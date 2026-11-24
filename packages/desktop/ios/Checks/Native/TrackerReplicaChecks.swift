@@ -193,6 +193,14 @@ func trackerWriteOutboxChecks() {
         try restarted.discardConflict(review.intent)
         let unblocked = try restarted.nextWrite()
         check(unblocked?.intentId == later.intent.intentId, "tracker write: discarding the conflict releases later intents")
+        let receipts = try (0..<21).map { _ in
+            let intent = try restarted.prepareWrite(scope: scope, action: "note", input: ["id": "fixture002", "text": "Receipt"]).intent
+            try restarted.enqueueWrite(intent)
+            return intent
+        }
+        for intent in receipts { try restarted.finishWrite(intent, conflict: nil) }
+        let accepted = try restarted.writeStatus().filter { $0["status"] == "accepted" }
+        check(accepted.compactMap { $0["intentId"] } == receipts.suffix(20).map(\.intentId), "tracker write: retain only the newest 20 acknowledged intents")
         try restarted.purgeWrites()
         let erased = try restarted.writeStatus()
         check(erased.isEmpty, "tracker write: revocation discards outbox payloads")

@@ -24,6 +24,11 @@
 		"desktop.component.deployment-route",
 		"desktop.component.design-panel",
 		"desktop.component.details-panel",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
 		"desktop.component.entity-card",
 		"desktop.component.entity-view",
 		"desktop.component.environment-picker",
@@ -93,6 +98,7 @@
 		"desktop.page.projects-project-id-harness-path",
 		"desktop.page.root",
 		"desktop.page.settings",
+		"desktop.page.tracker",
 		"hub.component.account-menu",
 		"hub.component.email-proof-panel",
 		"hub.component.hosted-workspace",
@@ -807,6 +813,36 @@
 			"title": "Source files",
 			"coverage": "required",
 			"units": ["desktop.component.details-panel"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox",
+			"title": "Tracker decision inbox",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
+			"title": "Tracker item review",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-record",
+			"title": "Tracker item notes and runs",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-record"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
+			"title": "Tracker item rows",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-writes",
+			"title": "Tracker write states",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes"]
 		},
 		{
 			"id": "desktop-component-entity-card",
@@ -2019,6 +2055,12 @@
 			"title": "Agent settings",
 			"coverage": "required",
 			"units": ["desktop.page.settings"]
+		},
+		{
+			"id": "desktop-page-tracker",
+			"title": "Tracker decisions",
+			"coverage": "required",
+			"units": ["desktop.page.tracker"]
 		},
 		{
 			"id": "hub-component-account-menu",
@@ -8629,6 +8671,11 @@
 				"desktop-component-design-panel-readonly",
 				"desktop-component-design-panel-long",
 				"desktop-component-details-panel",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-record",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-writes",
 				"desktop-component-entity-card",
 				"desktop-component-entity-view",
 				"desktop-component-entity-view-source",
@@ -8811,6 +8858,7 @@
 				"desktop-page-projects-project-id-harness-path",
 				"desktop-page-root",
 				"desktop-page-settings",
+				"desktop-page-tracker",
 				"hub-component-account-menu",
 				"hub-component-email-proof-panel",
 				"hub-component-hosted-workspace",

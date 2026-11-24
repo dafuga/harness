@@ -10,12 +10,23 @@ const confirmedWrites = {
 	flag: 'Flag an item',
 	answer: 'Answer the current flag'
 } as const;
-const writeInput = {
+const writeProperties = {
+	id: { type: 'string', minLength: 6, maxLength: 80 },
+	text: { type: 'string', minLength: 1, maxLength: 512 }
+};
+/** A flag or answer carries the attention revision its user reviewed, from `tracker_show`. */
+const reviewedWriteInput = {
 	type: 'object',
 	properties: {
-		id: { type: 'string', minLength: 6, maxLength: 80 },
-		text: { type: 'string', minLength: 1, maxLength: 512 }
+		...writeProperties,
+		revision: { type: ['string', 'null'], maxLength: 80 }
 	},
+	required: ['id', 'text', 'revision'],
+	additionalProperties: false
+};
+const noteInput = {
+	type: 'object',
+	properties: writeProperties,
 	required: ['id', 'text'],
 	additionalProperties: false
 };
@@ -25,7 +36,7 @@ export const trackerToolSchemas = [
 	{
 		name: 'tracker_status',
 		description:
-			'Read status totals, unresolved flags, and recently updated items from this phone.',
+			'Read status totals, unresolved flags, items that need you, and recently updated items from this phone.',
 		inputSchema: { type: 'object', properties: {}, additionalProperties: false }
 	},
 	{
@@ -74,7 +85,7 @@ export const trackerToolSchemas = [
 	...(['note', 'flag', 'answer'] as const).map((action) => ({
 		name: `tracker_${action}` as const,
 		description: confirmedWrites[action] + ' after the user confirms it on the phone.',
-		inputSchema: writeInput
+		inputSchema: action === 'note' ? noteInput : reviewedWriteInput
 	}))
 ] as const satisfies readonly PhoneTrackerToolSchema[];
 

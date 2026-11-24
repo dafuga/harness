@@ -1,0 +1,167 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-tracker-inbox-phone-tracker-inbox-parse",
+	"uid": "u_ymhr4iqr7u",
+	"kind": "module",
+	"title": "phoneTrackerInboxParse",
+	"responsibility": "Owns the phoneTrackerInboxParse library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxParse.ts"
+		],
+		"symbols": ["parseHeader", "parseHeaders", "parseDetail", "parseWrites"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "parseHeader.value",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "A native Tracker row is untrusted until its required fields are validated."
+			},
+			{
+				"name": "parseHeaders.value",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The native bridge can supply a malformed list or malformed entries."
+			},
+			{
+				"name": "parseDetail.data",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The native Tracker detail response is untrusted until its fields are validated."
+			},
+			{
+				"name": "parseWrites.data",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The native outbox response can contain malformed rows or unrecognized statuses."
+			}
+		],
+		"outputs": [
+			{
+				"name": "parseHeader",
+				"type": "InboxHeader | null"
+			},
+			{
+				"name": "parseHeaders",
+				"type": "InboxHeader[]"
+			},
+			{
+				"name": "parseDetail",
+				"type": "InboxDetail | null"
+			},
+			{
+				"name": "parseWrites",
+				"type": "InboxWrite[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "parseHeader",
+				"inputs": [
+					{
+						"name": "parseHeader.value",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "A native Tracker row is untrusted until its required fields are validated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseHeader",
+						"type": "InboxHeader | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseHeaders",
+				"inputs": [
+					{
+						"name": "parseHeaders.value",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The native bridge can supply a malformed list or malformed entries."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseHeaders",
+						"type": "InboxHeader[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseDetail",
+				"inputs": [
+					{
+						"name": "parseDetail.data",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The native Tracker detail response is untrusted until its fields are validated."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseDetail",
+						"type": "InboxDetail | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseWrites",
+				"inputs": [
+					{
+						"name": "parseWrites.data",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The native outbox response can contain malformed rows or unrecognized statuses."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseWrites",
+						"type": "InboxWrite[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxParse.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxParse.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-tracker-inbox-phone-tracker-inbox-source",
+	"uid": "u_gvp72ccrq5",
+	"kind": "module",
+	"title": "phoneTrackerInboxSource",
+	"responsibility": "Owns the phoneTrackerInboxSource library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxSource.ts"
+		],
+		"symbols": ["phoneTrackerInboxSource"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "phoneTrackerInboxSource.tools",
+				"type": "PhoneTrackerTools",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "phoneTrackerInboxSource",
+				"type": "TrackerInboxSource"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "phoneTrackerInboxSource",
+				"inputs": [
+					{
+						"name": "phoneTrackerInboxSource.tools",
+						"type": "PhoneTrackerTools",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "phoneTrackerInboxSource",
+						"type": "TrackerInboxSource"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-phone-tracker-inbox-parse",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
