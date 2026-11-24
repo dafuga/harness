@@ -78,7 +78,7 @@ const liveTargetField = new RegExp(
 const computerUse =
 	/^\[?computer[- ]use\b|\b(?:use|using|via|requires?)\s+(?:codex\s+)?computer[- ]use\b|^(?:please\s+)?(?:open|visit|navigate|browse|interact|click|tap|use|manually (?:test|verify|check))\b[^.!?\n;]*\b(?:browser|chrome|safari|firefox|edge|desktop app|mobile app|iphone|ipad)\b/i;
 const visualDesign =
-	/^(?:mockups?|wireframes?|visual (?:polish|design)|screenshot review)\b|\b(?:design|redesign|create|draw|generate|review|revise|prepare|polish|restyle)\b[^.!?\n;]*\b(?:mockups?|wireframes?)\b|\b(?:design|redesign|polish|restyle)\b[^.!?\n;]*\b(?:screens?|ui|dashboard|pages?|views?|layout|components?)\b/i;
+	/^(?:mock[ -]?ups?|wireframes?|designs? for|visual (?:polish|designs?)|screenshot review|review (?:the )?designs)\b|\b(?:design|redesign|build|create|draw|generate|review|revise|prepare|polish|restyle)\b[^.!?\n;]*\b(?:mock[ -]?ups?|wireframes?|visual (?:designs?|polish))\b|\b(?:design|redesign|polish|restyle)\b[^.!?\n;]*\b(?:screens?|ui|dashboard|pages?|views?|layout|components?)\b/i;
 
 export function trackerTaskRoute(item: TrackerModelItem): TrackerTaskRoute {
 	const title = item.title ?? '';
