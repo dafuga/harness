@@ -134,6 +134,16 @@ async function verifyProjectFollowUp() {
 	expect(
 		await (await followUp('done', { next_step: 'Approve the pilot scope' })).json()
 	).toMatchObject({ status: 'done', needs_daniel: true, next_step: 'Approve the pilot scope' });
+	expect(await (await request('/check?text=Elan+proposal+ready+for+review')).json()).toMatchObject({
+		open: [{ id: idea.id, status: 'done', needs_daniel: true }]
+	});
+	expect(
+		await (await followUp('answer', { answer: 'Discussed without deciding' })).json()
+	).toMatchObject({
+		next_step: 'Approve the pilot scope',
+		answer: 'Discussed without deciding',
+		needs_daniel: true
+	});
 	expect((await followUp('unflag')).status).toBe(409);
 	expect((await followUp('move-on')).status).toBe(403);
 	expect((await followUp('park', { until: '2026-11-22' })).status).toBe(403);
