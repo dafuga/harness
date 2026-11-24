@@ -1,9 +1,7 @@
 // @harness-uid u_g7kdpz7bel
-import { createHash, randomBytes } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
-import type { TrackerItemRow } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
-import { planTrackerItemMutation } from '../../../utils/projects-sessions/planTrackerItemMutation';
 import type {
 	TrackerItemInput,
 	TrackerItemValue
@@ -11,10 +9,10 @@ import type {
 import type {
 	TrackerItemAction,
 	TrackerItemMutationContext,
-	TrackerItemMutationPlan,
 	TrackerItemMutation
 } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
-import type { TrackerInboxReview } from './trackerLocalItemMutation.types';
+import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
+import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerItemTransitions } from '../../../utils/projects-sessions/trackerItemTransitions';
 
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
@@ -141,64 +139,28 @@ function parseItemBody(text: string): TrackerItemInput {
 	return value as TrackerItemInput;
 }
 
-/** The inbox reviews exact, visible items. Clock changes detect even an identical replacement question. */
-export function readInboxItem(database: SqliteDatabase, id: string): TrackerInboxReview {
-	const item = database
-		.prepare(
-			'SELECT * FROM items WHERE id = ? AND deleted = 0 AND coalesce(sensitive, 0) = 0 AND title IS NOT NULL'
-		)
-		.get(id) as (TrackerItemRow & { clocks: string }) | undefined;
-	if (!item) throw trackerItemError('Tracker item unavailable', 404);
-	const { question, needs_daniel, resolved, answered_at, answer } = JSON.parse(
-		item.clocks
-	) as Record<string, string>;
-	const revision = createHash('sha256')
-		.update(
-			JSON.stringify([
-				id,
-				question,
-				needs_daniel,
-				resolved,
-				answered_at,
-				answer,
-				item.question,
-				item.needs_daniel,
-				item.resolved,
-				item.answered_at,
-				item.answer
-			])
-		)
-		.digest('hex');
-	const clock = /^(\d{15})-/.exec(question ?? needs_daniel ?? '');
-	return { item, revision, flaggedAt: clock ? new Date(Number(clock[1])).toISOString() : null };
-}
-
-export function planInboxWrite(
-	review: TrackerInboxReview,
-	draft: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemMutationPlan {
-	const { item, revision } = review;
-	const { action, text, revision: reviewed } = draft;
-	if (action !== 'note' && action !== 'flag' && action !== 'answer')
-		throw trackerItemError('invalid inbox action');
-	if (typeof text !== 'string' || !text.trim() || Buffer.byteLength(text.trim()) > 512)
-		throw trackerItemError('invalid inbox write text');
-	if (action !== 'note' && revision !== reviewed) throw staleReview();
-	const open = item.needs_daniel && !item.resolved;
-	if ((action === 'answer' && !open) || (action === 'flag' && open)) throw staleReview();
-	const value = text.trim();
-	const body =
-		action === 'note'
-			? { text: value }
-			: action === 'flag'
-				? { question: value }
-				: { answer: value, by: 'daniel' };
-	return planTrackerItemMutation({ action, item, body }, context);
-}
-
-function staleReview() {
-	return Object.assign(trackerItemError('Tracker attention changed', 409), {
-		body: { code: 'staleReview' }
-	});
+/** Resolve the clock, duplicate candidates and launch policy used for one local write. */
+export function itemMutationContext(
+	store: TrackerPersistenceService,
+	items: TrackerItemReadRepository,
+	options: TrackerLocalApiOptions
+): TrackerItemMutationContext {
+	const { planLaunch, runs } = options;
+	return {
+		node: store.node,
+		now: options.now?.() ?? Date.now(),
+		timeZone: options.timeZone,
+		launchNonce: randomUUID(),
+		candidates: items.candidates(),
+		validateModel: options.validateModel,
+		planLaunch:
+			planLaunch &&
+			((fields, current) =>
+				planLaunch(
+					fields,
+					current?.auto && runs?.launchConsumed(current.id, current.auto)
+						? { ...current, auto: null }
+						: current
+				))
+	};
 }
