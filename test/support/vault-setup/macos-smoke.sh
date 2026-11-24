@@ -4,7 +4,8 @@ set -euo pipefail
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 [[ "$(uname -s)" == Darwin && "$EUID" != 0 ]]
 source_dir="$(cd "$(dirname "$0")/../../../deploy/vault/setup" && pwd -P)"
-suffix="$(uuidgen | cut -d- -f1 | tr '[:upper:]' '[:lower:]')"
+# The account name appears twice in Lima's SSH control socket path.
+suffix="$(uuidgen | cut -c 1-6 | tr '[:upper:]' '[:lower:]')"
 fixture="vault-test-$suffix"
 journal="/var/db/org.harness.vault-executor-$fixture"
 previous=${1:-}
@@ -44,7 +45,7 @@ export PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C
 [[ "$EUID" == 0 ]]
 payload=$1 account=$2 journal=$3
 previous=$4 previous_payload=$5
-[[ "$account" =~ ^vault-test-[0-9a-f]{8}$ && "$journal" == "/var/db/org.harness.vault-executor-$account" ]]
+[[ "$account" =~ ^vault-test-[0-9a-f]{6}$ && "$journal" == "/var/db/org.harness.vault-executor-$account" ]]
 home="/private/var/db/hv/$account"
 legacy_failed=0
 if [[ -n "$previous" ]]; then
