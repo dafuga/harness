@@ -13,7 +13,7 @@ import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
 	retainedTrackerTmuxFixture,
-	seedRetainedRuns,
+	seedCompletedRetainedRun,
 	startLinkedItem
 } from '../../support/trackerManagedProcessFixture';
 
@@ -37,7 +37,7 @@ async function proveHostCapacity(root: string) {
 	const signal = new AbortController().signal;
 	const closed = join(root, 'closed');
 	try {
-		seedCompletedRetainedRun(runtime, db);
+		seedCompletedRetainedRun(runtime, db, now);
 		for (const id of ['next100001', 'next100002', 'next100003'])
 			queueCapacityItem(runtime, id, id === 'next100003');
 		clock += 300_000;
@@ -89,14 +89,6 @@ async function expectPaneRetained(
 ) {
 	await runtime.scheduler!.tick(signal);
 	expect(existsSync(closed)).toBe(false);
-}
-
-function seedCompletedRetainedRun(runtime: TrackerNativeRuntimeService, database: DatabaseSync) {
-	seedRetainedRuns(database, now);
-	runtime.store.appendLocal({
-		itemId: 'old008abcd',
-		fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
-	});
 }
 
 function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, flagged: boolean) {

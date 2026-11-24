@@ -197,3 +197,15 @@ export function managedForegroundConfig(
 	writeFileSync(path, JSON.stringify(config), { mode: 0o600 });
 	return loadTrackerNodeConfig(path);
 }
+
+export function seedCompletedRetainedRun(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	now: number
+) {
+	seedRetainedRuns(database, now);
+	runtime.store.appendLocal({
+		itemId: 'old008abcd',
+		fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
+	});
+}

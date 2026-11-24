@@ -3,60 +3,6 @@ import { expect } from 'vitest';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../src/services/projects-sessions/TrackerSupervisorService';
 import { trackerNodeApi } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
-import { fixtureTrackerJson, trackerProcess } from './trackerNodeProcess';
-import type { TrackerNodeFixture } from './trackerNodeProcess.types';
-
-export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: string) {
-	const short = id.slice(0, 6);
-	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
-	const rejected = await trackerProcess(spoke, launch).exited;
-	expect(rejected).toMatchObject({
-		code: 1,
-		stdout: '',
-		stderr: expect.stringContaining('launcher disabled')
-	});
-	const launched = await fixtureTrackerJson(spoke, ['show', short]);
-	expect(launched).toMatchObject({
-		id,
-		auto: expect.stringMatching(/^synthetic-spoke@/),
-		launch_source: 'manual',
-		launch_target: 'synthetic-spoke',
-		project: 'Tracker',
-		model: 'Fable:high'
-	});
-	expect((await trackerProcess(spoke, launch).exited).code).toBe(1);
-	expect(await fixtureTrackerJson(spoke, ['show', short])).toEqual(launched);
-	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
-		rung: 'fable',
-		model: 'claude-fable-5-2',
-		effort: 'high',
-		pinned: true
-	});
-	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
-		1
-	);
-	await verifyLaunchCliTimeout(spoke, short, id);
-	expect(await fixtureTrackerJson(spoke, ['launch', 'on', short])).toMatchObject({
-		id,
-		schedule_off: false
-	});
-}
-
-async function verifyLaunchCliTimeout(spoke: TrackerNodeFixture, short: string, id: string) {
-	const clear = ['launch', 'off', short];
-	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({
-		id,
-		auto: null,
-		schedule_off: true
-	});
-	const waiting = await trackerProcess(spoke, ['launch', short, '--computer', 'grok-box']).exited;
-	expect(waiting).toMatchObject({
-		code: 1,
-		stdout: '',
-		stderr: expect.stringContaining('no run confirmation within 20 seconds on grok-box')
-	});
-	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({ id, auto: null });
-}
 
 export async function verifyLaunchWatchdogBoundary(
 	runtime: TrackerNativeRuntimeService,

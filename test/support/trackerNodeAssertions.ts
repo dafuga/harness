@@ -1,4 +1,4 @@
-import { verifyLaunchCliOptions } from './trackerLaunchOutcomeFixture';
+import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { once } from 'node:events';
