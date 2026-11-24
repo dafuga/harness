@@ -42,6 +42,7 @@ export interface StoredReminder {
 	next_at: number;
 	pings: number;
 	last_ping: number | null;
+	first_ping: number | null;
 }
 
 export interface StoredFlag {

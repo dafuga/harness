@@ -13,6 +13,7 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		status: row.status,
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		...ignoredFields(row),
+		...trackerChaseFields(row),
 		due: row.due,
 		remind_at: nullIfEmpty(row.remind_at),
 		auto: nullIfEmpty(row.auto),
@@ -53,6 +54,16 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		created_by: row.created_by,
 		updated_at: row.updated_at,
 		deleted: Boolean(row.deleted)
+	};
+}
+
+export function trackerChaseFields(row: TrackerItemRow) {
+	if (!row.chased_clock || !row.chased_count) return {};
+	return {
+		chased_at: new Date(hlcMilliseconds(row.chased_clock)).toISOString(),
+		chased_by: row.chased_by ?? null,
+		chased_reason: row.chased_reason ?? null,
+		chased_count: row.chased_count
 	};
 }
 

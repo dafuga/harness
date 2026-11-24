@@ -8,36 +8,54 @@ import type {
 import type {
 	DeliveryAttempt,
 	ReminderRow,
+	DirectReminderBrief,
 	TrackerNotificationState
 } from './notificationState.types';
-import { callbackRequest } from './deliveryRequest';
+import { callbackRequest, flagWebhook } from './deliveryRequest';
 import {
-	activeItem,
-	dueTime,
+	askQuietHours,
+	clockTime,
+	dueForDirectReminder,
 	eventId,
 	flagged,
 	holdRegularReminder,
 	isoTime,
 	localDay,
+	minute,
+	nextAskAt,
 	readyRows
 } from './notificationRules';
 
-function reminderRows(options: TrackerNotificationOptions, now: number) {
+export function directReminderDestination(options: TrackerNotificationOptions) {
+	if (options.role !== 'hub') return undefined;
+	const { chiefOfStaff, scheduledReminders, webhook, destinations } = options;
+	const fallback =
+		webhook?.batch === false ? undefined : (webhook?.destination ?? scheduledReminders);
+	const target = chiefOfStaff ?? fallback;
+	return target && destinations.available(target) ? target : undefined;
+}
+
+function reminderRows(
+	state: TrackerNotificationState,
+	options: TrackerNotificationOptions,
+	now: number
+) {
 	const { source } = options;
 	const reminders = [];
 	const today = localDay(now, source.tz);
 	const nextAt = quietHourBoundary(now, options.quietHours);
 	for (const item of source.items()) {
-		if (!activeItem(item)) continue;
 		const row = { itemId: item.id, status: 'active', nextAt, createdAt: now, pings: 0 } as const;
-		if (flagged(item))
-			reminders.push({
-				...row,
-				key: `flag|${item.id}|${item.clocks.needs_daniel ?? ''}`,
-				kind: 'flag'
-			} as const);
-		const due = item.every ? null : dueTime(item.due, source.tz);
-		if (due !== null && localDay(due, source.tz) <= today)
+		if (flagged(item)) {
+			const flag = flagReminder(
+				state,
+				item,
+				now,
+				!options.chiefOfStaff && Boolean(options.webhook)
+			);
+			if (flag) reminders.push(flag);
+		}
+		if (dueForDirectReminder(item, options, today))
 			reminders.push({
 				...row,
 				key: `due|${item.id}|${item.clocks.due ?? ''}`,
@@ -48,24 +66,76 @@ function reminderRows(options: TrackerNotificationOptions, now: number) {
 	return reminders.sort((a, b) => Number(a.kind === 'due') - Number(b.kind === 'due'));
 }
 
+function reminderKey(item: TrackerNotificationItem): string {
+	return `flag|${item.id}|${item.clocks.needs_daniel ?? ''}`;
+}
+
+function flagReminder(
+	state: TrackerNotificationState,
+	item: TrackerNotificationItem,
+	now: number,
+	batched: boolean
+): ReminderRow | undefined {
+	const key = reminderKey(item);
+	const initial = batched ? initialBatch(state, item, key) : undefined;
+	if (initial?.status === 'pending') return undefined;
+	const createdAt =
+		clockTime(item.clocks.needs_daniel) || Date.parse(initial?.line.at ?? '') || now;
+	const firstPing = initial?.sentAt;
+	return {
+		key,
+		itemId: item.id,
+		kind: 'flag',
+		status: 'active',
+		createdAt,
+		nextAt:
+			firstPing === undefined
+				? quietHourBoundary(now, askQuietHours)
+				: nextAskAt(1, firstPing, firstPing),
+		pings: Number(firstPing !== undefined),
+		firstPing
+	};
+}
+
+function initialBatch(state: TrackerNotificationState, item: TrackerNotificationItem, key: string) {
+	const clock = item.clocks.needs_daniel;
+	const row =
+		state.attention.get(key) ??
+		(item.clocks.status === clock ? state.attention.get(`blocked|${item.id}|${clock}`) : undefined);
+	if (row || clock) return row;
+	return [...state.attention.values()]
+		.reverse()
+		.find(
+			(entry) =>
+				entry.itemId === item.id && (entry.kind === 'needs_daniel' || entry.line.needs_daniel)
+		);
+}
+
 export function scanDirectReminders(
 	state: TrackerNotificationState,
 	options: TrackerNotificationOptions,
 	now: number
 ): void {
-	if (!options.chiefOfStaff) return;
+	if (!directReminderDestination(options)) return;
 	const active = new Set<string>();
-	for (const row of reminderRows(options, now)) {
+	for (const row of reminderRows(state, options, now)) {
 		active.add(row.key);
 		if (!state.reminders.has(row.key)) state.reminders.set(row.key, row);
 	}
 	for (const row of state.reminders.values()) {
-		if (row.kind !== 'scheduled' && row.status === 'active' && !active.has(row.key))
+		if (row.kind === 'scheduled' || row.status !== 'active') continue;
+		if (!active.has(row.key) && !currentFlag(row, options.source.item(row.itemId)))
 			row.status = 'closed';
 	}
 }
 
-function brief(row: ReminderRow, item: TrackerNotificationItem) {
+function currentFlag(row: ReminderRow, item: TrackerNotificationItem | undefined) {
+	return row.kind === 'flag' && flagged(item) && row.key === reminderKey(item);
+}
+
+function brief(row: ReminderRow, item: TrackerNotificationItem, now: number): DirectReminderBrief {
+	const askedAt =
+		row.kind === 'flag' ? clockTime(item.clocks.needs_daniel) || row.createdAt : row.createdAt;
 	return {
 		id: item.id,
 		title: item.title,
@@ -76,7 +146,10 @@ function brief(row: ReminderRow, item: TrackerNotificationItem) {
 		agent: item.agent,
 		reason: row.kind === 'flag' ? 'needs_daniel' : 'due',
 		reminder_number: row.pings,
-		first_noticed_at: isoTime(row.createdAt)
+		first_noticed_at: isoTime(askedAt),
+		...(row.kind === 'flag' && {
+			waiting_minutes: Math.max(0, Math.floor((now - askedAt) / minute))
+		})
 	};
 }
 
@@ -86,39 +159,65 @@ export function nextDirectReminder(
 	destination: TrackerDestination,
 	now: number
 ): DeliveryAttempt | undefined {
+	const batched =
+		destination === options.webhook?.destination && destination !== options.chiefOfStaff;
 	const due = readyRows(
 		state.reminders.values(),
 		now,
 		(row) => row.kind !== 'scheduled' && row.status === 'active'
 	);
-	if (!due.length) return undefined;
-	const release = quietHourBoundary(now, options.quietHours);
-	if (release > now) {
-		for (const row of due) row.nextAt = release;
-		return undefined;
-	}
-	const fresh: ReturnType<typeof brief>[] = [];
-	const repeat: ReturnType<typeof brief>[] = [];
+	const fresh: DirectReminderBrief[] = [];
+	const repeat: DirectReminderBrief[] = [];
 	const pending = [];
 	for (const row of due) {
-		const item = options.source.item(row.itemId);
-		if (!item) {
-			row.status = 'closed';
-			continue;
-		}
-		if (holdRegularReminder(item, now, options.reminderIntervalMinutes)) continue;
+		const item = readyReminder(state, row, { options, now, batched });
+		if (!item) continue;
 		pending.push(row);
-		(row.pings === 0 ? fresh : repeat).push(brief(row, item));
+		(row.pings ? repeat : fresh).push(brief(row, item, now));
+		if (destination === options.scheduledReminders) break;
 	}
 	if (!pending.length) return undefined;
 	const id = eventId(pending.map((row) => `${row.key}|${row.pings}`));
-	const request = callbackRequest(id, destination, {
-		type: 'attention',
-		new: fresh,
-		reminders: repeat,
-		digest: options.source.digest(now),
-		node: options.source.node,
-		sent_at: isoTime(now)
-	});
+	const request = batched
+		? flagWebhook(destination, id, [...fresh, ...repeat], { node: options.source.node, now })
+		: callbackRequest(id, destination, {
+				type: 'attention',
+				new: fresh,
+				reminders: repeat,
+				...(destination.kind === 'http' && { digest: options.source.digest(now) }),
+				node: options.source.node,
+				sent_at: isoTime(now)
+			});
 	return { kind: 'reminders', keys: pending.map((row) => row.key), request, startedAt: now };
+}
+
+function readyReminder(
+	state: TrackerNotificationState,
+	row: ReminderRow,
+	{ options, now, batched }: { options: TrackerNotificationOptions; now: number; batched: boolean }
+) {
+	const item = options.source.item(row.itemId);
+	if (!item || (row.kind === 'flag' && !currentFlag(row, item))) {
+		row.status = 'closed';
+		return undefined;
+	}
+	const release = quietHourBoundary(now, row.kind === 'flag' ? askQuietHours : options.quietHours);
+	if (release > now) {
+		row.nextAt = release;
+		return undefined;
+	}
+	if (batched && initialBatch(state, item, row.key)?.status === 'pending') return undefined;
+	return holdRegularReminder(item, now, options.reminderIntervalMinutes) ? undefined : item;
+}
+
+export function currentDirectAttempt(
+	state: TrackerNotificationState,
+	attempt: DeliveryAttempt,
+	options: TrackerNotificationOptions
+) {
+	return attempt.keys.every((key) => {
+		const row = state.reminders.get(key);
+		if (row?.status !== 'active') return false;
+		return row.kind !== 'flag' || currentFlag(row, options.source.item(row.itemId));
+	});
 }

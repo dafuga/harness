@@ -9,11 +9,14 @@ import type {
 import type { FlagRow, TrackerNotificationState } from './notificationState.types';
 import {
 	activeItem,
+	askQuietHours,
+	clockTime,
 	dueTime,
 	flagged,
 	holdRegularReminder,
 	intervalMs,
-	minute
+	minute,
+	nextAskAt
 } from './notificationRules';
 import { enqueueEvent, itemEvent } from './webhookEvents';
 
@@ -24,7 +27,7 @@ function nextEscalation(from: number, options: TrackerNotificationOptions): numb
 		const slot = nextReminderSlotAt(from, slots, quietHours?.tz ?? source.tz);
 		return quietHourBoundary(slot, quietHours);
 	}
-	return nextReminderAt(from, intervalMs(options.reminderIntervalMinutes, 60), quietHours);
+	return nextReminderAt(from, intervalMs(options.reminderIntervalMinutes, 120), askQuietHours);
 }
 
 function firstEscalation(
@@ -38,7 +41,7 @@ function firstEscalation(
 		item.status === 'blocked' && status === flag
 			? state.outbox.get(`blocked|${item.id}|${status}`)
 			: undefined;
-	const initial = quietHourBoundary(now, options.quietHours);
+	const initial = quietHourBoundary(now, askQuietHours);
 	if (!blocked) return { nextAt: initial, escalation: 0 };
 	const firstAt =
 		blocked.sentAt ?? quietHourBoundary(Math.max(blocked.nextAt, now), options.quietHours);
@@ -60,7 +63,7 @@ function trackFlags(
 				key,
 				itemId: item.id,
 				status: 'active',
-				createdAt: now,
+				createdAt: clockTime(item.clocks.needs_daniel) || now,
 				...firstEscalation(state, item, options, now)
 			});
 	}
@@ -86,16 +89,17 @@ export function scanWebhookFlags(
 	});
 	const due = pending.filter((row) => row.nextAt <= now);
 	if (!due.length) return;
-	const release = quietHourBoundary(now, options.quietHours);
+	const release = quietHourBoundary(now, askQuietHours);
 	if (release > now) {
 		for (const row of due) row.nextAt = release;
 		return;
 	}
-	const grace = (options.webhook?.coalesceMinutes ?? 10) * minute;
+	const grace = options.webhook?.reminderTimes?.length
+		? (options.webhook.coalesceMinutes ?? 10) * minute
+		: 0;
 	const near = pending.filter(
 		(row) => row.escalation >= 1 && row.nextAt > now && row.nextAt <= now + grace
 	);
-	const nextAt = nextEscalation(now, options);
 	for (const row of [...due, ...near]) {
 		const item = active.get(row.key);
 		if (!item) continue;
@@ -104,12 +108,31 @@ export function scanWebhookFlags(
 			item,
 			'needs_daniel',
 			{ key, node: options.source.node, now },
-			{ escalation: row.escalation }
+			{
+				escalation: row.escalation,
+				payload: {
+					first_noticed_at: new Date(row.createdAt).toISOString(),
+					waiting_minutes: Math.max(0, Math.floor((now - row.createdAt) / minute))
+				}
+			}
 		);
 		enqueueEvent(state, event, { key, now });
-		row.nextAt = nextAt;
 		row.escalation++;
+		row.nextAt = nextFlagEscalation(state, item, row, { options, now });
 	}
+}
+
+function nextFlagEscalation(
+	state: TrackerNotificationState,
+	item: TrackerNotificationItem,
+	row: FlagRow,
+	{ options, now }: { options: TrackerNotificationOptions; now: number }
+): number {
+	if (options.webhook?.reminderTimes?.length) return nextEscalation(now, options);
+	const original = state.outbox.get(`needs_daniel|${row.key}|0`);
+	const blocked = state.outbox.get(`blocked|${item.id}|${item.clocks.needs_daniel}`);
+	const first = original ?? blocked;
+	return nextAskAt(row.escalation, first?.sentAt ?? first?.createdAt ?? now, now);
 }
 
 export function scanWebhookDue(

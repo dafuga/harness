@@ -23,6 +23,7 @@
 			"readTrackerItemDetail",
 			"readTrackerRunEndpoint",
 			"itemMutation",
+			"trackerMutationBody",
 			"itemAction",
 			"trackerSessionItemPrefix",
 			"recordTrackerSessionItem",
@@ -98,6 +99,26 @@
 			{
 				"name": "itemMutation.items",
 				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerMutationBody.body",
+				"type": "TrackerItemInput",
+				"required": true
+			},
+			{
+				"name": "trackerMutationBody.action",
+				"type": "TrackerItemAction | 'add' | undefined",
+				"required": true
+			},
+			{
+				"name": "trackerMutationBody.actor",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "trackerMutationBody.canLaunch",
+				"type": "boolean",
 				"required": true
 			},
 			{
@@ -182,6 +203,10 @@
 			{
 				"name": "itemMutation",
 				"type": "TrackerItemMutation"
+			},
+			{
+				"name": "trackerMutationBody",
+				"type": "TrackerItemInput"
 			},
 			{
 				"name": "itemAction",
@@ -308,6 +333,39 @@
 					{
 						"name": "itemMutation",
 						"type": "TrackerItemMutation"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMutationBody",
+				"inputs": [
+					{
+						"name": "trackerMutationBody.body",
+						"type": "TrackerItemInput",
+						"required": true
+					},
+					{
+						"name": "trackerMutationBody.action",
+						"type": "TrackerItemAction | 'add' | undefined",
+						"required": true
+					},
+					{
+						"name": "trackerMutationBody.actor",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "trackerMutationBody.canLaunch",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMutationBody",
+						"type": "TrackerItemInput"
 					}
 				],
 				"errors": [],

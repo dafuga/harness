@@ -28,6 +28,31 @@ export function itemMutation(
 		: { action, item: items.resolve(id), body };
 }
 
+export function trackerMutationBody(
+	body: TrackerItemInput,
+	action: TrackerItemAction | 'add' | undefined,
+	actor: string | null,
+	canLaunch: boolean
+): TrackerItemInput {
+	if (action !== 'add' || !canLaunch || !isDanielOrChief(actor)) return body;
+	if (body.later || body.auto !== undefined || !launchableCreation(body)) return body;
+	return { ...body, auto: true };
+}
+
+function isDanielOrChief(actor: string | null) {
+	const creator = actor?.split('@')[0]?.trim() ?? '';
+	return /^(?:daniel(?: fugere)?|danielfugere|cos|chief[-_ ]of[-_ ]staff)$/i.test(creator);
+}
+
+function launchableCreation(body: TrackerItemInput) {
+	return (
+		(body.kind ?? 'task') === 'task' &&
+		!body.every &&
+		![body.flag, body.question, body.needs_daniel].some(Boolean) &&
+		(!body.status || body.status === 'open' || body.status === 'in_progress')
+	);
+}
+
 export function itemAction(
 	method: string,
 	id: string | undefined,

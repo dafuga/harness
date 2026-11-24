@@ -135,6 +135,9 @@ function itemAction(
 			};
 		case 'launch':
 			return launchAction(id, [first, ...rest], values);
+		case 'chase':
+			if (rest.length) throw new TypeError('usage: tracker chase <id> [--note text]');
+			return { method: 'POST', path: id + '/chase', body: { note: values.note } };
 		default:
 			return { method: 'POST', path: `${id}/${command}`, body: actionBody(command, rest, values) };
 	}

@@ -1,10 +1,24 @@
 // @harness-uid u_vqnqshfas2
 import { createHash } from 'node:crypto';
+import { nextReminderSlotAt } from '../../../helpers/attention-timing/nextReminderSlotAt';
+import { quietHourBoundary } from '../../../helpers/attention-timing/quietHourBoundary';
 import { wallClockToEpochMs } from '../../../helpers/attention-timing/wallClockToEpochMs';
 import { zonedWallClock } from '../../../helpers/attention-timing/zonedWallClock';
-import type { TrackerNotificationItem } from '../TrackerNotificationService.types';
+import type {
+	TrackerNotificationItem,
+	TrackerNotificationOptions
+} from '../TrackerNotificationService.types';
 
 export const minute = 60_000;
+const lisbon = 'Europe/Lisbon';
+export const askQuietHours = { start: '22:00', end: '08:00', tz: lisbon };
+
+export function nextAskAt(numberSent: number, first: number, now: number): number {
+	const delay = [120, 360][numberSent - 1];
+	if (delay !== undefined && first + delay * minute > now)
+		return quietHourBoundary(first + delay * minute, askQuietHours);
+	return nextReminderSlotAt(now, ['08:00'], lisbon);
+}
 
 export function intervalMs(minutes: number | undefined, fallback: number): number {
 	if (!minutes) return fallback * minute;
@@ -42,7 +56,14 @@ export function activeItem(
 export function flagged(
 	item: TrackerNotificationItem | undefined
 ): item is TrackerNotificationItem {
-	return activeItem(item) && !!item.needs_daniel && !item.resolved;
+	return (
+		!!item?.title &&
+		!!item.status &&
+		!item.deleted &&
+		item.status !== 'ignored' &&
+		!!item.needs_daniel &&
+		!item.resolved
+	);
 }
 
 export function dueTime(value: string | null, tz: string): number | null {
@@ -77,4 +98,15 @@ export function readyRows<T extends { createdAt: number; nextAt: number }>(
 	return [...rows]
 		.filter((row) => pending(row) && row.nextAt <= now)
 		.sort((a, b) => a.createdAt - b.createdAt);
+}
+
+export function dueForDirectReminder(
+	item: TrackerNotificationItem,
+	options: TrackerNotificationOptions,
+	today: number
+) {
+	if (!options.chiefOfStaff || options.scheduledOnly || !activeItem(item) || item.every)
+		return false;
+	const due = dueTime(item.due, options.source.tz);
+	return due !== null && localDay(due, options.source.tz) <= today;
 }

@@ -7,6 +7,7 @@ import type { TrackerItemMutationContext } from '../../utils/projects-sessions/p
 import {
 	itemAction,
 	itemMutation,
+	trackerMutationBody,
 	readItemBody,
 	recordTrackerSessionItem
 } from './tracker-local-api-service/trackerLocalItemMutation';
@@ -104,9 +105,11 @@ export class TrackerLocalApiService {
 		const manual =
 			this.options.manualLaunch && request.method === 'POST' && id && isTrackerManualLaunch(verb);
 		if (!action && !manual) return undefined;
-		const body = await readItemBody(request);
+		const input = await readItemBody(request);
 		request.signal.throwIfAborted();
+		const actor = readActor(request.headers);
 		const context = this.mutationContext();
+		const body = trackerMutationBody(input, action, actor, Boolean(context.planLaunch));
 		const plan = action
 			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)
 			: planTrackerManualLaunch(verb, this.items.resolve(id), body, context);
@@ -115,10 +118,7 @@ export class TrackerLocalApiService {
 				? () => recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run)
 				: undefined;
 		if (plan.fields)
-			this.store.appendLocal(
-				{ itemId: plan.itemId, fields: plan.fields, actor: readActor(request.headers) },
-				persist
-			);
+			this.store.appendLocal({ itemId: plan.itemId, fields: plan.fields, actor }, persist);
 		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
 	}
 

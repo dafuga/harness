@@ -82,12 +82,17 @@
 			"scanCallbacks",
 			"nextCallback",
 			"completeDelivery",
+			"flagWebhook",
 			"webhookRequest",
 			"callbackRequest",
+			"directReminderDestination",
 			"scanDirectReminders",
 			"nextDirectReminder",
+			"currentDirectAttempt",
 			"enqueueWebhook",
 			"minute",
+			"askQuietHours",
+			"nextAskAt",
 			"intervalMs",
 			"isoTime",
 			"clockTime",
@@ -98,6 +103,7 @@
 			"localDay",
 			"holdRegularReminder",
 			"readyRows",
+			"dueForDirectReminder",
 			"CallbackEvent",
 			"AttentionKind",
 			"ReminderKind",
@@ -106,6 +112,7 @@
 			"WebhookPayload",
 			"OutboxRow",
 			"ReminderRow",
+			"DirectReminderBrief",
 			"FlagRow",
 			"AttentionPayload",
 			"AttentionRow",
@@ -368,6 +375,31 @@
 				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
 			},
 			{
+				"name": "flagWebhook.destination",
+				"type": "TrackerDestination",
+				"required": true
+			},
+			{
+				"name": "flagWebhook.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "flagWebhook.briefs",
+				"type": "DirectReminderBrief[]",
+				"required": true
+			},
+			{
+				"name": "flagWebhook.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "flagWebhook.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "webhookRequest.destination",
 				"type": "TrackerDestination",
 				"required": true,
@@ -403,6 +435,11 @@
 				"required": false,
 				"default": null,
 				"description": "Item ID and ordered completion events for the command environment. Omit for a non-item payload."
+			},
+			{
+				"name": "directReminderDestination.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
 			},
 			{
 				"name": "scanDirectReminders.state",
@@ -447,6 +484,21 @@
 				"description": "Epoch milliseconds from the injected clock for this scan or send."
 			},
 			{
+				"name": "currentDirectAttempt.state",
+				"type": "TrackerNotificationState",
+				"required": true
+			},
+			{
+				"name": "currentDirectAttempt.attempt",
+				"type": "DeliveryAttempt",
+				"required": true
+			},
+			{
+				"name": "currentDirectAttempt.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
 				"name": "enqueueWebhook.state",
 				"type": "TrackerNotificationState",
 				"required": true,
@@ -463,6 +515,21 @@
 				"type": "TrackerNotificationOptions",
 				"required": true,
 				"description": "The injected clock, item and journal reader, queue and destination ports, node role and notification settings."
+			},
+			{
+				"name": "nextAskAt.numberSent",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "nextAskAt.first",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "nextAskAt.now",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "intervalMs.minutes",
@@ -565,6 +632,21 @@
 				"type": "(row: T) => boolean",
 				"required": true,
 				"description": "Predicate selecting rows that still need processing."
+			},
+			{
+				"name": "dueForDirectReminder.item",
+				"type": "TrackerNotificationItem",
+				"required": true
+			},
+			{
+				"name": "dueForDirectReminder.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
+			},
+			{
+				"name": "dueForDirectReminder.today",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "runNotificationTick.options",
@@ -1584,6 +1666,44 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "flagWebhook",
+				"inputs": [
+					{
+						"name": "flagWebhook.destination",
+						"type": "TrackerDestination",
+						"required": true
+					},
+					{
+						"name": "flagWebhook.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "flagWebhook.briefs",
+						"type": "DirectReminderBrief[]",
+						"required": true
+					},
+					{
+						"name": "flagWebhook.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "flagWebhook.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "flagWebhook",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "webhookRequest",
 				"inputs": [
 					{
@@ -1659,6 +1779,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "directReminderDestination",
+				"inputs": [
+					{
+						"name": "directReminderDestination.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "directReminderDestination",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "scanDirectReminders",
@@ -1743,6 +1881,34 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "currentDirectAttempt",
+				"inputs": [
+					{
+						"name": "currentDirectAttempt.state",
+						"type": "TrackerNotificationState",
+						"required": true
+					},
+					{
+						"name": "currentDirectAttempt.attempt",
+						"type": "DeliveryAttempt",
+						"required": true
+					},
+					{
+						"name": "currentDirectAttempt.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentDirectAttempt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "enqueueWebhook",
 				"inputs": [
 					{
@@ -1779,6 +1945,34 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "nextAskAt",
+				"inputs": [
+					{
+						"name": "nextAskAt.numberSent",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "nextAskAt.first",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "nextAskAt.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextAskAt",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "intervalMs",
@@ -2045,6 +2239,34 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "dueForDirectReminder",
+				"inputs": [
+					{
+						"name": "dueForDirectReminder.item",
+						"type": "TrackerNotificationItem",
+						"required": true
+					},
+					{
+						"name": "dueForDirectReminder.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					},
+					{
+						"name": "dueForDirectReminder.today",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dueForDirectReminder",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "runNotificationTick",
@@ -2631,6 +2853,11 @@
 		},
 		{
 			"unit": "helper.attention-timing-group-attention-lines",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
 			"via": "import",
 			"origin": "derived"
 		},

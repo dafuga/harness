@@ -46,17 +46,35 @@ export function configuredTrackerReminderHost(
 }
 
 function reminderDetails(request: TrackerDeliveryRequest) {
-	const {
-		new: [reminder]
-	} = JSON.parse(request.body);
-	const id = String(reminder.id);
-	const at = String(reminder.remind_at);
-	if (!/^[a-z0-9-]{1,80}$/.test(id) || !/^\d{4}-[\d:TZ.-]+$/.test(at))
-		throw new TypeError('Invalid Tracker reminder identity');
+	const body = JSON.parse(request.body);
+	const reminder = body.new?.[0] ?? body.reminders?.[0];
+	const id = String(reminder?.id);
+	if (!/^[a-z0-9-]{1,80}$/.test(id)) throw new TypeError('Invalid Tracker reminder identity');
+	if (reminder?.reason === 'needs_daniel') return askDetails(id, reminder, request.id);
+	const at = String(reminder?.remind_at);
+	if (!/^\d{4}-[\d:TZ.-]+$/.test(at)) throw new TypeError('Invalid Tracker reminder timestamp');
 	return {
 		id,
 		at,
+		kind: 'remind_at',
 		message: `Scheduled Tracker reminder [${id.slice(0, 6)}] due at ${at}. Open Tracker item ${id} and remind Daniel as requested. Reminder reference ${request.id}.`
+	};
+}
+
+function askDetails(
+	id: string,
+	{ waiting_minutes, first_noticed_at }: Record<string, unknown>,
+	reference: string
+) {
+	const minutes = Number(waiting_minutes);
+	const at = String(first_noticed_at);
+	if (!Number.isSafeInteger(minutes) || minutes < 0 || !/^\d{4}-[\d:TZ.-]+$/.test(at))
+		throw new TypeError('Invalid Tracker ask age');
+	return {
+		id,
+		at,
+		kind: 'needs-daniel',
+		message: `Tracker item [${id.slice(0, 6)}] has been waiting for Daniel for ${minutes} minutes. Open the item and relay its current question to Daniel if it is still unanswered. Reminder reference ${reference}.`
 	};
 }
 
@@ -70,13 +88,13 @@ function tmuxReminder(tmux: TrackerTmuxAdapter) {
 
 function driverReminder(driver: ReturnType<typeof trackerWatchdogPort>, node: string) {
 	return (request: TrackerDeliveryRequest, signal: AbortSignal) => {
-		const { id, at, message } = reminderDetails(request);
+		const { id, at, kind, message } = reminderDetails(request);
 		return driver.send(
 			[
 				{
 					id: request.id,
 					item_id: id,
-					kind: 'remind_at',
+					kind,
 					host: node,
 					reason: message,
 					identity: request.id,

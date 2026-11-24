@@ -7,6 +7,14 @@
 	"responsibility": "Owns the TrackerNativeRuntimeService service workflow.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"configControls": [
+		{
+			"source": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
+			"name": "idleWorkMinutes",
+			"audience": "operator",
+			"purpose": "Set how long an unassigned Tracker task can remain idle during Lisbon daytime before the hub requests pickup. Defaults to 120 minutes."
+		}
+	],
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerNativeRuntimeService.ts",
@@ -187,6 +195,7 @@
 			"WatchdogSessionHost",
 			"WatchdogSessionScan",
 			"launchWithoutRunKind",
+			"queueIdleWork",
 			"watchLaunchRequests",
 			"sampleTrackerContexts",
 			"TrackerContextSample",
@@ -651,7 +660,12 @@
 			{
 				"name": "trackerHostWatchdog.launch",
 				"type": "TrackerWatchdogLaunch",
-				"required": false
+				"required": true
+			},
+			{
+				"name": "trackerHostWatchdog.idleWork",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "configuredHostWatchdog.store",
@@ -670,6 +684,11 @@
 				"type": "TrackerDispatcherService | undefined",
 				"required": true,
 				"description": "Dispatch scheduler used when the watchdog recovers a launch."
+			},
+			{
+				"name": "configuredHostWatchdog.role",
+				"type": "unknown",
+				"required": true
 			},
 			{
 				"name": "configuredHostWatchdog.watchdog",
@@ -1136,6 +1155,36 @@
 			{
 				"name": "watchHostSessions.options",
 				"type": "WatchdogSessionScan",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.rows",
+				"type": "readonly TrackerItem[]",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.snapshot",
+				"type": "WatchdogScan",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.dispatch",
+				"type": "TrackerDispatcherService",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.minutes",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "queueIdleWork.signal",
+				"type": "AbortSignal",
 				"required": true
 			},
 			{
@@ -2316,7 +2365,12 @@
 					{
 						"name": "trackerHostWatchdog.launch",
 						"type": "TrackerWatchdogLaunch",
-						"required": false
+						"required": true
+					},
+					{
+						"name": "trackerHostWatchdog.idleWork",
+						"type": "unknown",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -2348,6 +2402,11 @@
 						"type": "TrackerDispatcherService | undefined",
 						"required": true,
 						"description": "Dispatch scheduler used when the watchdog recovers a launch."
+					},
+					{
+						"name": "configuredHostWatchdog.role",
+						"type": "unknown",
+						"required": true
 					},
 					{
 						"name": "configuredHostWatchdog.watchdog",
@@ -3261,6 +3320,49 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "queueIdleWork",
+				"inputs": [
+					{
+						"name": "queueIdleWork.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.rows",
+						"type": "readonly TrackerItem[]",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.snapshot",
+						"type": "WatchdogScan",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.dispatch",
+						"type": "TrackerDispatcherService",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.minutes",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "queueIdleWork.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "queueIdleWork",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "watchLaunchRequests",
 				"inputs": [
 					{
@@ -3432,6 +3534,11 @@
 		},
 		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
 			"via": "import",
 			"origin": "derived"
 		},

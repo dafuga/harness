@@ -7,11 +7,12 @@ import type {
 } from '../TrackerNotificationService.types';
 import type {
 	DeliveryAttempt,
+	ReminderRow,
 	RetryRow,
 	TrackerNotificationState
 } from './notificationState.types';
 import { TrackerNotificationStateError } from './TrackerNotificationStateError';
-import { intervalMs } from './notificationRules';
+import { askQuietHours, intervalMs, nextAskAt } from './notificationRules';
 import { quietOutboxEvent } from './outboxRouting';
 
 const backoff = [30_000, 120_000, 600_000, 1_800_000, 3_600_000];
@@ -85,11 +86,25 @@ function completeReminders(
 		if (!row)
 			throw new TrackerNotificationStateError('Tracker reminder attempt is missing its queue row');
 		row.nextAt = row.kind === 'scheduled' ? at + retry : next;
+		if (row.kind === 'flag') scheduleNextAsk(row, result, { at, retry });
 		if (result.status === 'sent') {
 			row.pings++;
 			row.lastPing = at;
 			if (row.kind !== 'flag') row.status = 'closed';
 		}
+	}
+}
+
+function scheduleNextAsk(
+	row: ReminderRow,
+	result: TrackerDeliveryResult,
+	{ at, retry }: { at: number; retry: number }
+) {
+	if (result.status === 'sent') {
+		row.firstPing ??= row.lastPing ?? at;
+		row.nextAt = nextAskAt(row.pings + 1, row.firstPing, at);
+	} else {
+		row.nextAt = quietHourBoundary(at + retry, askQuietHours);
 	}
 }
 

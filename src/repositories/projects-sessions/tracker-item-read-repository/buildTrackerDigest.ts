@@ -1,66 +1,103 @@
 // @harness-uid u_xba7ieg4je
 import type {
 	TrackerDigest,
+	TrackerDigestGroups,
 	TrackerDigestItem,
 	TrackerItemRow,
 	TrackerRecurringProblem
 } from '../TrackerItemReadRepository.types';
+import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
+import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
+import { trackerChaseFields } from './serializeTrackerItem';
 import type { StoredRecurringResult } from './buildTrackerDigest.types';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
 export function buildTrackerDigest(
 	rows: TrackerItemRow[],
 	nowMs: number,
-	timeZone: string
+	timeZone: string,
+	runs: TrackerRunReadRepository
 ): TrackerDigest {
 	const localTime = stamp(nowMs, timeZone);
 	const [today] = localTime.split(' ');
-	const blocked: TrackerDigestItem[] = [];
-	const needs_daniel: TrackerDigestItem[] = [];
-	const overdue: TrackerDigestItem[] = [];
-	const due_today: TrackerDigestItem[] = [];
-	const recurring_missed: TrackerRecurringProblem[] = [];
+	const groups: TrackerDigestGroups = {
+		blocked: [],
+		needs_daniel: [],
+		overdue: [],
+		due_today: [],
+		recurring_missed: [],
+		chased_7d: [],
+		queued: []
+	};
 	for (const row of rows) {
-		const item = summarize(row);
-		if (row.status === 'blocked') blocked.push(item);
-		if (item.needs_daniel) needs_daniel.push(item);
-		if (row.every) {
-			const problem = recurringProblem(row, row.every, item, timeZone);
-			if (problem) recurring_missed.push(problem);
-		} else if (row.due) {
-			const day =
-				row.due.length === 10 ? row.due : stamp(Date.parse(row.due), timeZone).split(' ')[0];
-			if (day < today) overdue.push(item);
-			if (day === today) due_today.push(item);
-		}
+		const item = summarize(row, nowMs);
+		followThrough(groups, { row, item, nowMs, runs });
+		if (digestActive(row, nowMs)) groupActive(groups, row, item, { today, timeZone });
 	}
+	groups.chased_7d.sort((a, b) => (b.chased_at ?? '').localeCompare(a.chased_at ?? ''));
+	groups.queued.sort((a, b) => a.requested_at.localeCompare(b.requested_at));
 	return {
 		generated_at: new Date(nowMs).toISOString(),
 		local_time: `${localTime} ${timeZone}`,
 		today,
-		blocked,
-		needs_daniel,
-		overdue,
-		due_today,
-		recurring_missed,
-		counts: {
-			blocked: blocked.length,
-			needs_daniel: needs_daniel.length,
-			overdue: overdue.length,
-			due_today: due_today.length,
-			recurring_missed: recurring_missed.length
-		}
+		...groups,
+		counts: Object.fromEntries(
+			Object.entries(groups).map(([key, items]) => [key, items.length])
+		) as TrackerDigest['counts']
 	};
 }
 
-function summarize(row: TrackerItemRow): TrackerDigestItem {
+function followThrough(
+	groups: TrackerDigestGroups,
+	{
+		row,
+		item,
+		nowMs,
+		runs
+	}: { row: TrackerItemRow; item: TrackerDigestItem; nowMs: number; runs: TrackerRunReadRepository }
+) {
+	const chasedAt = Date.parse(item.chased_at ?? '');
+	if (chasedAt <= nowMs && chasedAt >= nowMs - 7 * 86_400_000) groups.chased_7d.push(item);
+	if (item.needs_daniel) groups.needs_daniel.push(item);
+	const queue = queuedLaunch(row, item, nowMs, runs);
+	if (queue) groups.queued.push(queue);
+}
+
+function groupActive(
+	groups: TrackerDigestGroups,
+	row: TrackerItemRow,
+	item: TrackerDigestItem,
+	{ today, timeZone }: { today: string; timeZone: string }
+) {
+	if (row.status === 'blocked') groups.blocked.push(item);
+	if (row.every) {
+		const problem = recurringProblem(row, row.every, item, timeZone);
+		if (problem) groups.recurring_missed.push(problem);
+	} else if (row.due) {
+		const day =
+			row.due.length === 10 ? row.due : stamp(Date.parse(row.due), timeZone).split(' ')[0];
+		if (day < today) groups.overdue.push(item);
+		if (day === today) groups.due_today.push(item);
+	}
+}
+
+function digestActive(row: TrackerItemRow, now: number): boolean {
+	return (
+		row.status !== 'done' && row.status !== 'ignored' && !(Date.parse(row.remind_at ?? '') > now)
+	);
+}
+
+function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
+	const needsDaniel = row.status !== 'ignored' && Boolean(row.needs_daniel) && !row.resolved;
 	return {
 		id: row.id,
 		kind: row.kind,
 		title: row.title,
 		status: row.status,
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
-		needs_daniel: Boolean(row.needs_daniel) && !row.resolved,
+		needs_daniel: needsDaniel,
+		...(needsDaniel && askAge(row, now)),
+		...trackerChaseFields(row),
 		due: row.due,
 		...(row.remind_at && { remind_at: row.remind_at }),
 		owner: row.owner,
@@ -69,6 +106,43 @@ function summarize(row: TrackerItemRow): TrackerDigestItem {
 		created_by: row.created_by,
 		updated_at: row.updated_at
 	};
+}
+
+function askAge(row: TrackerItemRow, now: number) {
+	const { needs_daniel } = JSON.parse(row.clocks) as { needs_daniel?: string };
+	const at =
+		trackerClockMilliseconds(needs_daniel ?? '') ||
+		Date.parse(row.updated_at ?? row.created_at ?? '') ||
+		now;
+	return { asked_at: new Date(at).toISOString(), waiting_minutes: elapsedMinutes(now, at) };
+}
+
+function queuedLaunch(
+	row: TrackerItemRow,
+	item: TrackerDigestItem,
+	now: number,
+	runs: TrackerRunReadRepository
+) {
+	if (!row.auto || item.needs_daniel || !['open', 'in_progress'].includes(row.status ?? ''))
+		return undefined;
+	const attempts = runs.list({ itemId: row.id }).filter((run) => run.auto_token === row.auto);
+	if (attempts.length && attempts.every((run) => run.state !== 'queued')) return undefined;
+	const at = launchRequestedAt(row, now);
+	return {
+		...item,
+		requested_at: new Date(at).toISOString(),
+		waiting_minutes: elapsedMinutes(now, at),
+		computer: row.launch_target ?? row.computer
+	};
+}
+
+function launchRequestedAt(row: TrackerItemRow, now: number) {
+	const { auto } = JSON.parse(row.clocks) as { auto?: string };
+	return trackerClockMilliseconds(auto ?? '') || Date.parse(row.updated_at ?? '') || now;
+}
+
+function elapsedMinutes(now: number, at: number) {
+	return Math.max(0, Math.floor((now - at) / 60_000));
 }
 
 function recurringProblem(

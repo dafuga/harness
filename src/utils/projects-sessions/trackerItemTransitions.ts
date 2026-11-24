@@ -32,6 +32,7 @@ export const trackerItemTransitions: Record<
 	progress: (_, body) => appendText('progress', body.text, start),
 	note: (_, body) => appendText('note', body.text, {}),
 	flag: flagItem,
+	chase: (_, body) => ({ fields: { 'chase+': body.note ?? null } }),
 	remind: (item, body, context) => {
 		if (item.status === 'done' || item.status === 'ignored')
 			throw trackerItemError('only active items can be reminded', 409);
@@ -79,7 +80,7 @@ function unblockItem(item: TrackerItemSnapshot, body: TrackerItemInput): Tracker
 		);
 	}
 	return {
-		fields: { ...start, needs_daniel: 0 },
+		fields: start,
 		appendNote: body.note ? `unblocked: ${body.note}` : 'unblocked'
 	};
 }

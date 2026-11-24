@@ -16,19 +16,18 @@ import {
 	watchdogSnapshot
 } from './trackerHostWatchdogState';
 import { readTrackerSessionHealth, trackerRecoveryLaunch } from './trackerSessionHealthRuntime';
-import type { TrackerWatchdogLaunch } from './trackerSessionHealth.types';
 import { trackerTranscriptScan } from './trackerTranscriptScan';
 import { trackerWatchdogPort } from './trackerWatchdogPort';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { watchHostSessions } from './trackerWatchHostSessions';
+import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
 const minute = 60_000;
 
 export function trackerHostWatchdog(
 	store: TrackerPersistenceService,
 	config: NonNullable<TrackerHostEffects['watchdog']>,
-	now: () => number,
-	launch?: TrackerWatchdogLaunch
+	{ now, launch, idleWork }: Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork'>
 ) {
 	const driver = trackerWatchdogPort(config, store.node);
 	store.database.exec(trackerRunSchema);
@@ -45,6 +44,7 @@ export function trackerHostWatchdog(
 			readItems,
 			now,
 			launch,
+			idleWork,
 			roots: config.transcriptRoots
 		}
 	);
@@ -71,11 +71,22 @@ export function trackerHostWatchdog(
 }
 
 export function configuredHostWatchdog(
-	{ store, now, dispatch }: Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch'>,
+	{
+		store,
+		now,
+		dispatch,
+		role
+	}: Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>,
 	watchdog?: TrackerHostEffects['watchdog']
 ) {
-	if (watchdog) return trackerHostWatchdog(store, watchdog, now, trackerRecoveryLaunch(dispatch));
-	return undefined;
+	if (!watchdog) return undefined;
+	const idleWork =
+		role === 'hub' && dispatch ? { dispatch, minutes: watchdog.idleWorkMinutes ?? 120 } : undefined;
+	return trackerHostWatchdog(store, watchdog, {
+		now,
+		launch: trackerRecoveryLaunch(dispatch),
+		idleWork
+	});
 }
 
 function localAlerts(store: TrackerPersistenceService, items: TrackerItemReadRepository) {

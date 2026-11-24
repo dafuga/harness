@@ -28,13 +28,14 @@ export const nativeTrackerCommandOptions = new Map<
 	string,
 	Record<string, typeof text | typeof flag>
 >([
-	['add', itemOptions],
+	['add', { ...itemOptions, later: flag }],
 	['plan', itemOptions],
 	['goal', itemOptions],
 	['update', { ...itemOptions, note: text }],
 	['note', {}],
 	['progress', {}],
 	['flag', { question: text, force: flag }],
+	['chase', { note: text }],
 	['remind', { at: text }],
 	['block', { 'needs-daniel': flag, force: flag }],
 	['unblock', { note: text }],
@@ -55,6 +56,7 @@ export const nativeTrackerCommandOptions = new Map<
 			owner: text,
 			parent: text,
 			flagged: flag,
+			chased: flag,
 			recurring: flag,
 			limit: text
 		}
@@ -91,6 +93,7 @@ export const nativeTrackerIdVerbs = new Set([
 	'note',
 	'progress',
 	'flag',
+	'chase',
 	'block',
 	'unblock',
 	'answer',

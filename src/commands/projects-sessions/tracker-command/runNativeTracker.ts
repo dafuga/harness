@@ -70,7 +70,7 @@ async function sendNativeTracker(
 ) {
 	const { command, values, request, words } = input;
 	const actor = String(
-		[values.by, process.env.TRACKER_AS].find(Boolean) ?? `${userInfo().username}@${config.node}`
+		[values.by, process.env.TRACKER_AS].find(Boolean) ?? defaultTrackerActor(command, config.node)
 	);
 	const body = trackerRequestBody(command, request, actor);
 	const response = await fetch(`http://127.0.0.1:${config.apiPort}/native/v1${request.path}`, {
@@ -94,6 +94,13 @@ async function sendNativeTracker(
 	if (values.json) console.log(JSON.stringify(data, null, 2));
 	else renderNativeTracker(command, data, { quiet: Boolean(values.quiet), first: words[0] });
 	return 0;
+}
+
+function defaultTrackerActor(command: string, node: string): string {
+	const run = process.env.TRACKER_RUN_ID;
+	if (command === 'add' && run && /^[1-9][0-9]{0,15}$/.test(run))
+		return `tracker-run-${run}@${node}`;
+	return `${userInfo().username}@${node}`;
 }
 
 function trackerRequestTimeout(path: string) {

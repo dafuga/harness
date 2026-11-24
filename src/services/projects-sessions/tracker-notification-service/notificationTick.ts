@@ -1,4 +1,6 @@
 // @harness-uid u_vqnqshfas2
+import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
+import { askQuietHours, flagged } from './notificationRules';
 import type {
 	TrackerDestination,
 	TrackerNotificationOptions
@@ -7,7 +9,12 @@ import type { DeliveryAttempt, TrackerNotificationState } from './notificationSt
 import { nextAttention } from './attentionBatch';
 import { nextCallback, scanCallbacks } from './callbackDelivery';
 import { completeDelivery } from './completeDelivery';
-import { nextDirectReminder, scanDirectReminders } from './directReminders';
+import {
+	currentDirectAttempt,
+	directReminderDestination,
+	nextDirectReminder,
+	scanDirectReminders
+} from './directReminders';
 import {
 	currentScheduledAttempt,
 	nextScheduledReminder,
@@ -57,14 +64,18 @@ function scan(
 ): void {
 	options.queue.update((state) => {
 		scanScheduledReminders(state, options, now);
-		if (options.scheduledOnly) return;
+		if (options.scheduledOnly) {
+			scanDirectReminders(state, options, now);
+			return;
+		}
 		scanCallbacks(state, options.source, now, itemIds);
-		scanDirectReminders(state, options, now);
 		if (webhookReady && options.webhook) {
 			scanWebhookEvents(state, options.source, options.webhook, now);
-			if (options.webhook.batch === false) scanWebhookFlags(state, options, now);
+			if (options.webhook.batch === false && !options.chiefOfStaff)
+				scanWebhookFlags(state, options, now);
 			scanWebhookDue(state, options, now);
 		}
+		scanDirectReminders(state, options, now);
 	});
 }
 
@@ -97,30 +108,95 @@ function availableWebhook(options: TrackerNotificationOptions): TrackerDestinati
 	return chief && options.destinations.available(chief) ? chief : undefined;
 }
 
+function issueStillCurrent(
+	state: TrackerNotificationState,
+	attempt: DeliveryAttempt,
+	options: TrackerNotificationOptions
+) {
+	if (attempt.kind === 'scheduled') return currentScheduledAttempt(state, attempt, options.source);
+	if (attempt.kind === 'reminders') return currentDirectAttempt(state, attempt, options);
+	return askIds(state, attempt).every((id) => flagged(options.source.item(id)));
+}
+
+function askIds(state: TrackerNotificationState, attempt: DeliveryAttempt): string[] {
+	if (attempt.kind === 'attention')
+		return attempt.keys.flatMap((key) => {
+			const row = state.attention.get(key);
+			return row && (row.kind === 'needs_daniel' || row.line.needs_daniel) ? [row.itemId] : [];
+		});
+	if (attempt.kind === 'outbox')
+		return attempt.keys.flatMap((key) => {
+			const row = state.outbox.get(key);
+			return row?.itemId &&
+				row.payload.needs_daniel &&
+				['needs_daniel', 'blocked'].includes(row.kind)
+				? [row.itemId]
+				: [];
+		});
+	if (attempt.kind === 'reminders')
+		return attempt.keys.flatMap((key) => {
+			const row = state.reminders.get(key);
+			return row?.kind === 'flag' ? [row.itemId] : [];
+		});
+	return [];
+}
+
+function replayState(options: TrackerNotificationOptions) {
+	return options.queue.update((state) => {
+		const issued = state.inFlight;
+		const paused = Boolean(state.paused);
+		if (!issued) return { paused };
+		if (!issueStillCurrent(state, issued, options)) {
+			delete state.inFlight;
+			return { paused };
+		}
+		const asking = askIds(state, issued).length > 0;
+		return {
+			issued,
+			paused,
+			held:
+				holdIssued(issued, options, paused) || (asking && quietOrPaused(issued, options, paused))
+		};
+	});
+}
+
+function quietOrPaused(
+	issued: DeliveryAttempt,
+	options: TrackerNotificationOptions,
+	paused: boolean
+) {
+	if (isQuietHour(options.now(), askQuietHours)) return true;
+	return (
+		paused &&
+		issued.request.destination.id === options.webhook?.destination.id &&
+		issued.request.destination.id !== options.chiefOfStaff?.id
+	);
+}
+
+async function deliverDirectReminder(
+	options: TrackerNotificationOptions,
+	{ now, paused, issued }: { now: number; paused: boolean; issued?: DeliveryAttempt }
+) {
+	const direct = directReminderDestination(options);
+	if (!direct || issued?.kind === 'reminders') return;
+	if (paused && direct === options.webhook?.destination && direct !== options.chiefOfStaff) return;
+	await sendNext(options, (state) => nextDirectReminder(state, options, direct, now));
+}
+
 export async function runNotificationTick(
 	options: TrackerNotificationOptions,
 	itemIds?: readonly string[]
 ): Promise<void> {
-	const { chiefOfStaff, queue, source } = options;
-	const { issued, paused } = queue.update((state) => {
-		const issued = state.inFlight;
-		if (issued?.kind === 'scheduled' && !currentScheduledAttempt(state, issued, options.source))
-			delete state.inFlight;
-		return { issued: state.inFlight, paused: Boolean(state.paused) };
-	});
-	if (issued) {
-		if (holdIssued(issued, options, paused)) return;
-		await deliver(options, issued);
-	}
+	const { issued, paused, held } = replayState(options);
+	if (held) return;
+	if (issued) await deliver(options, issued);
 	const now = options.now();
 	const chief = availableWebhook(options);
 	scan(options, now, Boolean(chief), itemIds);
 	await drain(options, (state) => nextScheduledReminder(state, options, now));
+	await deliverDirectReminder(options, { now, paused, issued });
 	if (options.scheduledOnly) return;
-	if (chiefOfStaff && issued?.kind !== 'reminders') {
-		await sendNext(options, (state) => nextDirectReminder(state, options, chiefOfStaff, now));
-	}
-	await drain(options, (state) => nextCallback(state, source, now));
+	await drain(options, (state) => nextCallback(state, options.source, now));
 	if (chief)
 		await deliverWebhooks(options, chief, {
 			now,

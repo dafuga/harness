@@ -18,6 +18,10 @@ export interface NativeTrackerItem {
 	ignored_until?: string;
 	needs_daniel?: boolean;
 	resolved?: boolean;
+	chased_count?: number;
+	chased_at?: string;
+	chased_by?: string | null;
+	chased_reason?: string | null;
 	every?: string;
 	every_tz?: string;
 	due?: string;

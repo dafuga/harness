@@ -44,6 +44,10 @@ export function trackerItemInput(
 	applyRecurrenceFields(fields, current);
 	validateNamedModel(fields, context, current);
 	applyAliases(fields, body, context.node);
+	if (!current && body.later === true) {
+		if (requestsTrackerLaunch(fields.auto)) throw trackerItemError('--later conflicts with --auto');
+		fields.schedule_off = 1;
+	}
 	checkItemInput(fields, context, body.force, current);
 	if (!requestsTrackerLaunch(fields.auto)) return fields;
 	if (!context.planLaunch)

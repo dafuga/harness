@@ -5,6 +5,43 @@ import type {
 	TrackerPayloadFields
 } from '../TrackerNotificationService.types';
 
+import type { DirectReminderBrief } from './notificationState.types';
+import { isoTime } from './notificationRules';
+
+export function flagWebhook(
+	destination: TrackerDestination,
+	id: string,
+	briefs: DirectReminderBrief[],
+	{ node, now }: { node: string; now: number }
+) {
+	const at = isoTime(now);
+	const items = briefs.map((item) => ({
+		...item,
+		item_id: item.id,
+		event: 'needs_daniel',
+		escalation: item.reminder_number,
+		at
+	}));
+	const text = items
+		.map(
+			(item) =>
+				`NEEDS DANIEL [${item.id.slice(0, 6)}]: ${item.title} - waiting ${item.waiting_minutes}m`
+		)
+		.join('\n');
+	return webhookRequest(destination, {
+		event_id: id,
+		event: 'attention',
+		to: 'chief_of_staff',
+		batch: true,
+		count: items.length,
+		counts: { needs_daniel: items.length },
+		items,
+		text,
+		node,
+		sent_at: at
+	});
+}
+
 export function webhookRequest(
 	destination: TrackerDestination,
 	payload: TrackerPayloadFields & { event_id: string; event: string }

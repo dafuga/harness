@@ -2,11 +2,9 @@
 	"name": "tracker-follow-through-shpe9k",
 	"goal": "Replay item chasing, unattended work admission, and unanswered asks through the native Tracker lifecycle",
 	"createdAt": "2026-11-24T21:14:26.755Z",
-	"updatedAt": "2026-11-24T21:16:10.285Z",
+	"updatedAt": "2026-11-24T21:34:00.054Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,7 +25,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T21:34:00.054Z",
+			"evidence": "Committed 4d74b5e18e reproduced unavailable chase, missing queued idle work, and the earlier reminder interval in the same three frozen test files. Signed MB2 replay also rejected the chase command at the red checkpoint."
 		},
 		{
 			"id": "implement",

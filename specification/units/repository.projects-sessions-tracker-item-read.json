@@ -37,6 +37,7 @@
 			"TrackerItem",
 			"TrackerDigestItem",
 			"TrackerRecurringProblem",
+			"TrackerDigestGroups",
 			"TrackerDigest",
 			"TrackerItemReadError",
 			"TrackerItemReadError.constructor",
@@ -44,6 +45,7 @@
 			"StoredRecurringResult",
 			"formatTrackerDigest",
 			"serializeTrackerItem",
+			"trackerChaseFields",
 			"StoredTrackerNote",
 			"StoredTrackerCallback"
 		]
@@ -139,6 +141,11 @@
 				"required": true
 			},
 			{
+				"name": "buildTrackerDigest.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
 				"name": "formatTrackerDigest.digest",
 				"type": "TrackerDigest",
 				"required": true
@@ -151,6 +158,11 @@
 			{
 				"name": "serializeTrackerItem.notes",
 				"type": "SqliteStatement",
+				"required": true
+			},
+			{
+				"name": "trackerChaseFields.row",
+				"type": "TrackerItemRow",
 				"required": true
 			}
 		],
@@ -434,6 +446,11 @@
 						"name": "buildTrackerDigest.timeZone",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "buildTrackerDigest.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -507,6 +524,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerChaseFields",
+				"inputs": [
+					{
+						"name": "trackerChaseFields.row",
+						"type": "TrackerItemRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerChaseFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -562,7 +597,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
 			"via": "import",
 			"origin": "derived"
 		}

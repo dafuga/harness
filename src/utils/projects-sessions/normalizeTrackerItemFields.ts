@@ -44,7 +44,8 @@ const textFields = new Set([
 	'ignored_prev_status',
 	'adapter_notice',
 	'adapter_instructions',
-	'adapter_due_owner'
+	'adapter_due_owner',
+	'chase+'
 ]);
 const flagFields = new Set([
 	'needs_daniel',

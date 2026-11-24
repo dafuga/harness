@@ -11,7 +11,8 @@ export function formatNativeTrackerItem(item: NativeTrackerItem): string {
 	const flags = [
 		itemStatus(item),
 		item.needs_daniel && !item.resolved && 'NEEDS DANIEL',
-		item.resolved && 'resolved'
+		item.resolved && 'resolved',
+		item.chased_count && `CHASED ×${item.chased_count}`
 	].filter(Boolean);
 	const meta = trackerItemMetadata(item);
 	return `[${item.id.slice(0, 6)}] ${item.title}  (${flags.join(', ')}; ${meta.join(' | ')})`;
@@ -25,7 +26,10 @@ function trackerItemMetadata(item: NativeTrackerItem) {
 		item.remind_at && `reminder ${item.remind_at}`,
 		item.owner && `owner ${item.owner}`,
 		item.agent && `agent ${item.agent}`,
-		item.auto && 'auto-launch'
+		item.auto && 'auto-launch',
+		item.chased_at && `chased ${item.chased_at}`,
+		item.chased_by && `by ${item.chased_by}`,
+		item.chased_reason
 	].filter(Boolean);
 }
 
@@ -52,6 +56,7 @@ const commandPrefixes = new Map([
 	['ignore', 'ignored: '],
 	['unignore', 'unignored: '],
 	['flag', 'flagged: '],
+	['chase', 'chased: '],
 	['answer', 'resolved: '],
 	['resolve', 'resolved: '],
 	['update', 'updated '],
