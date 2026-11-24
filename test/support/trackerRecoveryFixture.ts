@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { expect } from 'vitest';
+import { expect, vi } from 'vitest';
 import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { trackerNodeRuntime } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
@@ -38,24 +38,28 @@ async function proveRecovery(root: string) {
 	const tmux = (...args: string[]) =>
 		execFileSync(tmuxExecutable!, ['-L', socket, ...args], { encoding: 'utf8', stdio: 'pipe' });
 	const database = new DatabaseSync(':memory:');
-	let now = Date.now();
+	let offset = 0;
+	const realNow = Date.now;
+	const clock = vi.spyOn(Date, 'now').mockImplementation(() => realNow() + offset);
 	const options = trackerNodeRuntime(managedForegroundConfig(root, config, 'macos'));
 	const makeRuntime = () =>
 		new TrackerNativeRuntimeService(database, {
 			...options,
-			now: () => now,
+			now: Date.now,
 			hostEffects: { ...options.hostEffects, watchdog: { tmux: config.tmux } }
 		});
 	let runtime = makeRuntime();
 	const signal = AbortSignal.timeout(35_000);
 	const dispatch = () => runtime.scheduler!.tick(signal);
 	const watchdog = async (delay: number) => {
-		now += delay;
+		offset += delay;
+		await dispatch();
 		await runtime.watchdog!.tick(signal);
+		await dispatch();
 	};
 	const items = new TrackerItemReadRepository(database);
 	try {
-		seedTask(runtime, now);
+		seedTask(runtime, Date.now());
 		for (let index = 0; index < 12; index++)
 			runtime.store.appendLocal({ itemId: id, fields: { 'note+': 'Progress note ' + index } });
 		expect((await managedTrackerItemRequest(runtime, id, 'launch')).ok).toBe(true);
@@ -65,7 +69,10 @@ async function proveRecovery(root: string) {
 				return database.prepare('SELECT state FROM runs WHERE id = 1').get();
 			})
 			.toMatchObject({ state: 'running' });
-		runtime.store.appendLocal({ itemId: id, fields: { schedule_off: true } });
+		runtime.store.appendLocal({
+			itemId: id,
+			fields: { schedule_off: true, model: 'gpt-6.2-sol:low' }
+		});
 		tmux('kill-session', '-t', '=auto-recovr-r1');
 		await dispatch();
 		expect(database.prepare('SELECT state,outcome FROM runs WHERE id = 1').get()).toEqual({
@@ -89,7 +96,7 @@ async function proveRecovery(root: string) {
 		await dispatch();
 		writeFileSync(join(root, 'reject-boot'), '');
 		runtime = makeRuntime();
-		await verifyFailureBudget({ watchdog, dispatch, items, database });
+		await verifyFailureBudget({ watchdog, items, database });
 	} finally {
 		try {
 			tmux('kill-server');
@@ -97,6 +104,7 @@ async function proveRecovery(root: string) {
 			// The isolated server disappears when its final session ends.
 		}
 		database.close();
+		clock.mockRestore();
 	}
 }
 
@@ -118,31 +126,24 @@ function seedTask(runtime: TrackerNativeRuntimeService, now: number) {
 
 async function verifyFailureBudget({
 	watchdog,
-	dispatch,
 	items,
 	database
 }: {
 	watchdog: (delay: number) => Promise<void>;
-	dispatch: () => Promise<void>;
 	items: TrackerItemReadRepository;
 	database: DatabaseSync;
 }) {
-	for (let attempt = 0; attempt < 4; attempt++) {
+	for (let step = 0; step < 4; step++) {
 		await watchdog(11 * minute);
-		await dispatch();
-		await dispatch();
 		expect(items.getStored(id).needs_daniel).toBe(false);
-		if (attempt === 2) break;
 	}
 	await watchdog(11 * minute);
-	await dispatch();
 	expect(items.getStored(id)).toMatchObject({
 		needs_daniel: true,
 		question: expect.stringMatching(/3.*relaunch/i)
 	});
 	const count = database.prepare('SELECT COUNT(*) AS total FROM runs').get();
 	await watchdog(11 * minute);
-	await dispatch();
 	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual(count);
 	expect(
 		items.getStored(id).notes_log.filter(({ text }) => text.includes('watchdog recovery-failed'))
