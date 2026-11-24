@@ -117,6 +117,10 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 	expect(await (await mark('done')).json()).toMatchObject({ status: 'done', needs_daniel: true });
 	expect(await (await mark('unflag')).json()).toMatchObject({ needs_daniel: false });
 	expect(await (await mark('reopen')).json()).toMatchObject({ status: 'open' });
+	await verifyProjectFollowUp();
+});
+
+async function verifyProjectFollowUp() {
 	const project = await request('/items', 'POST', {
 		title: 'Elan proposal ready for review',
 		project: 'elan',
@@ -157,7 +161,7 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 		needs_daniel: false
 	});
 	expect(await (await request('/items?flagged=1')).json()).toEqual([]);
-});
+}
 
 test('reports persisted run history and selects a model through the native item API', async () => {
 	const { id } = await (

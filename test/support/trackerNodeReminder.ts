@@ -54,3 +54,31 @@ export async function verifyReminder(
 	});
 	verifyCosDryRun(hub, id);
 }
+
+export async function verifyProjectFollowUp(hub: TrackerNodeFixture, spoke: TrackerNodeFixture) {
+	const { id } = await fixtureTrackerJson(spoke, [
+		'add',
+		'Synthetic Elan decision',
+		'--project',
+		'elan',
+		'--next-step',
+		'Choose pilot scope'
+	]);
+	expect(await fixtureTrackerJson(spoke, ['done', id])).toMatchObject({
+		id,
+		status: 'done',
+		needs_daniel: true,
+		next_step: 'Choose pilot scope'
+	});
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['digest']), { timeout: 8_000 })
+		.toMatchObject({ needs_daniel: [{ id, project: 'elan', next_step: 'Choose pilot scope' }] });
+	await fixtureTrackerJson(spoke, ['park', id, '--until', '2099-11-25', '--by', 'Daniel']);
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['list', '--flagged']), { timeout: 8_000 })
+		.toEqual([]);
+	await fixtureTrackerJson(spoke, ['move-on', id, '--by', 'Daniel']);
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['digest']), { timeout: 8_000 })
+		.toMatchObject({ needs_daniel: [] });
+}
