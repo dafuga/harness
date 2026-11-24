@@ -56,16 +56,7 @@ export class TrackerItemReadRepository {
 		const where = [visibleItems];
 		const values: string[] = [];
 		addStatusFilter(filters, where, values);
-		for (const column of filterColumns) {
-			const value = filters[column];
-			if (!value) continue;
-			where.push(`${column} = ?`);
-			values.push(String(value));
-		}
-		if (filters.stage !== undefined) {
-			where.push(trackerPlanningStageSql + ' = ?');
-			values.push(trackerStage(filters.stage));
-		}
+		addFieldFilters(filters, where, values);
 		if (queryFlag(filters.flagged)) {
 			where.push(
 				'needs_daniel = 1 AND resolved = 0',
@@ -148,6 +139,19 @@ function addStatusFilter(filters: TrackerItemListFilters, where: string[], value
 	} else if (status !== 'all') {
 		where.push('status = ?');
 		values.push(normalizeStatus(status));
+	}
+}
+
+function addFieldFilters(filters: TrackerItemListFilters, where: string[], values: string[]) {
+	for (const column of filterColumns) {
+		const value = filters[column];
+		if (!value) continue;
+		where.push(`${column} = ?`);
+		values.push(String(value));
+	}
+	if (filters.stage !== undefined) {
+		where.push(trackerPlanningStageSql + ' = ?');
+		values.push(trackerStage(filters.stage));
 	}
 }
 

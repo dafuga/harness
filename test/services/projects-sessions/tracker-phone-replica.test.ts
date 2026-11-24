@@ -39,7 +39,7 @@ function checkSnapshot(first: unknown) {
 	});
 }
 
-test('bootstraps a redacted snapshot and sends a replayable delta for a run without an item edit', async () => {
+test('bootstraps a redacted snapshot and sends a replayable delta for planning and run changes', async () => {
 	const fixture = hub();
 	try {
 		fixture.item('fixture001', {
@@ -61,6 +61,10 @@ test('bootstraps a redacted snapshot and sends a replayable delta for a run with
 		const first = await response.json();
 		checkSnapshot(first);
 		expect(JSON.stringify(first)).not.toMatch(/Private item|synthetic-example|host-only/);
+		fixture.item('fixture001', {
+			planning_artifact_detail: '{"summary":"Designs are ready"}',
+			planning_promotion_detail: JSON.stringify({ by: 'Fixture Planner', at: updatedAt })
+		});
 		fixture.db.exec("UPDATE runs SET state = 'finished', outcome = 'done', ended_at = 3");
 		const request = '&cursor=' + first.cursor;
 		const delta = await (await fixture.pull(request)).json();
@@ -70,7 +74,17 @@ test('bootstraps a redacted snapshot and sends a replayable delta for a run with
 			cursor: expect.any(String),
 			hasMore: false,
 			operations: [
-				{ id: 'fixture001', row: { runs: [{ state: 'finished', outcome: 'done', endedAt: 3 }] } }
+				{
+					id: 'fixture001',
+					row: {
+						stage: 'detail',
+						planning: {
+							artifacts: { detail: { summary: 'Designs are ready' } },
+							promotions: [{ stage: 'detail', by: 'Fixture Planner', at: updatedAt }]
+						},
+						runs: [{ state: 'finished', outcome: 'done', endedAt: 3 }]
+					}
+				}
 			]
 		});
 		fixture.restart();

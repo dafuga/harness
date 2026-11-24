@@ -1,5 +1,7 @@
 import { expect, afterEach, beforeEach, onTestFinished, test, vi } from 'vitest';
 import { rmSync } from 'node:fs';
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { createTempDirectory } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 import { TrackerCommand } from '../../../src/commands/projects-sessions/TrackerCommand';
@@ -123,6 +125,7 @@ test('native show prints the full human item and returns the enriched JSON for a
 		runs: [{ id: 1, model: 'fixture-model', outcome: 'done' }],
 		launch_status: null
 	});
+	await verifyArtifactCommand(run);
 	vi.stubEnv('TRACKER_RUN_ID', '42');
 	const started = await run('start', 'taskfi', '--json');
 	expect(started.code).toBe(0);
@@ -136,6 +139,19 @@ test('native show prints the full human item and returns the enriched JSON for a
 		err: 'tracker: no item "absent"'
 	});
 });
+
+async function verifyArtifactCommand(run: Awaited<ReturnType<typeof compatibilityFixture>>['run']) {
+	const directory = await createTempDirectory('tracker-artifact-');
+	onTestFinished(() => rmSync(directory, { recursive: true, force: true }));
+	const file = join(directory, 'design.json');
+	const design = {
+		links: [{ label: 'Wireframe', url: 'https://example.test/wireframe.png', kind: 'image' }]
+	};
+	await writeFile(file, JSON.stringify(design));
+	const saved = await run('artifact', 'taskfi', 'detail', file, '--json');
+	expect(saved.code).toBe(0);
+	expect(JSON.parse(saved.out)).toMatchObject({ planning: { artifacts: { detail: design } } });
+}
 
 test('native remind holds delivery and keeps the ask visible in the digest', async () => {
 	const { runtime, run } = await compatibilityFixture();

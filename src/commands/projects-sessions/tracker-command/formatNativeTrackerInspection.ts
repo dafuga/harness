@@ -25,6 +25,16 @@ export function formatNativeTrackerInspection(command: string, data: NativeTrack
 
 function formatItemDetail(item: NativeTrackerItemDetail): string {
 	const lines = [formatNativeTrackerItem(item), `  id: ${item.id}`];
+	lines.push(...itemNotes(item));
+	if (item.callback) lines.push(`  callback: ${item.callback.target} on ${item.callback.node}`);
+	lines.push(...recurringDetails(item), ...launchDetails(item));
+	for (const run of item.runs ?? []) lines.push(`  run ${formatListedRun(run)}`);
+	lines.push(`  created ${item.created_at} on ${item.created_by}; updated ${item.updated_at}`);
+	return lines.join('\n');
+}
+
+function itemNotes(item: NativeTrackerItemDetail): string[] {
+	const lines: string[] = [];
 	for (const promotion of item.planning?.promotions ?? [])
 		lines.push(`  promoted to ${promotion.stage} by ${promotion.by} at ${promotion.at}`);
 	if (item.parent) lines.push(`  parent: ${item.parent}`);
@@ -33,11 +43,7 @@ function formatItemDetail(item: NativeTrackerItemDetail): string {
 		lines.push(`  answer: ${item.answer} (by ${item.answered_by} at ${item.answered_at})`);
 	if (item.notes) lines.push(`  notes: ${item.notes}`);
 	for (const n of item.notes_log ?? []) lines.push(`  note ${n.at} [${n.node}]: ${n.text}`);
-	if (item.callback) lines.push(`  callback: ${item.callback.target} on ${item.callback.node}`);
-	lines.push(...recurringDetails(item), ...launchDetails(item));
-	for (const run of item.runs ?? []) lines.push(`  run ${formatListedRun(run)}`);
-	lines.push(`  created ${item.created_at} on ${item.created_by}; updated ${item.updated_at}`);
-	return lines.join('\n');
+	return lines;
 }
 
 function recurringDetails(item: NativeTrackerItemDetail): string[] {
