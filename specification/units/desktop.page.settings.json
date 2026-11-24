@@ -3,13 +3,14 @@
 	"id": "desktop.page.settings",
 	"uid": "u_pgijxbptc2",
 	"kind": "page",
-	"title": "Agent settings",
-	"responsibility": "Shows device planning preferences in the shared renderer and returns to the selected project.",
+	"title": "Settings",
+	"responsibility": "Shows local planning preferences and Mac Vault setup, and returns to the selected project.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "page",
 		"uses": [
+			"desktop.component.accounts-access-vault-setup",
 			"desktop.component.agent-settings",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-h1",
@@ -18,8 +19,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/routes/settings/+page.svelte"],
-		"symbols": ["+page"]
+		"source": [
+			"packages/desktop/src/routes/settings/+page.svelte"
+		],
+		"symbols": [
+			"+page"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -28,7 +33,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "Renders the Settings heading, a Back to project link, and the AgentSettings component. The initial link points to `/`; on mount, only a same-origin workspace path from the `from` query parameter is retained with its search string, while absent, malformed, cross-origin, or non-workspace values resolve to `/`."
+				"description": "Renders Settings, a link back to the project or home, local planning preferences, and the Vault panel when a Mac installer bridge is available. The link retains only a same-origin workspace path and query."
 			}
 		],
 		"errors": [],
@@ -37,6 +42,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.accounts-access-vault-setup",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.component.agent-settings",
 			"via": "import",
@@ -88,7 +98,11 @@
 			}
 		]
 	},
-	"scenarios": ["agent-settings", "component-catalog-previews"],
+	"scenarios": [
+		"agent-settings",
+		"component-catalog-previews",
+		"vault-local-setup"
+	],
 	"preview": {
 		"scenario": "component-catalog-previews",
 		"state": "desktop-page-settings",

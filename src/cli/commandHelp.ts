@@ -141,6 +141,13 @@ export const commandHelp = [
 		aliases: []
 	},
 	{
+		name: 'vault',
+		signature: 'vault',
+		description: 'Manage the local Vault executor.',
+		term: 'vault',
+		aliases: []
+	},
+	{
 		name: 'module',
 		signature: 'module',
 		description: 'Discover and add project capabilities.',

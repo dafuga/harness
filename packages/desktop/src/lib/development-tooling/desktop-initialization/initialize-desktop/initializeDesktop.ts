@@ -33,6 +33,7 @@ import { RemoteRegistrationAdapter } from '../RemoteRegistrationAdapter';
 import { chooseProject } from './chooseProject';
 import { confirmUnload } from './confirmUnload';
 import { desktopIpc } from './desktopIpc';
+import { vaultSetupIpc } from '../../vault-setup/vaultSetupIpc';
 import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
@@ -68,6 +69,7 @@ export async function initializeDesktop(): Promise<BrowserWindow | null> {
 		rendererAssets(assets, request.url, `ws://127.0.0.1:${port}`)
 	);
 	desktopIpc(ipcMain, (event) => bootstrap(backend, event));
+	vaultSetupIpc(() => windows.current?.window);
 	appLifecycle(backend);
 	await backend.remote.start();
 	return openWindow(backend);

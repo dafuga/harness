@@ -1,0 +1,87 @@
+{
+	"schemaVersion": 1,
+	"id": "command.accounts-access-vault-setup",
+	"uid": "u_6dqpunlqnz",
+	"kind": "command",
+	"title": "Vault executor CLI",
+	"responsibility": "Registers local Vault setup, removal and read-only status commands for macOS and Linux.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/accounts-access/VaultSetupCommand.ts"
+		],
+		"symbols": [
+			"VaultSetupCommand",
+			"VaultSetupCommand.register"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "VaultSetupCommand.register.program",
+				"type": "Command",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "VaultSetupCommand.register",
+				"type": "void",
+				"description": "Registers the vault command and its setup, remove, and status subcommands. A failed installer surfaces its exit status to the caller."
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "VaultSetupCommand.register",
+				"inputs": [
+					{
+						"name": "VaultSetupCommand.register.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultSetupCommand.register",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/accounts-access/VaultSetupCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/accounts-access/VaultSetupCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

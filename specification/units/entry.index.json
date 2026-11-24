@@ -198,7 +198,8 @@
 			"TrackerAdapterLeaseAdapter",
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
-			"TrackerSupervisorService"
+			"TrackerSupervisorService",
+			"VaultSetupCommand"
 		]
 	},
 	"contract": {
@@ -293,6 +294,11 @@
 		},
 		{
 			"unit": "adapter.sqlite",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.accounts-access-vault-setup",
 			"via": "reexport",
 			"origin": "derived"
 		},
