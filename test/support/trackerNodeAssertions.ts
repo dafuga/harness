@@ -53,6 +53,7 @@ export async function proveForegroundSync(
 				.poll(() => fixtureTrackerJson(spoke, ['list']), { timeout: 8_000 })
 				.toEqual(expect.arrayContaining([expect.objectContaining({ id: reverse.id })]));
 			await verifyTrackerNotificationFlow(hub, spoke, id, sink.receipts);
+			await verifyProjectFollowUp(hub, spoke);
 			expect(await fixtureTrackerJson(spoke, ['status'])).toMatchObject({
 				role: 'spoke',
 				sync: { connected: true, pending_push: 0 },
@@ -65,6 +66,34 @@ export async function proveForegroundSync(
 		expect((await hubOwner.stop()).code).toBe(0);
 	}
 	expect((await trackerProcess(spoke, ['ensure']).exited).code).toBe(3);
+}
+
+async function verifyProjectFollowUp(hub: TrackerNodeFixture, spoke: TrackerNodeFixture) {
+	const { id } = await fixtureTrackerJson(spoke, [
+		'add',
+		'Synthetic Elan decision',
+		'--project',
+		'elan',
+		'--next-step',
+		'Choose pilot scope'
+	]);
+	expect(await fixtureTrackerJson(spoke, ['done', id])).toMatchObject({
+		id,
+		status: 'done',
+		needs_daniel: true,
+		next_step: 'Choose pilot scope'
+	});
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['digest']), { timeout: 8_000 })
+		.toMatchObject({ needs_daniel: [{ id, project: 'elan', next_step: 'Choose pilot scope' }] });
+	await fixtureTrackerJson(spoke, ['park', id, '--until', '2099-11-25', '--by', 'Daniel']);
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['list', '--flagged']), { timeout: 8_000 })
+		.toEqual([]);
+	await fixtureTrackerJson(spoke, ['move-on', id, '--by', 'Daniel']);
+	await expect
+		.poll(() => fixtureTrackerJson(hub, ['digest']), { timeout: 8_000 })
+		.toMatchObject({ needs_daniel: [] });
 }
 
 async function verifySpokePublication(hub: TrackerNodeFixture) {
