@@ -29,7 +29,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The route's rendered markup: a document title of 'Harness', with ' · ' and workspace.snapshot.project.name appended once workspace.snapshot is set, and it renders WorkspaceShell when a snapshot is set or ProjectGate otherwise. While available is true (the environment has a bridge), ProjectGate holds HostedConnection (compact on this device) and, on a phone, RemoteConnection inline; on this device with a remote host port, RemoteConnection is passed as the gate's phone snippet and opens in its Phone access dialog. An hx-p with role alert shows workspace.error when it is set and no snapshot is set."
+				"description": "The route's rendered markup: a document title of 'Harness', with ' · ' and workspace.snapshot.project.name appended once workspace.snapshot is set, and it renders WorkspaceShell when a snapshot is set or ProjectGate otherwise. A phone with a bridge shows RemoteConnection inline. A signed-in unpaired or offline phone separates the account label and Sign out from the computer controls. On the desktop, RemoteConnection opens in the Phone access dialog when a remote host is available. An hx-p with role alert shows workspace.error when it is set and no snapshot is set."
 			}
 		],
 		"errors": [],

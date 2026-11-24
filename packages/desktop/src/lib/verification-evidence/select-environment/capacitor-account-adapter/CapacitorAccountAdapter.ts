@@ -137,7 +137,9 @@ export class CapacitorAccountAdapter {
 			const listed = await shared.listProjects!();
 			return asked === this.generation ? listed : [];
 		} catch (cause) {
-			if ((cause as { status?: number }).status === 401) return [];
+			const { status, code } = (cause ?? {}) as { status?: number; code?: string };
+			// The Hub account and paired computer can work without hosted collaboration.
+			if (status === 401 || (status === 503 && code === 'collaboration-disabled')) return [];
 			throw cause;
 		}
 	}

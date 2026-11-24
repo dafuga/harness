@@ -2,7 +2,7 @@
 	"name": "mg4rq5-phone-home",
 	"goal": "Signed-in iPhone home keeps Overview and computer pairing usable when hosted collaboration is disabled, and account actions on both the iPhone and Hub return page have visible spacing.",
 	"createdAt": "2026-11-24T12:01:36.261Z",
-	"updatedAt": "2026-11-24T12:03:03.066Z",
+	"updatedAt": "2026-11-24T12:08:38.459Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T12:08:19.402Z",
+			"evidence": "Hub clean red snapshot d99a646c6b measures 0 px between the return actions. At 19eb8660d1 the separate native signedInHome fixture on iOS 26.5 fails for banner and both 12 px gaps. Red screenshots captured by both tests."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T12:08:38.459Z",
+			"evidence": "Map only shared-project discovery HTTP 503 collaboration-disabled to an empty hosted list. Separate the phone status actions and the Hub return actions with the shared 12 px spacing token, with no Google callback change."
 		},
 		{
 			"id": "green",
