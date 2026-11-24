@@ -1,6 +1,11 @@
 // @harness-uid u_vqnqshfas2
 import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
-import { askQuietHours, directReminderDestination, flagged } from './notificationRules';
+import {
+	askQuietHours,
+	directReminderDestination,
+	flagged,
+	parkedUntil
+} from './notificationRules';
 import type {
 	TrackerDestination,
 	TrackerNotificationOptions
@@ -136,12 +141,26 @@ function askIds(state: TrackerNotificationState, attempt: DeliveryAttempt): stri
 	return [];
 }
 
+function parkedRequest(
+	state: TrackerNotificationState,
+	attempt: DeliveryAttempt,
+	options: TrackerNotificationOptions
+): boolean {
+	const { source } = options;
+	const ids =
+		attempt.kind === 'scheduled' || attempt.kind === 'reminders'
+			? attempt.keys.flatMap((key) => state.reminders.get(key)?.itemId ?? [])
+			: askIds(state, attempt);
+	const now = options.now();
+	return ids.some((id) => parkedUntil(source.item(id)) > now);
+}
+
 function replayState(options: TrackerNotificationOptions) {
 	return options.queue.update((state) => {
 		const issued = state.inFlight;
 		const paused = Boolean(state.paused);
 		if (!issued) return { paused };
-		if (!issueStillCurrent(state, issued, options)) {
+		if (!issueStillCurrent(state, issued, options) || parkedRequest(state, issued, options)) {
 			delete state.inFlight;
 			return { paused };
 		}

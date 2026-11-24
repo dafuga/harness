@@ -74,7 +74,7 @@ function askDetails(
 		id,
 		at,
 		kind: 'needs-daniel',
-		message: `Tracker item [${id.slice(0, 6)}] has been waiting for Daniel for ${minutes} minutes. Open the item and relay its current question to Daniel if it is still unanswered. Reminder reference ${reference}.`
+		message: `Tracker item [${id.slice(0, 6)}] has been waiting for Daniel for ${minutes} minutes. Open the item and relay its current question to Daniel if it still needs his decision. Reminder reference ${reference}.`
 	};
 }
 
