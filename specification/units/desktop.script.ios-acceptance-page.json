@@ -93,7 +93,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "SimulatorPageError",
 				"type": "thrown",
 				"description": "An Error is thrown by evaluate after all eight connect or execute attempts fail, or by until when its deadline expires without wanted appearing in the evaluated text."
 			}
@@ -124,7 +124,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator page inspection or wait failure",
 						"type": "thrown",
 						"description": "An Error is thrown by evaluate after all eight connect or execute attempts fail, or by until when its deadline expires without wanted appearing in the evaluated text."
 					}
@@ -170,7 +170,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator page inspection or wait failure",
 						"type": "thrown",
 						"description": "An Error is thrown by evaluate after all eight connect or execute attempts fail, or by until when its deadline expires without wanted appearing in the evaluated text."
 					}

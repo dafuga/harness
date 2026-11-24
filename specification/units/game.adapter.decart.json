@@ -155,17 +155,17 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid Decart preview model, mode, or duration",
 				"type": "thrown",
 				"description": "Thrown by validateSession, and so by start as a rejection, when model is not 'lucy-restyle-2' or 'lucy-2.5', fast is not a boolean or is true for a model other than 'lucy-2.5', or seconds is not an integer from 10 to 60. This check runs before the lease check and before any token request."
 			},
 			{
-				"name": "Error",
+				"name": "Decart preview lease already active",
 				"type": "thrown",
 				"description": "Thrown by start, as a rejection, when an earlier preview lease is still active, meaning the stored until time is later than the current time. The token client is not called and the stored until time is left unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "Decart token request failed",
 				"type": "thrown",
 				"description": "Thrown by start, as a rejection, when the token client's create call throws or rejects. The original error is discarded, the stored until time is reset to 0, and an Error with a fixed message is thrown instead."
 			}
@@ -237,17 +237,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid Decart preview model, mode, or duration",
 						"type": "thrown",
 						"description": "Thrown by validateSession, and so by start as a rejection, when model is not 'lucy-restyle-2' or 'lucy-2.5', fast is not a boolean or is true for a model other than 'lucy-2.5', or seconds is not an integer from 10 to 60. This check runs before the lease check and before any token request."
 					},
 					{
-						"name": "Error",
+						"name": "Decart preview lease already active",
 						"type": "thrown",
 						"description": "Thrown by start, as a rejection, when an earlier preview lease is still active, meaning the stored until time is later than the current time. The token client is not called and the stored until time is left unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "Decart token request failed",
 						"type": "thrown",
 						"description": "Thrown by start, as a rejection, when the token client's create call throws or rejects. The original error is discarded, the stored until time is reset to 0, and an Error with a fixed message is thrown instead."
 					}
@@ -322,7 +322,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid Decart preview model, mode, or duration",
 						"type": "thrown",
 						"description": "Thrown by validateSession, and so by start as a rejection, when model is not 'lucy-restyle-2' or 'lucy-2.5', fast is not a boolean or is true for a model other than 'lucy-2.5', or seconds is not an integer from 10 to 60. This check runs before the lease check and before any token request."
 					}

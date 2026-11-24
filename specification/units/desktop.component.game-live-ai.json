@@ -8,14 +8,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
-			"reports.component.modal",
-			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-small"
+			"reports.component.shared-primitives-atoms-html-option",
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -23,10 +21,7 @@
 			"packages/desktop/src/components/game-authoring/GameLiveAi.svelte",
 			"packages/desktop/src/components/game-authoring/GameLiveAi.types.ts"
 		],
-		"symbols": [
-			"GameLiveAi",
-			"GameLiveAiProps"
-		]
+		"symbols": ["GameLiveAi", "GameLiveAiProps"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,6 +36,7 @@
 				"name": "GameLiveAi.choice",
 				"type": "string",
 				"required": false,
+				"default": "undefined (omitted)",
 				"description": "The chosen model key, bindable. The select changes it only while the control is available and not busy."
 			},
 			{
@@ -106,16 +102,6 @@
 	},
 	"dependencies": [
 		{
-			"unit": "reports.component.modal",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.select",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
@@ -126,12 +112,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"unit": "reports.component.shared-primitives-atoms-html-option",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		}

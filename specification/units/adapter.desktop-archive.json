@@ -76,7 +76,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Archive extraction or patch failure",
 				"type": "thrown",
 				"description": "An uncaught extractFile error can escape read, and patch explicitly throws Error when source and target are identical strings. Other archive or filesystem failures are allowed to escape without translation."
 			}
@@ -112,7 +112,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "extractFile failure (asar)",
 						"type": "thrown",
 						"description": "An uncaught extractFile error propagates when the source package or a requested entry cannot be extracted. This adapter does not validate or translate that dependency error."
 					}
@@ -153,7 +153,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ArchiveDestinationNotSeparateError",
 						"type": "thrown",
 						"description": "This Error is explicitly thrown when source and target are identical strings, before any archive work begins. Failures from ASAR or filesystem calls are not caught or translated, so their concrete details come from those dependencies."
 					}

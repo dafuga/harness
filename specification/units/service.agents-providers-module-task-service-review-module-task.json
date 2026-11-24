@@ -91,7 +91,8 @@
 						"verdict": "incomplete",
 						"feedback": "Add scenario proof for the changed behavior."
 					}
-				]
+				],
+				"unknownReason": "The submission review payload is checked at runtime before the queue is updated."
 			}
 		],
 		"outputs": [
@@ -152,11 +153,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Invalid checkpoint or verification evidence",
+						"type": "thrown",
+						"description": "The submission has to name a checkpoint with changed files. The cited commit must carry those files unchanged and have an intact verification record covering the module. Git lookup failures can also reject."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "recordedReview",
@@ -180,11 +182,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown"
+						"name": "Conflicting review verdict",
+						"type": "thrown",
+						"description": "Resending the recorded verdict is idempotent. An existing review for the same attempt with a different verdict is refused."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "reviewModuleTask",
@@ -225,7 +228,8 @@
 								"verdict": "incomplete",
 								"feedback": "Add scenario proof for the changed behavior."
 							}
-						]
+						],
+						"unknownReason": "The submission review payload is checked at runtime before the queue is updated."
 					}
 				],
 				"outputs": [

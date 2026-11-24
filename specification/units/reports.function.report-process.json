@@ -72,7 +72,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Report child process spawn failure",
 				"type": "thrown",
 				"description": "A spawn failure delivered through the child's error event rejects the returned Promise with that error. A nonzero exit code is returned in the result and does not reject."
 			}
@@ -140,7 +140,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Report child process spawn failure",
 						"type": "thrown",
 						"description": "A spawn failure delivered through the child's error event rejects the returned Promise with that error. A nonzero exit code is returned in the result and does not reject."
 					}

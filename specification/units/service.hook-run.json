@@ -60,7 +60,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hook refs, verification run, or history attachment failure",
 				"type": "thrown",
 				"description": "Rejects unchanged if pushedRefs throws or verifyRun/historyAttach rejects; verifyCheck rejections are caught and treated as no prior passing proof."
 			}
@@ -100,7 +100,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hook refs, verification run, or history attachment failure",
 						"type": "thrown",
 						"description": "Rejects unchanged if pushedRefs throws or verifyRun/historyAttach rejects; verifyCheck rejections are caught and treated as no prior passing proof."
 					}

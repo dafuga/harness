@@ -161,7 +161,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Cloudflare deployment authorization or target failure",
 				"type": "thrown",
 				"description": "Thrown by deploy when the credential named by tokenEnv is unset or empty, the Cloudflare target or account check fails, the Pages production branch is unreadable or conflicts with the environment, or the output has no deployment identity. Thrown by discover, through deploymentConfig and cloudflareSafety, when no Wrangler configuration is found, the JSONC configuration is invalid, a path leaves the project, two Worker targets share an account and name, a target is incomplete or mismatched, a lower Worker environment inherits or overlaps a production route or has a wildcard host, or a route mapping is ambiguous."
 			},
@@ -236,7 +236,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Wrangler configuration or deployment target failure",
 						"type": "thrown",
 						"description": "Thrown by deploymentConfig, which discover returns, when no Wrangler configuration is found, the JSONC configuration is invalid, a path leaves the project, two Worker targets share an account and name, a target is incomplete or mismatched, a lower Worker environment inherits or overlaps a production route or has a wildcard host, or a route mapping is ambiguous. Errors from file reads (other than ENOENT), the zod schema check of harness.deploy.json and TOML parsing propagate unchanged."
 					},
@@ -324,7 +324,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Cloudflare deployment authorization or target failure",
 						"type": "thrown",
 						"description": "Thrown when the credential named by tokenEnv is unset or empty, when the Cloudflare target or account check fails, when the Pages production branch cannot be read, when a Pages branch conflicts with the environment's production status, or when the command output has no deployment identity. Errors from the request (including the 15-second timeout on the target lookup) and execute functions, such as deploymentCommand's failures, pass through unchanged."
 					},

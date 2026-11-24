@@ -42,7 +42,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Binary artifact decode or integrity failure",
 				"type": "thrown",
 				"description": "Throws Error(\"The computer sent media this app cannot read.\") when the encoding or data cannot be decoded, or when mediaType is not a string. Throws Error(\"The media arrived damaged and is not shown.\") when the decoded byte length or SHA-256 digest differs from the supplied value."
 			}
@@ -77,7 +77,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Binary artifact decode or integrity failure",
 						"type": "thrown",
 						"description": "Throws Error(\"The computer sent media this app cannot read.\") when the encoding or data cannot be decoded, or when mediaType is not a string. Throws Error(\"The media arrived damaged and is not shown.\") when the decoded byte length or SHA-256 digest differs from the supplied value."
 					}

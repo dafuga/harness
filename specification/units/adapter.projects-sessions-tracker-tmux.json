@@ -17,7 +17,8 @@
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedProviderCommands.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts",
-			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts"
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/verifyTrackerTmuxSubmission.ts"
 		],
 		"symbols": [
 			"TrackerTmuxAdapter",
@@ -54,7 +55,9 @@
 			"matchesTrackerTmuxPane",
 			"trackerTmuxKeys",
 			"trackerWorkerClient",
-			"trackerGuestAuthFile"
+			"trackerGuestAuthFile",
+			"sendTrackerTmuxNudge",
+			"trackerTmuxCwd"
 		]
 	},
 	"contract": {
@@ -274,7 +277,7 @@
 			{
 				"name": "trackerTmuxKeys.message",
 				"type": "string",
-				"required": true,
+				"required": false,
 				"description": "Control-character-free message already checked by the caller."
 			},
 			{
@@ -310,6 +313,43 @@
 			{
 				"name": "trackerGuestAuthFile.address",
 				"type": "Pick<TrackerWorkerClient, 'writeGuestAuth' | 'apiPort'>",
+				"required": true
+			},
+			{
+				"name": "sendTrackerTmuxNudge.input",
+				"type": "TrackerTmuxNudge",
+				"required": true
+			},
+			{
+				"name": "sendTrackerTmuxNudge.id",
+				"type": "string",
+				"required": true,
+				"description": "The identifier of the targeted tmux pane."
+			},
+			{
+				"name": "sendTrackerTmuxNudge.raw",
+				"type": "string",
+				"required": true,
+				"description": "The captured tmux layout fingerprint compared before sending keys."
+			},
+			{
+				"name": "sendTrackerTmuxNudge.effects",
+				"type": "{ command: (args: string[]) => Promise<{ code: number; stdout: string }>; capture: () => Promise<TrackerTmuxPane | undefined>; }",
+				"required": true
+			},
+			{
+				"name": "sendTrackerTmuxNudge.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "trackerTmuxCwd.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerTmuxCwd.command",
+				"type": "(args: string[]) => Promise<{ code: number; stdout: string }>",
 				"required": true
 			}
 		],
@@ -816,7 +856,7 @@
 					{
 						"name": "trackerTmuxKeys.message",
 						"type": "string",
-						"required": true,
+						"required": false,
 						"description": "Control-character-free message already checked by the caller."
 					}
 				],
@@ -894,6 +934,69 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sendTrackerTmuxNudge",
+				"inputs": [
+					{
+						"name": "sendTrackerTmuxNudge.input",
+						"type": "TrackerTmuxNudge",
+						"required": true
+					},
+					{
+						"name": "sendTrackerTmuxNudge.id",
+						"type": "string",
+						"required": true,
+						"description": "The identifier of the targeted tmux pane."
+					},
+					{
+						"name": "sendTrackerTmuxNudge.raw",
+						"type": "string",
+						"required": true,
+						"description": "The captured tmux layout fingerprint compared before sending keys."
+					},
+					{
+						"name": "sendTrackerTmuxNudge.effects",
+						"type": "{ command: (args: string[]) => Promise<{ code: number; stdout: string }>; capture: () => Promise<TrackerTmuxPane | undefined>; }",
+						"required": true
+					},
+					{
+						"name": "sendTrackerTmuxNudge.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sendTrackerTmuxNudge",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerTmuxCwd",
+				"inputs": [
+					{
+						"name": "trackerTmuxCwd.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerTmuxCwd.command",
+						"type": "(args: string[]) => Promise<{ code: number; stdout: string }>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTmuxCwd",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],

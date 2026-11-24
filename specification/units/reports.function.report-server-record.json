@@ -106,7 +106,7 @@
 				"description": "Reading a nonempty record parses its contents with `JSON.parse` and does not catch parse failures, so malformed JSON rejects `read()` and `stopReportServer`."
 			},
 			{
-				"name": "Error",
+				"name": "Report process signal or record filesystem failure",
 				"type": "thrown",
 				"description": "OS signal errors from `process.kill` and filesystem errors from `mkdir`, `writeFile` or `rm` propagate as Node errors; `stopReportServer` does not catch failed signals or record removal. `readFile` errors are caught and returned as absence."
 			}
@@ -163,7 +163,7 @@
 						"description": "Reading a nonempty record parses its contents with `JSON.parse` and does not catch parse failures, so malformed JSON rejects `read()` and `stopReportServer`."
 					},
 					{
-						"name": "Error",
+						"name": "Report process signal or record removal failure",
 						"type": "thrown",
 						"description": "An OS error from process.kill or a filesystem error from rm propagates because this function does not catch it. The PID/start-time check cannot make a later signal atomic."
 					}

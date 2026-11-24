@@ -155,7 +155,7 @@
 				"description": "Thrown when the selected branch has no tip, a requested commit cannot be proven reachable from the tip, commit facts are missing or disagree with the requested commit, or the entity has no registered kind."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid current-tip scope or unsupported entity kind",
 				"type": "thrown",
 				"description": "The scope helper calls recordedScope, which throws a plain Error if a current-mode commit differs from tip or if its kind has no mapped explorer category."
 			}
@@ -315,7 +315,7 @@
 						"description": "Thrown when the selected branch has no tip, a requested commit cannot be proven reachable from the tip, commit facts are missing or disagree with the requested commit, or the entity has no registered kind."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid current-tip scope or unsupported entity kind",
 						"type": "thrown",
 						"description": "The scope helper calls recordedScope, which throws a plain Error if a current-mode commit differs from tip or if its kind has no mapped explorer category."
 					}

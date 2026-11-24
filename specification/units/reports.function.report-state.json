@@ -154,9 +154,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidReportStateInputError",
 				"type": "thrown",
-				"description": "Throws Error(\"Project, title and valid mode are required\") when project or title is falsy, or mode is neither feature nor suite."
+				"description": "Throws InvalidReportStateInputError(\"Project, title and valid mode are required\") when project or title is falsy, or mode is neither feature nor suite."
 			}
 		],
 		"errorStatus": "declared",
@@ -218,9 +218,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidReportStateInputError",
 						"type": "thrown",
-						"description": "Throws Error(\"Project, title and valid mode are required\") when project or title is falsy, or mode is neither feature nor suite."
+						"description": "Throws InvalidReportStateInputError(\"Project, title and valid mode are required\") when project or title is falsy, or mode is neither feature nor suite."
 					}
 				],
 				"errorStatus": "declared"

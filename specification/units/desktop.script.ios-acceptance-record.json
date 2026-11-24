@@ -61,7 +61,8 @@
 				"type": "unknown",
 				"required": true,
 				"description": "Any value converted with Boolean(...) to determine the check’s passed flag. It matters when recording an assertion; truthy values count as passed and falsy values count as failed.",
-				"examples": [true, false, 0]
+				"examples": [true, false, 0],
+				"unknownReason": "This recorder accepts any assertion result and records its JavaScript truthiness."
 			},
 			{
 				"name": "AcceptanceRecord.check.name",
@@ -80,7 +81,8 @@
 					{
 						"message": "Simulator launch timed out"
 					}
-				]
+				],
+				"unknownReason": "A failed phase may supply any thrown value; the recorder formats it into a short diagnostic."
 			}
 		],
 		"outputs": [
@@ -198,7 +200,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Any value converted with Boolean(...) to determine the check’s passed flag. It matters when recording an assertion; truthy values count as passed and falsy values count as failed.",
-						"examples": [true, false, 0]
+						"examples": [true, false, 0],
+						"unknownReason": "This recorder accepts any assertion result and records its JavaScript truthiness."
 					},
 					{
 						"name": "AcceptanceRecord.check.name",
@@ -231,7 +234,8 @@
 							{
 								"message": "Simulator launch timed out"
 							}
-						]
+						],
+						"unknownReason": "A failed phase may supply any thrown value; the recorder formats it into a short diagnostic."
 					}
 				],
 				"outputs": [

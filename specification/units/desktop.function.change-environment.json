@@ -39,7 +39,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnknownDeploymentEnvironmentError",
 				"type": "thrown",
 				"description": "Thrown when the argument is not dev, stage, preprod, or prod; the message is \"Unknown deployment environment.\"."
 			}
@@ -71,7 +71,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnknownDeploymentEnvironmentError",
 						"type": "thrown",
 						"description": "Thrown when the argument is not dev, stage, preprod, or prod; the message is \"Unknown deployment environment.\"."
 					}

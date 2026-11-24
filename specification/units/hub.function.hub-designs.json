@@ -187,7 +187,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub design or image missing or corrupt",
 				"type": "thrown",
 				"description": "Rejects with code not-found when a requested committed design or image is absent, or code artifact-corrupt when design JSON, schema, identity/path/hash, option, version-sequence, image-length or PNG-dimension validation fails."
 			}
@@ -262,7 +262,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub image missing or corrupt",
 						"type": "thrown",
 						"description": "Rejects with code not-found when the requested image hash or stored blob is absent, or code artifact-corrupt when design metadata, image byte length or decoded PNG dimensions fail validation."
 					}
@@ -328,7 +328,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub design bundle missing or corrupt",
 						"type": "thrown",
 						"description": "Rejects with code not-found for a missing design, prompt, notes or image blob, or code artifact-corrupt for invalid design data, option assignments, or a version sequence that does not start at v001 and increase without gaps."
 					}
@@ -437,7 +437,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub design artifact missing or corrupt",
 						"type": "thrown",
 						"description": "Rejects with code not-found for a missing design artifact, or code artifact-corrupt for invalid JSON/schema, unitId or path mismatch, contract-hash mismatch, or invalid option assignments."
 					}

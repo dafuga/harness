@@ -70,7 +70,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnembeddedImportError",
 				"type": "thrown",
 				"description": "Thrown when a relative module specifier resolves to a .ts path that is not represented in gameSourceLayout. In that case embeddedSource rejects instead of returning formatted source."
 			}
@@ -105,7 +105,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnembeddedImportError",
 						"type": "thrown",
 						"description": "Thrown when a relative module specifier resolves to a .ts path that is not represented in gameSourceLayout. In that case embeddedSource rejects instead of returning formatted source."
 					}

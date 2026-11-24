@@ -93,7 +93,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Provider discovery or Claude runner unavailable",
 				"type": "thrown",
 				"description": "Runner discovery failures propagate without wrapping. mockupRunner also rejects if Claude is unavailable."
 			},
@@ -144,7 +144,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "discover() failure (AgentRunner)",
 						"type": "thrown",
 						"description": "Promise.all rejects if any runner's discover() rejects, and this method propagates the rejection without wrapping it. The rejection reason comes from that runner."
 					}
@@ -163,7 +163,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Claude runner discovery or availability failure",
 						"type": "thrown",
 						"description": "Rejects with the discovery error, or with the reported reason when the Claude CLI is unavailable. Uses “Claude CLI is unavailable.” if discovery gives no reason."
 					}
@@ -214,7 +214,7 @@
 						"description": "The requested model is unavailable or the selected model does not support the supplied effort."
 					},
 					{
-						"name": "Error",
+						"name": "Selected provider discovery failure",
 						"type": "thrown",
 						"description": "Rejections from the selected runner’s discovery propagate without wrapping."
 					}

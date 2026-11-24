@@ -25,7 +25,8 @@
 					},
 					["item"],
 					null
-				]
+				],
+				"unknownReason": "The type guard accepts any value and tests whether it is a non-null non-array object."
 			}
 		],
 		"outputs": [
@@ -59,7 +60,8 @@
 							},
 							["item"],
 							null
-						]
+						],
+						"unknownReason": "The type guard accepts any value and tests whether it is a non-null non-array object."
 					}
 				],
 				"outputs": [

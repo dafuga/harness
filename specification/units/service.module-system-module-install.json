@@ -53,7 +53,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Module catalog invalid or module unavailable",
 				"type": "thrown",
 				"description": "An Error thrown when the loaded catalog has gaps, with their messages joined by newlines, or when no entry matches the requested ID, with an Unknown module message. Failures from awaited catalog, state, planning, or writing calls also reject this promise and are not caught here."
 			}
@@ -90,7 +90,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Module catalog invalid or module unavailable",
 						"type": "thrown",
 						"description": "An Error thrown when the loaded catalog has gaps, with their messages joined by newlines, or when no entry matches the requested ID, with an Unknown module message. Failures from awaited catalog, state, planning, or writing calls also reject this promise and are not caught here."
 					}

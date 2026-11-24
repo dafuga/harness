@@ -74,7 +74,8 @@
 							}
 						}
 					}
-				]
+				],
+				"unknownReason": "Wrangler configuration allows unrelated fields and the route entries used by this check are narrowed individually."
 			},
 			{
 				"name": "cloudflareSafety.targets",
@@ -134,7 +135,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CloudflareSafetyError",
 				"type": "thrown",
 				"description": "Thrown with the message 'A lower Worker environment inherits or overlaps a production route' when a workers target whose environment is not prod has a route hostname that contains an asterisk or exactly equals a protected hostname. Thrown with the message 'Cloudflare route mapping is ambiguous' when a non-null route entry is not a string and its pattern is not a string."
 			},
@@ -206,7 +207,8 @@
 									}
 								}
 							}
-						]
+						],
+						"unknownReason": "Wrangler configuration allows unrelated fields and the route entries used by this check are narrowed individually."
 					},
 					{
 						"name": "cloudflareSafety.targets",
@@ -266,7 +268,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CloudflareSafetyError",
 						"type": "thrown",
 						"description": "Thrown with the message 'A lower Worker environment inherits or overlaps a production route' when a workers target whose environment is not prod has a route hostname that contains an asterisk or exactly equals a protected hostname. Thrown with the message 'Cloudflare route mapping is ambiguous' when a non-null route entry is not a string and its pattern is not a string."
 					},

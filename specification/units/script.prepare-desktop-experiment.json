@@ -21,7 +21,7 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Desktop experiment path, process, or preparation failure",
 				"type": "thrown",
 				"description": "An Error is thrown if source and target resolve to the same path, process inspection fails, the experimental app is running, either build fails, or a non-Delete plist edit fails. Failures from filesystem, process, archive, service, and integrity calls also propagate without being normalized by this script."
 			}

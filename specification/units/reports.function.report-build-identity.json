@@ -32,7 +32,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Report build directory or file read failure",
 				"type": "thrown",
 				"description": "Filesystem errors propagate if the selected directory cannot be enumerated or one of its files cannot be read."
 			}
@@ -60,7 +60,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Report build directory or file read failure",
 						"type": "thrown",
 						"description": "Filesystem errors propagate if the selected directory cannot be enumerated or one of its files cannot be read."
 					}

@@ -264,7 +264,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Game view readiness or level generation failure",
 				"type": "thrown",
 				"description": "Thrown as Error with one of the fixed messages when the view is missing or its planning concept or description is blank, the session is busy or this project is already generating, the game revision changes before or after the run, project files change during generation, the provider returns another model, or the model text is over 100000 characters or its JSON, summary or layout is invalid. Errors from the session, provider, repository and validator calls, such as an unselected project, read-only history or an unavailable model, are not caught here and reach the caller unchanged."
 			}
@@ -503,7 +503,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Game view readiness or level generation failure",
 						"type": "thrown",
 						"description": "Thrown as Error with one of the fixed messages when the view is missing or its planning concept or description is blank, the session is busy or this project is already generating, the game revision changes before or after the run, project files change during generation, the provider returns another model, or the model text is over 100000 characters or its JSON, summary or layout is invalid. Errors from the session, provider, repository and validator calls, such as an unselected project, read-only history or an unavailable model, are not caught here and reach the caller unchanged."
 					}

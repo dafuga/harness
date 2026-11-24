@@ -61,7 +61,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unreadable or damaged remote binary",
 				"type": "thrown",
 				"description": "Thrown inside the async remoteBinary, so callers receive a rejected promise: with the unreadableMedia message for an encoding other than 'base64', non-string data, or undecodable base64, and with the damagedMedia message for a decoded length or SHA-256 mismatch. Failures from crypto.subtle.digest are not caught, so they also reject the promise."
 			}
@@ -103,7 +103,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unreadable or damaged remote binary",
 						"type": "thrown",
 						"description": "Thrown inside the async remoteBinary, so callers receive a rejected promise: with the unreadableMedia message for an encoding other than 'base64', non-string data, or undecodable base64, and with the damagedMedia message for a decoded length or SHA-256 mismatch. Failures from crypto.subtle.digest are not caught, so they also reject the promise."
 					}

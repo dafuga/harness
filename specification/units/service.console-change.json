@@ -242,7 +242,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Console update filesystem failure",
 				"type": "thrown",
 				"description": "Filesystem operations that are not caught by the service reject with the underlying filesystem error when the operation fails."
 			}
@@ -362,7 +362,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Console backup or file replacement failure",
 						"type": "thrown",
 						"description": "Rejects with the underlying filesystem error if creating the backup directory, saving the current bytes, or writing or removing the target fails."
 					}
@@ -406,7 +406,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Console rollback file write failure",
 						"type": "thrown",
 						"description": "Rejects with the underlying filesystem error if its delegated replace step cannot save or restore the file."
 					}
@@ -433,7 +433,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Console file removal failure",
 						"type": "thrown",
 						"description": "Rejects with the underlying filesystem error if removing the path fails; the force option only makes a missing path succeed."
 					}
@@ -467,7 +467,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Console file write failure",
 						"type": "thrown",
 						"description": "Rejects with the underlying filesystem error if creating parent directories or writing the file fails."
 					}

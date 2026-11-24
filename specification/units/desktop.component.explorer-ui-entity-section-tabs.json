@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.explorer-ui-entity-section-tabs",
+	"uid": "u_eqr4mg5wut",
+	"kind": "component",
+	"title": "EntitySectionTabs",
+	"responsibility": "Owns the EntitySectionTabs Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-nav",
+			"reports.component.shared-primitives-atoms-svg-path",
+			"reports.component.shared-primitives-atoms-svg-svg"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/explorer-ui/EntitySectionTabs.svelte"],
+		"symbols": ["EntitySectionTabs"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "EntitySectionTabs.names",
+				"type": "Section[]",
+				"required": true
+			},
+			{
+				"name": "EntitySectionTabs.tab",
+				"type": "Section",
+				"required": true
+			},
+			{
+				"name": "EntitySectionTabs.threadShown",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "EntitySectionTabs.onpick",
+				"type": "(value: Section) => void",
+				"required": true
+			},
+			{
+				"name": "EntitySectionTabs.onconversation",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "EntitySectionTabs",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.entity-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-nav",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-path",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-svg",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/explorer-ui/EntitySectionTabs.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/explorer-ui/EntitySectionTabs.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

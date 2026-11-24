@@ -2,7 +2,7 @@
 	"name": "strict-unit-contracts",
 	"goal": "Make the existing strict units check pass while retaining unit UIDs and callable signatures. Match declared failures to source and explicitly document genuinely untrusted inputs.",
 	"createdAt": "2026-11-24T02:51:00.445Z",
-	"updatedAt": "2026-11-24T02:51:32.187Z",
+	"updatedAt": "2026-11-24T03:07:14.531Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T03:00:42.811Z",
+			"evidence": "Harness recorded the strengthened existing contractFailureCounts example failing at 937ff1b860 on Stored unit manifests must pass strict contract validation. The unchanged gate will be rerun after the repair."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T03:07:14.531Z",
+			"evidence": "Aligned error names and causes with current implementations, documented unknown boundary reasons and resolved inferred parameter types. Canonically indexed current source and backfilled five previously unassigned new units. Existing UIDs, runtime targets, source ownership, parameter order, required flags, defaults and outputs were compared by unit and operation. Strict units check returned 0 for 2084 active units."
 		},
 		{
 			"id": "green",

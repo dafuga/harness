@@ -1,0 +1,72 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.planning-collaboration-floating-chat-inert-behind",
+	"uid": "u_alymhuf2pk",
+	"kind": "function",
+	"title": "inertBehind",
+	"responsibility": "Owns the inertBehind shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/planning-collaboration/floating-chat/inertBehind.ts"
+		],
+		"symbols": ["inertBehind"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "inertBehind.node",
+				"type": "HTMLElement",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "inertBehind",
+				"type": "()"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "inertBehind",
+				"inputs": [
+					{
+						"name": "inertBehind.node",
+						"type": "HTMLElement",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inertBehind",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/planning-collaboration/floating-chat/inertBehind.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/planning-collaboration/floating-chat/inertBehind.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

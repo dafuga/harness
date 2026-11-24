@@ -253,7 +253,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Stored comparison side load failure",
 				"type": "thrown",
 				"description": "Thrown by the harness client's side loader, and so rejected by comparedSides, when a stored side's response is not ok: '<path> could not be loaded (<status>)'. A network or JSON parse rejection inside that loader, and any rejection from sideImpact, pass through unchanged."
 			}
@@ -499,7 +499,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Stored comparison side load failure",
 						"type": "thrown",
 						"description": "Thrown by the harness client's side loader, and so rejected by comparedSides, when a stored side's response is not ok: '<path> could not be loaded (<status>)'. A network or JSON parse rejection inside that loader, and any rejection from sideImpact, pass through unchanged."
 					}

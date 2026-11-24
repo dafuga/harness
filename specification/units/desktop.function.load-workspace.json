@@ -280,9 +280,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "WorkspaceProjectMismatchError",
 				"type": "thrown",
-				"description": "The promise rejects with `Error('The bridge answered for another project.')` when the route names a project and the snapshot's `project.id` is a different, non-empty id. Rejections from the project-selection, snapshot and entity reads pass through unchanged."
+				"description": "The promise rejects with `WorkspaceProjectMismatchError('The bridge answered for another project.')` when the route names a project and the snapshot's `project.id` is a different, non-empty id. Rejections from the project-selection, snapshot and entity reads pass through unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -542,9 +542,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "WorkspaceProjectMismatchError",
 						"type": "thrown",
-						"description": "The promise rejects with `Error('The bridge answered for another project.')` when the route names a project and the snapshot's `project.id` is a different, non-empty id. Rejections from the project-selection, snapshot and entity reads pass through unchanged."
+						"description": "The promise rejects with `WorkspaceProjectMismatchError('The bridge answered for another project.')` when the route names a project and the snapshot's `project.id` is a different, non-empty id. Rejections from the project-selection, snapshot and entity reads pass through unchanged."
 					}
 				],
 				"errorStatus": "declared"

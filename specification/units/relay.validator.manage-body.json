@@ -37,7 +37,8 @@
 						},
 						"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c"
 					}
-				]
+				],
+				"unknownReason": "The owner credential envelope comes from an unvalidated management request body."
 			},
 			{
 				"name": "ManageBodyValidator.register.value",
@@ -63,7 +64,8 @@
 						"credentialHash": "0f6d2b9e4a1c8375d0e6f2a9b4c1d7e3805a6f2b1c9e4d7a3f0b8e5c2d6a1f94",
 						"name": "Lab workstation"
 					}
-				]
+				],
+				"unknownReason": "The host registration body is raw request data until the owner and host fields have been checked."
 			},
 			{
 				"name": "ManageBodyValidator.device.value",
@@ -85,7 +87,8 @@
 						"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
 						"deviceId": "2d8b6e1f0c9a47d35e2b8f10a6c7d94e1b3f5a08"
 					}
-				]
+				],
+				"unknownReason": "The device request body is raw data until the owner and device fields have been checked."
 			}
 		],
 		"outputs": [
@@ -179,7 +182,8 @@
 								},
 								"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c"
 							}
-						]
+						],
+						"unknownReason": "The owner credential envelope comes from an unvalidated management request body."
 					}
 				],
 				"outputs": [
@@ -233,7 +237,8 @@
 								"credentialHash": "0f6d2b9e4a1c8375d0e6f2a9b4c1d7e3805a6f2b1c9e4d7a3f0b8e5c2d6a1f94",
 								"name": "Lab workstation"
 							}
-						]
+						],
+						"unknownReason": "The host registration body is raw request data until the owner and host fields have been checked."
 					}
 				],
 				"outputs": [
@@ -289,7 +294,8 @@
 								"hostId": "e27b40d91a6c58f3b0a4e7d2c19f86a5b3d0e74c",
 								"deviceId": "2d8b6e1f0c9a47d35e2b8f10a6c7d94e1b3f5a08"
 							}
-						]
+						],
+						"unknownReason": "The device request body is raw data until the owner and device fields have been checked."
 					}
 				],
 				"outputs": [

@@ -53,9 +53,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "SwitchVerificationError",
 				"type": "thrown",
-				"description": "Invalid IDs throw Error('A valid explicit Codex session ID is required.'); a post-resume selection mismatch creates Error('Settings mismatch'), which is caught to trigger rollback. A failed revision-checked status write throws Error('Switch ownership changed; settings require manual verification.'), and uncaught store/control failures can also reject apply."
+				"description": "Invalid IDs throw SwitchVerificationError('A valid explicit Codex session ID is required.'); a post-resume selection mismatch creates SwitchVerificationError('Settings mismatch'), which is caught to trigger rollback. A failed revision-checked status write throws SwitchVerificationError('Switch ownership changed; settings require manual verification.'), and uncaught store/control failures can also reject apply."
 			}
 		],
 		"errorStatus": "declared",
@@ -80,9 +80,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "SwitchVerificationError",
 						"type": "thrown",
-						"description": "Invalid IDs throw Error('A valid explicit Codex session ID is required.'); a post-resume selection mismatch creates Error('Settings mismatch'), which is caught to trigger rollback. A failed revision-checked status write throws Error('Switch ownership changed; settings require manual verification.'), and uncaught store/control failures can also reject apply."
+						"description": "Invalid IDs throw SwitchVerificationError('A valid explicit Codex session ID is required.'); a post-resume selection mismatch creates SwitchVerificationError('Settings mismatch'), which is caught to trigger rollback. A failed revision-checked status write throws SwitchVerificationError('Switch ownership changed; settings require manual verification.'), and uncaught store/control failures can also reject apply."
 					}
 				],
 				"errorStatus": "declared"

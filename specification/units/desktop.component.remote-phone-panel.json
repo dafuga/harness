@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-form",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-input",
@@ -25,7 +26,7 @@
 		"source": [
 			"packages/desktop/src/components/networking-security/remote-phone-panel/RemotePhonePanel.svelte"
 		],
-		"symbols": ["RemotePhonePanel"]
+		"symbols": ["RemotePhonePanel", "RemotePhonePanel.failure"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,11 +56,30 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "RemotePhonePanel.failure",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemotePhonePanel.failure",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "desktop.function.remote-labels",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -70,6 +90,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

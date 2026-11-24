@@ -80,9 +80,9 @@
 		],
 		"errors": [
 			{
-				"name": "access changed",
-				"type": "Error",
-				"description": "Thrown as Error('Hosted authority changed during project discovery.') when there was no credential at the start, or when the credential differs after the list is read or before the list is returned. The discovery result is discarded."
+				"name": "HostedAuthorityChangedError",
+				"type": "thrown",
+				"description": "Thrown as HostedAuthorityChangedError('Hosted authority changed during project discovery.') when there was no credential at the start, or when the credential differs after the list is read or before the list is returned. The discovery result is discarded."
 			}
 		],
 		"errorStatus": "declared",

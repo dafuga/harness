@@ -152,7 +152,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.store.remote-phone",
 			"via": "import",
 			"origin": "derived"
 		},

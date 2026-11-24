@@ -57,7 +57,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Simulator scan fixture source or product mismatch",
 				"type": "thrown",
 				"description": "An `Error` is thrown if the isolated source differs in anything other than exactly the camera scanner replacement, or if the built product lacks `scanMarker`. Failures from the uncaught build, file-read, and copy steps also propagate."
 			}
@@ -95,7 +95,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator product marker read failure",
 						"type": "thrown",
 						"description": "An `Error` from `contents(product)` or `readFileSync` propagates if product files cannot be read. `holds` does not catch file-reading failures."
 					}
@@ -115,7 +115,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator scan fixture source or product mismatch",
 						"type": "thrown",
 						"description": "An `Error` is thrown if the isolated source differs in anything other than exactly the camera scanner replacement, or if the built product lacks `scanMarker`. Failures from the uncaught build and copy steps also propagate."
 					}

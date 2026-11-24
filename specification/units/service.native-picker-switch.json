@@ -82,7 +82,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid native picker selection or unavailable chat state",
 				"type": "thrown",
 				"description": "An Error is thrown for a missing or non-string threadId, an unsupported model, a non-idle chat, ephemeral history, enabled remote control, incomplete client closure, or mismatched resumed settings. Resume or verification failures trigger rollback; if rollback cannot be verified, apply rejects with a manual-recovery Error."
 			}
@@ -132,7 +132,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid native picker selection or unavailable chat state",
 						"type": "thrown",
 						"description": "An Error is thrown for a missing or non-string threadId, an unsupported model, a non-idle chat, ephemeral history, enabled remote control, incomplete client closure, or mismatched resumed settings. Resume or verification failures trigger rollback; if rollback cannot be verified, apply rejects with a manual-recovery Error."
 					}

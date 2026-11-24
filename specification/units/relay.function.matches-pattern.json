@@ -23,7 +23,8 @@
 					"packages/relay/src/utils/matchesPattern.ts",
 					"packages/relay/src/utils/development-tooling/matchesPattern.ts",
 					42
-				]
+				],
+				"unknownReason": "The pattern helper is also a type guard, so it handles arbitrary values and tests only strings."
 			},
 			{
 				"name": "matchesPattern.pattern",
@@ -61,7 +62,8 @@
 							"packages/relay/src/utils/matchesPattern.ts",
 							"packages/relay/src/utils/development-tooling/matchesPattern.ts",
 							42
-						]
+						],
+						"unknownReason": "The pattern helper is also a type guard, so it handles arbitrary values and tests only strings."
 					},
 					{
 						"name": "matchesPattern.pattern",

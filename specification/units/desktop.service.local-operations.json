@@ -124,7 +124,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DesktopOperationUnavailableError",
 				"type": "thrown",
 				"description": "The throws in `handle` reach the caller as rejected promises: `Desktop operation unavailable.` when the bridge lacks the operation, `Unknown desktop operation.` when a method has no bridge channel, and a validator's message when the input is refused. A rejection from a bridge or control operation passes through unchanged."
 			}
@@ -225,7 +225,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DesktopOperationUnavailableError",
 						"type": "thrown",
 						"description": "The throws in `handle` reach the caller as rejected promises: `Desktop operation unavailable.` when the bridge lacks the operation, `Unknown desktop operation.` when a method has no bridge channel, and a validator's message when the input is refused. A rejection from a bridge or control operation passes through unchanged."
 					}

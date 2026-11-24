@@ -86,7 +86,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown for a missing or empty root on 'import' ('--root is required.'), a missing or empty output on 'export' ('--output is required.') and a non-empty since or until value that does not parse to a valid date ('Invalid --since date.' or 'Invalid --until date.'). Errors from the other steps (for example importAnalytics, projectIdentity, ModuleTaskAnalyticsService.sync, the repository calls, analyticsSnapshot, analyticsHtml, file writes and stdout writes) are not caught and reach the caller."
 			}
@@ -134,7 +134,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown for a missing or empty root on 'import' ('--root is required.'), a missing or empty output on 'export' ('--output is required.') and a non-empty since or until value that does not parse to a valid date ('Invalid --since date.' or 'Invalid --until date.'). Errors from the other steps (for example importAnalytics, projectIdentity, ModuleTaskAnalyticsService.sync, the repository calls, analyticsSnapshot, analyticsHtml, file writes and stdout writes) are not caught and reach the caller."
 					}
@@ -177,7 +177,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown for a non-empty since or until value that does not parse to a valid date ('Invalid --since date.' or 'Invalid --until date.'). A rejection from projectIdentity is not caught and reaches the caller."
 					}

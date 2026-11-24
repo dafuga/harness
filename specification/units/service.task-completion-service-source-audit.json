@@ -61,7 +61,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid task completion scope or uncommitted work",
 				"type": "thrown",
 				"description": "Thrown for a kind other than 'coding' or 'planning', a blank goal, an invalid loop name, any uncommitted change other than the loop's loop.json and trace.ndjson, an input goal that differs from the committed loop goal, a committed goal that differs from the current loop goal, a current completion that differs from the committed one, or a committed completion whose kind or plan differs from the input. Errors raised by GitAdapter, CommitTreeAdapter, loop-state reads or JSON.parse of the committed loop.json are not caught and reach the caller unchanged."
 			}
@@ -114,7 +114,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid task completion scope or uncommitted work",
 						"type": "thrown",
 						"description": "Thrown for a kind other than 'coding' or 'planning', a blank goal, an invalid loop name, any uncommitted change other than the loop's loop.json and trace.ndjson, an input goal that differs from the committed loop goal, a committed goal that differs from the current loop goal, a current completion that differs from the committed one, or a committed completion whose kind or plan differs from the input. Errors raised by GitAdapter, CommitTreeAdapter, loop-state reads or JSON.parse of the committed loop.json are not caught and reach the caller unchanged."
 					}

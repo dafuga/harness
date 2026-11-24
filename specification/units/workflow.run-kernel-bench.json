@@ -412,7 +412,7 @@
 				"description": "Raised when the built kernel artifacts required for benchmarking are unavailable or a cold-sample CLI exits with a nonzero status."
 			},
 			{
-				"name": "Error",
+				"name": "Kernel benchmark child startup or readiness failure",
 				"type": "thrown",
 				"description": "serveKernel rejects with Error when its child process errors, exits before readiness, exceeds the startup timeout, or returns invalid readiness JSON."
 			}
@@ -627,7 +627,7 @@
 						"description": "Raised when the built kernel artifacts required for benchmarking are unavailable or a cold-sample CLI exits with a nonzero status."
 					},
 					{
-						"name": "Error",
+						"name": "Kernel benchmark child startup or readiness failure",
 						"type": "thrown",
 						"description": "serveKernel rejects with Error when its child process errors, exits before readiness, exceeds the startup timeout, or returns invalid readiness JSON."
 					}

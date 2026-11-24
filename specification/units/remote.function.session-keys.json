@@ -53,7 +53,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Malformed P-256 public key",
 				"type": "thrown",
 				"description": "Thrown by the point check that sharedSecret runs before ECDH when peerStatic or peerEphemeral is not 65 bytes starting with 0x04 (message 'Invalid P-256 public key.'), and sessionKeys rejects with it because nothing in secrets() or sessionKeys catches it."
 			},
@@ -104,7 +104,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Malformed P-256 public key",
 						"type": "thrown",
 						"description": "Thrown by the point check that sharedSecret runs before ECDH when peerStatic or peerEphemeral is not 65 bytes starting with 0x04 (message 'Invalid P-256 public key.'), and sessionKeys rejects with it because nothing in secrets() or sessionKeys catches it."
 					},

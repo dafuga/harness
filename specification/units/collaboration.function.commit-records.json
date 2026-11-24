@@ -54,7 +54,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Collaboration commit request or response failure",
 				"type": "thrown",
 				"description": "The promise rejects when a GitHub request rejects, JSON.stringify fails (for example on cyclic data or a BigInt), or a response fails the expected SHA or tree SHA parse. commitRecords does not catch or normalize these failures, so the concrete rejection class and message come from the transport, parser, or runtime."
 			}
@@ -102,7 +102,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Collaboration commit request or response failure",
 						"type": "thrown",
 						"description": "The promise rejects when a GitHub request rejects, JSON.stringify fails (for example on cyclic data or a BigInt), or a response fails the expected SHA or tree SHA parse. commitRecords does not catch or normalize these failures, so the concrete rejection class and message come from the transport, parser, or runtime."
 					}

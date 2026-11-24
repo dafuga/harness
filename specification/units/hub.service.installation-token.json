@@ -91,7 +91,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Installation-token helper, clock, cache, or GitHub failure",
 				"type": "thrown",
 				"description": "The operation rejects when a called helper, configured clock or cache, or GitHub API adapter throws or rejects; the service does not catch or translate that failure."
 			}
@@ -127,7 +127,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Installation-token authorization failure",
 						"type": "thrown",
 						"description": "The promise rejects with failures raised by authFail for token-scope-denied (invalid or disallowed scope, or a grant that differs from the request) or repository-denied (no grant), and propagates failures from key creation, JWT creation, the configured clock or cache, and the GitHub API adapter without catching them."
 					}
@@ -171,7 +171,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Installation credential signing or GitHub request failure",
 						"type": "thrown",
 						"description": "The promise rejects if key creation, JWT creation, the configured clock, or the GitHub API adapter throws or rejects; the service does not catch or translate that failure."
 					}

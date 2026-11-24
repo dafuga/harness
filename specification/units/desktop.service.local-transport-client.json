@@ -65,7 +65,8 @@
 				"name": "LocalTransportClientService.on.listener",
 				"type": "(value: unknown) => void",
 				"required": true,
-				"description": "Called with the value of each event on the channel, in order and once, until the function returned by on is called. If it throws, nothing reports the error to the caller: the client closes the socket and reconnects."
+				"description": "Called with the value of each event on the channel, in order and once, until the function returned by on is called. If it throws, nothing reports the error to the caller: the client closes the socket and reconnects.",
+				"unknownReason": "Each transport event channel defines its own payload shape."
 			}
 		],
 		"outputs": [
@@ -185,7 +186,8 @@
 						"name": "LocalTransportClientService.on.listener",
 						"type": "(value: unknown) => void",
 						"required": true,
-						"description": "Called with the value of each event on the channel, in order and once, until the function returned by on is called. If it throws, nothing reports the error to the caller: the client closes the socket and reconnects."
+						"description": "Called with the value of each event on the channel, in order and once, until the function returned by on is called. If it throws, nothing reports the error to the caller: the client closes the socket and reconnects.",
+						"unknownReason": "Each transport event channel defines its own payload shape."
 					}
 				],
 				"outputs": [

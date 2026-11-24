@@ -37,9 +37,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Throws Error('Invalid preview ownership port.') when the selected owner port does not convert to an integer from 1024 through 65535, and Error('Could not prepare the managed preview runtime.') when Bun.build reports failure. Errors from argument parsing, owner or worker calls, Bun.build, filesystem setup or removal, and cleanup also propagate as rejections."
+				"description": "Throws ExpectedCliError('Invalid preview ownership port.') when the selected owner port does not convert to an integer from 1024 through 65535, and ExpectedCliError('Could not prepare the managed preview runtime.') when Bun.build reports failure. Errors from argument parsing, owner or worker calls, Bun.build, filesystem setup or removal, and cleanup also propagate as rejections."
 			}
 		],
 		"errorStatus": "declared",
@@ -74,9 +74,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Throws Error('Invalid preview ownership port.') when the selected owner port does not convert to an integer from 1024 through 65535, and Error('Could not prepare the managed preview runtime.') when Bun.build reports failure. Errors from argument parsing, owner or worker calls, Bun.build, filesystem setup or removal, and cleanup also propagate as rejections."
+						"description": "Throws ExpectedCliError('Invalid preview ownership port.') when the selected owner port does not convert to an integer from 1024 through 65535, and ExpectedCliError('Could not prepare the managed preview runtime.') when Bun.build reports failure. Errors from argument parsing, owner or worker calls, Bun.build, filesystem setup or removal, and cleanup also propagate as rejections."
 					}
 				],
 				"errorStatus": "declared"

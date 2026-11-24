@@ -93,7 +93,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ApprovalMismatchError",
 				"type": "thrown",
 				"description": "A synchronous Error is thrown for a Change request without a current approval or target, a mismatch in version, contract hash, image hashes, or option, a thread outside the entity, or a thread anchored to a different version or option. Image hash order is ignored, and a thread with no version or option anchor is not rejected for that missing anchor value."
 			}
@@ -179,7 +179,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ApprovalMismatchError",
 						"type": "thrown",
 						"description": "A synchronous Error is thrown for a Change request without a current approval or target, a mismatch in version, contract hash, image hashes, or option, a thread outside the entity, or a thread anchored to a different version or option. Image hash order is ignored, and a thread with no version or option anchor is not rejected for that missing anchor value."
 					}

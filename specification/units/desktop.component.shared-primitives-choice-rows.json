@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.shared-primitives-choice-rows",
+	"uid": "u_7465g3sdj3",
+	"kind": "component",
+	"title": "ChoiceRows",
+	"responsibility": "Owns the ChoiceRows Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-small"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/shared-primitives/ChoiceRows.svelte"],
+		"symbols": ["ChoiceRows"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ChoiceRows.label",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ChoiceRows.title",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "ChoiceRows.children",
+				"type": "Snippet",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ChoiceRows",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/shared-primitives/ChoiceRows.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/shared-primitives/ChoiceRows.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

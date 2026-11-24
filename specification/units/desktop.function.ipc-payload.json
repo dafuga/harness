@@ -44,7 +44,8 @@
 						"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
 						"option": "o1"
 					}
-				]
+				],
+				"unknownReason": "The approval comes from IPC and is validated before its fields are used."
 			},
 			{
 				"name": "threadPayload.x",
@@ -69,7 +70,8 @@
 						"viewport": null,
 						"region": null
 					}
-				]
+				],
+				"unknownReason": "The IPC thread request is checked field by field, including its optional image anchor."
 			},
 			{
 				"name": "creationProject.value",
@@ -79,7 +81,8 @@
 				"examples": [
 					"local-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
 					"550e8400-e29b-41d4-a716-446655440000"
-				]
+				],
+				"unknownReason": "The project identifier comes from unvalidated IPC data and is narrowed to a supported identifier string."
 			},
 			{
 				"name": "creationPayload.x",
@@ -98,7 +101,8 @@
 						"text": "Add a filter to the report list.",
 						"designOptions": 3
 					}
-				]
+				],
+				"unknownReason": "The incoming agent creation request is narrowed to the allowed Plan fields."
 			},
 			{
 				"name": "runPayload.x",
@@ -116,7 +120,8 @@
 						"threadId": "thread-123",
 						"text": "Review the current design."
 					}
-				]
+				],
+				"unknownReason": "The agent request is narrowed by intent and may carry one of several payload shapes."
 			},
 			{
 				"name": "ipcPayload.channel",
@@ -141,7 +146,8 @@
 						"commit": "0123456789abcdef0123456789abcdef01234567",
 						"page": 1
 					}
-				]
+				],
+				"unknownReason": "The IPC channel selects the request parser, with some channels carrying no payload."
 			}
 		],
 		"outputs": [
@@ -246,7 +252,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidPayloadError",
 				"type": "thrown",
 				"description": "Thrown when an input object or field fails validation, a thread has an incomplete image anchor or a region on a draft, a creation request has invalid keys or project identity, a change lacks approval or supplies designOptions, or an entity-history page is outside 1 to 10,000. Imported plan, evidence, and field validators can also throw Error for invalid selected-channel payloads."
 			}
@@ -268,7 +274,8 @@
 								"contractHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
 								"option": "o1"
 							}
-						]
+						],
+						"unknownReason": "The approval comes from IPC and is validated before its fields are used."
 					}
 				],
 				"outputs": [
@@ -288,7 +295,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid approval payload",
 						"type": "thrown",
 						"description": "Thrown when the value is not a valid object, imageHashes is not an array or has more than 24 entries, or an approval field fails its validator."
 					}
@@ -321,7 +328,8 @@
 								"viewport": null,
 								"region": null
 							}
-						]
+						],
+						"unknownReason": "The IPC thread request is checked field by field, including its optional image anchor."
 					}
 				],
 				"outputs": [
@@ -352,7 +360,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidPayloadError",
 						"type": "thrown",
 						"description": "Thrown when a thread field fails validation, the image-anchor fields do not all have the same null status as version, or a null version is paired with a non-null region."
 					}
@@ -370,7 +378,8 @@
 						"examples": [
 							"local-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
 							"550e8400-e29b-41d4-a716-446655440000"
-						]
+						],
+						"unknownReason": "The project identifier comes from unvalidated IPC data and is narrowed to a supported identifier string."
 					}
 				],
 				"outputs": [
@@ -386,7 +395,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidPayloadError",
 						"type": "thrown",
 						"description": "Thrown unless the value is a string matching local- plus 64 hexadecimal characters or a UUID-shaped identity."
 					}
@@ -413,7 +422,8 @@
 								"text": "Add a filter to the report list.",
 								"designOptions": 3
 							}
-						]
+						],
+						"unknownReason": "The incoming agent creation request is narrowed to the allowed Plan fields."
 					}
 				],
 				"outputs": [
@@ -438,7 +448,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid creation request payload",
 						"type": "thrown",
 						"description": "Thrown when the request contains a key outside the creation field list or a required field, catalog value, or optional designOptions value fails validation."
 					}
@@ -464,7 +474,8 @@
 								"threadId": "thread-123",
 								"text": "Review the current design."
 							}
-						]
+						],
+						"unknownReason": "The agent request is narrowed by intent and may carry one of several payload shapes."
 					}
 				],
 				"outputs": [
@@ -488,7 +499,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid agent run payload",
 						"type": "thrown",
 						"description": "Thrown when the selected creation, task, or existing-run payload fails field validation, the task conversation is not an array of at most 20 entries, or a change lacks approval or includes designOptions."
 					}
@@ -521,7 +532,8 @@
 								"commit": "0123456789abcdef0123456789abcdef01234567",
 								"page": 1
 							}
-						]
+						],
+						"unknownReason": "The IPC channel selects the request parser, with some channels carrying no payload."
 					}
 				],
 				"outputs": [
@@ -545,7 +557,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid IPC channel payload",
 						"type": "thrown",
 						"description": "Thrown when the selected channel payload or one of its fields fails validation, including invalid entity-history pages and delegated plan or evidence payload validation."
 					}

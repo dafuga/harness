@@ -59,7 +59,7 @@
 				"description": "Filesystem error from lstat, readlink, or opening and reading a file, with a code other than ENOENT (for example EACCES or ENOTDIR). fileHash rethrows it unchanged, and sourceSnapshot rejects with it when any listed path fails this way."
 			},
 			{
-				"name": "Error",
+				"name": "gitRead failure (git)",
 				"type": "thrown",
 				"description": "Error that gitRead's execFile call rejects with when git exits non-zero (for example, when root is not inside a Git working tree), when the git executable cannot be started (for example, code ENOENT when it is not on PATH), or when git's stdout exceeds the 64000000-byte maxBuffer. sourceSnapshot does not catch it, so it rejects with the same error."
 			}
@@ -121,7 +121,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "gitRead failure (git)",
 						"type": "thrown",
 						"description": "Error that gitRead's execFile call rejects with when git exits non-zero (for example, when root is not inside a Git working tree), when the git executable cannot be started (for example, code ENOENT when it is not on PATH), or when git's stdout exceeds the 64000000-byte maxBuffer. sourceSnapshot does not catch it, so it rejects with the same error."
 					},

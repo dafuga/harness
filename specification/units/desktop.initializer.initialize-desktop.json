@@ -107,7 +107,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Desktop profile preparation failure",
 						"type": "thrown",
 						"description": "Preparing the chosen profile can throw a filesystem or Electron path error."
 					}
@@ -133,7 +133,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Desktop startup or recovery dialog failure",
 						"type": "thrown",
 						"description": "Electron readiness, filesystem inspection, or displaying the recovery message can fail."
 					}

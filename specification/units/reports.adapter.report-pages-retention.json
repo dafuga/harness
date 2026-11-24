@@ -80,22 +80,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidReportPublicationReceiptError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid report publication receipt' when `url` does not match `https://<label>.<project>.pages.dev` (with an optional trailing slash), before any Wrangler call runs."
 			},
 			{
-				"name": "Error",
+				"name": "ReportPublicationProjectMismatchError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Publication escaped the Project Reports Pages project' when the project label in `url` is not the configured Pages project, before any Wrangler call runs."
 			},
 			{
-				"name": "Error",
+				"name": "MissingProjectReportsCloudflareAccountError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Project Reports Cloudflare account is required for published cleanup' when `r2ScreenshotConfig` returns no `accountId`; the first Wrangler list call raises it, so no deployment is deleted."
 			},
 			{
-				"name": "Error",
+				"name": "CloudflarePagesCleanupError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Cloudflare Pages cleanup failed; local publication receipt retained for retry' when a Wrangler run returns a `code` other than 0, for the list call or any delete call; deployments deleted by earlier iterations are not restored."
 			},
@@ -105,12 +105,12 @@
 				"description": "Thrown by `JSON.parse` when the Wrangler list output is not valid JSON, before any delete call."
 			},
 			{
-				"name": "Error",
+				"name": "PublishedReportAbsentFromDeploymentListingError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Published report absent from deployment listing; local receipt retained' when no matching deployment lists `url` and a request to `url` returns a status other than 404, before any delete call."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidReportDeploymentIdError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid report deployment ID' when a matching deployment's `Id` is not 36 characters of lowercase hex digits and hyphens; deployments earlier in the match list may already have been deleted when it is thrown."
 			}
@@ -154,22 +154,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidReportPublicationReceiptError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid report publication receipt' when `url` does not match `https://<label>.<project>.pages.dev` (with an optional trailing slash), before any Wrangler call runs."
 					},
 					{
-						"name": "Error",
+						"name": "ReportPublicationProjectMismatchError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Publication escaped the Project Reports Pages project' when the project label in `url` is not the configured Pages project, before any Wrangler call runs."
 					},
 					{
-						"name": "Error",
+						"name": "MissingProjectReportsCloudflareAccountError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Project Reports Cloudflare account is required for published cleanup' when `r2ScreenshotConfig` returns no `accountId`; the first Wrangler list call raises it, so no deployment is deleted."
 					},
 					{
-						"name": "Error",
+						"name": "CloudflarePagesCleanupError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Cloudflare Pages cleanup failed; local publication receipt retained for retry' when a Wrangler run returns a `code` other than 0, for the list call or any delete call; deployments deleted by earlier iterations are not restored."
 					},
@@ -179,12 +179,12 @@
 						"description": "Thrown by `JSON.parse` when the Wrangler list output is not valid JSON, before any delete call."
 					},
 					{
-						"name": "Error",
+						"name": "PublishedReportAbsentFromDeploymentListingError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Published report absent from deployment listing; local receipt retained' when no matching deployment lists `url` and a request to `url` returns a status other than 404, before any delete call."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidReportDeploymentIdError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid report deployment ID' when a matching deployment's `Id` is not 36 characters of lowercase hex digits and hyphens; deployments earlier in the match list may already have been deleted when it is thrown."
 					}

@@ -134,6 +134,12 @@
 				"examples": ["", "Describe the sidebar change…"]
 			},
 			{
+				"name": "Composer.opening",
+				"type": "string",
+				"required": false,
+				"default": ""
+			},
+			{
 				"name": "Composer.visual",
 				"type": "boolean",
 				"required": false,

@@ -41,9 +41,19 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "PickerSelectionRejectedError",
 				"type": "thrown",
-				"description": "Rejects with `Error('Preview request rejected.')` for a non-OK preview response and with `Error('Selection rejected. Refresh the panel and check the session ID.')` when an MCP tool result sets `isError`; fetch, response JSON parsing, or app connection errors also propagate."
+				"description": "The selection MCP result reports an error."
+			},
+			{
+				"name": "PreviewRequestRejectedError",
+				"type": "thrown",
+				"description": "The preview endpoint returned a non-OK response."
+			},
+			{
+				"name": "Picker transport or response decode failure",
+				"type": "propagated",
+				"description": "App connection, fetch, and response JSON errors propagate."
 			}
 		],
 		"errorStatus": "declared",
@@ -67,9 +77,19 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PickerSelectionRejectedError",
 						"type": "thrown",
-						"description": "Rejects with `Error('Preview request rejected.')` for a non-OK preview response and with `Error('Selection rejected. Refresh the panel and check the session ID.')` when an MCP tool result sets `isError`; fetch, response JSON parsing, or app connection errors also propagate."
+						"description": "The selection MCP result reports an error."
+					},
+					{
+						"name": "PreviewRequestRejectedError",
+						"type": "thrown",
+						"description": "The preview endpoint returned a non-OK response."
+					},
+					{
+						"name": "Picker transport or response decode failure",
+						"type": "propagated",
+						"description": "App connection, fetch, and response JSON errors propagate."
 					}
 				],
 				"errorStatus": "declared"

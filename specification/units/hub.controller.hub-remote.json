@@ -61,27 +61,27 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub Remote invalid-input",
 				"type": "thrown",
 				"description": "An Error with code `invalid-input` is thrown for a missing or non-JSON registration body, invalid or non-object JSON, a body over 20,000 bytes, registration fields or host/device identifiers that fail validation, or a relay 400 refusal carrying that code."
 			},
 			{
-				"name": "Error",
+				"name": "Hub Remote remote-disabled",
 				"type": "thrown",
 				"description": "An Error with code `remote-disabled` is thrown when a matched action has no configured runtime because the constructor received null or undefined."
 			},
 			{
-				"name": "Error",
+				"name": "Hub Remote forbidden",
 				"type": "thrown",
 				"description": "An Error with code `forbidden` is thrown when the relay refuses a management request with status 403 and error code `forbidden`."
 			},
 			{
-				"name": "Error",
+				"name": "Hub Remote not-found",
 				"type": "thrown",
 				"description": "An Error with code `not-found` is thrown when the relay refuses a management request with status 404 and error code `not-found`."
 			},
 			{
-				"name": "Error",
+				"name": "Hub Remote unavailable",
 				"type": "thrown",
 				"description": "An Error with code `unavailable` is thrown when relay access fails, its JSON reply cannot be parsed, its refusal is not a defined status/code pair, or its successful reply fails shape validation."
 			}
@@ -121,27 +121,27 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub Remote invalid-input",
 						"type": "thrown",
 						"description": "An Error with code `invalid-input` is thrown for a missing or non-JSON registration body, invalid or non-object JSON, a body over 20,000 bytes, registration fields or host/device identifiers that fail validation, or a relay 400 refusal carrying that code."
 					},
 					{
-						"name": "Error",
+						"name": "Hub Remote remote-disabled",
 						"type": "thrown",
 						"description": "An Error with code `remote-disabled` is thrown when a matched action has no configured runtime because the constructor received null or undefined."
 					},
 					{
-						"name": "Error",
+						"name": "Hub Remote forbidden",
 						"type": "thrown",
 						"description": "An Error with code `forbidden` is thrown when the relay refuses a management request with status 403 and error code `forbidden`."
 					},
 					{
-						"name": "Error",
+						"name": "Hub Remote not-found",
 						"type": "thrown",
 						"description": "An Error with code `not-found` is thrown when the relay refuses a management request with status 404 and error code `not-found`."
 					},
 					{
-						"name": "Error",
+						"name": "Hub Remote unavailable",
 						"type": "thrown",
 						"description": "An Error with code `unavailable` is thrown when relay access fails, its JSON reply cannot be parsed, its refusal is not a defined status/code pair, or its successful reply fails shape validation."
 					}

@@ -193,7 +193,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Simulator runtime, device, or Keychain failure",
 				"type": "thrown",
 				"description": "Thrown when no available iOS runtime exists, the newest available runtime supports no iPhone, the Keychain database read fails, or a simulator command fails."
 			},
@@ -223,7 +223,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "No supported iOS simulator runtime or device",
 						"type": "thrown",
 						"description": "Thrown when no available iOS runtime exists or the newest available runtime supports no iPhone."
 					},
@@ -262,7 +262,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator command failure",
 						"type": "thrown",
 						"description": "Propagated when the xcrun simctl command used by this operation fails."
 					}
@@ -299,7 +299,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator command failure",
 						"type": "thrown",
 						"description": "Propagated when the xcrun simctl command used by this operation fails."
 					}
@@ -333,7 +333,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator command failure",
 						"type": "thrown",
 						"description": "Propagated when the xcrun simctl command used by this operation fails."
 					}
@@ -361,7 +361,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator command failure",
 						"type": "thrown",
 						"description": "Propagated when the xcrun simctl command used by this operation fails."
 					}
@@ -395,7 +395,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator command failure",
 						"type": "thrown",
 						"description": "Propagated when the xcrun simctl command used by this operation fails."
 					}
@@ -423,7 +423,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator command failure",
 						"type": "thrown",
 						"description": "Propagated when the xcrun simctl command used by this operation fails."
 					}
@@ -454,7 +454,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Simulator Keychain database query failure",
 						"type": "thrown",
 						"description": "Thrown when the simulator Keychain database query returns a nonzero exit code."
 					}

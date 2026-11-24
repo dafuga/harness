@@ -204,72 +204,72 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "User home directory lookup failure",
 				"type": "thrown",
 				"description": "Propagates any error from homedir(), which the default for projectsRoot calls whenever the projectsRoot argument is undefined, since the constructor does not catch it."
 			},
 			{
-				"name": "Error",
+				"name": "GameProjectBusyError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Wait for the current project operation.' when this.session.busy or this.session.pending is set. This check runs before validateProjectName, so no folder is created."
 			},
 			{
-				"name": "Error",
+				"name": "GameProjectAlreadyExistsError",
 				"type": "thrown",
 				"description": "Thrown with the message 'A project with that name already exists.' when mkdir of the target folder fails with code EEXIST. The existing folder is left in place because this call did not create it."
 			},
 			{
-				"name": "Error",
+				"name": "Game project directory creation failure",
 				"type": "thrown",
 				"description": "Rethrows any other error from mkdir of the target folder, unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "projects root mkdir failure (node:fs/promises)",
 				"type": "thrown",
 				"description": "Propagates any error from mkdir of the projects root, which runs with recursive: true and is not caught."
 			},
 			{
-				"name": "Error",
+				"name": "validateProjectName failure (function.validation)",
 				"type": "thrown",
 				"description": "Propagates any error from validateProjectName(input.name), which runs before the projects root or the target folder is created."
 			},
 			{
-				"name": "Error",
+				"name": "Game project setup or Git initialization failure",
 				"type": "thrown",
 				"description": "Propagates any error from the try block: createProject, initializePlanning when input.kind is 'game', and initialize with a GitAdapter for the target, including a Git failure such as a missing commit identity, which fails as Git reports it. The target folder is removed with rm before the error is rethrown."
 			},
 			{
-				"name": "Error",
+				"name": "ProjectSessionService.open failure",
 				"type": "thrown",
 				"description": "Propagates any error from this.session.open(target), which runs after the try block. The created project folder is not removed in that case."
 			},
 			{
-				"name": "Error",
+				"name": "Selected game project assertion failure",
 				"type": "thrown",
 				"description": "this.session.assertProject(input.projectId) is called without await or return, so only a synchronous throw from it reaches the caller."
 			},
 			{
-				"name": "Error",
+				"name": "No available game project session",
 				"type": "thrown",
 				"description": "Rejects with any error from this.session.requireProject(), which read calls right after assertProject."
 			},
 			{
-				"name": "Error",
+				"name": "Game document revision read failure",
 				"type": "thrown",
 				"description": "Rejects with any error from new GameDocumentRepository(root).read(input.commit), which read returns without catching."
 			},
 			{
-				"name": "Error",
+				"name": "Game project write access failure",
 				"type": "thrown",
 				"description": "Rejects with any error from this.session.mutable(), which save awaits after assertProject."
 			},
 			{
-				"name": "Error",
+				"name": "GameProjectBusyError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Wait for the current run.' when this.session.busy is set after this.session.mutable() resolves."
 			},
 			{
-				"name": "Error",
+				"name": "Exclusive game document write failure",
 				"type": "thrown",
 				"description": "Propagates any error from this.session.arbiter.exclusive(root, ...), whose callback constructs GameDocumentRepository(root) and calls save(input.document, input.expectedRevision)."
 			}
@@ -349,37 +349,37 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "GameProjectBusyError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Wait for the current project operation.' when this.session.busy or this.session.pending is set. This check runs before validateProjectName, so no folder is created."
 					},
 					{
-						"name": "Error",
+						"name": "GameProjectAlreadyExistsError",
 						"type": "thrown",
 						"description": "Thrown with the message 'A project with that name already exists.' when mkdir of the target folder fails with code EEXIST. The existing folder is left in place because this call did not create it."
 					},
 					{
-						"name": "Error",
+						"name": "Game project directory creation failure",
 						"type": "thrown",
 						"description": "Rethrows any other error from mkdir of the target folder, unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "projects root mkdir failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "Propagates any error from mkdir of the projects root, which runs with recursive: true and is not caught."
 					},
 					{
-						"name": "Error",
+						"name": "validateProjectName failure (function.validation)",
 						"type": "thrown",
 						"description": "Propagates any error from validateProjectName(input.name), which runs before the projects root or the target folder is created."
 					},
 					{
-						"name": "Error",
+						"name": "Game project setup or Git initialization failure",
 						"type": "thrown",
 						"description": "Propagates any error from the try block: createProject, initializePlanning when input.kind is 'game', and initialize with a GitAdapter for the target, including a Git failure such as a missing commit identity, which fails as Git reports it. The target folder is removed with rm before the error is rethrown."
 					},
 					{
-						"name": "Error",
+						"name": "ProjectSessionService.open failure",
 						"type": "thrown",
 						"description": "Propagates any error from this.session.open(target), which runs after the try block. The created project folder is not removed in that case."
 					}
@@ -443,17 +443,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Selected game project assertion failure",
 						"type": "thrown",
 						"description": "this.session.assertProject(input.projectId) is called without await or return, so only a synchronous throw from it reaches the caller."
 					},
 					{
-						"name": "Error",
+						"name": "No available game project session",
 						"type": "thrown",
 						"description": "Rejects with any error from this.session.requireProject(), which read calls right after assertProject."
 					},
 					{
-						"name": "Error",
+						"name": "Game document revision read failure",
 						"type": "thrown",
 						"description": "Rejects with any error from new GameDocumentRepository(root).read(input.commit), which read returns without catching."
 					}
@@ -514,22 +514,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Selected game project assertion failure",
 						"type": "thrown",
 						"description": "this.session.assertProject(input.projectId) is called without await or return, so only a synchronous throw from it reaches the caller."
 					},
 					{
-						"name": "Error",
+						"name": "Game project write access failure",
 						"type": "thrown",
 						"description": "Rejects with any error from this.session.mutable(), which save awaits after assertProject."
 					},
 					{
-						"name": "Error",
+						"name": "GameProjectBusyError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Wait for the current run.' when this.session.busy is set after this.session.mutable() resolves."
 					},
 					{
-						"name": "Error",
+						"name": "Exclusive game document write failure",
 						"type": "thrown",
 						"description": "Propagates any error from this.session.arbiter.exclusive(root, ...), whose callback constructs GameDocumentRepository(root) and calls save(input.document, input.expectedRevision)."
 					}
@@ -564,7 +564,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "User home directory lookup failure",
 						"type": "thrown",
 						"description": "Propagates any error from homedir(), which the default for projectsRoot calls whenever the projectsRoot argument is undefined, since the constructor does not catch it."
 					}

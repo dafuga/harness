@@ -150,7 +150,7 @@
 				"description": "Thrown by new URL or fileURLToPath (ERR_INVALID_URL or ERR_INVALID_URL_SCHEME) when import.meta.url is missing or is not a file: URL. The beside candidates are built before HARNESS_KERNEL_DIR is checked, so this can throw even when the override is set."
 			},
 			{
-				"name": "Error",
+				"name": "Kernel build manifest read failure",
 				"type": "thrown",
 				"description": "Thrown by readFileSync when the selected build.json exists but cannot be read, for example when a directory is named build.json (EISDIR), permission is denied (EACCES), or the file is removed after the existence check (ENOENT). The Node error code is on the error's code property."
 			},
@@ -286,7 +286,7 @@
 						"description": "Thrown by new URL or fileURLToPath (ERR_INVALID_URL or ERR_INVALID_URL_SCHEME) when import.meta.url is missing or is not a file: URL. The beside candidates are built before HARNESS_KERNEL_DIR is checked, so this can throw even when the override is set."
 					},
 					{
-						"name": "Error",
+						"name": "Kernel build manifest read failure",
 						"type": "thrown",
 						"description": "Thrown by readFileSync when the selected build.json exists but cannot be read, for example when a directory is named build.json (EISDIR), permission is denied (EACCES), or the file is removed after the existence check (ENOENT). The Node error code is on the error's code property."
 					},

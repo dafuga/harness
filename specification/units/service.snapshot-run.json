@@ -208,7 +208,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Snapshot setup, verification, or cleanup failure",
 				"type": "thrown",
 				"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
 			},
@@ -274,7 +274,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Snapshot setup, verification, or cleanup failure",
 						"type": "thrown",
 						"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
 					}
@@ -303,7 +303,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Snapshot setup, verification, or cleanup failure",
 						"type": "thrown",
 						"description": "An uncaught Error from snapshot creation, linking, drift checks, check/tool execution, build identity work, or snapshot removal rejects the execution promise. Output misdeclarations, setup/check failures, unavailable tool versions, and build failures are reported in Executed when the delegated services return them as results."
 					},

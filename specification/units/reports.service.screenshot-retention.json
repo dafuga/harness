@@ -65,7 +65,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid screenshot cleanup time or storage path",
 				"type": "thrown",
 				"description": "Thrown as Error('Invalid cleanup time') when now.getTime() is not finite, as Error('Invalid report assets directory') when a report with expired evidence has a symbolic link at its assets directory, and as Error('Invalid report exports directory') when a report with expired evidence and exports has a symbolic link at its exports or exports/assets directory. Errors from the repository, report lock, resultStatus, r2ObjectKey, atomicJson and rm calls are not caught in this file and are not covered by this entry."
 			}
@@ -105,7 +105,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid screenshot cleanup time or storage path",
 						"type": "thrown",
 						"description": "Thrown as Error('Invalid cleanup time') when now.getTime() is not finite, as Error('Invalid report assets directory') when a report with expired evidence has a symbolic link at its assets directory, and as Error('Invalid report exports directory') when a report with expired evidence and exports has a symbolic link at its exports or exports/assets directory. Errors from the repository, report lock, resultStatus, r2ObjectKey, atomicJson and rm calls are not caught in this file and are not covered by this entry."
 					}

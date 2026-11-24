@@ -65,22 +65,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidAudioFileError",
 				"type": "thrown",
 				"description": "Thrown with 'Invalid audio file or size' when bytes is empty or longer than 50,000,000 bytes; it is the first check, so it runs before the filename is examined."
 			},
 			{
-				"name": "Error",
+				"name": "UnsupportedAudioFormatError",
 				"type": "thrown",
 				"description": "Thrown with 'Unsupported audio format' when the name's extension does not map to an audio MIME type (only .wav, .mp3, .m4a and .ogg do), which includes a name without any dot."
 			},
 			{
-				"name": "Error",
+				"name": "AudioContentMismatchError",
 				"type": "thrown",
 				"description": "Thrown with 'Audio content does not match its filename' when an .mp3, .ogg or .m4a header or container check fails, and also for a dot-led name such as '.mp3' or '.wav' because path.extname gives it no extension to validate against."
 			},
 			{
-				"name": "Error",
+				"name": "wavInfo failure (wavInfo)",
 				"type": "thrown",
 				"description": "For .wav filenames the wavInfo errors propagate unchanged, with messages 'Invalid WAV audio' (under 44 bytes or not RIFF/WAVE), 'Invalid WAV container length', 'Truncated WAV chunk', 'Invalid WAV chunk boundary', 'WAV format and audio data are required', 'Invalid WAV format', 'Unsupported WAV audio format', 'Invalid WAV sample format' and 'Invalid WAV audio data length'."
 			}
@@ -131,22 +131,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidAudioFileError",
 						"type": "thrown",
 						"description": "Thrown with 'Invalid audio file or size' when bytes is empty or longer than 50,000,000 bytes; it is the first check, so it runs before the filename is examined."
 					},
 					{
-						"name": "Error",
+						"name": "UnsupportedAudioFormatError",
 						"type": "thrown",
 						"description": "Thrown with 'Unsupported audio format' when the name's extension does not map to an audio MIME type (only .wav, .mp3, .m4a and .ogg do), which includes a name without any dot."
 					},
 					{
-						"name": "Error",
+						"name": "AudioContentMismatchError",
 						"type": "thrown",
 						"description": "Thrown with 'Audio content does not match its filename' when an .mp3, .ogg or .m4a header or container check fails, and also for a dot-led name such as '.mp3' or '.wav' because path.extname gives it no extension to validate against."
 					},
 					{
-						"name": "Error",
+						"name": "wavInfo failure (wavInfo)",
 						"type": "thrown",
 						"description": "For .wav filenames the wavInfo errors propagate unchanged, with messages 'Invalid WAV audio' (under 44 bytes or not RIFF/WAVE), 'Invalid WAV container length', 'Truncated WAV chunk', 'Invalid WAV chunk boundary', 'WAV format and audio data are required', 'Invalid WAV format', 'Unsupported WAV audio format', 'Invalid WAV sample format' and 'Invalid WAV audio data length'."
 					}

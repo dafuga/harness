@@ -90,9 +90,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CpuIntervalError",
 				"type": "thrown",
-				"description": "Throws Error('Invalid CPU interval') when current cores are zero or differ from previous.cores, total time does not advance, or idle delta is outside zero through elapsed time. Throws Error('CPU quota changed; waiting for a fresh interval') when reported quota usage has no prior value, regresses, or the core limit changes; throws Error('Invalid CPU quota counters') when computed quota availability is not finite."
+				"description": "Throws CpuIntervalError('Invalid CPU interval') when current cores are zero or differ from previous.cores, total time does not advance, or idle delta is outside zero through elapsed time. Throws CpuIntervalError('CPU quota changed; waiting for a fresh interval') when reported quota usage has no prior value, regresses, or the core limit changes; throws CpuIntervalError('Invalid CPU quota counters') when computed quota availability is not finite."
 			}
 		],
 		"errorStatus": "declared",
@@ -182,9 +182,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CpuIntervalError",
 						"type": "thrown",
-						"description": "Throws Error('Invalid CPU interval') when current cores are zero or differ from previous.cores, total time does not advance, or idle delta is outside zero through elapsed time. Throws Error('CPU quota changed; waiting for a fresh interval') when reported quota usage has no prior value, regresses, or the core limit changes; throws Error('Invalid CPU quota counters') when computed quota availability is not finite."
+						"description": "Throws CpuIntervalError('Invalid CPU interval') when current cores are zero or differ from previous.cores, total time does not advance, or idle delta is outside zero through elapsed time. Throws CpuIntervalError('CPU quota changed; waiting for a fresh interval') when reported quota usage has no prior value, regresses, or the core limit changes; throws CpuIntervalError('Invalid CPU quota counters') when computed quota availability is not finite."
 					}
 				],
 				"errorStatus": "declared"

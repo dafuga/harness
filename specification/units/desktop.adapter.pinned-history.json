@@ -241,7 +241,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CommitNotFoundError",
 				"type": "thrown",
 				"description": "Thrown by facts with the message 'This commit is not in the repository of this project.' when the source-history repository returns no revision for the commit; revision rejects with it as well, because a read that is not cached awaits facts first."
 			}
@@ -287,7 +287,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CommitNotFoundError",
 						"type": "thrown",
 						"description": "Thrown by facts with the message 'This commit is not in the repository of this project.' when the source-history repository returns no revision for the commit, and the promise rejects with it."
 					}
@@ -435,7 +435,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CommitNotFoundError",
 						"type": "thrown",
 						"description": "The error from facts, which a read that is not cached awaits first, so the promise rejects with it when the commit is not in the repository of this project."
 					}

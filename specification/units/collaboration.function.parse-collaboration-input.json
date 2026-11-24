@@ -77,7 +77,8 @@
 						"name": "Release reviewer",
 						"emailVerified": true
 					}
-				]
+				],
+				"unknownReason": "The collaboration boundary accepts unvalidated data and the supplied schema determines the accepted shape."
 			},
 			{
 				"name": "digest.bytes",
@@ -259,7 +260,8 @@
 								"name": "Release reviewer",
 								"emailVerified": true
 							}
-						]
+						],
+						"unknownReason": "The collaboration boundary accepts unvalidated data and the supplied schema determines the accepted shape."
 					}
 				],
 				"outputs": [

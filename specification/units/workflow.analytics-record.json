@@ -164,7 +164,7 @@
 				"description": "fingerprint throws when JSON.stringify fails, such as for cyclic data, or returns no string, such as for undefined."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid analytics task, loop, step, or report context",
 				"type": "thrown",
 				"description": "resolvedContext throws Error for incompatible task, loop, and step selections or an absent loop step; validateReport throws Error for a report ID containing characters other than letters, digits, or hyphens. Their exact messages are documented on the corresponding operations."
 			}
@@ -242,9 +242,9 @@
 						"description": "When a loop is selected, failures from resolving its state path or reading its state propagate from resolvedContext."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Throws Error('Use either --task or --loop/--step.') when task is combined with loop or step, Error('--step requires --loop.') when step lacks loop, and Error('Loop step does not exist.') when the selected step is absent from loaded loop state."
+						"description": "Throws ExpectedCliError('Use either --task or --loop/--step.') when task is combined with loop or step, ExpectedCliError('--step requires --loop.') when step lacks loop, and ExpectedCliError('Loop step does not exist.') when the selected step is absent from loaded loop state."
 					}
 				],
 				"errorStatus": "declared"
@@ -351,9 +351,9 @@
 						"description": "validateReport throws Error('Invalid report ID.') when the report contains characters outside letters, digits, and hyphens. A readFile rejection propagates when the manifest is missing or unreadable."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Throws Error('Invalid report ID.') when a supplied report ID contains characters other than letters, digits, or hyphens."
+						"description": "Throws ExpectedCliError('Invalid report ID.') when a supplied report ID contains characters other than letters, digits, or hyphens."
 					}
 				],
 				"errorStatus": "declared"

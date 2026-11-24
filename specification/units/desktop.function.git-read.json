@@ -146,22 +146,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidRevisionError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid revision.' by gitRevision, and so by gitFiles and gitText, when the revision is empty, longer than 300 characters or contains a null character."
 			},
 			{
-				"name": "Error",
+				"name": "UnsafeSourcePathError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Unsafe source path.' by gitText when the path starts with '/', has a '..' segment or contains a null character."
 			},
 			{
-				"name": "Error",
+				"name": "SourceFileTooLargeError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Source file too large.' by gitText when the text's UTF-8 byte length is over 2,000,000 bytes."
 			},
 			{
-				"name": "Error",
+				"name": "Git command execution or output limit",
 				"type": "thrown",
 				"description": "Rejected by gitRead when the Git process cannot start, exits with a failure or its output exceeds the 64,000,000-byte maxBuffer limit, which also makes gitFiles, gitRevision and gitText reject."
 			}
@@ -202,12 +202,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidRevisionError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid revision.' by gitRevision when the revision is empty, longer than 300 characters or contains a null character."
 					},
 					{
-						"name": "Error",
+						"name": "Git revision or file listing failure",
 						"type": "thrown",
 						"description": "Rejected when a Git command in the revision lookup or the ls-tree listing fails, cannot start, or its output exceeds the 64,000,000-byte maxBuffer limit."
 					}
@@ -252,7 +252,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git command execution or output limit",
 						"type": "thrown",
 						"description": "Rejected when the Git process cannot start, exits with a failure or its output exceeds the 64,000,000-byte maxBuffer limit."
 					}
@@ -291,12 +291,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidRevisionError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid revision.' when the revision is empty, longer than 300 characters or contains a null character."
 					},
 					{
-						"name": "Error",
+						"name": "Unresolvable Git revision",
 						"type": "thrown",
 						"description": "Rejected when git rev-parse --verify fails, which includes a revision that cannot be resolved to a commit."
 					}
@@ -344,22 +344,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnsafeSourcePathError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Unsafe source path.' when the path starts with '/', has a '..' segment or contains a null character."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidRevisionError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid revision.' by gitRevision when the revision is empty, longer than 300 characters or contains a null character."
 					},
 					{
-						"name": "Error",
+						"name": "SourceFileTooLargeError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Source file too large.' when the text's UTF-8 byte length is over 2,000,000 bytes."
 					},
 					{
-						"name": "Error",
+						"name": "Git revision or text read failure",
 						"type": "thrown",
 						"description": "Rejected when a Git command in the revision lookup or the git show read fails, cannot start, or its output exceeds the 64,000,000-byte maxBuffer limit."
 					}

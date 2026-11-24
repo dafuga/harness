@@ -64,7 +64,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidProjectRunRequestError",
 				"type": "thrown",
 				"description": "Thrown with the message \"Something new is asked for as a Plan.\" when intent is not \"create\" or mode is not \"plan\"."
 			},
@@ -120,7 +120,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidProjectRunRequestError",
 						"type": "thrown",
 						"description": "Thrown with the message \"Something new is asked for as a Plan.\" when intent is not \"create\" or mode is not \"plan\"."
 					},

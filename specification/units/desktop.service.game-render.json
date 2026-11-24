@@ -108,9 +108,34 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ActivePreviewLeaseError",
 				"type": "thrown",
-				"description": "start() rejects with 'Wait for the current run.' while session.busy is true, with 'Live AI is blocked until a credential-safe provider transport is available.' when transportReady() returns a falsy value, and with 'Invalid AI preview. Choose a supported model and 10–60 seconds.', 'An AI preview lease is already active.' or 'Unable to start the Decart preview. Check this project’s provider configuration.' from DecartAdapter.start. That last message replaces every failure of the token request (including 'Token request failed.' and 'Invalid token response.'), and errors from session.assertProject(), session.mutable() and the credential read pass through unchanged."
+				"description": "A live AI preview lease is already active."
+			},
+			{
+				"name": "CredentialSafeProviderTransportUnavailableError",
+				"type": "thrown",
+				"description": "The live AI preview requires a configured credential-safe transport."
+			},
+			{
+				"name": "DecartTokenCreationError",
+				"type": "thrown",
+				"description": "The token request or response could not be used and is reported as a preview startup failure."
+			},
+			{
+				"name": "GameRenderBusyError",
+				"type": "thrown",
+				"description": "The game session already has a running operation."
+			},
+			{
+				"name": "InvalidPreviewRequestError",
+				"type": "thrown",
+				"description": "The preview must specify a supported model, an allowed fast-mode setting, and a whole-number duration from 10 through 60 seconds."
+			},
+			{
+				"name": "Game session or credential read failure",
+				"type": "propagated",
+				"description": "Session selection, write-access checks, and credential reads can reject without conversion."
 			}
 		],
 		"errorStatus": "declared",
@@ -180,9 +205,34 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ActivePreviewLeaseError",
 						"type": "thrown",
-						"description": "start() rejects with 'Wait for the current run.' while session.busy is true, with 'Live AI is blocked until a credential-safe provider transport is available.' when transportReady() returns a falsy value, and with 'Invalid AI preview. Choose a supported model and 10–60 seconds.', 'An AI preview lease is already active.' or 'Unable to start the Decart preview. Check this project’s provider configuration.' from DecartAdapter.start. That last message replaces every failure of the token request (including 'Token request failed.' and 'Invalid token response.'), and errors from session.assertProject(), session.mutable() and the credential read pass through unchanged."
+						"description": "A live AI preview lease is already active."
+					},
+					{
+						"name": "CredentialSafeProviderTransportUnavailableError",
+						"type": "thrown",
+						"description": "The live AI preview requires a configured credential-safe transport."
+					},
+					{
+						"name": "DecartTokenCreationError",
+						"type": "thrown",
+						"description": "The token request or response could not be used and is reported as a preview startup failure."
+					},
+					{
+						"name": "GameRenderBusyError",
+						"type": "thrown",
+						"description": "The game session already has a running operation."
+					},
+					{
+						"name": "InvalidPreviewRequestError",
+						"type": "thrown",
+						"description": "The preview must specify a supported model, an allowed fast-mode setting, and a whole-number duration from 10 through 60 seconds."
+					},
+					{
+						"name": "Game session or credential read failure",
+						"type": "propagated",
+						"description": "Session selection, write-access checks, and credential reads can reject without conversion."
 					}
 				],
 				"errorStatus": "declared"

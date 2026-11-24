@@ -688,12 +688,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Conflicting task and loop options",
 				"type": "thrown",
 				"description": "resolvedContext throws Error 'Use either --task or --loop/--step.' when a task is set together with a loop or a step, after the HARNESS_ANALYTICS_* environment defaults are applied."
 			},
 			{
-				"name": "Error",
+				"name": "Loop step requires a loop",
 				"type": "thrown",
 				"description": "resolvedContext throws Error '--step requires --loop.' when a step is set without a loop, after the HARNESS_ANALYTICS_* environment defaults are applied."
 			},
@@ -713,22 +713,22 @@
 				"description": "readLoop rethrows the JSON SyntaxError from parsing loop.json when the file is not valid JSON."
 			},
 			{
-				"name": "Error",
+				"name": "Loop state file read failure",
 				"type": "thrown",
 				"description": "readLoop rethrows unchanged any filesystem error other than a missing file, such as a permission error, while reading loop.json."
 			},
 			{
-				"name": "Error",
+				"name": "Loop step does not exist",
 				"type": "thrown",
 				"description": "resolvedContext throws Error 'Loop step does not exist.' when a step is set with a loop and loop.json has no step with that id."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid report ID",
 				"type": "thrown",
 				"description": "validateReport throws Error 'Invalid report ID.' when a report ID is set and contains anything other than ASCII letters, digits or hyphens."
 			},
 			{
-				"name": "Error",
+				"name": "Report manifest read failure",
 				"type": "thrown",
 				"description": "validateReport rejects with the filesystem error from reading runs/<report>/manifest.json under PROJECT_REPORTS_HOME (or $HOME/.codex/project-reports when it is unset), such as ENOENT when the manifest is missing."
 			}
@@ -1430,12 +1430,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Conflicting task and loop options",
 						"type": "thrown",
 						"description": "resolvedContext throws Error 'Use either --task or --loop/--step.' when a task is set together with a loop or a step, after the HARNESS_ANALYTICS_* environment defaults are applied."
 					},
 					{
-						"name": "Error",
+						"name": "Loop step requires a loop",
 						"type": "thrown",
 						"description": "resolvedContext throws Error '--step requires --loop.' when a step is set without a loop, after the HARNESS_ANALYTICS_* environment defaults are applied."
 					},
@@ -1455,22 +1455,22 @@
 						"description": "readLoop rethrows the JSON SyntaxError from parsing loop.json when the file is not valid JSON."
 					},
 					{
-						"name": "Error",
+						"name": "Loop state file read failure",
 						"type": "thrown",
 						"description": "readLoop rethrows unchanged any filesystem error other than a missing file, such as a permission error, while reading loop.json."
 					},
 					{
-						"name": "Error",
+						"name": "Loop step does not exist",
 						"type": "thrown",
 						"description": "resolvedContext throws Error 'Loop step does not exist.' when a step is set with a loop and loop.json has no step with that id."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report ID",
 						"type": "thrown",
 						"description": "validateReport throws Error 'Invalid report ID.' when a report ID is set and contains anything other than ASCII letters, digits or hyphens."
 					},
 					{
-						"name": "Error",
+						"name": "Report manifest read failure",
 						"type": "thrown",
 						"description": "validateReport rejects with the filesystem error from reading runs/<report>/manifest.json under PROJECT_REPORTS_HOME (or $HOME/.codex/project-reports when it is unset), such as ENOENT when the manifest is missing."
 					}

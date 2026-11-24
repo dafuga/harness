@@ -317,22 +317,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Git source command failure",
 				"type": "thrown",
 				"description": "Thrown by tool when a git command does not end with exit code 0, including when it cannot start or is killed; the message is 'git failed (<code>):' followed by the last 25 lines of its output."
 			},
 			{
-				"name": "Error",
+				"name": "Source digest file read failure",
 				"type": "thrown",
 				"description": "Thrown by readFileSync inside fileDigest when a file that exists cannot be read, for example because of a permission error."
 			},
 			{
-				"name": "Error",
+				"name": "Product directory listing failure",
 				"type": "thrown",
 				"description": "Thrown by readdirSync inside contents when the folder, or a folder under it, cannot be listed, for example because the path is a file."
 			},
 			{
-				"name": "Error",
+				"name": "Inspector package metadata read failure",
 				"type": "thrown",
 				"description": "Thrown by readFileSync inside inspectorPackage when the appium-remote-debugger package.json that it found cannot be read."
 			},
@@ -384,12 +384,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git source command failure",
 						"type": "thrown",
 						"description": "Thrown by tool when a git command does not end with exit code 0, including when it cannot start or is killed; the message is 'git failed (<code>):' followed by the last 25 lines of its output."
 					},
 					{
-						"name": "Error",
+						"name": "Source digest file read failure",
 						"type": "thrown",
 						"description": "Thrown by readFileSync inside fileDigest when a file that exists cannot be read, for example because of a permission error."
 					}
@@ -426,12 +426,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Product directory listing failure",
 						"type": "thrown",
 						"description": "Thrown by readdirSync inside contents when the folder, or a folder under it, cannot be listed, for example because the path is a file."
 					},
 					{
-						"name": "Error",
+						"name": "Source digest file read failure",
 						"type": "thrown",
 						"description": "Thrown by readFileSync inside fileDigest when a file that exists cannot be read, for example because of a permission error."
 					}
@@ -620,12 +620,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git source command failure",
 						"type": "thrown",
 						"description": "Thrown by tool when a git command does not end with exit code 0, including when it cannot start or is killed; the message is 'git failed (<code>):' followed by the last 25 lines of its output."
 					},
 					{
-						"name": "Error",
+						"name": "Source digest file read failure",
 						"type": "thrown",
 						"description": "Thrown by readFileSync inside fileDigest when a file that exists cannot be read, for example because of a permission error."
 					}
@@ -689,7 +689,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git source command failure",
 						"type": "thrown",
 						"description": "Thrown by tool when a git command does not end with exit code 0, including when it cannot start or is killed; the message is 'git failed (<code>):' followed by the last 25 lines of its output."
 					}
@@ -720,7 +720,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Inspector package metadata read failure",
 						"type": "thrown",
 						"description": "Thrown by readFileSync inside inspectorPackage when the appium-remote-debugger package.json that it found cannot be read."
 					},

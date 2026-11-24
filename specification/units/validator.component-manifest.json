@@ -101,7 +101,8 @@
 						"schemaVersion": 1,
 						"id": "reports.component.evidence-grid"
 					}
-				]
+				],
+				"unknownReason": "The candidate unit manifest is parsed data with no established shape until schema validation."
 			},
 			{
 				"name": "ComponentManifestValidator.validate.file",
@@ -490,7 +491,8 @@
 								"schemaVersion": 1,
 								"id": "reports.component.evidence-grid"
 							}
-						]
+						],
+						"unknownReason": "The candidate unit manifest is parsed data with no established shape until schema validation."
 					},
 					{
 						"name": "ComponentManifestValidator.validate.file",

@@ -224,7 +224,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "constructor callee failure (DurableObject, hostRuntime, setWebSocketAutoResponse)",
 						"type": "thrown",
 						"description": "Any error thrown by super(state, env), hostRuntime(state, env) or state.setWebSocketAutoResponse(new WebSocketRequestResponsePair('ping', 'pong')) propagates out of the constructor unchanged, because the constructor has no try/catch and throws nothing of its own."
 					}

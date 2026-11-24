@@ -36,7 +36,7 @@
 				"description": "Rejects when crypto.subtle.importKey (input.secret as the HMAC key) or crypto.subtle.sign (the IP or 'local', a colon and the path) rejects; the function does not catch it, so the caller receives that rejection."
 			},
 			{
-				"name": "Error",
+				"name": "Hub rate-limit D1 write failure",
 				"type": "thrown",
 				"description": "Rejects with whatever the D1 binding rejects with when the upsert into hub_rate_limits (prepare, bind and first) fails for input.db; the function does not catch it, so the caller receives that rejection instead of a Response or null."
 			}
@@ -68,7 +68,7 @@
 						"description": "Rejects when crypto.subtle.importKey (input.secret as the HMAC key) or crypto.subtle.sign (the IP or 'local', a colon and the path) rejects; the function does not catch it, so the caller receives that rejection."
 					},
 					{
-						"name": "Error",
+						"name": "Hub rate-limit D1 write failure",
 						"type": "thrown",
 						"description": "Rejects with whatever the D1 binding rejects with when the upsert into hub_rate_limits (prepare, bind and first) fails for input.db; the function does not catch it, so the caller receives that rejection instead of a Response or null."
 					}

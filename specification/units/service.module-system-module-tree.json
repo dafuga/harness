@@ -34,7 +34,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Module tree filesystem read failure",
 				"type": "thrown",
 				"description": "Filesystem failures rejected by read() or thrown while list() scans directories or reads module files are propagated unless handled as ENOENT; a missing module directory yields an empty list, and a missing module file is omitted."
 			}

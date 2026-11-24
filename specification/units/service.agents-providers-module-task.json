@@ -80,7 +80,8 @@
 						},
 						"model": "auto"
 					}
-				]
+				],
+				"unknownReason": "The task definition is raw input until it passes the task schema."
 			},
 			{
 				"name": "ModuleTaskService.show.id",
@@ -171,7 +172,8 @@
 						"reviewer": "Daniel",
 						"feedback": "The recorded task satisfies its wanted contract."
 					}
-				]
+				],
+				"unknownReason": "The review request is unvalidated until its attempt and verdict fields pass the review schema."
 			},
 			{
 				"name": "queuedTask.input",
@@ -825,7 +827,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Module task definition, state, or queue failure",
 				"type": "thrown",
 				"description": "Thrown for immutable-feature conflicts, invalid model selection, missing or ineligible tasks, prompt-integrity failures, review-state conflicts and delegated operation failures."
 			},
@@ -878,7 +880,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Conflicting feature context or queue write failure",
 						"type": "thrown",
 						"description": "Thrown when the same feature id is supplied with different context or queue persistence fails."
 					},
@@ -923,7 +925,8 @@
 								},
 								"model": "auto"
 							}
-						]
+						],
+						"unknownReason": "The task definition is raw input until it passes the task schema."
 					}
 				],
 				"outputs": [
@@ -974,7 +977,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid module task definition or queue write failure",
 						"type": "thrown",
 						"description": "Thrown for invalid model selection, inactive or unregistered modules, missing module goals, duplicate task ids, missing feature context or queue persistence failures."
 					},
@@ -1051,7 +1054,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Module task queue or snapshot read failure",
 						"type": "thrown",
 						"description": "Propagated when reading the task queue or its Git-backed snapshot fails."
 					},
@@ -1211,7 +1214,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Module task missing or queue read failure",
 						"type": "thrown",
 						"description": "Thrown when the task id is absent from the queue, or propagated from reading the queue."
 					},
@@ -1251,7 +1254,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Module task missing, stale contract, or queue read failure",
 						"type": "thrown",
 						"description": "Thrown when the task is absent or its wanted-contract hash does not match, or propagated from reading the queue."
 					},
@@ -1340,7 +1343,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when the wanted-contract hash is invalid or the model, provider and intelligence combination cannot be resolved."
 					}
@@ -1406,7 +1409,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Module task retry ownership or lookup failure",
 						"type": "thrown",
 						"description": "Thrown when the task is missing or cannot be retried because its owner is active, unknown or in another clone; repository failures also propagate."
 					},
@@ -1445,7 +1448,8 @@
 								"reviewer": "Daniel",
 								"feedback": "The recorded task satisfies its wanted contract."
 							}
-						]
+						],
+						"unknownReason": "The review request is unvalidated until its attempt and verdict fields pass the review schema."
 					}
 				],
 				"outputs": [
@@ -1533,7 +1537,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Module task review stale or not awaiting the attempt",
 						"type": "thrown",
 						"description": "Thrown when the task is not awaiting the supplied attempt or its review becomes stale; delegated worktree, repository and analytics failures also propagate."
 					},
@@ -1820,7 +1824,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when the wanted-contract SHA256 differs from the hash recorded on the task."
 					}
@@ -1858,7 +1862,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when auto is combined with an explicit provider or intelligence, when an unrecognized explicit model lacks a provider, or when Claude is assigned ultra intelligence."
 					}

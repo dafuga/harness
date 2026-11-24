@@ -104,7 +104,8 @@
 							"count": "{count, plural, one {# change} other {# changes}}"
 						}
 					}
-				]
+				],
+				"unknownReason": "The dictionary can be loaded from runtime data and each nesting level and leaf is checked."
 			},
 			{
 				"name": "flattenMessages.prefix",
@@ -163,7 +164,7 @@
 				"description": "Rejects with the unchanged error from tree.list(), or from tree.read() on a matching source file; these reads are not caught, so one failure rejects the whole catalog. Failures reading JSON dictionaries are caught and recorded as gaps instead."
 			},
 			{
-				"name": "Error",
+				"name": "UnreadableDictionaryError",
 				"type": "thrown",
 				"description": "Thrown by flattenMessages with 'Dictionary must be an object.' when its input is null, not an object or an array, or when a nested value is neither a string nor a non-null, non-array object. translationCatalog never rejects with it, because each source file's failures are caught and recorded as gaps."
 			}
@@ -285,7 +286,8 @@
 									"count": "{count, plural, one {# change} other {# changes}}"
 								}
 							}
-						]
+						],
+						"unknownReason": "The dictionary can be loaded from runtime data and each nesting level and leaf is checked."
 					},
 					{
 						"name": "flattenMessages.prefix",
@@ -315,7 +317,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnreadableDictionaryError",
 						"type": "thrown",
 						"description": "Thrown with 'Dictionary must be an object.' when the input is null, not an object or an array, or when a nested value is neither a string nor a non-null, non-array object."
 					}

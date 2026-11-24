@@ -223,7 +223,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Verification Git, record, or evidence read failure",
 				"type": "thrown",
 				"description": "The promise may reject with an Error propagated from Git revision or tree access, source loading, record-store reads, or evidence file access; these failures are not converted into CheckReport problems."
 			}
@@ -316,7 +316,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Verification Git, record, or evidence read failure",
 						"type": "thrown",
 						"description": "The promise may reject with an Error propagated from Git revision or tree access, source loading, record-store reads, or evidence file access; these failures are not converted into CheckReport problems."
 					}
@@ -407,7 +407,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Verification checkout or evidence read failure",
 						"type": "thrown",
 						"description": "The promise may reject with an Error if Git tree resolution, committed-source loading, or evidence file access fails; those failures are not converted into problem strings."
 					}

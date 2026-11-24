@@ -44,7 +44,8 @@
 							"description": "The response explains how to roll back the change."
 						}
 					]
-				]
+				],
+				"unknownReason": "The criteria are parsed data and the validator establishes the array and entry shape."
 			}
 		],
 		"outputs": [
@@ -75,22 +76,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown as an Error with the message 'Criteria must be a JSON array.' when the raw value passed to validateCriteria is not an array."
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown as an Error with the message 'Each criterion needs an id and description.' when an element is null, not an object, or an array."
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown as an Error with the message 'Criterion ids and descriptions must be nonempty strings.' when an element's id or description is not a string or is empty after trimming."
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown as an Error with the message 'Criterion ids must be unique.' when an element's id repeats an earlier element's id after trimming."
 			}
@@ -123,7 +124,8 @@
 									"description": "The response explains how to roll back the change."
 								}
 							]
-						]
+						],
+						"unknownReason": "The criteria are parsed data and the validator establishes the array and entry shape."
 					}
 				],
 				"outputs": [
@@ -154,22 +156,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown as an Error with the message 'Criteria must be a JSON array.' when the raw value passed to validateCriteria is not an array."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown as an Error with the message 'Each criterion needs an id and description.' when an element is null, not an object, or an array."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown as an Error with the message 'Criterion ids and descriptions must be nonempty strings.' when an element's id or description is not a string or is empty after trimming."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown as an Error with the message 'Criterion ids must be unique.' when an element's id repeats an earlier element's id after trimming."
 					}

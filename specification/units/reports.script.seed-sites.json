@@ -30,7 +30,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Site fixture Git or filesystem failure",
 				"type": "thrown",
 				"description": "A filesystem call or Git command can throw during module execution, stopping fixture creation partway through."
 			}

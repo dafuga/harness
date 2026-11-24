@@ -43,7 +43,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Browser context accessed outside Svelte initialization",
 				"type": "thrown",
 				"description": "Thrown by Svelte when provideBrowser (through setContext) or browserContext (through getContext) runs outside component initialization; neither function catches it."
 			}
@@ -62,7 +62,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Browser provider used outside Svelte initialization",
 						"type": "thrown",
 						"description": "Thrown by setContext when provideBrowser runs outside component initialization; there is no try/catch, so an error raised while browserApi, browserAuth, createSessionStore or browserProjects builds the services also propagates unchanged."
 					}
@@ -81,7 +81,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Browser context read outside Svelte initialization",
 						"type": "thrown",
 						"description": "Thrown by getContext when browserContext runs outside component initialization; the function does not catch it."
 					}
