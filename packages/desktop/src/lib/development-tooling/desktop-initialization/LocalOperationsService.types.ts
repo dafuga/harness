@@ -14,6 +14,7 @@ export interface LocalOperationsOptions {
 	control: LocalControl;
 	/** Present only when a Hub is configured: the overview then comes from the Hub, never the local tracker. */
 	hubOverview?: () => Promise<OverviewSnapshot>;
+	deployApprovals?: (input: unknown) => Promise<unknown>;
 }
 
 export type Fields = Record<string, unknown>;

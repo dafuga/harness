@@ -12,6 +12,7 @@ import {
 	signedProof
 } from '../../core/execution-runtimes/scripted-deploy/contracts';
 import { DeployRunRepository } from '../../repositories/execution-runtimes/DeployRunRepository';
+import type { DeployRequest } from '../../services/execution-runtimes/scripted-deploy/DeployPlanning';
 import { ScriptedDeployService } from '../../services/execution-runtimes/ScriptedDeployService';
 import {
 	DeployManifestValidator,
@@ -54,7 +55,7 @@ async function execute(operation: Operation, options: DeployOptions): Promise<un
 	const target = environment.parse(operation.environment);
 	if (operation.kind === 'rollback') {
 		const input = { environment: target, release: null, rollback: operation.run };
-		return options.plan ? service.planning.plan(input) : service.deploy(input);
+		return options.plan ? publicPlan(service, input) : service.deploy(input);
 	}
 	return routeDeploy({ service, target, store }, options);
 }
@@ -79,7 +80,7 @@ async function routeDeploy(
 	const source = options.ref ? sha.parse(options.ref) : undefined;
 	const release = options.release ? store.getRelease(options.release) : null;
 	if (options.plan)
-		return service.planning.plan({ environment: target, release, from: options.from, source });
+		return publicPlan(service, { environment: target, release, from: options.from, source });
 	const prepared = source ? await service.prepare(source) : release;
 	return service.deploy({ environment: target, release: prepared, from: options.from });
 }
@@ -93,4 +94,9 @@ function operationProject(operation: Operation, store: DeployRunRepository): str
 function recordSignoff(service: ScriptedDeployService, run: string, receipt: string | undefined) {
 	if (!receipt) throw new ExpectedCliError('A signed receipt file is required.');
 	return service.signoff(run, signedProof.parse(readJson(privateFile(receipt))));
+}
+
+async function publicPlan(service: ScriptedDeployService, input: DeployRequest) {
+	const { plan, parity, source } = await service.planning.plan(input);
+	return { plan, parity, source };
 }

@@ -66,7 +66,7 @@ export class DeployPlanning {
 			item: this.context.config.item,
 			createdAt: Date.now()
 		};
-		return { plan, parity, source: chosenSource(input, restore) };
+		return { plan, parity, source: chosenSource(input, restore), predecessor: chain };
 	}
 
 	async inventory(manifest: string): Promise<Partial<Record<Environment, Observation>>> {

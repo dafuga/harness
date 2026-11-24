@@ -1,4 +1,8 @@
 // @harness-uid u_bt6e76o6y5
+import {
+	deployApprovalPath,
+	approvalDecision
+} from '../../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox';
 import type { Pending, AuthOptions } from './NativeAuthService.types';
 import { NativeSignInError } from './NativeAuthService.types';
 import { NativeSignInService } from '../../../services/accounts-access/NativeSignInService';
@@ -75,6 +79,23 @@ export class NativeAuthService {
 	}
 	overview(): Promise<OverviewSnapshot> {
 		return readOverview(this.options);
+	}
+
+	async deployApprovals(input: unknown): Promise<unknown> {
+		const approval = Object.keys(input as object).length
+			? approvalDecision.parse(input)
+			: undefined;
+		const generation = this.generation;
+		const credential = await this.options.http.authorize();
+		if (generation !== this.generation) throw new NativeSignInError('The Harness session changed.');
+		const response = await this.options.http.request(
+			deployApprovalPath,
+			credential,
+			approval ? { method: 'POST', body: JSON.stringify(approval) } : {}
+		);
+		const value: unknown = await response.json();
+		if (generation !== this.generation) throw new NativeSignInError('The Harness session changed.');
+		return value;
 	}
 
 	private serial(action: () => Promise<NativeHostedStatus>): Promise<NativeHostedStatus> {

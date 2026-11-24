@@ -1,4 +1,5 @@
 // @harness-uid u_djg3cju4tr
+import { deployApprovalPath } from '../../../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox';
 import type { CapacitorAccountAdapterConfig } from './CapacitorAccountAdapter.types';
 import { browserBridge } from '../../../../adapters/explorer-ui/browser-project-adapter/browserBridge';
 import type { BrowserApi, Query } from '../../../../models/development-tooling/BrowserApi.types';
@@ -97,6 +98,14 @@ export class CapacitorAccountAdapter {
 				return () => this.listeners.delete(listener);
 			},
 			listProjects: () => this.listProjects(shared),
+			deployApprovals: async (input) =>
+				json(
+					await this.send(
+						input
+							? { method: 'POST', path: deployApprovalPath, body: input }
+							: { method: 'GET', path: deployApprovalPath }
+					)
+				),
 			hostedStatus: () => this.account(() => this.config.plugin.status()),
 			connectHosted: (input) => this.account(() => this.config.plugin.connect(input)),
 			disconnectHosted: () => this.disconnect()

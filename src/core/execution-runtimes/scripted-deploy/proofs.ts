@@ -1,6 +1,8 @@
 // @harness-uid u_bycapn5sbw
 import { ExpectedCliError } from '../../development-tooling/errors';
 import type { Issuer } from './proofs.types';
+import { approvalClockSkewMs, approvalWindowMs } from './approvalInbox';
+import type { ApprovalReceipt } from './approvalInbox.types';
 import { createPublicKey, verify } from 'node:crypto';
 import { hash, canonical, type Journal, type Plan, type Proof } from './contracts';
 import type { DeployRegistry } from '../../../validators/execution-runtimes/DeployManifestValidator';
@@ -34,9 +36,23 @@ export function verifyProof(
 	}
 }
 
-export function verifyApproval(record: Plan, proof: Proof, registry: DeployRegistry): void {
+export function verifyApproval(
+	record: Plan,
+	proof: Proof,
+	registry: DeployRegistry,
+	decision?: ApprovalReceipt
+): void {
 	const issuer = record.environment === 'staging' ? registry.stageAuthority : registry.daniel;
 	verifyProof(proof, { kind: 'approval', scope: hash(record), after: record.createdAt }, [issuer]);
+	if (
+		registry.approvalInbox &&
+		record.environment !== 'staging' &&
+		(!decision ||
+			proof.payload.reference !== 'decision:' + decision.receipt ||
+			proof.payload.issuedAt < decision.decidedAt - approvalClockSkewMs ||
+			Date.now() >= record.createdAt + approvalWindowMs)
+	)
+		throw new ExpectedCliError('Deployment signature does not match a current exact decision.');
 	if (proof.payload.expiresAt - proof.payload.issuedAt > 120_000) {
 		throw new ExpectedCliError('Deployment approval has an excessive lifetime.');
 	}

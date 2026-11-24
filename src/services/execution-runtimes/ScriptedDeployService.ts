@@ -27,6 +27,8 @@ import {
 import { DeployPlanning, type DeployRequest } from './scripted-deploy/DeployPlanning';
 
 import { DeployRecovery } from './scripted-deploy/DeployRecovery';
+import type { ApprovalReceipt } from '../../core/execution-runtimes/scripted-deploy/approvalInbox.types';
+import { requestDeployApproval } from './scripted-deploy/requestDeployApproval';
 import { DeployVerification } from './scripted-deploy/DeployVerification';
 
 export class ScriptedDeployService {
@@ -57,7 +59,7 @@ export class ScriptedDeployService {
 	}
 
 	async deploy(input: DeployRequest): Promise<Journal> {
-		const { plan, parity } = await this.planning.plan(input);
+		const { plan, parity, predecessor } = await this.planning.plan(input);
 		if (parity.blocked)
 			throw new ExpectedCliError(
 				'Deployment parity has unexpected differences. Run with --plan to view them.'
@@ -66,14 +68,28 @@ export class ScriptedDeployService {
 			throw new ExpectedCliError('Deployment requires a prepared release.');
 		const artifact = await verifyPreparedArtifact(this.store, plan, this.config.image);
 		const record: Journal = { plan, phase: 'pending' };
-		this.store.lock(plan.project, plan.environment, plan.id);
 		try {
-			return await this.apply(record, artifact, input);
+			if (this.registry.approvalInbox && plan.environment !== 'staging') this.store.save(record);
+			const decision = await requestDeployApproval(
+				{
+					plan,
+					chain: predecessor,
+					differences: parity.differences.length
+				},
+				this.registry,
+				this.config
+			);
+			this.store.lock(plan.project, plan.environment, plan.id);
+			return await this.apply(record, artifact, input, decision);
 		} catch (error) {
 			const reason = error instanceof Error ? error.message : 'Operation failed.';
 			throw new ExpectedCliError(`Deployment run ${plan.id} stopped. ${reason}`);
 		} finally {
-			if (record.phase !== 'applying') this.store.unlock(record);
+			if (
+				record.phase !== 'applying' &&
+				this.store.active(plan.project, plan.environment) === plan.id
+			)
+				this.store.unlock(record);
 		}
 	}
 
@@ -95,14 +111,15 @@ export class ScriptedDeployService {
 	private async apply(
 		record: Journal,
 		artifact: string | null,
-		input: DeployRequest
+		input: DeployRequest,
+		decision?: ApprovalReceipt
 	): Promise<Journal> {
 		const { plan } = record;
 		this.store.save(record);
-		const approval = await this.broker.authorize(plan);
-		await this.revalidate(plan, approval, input);
+		const approval = await this.broker.authorize(plan, decision);
+		await this.revalidate(plan, approval, input, decision);
 		if (artifact) await verifyPreparedArtifact(this.store, plan, this.config.image);
-		verifyApproval(plan, approval, this.registry);
+		verifyApproval(plan, approval, this.registry, decision);
 		record.approval = approval;
 		record.phase = 'applying';
 		this.store.save(record);
@@ -114,8 +131,13 @@ export class ScriptedDeployService {
 		return await this.verification.verify(record);
 	}
 
-	private async revalidate(plan: Plan, approval: Proof, input: DeployRequest): Promise<void> {
-		verifyApproval(plan, approval, this.registry);
+	private async revalidate(
+		plan: Plan,
+		approval: Proof,
+		input: DeployRequest,
+		decision?: ApprovalReceipt
+	): Promise<void> {
+		verifyApproval(plan, approval, this.registry, decision);
 		const current = await this.planning.inventory(plan.manifest);
 		const parity = parityReport(
 			this.config,
@@ -129,7 +151,9 @@ export class ScriptedDeployService {
 		) {
 			throw new ExpectedCliError('Provider state or deploy scripts changed after planning.');
 		}
-		this.planning.predecessor(input, current);
+		const predecessor = this.planning.predecessor(input, current);
+		if (plan.signoff !== (predecessor?.signoff ? hash(predecessor.signoff) : null))
+			throw new ExpectedCliError('Predecessor sign-off changed after planning.');
 		await this.broker.note(
 			plan.item,
 			'Deploy approval ' +
@@ -143,7 +167,7 @@ export class ScriptedDeployService {
 				', plan ' +
 				hash(plan)
 		);
-		verifyApproval(plan, approval, this.registry);
+		verifyApproval(plan, approval, this.registry, decision);
 	}
 }
 

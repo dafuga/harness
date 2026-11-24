@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_gp2k2ksjwv -->
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { getContext, onMount, setContext } from 'svelte';
 	import { createRemoteHostStore } from '../lib/stores/networking-security/remoteHost.svelte';
 	import { createRemotePhoneStore } from '../lib/stores/networking-security/remotePhone.svelte';
@@ -34,6 +35,7 @@
 	const local = $derived(kind !== 'capacitor');
 	/** The phone offers Project Overview after the Hub confirms this account may read it. */
 	let overview = $state(false);
+	let approvals = $state(false);
 	onMount(() => {
 		/** One adapter per runtime: the desktop preload, the phone's native plugin, or neither. */
 		const environment = account.environment;
@@ -56,12 +58,22 @@
 		const sync = new ProjectSyncService({ refresh: () => workspace.loadProjects() });
 		if (account.signedIn) sync.start();
 		const releaseOverview = environment.account ? offerOverview(environment) : undefined;
+		let active = true;
+		if (account.signedIn) {
+			void environment.bridge?.deployApprovals?.().then(
+				(value) => {
+					if (active && Array.isArray(value)) approvals = true;
+				},
+				() => {}
+			);
+		}
 		void remote.host.start();
 		void remote.phone.start();
 		window.addEventListener('popstate', show);
 		return () => {
 			window.removeEventListener('popstate', show);
 			releaseOverview?.();
+			active = false;
 			sync.stop();
 			overview = false;
 			remote.host.dispose();
@@ -104,6 +116,7 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
+		{#if approvals}<hx-a href={resolve('/deploy-approvals')}>Deploy approvals</hx-a>{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
 			<hx-p class="account-status">

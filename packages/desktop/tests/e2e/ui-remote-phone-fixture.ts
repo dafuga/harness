@@ -130,6 +130,12 @@ function installPhonePlugin() {
 /** A signed-in phone account with no shared projects and no Tracker overview access. */
 function installPhoneAccount() {
 	const { Capacitor } = window as unknown as PhoneHost;
+	const approvals = () =>
+		(
+			window as unknown as {
+				__fixtureDeploy?: (body?: unknown) => Promise<unknown>;
+			}
+		).__fixtureDeploy;
 	const account = {
 		status: async () => ({
 			configured: true,
@@ -140,7 +146,18 @@ function installPhoneAccount() {
 				email: 'phone@example.invalid'
 			}
 		}),
-		request: async ({ path }: { path: string }) => {
+		request: async ({ path, body }: { path: string; body?: unknown }) => {
+			if (path === '/api/deploy-approvals' && approvals()) {
+				try {
+					return {
+						status: 200,
+						contentType: 'application/json',
+						data: btoa(JSON.stringify(await approvals()!(body)))
+					};
+				} catch {
+					return { status: 503, contentType: 'application/json', data: btoa('{}') };
+				}
+			}
 			const overview = path === '/api/tracker-overview';
 			return {
 				status: overview ? 403 : 200,

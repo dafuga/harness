@@ -54,6 +54,11 @@ export class LocalOperationsService {
 		const { method } = request,
 			input: Fields = { ...request.input };
 		delete input.epoch;
+		if (method === 'deployApprovals') {
+			if (!this.options.deployApprovals)
+				throw new DesktopOperationUnavailableError('Deploy approvals are unavailable.');
+			return this.options.deployApprovals(input);
+		}
 		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
 		if (Object.hasOwn(controls, method)) return this.control(controls[method], input);
 		const payload = this.payloads.parse(channels[method as keyof typeof channels], input),

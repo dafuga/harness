@@ -18,6 +18,8 @@ export interface HubEnv {
 	HARNESS_RELAY_ORIGIN?: string;
 	/** The canonical Hub actor ID of the one owner allowed to read or publish the Project Overview. Unset disables it. */
 	HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID?: string;
+	HARNESS_DEPLOY_APPROVER_ID?: string;
+	HARNESS_DEPLOY_RUNNER_GRANTS?: string;
 	DB?: D1Database;
 	CACHE?: R2Bucket;
 	/** The relay's host objects, reachable through this binding only. */

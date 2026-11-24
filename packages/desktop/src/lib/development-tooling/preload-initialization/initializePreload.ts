@@ -50,6 +50,7 @@ const bridge: DesktopBridge = {
 	connectHosted: call('connectHosted'),
 	disconnectHosted: call('disconnectHosted'),
 	projectOverview: call('projectOverview'),
+	deployApprovals: call('deployApprovals'),
 	listProjects: call('listProjects'),
 	selectProject: call('selectProject'),
 	capabilities: call('capabilities'),

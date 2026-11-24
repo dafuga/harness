@@ -33,6 +33,10 @@ enum HubAccountPolicy {
     /// agent calls, with the tracker overview. Sign-in, sign-out and every other route of the Hub
     /// are never asked for the page.
     static func allowed(_ call: HubAccountCall) -> Bool {
+        if call.path == "/api/deploy-approvals" {
+            return call.query.isEmpty && ((call.method == "GET" && call.body == nil)
+                || (call.method == "POST" && (1...1024).contains(call.body?.count ?? 0)))
+        }
         if call.path == overview { return call.method == "GET" && call.query.isEmpty && call.body == nil }
         let parts = call.path.components(separatedBy: "/")
         guard parts.count == 3 || parts.count == 5, parts[0].isEmpty, parts[1] == "api", parts[2] == "projects",

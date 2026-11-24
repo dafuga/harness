@@ -26,7 +26,8 @@ function approval() {
 	const payload = {
 		issuer, scope: mode === 'wrong-scope' ? '0'.repeat(64) : scope,
 		kind: 'approval', issuedAt: mode === 'expired' ? now - 200_000 : now,
-		expiresAt: mode === 'expired' ? now - 1 : now + 100_000, reference: 'grant:' + plan.id
+		expiresAt: mode === 'expired' ? now - 1 : now + 100_000, reference: input.decision && mode !== 'ignore-decision'
+			? 'decision:' + input.decision.receipt : 'grant:' + plan.id
 	};
 	if (mode === 'changed-after-grant') {
 		state[env].version = 'changed-after-grant';
