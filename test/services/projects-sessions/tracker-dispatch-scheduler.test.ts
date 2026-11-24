@@ -41,8 +41,60 @@ setInterval(() => {}, 60000);
 
 test('adopts an uncertain start after restart without releasing the attempt twice', () =>
 	measureWorkload('service.projects-sessions-tracker-dispatch-scheduler', 'managed-adoption', () =>
-		withTempDir('tracker-managed-child-', proveManagedAdoption)
+		withTempDir('tracker-managed-child-', async (root) => {
+			await measureWorkload(
+				'service.agents-providers-tracker-dispatcher',
+				'stale-launch-claims',
+				proveIndependentDispatch
+			);
+			await proveManagedAdoption(root);
+		})
 	));
+
+async function proveIndependentDispatch() {
+	const { store, database, repo, dispatcher } = openDispatcher(':memory:');
+	const refused = 'blocked001';
+	const failed = 'failed0001';
+	const runnable = 'queued0001';
+	let clock = now();
+	const localPolicy = fixturePolicy(() => clock, {
+		admit: (item) => (item.id === refused ? 'no approved repository' : null)
+	});
+	const localDispatcher = new TrackerDispatcherService(repo, localPolicy);
+	const start = vi.fn<TrackerDispatchRunner['start']>(async ({ run, key }) => {
+		if (run.item_id === failed) throw new Error('lost start reply');
+		return { type: 'session', session: { key, id: 'live', startedAt: clock, state: 'live' } };
+	});
+	const scheduler = new TrackerDispatchSchedulerService(repo, localDispatcher, {
+		policy: localPolicy,
+		runner: { start, observe: async () => undefined }
+	});
+	try {
+		queueFixtureItem(store, refused);
+		queueFixtureItem(store, failed);
+		queueFixtureItem(store, runnable);
+		queueFixtureItem(store);
+		const reserved = await dispatcher.claim(sampleId, sampleToken);
+		if (reserved.status !== 'start') throw new Error('fixture failed to reserve a run');
+		await dispatcher.record(sampleId, reserved.run, { type: 'startup-failed', reason: 'fixture' });
+		store.appendLocal({ itemId: sampleId, fields: { needs_daniel: 1, question: 'Hold fixture' } });
+		clock += 6 * 60_000;
+		const error = await scheduler.tick(signal).then(
+			() => undefined,
+			(reason: unknown) => reason
+		);
+		expect.soft(error).toBeUndefined();
+		expect.soft(repo.readSnapshot(refused).runs).toEqual([]);
+		expect.soft(repo.readSnapshot(failed).runs).toMatchObject([{ state: 'queued' }]);
+		expect.soft(repo.readSnapshot(runnable).runs).toMatchObject([{ state: 'running' }]);
+		expect.soft(repo.readSnapshot(sampleId)).toMatchObject({
+			item: { awaitingAnswer: true, launch: null },
+			runs: [{ state: 'finished' }, { state: 'finished', started_at: null }]
+		});
+	} finally {
+		database.close();
+	}
+}
 
 async function proveManagedAdoption(root: string) {
 	const dbPath = join(root, 'tracker.db');
@@ -56,7 +108,7 @@ async function proveManagedAdoption(root: string) {
 			runner,
 			policy
 		});
-		await expect(scheduler.tick(signal)).rejects.toThrow('lost start reply');
+		await expect.soft(scheduler.tick(signal)).resolves.toBeUndefined();
 		expect(() => state.repo.assertLegacyRollbackSafe()).toThrow('(queued)');
 		state.database.close();
 		state = openDispatcher(dbPath);
@@ -92,14 +144,14 @@ async function proveManagedAdoption(root: string) {
 	}
 }
 
-function queueFixtureItem(store: TrackerPersistenceService) {
+function queueFixtureItem(store: TrackerPersistenceService, itemId = sampleId) {
 	store.appendLocal({
-		itemId: sampleId,
+		itemId,
 		fields: {
 			title: 'Fixture',
 			kind: 'task',
 			status: 'open',
-			auto: sampleToken,
+			auto: itemId === sampleId ? sampleToken : itemId,
 			computer: 'mac'
 		}
 	});

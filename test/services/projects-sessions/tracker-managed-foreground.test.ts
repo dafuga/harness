@@ -10,27 +10,34 @@ import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
 	managedFixtureBindings,
-	managedTrackerItemRequest,
-	verifyCancelledClaim
+	managedTrackerItemRequest
 } from '../../support/trackerManagedProcessFixture';
+import {
+	verifyCancelledClaim,
+	verifyExpiredClaim
+} from '../../support/trackerManagedLaunchAssertions';
 
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
 
-test('the configured foreground completes managed runs through the normal Tracker done request', () =>
-	measureWorkload('service.projects-sessions-tracker-node', 'managed-foreground', async () => {
-		await withTempRepo(proveManagedForeground);
-		if (process.platform === 'darwin') {
-			await measureWorkload(
-				'service.projects-sessions-tracker-native-runtime',
-				'codex-usage-receipt',
-				async () => {
-					await withTempRepo((repo) => proveNativeUsage(repo, false));
-					await withTempRepo((repo) => proveNativeUsage(repo, true));
-				}
-			);
-		}
-	}));
+test(
+	'the configured foreground completes managed runs through the normal Tracker done request',
+	{ timeout: 15_000 },
+	() =>
+		measureWorkload('service.projects-sessions-tracker-node', 'managed-foreground', async () => {
+			await withTempRepo(proveManagedForeground);
+			if (process.platform === 'darwin') {
+				await measureWorkload(
+					'service.projects-sessions-tracker-native-runtime',
+					'codex-usage-receipt',
+					async () => {
+						await withTempRepo((repo) => proveNativeUsage(repo, false));
+						await withTempRepo((repo) => proveNativeUsage(repo, true));
+					}
+				);
+			}
+		})
+);
 
 async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	git('commit', '--allow-empty', '-m', 'Fixture source');
@@ -41,7 +48,10 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 		const runtime = new TrackerNativeRuntimeService(database, {
 			...trackerNodeRuntime(foregroundConfig(root, config), (scope) => {
 				expect(scope).toMatchObject({ itemId, apiPort: 49281 });
-				expect(JSON.parse(scope.key)).toEqual([itemId, expect.any(String), 1]);
+				const run = database
+					.prepare('SELECT auto_token, attempt FROM runs WHERE id = ?')
+					.get(scope.runId);
+				expect(JSON.parse(scope.key)).toEqual([itemId, run?.auto_token, run?.attempt]);
 				writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
 			}),
 			now: () => Date.now()
@@ -73,6 +83,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 		expect(existsSync(launched.guestAuthFile)).toBe(false);
 		await verifyLostSession(runtime, database, config.stateDirectory);
 		await verifyCancelledClaim(runtime, database, config.stateDirectory, itemId);
+		await verifyExpiredClaim(runtime, database, config.stateDirectory, itemId);
 	} finally {
 		database.close();
 	}
@@ -164,31 +175,28 @@ function foregroundConfig(
 	const path = join(root, 'foreground.json');
 	const syncSecretFile = join(root, 'secret');
 	writeFileSync(syncSecretFile, 'synthetic-host-worker-wire-key', { mode: 0o600 });
-	writeFileSync(
-		path,
-		JSON.stringify({
-			version: 1,
-			node,
-			role: 'hub',
-			apiPort: 49281,
-			syncPort: 49282,
-			database: join(root, 'test-db'),
-			legacyFenceFile: join(root, 'fence'),
-			syncSecretFile,
-			hostEffects: {
-				mode: 'active',
-				checkpoint: 'fixture',
-				...(platform === 'macos' && {
-					watchdog: { transcriptRoots: [join(root, 'tracker-test-codex-transcripts')] }
-				}),
-				launch: {
-					maxConcurrent: 1,
-					managed,
-					repositories: { Harness: { repo: root, platform } }
-				}
+	const config = {
+		version: 1,
+		node,
+		role: 'hub',
+		apiPort: 49281,
+		syncPort: 49282,
+		database: join(root, 'test-db'),
+		legacyFenceFile: join(root, 'fence'),
+		syncSecretFile,
+		hostEffects: {
+			mode: 'active',
+			checkpoint: 'fixture',
+			...(platform === 'macos' && {
+				watchdog: { transcriptRoots: [join(root, 'tracker-test-codex-transcripts')] }
+			}),
+			launch: {
+				maxConcurrent: 1,
+				managed,
+				repositories: { Harness: { repo: root, platform } }
 			}
-		}),
-		{ mode: 0o600 }
-	);
+		}
+	};
+	writeFileSync(path, JSON.stringify(config), { mode: 0o600 });
 	return loadTrackerNodeConfig(path);
 }
