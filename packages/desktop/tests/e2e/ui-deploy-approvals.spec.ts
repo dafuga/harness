@@ -30,7 +30,10 @@ async function fixture(page: Page, phone: boolean) {
 	}));
 	const decisions: ApprovalDecision[] = [];
 	let online = true;
-	await page.clock.setFixedTime(clock);
+	// Keep the expiry fixture stable without replacing the browser's navigation timings.
+	await page.addInitScript((value) => {
+		Date.now = () => value;
+	}, clock);
 	await page.exposeFunction('__fixtureDeploy', (input?: ApprovalDecision) => {
 		if (!online) throw new Error('Synthetic authority unavailable');
 		if (!input) return cards;

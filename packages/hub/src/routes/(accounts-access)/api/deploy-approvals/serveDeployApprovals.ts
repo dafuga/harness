@@ -33,12 +33,16 @@ export async function serveDeployApprovals(request: Request, deps: DeployApprova
 			return await serveRunner(request, context, { grant, configured: deps.runnerGrants });
 		return await serveOwner(request, context, deps.sessions, deps.runnerGrants ?? '{}');
 	} catch (cause) {
-		if (cause instanceof ZodError || cause instanceof SyntaxError)
-			return json({ error: 'invalid-input' }, 400);
-		const response = hubHttpFailure(cause);
-		for (const [name, value] of Object.entries(headers)) response.headers.set(name, value);
-		return response;
+		return approvalFailure(cause);
 	}
+}
+
+function approvalFailure(cause: unknown) {
+	if (cause instanceof ZodError || cause instanceof SyntaxError)
+		return json({ error: 'invalid-input' }, 400);
+	const response = hubHttpFailure(cause);
+	for (const [name, value] of Object.entries(headers)) response.headers.set(name, value);
+	return response;
 }
 
 function approvalContext(request: Request, { owner, db, now }: DeployApprovalDependencies) {

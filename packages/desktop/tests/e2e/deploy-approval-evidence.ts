@@ -43,6 +43,10 @@ export async function approvalEvidence(page: Page, info: TestInfo, state: string
 		await page.screenshot({ animations: 'disabled', caret: 'hide' })
 	);
 	if (state === 'pending') {
+		const currentNavigation = await page.evaluate(() =>
+			performance.getEntriesByType('navigation').some((entry) => entry.name === location.href)
+		);
+		expect(currentNavigation, 'Real navigation timing for the approval page').toBe(true);
 		await pageWorkload(page, scenario as ScenarioManifest, {
 			state,
 			viewport: viewport!,
