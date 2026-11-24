@@ -98,6 +98,19 @@ for (const viewport of scenario.viewports)
 				database
 					.prepare("INSERT INTO runs VALUES (1, ?, ?, 'finished', 'sol', 'done')")
 					.run(id, now());
+				expect((await post(api, `/items/${id}/stage`, { stage: 'detail' })).status).toBe(200);
+				expect(
+					(
+						await post(api, `/items/${id}/artifact`, {
+							stage: 'detail',
+							artifact: {
+								links: [
+									{ label: 'Mac wireframe', url: 'https://example.test/mac.png', kind: 'image' }
+								]
+							}
+						})
+					).status
+				).toBe(200);
 				await post(api, `/items/${id}/flag`, { question: firstQuestion });
 				await post(api, `/items/${id}/note`, { text: 'Synthetic initial note' });
 				const listening = once(server, 'listening');
@@ -151,6 +164,9 @@ async function exerciseInbox(
 	await expect(page.getByText('Synthetic initial note', { exact: true })).toBeVisible();
 	await expect(page.getByText('finished', { exact: true })).toBeVisible();
 	await captureMacInbox(page, 'detail');
+	const planning = page.getByRole('region', { name: 'Planning stages' });
+	await expect(planning.getByRole('link', { name: 'Mac wireframe' })).toBeVisible();
+	await expect(planning.getByText(/Promoted by fixture-mac/)).toBeVisible();
 	await stage(page, 'Add note', 'Mac confirmed note');
 	await captureMacInbox(page, 'confirm-note');
 	await page.getByRole('button', { name: 'Cancel', exact: true }).click();
