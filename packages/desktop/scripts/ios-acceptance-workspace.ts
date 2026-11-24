@@ -20,7 +20,6 @@ import {
 	trackerWritePrompt
 } from './ios-acceptance-tracker';
 import { keychainGroups } from './ios-acceptance-simulator';
-import { fixtureOverview } from '../tests/e2e/support/projectOverviewNativeFixture';
 
 const listed = (selector: string) =>
 	`[...document.querySelectorAll('${selector}')].map((item) => item.textContent.trim()).join(',')`;
@@ -35,43 +34,17 @@ const bar = footer();
 const stale = ['Offline cached view', 'Read-only', 'Loading project'].some((words) => bar.includes(words));
 return (stale ? 'stale: ' : 'current: ') + bar;`;
 
-/** The real paired phone stays connected. Only its Hub account reply is synthetic. */
-const overviewAccount = (snapshot: Awaited<ReturnType<typeof fixtureOverview>>) => `
-const cap = window.Capacitor;
-if (!cap.isNativePlatform() || !cap.isPluginAvailable('HarnessAccount')) return 'unavailable';
-const native = cap.nativePromise;
-const fixture = { calls: [], denied: false, restore: () => { cap.nativePromise = native; } };
-window.harnessOverviewAcceptance = fixture;
-cap.nativePromise = (plugin, method, options) => {
-	if (plugin !== 'HarnessAccount') return native.call(cap, plugin, method, options);
-	if (method === 'status') return Promise.resolve({
-		configured: true, state: 'signed-in',
-		actor: { id: 'google-fixture-owner', name: 'Fixture Owner', email: 'owner@example.invalid' }
-	});
-	fixture.calls.push(options);
-	const overview = options?.path === '/api/tracker-overview';
-	const status = overview && fixture.denied ? 403 : 200;
-	const body = overview ? (fixture.denied ? {} : ${JSON.stringify(snapshot)}) : [];
-	return Promise.resolve({ status, contentType: 'application/json', data: btoa(JSON.stringify(body)) });
-};
-const link = document.createElement('a');
-link.href = '/projects';
-document.body.append(link);
-link.click();
-link.remove();
-return 'opened';`;
-
-class NativeOverviewAccountUnavailable extends Error {}
-
 /** Captures the cards in native WebKit after pairing, and proves an owner refusal clears them. */
 export async function pairedOverview(run: Acceptance): Promise<void> {
 	const { record, page } = run;
 	record.begin('Project Overview on the paired iOS app');
 	try {
-		if ((await page.evaluate(overviewAccount(await fixtureOverview()))) !== 'opened')
-			throw new NativeOverviewAccountUnavailable(
-				'The paired iOS shell did not expose its account plugin.'
-			);
+		await seen(
+			run,
+			"return pressLink('Project Overview') ? 'opened' : '';",
+			'opened',
+			'the signed-in synthetic owner has the Project Overview link'
+		);
 		await seen(
 			run,
 			"return text('main');",

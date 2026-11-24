@@ -7,6 +7,7 @@ import {
 	FixtureControlRefusedError
 } from './ios-acceptance-run.types';
 import { resolve } from 'node:path';
+import { fixtureOverview } from '../tests/e2e/support/projectOverviewNativeFixture';
 import { localOrigin, loopbackArgument, scanArgument } from './ios-acceptance-guards';
 import { launch, screenshot } from './ios-acceptance-simulator';
 
@@ -55,6 +56,38 @@ export async function restart(
 	await run.page.reset();
 	const answers = scans.length ? [scanArgument, scans.join('|')] : [];
 	launch(run.udid, [...(fixture ? [loopbackArgument] : []), ...answers]);
+	await prepareOwnerFixture(run);
+}
+
+/** The real paired phone stays connected. Only its Hub account reply is synthetic. */
+const overviewAccount = (snapshot: Awaited<ReturnType<typeof fixtureOverview>>) => `
+const cap = window.Capacitor;
+if (!cap.isNativePlatform() || !cap.isPluginAvailable('HarnessAccount')) return 'unavailable';
+const native = cap.nativePromise;
+const fixture = { calls: [], denied: false, restore: () => { cap.nativePromise = native; } };
+window.harnessOverviewAcceptance = fixture;
+cap.nativePromise = (plugin, method, options) => {
+	if (plugin !== 'HarnessAccount') return native.call(cap, plugin, method, options);
+	if (method === 'status') return Promise.resolve({
+		configured: true, state: 'signed-in',
+		actor: { id: 'google-fixture-owner', name: 'Fixture Owner', email: 'owner@example.invalid' }
+	});
+	fixture.calls.push(options);
+	const overview = options?.path === '/api/tracker-overview';
+	const status = overview && fixture.denied ? 403 : 200;
+	const body = overview ? (fixture.denied ? {} : ${JSON.stringify(snapshot)}) : [];
+	return Promise.resolve({ status, contentType: 'application/json', data: btoa(JSON.stringify(body)) });
+};
+window.dispatchEvent(new Event('focus'));
+return 'ready';`;
+
+async function prepareOwnerFixture(run: Acceptance): Promise<void> {
+	await run.page.until(
+		"return String(window.Capacitor?.isNativePlatform() && window.Capacitor.isPluginAvailable('HarnessAccount'));",
+		'true'
+	);
+	const ready = await run.page.evaluate(overviewAccount(await fixtureOverview()));
+	run.record.check(ready === 'ready', 'the isolated test copy uses the synthetic Hub owner');
 }
 
 /** Names the phone when asked to, and presses the scan button, whatever it is called now. */
