@@ -4,12 +4,15 @@ export interface PhoneReplicaWriteGrant {
 	token: string;
 }
 
+import type { PhoneReplicaAction } from './phoneReplicaActions.types';
+
 export interface PhoneReplicaIntent {
 	intentId: string;
 	itemId: string;
-	action: 'note' | 'flag' | 'answer';
+	action: PhoneReplicaAction;
 	text: string;
 	revision: string | null;
+	expectedStatus: string | null;
 }
 
 export type PhoneReplicaReceipt = { intentId: string } & (
