@@ -52,6 +52,7 @@ export function recordWatchdogAlert(
 		identity: string;
 		session?: string | null;
 		key?: string;
+		host?: string;
 		localOnly?: boolean;
 	},
 	at: number,
@@ -67,7 +68,7 @@ export function recordWatchdogAlert(
 		id: `${store.node}:${key}:${at}`,
 		item_id: itemId,
 		kind,
-		host: store.node,
+		host: input.host ?? store.node,
 		session,
 		reason,
 		identity,

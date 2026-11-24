@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { launchWithoutRunKind } from './trackerWatchLaunchRequests';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 
 export async function sendWatchdogAlerts(
@@ -12,7 +13,11 @@ export async function sendWatchdogAlerts(
 	const sent = new Set<string>(JSON.parse(store.getMeta('watchdog_cos_sent') ?? '[]'));
 	const batch = alerts
 		.filter(({ id }) => !sent.has(id))
-		.sort((a, b) => a.at - b.at)
+		.sort(
+			(a, b) =>
+				Number(b.kind === launchWithoutRunKind) - Number(a.kind === launchWithoutRunKind) ||
+				a.at - b.at
+		)
 		.slice(0, 8);
 	if (!batch.length) return;
 	if (!(await driver.send(batch, signal))) return;

@@ -1,3 +1,7 @@
+import {
+	verifyLaunchWatchdogBoundary,
+	verifyIdleWatchdogAlert
+} from '../../support/trackerLaunchOutcomeFixture';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -53,30 +57,14 @@ async function proveWatchdog(root: string) {
 		);
 		await runtime.watchdog!.tick(signal);
 		expect(runtime.watchdog!.alerts()).toEqual([]);
-		runtime.store.appendLocal({
-			itemId: requestId,
-			fields: {
-				title: 'Remote launch without a run',
-				kind: 'task',
-				status: 'open',
-				launch_target: 'harbor-mbp-2',
-				auto: 'fixture-request'
-			}
+		await verifyLaunchWatchdogBoundary(runtime, signal, (elapsed) => {
+			clock += elapsed;
 		});
-		clock += minute - 1;
-		await runtime.watchdog!.tick(signal);
-		expect(runtime.watchdog!.alerts()).toEqual([]);
-		clock++;
-		await runtime.watchdog!.tick(signal);
-		expect(runtime.watchdog!.alerts()).toMatchObject([
-			{ item_id: requestId, kind: 'launch-without-run', host: 'harbor-mbp-2' }
-		]);
-		runtime.store.appendLocal({ itemId: requestId, fields: { auto: null, status: 'ignored' } });
 		clock += 10 * minute;
 		const restarted = create();
 		await restarted.watchdog!.tick(signal);
 		await restarted.watchdog!.tick(signal);
-		await verifyAlert(restarted);
+		await verifyIdleWatchdogAlert(restarted, itemId, node);
 		const effects = readFileSync(trace, 'utf8')
 			.trim()
 			.split('\n')
@@ -116,26 +104,6 @@ async function assertDryRun(runtime: TrackerNativeRuntimeService, trace: string)
 	});
 	runtime.store.appendLocal({ itemId: missingId, fields: { status: 'ignored' } });
 	expect(existsSync(trace)).toBe(false);
-}
-
-async function verifyAlert(runtime: TrackerNativeRuntimeService) {
-	const response = await trackerNodeApi(
-		new Request('http://tracker-fixture.invalid/watchdog/alerts'),
-		runtime,
-		new TrackerSupervisorService(runtime),
-		'synthetic-fence'
-	);
-	expect(await response.json()).toMatchObject([{ item_id: itemId, host: node, kind: 'idle' }]);
-	const item = await runtime.items.handle(
-		new Request('http://tracker-fixture.invalid/items/' + itemId)
-	);
-	expect(await item.json()).toMatchObject({
-		needs_daniel: true,
-		notes_log: [
-			{ text: expect.stringContaining('watchdog nudge 1/1') },
-			{ text: expect.stringContaining('watchdog idle') }
-		]
-	});
 }
 
 const watchdogDriver = `

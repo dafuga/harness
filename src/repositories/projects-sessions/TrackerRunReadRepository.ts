@@ -42,6 +42,10 @@ export class TrackerRunReadRepository {
 		return this.rows("WHERE state = 'finished'");
 	}
 
+	latestLocalRunId() {
+		return this.select('runs', 'ORDER BY id DESC LIMIT 1', [])[0]?.id;
+	}
+
 	activeLocal() {
 		return this.select('runs', "WHERE state IN ('queued','running','verifying') ORDER BY id", []);
 	}
