@@ -131,6 +131,13 @@ export async function verifyLegacyQueuedClaim(
 
 export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: string) {
 	const short = id.slice(0, 6);
+	const { id: visualId } = await fixtureTrackerJson(spoke, ['add', 'Design a dashboard mockup']);
+	expect(await fixtureTrackerJson(spoke, ['pick', visualId])).toMatchObject({
+		rung: 'haiku',
+		model: 'claude-haiku-5-5',
+		cli: 'claude',
+		pinned: false
+	});
 	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
 	const rejected = await trackerProcess(spoke, launch).exited;
 	expect(rejected).toMatchObject({

@@ -41,8 +41,8 @@ test('learns to escalate from comparable recorded outcomes and ignores pins and 
 	expect(
 		pickTrackerModel({ agent: 'Harness', title: 'Review module screenshots' }, { history })
 	).toMatchObject({
-		rung: { id: 'terra' },
-		reason: 'triage/small: terra; haiku succeeded 33% on similar tasks'
+		rung: { id: 'sonnet' },
+		reason: 'triage/small: sonnet; haiku succeeded 33% on similar tasks'
 	});
 });
 
