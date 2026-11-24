@@ -4,31 +4,34 @@
 	"uid": "u_dro4rwiken",
 	"kind": "function",
 	"title": "relativeTime",
-	"responsibility": "Owns the relativeTime shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Formats an instant relative to a supplied reference time for the revision picker.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/shared-primitives/revision-picker/relativeTime.ts"],
 		"symbols": ["relativeTime"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "relativeTime.instant",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "Recorded timestamp to parse. A missing or invalid timestamp returns Unknown."
 			},
 			{
 				"name": "relativeTime.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Reference time in milliseconds since the Unix epoch."
 			}
 		],
 		"outputs": [
 			{
 				"name": "relativeTime",
-				"type": "string"
+				"type": "string",
+				"description": "Localized relative date or Unknown when the recorded timestamp is unavailable."
 			}
 		],
 		"errors": [],
@@ -40,18 +43,21 @@
 					{
 						"name": "relativeTime.instant",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "Recorded timestamp to parse. A missing or invalid timestamp returns Unknown."
 					},
 					{
 						"name": "relativeTime.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Reference time in milliseconds since the Unix epoch."
 					}
 				],
 				"outputs": [
 					{
 						"name": "relativeTime",
-						"type": "string"
+						"type": "string",
+						"description": "Localized relative date or Unknown when the recorded timestamp is unavailable."
 					}
 				],
 				"errors": [],

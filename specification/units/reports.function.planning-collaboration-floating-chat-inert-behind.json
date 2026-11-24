@@ -4,8 +4,8 @@
 	"uid": "u_alymhuf2pk",
 	"kind": "function",
 	"title": "inertBehind",
-	"responsibility": "Owns the inertBehind shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Makes the page outside an open chat sheet inert until the caller restores it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,18 +14,20 @@
 		"symbols": ["inertBehind"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "inertBehind.node",
 				"type": "HTMLElement",
-				"required": true
+				"required": true,
+				"description": "Sheet element whose ancestor siblings are made inert."
 			}
 		],
 		"outputs": [
 			{
 				"name": "inertBehind",
-				"type": "()"
+				"type": "()",
+				"description": "Callback that restores the elements made inert by this call."
 			}
 		],
 		"errors": [],
@@ -37,13 +39,15 @@
 					{
 						"name": "inertBehind.node",
 						"type": "HTMLElement",
-						"required": true
+						"required": true,
+						"description": "Sheet element whose ancestor siblings are made inert."
 					}
 				],
 				"outputs": [
 					{
 						"name": "inertBehind",
-						"type": "()"
+						"type": "()",
+						"description": "Callback that restores the elements made inert by this call."
 					}
 				],
 				"errors": [],

@@ -26,6 +26,7 @@
 		"desktop.component.entity-card",
 		"desktop.component.entity-view",
 		"desktop.component.environment-picker",
+		"desktop.component.explorer-ui-entity-section-tabs",
 		"desktop.component.game-authoring-game-graph-fit",
 		"desktop.component.game-authoring-game-workspace-chips",
 		"desktop.component.game-checkpoint-editor",
@@ -75,6 +76,8 @@
 		"desktop.component.runtime-run",
 		"desktop.component.runtime-screens",
 		"desktop.component.segmented-choice",
+		"desktop.component.shared-primitives-choice-row",
+		"desktop.component.shared-primitives-choice-rows",
 		"desktop.component.status-bar",
 		"desktop.component.thread-history",
 		"desktop.component.thread-links",
@@ -889,6 +892,12 @@
 			"title": "EnvironmentPicker: with-action",
 			"coverage": "required",
 			"units": ["desktop.component.environment-picker"]
+		},
+		{
+			"id": "desktop-component-explorer-ui-entity-section-tabs",
+			"title": "Entity section tabs",
+			"coverage": "required",
+			"units": ["desktop.component.explorer-ui-entity-section-tabs"]
 		},
 		{
 			"id": "desktop-component-game-authoring-game-graph-fit",
@@ -1903,6 +1912,18 @@
 			"title": "Segmented choice",
 			"coverage": "required",
 			"units": ["desktop.component.segmented-choice"]
+		},
+		{
+			"id": "desktop-component-shared-primitives-choice-row",
+			"title": "Choice row",
+			"coverage": "required",
+			"units": ["desktop.component.shared-primitives-choice-row"]
+		},
+		{
+			"id": "desktop-component-shared-primitives-choice-rows",
+			"title": "Choice rows",
+			"coverage": "required",
+			"units": ["desktop.component.shared-primitives-choice-rows"]
 		},
 		{
 			"id": "desktop-component-status-bar",
@@ -8588,6 +8609,7 @@
 				"desktop-component-environment-picker-preprod",
 				"desktop-component-environment-picker-prod",
 				"desktop-component-environment-picker-with-action",
+				"desktop-component-explorer-ui-entity-section-tabs",
 				"desktop-component-game-authoring-game-graph-fit",
 				"desktop-component-game-authoring-game-workspace-chips",
 				"desktop-component-game-authoring-game-workspace-chips-demo",
@@ -8671,7 +8693,6 @@
 				"desktop-component-plan-badge",
 				"desktop-component-prior-image",
 				"desktop-component-project-agent",
-
 				"desktop-component-project-gate",
 				"desktop-component-project-gate-available",
 				"desktop-component-project-gate-busy",
@@ -8738,6 +8759,8 @@
 				"desktop-component-runtime-screens-paired",
 				"desktop-component-runtime-screens-incomparable",
 				"desktop-component-segmented-choice",
+				"desktop-component-shared-primitives-choice-row",
+				"desktop-component-shared-primitives-choice-rows",
 				"desktop-component-status-bar",
 				"desktop-component-thread-history",
 				"desktop-component-thread-links",

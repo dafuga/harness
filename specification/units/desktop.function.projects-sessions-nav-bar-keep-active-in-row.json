@@ -4,26 +4,28 @@
 	"uid": "u_eeronpe3dc",
 	"kind": "function",
 	"title": "keepActiveInRow",
-	"responsibility": "Owns the keepActiveInRow shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Reveals the active category within an overflowing horizontal navigation row on mount and when its active class changes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/desktop/src/components/projects-sessions/nav-bar/keepActiveInRow.ts"],
 		"symbols": ["keepActiveInRow"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "keepActiveInRow.row",
 				"type": "HTMLElement",
-				"required": true
+				"required": true,
+				"description": "Horizontal navigation element containing the active category link."
 			}
 		],
 		"outputs": [
 			{
 				"name": "keepActiveInRow",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Svelte action result whose destroy callback disconnects the class observer."
 			}
 		],
 		"errors": [],
@@ -35,13 +37,15 @@
 					{
 						"name": "keepActiveInRow.row",
 						"type": "HTMLElement",
-						"required": true
+						"required": true,
+						"description": "Horizontal navigation element containing the active category link."
 					}
 				],
 				"outputs": [
 					{
 						"name": "keepActiveInRow",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Svelte action result whose destroy callback disconnects the class observer."
 					}
 				],
 				"errors": [],

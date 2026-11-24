@@ -4,8 +4,8 @@
 	"uid": "u_eqr4mg5wut",
 	"kind": "component",
 	"title": "EntitySectionTabs",
-	"responsibility": "Owns the EntitySectionTabs Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows the available sections for an Explorer entity in one row and exposes an entry point to its conversation.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -21,38 +21,44 @@
 		"symbols": ["EntitySectionTabs"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "EntitySectionTabs.names",
 				"type": "Section[]",
-				"required": true
+				"required": true,
+				"description": "Ordered sections available for the entity."
 			},
 			{
 				"name": "EntitySectionTabs.tab",
 				"type": "Section",
-				"required": true
+				"required": true,
+				"description": "Selected section, marked as the current page."
 			},
 			{
 				"name": "EntitySectionTabs.threadShown",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the conversation panel is already open. Hides the conversation button when true."
 			},
 			{
 				"name": "EntitySectionTabs.onpick",
 				"type": "(value: Section) => void",
-				"required": true
+				"required": true,
+				"description": "Receives the section selected by the user."
 			},
 			{
 				"name": "EntitySectionTabs.onconversation",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Runs when the user opens the conversation panel."
 			}
 		],
 		"outputs": [
 			{
 				"name": "EntitySectionTabs",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders the entity section navigation with the current section marked."
 			}
 		],
 		"errors": [],

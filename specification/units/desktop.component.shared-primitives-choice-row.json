@@ -4,8 +4,8 @@
 	"uid": "u_23oxoqg3mq",
 	"kind": "component",
 	"title": "ChoiceRow",
-	"responsibility": "Owns the ChoiceRow Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Presents a selectable option with optional metadata and a check mark for the current choice.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -22,35 +22,40 @@
 		"symbols": ["ChoiceRow"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ChoiceRow.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Visible name, also available as the button's title when the text is truncated."
 			},
 			{
 				"name": "ChoiceRow.meta",
 				"type": "string",
 				"required": false,
-				"default": ""
+				"default": "",
+				"description": "Secondary label placed beside the name. Defaults to an empty string."
 			},
 			{
 				"name": "ChoiceRow.current",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Whether the choice is current and marked as pressed. Defaults to false."
 			},
 			{
 				"name": "ChoiceRow.onchoose",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Runs when the user activates the choice."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ChoiceRow",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders a button with the name, optional metadata and current-choice state."
 			}
 		],
 		"errors": [],

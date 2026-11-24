@@ -4,8 +4,8 @@
 	"uid": "u_7465g3sdj3",
 	"kind": "component",
 	"title": "ChoiceRows",
-	"responsibility": "Owns the ChoiceRows Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Groups picker choices and moves focus between enabled rows using arrow, Home and End keys.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -19,29 +19,33 @@
 		"symbols": ["ChoiceRows"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ChoiceRows.label",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Accessible name for the choice group."
 			},
 			{
 				"name": "ChoiceRows.title",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional heading displayed above the rows. Defaults to no heading."
 			},
 			{
 				"name": "ChoiceRows.children",
 				"type": "Snippet",
-				"required": true
+				"required": true,
+				"description": "Snippet rendering the picker content and its selectable rows."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ChoiceRows",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders a named group that supports keyboard movement between enabled choices."
 			}
 		],
 		"errors": [],
