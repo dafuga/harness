@@ -107,6 +107,8 @@ test('denial, expiration, and revoked device or runner grants all prevent collec
 		await fixture.revoke();
 		expect(await response(await fixture.runner(revoked))).toEqual([200, { status: 'refused' }]);
 		expect((await fixture.session()).status).toBe(404);
+		fixture.withdrawRunner();
+		expect(await response(await fixture.runner(revoked))).toEqual([404, { error: 'not-found' }]);
 	} finally {
 		await fixture.close();
 	}

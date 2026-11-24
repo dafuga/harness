@@ -85,6 +85,7 @@ for (const { name, width, height } of viewports) {
 			const link = page.getByRole('link', { name: 'Deploy approvals' });
 			await approvalEvidence(page, info, 'entry');
 			await link.click({ timeout: 5000 });
+			await expect(page).toHaveURL(/\/deploy-approvals$/);
 			await page.reload();
 			await expect(page.getByRole('heading', { name: 'Deploy approvals' })).toBeVisible();
 			await expect(

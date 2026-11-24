@@ -76,11 +76,12 @@
 		busy = true;
 		error = '';
 		try {
-			const receipt = approvalReceipt.parse(
-				await bridge?.deployApprovals?.({ id: card.id, plan: card.plan, decision })
-			);
-			if (receipt.id !== card.id || receipt.plan !== card.plan || receipt.decision !== decision)
-				throw new Error('Decision receipt scope changed.');
+			const receipt = approvalReceipt
+				.refine(
+					(answer) =>
+						answer.id === card.id && answer.plan === card.plan && answer.decision === decision
+				)
+				.parse(await bridge?.deployApprovals?.({ id: card.id, plan: card.plan, decision }));
 			if (active) cards = cards.map((item) => (item.id === card.id ? { ...item, receipt } : item));
 		} catch {
 			if (active)
