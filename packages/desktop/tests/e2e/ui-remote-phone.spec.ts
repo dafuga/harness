@@ -1,6 +1,6 @@
 import type { Call, Phone } from './ui-remote-phone.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { remoteEvidence } from './remote-evidence';
+import { captured, remoteEvidence } from './remote-evidence';
 import { alpha, deviceName, hostName, remotePhoneFixture } from './ui-remote-phone-fixture';
 const made = async (page: Page, op: string) =>
 	(await page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls)).filter(
@@ -164,6 +164,7 @@ test('a paired phone shows the same workspace through the native adapter', async
 	await page.getByRole('button', { name: 'Conversation', exact: true }).click();
 	const modes = page.getByRole('group', { name: 'Request mode' });
 	await modes.getByRole('button', { name: 'Plan', exact: true }).click();
+	await captured(page, testInfo, `phone-plan-${process.env.SCREENSHOT_LABEL}`);
 	await expect(page.getByLabel('Model', { exact: true }).locator('option')).toHaveText([
 		'Fixture model'
 	]);

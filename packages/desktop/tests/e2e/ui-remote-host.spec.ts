@@ -169,7 +169,7 @@ test('a phone that is denied is not approved, and a code that ran out is no long
 
 test('phone access stays reachable in the workspace, and a hosted project offers no agent', async ({
 	page
-}) => {
+}, testInfo) => {
 	await remoteHostFixture(page, true);
 	await page.goto(entity(alpha, 'feat%2Falpha'));
 	await expect(page.getByRole('heading', { level: 1, name: 'Alpha activity' })).toBeVisible();
@@ -182,6 +182,7 @@ test('phone access stays reachable in the workspace, and a hosted project offers
 	await expect(footer.getByRole('button', { name: 'Pair a phone', exact: true })).toBeVisible();
 	const modes = page.getByRole('group', { name: 'Request mode' });
 	await modes.getByRole('button', { name: 'Plan', exact: true }).click();
+	await captured(page, testInfo, `host-plan-${process.env.SCREENSHOT_LABEL}`);
 	await expect(page.getByLabel('Model', { exact: true }).locator('option')).toHaveText([
 		'Fixture model'
 	]);
