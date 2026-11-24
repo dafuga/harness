@@ -27,6 +27,13 @@ async function comment(page: Page, text: string) {
 	await expect(page.getByText(text, { exact: true })).toBeVisible();
 }
 
+async function expectNoAgentControls(page: Page) {
+	await expect(page.getByLabel('Model', { exact: true })).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'Choose model', exact: true })).toHaveCount(0);
+	await expect(page.getByLabel('Reasoning effort', { exact: true })).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'Codex CLI', exact: true })).toHaveCount(0);
+}
+
 async function captureComposer(page: Page, state: string) {
 	const folder = process.env.HEADLESS_RUN_ARTIFACTS;
 	if (process.env.TAKE_SCREENSHOT !== 'true' || !folder) return;
@@ -52,9 +59,7 @@ test('Comment is the default, never starts a run and stays pending after a resta
 		'aria-pressed',
 		'true'
 	);
-	await expect(page.getByLabel('Model', { exact: true })).toHaveCount(0);
-	await expect(page.getByLabel('Reasoning effort', { exact: true })).toHaveCount(0);
-	await expect(page.getByRole('button', { name: 'Codex CLI', exact: true })).toHaveCount(0);
+	await expectNoAgentControls(page);
 	await comment(page, 'Tighten the header');
 	await expect(page.getByText(/Pending on this device · not shared/)).toBeVisible();
 	await expect(
@@ -79,11 +84,19 @@ test('Comment is the default, never starts a run and stays pending after a resta
 	await expect(page.getByText('Tighten the header', { exact: true })).toBeVisible();
 	await expect(page.getByText(/Pending on this device · not shared/)).toBeVisible();
 	await captureComposer(page, 'pending');
-	await modes(page).getByRole('button', { name: 'Plan', exact: true }).click();
+	const plan = modes(page).getByRole('button', { name: 'Plan', exact: true });
+	await plan.click();
 	await captureComposer(page, 'plan');
-	await expect(page.getByLabel('Model', { exact: true })).toBeVisible();
-	await expect(page.getByRole('button', { name: 'Codex CLI', exact: true })).toBeVisible();
-	await expect(page.getByRole('button', { name: 'Send plan', exact: true })).toBeVisible();
+	await expect(plan).toHaveAttribute('aria-pressed', 'true');
+	await expect(
+		page.getByText('Sonnet mockups · Haiku sizes and states', { exact: true })
+	).toBeVisible();
+	await expectNoAgentControls(page);
+	const sendPlan = page.getByRole('button', { name: 'Send plan', exact: true });
+	await expect(sendPlan).toBeDisabled();
+	await message(page).fill('Try a more compact header');
+	await expect(sendPlan).toBeEnabled();
+	expect((await calls(page)).filter((call) => agentOnly.includes(String(call.op)))).toEqual([]);
 });
 
 test('a shared project acknowledges the collaboration commit and offers no agent control', async ({
@@ -97,10 +110,9 @@ test('a shared project acknowledges the collaboration commit and offers no agent
 	await page.getByRole('link', { name: /Open Gamma activity/ }).click();
 	await expect(message(page)).toBeVisible();
 	await expect(modes(page)).toHaveCount(0);
-	for (const name of ['Plan', 'Change', 'Codex CLI'])
+	for (const name of ['Plan', 'Change'])
 		await expect(page.getByRole('button', { name, exact: true })).toHaveCount(0);
-	await expect(page.getByLabel('Model', { exact: true })).toHaveCount(0);
-	await expect(page.getByLabel('Reasoning effort', { exact: true })).toHaveCount(0);
+	await expectNoAgentControls(page);
 	await expect(page.getByRole('button', { name: /Approve/ })).toHaveCount(0);
 	await page.getByRole('button', { name: 'Designs', exact: true }).click();
 	await page.getByRole('button', { name: 'Comment on image', exact: true }).click();
