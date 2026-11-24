@@ -10,7 +10,6 @@ import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/track
 import { trackerNodeApi } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
-
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
 const missingId = 'missing123';
