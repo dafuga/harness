@@ -10,7 +10,8 @@ import {
 	compatibilityFixture,
 	fixtureTime,
 	fixtureItem,
-	fixtureTitle
+	fixtureTitle,
+	verifyTrackerReminderScheduling
 } from '../../support/trackerCliCompatibilityFixture';
 
 beforeEach(async () => {
@@ -130,6 +131,29 @@ test('native show prints the full human item and returns the enriched JSON for a
 		code: 1,
 		out: '',
 		err: 'tracker: no item "absent"'
+	});
+});
+
+test('native remind schedules a decision without changing its state and filters attention until it wakes', async () => {
+	const { runtime, run } = await compatibilityFixture();
+	runtime.store.appendLocal({
+		itemId: fixtureItem,
+		fields: { status: 'blocked', needs_daniel: 1, question: 'Approve the fixture?' }
+	});
+	const at = await verifyTrackerReminderScheduling(run);
+	expect(JSON.parse((await run('list', '--flagged', '--json')).out)).toEqual([]);
+	expect(JSON.parse((await run('digest', '--json')).out)).toMatchObject({
+		blocked: [],
+		needs_daniel: []
+	});
+	expect(JSON.parse((await run('list', '--status', 'all', '--json')).out)).toEqual(
+		expect.arrayContaining([expect.objectContaining({ id: fixtureItem, remind_at: at })])
+	);
+	const answered = await run('answer', 'taskfi', 'Approved', '--json');
+	expect(JSON.parse(answered.out)).toMatchObject({
+		id: fixtureItem,
+		resolved: true,
+		remind_at: null
 	});
 });
 

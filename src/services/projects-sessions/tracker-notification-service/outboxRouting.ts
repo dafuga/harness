@@ -11,7 +11,7 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import type { OutboxGroup, OutboxRecipient } from './outboxRouting.types';
-import { flagged, readyRows } from './notificationRules';
+import { flagged, holdRegularReminder, readyRows } from './notificationRules';
 import { outboxBatch, outboxSingle } from './webhookBatch';
 import { normalizeActor } from './webhookEvents';
 
@@ -89,6 +89,7 @@ function sendReady(
 		if (!currentOccurrence(row, item)) drop(row, 'superseded');
 		return row.status !== 'dropped';
 	}
+	if (heldByReminder(row, item, options, now)) return false;
 	if (!quietOutboxEvent(row)) return true;
 	if (!relevant(row, item)) {
 		drop(row, 'no longer relevant');
@@ -97,6 +98,24 @@ function sendReady(
 	const release = quietHourBoundary(now, options.quietHours);
 	if (release > now) row.nextAt = release;
 	return release <= now;
+}
+
+function heldByReminder(
+	row: OutboxRow,
+	item: TrackerNotificationItem | undefined,
+	options: TrackerNotificationOptions,
+	now: number
+): boolean {
+	if (!item?.remind_at) return false;
+	const remindAt = Date.parse(item.remind_at);
+	if (
+		(row.kind === 'needs_daniel' || row.kind === 'blocked') &&
+		remindAt > Date.parse(String(row.payload.occurred_at))
+	) {
+		drop(row, 'item reminder supersedes attention');
+		return true;
+	}
+	return row.kind === 'due' && holdRegularReminder(item, now, options.reminderIntervalMinutes);
 }
 
 function eligible(

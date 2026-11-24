@@ -1,6 +1,5 @@
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { TrackerFixtureReceipts } from './trackerNodeProcess.types';
 import { once } from 'node:events';
 import { expect } from 'vitest';
 import {
@@ -10,9 +9,9 @@ import {
 	trackerProcess,
 	verifyTrackerWire
 } from './trackerNodeProcess';
-import type { TrackerNodeFixture } from './trackerNodeProcess.types';
+import type { TrackerFixtureReceipts, TrackerNodeFixture } from './trackerNodeProcess.types';
 import { verifyCosDryRun } from './verifyCosDryRun';
-
+import { verifyReminder } from './trackerNodeReminder';
 export async function proveForegroundSync(
 	hub: TrackerNodeFixture,
 	spoke: TrackerNodeFixture,
@@ -43,7 +42,12 @@ export async function proveForegroundSync(
 			expect(sync).toMatchObject({ code: 0, stdout: 'sync triggered\n' });
 			await expect
 				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
-				.toMatchObject([{ id }]);
+				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
+			await expect
+				.poll(() => fixtureTrackerJson(hub, ['runs', '--item', 'spokerun22']), { timeout: 8_000 })
+				.toMatchObject([
+					{ id: 22, node: 'synthetic-spoke', state: 'running', auto_token: 'spoke-token' }
+				]);
 			await verifyTrackerWire(syncPort, id);
 			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
 			await expect
@@ -125,6 +129,7 @@ async function verifyTrackerNotificationFlow(
 			type: 'attention',
 			new: [{ id, question: 'Is the fixture ready?' }]
 		});
+	await verifyReminder(hub, spoke, id, receipts);
 	expect(
 		await fixtureTrackerJson(spoke, ['answer', id, 'Fixture confirmed', '--by', 'fixture-operator'])
 	).toMatchObject({

@@ -42,7 +42,10 @@ For direct Mac peer replication, a spoke may also configure `peer.upstream`
 and `peer.listenPort`. Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
 An optional `accessFile` beside an upstream URL supplies `clientId` and
 `clientSecret` for Cloudflare Access over HTTPS. The sync listener routes
-only signed Tracker sync requests. The local API keeps
+only signed Tracker sync requests. Each spoke sends its local run records to
+the hub through the signed machine exchange, even without a machine sampler.
+The hub stores them under the sender’s node and run ID for run history and
+watchdog checks. The local API keeps
 the existing health, status, item and digest paths used by local readers.
 
 The cutover operator must first stop and persistently disable the legacy
@@ -166,6 +169,7 @@ whose ownership, credentials, and effect scopes the operator has verified.
 				"tmux": "/absolute/bin/tmux",
 				"stateDirectory": "/absolute/private/tracker-attempts",
 				"trackerBinDirectory": "/absolute/qualified/tracker/bin",
+				"opsWorkdir": "/absolute/approved/operations-directory",
 				"native": {
 					"codex": "/absolute/bin/codex",
 					"claude": "/absolute/bin/claude",
@@ -194,6 +198,14 @@ whose ownership, credentials, and effect scopes the operator has verified.
 	}
 }
 ```
+
+On the two Macs, set `hostEffects.launch.managed.opsWorkdir` to an existing
+absolute directory approved for native operations work. An item without an
+explicit repository or project uses this directory if its agent has no
+repository mapping. Tracker runs the session there directly and keeps the
+brief and launch receipts in its per-attempt state directory. A mapped agent
+still uses its repository. Due Chief of Staff tasks may use this route when
+due scheduling is enabled, subject to the usual eligibility and grant checks.
 
 `launch.due: true` enables due scheduling through the existing due-owner and
 signed permit path. The primary adapter's `scheduleDue` opt-in works
@@ -318,6 +330,25 @@ Closure leaves provider transcripts and worktrees in place. Tracker adds a note
 with the computer, closed session and provider resume command. Long-lived
 control sessions fall outside the auto-launch name filter. Pending flagged
 launches report `waiting on Daniel (flagged)` in autolaunch status.
+
+### Scheduled reminders
+
+Use `tracker remind <id> --at <ISO timestamp with a time zone>` for an
+active item. Convert requests such as “remind me tomorrow at 14:30” to an
+absolute timestamp using the person's time zone. Use the command again to
+reschedule. Normal item lists and `tracker show` expose `remind_at` in UTC.
+While the reminder is in the future, `tracker list --flagged` and the text
+and JSON digests omit the item. This also hides it from the Chief of Staff's
+status tick. The reminder time is stored separately from the item's flag,
+question, due date and dispatch state.
+
+At the requested time the item becomes eligible for its normal digest sections.
+The hub's notification worker sends the explicit reminder on the first
+available poll, including during quiet hours. It uses the configured direct
+Chief of Staff destination, its webhook, or the primary Mac's existing CoS
+host binding. An unavailable destination is retried. Resolving, unflagging,
+unblocking, closing, ignoring or deleting the item cancels its reminder.
+The journal replicates the reminder time and the hub stores delivery receipts.
 
 ### Legacy CLI inventory and remaining checks
 

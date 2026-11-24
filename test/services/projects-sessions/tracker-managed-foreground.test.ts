@@ -1,15 +1,23 @@
-import { existsSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import {
+	existsSync,
+	mkdirSync,
+	readFileSync,
+	readdirSync,
+	realpathSync,
+	unlinkSync,
+	writeFileSync
+} from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
-import { loadTrackerNodeConfig } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import { trackerNodeRuntime } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
 	managedFixtureBindings,
+	managedForegroundConfig,
 	managedTrackerItemRequest
 } from '../../support/trackerManagedProcessFixture';
 import {
@@ -33,6 +41,7 @@ test(
 					async () => {
 						await withTempRepo((repo) => proveNativeUsage(repo, false));
 						await withTempRepo((repo) => proveNativeUsage(repo, true));
+						await withTempRepo((repo) => proveNativeUsage(repo, false, join(repo.root, 'ops')));
 					}
 				);
 			}
@@ -46,7 +55,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	const signal = new AbortController().signal;
 	try {
 		const runtime = new TrackerNativeRuntimeService(database, {
-			...trackerNodeRuntime(foregroundConfig(root, config), (scope) => {
+			...trackerNodeRuntime(managedForegroundConfig(root, config), (scope) => {
 				expect(scope).toMatchObject({ itemId, apiPort: 49281 });
 				const run = database
 					.prepare('SELECT auto_token, attempt FROM runs WHERE id = ?')
@@ -89,8 +98,9 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	}
 }
 
-async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean) {
-	git('commit', '--allow-empty', '-m', 'Fixture source');
+async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean, ops?: string) {
+	if (ops) mkdirSync(ops, { mode: 0o700 });
+	else git('commit', '--allow-empty', '-m', 'Fixture source');
 	const { config } = managedFixtureBindings(root);
 	if (competing) writeFileSync(join(root, 'competing-codex-transcript'), '', { mode: 0o600 });
 	const database = new DatabaseSync(':memory:');
@@ -98,14 +108,26 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 	try {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
-			trackerNodeRuntime(foregroundConfig(root, config, 'macos'))
+			trackerNodeRuntime(managedForegroundConfig(root, config, 'macos', ops))
 		);
 		runtime.store.appendLocal({
 			itemId,
-			fields: { title: 'Synthetic Codex work', status: 'open', kind: 'task', project: 'Harness' }
+			fields: {
+				title: 'Synthetic Codex work',
+				status: 'open',
+				kind: 'task',
+				...(ops ? { agent: 'cos', due: '2000-01-01', created_by: node } : { project: 'Harness' })
+			}
 		});
-		expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
+		if (ops) expectApprovedOpsRoute(runtime, root);
+		else expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
 		await runtime.scheduler!.tick(signal);
+		if (ops) {
+			const invocation = JSON.parse(
+				readFileSync(join(config.native.profile, 'invoked.ndjson'), 'utf8')
+			);
+			expect(invocation.cwd).toBe(realpathSync(ops));
+		}
 		expect(database.prepare('SELECT state FROM runs').get()).toEqual({ state: 'running' });
 		expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
 		await runtime.scheduler!.tick(signal);
@@ -118,14 +140,29 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 		).toEqual({
 			state: 'finished',
 			outcome: 'done',
-			input_tokens: competing ? null : 95,
-			output_tokens: competing ? null : 10,
-			cache_read_tokens: competing ? null : 25,
-			cache_write_tokens: competing ? null : 0
+			...expectedTokenUsage(Boolean(competing || ops))
 		});
 	} finally {
 		database.close();
 	}
+}
+
+function expectApprovedOpsRoute(runtime: TrackerNativeRuntimeService, root: string) {
+	runtime.store.appendLocal({ itemId, fields: { repo: join(root, 'unapproved') } });
+	expect(runtime.duePreview.preview?.(itemId)).not.toHaveProperty('target');
+	runtime.store.appendLocal({ itemId, fields: { repo: null } });
+	expect(runtime.duePreview.preview?.(itemId)).toMatchObject({ target: node });
+}
+
+function expectedTokenUsage(missing: boolean) {
+	if (!missing)
+		return { input_tokens: 95, output_tokens: 10, cache_read_tokens: 25, cache_write_tokens: 0 };
+	return {
+		input_tokens: null,
+		output_tokens: null,
+		cache_read_tokens: null,
+		cache_write_tokens: null
+	};
 }
 
 async function verifyLostSession(
@@ -165,38 +202,4 @@ async function verifyLostSession(
 	expect(database.prepare('SELECT state FROM runs WHERE id = 3').get()).toEqual({
 		state: 'running'
 	});
-}
-
-function foregroundConfig(
-	root: string,
-	managed: ReturnType<typeof managedFixtureBindings>['config'],
-	platform: 'linux' | 'macos' = 'linux'
-) {
-	const path = join(root, 'foreground.json');
-	const syncSecretFile = join(root, 'secret');
-	writeFileSync(syncSecretFile, 'synthetic-host-worker-wire-key', { mode: 0o600 });
-	const config = {
-		version: 1,
-		node,
-		role: 'hub',
-		apiPort: 49281,
-		syncPort: 49282,
-		database: join(root, 'test-db'),
-		legacyFenceFile: join(root, 'fence'),
-		syncSecretFile,
-		hostEffects: {
-			mode: 'active',
-			checkpoint: 'fixture',
-			...(platform === 'macos' && {
-				watchdog: { transcriptRoots: [join(root, 'tracker-test-codex-transcripts')] }
-			}),
-			launch: {
-				maxConcurrent: 1,
-				managed,
-				repositories: { Harness: { repo: root, platform } }
-			}
-		}
-	};
-	writeFileSync(path, JSON.stringify(config), { mode: 0o600 });
-	return loadTrackerNodeConfig(path);
 }

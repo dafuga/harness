@@ -44,6 +44,7 @@ const managedLauncher = z
 		tmux: absolutePath,
 		stateDirectory: absolutePath,
 		trackerBinDirectory: absolutePath,
+		opsWorkdir: absolutePath.optional(),
 		native: z
 			.strictObject({ codex: absolutePath, claude: absolutePath, profile: absolutePath })
 			.optional(),
@@ -55,7 +56,10 @@ const managedLauncher = z
 			})
 			.optional()
 	})
-	.refine(({ native, docker }) => Boolean(native ?? docker));
+	.refine(
+		({ native, docker, opsWorkdir }) =>
+			Boolean(native ?? docker) && (!opsWorkdir || Boolean(native))
+	);
 
 export const trackerHostEffectsSchema = z.discriminatedUnion('mode', [
 	z.strictObject({ mode: z.literal('held') }),

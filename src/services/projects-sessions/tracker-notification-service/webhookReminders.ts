@@ -7,7 +7,14 @@ import type {
 	TrackerNotificationOptions
 } from '../TrackerNotificationService.types';
 import type { FlagRow, TrackerNotificationState } from './notificationState.types';
-import { activeItem, dueTime, flagged, intervalMs, minute } from './notificationRules';
+import {
+	activeItem,
+	dueTime,
+	flagged,
+	holdRegularReminder,
+	intervalMs,
+	minute
+} from './notificationRules';
 import { enqueueEvent, itemEvent } from './webhookEvents';
 
 function nextEscalation(from: number, options: TrackerNotificationOptions): number {
@@ -69,7 +76,14 @@ export function scanWebhookFlags(
 	now: number
 ): void {
 	const active = trackFlags(state, options, now);
-	const pending = [...state.flags.values()].filter((row) => row.status === 'active');
+	const pending = [...state.flags.values()].filter((row) => {
+		const item = active.get(row.key);
+		return (
+			row.status === 'active' &&
+			item &&
+			!holdRegularReminder(item, now, options.reminderIntervalMinutes)
+		);
+	});
 	const due = pending.filter((row) => row.nextAt <= now);
 	if (!due.length) return;
 	const release = quietHourBoundary(now, options.quietHours);
@@ -106,7 +120,12 @@ export function scanWebhookDue(
 	const { source } = options;
 	const nextAt = quietHourBoundary(now, options.quietHours);
 	for (const item of source.items()) {
-		if (!activeItem(item) || item.every) continue;
+		if (
+			!activeItem(item) ||
+			item.every ||
+			holdRegularReminder(item, now, options.reminderIntervalMinutes)
+		)
+			continue;
 		const at = dueTime(item.due, source.tz);
 		if (at === null || at > now) continue;
 		const key = `due|${item.id}|${item.clocks.due}`;

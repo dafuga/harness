@@ -45,9 +45,20 @@ function updateFields(
 			? { fields: trackerItemInput(body, context, item), appendNote: body.append_note }
 			: trackerItemTransitions[action](item, body, context);
 	const fields = normalizeTrackerItemFields(change.fields, context);
+	if (endsReminder(fields)) fields.remind_at = null;
 	if (change.appendNote) fields['note+'] = String(change.appendNote);
 	if (Object.keys(fields).length === 0) throw trackerItemError('nothing to update');
 	return fields;
+}
+
+function endsReminder(fields: TrackerItemFields): boolean {
+	return (
+		fields.resolved === 1 ||
+		fields.needs_daniel === 0 ||
+		fields.status === 'done' ||
+		fields.status === 'ignored' ||
+		fields.deleted === 1
+	);
 }
 
 function createFields(

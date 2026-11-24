@@ -12,6 +12,7 @@
 			"src/services/projects-sessions/TrackerNativeRuntimeService.ts",
 			"src/services/projects-sessions/TrackerNativeRuntimeService.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerReminderHost.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
@@ -68,6 +69,7 @@
 			"TrackerNativeNotificationOptions",
 			"TrackerNativeRuntimeOptions",
 			"configuredTrackerDestinations",
+			"configuredTrackerReminderHost",
 			"composeTrackerDispatch",
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
@@ -104,6 +106,7 @@
 			"configuredHostDispatch",
 			"TrackerHostSession",
 			"TrackerHostRouteItem",
+			"TrackerHostTarget",
 			"TrackerHostRoute",
 			"TrackerHostStartReply",
 			"TrackerHostStartRequest",
@@ -180,6 +183,12 @@
 				"name": "configuredTrackerDestinations.bindings",
 				"type": "TrackerLegacyDestinationBindings",
 				"required": true
+			},
+			{
+				"name": "configuredTrackerReminderHost.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true,
+				"description": "Tracker node identity, established host effects and any existing notification transport."
 			},
 			{
 				"name": "composeTrackerDispatch.store",
@@ -869,6 +878,11 @@
 				"type": "unknown"
 			},
 			{
+				"name": "configuredTrackerReminderHost",
+				"type": "TrackerNativeNotificationOptions | undefined",
+				"description": "Notification options with the primary hub’s Chief of Staff reminder binding."
+			},
+			{
 				"name": "composeTrackerDispatch",
 				"type": "unknown"
 			},
@@ -1180,6 +1194,26 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "configuredTrackerReminderHost",
+				"inputs": [
+					{
+						"name": "configuredTrackerReminderHost.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true,
+						"description": "Tracker node identity, established host effects and any existing notification transport."
+					}
+				],
+				"outputs": [
+					{
+						"name": "configuredTrackerReminderHost",
+						"type": "TrackerNativeNotificationOptions | undefined",
+						"description": "Notification options with the primary hub’s Chief of Staff reminder binding."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "composeTrackerDispatch",

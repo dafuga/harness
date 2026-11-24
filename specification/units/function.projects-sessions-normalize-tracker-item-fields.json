@@ -27,6 +27,7 @@
 			"trackerDateParts",
 			"trackerLocalStamp",
 			"normalizeTrackerDue",
+			"normalizeTrackerReminder",
 			"trackerIsoTime",
 			"validateTrackerTimeZone",
 			"normalizeTrackerItemFields",
@@ -113,6 +114,18 @@
 				"type": "TrackerItemClock",
 				"required": true,
 				"description": "Current epoch time and optional time zone used to resolve relative dates."
+			},
+			{
+				"name": "normalizeTrackerReminder.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Future ISO date and time with an explicit time zone."
+			},
+			{
+				"name": "normalizeTrackerReminder.now",
+				"type": "number",
+				"required": true,
+				"description": "Current epoch time in milliseconds for future-time validation."
 			},
 			{
 				"name": "trackerIsoTime.epoch",
@@ -324,6 +337,32 @@
 					{
 						"name": "normalizeTrackerDue",
 						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "normalizeTrackerReminder",
+				"inputs": [
+					{
+						"name": "normalizeTrackerReminder.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Future ISO date and time with an explicit time zone."
+					},
+					{
+						"name": "normalizeTrackerReminder.now",
+						"type": "number",
+						"required": true,
+						"description": "Current epoch time in milliseconds for future-time validation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "normalizeTrackerReminder",
+						"type": "string",
+						"description": "Canonical UTC timestamp for the reminder."
 					}
 				],
 				"errors": [],

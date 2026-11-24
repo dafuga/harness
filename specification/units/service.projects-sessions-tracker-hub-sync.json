@@ -249,8 +249,13 @@
 						"description": "A fresh snapshot mapping node labels reported by authenticated callers to their last contact time in ISO format."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TrackerHubInputError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "TrackerHubPolls.wait",
@@ -397,12 +402,7 @@
 						"type": "Response"
 					}
 				],
-				"errors": [
-					{
-						"name": "TrackerHubInputError",
-						"type": "thrown"
-					}
-				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{

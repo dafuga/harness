@@ -61,6 +61,14 @@ export function localDay(at: number, tz: string): number {
 	return year * 10_000 + month * 100 + day;
 }
 
+export function holdRegularReminder(
+	item: TrackerNotificationItem,
+	now: number,
+	interval: number | undefined
+): boolean {
+	return Date.parse(item.remind_at ?? '') + intervalMs(interval, 60) > now;
+}
+
 export function readyRows<T extends { createdAt: number; nextAt: number }>(
 	rows: Iterable<T>,
 	now: number,
