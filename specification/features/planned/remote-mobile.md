@@ -10,6 +10,8 @@ reviewedAt: null
 
 Use the same Svelte workspace, routes, image threads, and controls in Electron and Capacitor iOS. Environment adapters provide the typed DesktopBridge; web collaboration remains human comments only.
 
+Harness Studio supports iOS 15 and later. Build App Store releases with Xcode 27 or later and the iOS 27 SDK or later to meet [Apple’s April 2027 requirements](https://developer.apple.com/app-store/submitting/). The native CI job checks the minimum OS and SDK in an unsigned device Release build.
+
 An awake desktop keeps its main-process backend and outbound WebSocket connection running while its screen is locked. Pairing requires desktop approval of a specific phone and project grants. Only the desktop executes installed Codex/Claude CLIs. Internet connections use a relay without opening an inbound desktop port.
 
 Require explicit project/revision context, isolated connection state, shared repository write locks, device-owned runs, bounded protocol messages, replay protection, revocation, reconnect without replaying mutations, and native credential storage. Remote callers cannot open folders or manage the desktop's hosted credentials.
