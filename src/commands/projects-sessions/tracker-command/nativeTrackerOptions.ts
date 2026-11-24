@@ -1,9 +1,31 @@
 // @harness-uid u_r7qgepnoax
+import { resolve } from 'node:path';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
 const text = { type: 'string' } as const;
 const flag = { type: 'boolean' } as const;
 export const nativeTrackerCommonOptions = { json: flag, quiet: { ...flag, short: 'q' }, by: text };
+
+export function itemFields(input: Record<string, string | boolean | undefined>) {
+	const { tz, repo } = input;
+	const fields = Object.fromEntries(
+		Object.entries(input).filter(
+			([key]) =>
+				!Object.hasOwn(nativeTrackerCommonOptions, key) &&
+				!['callback-url', 'callback-cmd', 'needs-daniel', 'next-step', 'note', 'tz'].includes(key)
+		)
+	);
+	return {
+		...fields,
+		callback_url: input['callback-url'],
+		callback_cmd: input['callback-cmd'],
+		needs_daniel: input['needs-daniel'],
+		next_step: input['next-step'],
+		every_tz: tz,
+		repo: typeof repo === 'string' && repo ? resolve(repo) : repo
+	};
+}
+
 const launchOptions = { project: text, repo: text, computer: text, model: text, sensitive: flag };
 const itemOptions = {
 	...launchOptions,

@@ -32,6 +32,7 @@
 			"trackerNextStepFields",
 			"trackerMoveOn",
 			"trackerParkNextStep",
+			"trackerResolveItem",
 			"guardTrackerDuplicate",
 			"trackerItemTransitions"
 		]
@@ -98,6 +99,24 @@
 				"type": "TrackerItemMutationContext",
 				"required": true,
 				"description": "Current time for validating the requested hold."
+			},
+			{
+				"name": "trackerResolveItem.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "Current item, including any next step that must remain open."
+			},
+			{
+				"name": "trackerResolveItem.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "Answer, optional attribution and requested work status."
+			},
+			{
+				"name": "trackerResolveItem.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Current clock used for the answer timestamp."
 			},
 			{
 				"name": "guardTrackerDuplicate.context",
@@ -281,6 +300,38 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "trackerResolveItem",
+				"inputs": [
+					{
+						"name": "trackerResolveItem.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "Current item, including any next step that must remain open."
+					},
+					{
+						"name": "trackerResolveItem.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "Answer, optional attribution and requested work status."
+					},
+					{
+						"name": "trackerResolveItem.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Current clock used for the answer timestamp."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerResolveItem",
+						"type": "TrackerItemChange",
+						"description": "Answer fields and a completion status when requested."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "guardTrackerDuplicate",
 				"inputs": [
 					{
@@ -316,11 +367,6 @@
 		},
 		{
 			"unit": "function.projects-sessions-normalize-tracker-item-fields",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "helper.attention-timing-wall-clock-to-epoch-ms",
 			"via": "import",
 			"origin": "derived"
 		}

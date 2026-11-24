@@ -8,8 +8,7 @@ import type {
 	TrackerItemChange,
 	TrackerItemSnapshot
 } from './planTrackerItemMutation.types';
-import { normalizeTrackerReminder, trackerIsoTime, trackerTimeZone } from './normalizeTrackerDue';
-import { wallClockToEpochMs } from '../../helpers/attention-timing/wallClockToEpochMs';
+import { normalizeTrackerParkUntil, trackerIsoTime, trackerTimeZone } from './normalizeTrackerDue';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 
@@ -168,19 +167,23 @@ export function trackerParkNextStep(
 	context: TrackerItemMutationContext
 ): TrackerItemChange {
 	requireNextStep(item);
-	const until = body.until;
-	const date = typeof until === 'string' && /^(\d{4})-(\d{2})-(\d{2})$/.exec(until);
-	const time = date
-		? lisbonMorning(date, context.now)
-		: normalizeTrackerReminder(until, context.now);
-	return { fields: { parked_until: time } };
+	return { fields: { parked_until: normalizeTrackerParkUntil(body.until, context.now) } };
 }
 
-function lisbonMorning(date: RegExpExecArray, now: number): string {
-	const [, year, month, day] = date.map(Number);
-	normalizeTrackerReminder(`${date[0]}T23:59:59Z`, 0);
-	const at = wallClockToEpochMs({ year, month, day, hour: 8, minute: 0 }, trackerTimeZone);
-	return normalizeTrackerReminder(trackerIsoTime(at), now);
+export function trackerResolveItem(
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+): TrackerItemChange {
+	return {
+		fields: {
+			...(item.next_step ? {} : { resolved: 1, needs_daniel: 0 }),
+			answered_at: trackerIsoTime(context.now),
+			answered_by: trackerItemValueOr(body.by, 'daniel'),
+			...(body.answer ? { answer: body.answer } : {}),
+			...(body.done ? { status: 'done' } : {})
+		}
+	};
 }
 
 export function guardTrackerDuplicate(

@@ -61,7 +61,8 @@ function line(item: TrackerDigestItem, detail: string): string {
 function blockedDetail(item: TrackerDigestItem): string {
 	return [
 		item.blocked_reason && `blocked: ${item.blocked_reason}`,
-		item.needs_daniel && `NEEDS DANIEL · ${askDetail(item)}`,
+		item.needs_daniel &&
+			`NEEDS DANIEL · ${item.next_step ? askDetail(item) : waitText(item.waiting_minutes)}`,
 		item.due && `due ${item.due}`
 	]
 		.filter(Boolean)

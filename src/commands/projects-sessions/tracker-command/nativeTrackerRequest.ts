@@ -1,11 +1,11 @@
 // @harness-uid u_r7qgepnoax
-import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
 import {
 	nativeTrackerCommandOptions,
 	nativeTrackerCommonOptions,
+	itemFields,
 	nativeTrackerIdVerbs,
 	nativeTrackerTimedItemRequest,
 	nativeTrackerInspectionRequest
@@ -116,7 +116,7 @@ function itemQuery(
 function itemAction(
 	command: string,
 	[first, ...rest]: string[],
-	values: Record<string, unknown>
+	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest {
 	if (!first) throw new TypeError(`usage: tracker ${command} <id>`);
 	const id = '/items/' + encodeURIComponent(first);
@@ -146,7 +146,7 @@ function itemAction(
 function launchAction(
 	path: string,
 	[target, ...rest]: string[],
-	values: Record<string, unknown>
+	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest {
 	if (target !== 'on' && target !== 'off')
 		return { method: 'POST', path: path + '/launch?outcome=run', body: itemFields(values) };
@@ -188,25 +188,6 @@ function resolveBody(answer: string, values: Record<string, unknown>) {
 
 function blockBody(reason: string, values: Record<string, unknown>) {
 	return { reason, needs_daniel: values['needs-daniel'] !== false, force: values.force };
-}
-
-function itemFields(input: Record<string, unknown>) {
-	const { tz, repo } = input;
-	const fields = Object.fromEntries(
-		Object.entries(input).filter(
-			([key]) =>
-				!Object.hasOwn(nativeTrackerCommonOptions, key) &&
-				!['callback-url', 'callback-cmd', 'needs-daniel', 'note', 'tz'].includes(key)
-		)
-	);
-	return {
-		...fields,
-		callback_url: input['callback-url'],
-		callback_cmd: input['callback-cmd'],
-		needs_daniel: input['needs-daniel'],
-		every_tz: tz,
-		repo: typeof repo === 'string' && repo ? resolve(repo) : repo
-	};
 }
 
 function requiredText(words: string[], command: string): string {

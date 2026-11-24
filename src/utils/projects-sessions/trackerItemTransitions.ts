@@ -20,10 +20,10 @@ import {
 	guardTrackerDuplicate,
 	trackerMoveOn,
 	trackerNextStepFields,
-	trackerParkNextStep
+	trackerParkNextStep,
+	trackerResolveItem
 } from './trackerItemInput';
 const start = { status: 'in_progress' };
-const resolved = { resolved: 1, needs_daniel: 0 };
 
 export const trackerItemTransitions: Record<
 	Exclude<TrackerItemAction, 'update'>,
@@ -47,10 +47,10 @@ export const trackerItemTransitions: Record<
 	},
 	answer: (item, body, context) => {
 		if (!body.answer) throw trackerItemError('answer text required');
-		return resolveItem(item, body, context);
+		return trackerResolveItem(item, body, context);
 	},
 	unflag: () => ({ fields: { needs_daniel: 0 } }),
-	resolve: resolveItem,
+	resolve: trackerResolveItem,
 	done: finishItem,
 	ignore: ignoreItem,
 	unignore: unignoreItem
@@ -118,22 +118,6 @@ function flagItem(
 			needs_daniel: 1,
 			resolved: 0,
 			...(body.question ? { question: body.question } : {})
-		}
-	};
-}
-
-function resolveItem(
-	item: TrackerItemSnapshot,
-	body: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemChange {
-	return {
-		fields: {
-			...(item.next_step ? {} : resolved),
-			answered_at: trackerIsoTime(context.now),
-			answered_by: trackerItemValueOr(body.by, 'daniel'),
-			...(body.answer ? { answer: body.answer } : {}),
-			...(body.done ? { status: 'done' } : {})
 		}
 	};
 }

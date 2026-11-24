@@ -106,6 +106,15 @@ export function readyRows<T extends { createdAt: number; nextAt: number }>(
 		.sort((a, b) => a.createdAt - b.createdAt);
 }
 
+export function directReminderDestination(options: TrackerNotificationOptions) {
+	if (options.role !== 'hub') return undefined;
+	const { chiefOfStaff, scheduledReminders, webhook, destinations } = options;
+	const fallback =
+		webhook?.batch === false ? undefined : (webhook?.destination ?? scheduledReminders);
+	const target = chiefOfStaff ?? fallback;
+	return target && destinations.available(target) ? target : undefined;
+}
+
 export function dueForDirectReminder(
 	item: TrackerNotificationItem,
 	options: TrackerNotificationOptions,

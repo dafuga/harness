@@ -46,6 +46,7 @@
 			"formatTrackerDigest",
 			"serializeTrackerItem",
 			"trackerChaseFields",
+			"trackerAskAge",
 			"StoredTrackerNote",
 			"StoredTrackerCallback"
 		]
@@ -164,6 +165,18 @@
 				"name": "trackerChaseFields.row",
 				"type": "TrackerItemRow",
 				"required": true
+			},
+			{
+				"name": "trackerAskAge.row",
+				"type": "TrackerItemRow",
+				"required": true,
+				"description": "Materialized item row with the journal clock for the open decision."
+			},
+			{
+				"name": "trackerAskAge.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in epoch milliseconds."
 			}
 		],
 		"outputs": [
@@ -538,6 +551,32 @@
 					{
 						"name": "trackerChaseFields",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAskAge",
+				"inputs": [
+					{
+						"name": "trackerAskAge.row",
+						"type": "TrackerItemRow",
+						"required": true,
+						"description": "Materialized item row with the journal clock for the open decision."
+					},
+					{
+						"name": "trackerAskAge.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAskAge",
+						"type": "unknown",
+						"description": "The original ask time and elapsed whole minutes."
 					}
 				],
 				"errors": [],

@@ -15,6 +15,7 @@ import { callbackRequest, flagWebhook } from './deliveryRequest';
 import {
 	askQuietHours,
 	clockTime,
+	directReminderDestination,
 	dueForDirectReminder,
 	eventId,
 	flagged,
@@ -25,15 +26,6 @@ import {
 	nextAskAt,
 	readyRows
 } from './notificationRules';
-
-export function directReminderDestination(options: TrackerNotificationOptions) {
-	if (options.role !== 'hub') return undefined;
-	const { chiefOfStaff, scheduledReminders, webhook, destinations } = options;
-	const fallback =
-		webhook?.batch === false ? undefined : (webhook?.destination ?? scheduledReminders);
-	const target = chiefOfStaff ?? fallback;
-	return target && destinations.available(target) ? target : undefined;
-}
 
 function reminderRows(
 	state: TrackerNotificationState,

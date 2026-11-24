@@ -8,7 +8,7 @@ import type {
 } from '../TrackerItemReadRepository.types';
 import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
-import { trackerChaseFields } from './serializeTrackerItem';
+import { trackerChaseFields, trackerAskAge } from './serializeTrackerItem';
 import type { StoredRecurringResult } from './buildTrackerDigest.types';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
@@ -99,7 +99,7 @@ function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
 		status: row.status,
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		needs_daniel: needsDaniel,
-		...(needsDaniel && askAge(row, now)),
+		...(needsDaniel && trackerAskAge(row, now)),
 		...(row.next_step && {
 			next_step: row.next_step,
 			...(row.project && { project: row.project })
@@ -115,15 +115,6 @@ function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
 		created_by: row.created_by,
 		updated_at: row.updated_at
 	};
-}
-
-function askAge(row: TrackerItemRow, now: number) {
-	const { needs_daniel } = JSON.parse(row.clocks) as { needs_daniel?: string };
-	const at =
-		trackerClockMilliseconds(needs_daniel ?? '') ||
-		Date.parse(row.updated_at ?? row.created_at ?? '') ||
-		now;
-	return { asked_at: new Date(at).toISOString(), waiting_minutes: elapsedMinutes(now, at) };
 }
 
 function queuedLaunch(

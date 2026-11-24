@@ -1,6 +1,6 @@
 // @harness-uid u_vqnqshfas2
 import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
-import { askQuietHours, flagged } from './notificationRules';
+import { askQuietHours, directReminderDestination, flagged } from './notificationRules';
 import type {
 	TrackerDestination,
 	TrackerNotificationOptions
@@ -9,12 +9,7 @@ import type { DeliveryAttempt, TrackerNotificationState } from './notificationSt
 import { nextAttention } from './attentionBatch';
 import { nextCallback, scanCallbacks } from './callbackDelivery';
 import { completeDelivery } from './completeDelivery';
-import {
-	currentDirectAttempt,
-	directReminderDestination,
-	nextDirectReminder,
-	scanDirectReminders
-} from './directReminders';
+import { currentDirectAttempt, nextDirectReminder, scanDirectReminders } from './directReminders';
 import {
 	currentScheduledAttempt,
 	nextScheduledReminder,

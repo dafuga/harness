@@ -85,7 +85,6 @@
 			"flagWebhook",
 			"webhookRequest",
 			"callbackRequest",
-			"directReminderDestination",
 			"scanDirectReminders",
 			"nextDirectReminder",
 			"currentDirectAttempt",
@@ -104,6 +103,7 @@
 			"parkedUntil",
 			"holdRegularReminder",
 			"readyRows",
+			"directReminderDestination",
 			"dueForDirectReminder",
 			"CallbackEvent",
 			"AttentionKind",
@@ -438,11 +438,6 @@
 				"description": "Item ID and ordered completion events for the command environment. Omit for a non-item payload."
 			},
 			{
-				"name": "directReminderDestination.options",
-				"type": "TrackerNotificationOptions",
-				"required": true
-			},
-			{
 				"name": "scanDirectReminders.state",
 				"type": "TrackerNotificationState",
 				"required": true,
@@ -639,6 +634,11 @@
 				"type": "(row: T) => boolean",
 				"required": true,
 				"description": "Predicate selecting rows that still need processing."
+			},
+			{
+				"name": "directReminderDestination.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
 			},
 			{
 				"name": "dueForDirectReminder.item",
@@ -1788,24 +1788,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "directReminderDestination",
-				"inputs": [
-					{
-						"name": "directReminderDestination.options",
-						"type": "TrackerNotificationOptions",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "directReminderDestination",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "scanDirectReminders",
 				"inputs": [
 					{
@@ -2266,6 +2248,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "directReminderDestination",
+				"inputs": [
+					{
+						"name": "directReminderDestination.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "directReminderDestination",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "dueForDirectReminder",
