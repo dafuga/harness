@@ -52,7 +52,7 @@ agents have passwordless sudo still requires a separately controlled Vault VM.
 
 Setup reports local engine readiness. Browser sandbox, requester isolation and
 synthetic provider qualification are verified separately before provider use.
-The Mac installer can resume journals from the MB2 synthetic executor run.\nTo qualify the installer in a macOS operator session, run\n`bash test/fixtures/vault-setup/macos-smoke.sh`. It uses a fresh temporary account\nand private VM profile, checks repair and removal, and deletes its test data.
+The Mac installer can resume journals from the MB2 synthetic executor run.\nTo qualify the installer in a macOS operator session, run\n`bash test/support/vault-setup/macos-smoke.sh`. It uses a fresh temporary account\nand private VM profile, checks repair and removal, and deletes its test data.
 On MB2, `mb2-cross-user.sh` qualifies the existing synthetic SMS fixture on the dedicated
 engine. It runs the fixture supervisor as `harness-vault` and uses the unprivileged system test
 identity `_www` to inspect the roster through the actual Chromium lease. The owner UID is refused

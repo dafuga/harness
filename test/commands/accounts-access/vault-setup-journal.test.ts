@@ -20,7 +20,7 @@ async function fixture() {
 	const run = (action: 'setup' | 'remove', fault = '') =>
 		spawnSync(
 			'/bin/bash',
-			['test/fixtures/vault-setup/transaction.sh', common, path, action, fault],
+			['test/support/vault-setup/transaction.sh', common, path, action, fault],
 			{
 				encoding: 'utf8'
 			}
