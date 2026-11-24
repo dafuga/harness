@@ -79,3 +79,18 @@ test('native chat refuses an outdated question and calls only the fixed Tracker 
 		})
 	);
 });
+
+test('posted Tracker notes are not shown as agent replies; Hub messages are shown as Daniel', () => {
+	const work = {
+		...base,
+		notes_log: [
+			{ text: 'Tests pass on MB2', at: '2026-11-21T22:10:00Z' },
+			{ text: 'Hub message: please keep going', at: '2026-11-21T22:11:00Z' }
+		]
+	};
+	const { agents } = buildHomeSnapshot({ items: [work], runs: [], machines: [] }, noProviders, now);
+	expect(agents[0]?.messages.map(({ text, from }) => ({ text, from }))).toEqual([
+		{ text: 'Tests pass on MB2', from: 'tracker' },
+		{ text: 'please keep going', from: 'you' }
+	]);
+});

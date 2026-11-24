@@ -7,6 +7,8 @@ import type {
 import type { HomeAgent, HomeMessage } from './hubHome.types';
 import { homeText, openQuestion } from './homeTrackerText';
 
+const HUB_MESSAGE_PREFIX = 'Hub message: ';
+
 const precedence: Record<HomeAgent['state'], number> = {
 	'needs-you': 0,
 	working: 1,
@@ -17,8 +19,9 @@ const precedence: Record<HomeAgent['state'], number> = {
 function messages(item: TrackerItemRecord | undefined, question: string | null): HomeMessage[] {
 	if (!item) return [];
 	const notes: HomeMessage[] = (item.notes_log ?? []).slice(-5).map((note, index) => {
-		const from = note.text.startsWith('Hub message: ') ? 'you' : 'agent';
-		const text = from === 'you' ? note.text.slice('Hub message: '.length) : note.text;
+		const delivered = note.text.startsWith(HUB_MESSAGE_PREFIX);
+		const text = delivered ? note.text.slice(HUB_MESSAGE_PREFIX.length) : note.text;
+		const from: HomeMessage['from'] = delivered ? 'you' : 'tracker';
 		return {
 			id: `note-${note.at}-${index}`,
 			text: homeText(text, 900) ?? '',
@@ -44,16 +47,28 @@ function messages(item: TrackerItemRecord | undefined, question: string | null):
 	return notes;
 }
 
-function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
+function activeItemId(card: OverviewCard): string | undefined {
 	const active =
 		card.items.find((item) => item.live) ??
 		card.items.find((item) => ['in_progress', 'blocked'].includes(item.status));
-	const id = card.attention?.item.id ?? active?.id;
-	const item = sources.items.find((candidate) => candidate.id === id);
+	return card.attention?.item.id ?? active?.id;
+}
+
+function machineFor(
+	sources: TrackerSources,
+	id: string | undefined,
+	item: TrackerItemRecord | undefined
+): string | null | undefined {
 	const run = sources.runs.find(
 		(entry) => entry.item_id === id && entry.ended_at === null && entry.state === 'running'
 	);
-	const machine = run?.node ?? item?.computer;
+	return run?.node ?? item?.computer;
+}
+
+function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
+	const id = activeItemId(card);
+	const item = sources.items.find((candidate) => candidate.id === id);
+	const machine = machineFor(sources, id, item);
 	const unavailable =
 		sources.machines.find((entry) => entry.node === machine)?.status === 'offline';
 	const state = agentState(card, Boolean(unavailable));
