@@ -1,4 +1,5 @@
 import { expect, test } from 'vitest';
+import { measureWorkload } from '../../support/measureWorkload';
 import {
 	classifyTrackerTask,
 	floorReasons,
@@ -47,11 +48,13 @@ test('uses the agent as the project fallback and checks the visual title', () =>
 	expect(isVisualInspection({ title: 'Generate a mockup', notes: 'Review it' })).toBe(false);
 });
 
-test('assigns larger, harder, or operational work higher Sol effort', () => {
-	expect(solEffort('docs', 'small')).toBe('low');
-	expect(solEffort('feature', 'small')).toBe('medium');
-	expect(solEffort('refactor', 'small')).toBe('high');
-	expect(solEffort('bugfix', 'medium')).toBe('high');
-	expect(solEffort('ops', 'small')).toBe('xhigh');
-	expect(solEffort('docs', 'large')).toBe('xhigh');
-});
+test('uses medium for routine work and high for hard work', () =>
+	measureWorkload('function.agents-providers-classify-tracker-task', 'sol-effort-by-task', () => {
+		expect(solEffort('docs', 'small')).toBe('medium');
+		expect(solEffort('feature', 'small')).toBe('medium');
+		expect(solEffort('refactor', 'small')).toBe('medium');
+		expect(solEffort('bugfix', 'medium')).toBe('medium');
+		expect(solEffort('ops', 'small')).toBe('medium');
+		expect(solEffort('docs', 'large')).toBe('medium');
+		expect(solEffort('hard', 'small')).toBe('high');
+	}));
