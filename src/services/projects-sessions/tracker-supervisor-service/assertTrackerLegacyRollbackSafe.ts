@@ -1,7 +1,7 @@
 // @harness-uid u_46eur7qage
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { assertLegacyRecurringRollbackSafe } from '../../../repositories/projects-sessions/TrackerRecurringRepository';
-import { assertLegacyDispatchRollbackSafe } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
+import { assertLegacyDispatchRollbackSafe } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchRunRows';
 
 /** Inspect the stopped database without initializing any legacy or native worker schema. */
 export function assertTrackerLegacyRollbackSafe(database: SqliteDatabase): void {

@@ -45,9 +45,26 @@ const columns = [
 	'credits_balance'
 ] as const;
 const reservationPrefix = 'harness_dispatch_run:';
-const legacyUnstarted = `r.state = 'queued' AND r.started_at IS NULL AND r.ended_at IS NULL
+export const legacyUnstarted = `r.state = 'queued' AND r.started_at IS NULL AND r.ended_at IS NULL
 	AND r.tmux IS NULL AND r.session_name IS NULL AND r.session_id IS NULL
 	AND r.watch_pane IS NULL AND r.exit_code IS NULL`;
+
+export function assertLegacyDispatchRollbackSafe(database: SqliteDatabase): void {
+	const blocker = database
+		.prepare(
+			`SELECT r.id, r.state FROM runs r
+		JOIN meta m ON m.k = '${reservationPrefix}' || r.id
+		WHERE r.state IN ('queued','running','verifying')
+		OR (r.outcome = 'blocked' AND r.session_id IS NOT NULL)
+		ORDER BY r.id LIMIT 1`
+		)
+		.get() as { id: number; state: string } | undefined;
+	if (blocker)
+		throw new DOMException(
+			`Tracker rollback blocked by run ${blocker.id} (${blocker.state})`,
+			'InvalidStateError'
+		);
+}
 
 export function dispatchRunRows(
 	database: SqliteDatabase,
@@ -82,22 +99,6 @@ export function legacyDispatchRuns(database: SqliteDatabase, node: string, cutof
 			OR (${legacyUnstarted} AND r.queued_at <= ?))`,
 		cutoff
 	).map((row) => receipt(row, node));
-}
-
-export function retireLegacyDispatchRun(
-	database: SqliteDatabase,
-	run: TrackerRunReceipt,
-	now: number
-): void {
-	database
-		.prepare(
-			`UPDATE runs AS r SET state = 'finished', outcome = 'abandoned',
-			failure_reason = 'legacy launch expired before startup', ended_at = ?
-		WHERE r.id = ? AND r.item_id = ? AND r.auto_token = ? AND r.queued_at = ?
-		AND ${legacyUnstarted}
-		AND NOT EXISTS (SELECT 1 FROM meta WHERE k = '${reservationPrefix}' || r.id)`
-		)
-		.run(now, run.id, run.item_id, run.auto_token, run.queued_at);
 }
 
 export function adoptLegacyDispatchRun(

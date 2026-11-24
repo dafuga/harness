@@ -1,11 +1,15 @@
 // @harness-uid u_bl6xl2h4a3
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import {
-	hasLegacyStartupEvidence,
+	legacyTrackerStartupProbe,
 	trackerLegacyExitReceipt,
 	trackerLegacySession
 } from './trackerLegacyExitReceipt';
-import { finishedTrackerSession, trackerHostInventory } from './trackerHostInventory';
+import {
+	finishedTrackerSession,
+	hasManualTrackerPane,
+	trackerHostInventory
+} from './trackerHostInventory';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import {
@@ -61,32 +65,21 @@ export function trackerHostRunner(
 				return result;
 			},
 			legacySession,
-			async confirmLegacyNeverStarted(run: TrackerRunReceipt, signal: AbortSignal) {
-				if (
-					!legacyRunDirectory ||
-					!tmux ||
-					hasLegacyStartupEvidence(legacyRunDirectory, run, panes)
-				)
-					return false;
-				return (await driver.confirmNeverStarted?.(run, signal)) === true;
-			},
+			confirmLegacyNeverStarted: legacyTrackerStartupProbe(
+				driver,
+				tmux && legacyRunDirectory,
+				() => panes
+			),
 			async observe(run: TrackerRunReceipt, key: string, signal: AbortSignal) {
 				const event = recordedHostEvent(run, { key, sessions, items, legacySession });
 				return withTrackerRunUsage(event, { driver, run, items, now: now() }, signal);
 			},
 			confirmNeverStarted: driver.confirmNeverStarted?.bind(driver)
 		},
-		sessions(itemId: string) {
-			return {
-				openSession: panes.some(
-					(pane) =>
-						pane.live &&
-						/^auto-[a-z0-9]{6,10}$/.test(pane.name) &&
-						itemId.startsWith(pane.name.slice(5))
-				),
-				activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
-			};
-		}
+		sessions: (itemId: string) => ({
+			openSession: hasManualTrackerPane(panes, itemId),
+			activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
+		})
 	};
 }
 

@@ -38,20 +38,21 @@ export function trackerNodeRuntime(
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
 		manualLaunch: true,
-		...(config.role === 'hub' || config.peer
-			? {
-					syncResponder: {
-						auth: new TrackerSyncAuthService(secret),
-						...(config.role === 'hub' && { machines: trackerFleetMachineStore() })
-					}
-				}
-			: {}),
+		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
 		validateModel(model) {
 			parseTrackerModelSpec(String(model), ladder);
 		},
 		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
+	};
+}
+
+function configuredSyncResponder(config: TrackerNodeConfig, secret: string) {
+	if (config.role === 'spoke' && !config.peer) return undefined;
+	return {
+		auth: new TrackerSyncAuthService(secret),
+		...(config.role === 'hub' && { machines: trackerFleetMachineStore() })
 	};
 }
 

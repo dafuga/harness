@@ -49,6 +49,13 @@ export async function trackerHostInventory(
 	return { sessions: [...sessions, ...direct], panes };
 }
 
+export function hasManualTrackerPane(panes: readonly WatchdogPane[], itemId: string) {
+	return panes.some(
+		(pane) =>
+			pane.live && /^auto-[a-z0-9]{6,10}$/.test(pane.name) && itemId.startsWith(pane.name.slice(5))
+	);
+}
+
 function legacyTmuxSession(pane: WatchdogPane): TrackerHostSession | undefined {
 	const match = runSessionName.exec(pane.name);
 	if (!pane.runnerSocket || !match || !pane.ready || !pane.live) return undefined;

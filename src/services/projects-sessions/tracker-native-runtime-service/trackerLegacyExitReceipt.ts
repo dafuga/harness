@@ -13,7 +13,7 @@ import { join } from 'node:path';
 import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
 import { attemptKey } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
-import type { TrackerHostSession } from './trackerHostLaunch.types';
+import type { TrackerHostLaunchPort, TrackerHostSession } from './trackerHostLaunch.types';
 
 export function trackerLegacyExitReceipt(directory: string) {
 	const root = realpathSync(directory);
@@ -21,7 +21,18 @@ export function trackerLegacyExitReceipt(directory: string) {
 	return (run: TrackerRunReceipt): TrackerHostSession | undefined => legacyExit(root, run);
 }
 
-export function hasLegacyStartupEvidence(
+export function legacyTrackerStartupProbe(
+	driver: TrackerHostLaunchPort,
+	directory: string | undefined,
+	inventory: () => readonly WatchdogPane[]
+) {
+	if (!directory || !driver.confirmNeverStarted) return undefined;
+	return async (run: TrackerRunReceipt, signal: AbortSignal) =>
+		!hasLegacyStartupEvidence(directory, run, inventory()) &&
+		(await driver.confirmNeverStarted?.(run, signal)) === true;
+}
+
+function hasLegacyStartupEvidence(
 	root: string,
 	run: TrackerRunReceipt,
 	panes: readonly WatchdogPane[]
