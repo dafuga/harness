@@ -83,15 +83,37 @@ async function sendNativeTracker(
 			'x-harness-tracker-role': config.role
 		},
 		redirect: 'error',
-		signal: AbortSignal.timeout(request.path.startsWith('/adapters/run?') ? 120_000 : 15_000)
+		signal: AbortSignal.timeout(trackerRequestTimeout(request.path))
 	});
 	const data = response.headers.get('content-type')?.startsWith('application/json')
 		? await response.json()
 		: await response.text();
 	if (!response.ok) return printResponseError(response.status, data);
+	if (request.path.endsWith('/launch?outcome=run')) return renderLaunch(data, Boolean(values.json));
 	if (command === 'check') return renderCheck(data, Boolean(values.json));
 	if (values.json) console.log(JSON.stringify(data, null, 2));
 	else renderNativeTracker(command, data, { quiet: Boolean(values.quiet), first: words[0] });
+	return 0;
+}
+
+function trackerRequestTimeout(path: string) {
+	if (path.startsWith('/adapters/run?')) return 120_000;
+	return path.endsWith('/launch?outcome=run') ? 30_000 : 15_000;
+}
+
+function renderLaunch(
+	data: NativeTrackerItem & { run?: { id: number; state: string; node: string } },
+	json: boolean
+) {
+	const run = data?.run;
+	if (!Number.isSafeInteger(run?.id) || !run?.state || !run.node) {
+		console.error(
+			'tracker: native launcher returned no run confirmation. Inspect the pending request with tracker show.'
+		);
+		return 1;
+	}
+	if (json) console.log(JSON.stringify(data, null, 2));
+	else console.log(`run #${run.id} ${run.state} on ${run.node}: ${formatNativeTrackerItem(data)}`);
 	return 0;
 }
 

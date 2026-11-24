@@ -40,9 +40,13 @@ export function composeTrackerTelemetry(
 	if (!link) return { tick: undefined, samples: undefined };
 	const now = options.now ?? Date.now;
 	let nextPoll = -Infinity;
+	let previousLaunchState = '';
 	let samples: readonly unknown[] = [];
 	const tick = async (signal: AbortSignal) => {
-		if (now() < nextPoll) return;
+		const active = runs.activeLocal();
+		const runner = scheduler?.runnerStatus() ?? { enabled: false };
+		const launchState = launchSampleRevision(runner, active, runs.latestLocalRunId());
+		if (now() < nextPoll && launchState === previousLaunchState) return;
 		nextPoll = now() + 60_000;
 		const client = new TrackerSpokeSyncService({
 			...link,
@@ -52,17 +56,38 @@ export function composeTrackerTelemetry(
 		const sample = telemetry?.sample() ?? {
 			at: new Date(now()).toISOString(),
 			runner: {
-				...(scheduler?.runnerStatus() ?? { enabled: false }),
-				active: runs.activeLocal().filter(({ state }) => state !== 'queued').length
+				...runner,
+				active: active.filter(({ state }) => state !== 'queued').length
 			}
 		};
 		const received = await client.exchangeMachine(sample, runs.exportLocal());
 		signal.throwIfAborted();
 		if (received.run_history) runs.importHubHistory(received.run_history);
+		previousLaunchState = launchState;
 		samples = received.machines;
 		telemetry?.onMachines?.(samples);
 	};
 	return { tick, samples: () => samples };
+}
+
+function launchSampleRevision(
+	runner: {
+		enabled: boolean;
+		last_error?: string | null;
+		waiting?: unknown;
+		waiting_tokens?: unknown;
+	},
+	active: ReturnType<TrackerRunReadRepository['activeLocal']>,
+	latestId: number | undefined
+) {
+	return JSON.stringify([
+		runner.enabled,
+		runner.last_error,
+		runner.waiting,
+		runner.waiting_tokens,
+		latestId,
+		active.map(({ id, state }) => [id, state])
+	]);
 }
 
 export const trackerRunnerSample = z.object({
@@ -71,10 +96,11 @@ export const trackerRunnerSample = z.object({
 	last_error: z.string().nullish(),
 	waiting_on: z.string().nullish(),
 	active: z.int().nonnegative().nullish(),
-	waiting: z.record(z.string(), z.string()).optional()
+	waiting: z.record(z.string(), z.string()).optional(),
+	waiting_tokens: z.record(z.string(), z.string()).optional()
 });
 
-const trackerMachineSample = z.object({
+export const trackerMachineSample = z.object({
 	node: z.string().min(1).max(128),
 	at: z.iso.datetime(),
 	runner: trackerRunnerSample

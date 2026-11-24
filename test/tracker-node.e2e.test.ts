@@ -62,7 +62,7 @@ test('foreground hub and spoke converge over signed loopback and route compatibi
 		}
 		expect(existsSync(join(root, 'legacy-used'))).toBe(false);
 	});
-}, 45_000);
+}, 70_000);
 
 function seedSpokeRun({ config }: TrackerNodeFixture) {
 	const database = new DatabaseSync(config.database);

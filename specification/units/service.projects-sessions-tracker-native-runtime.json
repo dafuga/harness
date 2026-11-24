@@ -47,6 +47,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptPatterns.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptScan.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPeer.ts",
@@ -85,6 +86,7 @@
 			"composeTrackerLinks",
 			"composeTrackerTelemetry",
 			"trackerRunnerSample",
+			"trackerMachineSample",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
 			"readTrackerDuePreview",
@@ -156,6 +158,8 @@
 			"trackerTranscriptMatches",
 			"trackerTranscriptScan",
 			"transcriptFiles",
+			"launchWithoutRunKind",
+			"watchLaunchRequests",
 			"sampleTrackerContexts",
 			"TrackerContextSample",
 			"TrackerTranscriptRecord",
@@ -634,7 +638,7 @@
 			},
 			{
 				"name": "recordWatchdogAlert.input",
-				"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; localOnly?: boolean; }",
+				"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; host?: string; localOnly?: boolean; }",
 				"required": true
 			},
 			{
@@ -873,6 +877,16 @@
 				"type": "number",
 				"required": false,
 				"default": 0
+			},
+			{
+				"name": "watchLaunchRequests.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "watchLaunchRequests.now",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "sampleTrackerContexts.panes",
@@ -2070,7 +2084,7 @@
 					},
 					{
 						"name": "recordWatchdogAlert.input",
-						"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; localOnly?: boolean; }",
+						"type": "{ itemId: string; kind: string; reason: string; identity: string; session?: string | null; key?: string; host?: string; localOnly?: boolean; }",
 						"required": true
 					},
 					{
@@ -2554,6 +2568,29 @@
 					{
 						"name": "transcriptFiles",
 						"type": "AsyncGenerator<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchLaunchRequests",
+				"inputs": [
+					{
+						"name": "watchLaunchRequests.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "watchLaunchRequests.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchLaunchRequests",
+						"type": "boolean"
 					}
 				],
 				"errors": [],

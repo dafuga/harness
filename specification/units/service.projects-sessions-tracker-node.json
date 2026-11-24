@@ -13,6 +13,7 @@
 			"src/services/projects-sessions/TrackerNodeService.types.ts",
 			"src/services/projects-sessions/tracker-node-service/TrackerNodeStartupError.ts",
 			"src/services/projects-sessions/tracker-node-service/TrackerNodeTransportError.ts",
+			"src/services/projects-sessions/tracker-node-service/confirmTrackerLaunch.ts",
 			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerNodeInspection.ts",
@@ -31,6 +32,7 @@
 			"TrackerNodeOwnership",
 			"TrackerNodeStartupError",
 			"TrackerNodeTransportError",
+			"trackerLaunchAwareItemResponse",
 			"holdLegacySupervisorSocket",
 			"readTrackerBackupList",
 			"readTrackerNodeInspection",
@@ -59,6 +61,16 @@
 			{
 				"name": "TrackerNodeService.start.config",
 				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchAwareItemResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchAwareItemResponse.runtime",
+				"type": "TrackerNativeRuntimeService",
 				"required": true
 			},
 			{
@@ -218,6 +230,10 @@
 				"type": "Promise<TrackerNodeOwner>"
 			},
 			{
+				"name": "trackerLaunchAwareItemResponse",
+				"type": "unknown"
+			},
+			{
 				"name": "holdLegacySupervisorSocket",
 				"type": "Promise<()"
 			},
@@ -327,6 +343,29 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLaunchAwareItemResponse",
+				"inputs": [
+					{
+						"name": "trackerLaunchAwareItemResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchAwareItemResponse.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLaunchAwareItemResponse",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -783,6 +822,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-adapter-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
 			"via": "import",
 			"origin": "derived"
 		},

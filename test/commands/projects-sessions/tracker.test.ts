@@ -11,6 +11,7 @@ import {
 	fixtureTime,
 	fixtureItem,
 	fixtureTitle,
+	verifyNativeLaunchReceipts,
 	verifyTrackerReminderScheduling
 } from '../../support/trackerCliCompatibilityFixture';
 
@@ -79,7 +80,8 @@ test('native Tracker forwards existing run, report and model selection commands'
 	}));
 
 async function verifyCodexReportRange() {
-	const { database, run } = await compatibilityFixture();
+	const fixture = await compatibilityFixture();
+	const { database, run } = fixture;
 	database
 		.prepare(
 			`INSERT INTO runs (item_id, model, rung, cli, state, outcome, queued_at,
@@ -92,6 +94,7 @@ async function verifyCodexReportRange() {
 	expect(out).toContain('$0.71–$1.37');
 	expect(out).toContain('1/1');
 	expect(out).toContain('API-equivalent estimate');
+	await verifyNativeLaunchReceipts(fixture);
 }
 
 test('native show prints the full human item and returns the enriched JSON for a prefix', async () => {

@@ -1,6 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
+import { trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
 import { readTrackerNodeInspection } from './readTrackerNodeInspection';
 
 const host = '127.0.0.1';
@@ -17,7 +18,7 @@ export function bindTrackerListener(
 		hostname: host,
 		port,
 		reusePort: false,
-		idleTimeout: type === 'sync' ? 70 : 15,
+		idleTimeout: type === 'sync' ? 70 : 30,
 		fetch(request, server) {
 			const origin = `http://${host}:${server.port}`;
 			if (!allowedLocalRequest(request, origin, type))
@@ -127,7 +128,7 @@ function trackerOperationalApi(
 		default: {
 			const inspection =
 				request.method === 'GET' ? readTrackerNodeInspection(path, runtime, supervisor) : undefined;
-			return inspection ?? runtime.items.handle(request);
+			return inspection ?? trackerLaunchAwareItemResponse(request, runtime);
 		}
 	}
 }

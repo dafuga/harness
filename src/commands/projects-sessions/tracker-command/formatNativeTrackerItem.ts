@@ -64,7 +64,7 @@ export function nativeItemPrefix(
 	item: NativeTrackerItem
 ) {
 	if (command === 'launch')
-		return first === 'on' || first === 'off' ? `due launch ${first}: ` : 'auto-launch on: ';
+		return first === 'on' || first === 'off' ? `due launch ${first}: ` : 'launch: ';
 	if (command === 'done' && item.last_result && item.every)
 		return `occurrence ${item.last_result.occurrence} ${item.last_result.status}: `;
 	return commandPrefixes.get(command) ?? `${command}: `;
