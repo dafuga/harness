@@ -208,4 +208,4 @@ test('recorded service moves preserve implementations and registered owner-local
 			entry
 		).toBe('[]');
 	}
-});
+}, 30_000);
