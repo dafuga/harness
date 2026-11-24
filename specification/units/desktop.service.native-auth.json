@@ -44,7 +44,8 @@
 			{
 				"name": "NativeAuthService.deployApprovals.input",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"unknownReason": "The local IPC router supplies untrusted wire fields. Empty fields list approvals, and nonempty fields must pass the exact approval decision schema before reaching the Hub."
 			}
 		],
 		"outputs": [
@@ -257,7 +258,8 @@
 					{
 						"name": "NativeAuthService.deployApprovals.input",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"unknownReason": "The local IPC router supplies untrusted wire fields. Empty fields list approvals, and nonempty fields must pass the exact approval decision schema before reaching the Hub."
 					}
 				],
 				"outputs": [
