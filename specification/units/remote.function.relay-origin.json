@@ -58,7 +58,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidRelayAddressError",
 				"type": "thrown",
 				"description": "relaySocketUrl throws this Error when relayOrigin(origin) returns null or the host ID fails the 40-character lowercase hexadecimal pattern; its message is Invalid relay address."
 			}
@@ -118,7 +118,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidRelayAddressError",
 						"type": "thrown",
 						"description": "relaySocketUrl throws this Error when relayOrigin(origin) returns null or the host ID fails the 40-character lowercase hexadecimal pattern; its message is Invalid relay address."
 					}

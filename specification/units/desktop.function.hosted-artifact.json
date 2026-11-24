@@ -47,7 +47,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hosted artifact type, integrity, or size failure",
 				"type": "thrown",
 				"description": "Unsupported base media types, content that cannot be served under the declared type (including invalid UTF-8 or invalid JSON declared as JSON), SHA-256 mismatches and artifacts over 11 MiB reject the promise. Digest failures use the recorded-file message, oversize failures preserve the size error, and other content/type failures use the unsupported-kind message."
 			}
@@ -86,7 +86,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted artifact type, integrity, or size failure",
 						"type": "thrown",
 						"description": "Unsupported base media types, content that cannot be served under the declared type (including invalid UTF-8 or invalid JSON declared as JSON), SHA-256 mismatches and artifacts over 11 MiB reject the promise. Digest failures use the recorded-file message, oversize failures preserve the size error, and other content/type failures use the unsupported-kind message."
 					}

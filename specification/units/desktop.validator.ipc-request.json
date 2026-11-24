@@ -33,7 +33,8 @@
 					null,
 					{},
 					[]
-				]
+				],
+				"unknownReason": "The IPC channel selects the schema that determines whether the incoming payload is valid."
 			}
 		],
 		"outputs": [
@@ -48,7 +49,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnknownDesktopOperationError",
 				"type": "thrown",
 				"description": "Thrown with message `Unknown desktop operation.` when `channel` is not among the values in `channels`. Exceptions from delegated parsing or project-context methods are not caught by this method."
 			}
@@ -74,7 +75,8 @@
 							null,
 							{},
 							[]
-						]
+						],
+						"unknownReason": "The IPC channel selects the schema that determines whether the incoming payload is valid."
 					}
 				],
 				"outputs": [
@@ -89,7 +91,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnknownDesktopOperationError",
 						"type": "thrown",
 						"description": "Thrown with message `Unknown desktop operation.` when `channel` is not among the values in `channels`. Exceptions from delegated parsing or project-context methods are not caught by this method."
 					}

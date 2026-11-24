@@ -17,7 +17,7 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Brand asset directory or file write failure",
 				"type": "thrown",
 				"description": "A Node.js file-system error (an Error whose code property names the failure) that mkdir or writeFile from node:fs/promises rejects with, for example when a static folder cannot be created or a folder on the iOS icon path does not already exist, because only the static folders are created. Nothing catches it, so the script stops and files written earlier stay on disk."
 			},

@@ -67,7 +67,7 @@
 				"description": "Throws an Error when artifactMedia cannot serve the capture kind or bytes: screenshots need a PNG or JPEG signature, recorded audio needs a recognized matching signature, and results need UTF-8 text without NUL. A result recorded as JSON but containing other valid text is served as plain text."
 			},
 			{
-				"name": "Error",
+				"name": "StoredCaptureCheckError",
 				"type": "thrown",
 				"description": "Throws an Error when capture.media is null or bytes are undefined, when bytes.length exceeds artifactLimit, or when the recomputed SHA-256 differs from capture.sha256."
 			}
@@ -107,7 +107,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Artifact availability, size, or integrity failure",
 						"type": "thrown",
 						"description": "Rejects with an Error when bytes or stored media are unavailable, the bytes exceed 11 MiB, their SHA-256 differs from the recorded value, or artifactMedia cannot serve the capture. Media selection occurs only after the availability, size, and hash checks pass."
 					}

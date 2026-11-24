@@ -128,7 +128,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Plan commit filesystem or Git process failure",
 				"type": "thrown",
 				"description": "Node system errors (for example EACCES) from filesystem calls and spawned Git processes, such as copyFile, rename or a spawn failure, propagate unchanged, and a rollback step that fails replaces the original error."
 			},
@@ -198,7 +198,7 @@
 						"description": "Error objects with a planning code in their code property: repository-busy when index.lock cannot be created exclusively (any open failure, including a missing Git directory), conflict when HEAD names a different branch than context.branch, unsafe-path from safePath, and git-failed from a non-zero Git exit such as a failed update-ref compare-and-swap; no ExpectedCliError class is thrown."
 					},
 					{
-						"name": "Error",
+						"name": "Plan backup, write, or rollback filesystem failure",
 						"type": "thrown",
 						"description": "Node system errors from filesystem calls in planCommit (backupFiles reads other than ENOENT, the index copies, materialize writes, closing the lock handle, copyFile into the lock, rename and removing the lock) and from spawn failures; a rollback step that fails replaces the original error."
 					}
@@ -224,7 +224,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "temporary probe cleanup failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "Node system error from removing the temporary probe directory in the finally block; it replaces a git-failed error that was already being thrown, because every failure inside the probe is converted to git-failed."
 					},
@@ -279,7 +279,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsafe plan path, Git commit, or filesystem failure",
 						"type": "thrown",
 						"description": "Error objects with a planning code in their code property: unsafe-path from safePath and git-failed from a non-zero Git exit; plus Node system errors from lstat or spawn failures. Entries staged before the failing one remain in the supplied index."
 					}

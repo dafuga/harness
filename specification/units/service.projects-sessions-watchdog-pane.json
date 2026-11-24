@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/WatchdogPaneService.ts",
-			"src/services/projects-sessions/WatchdogPaneService.types.ts"
+			"src/services/projects-sessions/WatchdogPaneService.types.ts",
+			"src/services/projects-sessions/watchdog-pane-service/codexStartupMenus.ts"
 		],
 		"symbols": [
 			"WatchdogPaneService",
@@ -27,7 +28,8 @@
 			"WatchdogNote",
 			"WatchdogItem",
 			"WatchdogRun",
-			"WatchdogScan"
+			"WatchdogScan",
+			"codexStartupMenus"
 		]
 	},
 	"contract": {

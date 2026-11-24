@@ -59,7 +59,8 @@
 						"enabled": true
 					},
 					["first", "second"]
-				]
+				],
+				"unknownReason": "The selected endpoint determines the body shape; this method performs JSON serialization."
 			},
 			{
 				"name": "HostedHttpAdapter.json.path",
@@ -270,7 +271,8 @@
 								"enabled": true
 							},
 							["first", "second"]
-						]
+						],
+						"unknownReason": "The selected endpoint determines the body shape; this method performs JSON serialization."
 					}
 				],
 				"outputs": [
@@ -517,7 +519,7 @@
 						"description": "Thrown by new URL(options.origin) when the origin is not an absolute URL string, and by reading options.origin when options is null or undefined."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidHostedOriginError",
 						"type": "thrown",
 						"description": "Thrown with 'Use an exact HTTPS hosted origin.' when the origin is not https (or http for localhost, 127.0.0.1 or [::1]) or carries a username, password, path other than '/', query or fragment."
 					}

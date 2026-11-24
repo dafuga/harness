@@ -18,7 +18,8 @@
 				"name": "planData.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-compatible value to serialize recursively."
+				"description": "JSON-compatible value to serialize recursively.",
+				"unknownReason": "The planning serializer accepts values of arbitrary JSON-compatible shape."
 			},
 			{
 				"name": "hash.value",
@@ -44,7 +45,8 @@
 				"name": "json.value",
 				"type": "unknown",
 				"required": true,
-				"description": "JSON-compatible value to serialize with a trailing newline."
+				"description": "JSON-compatible value to serialize with a trailing newline.",
+				"unknownReason": "The formatter accepts values of arbitrary JSON-compatible shape."
 			},
 			{
 				"name": "parse.value",
@@ -112,7 +114,8 @@
 						"name": "planData.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-compatible value to serialize recursively."
+						"description": "JSON-compatible value to serialize recursively.",
+						"unknownReason": "The planning serializer accepts values of arbitrary JSON-compatible shape."
 					}
 				],
 				"outputs": [
@@ -198,7 +201,8 @@
 						"name": "json.value",
 						"type": "unknown",
 						"required": true,
-						"description": "JSON-compatible value to serialize with a trailing newline."
+						"description": "JSON-compatible value to serialize with a trailing newline.",
+						"unknownReason": "The formatter accepts values of arbitrary JSON-compatible shape."
 					}
 				],
 				"outputs": [

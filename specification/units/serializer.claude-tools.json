@@ -70,7 +70,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnsupportedToolShapeError",
 				"type": "thrown",
 				"description": "Thrown while creating a tool when its definition type is neither function nor custom. The message is Unsupported Codex tool shape."
 			}
@@ -120,7 +120,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnsupportedToolShapeError",
 						"type": "thrown",
 						"description": "Thrown while creating a tool when its definition type is neither function nor custom. The message is Unsupported Codex tool shape."
 					}

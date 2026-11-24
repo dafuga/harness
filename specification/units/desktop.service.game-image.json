@@ -121,7 +121,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Game image document, checkpoint, or generation failure",
 				"type": "thrown",
 				"description": "An Error is thrown when the document or selected checkpoint is invalid, the view is not ready, the saved game revision is stale, another game operation is active, or the assembled prompt exceeds 20,000 characters."
 			}
@@ -191,7 +191,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Game image document, checkpoint, or generation failure",
 						"type": "thrown",
 						"description": "An Error is thrown when the document or selected checkpoint is invalid, the view is not ready, the saved game revision is stale, another game operation is active, or the assembled prompt exceeds 20,000 characters."
 					}

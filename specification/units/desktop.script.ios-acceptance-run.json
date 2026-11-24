@@ -254,7 +254,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unsafe fixture origin or refused fixture command",
 				"type": "thrown",
 				"description": "Thrown when the fixture control origin is not on this machine or the fixture responds with a non-OK status. The response status is included in the refusal error message."
 			}
@@ -337,7 +337,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsafe fixture origin or refused fixture command",
 						"type": "thrown",
 						"description": "Thrown when the fixture control origin is not on this machine or the fixture responds with a non-OK status. The response status is included in the refusal error message."
 					}
@@ -370,7 +370,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "control failure (ios-acceptance-run)",
 						"type": "thrown",
 						"description": "Propagates the Error from control when the fixture control origin is not local or the pairing endpoint responds with a non-OK status."
 					}

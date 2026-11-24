@@ -1,3 +1,4 @@
+// @harness-uid u_eeronpe3dc
 /**
  * On a phone the categories are one row that scrolls sideways. Keep the active category in view as
  * the page opens and as the category changes. Only the row moves, never the page.

@@ -80,7 +80,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid module catalog, resource, or output path",
 				"type": "thrown",
 				"description": "Thrown directly when the catalog reports gaps, the module has no installed entry, the resource type is unknown, a resource with the same module, type and PascalCase-equal name already exists, or a file path or body contains a {{placeholder}} other than name, group, PascalName, camelName, snakeName or kebabName. Errors from the catalog, module tree, install, package plan, group plan, scaffold and write steps propagate unchanged."
 			},
@@ -159,7 +159,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid module catalog, resource, or output path",
 						"type": "thrown",
 						"description": "Thrown directly when the catalog reports gaps, the module has no installed entry, the resource type is unknown, a resource with the same module, type and PascalCase-equal name already exists, or a file path or body contains a {{placeholder}} other than name, group, PascalName, camelName, snakeName or kebabName. Errors from the catalog, module tree, install, package plan, group plan, scaffold and write steps propagate unchanged."
 					},

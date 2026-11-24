@@ -238,7 +238,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Task worktree revision, ownership, or Git failure",
 				"type": "thrown",
 				"description": "Git command failures and task source, changed-path or worktree repository mismatches reject with Error while preparing or snapshotting a workspace."
 			}
@@ -349,7 +349,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "GitAdapter.run failure",
 						"type": "thrown",
 						"description": "GitAdapter.run rejects with Error when rev-parse --git-common-dir fails."
 					}
@@ -536,7 +536,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Task source revision, changed path, or Git failure",
 						"type": "thrown",
 						"description": "Rejects with Error when Git commands fail, when taskWrites finds a changed source commit or a changed path outside task.module.files, or when checkpoint detects a changed repository or source."
 					}

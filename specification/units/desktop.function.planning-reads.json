@@ -372,7 +372,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Rejected plan, missing thread, or missing image",
 				"type": "thrown",
 				"description": "An Error is thrown when a snapshot contains rejected plans, a requested thread is missing, or an image is absent from its entity/version. Planning API and Git prompt/notes read failures also reject the corresponding operation."
 			}
@@ -408,7 +408,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid planning snapshot or metadata read failure",
 						"type": "thrown",
 						"description": "Throws an Error containing rejected plan paths and messages when the snapshot reports rejected entries; planning API, conversion, or Git text reads may also reject."
 					}
@@ -462,7 +462,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Missing planning thread or plan read failure",
 						"type": "thrown",
 						"description": "Throws an Error when the requested thread is not found on the entity; the planning API read may also reject."
 					}
@@ -503,7 +503,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Missing version image or plan read failure",
 						"type": "thrown",
 						"description": "Throws an Error when the requested version contains no image with the requested SHA-256; planning API reads may also reject."
 					}
@@ -556,7 +556,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Planning history read failure",
 						"type": "thrown",
 						"description": "Rejects if the planning API's entityHistory read fails."
 					}
@@ -649,7 +649,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Revision prompt or notes read failure",
 						"type": "thrown",
 						"description": "Rejects if a version prompt or optional notes file cannot be read at the requested Git revision."
 					}
@@ -787,7 +787,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Revision prompt or notes read failure",
 						"type": "thrown",
 						"description": "Rejects if the prompt or optional notes file cannot be read at the requested Git revision."
 					}

@@ -244,12 +244,12 @@
 				"description": "Rejects a Git query whose command cannot run to completion: it cannot start, it exceeds its deadline (6 hours for worktree list, 30 minutes for log, status, ls-tree and show), or its stdout and stderr together exceed 128 MiB."
 			},
 			{
-				"name": "Error",
+				"name": "Project change Git log failure",
 				"type": "thrown",
 				"description": "Thrown by changes() when git log exits with a non-zero code, for example for a revision Git cannot resolve; the message holds the git arguments and Git's stderr."
 			},
 			{
-				"name": "Error",
+				"name": "Project loop directory read failure",
 				"type": "thrown",
 				"description": "Thrown by loops() without a commit when specification/loops exists under root but cannot be read as a directory; the Node.js error's code, such as ENOTDIR or EACCES, gives the cause."
 			}
@@ -344,7 +344,7 @@
 						"description": "Rejects when git log cannot run to completion: it cannot start, it exceeds its 30-minute deadline, or its stdout and stderr together exceed 128 MiB."
 					},
 					{
-						"name": "Error",
+						"name": "Project work Git log failure",
 						"type": "thrown",
 						"description": "Thrown when git log exits with a non-zero code, for example for a revision Git cannot resolve; the message holds the git arguments and Git's stderr."
 					}
@@ -520,7 +520,7 @@
 						"description": "With a commit, rejects when git ls-tree or git show cannot run to completion: it cannot start, it exceeds its 30-minute deadline, or its stdout and stderr together exceed 128 MiB. A non-zero exit from either does not reject; that listing or file is skipped."
 					},
 					{
-						"name": "Error",
+						"name": "Project loop directory read failure",
 						"type": "thrown",
 						"description": "Thrown by loops() without a commit when specification/loops exists under root but cannot be read as a directory; the Node.js error's code, such as ENOTDIR or EACCES, gives the cause."
 					}

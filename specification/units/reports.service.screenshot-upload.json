@@ -59,7 +59,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidUploadInputError",
 				"type": "thrown",
 				"description": "This Error is thrown when the sanitized trimmed title is empty or longer than 120 characters (Comparison title must be 1–120 characters), or when the viewport membership check fails (Invalid viewport). File reads, repository and storage calls, and asset writes are awaited without local error wrapping, so their rejections propagate with their original reasons."
 			}
@@ -92,7 +92,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidUploadInputError",
 						"type": "thrown",
 						"description": "This Error is thrown when the sanitized trimmed title is empty or longer than 120 characters (Comparison title must be 1–120 characters), or when the viewport membership check fails (Invalid viewport). File reads, repository and storage calls, and asset writes are awaited without local error wrapping, so their rejections propagate with their original reasons."
 					}

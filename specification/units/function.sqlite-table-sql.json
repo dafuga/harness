@@ -122,7 +122,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidSqliteDefinitionError",
 				"type": "thrown",
 				"description": "Thrown with 'Invalid SQLite identifier: <name>' when sqliteIdentifier gets a name outside the identifier pattern, 'Missing primary key: <property>' when the primary-key property is not a key of fields, 'Duplicate SQLite column in <table>' when two fields map to identical column names, or 'Invalid SQLite field type: <type>' when a field type has no entry in the type map. sqliteTableSql also throws the identifier message for an invalid table or column name, and inherited Object.prototype names such as 'constructor' pass the type-map check without throwing."
 			}
@@ -150,7 +150,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidSqliteDefinitionError",
 						"type": "thrown",
 						"description": "Thrown with 'Invalid SQLite identifier: <identifier>' when the identifier does not match /^[A-Za-z_][A-Za-z0-9_]*$/."
 					}
@@ -254,7 +254,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidSqliteDefinitionError",
 						"type": "thrown",
 						"description": "Thrown with 'Missing primary key: <property>', 'Duplicate SQLite column in <table>' or 'Invalid SQLite field type: <type>' while the statement is built, and through sqliteIdentifier with 'Invalid SQLite identifier: <name>' for an invalid column or table name. Inherited Object.prototype names such as 'constructor' pass the type-map check without throwing."
 					}

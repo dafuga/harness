@@ -1,3 +1,4 @@
+// @harness-uid u_3xrke762v6
 // @harness-uid u_release_revision
 import { execFileSync } from 'node:child_process';
 import { MacPackageError } from './package-mac.types';

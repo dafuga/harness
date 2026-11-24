@@ -72,7 +72,8 @@
 				"name": "HostedReadService.read.validate",
 				"type": "(value: unknown) => T",
 				"required": true,
-				"description": "Checks a kept value before it is served offline and supplies the value that read returns in that case; it is never called on a fresh load result. If it throws, the kept entry for this read's scope is discarded and its error is rethrown."
+				"description": "Checks a kept value before it is served offline and supplies the value that read returns in that case; it is never called on a fresh load result. If it throws, the kept entry for this read's scope is discarded and its error is rethrown.",
+				"unknownReason": "The cached value must be checked at runtime before the supplied callback can produce the caller's type."
 			}
 		],
 		"outputs": [
@@ -113,11 +114,6 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "Thrown by read's own checks: 'A verified hosted session is required.' when credentials() resolves no session, the session origin differs from origin, or its token or principalId is empty; 'Hosted authority changed during the read.' when the session, authorityVersion, or cache generation differs from the one the read began with; and 'Hosted cache identity mismatch.', 'Incomplete hosted cache identity.', 'Invalid hosted cache revision.', or 'Invalid hosted collaboration revision.' when a loaded principalId or identity, or a kept identity, fails its checks. Errors from load, validate, credentials, authorityVersion, onCacheStatus, or the cache are otherwise rethrown unchanged, and a validate error on a kept value is rethrown after that entry is discarded."
-			},
-			{
 				"name": "TypeError",
 				"type": "thrown",
 				"description": "Thrown by new URL(options.origin) inside credential() when origin is not an absolute URL, which is reached only after credentials() resolves a non-null session. It is raised before load runs and is not caught by the offline fallback, so no kept value is served."
@@ -126,6 +122,41 @@
 				"name": "HostedFailureValidator",
 				"type": "thrown",
 				"description": "A HostedFailureValidator that load() rejects with and read rethrows unchanged when its category is 'denied' or 'failed', or when it is 'offline' and no kept entry exists, including when no cache is configured; the class sets no name, so its .name is 'Error'. Before rethrowing a 'denied' failure, read purges the principal's cache at status 401 and this project's cache at any other status."
+			},
+			{
+				"name": "HostedAuthorityChangedError",
+				"type": "thrown",
+				"description": "The session, authority version, or cache generation changed during the read."
+			},
+			{
+				"name": "HostedCacheIdentityMismatchError",
+				"type": "thrown",
+				"description": "The identity of the loaded or cached result does not match the current request."
+			},
+			{
+				"name": "HostedSessionRequiredError",
+				"type": "thrown",
+				"description": "A read needs a hosted session with the requested origin, a nonempty token, and a principal ID."
+			},
+			{
+				"name": "IncompleteHostedCacheIdentityError",
+				"type": "thrown",
+				"description": "The result lacks fields needed to establish its cache identity."
+			},
+			{
+				"name": "InvalidHostedCacheRevisionError",
+				"type": "thrown",
+				"description": "The stored or loaded source revision does not pass validation."
+			},
+			{
+				"name": "InvalidHostedCollaborationRevisionError",
+				"type": "thrown",
+				"description": "The collaboration revision on the result does not pass validation."
+			},
+			{
+				"name": "Hosted read dependency failure",
+				"type": "propagated",
+				"description": "Loader, validator, session, authority-version, cache, and cache-status callback errors propagate. A cached value that fails validation is discarded first."
 			}
 		],
 		"errorStatus": "declared",
@@ -163,7 +194,8 @@
 						"name": "HostedReadService.read.validate",
 						"type": "(value: unknown) => T",
 						"required": true,
-						"description": "Checks a kept value before it is served offline and supplies the value that read returns in that case; it is never called on a fresh load result. If it throws, the kept entry for this read's scope is discarded and its error is rethrown."
+						"description": "Checks a kept value before it is served offline and supplies the value that read returns in that case; it is never called on a fresh load result. If it throws, the kept entry for this read's scope is discarded and its error is rethrown.",
+						"unknownReason": "The cached value must be checked at runtime before the supplied callback can produce the caller's type."
 					}
 				],
 				"outputs": [
@@ -204,11 +236,6 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown by read's own checks: 'A verified hosted session is required.' when credentials() resolves no session, the session origin differs from origin, or its token or principalId is empty; 'Hosted authority changed during the read.' when the session, authorityVersion, or cache generation differs from the one the read began with; and 'Hosted cache identity mismatch.', 'Incomplete hosted cache identity.', 'Invalid hosted cache revision.', or 'Invalid hosted collaboration revision.' when a loaded principalId or identity, or a kept identity, fails its checks. Errors from load, validate, credentials, authorityVersion, onCacheStatus, or the cache are otherwise rethrown unchanged, and a validate error on a kept value is rethrown after that entry is discarded."
-					},
-					{
 						"name": "TypeError",
 						"type": "thrown",
 						"description": "Thrown by new URL(options.origin) inside credential() when origin is not an absolute URL, which is reached only after credentials() resolves a non-null session. It is raised before load runs and is not caught by the offline fallback, so no kept value is served."
@@ -217,6 +244,41 @@
 						"name": "HostedFailureValidator",
 						"type": "thrown",
 						"description": "A HostedFailureValidator that load() rejects with and read rethrows unchanged when its category is 'denied' or 'failed', or when it is 'offline' and no kept entry exists, including when no cache is configured; the class sets no name, so its .name is 'Error'. Before rethrowing a 'denied' failure, read purges the principal's cache at status 401 and this project's cache at any other status."
+					},
+					{
+						"name": "HostedAuthorityChangedError",
+						"type": "thrown",
+						"description": "The session, authority version, or cache generation changed during the read."
+					},
+					{
+						"name": "HostedCacheIdentityMismatchError",
+						"type": "thrown",
+						"description": "The identity of the loaded or cached result does not match the current request."
+					},
+					{
+						"name": "HostedSessionRequiredError",
+						"type": "thrown",
+						"description": "A read needs a hosted session with the requested origin, a nonempty token, and a principal ID."
+					},
+					{
+						"name": "IncompleteHostedCacheIdentityError",
+						"type": "thrown",
+						"description": "The result lacks fields needed to establish its cache identity."
+					},
+					{
+						"name": "InvalidHostedCacheRevisionError",
+						"type": "thrown",
+						"description": "The stored or loaded source revision does not pass validation."
+					},
+					{
+						"name": "InvalidHostedCollaborationRevisionError",
+						"type": "thrown",
+						"description": "The collaboration revision on the result does not pass validation."
+					},
+					{
+						"name": "Hosted read dependency failure",
+						"type": "propagated",
+						"description": "Loader, validator, session, authority-version, cache, and cache-status callback errors propagate. A cached value that fails validation is discarded first."
 					}
 				],
 				"errorStatus": "declared"

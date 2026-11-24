@@ -50,7 +50,8 @@
 					{
 						"result": 42
 					}
-				]
+				],
+				"unknownReason": "The runtime reply comes from parsed JSON and must satisfy the response shape before use."
 			},
 			{
 				"name": "runtimeResponseText.text",
@@ -148,7 +149,8 @@
 							{
 								"result": 42
 							}
-						]
+						],
+						"unknownReason": "The runtime reply comes from parsed JSON and must satisfy the response shape before use."
 					}
 				],
 				"outputs": [

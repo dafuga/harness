@@ -311,7 +311,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Task completion audit failed",
 				"type": "thrown",
 				"description": "Thrown by requirePlan() and require() as 'Task completion audit failed: ' followed by the failed check details (space-separated for requirePlan(), one per line for require()); check() and require() also reject when the audit record cannot be written."
 			}
@@ -465,7 +465,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Task audit record write failure",
 						"type": "thrown",
 						"description": "Rejects only when the audit record cannot be created or written; source, plan, code and verification problems are caught and recorded as failed checks."
 					}
@@ -504,7 +504,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Task plan audit failed",
 						"type": "thrown",
 						"description": "Thrown as 'Task completion audit failed: ' followed by the details of every failed planAudit check, separated by spaces."
 					}
@@ -611,7 +611,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Task completion audit failed",
 						"type": "thrown",
 						"description": "Thrown as 'Task completion audit failed: ' followed by the details of every failed check, one per line, when check() returns a failed audit; a rejection from check() passes through unchanged."
 					}

@@ -38,7 +38,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid atomic markup or native atom configuration",
 				"type": "thrown",
 				"description": "Markup processing throws `Error` for unknown native atoms, missing `@harness-atoms` directory declarations, unresolved non-relative native atom imports, or atom sources that fail the element-contract check. Parsing and filesystem errors encountered while examining component or atom files can also propagate."
 			}

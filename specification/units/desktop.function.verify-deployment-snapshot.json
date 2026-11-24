@@ -184,7 +184,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Reviewed deployment snapshot no longer matches",
 				"type": "thrown",
 				"description": "Throws Error when the reviewed configuration changes, a required predecessor proof is absent or mismatched, destination history is not forward-only, an isolated source changes or is dirty, or the destination receipt changes. Rejections from adapter discovery and state or Git reads can also propagate."
 			}
@@ -295,7 +295,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Deployment fingerprint, predecessor, or history mismatch",
 						"type": "thrown",
 						"description": "Throws Error if configuration differs from the reviewed fingerprint, a required predecessor receipt does not prove the prior environment, exact commit, and configuration, or the destination is not an ancestor of the reviewed commit. Adapter discovery, deployment-state reads, and uncaught Git reads may also reject."
 					}
@@ -372,7 +372,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Isolated deployment revision or destination changed",
 						"type": "thrown",
 						"description": "Throws Error if an isolated source has a different revision or dirty worktree, configuration differs from the reviewed fingerprint, or the current destination receipt differs from the captured receipt. Adapter discovery, deployment-state reads, and uncaught Git reads may also reject."
 					}

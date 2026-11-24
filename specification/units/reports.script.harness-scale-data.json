@@ -75,7 +75,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Scale fixture history, registry, or storage failure",
 				"type": "thrown",
 				"description": "Thrown if the selected failed revision has no record with status `failed`, or the map registry has no unit with ID `function.slugify`; filesystem errors also propagate as Node errors. These failures can occur after the destination has been removed and copied."
 			}
@@ -121,7 +121,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Scale fixture history, registry, or storage failure",
 						"type": "thrown",
 						"description": "Thrown if the selected failed revision has no record with status `failed`, or the map registry has no unit with ID `function.slugify`; filesystem errors also propagate as Node errors. These failures can occur after the destination has been removed and copied."
 					}

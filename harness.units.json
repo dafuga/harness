@@ -2622,6 +2622,60 @@
 			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
 			"reason": "The native owner read returns the shared display snapshot."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameLiveAi.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameLiveAi.svelte",
+			"specifier": "$shared/Select.svelte",
+			"to": "packages/reports/src/components/Select.svelte",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/game-authoring/GameViewFields.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/networking-security/remote-phone-panel/RemotePhonePanel.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/ProjectGate.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/hub/src/components/shared-primitives/HubFrame.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/hub/src/components/shared-primitives/MembersPanel.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/(accounts-access)/devices/+page.svelte",
+			"specifier": "$reports/helpers/strings/formatTime",
+			"to": "packages/reports/src/helpers/strings/formatTime.ts",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/projects/+page.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
 		}
 	]
 }

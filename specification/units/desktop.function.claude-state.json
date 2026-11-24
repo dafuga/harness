@@ -76,12 +76,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ClaudeCliSubscriptionSignInError",
 				"type": "thrown",
 				"description": "Thrown inside claudeState, with the message 'Sign in to Claude CLI with a subscription.', when auth status reports loggedIn false or an authMethod other than 'claude.ai'. The catch block returns that message as reason, so callers never receive this error."
 			},
 			{
-				"name": "Error",
+				"name": "Claude CLI invocation failure",
 				"type": "thrown",
 				"description": "A rejection from either cliProcess call, such as a spawn failure ('spawn claude ENOENT' when the executable is missing), a non-zero exit ('CLI failed (code): stderr'), a ten-second timeout ('CLI request timed out.'), or output over its limit ('CLI output exceeded its limit.'), is caught and returned as reason, so callers never receive it."
 			},
@@ -155,12 +155,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ClaudeCliSubscriptionSignInError",
 						"type": "thrown",
 						"description": "Thrown inside claudeState, with the message 'Sign in to Claude CLI with a subscription.', when auth status reports loggedIn false or an authMethod other than 'claude.ai'. The catch block returns that message as reason, so callers never receive this error."
 					},
 					{
-						"name": "Error",
+						"name": "Claude CLI invocation failure",
 						"type": "thrown",
 						"description": "A rejection from either cliProcess call, such as a spawn failure ('spawn claude ENOENT' when the executable is missing), a non-zero exit ('CLI failed (code): stderr'), a ten-second timeout ('CLI request timed out.'), or output over its limit ('CLI output exceeded its limit.'), is caught and returned as reason, so callers never receive it."
 					},

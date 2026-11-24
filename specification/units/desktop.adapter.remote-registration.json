@@ -74,7 +74,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HubRegistrationError",
 				"type": "thrown",
 				"description": "Thrown by register as an Error with signedOut: true and the message 'Connect to Harness Hub on this computer first.' when config.origin is missing or empty, when authorizing the hosted session fails, or when the hub answers 401; the HostedHttpAdapter constructor throws an Error with the message 'Use an exact HTTPS hosted origin.' when config.origin is not an exact hosted origin (anything but https is refused, except plain http to localhost, 127.0.0.1 or [::1]; user info, a path other than '/', a query or a hash is refused too). It is also thrown with the message 'The hub answered with an invalid registration.' when the hub's JSON has a hostId that differs from the input's, a non-string origin or registeredAt, or a generation that is not a safe integer."
 			},
@@ -143,7 +143,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HubRegistrationError",
 						"type": "thrown",
 						"description": "Thrown by register as an Error with signedOut: true and the message 'Connect to Harness Hub on this computer first.' when config.origin is missing or empty, when authorizing the hosted session fails, or when the hub answers 401; the HostedHttpAdapter constructor throws an Error with the message 'Use an exact HTTPS hosted origin.' when config.origin is not an exact hosted origin (anything but https is refused, except plain http to localhost, 127.0.0.1 or [::1]; user info, a path other than '/', a query or a hash is refused too). It is also thrown with the message 'The hub answered with an invalid registration.' when the hub's JSON has a hostId that differs from the input's, a non-string origin or registeredAt, or a generation that is not a safe integer."
 					},

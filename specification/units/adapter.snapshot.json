@@ -151,7 +151,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "TarExtractError",
 				"type": "thrown",
 				"description": "The adapter propagates filesystem, Git, bounded command, and snapshot-scanning failures. A nonzero tar exit throws TarExtractError with its captured stderr."
 			},
@@ -200,7 +200,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "TarExtractError",
 						"type": "thrown",
 						"description": "The operation rejects if temporary workspace setup, Git archive export, bounded tar execution, or commit-tree loading fails. A nonzero tar exit throws TarExtractError with its captured stderr."
 					}
@@ -235,7 +235,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Snapshot symlink creation failure",
 						"type": "thrown",
 						"description": "The operation rejects if creating the symlink fails. That filesystem rejection is not caught by link."
 					}
@@ -283,7 +283,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Snapshot addition scan failure",
 						"type": "thrown",
 						"description": "The operation rejects if snapshot-addition scanning fails. Individual file-hash and readlink failures are handled as missing values."
 					}
@@ -361,7 +361,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Snapshot removal failure",
 						"type": "thrown",
 						"description": "The operation rejects if recursive removal fails."
 					}

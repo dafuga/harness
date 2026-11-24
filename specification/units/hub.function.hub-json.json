@@ -104,7 +104,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HarnessArtifactUnavailableError",
 				"type": "thrown",
 				"description": "Invalid UTF-8 decoding or JSON parsing throws Error with message Invalid committed artifact and code artifact-corrupt."
 			},
@@ -119,12 +119,12 @@
 				"description": "Errors from canonicalJson(value) or rejection from hubHash propagate through the returned Promise unchanged. This implementation does not specify a stable error name or message."
 			},
 			{
-				"name": "Error",
+				"name": "HarnessArtifactUnavailableError",
 				"type": "thrown",
 				"description": "Calling this helper always throws Error with message Harness artifact unavailable and a code property equal to the supplied code, defaulting to artifact-corrupt."
 			},
 			{
-				"name": "Error",
+				"name": "HarnessArtifactUnavailableError",
 				"type": "thrown",
 				"description": "A value that fails the filename rule throws Error with message Harness artifact unavailable and code invalid-path via hubFail."
 			}
@@ -157,7 +157,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HarnessArtifactUnavailableError",
 						"type": "thrown",
 						"description": "Invalid UTF-8 decoding or JSON parsing throws Error with message Invalid committed artifact and code artifact-corrupt."
 					}
@@ -246,7 +246,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HarnessArtifactUnavailableError",
 						"type": "thrown",
 						"description": "Calling this helper always throws Error with message Harness artifact unavailable and a code property equal to the supplied code, defaulting to artifact-corrupt."
 					}
@@ -274,7 +274,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HarnessArtifactUnavailableError",
 						"type": "thrown",
 						"description": "A value that fails the filename rule throws Error with message Harness artifact unavailable and code invalid-path via hubFail."
 					}

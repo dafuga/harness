@@ -210,9 +210,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ModuleCatalogValidationError",
 				"type": "thrown",
-				"description": "Module-listing failures can propagate through load() and at(); direct state() without gaps throws Error('Invalid module installation state.') for invalid or duplicate state and propagates non-missing read failures."
+				"description": "Module-listing failures can propagate through load() and at(); direct state() without gaps throws ModuleCatalogValidationError('Invalid module installation state.') for invalid or duplicate state and propagates non-missing read failures."
 			}
 		],
 		"errorStatus": "declared",
@@ -281,7 +281,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Module catalog directory read failure",
 						"type": "thrown",
 						"description": "A non-ENOENT filesystem failure during module listing propagates through the source tree; definition and installation-state problems handled by at() are recorded as gaps."
 					}
@@ -351,7 +351,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "tree.list failure (SourceTree)",
 						"type": "thrown",
 						"description": "A rejection from tree.list() propagates because definitions() awaits the listing without catching it; installation-state read and parse problems are converted to gaps."
 					}
@@ -435,9 +435,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ModuleCatalogValidationError",
 						"type": "thrown",
-						"description": "When gaps is omitted, invalid JSON or schema data and duplicate module ids reject with Error('Invalid module installation state.'); other read failures except recognized missing-file errors propagate."
+						"description": "When gaps is omitted, invalid JSON or schema data and duplicate module ids reject with ModuleCatalogValidationError('Invalid module installation state.'); other read failures except recognized missing-file errors propagate."
 					}
 				],
 				"errorStatus": "declared"

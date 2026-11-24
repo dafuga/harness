@@ -103,7 +103,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Git catalog history read failure",
 				"type": "thrown",
 				"description": "A rejected gitRead call propagates when the Git history command fails. The function skips the Git read when the manifest has no source or documentation paths."
 			}
@@ -200,7 +200,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git catalog history read failure",
 						"type": "thrown",
 						"description": "A rejected gitRead call propagates when the Git history command fails. The function skips the Git read when the manifest has no source or documentation paths."
 					}

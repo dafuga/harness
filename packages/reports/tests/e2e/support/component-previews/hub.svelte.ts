@@ -12,6 +12,13 @@ const project = {
 	sourceRepository: { owner: 'preview', name: 'example', fullName: 'preview/example' },
 	createdAt: stamp
 };
+const signedInDevices = {
+	currentDeviceId: 'preview-mac',
+	devices: [
+		{ id: 'preview-mac', name: 'MacBook Pro', lastSeenAt: stamp },
+		{ id: 'preview-phone', name: 'iPhone', lastSeenAt: stamp }
+	]
+};
 const proof = { email: actor.email, sent: true, expiresAt: '2026-10-20T10:10:05Z' };
 /** `shown` is the desktop previews' project, which the web workspace reads through the hub API. */
 export function hubPreview(id: string, shown: ProjectSnapshot) {
@@ -48,6 +55,7 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 	const request = { resource: { kind: 'project', projectId: project.id }, status: 'pending' };
 	const api = {
 		get: async (path: string) => {
+			if (path === '/api/account/devices') return signedInDevices;
 			if (path === '/api/hub-home') return catalogHome;
 			if (path === `/api/projects/${project.id}/snapshot`) return hostedSnapshot(shown);
 			return hosted.read(path) ?? request;

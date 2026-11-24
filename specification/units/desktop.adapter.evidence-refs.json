@@ -116,7 +116,7 @@
 				"description": "The adapter throws an Error when a requested notes or evidence revision is neither the current corresponding ref tip nor an ancestor commit reachable from that tip."
 			},
 			{
-				"name": "Error",
+				"name": "RevisionNotHeldError",
 				"type": "thrown",
 				"description": "Thrown by EvidenceRefsAdapter.held when a requested revision does not equal its corresponding current ref tip and is not a commit ancestor of that tip; the message identifies the notes or evidence ref."
 			}
@@ -192,7 +192,7 @@
 						"description": "The adapter throws an Error when a requested notes or evidence revision is neither the current corresponding ref tip nor an ancestor commit reachable from that tip."
 					},
 					{
-						"name": "Error",
+						"name": "RevisionNotHeldError",
 						"type": "thrown",
 						"description": "Thrown by EvidenceRefsAdapter.held when a requested revision does not equal its corresponding current ref tip and is not a commit ancestor of that tip; the message identifies the notes or evidence ref."
 					}

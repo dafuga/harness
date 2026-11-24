@@ -683,7 +683,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid Git revision or source scope",
 				"type": "thrown",
 				"description": "Revision selection throws when no local branch is available or the commit fails the branch ancestry check, and source reading throws when a path is outside the unit source contract. Errors rejected by awaited Git, blob, manifest and documentation readers also propagate."
 			}
@@ -712,7 +712,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Local Git branch enumeration failure",
 						"type": "thrown",
 						"description": "Rejects if listing local branch refs fails; failure to resolve symbolic HEAD is caught and leaves no branch marked current."
 					}
@@ -762,7 +762,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "No local branch or commit outside the branch",
 						"type": "thrown",
 						"description": "Throws when no local named branch is selected or when the selected commit fails the branch ancestry check. Git revision-resolution failures also reject."
 					}
@@ -799,7 +799,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git history or branch selection failure",
 						"type": "thrown",
 						"description": "Rejects if branch selection fails or the Git log read fails."
 					}
@@ -829,7 +829,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Revision manifest read or validation failure",
 						"type": "thrown",
 						"description": "Rejects on revision, tree or blob read failures, JSON or manifest-schema parse failures, or a manifest ID that does not match its filename."
 					}
@@ -856,7 +856,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git tree diff failure",
 						"type": "thrown",
 						"description": "Rejects when diff-tree cannot read the requested revision."
 					}
@@ -979,7 +979,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Git revision file listing failure",
 						"type": "thrown",
 						"description": "Rejects when the Git file listing for the revision fails."
 					}
@@ -1112,7 +1112,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Source outside the unit contract or unreadable",
 						"type": "thrown",
 						"description": "Throws when the path is outside the unit source contract; Git text-read failures also reject."
 					}
@@ -1230,7 +1230,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Revision documentation read failure",
 						"type": "thrown",
 						"description": "When documentation is declared, rejects if revision resolution, Git text reading or the documentation reader fails."
 					}
@@ -1358,7 +1358,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Source enumeration or Git blob size failure",
 						"type": "thrown",
 						"description": "Rejects when source enumeration or any Git blob-size read fails."
 					}

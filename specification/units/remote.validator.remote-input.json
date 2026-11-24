@@ -51,7 +51,8 @@
 							"sequence": 42
 						}
 					}
-				]
+				],
+				"unknownReason": "The attach payload is raw wire data until its version, client and resume fields are parsed."
 			},
 			{
 				"name": "RemoteInputValidator.projectId.input",
@@ -122,7 +123,8 @@
 						"agents": true,
 						"comments": true
 					}
-				]
+				],
+				"unknownReason": "The approval payload is raw input until its pairing id, device id and capabilities are verified."
 			},
 			{
 				"name": "RemoteInputValidator.pairing.input",
@@ -136,7 +138,8 @@
 					{
 						"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628"
 					}
-				]
+				],
+				"unknownReason": "The pairing request is unvalidated wire data before pairing-id checks."
 			},
 			{
 				"name": "RemoteInputValidator.device.input",
@@ -150,7 +153,8 @@
 					{
 						"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c"
 					}
-				]
+				],
+				"unknownReason": "The device request is unvalidated wire data before device-id checks."
 			}
 		],
 		"outputs": [
@@ -293,7 +297,8 @@
 									"sequence": 42
 								}
 							}
-						]
+						],
+						"unknownReason": "The attach payload is raw wire data until its version, client and resume fields are parsed."
 					}
 				],
 				"outputs": [
@@ -459,7 +464,8 @@
 								"agents": true,
 								"comments": true
 							}
-						]
+						],
+						"unknownReason": "The approval payload is raw input until its pairing id, device id and capabilities are verified."
 					}
 				],
 				"outputs": [
@@ -513,7 +519,8 @@
 							{
 								"pairingId": "3e07b5d19a6c42f8b0d7e4a19c53f628"
 							}
-						]
+						],
+						"unknownReason": "The pairing request is unvalidated wire data before pairing-id checks."
 					}
 				],
 				"outputs": [
@@ -555,7 +562,8 @@
 							{
 								"deviceId": "c83e1a6f0d95b2e47a1c3f08d6b59e2a74d01f6c"
 							}
-						]
+						],
+						"unknownReason": "The device request is unvalidated wire data before device-id checks."
 					}
 				],
 				"outputs": [

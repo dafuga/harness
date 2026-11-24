@@ -247,7 +247,7 @@
 				"description": "JSON.parse throws this when persisted loop state or a project loop-template file contains malformed JSON."
 			},
 			{
-				"name": "Error",
+				"name": "TaskCompletionService.require failure",
 				"type": "thrown",
 				"description": "TaskCompletionService.require throws this when a configured final-task audit does not pass during step completion."
 			}
@@ -405,7 +405,7 @@
 						"description": "Thrown for invalid loop or step ids, blank evidence, missing or schema-invalid state, a closed loop, a missing or already-complete step, enforced-order violations, or missing regression proof."
 					},
 					{
-						"name": "Error",
+						"name": "TaskCompletionService.require failure",
 						"type": "thrown",
 						"description": "TaskCompletionService.require throws this when the configured final-task audit does not pass."
 					}

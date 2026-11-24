@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_23oxoqg3mq -->
 <script lang="ts">
 	/**
 	 * One choice in a picker: the name on the left, quiet metadata on the right, and a check on

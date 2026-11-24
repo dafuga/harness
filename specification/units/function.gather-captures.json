@@ -352,7 +352,7 @@
 				"description": "Video inputs, recording tools, poster media or evidence limits cannot satisfy the declared recording contract."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid capture index or child sidecar",
 				"type": "thrown or reported",
 				"description": "Invalid or oversized indexes and child sidecars are either reported as admission failures or thrown by the low-level descriptor helpers."
 			}
@@ -501,7 +501,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Capture file type, availability, or digest failure",
 						"type": "thrown",
 						"description": "Thrown inside this unit when lstat does not report a capture as a regular file, when a media or benchmark capture's read returns no contents, and when the capture directory or index is not a regular directory or regular file. gatherLine and indexLines catch every such throw and report it as a failure string, so gatherCaptures never throws it."
 					}
@@ -563,7 +563,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid capture index or child sidecar",
 						"type": "thrown or reported",
 						"description": "Invalid or oversized indexes and child sidecars are either reported as admission failures or thrown by the low-level descriptor helpers."
 					}
@@ -722,7 +722,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid line binding or duplicate capture pointer",
 						"type": "thrown",
 						"description": "Bounded sidecar descriptors, line bindings, or duplicate child pointer identities are invalid; filesystem and schema errors propagate."
 					}
@@ -759,7 +759,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid line binding or duplicate capture pointer",
 						"type": "thrown",
 						"description": "Bounded sidecar descriptors, line bindings, or duplicate child pointer identities are invalid; filesystem and schema errors propagate."
 					}

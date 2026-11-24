@@ -27,7 +27,8 @@
 					},
 					[1, 2.5, "text", null, true],
 					"build finished"
-				]
+				],
+				"unknownReason": "This guard tests arbitrary input recursively for compatibility with the portable JSON runtime."
 			},
 			{
 				"name": "portableJson.level",
@@ -85,7 +86,8 @@
 							},
 							[1, 2.5, "text", null, true],
 							"build finished"
-						]
+						],
+						"unknownReason": "This guard tests arbitrary input recursively for compatibility with the portable JSON runtime."
 					},
 					{
 						"name": "portableJson.level",

@@ -146,7 +146,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Permission catalog directory read failure",
 				"type": "thrown",
 				"description": "A listing failure can escape when `load` cannot enumerate the permissions directory for a reason other than `ENOENT`, or when `at` receives a rejected `tree.list()`; that failure is passed through. Per-path read and validation failures are caught and recorded as gap strings."
 			}
@@ -214,7 +214,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "readdir failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "A permissions-directory listing failure other than `ENOENT` rejects `load` and is passed through. Failures reading individual matching files are caught by `at` and recorded as gap strings."
 					}
@@ -281,7 +281,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "tree.list() failure (PermissionSourceTree)",
 						"type": "thrown",
 						"description": "A rejected `tree.list()` escapes unchanged. Per-path read, JSON, schema, identity, and duplicate failures are caught and recorded as gap strings."
 					}

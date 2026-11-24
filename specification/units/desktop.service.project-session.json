@@ -397,47 +397,47 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ProjectNotSelectedError",
 				"type": "thrown",
 				"description": "Thrown by assertProject when a projectId is given and differs from the selected project's id, and by snapshot through the query's projectId, with the message 'The requested project is not selected.'"
 			},
 			{
-				"name": "Error",
+				"name": "ProjectSwitchBlockedError",
 				"type": "thrown",
 				"description": "Thrown by open while a run is busy or pending or another open() is still in progress, with the message 'Cancel or finish the current run before switching projects.'"
 			},
 			{
-				"name": "Error",
+				"name": "ProjectNotOpenError",
 				"type": "thrown",
 				"description": "Thrown by requireProject when root, source, planning or catalog is unset, and by snapshot, mutable and atBranch through it, with the message 'Open a project first.'"
 			},
 			{
-				"name": "Error",
+				"name": "ProjectRevisionReadOnlyError",
 				"type": "thrown",
 				"description": "Thrown by mutable when the stored query names a commit, its branch is not the checked-out one, its revision is not at the branch tip, or the branch is harness-evidence, with the message 'Historical views and other branches are read-only. View the checked-out branch tip to make changes.'"
 			},
 			{
-				"name": "Error",
+				"name": "CheckedOutBranchChangedError",
 				"type": "thrown",
 				"description": "Thrown by atBranch when the checked-out branch's name differs from the branch given, which includes a detached HEAD, with the message 'The checked-out branch changed during this run.'"
 			},
 			{
-				"name": "Error",
+				"name": "Detached HEAD without a local branch",
 				"type": "thrown",
 				"description": "Thrown by GitSourceAdapter.revision, and so by open, snapshot and mutable, when the requested branch is not a local branch or no branch is given and HEAD is detached, with the message 'Select a local branch. Detached HEAD is read-only and must have a named branch.'"
 			},
 			{
-				"name": "Error",
+				"name": "GitSourceAdapter.revision commit failure",
 				"type": "thrown",
 				"description": "Thrown by GitSourceAdapter.revision, and so by snapshot and mutable, when a requested commit is neither the branch tip nor one of its ancestors, with the message 'This commit is outside the selected branch ancestry.'"
 			},
 			{
-				"name": "Error",
+				"name": "gitRevision failure",
 				"type": "thrown",
 				"description": "Thrown by gitRevision, and so by snapshot, when a requested commit is longer than 300 characters or contains a NUL character, with the message 'Invalid revision.'"
 			},
 			{
-				"name": "Error",
+				"name": "Project session Git, registry, planning, or catalog failure",
 				"type": "thrown",
 				"description": "Failures of the Git, project registry, planning and catalog calls made by open, snapshot, mutable and atBranch reach the caller unchanged, except a failed package.json read, which only means the project is not reported as a game."
 			}
@@ -468,7 +468,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ProjectNotSelectedError",
 						"type": "thrown",
 						"description": "Thrown when a projectId is given and differs from the selected project's id, with the message 'The requested project is not selected.'"
 					}
@@ -636,17 +636,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ProjectSwitchBlockedError",
 						"type": "thrown",
 						"description": "Thrown by open while a run is busy or pending or another open() is still in progress, with the message 'Cancel or finish the current run before switching projects.'"
 					},
 					{
-						"name": "Error",
+						"name": "Detached HEAD without a local branch",
 						"type": "thrown",
 						"description": "Thrown through snapshot when HEAD is detached, because open() reads the checked-out branch, with the message 'Select a local branch. Detached HEAD is read-only and must have a named branch.'"
 					},
 					{
-						"name": "Error",
+						"name": "Project session Git, registry, or planning failure",
 						"type": "thrown",
 						"description": "Git, registry and planning failures, such as a directory outside any Git work tree, are not caught here and reach the caller unchanged."
 					}
@@ -824,32 +824,32 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ProjectNotSelectedError",
 						"type": "thrown",
 						"description": "Thrown through assertProject when the query's projectId is given and differs from the selected project's id, with the message 'The requested project is not selected.'"
 					},
 					{
-						"name": "Error",
+						"name": "ProjectNotOpenError",
 						"type": "thrown",
 						"description": "Thrown through requireProject when no project is open, with the message 'Open a project first.'"
 					},
 					{
-						"name": "Error",
+						"name": "GitSourceAdapter.revision branch failure",
 						"type": "thrown",
 						"description": "Thrown by GitSourceAdapter.revision when the requested branch is not a local branch, or when no branch is given and HEAD is detached, with the message 'Select a local branch. Detached HEAD is read-only and must have a named branch.'"
 					},
 					{
-						"name": "Error",
+						"name": "GitSourceAdapter.revision commit failure",
 						"type": "thrown",
 						"description": "Thrown by GitSourceAdapter.revision when the requested commit is neither the branch tip nor one of its ancestors, with the message 'This commit is outside the selected branch ancestry.'"
 					},
 					{
-						"name": "Error",
+						"name": "gitRevision failure",
 						"type": "thrown",
 						"description": "Thrown by gitRevision when the requested commit is longer than 300 characters or contains a NUL character, with the message 'Invalid revision.'"
 					},
 					{
-						"name": "Error",
+						"name": "Project snapshot revision or catalog read failure",
 						"type": "thrown",
 						"description": "Git failures from the revision, branch and commit reads, and catalog failures such as an invalid component manifest, reach the caller unchanged; a failed package.json read is caught and the project is reported without kind or dimension."
 					}
@@ -868,7 +868,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ProjectNotOpenError",
 						"type": "thrown",
 						"description": "Thrown when root, source, planning or catalog is unset, as it is before open() sets them, with the message 'Open a project first.'"
 					}
@@ -887,27 +887,27 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ProjectNotOpenError",
 						"type": "thrown",
 						"description": "Thrown through requireProject when no project is open, with the message 'Open a project first.'"
 					},
 					{
-						"name": "Error",
+						"name": "GitSourceAdapter.revision branch failure",
 						"type": "thrown",
 						"description": "Thrown by GitSourceAdapter.revision when the stored branch is no longer a local branch, or when none is stored and HEAD is detached, with the message 'Select a local branch. Detached HEAD is read-only and must have a named branch.'"
 					},
 					{
-						"name": "Error",
+						"name": "GitSourceAdapter.revision commit failure",
 						"type": "thrown",
 						"description": "Thrown by GitSourceAdapter.revision when the stored commit is no longer the branch tip or one of its ancestors, with the message 'This commit is outside the selected branch ancestry.'"
 					},
 					{
-						"name": "Error",
+						"name": "ProjectRevisionReadOnlyError",
 						"type": "thrown",
 						"description": "Thrown when the stored query names a commit, its branch is not the checked-out one, its revision is not at the branch tip, or the branch is harness-evidence, with the message 'Historical views and other branches are read-only. View the checked-out branch tip to make changes.'"
 					},
 					{
-						"name": "Error",
+						"name": "GitSourceAdapter callee failure",
 						"type": "thrown",
 						"description": "Git failures from the revision and branch reads are not caught here and reach the caller unchanged."
 					}
@@ -934,17 +934,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ProjectNotOpenError",
 						"type": "thrown",
 						"description": "Thrown through requireProject when no project is open, with the message 'Open a project first.'"
 					},
 					{
-						"name": "Error",
+						"name": "CheckedOutBranchChangedError",
 						"type": "thrown",
 						"description": "Thrown when the checked-out branch's name differs from the branch given, which includes a detached HEAD, with the message 'The checked-out branch changed during this run.'"
 					},
 					{
-						"name": "Error",
+						"name": "Git branch enumeration failure",
 						"type": "thrown",
 						"description": "Git failures from listing the branches are not caught here and reach the caller unchanged."
 					}

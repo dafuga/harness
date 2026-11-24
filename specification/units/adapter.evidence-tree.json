@@ -341,7 +341,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidGitBatchResponseError",
 				"type": "thrown",
 				"description": "Thrown as 'Invalid Git batch response' by readMany when its cat-file --batch output is malformed; errors from the Git, temporary-directory and commitIdentity calls in list, readMany and commit reach the caller unchanged."
 			}
@@ -503,7 +503,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidGitBatchResponseError",
 						"type": "thrown",
 						"description": "Rejects a scoped path that exceeds the 32KiB argument budget including its per-argument allowance. Thrown as 'Invalid Git batch response' when the cat-file --batch output is malformed, meaning a header that is not a valid blob header for the expected blob, a blob body without a trailing newline, or bytes left after the last blob; errors from the list call and the this.git.bytes call reach the caller unchanged."
 					}
@@ -544,7 +544,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Oversized path or Git tree read failure",
 						"type": "thrown",
 						"description": "Rejects a scoped path that exceeds the 32KiB argument budget including its per-argument allowance. Errors from the git ls-tree call made through this.git.run reach the caller unchanged, and parsing its output does not throw."
 					}
@@ -621,7 +621,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Scratch-directory, Git or identity failure",
 						"type": "thrown",
 						"description": "Errors from mkdtemp, from the Git calls made through this.git.run, from commitIdentity and from rm reach the caller unchanged; rm runs in a finally block, so the scratch directory is removed even when the work fails."
 					}

@@ -123,7 +123,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "WorkspaceAddressError",
 				"type": "thrown",
 				"description": "Thrown by workspaceRoute for a non-workspace address, invalid commit hash or unknown catalog category."
 			},
@@ -204,7 +204,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid workspace path, commit, or category",
 						"type": "thrown",
 						"description": "Thrown when the path is outside workspace routes, the supplied commit is not a full lowercase 40-character hash, or the catalog category is unknown."
 					},

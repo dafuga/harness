@@ -12,7 +12,9 @@
 		"uses": [
 			"hub.component.account-menu",
 			"reports.component.brand-mark",
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-main",
@@ -36,14 +38,15 @@
 				"name": "HubFrame.section",
 				"type": "string",
 				"required": false,
-				"default": "Shared projects"
+				"default": "Shared projects",
+				"description": "Header label for the current Hub section."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubFrame",
 				"type": "markup",
-				"description": "Renders the shared-project page frame when included around page content. It contains a root-resolved brand link with BrandMark and data-sveltekit-reload, a “Shared projects” label, AccountMenu, and a main area that renders children once."
+				"description": "A header with a brand link, the current section label and account controls, followed by the supplied page content."
 			}
 		],
 		"errors": [],
@@ -58,12 +61,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.brand-mark",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
 		},

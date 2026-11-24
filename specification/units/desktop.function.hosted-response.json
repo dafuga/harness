@@ -40,7 +40,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Oversized or unreadable hosted response",
 				"type": "thrown",
 				"description": "Explicitly throws Error when a decimal Content-Length exceeds the limit or the streamed byte count crosses it. Read failures from the response stream are also propagated as rejections."
 			}
@@ -73,7 +73,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Oversized or unreadable hosted response",
 						"type": "thrown",
 						"description": "Explicitly throws Error when a decimal Content-Length exceeds the limit or the streamed byte count crosses it. Read failures from the response stream are also propagated as rejections."
 					}

@@ -248,7 +248,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid command bounds, disallowed probe, or child process failure",
 				"type": "thrown",
 				"description": "Thrown for invalid timeoutMs or maxBuffer bounds, a runSync command shape outside the direct-probe allowlist, or a synchronous child-process API error."
 			},
@@ -318,7 +318,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid command bounds or spawn failure",
 						"type": "thrown",
 						"description": "Thrown for invalid timeoutMs or maxBuffer bounds or a synchronous child_process.spawn API error."
 					},
@@ -383,7 +383,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid command bounds or spawn failure",
 						"type": "thrown",
 						"description": "Thrown for invalid timeoutMs or maxBuffer bounds or a synchronous child_process.spawn API error."
 					},
@@ -453,7 +453,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid command bounds, disallowed probe, or child process failure",
 						"type": "thrown",
 						"description": "Thrown for invalid timeoutMs or maxBuffer bounds, a command and argument shape outside the direct-probe allowlist, or a synchronous child-process error."
 					}

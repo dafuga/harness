@@ -166,7 +166,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid replay frame set, asset, or storage path",
 				"type": "thrown",
 				"description": "Rejects with Error when the report yields no replay frames or more than 500, when the replays folder or the cached MP4 path is a symbolic link, when a screenshot fails to render, or when the video encode exits non-zero. Asset validation errors ('Unregistered asset', 'Invalid asset', 'Invalid asset path'), a missing asset file, a failed ffmpeg spawn and filesystem errors from mkdir, mkdtemp, writeFile, rename or rm also reject."
 			}
@@ -258,7 +258,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid replay frame set, asset, or storage path",
 						"type": "thrown",
 						"description": "Rejects with Error when the report yields no replay frames or more than 500, when the replays folder or the cached MP4 path is a symbolic link, when a screenshot fails to render, or when the video encode exits non-zero. Asset validation errors ('Unregistered asset', 'Invalid asset', 'Invalid asset path'), a missing asset file, a failed ffmpeg spawn and filesystem errors from mkdir, mkdtemp, writeFile, rename or rm also reject."
 					}

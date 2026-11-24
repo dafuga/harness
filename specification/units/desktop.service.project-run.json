@@ -80,7 +80,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Plan source changed or proposal failed validation",
 				"type": "thrown",
 				"description": "Thrown when the source revision advanced during the run, when the agent changed files although it was asked not to, or when its answer is not a checked proposal. An agent failure is rethrown unchanged, or as an Error that also names the files it changed, and a failure of a planning step is rethrown unchanged."
 			},
@@ -140,7 +140,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Plan source changed or proposal failed validation",
 						"type": "thrown",
 						"description": "Thrown when the source revision advanced during the run, when the agent changed files although it was asked not to, or when its answer is not a checked proposal. An agent failure is rethrown unchanged, or as an Error that also names the files it changed, and a failure of a planning step is rethrown unchanged."
 					},

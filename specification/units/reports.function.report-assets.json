@@ -138,7 +138,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid report source, media, or asset path",
 				"type": "thrown",
 				"description": "Validation failures are thrown as Error, including invalid source files, image content, and registered paths. Filesystem and delegated audio-validation failures also reject through the calling promise."
 			}
@@ -179,7 +179,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid report source file, size, or media",
 						"type": "thrown",
 						"description": "Throws when the source is a symlink, is not a file, or exceeds 50,000,000 bytes; media-specific validation and filesystem failures also reject the promise."
 					}
@@ -218,7 +218,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidAssetError",
 						"type": "thrown",
 						"description": "Throws when bytes are empty or exceed 50,000,000 bytes, the extension is unsupported, no supported signature is found, or the filename extension disagrees with the detected signature."
 					}
@@ -258,7 +258,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Report asset directory or file write failure",
 						"type": "thrown",
 						"description": "Rejects when creating the assets directory or writing the file fails; this helper performs no content validation."
 					}
@@ -304,7 +304,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unregistered, unsafe, or unreadable report asset",
 						"type": "thrown",
 						"description": "Throws for unregistered names, names containing a slash or backslash, symlinks, non-files, or paths outside the canonical directory; filesystem lookup failures also reject."
 					}

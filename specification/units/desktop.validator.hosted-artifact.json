@@ -44,9 +44,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostedArtifactRejectedError",
 				"type": "thrown",
-				"description": "Throws Error(\"The capture exceeds 11 MiB.\") when the bytes exceed the limit, and Error(\"This is not the recorded file that was asked for (SHA-256).\") when the digest is malformed or does not match the bytes. It throws Error(\"The hosted service sent a kind this app does not show.\") when the MIME attestation is refused or the bytes cannot be served as the attested kind."
+				"description": "Throws HostedArtifactRejectedError(\"The capture exceeds 11 MiB.\") when the bytes exceed the limit, and HostedArtifactRejectedError(\"This is not the recorded file that was asked for (SHA-256).\") when the digest is malformed or does not match the bytes. It throws HostedArtifactRejectedError(\"The hosted service sent a kind this app does not show.\") when the MIME attestation is refused or the bytes cannot be served as the attested kind."
 			}
 		],
 		"errorStatus": "declared",
@@ -77,9 +77,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostedArtifactRejectedError",
 						"type": "thrown",
-						"description": "Throws Error(\"The capture exceeds 11 MiB.\") when the bytes exceed the limit, and Error(\"This is not the recorded file that was asked for (SHA-256).\") when the digest is malformed or does not match the bytes. It throws Error(\"The hosted service sent a kind this app does not show.\") when the MIME attestation is refused or the bytes cannot be served as the attested kind."
+						"description": "Throws HostedArtifactRejectedError(\"The capture exceeds 11 MiB.\") when the bytes exceed the limit, and HostedArtifactRejectedError(\"This is not the recorded file that was asked for (SHA-256).\") when the digest is malformed or does not match the bytes. It throws HostedArtifactRejectedError(\"The hosted service sent a kind this app does not show.\") when the MIME attestation is refused or the bytes cannot be served as the attested kind."
 					}
 				],
 				"errorStatus": "declared"

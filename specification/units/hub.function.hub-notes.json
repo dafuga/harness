@@ -49,7 +49,7 @@
 				"description": "Fatal UTF-8 decoding rejects with TypeError when a candidate note blob contains invalid UTF-8."
 			},
 			{
-				"name": "Error",
+				"name": "Hub note or pinned source read failure",
 				"type": "thrown",
 				"description": "Errors thrown by readNoteLines or rejected by hubPinnedSource or hubRaw propagate through the returned promise because this function does not catch them."
 			}
@@ -92,7 +92,7 @@
 						"description": "Fatal UTF-8 decoding rejects with TypeError when a candidate note blob contains invalid UTF-8."
 					},
 					{
-						"name": "Error",
+						"name": "Hub note or pinned source read failure",
 						"type": "thrown",
 						"description": "Errors thrown by readNoteLines or rejected by hubPinnedSource or hubRaw propagate through the returned promise because this function does not catch them."
 					}

@@ -133,7 +133,8 @@
 						"views": [],
 						"mechanics": []
 					}
-				]
+				],
+				"unknownReason": "This validator deliberately accepts arbitrary game data before checking its document shape."
 			},
 			{
 				"name": "assertDocument.input",
@@ -251,7 +252,8 @@
 						"views": [],
 						"mechanics": []
 					}
-				]
+				],
+				"unknownReason": "The assertion establishes the game document type at runtime for callers with unvalidated data."
 			}
 		],
 		"outputs": [
@@ -399,7 +401,8 @@
 								"views": [],
 								"mechanics": []
 							}
-						]
+						],
+						"unknownReason": "This validator deliberately accepts arbitrary game data before checking its document shape."
 					}
 				],
 				"outputs": [
@@ -536,7 +539,8 @@
 								"views": [],
 								"mechanics": []
 							}
-						]
+						],
+						"unknownReason": "The assertion establishes the game document type at runtime for callers with unvalidated data."
 					}
 				],
 				"outputs": [

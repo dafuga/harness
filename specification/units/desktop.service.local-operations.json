@@ -12,6 +12,7 @@
 			"packages/desktop/src/lib/desktop-initialization/LocalOperationsService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/UnexpectedOverviewFieldsError.ts",
 			"packages/desktop/src/services/LocalOperationsService.ts"
 		],
 		"symbols": [
@@ -27,6 +28,7 @@
 			"LocalOperationsOptions",
 			"Fields",
 			"Operation",
+			"UnexpectedOverviewFieldsError",
 			"LocalOperationsService",
 			"LocalControl",
 			"LocalOperationsOptions"
@@ -124,9 +126,14 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DesktopOperationUnavailableError",
 				"type": "thrown",
 				"description": "The throws in `handle` reach the caller as rejected promises: `Desktop operation unavailable.` when the bridge lacks the operation, `Unknown desktop operation.` when a method has no bridge channel, and a validator's message when the input is refused. A rejection from a bridge or control operation passes through unchanged."
+			},
+			{
+				"name": "UnexpectedOverviewFieldsError",
+				"type": "thrown",
+				"description": "Project overview accepts no request fields after the protocol epoch is removed."
 			}
 		],
 		"errorStatus": "declared",
@@ -225,9 +232,14 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DesktopOperationUnavailableError",
 						"type": "thrown",
 						"description": "The throws in `handle` reach the caller as rejected promises: `Desktop operation unavailable.` when the bridge lacks the operation, `Unknown desktop operation.` when a method has no bridge channel, and a validator's message when the input is refused. A rejection from a bridge or control operation passes through unchanged."
+					},
+					{
+						"name": "UnexpectedOverviewFieldsError",
+						"type": "thrown",
+						"description": "Project overview accepts no request fields after the protocol epoch is removed."
 					}
 				],
 				"errorStatus": "declared"

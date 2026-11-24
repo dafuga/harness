@@ -21,9 +21,9 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ReportCliBundleError",
 				"type": "thrown",
-				"description": "Thrown as new Error('Report CLI bundle failed.') when the Bun.build result for packages/reports/src/cli/index.ts has success set to false, after dist/reports is cleared and the packages/reports build and dist folders are copied into it and before the console assets are read. Other failures are not listed here: rejections from the awaited filesystem and Bun.build calls are not caught and propagate out of the module unchanged."
+				"description": "Thrown as new ReportCliBundleError('Report CLI bundle failed.') when the Bun.build result for packages/reports/src/cli/index.ts has success set to false, after dist/reports is cleared and the packages/reports build and dist folders are copied into it and before the console assets are read. Other failures are not listed here: rejections from the awaited filesystem and Bun.build calls are not caught and propagate out of the module unchanged."
 			}
 		],
 		"errorStatus": "declared",

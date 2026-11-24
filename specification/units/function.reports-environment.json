@@ -43,7 +43,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid Harness report settings file.' when the settings file read fails with anything other than an ENOENT error, or when its content is not valid JSON."
 			},
@@ -84,7 +84,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid Harness report settings file.' when the settings file read fails with anything other than an ENOENT error, or when its content is not valid JSON."
 					},

@@ -96,7 +96,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Project registry validation or write failure",
 				"type": "thrown",
 				"description": "The service throws Error(Invalid project registry.) when list() rejects the persisted shape and Error(Unknown project.) when get() cannot find the requested ID. Rejections from Git lookup, realpath, and document adapter calls in register() or list() propagate."
 			}
@@ -131,7 +131,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Project registration Git or filesystem failure",
 						"type": "thrown",
 						"description": "Git lookup, realpath, or the registry update can reject; register() does not catch or replace those failures."
 					}
@@ -160,7 +160,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Malformed project registry",
 						"type": "thrown",
 						"description": "Throws Error(Invalid project registry.) when the read value is not an array or an entry fails the kind, root, or ID checks."
 					}
@@ -195,7 +195,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unknown project ID or registry read failure",
 						"type": "thrown",
 						"description": "Throws Error(Unknown project.) when no registry entry has the requested ID; it also propagates errors from list()."
 					}

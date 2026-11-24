@@ -157,24 +157,14 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown synchronously by responseCheckSettings with 'Invalid JEV model.' when model is invalid, 'Confidence threshold must be greater than 0 and at most 1.' when minConfidence is invalid, or 'Invalid API key environment variable.' when apiKeyEnv is invalid."
+				"description": "Both request and response paths are required. The request must be nonempty after trimming and the serialized evaluation input may not exceed 24,000 UTF-8 bytes."
 			},
 			{
-				"name": "Error",
+				"name": "UnreadableInputFileError",
 				"type": "thrown",
-				"description": "Rejected by readResponseCheckInput with '--request and --response files are required.' when either path is missing, with 'The user request must be nonempty.' when the request is blank after trimming, or with 'Serialized evaluation input exceeds 24000 UTF-8 bytes; no input was truncated.' when the serialized input is too large."
-			},
-			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "Rejected by readResponseCheckInput with 'Cannot read input file: use a regular UTF-8 file of at most 24000 bytes.' when a request, response, context or criteria file cannot be opened or read, is not a regular file, is larger than 24000 bytes, or is not valid UTF-8."
-			},
-			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "Rejected by readResponseCheckInput with 'Criteria file must contain valid JSON.' when the criteria file does not parse as JSON, and errors thrown by ResponseCheckInputValidator.validateCriteria are not caught and reject readResponseCheckInput unchanged."
+				"description": "The request or response file could not be read."
 			}
 		],
 		"errorStatus": "declared",
@@ -230,7 +220,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown synchronously by responseCheckSettings with 'Invalid JEV model.' when model is invalid, 'Confidence threshold must be greater than 0 and at most 1.' when minConfidence is invalid, or 'Invalid API key environment variable.' when apiKeyEnv is invalid."
 					}
@@ -290,19 +280,14 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Rejected by readResponseCheckInput with '--request and --response files are required.' when either path is missing, with 'The user request must be nonempty.' when the request is blank after trimming, or with 'Serialized evaluation input exceeds 24000 UTF-8 bytes; no input was truncated.' when the serialized input is too large."
+						"description": "Both request and response paths are required. The request must be nonempty after trimming and the serialized evaluation input may not exceed 24,000 UTF-8 bytes."
 					},
 					{
-						"name": "Error",
+						"name": "UnreadableInputFileError",
 						"type": "thrown",
-						"description": "Rejected by readResponseCheckInput with 'Cannot read input file: use a regular UTF-8 file of at most 24000 bytes.' when a request, response, context or criteria file cannot be opened or read, is not a regular file, is larger than 24000 bytes, or is not valid UTF-8."
-					},
-					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Rejected by readResponseCheckInput with 'Criteria file must contain valid JSON.' when the criteria file does not parse as JSON, and errors thrown by ResponseCheckInputValidator.validateCriteria are not caught and reject readResponseCheckInput unchanged."
+						"description": "The request or response file could not be read."
 					}
 				],
 				"errorStatus": "declared"

@@ -105,7 +105,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Resource wait timed out, became impossible, or was cancelled",
 				"type": "thrown",
 				"description": "`wait` throws `Error` when its deadline passes, the request exceeds usable capacity after reserves, the queued job disappears, or its parent is no longer running. An aborted signal rejects with the signal’s abort reason."
 			}
@@ -217,7 +217,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource wait timed out, became impossible, or was cancelled",
 						"type": "thrown",
 						"description": "`wait` throws `Error` when its deadline passes, the request exceeds usable capacity after reserves, the queued job disappears, or its parent is no longer running. An aborted signal rejects with the signal’s abort reason."
 					}

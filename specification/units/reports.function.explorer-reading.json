@@ -49,7 +49,8 @@
 						}
 					},
 					"Order placed for 42 EUR.\n"
-				]
+				],
+				"unknownReason": "The earlier artifact can be parsed data or plain text and is normalized before comparison."
 			},
 			{
 				"name": "artifactDifferences.after",
@@ -70,7 +71,8 @@
 						}
 					},
 					"Order placed for 45 EUR.\n"
-				]
+				],
+				"unknownReason": "The later artifact can be parsed data or plain text and is normalized before comparison."
 			},
 			{
 				"name": "explorerReading.behavior",
@@ -268,7 +270,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Explorer artifact load or digest failure",
 				"type": "thrown",
 				"description": "Rejects with whatever the artifact loader, the read of a response's bytes or the SHA-256 digest rejects with, such as a failed fetch. explorerReading does not catch it, so one such rejection rejects the whole result."
 			}
@@ -297,7 +299,8 @@
 								}
 							},
 							"Order placed for 42 EUR.\n"
-						]
+						],
+						"unknownReason": "The earlier artifact can be parsed data or plain text and is normalized before comparison."
 					},
 					{
 						"name": "artifactDifferences.after",
@@ -318,7 +321,8 @@
 								}
 							},
 							"Order placed for 45 EUR.\n"
-						]
+						],
+						"unknownReason": "The later artifact can be parsed data or plain text and is normalized before comparison."
 					}
 				],
 				"outputs": [
@@ -513,7 +517,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Explorer artifact load or digest failure",
 						"type": "thrown",
 						"description": "Rejects with whatever the artifact loader, the read of a response's bytes or the SHA-256 digest rejects with, such as a failed fetch. explorerReading does not catch it, so one such rejection rejects the whole result."
 					}

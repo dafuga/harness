@@ -40,7 +40,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Existing iOS service observation or identity failure",
 				"type": "thrown",
 				"description": "The function throws Error if rows is null, a matching existing service is not classified as delegated, or its process identity cannot be anchored as alive. Rejections from awaited service discovery or process checks also reject this async call."
 			}
@@ -73,7 +73,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Existing iOS service observation or identity failure",
 						"type": "thrown",
 						"description": "The function throws Error if rows is null, a matching existing service is not classified as delegated, or its process identity cannot be anchored as alive. Rejections from awaited service discovery or process checks also reject this async call."
 					}

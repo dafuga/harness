@@ -104,7 +104,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Game document revision, validation, or storage failure",
 				"type": "thrown",
 				"description": "Thrown for a malformed commit, invalid document, file-size violation, or stale revision, and propagated for git and filesystem failures."
 			},
@@ -155,7 +155,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Game document read, commit, or size failure",
 						"type": "thrown",
 						"description": "Thrown when a truthy commit is not a 40-character lowercase hexadecimal SHA or content exceeds 1,048,576 bytes; rejected when document validation or file/git access fails."
 					},
@@ -213,7 +213,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Game document validation, revision, or write failure",
 						"type": "thrown",
 						"description": "Thrown when document validation fails, current text differs from expectedRevision, or serialized output exceeds 1,048,576 bytes; rejected when file inspection or replacement operations fail."
 					}

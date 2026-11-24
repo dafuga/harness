@@ -422,7 +422,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Planning repository or delegated operation failure",
 				"type": "thrown",
 				"description": "The facade propagates Error rejections from its planning helpers and Git-backed PlanningApi; failures include repository initialization, rejected snapshot paths, unusable plan titles, invalid or missing design, thread and image selections, missing threads, approval mismatches, and history-read failures."
 			}
@@ -449,7 +449,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unresolved planning repository root",
 						"type": "thrown",
 						"description": "Rejects with Error when the repository root cannot be resolved or Git cannot confirm it as the repository root."
 					}
@@ -496,7 +496,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Rejected planning snapshot paths",
 						"type": "thrown",
 						"description": "Throws Error when the snapshot reports rejected plan paths, joining each path and its read or parse message with newlines."
 					}
@@ -547,7 +547,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Plan title produces an empty slug",
 						"type": "thrown",
 						"description": "Throws Error when title normalization produces no letters or numbers; the generated slug is limited to 64 characters."
 					}
@@ -632,7 +632,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Canonical plan read, validation, or creation failure",
 						"type": "thrown",
 						"description": "Rejects with Error if listing, reading, validating or creating the canonical plan fails in the delegated planning API."
 					}
@@ -686,7 +686,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Design entity or write validation failure",
 						"type": "thrown",
 						"description": "Rejects with Error if the entity cannot be read or the design write fails, including stale latest versions and category-specific image or notes validation."
 					}
@@ -734,7 +734,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid thread image anchor or write failure",
 						"type": "thrown",
 						"description": "Throws Error when the requested image anchor is absent or its state or viewport differs; delegated thread-write failures also reject."
 					}
@@ -790,7 +790,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Thread outside the entity or plan read failure",
 						"type": "thrown",
 						"description": "Throws Error when the thread does not belong to the entity; delegated plan-read failures also reject."
 					}
@@ -842,7 +842,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Change approval or revision mismatch",
 						"type": "thrown",
 						"description": "For change mode, throws Error when no approval exists or the draft version differs from the approved version; the planning API also rejects invalid change targets or references."
 					}
@@ -886,7 +886,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Design approval version or image mismatch",
 						"type": "thrown",
 						"description": "Throws Error for an unknown design version or image hashes that do not match it; the planning API also rejects approvals that do not bind the current design."
 					}
@@ -920,7 +920,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unknown image or image read failure",
 						"type": "thrown",
 						"description": "Throws Error when the image is absent from the entity or version; delegated image-read failures also reject."
 					}
@@ -985,7 +985,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Planning history or revision read failure",
 						"type": "thrown",
 						"description": "Rejects with Error when the delegated planning API cannot resolve the revision or read entity history."
 					}

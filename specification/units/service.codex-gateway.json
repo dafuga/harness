@@ -54,7 +54,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidGatewayRequestError",
 				"type": "thrown",
 				"description": "An Error that the private `respond` method throws for three conditions: a body over 33,554,432 bytes (message 'Request too large'), a missing or empty `thread-id` header or one longer than 256 characters (message 'thread-id required'), and an uncached request on a session that already holds 16 or more replays (message 'Prototype request limit reached'). `respond`'s own catch block turns each of these into a 400 invalid_request response, so fetch never rejects with it."
 			}

@@ -34,7 +34,8 @@
 						"sealed": "Ac4Gt9Pq2LvR7hXn0sYeMj3wKz8dBoUfI5yTq6rNsE1cLh9gWaPk0bDx4vSmnH8uZo2eJrQy6aMt3iVflX9dNs5wCkEz2pGj7hRbtO4kUq1mYxiL0fVc6nAdW8sBr3hKePDg5zQy9jTohN2mXa7uSlF1eRi4pOcWbK6tJd0vGqYs9nHz3wLarC7oMe5fUIx0BkPg8sTdVq4lEy2hNjaW3zDc6rOpGm9iSf1tXbeT5yKu8nLvRo7hQa0jMd3cZ-wPg4EikU6sBn9xVyJf2dLr5mCt9oAhWq8zGeNb1vIs7cTuyP4lRk6oXg",
 						"challenge": "d4Yo9vLqRz2kBWsHn7EcMxZ0pJfA5uIgK8aNDb3hYe8"
 					}
-				]
+				],
+				"unknownReason": "A public pairing client can send arbitrary JSON; the parser checks the request before using it."
 			},
 			{
 				"name": "PairingBodyValidator.verifier.value",
@@ -48,7 +49,8 @@
 					{
 						"verifier": "x5-QmBt0RwLd8KcV3fGh7JyZ1uNp4EaSo2iTqXbMk6U"
 					}
-				]
+				],
+				"unknownReason": "The public pairing exchange accepts unvalidated JSON and verifies the supplied fields."
 			}
 		],
 		"outputs": [
@@ -101,7 +103,8 @@
 								"sealed": "Ac4Gt9Pq2LvR7hXn0sYeMj3wKz8dBoUfI5yTq6rNsE1cLh9gWaPk0bDx4vSmnH8uZo2eJrQy6aMt3iVflX9dNs5wCkEz2pGj7hRbtO4kUq1mYxiL0fVc6nAdW8sBr3hKePDg5zQy9jTohN2mXa7uSlF1eRi4pOcWbK6tJd0vGqYs9nHz3wLarC7oMe5fUIx0BkPg8sTdVq4lEy2hNjaW3zDc6rOpGm9iSf1tXbeT5yKu8nLvRo7hQa0jMd3cZ-wPg4EikU6sBn9xVyJf2dLr5mCt9oAhWq8zGeNb1vIs7cTuyP4lRk6oXg",
 								"challenge": "d4Yo9vLqRz2kBWsHn7EcMxZ0pJfA5uIgK8aNDb3hYe8"
 							}
-						]
+						],
+						"unknownReason": "A public pairing client can send arbitrary JSON; the parser checks the request before using it."
 					}
 				],
 				"outputs": [
@@ -141,7 +144,8 @@
 							{
 								"verifier": "x5-QmBt0RwLd8KcV3fGh7JyZ1uNp4EaSo2iTqXbMk6U"
 							}
-						]
+						],
+						"unknownReason": "The public pairing exchange accepts unvalidated JSON and verifies the supplied fields."
 					}
 				],
 				"outputs": [

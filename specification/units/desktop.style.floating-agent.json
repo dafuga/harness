@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.style.floating-agent",
+	"uid": "u_q7m2dk4xwt",
+	"kind": "style",
+	"title": "floating-agent",
+	"responsibility": "Owns the floating-agent stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/styles/floating-agent.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/styles/floating-agent.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/styles/floating-agent.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

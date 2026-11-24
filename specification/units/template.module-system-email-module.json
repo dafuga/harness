@@ -88,37 +88,37 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "EmailServiceError",
 				"type": "thrown",
 				"description": "The thrown Error has message 'Configure the email provider and sender.' when either provider setting is missing; both are required for enabled sends."
 			},
 			{
-				"name": "Error",
+				"name": "EmailServiceError",
 				"type": "thrown",
 				"description": "The thrown Error has message 'Invalid email message.' when the recipient fails the email-address check, the trimmed subject is empty, or the subject contains a carriage return or newline."
 			},
 			{
-				"name": "Error",
+				"name": "EmailServiceError",
 				"type": "thrown",
 				"description": "The thrown Error has message 'Email sending rate limit reached.' when an instance has already admitted 100 send attempts in its current one-hour window."
 			},
 			{
-				"name": "Error",
+				"name": "EmailServiceError",
 				"type": "thrown",
 				"description": "The thrown Error has message 'Email provider usage limit reached.' when Resend responds with HTTP 429."
 			},
 			{
-				"name": "Error",
+				"name": "EmailServiceError",
 				"type": "thrown",
 				"description": "The thrown Error has message 'Email delivery failed.' when Resend responds with a non-success status other than HTTP 429."
 			},
 			{
-				"name": "Error",
+				"name": "EmailServiceError",
 				"type": "thrown",
 				"description": "The thrown Error has message 'Email service is unavailable.' when the provider transport promise rejects."
 			},
 			{
-				"name": "Error",
+				"name": "EmailServiceError",
 				"type": "thrown",
 				"description": "The thrown Error has message 'Email provider did not acknowledge delivery.' when a successful provider response has no non-empty string id."
 			}

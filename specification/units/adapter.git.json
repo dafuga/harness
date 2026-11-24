@@ -219,7 +219,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "GitCommandError",
 				"type": "thrown",
 				"description": "On a nonzero Git exit, bytes throws an Error and run propagates it; the message is git <args joined by spaces> failed: <trimmed stderr>. attempt returns undefined and exec returns a GitResult with its nonzero code instead of throwing this Git command error."
 			},
@@ -278,7 +278,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "GitCommandError",
 						"type": "thrown",
 						"description": "On a nonzero Git exit, bytes throws an Error and run propagates it; the message is git <args joined by spaces> failed: <trimmed stderr>. attempt returns undefined and exec returns a GitResult with its nonzero code instead of throwing this Git command error."
 					},
@@ -333,7 +333,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "GitCommandError",
 						"type": "thrown",
 						"description": "On a nonzero Git exit, bytes throws an Error and run propagates it; the message is git <args joined by spaces> failed: <trimmed stderr>. attempt returns undefined and exec returns a GitResult with its nonzero code instead of throwing this Git command error."
 					},

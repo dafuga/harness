@@ -100,7 +100,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub evidence invalid-input",
 				"type": "thrown",
 				"description": "Thrown with code invalid-input when evidencePayload rejects a query field; the field-validation exception is caught before hubFail creates this error."
 			},
@@ -154,7 +154,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub evidence invalid-input",
 						"type": "thrown",
 						"description": "Thrown with code invalid-input when evidencePayload rejects a query field; the field-validation exception is caught before hubFail creates this error."
 					},
@@ -210,7 +210,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub evidence invalid-input",
 						"type": "thrown",
 						"description": "Thrown with code invalid-input when evidencePayload rejects a query field; the field-validation exception is caught before hubFail creates this error."
 					},

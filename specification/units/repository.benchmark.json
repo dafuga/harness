@@ -226,12 +226,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidBenchmarkRunIdError",
 				"type": "thrown",
 				"description": "Thrown by directory() when the run ID does not match /^[a-f0-9-]{36}$/, with the message 'Invalid benchmark run ID.'; save() and read() reject with it."
 			},
 			{
-				"name": "Error",
+				"name": "Benchmark run filesystem failure",
 				"type": "thrown",
 				"description": "Rejects save() when mkdir, writeFile or rename fails, and read() when run.json cannot be read, for example because no run was saved under that ID."
 			},
@@ -275,7 +275,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidBenchmarkRunIdError",
 						"type": "thrown",
 						"description": "Thrown synchronously when the run ID does not match /^[a-f0-9-]{36}$/, with the message 'Invalid benchmark run ID.'."
 					}
@@ -374,12 +374,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid benchmark run ID",
 						"type": "thrown",
 						"description": "Thrown by directory(run.id) inside save(), so the promise rejects, when run.id does not match /^[a-f0-9-]{36}$/."
 					},
 					{
-						"name": "Error",
+						"name": "Benchmark run write failure",
 						"type": "thrown",
 						"description": "Rejects with the file-system error from mkdir, writeFile or rename, for example when the run folder cannot be created or run.json.tmp cannot be written."
 					},
@@ -487,12 +487,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidBenchmarkRunIdError",
 						"type": "thrown",
 						"description": "Rejects with the 'Invalid benchmark run ID.' error when the run ID does not match /^[a-f0-9-]{36}$/."
 					},
 					{
-						"name": "Error",
+						"name": "Benchmark run read failure",
 						"type": "thrown",
 						"description": "Rejects with the file-system error from readFile when run.json does not exist or cannot be read."
 					},

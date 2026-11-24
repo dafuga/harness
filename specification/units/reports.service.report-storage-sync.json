@@ -71,7 +71,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Report selection or enumeration failure",
 				"type": "thrown",
 				"description": "An Error from repository.get(options.run) or repository.list() can reject run before its per-report error handling begins. Failures during an individual report sync are caught and added to the returned errors array."
 			}
@@ -122,7 +122,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Report selection or enumeration failure",
 						"type": "thrown",
 						"description": "An Error from repository.get(options.run) or repository.list() can reject run before its per-report error handling begins. Failures during an individual report sync are caught and added to the returned errors array."
 					}

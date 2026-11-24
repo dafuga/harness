@@ -21,7 +21,13 @@
 			"PhoneReplicaWriteService.push",
 			"PhoneReplicaWriteGrant",
 			"PhoneReplicaIntent",
-			"PhoneReplicaReceipt"
+			"PhoneReplicaReceipt",
+			"PhoneReplicaAction",
+			"phoneReplicaActions",
+			"needsOpenFlag",
+			"statusGuarded",
+			"isPhoneReplicaAction",
+			"PhoneReplicaAction"
 		]
 	},
 	"contract": {
@@ -62,6 +68,13 @@
 				"type": "TrackerItemInput",
 				"required": true,
 				"description": "Version 1 intent with UUID, exact item ID, one allowlisted action (note, flag, answer, or the lifecycle actions start, reopen, block, unblock, resolve, done, ignore, unignore), bounded text, the attention revision for every action except note, and the expected item status for lifecycle actions."
+			},
+			{
+				"name": "isPhoneReplicaAction.value",
+				"type": "unknown",
+				"required": true,
+				"description": "Candidate action name from a phone write request.",
+				"unknownReason": "The request value is untrusted until this guard verifies that it names a supported phone replica action."
 			}
 		],
 		"outputs": [
@@ -146,6 +159,26 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "isPhoneReplicaAction",
+				"inputs": [
+					{
+						"name": "isPhoneReplicaAction.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Candidate action name from a phone write request.",
+						"unknownReason": "The request value is untrusted until this guard verifies that it names a supported phone replica action."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isPhoneReplicaAction",
+						"type": "value is PhoneReplicaAction"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

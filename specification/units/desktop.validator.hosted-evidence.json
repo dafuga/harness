@@ -93,7 +93,8 @@
 							"scenarios": []
 						}
 					}
-				]
+				],
+				"unknownReason": "The hosted evidence answer is an untrusted external value until its schema parses."
 			},
 			{
 				"name": "HostedEvidenceValidator.evidence.query",
@@ -270,7 +271,8 @@
 									"scenarios": []
 								}
 							}
-						]
+						],
+						"unknownReason": "The hosted evidence answer is an untrusted external value until its schema parses."
 					},
 					{
 						"name": "HostedEvidenceValidator.evidence.query",

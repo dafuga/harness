@@ -46,7 +46,8 @@
 						}
 					},
 					["edge-gateway", "vpn-tunnel"]
-				]
+				],
+				"unknownReason": "The CLI prints arbitrary API results and only applies binary handling to recognized response objects."
 			},
 			{
 				"name": "apiOutput.options",
@@ -81,7 +82,7 @@
 				"description": "Thrown through fail() with a message when a binary response has a non-empty select, when a binary response has no output, or when the select path does not reach an own property of an object at every segment."
 			},
 			{
-				"name": "Error",
+				"name": "API output file creation failure",
 				"type": "thrown",
 				"description": "Rejected by writeFile with a Node.js file system error, such as EEXIST, when the output path already exists because the file is opened with the 'wx' flag, or when the file cannot be created for another file system reason."
 			},
@@ -128,7 +129,8 @@
 								}
 							},
 							["edge-gateway", "vpn-tunnel"]
-						]
+						],
+						"unknownReason": "The CLI prints arbitrary API results and only applies binary handling to recognized response objects."
 					},
 					{
 						"name": "apiOutput.options",
@@ -163,7 +165,7 @@
 						"description": "Thrown through fail() with a message when a binary response has a non-empty select, when a binary response has no output, or when the select path does not reach an own property of an object at every segment."
 					},
 					{
-						"name": "Error",
+						"name": "API output file creation failure",
 						"type": "thrown",
 						"description": "Rejected by writeFile with a Node.js file system error, such as EEXIST, when the output path already exists because the file is opened with the 'wx' flag, or when the file cannot be created for another file system reason."
 					},

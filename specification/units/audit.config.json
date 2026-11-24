@@ -221,7 +221,7 @@
 				"description": "Thrown by JSON.parse when harness.audit.json exists but its contents are not valid JSON. readAuditConfig does not catch it, so the parser's error reaches the caller unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "Audit configuration read failure",
 				"type": "thrown",
 				"description": "Node.js file-system error from readFileSync when harness.audit.json exists but cannot be read, for example EACCES when read permission is missing or EISDIR when the path is a directory. readAuditConfig does not catch it, so the error reaches the caller unchanged."
 			},
@@ -311,7 +311,7 @@
 						"description": "Thrown by JSON.parse when harness.audit.json exists but its contents are not valid JSON. readAuditConfig does not catch it, so the parser's error reaches the caller unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "Audit configuration read failure",
 						"type": "thrown",
 						"description": "Node.js file-system error from readFileSync when harness.audit.json exists but cannot be read, for example EACCES when read permission is missing or EISDIR when the path is a directory. readAuditConfig does not catch it, so the error reaches the caller unchanged."
 					},

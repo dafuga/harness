@@ -33,7 +33,8 @@
 							]
 						}
 					}
-				]
+				],
+				"unknownReason": "The extractor filters unvalidated CLI event objects by event and message fields."
 			}
 		],
 		"outputs": [
@@ -70,7 +71,8 @@
 									]
 								}
 							}
-						]
+						],
+						"unknownReason": "The extractor filters unvalidated CLI event objects by event and message fields."
 					}
 				],
 				"outputs": [

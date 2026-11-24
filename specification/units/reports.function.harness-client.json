@@ -40,7 +40,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HarnessDataLoadError",
 				"type": "thrown",
 				"description": "An HTTP response with ok === false causes the requested resource promise to reject with an Error whose message includes the data path and status. Rejections from the fetcher and response.json() propagate without wrapping, and failed path promises are removed from the cache for a later retry."
 			}

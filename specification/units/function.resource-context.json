@@ -104,7 +104,7 @@
 				"description": "Thrown by track(pid) when any stored job record is not valid JSON, because ResourceQueueRepository.all() parses every record before patch() updates the matching one."
 			},
 			{
-				"name": "Error",
+				"name": "Resource tracking SQLite transaction failure",
 				"type": "thrown",
 				"description": "Thrown by track(pid) when the SQLite driver (bun:sqlite under Bun, node:sqlite under Node) fails on BEGIN IMMEDIATE, a read, a write or COMMIT; errors after BEGIN are rolled back and rethrown unchanged."
 			}
@@ -204,7 +204,7 @@
 						"description": "Thrown by track(pid) when any stored job record is not valid JSON, because ResourceQueueRepository.all() parses every record before patch() updates the matching one."
 					},
 					{
-						"name": "Error",
+						"name": "Resource tracking SQLite transaction failure",
 						"type": "thrown",
 						"description": "Thrown by track(pid) when the SQLite driver (bun:sqlite under Bun, node:sqlite under Node) fails on BEGIN IMMEDIATE, a read, a write or COMMIT; errors after BEGIN are rolled back and rethrown unchanged."
 					}

@@ -6683,15 +6683,21 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
+			"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
-				"reason": "Retains typed local operation errors and main’s visual mockup runner wiring."
+				"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
+				"reason": "Names the rejection for unexpected project overview fields while preserving its message and Error compatibility."
 			},
 			"previousReviews": [
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "99a5afd915176506e32bbf0c7c0352db1ce862a3cca43c1871f72226e2a5aa81",
+					"reason": "Retains typed local operation errors and main’s visual mockup runner wiring."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",

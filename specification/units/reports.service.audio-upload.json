@@ -171,57 +171,57 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidAudioTitleError",
 				"type": "thrown",
 				"description": "Thrown by inputDetails when the title is empty after trimming and sanitizing or is longer than 120 characters, with the message 'Audio title must be 1–120 characters'."
 			},
 			{
-				"name": "Error",
+				"name": "AudioDetailsTooLargeError",
 				"type": "thrown",
 				"description": "Thrown by inputDetails when the raw note is longer than 2000 characters or the raw source is longer than 200 characters, with the message 'Audio notes or source exceed size limit'."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidAudioFileSizeError",
 				"type": "thrown",
 				"description": "Thrown by readAudio with 'Audio file must be 1 byte to 50 MB' when the File is empty or larger than 50,000,000 bytes, and by audioAsset with 'Invalid audio file or size' when the bytes read are empty or larger than that."
 			},
 			{
-				"name": "Error",
+				"name": "Unsupported audio format",
 				"type": "thrown",
 				"description": "Thrown by audioAsset with 'Unsupported audio format' when the filename extension does not map to an audio/* MIME type; only .wav, .mp3, .m4a and .ogg do."
 			},
 			{
-				"name": "Error",
+				"name": "Audio content does not match its filename",
 				"type": "thrown",
 				"description": "Thrown by audioAsset with 'Audio content does not match its filename' when .mp3, .m4a or .ogg bytes fail their header check; .wav bytes are checked by wavInfo instead."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid or unsupported WAV audio",
 				"type": "thrown",
 				"description": "Thrown by wavInfo for a .wav file whose RIFF/WAVE container, chunk layout, fmt encoding, sample format or data length is invalid or unsupported, with messages such as 'Invalid WAV audio' and 'Unsupported WAV audio format'."
 			},
 			{
-				"name": "Error",
+				"name": "Report audio asset write failure",
 				"type": "thrown",
 				"description": "Raised by mkdir or writeFile in writeImageAsset when the audio is written into the report's assets directory; the service does not catch it, so no evidence entry is added."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid report or asset ID",
 				"type": "thrown",
 				"description": "Thrown by safeId, reached through repository.directory, when reportId is not 1 to 100 letters, digits, underscores or hyphens, with the message 'Invalid report or asset ID'."
 			},
 			{
-				"name": "Error",
+				"name": "Report audio lock filesystem failure",
 				"type": "thrown",
 				"description": "Raised by reportLock's own file-system calls, which it does not catch: opening the .lock file (ENOENT when the report directory does not exist), writing the process id into it, closing it, and removing it with any code other than ENOENT."
 			},
 			{
-				"name": "Error",
+				"name": "Report update lock timed out",
 				"type": "thrown",
 				"description": "Thrown by reportLock with the message 'Report is busy; retry this update' when the .lock file is still present after 200 attempts, each followed by a 25 millisecond wait."
 			},
 			{
-				"name": "Error",
+				"name": "Unsafe report directory",
 				"type": "thrown",
 				"description": "Thrown by ReportRepository.get with the message 'Invalid report directory' when the report directory is a symbolic link; lstat and readFile failures on the directory or manifest.json, such as a missing manifest, pass through unchanged."
 			},
@@ -231,27 +231,27 @@
 				"description": "Thrown by JSON.parse in readJson when manifest.json is not valid JSON."
 			},
 			{
-				"name": "Error",
+				"name": "Report is finalizing or finalized",
 				"type": "thrown",
 				"description": "Thrown by ReportRepository.mutateActive with the message 'Cannot update finalizing or finalized report' when the report's state is not 'active'."
 			},
 			{
-				"name": "Error",
+				"name": "Expired report or invalid retention timestamp",
 				"type": "thrown",
 				"description": "Thrown by EvidenceStorageService.store, which mutateActive awaits after the update, with 'Report expired after 30 days; create a new report' when startedAt is at least 30 days before now, or with 'Invalid report retention timestamp' when startedAt does not parse; the new entry is always pending, so every upload reaches this check."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid evidence asset or storage configuration",
 				"type": "thrown",
 				"description": "After the retention check, store calls R2EvidenceStoreAdapter.fromEnvironment() without a catch, and when that returns an adapter, registeredAsset throws 'Invalid asset' for a symbolic link or non-regular file or 'Invalid asset path' when the real path leaves the assets directory; readFile, lstat and realpath errors pass through unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid R2 evidence name",
 				"type": "thrown",
 				"description": "R2EvidenceStoreAdapter.put throws 'Invalid R2 evidence name' when the file name is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg, and a failed S3 PutObject rejects with the S3 client's own error."
 			},
 			{
-				"name": "Error",
+				"name": "Updated report manifest could not be written",
 				"type": "thrown",
 				"description": "Raised by mkdir, writeFile or rename in atomicJson when mutateActive writes the updated manifest.json; the service does not catch it, so the promise rejects instead of resolving."
 			}
@@ -324,57 +324,57 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidAudioTitleError",
 						"type": "thrown",
 						"description": "Thrown by inputDetails when the title is empty after trimming and sanitizing or is longer than 120 characters, with the message 'Audio title must be 1–120 characters'."
 					},
 					{
-						"name": "Error",
+						"name": "AudioDetailsTooLargeError",
 						"type": "thrown",
 						"description": "Thrown by inputDetails when the raw note is longer than 2000 characters or the raw source is longer than 200 characters, with the message 'Audio notes or source exceed size limit'."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidAudioFileSizeError",
 						"type": "thrown",
 						"description": "Thrown by readAudio with 'Audio file must be 1 byte to 50 MB' when the File is empty or larger than 50,000,000 bytes, and by audioAsset with 'Invalid audio file or size' when the bytes read are empty or larger than that."
 					},
 					{
-						"name": "Error",
+						"name": "Unsupported audio format",
 						"type": "thrown",
 						"description": "Thrown by audioAsset with 'Unsupported audio format' when the filename extension does not map to an audio/* MIME type; only .wav, .mp3, .m4a and .ogg do."
 					},
 					{
-						"name": "Error",
+						"name": "Audio content does not match its filename",
 						"type": "thrown",
 						"description": "Thrown by audioAsset with 'Audio content does not match its filename' when .mp3, .m4a or .ogg bytes fail their header check; .wav bytes are checked by wavInfo instead."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid or unsupported WAV audio",
 						"type": "thrown",
 						"description": "Thrown by wavInfo for a .wav file whose RIFF/WAVE container, chunk layout, fmt encoding, sample format or data length is invalid or unsupported, with messages such as 'Invalid WAV audio' and 'Unsupported WAV audio format'."
 					},
 					{
-						"name": "Error",
+						"name": "Report audio asset write failure",
 						"type": "thrown",
 						"description": "Raised by mkdir or writeFile in writeImageAsset when the audio is written into the report's assets directory; the service does not catch it, so no evidence entry is added."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown by safeId, reached through repository.directory, when reportId is not 1 to 100 letters, digits, underscores or hyphens, with the message 'Invalid report or asset ID'."
 					},
 					{
-						"name": "Error",
+						"name": "Report audio lock filesystem failure",
 						"type": "thrown",
 						"description": "Raised by reportLock's own file-system calls, which it does not catch: opening the .lock file (ENOENT when the report directory does not exist), writing the process id into it, closing it, and removing it with any code other than ENOENT."
 					},
 					{
-						"name": "Error",
+						"name": "Report update lock timed out",
 						"type": "thrown",
 						"description": "Thrown by reportLock with the message 'Report is busy; retry this update' when the .lock file is still present after 200 attempts, each followed by a 25 millisecond wait."
 					},
 					{
-						"name": "Error",
+						"name": "Unsafe report directory",
 						"type": "thrown",
 						"description": "Thrown by ReportRepository.get with the message 'Invalid report directory' when the report directory is a symbolic link; lstat and readFile failures on the directory or manifest.json, such as a missing manifest, pass through unchanged."
 					},
@@ -384,27 +384,27 @@
 						"description": "Thrown by JSON.parse in readJson when manifest.json is not valid JSON."
 					},
 					{
-						"name": "Error",
+						"name": "Report is finalizing or finalized",
 						"type": "thrown",
 						"description": "Thrown by ReportRepository.mutateActive with the message 'Cannot update finalizing or finalized report' when the report's state is not 'active'."
 					},
 					{
-						"name": "Error",
+						"name": "Expired report or invalid retention timestamp",
 						"type": "thrown",
 						"description": "Thrown by EvidenceStorageService.store, which mutateActive awaits after the update, with 'Report expired after 30 days; create a new report' when startedAt is at least 30 days before now, or with 'Invalid report retention timestamp' when startedAt does not parse; the new entry is always pending, so every upload reaches this check."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid evidence asset or storage configuration",
 						"type": "thrown",
 						"description": "After the retention check, store calls R2EvidenceStoreAdapter.fromEnvironment() without a catch, and when that returns an adapter, registeredAsset throws 'Invalid asset' for a symbolic link or non-regular file or 'Invalid asset path' when the real path leaves the assets directory; readFile, lstat and realpath errors pass through unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid R2 evidence name",
 						"type": "thrown",
 						"description": "R2EvidenceStoreAdapter.put throws 'Invalid R2 evidence name' when the file name is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg, and a failed S3 PutObject rejects with the S3 client's own error."
 					},
 					{
-						"name": "Error",
+						"name": "Updated report manifest could not be written",
 						"type": "thrown",
 						"description": "Raised by mkdir, writeFile or rename in atomicJson when mutateActive writes the updated manifest.json; the service does not catch it, so the promise rejects instead of resolving."
 					}
@@ -494,57 +494,57 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidAudioTitleError",
 						"type": "thrown",
 						"description": "Thrown by inputDetails when the title is empty after trimming and sanitizing or is longer than 120 characters, with the message 'Audio title must be 1–120 characters'."
 					},
 					{
-						"name": "Error",
+						"name": "AudioDetailsTooLargeError",
 						"type": "thrown",
 						"description": "Thrown by inputDetails when the raw note is longer than 2000 characters or the raw source is longer than 200 characters, with the message 'Audio notes or source exceed size limit'."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidAudioFileSizeError",
 						"type": "thrown",
 						"description": "Thrown by readAudio with 'Audio file must be 1 byte to 50 MB' when the File is empty or larger than 50,000,000 bytes, and by audioAsset with 'Invalid audio file or size' when the bytes read are empty or larger than that."
 					},
 					{
-						"name": "Error",
+						"name": "Unsupported audio format",
 						"type": "thrown",
 						"description": "Thrown by audioAsset with 'Unsupported audio format' when the filename extension does not map to an audio/* MIME type; only .wav, .mp3, .m4a and .ogg do."
 					},
 					{
-						"name": "Error",
+						"name": "Audio content does not match its filename",
 						"type": "thrown",
 						"description": "Thrown by audioAsset with 'Audio content does not match its filename' when .mp3, .m4a or .ogg bytes fail their header check; .wav bytes are checked by wavInfo instead."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid or unsupported WAV audio",
 						"type": "thrown",
 						"description": "Thrown by wavInfo for a .wav file whose RIFF/WAVE container, chunk layout, fmt encoding, sample format or data length is invalid or unsupported, with messages such as 'Invalid WAV audio' and 'Unsupported WAV audio format'."
 					},
 					{
-						"name": "Error",
+						"name": "Report audio asset write failure",
 						"type": "thrown",
 						"description": "Raised by mkdir or writeFile in writeImageAsset when the audio is written into the report's assets directory; the service does not catch it, so no evidence entry is added."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown by safeId, reached through repository.directory, when reportId is not 1 to 100 letters, digits, underscores or hyphens, with the message 'Invalid report or asset ID'."
 					},
 					{
-						"name": "Error",
+						"name": "Report audio lock filesystem failure",
 						"type": "thrown",
 						"description": "Raised by reportLock's own file-system calls, which it does not catch: opening the .lock file (ENOENT when the report directory does not exist), writing the process id into it, closing it, and removing it with any code other than ENOENT."
 					},
 					{
-						"name": "Error",
+						"name": "Report update lock timed out",
 						"type": "thrown",
 						"description": "Thrown by reportLock with the message 'Report is busy; retry this update' when the .lock file is still present after 200 attempts, each followed by a 25 millisecond wait."
 					},
 					{
-						"name": "Error",
+						"name": "Unsafe report directory",
 						"type": "thrown",
 						"description": "Thrown by ReportRepository.get with the message 'Invalid report directory' when the report directory is a symbolic link; lstat and readFile failures on the directory or manifest.json, such as a missing manifest, pass through unchanged."
 					},
@@ -554,27 +554,27 @@
 						"description": "Thrown by JSON.parse in readJson when manifest.json is not valid JSON."
 					},
 					{
-						"name": "Error",
+						"name": "Report is finalizing or finalized",
 						"type": "thrown",
 						"description": "Thrown by ReportRepository.mutateActive with the message 'Cannot update finalizing or finalized report' when the report's state is not 'active'."
 					},
 					{
-						"name": "Error",
+						"name": "Expired report or invalid retention timestamp",
 						"type": "thrown",
 						"description": "Thrown by EvidenceStorageService.store, which mutateActive awaits after the update, with 'Report expired after 30 days; create a new report' when startedAt is at least 30 days before now, or with 'Invalid report retention timestamp' when startedAt does not parse; the new entry is always pending, so every upload reaches this check."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid evidence asset or storage configuration",
 						"type": "thrown",
 						"description": "After the retention check, store calls R2EvidenceStoreAdapter.fromEnvironment() without a catch, and when that returns an adapter, registeredAsset throws 'Invalid asset' for a symbolic link or non-regular file or 'Invalid asset path' when the real path leaves the assets directory; readFile, lstat and realpath errors pass through unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid R2 evidence name",
 						"type": "thrown",
 						"description": "R2EvidenceStoreAdapter.put throws 'Invalid R2 evidence name' when the file name is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg, and a failed S3 PutObject rejects with the S3 client's own error."
 					},
 					{
-						"name": "Error",
+						"name": "Updated report manifest could not be written",
 						"type": "thrown",
 						"description": "Raised by mkdir, writeFile or rename in atomicJson when mutateActive writes the updated manifest.json; the service does not catch it, so the promise rejects instead of resolving."
 					}

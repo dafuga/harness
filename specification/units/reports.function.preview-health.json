@@ -88,9 +88,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "WorkerNotReadyError",
 				"type": "thrown",
-				"description": "Throws `Error('Worker not ready.')` when the response is not OK or its protocol is not `harness-worker-v1`. Fetch, redirect, 750 ms timeout, and JSON parsing failures also reject the promise; the remaining health fields are not runtime-validated."
+				"description": "Throws `WorkerNotReadyError('Worker not ready.')` when the response is not OK or its protocol is not `harness-worker-v1`. Fetch, redirect, 750 ms timeout, and JSON parsing failures also reject the promise; the remaining health fields are not runtime-validated."
 			}
 		],
 		"errorStatus": "declared",
@@ -164,9 +164,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "WorkerNotReadyError",
 						"type": "thrown",
-						"description": "Throws `Error('Worker not ready.')` when the response is not OK or its protocol is not `harness-worker-v1`. Fetch, redirect, 750 ms timeout, and JSON parsing failures also reject the promise; the remaining health fields are not runtime-validated."
+						"description": "Throws `WorkerNotReadyError('Worker not ready.')` when the response is not OK or its protocol is not `harness-worker-v1`. Fetch, redirect, 750 ms timeout, and JSON parsing failures also reject the promise; the remaining health fields are not runtime-validated."
 					}
 				],
 				"errorStatus": "declared"

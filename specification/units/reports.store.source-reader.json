@@ -336,7 +336,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unregistered, invalid, or unreadable archived source",
 				"type": "thrown",
 				"description": "The returned read(path) rejects with Error when the path is not archived with media, the recorded reference does not match media/<64 lowercase hex>.txt, or the fetch response is not OK; an available recorded gap supplies the message for an entry without media. Rejections from fetch and response.text() also propagate unchanged."
 			}
@@ -672,7 +672,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unregistered, invalid, or unreadable archived source",
 						"type": "thrown",
 						"description": "The returned read(path) rejects with Error when the path is not archived with media, the recorded reference does not match media/<64 lowercase hex>.txt, or the fetch response is not OK; an available recorded gap supplies the message for an entry without media. Rejections from fetch and response.text() also propagate unchanged."
 					}

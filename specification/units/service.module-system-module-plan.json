@@ -166,17 +166,17 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Rejects modulePackagePlan with 'This module requires a Harness app project.' when definition.appOnly is true and package.json's harness.kind is neither 'app' nor 'game'."
 			},
 			{
-				"name": "Error",
+				"name": "Module dependency or script declaration conflict",
 				"type": "thrown",
 				"description": "Rejects modulePackagePlan when a dependency, devDependency or package script already has a different non-empty value under the same name; the message names the conflicting entry."
 			},
 			{
-				"name": "Error",
+				"name": "Module package or group configuration read failure",
 				"type": "thrown",
 				"description": "Rejects with the readFile error when package.json cannot be read, or when harness.groups.json fails with a code other than ENOENT."
 			},
@@ -304,17 +304,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Rejects modulePackagePlan with 'This module requires a Harness app project.' when definition.appOnly is true and package.json's harness.kind is neither 'app' nor 'game'."
 					},
 					{
-						"name": "Error",
+						"name": "Module dependency or script declaration conflict",
 						"type": "thrown",
 						"description": "Rejects modulePackagePlan when a dependency, devDependency or package script already has a different non-empty value under the same name; the message names the conflicting entry."
 					},
 					{
-						"name": "Error",
+						"name": "Module package manifest read failure",
 						"type": "thrown",
 						"description": "Rejects with the readFile error when package.json cannot be read, such as ENOENT when the file is missing."
 					},
@@ -390,7 +390,7 @@
 						"description": "Rejects when harness.groups.json exists but is not valid JSON, because its text is passed straight to JSON.parse."
 					},
 					{
-						"name": "Error",
+						"name": "Module group configuration read failure",
 						"type": "thrown",
 						"description": "Rejects with the readFile error when harness.groups.json fails with a code other than ENOENT; ENOENT is caught and the taxonomy starts empty instead."
 					},

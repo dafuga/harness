@@ -16,13 +16,13 @@
 		"inputs": [
 			{
 				"name": "atomicSyntax.content",
-				"type": "unknown",
+				"type": "string",
 				"required": true,
 				"description": "Svelte source text passed to parse with { modern: true }. The function does not catch parse failures."
 			},
 			{
 				"name": "walkAtomicMarkup.node",
-				"type": "unknown",
+				"type": "AST.Fragment",
 				"required": true,
 				"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
 				"examples": [
@@ -31,7 +31,7 @@
 			},
 			{
 				"name": "walkAtomicMarkup.callback",
-				"type": "unknown",
+				"type": "(node: AtomicMarkupNode) => void",
 				"required": true,
 				"description": "A synchronous function called with each visited object whose type property is truthy. It is not called for untyped values, and any exception it throws propagates."
 			}
@@ -72,7 +72,7 @@
 				"inputs": [
 					{
 						"name": "atomicSyntax.content",
-						"type": "unknown",
+						"type": "string",
 						"required": true,
 						"description": "Svelte source text passed to parse with { modern: true }. The function does not catch parse failures."
 					}
@@ -98,7 +98,7 @@
 				"inputs": [
 					{
 						"name": "walkAtomicMarkup.node",
-						"type": "unknown",
+						"type": "AST.Fragment",
 						"required": true,
 						"description": "An object subtree or array of subtrees that the walker inspects. Falsy and non-object values are ignored; traversal skips keys parent, metadata, expression, and attributes, and it has no general cycle guard.",
 						"examples": [
@@ -107,7 +107,7 @@
 					},
 					{
 						"name": "walkAtomicMarkup.callback",
-						"type": "unknown",
+						"type": "(node: AtomicMarkupNode) => void",
 						"required": true,
 						"description": "A synchronous function called with each visited object whose type property is truthy. It is not called for untyped values, and any exception it throws propagates."
 					}

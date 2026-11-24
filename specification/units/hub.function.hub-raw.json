@@ -126,7 +126,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub blob artifact-corrupt",
 				"type": "thrown",
 				"description": "Error thrown by hubFail() inside an async function, so the call rejects with message 'Harness artifact unavailable' and code 'artifact-corrupt' when prefetched or source bytes fail the blob SHA-1 check, or when hubMaterializedHash finds an expected SHA-256 mismatch, a malformed Git LFS pointer, or a pointer size that is not a safe integer or is above 50000000. A cache entry that fails the check is skipped instead, and errors from context.source.raw, readCache, writeCache or crypto.subtle.digest propagate unchanged."
 			}
@@ -173,7 +173,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub blob artifact-corrupt",
 						"type": "thrown",
 						"description": "Error thrown by hubFail() inside an async function, so the call rejects with message 'Harness artifact unavailable' and code 'artifact-corrupt' when prefetched bytes, or bytes read from context.source.raw, do not match entry.sha. A cache entry that does not match is skipped instead, and errors from context.source.raw, readCache, writeCache or crypto.subtle.digest propagate unchanged."
 					}
@@ -227,7 +227,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub blob artifact-corrupt",
 						"type": "thrown",
 						"description": "Error thrown by hubFail() inside an async function, so the call rejects with message 'Harness artifact unavailable' and code 'artifact-corrupt' when an expected SHA-256 does not match, when text starting with 'version https://git-lfs.github.com/spec/' is not an exact v1 pointer, or when its declared size is not a safe integer or is above 50000000. Errors from crypto.subtle.digest propagate unchanged."
 					}

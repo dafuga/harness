@@ -84,7 +84,8 @@
 						"contract": null,
 						"is_active": 0
 					}
-				]
+				],
+				"unknownReason": "The driver returns an unchecked row; each column is converted according to the SQLite model descriptor."
 			}
 		],
 		"outputs": [
@@ -195,7 +196,8 @@
 								"contract": null,
 								"is_active": 0
 							}
-						]
+						],
+						"unknownReason": "The driver returns an unchecked row; each column is converted according to the SQLite model descriptor."
 					}
 				],
 				"outputs": [

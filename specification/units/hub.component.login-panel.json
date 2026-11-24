@@ -40,7 +40,8 @@
 				"name": "LoginPanel.compact",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Places the sign-in controls in the surrounding layout by omitting the card styling, introductory heading and paragraph."
 			}
 		],
 		"outputs": [

@@ -51,14 +51,16 @@
 				"type": "unknown",
 				"required": true,
 				"description": "Accepts only a string whose trimmed form is nonempty and whose JavaScript length is at most 1,000,000. Validation does not trim or replace the original value.",
-				"examples": ["Plan design", "Plan validation notes"]
+				"examples": ["Plan design", "Plan validation notes"],
+				"unknownReason": "The argument is supplied before text validation and may have any runtime type."
 			},
 			{
 				"name": "slug.value",
 				"type": "unknown",
 				"required": true,
 				"description": "Accepts a lowercase slug starting with a letter, followed by lowercase letters or digits and optionally hyphen-separated nonempty lowercase alphanumeric groups. It must be at most 64 characters.",
-				"examples": ["planning", "plan-validate", "rev2"]
+				"examples": ["planning", "plan-validate", "rev2"],
+				"unknownReason": "The argument is supplied before slug validation and may have any runtime type."
 			},
 			{
 				"name": "planValidate.unitId",
@@ -255,7 +257,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Accepts only a string whose trimmed form is nonempty and whose JavaScript length is at most 1,000,000. Validation does not trim or replace the original value.",
-						"examples": ["Plan design", "Plan validation notes"]
+						"examples": ["Plan design", "Plan validation notes"],
+						"unknownReason": "The argument is supplied before text validation and may have any runtime type."
 					}
 				],
 				"outputs": [
@@ -282,7 +285,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Accepts a lowercase slug starting with a letter, followed by lowercase letters or digits and optionally hyphen-separated nonempty lowercase alphanumeric groups. It must be at most 64 characters.",
-						"examples": ["planning", "plan-validate", "rev2"]
+						"examples": ["planning", "plan-validate", "rev2"],
+						"unknownReason": "The argument is supplied before slug validation and may have any runtime type."
 					}
 				],
 				"outputs": [

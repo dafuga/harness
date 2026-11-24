@@ -77,9 +77,64 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidAcceptanceCriteriaError",
 				"type": "thrown",
-				"description": "An Error is thrown when the kind is unsupported, data is missing or not a non-array object, or a kind-specific check fails; messages are Unsupported record kind, Record data is required, Summary text is required, Acceptance criteria must be a list of short nonempty strings, Invalid report or asset ID, Record title is required, Valid status is required, Invalid evidence status, Evidence path is required, Invalid evidence phase, Invalid audio duration, or Invalid audio transcript. IDs must contain 1–100 ASCII letters, digits, underscores, or hyphens; item titles and acceptance strings must be nonempty after trimming and at most 500 characters, acceptance allows at most 30 entries, statuses must be running, passed, failed, blocked, skipped, not-proven, or interrupted, truthy evidence phases must be before, after, or current, evidence paths must be nonempty strings, and supplied audio durations and transcripts must be finite nonnegative numbers and strings of at most 10,000 characters respectively."
+				"description": "The acceptance record must contain at most 30 nonempty strings of up to 500 characters each."
+			},
+			{
+				"name": "InvalidAudioDurationError",
+				"type": "thrown",
+				"description": "A supplied audio duration must be finite and nonnegative."
+			},
+			{
+				"name": "InvalidAudioTranscriptError",
+				"type": "thrown",
+				"description": "A supplied audio transcript must be a string of at most 10,000 characters."
+			},
+			{
+				"name": "InvalidEvidencePhaseError",
+				"type": "thrown",
+				"description": "A supplied truthy phase must be before, after, or current."
+			},
+			{
+				"name": "InvalidEvidenceStatusError",
+				"type": "thrown",
+				"description": "A truthy evidence status must be one of running, passed, failed, blocked, skipped, not-proven, or interrupted."
+			},
+			{
+				"name": "InvalidRecordStatusError",
+				"type": "thrown",
+				"description": "A nonevidence item requires one of running, passed, failed, blocked, skipped, not-proven, or interrupted."
+			},
+			{
+				"name": "InvalidReportOrAssetIdError",
+				"type": "thrown",
+				"description": "The record ID must contain 1–100 ASCII letters, digits, underscores, or hyphens."
+			},
+			{
+				"name": "MissingEvidencePathError",
+				"type": "thrown",
+				"description": "An evidence record requires a nonempty path."
+			},
+			{
+				"name": "MissingRecordDataError",
+				"type": "thrown",
+				"description": "Record data must be a non-array object."
+			},
+			{
+				"name": "MissingRecordTitleError",
+				"type": "thrown",
+				"description": "The title of a check, finding, or evidence record must be nonempty after trimming and at most 500 characters long."
+			},
+			{
+				"name": "MissingSummaryTextError",
+				"type": "thrown",
+				"description": "A summary must supply its text as a string."
+			},
+			{
+				"name": "UnsupportedRecordKindError",
+				"type": "thrown",
+				"description": "The submitted value must use a supported report record kind."
 			}
 		],
 		"errorStatus": "declared",
@@ -123,9 +178,64 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidAcceptanceCriteriaError",
 						"type": "thrown",
-						"description": "An Error is thrown when the kind is unsupported, data is missing or not a non-array object, or a kind-specific check fails; messages are Unsupported record kind, Record data is required, Summary text is required, Acceptance criteria must be a list of short nonempty strings, Invalid report or asset ID, Record title is required, Valid status is required, Invalid evidence status, Evidence path is required, Invalid evidence phase, Invalid audio duration, or Invalid audio transcript. IDs must contain 1–100 ASCII letters, digits, underscores, or hyphens; item titles and acceptance strings must be nonempty after trimming and at most 500 characters, acceptance allows at most 30 entries, statuses must be running, passed, failed, blocked, skipped, not-proven, or interrupted, truthy evidence phases must be before, after, or current, evidence paths must be nonempty strings, and supplied audio durations and transcripts must be finite nonnegative numbers and strings of at most 10,000 characters respectively."
+						"description": "The acceptance record must contain at most 30 nonempty strings of up to 500 characters each."
+					},
+					{
+						"name": "InvalidAudioDurationError",
+						"type": "thrown",
+						"description": "A supplied audio duration must be finite and nonnegative."
+					},
+					{
+						"name": "InvalidAudioTranscriptError",
+						"type": "thrown",
+						"description": "A supplied audio transcript must be a string of at most 10,000 characters."
+					},
+					{
+						"name": "InvalidEvidencePhaseError",
+						"type": "thrown",
+						"description": "A supplied truthy phase must be before, after, or current."
+					},
+					{
+						"name": "InvalidEvidenceStatusError",
+						"type": "thrown",
+						"description": "A truthy evidence status must be one of running, passed, failed, blocked, skipped, not-proven, or interrupted."
+					},
+					{
+						"name": "InvalidRecordStatusError",
+						"type": "thrown",
+						"description": "A nonevidence item requires one of running, passed, failed, blocked, skipped, not-proven, or interrupted."
+					},
+					{
+						"name": "InvalidReportOrAssetIdError",
+						"type": "thrown",
+						"description": "The record ID must contain 1–100 ASCII letters, digits, underscores, or hyphens."
+					},
+					{
+						"name": "MissingEvidencePathError",
+						"type": "thrown",
+						"description": "An evidence record requires a nonempty path."
+					},
+					{
+						"name": "MissingRecordDataError",
+						"type": "thrown",
+						"description": "Record data must be a non-array object."
+					},
+					{
+						"name": "MissingRecordTitleError",
+						"type": "thrown",
+						"description": "The title of a check, finding, or evidence record must be nonempty after trimming and at most 500 characters long."
+					},
+					{
+						"name": "MissingSummaryTextError",
+						"type": "thrown",
+						"description": "A summary must supply its text as a string."
+					},
+					{
+						"name": "UnsupportedRecordKindError",
+						"type": "thrown",
+						"description": "The submitted value must use a supported report record kind."
 					}
 				],
 				"errorStatus": "declared"

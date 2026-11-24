@@ -71,7 +71,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid Rust tool, work directory, or toolchain file",
 				"type": "thrown",
 				"description": "Throws Error for a tool name outside /^[a-z][a-z0-9-]*$/, a non-directory working directory, or a filesystem or TOML failure while locating or parsing the nearest rust-toolchain.toml. It also throws if rustup cannot start, exits nonzero, or returns a blank executable path; a malformed nearer pin is not skipped in favor of an ancestor."
 			}
@@ -128,7 +128,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid Rust tool, work directory, or toolchain file",
 						"type": "thrown",
 						"description": "Throws Error for a tool name outside /^[a-z][a-z0-9-]*$/, a non-directory working directory, or a filesystem or TOML failure while locating or parsing the nearest rust-toolchain.toml. It also throws if rustup cannot start, exits nonzero, or returns a blank executable path; a malformed nearer pin is not skipped in favor of an ancestor."
 					}

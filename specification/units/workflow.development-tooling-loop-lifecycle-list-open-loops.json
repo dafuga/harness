@@ -81,7 +81,7 @@
 				"description": "Raised when staleDays is not a nonnegative safe integer. Validation happens before loop enumeration."
 			},
 			{
-				"name": "Error",
+				"name": "Loop directory listing failure",
 				"type": "thrown",
 				"description": "A non-missing error from listing the loop directory is rethrown, so listOpenLoops rejects. A missing loop directory is treated as an empty set."
 			}
@@ -122,7 +122,7 @@
 						"description": "Raised when staleDays is not a nonnegative safe integer. Validation happens before loop enumeration."
 					},
 					{
-						"name": "Error",
+						"name": "Loop directory listing failure",
 						"type": "thrown",
 						"description": "A non-missing error from listing the loop directory is rethrown, so listOpenLoops rejects. A missing loop directory is treated as an empty set."
 					}

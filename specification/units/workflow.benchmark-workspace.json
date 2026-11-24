@@ -193,7 +193,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Benchmark snapshot Git, extraction, or filesystem failure",
 				"type": "thrown",
 				"description": "Benchmark operations reject with Error for Git failures, unsupported tree entries, archive extraction or completeness failures, and filesystem failures. Explicit validation failures use the messages in the implementation; underlying filesystem and subprocess errors propagate."
 			}
@@ -230,7 +230,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark Git subprocess failed",
 						"type": "thrown",
 						"description": "Rejects if the Git subprocess fails or exits with a nonzero status. A nonzero exit status is raised as Error with the benchmark Git failure message."
 					}
@@ -267,7 +267,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark Git tree read or unsupported entry",
 						"type": "thrown",
 						"description": "Rejects with Error when Git fails or a tree entry is not a `100644 blob` or `100755 blob` regular-file entry."
 					}
@@ -311,7 +311,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid or incomplete benchmark snapshot",
 						"type": "thrown",
 						"description": "Rejects with Error on Git failure, an unsupported tree entry, tar extraction failure, or a listed snapshot file missing after extraction."
 					}
@@ -345,7 +345,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark workspace copy or Git initialization failure",
 						"type": "thrown",
 						"description": "Rejects if destination removal or baseline copying fails, or if any Git initialization, add, or commit command fails."
 					}
@@ -380,7 +380,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark path metadata lookup failure",
 						"type": "thrown",
 						"description": "Can reject if the final filesystem lookup fails after the segment checks, such as when the path changes during traversal. Missing or symlinked segments encountered by the loop return false."
 					}
@@ -415,7 +415,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark file metadata or read failure",
 						"type": "thrown",
 						"description": "Can reject if filesystem metadata or file reading fails after the regular-file check. A path that fails the check returns undefined instead."
 					}
@@ -458,7 +458,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Allowed benchmark file copy or permission failure",
 						"type": "thrown",
 						"description": "Can reject if target removal, directory creation, source reading, target writing, or permission updating fails."
 					}

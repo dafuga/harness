@@ -36,7 +36,7 @@
 				"description": "Rejects the returned promise with this error when index.json is not found directly inside the directory, including when the directory itself is missing; the message names the directory and the harness history build --out command that creates an index there."
 			},
 			{
-				"name": "Error",
+				"name": "Source indexing filesystem failure",
 				"type": "thrown",
 				"description": "Node filesystem error, with a code such as EACCES or ENOENT, that rejects the returned promise unchanged when readdir cannot list the directory or readFile cannot read a listed file, such as a file removed after it was listed."
 			}
@@ -68,7 +68,7 @@
 						"description": "Rejects the returned promise with this error when index.json is not found directly inside the directory, including when the directory itself is missing; the message names the directory and the harness history build --out command that creates an index there."
 					},
 					{
-						"name": "Error",
+						"name": "Source indexing filesystem failure",
 						"type": "thrown",
 						"description": "Node filesystem error, with a code such as EACCES or ENOENT, that rejects the returned promise unchanged when readdir cannot list the directory or readFile cannot read a listed file, such as a file removed after it was listed."
 					}

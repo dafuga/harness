@@ -449,7 +449,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnknownStandardScaffoldError",
 				"type": "thrown",
 				"description": "Thrown when a kind routed through the scaffold branch has no matching entry in scaffoldKinds, aborting module-array construction."
 			}

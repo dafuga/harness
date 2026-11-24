@@ -59,9 +59,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidPickerPreviewRequestError",
 				"type": "thrown",
-				"description": "For POST `/tools`, the handler throws `Error('Request too large')` when the body string length exceeds 16,000 and `Error('The preview only accepts its synthetic session.')` for a truthy `arguments.session_id` other than `preview-session`; `respond` catches these and returns HTTP 400 JSON with `error: Invalid preview request.`."
+				"description": "For POST `/tools`, the handler throws `InvalidPickerPreviewRequestError('Request too large')` when the body string length exceeds 16,000 and `InvalidPickerPreviewRequestError('The preview only accepts its synthetic session.')` for a truthy `arguments.session_id` other than `preview-session`; `respond` catches these and returns HTTP 400 JSON with `error: Invalid preview request.`."
 			},
 			{
 				"name": "HTML supplier rejection",
