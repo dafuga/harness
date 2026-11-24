@@ -135,7 +135,7 @@
 				"description": "Thrown by resourceConfigSchema.parse in resourceConfig when the persisted config.json fails the schema (unknown keys or a value outside its range), and in saveResourceConfig when the config fails the schema before any filesystem call."
 			},
 			{
-				"name": "Error",
+				"name": "readFileSync, mkdirSync, writeFileSync or renameSync failure (node:fs)",
 				"type": "thrown",
 				"description": "Node.js filesystem Error with a system code such as EACCES or EISDIR, thrown by readFileSync in resourceConfig or by mkdirSync, writeFileSync or renameSync in saveResourceConfig; the implementation does not catch it."
 			}
@@ -231,7 +231,7 @@
 						"description": "Thrown by resourceConfigSchema.parse when the parsed config.json fails the schema (unknown keys, schemaVersion other than 1, or a value outside its range); an absent file is parsed as an empty object, which the defaults satisfy, so it does not throw."
 					},
 					{
-						"name": "Error",
+						"name": "readFileSync failure (node:fs)",
 						"type": "thrown",
 						"description": "Node.js filesystem Error with a system code such as EACCES or EISDIR, thrown by readFileSync when config.json exists but cannot be read; the implementation does not catch it."
 					}
@@ -295,7 +295,7 @@
 						"description": "Thrown by resourceConfigSchema.parse before any filesystem call when the config has unknown keys or a value outside its range, so no file is written."
 					},
 					{
-						"name": "Error",
+						"name": "mkdirSync, writeFileSync or renameSync failure (node:fs)",
 						"type": "thrown",
 						"description": "Node.js filesystem Error with a system code such as EACCES, ENOTDIR or EISDIR, thrown by mkdirSync, writeFileSync or renameSync; if writeFileSync or renameSync fails after the temporary file exists, nothing removes config.<uuid>.partial."
 					}

@@ -181,12 +181,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Remote access requires OS encryption",
 				"type": "thrown",
 				"description": "Thrown by read() and save() with the message 'OS encryption is required for remote access.' whenever available() is false."
 			},
 			{
-				"name": "Error",
+				"name": "Stored remote access state unreadable",
 				"type": "thrown",
 				"description": "Thrown by read() with the message 'Stored remote access state is unreadable. Turn remote access on again.' when the file cannot be decrypted or parsed as JSON, or when the parsed value fails the shape check."
 			},
@@ -274,12 +274,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Remote access requires OS encryption",
 						"type": "thrown",
 						"description": "Thrown when available() is false, before the file is opened."
 					},
 					{
-						"name": "Error",
+						"name": "Stored remote access state unreadable",
 						"type": "thrown",
 						"description": "Thrown when the file cannot be decrypted or parsed as JSON, or when the parsed value fails the shape check."
 					},
@@ -372,7 +372,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RemoteHostStoreError",
 						"type": "thrown",
 						"description": "Thrown before anything is written when available() is false."
 					},

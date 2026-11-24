@@ -182,32 +182,32 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "R2ScreenshotStoreError",
 				"type": "thrown",
 				"description": "Thrown by r2ObjectKey when the filename is not 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp; its message is Invalid R2 image name."
 			},
 			{
-				"name": "Error",
+				"name": "R2ScreenshotStoreError",
 				"type": "thrown",
 				"description": "Thrown by fromEnvironment when account ID, bucket, access key, or secret key is missing; its message is Cloudflare R2 screenshot storage is not configured."
 			},
 			{
-				"name": "Error",
+				"name": "R2ScreenshotStoreError",
 				"type": "thrown",
 				"description": "Thrown by fromEnvironment when an endpoint override does not match http://127.0.0.1:<port>; its message is R2 endpoint override must be a local test server."
 			},
 			{
-				"name": "Error",
+				"name": "R2ScreenshotStoreError",
 				"type": "thrown",
 				"description": "Thrown by get when the R2 response has no body; its message is R2 image has no body."
 			},
 			{
-				"name": "Error",
+				"name": "R2 screenshot settings read failure",
 				"type": "thrown",
 				"description": "Non-ENOENT errors from reading the optional local configuration file propagate unchanged; ENOENT is ignored."
 			},
 			{
-				"name": "Error",
+				"name": "R2 screenshot request or response read failure",
 				"type": "thrown",
 				"description": "Rejections from S3Client.send and response-body byte conversion propagate unchanged from the adapter."
 			}
@@ -259,7 +259,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2 screenshot settings read failure",
 						"type": "thrown",
 						"description": "If localFile is supplied, a readFileSync error other than ENOENT propagates; ENOENT is ignored."
 					}
@@ -296,7 +296,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2ScreenshotStoreError",
 						"type": "thrown",
 						"description": "Thrown when file is not 64 lowercase hexadecimal characters followed by .png, .jpg, or .webp; the message is Invalid R2 image name."
 					}
@@ -315,12 +315,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2ScreenshotStoreError",
 						"type": "thrown",
 						"description": "Thrown when account ID, bucket, access key, or secret key is missing; the message is Cloudflare R2 screenshot storage is not configured."
 					},
 					{
-						"name": "Error",
+						"name": "R2ScreenshotStoreError",
 						"type": "thrown",
 						"description": "Thrown when an endpoint override does not match http://127.0.0.1:<port>; the message is R2 endpoint override must be a local test server."
 					}
@@ -367,12 +367,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2ScreenshotStoreError",
 						"type": "thrown",
 						"description": "The promise rejects with Invalid R2 image name when the filename fails r2ObjectKey validation."
 					},
 					{
-						"name": "Error",
+						"name": "R2 screenshot upload failure",
 						"type": "thrown",
 						"description": "A rejection from S3Client.send propagates unchanged if the R2 put request fails."
 					}
@@ -406,17 +406,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2ScreenshotStoreError",
 						"type": "thrown",
 						"description": "The promise rejects with Invalid R2 image name when the filename fails r2ObjectKey validation."
 					},
 					{
-						"name": "Error",
+						"name": "R2ScreenshotStoreError",
 						"type": "thrown",
 						"description": "Thrown when the R2 response has no body; the message is R2 image has no body."
 					},
 					{
-						"name": "Error",
+						"name": "R2 screenshot download or response read failure",
 						"type": "thrown",
 						"description": "Rejections from S3Client.send or transformToByteArray propagate unchanged."
 					}

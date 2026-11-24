@@ -9,7 +9,7 @@ export type {
 	TrackerSessionEvidence
 } from './tracker-dispatcher-service/runReceipt.types';
 
-export type TrackerLaunchSource = 'manual' | 'due';
+export type TrackerLaunchSource = 'manual' | 'due' | 'recovery';
 export type TrackerItemStatus = 'open' | 'in_progress' | 'blocked' | 'done' | 'ignored';
 export type TrackerDispatchOutcome =
 	| 'done'
@@ -49,6 +49,7 @@ export interface TrackerDispatchItem extends TrackerLaunchOptions {
 	scheduleOff?: boolean;
 	deleted?: boolean;
 	awaitingAnswer?: boolean;
+	question?: string | null;
 	/** The item journal has confirmed this answer wins over the current question and block. */
 	answeredCurrentBlock?: boolean;
 	blockedReason?: string | null;
@@ -78,6 +79,7 @@ export interface TrackerDispatchPolicy {
 	node: string;
 	hub?: boolean;
 	enabled?: boolean;
+	recoverDroppedSessions?: boolean;
 	timezone: string;
 	now(): number;
 	/** Resolve custom aliases and known nodes. Built-in fleet aliases are resolved locally. */
@@ -86,8 +88,9 @@ export interface TrackerDispatchPolicy {
 		item: TrackerDispatchItem,
 		scope: { source: TrackerLaunchSource; requestedNode: string | null }
 	): { node: string | null; why: string };
-	/** Whether the mapped repository exists on the requesting computer. */
+	/** Whether the requesting computer has an approved execution directory. */
 	localRepoAvailable?(item: TrackerDispatchItem): boolean;
+	opsWorkdirAvailable?(item: TrackerDispatchItem): boolean;
 	/** A null rung allows capacity to be checked for an invalid model request. */
 	admit(
 		item: TrackerDispatchItem,
@@ -165,7 +168,8 @@ export interface TrackerDispatchStore {
 
 export type TrackerLaunchRequest =
 	| { source: 'manual'; token: string; options?: TrackerLaunchOptions }
-	| { source: 'due'; token: string };
+	| { source: 'due'; token: string }
+	| { source: 'recovery'; token: string; expectedAuto: string | null; rung?: TrackerLaunchRung };
 
 export interface TrackerAttemptVersion {
 	id: number;

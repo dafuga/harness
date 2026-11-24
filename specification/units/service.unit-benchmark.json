@@ -222,7 +222,7 @@
 				"description": "Thrown when the manifest declares no execution target of the requested kind, or when the first workload call returns a failed response; its message names the unit and, for a failed call, the response code and message."
 			},
 			{
-				"name": "Error",
+				"name": "Benchmark warm-up or timed invocation failed",
 				"type": "thrown",
 				"description": "A plain Error thrown by the benchmark timing loop when a warm-up or timed call returns a failed response after the first call succeeded; its message names the runtime kind and the failure message."
 			}
@@ -422,7 +422,7 @@
 						"description": "Thrown when the manifest declares no execution target of the requested kind, or when the first workload call returns a failed response; its message names the unit and, for a failed call, the response code and message."
 					},
 					{
-						"name": "Error",
+						"name": "Benchmark warm-up or timed invocation failed",
 						"type": "thrown",
 						"description": "A plain Error thrown by the benchmark timing loop when a warm-up or timed call returns a failed response after the first call succeeded; its message names the runtime kind and the failure message."
 					}

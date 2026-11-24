@@ -76,7 +76,7 @@
 				"description": "Thrown when malformed suite, spec, or attachment values have incompatible shapes for traversal or path handling; the adapter does not validate the report schema."
 			},
 			{
-				"name": "Error",
+				"name": "Playwright report file read failure",
 				"type": "thrown",
 				"description": "A file read failure from readFile rejects ingestion with the filesystem error."
 			},
@@ -139,7 +139,7 @@
 						"description": "Thrown when malformed suite, spec, or attachment values have incompatible shapes for traversal or path handling; the adapter does not validate the report schema."
 					},
 					{
-						"name": "Error",
+						"name": "Playwright report file read failure",
 						"type": "thrown",
 						"description": "A file read failure from readFile rejects ingestion with the filesystem error."
 					},

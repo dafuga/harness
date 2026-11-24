@@ -41,7 +41,8 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional recorded document passed with unit to artifactCases when examples is undefined, to produce observed rows or a gap. In the non-gap recorded view, it appears in the expandable full-values disclosure.",
-				"examples": [null]
+				"examples": [null],
+				"unknownReason": "Recorded evidence can come from multiple producers or be absent; the reader recognizes supported document shapes."
 			},
 			{
 				"name": "EntityCases.examples",

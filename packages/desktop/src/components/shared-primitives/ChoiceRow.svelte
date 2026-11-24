@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_23oxoqg3mq -->
 <script lang="ts">
 	/**
 	 * One choice in a picker: the name on the left, quiet metadata on the right, and a check on
@@ -9,11 +10,15 @@
 		name,
 		meta = '',
 		current = false,
+		disabled = false,
+		label,
 		onchoose
 	}: {
 		name: string;
 		meta?: string;
 		current?: boolean;
+		disabled?: boolean;
+		label?: string;
 		onchoose: () => void;
 	} = $props();
 </script>
@@ -21,6 +26,8 @@
 <hx-button
 	type="button"
 	class="choice-row"
+	{disabled}
+	aria-label={label}
 	aria-pressed={current ? 'true' : 'false'}
 	onclick={onchoose}
 	title={name}

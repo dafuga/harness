@@ -7,7 +7,7 @@ import {
 	nativeTrackerCommandOptions,
 	nativeTrackerCommonOptions,
 	nativeTrackerIdVerbs,
-	nativeTrackerIgnoreRequest,
+	nativeTrackerTimedItemRequest,
 	nativeTrackerInspectionRequest
 } from './nativeTrackerOptions';
 
@@ -109,7 +109,7 @@ function itemQuery(
 				path: '/check' + query({ ...fields, text: requiredText(words, command) })
 			};
 		default:
-			return nativeTrackerIgnoreRequest(command, words, values);
+			return nativeTrackerTimedItemRequest(command, words, values);
 	}
 }
 
@@ -146,7 +146,7 @@ function launchAction(
 	values: Record<string, unknown>
 ): NativeTrackerRequest {
 	if (target !== 'on' && target !== 'off')
-		return { method: 'POST', path: path + '/launch', body: itemFields(values) };
+		return { method: 'POST', path: path + '/launch?outcome=run', body: itemFields(values) };
 	if (rest.length !== 1) throw new TypeError(`usage: tracker launch ${target} <id>`);
 	const verb = target === 'off' ? 'unlaunch' : 'schedule-on';
 	return { method: 'POST', path: `/items/${encodeURIComponent(rest[0])}/${verb}` };

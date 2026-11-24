@@ -2,7 +2,7 @@
 import type { HubRemoteRuntime } from '../../../../utils/networking-security/hubRemote';
 
 export interface Route {
-	kind: 'hosts' | 'host' | 'device';
+	kind: 'hosts' | 'host' | 'device' | 'pairing';
 	ids: string[];
 }
 

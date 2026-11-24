@@ -177,7 +177,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Canvas2dContextUnavailableError",
 				"type": "thrown",
 				"description": "Thrown by the constructor with the message 'This browser cannot create a game canvas.' when canvas.getContext('2d') returns no 2D context, so no adapter is created."
 			}
@@ -362,7 +362,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Canvas2dContextUnavailableError",
 						"type": "thrown",
 						"description": "Thrown by the constructor with the message 'This browser cannot create a game canvas.' when canvas.getContext('2d') returns no 2D context, so no adapter is created."
 					}

@@ -1,7 +1,13 @@
+import { verifyAdoption } from '../../support/trackerObservedRunFixture';
+import {
+	verifyLaunchWatchdogBoundary,
+	verifyIdleWatchdogAlert
+} from '../../support/trackerLaunchOutcomeFixture';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { trackerRunSchema } from '../../../src/repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../../src/services/projects-sessions/TrackerSupervisorService';
@@ -9,7 +15,6 @@ import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/track
 import { trackerNodeApi } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
-
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
 const missingId = 'missing123';
@@ -53,17 +58,21 @@ async function proveWatchdog(root: string) {
 		);
 		await runtime.watchdog!.tick(signal);
 		expect(runtime.watchdog!.alerts()).toEqual([]);
-		clock += 11 * minute;
+		await verifyLaunchWatchdogBoundary(runtime, signal, (elapsed) => {
+			clock += elapsed;
+		});
+		clock += 10 * minute;
 		const restarted = create();
 		await restarted.watchdog!.tick(signal);
 		await restarted.watchdog!.tick(signal);
-		await verifyAlert(restarted);
+		await verifyIdleWatchdogAlert(restarted, itemId, node);
 		const effects = readFileSync(trace, 'utf8')
 			.trim()
 			.split('\n')
 			.map((line) => JSON.parse(line));
 		expect(effects).toMatchObject([
 			{ operation: 'watchdog-nudge', itemId, pane: { key: 'synthetic-pane' } },
+			{ operation: 'watchdog-cos', alerts: [{ item_id: requestId, host: 'harbor-mbp-2' }] },
 			{ operation: 'watchdog-cos', alerts: [{ item_id: itemId, host: node }] }
 		]);
 	} finally {
@@ -98,33 +107,14 @@ async function assertDryRun(runtime: TrackerNativeRuntimeService, trace: string)
 	expect(existsSync(trace)).toBe(false);
 }
 
-async function verifyAlert(runtime: TrackerNativeRuntimeService) {
-	const response = await trackerNodeApi(
-		new Request('http://tracker-fixture.invalid/watchdog/alerts'),
-		runtime,
-		new TrackerSupervisorService(runtime),
-		'synthetic-fence'
-	);
-	expect(await response.json()).toMatchObject([{ item_id: itemId, host: node, kind: 'idle' }]);
-	const item = await runtime.items.handle(
-		new Request('http://tracker-fixture.invalid/items/' + itemId)
-	);
-	expect(await item.json()).toMatchObject({
-		needs_daniel: true,
-		notes_log: [
-			{ text: expect.stringContaining('watchdog nudge 1/1') },
-			{ text: expect.stringContaining('watchdog idle') }
-		]
-	});
-}
-
 const watchdogDriver = `
-const { appendFileSync, readFileSync } = require('node:fs');
+const { appendFileSync, existsSync, readFileSync } = require('node:fs');
 const { dirname, join } = require('node:path');
 const operation = process.argv[2];
 const input = JSON.parse(readFileSync(0, 'utf8'));
+const hand = existsSync(join(dirname(process.argv[1]), 'hand-session'));
 const result = operation === 'watchdog-scan' ? [{
-  name: 'auto-abc123', key: 'synthetic-pane', activity: ${firstPoll - 11 * minute}, createdAt: ${firstPoll - 12 * minute},
+  name: hand ? 'man123-recovery' : 'auto-abc123', key: hand ? 'hand-pane' : 'synthetic-pane', activity: ${firstPoll - 11 * minute}, createdAt: ${firstPoll - 12 * minute},
   live: true, runnerSocket: true, readable: true, ready: true, attached: false, x: 2, y: 2,
   currentCommand: 'codex', screen: 'fixture\\n\\n› \\n\\n100% context left\\n'
 }] : { sent: true };
@@ -188,6 +178,9 @@ async function proveObserved(root: string) {
 		expect(runtime.watchdog!.alerts()).toMatchObject([
 			{ item_id: itemId, host: 'harbor-mbp-2', kind: 'finished', session: 'auto-abc123' }
 		]);
+		await verifyAdoption(runtime, db, root, () => {
+			clock += minute;
+		});
 	} finally {
 		db.close();
 	}

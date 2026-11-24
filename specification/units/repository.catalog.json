@@ -812,7 +812,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidCatalogError",
 				"type": "thrown",
 				"description": "Thrown by the constructor with 'Unsupported SQLite catalog schema version' when the catalog_metadata row 'catalog' has a schema_version other than 1, and by entities with 'Invalid catalog pagination' when limit or offset is out of range. The constructor also propagates the SQLite adapter's assertModels errors, such as 'SQLite model columns do not match table: <table>', when the stored tables and their models disagree."
 			}
@@ -1377,7 +1377,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidCatalogError",
 						"type": "thrown",
 						"description": "Thrown with 'Invalid catalog pagination' when limit is not an integer from 1 to 10000 or offset is not a non-negative integer. The check runs before the entities query is executed."
 					}
@@ -1678,7 +1678,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidCatalogError",
 						"type": "thrown",
 						"description": "Thrown with 'Unsupported SQLite catalog schema version' when the catalog_metadata row 'catalog' has a schema_version other than 1, whichever value initialize has. The SQLite adapter's assertModels errors, such as 'SQLite model columns do not match table: <table>', propagate from the same call when the stored tables and their models disagree."
 					}

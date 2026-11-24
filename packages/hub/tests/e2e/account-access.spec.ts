@@ -74,7 +74,10 @@ test('the account menu lists devices and removes only the selected device', asyn
 	await expect(currentBrowser).toBeVisible();
 });
 
-test('Google sign-in returns to the desktop loopback without typing a code', async ({ page }) => {
+test('Google sign-in returns to the desktop loopback without typing a code', async ({
+	page
+}, testInfo) => {
+	await page.setViewportSize({ width: 390, height: 844 });
 	await hostedFixture(page, { signedIn: false });
 	const handoffId = 'h'.repeat(43);
 	const callbackCode = 'c'.repeat(43);
@@ -91,7 +94,21 @@ test('Google sign-in returns to the desktop loopback without typing a code', asy
 	try {
 		await page.goto(`/native/${handoffId}?return=1`);
 		await page.getByRole('button', signIn).click();
-		await page.getByRole('button', { name: 'Continue to Harness' }).click();
+		const proceed = page.getByRole('button', { name: 'Continue to Harness' });
+		const switchAccount = page.getByRole('button', { name: 'Use another Google account' });
+		await expect(proceed).toBeVisible();
+		await expect(switchAccount).toBeVisible();
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await page.evaluate(() => document.fonts.ready);
+			await page.screenshot({ path: testInfo.outputPath('connect-device.png') });
+		}
+		const primary = (await proceed.boundingBox())!;
+		const secondary = (await switchAccount.boundingBox())!;
+		expect(
+			Math.max(secondary.y - primary.y - primary.height, secondary.x - primary.x - primary.width),
+			'Account actions have at least 12 px of separation'
+		).toBeGreaterThanOrEqual(12);
+		await proceed.click();
 		await expect(page).toHaveURL(origin + '/return-to-harness');
 		await expect(page.getByText('Return to Harness to finish signing in.')).toBeVisible();
 		expect(callback.take()).toBe(callbackCode);

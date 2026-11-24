@@ -364,12 +364,12 @@
 				"description": "Rejected by the Git commands of `show` and `recorded` that run through `GitAdapter.exec`, when git cannot be started, runs past its deadline, or writes more output than its bound. Its message gives the cause, such as the deadline that was exceeded."
 			},
 			{
-				"name": "Error",
+				"name": "Project activity Git read failure",
 				"type": "thrown",
 				"description": "Thrown by `show` when one of its Git reads exits non-zero: the ref listing, the commit walk, the history log, the changed-files log, or the note blob read. Its message is `git <arguments> failed:` followed by git's stderr."
 			},
 			{
-				"name": "Error",
+				"name": "Project activity input directory read failure",
 				"type": "thrown",
 				"description": "Rejected by `show` when a directory it lists cannot be read, with a system error such as EACCES or ENOTDIR: the unit registry (`specification/units`), the loops (`specification/loops`), or a checkout's agent registry (`.cache/harness/agents`)."
 			},
@@ -590,12 +590,12 @@
 						"description": "Rejected by the Git commands of `show` and `recorded` that run through `GitAdapter.exec`, when git cannot be started, runs past its deadline, or writes more output than its bound. Its message gives the cause, such as the deadline that was exceeded."
 					},
 					{
-						"name": "Error",
+						"name": "Project activity Git read failure",
 						"type": "thrown",
 						"description": "Thrown by `show` when one of its Git reads exits non-zero: the ref listing, the commit walk, the history log, the changed-files log, or the note blob read. Its message is `git <arguments> failed:` followed by git's stderr."
 					},
 					{
-						"name": "Error",
+						"name": "Project activity input directory read failure",
 						"type": "thrown",
 						"description": "Rejected by `show` when a directory it lists cannot be read, with a system error such as EACCES or ENOTDIR: the unit registry (`specification/units`), the loops (`specification/loops`), or a checkout's agent registry (`.cache/harness/agents`)."
 					},

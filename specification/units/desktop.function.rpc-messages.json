@@ -64,7 +64,8 @@
 							"text": "hello"
 						}
 					}
-				]
+				],
+				"unknownReason": "The RPC method determines the schema of params; request tracking relies on the numeric id."
 			},
 			{
 				"name": "rpcRequest.timeoutMs",
@@ -95,9 +96,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CodexRpcError",
 				"type": "thrown",
-				"description": "A matched reply with a truthy error causes rpcRequest to reject with an Error whose message is String(error.message ?? 'Codex RPC failed.'). The timeout callback also rejects with Error('Codex ' + frame.method + ' timed out.')."
+				"description": "A matched reply with a truthy error causes rpcRequest to reject with an Error whose message is String(error.message ?? 'Codex RPC failed.'). The timeout callback also rejects with CodexRpcError('Codex ' + frame.method + ' timed out.')."
 			},
 			{
 				"name": "Sender or callback error",
@@ -180,7 +181,8 @@
 									"text": "hello"
 								}
 							}
-						]
+						],
+						"unknownReason": "The RPC method determines the schema of params; request tracking relies on the numeric id."
 					},
 					{
 						"name": "rpcRequest.timeoutMs",
@@ -206,9 +208,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CodexRpcError",
 						"type": "thrown",
-						"description": "A matched reply with a truthy error causes rpcRequest to reject with an Error whose message is String(error.message ?? 'Codex RPC failed.'). The timeout callback also rejects with Error('Codex ' + frame.method + ' timed out.')."
+						"description": "A matched reply with a truthy error causes rpcRequest to reject with an Error whose message is String(error.message ?? 'Codex RPC failed.'). The timeout callback also rejects with CodexRpcError('Codex ' + frame.method + ' timed out.')."
 					},
 					{
 						"name": "state.send error",

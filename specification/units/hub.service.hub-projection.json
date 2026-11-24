@@ -643,57 +643,57 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hub projection forbidden",
 				"type": "thrown",
 				"description": "hubFail throws an Error with code forbidden when the evidence project is missing or a source path is not owned, and the evidence reader also rejects if the authorized repository changes during the request."
 			},
 			{
-				"name": "Error",
+				"name": "Hub projection not-found",
 				"type": "thrown",
 				"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
 			},
 			{
-				"name": "Error",
+				"name": "Hub projection artifact-corrupt",
 				"type": "thrown",
 				"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 			},
 			{
-				"name": "Error",
+				"name": "Hub projection history-unavailable",
 				"type": "thrown",
 				"description": "hubHistory throws an Error with code history-unavailable when the source adapter has no historyPage reader."
 			},
 			{
-				"name": "Error",
+				"name": "Hub projection revision-mismatch",
 				"type": "thrown",
 				"description": "hubSnapshot throws an Error with code revision-mismatch when resolving the requested commit does not return that commit."
 			},
 			{
-				"name": "Error",
+				"name": "Hub projection evidence-unreadable",
 				"type": "thrown",
 				"description": "The evidence reader throws an Error with code evidence-unreadable when the selected branch tip, source revision, or registered entity cannot be read."
 			},
 			{
-				"name": "Error",
+				"name": "Hub projection evidence-stale",
 				"type": "thrown",
 				"description": "The evidence reader throws an Error with code evidence-stale when current evidence no longer names the branch tip or its pinned notes and evidence revisions are no longer valid."
 			},
 			{
-				"name": "Error",
+				"name": "Hub projection artifact-refused",
 				"type": "thrown",
 				"description": "The artifact reader throws an Error with code artifact-refused when the requested capture has no validated origin or cannot be safely served."
 			},
 			{
-				"name": "Error",
+				"name": "Hub projection artifact-too-large",
 				"type": "thrown",
 				"description": "The artifact reader throws an Error with code artifact-too-large when the capture exceeds the 11 MiB artifact limit."
 			},
 			{
-				"name": "Error",
+				"name": "Hub evidence answer exceeds 16 MiB",
 				"type": "thrown",
 				"description": "recordedAnswer throws an Error when the evidence JSON exceeds the 16 MiB transport allowance; the answer is rejected without truncation."
 			},
 			{
-				"name": "Error",
+				"name": "Unlisted, unreadable, or invalid evidence capture",
 				"type": "thrown",
 				"description": "The artifact helpers throw an Error when the capture is not listed by the pinned evidence, its bytes are absent, or the bytes do not match the recorded SHA-256."
 			}
@@ -832,27 +832,27 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection forbidden",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code forbidden when the evidence project is missing or a source path is not owned, and the evidence reader also rejects if the authorized repository changes during the request."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection evidence-unreadable",
 						"type": "thrown",
 						"description": "The evidence reader throws an Error with code evidence-unreadable when the selected branch tip, source revision, or registered entity cannot be read."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection evidence-stale",
 						"type": "thrown",
 						"description": "The evidence reader throws an Error with code evidence-stale when current evidence no longer names the branch tip or its pinned notes and evidence revisions are no longer valid."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-corrupt",
 						"type": "thrown",
 						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 					},
 					{
-						"name": "Error",
+						"name": "Hub evidence answer exceeds 16 MiB",
 						"type": "thrown",
 						"description": "recordedAnswer throws an Error when the evidence JSON exceeds the 16 MiB transport allowance; the answer is rejected without truncation."
 					}
@@ -916,37 +916,37 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection forbidden",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code forbidden when the evidence project is missing or a source path is not owned, and the evidence reader also rejects if the authorized repository changes during the request."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection evidence-unreadable",
 						"type": "thrown",
 						"description": "The evidence reader throws an Error with code evidence-unreadable when the selected branch tip, source revision, or registered entity cannot be read."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection evidence-stale",
 						"type": "thrown",
 						"description": "The evidence reader throws an Error with code evidence-stale when current evidence no longer names the branch tip or its pinned notes and evidence revisions are no longer valid."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-corrupt",
 						"type": "thrown",
 						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-refused",
 						"type": "thrown",
 						"description": "The artifact reader throws an Error with code artifact-refused when the requested capture has no validated origin or cannot be safely served."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-too-large",
 						"type": "thrown",
 						"description": "The artifact reader throws an Error with code artifact-too-large when the capture exceeds the 11 MiB artifact limit."
 					},
 					{
-						"name": "Error",
+						"name": "Unlisted, unreadable, or invalid evidence capture",
 						"type": "thrown",
 						"description": "The artifact helpers throw an Error when the capture is not listed by the pinned evidence, its bytes are absent, or the bytes do not match the recorded SHA-256."
 					}
@@ -1057,17 +1057,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection not-found",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection revision-mismatch",
 						"type": "thrown",
 						"description": "hubSnapshot throws an Error with code revision-mismatch when resolving the requested commit does not return that commit."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-corrupt",
 						"type": "thrown",
 						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 					}
@@ -1121,7 +1121,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-corrupt",
 						"type": "thrown",
 						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 					}
@@ -1232,17 +1232,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection not-found",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection history-unavailable",
 						"type": "thrown",
 						"description": "hubHistory throws an Error with code history-unavailable when the source adapter has no historyPage reader."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-corrupt",
 						"type": "thrown",
 						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 					}
@@ -1314,17 +1314,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection not-found",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection history-unavailable",
 						"type": "thrown",
 						"description": "hubHistory throws an Error with code history-unavailable when the source adapter has no historyPage reader."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-corrupt",
 						"type": "thrown",
 						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 					}
@@ -1384,17 +1384,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection forbidden",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code forbidden when the evidence project is missing or a source path is not owned, and the evidence reader also rejects if the authorized repository changes during the request."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection not-found",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-corrupt",
 						"type": "thrown",
 						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 					}
@@ -1449,12 +1449,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection not-found",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
 					},
 					{
-						"name": "Error",
+						"name": "Hub projection artifact-corrupt",
 						"type": "thrown",
 						"description": "The artifact readers throw an Error with code artifact-corrupt when committed JSON, metadata, design data, or validated image bytes are malformed or inconsistent."
 					}
@@ -1525,7 +1525,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hub projection not-found",
 						"type": "thrown",
 						"description": "hubFail throws an Error with code not-found when the selected branch, entity, plan, owned source blob, design image, or thread is absent."
 					}

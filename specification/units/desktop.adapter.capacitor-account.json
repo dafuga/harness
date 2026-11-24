@@ -84,14 +84,16 @@
 						"code": "session-required",
 						"message": "Sign in is required."
 					}
-				]
+				],
+				"unknownReason": "Native plugin rejections can be arbitrary; the handler extracts a usable code and message when present."
 			},
 			{
 				"name": "decoded.data",
 				"type": "unknown",
 				"required": true,
 				"description": "Base64 string containing the answer bytes. Non-string or invalid base64 data is unreadable, and data exceeding limit is refused.",
-				"examples": ["SGVsbG8="]
+				"examples": ["SGVsbG8="],
+				"unknownReason": "The native bridge supplies unverified data that is checked for string type and a valid base64 representation."
 			},
 			{
 				"name": "decoded.limit",
@@ -223,7 +225,7 @@
 			{
 				"name": "bridge",
 				"type": "DesktopBridge",
-				"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views."
+				"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views. A 503 collaboration-disabled response to listing shared projects yields an empty list while the account remains signed in."
 			}
 		],
 		"errors": [
@@ -242,7 +244,7 @@
 					{
 						"name": "CapacitorAccountAdapter.connect",
 						"type": "DesktopBridge",
-						"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views."
+						"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views. A 503 collaboration-disabled response to listing shared projects yields an empty list while the account remains signed in."
 					}
 				],
 				"errors": [],
@@ -296,7 +298,8 @@
 								"code": "session-required",
 								"message": "Sign in is required."
 							}
-						]
+						],
+						"unknownReason": "Native plugin rejections can be arbitrary; the handler extracts a usable code and message when present."
 					}
 				],
 				"outputs": [
@@ -317,7 +320,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Base64 string containing the answer bytes. Non-string or invalid base64 data is unreadable, and data exceeding limit is refused.",
-						"examples": ["SGVsbG8="]
+						"examples": ["SGVsbG8="],
+						"unknownReason": "The native bridge supplies unverified data that is checked for string type and a valid base64 representation."
 					},
 					{
 						"name": "decoded.limit",

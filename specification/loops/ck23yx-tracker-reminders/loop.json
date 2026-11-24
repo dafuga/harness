@@ -1,0 +1,45 @@
+{
+	"name": "ck23yx-tracker-reminders",
+	"goal": "Prove a journaled Tracker reminder disappears from the decision digest and status tick, reappears at its timestamp and sends one durable notification across restart and signed sync.",
+	"createdAt": "2026-11-24T02:33:02.400Z",
+	"updatedAt": "2026-11-24T02:47:19.719Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T02:35:15.601Z",
+			"evidence": "CLI and synthetic hub/spoke must preserve the decision and due date, hide the item from flagged status input and digest until the UTC instant, and wake the latest active reminder once through durable delivery. Red: native remind unavailable; direct notification leaked before wake; webhook had no scheduled delivery."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-24T02:47:18.502Z",
+			"evidence": "UTC reminder on the replicated item, visibility cutoff in digest and flagged reads, cancel and replace transitions, and hub receipt delivery through HTTP or the established CoS host binding."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-24T02:47:19.719Z",
+			"evidence": "Red CLI and notification fixtures reproduced missing behavior. Green: 45 focused cases and all three Tracker node E2Es on harbor-mbp-2, including status script dry-runs before and after the wake."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

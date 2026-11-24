@@ -87,14 +87,14 @@
 		],
 		"errors": [
 			{
-				"name": "RemoteFailure",
+				"name": "InvalidWirePartError",
 				"type": "thrown",
-				"description": "A RemoteFailure whose code gives the reason: 'too-large' for text over outgoingBytes, for a frame over frameBytes, for a part over chunkBytes, or for a message over incomingBytes or its parts limit. 'invalid-message' covers a frame that is not a part, bad base64, an empty part that is not last, an index or message id out of sequence, or text that is not valid UTF-8, and 'too-many-requests' covers a new multipart message while streams are all in use."
+				"description": "A parsed frame that is not a part or has non-string data is caught internally and reported as invalid-message."
 			},
 			{
-				"name": "Error",
+				"name": "RemoteFailure",
 				"type": "thrown",
-				"description": "Thrown inside partOf, as new Error('Not a part.'), when a parsed frame is not a part or its data is not a string; the try block there catches it, so callers never receive it and get RemoteFailure 'invalid-message' instead."
+				"description": "The caller receives the invalid-message outcome for an invalid wire frame."
 			}
 		],
 		"errorStatus": "declared",

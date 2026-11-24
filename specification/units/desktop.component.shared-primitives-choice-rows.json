@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.shared-primitives-choice-rows",
+	"uid": "u_7465g3sdj3",
+	"kind": "component",
+	"title": "ChoiceRows",
+	"responsibility": "Groups picker choices and moves focus between enabled rows using arrow, Home and End keys.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-small"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/shared-primitives/ChoiceRows.svelte"],
+		"symbols": ["ChoiceRows"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ChoiceRows.label",
+				"type": "string",
+				"required": true,
+				"description": "Accessible name for the choice group."
+			},
+			{
+				"name": "ChoiceRows.title",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional heading displayed above the rows. Defaults to no heading."
+			},
+			{
+				"name": "ChoiceRows.children",
+				"type": "Snippet",
+				"required": true,
+				"description": "Snippet rendering the picker content and its selectable rows."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ChoiceRows",
+				"type": "markup",
+				"description": "Renders a named group that supports keyboard movement between enabled choices."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/shared-primitives/ChoiceRows.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/shared-primitives/ChoiceRows.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

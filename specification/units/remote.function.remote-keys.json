@@ -374,7 +374,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "RemoteKeyError",
 				"type": "thrown",
 				"description": "An explicit Error is thrown when a public point fails the length or prefix check, an imported private scalar does not match its public point, or exported JWK data has no string d. Other Web Crypto rejections propagate without being normalized by these helpers."
 			}
@@ -560,7 +560,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RemoteKeyError",
 						"type": "thrown",
 						"description": "Thrown when the public point fails the shape check or an ECDH probe shows that the imported private scalar and stored public point do not match. Rejections from Web Crypto imports or derivation propagate directly."
 					}
@@ -592,7 +592,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RemoteKeyError",
 						"type": "thrown",
 						"description": "Thrown when exporting the private key yields JWK data without a string d. Web Crypto export rejections propagate directly."
 					}

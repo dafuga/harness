@@ -35,9 +35,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "RepositoryLeaseError",
 				"type": "thrown",
-				"description": "Throws Error('Cross-app repository locking is not supported on this platform.') outside macOS and Linux, and Error('Invalid project lock owner.') for a malformed saved PID; other helper, filesystem, and non-ESRCH process-probe errors are propagated, and acquisition cleanup can reject. An acquired release callback can separately reject if its owner marker cannot be read or unlinked or its helper lock cannot be released."
+				"description": "Throws RepositoryLeaseError('Cross-app repository locking is not supported on this platform.') outside macOS and Linux, and RepositoryLeaseError('Invalid project lock owner.') for a malformed saved PID; other helper, filesystem, and non-ESRCH process-probe errors are propagated, and acquisition cleanup can reject. An acquired release callback can separately reject if its owner marker cannot be read or unlinked or its helper lock cannot be released."
 			}
 		],
 		"errorStatus": "declared",
@@ -63,9 +63,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RepositoryLeaseError",
 						"type": "thrown",
-						"description": "Throws Error('Cross-app repository locking is not supported on this platform.') outside macOS and Linux, and Error('Invalid project lock owner.') for a malformed saved PID; other helper, filesystem, and non-ESRCH process-probe errors are propagated, and acquisition cleanup can reject. An acquired release callback can separately reject if its owner marker cannot be read or unlinked or its helper lock cannot be released."
+						"description": "Throws RepositoryLeaseError('Cross-app repository locking is not supported on this platform.') outside macOS and Linux, and RepositoryLeaseError('Invalid project lock owner.') for a malformed saved PID; other helper, filesystem, and non-ESRCH process-probe errors are propagated, and acquisition cleanup can reject. An acquired release callback can separately reject if its owner marker cannot be read or unlinked or its helper lock cannot be released."
 					}
 				],
 				"errorStatus": "declared"

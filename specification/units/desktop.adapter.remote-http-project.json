@@ -108,7 +108,8 @@
 						"viewport": null,
 						"region": null
 					}
-				]
+				],
+				"unknownReason": "Agent channels have different request shapes, and the selected hosted operation validates its payload."
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.agent.projectId",
@@ -540,7 +541,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Hosted project access or response validation failure",
 				"type": "thrown",
 				"description": "The adapter and its delegated validators reject with standard Error values for hosted authorization or request failures, invalid or mismatched hosted responses, unknown image anchors, or agent mutations without a shown writable branch tip. HTTP failures are normalized by HostedFailureValidator, which extends Error."
 			},
@@ -648,7 +649,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted evidence access, cache, or identity failure",
 						"type": "thrown",
 						"description": "Rejects when hosted access or authority checks fail, or when the hosted evidence is invalid or bound to another query. An offline read also rejects if no accepted cached answer is available."
 					}
@@ -692,7 +693,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted artifact access or integrity failure",
 						"type": "thrown",
 						"description": "Rejects when hosted access or transport fails, or when returned or cached bytes fail media, size, or requested-hash validation."
 					}
@@ -724,7 +725,8 @@
 								"viewport": null,
 								"region": null
 							}
-						]
+						],
+						"unknownReason": "Agent channels have different request shapes, and the selected hosted operation validates its payload."
 					},
 					{
 						"name": "RemoteHttpProjectAdapter.agent.projectId",
@@ -755,7 +757,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Agent write authorization or retry conflict",
 						"type": "thrown",
 						"description": "Rejects state-changing calls without a shown writable branch tip and conflicting startRun retries. Hosted authorization and request failures also reject."
 					}
@@ -817,7 +819,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted project discovery or authority failure",
 						"type": "thrown",
 						"description": "Rejects when hosted authorization or project-list reading fails, the returned list is invalid, or the signed-in authority changes during discovery."
 					}
@@ -878,7 +880,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted project snapshot or capabilities failure",
 						"type": "thrown",
 						"description": "Rejects when the hosted snapshot, requested commit, or cache identity fails validation, or when the follow-up capabilities read fails."
 					}
@@ -951,7 +953,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted entity path or response validation failure",
 						"type": "thrown",
 						"description": "Rejects when hosted access or the read fails, the requested project path is invalid, or the response does not contain the requested entity id and required arrays."
 					}
@@ -991,7 +993,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted source path or response validation failure",
 						"type": "thrown",
 						"description": "Rejects when hosted access or the read fails, or when the response path differs from the requested path or text is not a string."
 					}
@@ -1026,7 +1028,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted image access, integrity, or size failure",
 						"type": "thrown",
 						"description": "Rejects for an unknown entity/version/hash anchor, failed hosted access, invalid image bytes, a hash mismatch, or an image larger than 25,000,000 bytes."
 					}
@@ -1075,7 +1077,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted thread read or response validation failure",
 						"type": "thrown",
 						"description": "Rejects when hosted access or the read fails, or the response is not an array of messages with string ids and text."
 					}
@@ -1117,7 +1119,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted history read or cursor validation failure",
 						"type": "thrown",
 						"description": "Rejects when hosted access or the read fails, or the history page/cursor or an entry id/title fails validation."
 					}
@@ -1154,7 +1156,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted role or project identity validation failure",
 						"type": "thrown",
 						"description": "Rejects when hosted access fails, the response project id differs from the requested id, or its role is not owner, writer, commenter, or viewer."
 					}
@@ -1229,7 +1231,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Hosted comment request or acknowledgment mismatch",
 						"type": "thrown",
 						"description": "Rejects when hosted access or posting fails, or the acknowledgment's project, thread, anchor, comment text/request id, verified actor, or collaboration commit fails validation."
 					}
@@ -1257,7 +1259,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostedHttpAdapter construction failure",
 						"type": "thrown",
 						"description": "Rejects an origin that is not an exact HTTPS origin or an HTTP loopback origin. Malformed URL syntax can instead throw TypeError before construction completes."
 					},

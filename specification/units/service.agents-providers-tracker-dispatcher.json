@@ -13,6 +13,7 @@
 			"src/services/agents-providers/TrackerDispatcherService.types.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runMonitor.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.ts",
@@ -74,6 +75,7 @@
 			"ownsLaunch",
 			"activeRun",
 			"inactive",
+			"trackerFlagBlocksRecovery",
 			"startable",
 			"skip",
 			"dueOwner",
@@ -86,9 +88,11 @@
 			"matchesRequest",
 			"requestLaunch",
 			"previewDueLaunch",
+			"recoveryIntent",
+			"launchStartupGrace",
 			"claimLaunch",
 			"prepareRetry",
-			"cancelUnstartedRun",
+			"retireUnstartedRun",
 			"monitorRun",
 			"completeRun",
 			"etaFor",
@@ -246,6 +250,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerFlagBlocksRecovery.question",
+				"type": "string | null",
+				"required": false
+			},
+			{
 				"name": "startable.item",
 				"type": "TrackerDispatchItem",
 				"required": true
@@ -309,6 +318,11 @@
 				"name": "schedulingHold.item",
 				"type": "TrackerDispatchItem",
 				"required": true
+			},
+			{
+				"name": "schedulingHold.policy",
+				"type": "Pick<TrackerDispatchPolicy, 'opsWorkdirAvailable'>",
+				"required": false
 			},
 			{
 				"name": "isDueNow.due",
@@ -401,6 +415,31 @@
 				"required": true
 			},
 			{
+				"name": "recoveryIntent.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.request",
+				"type": "Extract<TrackerLaunchRequest, { source: 'recovery' }>",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "recoveryIntent.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "claimLaunch.snapshot",
 				"type": "TrackerDispatchSnapshot",
 				"required": true
@@ -451,18 +490,18 @@
 				"required": true
 			},
 			{
-				"name": "cancelUnstartedRun.snapshot",
+				"name": "retireUnstartedRun.snapshot",
 				"type": "TrackerDispatchSnapshot",
 				"required": true
 			},
 			{
-				"name": "cancelUnstartedRun.run",
+				"name": "retireUnstartedRun.run",
 				"type": "TrackerRunReceipt",
 				"required": true
 			},
 			{
-				"name": "cancelUnstartedRun.now",
-				"type": "number",
+				"name": "retireUnstartedRun.clock",
+				"type": "{ policy: TrackerDispatchPolicy; now: number }",
 				"required": true
 			},
 			{
@@ -933,6 +972,24 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "trackerFlagBlocksRecovery",
+				"inputs": [
+					{
+						"name": "trackerFlagBlocksRecovery.question",
+						"type": "string | null",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerFlagBlocksRecovery",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "startable",
 				"inputs": [
 					{
@@ -1064,6 +1121,11 @@
 						"name": "schedulingHold.item",
 						"type": "TrackerDispatchItem",
 						"required": true
+					},
+					{
+						"name": "schedulingHold.policy",
+						"type": "Pick<TrackerDispatchPolicy, 'opsWorkdirAvailable'>",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -1244,6 +1306,44 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recoveryIntent",
+				"inputs": [
+					{
+						"name": "recoveryIntent.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "recoveryIntent.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "recoveryIntent.request",
+						"type": "Extract<TrackerLaunchRequest, { source: 'recovery' }>",
+						"required": true
+					},
+					{
+						"name": "recoveryIntent.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "recoveryIntent.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoveryIntent",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "claimLaunch",
 				"inputs": [
 					{
@@ -1320,27 +1420,27 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "cancelUnstartedRun",
+				"name": "retireUnstartedRun",
 				"inputs": [
 					{
-						"name": "cancelUnstartedRun.snapshot",
+						"name": "retireUnstartedRun.snapshot",
 						"type": "TrackerDispatchSnapshot",
 						"required": true
 					},
 					{
-						"name": "cancelUnstartedRun.run",
+						"name": "retireUnstartedRun.run",
 						"type": "TrackerRunReceipt",
 						"required": true
 					},
 					{
-						"name": "cancelUnstartedRun.now",
-						"type": "number",
+						"name": "retireUnstartedRun.clock",
+						"type": "{ policy: TrackerDispatchPolicy; now: number }",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "cancelUnstartedRun",
+						"name": "retireUnstartedRun",
 						"type": "TrackerDispatchDecision"
 					}
 				],

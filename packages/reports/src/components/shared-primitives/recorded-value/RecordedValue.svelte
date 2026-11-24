@@ -6,7 +6,10 @@
 	import DataTable from '../DataTable.svelte';
 	import { humanize } from '../../../helpers/strings/humanize';
 	import { recordedValue } from './recordedValue';
-	import { type RecordedNode } from '../../../utils/shared-primitives/recordedValue';
+	import type {
+		RecordedField,
+		RecordedNode
+	} from '../../../utils/shared-primitives/recordedValue.types';
 	let {
 		value,
 		fullValuesLabel = 'Full recorded values',
@@ -41,8 +44,8 @@
 			termTitle={(field) => field.name}
 			className="fields"
 		>
-			{#snippet label(field)}{fieldLabel(field.name)}{/snippet}
-			{#snippet children(field)}{@render present(field.node)}{/snippet}
+			{#snippet label(field: RecordedField)}{fieldLabel(field.name)}{/snippet}
+			{#snippet children(field: RecordedField)}{@render present(field.node)}{/snippet}
 		</DetailList>
 		{#if node.remaining}<hx-p class="value-note">
 				{node.remaining} more fields in {fullValuesLabel}.

@@ -156,7 +156,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "The implementation rejects with a plain Error whose name is Error, not ExpectedCliError, and whose code is one of invalid-input, forbidden, not-found, sole-owner or conflict."
 			},
@@ -166,7 +166,7 @@
 				"description": "Thrown by the toISOString call in createProject when deps.now returns an Invalid Date, before any project is added."
 			},
 			{
-				"name": "Error",
+				"name": "record repository failure (deps.repository)",
 				"type": "thrown",
 				"description": "Passes through unchanged any rejection from deps.repository.read or deps.repository.compareAndSwap, because transaction does not catch it; this unit sets neither its name nor its code."
 			}
@@ -260,12 +260,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Collaboration invalid-input",
 						"type": "thrown",
 						"description": "Rejects with code invalid-input when the actor fails actorSchema, when the input is not a strict object with a 1 to 200 character trimmed name and a positive integer repositoryId, or when the stored or resulting collaboration records fail recordsSchema; nothing is written in that case."
 					},
 					{
-						"name": "Error",
+						"name": "Collaboration forbidden",
 						"type": "thrown",
 						"description": "Rejects with code forbidden when deps.authorizeRepository rejects, when it returns a value that fails repositorySchema, or when the returned repository id differs from the input's repositoryId; no project is added in that case."
 					},
@@ -275,12 +275,12 @@
 						"description": "Thrown by the toISOString call when deps.now returns an Invalid Date; no project is added in that case."
 					},
 					{
-						"name": "Error",
+						"name": "Collaboration conflict",
 						"type": "thrown",
 						"description": "Rejects with code conflict when compareAndSwap returns null on all five attempts; no project is added in that case."
 					},
 					{
-						"name": "Error",
+						"name": "record repository failure (deps.repository)",
 						"type": "thrown",
 						"description": "Passes through unchanged any rejection from deps.repository.read or deps.repository.compareAndSwap, because transaction does not catch it; this unit sets neither its name nor its code."
 					}
@@ -342,32 +342,32 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Collaboration invalid-input",
 						"type": "thrown",
 						"description": "Rejects with code invalid-input when the input is not a strict object with a UUID projectId and a memberId of 1 to 200 characters after trimming, when the actor fails actorSchema inside the transaction, or when the stored or resulting records fail recordsSchema."
 					},
 					{
-						"name": "Error",
+						"name": "Collaboration forbidden",
 						"type": "thrown",
 						"description": "Rejects with code forbidden when no project matches projectId, when the actor has no membership in that project, or when the actor's role there is not owner."
 					},
 					{
-						"name": "Error",
+						"name": "Collaboration not-found",
 						"type": "thrown",
 						"description": "Rejects with code not-found when the project has no member whose actorId equals memberId."
 					},
 					{
-						"name": "Error",
+						"name": "Collaboration sole-owner",
 						"type": "thrown",
 						"description": "Rejects with code sole-owner when the target member is an owner and is the only owner of the project."
 					},
 					{
-						"name": "Error",
+						"name": "Collaboration conflict",
 						"type": "thrown",
 						"description": "Rejects with code conflict when compareAndSwap returns null on all five attempts; the member is not removed in that case."
 					},
 					{
-						"name": "Error",
+						"name": "record repository failure (deps.repository)",
 						"type": "thrown",
 						"description": "Passes through unchanged any rejection from deps.repository.read or deps.repository.compareAndSwap, because transaction does not catch it; this unit sets neither its name nor its code."
 					}

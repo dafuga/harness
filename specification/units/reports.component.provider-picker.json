@@ -60,9 +60,9 @@
 				"description": "Opening the picker client or calling it for status, switch, cancellation, or observed-session data can reject. The component catches these failures and displays failure text with the relevant fallback message."
 			},
 			{
-				"name": "Error",
+				"name": "TypeError",
 				"type": "thrown",
-				"description": "Loading observed sessions throws Error('Queued sessions could not be read.') when readSessions produces no list. The action handler catches it and displays the failure text."
+				"description": "Loading observed sessions throws TypeError('Queued sessions could not be read.') when readSessions produces no list. The action handler catches it and displays the failure text."
 			}
 		],
 		"errorStatus": "declared",

@@ -79,7 +79,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CheckpointImageError",
 				"type": "thrown",
 				"description": "Errors thrown inside save and read, which reject their returned promises: 'Invalid checkpoint image path.' and 'A full commit is required.' (both from read), 'Checkpoint image integrity failed.', 'Invalid checkpoint image file.' (not a regular file or over 12,000,000 bytes), and 'Unsafe checkpoint image directory.' (a static, game or checkpoints entry is a symlink or not a directory). Filesystem errors, such as a missing file or denied permission, and git failures from execFileSync propagate unchanged."
 			}
@@ -109,7 +109,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CheckpointImageError",
 						"type": "thrown",
 						"description": "save rejects with 'Unsafe checkpoint image directory.' when a static, game or checkpoints entry is a symlink or not a directory, and it propagates other mkdir, lstat or writeFile errors, such as denied permission or no space left. When a file with the same name already exists, save also rejects with any error that read throws for it, such as 'Checkpoint image integrity failed.'"
 					}
@@ -153,7 +153,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CheckpointImageError",
 						"type": "thrown",
 						"description": "read rejects with 'Invalid checkpoint image path.' for a path that does not match the checkpoint pattern, with 'A full commit is required.' for a non-empty commit that is not 40 lowercase hex characters, and with 'Unsafe checkpoint image directory.' for a working-tree read when a static, game or checkpoints entry is a symlink or not a directory. It also rejects with 'Invalid checkpoint image file.' for a working-tree file that is not a regular file or is over 12,000,000 bytes, with 'Checkpoint image integrity failed.', with git failures from execFileSync, and with filesystem errors such as a missing working-tree file."
 					}

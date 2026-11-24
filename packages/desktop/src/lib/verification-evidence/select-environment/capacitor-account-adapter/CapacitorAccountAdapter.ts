@@ -115,7 +115,6 @@ export class CapacitorAccountAdapter {
 			connectHosted: (input) => this.account(() => this.config.plugin.connect(input)),
 			disconnectHosted: () => this.disconnect()
 		};
-		/** Offered only while the account is signed in and not yet denied the overview; the Hub still decides who reads. */
 		return Object.defineProperty(bridge, 'projectOverview', {
 			enumerable: true,
 			get: () =>
@@ -142,7 +141,7 @@ export class CapacitorAccountAdapter {
 		}
 	}
 
-	/** Owned and invited projects while signed in; none otherwise, and none of an earlier account. */
+	/** Current shared projects for this account when the Hub offers collaboration. */
 	private async listProjects(shared: DesktopBridge): Promise<DesktopProject[]> {
 		const known = this.known ?? (await this.account(() => this.config.plugin.status()));
 		if (known.state !== 'signed-in') return [];
@@ -151,7 +150,8 @@ export class CapacitorAccountAdapter {
 			const listed = await shared.listProjects!();
 			return asked === this.generation ? listed : [];
 		} catch (cause) {
-			if ((cause as { status?: number }).status === 401) return [];
+			const { status, code } = (cause ?? {}) as { status?: number; code?: string };
+			if (status === 401 || (status === 503 && code === 'collaboration-disabled')) return [];
 			throw cause;
 		}
 	}

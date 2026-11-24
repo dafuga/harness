@@ -54,7 +54,7 @@
 				"description": "Rejects with the original readFile error when its code is not 'ENOENT'; nothing is written in that case."
 			},
 			{
-				"name": "Error",
+				"name": "Report retention log write failure",
 				"type": "thrown",
 				"description": "Rejects with the error from writeFile for join(root, 'retention-history.jsonl'), such as a missing root directory; the implementation does not catch it."
 			},
@@ -107,7 +107,7 @@
 						"description": "Rejects with the original readFile error when its code is not 'ENOENT'; nothing is written in that case."
 					},
 					{
-						"name": "Error",
+						"name": "Report retention log write failure",
 						"type": "thrown",
 						"description": "Rejects with the error from writeFile for join(root, 'retention-history.jsonl'), such as a missing root directory; the implementation does not catch it."
 					},

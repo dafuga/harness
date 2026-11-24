@@ -1,10 +1,11 @@
 // @harness-uid u_bl6xl2h4a3
 import { z } from 'zod';
+import { trackerWatchdogSessionName } from '../WatchdogPaneService';
 
 export const watchdogScan = z
 	.array(
 		z.strictObject({
-			name: z.string().regex(/^auto-[a-z0-9]{6,10}(?:-r[0-9]+)?$/),
+			name: z.string().regex(trackerWatchdogSessionName),
 			key: z.string().min(1).max(200),
 			activity: z.int().nonnegative(),
 			createdAt: z.int().nonnegative(),
@@ -18,7 +19,9 @@ export const watchdogScan = z
 			y: z.int().nonnegative(),
 			screen: z.string().max(64_000).nullable(),
 			cwd: z.string().max(4096).optional(),
-			contextTokens: z.int().nonnegative().optional()
+			contextTokens: z.int().nonnegative().optional(),
+			model: z.string().max(80).optional(),
+			effort: z.string().max(16).optional()
 		})
 	)
 	.max(100)

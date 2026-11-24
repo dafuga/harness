@@ -133,7 +133,8 @@
 							}
 						]
 					}
-				]
+				],
+				"unknownReason": "The JSON value was read from a scenario file and needs schema validation before it is used."
 			},
 			{
 				"name": "ScenarioManifestValidator.validate.file",
@@ -374,7 +375,8 @@
 									}
 								]
 							}
-						]
+						],
+						"unknownReason": "The JSON value was read from a scenario file and needs schema validation before it is used."
 					},
 					{
 						"name": "ScenarioManifestValidator.validate.file",

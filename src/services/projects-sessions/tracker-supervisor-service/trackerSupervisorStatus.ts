@@ -1,8 +1,12 @@
 // @harness-uid u_46eur7qage
 import { z } from 'zod';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
-import { trackerFleetNodes } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import {
+	canonicalNode,
+	trackerFleetNodes
+} from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
+import { trackerRunnerSample } from '../tracker-native-runtime-service/nativeTrackerLinks';
 import type { TrackerSupervisorViews } from '../TrackerSupervisorService.types';
 
 export function trackerSupervisorStatus(
@@ -66,12 +70,20 @@ function trackerJobsStatus({ store, recurring }: TrackerNativeRuntimeService) {
 
 function trackerAutolaunchStatus(runtime: TrackerNativeRuntimeService) {
 	const runs = activeRunCounts(runtime.store.database);
+	const now = runtime.now();
+	const samples = machineSamplesByNode(runtime.fleetSamples?.() ?? []);
+	const status = runtime.scheduler?.status();
 	return {
-		enabled: false,
-		stuck: [],
-		...runtime.scheduler?.status(),
+		enabled: status?.enabled ?? false,
+		stuck: (status?.stuck ?? []).map((item) => {
+			if (item.reason !== 'ready but has not started') return item;
+			const sample = samples.get(canonicalNode(item.computer, {}));
+			const runner = trackerRunnerSample.safeParse(sample?.runner).data;
+			const reason = machineOffline(sample?.at, now) ? undefined : runner?.waiting?.[item.id];
+			return reason ? { ...item, reason } : item;
+		}),
 		active_runs: runs.active,
-		computers: trackerFleetHealth(runtime, runs.started)
+		computers: trackerFleetHealth(runtime, runs.started, { now, samples })
 	};
 }
 
@@ -90,24 +102,20 @@ function activeRunCounts(database: SqliteDatabase) {
 }
 
 const machineSample = z.object({ node: z.string().min(1), at: z.string(), runner: z.unknown() });
-const runnerSample = z.object({
-	enabled: z.boolean().nullish(),
-	last_tick_at: z.string().nullish(),
-	last_error: z.string().nullish(),
-	waiting_on: z.string().nullish(),
-	active: z.int().nonnegative().nullish()
-});
-
-function trackerFleetHealth(runtime: TrackerNativeRuntimeService, startedRuns: number) {
+function trackerFleetHealth(
+	runtime: TrackerNativeRuntimeService,
+	startedRuns: number,
+	{ now, samples }: { now: number; samples: ReturnType<typeof machineSamplesByNode> }
+) {
 	const { store, scheduler, fleetSamples } = runtime;
-	const now = runtime.now();
-	const samples = machineSamplesByNode(fleetSamples?.() ?? []);
-	const localRunner: z.infer<typeof runnerSample> = scheduler?.runnerStatus() ?? { enabled: false };
+	const localRunner: z.infer<typeof trackerRunnerSample> = scheduler?.runnerStatus() ?? {
+		enabled: false
+	};
 	const nodes = new Set([...trackerFleetNodes, ...samples.keys(), store.node]);
 	return [...nodes].map((computer) => {
 		const local = computer === store.node;
 		const sample = samples.get(computer);
-		const runner = local ? localRunner : runnerSample.safeParse(sample?.runner).data;
+		const runner = local ? localRunner : trackerRunnerSample.safeParse(sample?.runner).data;
 		const offline = !local && Boolean(fleetSamples) && machineOffline(sample?.at, now);
 		return {
 			computer,
@@ -122,7 +130,11 @@ function machineOffline(sampledAt: string | undefined, now: number) {
 }
 
 function fleetRunnerDetails(
-	{ last_tick_at = null, last_error = null, waiting_on = null }: z.infer<typeof runnerSample> = {},
+	{
+		last_tick_at = null,
+		last_error = null,
+		waiting_on = null
+	}: z.infer<typeof trackerRunnerSample> = {},
 	active: number | null | undefined
 ) {
 	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null };
@@ -137,7 +149,7 @@ function machineSamplesByNode(values: readonly unknown[]) {
 	return samples;
 }
 
-function fleetRunnerState(runner: z.infer<typeof runnerSample> | undefined, now: number) {
+function fleetRunnerState(runner: z.infer<typeof trackerRunnerSample> | undefined, now: number) {
 	if (runner?.enabled == null) return 'unknown';
 	if (!runner.enabled) return 'disabled';
 	if (runner.last_error) return 'error';

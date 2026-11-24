@@ -130,12 +130,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "LocalTransportNotListeningError",
 				"type": "thrown",
 				"description": "Thrown by the port and address getters and by bootstrap while no server is bound, that is before listen() resolves or after close(). The message is 'The transport is not listening.'"
 			},
 			{
-				"name": "Error",
+				"name": "Local transport server startup failure",
 				"type": "thrown",
 				"description": "Rejection of listen() with the error that starting the WebSocket server fails with, such as an 'error' event emitted before it is listening. The cached start promise is cleared, so a later listen() call starts the server again."
 			}
@@ -155,7 +155,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "LocalTransportNotListeningError",
 						"type": "thrown",
 						"description": "Thrown while no server is bound, that is before listen() resolves or after close(). The message is 'The transport is not listening.'"
 					}
@@ -175,7 +175,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "LocalTransportNotListeningError",
 						"type": "thrown",
 						"description": "Thrown while no server is bound, that is before listen() resolves or after close(). The message is 'The transport is not listening.'"
 					}
@@ -209,7 +209,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Local transport server startup failure",
 						"type": "thrown",
 						"description": "Rejection of listen() with the error that starting the WebSocket server fails with, such as an 'error' event emitted before it is listening. The cached start promise is cleared, so a later listen() call starts the server again."
 					}
@@ -245,7 +245,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "LocalTransportNotListeningError",
 						"type": "thrown",
 						"description": "Thrown while no server is bound, that is before listen() resolves or after close(). The ticket is stored before the port is read, so it is never returned and stays in the map until it expires or is pruned."
 					}

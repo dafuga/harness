@@ -70,7 +70,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ClaudeRunFailedError",
 				"type": "thrown",
 				"description": "Rejects with Error when no system init event reports the requested model ('Claude did not run the requested model.'), or when there is no result event or its is_error flag is set (the message is its result text when present, else 'Claude returned no completed result.'). A CLI exit other than code 0, a process error event, a run longer than 600000 ms or output over 16000000 bytes also rejects with Error, and resource queue or resourceWork failures propagate unchanged unless turn.signal is aborted."
 			},
@@ -138,7 +138,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ClaudeRunFailedError",
 						"type": "thrown",
 						"description": "Rejects with Error when no system init event reports the requested model ('Claude did not run the requested model.'), or when there is no result event or its is_error flag is set (the message is its result text when present, else 'Claude returned no completed result.'). A CLI exit other than code 0, a process error event, a run longer than 600000 ms or output over 16000000 bytes also rejects with Error, and resource queue or resourceWork failures propagate unchanged unless turn.signal is aborted."
 					},

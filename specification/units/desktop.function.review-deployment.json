@@ -174,7 +174,7 @@
 				"description": "Rejects with whatever `options.plugin.discover(root)` rejects with, passed through unchanged; the DeploymentPlugin type does not define those errors."
 			},
 			{
-				"name": "Error",
+				"name": "Deployment review Git or receipt read failure",
 				"type": "thrown",
 				"description": "Rejects with the error from a git read that exits non-zero (for example when `root` is not a Git repository or has no commits), or with a filesystem error other than ENOENT while reading receipts.json."
 			},
@@ -354,7 +354,7 @@
 						"description": "Rejects with whatever `options.plugin.discover(root)` rejects with, passed through unchanged; the DeploymentPlugin type does not define those errors."
 					},
 					{
-						"name": "Error",
+						"name": "Deployment review Git or receipt read failure",
 						"type": "thrown",
 						"description": "Rejects with the error from a git read that exits non-zero (for example when `root` is not a Git repository or has no commits), or with a filesystem error other than ENOENT while reading receipts.json."
 					},

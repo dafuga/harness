@@ -180,7 +180,7 @@
 				"description": "An invalid pointer or length can make a linear-memory view fail; invokeText rejects with that failure and invoke converts it to runtime-failed."
 			},
 			{
-				"name": "Error",
+				"name": "Runtime loader or invocation failure",
 				"type": "thrown",
 				"description": "A caller-provided loader can reject with its own Error, which raw methods propagate; invoke converts errors from the inner call to runtime-failed unless the error is RuntimeUnavailable or CompileError."
 			}
@@ -262,7 +262,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Portable JSON accessor or proxy failure",
 						"type": "thrown",
 						"description": "An error thrown while portableJson inspects accessor- or proxy-backed request values escapes before the call-level catch and rejects the promise; ordinary nonportable JSON values resolve as invalid-json."
 					}
@@ -320,7 +320,7 @@
 						"description": "An invalid pointer or length can make a linear-memory view fail; invokeText rejects with that failure and invoke converts it to runtime-failed."
 					},
 					{
-						"name": "Error",
+						"name": "Runtime loader or invocation failure",
 						"type": "thrown",
 						"description": "A caller-provided loader can reject with its own Error, which raw methods propagate; invoke converts errors from the inner call to runtime-failed unless the error is RuntimeUnavailable or CompileError."
 					}
@@ -365,7 +365,7 @@
 						"description": "Malformed export values can fail when the adapter reads memory or calls an ABI export; invoke converts call failures to runtime-failed."
 					},
 					{
-						"name": "Error",
+						"name": "loader failure (caller-provided WasmLoader)",
 						"type": "thrown",
 						"description": "A caller-provided loader can reject with its own Error, which raw methods propagate; invoke converts errors from the inner call to runtime-failed unless the error is RuntimeUnavailable or CompileError."
 					}

@@ -1,5 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
-import { createHash } from 'node:crypto';
+import { paneNudgeKey } from './trackerHostWatchdogState';
 import type { IdleDecision } from '../WatchdogIdleService.types';
 import type { WatchdogPane, WatchdogScan } from '../WatchdogPaneService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -56,8 +56,4 @@ export async function applyIdleDecision(
 		const reason = `Could not verify submission of the watchdog check-in in ${pane.name}.`;
 		recordWatchdogAlert(store, { ...alert, reason }, snapshot.now, null);
 	}
-}
-
-export function paneNudgeKey({ key }: WatchdogPane): string {
-	return 'tracker_host_watchdog_nudge:' + createHash('sha256').update(key).digest('hex');
 }

@@ -23,8 +23,7 @@ function internalAtom(unit: PreviewManifest) {
  * history, a Desktop page over the synthetic bridge of the orders project, or a Hub page or layout
  * over the synthetic hosted API of a signed-in person.
  */
-export const routePreview = (id: string) =>
-	/^(?:(?:reports|hub)\.(?:page|layout)|desktop\.page)\./.test(id);
+export const routePreview = (id: string) => /^(?:reports|hub|desktop)\.(?:page|layout)\./.test(id);
 /** What the catalog previews so far: every visual component and shell, and those routes. */
 export function catalogVisual(unit: PreviewManifest): boolean {
 	if (!visualUnit(unit)) return false;

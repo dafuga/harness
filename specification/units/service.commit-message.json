@@ -116,7 +116,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Commit message history Git read failure",
 				"type": "thrown",
 				"description": "Rejected by stored, and so by reported, when a git rev-list or git log call exits with a non-zero status, for example for a base or head that git cannot resolve. Its message is git with its arguments, then failed: and git's stderr."
 			},
@@ -217,7 +217,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Commit message history Git read failure",
 						"type": "thrown",
 						"description": "Rejected by stored, and so by reported, when a git rev-list or git log call exits with a non-zero status, for example for a base or head that git cannot resolve. Its message is git with its arguments, then failed: and git's stderr."
 					},
@@ -265,7 +265,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Commit message history Git read failure",
 						"type": "thrown",
 						"description": "Rejected by stored, and so by reported, when a git rev-list or git log call exits with a non-zero status, for example for a base or head that git cannot resolve. Its message is git with its arguments, then failed: and git's stderr."
 					},

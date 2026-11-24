@@ -104,7 +104,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Svelte markup parse failure",
 				"type": "thrown",
 				"description": "Thrown by svelte/compiler parse(), which atomicSyntax calls on the source, when the markup cannot be parsed; neither atomicMarkup nor atomicProjectFiles catches it, so it propagates to the caller. atomicProjectFiles hits it for any .svelte file outside /atoms/ whose markup does not parse."
 			}
@@ -166,7 +166,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "parse failure (svelte/compiler)",
 						"type": "thrown",
 						"description": "Propagated from svelte/compiler parse() through atomicMarkup for a .svelte file outside /atoms/ whose markup cannot be parsed; the function has no try/catch, so the error reaches the caller."
 					}
@@ -219,7 +219,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "parse failure (svelte/compiler)",
 						"type": "thrown",
 						"description": "Thrown by svelte/compiler parse(), which atomicSyntax calls on the source, when the markup cannot be parsed; the function has no try/catch, so the error reaches the caller."
 					}

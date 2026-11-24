@@ -84,11 +84,11 @@ function completeReminders(
 		const row = state.reminders.get(key);
 		if (!row)
 			throw new TrackerNotificationStateError('Tracker reminder attempt is missing its queue row');
-		row.nextAt = next;
+		row.nextAt = row.kind === 'scheduled' ? at + retry : next;
 		if (result.status === 'sent') {
 			row.pings++;
 			row.lastPing = at;
-			if (row.kind === 'due') row.status = 'closed';
+			if (row.kind !== 'flag') row.status = 'closed';
 		}
 	}
 }
@@ -125,6 +125,7 @@ export function completeDelivery(
 		case 'callback':
 			completeCallback(state, attempt.keys[0], result, options.now());
 			break;
+		case 'scheduled':
 		case 'reminders':
 			completeReminders(state, attempt, result, options);
 			break;

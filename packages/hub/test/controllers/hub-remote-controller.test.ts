@@ -19,6 +19,7 @@ test('an unauthenticated caller is refused before anything reaches the relay', a
 	f.setActor(null);
 	const requests: [string, string, unknown?][] = [
 		['POST', '/hosts', registration(host)],
+		['GET', '/hosts'],
 		['GET', path],
 		['DELETE', `${path}/devices/${DEVICE_ID}`],
 		['DELETE', path]

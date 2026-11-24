@@ -58,7 +58,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostResourceLimitsError",
 				"type": "thrown",
 				"description": "Throws Error with messages 'Resource admission requires cgroup v2 on Linux', 'Cannot establish cgroup membership', 'Invalid cgroup path', 'Invalid CPU quota', or 'Invalid memory quota' when those checks fail. Filesystem read errors for membership, selected cpu.stat, memory.current, or non-ENOENT cpu.max and memory.max reads also propagate."
 			}
@@ -110,7 +110,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostResourceLimitsError",
 						"type": "thrown",
 						"description": "Throws Error with messages 'Resource admission requires cgroup v2 on Linux', 'Cannot establish cgroup membership', 'Invalid cgroup path', 'Invalid CPU quota', or 'Invalid memory quota' when those checks fail. Filesystem read errors for membership, selected cpu.stat, memory.current, or non-ENOENT cpu.max and memory.max reads also propagate."
 					}

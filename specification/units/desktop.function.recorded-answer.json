@@ -190,7 +190,7 @@
 				"description": "Throws Error with the message \"The recorded evidence of this entity is larger than one answer may be (16 MiB).\" when the serialized JSON answer exceeds remoteLimits.messageBytes - 1024 UTF-8 bytes; the answer is not truncated."
 			},
 			{
-				"name": "Error",
+				"name": "Recorded evidence answer exceeds 16 MiB",
 				"type": "thrown",
 				"description": "The function throws a native Error with the message \"The recorded evidence of this entity is larger than one answer may be (16 MiB).\" when the serialized JSON answer exceeds remoteLimits.messageBytes - 1024 UTF-8 bytes."
 			}
@@ -360,7 +360,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AnswerTooLargeError",
 						"type": "thrown",
 						"description": "Throws Error with the message \"The recorded evidence of this entity is larger than one answer may be (16 MiB).\" when the serialized JSON answer exceeds remoteLimits.messageBytes - 1024 UTF-8 bytes; the answer is not truncated."
 					}

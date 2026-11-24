@@ -18,14 +18,16 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
         CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise)
     ]
 
-    private let session = HubAccountSession(
+    static let sharedSession = HubAccountSession(
         origin: HubAccountPolicy.origin(Bundle.main.object(forInfoDictionaryKey: HubAccountPolicy.infoKey)))
 
+    private var session: HubAccountSession { Self.sharedSession }
     private var authentication: ASWebAuthenticationSession?
     private var authenticationState: String?
 
     /// Google sign-in uses the Hub in the system authentication session.
     override public func load() {
+        session.accountEnded = { TrackerRefresh.session.cancelAccountPairing() }
         session.open = { page in DispatchQueue.main.async { UIApplication.shared.open(page) } }
         session.deviceName = "Harness " + UIDevice.current.model
         session.authenticate = { [weak self] page, state in

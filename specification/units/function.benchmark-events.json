@@ -143,7 +143,7 @@
 				"description": "Thrown when parsed JSON does not satisfy the runner event schema, including invalid field types, empty supplied identifiers or model, or negative or nonfinite usage and cost counts."
 			},
 			{
-				"name": "Error",
+				"name": "IncompleteBenchmarkSubmissionError",
 				"type": "thrown",
 				"description": "Thrown by codexTurn when its session or completion conditions fail, or by claudeTurn when its result does not satisfy the session and success conditions."
 			}
@@ -248,7 +248,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "IncompleteBenchmarkSubmissionError",
 						"type": "thrown",
 						"description": "Thrown when no thread.started event supplies a truthy thread_id, no turn.completed event exists, or any event has type turn.failed; message: 'Codex did not complete a benchmark submission.'"
 					}
@@ -307,7 +307,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "IncompleteBenchmarkSubmissionError",
 						"type": "thrown",
 						"description": "Thrown when there is no result with a truthy session_id, result.is_error is true, or the result subtype is not success; message: 'Claude did not complete a benchmark submission.'"
 					}

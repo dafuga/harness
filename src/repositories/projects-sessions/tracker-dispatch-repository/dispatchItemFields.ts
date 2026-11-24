@@ -33,6 +33,7 @@ export function dispatchItem(
 		scheduleOff: flag(row.schedule_off),
 		deleted: Boolean(row.deleted),
 		awaitingAnswer: Boolean(row.needs_daniel && !row.resolved),
+		question: row.question,
 		answeredCurrentBlock: answeredBlock(row, clocks, runs),
 		blockedReason: row.blocked_reason,
 		closedBySource: flag(row.adapter_closed),
@@ -50,7 +51,10 @@ function launchIntent(row: TrackerDispatchRow): TrackerLaunchIntent | null {
 	if (!row.auto) return null;
 	return {
 		token: row.auto,
-		source: row.launch_source === 'due' ? 'due' : 'manual',
+		source:
+			row.launch_source === 'due' || row.launch_source === 'recovery'
+				? row.launch_source
+				: 'manual',
 		target:
 			(row.launch_target ?? row.computer) === 'auto' ? null : (row.launch_target ?? row.computer),
 		...(row.launch_pick && { scheduledPick: JSON.parse(row.launch_pick) })

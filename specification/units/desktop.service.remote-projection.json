@@ -95,14 +95,16 @@
 				"name": "RemoteProjectionService.read.validate",
 				"type": "(value: unknown) => T",
 				"required": true,
-				"description": "A caller-supplied function that validates an unknown fetched or cached value and returns the caller's type T. It is applied before a value is returned."
+				"description": "A caller-supplied function that validates an unknown fetched or cached value and returns the caller's type T. It is applied before a value is returned.",
+				"unknownReason": "Only the caller's validator knows the shape of the fetched or cached resource and narrows it to T."
 			},
 			{
 				"name": "RemoteProjectionService.read.load",
 				"type": "() => Promise<unknown>",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "An optional asynchronous provider for the raw resource value. If omitted, the service fetches the computed resource path through the HTTP adapter."
+				"description": "An optional asynchronous provider for the raw resource value. If omitted, the service fetches the computed resource path through the HTTP adapter.",
+				"unknownReason": "The asynchronous provider yields an unvalidated resource value for the caller-supplied validator."
 			},
 			{
 				"name": "RemoteProjectionService.path.projectId",
@@ -201,22 +203,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidHostedProjectIdError",
 				"type": "thrown",
 				"description": "Thrown when projectionPath receives a project ID that does not match the hosted project identifier pattern."
 			},
 			{
-				"name": "Error",
+				"name": "Hosted snapshot cache identity does not match its revision",
 				"type": "thrown",
 				"description": "Thrown when a validated snapshot has cache.identity.sourceCommit different from revision.commit."
 			},
 			{
-				"name": "Error",
+				"name": "Hosted snapshot revision does not match the request",
 				"type": "thrown",
 				"description": "Thrown when a non-empty requested commit differs from the validated snapshot revision.commit."
 			},
 			{
-				"name": "Error",
+				"name": "Fetched snapshot revision does not match the request",
 				"type": "thrown",
 				"description": "Thrown when fetched snapshot metadata has a revision.commit different from the requested commit."
 			}
@@ -308,17 +310,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidHostedProjectIdError",
 						"type": "thrown",
 						"description": "Thrown when projectionPath receives a project ID that does not match the hosted project identifier pattern."
 					},
 					{
-						"name": "Error",
+						"name": "HostedCacheCommitMismatchError",
 						"type": "thrown",
 						"description": "Thrown when a validated snapshot has cache.identity.sourceCommit different from revision.commit."
 					},
 					{
-						"name": "Error",
+						"name": "HostedCommitMismatchError",
 						"type": "thrown",
 						"description": "Thrown when a non-empty requested commit differs from the validated snapshot revision.commit."
 					}
@@ -372,14 +374,16 @@
 						"name": "RemoteProjectionService.read.validate",
 						"type": "(value: unknown) => T",
 						"required": true,
-						"description": "A caller-supplied function that validates an unknown fetched or cached value and returns the caller's type T. It is applied before a value is returned."
+						"description": "A caller-supplied function that validates an unknown fetched or cached value and returns the caller's type T. It is applied before a value is returned.",
+						"unknownReason": "Only the caller's validator knows the shape of the fetched or cached resource and narrows it to T."
 					},
 					{
 						"name": "RemoteProjectionService.read.load",
 						"type": "() => Promise<unknown>",
 						"required": false,
 						"default": "undefined (omitted)",
-						"description": "An optional asynchronous provider for the raw resource value. If omitted, the service fetches the computed resource path through the HTTP adapter."
+						"description": "An optional asynchronous provider for the raw resource value. If omitted, the service fetches the computed resource path through the HTTP adapter.",
+						"unknownReason": "The asynchronous provider yields an unvalidated resource value for the caller-supplied validator."
 					}
 				],
 				"outputs": [
@@ -391,17 +395,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidHostedProjectIdError",
 						"type": "thrown",
 						"description": "Thrown when projectionPath receives a project ID that does not match the hosted project identifier pattern."
 					},
 					{
-						"name": "Error",
+						"name": "Hosted snapshot cache identity does not match its revision",
 						"type": "thrown",
 						"description": "Thrown when a validated snapshot has cache.identity.sourceCommit different from revision.commit."
 					},
 					{
-						"name": "Error",
+						"name": "HostedCommitMismatchError",
 						"type": "thrown",
 						"description": "Thrown when fetched snapshot metadata has a revision.commit different from the requested commit."
 					}
@@ -452,7 +456,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidHostedProjectIdError",
 						"type": "thrown",
 						"description": "Thrown when projectionPath receives a project ID that does not match the hosted project identifier pattern."
 					}

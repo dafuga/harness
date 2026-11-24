@@ -248,7 +248,7 @@
 				"description": "Thrown for a sealed capture whose recorded size is more than 11 MiB (11534336 bytes), checked before its bytes are read."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid Hub evidence request or unavailable evidence",
 				"type": "thrown",
 				"description": "An uncoded Error for a request field that fails its format, for an entity whose kind has no category at its commit, for an answer larger than one transport message (16 MiB less 1024 bytes), and, for a focused capture, for stored bytes that are missing, fail their SHA-256 or media-type check, or are larger than 11 MiB."
 			}
@@ -402,7 +402,7 @@
 						"description": "Thrown when the branch does not exist, when the commit is not reachable from the branch tip, when the repository cannot give the commit's facts, or when the entity is not registered at that commit."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid Hub evidence request or unavailable evidence",
 						"type": "thrown",
 						"description": "An uncoded Error for a request field that fails its format, for an entity whose kind has no category at its commit, or for an answer larger than one transport message (16 MiB less 1024 bytes)."
 					}
@@ -515,7 +515,7 @@
 						"description": "Thrown for a sealed capture whose recorded size is more than 11 MiB (11534336 bytes), checked before its bytes are read."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid Hub artifact request or unavailable artifact",
 						"type": "thrown",
 						"description": "An uncoded Error for a request field that fails its format, for an entity whose kind has no category at its commit, or, for a focused capture, for stored bytes that are missing, fail their SHA-256 or media-type check, or are larger than 11 MiB."
 					}

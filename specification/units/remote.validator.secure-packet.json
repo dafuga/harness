@@ -35,7 +35,8 @@
 						"ephemeralKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 						"nonce": "AAECAwQFBgcICQoLDA0ODw"
 					}
-				]
+				],
+				"unknownReason": "A received packet must pass shape checks before its fields are used."
 			},
 			{
 				"name": "SecurePacketValidator.text.text",
@@ -122,7 +123,8 @@
 								"ephemeralKey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 								"nonce": "AAECAwQFBgcICQoLDA0ODw"
 							}
-						]
+						],
+						"unknownReason": "A received packet must pass shape checks before its fields are used."
 					}
 				],
 				"outputs": [

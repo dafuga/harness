@@ -73,7 +73,7 @@
 				"description": "start rejects with 'Preview stopped.' if close() has already run; with the message of a child 'error' event (such as a spawn failure) raised before readiness; with 'Preview worker exited before readiness.' if the child exits before readiness; and with 'Preview worker did not become ready.' after the 20000 ms startup deadline or when close() stops the launch loop before a probe reports the child's PID. Recovery catches these errors, logs them with console.warn unless the service is stopped, and retries after a backoff that starts at 250 ms, doubles, and caps at 30000 ms."
 			},
 			{
-				"name": "Error",
+				"name": "PreviewWorkerIdentityChangedError",
 				"type": "thrown",
 				"description": "launch() throws a new plain Error (no subclass, code or cause) with one of the messages listed under 'Preview worker startup failure', and start() rejects with that same Error. check() also throws an Error with the message 'Worker identity changed.', but its own catch handles it, so no caller receives it."
 			}
@@ -97,7 +97,7 @@
 						"description": "start rejects with 'Preview stopped.' if close() has already run; with the message of a child 'error' event (such as a spawn failure) raised before readiness; with 'Preview worker exited before readiness.' if the child exits before readiness; and with 'Preview worker did not become ready.' after the 20000 ms startup deadline or when close() stops the launch loop before a probe reports the child's PID. Recovery catches these errors, logs them with console.warn unless the service is stopped, and retries after a backoff that starts at 250 ms, doubles, and caps at 30000 ms."
 					},
 					{
-						"name": "Error",
+						"name": "PreviewWorkerIdentityChangedError",
 						"type": "thrown",
 						"description": "launch() throws a new plain Error (no subclass, code or cause) with one of the messages listed under 'Preview worker startup failure', and start() rejects with that same Error. check() also throws an Error with the message 'Worker identity changed.', but its own catch handles it, so no caller receives it."
 					}

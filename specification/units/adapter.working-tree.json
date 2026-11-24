@@ -82,12 +82,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "GitAdapter or collectAuditedFiles failure (adapter.git, audit.collect)",
 				"type": "thrown",
 				"description": "Rejects with whatever GitAdapter.isRepository, GitAdapter.run or collectAuditedFiles rejects with, because the scan does not catch those rejections."
 			},
 			{
-				"name": "Error",
+				"name": "readFile failure (node:fs/promises)",
 				"type": "thrown",
 				"description": "Rejects with the error the node:fs/promises readFile call raises for the path joined onto root, for example ENOENT when nothing exists there, because read() does not catch it."
 			},
@@ -133,7 +133,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "GitAdapter or collectAuditedFiles failure (adapter.git, audit.collect)",
 						"type": "thrown",
 						"description": "Rejects with whatever GitAdapter.isRepository, GitAdapter.run or collectAuditedFiles rejects with, because the scan does not catch those rejections."
 					}
@@ -168,7 +168,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "readFile failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "Rejects with the error the node:fs/promises readFile call raises for the path joined onto root, for example ENOENT when nothing exists there, because read() does not catch it."
 					},

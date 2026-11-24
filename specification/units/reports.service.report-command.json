@@ -57,7 +57,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown when dispatch reaches an unsupported operation, or when import has no --run value and the format is not mira."
 			},
@@ -101,7 +101,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when dispatch reaches an unsupported operation, or when import has no --run value and the format is not mira."
 					},

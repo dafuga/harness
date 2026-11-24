@@ -102,7 +102,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unsafe, oversized, or unreadable review input",
 				"type": "thrown",
 				"description": "Raised when readReviewInput finds a path outside the project root, a symlink or non-file, or a file larger than 1 MiB; filesystem resolution, inspection, and read failures also reject with an error. reviewInputsCurrent catches these read failures and returns false."
 			}
@@ -165,7 +165,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsafe, oversized, or unreadable review input",
 						"type": "thrown",
 						"description": "Raised when readReviewInput finds a path outside the project root, a symlink or non-file, or a file larger than 1 MiB; filesystem resolution, inspection, and read failures also reject with an error. reviewInputsCurrent catches these read failures and returns false."
 					}

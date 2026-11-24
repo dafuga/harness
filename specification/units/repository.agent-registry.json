@@ -219,7 +219,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Agent registry filesystem failure",
 				"type": "thrown",
 				"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
 			},
@@ -297,7 +297,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Agent registry filesystem failure",
 						"type": "thrown",
 						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
 					}
@@ -339,7 +339,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Agent registry filesystem failure",
 						"type": "thrown",
 						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
 					}
@@ -380,7 +380,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Agent registry filesystem failure",
 						"type": "thrown",
 						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
 					}
@@ -430,7 +430,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Agent registry filesystem failure",
 						"type": "thrown",
 						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
 					},
@@ -487,7 +487,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Agent registry filesystem failure",
 						"type": "thrown",
 						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
 					}
@@ -514,7 +514,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Agent registry filesystem failure",
 						"type": "thrown",
 						"description": "Filesystem operations can throw or reject when creating, replacing, linking, reading, listing, or removing agent state fails. finish converts an existing end file into false instead of throwing for that case."
 					}

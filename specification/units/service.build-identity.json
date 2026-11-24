@@ -152,7 +152,7 @@
 				"description": "Thrown when stamp finds no file with a stamp slot; the message identifies the directory and says nothing in it reports a build identity."
 			},
 			{
-				"name": "Error",
+				"name": "Build identity filesystem failure",
 				"type": "thrown",
 				"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
 			}
@@ -207,7 +207,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Build identity filesystem failure",
 						"type": "thrown",
 						"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
 					}
@@ -256,7 +256,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Build identity filesystem failure",
 						"type": "thrown",
 						"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
 					}
@@ -290,7 +290,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Build identity filesystem failure",
 						"type": "thrown",
 						"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
 					}
@@ -329,7 +329,7 @@
 						"description": "Thrown when stamp finds no file with a stamp slot; the message identifies the directory and says nothing in it reports a build identity."
 					},
 					{
-						"name": "Error",
+						"name": "Build identity filesystem failure",
 						"type": "thrown",
 						"description": "A file read or write failure rejects the operation; the underlying file-system error may include a platform-specific code."
 					}

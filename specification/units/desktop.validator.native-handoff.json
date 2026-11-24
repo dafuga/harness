@@ -50,7 +50,8 @@
 						"expiresAt": "2026-11-14T12:05:00.000Z",
 						"interval": 2
 					}
-				]
+				],
+				"unknownReason": "The native handoff start endpoint receives undecoded-shape JSON and validates the fields it uses."
 			},
 			{
 				"name": "NativeHandoffValidator.start.origin",
@@ -104,7 +105,8 @@
 						"nonce": "a1Lk9Vq0ZtR3xMsP7wYbN2eHcJ8uGdKf",
 						"expiresAt": "2026-12-14T12:01:00.000Z"
 					}
-				]
+				],
+				"unknownReason": "The native handoff exchange endpoint checks the incoming JSON and its nested actor before using them."
 			},
 			{
 				"name": "NativeHandoffValidator.exchange.expected",
@@ -196,34 +198,34 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid hosted response",
 				"type": "thrown",
 				"description": "Thrown as Error('Invalid hosted response.') by responseRecord when the response is null, not an object, or an array; exchange() also throws it when the response's actor is missing or is not a non-array object."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidNativeHandoffUrlError",
 				"type": "thrown",
-				"description": "Thrown as Error('Invalid native handoff URL.') by start() when handoffId is not a string of 1 to 200 characters, each a letter, digit, underscore or hyphen, or when verificationUrl is not exactly origin, then '/native/', then the URL-encoded handoffId."
+				"description": "Thrown as InvalidNativeHandoffUrlError('Invalid native handoff URL.') by start() when handoffId is not a string of 1 to 200 characters, each a letter, digit, underscore or hyphen, or when verificationUrl is not exactly origin, then '/native/', then the URL-encoded handoffId."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidNativeHandoffError",
 				"type": "thrown",
-				"description": "Thrown as Error('Invalid native handoff.') by start() when userCode is not a string of at most 40 characters, or when interval is not a number from 1 to 30."
+				"description": "Thrown as InvalidNativeHandoffError('Invalid native handoff.') by start() when userCode is not a string of at most 40 characters, or when interval is not a number from 1 to 30."
 			},
 			{
-				"name": "Error",
+				"name": "ExpiredNativeHandoffError",
 				"type": "thrown",
-				"description": "Thrown as Error('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
+				"description": "Thrown as ExpiredNativeHandoffError('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
 			},
 			{
-				"name": "Error",
+				"name": "NativeHandoffBindingMismatchError",
 				"type": "thrown",
-				"description": "Thrown as Error('Native handoff binding mismatch.') by exchange() when audience is not 'harness-desktop', when nonce or resource differ from expected, or when authorization is not a string."
+				"description": "Thrown as NativeHandoffBindingMismatchError('Native handoff binding mismatch.') by exchange() when audience is not 'harness-desktop', when nonce or resource differ from expected, or when authorization is not a string."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidNativeHandoffIdentityError",
 				"type": "thrown",
-				"description": "Thrown as Error('Invalid native handoff identity.') by exchange() when actor.id, actor.email or actor.name is not a string, or when actor.emailVerified is not true."
+				"description": "Thrown as InvalidNativeHandoffIdentityError('Invalid native handoff identity.') by exchange() when actor.id, actor.email or actor.name is not a string, or when actor.emailVerified is not true."
 			}
 		],
 		"errorStatus": "declared",
@@ -251,7 +253,8 @@
 								"expiresAt": "2026-11-14T12:05:00.000Z",
 								"interval": 2
 							}
-						]
+						],
+						"unknownReason": "The native handoff start endpoint receives undecoded-shape JSON and validates the fields it uses."
 					},
 					{
 						"name": "NativeHandoffValidator.start.origin",
@@ -299,24 +302,24 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted response",
 						"type": "thrown",
 						"description": "Thrown as Error('Invalid hosted response.') by responseRecord when the response is null, not an object, or an array; exchange() also throws it when the response's actor is missing or is not a non-array object."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidNativeHandoffUrlError",
 						"type": "thrown",
-						"description": "Thrown as Error('Invalid native handoff URL.') by start() when handoffId is not a string of 1 to 200 characters, each a letter, digit, underscore or hyphen, or when verificationUrl is not exactly origin, then '/native/', then the URL-encoded handoffId."
+						"description": "Thrown as InvalidNativeHandoffUrlError('Invalid native handoff URL.') by start() when handoffId is not a string of 1 to 200 characters, each a letter, digit, underscore or hyphen, or when verificationUrl is not exactly origin, then '/native/', then the URL-encoded handoffId."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidNativeHandoffError",
 						"type": "thrown",
-						"description": "Thrown as Error('Invalid native handoff.') by start() when userCode is not a string of at most 40 characters, or when interval is not a number from 1 to 30."
+						"description": "Thrown as InvalidNativeHandoffError('Invalid native handoff.') by start() when userCode is not a string of at most 40 characters, or when interval is not a number from 1 to 30."
 					},
 					{
-						"name": "Error",
+						"name": "ExpiredNativeHandoffError",
 						"type": "thrown",
-						"description": "Thrown as Error('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
+						"description": "Thrown as ExpiredNativeHandoffError('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
 					}
 				],
 				"errorStatus": "declared"
@@ -356,7 +359,8 @@
 								"nonce": "a1Lk9Vq0ZtR3xMsP7wYbN2eHcJ8uGdKf",
 								"expiresAt": "2026-12-14T12:01:00.000Z"
 							}
-						]
+						],
+						"unknownReason": "The native handoff exchange endpoint checks the incoming JSON and its nested actor before using them."
 					},
 					{
 						"name": "NativeHandoffValidator.exchange.expected",
@@ -427,24 +431,24 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted response",
 						"type": "thrown",
 						"description": "Thrown as Error('Invalid hosted response.') by responseRecord when the response is null, not an object, or an array; exchange() also throws it when the response's actor is missing or is not a non-array object."
 					},
 					{
-						"name": "Error",
+						"name": "NativeHandoffBindingMismatchError",
 						"type": "thrown",
-						"description": "Thrown as Error('Native handoff binding mismatch.') by exchange() when audience is not 'harness-desktop', when nonce or resource differ from expected, or when authorization is not a string."
+						"description": "Thrown as NativeHandoffBindingMismatchError('Native handoff binding mismatch.') by exchange() when audience is not 'harness-desktop', when nonce or resource differ from expected, or when authorization is not a string."
 					},
 					{
-						"name": "Error",
+						"name": "ExpiredNativeHandoffError",
 						"type": "thrown",
-						"description": "Thrown as Error('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
+						"description": "Thrown as ExpiredNativeHandoffError('Expired native handoff.') by start() and exchange() through their expiresAt check, when expiresAt is not a string that Date.parse can read or is at or before now, so malformed values get the same message."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidNativeHandoffIdentityError",
 						"type": "thrown",
-						"description": "Thrown as Error('Invalid native handoff identity.') by exchange() when actor.id, actor.email or actor.name is not a string, or when actor.emailVerified is not true."
+						"description": "Thrown as InvalidNativeHandoffIdentityError('Invalid native handoff identity.') by exchange() when actor.id, actor.email or actor.name is not a string, or when actor.emailVerified is not true."
 					}
 				],
 				"errorStatus": "declared"

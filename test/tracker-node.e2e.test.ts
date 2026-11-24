@@ -1,8 +1,13 @@
+import { proveTrackerTmuxRecovery, tmuxExecutable } from './support/trackerRecoveryFixture';
 import { existsSync, realpathSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
+import { TrackerDispatchRepository } from '../src/repositories/projects-sessions/TrackerDispatchRepository';
+import { TrackerPersistenceService } from '../src/services/projects-sessions/TrackerPersistenceService';
 import { once } from 'node:events';
 import { connect, createServer } from 'node:net';
 import { expect, test } from 'vitest';
+import { measureWorkload } from './support/measureWorkload';
 import { notificationSink, proveForegroundSync } from './support/trackerNodeAssertions';
 import {
 	fixtureConfig,
@@ -45,13 +50,46 @@ test('foreground hub and spoke converge over signed loopback and route compatibi
 			}
 		});
 		try {
-			await proveForegroundSync(hub, spoke, hubSync, sink);
+			await measureWorkload(
+				'service.projects-sessions-tracker-node',
+				'signed-spoke-model-pin',
+				() => {
+					seedSpokeRun(spoke);
+					return proveForegroundSync(hub, spoke, hubSync, sink);
+				}
+			);
 		} finally {
 			await sink.close();
 		}
 		expect(existsSync(join(root, 'legacy-used'))).toBe(false);
 	});
-}, 35_000);
+}, 70_000);
+
+function seedSpokeRun({ config }: TrackerNodeFixture) {
+	const database = new DatabaseSync(config.database);
+	try {
+		const store = new TrackerPersistenceService(database, config.node);
+		new TrackerDispatchRepository(store);
+		store.appendLocal({
+			itemId: 'spokerun22',
+			fields: {
+				title: 'Synthetic running spoke item',
+				status: 'in_progress',
+				kind: 'task',
+				auto: 'spoke-token'
+			}
+		});
+		const now = Date.now();
+		database
+			.prepare(
+				`INSERT INTO runs (id, item_id, auto_token, rung, cli, model, state, queued_at, started_at)
+			VALUES (22, 'spokerun22', 'spoke-token', 'sol', 'codex', 'gpt-6.2-sol', 'running', ?, ?)`
+			)
+			.run(now, now);
+	} finally {
+		database.close();
+	}
+}
 
 test('startup refuses an unfenced role or competing API, sync or journal owner and releases its lease on stop', async () => {
 	await withTempDir('hnt-', async (temporary) => {
@@ -158,3 +196,9 @@ async function readSupervisorSocket(path: string): Promise<string> {
 		socket.destroy();
 	}
 }
+
+test.skipIf(process.platform !== 'darwin' || !tmuxExecutable)(
+	'relaunches a killed managed tmux session and flags after three failed recoveries',
+	{ timeout: 40_000 },
+	proveTrackerTmuxRecovery
+);

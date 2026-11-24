@@ -12,6 +12,9 @@
 		"symbols": [
 			"HostStorageAdapter",
 			"HostStorageAdapter.constructor",
+			"HostStorageAdapter.directoryHosts",
+			"HostStorageAdapter.rememberHost",
+			"HostStorageAdapter.forgetHost",
 			"HostStorageAdapter.host",
 			"HostStorageAdapter.saveHost",
 			"HostStorageAdapter.device",
@@ -36,6 +39,16 @@
 				"type": "DurableObjectStorage",
 				"required": true,
 				"description": "The Durable Object storage instance retained by the adapter for synchronous SQL record access and alarm operations."
+			},
+			{
+				"name": "HostStorageAdapter.rememberHost.hostId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "HostStorageAdapter.forgetHost.hostId",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "HostStorageAdapter.saveHost.record",
@@ -283,6 +296,54 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "HostStorageAdapter.directoryHosts",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.directoryHosts",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.rememberHost",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.rememberHost.hostId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.rememberHost",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HostStorageAdapter.forgetHost",
+				"inputs": [
+					{
+						"name": "HostStorageAdapter.forgetHost.hostId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HostStorageAdapter.forgetHost",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "HostStorageAdapter.host",
 				"inputs": [],

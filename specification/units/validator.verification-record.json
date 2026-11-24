@@ -19,7 +19,8 @@
 				"type": "unknown",
 				"required": true,
 				"description": "The untrusted value supplied to validate for schema parsing. The parameter accepts any runtime value; only values accepted by verificationRecordSchema receive measurement and recorded-unit checks.",
-				"examples": [null]
+				"examples": [null],
+				"unknownReason": "The record is raw input until its shape is checked, before measurement and unit checks."
 			}
 		],
 		"outputs": [
@@ -45,7 +46,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "The untrusted value supplied to validate for schema parsing. The parameter accepts any runtime value; only values accepted by verificationRecordSchema receive measurement and recorded-unit checks.",
-						"examples": [null]
+						"examples": [null],
+						"unknownReason": "The record is raw input until its shape is checked, before measurement and unit checks."
 					}
 				],
 				"outputs": [

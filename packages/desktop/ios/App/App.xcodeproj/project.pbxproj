@@ -48,6 +48,7 @@
 		F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F31 /* HubAccountHttp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F32 /* HubAccountSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */; };
+		7A1C4E2B9D3F5A6B8C0D1F52 /* HubAccountComputers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E52 /* HubAccountComputers.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F33 /* HubAccountHandoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F34 /* HarnessAccountPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */; };
 		504EC30D1FED79650016851F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30B1FED79650016851F /* Main.storyboard */; };
@@ -64,6 +65,9 @@
 		38FBE65D3B27F16D4CC46D37 /* TrackerReplicaSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6366F789F18B2CCF39072A /* TrackerReplicaSync.swift */; };
 		0357881BC79015EECC352964 /* TrackerReplicaTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80692FE9910AA77AB5A2B6B /* TrackerReplicaTools.swift */; };
 		71CA10FA426439AE02D977A9 /* TrackerRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051BDF6A93006D0D5BEB3644 /* TrackerRefresh.swift */; };
+		AFC9321B54A240FA8C43DBB9 /* DecisionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057229D7C1CA44DCB864A471 /* DecisionAlert.swift */; };
+		D7B5450B1594477CB62C549A /* DecisionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37133F1636C5417E9029A427 /* DecisionRouter.swift */; };
+		0275AA7497154C91BF8E5342 /* PushAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF17086A468489BB994C872 /* PushAlert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +112,7 @@
 		F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultLegacyAdd.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountHttp.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountSession.swift; sourceTree = "<group>"; };
+		7A1C4E2B9D3F5A6B8C0D1E52 /* HubAccountComputers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountComputers.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountHandoff.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HarnessAccountPlugin.swift; sourceTree = "<group>"; };
 		504EC30C1FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -126,6 +131,9 @@
 		6A6366F789F18B2CCF39072A /* TrackerReplicaSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaSync.swift; sourceTree = "<group>"; };
 		D80692FE9910AA77AB5A2B6B /* TrackerReplicaTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaTools.swift; sourceTree = "<group>"; };
 		051BDF6A93006D0D5BEB3644 /* TrackerRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRefresh.swift; sourceTree = "<group>"; };
+		057229D7C1CA44DCB864A471 /* DecisionAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/DecisionAlert.swift; sourceTree = "<group>"; };
+		37133F1636C5417E9029A427 /* DecisionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/DecisionRouter.swift; sourceTree = "<group>"; };
+		4BF17086A468489BB994C872 /* PushAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/PushAlert.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,8 +217,12 @@
 				F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */,
+				7A1C4E2B9D3F5A6B8C0D1E52 /* HubAccountComputers.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */,
+				057229D7C1CA44DCB864A471 /* DecisionAlert.swift */,
+				37133F1636C5417E9029A427 /* DecisionRouter.swift */,
+				4BF17086A468489BB994C872 /* PushAlert.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -232,6 +244,7 @@
 				504EC3001FED79650016851F /* Sources */,
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
+				77ABBA060019FA00001BC22A /* Stamp Harness build revision */,
 			);
 			buildRules = (
 			);
@@ -310,6 +323,17 @@
 			shellScript = "if [ \"$CONFIGURATION\" = Release ] && [ \"${HARNESS_HUB_ORIGIN:-}\" != 'https://dafuga-harness.pages.dev' ]; then\n    echo 'error: HARNESS_HUB_ORIGIN must be the production Harness Hub HTTPS origin in Release.' >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		77ABBA060019FA00001BC22A /* Stamp Harness build revision */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = ();
+			name = "Stamp Harness build revision";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -eu\nif [ \"$CONFIGURATION\" = Release ]; then\n    if [ -n \"$(/usr/bin/git -C \"$SRCROOT\" status --porcelain --untracked-files=no)\" ]; then\n        echo 'error: Release builds need a clean tracked worktree so HarnessBuildRevision is exact.' >&2\n        exit 1\n    fi\n    revision=$(/usr/bin/git -C \"$SRCROOT\" rev-parse --verify HEAD)\n    if ! printf '%s' \"$revision\" | /usr/bin/grep -Eq '^[0-9a-f]{40}$'; then\n        echo 'error: HarnessBuildRevision must be a full git commit.' >&2\n        exit 1\n    fi\n    plist=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n    /usr/libexec/PlistBuddy -c 'Delete :HarnessBuildRevision' \"$plist\" >/dev/null 2>&1 || true\n    /usr/libexec/PlistBuddy -c \"Add :HarnessBuildRevision string $revision\" \"$plist\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -318,6 +342,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
+				AFC9321B54A240FA8C43DBB9 /* DecisionAlert.swift in Sources */,
+				D7B5450B1594477CB62C549A /* DecisionRouter.swift in Sources */,
+				0275AA7497154C91BF8E5342 /* PushAlert.swift in Sources */,
 				D875807B180B129E646816AB /* RemoteMedia.swift in Sources */,
 				EEC545FB9E06425F82192882 /* RemoteCacheIndex.swift in Sources */,
 				C00B54FBC4922F90192F65D4 /* RemoteSessionAuthority.swift in Sources */,
@@ -365,6 +392,7 @@
 				F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F31 /* HubAccountHttp.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F32 /* HubAccountSession.swift in Sources */,
+				7A1C4E2B9D3F5A6B8C0D1F52 /* HubAccountComputers.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F33 /* HubAccountHandoff.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F34 /* HarnessAccountPlugin.swift in Sources */,
 			);

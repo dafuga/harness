@@ -113,7 +113,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Benchmark Git or setup command failed",
 				"type": "thrown",
 				"description": "Thrown when a benchmark Git helper receives a nonzero exit status or a setup command exits nonzero; awaited filesystem helpers may also reject with I/O errors."
 			},
@@ -171,7 +171,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark Git or setup command failed",
 						"type": "thrown",
 						"description": "Thrown when a benchmark Git helper receives a nonzero exit status or a setup command exits nonzero; awaited filesystem helpers may also reject with I/O errors."
 					},
@@ -253,7 +253,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark Git or setup command failed",
 						"type": "thrown",
 						"description": "Thrown when a benchmark Git helper receives a nonzero exit status or a setup command exits nonzero; awaited filesystem helpers may also reject with I/O errors."
 					},

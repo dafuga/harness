@@ -80,7 +80,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "NativePickerError",
 				"type": "thrown",
 				"description": "The service throws Error with message Close this chat before resuming with a different provider when thread/resume selects a different provider from a loaded thread. It throws Error with message Reopen this chat in the experimental client before switching when thread/settings/update or turn/start changes provider without saved thread context, and with message Invalid model discovery response when model/list returns non-array data."
 			}
@@ -132,7 +132,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "NativePickerError",
 						"type": "thrown",
 						"description": "The service throws Error with message Close this chat before resuming with a different provider when thread/resume selects a different provider from a loaded thread. It throws Error with message Reopen this chat in the experimental client before switching when thread/settings/update or turn/start changes provider without saved thread context, and with message Invalid model discovery response when model/list returns non-array data."
 					}

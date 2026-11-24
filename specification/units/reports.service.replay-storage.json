@@ -133,7 +133,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid replay identity, retention, or storage",
 				"type": "thrown",
 				"description": "Error rejects invalid replay filenames or report IDs, invalid timestamps or reports expired after 30 days, invalid or symlinked local replay paths, and digest mismatches. Underlying filesystem and R2 failures can also reject."
 			}
@@ -201,7 +201,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid replay identity, retention, or storage",
 						"type": "thrown",
 						"description": "Error rejects invalid replay filenames or report IDs, invalid timestamps or reports expired after 30 days, symlinked replay directories, or missing, unregistered, invalid, or escaping local assets. Filesystem and R2 write failures also reject."
 					}
@@ -268,7 +268,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid replay identity, retention, or storage",
 						"type": "thrown",
 						"description": "Error rejects invalid replay filenames or report IDs, invalid timestamps or reports expired after 30 days, symlinked replay directories or destinations, and digest mismatches. Missing R2 bodies and filesystem or R2 request failures also reject."
 					}

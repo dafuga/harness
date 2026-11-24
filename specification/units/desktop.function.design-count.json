@@ -81,9 +81,14 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DesignOptionsOnChangeError",
 				"type": "thrown",
-				"description": "Throws Error('A Change makes no design options.') when designOptions is defined on a request whose mode is not 'plan', including an 'ask' ProjectTaskRequest. Throws Error('Design options must be a whole number from 1 to 10.') when a Plan's designOptions is not an integer from 1 to 10, such as 0, 11 or 2.5."
+				"description": "Only a Plan may supply designOptions."
+			},
+			{
+				"name": "InvalidDesignOptionsError",
+				"type": "thrown",
+				"description": "A Plan's designOptions must be a whole number from 1 through 10."
 			}
 		],
 		"errorStatus": "declared",
@@ -143,9 +148,14 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DesignOptionsOnChangeError",
 						"type": "thrown",
-						"description": "Throws Error('A Change makes no design options.') when designOptions is defined on a request whose mode is not 'plan', including an 'ask' ProjectTaskRequest. Throws Error('Design options must be a whole number from 1 to 10.') when a Plan's designOptions is not an integer from 1 to 10, such as 0, 11 or 2.5."
+						"description": "Only a Plan may supply designOptions."
+					},
+					{
+						"name": "InvalidDesignOptionsError",
+						"type": "thrown",
+						"description": "A Plan's designOptions must be a whole number from 1 through 10."
 					}
 				],
 				"errorStatus": "declared"

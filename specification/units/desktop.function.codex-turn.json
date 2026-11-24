@@ -68,7 +68,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Codex RPC startup or turn failure",
 				"type": "thrown",
 				"description": "Rejects when RPC startup or a request fails, the started model or provider does not match the request, a non-retrying server error arrives, the terminal turn status is not completed, or the turn exceeds fifteen minutes."
 			},
@@ -125,7 +125,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Codex RPC startup or turn failure",
 						"type": "thrown",
 						"description": "Rejects when RPC startup or a request fails, the started model or provider does not match the request, a non-retrying server error arrives, the terminal turn status is not completed, or the turn exceeds fifteen minutes."
 					},

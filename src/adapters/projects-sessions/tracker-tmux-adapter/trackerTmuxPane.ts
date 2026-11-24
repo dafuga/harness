@@ -19,7 +19,7 @@ const fields = [
 	'pane_current_command'
 ];
 export const trackerPaneFormat = fields.map((field) => `#{${field}}`).join('|');
-export const trackerSessionName = /^auto-[a-z0-9]{6,10}(?:-r[0-9]+)?$/;
+export { trackerWatchdogSessionName as trackerSessionName } from '../../../services/projects-sessions/WatchdogPaneService';
 
 export function trackerTmuxPane(
 	raw: string,

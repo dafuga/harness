@@ -5,6 +5,7 @@ import {
 	HostPairingService,
 	pairingEnvelope,
 	pkceChallenge,
+	randomId,
 	remoteIdentity,
 	remoteKeys,
 	sealPairing,
@@ -73,6 +74,24 @@ test('a concurrent valid request cannot replace the phone already displayed', as
 	f.gate.resolve();
 	await f.second;
 	expect(f.pairing.requests()).toMatchObject([{ deviceId: f.displayed.deviceId }]);
+	const keys = await remoteKeys();
+	const pairing = new HostPairingService({ keys, hostId: await remoteIdentity(keys.publicKey) });
+	const qr = pairing.open();
+	const expiresAt = qr.expiresAt;
+	const account = await frame(
+		keys,
+		{ pairingId: randomId(), expiresAt, code: '' },
+		'Account phone'
+	);
+	expect(await pairing.receive(account)).toBeNull();
+	expect(await pairing.receive({ ...account, account: true, expiresAt })).toMatchObject({
+		pairingId: account.pairingId,
+		deviceName: 'Account phone'
+	});
+	expect(pairing.offer()).toEqual(qr);
+	expect(pairing.deny(account.pairingId)).toBe(true);
+	expect(pairing.requests()).toEqual([]);
+	expect(pairing.offer()).toEqual(qr);
 });
 
 test('approval after project discovery stays bound to the displayed phone', async () => {

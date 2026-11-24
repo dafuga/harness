@@ -12,6 +12,8 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "scan", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "computers", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "connectAccountComputer", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "trackerTool", returnType: CAPPluginReturnPromise),
@@ -111,6 +113,34 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
             case .success(let answer):
                 call.resolve(["value": answer.value, "cachedAt": answer.cachedAt ?? NSNull()])
             case .failure(let failure): call.reject(failure.message, failure.code)
+            }
+        }
+    }
+}
+
+extension HarnessRemotePlugin {
+    @objc func computers(_ call: CAPPluginCall) {
+        HarnessAccountPlugin.sharedSession.computers { result in
+            switch result {
+            case .success(let computers): call.resolve(["computers": computers])
+            case .failure(let failure): call.reject(failure.message, failure.code)
+            }
+        }
+    }
+
+    @objc func connectAccountComputer(_ call: CAPPluginCall) {
+        guard let hostId = call.getString("hostId"), let name = RemoteScanFlow.name(call.getString("deviceName"))
+        else { return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code) }
+        HarnessAccountPlugin.sharedSession.computerPairing(hostId, name: name) { result in
+            switch result {
+            case .failure(let failure): call.reject(failure.message, failure.code)
+            case .success(let input):
+                self.session.pair(input) { paired in
+                    switch paired {
+                    case .success(let status): call.resolve(status)
+                    case .failure(let failure): call.reject(failure.message, failure.code)
+                    }
+                }
             }
         }
     }

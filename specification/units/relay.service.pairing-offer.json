@@ -17,6 +17,7 @@
 			"PairingOfferService.constructor",
 			"PairingOfferService.live",
 			"PairingOfferService.open",
+			"PairingOfferService.openAccount",
 			"PairingOfferService.approve",
 			"PairingOfferService.deny",
 			"PairingOfferService.close",
@@ -53,6 +54,16 @@
 				"required": true,
 				"description": "The requested expiry as a string accepted by Date.parse. open returns invalid-input unless it is in the future, then caps the stored expiry at five minutes from this call.",
 				"examples": ["2027-01-12T09:30:00.000Z"]
+			},
+			{
+				"name": "PairingOfferService.openAccount.pairingId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PairingOfferService.openAccount.body",
+				"type": "RelayPairingRequest",
+				"required": true
 			},
 			{
 				"name": "PairingOfferService.approve.approval",
@@ -210,6 +221,29 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "PairingOfferService.openAccount",
+				"inputs": [
+					{
+						"name": "PairingOfferService.openAccount.pairingId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PairingOfferService.openAccount.body",
+						"type": "RelayPairingRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingOfferService.openAccount",
+						"type": "Promise<PairingRecord | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "PairingOfferService.approve",

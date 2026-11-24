@@ -20,6 +20,7 @@ import {
 	skip,
 	startable
 } from './launchEligibility';
+import { recoveryIntent } from './recoveryIntent';
 
 export function requestLaunch(
 	snapshot: TrackerDispatchSnapshot,
@@ -30,6 +31,8 @@ export function requestLaunch(
 	const { item } = snapshot;
 	if (!item || inactive(item)) return skip('held', 'item is missing or inactive');
 	if (!request.token.trim()) return skip('conflict', 'launch token is required');
+	if (request.source === 'recovery')
+		return recoveryIntent(snapshot, { item, request }, policy, now);
 	return request.source === 'manual'
 		? manualIntent(snapshot, { ...request, item }, policy, now)
 		: dueIntent(snapshot, { item, token: request.token }, policy, now);
@@ -140,7 +143,7 @@ export function previewDueLaunch(
 ) {
 	const { item, due } = snapshot;
 	if (!item || inactive(item)) return { reason: 'item is missing or inactive' };
-	const hold = schedulingHold(item) ?? dueIntentHold(snapshot, item, policy, now);
+	const hold = schedulingHold(item, policy) ?? dueIntentHold(snapshot, item, policy, now);
 	if (hold) return { reason: hold };
 	if (due?.paused) return { reason: 'due scheduling is paused' };
 	if (!due || !mayScheduleHere(item, due, policy))
@@ -178,7 +181,9 @@ function dueIntentHold(
 	if (item.status === 'in_progress') return 'item is already in progress';
 	if (item.launch) return 'launch already requested';
 	if (hasOpenSession(snapshot, policy, now)) return 'item already has an open session';
-	return item.repo || item.project || item.agent ? null : 'no repo or project';
+	return item.repo || item.project || item.agent || policy.opsWorkdirAvailable?.(item)
+		? null
+		: 'no repo or project';
 }
 
 function writeIntent(

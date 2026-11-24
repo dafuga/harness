@@ -42,7 +42,7 @@ test('Returns not found for an unmatched remote path', async () => {
 
 test('Denies unsupported methods on a recognized remote path', async () => {
 	const response = await new HubRemoteController().handle(
-		new Request('https://hub.example/api/remote/hosts', { method: 'GET' }),
+		new Request('https://hub.example/api/remote/hosts', { method: 'DELETE' }),
 		actor
 	);
 	const output = await responseSummary(response);
@@ -58,8 +58,8 @@ test('Denies unsupported methods on a recognized remote path', async () => {
 		},
 		[
 			{
-				name: 'GET collection has no configured action',
-				input: { method: 'GET', path: '/api/remote/hosts' },
+				name: 'DELETE collection has no configured action',
+				input: { method: 'DELETE', path: '/api/remote/hosts' },
 				output
 			}
 		]

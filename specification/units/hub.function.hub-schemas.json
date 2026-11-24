@@ -196,7 +196,8 @@
 						"approvedAt": "2026-11-14T15:42:00Z",
 						"option": "o2"
 					}
-				]
+				],
+				"unknownReason": "Records read from hosted storage must pass their specific schema before their fields are trusted."
 			}
 		],
 		"outputs": [
@@ -399,7 +400,8 @@
 								"approvedAt": "2026-11-14T15:42:00Z",
 								"option": "o2"
 							}
-						]
+						],
+						"unknownReason": "Records read from hosted storage must pass their specific schema before their fields are trusted."
 					}
 				],
 				"outputs": [

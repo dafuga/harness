@@ -110,7 +110,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Legacy forwarding source read failure",
 				"type": "thrown",
 				"description": "A synchronous read can throw when a legacy entry is inspected for forwarding behavior and its source path is missing or unreadable."
 			}
@@ -169,7 +169,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Legacy forwarding source read failure",
 						"type": "thrown",
 						"description": "A synchronous read can throw when a legacy entry is inspected for forwarding behavior and its source path is missing or unreadable."
 					}
@@ -228,7 +228,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "readFileSync failure (node:fs)",
 						"type": "thrown",
 						"description": "This operation propagates the Error from moduleCategoryFindings if a legacy entry source cannot be read while its forwarding behavior is checked."
 					}

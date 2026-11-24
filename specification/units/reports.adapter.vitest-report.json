@@ -68,7 +68,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Vitest report file read failure",
 				"type": "thrown",
 				"description": "Rejection from readFile when the file cannot be read, for example ENOENT for a missing path or EISDIR for a directory; the Node.js error is propagated unchanged."
 			},
@@ -138,7 +138,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Vitest report file read failure",
 						"type": "thrown",
 						"description": "Rejection from readFile when the file cannot be read, for example ENOENT for a missing path or EISDIR for a directory; the Node.js error is propagated unchanged."
 					},

@@ -141,7 +141,7 @@ test('unknown remote paths and methods are refused in the hub and never forwarde
 	const doubled = new Request(`${HUB}/api//remote/hosts`, { method: 'POST', body: '{}' });
 	expect(await outcome(await f.controller.handle(doubled))).toBe('404 not-found');
 	const denied: Attempt[] = [
-		['GET', '/hosts'],
+		['DELETE', '/hosts'],
 		['PUT', '/hosts', body],
 		['POST', path, body],
 		['PATCH', path, body],

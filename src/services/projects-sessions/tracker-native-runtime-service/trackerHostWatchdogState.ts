@@ -1,7 +1,16 @@
 // @harness-uid u_bl6xl2h4a3
+import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import type { WatchdogItem, WatchdogRun } from '../WatchdogPaneService.types';
+import type {
+	WatchdogItem,
+	WatchdogPane,
+	WatchdogRun,
+	WatchdogScan
+} from '../WatchdogPaneService.types';
+import { createHash } from 'node:crypto';
+import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
+import type { TrackerHandoffAttempt } from './trackerWatchdogContext.types';
 import { trackerWatchdogAlerts } from './trackerHostWatchdogSchema';
 
 export function watchdogItem(item: TrackerItem): WatchdogItem {
@@ -54,4 +63,72 @@ export function finishObservedRuns(
 		for (const id of ids) finish.run(now, id);
 		return { result: undefined };
 	});
+}
+export function watchdogSnapshot(
+	store: TrackerPersistenceService,
+	items: readonly TrackerItem[],
+	panes: readonly WatchdogPane[],
+	now: number
+): WatchdogScan {
+	const allItems = items.map(watchdogItem);
+	const runs = localWatchdogRuns(store);
+	for (const pane of panes) {
+		const run = runs.find(
+			(candidate) => candidate.tmux === pane.name || candidate.watchPane === pane.key
+		);
+		if (!run) continue;
+		const seen = Number(store.getMeta(paneNudgeKey(pane)) ?? 0);
+		if (seen > (run.idleNudgedAt ?? 0)) {
+			run.idleNudgedAt = seen;
+			run.idleNudges = 1;
+		}
+	}
+	return { panes, runs, items: allItems, now, host: store.node };
+}
+
+export function paneNudgeKey({ key }: WatchdogPane): string {
+	return 'tracker_host_watchdog_nudge:' + createHash('sha256').update(key).digest('hex');
+}
+export function handoffRunOwnership(
+	store: TrackerPersistenceService,
+	{ id, runId, pane }: { id: string; runId: number; pane: WatchdogPane }
+): Pick<TrackerHandoffAttempt, 'token' | 'observed'> | undefined {
+	const row = store.database
+		.prepare(
+			`SELECT state, model, session_id AS token FROM runs
+		WHERE id = ? AND item_id = ? AND tmux = ?
+		AND (state = 'running' OR (state = 'observed' AND watch_pane = ?))
+		AND ABS(started_at - ?) <= 60000
+		AND NOT EXISTS (
+			SELECT 1 FROM meta link JOIN items owner ON owner.id = link.v
+			WHERE link.k GLOB ? AND owner.deleted = 0 AND owner.status NOT IN ('done', 'ignored')
+		)`
+		)
+		.get(
+			runId,
+			id,
+			pane.name,
+			pane.key,
+			pane.createdAt,
+			`${trackerSessionItemPrefix}${runId}:*`
+		) as { state: string; model: string; token?: string } | undefined;
+	if (
+		row?.state === 'observed' &&
+		/^[a-z0-9][a-z0-9._-]{1,79}$/i.test(row.model) &&
+		row.model !== 'unknown'
+	)
+		return { observed: true };
+	return row?.token && /^[a-f0-9]{64}$/.test(row.token) ? { token: row.token } : undefined;
+}
+export function activeWatchdogItem(
+	items: TrackerItemReadRepository,
+	id: string
+): TrackerItem | undefined {
+	try {
+		const item = items.getStored(id);
+		if (!item.deleted && item.status !== 'done' && item.status !== 'ignored') return item;
+	} catch {
+		return undefined;
+	}
+	return undefined;
 }

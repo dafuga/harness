@@ -13,15 +13,20 @@ export function formatNativeTrackerItem(item: NativeTrackerItem): string {
 		item.needs_daniel && !item.resolved && 'NEEDS DANIEL',
 		item.resolved && 'resolved'
 	].filter(Boolean);
-	const meta = [
+	const meta = trackerItemMetadata(item);
+	return `[${item.id.slice(0, 6)}] ${item.title}  (${flags.join(', ')}; ${meta.join(' | ')})`;
+}
+
+function trackerItemMetadata(item: NativeTrackerItem) {
+	return [
 		item.kind,
 		item.every && `every '${item.every}' ${item.every_tz}`,
 		item.due && `${item.every ? 'next' : 'due'} ${item.due}`,
+		item.remind_at && `reminder ${item.remind_at}`,
 		item.owner && `owner ${item.owner}`,
 		item.agent && `agent ${item.agent}`,
 		item.auto && 'auto-launch'
 	].filter(Boolean);
-	return `[${item.id.slice(0, 6)}] ${item.title}  (${flags.join(', ')}; ${meta.join(' | ')})`;
 }
 
 function itemStatus(item: NativeTrackerItem): string {
@@ -59,7 +64,7 @@ export function nativeItemPrefix(
 	item: NativeTrackerItem
 ) {
 	if (command === 'launch')
-		return first === 'on' || first === 'off' ? `due launch ${first}: ` : 'auto-launch on: ';
+		return first === 'on' || first === 'off' ? `due launch ${first}: ` : 'launch: ';
 	if (command === 'done' && item.last_result && item.every)
 		return `occurrence ${item.last_result.occurrence} ${item.last_result.status}: `;
 	return commandPrefixes.get(command) ?? `${command}: `;
@@ -114,13 +119,13 @@ function formatRunReport({ ladder, rows }: NativeTrackerRunReport): string {
 		(a, b) => order(a.rung) - order(b.rung) || compareReportKinds(a.kind, b.kind)
 	);
 	const heading =
-		'rung     kind        runs  done  fail  blkd  success  redone  avg cost  cost/success  avg min  nudges';
+		'rung     kind        runs  done  fail  blkd  success  redone   costed           avg cost        cost/success  avg min  nudges';
 	return [
 		heading,
 		...sorted.map(formatRunReportRow),
 		'',
 		'success = done / (done + failed + rejected + timed out); blocked-on-Daniel runs are neutral.',
-		'cost = API list-price estimate from Claude Code transcripts (Codex runs are unpriced).'
+		'Cost is an API-equivalent estimate. Costed counts runs with a saved estimate or a quote from retained usage.'
 	].join('\n');
 }
 
@@ -132,7 +137,10 @@ function compareReportKinds(a: string, b: string): number {
 }
 
 function formatRunReportRow(row: NativeTrackerRunReport['rows'][number]): string {
-	const usd = (value: number | null) => (value == null ? '-' : `$${value.toFixed(2)}`);
+	const usd = (value: number | null, range: [number, number] | null) => {
+		if (range) return range.map((bound) => `$${bound.toFixed(2)}`).join('–');
+		return value == null ? '-' : `$${value.toFixed(2)}`;
+	};
 	const success = row.success_rate == null ? '-' : `${Math.round(row.success_rate * 100)}%`;
 	return [
 		row.rung.padEnd(8),
@@ -143,8 +151,9 @@ function formatRunReportRow(row: NativeTrackerRunReport['rows'][number]): string
 		String(row.blocked).padStart(5),
 		success.padStart(8),
 		String(row.redone).padStart(7),
-		usd(row.avg_cost_usd).padStart(9),
-		usd(row.cost_per_success_usd).padStart(13),
+		`${row.priced + (row.ranged ?? 0)}/${row.runs}`.padStart(8),
+		usd(row.avg_cost_usd, row.avg_cost_range_usd).padStart(18),
+		usd(row.cost_per_success_usd, row.cost_per_success_range_usd).padStart(19),
 		(row.avg_minutes == null ? '-' : row.avg_minutes.toFixed(0)).padStart(8),
 		String(row.idle_nudges).padStart(7)
 	].join(' ');

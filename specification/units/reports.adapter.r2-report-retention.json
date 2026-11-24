@@ -81,7 +81,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CloudCleanupError",
 				"type": "thrown",
 				"description": "Thrown if a listed object has no Key or its Key is outside the requested prefix, if a truncated listing has no next continuation token, or if a delete response reports per-object errors."
 			}
@@ -130,7 +130,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CloudCleanupError",
 						"type": "thrown",
 						"description": "Thrown if a listed object has no Key or its Key is outside the requested prefix, if a truncated listing has no next continuation token, or if a delete response reports per-object errors."
 					}
@@ -172,7 +172,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CloudCleanupError",
 						"type": "thrown",
 						"description": "Thrown if a listed object has no Key or its Key is outside the requested prefix, if a truncated listing has no next continuation token, or if a delete response reports per-object errors."
 					}

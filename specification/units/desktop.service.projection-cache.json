@@ -144,7 +144,8 @@
 						"status": "ready",
 						"count": 3
 					}
-				]
+				],
+				"unknownReason": "The scoped cache accepts caller-defined values and retains the JSON serialization."
 			},
 			{
 				"name": "ProjectionCacheService.lookup.scope",
@@ -243,7 +244,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Projection cache write, eviction, or integrity failure",
 				"type": "thrown",
 				"description": "A filesystem Error can reject writes or removals; put also throws Error when expectedHash is invalid or mismatched, or when the cache generation changes during a write."
 			},
@@ -351,7 +352,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Projection hash, generation, or file write failure",
 						"type": "thrown",
 						"description": "Rejects with Error if expectedHash is not a 64-character lowercase SHA-256 digest, does not match the bytes, the cache generation changes during the write, or a filesystem write fails."
 					}
@@ -402,7 +403,8 @@
 								"status": "ready",
 								"count": 3
 							}
-						]
+						],
+						"unknownReason": "The scoped cache accepts caller-defined values and retains the JSON serialization."
 					}
 				],
 				"outputs": [
@@ -415,7 +417,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Projection cache hash, generation, or file write failure",
 						"type": "thrown",
 						"description": "Propagates Error from put for hash or generation failures and may reject with Error when cache files cannot be written."
 					},
@@ -523,7 +525,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Projection cache entry removal failure",
 						"type": "thrown",
 						"description": "Rejects with a filesystem Error if an invalid or matching cache file cannot be unlinked; directory enumeration and file-read errors are caught."
 					}
@@ -542,7 +544,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Projection cache enumeration or removal failure",
 						"type": "thrown",
 						"description": "Rejects with a filesystem Error if directory enumeration fails for anything other than ENOENT or a matching cache file cannot be unlinked."
 					}

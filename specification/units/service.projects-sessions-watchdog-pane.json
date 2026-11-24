@@ -10,9 +10,12 @@
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/WatchdogPaneService.ts",
-			"src/services/projects-sessions/WatchdogPaneService.types.ts"
+			"src/services/projects-sessions/WatchdogPaneService.types.ts",
+			"src/services/projects-sessions/watchdog-pane-service/codexStartupMenus.ts"
 		],
 		"symbols": [
+			"trackerWatchdogSessionName",
+			"watchdogManualPrefix",
 			"WatchdogPaneService",
 			"WatchdogPaneService.startupPrompt",
 			"WatchdogPaneService.idlePrompt",
@@ -27,12 +30,18 @@
 			"WatchdogNote",
 			"WatchdogItem",
 			"WatchdogRun",
-			"WatchdogScan"
+			"WatchdogScan",
+			"codexStartupMenus"
 		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "watchdogManualPrefix.name",
+				"type": "string",
+				"required": true
+			},
 			{
 				"name": "WatchdogPaneService.startupPrompt.pane",
 				"type": "WatchdogPane",
@@ -124,6 +133,24 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [
+			{
+				"name": "watchdogManualPrefix",
+				"inputs": [
+					{
+						"name": "watchdogManualPrefix.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchdogManualPrefix",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "WatchdogPaneService.startupPrompt",
 				"inputs": [

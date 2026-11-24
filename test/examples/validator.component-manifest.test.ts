@@ -1,4 +1,5 @@
 import type { Manifest, Result } from './validator.component-manifest.test.types';
+import { readFileSync, readdirSync } from 'node:fs';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
@@ -178,6 +179,14 @@ test('Counts contract findings per kind across units', () => {
 		bareErrors: 1
 	});
 	expect(empty.issues).toBe(0);
+
+	const stored = readdirSync('specification/units')
+		.filter((file) => file.endsWith('.json'))
+		.map((file) => JSON.parse(readFileSync(`specification/units/${file}`, 'utf8')) as Manifest);
+	expect(
+		contractFailureCounts(stored).issues,
+		'Stored unit manifests must pass strict contract validation'
+	).toBe(0);
 
 	recordExampleCases(
 		meta('Counts contract findings per kind across units', 'contractFailureCounts'),

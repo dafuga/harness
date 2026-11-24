@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerDispatchSchedulerService.ts",
-			"src/services/projects-sessions/TrackerDispatchSchedulerService.types.ts"
+			"src/services/projects-sessions/TrackerDispatchSchedulerService.types.ts",
+			"src/services/projects-sessions/trackerDispatchObservations.ts"
 		],
 		"symbols": [
 			"TrackerDispatchSchedulerService",
@@ -20,7 +21,10 @@
 			"TrackerDispatchSchedulerService.tick",
 			"TrackerReservedStart",
 			"TrackerDispatchRunner",
-			"TrackerDispatchSchedulerOptions"
+			"TrackerDispatchSchedulerOptions",
+			"schedulerWaits",
+			"observeReservedRun",
+			"reconcileLegacyRuns"
 		]
 	},
 	"contract": {
@@ -42,7 +46,53 @@
 				"required": true
 			},
 			{
+				"name": "TrackerDispatchSchedulerService.runnerStatus.limit",
+				"type": "number",
+				"required": false,
+				"default": 100
+			},
+			{
 				"name": "TrackerDispatchSchedulerService.tick.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "schedulerWaits.waits",
+				"type": "ReadonlyMap<string, { token: string; reason: string }>",
+				"required": true
+			},
+			{
+				"name": "schedulerWaits.limit",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "observeReservedRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "observeReservedRun.options",
+				"type": "TrackerDispatchSchedulerOptions",
+				"required": true
+			},
+			{
+				"name": "observeReservedRun.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "reconcileLegacyRuns.repository",
+				"type": "TrackerDispatchRepository",
+				"required": true
+			},
+			{
+				"name": "reconcileLegacyRuns.runner",
+				"type": "TrackerDispatchRunner",
+				"required": true
+			},
+			{
+				"name": "reconcileLegacyRuns.signal",
 				"type": "AbortSignal",
 				"required": true
 			}
@@ -58,6 +108,18 @@
 			},
 			{
 				"name": "TrackerDispatchSchedulerService.tick",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "schedulerWaits",
+				"type": "unknown"
+			},
+			{
+				"name": "observeReservedRun",
+				"type": "unknown"
+			},
+			{
+				"name": "reconcileLegacyRuns",
 				"type": "Promise<void>"
 			}
 		],
@@ -78,7 +140,14 @@
 			},
 			{
 				"name": "TrackerDispatchSchedulerService.runnerStatus",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "TrackerDispatchSchedulerService.runnerStatus.limit",
+						"type": "number",
+						"required": false,
+						"default": 100
+					}
+				],
 				"outputs": [
 					{
 						"name": "TrackerDispatchSchedulerService.runnerStatus",
@@ -100,6 +169,85 @@
 				"outputs": [
 					{
 						"name": "TrackerDispatchSchedulerService.tick",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "schedulerWaits",
+				"inputs": [
+					{
+						"name": "schedulerWaits.waits",
+						"type": "ReadonlyMap<string, { token: string; reason: string }>",
+						"required": true
+					},
+					{
+						"name": "schedulerWaits.limit",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "schedulerWaits",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "observeReservedRun",
+				"inputs": [
+					{
+						"name": "observeReservedRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "observeReservedRun.options",
+						"type": "TrackerDispatchSchedulerOptions",
+						"required": true
+					},
+					{
+						"name": "observeReservedRun.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "observeReservedRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reconcileLegacyRuns",
+				"inputs": [
+					{
+						"name": "reconcileLegacyRuns.repository",
+						"type": "TrackerDispatchRepository",
+						"required": true
+					},
+					{
+						"name": "reconcileLegacyRuns.runner",
+						"type": "TrackerDispatchRunner",
+						"required": true
+					},
+					{
+						"name": "reconcileLegacyRuns.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reconcileLegacyRuns",
 						"type": "Promise<void>"
 					}
 				],

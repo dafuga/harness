@@ -1,0 +1,123 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.shared-primitives-choice-row",
+	"uid": "u_23oxoqg3mq",
+	"kind": "component",
+	"title": "ChoiceRow",
+	"responsibility": "Presents a selectable option with optional metadata and a check mark for the current choice.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-svg-path",
+			"reports.component.shared-primitives-atoms-svg-svg"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/shared-primitives/ChoiceRow.svelte"],
+		"symbols": ["ChoiceRow"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ChoiceRow.name",
+				"type": "string",
+				"required": true,
+				"description": "Visible name, also available as the button's title when the text is truncated."
+			},
+			{
+				"name": "ChoiceRow.meta",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Secondary label placed beside the name. Defaults to an empty string."
+			},
+			{
+				"name": "ChoiceRow.current",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Whether the choice is current and marked as pressed. Defaults to false."
+			},
+			{
+				"name": "ChoiceRow.disabled",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Makes the choice unavailable while retaining its displayed name and metadata."
+			},
+			{
+				"name": "ChoiceRow.label",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional accessible name that describes the action taken when the row is chosen."
+			},
+			{
+				"name": "ChoiceRow.onchoose",
+				"type": "() => void",
+				"required": true,
+				"description": "Runs when the user activates the choice."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ChoiceRow",
+				"type": "markup",
+				"description": "Renders a button with the name, optional metadata and current-choice state."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-path",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-svg-svg",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/shared-primitives/ChoiceRow.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/shared-primitives/ChoiceRow.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

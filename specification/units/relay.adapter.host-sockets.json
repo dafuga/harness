@@ -87,7 +87,8 @@
 						"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
 						"connectionId": "f4e1ba6c3d2949f1a56c8c7249e76310"
 					}
-				]
+				],
+				"unknownReason": "The protocol selects the frame shape; the adapter serializes and sends it as text."
 			},
 			{
 				"name": "HostSocketsAdapter.close.socket",
@@ -343,7 +344,8 @@
 								"deviceId": "89abcdef0123456789abcdef0123456789abcdef",
 								"connectionId": "f4e1ba6c3d2949f1a56c8c7249e76310"
 							}
-						]
+						],
+						"unknownReason": "The protocol selects the frame shape; the adapter serializes and sends it as text."
 					}
 				],
 				"outputs": [

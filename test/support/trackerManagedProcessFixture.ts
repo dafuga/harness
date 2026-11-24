@@ -1,3 +1,4 @@
+import { loadTrackerNodeConfig } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { DatabaseSync } from 'node:sqlite';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -62,12 +63,30 @@ process.exit(1);
 `;
 
 const providerProgram = `
-const { appendFileSync, existsSync, readFileSync } = require('node:fs');
+const { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } = require('node:fs');
 const { basename, join } = require('node:path');
 const argv = process.argv.slice(2);
 if (basename(process.argv[1]) === 'claude') {
 	if (!existsSync(join(process.env.HOME, '.claude-session-fixture'))) process.exit(41);
 	if (process.env.USER !== require('node:os').userInfo().username) process.exit(42);
+}
+if (basename(process.argv[1]) === 'codex') {
+	const timestamp = new Date().toISOString();
+	const dir = join(process.env.HOME, '..', 'tracker-test-codex-transcripts',
+		timestamp.slice(0, 10).replaceAll('-', '/'));
+	mkdirSync(dir, { recursive: true, mode: 0o700 });
+	const cwd = process.cwd();
+	const usage = { input_tokens: 120, cached_input_tokens: 25, output_tokens: 10 };
+	const competing = existsSync(join(process.env.HOME, '..', 'competing-codex-transcript'));
+	const session = (id) => ({ type: 'session_meta', payload: { id, cwd, timestamp, base_instructions: 'x'.repeat(30 * 1024) } });
+	const counters = { type: 'event_msg', payload: { type: 'token_count', info: { total_token_usage: usage } } };
+	for (const suffix of competing ? ['1', '2'] : ['1']) {
+		const id = '9c0f0000-0000-4000-8000-00000000000' + suffix;
+		writeFileSync(join(dir, 'rollout-' + timestamp + '-' + id + '.jsonl'), [
+			session(id), { type: 'event_msg', payload: { type: 'user_message', message: 'synthetic transcript text' } },
+			counters
+		].map(JSON.stringify).join('\\n') + '\\n', { mode: 0o600, flag: 'wx' });
+	}
 }
 const briefPath = argv.includes('--brief') ? argv[argv.indexOf('--brief') + 1] : argv.at(-1)?.match(/^Read your brief at (.+) and do that work/)[1];
 appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
@@ -127,4 +146,54 @@ export async function startLinkedItem(runtime: TrackerNativeRuntimeService) {
 		body: JSON.stringify({ session_run: '8' })
 	});
 	expect((await runtime.items.handle(request)).ok).toBe(true);
+}
+
+export function managedTrackerItemRequest(
+	runtime: TrackerNativeRuntimeService,
+	itemId: string,
+	action: string
+) {
+	return runtime.items.handle(
+		new Request(`http://tracker-fixture.invalid/items/${itemId}/${action}`, {
+			method: 'POST',
+			body: '{}'
+		})
+	);
+}
+
+export function managedForegroundConfig(
+	root: string,
+	managed: ReturnType<typeof managedFixtureBindings>['config'],
+	platform: 'linux' | 'macos' = 'linux',
+	ops?: string
+) {
+	const path = join(root, 'foreground.json');
+	const syncSecretFile = join(root, 'secret');
+	writeFileSync(syncSecretFile, 'synthetic-host-worker-wire-key', { mode: 0o600 });
+	const config = {
+		version: 1,
+		node: 'daniel-primary-mbp',
+		role: 'hub',
+		apiPort: 49281,
+		syncPort: 49282,
+		database: join(root, 'test-db'),
+		legacyFenceFile: join(root, 'fence'),
+		syncSecretFile,
+		hostEffects: {
+			mode: 'active',
+			checkpoint: 'fixture',
+			...(platform === 'macos' && {
+				watchdog: { transcriptRoots: [join(root, 'tracker-test-codex-transcripts')] }
+			}),
+			launch: {
+				maxConcurrent: 1,
+				legacyRunDirectory: root,
+				managed: { ...managed, ...(ops && { opsWorkdir: ops }) },
+				...(ops && { due: true }),
+				repositories: { Harness: { repo: root, platform } }
+			}
+		}
+	};
+	writeFileSync(path, JSON.stringify(config), { mode: 0o600 });
+	return loadTrackerNodeConfig(path);
 }

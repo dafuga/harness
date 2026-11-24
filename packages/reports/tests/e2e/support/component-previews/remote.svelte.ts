@@ -1,5 +1,12 @@
 import type { PreviewCases } from './shared';
 import { stamp, done } from './shared';
+import { phoneTrackerInboxSource } from '../../../../../desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxSource';
+import { writeView } from '../../../../../desktop/src/lib/development-tooling/tracker-inbox/trackerInbox';
+import type { PhoneTrackerTools } from '../../../../../desktop/src/models/development-tooling/PhoneTracker.types';
+import type {
+	InboxDetail,
+	InboxWrite
+} from '../../../../../desktop/src/models/development-tooling/TrackerInbox.types';
 const projects = [{ id: 'preview-project', name: 'Northstar Store' }];
 const request = {
 	pairingId: 'preview-request',
@@ -71,6 +78,7 @@ export function remotePreview() {
 		disconnect: done
 	});
 	const cases: PreviewCases = {
+		...trackerInboxCases(),
 		'desktop.component.remote-approval': {
 			request,
 			projects: [{ id: 'northstar-store', name: 'Northstar Store' }],
@@ -82,4 +90,80 @@ export function remotePreview() {
 		'desktop.component.remote-phone-panel': { store: phone }
 	};
 	return { host, phone, cases };
+}
+
+const trackerItem = {
+	id: 'preview-item',
+	title: 'Review the storefront',
+	project: 'Northstar Store',
+	status: 'in_progress',
+	updatedAt: stamp,
+	dueAt: null
+};
+const trackerDetail: InboxDetail = {
+	header: trackerItem,
+	flag: { state: 'open', at: stamp, question: 'Is this ready for review?' },
+	notes: [{ id: 'preview-note', author: 'Ada', at: stamp, text: 'The preview is ready.' }],
+	runs: [
+		{
+			id: 'preview-run',
+			origin: 'Mac',
+			state: 'finished',
+			outcome: 'passed',
+			queuedAt: null,
+			startedAt: null,
+			endedAt: null
+		}
+	],
+	revision: 'preview-revision'
+};
+const trackerWrites: InboxWrite[] = [
+	{ intentId: 'preview-pending', itemId: trackerItem.id, status: 'queued', reason: '' },
+	{ intentId: 'preview-accepted', itemId: trackerItem.id, status: 'accepted', reason: '' },
+	{
+		intentId: 'preview-conflict',
+		itemId: trackerItem.id,
+		status: 'conflict',
+		reason: 'attention'
+	},
+	{ intentId: 'preview-rejected', itemId: trackerItem.id, status: 'conflict', reason: 'denied' }
+];
+const trackerReplies = {
+	tracker_status: { needsYou: [trackerItem], recent: [trackerItem], unresolvedFlags: 1 },
+	tracker_show: { ...trackerDetail, item: trackerItem, attentionRevision: trackerDetail.revision },
+	tracker_write_status: { writes: trackerWrites },
+	tracker_search: { items: [trackerItem] }
+};
+
+const trackerNoop = async () => {};
+
+export const previewTracker: PhoneTrackerTools = {
+	schemas: [],
+	refresh: trackerNoop,
+	call: async (name) => ({
+		source: 'local_tracker',
+		freshness: 'current',
+		lastSyncedAt: null,
+		partial: false,
+		data: trackerReplies[name as keyof typeof trackerReplies]
+	})
+};
+
+function trackerInboxCases(): PreviewCases {
+	const source = phoneTrackerInboxSource(previewTracker);
+	const unit = 'desktop.component.development-tooling-tracker-inbox-tracker-inbox';
+	return {
+		[unit]: { source },
+		[`${unit}-detail`]: { source, id: trackerItem.id, onchanged: trackerNoop },
+		[`${unit}-record`]: { detail: trackerDetail },
+		[`${unit}-rows`]: {
+			rows: [{ header: trackerItem, bucket: 'needs-you' }],
+			selected: null,
+			label: 'Needs you',
+			empty: 'Nothing here right now.',
+			onselect: trackerNoop
+		},
+		[`${unit}-writes`]: { source, writes: trackerWrites.map(writeView), onchanged: trackerNoop },
+		'desktop.page.tracker': {}
+	};
 }

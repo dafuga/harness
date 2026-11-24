@@ -24,6 +24,7 @@ export interface TrackerNotificationItem {
 	owner: string | null;
 	agent: string | null;
 	due: string | null;
+	remind_at?: string | null;
 	question: string | null;
 	answer: string | null;
 	blocked_reason: string | null;
@@ -49,6 +50,7 @@ export interface TrackerNotificationSource {
 	tz: string;
 	createdAt: number;
 	items(): readonly TrackerNotificationItem[];
+	scheduledItems?(through: number): readonly TrackerNotificationItem[];
 	item(id: string): TrackerNotificationItem | undefined;
 	agent(
 		name: string
@@ -127,6 +129,8 @@ export interface TrackerNotificationOptions {
 	role: 'hub' | 'spoke';
 	quietHours?: QuietHours | null;
 	chiefOfStaff?: TrackerDestination;
+	scheduledReminders?: TrackerDestination;
+	scheduledOnly?: boolean;
 	webhook?: TrackerWebhookOptions;
 	reminderIntervalMinutes?: number;
 	retryMinutes?: number;

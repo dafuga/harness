@@ -47,7 +47,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid Git blob path, command, or response",
 				"type": "thrown",
 				"description": "Thrown as an Error when any path contains LF, CR, or NUL, the 'git cat-file --batch' process fails (including its max-buffer limit), or a response header or blob size fails validation."
 			}
@@ -86,7 +86,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid Git blob path, command, or response",
 						"type": "thrown",
 						"description": "Thrown as an Error when any path contains LF, CR, or NUL, the 'git cat-file --batch' process fails (including its max-buffer limit), or a response header or blob size fails validation."
 					}

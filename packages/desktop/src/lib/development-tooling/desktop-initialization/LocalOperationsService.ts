@@ -15,6 +15,7 @@ import { channels } from '../../../models/development-tooling/DesktopBridge.type
 import type { EvidenceArtifactResult as Artifact } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { binaryAnswer } from '../../../utils/reports-media/binaryAnswer';
 import { IpcRequestValidator } from '../../../validators/development-tooling/IpcRequestValidator';
+import { UnexpectedOverviewFieldsError } from './UnexpectedOverviewFieldsError';
 const controls: Record<string, keyof LocalControl> = {
 	'remote.status': 'status',
 	'remote.enable': 'enable',
@@ -36,7 +37,8 @@ function overview(
 	input: Fields,
 	hubOverview?: () => Promise<OverviewSnapshot>
 ): Promise<OverviewSnapshot> {
-	if (Object.keys(input).length) throw new Error('This operation takes no fields.');
+	if (Object.keys(input).length)
+		throw new UnexpectedOverviewFieldsError('This operation takes no fields.');
 	return hubOverview ? hubOverview() : readProjectOverview();
 }
 

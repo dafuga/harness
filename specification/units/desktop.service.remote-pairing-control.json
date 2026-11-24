@@ -75,7 +75,8 @@
 						"agents": true,
 						"comments": true
 					}
-				]
+				],
+				"unknownReason": "The local pairing decision is parsed against the approval schema at the service boundary."
 			},
 			{
 				"name": "RemotePairingControlService.denyPairing.input",
@@ -89,7 +90,8 @@
 					{
 						"pairingId": "b72d91e0f4a83c65d0e7b9a2c1f48d36"
 					}
-				]
+				],
+				"unknownReason": "The incoming refusal is validated as a pairing identifier request."
 			},
 			{
 				"name": "RemotePairingControlService.revokeDevice.input",
@@ -103,7 +105,8 @@
 					{
 						"deviceId": "e07c5b1d9a24f6e83b0d7c2a9f15e4b06d3a8c71"
 					}
-				]
+				],
+				"unknownReason": "The incoming revocation is validated as a device identifier request."
 			},
 			{
 				"name": "RemotePairingControlService.dropped.deviceId",
@@ -372,67 +375,67 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "current() failure (RemoteHostAccess)",
 				"type": "thrown",
 				"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 			},
 			{
-				"name": "Error",
+				"name": "PairingOfferUnsupportedError",
 				"type": "thrown",
 				"description": "Thrown by `createPairing` before any offer is opened, with the message 'The relay of this computer cannot be shown to a phone as a QR code.', when the computer's relay origin is missing or is not one an offer may carry."
 			},
 			{
-				"name": "Error",
+				"name": "command failure (RelayLinkService)",
 				"type": "thrown",
 				"description": "Rejected by the relay command with the message 'The relay is not connected.' when the relay socket is not online or drops while a command waits; `createPairing` and `approvePairing` pass it on unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "command failure (RelayLinkService)",
 				"type": "thrown",
 				"description": "Rejected by the relay command with the message 'The relay did not answer.' when no acknowledgement arrives within the ack timeout, 10 seconds by default; `createPairing` and `approvePairing` pass it on unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "command failure (RelayLinkService)",
 				"type": "thrown",
 				"description": "Rejected by the relay command when the relay acknowledges a command with ok set to false: the message is the error text the relay sent, or 'refused' when it sent none, and `createPairing` and `approvePairing` pass it on unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "A newer pairing code superseded the request",
 				"type": "thrown",
 				"description": "Thrown by `createPairing` with the message 'A newer pairing code replaced this one.' when the status published after opening does not carry this offer while some offer is still open."
 			},
 			{
-				"name": "Error",
+				"name": "PairingOfferCreationError",
 				"type": "thrown",
 				"description": "Thrown by `createPairing` with the message 'The pairing offer could not be opened.' when the status published after opening does not carry this offer and no offer is open."
 			},
 			{
-				"name": "Error",
+				"name": "ProjectNotOpenedError",
 				"type": "thrown",
 				"description": "Thrown by `approvePairing`, before anything is approved, with the message 'Only projects opened on this computer can be shared.', when an approved project id is not among the registered projects."
 			},
 			{
-				"name": "Error",
+				"name": "list() failure (ProjectRegistryService)",
 				"type": "thrown",
 				"description": "Propagated from the registry's `list()` with the message 'Invalid project registry.'; `approvePairing` awaits it before approving anything, so the approval rejects with it."
 			},
 			{
-				"name": "Error",
+				"name": "PairingRequestNotWaitingError",
 				"type": "thrown",
 				"description": "Thrown by `approvePairing` with the message 'This pairing request is no longer waiting.' when, after its waits, the open offer has no request from this device under this pairing id, so nothing is approved."
 			},
 			{
-				"name": "Error",
+				"name": "approve() failure (HostPairingService)",
 				"type": "thrown",
 				"description": "Propagated from the host pairing service's `approve` with the message 'There is no pairing request to approve.' when no live request has this pairing id at that moment, so nothing is approved."
 			},
 			{
-				"name": "Error",
+				"name": "approve() failure (HostPairingService)",
 				"type": "thrown",
 				"description": "Propagated from the host pairing service's `approve` with the message 'This is not the phone that was shown.' when the device id in the approval is not that of the waiting request, so nothing is approved."
 			},
 			{
-				"name": "Error",
+				"name": "Remote access requires OS encryption",
 				"type": "thrown",
 				"description": "Propagated from the record store through `saved()` with the message 'OS encryption is required for remote access.' when OS encryption is unavailable while the record is written; `approvePairing`, `revokeDevice`, `dropped` and `seen` (for a known device) await it, and file-system errors from the same write are passed on unchanged."
 			},
@@ -474,37 +477,37 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "current() failure (RemoteHostAccess)",
 						"type": "thrown",
 						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 					},
 					{
-						"name": "Error",
+						"name": "PairingOfferUnsupportedError",
 						"type": "thrown",
 						"description": "Thrown by `createPairing` before any offer is opened, with the message 'The relay of this computer cannot be shown to a phone as a QR code.', when the computer's relay origin is missing or is not one an offer may carry."
 					},
 					{
-						"name": "Error",
+						"name": "command failure (RelayLinkService)",
 						"type": "thrown",
 						"description": "Rejected by the relay command with the message 'The relay is not connected.' when the relay socket is not online or drops while a command waits; `createPairing` and `approvePairing` pass it on unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "command failure (RelayLinkService)",
 						"type": "thrown",
 						"description": "Rejected by the relay command with the message 'The relay did not answer.' when no acknowledgement arrives within the ack timeout, 10 seconds by default; `createPairing` and `approvePairing` pass it on unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "command failure (RelayLinkService)",
 						"type": "thrown",
 						"description": "Rejected by the relay command when the relay acknowledges a command with ok set to false: the message is the error text the relay sent, or 'refused' when it sent none, and `createPairing` and `approvePairing` pass it on unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "A newer pairing code superseded the request",
 						"type": "thrown",
 						"description": "Thrown by `createPairing` with the message 'A newer pairing code replaced this one.' when the status published after opening does not carry this offer while some offer is still open."
 					},
 					{
-						"name": "Error",
+						"name": "PairingOfferCreationError",
 						"type": "thrown",
 						"description": "Thrown by `createPairing` with the message 'The pairing offer could not be opened.' when the status published after opening does not carry this offer and no offer is open."
 					}
@@ -579,7 +582,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "current() failure (RemoteHostAccess)",
 						"type": "thrown",
 						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 					}
@@ -614,7 +617,8 @@
 								"agents": true,
 								"comments": true
 							}
-						]
+						],
+						"unknownReason": "The local pairing decision is parsed against the approval schema at the service boundary."
 					}
 				],
 				"outputs": [
@@ -671,52 +675,52 @@
 						"description": "Thrown by `RemoteInputValidator` with code `invalid-message` and the message 'The request was not understood.' when the input of `approvePairing`, `denyPairing` or `revokeDevice` does not have the exact keys and values it must have."
 					},
 					{
-						"name": "Error",
+						"name": "list() failure (ProjectRegistryService)",
 						"type": "thrown",
 						"description": "Propagated from the registry's `list()` with the message 'Invalid project registry.'; `approvePairing` awaits it before approving anything, so the approval rejects with it."
 					},
 					{
-						"name": "Error",
+						"name": "ProjectNotOpenedError",
 						"type": "thrown",
 						"description": "Thrown by `approvePairing`, before anything is approved, with the message 'Only projects opened on this computer can be shared.', when an approved project id is not among the registered projects."
 					},
 					{
-						"name": "Error",
+						"name": "current() failure (RemoteHostAccess)",
 						"type": "thrown",
 						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 					},
 					{
-						"name": "Error",
+						"name": "PairingRequestNotWaitingError",
 						"type": "thrown",
 						"description": "Thrown by `approvePairing` with the message 'This pairing request is no longer waiting.' when, after its waits, the open offer has no request from this device under this pairing id, so nothing is approved."
 					},
 					{
-						"name": "Error",
+						"name": "approve() failure (HostPairingService)",
 						"type": "thrown",
 						"description": "Propagated from the host pairing service's `approve` with the message 'There is no pairing request to approve.' when no live request has this pairing id at that moment, so nothing is approved."
 					},
 					{
-						"name": "Error",
+						"name": "approve() failure (HostPairingService)",
 						"type": "thrown",
 						"description": "Propagated from the host pairing service's `approve` with the message 'This is not the phone that was shown.' when the device id in the approval is not that of the waiting request, so nothing is approved."
 					},
 					{
-						"name": "Error",
+						"name": "Remote access requires OS encryption",
 						"type": "thrown",
 						"description": "Propagated from the record store through `saved()` with the message 'OS encryption is required for remote access.' when OS encryption is unavailable while the record is written; `approvePairing`, `revokeDevice`, `dropped` and `seen` (for a known device) await it, and file-system errors from the same write are passed on unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "command failure (RelayLinkService)",
 						"type": "thrown",
 						"description": "Rejected by the relay command with the message 'The relay is not connected.' when the relay socket is not online or drops while a command waits; `createPairing` and `approvePairing` pass it on unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "command failure (RelayLinkService)",
 						"type": "thrown",
 						"description": "Rejected by the relay command with the message 'The relay did not answer.' when no acknowledgement arrives within the ack timeout, 10 seconds by default; `createPairing` and `approvePairing` pass it on unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "command failure (RelayLinkService)",
 						"type": "thrown",
 						"description": "Rejected by the relay command when the relay acknowledges a command with ok set to false: the message is the error text the relay sent, or 'refused' when it sent none, and `createPairing` and `approvePairing` pass it on unchanged."
 					}
@@ -738,7 +742,8 @@
 							{
 								"pairingId": "b72d91e0f4a83c65d0e7b9a2c1f48d36"
 							}
-						]
+						],
+						"unknownReason": "The incoming refusal is validated as a pairing identifier request."
 					}
 				],
 				"outputs": [
@@ -781,7 +786,7 @@
 						"description": "Thrown by `RemoteInputValidator` with code `invalid-message` and the message 'The request was not understood.' when the input of `approvePairing`, `denyPairing` or `revokeDevice` does not have the exact keys and values it must have."
 					},
 					{
-						"name": "Error",
+						"name": "current() failure (RemoteHostAccess)",
 						"type": "thrown",
 						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 					}
@@ -803,7 +808,8 @@
 							{
 								"deviceId": "e07c5b1d9a24f6e83b0d7c2a9f15e4b06d3a8c71"
 							}
-						]
+						],
+						"unknownReason": "The incoming revocation is validated as a device identifier request."
 					}
 				],
 				"outputs": [
@@ -882,12 +888,12 @@
 						"description": "Thrown by `RemoteInputValidator` with code `invalid-message` and the message 'The request was not understood.' when the input of `approvePairing`, `denyPairing` or `revokeDevice` does not have the exact keys and values it must have."
 					},
 					{
-						"name": "Error",
+						"name": "current() failure (RemoteHostAccess)",
 						"type": "thrown",
 						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 					},
 					{
-						"name": "Error",
+						"name": "Remote access requires OS encryption",
 						"type": "thrown",
 						"description": "Propagated from the record store through `saved()` with the message 'OS encryption is required for remote access.' when OS encryption is unavailable while the record is written; `approvePairing`, `revokeDevice`, `dropped` and `seen` (for a known device) await it, and file-system errors from the same write are passed on unchanged."
 					}
@@ -917,12 +923,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "current() failure (RemoteHostAccess)",
 						"type": "thrown",
 						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 					},
 					{
-						"name": "Error",
+						"name": "Remote access requires OS encryption",
 						"type": "thrown",
 						"description": "Propagated from the record store through `saved()` with the message 'OS encryption is required for remote access.' when OS encryption is unavailable while the record is written; `approvePairing`, `revokeDevice`, `dropped` and `seen` (for a known device) await it, and file-system errors from the same write are passed on unchanged."
 					}
@@ -952,12 +958,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "current() failure (RemoteHostAccess)",
 						"type": "thrown",
 						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 					},
 					{
-						"name": "Error",
+						"name": "Remote access requires OS encryption",
 						"type": "thrown",
 						"description": "Propagated from the record store through `saved()` with the message 'OS encryption is required for remote access.' when OS encryption is unavailable while the record is written; `approvePairing`, `revokeDevice`, `dropped` and `seen` (for a known device) await it, and file-system errors from the same write are passed on unchanged."
 					}
@@ -976,7 +982,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "current() failure (RemoteHostAccess)",
 						"type": "thrown",
 						"description": "Thrown by the host's `current()` with the message 'Turn remote access on first.' whenever remote access is off. Every operation calls `current()`, so every operation can reject with it."
 					}

@@ -17,6 +17,12 @@ import { prepareDesktopGameState } from './desktopGameStateActions';
 import type { CatalogStateAction } from './catalogStateActions.types';
 
 const actions: Record<string, CatalogStateAction> = {
+	'desktop.component.game-live-ai:': async (component) => {
+		await component.getByRole('button', { name: 'Live AI video…' }).click();
+		const dialog = component.getByRole('dialog', { name: 'Live AI video' });
+		await expect(dialog.getByRole('combobox', { name: 'AI video model' })).toHaveValue('standard');
+		await expect(dialog.getByRole('button', { name: 'Start AI video' })).toBeEnabled();
+	},
 	'reports.component.floating-chat:closed': async (component) => {
 		await expect(component.locator('.floating-chat-bubble')).toBeVisible();
 		await expect(component.locator('.floating-chat-panel')).toHaveCount(0);

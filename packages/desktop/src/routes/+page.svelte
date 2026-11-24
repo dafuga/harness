@@ -116,13 +116,18 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
-		{#if approvals}<hx-a href={resolve('/deploy-approvals')}>Deploy approvals</hx-a>{/if}
+		{#if account.environment?.tracker}
+			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
+		{/if}
+		{#if approvals}<hx-a class="project-overview-link" href={resolve('/deploy-approvals')}
+				>Deploy approvals</hx-a
+			>{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
-			<hx-p class="account-status">
-				Signed in with Google
+			<hx-div class="account-status" class:phone-account={!local}>
+				<hx-span>Signed in with Google</hx-span>
 				<hx-button type="button" onclick={account.signOut}>Sign out</hx-button>
-			</hx-p>
+			</hx-div>
 		{/if}
 	</ProjectGate>{#if workspace.error}<hx-p class="error" role="alert">{workspace.error}</hx-p
 		>{/if}{/if}
@@ -133,9 +138,16 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: var(--hx-space-8);
+		gap: var(--hx-space-12);
 		margin: 0;
 		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-xs);
+	}
+	.phone-account {
+		justify-content: center;
+		margin-top: var(--hx-space-12);
+	}
+	.phone-account > :global(button) {
+		min-height: 44px;
 	}
 </style>

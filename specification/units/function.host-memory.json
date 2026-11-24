@@ -107,9 +107,9 @@
 				"description": "`hostMemory` rejects when either macOS `checked` command rejects or the Linux `/proc/meminfo` read rejects; the awaited failure reaches the caller."
 			},
 			{
-				"name": "Error",
+				"name": "HostMemoryReadError",
 				"type": "thrown",
-				"description": "`macMemory` throws `Error('Cannot read macOS memory counters')` when its page size is absent or zero, or its available-byte calculation is non-finite. `linuxMemory` throws `Error('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive. `hostMemory` throws `Error('Unsupported resource platform')` for any platform other than `darwin`, `linux`, or `win32`, and propagates parser errors."
+				"description": "`macMemory` throws `HostMemoryReadError('Cannot read macOS memory counters')` when its page size is absent or zero, or its available-byte calculation is non-finite. `linuxMemory` throws `HostMemoryReadError('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive. `hostMemory` throws `HostMemoryReadError('Unsupported resource platform')` for any platform other than `darwin`, `linux`, or `win32`, and propagates parser errors."
 			}
 		],
 		"errorStatus": "declared",
@@ -162,9 +162,9 @@
 						"description": "`macMemory` throws `Error('Cannot read macOS memory counters')` for a missing or zero page size, or a non-finite available-byte calculation."
 					},
 					{
-						"name": "Error",
+						"name": "HostMemoryReadError",
 						"type": "thrown",
-						"description": "`macMemory` throws `Error('Cannot read macOS memory counters')` when its page size is absent or zero, or its available-byte calculation is non-finite."
+						"description": "`macMemory` throws `HostMemoryReadError('Cannot read macOS memory counters')` when its page size is absent or zero, or its available-byte calculation is non-finite."
 					}
 				],
 				"errorStatus": "declared"
@@ -206,9 +206,9 @@
 						"description": "`linuxMemory` throws `Error('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive."
 					},
 					{
-						"name": "Error",
+						"name": "HostMemoryReadError",
 						"type": "thrown",
-						"description": "`linuxMemory` throws `Error('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive."
+						"description": "`linuxMemory` throws `HostMemoryReadError('Cannot read Linux available memory')` when parsed counters are non-finite or `MemTotal` is not positive."
 					}
 				],
 				"errorStatus": "declared"
@@ -242,9 +242,9 @@
 						"description": "`hostMemory` rejects when either macOS `checked` command rejects or the Linux `/proc/meminfo` read rejects; the awaited failure reaches the caller."
 					},
 					{
-						"name": "Error",
+						"name": "HostMemoryReadError",
 						"type": "thrown",
-						"description": "`hostMemory` throws `Error('Unsupported resource platform')` for any platform other than `darwin`, `linux`, or `win32`. It also propagates an `Error` thrown by `macMemory` or `linuxMemory` when parsed counters are invalid."
+						"description": "`hostMemory` throws `HostMemoryReadError('Unsupported resource platform')` for any platform other than `darwin`, `linux`, or `win32`. It also propagates an `Error` thrown by `macMemory` or `linuxMemory` when parsed counters are invalid."
 					}
 				],
 				"errorStatus": "declared"

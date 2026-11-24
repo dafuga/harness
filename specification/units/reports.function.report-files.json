@@ -73,7 +73,8 @@
 							"path": "packages/reports/assets/asset_01.json"
 						}
 					]
-				]
+				],
+				"unknownReason": "This file writer receives the caller's arbitrary data shape and applies JSON serialization."
 			}
 		],
 		"outputs": [
@@ -113,7 +114,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidReportOrAssetIdError",
 				"type": "thrown",
 				"description": "safeId throws Error with message Invalid report or asset ID when the identifier fails its pattern. Filesystem errors from readJson and atomicJson propagate."
 			},
@@ -174,7 +175,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidReportOrAssetIdError",
 						"type": "thrown",
 						"description": "Throws Error with message Invalid report or asset ID when id does not match ^[a-zA-Z0-9_-]{1,100}$."
 					}
@@ -212,7 +213,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Report file read failure",
 						"type": "thrown",
 						"description": "Rejects with a filesystem Error when readFile cannot read the requested path."
 					},
@@ -253,7 +254,8 @@
 									"path": "packages/reports/assets/asset_01.json"
 								}
 							]
-						]
+						],
+						"unknownReason": "This file writer receives the caller's arbitrary data shape and applies JSON serialization."
 					}
 				],
 				"outputs": [
@@ -265,7 +267,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Report file write or rename failure",
 						"type": "thrown",
 						"description": "Rejects with a filesystem Error if mkdir, writeFile, or rename fails."
 					},

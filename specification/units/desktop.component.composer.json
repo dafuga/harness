@@ -134,6 +134,13 @@
 				"examples": ["", "Describe the sidebar change…"]
 			},
 			{
+				"name": "Composer.opening",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Optional opening prompt shown in place of the mode-specific placeholder. Defaults to an empty string."
+			},
+			{
 				"name": "Composer.visual",
 				"type": "boolean",
 				"required": false,

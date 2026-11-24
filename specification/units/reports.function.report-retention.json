@@ -72,7 +72,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidReportRetentionTimestampError",
 				"type": "thrown",
 				"description": "Error with the message 'Invalid report retention timestamp', thrown when Date.parse(report.startedAt) is not a finite number or when now is not a finite number."
 			}
@@ -114,7 +114,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidReportRetentionTimestampError",
 						"type": "thrown",
 						"description": "Error with the message 'Invalid report retention timestamp', thrown when Date.parse(report.startedAt) is not a finite number or when now is not a finite number."
 					}

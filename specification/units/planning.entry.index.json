@@ -92,7 +92,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unsupported planning operation",
 				"type": "thrown",
 				"description": "An unknown operation creates an Error that the handler catches and converts to a failure result. Rejections from planGit or planningService propagate from createPlanning without being caught here."
 			}
@@ -119,7 +119,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "planGit or planningService failure",
 						"type": "thrown",
 						"description": "The returned promise propagates a rejection from planGit(root) or planningService(...) because createPlanning does not catch setup errors."
 					}
@@ -171,7 +171,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnknownPlanningOperationError",
 						"type": "thrown",
 						"description": "An unknown operation throws an Error internally; handlePlanningRequest catches it and returns it as a failure result."
 					}

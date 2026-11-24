@@ -36,7 +36,8 @@
 				"name": "desktopIpc.bootstrap",
 				"type": "(event: unknown) => LocalBootstrap | null",
 				"required": true,
-				"description": "Called with the IPC event for each `transport:bootstrap` request and returns the local bootstrap for a trusted top frame or `null` otherwise. A falsy result makes the handler reject with `Error('Untrusted renderer.')`, and callback exceptions propagate."
+				"description": "Called with the IPC event for each `transport:bootstrap` request and returns the local bootstrap for a trusted top frame or `null` otherwise. A falsy result makes the handler reject with `Error('Untrusted renderer.')`, and callback exceptions propagate.",
+				"unknownReason": "The adapter receives a runtime IPC event and delegates top-frame verification to the supplied callback."
 			}
 		],
 		"outputs": [
@@ -54,9 +55,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UntrustedRendererError",
 				"type": "thrown",
-				"description": "The handler throws `Error('Untrusted renderer.')` when the bootstrap callback returns a falsy answer. Exceptions from the callback, `handle`, or `removeHandler` propagate from the corresponding call."
+				"description": "The handler throws `UntrustedRendererError('Untrusted renderer.')` when the bootstrap callback returns a falsy answer. Exceptions from the callback, `handle`, or `removeHandler` propagate from the corresponding call."
 			}
 		],
 		"errorStatus": "declared",
@@ -74,7 +75,8 @@
 						"name": "desktopIpc.bootstrap",
 						"type": "(event: unknown) => LocalBootstrap | null",
 						"required": true,
-						"description": "Called with the IPC event for each `transport:bootstrap` request and returns the local bootstrap for a trusted top frame or `null` otherwise. A falsy result makes the handler reject with `Error('Untrusted renderer.')`, and callback exceptions propagate."
+						"description": "Called with the IPC event for each `transport:bootstrap` request and returns the local bootstrap for a trusted top frame or `null` otherwise. A falsy result makes the handler reject with `Error('Untrusted renderer.')`, and callback exceptions propagate.",
+						"unknownReason": "The adapter receives a runtime IPC event and delegates top-frame verification to the supplied callback."
 					}
 				],
 				"outputs": [
@@ -86,9 +88,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UntrustedRendererError",
 						"type": "thrown",
-						"description": "The handler throws `Error('Untrusted renderer.')` when the bootstrap callback returns a falsy answer. Exceptions from the callback, `handle`, or `removeHandler` propagate from the corresponding call."
+						"description": "The handler throws `UntrustedRendererError('Untrusted renderer.')` when the bootstrap callback returns a falsy answer. Exceptions from the callback, `handle`, or `removeHandler` propagate from the corresponding call."
 					}
 				],
 				"errorStatus": "declared"

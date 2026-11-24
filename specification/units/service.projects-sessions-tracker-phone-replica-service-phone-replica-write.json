@@ -10,7 +10,9 @@
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaWriteService.ts",
-			"src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaWriteService.types.ts"
+			"src/services/projects-sessions/tracker-phone-replica-service/PhoneReplicaWriteService.types.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaActions.ts",
+			"src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaActions.types.ts"
 		],
 		"symbols": [
 			"PhoneReplicaWriteService",
@@ -19,7 +21,13 @@
 			"PhoneReplicaWriteService.push",
 			"PhoneReplicaWriteGrant",
 			"PhoneReplicaIntent",
-			"PhoneReplicaReceipt"
+			"PhoneReplicaReceipt",
+			"PhoneReplicaAction",
+			"phoneReplicaActions",
+			"needsOpenFlag",
+			"statusGuarded",
+			"isPhoneReplicaAction",
+			"PhoneReplicaAction"
 		]
 	},
 	"contract": {
@@ -59,7 +67,14 @@
 				"name": "PhoneReplicaWriteService.push.fields",
 				"type": "TrackerItemInput",
 				"required": true,
-				"description": "Version 1 intent with UUID, exact item ID, operation, bounded text and the attention revision for flag and answer."
+				"description": "Version 1 intent with UUID, exact item ID, one allowlisted action (note, flag, answer, or the lifecycle actions start, reopen, block, unblock, resolve, done, ignore, unignore), bounded text, the attention revision for every action except note, and the expected item status for lifecycle actions."
+			},
+			{
+				"name": "isPhoneReplicaAction.value",
+				"type": "unknown",
+				"required": true,
+				"description": "Candidate action name from a phone write request.",
+				"unknownReason": "The request value is untrusted until this guard verifies that it names a supported phone replica action."
 			}
 		],
 		"outputs": [
@@ -121,7 +136,7 @@
 						"name": "PhoneReplicaWriteService.push.fields",
 						"type": "TrackerItemInput",
 						"required": true,
-						"description": "Version 1 intent with UUID, exact item ID, operation, bounded text and the attention revision for flag and answer."
+						"description": "Version 1 intent with UUID, exact item ID, one allowlisted action (note, flag, answer, or the lifecycle actions start, reopen, block, unblock, resolve, done, ignore, unignore), bounded text, the attention revision for every action except note, and the expected item status for lifecycle actions."
 					}
 				],
 				"outputs": [
@@ -144,6 +159,26 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "isPhoneReplicaAction",
+				"inputs": [
+					{
+						"name": "isPhoneReplicaAction.value",
+						"type": "unknown",
+						"required": true,
+						"description": "Candidate action name from a phone write request.",
+						"unknownReason": "The request value is untrusted until this guard verifies that it names a supported phone replica action."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isPhoneReplicaAction",
+						"type": "value is PhoneReplicaAction"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [

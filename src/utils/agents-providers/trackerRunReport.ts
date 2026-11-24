@@ -1,4 +1,5 @@
 // @harness-uid u_lst54o5ptr
+import type { TaskApiCost } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TrackerModelHistory } from './pickTrackerModel.types';
 import type { TrackerHistoryScope, TrackerRunRow } from './trackerRunReport.types';
 
@@ -41,12 +42,16 @@ function summarizeOutcomes(rows: readonly TrackerRunRow[]) {
 }
 
 /** Roll up one snapshot of local and replicated attempts, keyed at source by node and run ID. */
-export function trackerRunReport(rows: readonly TrackerRunRow[]) {
+export function trackerRunReport(
+	rows: readonly TrackerRunRow[],
+	costFor: (row: TrackerRunRow) => TaskApiCost
+) {
 	const groups = new Map<string, ReturnType<typeof reportGroup>>();
 	for (const row of rows) {
 		if (row.state !== 'finished') continue;
-		accumulate(groups, row, row.kind ?? '?');
-		accumulate(groups, row, '*');
+		const metrics = { quote: costFor(row), duration: measuredDuration(row) };
+		accumulate(groups, row, row.kind ?? '?', metrics);
+		accumulate(groups, row, '*', metrics);
 	}
 	return [...groups.values()].sort(compareGroups).map(withAverages);
 }
@@ -64,6 +69,10 @@ function reportGroup(rung: string, kind: string) {
 		idle_nudges: 0,
 		cost: 0,
 		priced: 0,
+		ranged: 0,
+		min_cost: 0,
+		max_cost: 0,
+		timed: 0,
 		tokens: 0,
 		ms: 0
 	};
@@ -72,7 +81,8 @@ function reportGroup(rung: string, kind: string) {
 function accumulate(
 	groups: Map<string, ReturnType<typeof reportGroup>>,
 	row: TrackerRunRow,
-	kind: string
+	kind: string,
+	{ quote, duration }: { quote: TaskApiCost; duration: number | null }
 ) {
 	const key = JSON.stringify([row.rung, kind]);
 	const group = groups.get(key) ?? reportGroup(row.rung, kind);
@@ -80,16 +90,28 @@ function accumulate(
 	group[reportOutcome(row.outcome)]++;
 	group.redone += Number(row.redone_by != null);
 	group.idle_nudges += row.idle_nudges ?? 0;
-	group.cost += row.cost_usd ?? 0;
-	group.priced += Number(row.cost_usd != null);
+	accumulateCost(group, quote);
 	group.tokens +=
 		(row.input_tokens ?? 0) +
 		(row.output_tokens ?? 0) +
 		(row.cache_read_tokens ?? 0) +
 		(row.cache_write_tokens ?? 0);
-	// Keep the legacy report's arithmetic. Shared records require measured timing.
-	group.ms += (row.ended_at ?? 0) - (row.started_at ?? 0);
+	group.ms += duration ?? 0;
+	group.timed += Number(duration !== null);
 	groups.set(key, group);
+}
+
+function accumulateCost(group: ReturnType<typeof reportGroup>, quote: TaskApiCost) {
+	group.cost += quote.usd ?? 0;
+	group.priced += Number(quote.usd != null);
+	group.ranged += Number(quote.usd == null && quote.minimumUsd != null && quote.maximumUsd != null);
+	group.min_cost += quote.minimumUsd ?? 0;
+	group.max_cost += quote.maximumUsd ?? 0;
+}
+
+function measuredDuration(row: TrackerRunRow): number | null {
+	const { started_at: start, ended_at: end } = row;
+	return start != null && end != null && end >= start ? end - start : null;
 }
 
 function compareGroups(
@@ -104,11 +126,16 @@ function compareGroups(
 
 function withAverages(group: ReturnType<typeof reportGroup>) {
 	const decided = group.done + group.failed;
+	const costed = group.priced + group.ranged;
+	const range = (divisor: number): [number, number] | null =>
+		group.ranged && divisor ? [group.min_cost / divisor, group.max_cost / divisor] : null;
 	return {
 		...group,
 		success_rate: decided ? group.done / decided : null,
-		avg_cost_usd: group.priced ? group.cost / group.priced : null,
-		cost_per_success_usd: group.priced && group.done ? group.cost / group.done : null,
-		avg_minutes: group.ms / group.runs / 60_000
+		avg_cost_usd: costed && !group.ranged ? group.cost / costed : null,
+		cost_per_success_usd: costed && group.done && !group.ranged ? group.cost / group.done : null,
+		avg_cost_range_usd: range(costed),
+		cost_per_success_range_usd: range(group.done),
+		avg_minutes: group.timed ? group.ms / group.timed / 60_000 : null
 	};
 }

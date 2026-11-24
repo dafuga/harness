@@ -101,7 +101,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Device handshake timeout or unexpected response",
 				"type": "thrown",
 				"description": "The service creates Error when a handshake times out or the host response is not an accept packet; setup errors from dependencies are rethrown unchanged."
 			},
@@ -188,7 +188,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Device handshake timeout or unexpected response",
 						"type": "thrown",
 						"description": "The service creates Error when a handshake times out or the host response is not an accept packet; setup errors from dependencies are rethrown unchanged."
 					},

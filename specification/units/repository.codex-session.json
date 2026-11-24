@@ -93,9 +93,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CodexSessionError",
 				"type": "thrown",
-				"description": "An Error is thrown for an aborted existing session ID, the 100-session limit, duplicate pending or delivered tool calls, duplicate output call IDs, or output call IDs that are unknown or already delivered. Pending tool promises are rejected with Error('Session cancelled') when their session is cancelled."
+				"description": "An Error is thrown for an aborted existing session ID, the 100-session limit, duplicate pending or delivered tool calls, duplicate output call IDs, or output call IDs that are unknown or already delivered. Pending tool promises are rejected with CodexSessionError('Session cancelled') when their session is cancelled."
 			}
 		],
 		"errorStatus": "declared",
@@ -120,9 +120,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CodexSessionError",
 						"type": "thrown",
-						"description": "Error('Session cancelled; restart requires explicit recovery') is thrown when the stored session for the ID has been aborted. Error('Prototype session limit reached') is thrown when a new ID is requested while 100 sessions are stored."
+						"description": "CodexSessionError('Session cancelled; restart requires explicit recovery') is thrown when the stored session for the ID has been aborted. CodexSessionError('Prototype session limit reached') is thrown when a new ID is requested while 100 sessions are stored."
 					}
 				],
 				"errorStatus": "declared"
@@ -154,9 +154,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CodexSessionError",
 						"type": "thrown",
-						"description": "Error('Duplicate call') is thrown when the ID is already pending or delivered. The returned promise can reject with Error('Session cancelled') if cancel runs while it is pending."
+						"description": "CodexSessionError('Duplicate call') is thrown when the ID is already pending or delivered. The returned promise can reject with CodexSessionError('Session cancelled') if cancel runs while it is pending."
 					}
 				],
 				"errorStatus": "declared"
@@ -189,9 +189,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CodexSessionError",
 						"type": "thrown",
-						"description": "Error('Duplicate tool output') is thrown if output call_id values stringify to duplicates. Error('Unknown or already delivered tool call') is thrown if any output ID is not pending; all IDs are checked before any output is delivered."
+						"description": "CodexSessionError('Duplicate tool output') is thrown if output call_id values stringify to duplicates. CodexSessionError('Unknown or already delivered tool call') is thrown if any output ID is not pending; all IDs are checked before any output is delivered."
 					}
 				],
 				"errorStatus": "declared"
@@ -215,9 +215,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CodexSessionError",
 						"type": "thrown",
-						"description": "Each promise pending at cancellation is rejected with Error('Session cancelled') before the pending map is cleared."
+						"description": "Each promise pending at cancellation is rejected with CodexSessionError('Session cancelled') before the pending map is cleared."
 					}
 				],
 				"errorStatus": "declared"

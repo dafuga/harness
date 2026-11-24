@@ -75,7 +75,7 @@
 				"description": "Thrown through fail() by apiInput when '-' is used with a terminal stdin, when the input text is not valid JSON, or when the parsed value is null, an array or a primitive; also thrown through fail() by apiQuery when a field has no '=' or starts with '='. The apiInput failures reject the promise that apiInput returns, because apiInput is async, while apiQuery throws synchronously."
 			},
 			{
-				"name": "Error",
+				"name": "API input file or standard input read failure",
 				"type": "thrown",
 				"description": "A Node.js error from readFile when the file named after '@' cannot be read, or from iterating process.stdin when '-' is used, which apiInput does not catch, so the promise apiInput returns rejects with that error."
 			}
@@ -119,7 +119,7 @@
 						"description": "Thrown through fail() when '-' is used with a terminal stdin, when the input text is not valid JSON, or when the parsed value is null, an array or a primitive. Because apiInput is async, the promise it returns rejects with this error."
 					},
 					{
-						"name": "Error",
+						"name": "API input file or standard input read failure",
 						"type": "thrown",
 						"description": "A Node.js error from readFile when the file named after '@' cannot be read, or from iterating process.stdin when '-' is used, which apiInput does not catch, so the promise apiInput returns rejects with that error."
 					}

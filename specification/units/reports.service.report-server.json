@@ -137,7 +137,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Report server port or readiness failure",
 				"type": "thrown",
 				"description": "serve throws Error when no free port is found in the 30-port range or a started server fails its readiness check. Errors from startup, build identity, and server-record operations can also reject serve."
 			}
@@ -232,7 +232,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Report server port or readiness failure",
 						"type": "thrown",
 						"description": "serve throws Error when no free port is found in the 30-port range or a started server fails its readiness check. Errors from startup, build identity, and server-record operations can also reject serve."
 					}

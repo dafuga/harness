@@ -17,7 +17,7 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "iOS acceptance setup or device failure",
 				"type": "thrown",
 				"description": "Any error that main() rejects with, from a step the device-phase handler does not catch, such as the output-directory reset, the source reads, the product, device or fixture setup, the page reset, or the report write. The top-level handler prints the error's message to stderr (or the raw value when it is not an Error) and exits with code 1, and errors thrown by the device phases are passed to record.stopped instead of rejecting."
 			}

@@ -87,7 +87,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidSessionIdError",
 				"type": "thrown",
 				"description": "Thrown when the input fails the session-ID pattern; its message is exactly “A valid explicit Codex session ID is required.”"
 			}
@@ -166,7 +166,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidSessionIdError",
 						"type": "thrown",
 						"description": "Thrown when the input fails the session-ID pattern; its message is exactly “A valid explicit Codex session ID is required.”"
 					}

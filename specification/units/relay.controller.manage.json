@@ -9,7 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts"],
-		"symbols": ["ManageController", "ManageController.constructor", "ManageController.handle"]
+		"symbols": [
+			"ManageController",
+			"ManageController.constructor",
+			"ManageController.handle",
+			"ManageController.index"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -33,10 +38,9 @@
 				"description": "A HostRegistryService used for registration, summary, and unregistration. register(input) produces a 200 response when truthy and a 403 forbidden response otherwise; summary(host) supplies the summary response, and unregister() is awaited before a 200 response."
 			},
 			{
-				"name": "ManageController.constructor.revocation",
-				"type": "DeviceRevocationService",
-				"required": true,
-				"description": "A DeviceRevocationService used by revoke-device. The controller calls revoke(deviceId) after body validation and host and owner checks."
+				"name": "ManageController.constructor.services",
+				"type": "{ revocation: DeviceRevocationService; pairing: PairingAccessService; }",
+				"required": true
 			},
 			{
 				"name": "ManageController.handle.request",
@@ -50,6 +54,11 @@
 				"required": true,
 				"description": "The management route operation handled with the request. Accepted values are register, summary, revoke-device, and unregister; other values return 404 not-found before request-body parsing.",
 				"examples": ["register", "revoke-device", "unregister"]
+			},
+			{
+				"name": "ManageController.index.host",
+				"type": "HostRecord",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -88,6 +97,24 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "ManageController.index",
+				"inputs": [
+					{
+						"name": "ManageController.index.host",
+						"type": "HostRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ManageController.index",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -113,10 +140,9 @@
 						"description": "A HostRegistryService used for registration, summary, and unregistration. register(input) produces a 200 response when truthy and a 403 forbidden response otherwise; summary(host) supplies the summary response, and unregister() is awaited before a 200 response."
 					},
 					{
-						"name": "ManageController.constructor.revocation",
-						"type": "DeviceRevocationService",
-						"required": true,
-						"description": "A DeviceRevocationService used by revoke-device. The controller calls revoke(deviceId) after body validation and host and owner checks."
+						"name": "ManageController.constructor.services",
+						"type": "{ revocation: DeviceRevocationService; pairing: PairingAccessService; }",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -163,7 +189,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "relay.service.pairing-access",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "relay.validator.manage-body",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.validator.pairing-body",
 			"via": "import",
 			"origin": "derived"
 		},

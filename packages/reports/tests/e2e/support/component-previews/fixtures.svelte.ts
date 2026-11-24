@@ -20,7 +20,7 @@ import { hubPreview } from './hub.svelte';
 import { routeFixture } from './routePages';
 import { desktopRoute } from './routeDesktop.svelte';
 import { hubRoute } from './routeHub';
-import type { PreviewCases } from './shared';
+import { noop, type PreviewCases } from './shared';
 import { nativeAtomFixture } from './nativeAtomProps';
 import { projectAgentStateFixture } from './projectAgentStateFixtures';
 import type { ProjectAgentState } from './projectAgentStateFixtures.types';
@@ -29,6 +29,22 @@ import { desktopPreviewVariant } from './desktopPreviewVariants';
 import { desktopRuntimeReady } from './desktopRuntimeVariants';
 import { shellArtworkProps } from './shellArtwork';
 import ShellContentPreview from './ShellContentPreview.svelte';
+const desktopChooserCases: PreviewCases = {
+	'desktop.component.explorer-ui-entity-section-tabs': {
+		names: ['Overview', 'States', 'History', 'Source'],
+		tab: 'States',
+		threadShown: false,
+		onpick: noop,
+		onconversation: noop
+	},
+	'desktop.component.shared-primitives-choice-row': {
+		name: 'Main',
+		meta: 'Current branch',
+		current: true,
+		onchoose: noop
+	},
+	'desktop.component.shared-primitives-choice-rows': { label: 'Branches', title: 'Branches' }
+};
 export function previewFixture(id: string, variant = '') {
 	const desktop = createDesktopData(id);
 	// The shell opens at Pages, where its store starts and where the web workspace opens too.
@@ -51,12 +67,14 @@ export function previewFixture(id: string, variant = '') {
 		...gameCases,
 		...remote.cases,
 		...hub.cases,
+		...desktopChooserCases,
 		'desktop.component.remote-connection': { workspace: desktop.workspace }
 	};
 	// A route module is opened at its own address; it renders what the history holds there.
 	// A Desktop page reads the orders project over the synthetic bridge installed for it.
 	const route = desktopRoute(id, desktop);
 	const props =
+		(id === 'desktop.layout.root' ? {} : undefined) ??
 		routeFixture(id) ??
 		route?.props ??
 		hubRoute(id, hub.addresses['hub.component.hosted-workspace'], hub.project.id) ??

@@ -54,7 +54,7 @@
 				"description": "Parsing either SHA or the comparison response rejects when the value does not match its schema."
 			},
 			{
-				"name": "Error",
+				"name": "GitHub reachability request failure",
 				"type": "thrown",
 				"description": "A rejection from `client.check()` or `client.request()` propagates; the function does not convert transport failures into a reachability result."
 			}
@@ -102,7 +102,7 @@
 						"description": "Parsing either SHA or the comparison response rejects when the value does not match its schema."
 					},
 					{
-						"name": "Error",
+						"name": "GitHub reachability request failure",
 						"type": "thrown",
 						"description": "A rejection from `client.check()` or `client.request()` propagates; the function does not convert transport failures into a reachability result."
 					}

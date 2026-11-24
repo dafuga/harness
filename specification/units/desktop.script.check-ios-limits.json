@@ -20,12 +20,12 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "readdirSync failure (node:fs)",
 				"type": "thrown",
 				"description": "A Node.js file-system error, with a `code` such as `ENOENT` or `EACCES`, that the `readdirSync` call in `swiftFiles` raises when a scanned folder (`ios/App/App` or `ios/Checks` under `packages/desktop`) or one of its subfolders cannot be listed. The script does not catch it, so the run stops before any finding or summary line is printed."
 			},
 			{
-				"name": "Error",
+				"name": "readFileSync failure (node:fs)",
 				"type": "thrown",
 				"description": "A Node.js file-system error, with a `code` such as `ENOENT` or `EACCES`, that the `readFileSync` call in `inspect` raises when a `.swift` file found under those folders cannot be read. The script does not catch it, so the run stops before any finding or summary line is printed."
 			}

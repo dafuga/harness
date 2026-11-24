@@ -45,7 +45,7 @@
 				"description": "Thrown by response.headers.set when the response has no cache-control header but immutable headers, such as a response from fetch() or Response.redirect(); nothing in this hook catches it."
 			},
 			{
-				"name": "Error",
+				"name": "Report build identity file read failure",
 				"type": "thrown",
 				"description": "Thrown while the module loads when reportBuildIdentity() cannot read the build files (for example a filesystem EACCES error from readdirSync or readFileSync), so the module fails to load."
 			}

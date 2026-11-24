@@ -106,7 +106,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown with 'Run harness verify run; no verification record proves the task commit.' when no stored record has this commit as its source, and with 'Harness verification failed: ' followed by the problems joined with '; ' when the re-check or the stored record's status is not 'passed'. Errors and rejections from the dynamic imports and from the store, check, commit-tree, loader and validator calls are not caught and reach the caller unchanged."
 			}
@@ -208,7 +208,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown with 'Run harness verify run; no verification record proves the task commit.' when no stored record has this commit as its source, and with 'Harness verification failed: ' followed by the problems joined with '; ' when the re-check or the stored record's status is not 'passed'. Errors and rejections from the dynamic imports and from the store, check, commit-tree, loader and validator calls are not caught and reach the caller unchanged."
 					}

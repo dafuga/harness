@@ -87,7 +87,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "JevEvaluationError",
 				"type": "thrown",
 				"description": "The adapter throws or rejects with Error for an already-aborted signal, request or validation failures, API errors, cancellation, or deadline expiry. APIError becomes “Jev request failed (HTTP <status>).”, cancellation becomes “Jev review was cancelled or timed out.”, and all other caught failures, including model mismatch, become “Jev request or response validation failed.”"
 			}
@@ -136,7 +136,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "JevEvaluationError",
 						"type": "thrown",
 						"description": "The adapter throws or rejects with Error for an already-aborted signal, request or validation failures, API errors, cancellation, or deadline expiry. APIError becomes “Jev request failed (HTTP <status>).”, cancellation becomes “Jev review was cancelled or timed out.”, and all other caught failures, including model mismatch, become “Jev request or response validation failed.”"
 					}

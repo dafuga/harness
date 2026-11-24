@@ -1,0 +1,168 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+	"uid": "u_62ump5nnwq",
+	"kind": "component",
+	"title": "TrackerInbox",
+	"responsibility": "Loads the Tracker replica, filters or searches items, opens the selected item and shows the write outbox.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-form",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-input-search",
+			"reports.component.shared-primitives-atoms-html-nav",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte"
+		],
+		"symbols": ["TrackerInbox", "reload"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerInbox.source",
+				"type": "TrackerInboxSource",
+				"required": true,
+				"description": "Tracker read and confirmed-write operations supplied by the host environment."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerInbox",
+				"type": "markup",
+				"description": "Loads the Tracker replica, filters or searches items, opens the selected item and shows the write outbox."
+			},
+			{
+				"name": "reload",
+				"type": "Promise<void>",
+				"description": "Resolves when the status, item rows and outbox have been read again."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "reload",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "reload",
+						"type": "Promise<void>",
+						"description": "Resolves when the status, item rows and outbox have been read again."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-form",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input-search",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-nav",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

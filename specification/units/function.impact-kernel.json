@@ -64,7 +64,8 @@
 							"sinks": ["compile"]
 						}
 					}
-				]
+				],
+				"unknownReason": "The public kernel admits arbitrary caller input, then rejects values outside portable JSON before dispatch."
 			},
 			{
 				"name": "impactKernelPortable.request",
@@ -91,7 +92,8 @@
 							"sinks": ["compile"]
 						}
 					}
-				]
+				],
+				"unknownReason": "Portable JSON alone does not establish whether the envelope is an impact request."
 			}
 		],
 		"outputs": [
@@ -232,7 +234,8 @@
 									"sinks": ["compile"]
 								}
 							}
-						]
+						],
+						"unknownReason": "The public kernel admits arbitrary caller input, then rejects values outside portable JSON before dispatch."
 					}
 				],
 				"outputs": [
@@ -304,7 +307,8 @@
 									"sinks": ["compile"]
 								}
 							}
-						]
+						],
+						"unknownReason": "Portable JSON alone does not establish whether the envelope is an impact request."
 					}
 				],
 				"outputs": [

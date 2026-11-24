@@ -28,6 +28,7 @@ type TrackerItemDetailFields =
 	| 'title'
 	| 'status'
 	| 'due'
+	| 'remind_at'
 	| 'owner'
 	| 'agent'
 	| 'parent'
@@ -85,7 +86,7 @@ export type TrackerDigestItem = Pick<
 	| 'question'
 	| 'created_by'
 	| 'updated_at'
->;
+> & { remind_at?: string };
 
 export type TrackerRecurringProblem = TrackerDigestItem & {
 	every: string;

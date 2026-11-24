@@ -40,7 +40,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Analytics import repository or filesystem failure",
 				"type": "thrown",
 				"description": "The promise can reject if opening the analytics repository, resolving or traversing the root, computing project identity, reconciling history, or closing the repository fails. Individual loop read, parse, and event-recording failures are caught and logged, and a missing or unreadable specification/loops directory is treated as empty."
 			}
@@ -76,7 +76,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Analytics import repository or filesystem failure",
 						"type": "thrown",
 						"description": "The promise can reject if opening the analytics repository, resolving or traversing the root, computing project identity, reconciling history, or closing the repository fails. Individual loop read, parse, and event-recording failures are caught and logged, and a missing or unreadable specification/loops directory is treated as empty."
 					}

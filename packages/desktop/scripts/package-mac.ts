@@ -8,6 +8,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { buildDesktopMain, releaseDefine } from './build-main';
 import { macIcon } from './mac-icon/mac-icon';
 import { MacPackageError } from './package-mac.types';
+import { isRevision, releaseRevision } from './release-revision';
 const bundleId = 'dev.harness.desktop';
 const teamId = 'PAC8VHDW3G';
 const codesign = '/usr/bin/codesign';
@@ -77,9 +78,11 @@ function verifyRelease(app: string): void {
 	);
 	if (manifest.productName !== 'Harness')
 		throw new MacPackageError('Artifact must use the signed Harness Safe Storage namespace.');
+	if (!isRevision(manifest.revision))
+		throw new MacPackageError('Artifact must embed the full git commit it was built from.');
 }
 
-async function populateApp(output: string, bundles: string): Promise<void> {
+async function populateApp(output: string, bundles: string, revision: string): Promise<void> {
 	const { default: electron } = await import('electron');
 	const original = resolve(dirname(electron as unknown as string), '../..');
 	execFileSync('/usr/bin/ditto', [original, output]);
@@ -98,6 +101,7 @@ async function populateApp(output: string, bundles: string): Promise<void> {
 			name: 'harness-desktop',
 			productName: 'Harness',
 			version: '0.1.0',
+			revision,
 			main: 'dist/main.cjs'
 		})
 	);
@@ -127,6 +131,7 @@ async function populateApp(output: string, bundles: string): Promise<void> {
 async function packageRelease(): Promise<void> {
 	const define = releaseDefine(process.env, true);
 	const { identity, keychain } = releaseSigner();
+	const revision = releaseRevision();
 	const directory = resolve('dist/mac');
 	const output = join(directory, 'Harness.app');
 	await mkdir(directory, { recursive: true });
@@ -135,7 +140,7 @@ async function packageRelease(): Promise<void> {
 	try {
 		const bundles = join(staging, 'bundles');
 		await buildDesktopMain(define, bundles);
-		await populateApp(candidate, bundles);
+		await populateApp(candidate, bundles, revision);
 		const { sign } = await import('@electron/osx-sign');
 		await sign({
 			app: candidate,

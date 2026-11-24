@@ -16,6 +16,9 @@
 			"RelayManageAdapter",
 			"RelayManageAdapter.constructor",
 			"RelayManageAdapter.register",
+			"RelayManageAdapter.pairingKey",
+			"RelayManageAdapter.requestPairing",
+			"RelayManageAdapter.computers",
 			"RelayManageAdapter.summary",
 			"RelayManageAdapter.revokeDevice",
 			"RelayManageAdapter.unregister",
@@ -49,6 +52,26 @@
 						"name": "Studio Mac mini"
 					}
 				]
+			},
+			{
+				"name": "RelayManageAdapter.pairingKey.input",
+				"type": "RelayManageOwner",
+				"required": true
+			},
+			{
+				"name": "RelayManageAdapter.requestPairing.input",
+				"type": "RelayManageOwner",
+				"required": true
+			},
+			{
+				"name": "RelayManageAdapter.requestPairing.body",
+				"type": "RelayManagePairingRequest",
+				"required": true
+			},
+			{
+				"name": "RelayManageAdapter.computers.owner",
+				"type": "RelayManageOwner['owner']",
+				"required": true
 			},
 			{
 				"name": "RelayManageAdapter.summary.input",
@@ -238,6 +261,65 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "RelayManageAdapter.pairingKey",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.pairingKey.input",
+						"type": "RelayManageOwner",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.pairingKey",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayManageAdapter.requestPairing",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.requestPairing.input",
+						"type": "RelayManageOwner",
+						"required": true
+					},
+					{
+						"name": "RelayManageAdapter.requestPairing.body",
+						"type": "RelayManagePairingRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.requestPairing",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RelayManageAdapter.computers",
+				"inputs": [
+					{
+						"name": "RelayManageAdapter.computers.owner",
+						"type": "RelayManageOwner['owner']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RelayManageAdapter.computers",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "RelayManageAdapter.summary",
@@ -452,6 +534,11 @@
 		},
 		{
 			"unit": "hub.validator.relay-reply",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-identity",
 			"via": "import",
 			"origin": "derived"
 		},

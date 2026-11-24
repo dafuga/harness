@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import { trackerRunCost } from '../../agents-providers/module-task-analytics-service/trackerRunRecords';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -63,7 +64,7 @@ export function readTrackerRunEndpoint(
 			if (parts[1] === 'report') {
 				return {
 					ladder: ladderFrom(ladderConfig).map(({ id }) => id),
-					rows: trackerRunReport(runs.finished())
+					rows: trackerRunReport(runs.finished(), trackerRunCost)
 				};
 			}
 			return undefined;

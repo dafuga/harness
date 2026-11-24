@@ -15,6 +15,7 @@
 		"symbols": [
 			"RemoteHostValidator",
 			"RemoteHostValidator.registration",
+			"RemoteHostValidator.pairing",
 			"RemoteHostValidator.hostId",
 			"RemoteHostValidator.deviceId",
 			"Body"
@@ -44,6 +45,11 @@
 				]
 			},
 			{
+				"name": "RemoteHostValidator.pairing.body",
+				"type": "Body",
+				"required": true
+			},
+			{
 				"name": "RemoteHostValidator.hostId.value",
 				"type": "unknown",
 				"required": true,
@@ -51,7 +57,8 @@
 				"examples": [
 					"3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
 					"a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90"
-				]
+				],
+				"unknownReason": "The proposed identifier is received as untyped request data and must match the host id format."
 			},
 			{
 				"name": "RemoteHostValidator.deviceId.value",
@@ -61,7 +68,8 @@
 				"examples": [
 					"0e5d2b9f71a3c86e4d0b29f5a7c1e38d6b4f0a72",
 					"5b8f1e0c7a4d92e36f0b1c8a5d7e2f96c3a40b18"
-				]
+				],
+				"unknownReason": "The proposed identifier is received as untyped request data and must match the device id format."
 			}
 		],
 		"outputs": [
@@ -167,6 +175,24 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "RemoteHostValidator.pairing",
+				"inputs": [
+					{
+						"name": "RemoteHostValidator.pairing.body",
+						"type": "Body",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostValidator.pairing",
+						"type": "RelayManagePairingRequest"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "RemoteHostValidator.hostId",
 				"inputs": [
 					{
@@ -177,7 +203,8 @@
 						"examples": [
 							"3f9a1c7e5b2d084f6a91c3e7d5b20f8a4c6e1d93",
 							"a0c7e41d9b52f83e6d1a07c4b9e25f3d8c6a1e90"
-						]
+						],
+						"unknownReason": "The proposed identifier is received as untyped request data and must match the host id format."
 					}
 				],
 				"outputs": [
@@ -211,7 +238,8 @@
 						"examples": [
 							"0e5d2b9f71a3c86e4d0b29f5a7c1e38d6b4f0a72",
 							"5b8f1e0c7a4d92e36f0b1c8a5d7e2f96c3a40b18"
-						]
+						],
+						"unknownReason": "The proposed identifier is received as untyped request data and must match the device id format."
 					}
 				],
 				"outputs": [

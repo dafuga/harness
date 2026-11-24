@@ -232,47 +232,47 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "R2EvidenceStoreError",
 				"type": "thrown",
 				"description": "Thrown by evidenceObjectKey, with the message 'Invalid R2 evidence name', when file is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg. put and get reject with the same error because they build the key inside async methods."
 			},
 			{
-				"name": "Error",
+				"name": "R2EvidenceStoreError",
 				"type": "thrown",
 				"description": "Thrown by replayObjectKey, with the message 'Invalid R2 replay name', when file is not 64 lowercase hex characters followed by .mp4. putReplay and getReplay reject with the same error."
 			},
 			{
-				"name": "Error",
+				"name": "safeId failure (reportFiles)",
 				"type": "thrown",
 				"description": "Thrown by safeId, with the message 'Invalid report or asset ID', when reportId is not 1 to 100 letters, digits, underscores or hyphens. evidenceObjectKey and replayObjectKey reach it after their file check, so put, get, putReplay and getReplay reject with it too."
 			},
 			{
-				"name": "Error",
+				"name": "R2EvidenceStoreError",
 				"type": "thrown",
 				"description": "Thrown by read, with the message 'R2 evidence has no body', when the GetObjectCommand response has no Body. get and getReplay reject with it."
 			},
 			{
-				"name": "Error",
+				"name": "Local report storage requires an isolated test store",
 				"type": "thrown",
 				"description": "Thrown by r2EvidenceConfig, and so by fromEnvironment, with the message 'Local-only storage is restricted to temporary test stores; real report media requires Cloudflare R2', when PROJECT_REPORTS_ASSET_STORAGE is local and PROJECT_REPORTS_HOME is not under tmpdir(), /tmp or /private/tmp."
 			},
 			{
-				"name": "Error",
+				"name": "r2EvidenceConfig failure (Reports config)",
 				"type": "thrown",
 				"description": "Thrown by r2EvidenceConfig, and so by fromEnvironment, with the message 'Cloudflare R2 evidence storage is partially configured; real reports require all four R2 settings', when any of accountId, bucket, accessKeyId or secretAccessKey is empty, unless all four are empty inside an isolated test store."
 			},
 			{
-				"name": "Error",
+				"name": "r2EvidenceConfig failure (Reports config)",
 				"type": "thrown",
 				"description": "Thrown by r2EvidenceConfig, and so by fromEnvironment, with the message 'R2 endpoint override must be a local test server', when PROJECT_REPORTS_R2_ENDPOINT is non-empty and is not exactly http://127.0.0.1 followed by a port."
 			},
 			{
-				"name": "Error",
+				"name": "Report storage settings file read failure",
 				"type": "thrown",
 				"description": "When PROJECT_REPORTS_ASSET_STORAGE is not local, NODE_ENV is not test and PROJECT_REPORTS_CONFIG_FILE is set, a file-system error other than ENOENT (such as EACCES) raised while reading that file is rethrown unchanged by readLocalR2Config and reaches fromEnvironment through r2EvidenceConfig."
 			},
 			{
-				"name": "Error",
+				"name": "S3Client.send or response-body transform failure (@aws-sdk/client-s3)",
 				"type": "thrown",
 				"description": "Failures from the S3 client, such as network or service errors from send or from reading the response body, are not caught by the adapter, so callers receive them unchanged."
 			},
@@ -322,12 +322,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2EvidenceStoreError",
 						"type": "thrown",
 						"description": "Thrown synchronously with the message 'Invalid R2 evidence name' when file is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown synchronously by safeId with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens; the file check runs first."
 					}
@@ -371,12 +371,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2EvidenceStoreError",
 						"type": "thrown",
 						"description": "Thrown synchronously with the message 'Invalid R2 replay name' when file is not 64 lowercase hex characters followed by .mp4."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown synchronously by safeId with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens; the file check runs first."
 					}
@@ -395,22 +395,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Local report storage requires an isolated test store",
 						"type": "thrown",
 						"description": "Thrown synchronously by r2EvidenceConfig with the message 'Local-only storage is restricted to temporary test stores; real report media requires Cloudflare R2' when PROJECT_REPORTS_ASSET_STORAGE is local and PROJECT_REPORTS_HOME is not under tmpdir(), /tmp or /private/tmp."
 					},
 					{
-						"name": "Error",
+						"name": "r2EvidenceConfig failure (Reports config)",
 						"type": "thrown",
 						"description": "Thrown synchronously by r2EvidenceConfig with the message 'Cloudflare R2 evidence storage is partially configured; real reports require all four R2 settings' when any of accountId, bucket, accessKeyId or secretAccessKey is empty, unless all four are empty inside an isolated test store."
 					},
 					{
-						"name": "Error",
+						"name": "r2EvidenceConfig failure (Reports config)",
 						"type": "thrown",
 						"description": "Thrown synchronously by r2EvidenceConfig with the message 'R2 endpoint override must be a local test server' when PROJECT_REPORTS_R2_ENDPOINT is non-empty and is not exactly http://127.0.0.1 followed by a port."
 					},
 					{
-						"name": "Error",
+						"name": "readLocalR2Config failure (Reports config)",
 						"type": "thrown",
 						"description": "When PROJECT_REPORTS_ASSET_STORAGE is not local, NODE_ENV is not test and PROJECT_REPORTS_CONFIG_FILE is set, a file-system error other than ENOENT (such as EACCES) raised while reading that file is rethrown unchanged by readLocalR2Config."
 					}
@@ -464,17 +464,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2EvidenceStoreError",
 						"type": "thrown",
 						"description": "Thrown by evidenceObjectKey inside put, so put rejects with the message 'Invalid R2 evidence name' when file is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown by safeId inside put, so put rejects with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens."
 					},
 					{
-						"name": "Error",
+						"name": "R2 asset upload failure",
 						"type": "thrown",
 						"description": "Failures from the S3 client's send call with PutObjectCommand are not caught, so put rejects with them unchanged."
 					}
@@ -515,22 +515,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2EvidenceStoreError",
 						"type": "thrown",
 						"description": "Thrown by evidenceObjectKey inside get, so get rejects with the message 'Invalid R2 evidence name' when file is not 64 lowercase hex characters followed by .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown by safeId inside get, so get rejects with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens."
 					},
 					{
-						"name": "Error",
+						"name": "R2EvidenceStoreError",
 						"type": "thrown",
 						"description": "Thrown by read when the GetObjectCommand response has no Body, so get rejects with the message 'R2 evidence has no body'."
 					},
 					{
-						"name": "Error",
+						"name": "R2 asset download or response read failure",
 						"type": "thrown",
 						"description": "Failures from the S3 client's send call with GetObjectCommand, or from reading the response body, are not caught, so get rejects with them unchanged."
 					}
@@ -576,17 +576,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2EvidenceStoreError",
 						"type": "thrown",
 						"description": "Thrown by replayObjectKey inside putReplay, so putReplay rejects with the message 'Invalid R2 replay name' when file is not 64 lowercase hex characters followed by .mp4."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown by safeId inside putReplay, so putReplay rejects with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens."
 					},
 					{
-						"name": "Error",
+						"name": "R2 replay upload failure",
 						"type": "thrown",
 						"description": "Failures from the S3 client's send call with PutObjectCommand are not caught, so putReplay rejects with them unchanged."
 					}
@@ -626,22 +626,22 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "R2EvidenceStoreError",
 						"type": "thrown",
 						"description": "Thrown by replayObjectKey inside getReplay, so getReplay rejects with the message 'Invalid R2 replay name' when file is not 64 lowercase hex characters followed by .mp4."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown by safeId inside getReplay, so getReplay rejects with the message 'Invalid report or asset ID' when reportId is not 1 to 100 letters, digits, underscores or hyphens."
 					},
 					{
-						"name": "Error",
+						"name": "R2EvidenceStoreError",
 						"type": "thrown",
 						"description": "Thrown by read when the GetObjectCommand response has no Body, so getReplay rejects with the message 'R2 evidence has no body'."
 					},
 					{
-						"name": "Error",
+						"name": "R2 replay download or response read failure",
 						"type": "thrown",
 						"description": "Failures from the S3 client's send call with GetObjectCommand, or from reading the response body, are not caught, so getReplay rejects with them unchanged."
 					}

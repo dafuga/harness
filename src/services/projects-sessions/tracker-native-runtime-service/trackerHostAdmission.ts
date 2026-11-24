@@ -6,8 +6,14 @@ import type {
 	TrackerHostAdapterConfig,
 	TrackerHostLaunchConfig
 } from './nativeTrackerHostEffects.types';
-import type { TrackerHostRoute, TrackerHostSession } from './trackerHostLaunch.types';
+import type {
+	TrackerHostRoute,
+	TrackerHostSession,
+	TrackerHostTarget
+} from './trackerHostLaunch.types';
 import { finishedTrackerSession } from './trackerHostInventory';
+
+export const trackerHostCapacityHold = 'Tracker host is at session capacity';
 
 export function trackerHostAdmission(
 	store: TrackerPersistenceService,
@@ -27,10 +33,14 @@ export function trackerHostAdmission(
 		const route = routeFor(item);
 		if (!route || !configuredLane(config, route.platform))
 			return 'no approved Tracker repository or platform for this node';
-		if (occupiedHostSlots(store, inventory()) >= cap) return 'Tracker host is at session capacity';
+		if (occupiedHostSlots(store, inventory()) >= cap) return trackerHostCapacityHold;
 		if (rung && !['codex', 'claude'].includes(rung.cli)) return 'no supported Tracker provider';
 		if (adapter?.dueDisk && intent.source === 'due' && item.adapterDueOwner === store.node)
-			return adapterDueDiskHold({ config, repo: route.repo, dueDisk: adapter.dueDisk });
+			return adapterDueDiskHold({
+				config,
+				route,
+				dueDisk: adapter.dueDisk
+			});
 		return null;
 	};
 }
@@ -97,14 +107,14 @@ function configuredLane(config: TrackerHostLaunchConfig, platform: 'linux' | 'ma
 
 function adapterDueDiskHold({
 	config,
-	repo,
+	route,
 	dueDisk
 }: {
 	config: TrackerHostLaunchConfig;
-	repo: string;
+	route: TrackerHostTarget;
 	dueDisk: NonNullable<TrackerHostAdapterConfig['dueDisk']>;
 }) {
-	const repoHold = trackerAdapterDiskHold(repo, dueDisk);
+	const repoHold = trackerAdapterDiskHold('workdir' in route ? route.workdir : route.repo, dueDisk);
 	if (repoHold || 'driver' in config) return repoHold;
 	return trackerAdapterDiskHold(config.managed.stateDirectory, dueDisk);
 }

@@ -32,32 +32,32 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Game level is not approved and built",
 				"type": "thrown",
 				"description": "Thrown by stepGame with the message 'Approve and build the level before playing.' when LevelValidator.isReady(view) is false, meaning the view's planning has no current proposal (LevelValidator.isCurrent is false), its approved and built ids are not both the proposal id, or its world does not match the proposal layout. Views without planning are always ready, so they never throw it."
 			},
 			{
-				"name": "Error",
+				"name": "Nonfinite movement input",
 				"type": "thrown",
 				"description": "Thrown by stepGame with the message 'Movement must be finite.' when input.x or input.y is not a finite number, which covers NaN, Infinity, -Infinity and any non-number value."
 			},
 			{
-				"name": "Error",
+				"name": "Conflicting mechanic state write",
 				"type": "thrown",
 				"description": "Thrown by stepGame, only when a mechanics array is passed, with the message 'Conflicting mechanic write: ' followed by the state key when two mechanics write the same key in one tick. Mechanics run sorted by id, so the error is raised on the second write to that key."
 			},
 			{
-				"name": "Error",
+				"name": "Unsafe mechanic state field",
 				"type": "thrown",
 				"description": "Thrown by stepGame, only when a mechanics array is passed, with the message 'Unsafe state field.' when a mechanic's patch contains a key named '__proto__', 'constructor' or 'prototype'."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid game document",
 				"type": "thrown",
 				"description": "Thrown by assertDocument with the message made by joining every validateDocument message with '; ' (for example 'Invalid game document') whenever validateDocument(input) returns at least one message. When validateDocument returns no messages, assertDocument returns without throwing."
 			},
 			{
-				"name": "Error",
+				"name": "Browser canvas context unavailable",
 				"type": "thrown",
 				"description": "Thrown by create3d, from the Software3dAdapter constructor, with the message 'This browser cannot create a game canvas.' only when canvas.getContext('webgl2') and canvas.getContext('2d') both return null."
 			}

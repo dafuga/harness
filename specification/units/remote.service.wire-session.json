@@ -63,7 +63,8 @@
 					{
 						"status": "running"
 					}
-				]
+				],
+				"unknownReason": "Each event type determines its own payload format and the wire session forwards that payload."
 			}
 		],
 		"outputs": [
@@ -151,7 +152,8 @@
 							{
 								"status": "running"
 							}
-						]
+						],
+						"unknownReason": "Each event type determines its own payload format and the wire session forwards that payload."
 					}
 				],
 				"outputs": [

@@ -115,7 +115,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ClaudeQueryFailedError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Claude query failed' by the private forward method when a Claude result message has a subtype other than 'success'. run catches it and reports it as an error event, so run does not reject with this error."
 			}

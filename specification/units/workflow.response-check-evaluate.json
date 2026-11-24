@@ -122,7 +122,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Response evaluator configuration or request failure",
 				"type": "thrown",
 				"description": "Thrown when a nonblank response uses credentialed evaluation and the selected environment variable is missing or whitespace; failures from the selected evaluator also propagate."
 			}
@@ -207,7 +207,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Response evaluator configuration or request failure",
 						"type": "thrown",
 						"description": "Thrown when a nonblank response uses credentialed evaluation and the selected environment variable is missing or whitespace; failures from the selected evaluator also propagate."
 					}

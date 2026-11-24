@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/provider-discovery-service/MockupProviderUnavailableError.ts",
 			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.ts",
 			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.types.ts"
 		],
 		"symbols": [
+			"MockupProviderUnavailableError",
 			"ProviderDiscoveryService",
 			"ProviderDiscoveryService.constructor",
 			"ProviderDiscoveryService.list",
@@ -93,7 +95,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Provider discovery or Claude runner unavailable",
 				"type": "thrown",
 				"description": "Runner discovery failures propagate without wrapping. mockupRunner also rejects if Claude is unavailable."
 			},
@@ -106,6 +108,11 @@
 				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "The requested model is unavailable or the selected model does not support the supplied effort."
+			},
+			{
+				"name": "MockupProviderUnavailableError",
+				"type": "thrown",
+				"description": "The Claude runner reports that it is unavailable. The rejection uses the reported reason or the standard CLI-unavailable message."
 			}
 		],
 		"errorStatus": "declared",
@@ -144,7 +151,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "discover() failure (AgentRunner)",
 						"type": "thrown",
 						"description": "Promise.all rejects if any runner's discover() rejects, and this method propagates the rejection without wrapping it. The rejection reason comes from that runner."
 					}
@@ -163,9 +170,14 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "MockupProviderUnavailableError",
 						"type": "thrown",
-						"description": "Rejects with the discovery error, or with the reported reason when the Claude CLI is unavailable. Uses “Claude CLI is unavailable.” if discovery gives no reason."
+						"description": "The Claude runner reports that it is unavailable. The rejection uses the reported reason or the standard CLI-unavailable message."
+					},
+					{
+						"name": "Claude runner discovery failure",
+						"type": "propagated",
+						"description": "A rejection from the discovery call propagates."
 					}
 				],
 				"errorStatus": "declared"
@@ -214,7 +226,7 @@
 						"description": "The requested model is unavailable or the selected model does not support the supplied effort."
 					},
 					{
-						"name": "Error",
+						"name": "Selected provider discovery failure",
 						"type": "thrown",
 						"description": "Rejections from the selected runner’s discovery propagate without wrapping."
 					}

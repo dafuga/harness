@@ -14,6 +14,56 @@ export const fixtureTime = '2026-11-21T12:00:00.000Z';
 export const fixtureItem = 'taskfixture';
 export const fixtureTitle = 'Verify fixture CLI release';
 
+export async function verifyTrackerReminderScheduling(run: ReturnType<typeof observeCommand>) {
+	const at = new Date(Date.parse(fixtureTime) + 60_000).toISOString();
+	expect(await run('remind', 'taskfi')).toMatchObject({
+		code: 1,
+		err: expect.stringContaining('--at')
+	});
+	for (const invalid of [
+		fixtureTime,
+		fixtureTime.slice(0, 10),
+		fixtureTime.slice(0, -1),
+		'tomorrow'
+	]) {
+		expect(await run('remind', 'taskfi', '--at', invalid)).toMatchObject({ code: 1 });
+	}
+	const scheduled = await run('remind', 'taskfi', '--at', at.replace('Z', '+00:00'), '--json');
+	expect(scheduled).toMatchObject({ code: 0, err: '' });
+	expect(JSON.parse(scheduled.out)).toMatchObject({
+		id: fixtureItem,
+		remind_at: at,
+		status: 'blocked',
+		needs_daniel: true,
+		question: 'Approve the fixture?'
+	});
+	return at;
+}
+
+export async function verifyNativeLaunchReceipts({
+	run,
+	route
+}: Awaited<ReturnType<typeof compatibilityFixture>>) {
+	const item = { id: fixtureItem, kind: 'task', status: 'open', title: fixtureTitle };
+	const receipt = { id: 6, state: 'queued', node: primary };
+	route.mockResolvedValueOnce(Response.json({ ...item, run: receipt }));
+	expect(await run('launch', 'taskfi')).toMatchObject({
+		code: 0,
+		out: expect.stringContaining(`run #6 queued on ${primary}`),
+		err: ''
+	});
+	route.mockResolvedValueOnce(Response.json({ ...item, run: receipt }));
+	const json = await run('launch', 'taskfi', '--json');
+	expect(json.code).toBe(0);
+	expect(JSON.parse(json.out)).toMatchObject({ id: fixtureItem, run: receipt });
+	route.mockResolvedValueOnce(Response.json(item));
+	expect(await run('launch', 'taskfi')).toMatchObject({
+		code: 1,
+		out: '',
+		err: expect.stringContaining('native launcher returned no run confirmation')
+	});
+}
+
 export async function compatibilityFixture(
 	configureDispatch = true,
 	adapter?: TrackerAdapterPollDependencies

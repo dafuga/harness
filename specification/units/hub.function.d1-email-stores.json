@@ -52,7 +52,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid email proof row or D1 request failure",
 				"type": "thrown",
 				"description": "When a database row passed to records.emailProof or records.verifiedEmail violates the validator's field or value constraints, AuthRecordValidator throws Error('Hub auth record corrupt') rather than coercing the row."
 			}

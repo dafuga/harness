@@ -30,6 +30,10 @@ export interface RelayPairingRequest {
 	challenge: string;
 }
 
+export interface RelayManagePairingRequest extends RelayPairingRequest {
+	pairingId: string;
+}
+
 export interface RelayPairingPoll {
 	state: RelayPairingState;
 	expiresAt: string;
@@ -54,7 +58,12 @@ export type RelayHostFrame =
 	| { type: 'device-open'; deviceId: string; connectionId: string }
 	| { type: 'device-close'; deviceId: string; connectionId: string }
 	| { type: 'packet'; deviceId: string; connectionId: string; packet: SecurePacket }
-	| ({ type: 'pairing-request'; pairingId: string } & RelayPairingRequest)
+	| ({
+			type: 'pairing-request';
+			pairingId: string;
+			account?: true;
+			expiresAt?: string;
+	  } & RelayPairingRequest)
 	| { type: 'device-revoked'; deviceId: string }
 	| { type: 'ack'; ref: string; ok: boolean; error?: string };
 

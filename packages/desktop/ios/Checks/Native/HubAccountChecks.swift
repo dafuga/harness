@@ -37,7 +37,7 @@ extension Result {
 }
 
 /// Waits until what was asked answers, a few seconds at most.
-private func awaited<T>(_ ask: (@escaping (T) -> Void) -> Void) -> T? {
+func awaited<T>(_ ask: (@escaping (T) -> Void) -> Void) -> T? {
     var result: T?
     ask { result = $0 }
     wait { result != nil }
@@ -52,7 +52,7 @@ private let hubAda: [String: Any] = ["id": "google:ada", "name": "Ada", "email":
 private let hubKept = HubAccountCredential(origin: hubOrigin.absoluteString, subject: "google:ada", name: "Ada",
     email: "ada@example.invalid", token: hubToken, expiresAt: Date(timeIntervalSince1970: 1_900_000_000))
 
-private func hubJSON(_ status: Int, _ object: [String: Any]) -> HubAccountReply {
+func hubJSON(_ status: Int, _ object: [String: Any]) -> HubAccountReply {
     HubAccountReply(status: status, contentType: "application/json", data: RemoteCoding.json(object) ?? Data())
 }
 
