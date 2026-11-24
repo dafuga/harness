@@ -83,6 +83,11 @@ function expectConnectedFleet(
 				lastError: null,
 				pending_push: 0
 			},
+			machines: [
+				{ node: primary, status: 'ok' },
+				{ node: secondary, status: 'busy', last_tick_at: timestamp },
+				{ node: 'grok-box', status: 'offline', last_tick_at: null }
+			],
 			autolaunch: {
 				computers: [
 					{ computer: primary, state: 'polling', active_runs: 0 },

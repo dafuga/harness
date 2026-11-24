@@ -32,16 +32,33 @@ export function trackerSupervisorStatus(
 
 function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolean) {
 	const notification = runtime.notifications?.status();
+	const runs = activeRunCounts(runtime.store.database);
+	const computers = trackerFleetHealth(runtime, runs.started);
 	return {
 		chief_of_staff: notification?.chiefOfStaff ?? 'not configured',
 		backup: { enabled: false, note: 'backups run on the hub (set backup.enabled to change)' },
-		machines: [],
+		machines: computers.map(machineFromComputer),
 		webhook: notification?.webhook ?? defaultWebhookStatus(hub),
 		jobs: trackerJobsStatus(runtime),
 		adapters: runtime.adapter?.status() ?? { runner: null, active: false },
-		autolaunch: trackerAutolaunchStatus(runtime),
+		autolaunch: trackerAutolaunchStatus(runtime, runs.active, computers),
 		quiet_hours: notification?.quietHours ?? null
 	};
+}
+
+type FleetComputer = ReturnType<typeof trackerFleetHealth>[number];
+
+/**
+ * The overview status of one computer. Only a polling launcher counts as reachable; offline,
+ * stale, failing, disabled and unknown computers all read as offline, so none is shown as
+ * available without a fresh tick. A polling computer with active runs is busy.
+ */
+function machineFromComputer(computer: FleetComputer) {
+	let status = 'offline';
+	if (computer.state === 'polling') {
+		status = (computer.active_runs ?? 0) > 0 ? 'busy' : 'ok';
+	}
+	return { node: computer.computer, status, last_tick_at: computer.last_tick_at };
 }
 
 function defaultWebhookStatus(hub: boolean) {
@@ -64,14 +81,17 @@ function trackerJobsStatus({ store, recurring }: TrackerNativeRuntimeService) {
 	);
 }
 
-function trackerAutolaunchStatus(runtime: TrackerNativeRuntimeService) {
-	const runs = activeRunCounts(runtime.store.database);
+function trackerAutolaunchStatus(
+	runtime: TrackerNativeRuntimeService,
+	activeRuns: number,
+	computers: FleetComputer[]
+) {
 	return {
 		enabled: false,
 		stuck: [],
 		...runtime.scheduler?.status(),
-		active_runs: runs.active,
-		computers: trackerFleetHealth(runtime, runs.started)
+		active_runs: activeRuns,
+		computers
 	};
 }
 
