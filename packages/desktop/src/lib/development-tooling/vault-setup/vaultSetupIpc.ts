@@ -1,3 +1,4 @@
+// @harness-uid u_qteonwy4tg
 import { ipcMain } from 'electron';
 import type { BrowserWindow } from 'electron';
 import { macVaultInstaller } from '../../../../../../deploy/vault/setup/macInstaller';

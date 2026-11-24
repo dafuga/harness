@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.module.development-tooling-vault-setup-vault-setup-ipc",
+	"uid": "u_qteonwy4tg",
 	"kind": "module",
 	"title": "Local Vault IPC",
 	"responsibility": "Restricts Vault installer status and write actions to the trusted top frame of the local Harness Mac window.",
@@ -30,8 +31,19 @@
 				"description": "Registers IPC handlers for Vault status and fixed setup or remove actions. Untrusted callers and unknown actions receive an error without starting the installer."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "unsupported",
+				"type": "returned",
+				"description": "Status is unsupported for callers outside the trusted local macOS window."
+			},
+			{
+				"name": "Operation refused",
+				"type": "returned",
+				"description": "A mutation returns a reason if the caller is untrusted or the action is unknown."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "vaultSetupIpc",
@@ -49,7 +61,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []

@@ -35,10 +35,11 @@
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Reports an unsupported host platform or failure to launch the local installer."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "VaultSetupCommand.register",
@@ -56,7 +57,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []
