@@ -18,7 +18,7 @@ export function bindTrackerListener(
 		hostname: host,
 		port,
 		reusePort: false,
-		idleTimeout: type === 'sync' ? 70 : 15,
+		idleTimeout: type === 'sync' ? 70 : 30,
 		fetch(request, server) {
 			const origin = `http://${host}:${server.port}`;
 			if (!allowedLocalRequest(request, origin, type))

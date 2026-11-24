@@ -35,15 +35,27 @@ export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: stri
 	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
 		1
 	);
-	expect(await fixtureTrackerJson(spoke, ['launch', 'off', short])).toMatchObject({
-		id,
-		auto: null,
-		schedule_off: true
-	});
+	await verifyLaunchCliTimeout(spoke, short, id);
 	expect(await fixtureTrackerJson(spoke, ['launch', 'on', short])).toMatchObject({
 		id,
 		schedule_off: false
 	});
+}
+
+async function verifyLaunchCliTimeout(spoke: TrackerNodeFixture, short: string, id: string) {
+	const clear = ['launch', 'off', short];
+	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({
+		id,
+		auto: null,
+		schedule_off: true
+	});
+	const waiting = await trackerProcess(spoke, ['launch', short, '--computer', 'grok-box']).exited;
+	expect(waiting).toMatchObject({
+		code: 1,
+		stdout: '',
+		stderr: expect.stringContaining('no run confirmation within 20 seconds on grok-box')
+	});
+	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({ id, auto: null });
 }
 
 export async function verifyLaunchWatchdogBoundary(

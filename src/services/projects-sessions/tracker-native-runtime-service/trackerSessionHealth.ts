@@ -103,7 +103,7 @@ function itemHealth(
 	if (!canInspectItem(snapshot, target, history)) return undefined;
 	const pending = pendingLaunch(snapshot, item, history);
 	if (pending) {
-		return pending.run && snapshot.now - pending.at >= sessionHealthInterval
+		return snapshot.now - pending.at >= sessionHealthInterval
 			? stalledIssue(snapshot.host, item, pending.at, pending.run)
 			: undefined;
 	}
@@ -155,15 +155,17 @@ function stalledIssue(
 	host: string,
 	item: TrackerItem,
 	at: number,
-	run: TrackerListedRun
+	run?: TrackerListedRun
 ): TrackerSessionHealthIssue {
 	return {
 		item_id: item.id,
 		host,
 		kind: 'launch-stuck',
-		session: run.tmux ?? null,
-		reason: `Tracker run #${run.id} has been queued for over 10 minutes without a live session.`,
-		identity: `${run.id}:${at}`
+		session: run?.tmux ?? null,
+		reason: run
+			? `Tracker run #${run.id} has been queued for over 10 minutes without a live session.`
+			: 'Launch already requested for over 10 minutes without a run.',
+		identity: `${run?.id ?? 'request'}:${at}`
 	};
 }
 

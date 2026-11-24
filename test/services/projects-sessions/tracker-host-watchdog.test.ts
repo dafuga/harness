@@ -70,8 +70,8 @@ async function proveWatchdog(root: string) {
 			.split('\n')
 			.map((line) => JSON.parse(line));
 		expect(effects).toMatchObject([
-			{ operation: 'watchdog-cos', alerts: [{ item_id: requestId, host: 'harbor-mbp-2' }] },
 			{ operation: 'watchdog-nudge', itemId, pane: { key: 'synthetic-pane' } },
+			{ operation: 'watchdog-cos', alerts: [{ item_id: requestId, host: 'harbor-mbp-2' }] },
 			{ operation: 'watchdog-cos', alerts: [{ item_id: itemId, host: node }] }
 		]);
 	} finally {

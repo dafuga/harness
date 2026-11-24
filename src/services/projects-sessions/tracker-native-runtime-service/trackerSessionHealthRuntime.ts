@@ -51,7 +51,11 @@ export async function applyTrackerSessionHealth(
 	state: { now: number; items: readonly TrackerItem[]; launch?: TrackerWatchdogLaunch },
 	signal: AbortSignal
 ) {
-	const active = new Set(issues.map(healthKey));
+	// The hub delivers request-only alerts through the one-minute launch scan.
+	const monitored = issues.filter(
+		({ kind, identity }) => kind !== 'launch-stuck' || !identity.startsWith('request:')
+	);
+	const active = new Set(monitored.map(healthKey));
 	const stored = readWatchdogAlerts(store);
 	const existing = Object.entries(stored);
 	const retained = existing.filter(
@@ -59,7 +63,7 @@ export async function applyTrackerSessionHealth(
 	);
 	if (retained.length !== existing.length)
 		store.writeMeta({ watchdog_alerts: JSON.stringify(Object.fromEntries(retained)) });
-	for (const issue of issues) {
+	for (const issue of monitored) {
 		signal.throwIfAborted();
 		await publishIssue(store, issue, state);
 	}
