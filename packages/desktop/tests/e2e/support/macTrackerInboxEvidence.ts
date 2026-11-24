@@ -66,7 +66,7 @@ export async function verifyMacWireframeOpen(app: ElectronApplication, page: Pag
 			Reflect.set(process, 'trackerFixtureExternalUrl', url);
 		};
 	});
-	await page.getByRole('link', { name: 'Mac wireframe' }).click();
+	await page.getByRole('link', { name: 'Mac wireframe' }).click({ noWaitAfter: true });
 	await expect
 		.poll(() => app.evaluate(() => Reflect.get(process, 'trackerFixtureExternalUrl')))
 		.toBe('https://example.test/mac.png');

@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import { trackerIsoTime } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
@@ -16,7 +17,7 @@ export async function writeTrackerPlanning(
 	request: Request,
 	target: { id: string; verb: 'stage' | 'artifact'; actor: string | null },
 	dependencies: { store: TrackerPersistenceService; items: TrackerItemReadRepository; now: number }
-) {
+): Promise<TrackerItem> {
 	const body = await readItemBody(request, trackerArtifactMaxBytes * 2);
 	request.signal.throwIfAborted();
 	const next = trackerStage(body.stage);

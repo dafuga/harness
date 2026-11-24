@@ -39,7 +39,7 @@ function checkSnapshot(first: unknown) {
 	});
 }
 
-test('bootstraps a redacted snapshot and sends a replayable delta for planning and run changes', async () => {
+test('bootstraps a redacted snapshot and sends a replayable delta for a run without an item edit', async () => {
 	const fixture = hub();
 	try {
 		fixture.item('fixture001', {
@@ -61,10 +61,6 @@ test('bootstraps a redacted snapshot and sends a replayable delta for planning a
 		const first = await response.json();
 		checkSnapshot(first);
 		expect(JSON.stringify(first)).not.toMatch(/Private item|synthetic-example|host-only/);
-		fixture.item('fixture001', {
-			planning_artifact_detail: '{"summary":"Designs are ready"}',
-			planning_promotion_detail: JSON.stringify({ by: 'Fixture Planner', at: updatedAt })
-		});
 		fixture.db.exec("UPDATE runs SET state = 'finished', outcome = 'done', ended_at = 3");
 		const request = '&cursor=' + first.cursor;
 		const delta = await (await fixture.pull(request)).json();
@@ -74,23 +70,14 @@ test('bootstraps a redacted snapshot and sends a replayable delta for planning a
 			cursor: expect.any(String),
 			hasMore: false,
 			operations: [
-				{
-					id: 'fixture001',
-					row: {
-						stage: 'detail',
-						planning: {
-							artifacts: { detail: { summary: 'Designs are ready' } },
-							promotions: [{ stage: 'detail', by: 'Fixture Planner', at: updatedAt }]
-						},
-						runs: [{ state: 'finished', outcome: 'done', endedAt: 3 }]
-					}
-				}
+				{ id: 'fixture001', row: { runs: [{ state: 'finished', outcome: 'done', endedAt: 3 }] } }
 			]
 		});
 		fixture.restart();
 		expect(await (await fixture.pull(request)).json()).toEqual(delta);
+		const planningCursor = await checkPlanningDelta(fixture, delta.cursor);
 		fixture.item('fixture001', { deleted: true });
-		const removed = await (await fixture.pull('&cursor=' + delta.cursor)).json();
+		const removed = await (await fixture.pull('&cursor=' + planningCursor)).json();
 		expect(removed.operations).toEqual([{ id: 'fixture001', row: null }]);
 		const caughtUp = await (await fixture.pull('&cursor=' + removed.cursor)).json();
 		expect(caughtUp).toMatchObject({ operations: [], cursor: removed.cursor, hasMore: false });
@@ -98,6 +85,27 @@ test('bootstraps a redacted snapshot and sends a replayable delta for planning a
 		fixture.db.close();
 	}
 });
+
+async function checkPlanningDelta(fixture: ReturnType<typeof hub>, cursor: string) {
+	fixture.item('fixture001', {
+		planning_artifact_detail: '{"summary":"Designs are ready"}',
+		planning_promotion_detail: JSON.stringify({ by: 'Fixture Planner', at: updatedAt })
+	});
+	const changed = await (await fixture.pull('&cursor=' + cursor)).json();
+	expect(changed.operations).toMatchObject([
+		{
+			id: 'fixture001',
+			row: {
+				stage: 'detail',
+				planning: {
+					artifacts: { detail: { summary: 'Designs are ready' } },
+					promotions: [{ stage: 'detail', by: 'Fixture Planner', at: updatedAt }]
+				}
+			}
+		}
+	]);
+	return changed.cursor as string;
+}
 
 test('rejects another scope cursor, malformed scope and replica reads from a spoke', async () => {
 	const central = hub();

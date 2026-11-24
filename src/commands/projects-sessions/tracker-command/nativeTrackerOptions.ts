@@ -1,6 +1,5 @@
 // @harness-uid u_r7qgepnoax
 import { resolve } from 'node:path';
-import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
 const text = { type: 'string' } as const;
@@ -179,8 +178,6 @@ export function nativeTrackerTimedItemRequest(
 	[id, ...words]: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
-	if (command === 'stage' || command === 'artifact')
-		return nativeTrackerPlanningRequest(command, id, words);
 	if (command === 'remind') return reminderRequest(id, words, values.at);
 	const decision = decisionRequest(command, id, words, values.until);
 	if (decision) return decision;

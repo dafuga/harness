@@ -1,3 +1,4 @@
+import { qualifyPlanningStages } from './trackerPlanningAssertions';
 import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
@@ -68,25 +69,6 @@ export async function proveForegroundSync(
 		expect((await hubOwner.stop()).code).toBe(0);
 	}
 	expect((await trackerProcess(spoke, ['ensure']).exited).code).toBe(3);
-}
-
-async function qualifyPlanningStages(spoke: TrackerNodeFixture, id: string) {
-	expect(await fixtureTrackerJson(spoke, ['show', id])).toMatchObject({ stage: 'idea' });
-	for (const stage of ['detail', 'design', 'build']) {
-		expect(
-			await fixtureTrackerJson(spoke, ['stage', id, stage, '--by', 'fixture-planner'])
-		).toMatchObject({
-			stage,
-			planning: {
-				promotions: expect.arrayContaining([
-					{ stage, by: 'fixture-planner', at: expect.any(String) }
-				])
-			}
-		});
-	}
-	expect(await fixtureTrackerJson(spoke, ['list', '--stage', 'build'])).toMatchObject([
-		{ id, stage: 'build' }
-	]);
 }
 
 async function verifySpokePublication(hub: TrackerNodeFixture) {

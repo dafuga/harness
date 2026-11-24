@@ -4,8 +4,8 @@
 	"uid": "u_dpbqtddngd",
 	"kind": "module",
 	"title": "MacTrackerInboxService",
-	"responsibility": "Owns the MacTrackerInboxService library module.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Read the Mac Tracker inbox over its loopback API and project item stages, artifacts and existing decision data for the renderer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -104,6 +104,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		},

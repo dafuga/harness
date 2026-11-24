@@ -4,8 +4,8 @@
 	"uid": "u_g7kdpz7bel",
 	"kind": "service",
 	"title": "TrackerLocalApiService",
-	"responsibility": "Owns the TrackerLocalApiService service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Serve the local Tracker item API, including stage promotion and artifact writes through the item journal.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -15,6 +15,7 @@
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalPlanning.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts"
 		],
 		"symbols": [
@@ -35,6 +36,7 @@
 			"recordTrackerSessionItem",
 			"readItemBody",
 			"itemMutationContext",
+			"writeTrackerPlanning",
 			"isTrackerManualLaunch",
 			"planTrackerManualLaunch"
 		]
@@ -199,6 +201,21 @@
 				"required": true
 			},
 			{
+				"name": "writeTrackerPlanning.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "writeTrackerPlanning.target",
+				"type": "{ id: string; verb: 'stage' | 'artifact'; actor: string | null }",
+				"required": true
+			},
+			{
+				"name": "writeTrackerPlanning.dependencies",
+				"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository; now: number }",
+				"required": true
+			},
+			{
 				"name": "isTrackerManualLaunch.verb",
 				"type": "string | undefined",
 				"required": true
@@ -268,6 +285,10 @@
 			{
 				"name": "itemMutationContext",
 				"type": "TrackerItemMutationContext"
+			},
+			{
+				"name": "writeTrackerPlanning",
+				"type": "Promise<TrackerItem>"
 			},
 			{
 				"name": "isTrackerManualLaunch",
@@ -552,6 +573,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "writeTrackerPlanning",
+				"inputs": [
+					{
+						"name": "writeTrackerPlanning.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "writeTrackerPlanning.target",
+						"type": "{ id: string; verb: 'stage' | 'artifact'; actor: string | null }",
+						"required": true
+					},
+					{
+						"name": "writeTrackerPlanning.dependencies",
+						"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository; now: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeTrackerPlanning",
+						"type": "Promise<TrackerItem>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "isTrackerManualLaunch",
 				"inputs": [
 					{
@@ -668,6 +717,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		},

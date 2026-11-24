@@ -24,10 +24,10 @@ function readPlanningArtifact(file: string): unknown {
 		try {
 			const info = fstatSync(fd);
 			const limit = trackerArtifactMaxBytes * 2;
-			if (!info.isFile() || info.size > limit) throw new Error();
+			if (!info.isFile() || info.size > limit) throw new TypeError('invalid artifact file');
 			const buffer = Buffer.alloc(limit + 1);
 			const size = readSync(fd, buffer, 0, buffer.length, 0);
-			if (size > limit) throw new Error();
+			if (size > limit) throw new TypeError('invalid artifact file');
 			return JSON.parse(buffer.subarray(0, size).toString('utf8'));
 		} finally {
 			closeSync(fd);

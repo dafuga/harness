@@ -132,16 +132,17 @@ export class TrackerLocalApiService {
 
 function trackerItemSpecialResponse(
 	request: Request,
-	[resource, id, verb, trailing]: string[],
+	parts: string[],
 	dependencies: {
 		store: TrackerPersistenceService;
 		items: TrackerItemReadRepository;
 		options: TrackerLocalApiOptions;
 	}
 ): Promise<Response> | undefined {
-	if (resource !== 'items' || !id || trailing !== undefined) return undefined;
+	if (!/^items\/[^/]+\/(?:inbox|stage|artifact)$/.test(parts.join('/'))) return undefined;
+	const [, id, verb] = parts;
 	const actor = readActor(request.headers);
-	if (verb === 'inbox' && !id.includes('/'))
+	if (verb === 'inbox')
 		return trackerInboxItem(request, id, { ...dependencies, actor }).then((item) =>
 			trackerResponse(200, item)
 		);
