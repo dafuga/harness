@@ -11,16 +11,18 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-dd",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-dl",
-			"reports.component.shared-primitives-atoms-html-dt",
 			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/components/development-tooling/DeployApprovalCard.svelte"],
-		"symbols": ["DeployApprovalCard", "DeployApprovalCard.footer"]
+		"symbols": [
+			"DeployApprovalCard",
+			"DeployApprovalCard.label",
+			"DeployApprovalCard.children",
+			"DeployApprovalCard.footer"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -68,6 +70,42 @@
 		"initialization": [],
 		"snippets": [
 			{
+				"name": "DeployApprovalCard.label",
+				"inputs": [
+					{
+						"name": "DeployApprovalCard.label.row",
+						"type": "Array<string | null | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalCard.label",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "DeployApprovalCard.children",
+				"inputs": [
+					{
+						"name": "DeployApprovalCard.children.row",
+						"type": "Array<string | null | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalCard.children",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "DeployApprovalCard.footer",
 				"inputs": [],
 				"outputs": [
@@ -93,22 +131,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-dd",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dl",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-dt",
 			"via": "import",
 			"origin": "derived"
 		},

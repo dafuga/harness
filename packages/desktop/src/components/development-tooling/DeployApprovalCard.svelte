@@ -58,8 +58,8 @@
 		className="deploy-approval-fields"
 		grouped={false}
 	>
-		{#snippet label(row)}{row[0]}{/snippet}
-		{#snippet children(row)}{row[1]}{/snippet}
+		{#snippet label(row: Array<string | null | undefined>)}{row[0]}{/snippet}
+		{#snippet children(row: Array<string | null | undefined>)}{row[1]}{/snippet}
 	</DetailList>
 	{#snippet footer()}
 		<hx-div class="decision-actions">

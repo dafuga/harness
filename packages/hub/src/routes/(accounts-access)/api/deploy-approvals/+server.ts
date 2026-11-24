@@ -3,9 +3,14 @@ import { env } from '$env/dynamic/private';
 import { hubEnvConfig } from '../../../../configs/development-tooling/hubEnvConfig';
 import { overviewSessions } from '../../../api/tracker-overview/trackerOverviewPolicy';
 import { serveDeployApprovals } from './serveDeployApprovals';
-import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = ({ request, platform }) => {
+export function GET({
+	request,
+	platform
+}: {
+	request: Request;
+	platform?: App.Platform;
+}): Promise<Response> {
 	const config = hubEnvConfig({ ...env, ...platform?.env });
 	return serveDeployApprovals(request, {
 		owner: config.HARNESS_DEPLOY_APPROVER_ID,
@@ -14,6 +19,6 @@ export const GET: RequestHandler = ({ request, platform }) => {
 		db: config.DB,
 		now: Date.now()
 	});
-};
+}
 
 export const POST = GET;

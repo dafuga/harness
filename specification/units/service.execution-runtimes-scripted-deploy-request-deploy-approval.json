@@ -8,25 +8,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/execution-runtimes/scripted-deploy/requestDeployApproval.ts"],
-		"symbols": ["requestDeployApproval"]
+		"source": [
+			"src/services/execution-runtimes/scripted-deploy/requestDeployApproval.ts",
+			"src/services/execution-runtimes/scripted-deploy/requestDeployApproval.types.ts"
+		],
+		"symbols": ["requestDeployApproval", "ApprovalContext"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "requestDeployApproval.plan",
-				"type": "Plan",
-				"required": true
-			},
-			{
-				"name": "requestDeployApproval.chain",
-				"type": "Journal | null",
-				"required": true
-			},
-			{
-				"name": "requestDeployApproval.differences",
-				"type": "number",
+				"name": "requestDeployApproval.context",
+				"type": "ApprovalContext",
 				"required": true
 			},
 			{
@@ -58,18 +51,8 @@
 				"name": "requestDeployApproval",
 				"inputs": [
 					{
-						"name": "requestDeployApproval.plan",
-						"type": "Plan",
-						"required": true
-					},
-					{
-						"name": "requestDeployApproval.chain",
-						"type": "Journal | null",
-						"required": true
-					},
-					{
-						"name": "requestDeployApproval.differences",
-						"type": "number",
+						"name": "requestDeployApproval.context",
+						"type": "ApprovalContext",
 						"required": true
 					},
 					{
@@ -89,12 +72,7 @@
 						"type": "Promise<ApprovalReceipt | undefined>"
 					}
 				],
-				"errors": [
-					{
-						"name": "ExpectedCliError",
-						"type": "thrown"
-					}
-				],
+				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],

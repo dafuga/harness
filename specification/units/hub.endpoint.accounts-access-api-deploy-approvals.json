@@ -8,25 +8,20 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"
-		],
-		"symbols": [
-			"GET",
-			"POST"
-		]
+		"source": ["packages/hub/src/routes/(accounts-access)/api/deploy-approvals/+server.ts"],
+		"symbols": ["GET", "POST"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "request",
+				"name": "GET.request",
 				"type": "Request",
 				"required": true
 			},
 			{
-				"name": "platform",
-				"type": "App.Platform | undefined",
+				"name": "GET.platform",
+				"type": "App.Platform",
 				"required": false
 			}
 		],
@@ -56,73 +51,24 @@
 				"name": "GET",
 				"inputs": [
 					{
-						"name": "request",
+						"name": "GET.request",
 						"type": "Request",
 						"required": true
 					},
 					{
-						"name": "platform",
-						"type": "App.Platform | undefined",
+						"name": "GET.platform",
+						"type": "App.Platform",
 						"required": false
 					}
 				],
 				"outputs": [
 					{
-						"name": "response",
-						"type": "Response"
+						"name": "GET",
+						"type": "Promise<Response>"
 					}
 				],
-				"errors": [
-					{
-						"name": "InvalidDecision",
-						"type": "HTTP 400"
-					},
-					{
-						"name": "UnknownApprovalAuthority",
-						"type": "HTTP 404"
-					},
-					{
-						"name": "DecisionUnavailable",
-						"type": "HTTP 409"
-					}
-				],
-				"errorStatus": "found"
-			},
-			{
-				"name": "POST",
-				"inputs": [
-					{
-						"name": "request",
-						"type": "Request",
-						"required": true
-					},
-					{
-						"name": "platform",
-						"type": "App.Platform | undefined",
-						"required": false
-					}
-				],
-				"outputs": [
-					{
-						"name": "response",
-						"type": "Response"
-					}
-				],
-				"errors": [
-					{
-						"name": "InvalidDecision",
-						"type": "HTTP 400"
-					},
-					{
-						"name": "UnknownApprovalAuthority",
-						"type": "HTTP 404"
-					},
-					{
-						"name": "DecisionUnavailable",
-						"type": "HTTP 409"
-					}
-				],
-				"errorStatus": "found"
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
