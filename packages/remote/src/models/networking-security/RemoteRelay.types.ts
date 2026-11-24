@@ -30,6 +30,10 @@ export interface RelayPairingRequest {
 	challenge: string;
 }
 
+export interface RelayManagePairingRequest extends RelayPairingRequest {
+	pairingId: string;
+}
+
 export interface RelayPairingPoll {
 	state: RelayPairingState;
 	expiresAt: string;

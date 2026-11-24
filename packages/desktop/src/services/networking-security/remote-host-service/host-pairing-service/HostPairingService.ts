@@ -44,6 +44,37 @@ function secretOf(value: unknown): PairingSecret | null {
 	return valid ? (item as PairingSecret) : null;
 }
 
+async function openRequest(
+	options: HostPairingOptions,
+	offer: Offer,
+	frame: HostPairingFrame,
+	now: number
+): Promise<Requested | null> {
+	const { hostId, keys } = options,
+		ephemeralKey = fromBase64Url(frame.ephemeralKey);
+	const secret = await sharedSecret(keys.privateKey, ephemeralKey);
+	const context = { hostId, pairingId: offer.pairingId, ephemeralKey, hostKey: keys.publicKey };
+	const envelope = await pairingEnvelope({ ...context, secret });
+	const sealed = secretOf(await openPairing(envelope.request, 'request', frame.sealed));
+	const proven =
+		sealed !== null &&
+		safeEqual(normalizeCode(sealed.code), normalizeCode(offer.code)) &&
+		safeEqual(sealed.challenge, frame.challenge);
+	if (!proven) return null;
+	await sharedSecret(keys.privateKey, fromBase64Url(sealed.deviceKey));
+	return {
+		pairingId: offer.pairingId,
+		deviceId: await remoteIdentity(sealed.deviceKey),
+		deviceName: sealed.deviceName,
+		platform: sealed.platform,
+		requestedAt: new Date(now).toISOString(),
+		expiresAt: offer.expiresAt,
+		challenge: sealed.challenge,
+		deviceKey: sealed.deviceKey,
+		approvalKey: envelope.approval
+	};
+}
+
 /** The computer can receive an account request alongside its QR offer. Both need local approval. */
 export class HostPairingService {
 	private current: Offer | null = null;
@@ -78,7 +109,7 @@ export class HostPairingService {
 		const account = frame.account === true;
 		const offer = account ? this.accountOffer(frame) : this.live(false);
 		if (!offer || offer.pairingId !== frame.pairingId || offer.request) return null;
-		const request = await this.opened(offer, frame).catch(() => null);
+		const request = await openRequest(this.options, offer, frame, this.now()).catch(() => null);
 		if (this.live(account) !== offer || offer.request) return null;
 		if (!request) return this.miss(offer, account);
 		offer.request = request;
@@ -123,37 +154,12 @@ export class HostPairingService {
 	private accountOffer({ pairingId, expiresAt }: HostPairingFrame): Offer | null {
 		const now = this.now(),
 			end = Date.parse(expiresAt ?? '');
-		if (!expiresAt || !(end > now && end <= now + remoteLimits.pairingTtlMs)) return null;
+		if (!expiresAt || !(end > now && end <= now + remoteLimits.pairingTtlMs + 60_000)) return null;
 		if (this.live(false)?.pairingId === pairingId) return null;
 		return (
 			this.live(true) ??
 			(this.account = { pairingId, code: '', expiresAt, misses: 0, request: null })
 		);
-	}
-	private async opened(offer: Offer, frame: HostPairingFrame): Promise<Requested | null> {
-		const { hostId, keys } = this.options,
-			ephemeralKey = fromBase64Url(frame.ephemeralKey);
-		const secret = await sharedSecret(keys.privateKey, ephemeralKey);
-		const context = { hostId, pairingId: offer.pairingId, ephemeralKey, hostKey: keys.publicKey };
-		const envelope = await pairingEnvelope({ ...context, secret });
-		const sealed = secretOf(await openPairing(envelope.request, 'request', frame.sealed));
-		const proven =
-			sealed !== null &&
-			safeEqual(normalizeCode(sealed.code), normalizeCode(offer.code)) &&
-			safeEqual(sealed.challenge, frame.challenge);
-		if (!proven) return null;
-		await sharedSecret(keys.privateKey, fromBase64Url(sealed.deviceKey));
-		return {
-			pairingId: offer.pairingId,
-			deviceId: await remoteIdentity(sealed.deviceKey),
-			deviceName: sealed.deviceName,
-			platform: sealed.platform,
-			requestedAt: new Date(this.now()).toISOString(),
-			expiresAt: offer.expiresAt,
-			challenge: sealed.challenge,
-			deviceKey: sealed.deviceKey,
-			approvalKey: envelope.approval
-		};
 	}
 	private miss(offer: Offer, account: boolean): null {
 		const limit = this.options.attempts ?? remoteLimits.pairingAttempts;

@@ -18,7 +18,7 @@ Prove real socket transport, cross-device isolation, unauthorized/revoked access
 
 ## Connect with the same Google account
 
-After Google sign-in, the unpaired phone shows computers registered for phone access under the same Hub account. The Hub derives the owner from the session and checks the relay's current registration before showing a computer. Show only the computer name, connection state and the identifier needed to select it. An empty or unavailable list keeps Other connection options available.
+After Google sign-in, the unpaired phone shows computers registered for phone access under the same Hub account. The Hub derives the owner from the session and checks the relay's current registration before showing a computer. A Mac registered before the directory was added becomes discoverable when it next authenticates its relay connection. Show only the computer name, connection state and the identifier needed to select it. An empty or unavailable list keeps Other connection options available.
 
 Selecting an online computer sends a short-lived, account-authenticated pairing request for that host. The phone creates and keeps its pairing proof in the native shell. The Mac still approves the specific phone and chooses the projects to grant. Until then, the phone has no access to projects from that computer. Denying, expiring, or disconnecting a request cannot grant access. Account changes discard outstanding phone requests and results. QR scanning remains an explicit fallback.
 

@@ -4,12 +4,18 @@ import Foundation
 /// the pairing, send the sealed request, wait for the person at the computer, exchange. An
 /// attempt that was cancelled answers nothing.
 final class RemotePairing {
+    struct Account {
+        let hostKey: String
+        let request: ([String: Any], @escaping (Result<Void, RemoteFailure>) -> Void) -> Void
+    }
+
     struct Input {
         let origin: String
         let hostId: String
         let pairingId: String
         let code: String
         let deviceName: String
+        var account: Account? = nil
     }
     typealias Done = (Result<RemoteRecord, RemoteFailure>) -> Void
 
@@ -42,6 +48,9 @@ final class RemotePairing {
         guard let origin = RemotePolicy.origin(input.origin) else {
             return done(.failure(.failed("The relay of this link is not an https address.")))
         }
+        if let account = input.account {
+            return ask(origin, ["hostKey": account.hostKey, "state": "open"], pending: pending, done: done)
+        }
         relay.get(origin, path) { result in
             self.queue.async {
                 guard !self.cancelled else { return }
@@ -58,7 +67,7 @@ final class RemotePairing {
             return done(.failure(.failed("This pairing is not open, or the relay named another computer.")))
         }
         hostKey = info["hostKey"] as? String ?? ""
-        relay.post(origin, "\(path)/request", body: body) { result in
+        submit(origin, body) { result in
             self.queue.async {
                 guard !self.cancelled else { return }
                 if case .failure(let failure) = result { return done(.failure(failure)) }
@@ -110,5 +119,14 @@ final class RemotePairing {
                 credential: approval.credential, generation: approval.generation, grant: approval.grant,
                 lastOnlineAt: nil, epoch: nil, sequence: 0, methods: nil)))
         }
+    }
+}
+
+extension RemotePairing {
+    private func submit(_ origin: URL, _ body: [String: Any],
+        done: @escaping (Result<Void, RemoteFailure>) -> Void
+    ) {
+        if let account = input.account { return account.request(body, done) }
+        relay.post(origin, "\(path)/request", body: body) { done($0.map { _ in () }) }
     }
 }

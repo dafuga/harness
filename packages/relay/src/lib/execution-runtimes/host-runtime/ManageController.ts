@@ -18,6 +18,7 @@ const operations = [
 	'unregister',
 	'directory-list',
 	'directory-add',
+	'directory-remove',
 	'pairing-key',
 	'pairing-request'
 ];
@@ -74,7 +75,8 @@ export class ManageController {
 		if (operation === 'directory-list') return relayResponse(200, this.store.directoryHosts());
 		if (typeof hostId !== 'string' || !remotePatterns.hostId.test(hostId))
 			return relayError(400, 'invalid-input');
-		this.store.rememberHost(hostId);
+		if (operation === 'directory-add') this.store.rememberHost(hostId);
+		else this.store.forgetHost(hostId);
 		return relayResponse(200, { ok: true });
 	}
 
@@ -85,19 +87,27 @@ export class ManageController {
 		if (!(await certifies(input.hostKey, input.hostId))) return relayError(400, 'invalid-input');
 		const current = this.store.host();
 		if (current && current.ownerId !== input.owner.id) return relayError(403, 'forbidden');
-		const indexed = await this.scope
-			.directory(input.owner.id)
-			.fetch('https://relay.internal/manage/directory-add', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					owner: input.owner,
-					hostId: input.hostId
-				})
-			});
-		if (!indexed.ok) return relayResponse(503, { error: 'unavailable' });
+		const indexed = await this.updateDirectory('add', input.owner.id, input.hostId);
+		if (!indexed) return relayResponse(503, { error: 'unavailable' });
 		const registered = this.registry.register(input);
 		return registered ? relayResponse(200, registered) : relayError(403, 'forbidden');
+	}
+
+	/** Reconnects also index registrations that predate the owner directory. */
+	async index(host: HostRecord): Promise<boolean> {
+		return this.updateDirectory('add', host.ownerId, host.hostId);
+	}
+
+	private async updateDirectory(operation: 'add' | 'remove', ownerId: string, hostId: string) {
+		const reply = await this.scope
+			.directory(ownerId)
+			.fetch(`https://relay.internal/manage/directory-${operation}`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ owner: { id: ownerId }, hostId })
+			})
+			.catch(() => null);
+		return reply?.ok === true;
 	}
 
 	private async run(
@@ -107,7 +117,10 @@ export class ManageController {
 	): Promise<Response> {
 		if (operation === 'summary') return relayResponse(200, this.registry.summary(host));
 		if ('deviceId' in call) this.services.revocation.revoke(call.deviceId);
-		else await this.registry.unregister();
+		else {
+			await this.registry.unregister();
+			await this.updateDirectory('remove', host.ownerId, host.hostId);
+		}
 		return relayResponse(200, { ok: true });
 	}
 }

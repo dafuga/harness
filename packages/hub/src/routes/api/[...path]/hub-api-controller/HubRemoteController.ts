@@ -45,7 +45,7 @@ async function pairingKey(call: Call): Promise<Response> {
 
 async function requestPairing(call: Call): Promise<Response> {
 	const hostId = validator.hostId(call.ids[0]);
-	const body = await hubBody(call.request);
+	const body = validator.pairing(await hubBody(call.request));
 	return hubHttp(await call.remote.relay.requestPairing({ owner: call.owner, hostId }, body), 202);
 }
 

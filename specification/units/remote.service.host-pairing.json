@@ -25,6 +25,7 @@
 			"HostPairingService.receive",
 			"HostPairingService.approve",
 			"HostPairingService.deny",
+			"HostPairingService.closeOffer",
 			"HostPairingService.close",
 			"HostPairingOptions",
 			"HostPairingOffer",
@@ -446,6 +447,18 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "HostPairingService.closeOffer",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HostPairingService.closeOffer",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "HostPairingService.close",

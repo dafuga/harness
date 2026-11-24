@@ -51,6 +51,12 @@ export class CapacitorEnvironmentAdapter {
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
 		const mac = computer.connect();
+		if (this.account && plugin.computers && plugin.connectAccountComputer) {
+			const list = plugin.computers.bind(plugin);
+			const connect = plugin.connectAccountComputer.bind(plugin);
+			phone.computers = async () => (await list()).computers;
+			phone.connectAccountComputer = async (input) => note(await connect(input));
+		}
 		const tracker = phoneTrackerTools(plugin);
 		const local = {
 			kind: 'capacitor',

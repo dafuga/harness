@@ -10,7 +10,7 @@ extension RemoteSession {
     /// Begins the one attempt, on the queue and within the turn of whoever asks: between the
     /// decision to pair and the attempt there is no later turn that anything could come before.
     func begin(_ input: RemotePairing.Input) -> Result<[String: Any], RemoteFailure> {
-        guard record == nil, pairing == nil else {
+        guard record == nil, pairing == nil, look == nil else {
             return .failure(.failed("Disconnect from the current computer first."))
         }
         let attempt = RemotePairing(input, queue: queue)
@@ -27,6 +27,16 @@ extension RemoteSession {
                 self.paired(result)
             })
         return .success(snapshot)
+    }
+
+    func cancelAccountPairing() {
+        queue.async {
+            guard self.pending?.account != nil else { return }
+            self.pairing?.cancel()
+            self.pairing = nil
+            self.pending = nil
+            self.move("unpaired")
+        }
     }
 
     /// A pairing that cannot be kept safely is not a pairing: the phone says why and stays apart.

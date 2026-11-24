@@ -80,6 +80,10 @@ class RemotePhoneState {
 		}
 		return this.ask((port) => port.scan({ deviceName }));
 	}
+	connectAccountComputer(hostId: string, deviceName: string) {
+		const connect = this.port?.connectAccountComputer;
+		if (connect) return this.ask(() => connect({ hostId, deviceName }));
+	}
 	/** Forgets the computer; the plugin deletes the credential and keys it held for it. */
 	disconnect() {
 		return this.ask((port) => port.disconnect());

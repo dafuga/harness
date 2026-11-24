@@ -29,6 +29,10 @@ export class HostStorageAdapter {
 		this.write(`directory:${hostId}`, hostId);
 	}
 
+	forgetHost(hostId: string): void {
+		this.remove(`directory:${hostId}`);
+	}
+
 	host(): HostRecord | undefined {
 		return this.read('host');
 	}

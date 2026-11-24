@@ -3,6 +3,7 @@ import type { RelayManageAdapterConfig, Operation } from './RelayManageAdapter.t
 import type {
 	RelayManageDevice,
 	RelayManageOwner,
+	RelayManagePairingRequest,
 	RelayManageRegister,
 	RelayRegistered,
 	RemoteHostSummary
@@ -68,7 +69,7 @@ export class RelayManageAdapter {
 		return { hostId: input.hostId, hostKey: result.hostKey };
 	}
 
-	async requestPairing(input: RelayManageOwner, body: Record<string, unknown>) {
+	async requestPairing(input: RelayManageOwner, body: RelayManagePairingRequest) {
 		const { pairingId, ephemeralKey, sealed, challenge } = body;
 		const request = { ephemeralKey, sealed, challenge };
 		const result = (await this.manage('pairing-request', {
