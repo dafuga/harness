@@ -8,7 +8,7 @@ import {
 	type Proof,
 	type Release
 } from '../../core/execution-runtimes/scripted-deploy/contracts';
-import { assertResult, parityReport } from '../../core/execution-runtimes/scripted-deploy/parity';
+import { assertResult } from '../../core/execution-runtimes/scripted-deploy/parity';
 import {
 	verifyApproval,
 	verifySignoff
@@ -24,7 +24,11 @@ import {
 	type DeployRegistry
 } from '../../validators/execution-runtimes/DeployManifestValidator';
 
-import { DeployPlanning, type DeployRequest } from './scripted-deploy/DeployPlanning';
+import {
+	DeployPlanning,
+	verifyCurrentDeployPlan,
+	type DeployRequest
+} from './scripted-deploy/DeployPlanning';
 
 import { DeployRecovery } from './scripted-deploy/DeployRecovery';
 import type { ApprovalReceipt } from '../../core/execution-runtimes/scripted-deploy/approvalInbox.types';
@@ -117,7 +121,12 @@ export class ScriptedDeployService {
 		const { plan } = record;
 		this.store.save(record);
 		const approval = await this.broker.authorize(plan, decision);
-		await this.revalidate(plan, approval, input, decision);
+		verifyApproval(plan, approval, this.registry, decision);
+		await verifyCurrentDeployPlan(this.planning, this.config, plan, input);
+		await this.broker.note(
+			plan.item,
+			`Deploy approval ${approval.payload.reference} for ${plan.action} run ${plan.id}, target ${plan.target}, plan ${hash(plan)}`
+		);
 		if (artifact) await verifyPreparedArtifact(this.store, plan, this.config.image);
 		verifyApproval(plan, approval, this.registry, decision);
 		record.approval = approval;
@@ -129,45 +138,6 @@ export class ScriptedDeployService {
 		record.phase = 'deployed';
 		this.store.save(record);
 		return await this.verification.verify(record);
-	}
-
-	private async revalidate(
-		plan: Plan,
-		approval: Proof,
-		input: DeployRequest,
-		decision?: ApprovalReceipt
-	): Promise<void> {
-		verifyApproval(plan, approval, this.registry, decision);
-		const current = await this.planning.inventory(plan.manifest);
-		const parity = parityReport(
-			this.config,
-			current,
-			plan.release ? { release: plan.release, target: plan.environment } : undefined
-		);
-		if (
-			parity.blocked ||
-			parity.digest !== plan.parity ||
-			manifestDigest(this.config) !== plan.manifest
-		) {
-			throw new ExpectedCliError('Provider state or deploy scripts changed after planning.');
-		}
-		const predecessor = this.planning.predecessor(input, current);
-		if (plan.signoff !== (predecessor?.signoff ? hash(predecessor.signoff) : null))
-			throw new ExpectedCliError('Predecessor sign-off changed after planning.');
-		await this.broker.note(
-			plan.item,
-			'Deploy approval ' +
-				approval.payload.reference +
-				' for ' +
-				plan.action +
-				' run ' +
-				plan.id +
-				', target ' +
-				plan.target +
-				', plan ' +
-				hash(plan)
-		);
-		verifyApproval(plan, approval, this.registry, decision);
 	}
 }
 
