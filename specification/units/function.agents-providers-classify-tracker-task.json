@@ -4,7 +4,7 @@
 	"uid": "u_6owiaffoxw",
 	"kind": "function",
 	"title": "classifyTrackerTask",
-	"responsibility": "Classify Tracker items and identify their model-selection risk and effort requirements.",
+	"responsibility": "Classify Tracker work, identify its automatic model route and eligibility, and set initial Sol effort.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -13,6 +13,7 @@
 			"src/utils/agents-providers/classifyTrackerTask.types.ts"
 		],
 		"symbols": [
+			"trackerTaskRoute",
 			"classifyTrackerTask",
 			"sizeOf",
 			"projectOf",
@@ -22,12 +23,19 @@
 			"solEffort",
 			"TrackerModelItem",
 			"TrackerTaskKind",
-			"TrackerTaskSize"
+			"TrackerTaskSize",
+			"TrackerTaskRoute"
 		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerTaskRoute.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item whose title and notes describe the requested activity."
+			},
 			{
 				"name": "classifyTrackerTask.item",
 				"type": "TrackerModelItem",
@@ -71,10 +79,10 @@
 				"description": "Classified work type used to select reasoning effort."
 			},
 			{
-				"name": "solEffort.size",
+				"name": "solEffort._size",
 				"type": "TrackerTaskSize",
 				"required": true,
-				"description": "Estimated work size used to select reasoning effort."
+				"description": "Estimated work size retained for existing callers. Initial effort depends on difficulty."
 			}
 		],
 		"outputs": [
@@ -111,12 +119,37 @@
 			{
 				"name": "solEffort",
 				"type": "string",
-				"description": "Sol reasoning effort for the classified type and estimated size."
+				"description": "High reasoning effort for hard tasks and medium for other initial Sol runs."
+			},
+			{
+				"name": "trackerTaskRoute",
+				"type": "TrackerTaskRoute",
+				"description": "Live deployment, computer use, visual work or the default route, in priority order."
 			}
 		],
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerTaskRoute",
+				"inputs": [
+					{
+						"name": "trackerTaskRoute.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item whose title and notes describe the requested activity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTaskRoute",
+						"type": "TrackerTaskRoute",
+						"description": "Live deployment, computer use, visual work or the default route, in priority order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "classifyTrackerTask",
 				"inputs": [
@@ -247,21 +280,21 @@
 						"description": "Classified work type used to select reasoning effort."
 					},
 					{
-						"name": "solEffort.size",
+						"name": "solEffort._size",
 						"type": "TrackerTaskSize",
 						"required": true,
-						"description": "Estimated work size used to select reasoning effort."
+						"description": "Estimated work size retained for existing callers. Initial effort depends on difficulty."
 					}
 				],
 				"outputs": [
 					{
 						"name": "solEffort",
 						"type": "string",
-						"description": "Sol reasoning effort for the classified type and estimated size."
+						"description": "High reasoning effort for hard tasks and medium for other initial Sol runs."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []

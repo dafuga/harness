@@ -4,7 +4,7 @@
 	"uid": "u_gs5pnxnxt4",
 	"kind": "function",
 	"title": "pickTrackerModel",
-	"responsibility": "Select the earliest eligible Tracker model, honor valid pins, and escalate from measured outcomes.",
+	"responsibility": "Select a Tracker model by activity, honor eligible pins, and escalate within the eligible route.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -65,7 +65,7 @@
 			{
 				"name": "retryTrackerModel",
 				"type": "TrackerModelRung",
-				"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
+				"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
 			}
 		],
 		"errors": [],
@@ -124,7 +124,7 @@
 					{
 						"name": "retryTrackerModel",
 						"type": "TrackerModelRung",
-						"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
+						"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
 					}
 				],
 				"errors": [],

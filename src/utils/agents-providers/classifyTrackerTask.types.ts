@@ -20,3 +20,5 @@ export type TrackerTaskKind =
 	| 'feature';
 
 export type TrackerTaskSize = 'small' | 'medium' | 'large';
+
+export type TrackerTaskRoute = 'live-deploy' | 'computer-use' | 'visual' | 'default';

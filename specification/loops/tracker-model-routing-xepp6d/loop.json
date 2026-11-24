@@ -2,7 +2,7 @@
 	"name": "tracker-model-routing-xepp6d",
 	"goal": "Route Tracker work by actual activity and use medium Sol by default. Verify native model selection and escalation.",
 	"createdAt": "2026-11-24T23:16:51.477Z",
-	"updatedAt": "2026-11-24T23:17:14.498Z",
+	"updatedAt": "2026-11-24T23:24:53.069Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T23:24:50.156Z",
+			"evidence": "The unchanged picker, policy, catalog, report, and API tests reproduced the old selections at 6faed68d44."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T23:24:53.069Z",
+			"evidence": "Use task intent to select only eligible specialists. Keep Sol medium by default and move up for hard work or retries."
 		},
 		{
 			"id": "green",
