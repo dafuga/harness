@@ -89,7 +89,13 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		notes_log: [{ text: 'Retain this note' }]
 	});
 	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
-	const launched = await fixtureTrackerJson(spoke, launch);
+	const rejected = await trackerProcess(spoke, launch).exited;
+	expect(rejected).toMatchObject({
+		code: 1,
+		stdout: '',
+		stderr: expect.stringContaining('launcher disabled')
+	});
+	const launched = await fixtureTrackerJson(spoke, ['show', short]);
 	expect(launched).toMatchObject({
 		id,
 		auto: expect.stringMatching(/^synthetic-spoke@/),
@@ -98,7 +104,8 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 		project: 'Tracker',
 		model: 'Fable:high'
 	});
-	expect(await fixtureTrackerJson(spoke, launch)).toEqual(launched);
+	expect((await trackerProcess(spoke, launch).exited).code).toBe(1);
+	expect(await fixtureTrackerJson(spoke, ['show', short])).toEqual(launched);
 	expect(await fixtureTrackerJson(spoke, ['pick', short])).toMatchObject({
 		rung: 'fable',
 		model: 'claude-fable-5-2',

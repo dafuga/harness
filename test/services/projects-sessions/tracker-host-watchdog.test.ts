@@ -53,7 +53,26 @@ async function proveWatchdog(root: string) {
 		);
 		await runtime.watchdog!.tick(signal);
 		expect(runtime.watchdog!.alerts()).toEqual([]);
-		clock += 11 * minute;
+		runtime.store.appendLocal({
+			itemId: requestId,
+			fields: {
+				title: 'Remote launch without a run',
+				kind: 'task',
+				status: 'open',
+				launch_target: 'harbor-mbp-2',
+				auto: 'fixture-request'
+			}
+		});
+		clock += minute - 1;
+		await runtime.watchdog!.tick(signal);
+		expect(runtime.watchdog!.alerts()).toEqual([]);
+		clock++;
+		await runtime.watchdog!.tick(signal);
+		expect(runtime.watchdog!.alerts()).toMatchObject([
+			{ item_id: requestId, kind: 'launch-without-run', host: 'harbor-mbp-2' }
+		]);
+		runtime.store.appendLocal({ itemId: requestId, fields: { auto: null, status: 'ignored' } });
+		clock += 10 * minute;
 		const restarted = create();
 		await restarted.watchdog!.tick(signal);
 		await restarted.watchdog!.tick(signal);
@@ -63,6 +82,7 @@ async function proveWatchdog(root: string) {
 			.split('\n')
 			.map((line) => JSON.parse(line));
 		expect(effects).toMatchObject([
+			{ operation: 'watchdog-cos', alerts: [{ item_id: requestId, host: 'harbor-mbp-2' }] },
 			{ operation: 'watchdog-nudge', itemId, pane: { key: 'synthetic-pane' } },
 			{ operation: 'watchdog-cos', alerts: [{ item_id: itemId, host: node }] }
 		]);

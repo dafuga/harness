@@ -4,6 +4,8 @@ import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
 import { loadTrackerNodeConfig } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import { trackerNodeRuntime } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
+import { trackerNodeApi } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
+import { TrackerSupervisorService } from '../../../src/services/projects-sessions/TrackerSupervisorService';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -49,6 +51,20 @@ async function proveHostCapacity(root: string) {
 			.soft(db.prepare('SELECT item_id, state FROM runs WHERE id > 8').all())
 			.toEqual([{ item_id: 'next100001', state: 'running' }]);
 		expect(existsSync(closed)).toBe(false);
+		await runtime.scheduler!.tick(signal);
+		const held = await trackerNodeApi(
+			new Request('http://tracker-fixture.invalid/items/next100002/launch?outcome=run', {
+				method: 'POST',
+				body: '{}'
+			}),
+			runtime,
+			new TrackerSupervisorService(runtime),
+			'fixture'
+		);
+		expect.soft(held.status).toBe(409);
+		expect
+			.soft(await held.json())
+			.toMatchObject({ error: expect.stringContaining('Tracker host is at session capacity') });
 		clock += 300_000;
 		writeFileSync(join(root, 'busy'), '');
 		await expectPaneRetained(runtime, signal, closed);
@@ -96,6 +112,7 @@ function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, fla
 			status: 'open',
 			project: 'Harness',
 			auto: id,
+			launch_source: 'manual',
 			computer: node,
 			launch_target: node,
 			...(flagged && { needs_daniel: 1, question: 'Fixture question' })
