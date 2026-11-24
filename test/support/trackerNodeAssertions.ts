@@ -40,11 +40,13 @@ export async function proveForegroundSync(
 				sink.base + '/callback'
 			]);
 			await qualifyItemCommands(spoke, id);
+			await qualifyPlanningStages(spoke, id);
 			const sync = await trackerProcess(spoke, ['sync']).exited;
 			expect(sync).toMatchObject({ code: 0, stdout: 'sync triggered\n' });
 			await expect
 				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
 				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
+			expect(await fixtureTrackerJson(hub, ['show', id])).toMatchObject({ stage: 'build' });
 			await verifySpokePublication(hub);
 			await verifyDefaultPickup(hub);
 			await verifyTrackerWire(syncPort, id);
@@ -66,6 +68,25 @@ export async function proveForegroundSync(
 		expect((await hubOwner.stop()).code).toBe(0);
 	}
 	expect((await trackerProcess(spoke, ['ensure']).exited).code).toBe(3);
+}
+
+async function qualifyPlanningStages(spoke: TrackerNodeFixture, id: string) {
+	expect(await fixtureTrackerJson(spoke, ['show', id])).toMatchObject({ stage: 'idea' });
+	for (const stage of ['detail', 'design', 'build']) {
+		expect(
+			await fixtureTrackerJson(spoke, ['stage', id, stage, '--by', 'fixture-planner'])
+		).toMatchObject({
+			stage,
+			planning: {
+				promotions: expect.arrayContaining([
+					{ stage, by: 'fixture-planner', at: expect.any(String) }
+				])
+			}
+		});
+	}
+	expect(await fixtureTrackerJson(spoke, ['list', '--stage', 'build'])).toMatchObject([
+		{ id, stage: 'build' }
+	]);
 }
 
 async function verifySpokePublication(hub: TrackerNodeFixture) {

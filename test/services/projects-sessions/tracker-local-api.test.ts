@@ -82,6 +82,57 @@ test('commits item and notes under the actor, serves the overview feed and retur
 	expect((await request(`/items/${prefix}`)).status).toBe(404);
 });
 
+test('projects and journals stage artifacts and sequential promotions', async () => {
+	const id = 'olditem001';
+	store.appendLocal({
+		itemId: id,
+		fields: { title: 'Existing design', status: 'open', kind: 'task', due: '2026-11-21' }
+	});
+	const item = `/items/${id}`;
+	const stage = (next: string) => request(`${item}/stage`, 'POST', { stage: next, by: 'spoofed' });
+	const artifact = (value: object) =>
+		request(`${item}/artifact`, 'POST', { stage: 'detail', artifact: value });
+	expect(await (await request(item)).json()).toMatchObject({ stage: 'idea' });
+	expect((await stage('design')).status).toBe(409);
+	expect((await stage('unknown')).status).toBe(400);
+	expect(
+		(await artifact({ links: [{ label: 'Unsafe', url: 'javascript:alert(1)' }] })).status
+	).toBe(400);
+	const detail = {
+		summary: 'Design the project list and item detail.',
+		pages: [
+			{
+				name: 'Projects',
+				states: { empty: 'Show an empty list' },
+				links: [{ kind: 'image', label: 'Design', url: 'https://example.test/design.png' }]
+			}
+		]
+	};
+	expect((await artifact(detail)).status).toBe(200);
+	expect(await (await stage('detail')).json()).toMatchObject({
+		stage: 'detail',
+		planning: {
+			artifacts: { detail },
+			promotions: [{ stage: 'detail', by: 'fixture-actor', at: '2026-11-21T12:00:00.000Z' }]
+		}
+	});
+	const seq = store.maxSeq();
+	expect((await stage('detail')).status).toBe(200);
+	expect((await stage('idea')).status).toBe(409);
+	expect(store.maxSeq()).toBe(seq);
+	expect((await stage('design')).status).toBe(200);
+	expect((await stage('build')).status).toBe(200);
+	expect(await (await request('/items?stage=build&limit=1')).json()).toMatchObject([
+		{ id, stage: 'build' }
+	]);
+	expect(await (await request('/items?stage=idea')).json()).toEqual([]);
+	expect((await request('/items?stage=wrong')).status).toBe(400);
+	expect(await (await request('/digest')).json()).toMatchObject({
+		due_today: [{ id, stage: 'build' }]
+	});
+	expect(await (await request('/digest?format=text')).text()).toContain('build');
+});
+
 test('rejects duplicate and malformed inputs without changing the journal', async () => {
 	const { id } = await (
 		await request('/items', 'POST', { title: 'Unique fixture handoff' })
