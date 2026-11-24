@@ -12,12 +12,40 @@ import {
 import { join } from 'node:path';
 import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
 import { attemptKey } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { TrackerHostSession } from './trackerHostLaunch.types';
 
 export function trackerLegacyExitReceipt(directory: string) {
 	const root = realpathSync(directory);
 	if (!ownedLegacyDirectory(root)) throw new TypeError('Tracker legacy run directory is not owned');
 	return (run: TrackerRunReceipt): TrackerHostSession | undefined => legacyExit(root, run);
+}
+
+export function hasLegacyStartupEvidence(
+	root: string,
+	run: TrackerRunReceipt,
+	panes: readonly WatchdogPane[]
+): boolean {
+	const { id, item_id: itemId } = run;
+	if (lstatSync(join(root, `run-${id}`), { throwIfNoEntry: false })) return true;
+	return panes.some(({ name }) =>
+		[itemId, itemId.slice(0, 6)].some(
+			(item) => name === `auto-${item}-r${id}` || name === `auto-${item}`
+		)
+	);
+}
+
+export function trackerLegacySession(
+	run: TrackerRunReceipt,
+	sessions: readonly TrackerHostSession[]
+) {
+	const session = sessions.find(
+		(entry) =>
+			entry.legacyRunId === run.id &&
+			entry.tmux === run.tmux &&
+			(entry.itemId === run.item_id || entry.itemId === run.item_id.slice(0, 6))
+	);
+	return session && { ...session, key: attemptKey(run) };
 }
 
 function legacyExit(root: string, run: TrackerRunReceipt): TrackerHostSession | undefined {

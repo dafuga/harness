@@ -1,4 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
+import { z } from 'zod';
+import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
+import type { TrackerHubMachineStore } from '../TrackerHubSyncService.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -27,7 +30,8 @@ export function composeTrackerLinks(
 export function composeTrackerTelemetry(
 	store: TrackerPersistenceService,
 	runs: TrackerRunReadRepository,
-	options: TrackerNativeRuntimeOptions
+	options: TrackerNativeRuntimeOptions,
+	scheduler?: TrackerDispatchSchedulerService
 ) {
 	const telemetry = options.dispatch?.telemetry;
 	const link = options.links?.find((entry) => (entry.link ?? 'hub') === 'hub');
@@ -45,13 +49,48 @@ export function composeTrackerTelemetry(
 			store,
 			transport: (request) => link.transport(request, signal)
 		});
-		const received = await client.exchangeMachine(telemetry?.sample(), runs.exportLocal());
+		const sample = telemetry?.sample() ?? {
+			at: new Date(now()).toISOString(),
+			runner: {
+				...(scheduler?.runnerStatus() ?? { enabled: false }),
+				active: runs.activeLocal().filter(({ state }) => state !== 'queued').length
+			}
+		};
+		const received = await client.exchangeMachine(sample, runs.exportLocal());
 		signal.throwIfAborted();
 		if (received.run_history) runs.importHubHistory(received.run_history);
 		samples = received.machines;
 		telemetry?.onMachines?.(samples);
 	};
-	return { tick, samples: telemetry ? () => samples : undefined };
+	return { tick, samples: () => samples };
+}
+
+export const trackerRunnerSample = z.object({
+	enabled: z.boolean().nullish(),
+	last_tick_at: z.string().nullish(),
+	last_error: z.string().nullish(),
+	waiting_on: z.string().nullish(),
+	active: z.int().nonnegative().nullish(),
+	waiting: z.record(z.string(), z.string()).optional()
+});
+
+const trackerMachineSample = z.object({
+	node: z.string().min(1).max(128),
+	at: z.iso.datetime(),
+	runner: trackerRunnerSample
+});
+
+export function trackerFleetMachineStore(): TrackerHubMachineStore {
+	const samples = new Map<string, z.infer<typeof trackerMachineSample>>();
+	return {
+		record(sample) {
+			const parsed = trackerMachineSample.safeParse(sample).data;
+			if (!parsed) return;
+			if (samples.size >= 100 && !samples.has(parsed.node)) return;
+			samples.set(parsed.node, parsed);
+		},
+		latestSamples: () => [...samples.values()]
+	};
 }
 
 export function trackerSpokeStatus(links: readonly TrackerSpokeLoopService[]) {

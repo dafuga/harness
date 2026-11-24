@@ -14,6 +14,7 @@ export interface TrackerDispatchRunner {
 	/** Refresh authoritative session evidence before reconciling or claiming work. */
 	refresh?(signal: AbortSignal, runs: readonly TrackerRunReceipt[]): Promise<void>;
 	legacySession?(run: TrackerRunReceipt): TrackerSessionEvidence | undefined;
+	confirmLegacyNeverStarted?(run: TrackerRunReceipt, signal: AbortSignal): Promise<boolean>;
 	/** Append the completion instructions to the launch brief and launch only the committed attempt key. */
 	start(
 		reservation: TrackerReservedStart,

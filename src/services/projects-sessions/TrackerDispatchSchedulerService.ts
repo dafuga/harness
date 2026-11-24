@@ -48,7 +48,8 @@ export class TrackerDispatchSchedulerService {
 			enabled: this.options.policy?.enabled !== false,
 			last_tick_at: this.lastTickAt,
 			last_error: this.lastError,
-			waiting_on: this.waits.values().next().value ?? null
+			waiting_on: this.waits.values().next().value ?? null,
+			waiting: Object.fromEntries([...this.waits].slice(0, 100))
 		};
 	}
 
@@ -59,7 +60,7 @@ export class TrackerDispatchSchedulerService {
 		try {
 			await this.options.runner.refresh?.(signal, this.repository.managedRuns());
 			signal.throwIfAborted();
-			adoptLegacyRuns(this.repository, this.options.runner);
+			await reconcileLegacyRuns(this.repository, this.options.runner, signal);
 			if (!(await this.reconcile(signal))) await this.requestWork(signal);
 			if (signal.aborted) return;
 			this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
@@ -83,6 +84,8 @@ export class TrackerDispatchSchedulerService {
 				(await this.options.runner.observe(run, attemptKey(run), signal)) ??
 				(await expiredStartEvent(run, this.options, signal));
 			if (event) await this.dispatcher.record(run.item_id, run, event);
+			else if (run.state === 'queued' && !this.waits.has(run.item_id))
+				this.waits.set(run.item_id, 'waiting for host startup evidence');
 		}
 		return false;
 	}
@@ -93,7 +96,9 @@ export class TrackerDispatchSchedulerService {
 				? await this.options.grant?.(run.item_id, run.auto_token, signal)
 				: undefined;
 		signal.throwIfAborted();
-		return this.release(await this.dispatcher.prepare(run.item_id, run, grant), signal);
+		const decision = await this.dispatcher.prepare(run.item_id, run, grant);
+		if (decision.status === 'held') this.waits.set(run.item_id, decision.reason);
+		return this.release(decision, signal);
 	}
 
 	private async requestWork(signal: AbortSignal): Promise<void> {
@@ -183,13 +188,21 @@ function launchCompletionInstructions(itemId: string): string {
 	].join('\n');
 }
 
-function adoptLegacyRuns(
+async function reconcileLegacyRuns(
 	repository: TrackerDispatchRepository,
-	runner: TrackerDispatchRunner
-): void {
-	if (!runner.legacySession) return;
+	runner: TrackerDispatchRunner,
+	signal: AbortSignal
+): Promise<void> {
+	if (!runner.legacySession && !runner.confirmLegacyNeverStarted) return;
 	for (const run of repository.legacyRuns()) {
-		const session = runner.legacySession(run);
+		signal.throwIfAborted();
+		if (run.state === 'queued') {
+			const absent = await runner.confirmLegacyNeverStarted?.(run, signal).catch(() => false);
+			signal.throwIfAborted();
+			if (absent) repository.retireLegacy(run);
+			continue;
+		}
+		const session = runner.legacySession?.(run);
 		if (session) repository.adoptLegacy(run, session);
 	}
 }

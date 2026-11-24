@@ -12,6 +12,7 @@ import {
 import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { TrackerItemSnapshot } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
+import { trackerFleetMachineStore } from '../tracker-native-runtime-service/nativeTrackerLinks';
 import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
@@ -38,7 +39,12 @@ export function trackerNodeRuntime(
 		hostEffectsHeld,
 		manualLaunch: true,
 		...(config.role === 'hub' || config.peer
-			? { syncResponder: { auth: new TrackerSyncAuthService(secret) } }
+			? {
+					syncResponder: {
+						auth: new TrackerSyncAuthService(secret),
+						...(config.role === 'hub' && { machines: trackerFleetMachineStore() })
+					}
+				}
 			: {}),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),

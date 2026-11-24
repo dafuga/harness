@@ -45,23 +45,9 @@ const columns = [
 	'credits_balance'
 ] as const;
 const reservationPrefix = 'harness_dispatch_run:';
-
-export function assertLegacyDispatchRollbackSafe(database: SqliteDatabase): void {
-	const blocker = database
-		.prepare(
-			`SELECT r.id, r.state FROM runs r
-		JOIN meta m ON m.k = '${reservationPrefix}' || r.id
-		WHERE r.state IN ('queued','running','verifying')
-		OR (r.outcome = 'blocked' AND r.session_id IS NOT NULL)
-		ORDER BY r.id LIMIT 1`
-		)
-		.get() as { id: number; state: string } | undefined;
-	if (blocker)
-		throw new DOMException(
-			`Tracker rollback blocked by run ${blocker.id} (${blocker.state})`,
-			'InvalidStateError'
-		);
-}
+const legacyUnstarted = `r.state = 'queued' AND r.started_at IS NULL AND r.ended_at IS NULL
+	AND r.tmux IS NULL AND r.session_name IS NULL AND r.session_id IS NULL
+	AND r.watch_pane IS NULL AND r.exit_code IS NULL`;
 
 export function dispatchRunRows(
 	database: SqliteDatabase,
@@ -87,13 +73,31 @@ export function managedDispatchRuns(database: SqliteDatabase, node: string): Tra
 		.filter((row) => row.revision >= 0);
 }
 
-export function legacyDispatchRuns(database: SqliteDatabase, node: string): TrackerRunReceipt[] {
+export function legacyDispatchRuns(database: SqliteDatabase, node: string, cutoff: number) {
 	return localRows(
 		database,
 		`WHERE m.k IS NULL AND r.auto_token IS NOT NULL
-		AND r.state IN ('running','verifying') AND r.tmux IS NOT NULL
-		AND r.cli IN ('codex','claude') AND r.started_at IS NOT NULL`
+		AND r.cli IN ('codex','claude')
+		AND ((r.state IN ('running','verifying') AND r.tmux IS NOT NULL AND r.started_at IS NOT NULL)
+			OR (${legacyUnstarted} AND r.queued_at <= ?))`,
+		cutoff
 	).map((row) => receipt(row, node));
+}
+
+export function retireLegacyDispatchRun(
+	database: SqliteDatabase,
+	run: TrackerRunReceipt,
+	now: number
+): void {
+	database
+		.prepare(
+			`UPDATE runs AS r SET state = 'finished', outcome = 'abandoned',
+			failure_reason = 'legacy launch expired before startup', ended_at = ?
+		WHERE r.id = ? AND r.item_id = ? AND r.auto_token = ? AND r.queued_at = ?
+		AND ${legacyUnstarted}
+		AND NOT EXISTS (SELECT 1 FROM meta WHERE k = '${reservationPrefix}' || r.id)`
+		)
+		.run(now, run.id, run.item_id, run.auto_token, run.queued_at);
 }
 
 export function adoptLegacyDispatchRun(
@@ -166,7 +170,7 @@ export function persistDispatchRun(
 	if (run.node !== node || run.revision < 0)
 		throw new DOMException('Cannot write an unowned Tracker attempt', 'InvalidStateError');
 	const previous = localRows(store.database, 'WHERE r.id = ?', run.id)[0];
-	if (previous) assertRunVersion(previous, run, node);
+	if (previous) assertRunVersion(receipt(previous, node), run);
 	const fields = [...columns, 'tmux'];
 	const command = previous
 		? `UPDATE runs SET ${fields.map((column) => `${column} = ?`).join(', ')} WHERE id = ?`
@@ -188,12 +192,7 @@ function writeReservation(store: TrackerPersistenceService, run: TrackerRunRecei
 	store.writeMeta({ [reservationPrefix + run.id]: JSON.stringify(metadata) });
 }
 
-function assertRunVersion(
-	previous: TrackerStoredDispatchRun,
-	run: TrackerRunReceipt,
-	node: string
-) {
-	const version = receipt(previous, node);
+function assertRunVersion(version: TrackerRunReceipt, run: TrackerRunReceipt) {
 	if (
 		version.revision < 0 ||
 		run.revision !== version.revision + 1 ||

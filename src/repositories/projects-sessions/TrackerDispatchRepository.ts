@@ -9,6 +9,7 @@ import type {
 	TrackerSessionEvidence
 } from '../../services/agents-providers/TrackerDispatcherService.types';
 import { canonicalNode } from '../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
+import { launchStartupGrace } from '../../services/agents-providers/tracker-dispatcher-service/runClaim';
 import type { TrackerPersistenceService } from '../../services/projects-sessions/TrackerPersistenceService';
 import { trackerClockMilliseconds } from '../../utils/projects-sessions/nextTrackerClock';
 import type {
@@ -22,11 +23,11 @@ import {
 } from './tracker-dispatch-repository/dispatchItemFields';
 import {
 	adoptLegacyDispatchRun,
-	assertLegacyDispatchRollbackSafe,
 	dispatchRunRows,
 	legacyDispatchRuns,
 	managedDispatchRuns,
-	persistDispatchRun
+	persistDispatchRun,
+	retireLegacyDispatchRun
 } from './tracker-dispatch-repository/dispatchRunRows';
 import { trackerRunSchema } from './tracker-dispatch-repository/trackerRunSchema';
 
@@ -64,11 +65,19 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 	}
 
 	legacyRuns(): TrackerRunReceipt[] {
-		return legacyDispatchRuns(this.store.database, this.node);
+		const now = this.options.now?.() ?? Date.now();
+		return legacyDispatchRuns(this.store.database, this.node, now - launchStartupGrace);
 	}
 
 	adoptLegacy(run: TrackerRunReceipt, session: TrackerSessionEvidence): void {
 		adoptLegacyDispatchRun(this.store, run, session);
+	}
+
+	retireLegacy(run: TrackerRunReceipt): void {
+		this.store.commitLocal(() => {
+			retireLegacyDispatchRun(this.store.database, run, this.options.now?.() ?? Date.now());
+			return { result: undefined };
+		});
 	}
 
 	/** Call after quiescing the native writer, before starting the legacy dispatcher. */
@@ -80,8 +89,12 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		return this.store.database
 			.prepare(
 				`SELECT id, auto, launch_source, nullif(coalesce(launch_target, computer), 'auto') AS launch_target
-			FROM items WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1)
+			FROM items i WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1)
 			AND status IN ('open','in_progress') AND every IS NULL
+			AND (i.auto IS NULL OR (
+				NOT EXISTS (SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
+				AND NOT EXISTS (SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
+			))
 			ORDER BY (due IS NULL), due, created_at, id`
 			)
 			.all() as TrackerDispatchCandidate[];
@@ -141,10 +154,14 @@ function trackerStuckRequests(database: SqliteDatabase, now: number) {
 			`SELECT i.id, i.title, i.clocks, (i.needs_daniel = 1 AND i.resolved = 0) AS flagged,
 		nullif(coalesce(i.launch_target, i.computer), 'auto') AS computer
 		FROM items i WHERE i.deleted = 0 AND i.title IS NOT NULL AND i.status IN ('open','in_progress')
-		AND i.auto IS NOT NULL AND NOT EXISTS
-			(SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
-		AND NOT EXISTS
-			(SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
+		AND i.auto IS NOT NULL AND NOT EXISTS (
+			SELECT count(*) FROM (
+				SELECT state, started_at FROM runs WHERE item_id = i.id AND auto_token = i.auto
+				UNION ALL
+				SELECT state, started_at FROM remote_runs WHERE item_id = i.id AND auto_token = i.auto
+			)
+			HAVING count(started_at) > 0 OR (count(*) > 0 AND count(CASE WHEN state = 'queued' THEN 1 END) = 0)
+		)
 		ORDER BY i.id`
 		)
 		.all() as {
@@ -161,4 +178,21 @@ function trackerStuckRequests(database: SqliteDatabase, now: number) {
 			? [{ ...item, requested_at: new Date(requested).toISOString() }]
 			: [];
 	});
+}
+
+export function assertLegacyDispatchRollbackSafe(database: SqliteDatabase): void {
+	const blocker = database
+		.prepare(
+			`SELECT r.id, r.state FROM runs r
+		JOIN meta m ON m.k = 'harness_dispatch_run:' || r.id
+		WHERE r.state IN ('queued','running','verifying')
+		OR (r.outcome = 'blocked' AND r.session_id IS NOT NULL)
+		ORDER BY r.id LIMIT 1`
+		)
+		.get() as { id: number; state: string } | undefined;
+	if (blocker)
+		throw new DOMException(
+			`Tracker rollback blocked by run ${blocker.id} (${blocker.state})`,
+			'InvalidStateError'
+		);
 }
