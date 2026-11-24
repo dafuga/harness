@@ -169,7 +169,7 @@ test('a phone that is denied is not approved, and a code that ran out is no long
 
 test('phone access stays reachable in the workspace, and a hosted project offers no agent', async ({
 	page
-}) => {
+}, testInfo) => {
 	await remoteHostFixture(page, true);
 	await page.goto(entity(alpha, 'feat%2Falpha'));
 	await expect(page.getByRole('heading', { level: 1, name: 'Alpha activity' })).toBeVisible();
@@ -181,14 +181,27 @@ test('phone access stays reachable in the workspace, and a hosted project offers
 	await footer.getByRole('button', { name: 'Manage phone access', exact: true }).click();
 	await expect(footer.getByRole('button', { name: 'Pair a phone', exact: true })).toBeVisible();
 	const modes = page.getByRole('group', { name: 'Request mode' });
-	await modes.getByRole('button', { name: 'Plan', exact: true }).click();
-	await expect(page.getByLabel('Model', { exact: true }).locator('option')).toHaveText([
-		'Fixture model'
-	]);
+	const plan = modes.getByRole('button', { name: 'Plan', exact: true });
+	await plan.click();
+	await captured(page, testInfo, `host-plan-${process.env.SCREENSHOT_LABEL}`);
+	await expect(plan).toHaveAttribute('aria-pressed', 'true');
+	await expect(
+		page.getByText('Sonnet mockups · Haiku sizes and states', { exact: true })
+	).toBeVisible();
+	await expect(page.getByLabel('Model', { exact: true })).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'Choose model', exact: true })).toHaveCount(0);
+	const sendPlan = page.getByRole('button', { name: 'Send plan', exact: true });
+	await expect(sendPlan).toBeDisabled();
+	await page
+		.getByRole('textbox', { name: 'Message', exact: true })
+		.fill('Try a more compact header');
+	await expect(sendPlan).toBeEnabled();
+	await expect.poll(async () => (await made(page, 'providers')).length).toBeGreaterThan(0);
 	await page.goto(entity(gamma, 'main'));
 	await expect(page.getByRole('heading', { level: 1, name: 'Gamma activity' })).toBeVisible();
 	await expect(page.getByRole('textbox', { name: 'Message', exact: true })).toBeEnabled();
 	await expect(modes).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'Choose model', exact: true })).toHaveCount(0);
 	await expect(page.getByLabel('Model', { exact: true })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Plan', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Change', exact: true })).toHaveCount(0);

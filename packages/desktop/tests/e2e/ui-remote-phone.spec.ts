@@ -1,6 +1,6 @@
 import type { Call, Phone } from './ui-remote-phone.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { remoteEvidence } from './remote-evidence';
+import { captured, remoteEvidence } from './remote-evidence';
 import { alpha, deviceName, hostName, remotePhoneFixture } from './ui-remote-phone-fixture';
 const made = async (page: Page, op: string) =>
 	(await page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls)).filter(
@@ -77,7 +77,6 @@ test('approval on the desktop connects the phone and lists only what it was gran
 	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toHaveCount(0);
 	expect(await fits(page)).toBe(true);
-	await remoteEvidence(page, testInfo, 'phone-connected');
 	await announce(page, 'revoked');
 	await expect(panel.getByText(/access was removed on the computer/)).toBeVisible();
 	await expect(projects(page)).toHaveCount(0);
@@ -163,10 +162,20 @@ test('a paired phone shows the same workspace through the native adapter', async
 	}
 	await page.getByRole('button', { name: 'Conversation', exact: true }).click();
 	const modes = page.getByRole('group', { name: 'Request mode' });
-	await modes.getByRole('button', { name: 'Plan', exact: true }).click();
-	await expect(page.getByLabel('Model', { exact: true }).locator('option')).toHaveText([
-		'Fixture model'
-	]);
+	const plan = modes.getByRole('button', { name: 'Plan', exact: true });
+	await plan.click();
+	await captured(page, testInfo, `phone-plan-${process.env.SCREENSHOT_LABEL}`);
+	await expect(plan).toHaveAttribute('aria-pressed', 'true');
+	await expect(
+		page.getByText('Sonnet mockups · Haiku sizes and states', { exact: true })
+	).toBeVisible();
+	await expect(page.getByLabel('Model', { exact: true })).toHaveCount(0);
+	await expect(page.getByRole('button', { name: 'Choose model', exact: true })).toHaveCount(0);
+	const sendPlan = page.getByRole('button', { name: 'Send plan', exact: true });
+	await expect(sendPlan).toBeDisabled();
+	await message(page).fill('Try a more compact header');
+	await expect(sendPlan).toBeEnabled();
+	await message(page).clear();
 	const asked = (await made(page, 'native.request')).map((call) => call.method);
 	expect(asked).toEqual(expect.arrayContaining(['snapshot', 'entity', 'image', 'providers']));
 	expect(asked).not.toContain('openProject');
