@@ -2,12 +2,9 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_yo3goi2ees -->
 <script lang="ts">
-	import { shortCommit } from '$reports/helpers/strings/shortCommit';
-	import { resolve } from '$app/paths';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
 	import {
-		count,
 		planLabels,
 		relativeWhen,
 		runDay,
@@ -15,22 +12,13 @@
 		workSummary,
 		workEta
 	} from './hubHomePresentation';
-	import { projectInventory, inventorySummary } from './hubHomeProjects';
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
 	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
-	const latest = $derived(
-		view.projects
-			?.map((project) => ({
-				project,
-				commit: view.projectSnapshots[project.id]?.commits[0]
-			}))
-			.filter(({ commit }) => commit)
-			.sort((a, b) => Date.parse(b.commit!.authoredAt) - Date.parse(a.commit!.authoredAt))[0]
-	);
 </script>
 
 {#snippet empty(text: string, action?: string)}
@@ -133,62 +121,24 @@
 	{/if}
 </HubHomeCard>
 
-<HubHomeCard
-	section="projects"
-	total={view.projects?.length}
-	summary={view.projects === null
-		? 'Loading projects…'
-		: latest?.commit
-			? `Last change: ${latest.project.name}, ${relativeWhen(latest.commit.authoredAt, view.now)}`
-			: view.projects.length
-				? count(view.projects.length, 'shared project')
-				: 'No projects yet'}
-	open={() => open('projects')}
->
-	{#if view.projects === null}
-		<HubHomeSkeleton rows={3} />
-	{:else if view.projects.length}
-		<hx-ul class="po-items">
-			{#each view.projects.slice(0, 4) as project, index (project.id)}
-				{@const snapshot = view.projectSnapshots[project.id]}
-				{@const change = snapshot?.commits[0]}
-				<HubHomeRow
-					title={project.name}
-					meta={snapshot
-						? inventorySummary(projectInventory(snapshot))
-						: `${project.sourceRepository.owner}/${project.sourceRepository.name}`}
-					extra={index >= 2}
-					wide={index >= 3}
-				>
-					{#snippet trailing()}
-						{#if change}<hx-span class="hh-change"
-								><hx-code>{shortCommit(change.hash)}</hx-code>
-								{relativeWhen(change.authoredAt, view.now)}</hx-span
-							>{/if}
-					{/snippet}
-				</HubHomeRow>
-			{/each}
-		</hx-ul>
-	{:else}
-		<EmptyState as="div" className="po-empty hh-empty"
-			><hx-p>No projects yet. Add a repository to see its apps, pages and components.</hx-p>
-			<hx-a href={resolve('/projects')} class="po-action">Add a project</hx-a>
-		</EmptyState>
-	{/if}
-</HubHomeCard>
+<HubHomeProjectCard {view} open={() => open('projects')} />
 
 <HubHomeCard
 	section="wip"
-	total={view.overview ? view.work.length : undefined}
+	total={view.trackerConnected ? view.work.length : undefined}
 	summary={view.overview === null
 		? 'Loading work…'
-		: view.work.length
-			? 'Soonest to finish first'
-			: 'All clear'}
+		: !view.trackerConnected
+			? 'No work data'
+			: view.work.length
+				? 'Soonest to finish first'
+				: 'All clear'}
 	open={() => open('wip')}
 >
 	{#if view.overview === null}
 		<HubHomeSkeleton />
+	{:else if !view.trackerConnected}
+		{@render empty('Work in progress appears when Tracker data is available.')}
 	{:else if view.work.length}
 		<hx-p class="hh-wip-line">{workSummary(view.work)}</hx-p>
 		<hx-ul class="po-items">

@@ -53,12 +53,20 @@
 				? 'Loading your home…'
 				: view.trackerConnected
 					? homeHeadline(view.agents)
-					: 'Tracker is unavailable'}</hx-h1
+					: view.needsMac
+						? 'Connect your Mac'
+						: 'Your workspace'}</hx-h1
 		>
 		<hx-p class="po-totals" role="status"
 			>{view.agents === null
 				? 'Reading agents, plans, schedules and projects'
-				: summaryLine(view.work, view.schedule?.length ?? 0)}</hx-p
+				: view.needsMac
+					? 'Open Harness on your Mac and sign in with the same Google account.'
+					: view.trackerConnected
+						? summaryLine(view.work, view.schedule?.length ?? 0)
+						: view.owner
+							? 'Check Tracker on your Mac to resume sharing your work.'
+							: 'Your shared projects and activity appear here when available.'}</hx-p
 		>
 		{#if machines.length || warning}
 			<hx-ul class="po-machines" aria-label="Computers and quota">

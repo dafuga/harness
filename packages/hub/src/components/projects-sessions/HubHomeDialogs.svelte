@@ -4,6 +4,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Modal from '$reports/components/Modal.svelte';
+	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import ProjectOverview from '$reports/components/projects-sessions/project-overview/ProjectOverview.svelte';
 	import HarnessIcon from '$reports/components/explorer-ui/HarnessIcon.svelte';
 	import type {
 		HomeChatReceipt,
@@ -67,19 +69,22 @@
 				view.schedule === null
 					? 'Loading schedule…'
 					: `${runs.length} upcoming · ${runs.filter((run) => run.recurring).length} repeating`,
-			projects:
-				view.projects === null
-					? 'Loading projects…'
-					: snapshots.every(Boolean)
-						? `${count(projects.length, 'project')} · ${count(
-								snapshots.reduce(
-									(total, snapshot) => total + projectInventory(snapshot!).apps.length,
-									0
-								),
-								'app'
-							)}`
-						: count(projects.length, 'project'),
-			wip: workSummary(view.work),
+			projects: view.trackerProjects
+				? count(view.trackerProjects.projects.length, 'Tracker project')
+				: view.projectsFailed
+					? 'Shared projects unavailable'
+					: view.projects === null
+						? 'Loading projects…'
+						: snapshots.every(Boolean)
+							? `${count(projects.length, 'project')} · ${count(
+									snapshots.reduce(
+										(total, snapshot) => total + projectInventory(snapshot!).apps.length,
+										0
+									),
+									'app'
+								)}`
+							: count(projects.length, 'project'),
+			wip: view.trackerConnected ? workSummary(view.work) : 'Tracker work',
 			quota: view.quota === null ? 'Reading usage…' : quotaSummary(view.quota, view.now)
 		}[selected]
 	);
@@ -102,6 +107,8 @@
 			>
 				<HarnessIcon name="arrow-left" size={18} />
 			</hx-button>
+		{:else if selected === 'projects' && view.trackerProjects}
+			<hx-a class="po-action" href={resolve('/tracker-overview')}>Open Project Overview</hx-a>
 		{:else if selected === 'projects'}
 			<hx-a class="po-action hh-primary" href={resolve('/projects')}>Manage projects</hx-a>
 		{/if}
@@ -118,7 +125,18 @@
 		{:else if selected === 'scheduled'}
 			<HubHomeSchedule runs={view.schedule} now={view.now} connected={view.routinesConnected} />
 		{:else if selected === 'projects'}
-			<HubHomeProjects projects={view.projects} snapshots={view.projectSnapshots} {readProject} />
+			{#if view.trackerProjects}
+				<hx-div class="hh-overview"
+					><ProjectOverview snapshot={view.trackerProjects} standalone={false} /></hx-div
+				>
+			{:else if view.projectsFailed}
+				<EmptyState as="div" className="po-empty hh-empty">
+					<hx-p>Shared projects could not be read.</hx-p>
+					<hx-button type="button" class="po-action" onclick={reload}>Try again</hx-button>
+				</EmptyState>
+			{:else}
+				<HubHomeProjects projects={view.projects} snapshots={view.projectSnapshots} {readProject} />
+			{/if}
 		{:else if selected === 'quota'}
 			<HubHomeQuota quota={view.quota} now={view.now} connected={view.quotaConnected} {reload} />
 		{:else}

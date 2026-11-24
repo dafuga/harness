@@ -21,9 +21,12 @@ export interface HomeView {
 	schedule: HomeRun[] | null;
 	quota: HomeSubscription[] | null;
 	projects: ProjectSummary[] | null;
+	projectsFailed: boolean;
+	trackerProjects: Extract<OverviewSnapshot, { status: 'ready' }> | null;
 	projectSnapshots: Record<string, ProjectSnapshot>;
 	work: ReturnType<typeof soonestWork>;
 	owner: boolean;
+	needsMac: boolean;
 	trackerConnected: boolean;
 	routinesConnected: boolean;
 	quotaConnected: boolean;

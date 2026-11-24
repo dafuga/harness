@@ -19,7 +19,9 @@
 			"reports.component.harness-harness-icon",
 			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-a",
-			"reports.component.shared-primitives-atoms-html-button"
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -174,6 +176,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

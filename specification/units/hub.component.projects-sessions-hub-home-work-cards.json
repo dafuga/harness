@@ -11,12 +11,11 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
+			"hub.component.projects-sessions-hub-home-project-card",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
-			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-ul"
@@ -29,7 +28,6 @@
 			"HubHomeWorkCards.empty",
 			"HubHomeWorkCards.trailing",
 			"HubHomeWorkCards.lead",
-			"HubHomeWorkCards.trailing",
 			"HubHomeWorkCards.trailing"
 		]
 	},
@@ -120,24 +118,17 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
-			},
-			{
-				"name": "HubHomeWorkCards.trailing",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HubHomeWorkCards.trailing",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
 			}
 		]
 	},
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-project-card",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -157,11 +148,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-projects",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
@@ -172,17 +158,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-a",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-code",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -198,11 +174,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},
