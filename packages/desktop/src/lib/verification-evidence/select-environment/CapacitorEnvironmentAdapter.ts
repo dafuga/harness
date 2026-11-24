@@ -39,7 +39,6 @@ export class CapacitorEnvironmentAdapter {
 	connect(): Environment {
 		const plugin = this.plugin;
 		const computer = new CapacitorBridgeAdapter({ plugin });
-		/** What the bridge offers follows each status before anyone else hears of it. */
 		const note = (status: RemoteNativeStatus) => {
 			computer.allow(status);
 			return status;
@@ -65,7 +64,6 @@ export class CapacitorEnvironmentAdapter {
 			...(tracker ? { tracker } : {})
 		} as const;
 		if (!this.account) return { ...local, bridge: mac };
-		/** The account is read at once, paired or not; the computer's projects join it once reached. */
 		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();
 		const bridge = new CapacitorProjectsService({
 			cloud,

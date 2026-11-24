@@ -42,9 +42,7 @@ class RemotePhoneState {
 	scanFailure = $state<ScanFailure | null>(null);
 	private kept = false;
 	private release: (() => void) | undefined;
-	/** Counts every accepted state and every end; an answer asked for before it is stale. */
 	private version = 0;
-	/** The identity and the grant under which what is on the page was read. */
 	private authority = noAuthority;
 	constructor(private workspace: Workspace) {}
 	/** True only where the plugin says it is a Debug build started for a local test fixture. */
@@ -126,7 +124,6 @@ class RemotePhoneState {
 		const change = authorityChange(this.authority, next, before?.state === 'online');
 		this.authority = next;
 		if (change === 'none') return;
-		/** A project of the phone's own account was granted by no computer: no grant narrows it. */
 		if (accountView(workspace)) return this.beside(change === 'holder');
 		const allowed = workspace.capabilities;
 		if (change === 'holder' || excludes(status, workspace.projectId)) forgetRemote(workspace);

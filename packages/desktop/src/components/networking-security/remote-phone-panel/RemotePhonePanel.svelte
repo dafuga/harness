@@ -58,8 +58,7 @@
 			? `${labels.title} · ${status.device.name}`
 			: labels.title;
 	});
-	const how =
-		'In Harness on your computer, turn on phone access and choose Pair a phone. Then scan the code it shows.';
+	const how = 'Turn on phone access, choose Pair a phone, then scan the QR code.';
 	const fixture = 'Debug build for a test fixture: a relay on this machine is accepted.';
 </script>
 
