@@ -21,8 +21,9 @@
 	{#each links ?? [] as link}
 		<hx-p
 			><hx-a
+				class="artifact-link"
 				href={link.url}
-				target={mode === 'mac' ? undefined : '_blank'}
+				target={mode === 'mac' ? 'tracker-artifact' : '_blank'}
 				rel="noopener noreferrer">{link.label}</hx-a
 			></hx-p
 		>
