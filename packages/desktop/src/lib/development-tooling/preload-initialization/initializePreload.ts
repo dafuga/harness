@@ -1,4 +1,9 @@
 // @harness-uid u_u5ye4kbgg5
+import type {
+	InboxReply,
+	InboxWriteReceipt,
+	TrackerInboxSource
+} from '../../../models/development-tooling/TrackerInbox.types';
 import type { Input } from './initializePreload.types';
 import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
 import { contextBridge, ipcRenderer } from 'electron';
@@ -30,6 +35,28 @@ const call =
 	<T>(method: RemoteMethod) =>
 	(input?: Input): Promise<T> =>
 		transport.request<T>(method, { ...input });
+const unavailable: InboxReply<never> = {
+	code: 'unavailable',
+	freshness: 'unavailable',
+	lastSyncedAt: null,
+	partial: true
+};
+const inboxRead = <T>(input: Input): Promise<InboxReply<T>> =>
+	call<InboxReply<T>>('trackerInboxRead')(input).catch(() => unavailable);
+const trackerInbox: TrackerInboxSource = {
+	overview: () => inboxRead({ operation: 'overview' }),
+	search: (query) => inboxRead({ operation: 'search', query }),
+	detail: (id) => inboxRead({ operation: 'detail', id }),
+	write: (write) =>
+		call<InboxReply<InboxWriteReceipt>>('trackerInboxWrite')(write).catch(() => unavailable),
+	writes: async () => ({
+		freshness: 'current',
+		lastSyncedAt: null,
+		partial: false,
+		value: []
+	}),
+	discard: async () => unavailable
+};
 const bridge: DesktopBridge = {
 	gameCreate: call('gameCreate'),
 	gameImageGenerate: call('gameImageGenerate'),
@@ -50,6 +77,7 @@ const bridge: DesktopBridge = {
 	connectHosted: call('connectHosted'),
 	disconnectHosted: call('disconnectHosted'),
 	projectOverview: call('projectOverview'),
+	trackerInbox,
 	listProjects: call('listProjects'),
 	selectProject: call('selectProject'),
 	capabilities: call('capabilities'),

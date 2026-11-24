@@ -24,8 +24,14 @@
 	let {
 		source,
 		id,
+		mode = 'phone',
 		onchanged
-	}: { source: TrackerInboxSource; id: string; onchanged: () => Promise<void> } = $props();
+	}: {
+		source: TrackerInboxSource;
+		id: string;
+		mode?: 'phone' | 'mac';
+		onchanged: () => Promise<void>;
+	} = $props();
 
 	let detail = $state.raw<InboxDetail | null>(null);
 	let loadMessage = $state('');
@@ -46,7 +52,13 @@
 
 	function fresh(reply: InboxReply<InboxDetail>) {
 		detail = reply.value ?? null;
-		loadMessage = reply.value ? '' : 'This item is not on the phone copy.';
+		loadMessage = reply.value
+			? ''
+			: mode === 'mac'
+				? reply.code === 'noLocalMatch'
+					? 'This Tracker item is unavailable.'
+					: 'Tracker could not be reached on this Mac.'
+				: 'This item is not on the phone copy.';
 	}
 
 	/** Opening an item is the review. A refresh after a write does not count as one. */
@@ -76,7 +88,7 @@
 	}
 
 	async function send() {
-		if (!detail || !action || !reviewed || busy) return;
+		if (!detail || !action || !reviewed || !confirming || !gate?.allowed || busy) return;
 		const write = confirmedWrite(
 			{ action, id: detail.header.id, text, revision: reviewed.revision },
 			true
@@ -89,7 +101,7 @@
 		try {
 			const sent = action;
 			const reply = await source.write(write);
-			message = reply.value ? writeSentMessage(sent) : writeFailureMessage(reply.code);
+			message = reply.value ? writeSentMessage(sent, mode) : writeFailureMessage(reply.code, mode);
 			if (reply.value) {
 				cancel();
 				text = '';
@@ -114,7 +126,7 @@
 			>
 		</hx-header>
 
-		<TrackerInboxRecord {detail} />
+		<TrackerInboxRecord {detail} {mode} />
 
 		<hx-section class="actions" aria-label="Confirm a write">
 			<hx-div class="buttons">
@@ -160,6 +172,7 @@
 				{:else}
 					<hx-div class="confirm" role="group" aria-label="Confirm this write">
 						<hx-p>Send this {action} to <hx-strong>{detail.header.title}</hx-strong>?</hx-p>
+						{#if action === 'answer'}<hx-p class="meta">Question {question}</hx-p>{/if}
 						<hx-blockquote>{text.trim()}</hx-blockquote>
 						<hx-div class="buttons">
 							<hx-button type="button" disabled={busy} onclick={send}>Confirm and send</hx-button>

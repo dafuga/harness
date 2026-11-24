@@ -1,0 +1,45 @@
+{
+	"name": "mac-tracker-inbox",
+	"goal": "Mac Needs you uses the shared inbox over the local Tracker API and commits only explicitly confirmed writes, with stale attention rejected atomically.",
+	"createdAt": "2026-11-24T19:51:27.381Z",
+	"updatedAt": "2026-11-24T20:17:23.531Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T19:52:22.635Z",
+			"evidence": "Electron home opens the shared inbox backed by local Tracker. Confirm/cancel note, flag and answer; a replaced question rejects an old review without a journal write. Verify with disposable SQLite and built Electron."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-24T20:17:22.049Z",
+			"evidence": "Shared Renderer inbox uses the trusted Electron transport. Tracker GET and POST run against the loopback API, with the reviewed flag or answer revision checked under the journal writer lock."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-24T20:17:23.531Z",
+			"evidence": "Native tests on harbor-mbp-2 reproduced missing Home entry at desktop, tablet and mobile widths, then passed every width at f88e01ac6b. Eight paired-iOS Chromium cases passed. Disposable SQLite recorded confirmed writes and rejected the stale answer."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

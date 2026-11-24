@@ -5,7 +5,7 @@
 	import type { InboxDetail } from '../../../models/development-tooling/TrackerInbox.types';
 	import { flagQuestion } from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
-	let { detail }: { detail: InboxDetail } = $props();
+	let { detail, mode = 'phone' }: { detail: InboxDetail; mode?: 'phone' | 'mac' } = $props();
 
 	function runTime(stamp: number | null): string {
 		return stamp === null ? '' : new Date(stamp).toLocaleString();
@@ -22,7 +22,11 @@
 <hx-section>
 	<hx-h3>Runs</hx-h3>
 	{#if detail.runs.length === 0}
-		<hx-p class="meta">No runs are on this phone for this item.</hx-p>
+		<hx-p class="meta"
+			>{mode === 'mac'
+				? 'No runs recorded for this item.'
+				: 'No runs are on this phone for this item.'}</hx-p
+		>
 	{:else}
 		<hx-ul class="plain">
 			{#each detail.runs as run (run.origin + run.id)}
@@ -39,7 +43,11 @@
 <hx-section>
 	<hx-h3>Notes</hx-h3>
 	{#if detail.notes.length === 0}
-		<hx-p class="meta">No notes are on this phone for this item.</hx-p>
+		<hx-p class="meta"
+			>{mode === 'mac'
+				? 'No notes recorded for this item.'
+				: 'No notes are on this phone for this item.'}</hx-p
+		>
 	{:else}
 		<hx-ul class="plain">
 			{#each detail.notes as note (note.id)}

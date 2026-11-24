@@ -65,7 +65,9 @@ export const localMethods = [
 	'hostedStatus',
 	'connectHosted',
 	'disconnectHosted',
-	'projectOverview'
+	'projectOverview',
+	'trackerInboxRead',
+	'trackerInboxWrite'
 ] as const;
 /** The desktop control port. Local connection only. */
 export const controlMethods = [
@@ -107,6 +109,7 @@ export const projectlessMethods: readonly RemoteMethod[] = [
 /** Answers remembered by request id: re-sending one of these never runs it twice. */
 export const mutationMethods: readonly RemoteMethod[] = [
 	'trackerReplicaPush',
+	'trackerInboxWrite',
 	...commentMethods,
 	...agentMethods,
 	'gameCreate',

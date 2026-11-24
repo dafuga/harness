@@ -105,7 +105,7 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
-		{#if account.environment?.tracker}
+		{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
 			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
 		{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}

@@ -1,16 +1,16 @@
 // @harness-uid u_g7kdpz7bel
-import { randomUUID } from 'node:crypto';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
-import type { TrackerItemMutationContext } from '../../utils/projects-sessions/planTrackerItemMutation.types';
 import {
 	itemAction,
 	itemMutation,
-	trackerMutationBody,
+	itemMutationContext,
 	readItemBody,
-	recordTrackerSessionItem
+	recordTrackerSessionItem,
+	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import {
 	readTrackerItemDetail,
@@ -37,6 +37,16 @@ export class TrackerLocalApiService {
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
 			const phone = phoneReplicaResponse(request, url, this.options.phoneReplica);
 			if (phone) return await phone;
+			if (/^items\/[^/]+\/inbox$/.test(parts.join('/')))
+				return trackerResponse(
+					200,
+					await trackerInboxItem(request, parts[1], {
+						store: this.store,
+						items: this.items,
+						options: this.options,
+						actor: readActor(request.headers)
+					})
+				);
 			if (request.method === 'GET') {
 				const read = this.read(parts, Object.fromEntries(url.searchParams));
 				if (read) return read;
@@ -108,7 +118,7 @@ export class TrackerLocalApiService {
 		const input = await readItemBody(request);
 		request.signal.throwIfAborted();
 		const actor = readActor(request.headers);
-		const context = this.mutationContext();
+		const context = itemMutationContext(this.store, this.items, this.options);
 		const body = trackerMutationBody(input, action, actor, Boolean(context.planLaunch));
 		const plan = action
 			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)
@@ -120,27 +130,6 @@ export class TrackerLocalApiService {
 		if (plan.fields)
 			this.store.appendLocal({ itemId: plan.itemId, fields: plan.fields, actor }, persist);
 		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
-	}
-
-	private mutationContext(): TrackerItemMutationContext {
-		const { planLaunch, runs } = this.options;
-		return {
-			node: this.store.node,
-			now: this.options.now?.() ?? Date.now(),
-			timeZone: this.options.timeZone,
-			launchNonce: randomUUID(),
-			candidates: this.items.candidates(),
-			validateModel: this.options.validateModel,
-			planLaunch:
-				planLaunch &&
-				((fields, current) =>
-					planLaunch(
-						fields,
-						current?.auto && runs?.launchConsumed(current.id, current.auto)
-							? { ...current, auto: null }
-							: current
-					))
-		};
 	}
 }
 
@@ -164,7 +153,6 @@ async function phoneWrite(
 	request.signal.throwIfAborted();
 	return trackerResponse(200, writer.push(scope, body));
 }
-
 function readActor(headers: Headers): string | null {
 	const actor = headers
 		.get('x-tracker-as')
@@ -174,7 +162,6 @@ function readActor(headers: Headers): string | null {
 	if (!actor) return null;
 	return actor;
 }
-
 function failureResponse(error: unknown): Response {
 	if (
 		error instanceof Error &&
