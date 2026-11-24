@@ -1,5 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
-import { expect, test, vi } from 'vitest';
+import { test, vi } from 'vitest';
+import { expect } from '../../verificationExpect';
 import type { TrackerItem } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';

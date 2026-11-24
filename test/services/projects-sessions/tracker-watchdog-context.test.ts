@@ -1,7 +1,8 @@
 import { mkdirSync, utimesSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { expect, test, vi } from 'vitest';
+import { test, vi } from 'vitest';
+import { expect } from '../../verificationExpect';
 import { trackerRunSchema } from '../../../src/repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { trackerContextHandoffs } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff';
