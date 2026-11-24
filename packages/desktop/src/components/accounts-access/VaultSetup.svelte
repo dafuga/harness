@@ -153,7 +153,7 @@
 		padding: var(--hx-space-8) var(--hx-space-12);
 		min-height: 44px;
 		border: var(--hx-border-thin) solid var(--hx-color-border);
-		border-radius: var(--hx-radius-medium);
+		border-radius: var(--hx-radius-small);
 		background: var(--hx-color-surface);
 		color: inherit;
 		cursor: pointer;

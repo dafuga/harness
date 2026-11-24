@@ -1,8 +1,9 @@
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { createServer } from 'node:net';
 import { resolve, join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { createTempDirectory, withTempDir } from '../../support/temporary';
 
 const workspaces: string[] = [];
 const common = resolve('deploy/vault/setup/common.sh');
@@ -12,8 +13,8 @@ afterEach(() => {
 	for (const path of workspaces.splice(0)) rmSync(path, { recursive: true, force: true });
 });
 
-function fixture() {
-	const path = mkdtempSync(join(tmpdir(), 'vault-setup-test-'));
+async function fixture() {
+	const path = await createTempDirectory('vlt-');
 	workspaces.push(path);
 	const journal = join(path, 'journal');
 	const run = (action: 'setup' | 'remove', fault = '') =>
@@ -32,19 +33,22 @@ function fixture() {
 	};
 }
 
-test.each(['group', 'account', 'engine'])('setup resumes after interruption at %s', (phase) => {
-	const host = fixture();
-	expect(host.run('setup', phase).signal).toBe('SIGKILL');
-	expect(host.status()).toBe('working:setup:' + phase);
-	expect(host.run('setup').status).toBe(0);
-	expect(host.run('setup').status).toBe(0);
-	expect(host.status()).toBe('ready');
-});
+test.each(['group', 'account', 'engine'])(
+	'setup resumes after interruption at %s',
+	async (phase) => {
+		const host = await fixture();
+		expect(host.run('setup', phase).signal).toBe('SIGKILL');
+		expect(host.status()).toBe('working:setup:' + phase);
+		expect(host.run('setup').status).toBe(0);
+		expect(host.run('setup').status).toBe(0);
+		expect(host.status()).toBe('ready');
+	}
+);
 
 test.each(['stop', 'delete-user', 'delete-group'])(
 	'remove resumes after interruption at %s',
-	(phase) => {
-		const host = fixture();
+	async (phase) => {
+		const host = await fixture();
 		expect(host.run('setup').status).toBe(0);
 		writeFileSync(join(host.path, 'executor-home', 'synthetic-data'), 'keep this');
 		expect(host.run('remove', phase).signal).toBe('SIGKILL');
@@ -58,8 +62,8 @@ test.each(['stop', 'delete-user', 'delete-group'])(
 	}
 );
 
-test('the failed step is reported and repair respects the original identity', () => {
-	const host = fixture();
+test('the failed step is reported and repair respects the original identity', async () => {
+	const host = await fixture();
 	const failed = host.run('setup', 'engine-error');
 	expect(failed.status).toBe(1);
 	expect(failed.stderr).toContain('Vault setup failed at engine. The synthetic engine failed.');
@@ -92,4 +96,27 @@ test('macOS accepts both real dscl forms and requires unambiguous sudo denial te
 		{ encoding: 'utf8' }
 	);
 	expect(result.status, result.stderr).toBe(0);
+});
+
+test('macOS checks a real private socket with the system test binary', async () => {
+	await withTempDir('vlt-', async (directory) => {
+		const socket = join(directory, 'docker.sock');
+		const server = createServer();
+		await new Promise<void>((listen, reject) => {
+			server.once('error', reject).listen(socket, listen);
+		});
+		try {
+			const check = [
+				'source "$1"; source "$2"; socket="$3"; executor_id=551',
+				'as_executor() { case "$1" in /bin/test) "$@";; /usr/bin/stat) printf 551;; "$docker") :;; *) return 1;; esac; }',
+				'verify_engine'
+			].join('\n');
+			const result = spawnSync('/bin/bash', ['-c', check, 'fixture', common, macos, socket], {
+				encoding: 'utf8'
+			});
+			expect(result.status, result.stderr).toBe(0);
+		} finally {
+			await new Promise<void>((done) => server.close(() => done()));
+		}
+	});
 });

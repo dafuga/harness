@@ -2,7 +2,7 @@
 	"name": "vault-setup",
 	"goal": "Resume and undo the isolated Vault executor installer, with one Mac approval and progress in both desktop apps",
 	"createdAt": "2026-11-24T00:08:34.595Z",
-	"updatedAt": "2026-11-24T00:09:46.552Z",
+	"updatedAt": "2026-11-24T00:31:59.271Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T00:31:56.931Z",
+			"evidence": "Harness CLI and Settings plus Harbor Settings use the journaled installer and a fixed macOS authorization command. Linux rootless lifecycle and vendor parity checked."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T00:31:59.271Z",
+			"evidence": "CLI missing-command red and green, both Settings red and green on harbor-mbp-2, setup and remove interruption and ownership fixtures, real mb2 macOS quirks, and successful disposable Ubuntu rootless install/repair/remove. macOS privileged qualification remains in verify."
 		},
 		{
 			"id": "verify",

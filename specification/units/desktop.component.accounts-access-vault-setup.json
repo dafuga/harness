@@ -32,7 +32,7 @@
 			{
 				"name": "VaultSetup",
 				"type": "markup",
-				"description": "Shows the available actions, current installer step, and result. With no local installer bridge, the panel is hidden. A failed request shows the error and leaves the available actions enabled."
+				"description": "An absent receipt offers Setup. An unsupported host hides the panel. The panel presents the current step and outcome, then leaves the available actions enabled for a retry."
 			}
 		],
 		"errors": [],
