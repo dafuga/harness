@@ -25,6 +25,7 @@ function fingerprint(admission: AgentToolAdmission): string {
 		action,
 		prepared.resource,
 		prepared.summary,
+		prepared.content,
 		prepared.charge?.currency,
 		prepared.charge?.maximum,
 		proposal

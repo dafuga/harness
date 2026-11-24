@@ -46,7 +46,7 @@ and maximum charge when relevant) in the owner’s authenticated app. The model
 cannot submit an approval or choose the display text. Confirmation revalidates
 the current policy and content and consumes the challenge atomically with the
 dispatch reservation. It binds the agent and revision, exact proposal, resolved
-scope, operation and maximum charge. Replay, changes, expiry or revocation deny
+scope, operation, outgoing content and maximum charge. Replay, changes, expiry or revocation deny
 execution. The integration provides the original proposal from private host
 state, outside the user-visible journal. If the host loses that state, the action
 expires and a fresh request is required. A crash after reservation must never

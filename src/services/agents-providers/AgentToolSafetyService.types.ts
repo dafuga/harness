@@ -35,6 +35,7 @@ export interface PreparedAgentTool {
 	resource: string;
 	/** Safe, host-authored review text identifying the exact effect. */
 	summary: string;
+	/** Exact outgoing content, screened at admission and bound to owner approval. */
 	content?: string;
 	charge?: AgentToolCharge;
 	/** Recheck the current grant at the effect boundary after any preparatory I/O. */
