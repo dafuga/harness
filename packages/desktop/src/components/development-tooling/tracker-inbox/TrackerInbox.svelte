@@ -21,7 +21,8 @@
 	import TrackerInboxRows from './TrackerInboxRows.svelte';
 	import TrackerInboxWrites from './TrackerInboxWrites.svelte';
 
-	let { source }: { source: TrackerInboxSource } = $props();
+	let { source, mode = 'phone' }: { source: TrackerInboxSource; mode?: 'phone' | 'mac' } = $props();
+	const mac = $derived(mode === 'mac');
 
 	let overview = $state.raw<InboxOverview | null>(null);
 	let loadFailure = $state('');
@@ -48,9 +49,11 @@
 		overview = status.value ?? null;
 		loadFailure = status.value
 			? ''
-			: status.code === 'denied' || status.code === 'noReplica'
-				? 'No Tracker copy is on this phone yet. Connect to your computer to sync it.'
-				: 'The Tracker copy on this phone could not be read.';
+			: mac
+				? 'Tracker could not be reached on this Mac.'
+				: status.code === 'denied' || status.code === 'noReplica'
+					? 'No Tracker copy is on this phone yet. Connect to your computer to sync it.'
+					: 'The Tracker copy on this phone could not be read.';
 		writes = (outbox.value ?? []).map(writeView);
 	}
 
@@ -75,7 +78,9 @@
 	<hx-header class="inbox-head">
 		<hx-h1>Needs you</hx-h1>
 		<hx-p class="meta">
-			{#if freshness === 'current'}
+			{#if mac}
+				{overview ? 'Local Tracker' : 'Tracker on this Mac'}
+			{:else if freshness === 'current'}
 				Synced {lastSyncedAt ? new Date(lastSyncedAt).toLocaleString() : 'just now'}
 			{:else if freshness === 'stale'}
 				Showing the last copy. It may be out of date.
@@ -125,7 +130,9 @@
 				rows={found}
 				{selected}
 				label="Search results"
-				empty="Nothing on this phone matches that search."
+				empty={mac
+					? 'No Tracker items match that search.'
+					: 'Nothing on this phone matches that search.'}
 				onselect={choose}
 			/>
 		{:else}
@@ -144,12 +151,16 @@
 		{/if}
 
 		{#if selected}
-			<TrackerInboxDetail {source} id={selected} onchanged={reload} />
+			{#key selected}
+				<TrackerInboxDetail {source} {mode} id={selected} onchanged={reload} />
+			{/key}
 		{/if}
 
-		<TrackerInboxWrites {source} {writes} onchanged={reload} />
+		{#if !mac}<TrackerInboxWrites {source} {writes} onchanged={reload} />{/if}
 	{:else}
-		<hx-p class="meta" role="status">Loading the Tracker copy on this phone.</hx-p>
+		<hx-p class="meta" role="status"
+			>{mac ? 'Loading Tracker items.' : 'Loading the Tracker copy on this phone.'}</hx-p
+		>
 	{/if}
 </hx-section>
 

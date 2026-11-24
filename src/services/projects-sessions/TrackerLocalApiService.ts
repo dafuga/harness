@@ -8,6 +8,8 @@ import {
 	itemAction,
 	itemMutation,
 	trackerMutationBody,
+	planInboxWrite,
+	readInboxItem,
 	readItemBody,
 	recordTrackerSessionItem
 } from './tracker-local-api-service/trackerLocalItemMutation';
@@ -37,6 +39,8 @@ export class TrackerLocalApiService {
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
 			const phone = phoneReplicaResponse(request, url, this.options.phoneReplica);
 			if (phone) return await phone;
+			if (parts.length === 3 && parts[0] === 'items' && parts[2] === 'inbox')
+				return await this.inbox(request, parts[1]);
 			if (request.method === 'GET') {
 				const read = this.read(parts, Object.fromEntries(url.searchParams));
 				if (read) return read;
@@ -50,6 +54,26 @@ export class TrackerLocalApiService {
 			if (error instanceof URIError) return trackerResponse(400, { error: 'invalid item path' });
 			return failureResponse(error);
 		}
+	}
+
+	private async inbox(request: Request, id: string): Promise<Response> {
+		if (request.method === 'GET') {
+			const { revision, flaggedAt } = readInboxItem(this.store.database, id);
+			const runs = this.options.runs?.list({ itemId: id }).slice(-5).reverse() ?? [];
+			return trackerResponse(200, { item: this.items.getStored(id), revision, flaggedAt, runs });
+		}
+		if (request.method !== 'POST') return trackerResponse(405, { error: 'method not allowed' });
+		const body = await readItemBody(request, 4096);
+		request.signal.throwIfAborted();
+		const actor = readActor(request.headers);
+		this.store.commitLocal(() => ({
+			result: undefined,
+			operation: {
+				...planInboxWrite(readInboxItem(this.store.database, id), body, this.mutationContext()),
+				actor
+			}
+		}));
+		return trackerResponse(200, { status: 'accepted' });
 	}
 
 	private read(parts: string[], query: Record<string, string>): Response | undefined {
@@ -164,7 +188,6 @@ async function phoneWrite(
 	request.signal.throwIfAborted();
 	return trackerResponse(200, writer.push(scope, body));
 }
-
 function readActor(headers: Headers): string | null {
 	const actor = headers
 		.get('x-tracker-as')
@@ -174,7 +197,6 @@ function readActor(headers: Headers): string | null {
 	if (!actor) return null;
 	return actor;
 }
-
 function failureResponse(error: unknown): Response {
 	if (
 		error instanceof Error &&

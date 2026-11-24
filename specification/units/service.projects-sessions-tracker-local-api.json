@@ -13,6 +13,7 @@
 			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts"
 		],
 		"symbols": [
@@ -28,6 +29,9 @@
 			"trackerSessionItemPrefix",
 			"recordTrackerSessionItem",
 			"readItemBody",
+			"readInboxItem",
+			"planInboxWrite",
+			"TrackerInboxReview",
 			"isTrackerManualLaunch",
 			"planTrackerManualLaunch"
 		]
@@ -162,6 +166,31 @@
 				"required": false
 			},
 			{
+				"name": "readInboxItem.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "readInboxItem.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "planInboxWrite.review",
+				"type": "TrackerInboxReview",
+				"required": true
+			},
+			{
+				"name": "planInboxWrite.draft",
+				"type": "TrackerItemInput",
+				"required": true
+			},
+			{
+				"name": "planInboxWrite.context",
+				"type": "TrackerItemMutationContext",
+				"required": true
+			},
+			{
 				"name": "isTrackerManualLaunch.verb",
 				"type": "string | undefined",
 				"required": true
@@ -223,6 +252,14 @@
 			{
 				"name": "readItemBody",
 				"type": "Promise<TrackerItemInput>"
+			},
+			{
+				"name": "readInboxItem",
+				"type": "TrackerInboxReview"
+			},
+			{
+				"name": "planInboxWrite",
+				"type": "TrackerItemMutationPlan"
 			},
 			{
 				"name": "isTrackerManualLaunch",
@@ -445,6 +482,57 @@
 					{
 						"name": "readItemBody",
 						"type": "Promise<TrackerItemInput>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readInboxItem",
+				"inputs": [
+					{
+						"name": "readInboxItem.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "readInboxItem.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readInboxItem",
+						"type": "TrackerInboxReview"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "planInboxWrite",
+				"inputs": [
+					{
+						"name": "planInboxWrite.review",
+						"type": "TrackerInboxReview",
+						"required": true
+					},
+					{
+						"name": "planInboxWrite.draft",
+						"type": "TrackerItemInput",
+						"required": true
+					},
+					{
+						"name": "planInboxWrite.context",
+						"type": "TrackerItemMutationContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "planInboxWrite",
+						"type": "TrackerItemMutationPlan"
 					}
 				],
 				"errors": [],

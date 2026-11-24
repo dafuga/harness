@@ -15,6 +15,7 @@ import { channels } from '../../../models/development-tooling/DesktopBridge.type
 import type { EvidenceArtifactResult as Artifact } from '../../../models/verification-evidence/DesktopEvidence.types';
 import { binaryAnswer } from '../../../utils/reports-media/binaryAnswer';
 import { IpcRequestValidator } from '../../../validators/development-tooling/IpcRequestValidator';
+import { MacTrackerInboxService } from './MacTrackerInboxService';
 import { UnexpectedOverviewFieldsError } from './UnexpectedOverviewFieldsError';
 const controls: Record<string, keyof LocalControl> = {
 	'remote.status': 'status',
@@ -48,6 +49,7 @@ function overview(
  */
 export class LocalOperationsService {
 	private readonly payloads = new IpcRequestValidator();
+	private readonly tracker = new MacTrackerInboxService();
 	constructor(private readonly options: LocalOperationsOptions) {}
 	methods(): RemoteMethod[] {
 		return [...remoteMethods];
@@ -57,6 +59,8 @@ export class LocalOperationsService {
 			input: Fields = { ...request.input };
 		delete input.epoch;
 		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
+		if (method === 'trackerInboxRead') return this.tracker.read(input);
+		if (method === 'trackerInboxWrite') return this.tracker.write(input);
 		if (Object.hasOwn(controls, method)) return this.control(controls[method], input);
 		const payload = this.payloads.parse(channels[method as keyof typeof channels], input),
 			operation = (this.options.bridge as Fields)[method];

@@ -16,10 +16,28 @@ const failures: Record<string, string> = {
 
 const kinds: Record<WriteAction, string> = { note: 'Note', flag: 'Flag', answer: 'Answer' };
 
-export function writeSentMessage(action: WriteAction): string {
+export function writeSentMessage(action: WriteAction, mode: 'phone' | 'mac' = 'phone'): string {
+	if (mode === 'mac') return `${kinds[action]} saved to Tracker.`;
 	return `${kinds[action]} confirmed and queued. It reaches the Tracker when this phone is connected.`;
 }
 
-export function writeFailureMessage(code: string | undefined): string {
+export function writeFailureMessage(
+	code: string | undefined,
+	mode: 'phone' | 'mac' = 'phone'
+): string {
+	if (mode === 'mac') {
+		switch (code) {
+			case 'staleReview':
+				return failures.staleReview;
+			case 'noLocalMatch':
+				return 'This Tracker item is unavailable.';
+			case 'invalidInput':
+				return 'Enter up to 512 bytes of text and review it again.';
+			case 'writeConflict':
+				return 'Tracker declined the write. Review the item and try again.';
+			default:
+				return 'Tracker could not confirm the write. Review the item before retrying.';
+		}
+	}
 	return failures[code ?? ''] ?? 'The write did not go through. Nothing was queued.';
 }

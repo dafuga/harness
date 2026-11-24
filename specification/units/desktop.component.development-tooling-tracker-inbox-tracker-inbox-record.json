@@ -32,6 +32,13 @@
 				"type": "InboxDetail",
 				"required": true,
 				"description": "The current item, its reviewed flag, notes and run summaries."
+			},
+			{
+				"name": "TrackerInboxRecord.mode",
+				"type": "'phone' | 'mac'",
+				"required": false,
+				"default": "phone",
+				"description": "Labels empty notes and runs for the Mac or the phone copy."
 			}
 		],
 		"outputs": [
