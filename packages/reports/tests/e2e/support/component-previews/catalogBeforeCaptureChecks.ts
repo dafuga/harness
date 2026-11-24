@@ -76,6 +76,19 @@ async function assertCatalogNames(component: Locator, id: string, variant: strin
 /** Each required prop state joins the normal desktop/tablet/mobile catalog test matrix. */
 async function assertRequiredShellState(component: Locator, id: string, variant: string) {
 	const state = `${id}:${variant}`;
+	if (id === 'desktop.component.accounts-access-account-sign-in') {
+		const button = component.getByRole('button', { name: 'Sign in with Google' });
+		await expect(button).toBeVisible();
+		await expect
+			.poll(() => button.locator('img').evaluate((image: HTMLImageElement) => image.naturalWidth))
+			.toBeGreaterThan(0);
+	}
+	if (id === 'desktop.layout.root')
+		await expect(component.getByText('Child content', { exact: true })).toBeVisible();
+	if (id === 'hub.page.accounts-access-devices')
+		await expect(component.getByText('This browser', { exact: true })).toBeVisible();
+	if (id === 'hub.page.public-site-about')
+		await expect(component.getByRole('heading', { level: 1 })).toBeVisible();
 	if (state === 'reports.page.harness-branch-branch-at-platforms:ready')
 		await test.step('Platforms route', () => assertPlatformsRouteReady(component));
 	if (state === 'reports.component.harness-entity-relations:both') {

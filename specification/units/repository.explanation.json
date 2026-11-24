@@ -225,7 +225,7 @@
 				"description": "Thrown by the constructor when root is not a string or file is neither undefined nor a string, and rejected by append() when entries is not an array or an entry cannot be serialized to JSON."
 			},
 			{
-				"name": "Error",
+				"name": "Reason scratch file read or write failure",
 				"type": "thrown",
 				"description": "A filesystem error from creating the scratch folder, reading the scratch file or appending to it, which the code does not catch: read() throws it, and all() and append() reject with it."
 			}
@@ -303,7 +303,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "readFileSync failure (node:fs)",
 						"type": "thrown",
 						"description": "Rejects with the filesystem error from reading the scratch file when it exists but cannot be read; failures reading history notes are caught and contribute no reasons."
 					}
@@ -364,7 +364,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "readFileSync failure (node:fs)",
 						"type": "thrown",
 						"description": "Throws the filesystem error from readFileSync when the scratch file exists but cannot be read; a missing file and damaged lines do not throw."
 					}
@@ -449,7 +449,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Reason scratch file append failure",
 						"type": "thrown",
 						"description": "Rejects with the filesystem error from creating the scratch folder or appending to the scratch file, such as when the file cannot be written."
 					},

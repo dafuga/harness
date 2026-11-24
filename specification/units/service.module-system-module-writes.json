@@ -104,7 +104,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unsafe or conflicting module output path",
 				"type": "thrown",
 				"description": "moduleOutputPath throws an Error for an unsafe path, and writeModuleFiles rejects with an Error for an unsafe path, a duplicate planned path, an output path that crosses a symlink or escapes the project root, or an existing file that may not be overwritten. Filesystem errors also make writeModuleFiles reject, such as a missing root from realpath, and a failed mkdir or writeFile rolls back this call's earlier writes before the original error is rethrown unless the rollback itself fails."
 			}
@@ -183,7 +183,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsafe, duplicate, or occupied module output path",
 						"type": "thrown",
 						"description": "writeModuleFiles rejects with an Error for an unsafe path, a duplicate planned path, an output path that crosses a symlink or escapes the project root, or an existing file that may not be overwritten. Filesystem errors also reject the call, such as a missing root from realpath, and a failed mkdir or writeFile rolls back this call's earlier writes before the original error is rethrown unless the rollback itself fails."
 					}
@@ -219,7 +219,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "moduleOutputPath throws an Error with the message 'Unsafe module output path: <path>' when the path fails the prefix, character, segment, or '{{' checks."
 					}

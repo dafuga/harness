@@ -395,9 +395,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "EntityNotFoundError",
 				"type": "thrown",
-				"description": "Rejects with `Error('Entity not found at this revision.')` when no entry in `data.items` has the id `data.id`; errors from the planning, history, documentation, source and size readers propagate unchanged."
+				"description": "Rejects with `EntityNotFoundError('Entity not found at this revision.')` when no entry in `data.items` has the id `data.id`; errors from the planning, history, documentation, source and size readers propagate unchanged."
 			}
 		],
 		"errorStatus": "declared",
@@ -783,9 +783,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "EntityNotFoundError",
 						"type": "thrown",
-						"description": "Rejects with `Error('Entity not found at this revision.')` when no entry in `data.items` has the id `data.id`; errors from the planning, history, documentation, source and size readers propagate unchanged."
+						"description": "Rejects with `EntityNotFoundError('Entity not found at this revision.')` when no entry in `data.items` has the id `data.id`; errors from the planning, history, documentation, source and size readers propagate unchanged."
 					}
 				],
 				"errorStatus": "declared"

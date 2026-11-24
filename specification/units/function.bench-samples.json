@@ -223,7 +223,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Benchmark runtime invocation failed",
 				"type": "thrown",
 				"description": "timeCall throws an Error when invoke resolves with ok false, using the runtime kind and response error message; benchSamples and benchRounds propagate that failure. Any rejection from invoke also propagates unchanged."
 			}
@@ -280,7 +280,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark runtime invocation failed",
 						"type": "thrown",
 						"description": "timeCall throws an Error when invoke resolves with ok false, using the runtime kind and response error message. A rejected invoke promise also propagates unchanged."
 					}
@@ -349,7 +349,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark runtime invocation failed",
 						"type": "thrown",
 						"description": "timeCall throws an Error when invoke resolves with ok false, using the runtime kind and response error message. A rejected invoke promise also propagates unchanged."
 					}
@@ -412,7 +412,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark runtime invocation failed",
 						"type": "thrown",
 						"description": "timeCall throws an Error when invoke resolves with ok false, using the runtime kind and response error message. A rejected invoke promise also propagates unchanged."
 					}

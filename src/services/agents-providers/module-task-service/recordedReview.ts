@@ -1,5 +1,6 @@
 // @harness-uid u_mzypaxxnyu
 import type { ModuleTask } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
+import { ConflictingTaskReviewVerdictError } from './ConflictingTaskReviewVerdictError';
 
 /**
  * The review already recorded for this attempt, when the same verdict is sent again: a driver
@@ -15,7 +16,7 @@ export function recordedReview(
 		.find((item) => item.attempt === review.attempt);
 	if (!recorded) return undefined;
 	if (recorded.verdict !== review.verdict)
-		throw new Error(
+		throw new ConflictingTaskReviewVerdictError(
 			`Attempt ${review.attempt} was already reviewed as ${recorded.verdict}; the ${review.verdict} verdict was refused.`
 		);
 	return recorded;

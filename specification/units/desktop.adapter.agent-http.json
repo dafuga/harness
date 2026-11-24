@@ -72,7 +72,8 @@
 							}
 						]
 					}
-				]
+				],
+				"unknownReason": "The adapter accepts action-specific values and derives a retry key from their enumerable entries."
 			},
 			{
 				"name": "definitiveAgentFailure.cause",
@@ -92,13 +93,15 @@
 						"category": "offline",
 						"status": 0
 					}
-				]
+				],
+				"unknownReason": "A rejected transport can supply any value; only a numeric status participates in retry classification."
 			},
 			{
 				"name": "AgentHttpAdapter.constructor.send",
 				"type": "(projectId: string, body: AgentCall) => Promise<unknown>",
 				"required": true,
-				"description": "The transport for every project request: it receives the project id and the AgentCall body and resolves with the project API's response value. Its rejection is rethrown unchanged by call, and it is also used for the 'events' polls."
+				"description": "The transport for every project request: it receives the project id and the AgentCall body and resolves with the project API's response value. Its rejection is rethrown unchanged by call, and it is also used for the 'events' polls.",
+				"unknownReason": "The transport serves multiple operations whose responses have different shapes."
 			},
 			{
 				"name": "AgentHttpAdapter.shown.snapshot",
@@ -242,7 +245,8 @@
 						"intent": "create",
 						"mode": "plan"
 					}
-				]
+				],
+				"unknownReason": "The selected agent action determines the payload shape, and the adapter forwards the payload to that action."
 			},
 			{
 				"name": "AgentHttpAdapter.call.projectId",
@@ -306,14 +310,19 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown",
-				"description": "Thrown by call for 'startRun', 'approve' or 'openThread' when no branch-tip view is recorded for the project, and for a 'startRun' whose retry key differs from an unacknowledged start for the same project."
-			},
-			{
 				"name": "TypeError",
 				"type": "thrown",
 				"description": "Thrown when a 'startRun' input is null or undefined or cannot be serialized (for example a BigInt or a cycle), or when a 'startRun' resolves with null or undefined."
+			},
+			{
+				"name": "AgentBranchTipViewRequiredError",
+				"type": "thrown",
+				"description": "A startRun, approve, or openThread request requires a recorded writable branch-tip view."
+			},
+			{
+				"name": "UnacknowledgedAgentRequestError",
+				"type": "thrown",
+				"description": "A new startRun request conflicts with the unacknowledged run when its retry key differs."
 			}
 		],
 		"errorStatus": "declared",
@@ -359,7 +368,8 @@
 									}
 								]
 							}
-						]
+						],
+						"unknownReason": "The adapter accepts action-specific values and derives a retry key from their enumerable entries."
 					}
 				],
 				"outputs": [
@@ -403,7 +413,8 @@
 								"category": "offline",
 								"status": 0
 							}
-						]
+						],
+						"unknownReason": "A rejected transport can supply any value; only a numeric status participates in retry classification."
 					}
 				],
 				"outputs": [
@@ -590,7 +601,8 @@
 								"intent": "create",
 								"mode": "plan"
 							}
-						]
+						],
+						"unknownReason": "The selected agent action determines the payload shape, and the adapter forwards the payload to that action."
 					},
 					{
 						"name": "AgentHttpAdapter.call.projectId",
@@ -632,14 +644,19 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
-						"type": "thrown",
-						"description": "Thrown by call for 'startRun', 'approve' or 'openThread' when no branch-tip view is recorded for the project, and for a 'startRun' whose retry key differs from an unacknowledged start for the same project."
-					},
-					{
 						"name": "TypeError",
 						"type": "thrown",
 						"description": "Thrown when a 'startRun' input is null or undefined or cannot be serialized (for example a BigInt or a cycle), or when a 'startRun' resolves with null or undefined."
+					},
+					{
+						"name": "AgentBranchTipViewRequiredError",
+						"type": "thrown",
+						"description": "A startRun, approve, or openThread request requires a recorded writable branch-tip view."
+					},
+					{
+						"name": "UnacknowledgedAgentRequestError",
+						"type": "thrown",
+						"description": "A new startRun request conflicts with the unacknowledged run when its retry key differs."
 					}
 				],
 				"errorStatus": "declared"
@@ -653,7 +670,8 @@
 						"name": "AgentHttpAdapter.constructor.send",
 						"type": "(projectId: string, body: AgentCall) => Promise<unknown>",
 						"required": true,
-						"description": "The transport for every project request: it receives the project id and the AgentCall body and resolves with the project API's response value. Its rejection is rethrown unchanged by call, and it is also used for the 'events' polls."
+						"description": "The transport for every project request: it receives the project id and the AgentCall body and resolves with the project API's response value. Its rejection is rethrown unchanged by call, and it is also used for the 'events' polls.",
+						"unknownReason": "The transport serves multiple operations whose responses have different shapes."
 					}
 				],
 				"outputs": [

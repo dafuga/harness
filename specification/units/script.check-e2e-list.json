@@ -84,7 +84,7 @@
 				"description": "main, which runs only when import.meta.main is true, throws an Error that names the test:e2e or test:package script when package.json has no non-empty entry for that script, and fs or JSON errors from reading package.json, parsing it, or listing test/ propagate uncaught. Paths that differ between disk and the scripts do not throw; main writes them to stderr and sets process.exitCode to 1."
 			},
 			{
-				"name": "Error",
+				"name": "Missing E2E script or mismatched test inventory",
 				"type": "thrown",
 				"description": "main, which runs only when import.meta.main is true, throws new Error with the message 'package.json is missing the test:e2e script.' or 'package.json is missing the test:package script.' when package.json has no non-empty entry for that script in its scripts object. Node fs errors from reading package.json or listing test/ are also Error objects that propagate uncaught."
 			}

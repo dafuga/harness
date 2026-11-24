@@ -78,7 +78,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Clean-code review input or report write failure",
 				"type": "thrown",
 				"description": "The promise may reject on root resolution, audited-file collection or discovery, or the final source/context freshness check, which occur outside the per-file catch. Snapshot or evaluator failures within an individual review are caught and represented as an `incomplete` file result."
 			}
@@ -138,7 +138,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Clean-code review input or report write failure",
 						"type": "thrown",
 						"description": "The promise may reject on root resolution, audited-file collection or discovery, or the final source/context freshness check, which occur outside the per-file catch. Snapshot or evaluator failures within an individual review are caught and represented as an `incomplete` file result."
 					}

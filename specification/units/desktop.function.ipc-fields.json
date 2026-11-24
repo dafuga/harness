@@ -61,14 +61,16 @@
 						"entityId": "reports.component.evidence-grid",
 						"version": "v001"
 					}
-				]
+				],
+				"unknownReason": "IPC data can be any runtime value before the object shape check."
 			},
 			{
 				"name": "textField.value",
 				"type": "unknown",
 				"required": true,
 				"description": "The candidate text, which must be a string that is not blank after trimming and no longer than max; any value that fails these checks throws 'Invalid text field.'",
-				"examples": ["Evidence grid review", "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
+				"examples": ["Evidence grid review", "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"],
+				"unknownReason": "The candidate IPC field must be narrowed to a string before its length and contents can be checked."
 			},
 			{
 				"name": "textField.max",
@@ -90,7 +92,8 @@
 				"type": "unknown",
 				"required": true,
 				"description": "Either null, which is returned as null, or a string that is not blank after trimming and is at most 300 characters long. Undefined is not null, so it throws 'Invalid text field.' like any other non-string value.",
-				"examples": [null, "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
+				"examples": [null, "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"],
+				"unknownReason": "The IPC field may be any value before the explicit null branch or text validation."
 			},
 			{
 				"name": "nullableText.pattern",
@@ -104,7 +107,8 @@
 				"type": "unknown",
 				"required": true,
 				"description": "The candidate choice, which is accepted only when it equals one entry of allowed as checked by Array.prototype.includes; any other value throws 'Invalid option.'",
-				"examples": ["codex", "claude"]
+				"examples": ["codex", "claude"],
+				"unknownReason": "The raw candidate is narrowed by matching one of the supplied enum options."
 			},
 			{
 				"name": "enumField.allowed",
@@ -135,7 +139,8 @@
 						"width": 0.5,
 						"height": 0.25
 					}
-				]
+				],
+				"unknownReason": "The raw input may be null or require validation as an image-region object."
 			}
 		],
 		"outputs": [
@@ -254,7 +259,8 @@
 								"entityId": "reports.component.evidence-grid",
 								"version": "v001"
 							}
-						]
+						],
+						"unknownReason": "IPC data can be any runtime value before the object shape check."
 					}
 				],
 				"outputs": [
@@ -296,7 +302,12 @@
 						"type": "unknown",
 						"required": true,
 						"description": "The candidate text, which must be a string that is not blank after trimming and no longer than max; any value that fails these checks throws 'Invalid text field.'",
-						"examples": ["Evidence grid review", "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
+						"examples": [
+							"Evidence grid review",
+							"main",
+							"9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"
+						],
+						"unknownReason": "The candidate IPC field must be narrowed to a string before its length and contents can be checked."
 					},
 					{
 						"name": "textField.max",
@@ -339,7 +350,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Either null, which is returned as null, or a string that is not blank after trimming and is at most 300 characters long. Undefined is not null, so it throws 'Invalid text field.' like any other non-string value.",
-						"examples": [null, "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"]
+						"examples": [null, "main", "9f2c4e1a7b3d5e6f8a0b1c2d3e4f5a6b7c8d9e0f"],
+						"unknownReason": "The IPC field may be any value before the explicit null branch or text validation."
 					},
 					{
 						"name": "nullableText.pattern",
@@ -374,7 +386,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "The candidate choice, which is accepted only when it equals one entry of allowed as checked by Array.prototype.includes; any other value throws 'Invalid option.'",
-						"examples": ["codex", "claude"]
+						"examples": ["codex", "claude"],
+						"unknownReason": "The raw candidate is narrowed by matching one of the supplied enum options."
 					},
 					{
 						"name": "enumField.allowed",
@@ -426,7 +439,8 @@
 								"width": 0.5,
 								"height": 0.25
 							}
-						]
+						],
+						"unknownReason": "The raw input may be null or require validation as an image-region object."
 					}
 				],
 				"outputs": [

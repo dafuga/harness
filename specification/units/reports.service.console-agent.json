@@ -48,7 +48,8 @@
 					{
 						"after": 0
 					}
-				]
+				],
+				"unknownReason": "The chosen channel determines the payload shape and bridge inputs are parsed before dispatch."
 			},
 			{
 				"name": "ConsoleAgentService.call.requestId",
@@ -67,7 +68,8 @@
 					{
 						"method": "connect"
 					}
-				]
+				],
+				"unknownReason": "The envelope is decoded from an owner request and its fields depend on the selected method."
 			}
 		],
 		"outputs": [
@@ -115,7 +117,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ChatSessionError",
 				"type": "thrown",
 				"description": "Thrown for invalid event cursors, unavailable operations, invalid or conflicting startRun request identities, invalid session tokens, or exhausted active-session capacity. Errors from project opening, validation, repository reads, and bridge calls are propagated without translation."
 			}
@@ -134,7 +136,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Project open failed or workspace is busy",
 						"type": "thrown",
 						"description": "ProjectSessionService.open failures propagate; it throws when work is busy or pending, or another opening is already in progress."
 					}
@@ -201,7 +203,8 @@
 							{
 								"after": 0
 							}
-						]
+						],
+						"unknownReason": "The chosen channel determines the payload shape and bridge inputs are parsed before dispatch."
 					},
 					{
 						"name": "ConsoleAgentService.call.requestId",
@@ -229,7 +232,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ChatSessionError",
 						"type": "thrown",
 						"description": "Thrown for an invalid event cursor, an unavailable operation, a missing or malformed startRun request identity, or reuse of an identity with different serialized input. Request-validation, repository-read, and bridge-operation failures propagate."
 					}
@@ -248,7 +251,8 @@
 							{
 								"method": "connect"
 							}
-						]
+						],
+						"unknownReason": "The envelope is decoded from an owner request and its fields depend on the selected method."
 					}
 				],
 				"outputs": [
@@ -261,7 +265,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ChatSessionError",
 						"type": "thrown",
 						"description": "Thrown for an invalid or expired token or when every retained session is active. A failed connect removes its token and rethrows the opening error; session call errors propagate."
 					}

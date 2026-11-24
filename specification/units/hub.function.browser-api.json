@@ -36,7 +36,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Browser API path, transport, or response failure",
 				"type": "thrown",
 				"description": "Rejects non-API paths, coded HTTP failures, network/timeouts, invalid response JSON and media read failures. HTTP failures include status/code and readable wording."
 			}

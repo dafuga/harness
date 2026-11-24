@@ -118,7 +118,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Browser artifact media or integrity failure",
 				"type": "thrown",
 				"description": "Throws Error for an unsupported media type or a hosted-artifact failure. SHA-256 failures are rethrown unchanged, errors containing 11 MiB are replaced with the page's size message, and other hosted-artifact failures use the unsupported-content message."
 			}
@@ -228,7 +228,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Browser artifact media or integrity failure",
 						"type": "thrown",
 						"description": "Throws Error for an unsupported media type or a hosted-artifact failure. SHA-256 failures are rethrown unchanged, errors containing 11 MiB are replaced with the page's size message, and other hosted-artifact failures use the unsupported-content message."
 					}

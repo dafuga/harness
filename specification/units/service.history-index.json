@@ -161,12 +161,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "filesystem failure (node:fs/promises)",
 				"type": "thrown",
 				"description": "A Node filesystem error, such as one with code EACCES or ENOTDIR, from the rm, mkdir and writeFile calls that empty the output directory or write its files. rm is called with force: true, so a stale path that does not exist is not an error."
 			},
 			{
-				"name": "Error",
+				"name": "callee failure (build's collaborators)",
 				"type": "thrown",
 				"description": "A rejection or throw from any other call that build makes, passed through unchanged: the legacy callback, SourceHistoryRepository.read, RevisionDetailService.build, SourceArchiveService.archive, EvidenceTreeAdapter.tip, ProjectActivityService.recorded or CatalogIndexService.write. Where SourceHistoryRepository.read uses GitAdapter.run and git exits non-zero, the rejection is GitAdapter.run's Error, whose message reads 'git <arguments> failed: <stderr>'."
 			}
@@ -300,12 +300,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "filesystem failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "A Node filesystem error, such as one with code EACCES or ENOTDIR, from the rm, mkdir and writeFile calls that empty the output directory or write its files. rm is called with force: true, so a stale path that does not exist is not an error."
 					},
 					{
-						"name": "Error",
+						"name": "callee failure (build's collaborators)",
 						"type": "thrown",
 						"description": "A rejection or throw from any other call that build makes, passed through unchanged: the legacy callback, SourceHistoryRepository.read, RevisionDetailService.build, SourceArchiveService.archive, EvidenceTreeAdapter.tip, ProjectActivityService.recorded or CatalogIndexService.write. Where SourceHistoryRepository.read uses GitAdapter.run and git exits non-zero, the rejection is GitAdapter.run's Error, whose message reads 'git <arguments> failed: <stderr>'."
 					}

@@ -48,6 +48,14 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 	const request = { resource: { kind: 'project', projectId: project.id }, status: 'pending' };
 	const api = {
 		get: async (path: string) => {
+			if (path === '/api/account/devices')
+				return {
+					currentDeviceId: 'preview-mac',
+					devices: [
+						{ id: 'preview-mac', name: 'MacBook Pro', lastSeenAt: stamp },
+						{ id: 'preview-phone', name: 'iPhone', lastSeenAt: stamp }
+					]
+				};
 			if (path === '/api/hub-home') return catalogHome;
 			if (path === `/api/projects/${project.id}/snapshot`) return hostedSnapshot(shown);
 			return hosted.read(path) ?? request;

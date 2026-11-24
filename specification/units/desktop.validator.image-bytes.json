@@ -33,7 +33,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidImageBytesError",
 				"type": "thrown",
 				"description": "Thrown as an Error with the message 'Image generator did not return image bytes.' when the input is not a Uint8Array instance, before planImageCodec runs. Otherwise planImageCodec throws an Error with code 'invalid-image': 'Expected a complete PNG under 32 MiB' for fewer than 33 or more than 33,554,432 bytes, 'Image dimensions exceed limit' for a zero width or height or a width times height above 32,000,000, or 'PNG decoding failed' when pngjs throws while decoding, and validate does not catch it."
 			}
@@ -59,7 +59,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidImageBytesError",
 						"type": "thrown",
 						"description": "Thrown as an Error with the message 'Image generator did not return image bytes.' when the input is not a Uint8Array instance, before planImageCodec runs. Otherwise planImageCodec throws an Error with code 'invalid-image': 'Expected a complete PNG under 32 MiB' for fewer than 33 or more than 33,554,432 bytes, 'Image dimensions exceed limit' for a zero width or height or a width times height above 32,000,000, or 'PNG decoding failed' when pngjs throws while decoding, and validate does not catch it."
 					}

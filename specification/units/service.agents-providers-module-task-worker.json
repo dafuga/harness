@@ -290,8 +290,9 @@
 			},
 			{
 				"name": "claimedTask.runnable",
-				"type": "unknown",
-				"required": true
+				"type": "ReadonlySet<string>",
+				"required": true,
+				"description": "The task ids that passed preflight on this machine. When omitted, every otherwise eligible task can run."
 			},
 			{
 				"name": "finishTask.queue",
@@ -777,7 +778,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid worker, stale claim, or delegated task failure",
 				"type": "thrown",
 				"description": "Explicit throws: an invalid worker name in once(), a finish whose stored task no longer matches the claim, and changed paths outside the module or a HEAD that differs from the source commit. Owner lookup, queue updates, task preparation and workspace setup reject with their own errors, while runner, worktree and snapshot failures are recorded in result.error instead."
 			}
@@ -885,7 +886,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid worker name or task setup failure",
 						"type": "thrown",
 						"description": "Thrown before any I/O for an invalid worker name. Owner lookup, the claim update, task preparation, workspace setup and the finish update reject with their own errors, including the claim-changed error from the finish update; runner, worktree and snapshot failures are recorded in result.error and returned as status 'failed'."
 					}
@@ -1192,8 +1193,9 @@
 					},
 					{
 						"name": "claimedTask.runnable",
-						"type": "unknown",
-						"required": true
+						"type": "ReadonlySet<string>",
+						"required": true,
+						"description": "The task ids that passed preflight on this machine. When omitted, every otherwise eligible task can run."
 					}
 				],
 				"outputs": [
@@ -1497,7 +1499,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown when the stored task is missing or no longer running, or when its claim token, contractHash, sourceCommit or repairCommit differs from the claimed copy; the queue is left unchanged."
 					}
@@ -1596,7 +1598,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Module task revision, path, or Git failure",
 						"type": "thrown",
 						"description": "Thrown when HEAD differs from task.sourceCommit or a changed path lies outside task.module.files; a failed git command rejects with its own Error."
 					}
@@ -1682,7 +1684,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Worker current directory unavailable",
 						"type": "thrown",
 						"description": "Thrown only when root is omitted and the default process.cwd() fails because the working directory no longer exists (Node reports an ENOENT error from uv_cwd). Building the default ModuleTaskRunnerAdapter and the ModuleTaskRepository, which builds a GitAdapter, only stores fields and throws nothing."
 					}

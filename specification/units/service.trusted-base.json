@@ -67,7 +67,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Trusted base Git lookup failure",
 				"type": "thrown",
 				"description": "GitAdapter.run throws Error when a Git command exits unsuccessfully, and this service lets lookup failures reject the promise. Ordinary no-match cases resolve to null."
 			}
@@ -95,7 +95,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Trusted base revision or verification lookup failure",
 						"type": "thrown",
 						"description": "The delegated lookup can reject with Error when revision enumeration or verification checking fails; nearest does not catch that rejection. Ordinary no-match cases resolve to null."
 					}
@@ -129,7 +129,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Verification record revision lookup failure",
 						"type": "thrown",
 						"description": "A Git command failure during revision enumeration or commit checking throws Error, and nearestRecord does not catch it. Malformed individual record files are skipped by the store."
 					}

@@ -67,7 +67,7 @@
 				"description": "Thrown by the run method of each runner from fixtureProviders when the turn's signal is aborted once its 1.2-second wait ends; it is the RunCancelled class, an Error with the message 'The run was cancelled.'"
 			},
 			{
-				"name": "Error",
+				"name": "Remote fixture project setup failure",
 				"type": "thrown",
 				"description": "Passed through from remoteFixtureProject, which has no try/catch, so a failing git command (execFileSync throws on a non-zero exit), a file-system call, or a project-session or planning call rejects with that call's own Error."
 			}
@@ -128,7 +128,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Remote fixture project setup failure",
 						"type": "thrown",
 						"description": "Passed through from remoteFixtureProject, which has no try/catch, so a failing git command (execFileSync throws on a non-zero exit), a file-system call, or a project-session or planning call rejects with that call's own Error."
 					}

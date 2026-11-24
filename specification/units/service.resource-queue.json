@@ -100,7 +100,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Resource request validation, capacity, or admission failure",
 				"type": "thrown",
 				"description": "This Error is thrown for an invalid wait timeout, an owner without startedAt, a full queue of 512 records, an invalid inherited lease, or nested CPU or memory above the parent reservation. Request parsing, abort checks, monitor waits, action execution, snapshot reads, and queue closing can also propagate their underlying failures."
 			}
@@ -181,7 +181,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource request validation, capacity, or admission failure",
 						"type": "thrown",
 						"description": "This Error is thrown for an invalid wait timeout, an owner without startedAt, a full queue of 512 records, an invalid inherited lease, or nested CPU or memory above the parent reservation. Request parsing, abort checks, monitor waits, action execution, snapshot reads, and queue closing can also propagate their underlying failures."
 					}

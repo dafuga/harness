@@ -106,12 +106,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HostedCacheIdentityMismatchError",
 				"type": "thrown",
 				"description": "Rejects read() with the message 'Hosted cache identity mismatch.' when identity.principalId, identity.projectId, identity.sourceCommit or identity.artifactHash differs from principalId, query.projectId, query.commit or query.sha256. This check runs before the completeness check and before any cache or load call."
 			},
 			{
-				"name": "Error",
+				"name": "IncompleteHostedCacheIdentityError",
 				"type": "thrown",
 				"description": "Rejects read() with the message 'Incomplete hosted cache identity.' when identity has no own property for any of repositoryId, requestedRef, sourceTree, notesRef, notesRevision, evidenceRef, evidenceRevision, historyIndexRevision or profile; a property whose value is null still counts as present. This check runs after the identity match and before any cache or load call."
 			}
@@ -197,12 +197,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HostedCacheIdentityMismatchError",
 						"type": "thrown",
 						"description": "Rejects read() with the message 'Hosted cache identity mismatch.' when identity.principalId, identity.projectId, identity.sourceCommit or identity.artifactHash differs from principalId, query.projectId, query.commit or query.sha256. This check runs before the completeness check and before any cache or load call."
 					},
 					{
-						"name": "Error",
+						"name": "IncompleteHostedCacheIdentityError",
 						"type": "thrown",
 						"description": "Rejects read() with the message 'Incomplete hosted cache identity.' when identity has no own property for any of repositoryId, requestedRef, sourceTree, notesRef, notesRevision, evidenceRef, evidenceRevision, historyIndexRevision or profile; a property whose value is null still counts as present. This check runs after the identity match and before any cache or load call."
 					}

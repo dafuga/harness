@@ -47,7 +47,8 @@
 						"csrf_hash": "4b5f8cfc80f59ca3286fa65c",
 						"expires_at": 1893456000000
 					}
-				]
+				],
+				"unknownReason": "The challenge row is raw database data until the expected columns have been checked."
 			},
 			{
 				"name": "AuthRecordValidator.session.value",
@@ -67,7 +68,8 @@
 						"expires_at": 1893456000000,
 						"revoked_at": null
 					}
-				]
+				],
+				"unknownReason": "The session row must be checked for known kinds and session columns after reading it from storage."
 			},
 			{
 				"name": "AuthRecordValidator.githubState.value",
@@ -83,7 +85,8 @@
 						"verifier_cipher": "cipher-v1:K8nW4rP2sT6x",
 						"expires_at": 1893456000000
 					}
-				]
+				],
+				"unknownReason": "The saved OAuth state is raw database data until its required columns are verified."
 			},
 			{
 				"name": "AuthRecordValidator.grant.value",
@@ -102,7 +105,8 @@
 						"created_at": 1760000000000,
 						"expires_at": 1893456000000
 					}
-				]
+				],
+				"unknownReason": "The persisted grant row must be checked before its actor and encrypted fields are used."
 			},
 			{
 				"name": "AuthRecordValidator.emailProof.value",
@@ -121,7 +125,8 @@
 						"claimed": 0,
 						"expires_at": 1893456000000
 					}
-				]
+				],
+				"unknownReason": "The email proof row comes from storage and its required text fields are checked on read."
 			},
 			{
 				"name": "AuthRecordValidator.verifiedEmail.value",
@@ -135,7 +140,8 @@
 						"verified_at": 1760000000000,
 						"expires_at": 1893456000000
 					}
-				]
+				],
+				"unknownReason": "The stored email verification row is not typed until the actor and email fields are validated."
 			},
 			{
 				"name": "AuthRecordValidator.grantState.value",
@@ -161,7 +167,8 @@
 						"generation": 5,
 						"revoked_at": 1761000000000
 					}
-				]
+				],
+				"unknownReason": "The raw grant-state row must be checked for a valid generation and required fields."
 			},
 			{
 				"name": "AuthRecordValidator.exchange.value",
@@ -184,7 +191,8 @@
 						"parent_hash": null,
 						"expires_at": 1893456000000
 					}
-				]
+				],
+				"unknownReason": "The stored native exchange row needs validation, including environment and destination checks."
 			}
 		],
 		"outputs": [
@@ -342,7 +350,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "AuthRecordCorruptError",
 				"type": "thrown",
 				"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 			}
@@ -382,7 +390,8 @@
 								"csrf_hash": "4b5f8cfc80f59ca3286fa65c",
 								"expires_at": 1893456000000
 							}
-						]
+						],
+						"unknownReason": "The challenge row is raw database data until the expected columns have been checked."
 					}
 				],
 				"outputs": [
@@ -402,7 +411,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AuthRecordCorruptError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 					}
@@ -430,7 +439,8 @@
 								"expires_at": 1893456000000,
 								"revoked_at": null
 							}
-						]
+						],
+						"unknownReason": "The session row must be checked for known kinds and session columns after reading it from storage."
 					}
 				],
 				"outputs": [
@@ -459,7 +469,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AuthRecordCorruptError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 					}
@@ -483,7 +493,8 @@
 								"verifier_cipher": "cipher-v1:K8nW4rP2sT6x",
 								"expires_at": 1893456000000
 							}
-						]
+						],
+						"unknownReason": "The saved OAuth state is raw database data until its required columns are verified."
 					}
 				],
 				"outputs": [
@@ -505,7 +516,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AuthRecordCorruptError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 					}
@@ -532,7 +543,8 @@
 								"created_at": 1760000000000,
 								"expires_at": 1893456000000
 							}
-						]
+						],
+						"unknownReason": "The persisted grant row must be checked before its actor and encrypted fields are used."
 					}
 				],
 				"outputs": [
@@ -557,7 +569,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AuthRecordCorruptError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 					}
@@ -584,7 +596,8 @@
 								"claimed": 0,
 								"expires_at": 1893456000000
 							}
-						]
+						],
+						"unknownReason": "The email proof row comes from storage and its required text fields are checked on read."
 					}
 				],
 				"outputs": [
@@ -612,7 +625,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AuthRecordCorruptError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 					}
@@ -634,7 +647,8 @@
 								"verified_at": 1760000000000,
 								"expires_at": 1893456000000
 							}
-						]
+						],
+						"unknownReason": "The stored email verification row is not typed until the actor and email fields are validated."
 					}
 				],
 				"outputs": [
@@ -654,7 +668,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AuthRecordCorruptError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 					}
@@ -688,7 +702,8 @@
 								"generation": 5,
 								"revoked_at": 1761000000000
 							}
-						]
+						],
+						"unknownReason": "The raw grant-state row must be checked for a valid generation and required fields."
 					}
 				],
 				"outputs": [
@@ -722,7 +737,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AuthRecordCorruptError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 					}
@@ -753,7 +768,8 @@
 								"parent_hash": null,
 								"expires_at": 1893456000000
 							}
-						]
+						],
+						"unknownReason": "The stored native exchange row needs validation, including environment and destination checks."
 					}
 				],
 				"outputs": [
@@ -782,7 +798,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "AuthRecordCorruptError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Hub auth record corrupt' when the value is not a non-null row object or a required field is invalid; malformed present optional fields and values outside the allowed enums also throw."
 					}

@@ -95,7 +95,7 @@
 				"description": "Thrown synchronously by spawn, with code ERR_INVALID_ARG_TYPE or ERR_INVALID_ARG_VALUE, when run.cwd, run.env, or the command or an argument fails validation, such as a non-string cwd or a null byte."
 			},
 			{
-				"name": "Error",
+				"name": "Child process spawn failure",
 				"type": "thrown",
 				"description": "Thrown synchronously by spawn for some system failures, while the rest are emitted on the child's 'error' event."
 			},
@@ -172,7 +172,7 @@
 						"description": "Thrown synchronously by spawn, with code ERR_INVALID_ARG_TYPE or ERR_INVALID_ARG_VALUE, when run.cwd, run.env, or the command or an argument fails validation, such as a non-string cwd or a null byte."
 					},
 					{
-						"name": "Error",
+						"name": "Child process spawn failure",
 						"type": "thrown",
 						"description": "Thrown synchronously by spawn for some system failures, while the rest are emitted on the child's 'error' event."
 					}

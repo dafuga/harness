@@ -44,12 +44,12 @@
 				"description": "Any error thrown by reportsEnvironment() while the child environment is built is not caught here, so it makes the returned promise reject; this file does not define that error's class."
 			},
 			{
-				"name": "Error",
+				"name": "Report child process emitted a spawn error",
 				"type": "thrown",
 				"description": "An Error with an errno code such as ENOENT or EACCES is emitted as an 'error' event when the child process cannot be started. runReport attaches no 'error' listener, so the event is thrown asynchronously as an uncaught exception, and the 'exit' listener that resolves the promise never runs."
 			},
 			{
-				"name": "Error",
+				"name": "Report child process threw on spawn",
 				"type": "thrown",
 				"description": "A start failure that spawn reports by throwing synchronously, instead of by an 'error' event, is an Error with an errno code and makes the returned promise reject."
 			}
@@ -89,12 +89,12 @@
 						"description": "Any error thrown by reportsEnvironment() while the child environment is built is not caught here, so it makes the returned promise reject; this file does not define that error's class."
 					},
 					{
-						"name": "Error",
+						"name": "Report child process emitted a spawn error",
 						"type": "thrown",
 						"description": "An Error with an errno code such as ENOENT or EACCES is emitted as an 'error' event when the child process cannot be started. runReport attaches no 'error' listener, so the event is thrown asynchronously as an uncaught exception, and the 'exit' listener that resolves the promise never runs."
 					},
 					{
-						"name": "Error",
+						"name": "Report child process threw on spawn",
 						"type": "thrown",
 						"description": "A start failure that spawn reports by throwing synchronously, instead of by an 'error' event, is an Error with an errno code and makes the returned promise reject."
 					}

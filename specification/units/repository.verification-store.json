@@ -394,7 +394,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Verification store filesystem failure",
 				"type": "thrown",
 				"description": "Unhandled file-system failures from recursive directory creation, file writing, store traversal, or file stat can throw or reject from the corresponding methods. read catches file-read, JSON-parse, and validation failures and returns undefined; operating-system error codes vary by cause."
 			}
@@ -509,7 +509,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Verification record write failure",
 						"type": "thrown",
 						"description": "Recursive directory creation or writing record.json can reject with a Node filesystem Error; the method does not catch these failures."
 					}
@@ -591,7 +591,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Verification store stat or enumeration failure",
 						"type": "thrown",
 						"description": "A failing statSync on an existing path or an uncaught store-directory enumeration failure can throw a Node filesystem Error; record-file read and validation failures are caught by read."
 					}
@@ -670,7 +670,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Verification store directory enumeration failure",
 						"type": "thrown",
 						"description": "A store or run-directory enumeration failure from readdirSync can throw a Node filesystem Error; record-file read and validation failures are skipped."
 					}
@@ -744,7 +744,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Verification store directory enumeration failure",
 						"type": "thrown",
 						"description": "A store or run-directory enumeration failure from readdirSync can throw a Node filesystem Error; record-file read and validation failures are skipped."
 					}
@@ -763,7 +763,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Verification store iterator enumeration failure",
 						"type": "thrown",
 						"description": "A store or run-directory enumeration failure from readdirSync can throw a Node filesystem Error while the iterator is consumed; record-file read and validation failures are skipped."
 					}

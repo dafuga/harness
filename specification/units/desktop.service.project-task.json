@@ -46,7 +46,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Read-only agent performed a write",
 				"type": "thrown",
 				"description": "Thrown by the recording step when an ask request changed files or observed host operations, with the message 'The read-only agent changed files. Changes were preserved for review.' Because the recording step runs in the finally block, this Error replaces any error the run raised first, including RunCancelled."
 			},
@@ -85,7 +85,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Read-only agent performed a write",
 						"type": "thrown",
 						"description": "Thrown by the recording step when an ask request changed files or observed host operations, with the message 'The read-only agent changed files. Changes were preserved for review.' Because the recording step runs in the finally block, this Error replaces any error the run raised first, including RunCancelled."
 					},

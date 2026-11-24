@@ -46,7 +46,8 @@
 							}
 						]
 					}
-				]
+				],
+				"unknownReason": "The layout is checked at runtime for the supported dimensions, elements and positions."
 			},
 			{
 				"name": "LevelValidator.planning.input",
@@ -87,7 +88,8 @@
 							}
 						}
 					}
-				]
+				],
+				"unknownReason": "The planning value is checked at runtime for concept, description and its optional layout."
 			},
 			{
 				"name": "LevelValidator.isCurrent.view",
@@ -258,7 +260,8 @@
 									}
 								]
 							}
-						]
+						],
+						"unknownReason": "The layout is checked at runtime for the supported dimensions, elements and positions."
 					}
 				],
 				"outputs": [
@@ -314,7 +317,8 @@
 									}
 								}
 							}
-						]
+						],
+						"unknownReason": "The planning value is checked at runtime for concept, description and its optional layout."
 					}
 				],
 				"outputs": [

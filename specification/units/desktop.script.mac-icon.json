@@ -31,7 +31,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Mac icon generation or cleanup failure",
 				"type": "thrown",
 				"description": "Errors from temporary-directory creation, icon generation or writes, iconutil, PlistBuddy, and temporary-directory cleanup propagate without translation. If cleanup fails while another operation is already failing, the cleanup error rejects the promise."
 			}
@@ -58,7 +58,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Mac icon generation or cleanup failure",
 						"type": "thrown",
 						"description": "Errors from temporary-directory creation, icon generation or writes, iconutil, PlistBuddy, and temporary-directory cleanup propagate without translation. If cleanup fails while another operation is already failing, the cleanup error rejects the promise."
 					}

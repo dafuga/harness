@@ -174,7 +174,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CacheOutsideProjectError",
 				"type": "thrown",
 				"description": "The internal cache-directory guards throw this error when the resolved cache directory or nearest existing ancestor is outside the project root. readReviewCache and writeReviewCache catch it, so it does not escape those exported operations."
 			}

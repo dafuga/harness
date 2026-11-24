@@ -560,7 +560,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid plan, thread, approval, or change write",
 				"type": "thrown",
 				"description": "Thrown by planningWrites for a title with no letters or numbers, by openPlanThread for an image anchor missing from the given version or a state or viewport that differs from the image, and by approvePlanDesign for an unknown version or images that do not match it. Every operation also rejects with the planning package's Error when a planning API call or a follow-up read fails."
 			}
@@ -670,7 +670,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PlanningWriteError",
 						"type": "thrown",
 						"description": "Thrown when the title yields no slug ('Use a title containing letters or numbers.'). A createPlan call that fails, including one refused for its slug or category, also rejects with the planning package's Error."
 					}
@@ -870,7 +870,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Delegated plan creation or read failure",
 						"type": "thrown",
 						"description": "It has no throw of its own; it rejects when listPlans, readPlan or createPlan fails, or when the plan record cannot be read."
 					}
@@ -973,7 +973,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Delegated design write or read failure",
 						"type": "thrown",
 						"description": "It has no throw of its own; it rejects when readPlan or addDesign fails, including a refused stale expectedLatest, or when the version record cannot be read."
 					}
@@ -1064,7 +1064,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PlanningWriteError",
 						"type": "thrown",
 						"description": "Thrown for an image anchor missing from the given version ('The image anchor does not belong to this entity.') or a state or viewport that differs from the image ('The image state/viewport anchor does not match.'). A failed readPlan or openThread call also rejects with the planning package's Error."
 					}
@@ -1135,7 +1135,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PlanningWriteError",
 						"type": "thrown",
 						"description": "Thrown for an unknown design version ('Unknown design version.') or for images that do not match the version or option ('Approval images do not match the version.'). A failed readPlan or approveDesign call, such as one for a version that is not the latest, also rejects with the planning package's Error."
 					}

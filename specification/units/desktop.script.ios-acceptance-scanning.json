@@ -48,12 +48,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unsafe simulator fixture control origin",
 				"type": "thrown",
 				"description": "Thrown by control when run.controlOrigin is not an http://127.0.0.1 origin with a port of two to five digits, with the message 'The control of the fixture is not on this machine.' No request is sent in that case."
 			},
 			{
-				"name": "Error",
+				"name": "Simulator pairing or status fixture refused request",
 				"type": "thrown",
 				"description": "Thrown by control when the fixture answers with a status that is not OK, with the message 'The fixture refused /pairing (<status>).' or 'The fixture refused /status (<status>).', where the status is the HTTP status code of the response."
 			},
@@ -68,22 +68,22 @@
 				"description": "Rejected by response.json() inside control when the fixture answers with a body that is not valid JSON. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same SyntaxError."
 			},
 			{
-				"name": "Error",
+				"name": "Simulator launch, permission, or screenshot command failure",
 				"type": "thrown",
 				"description": "Thrown when an xcrun simctl call fails: launch in restart, privacy in cameraAccess, or io screenshot in shot. The message is 'xcrun failed (<exit code>):' followed by the last 25 lines of the tool's output."
 			},
 			{
-				"name": "Error",
+				"name": "Simulator Keychain database read failure",
 				"type": "thrown",
 				"description": "Thrown by keychainGroups in scanEndings when the sqlite3 read of the simulator's Keychain database exits with a non-zero code, with the message 'The Keychain database of the simulator could not be read.' cameraOnly never reads the Keychain, so it cannot throw this."
 			},
 			{
-				"name": "Error",
+				"name": "Simulator page evaluation retry limit",
 				"type": "thrown",
 				"description": "Thrown by SimulatorPage.evaluate after eight failed attempts; scanPressed and the plugin-method read in cameraOnly both reach it. The message is 'The page could not be read: ' followed by the first line of the last failure, cut to 160 characters."
 			},
 			{
-				"name": "Error",
+				"name": "Simulator page text wait timeout",
 				"type": "thrown",
 				"description": "Thrown by SimulatorPage.until when the expression does not show the wanted words within the given seconds. The message is \"<wanted>\" did not appear within <seconds> s; last seen: <text>, where the text is the last value read, or 'error: ' and the message of a failed read, with whitespace collapsed and cut to 160 characters."
 			}
@@ -109,12 +109,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsafe simulator fixture control origin",
 						"type": "thrown",
 						"description": "Thrown by control when run.controlOrigin is not an http://127.0.0.1 origin with a port of two to five digits, with the message 'The control of the fixture is not on this machine.' No request is sent in that case."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator pairing or status fixture refused request",
 						"type": "thrown",
 						"description": "Thrown by control when the fixture answers with a status that is not OK, with the message 'The fixture refused /pairing (<status>).' or 'The fixture refused /status (<status>).', where the status is the HTTP status code of the response."
 					},
@@ -129,22 +129,22 @@
 						"description": "Rejected by response.json() inside control when the fixture answers with a body that is not valid JSON. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same SyntaxError."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator launch, permission, or screenshot command failure",
 						"type": "thrown",
 						"description": "Thrown when an xcrun simctl call fails: launch in restart, privacy in cameraAccess, or io screenshot in shot. The message is 'xcrun failed (<exit code>):' followed by the last 25 lines of the tool's output."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator Keychain database read failure",
 						"type": "thrown",
 						"description": "Thrown by keychainGroups in scanEndings when the sqlite3 read of the simulator's Keychain database exits with a non-zero code, with the message 'The Keychain database of the simulator could not be read.' cameraOnly never reads the Keychain, so it cannot throw this."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator page evaluation retry limit",
 						"type": "thrown",
 						"description": "Thrown by SimulatorPage.evaluate after eight failed attempts; scanPressed and the plugin-method read in cameraOnly both reach it. The message is 'The page could not be read: ' followed by the first line of the last failure, cut to 160 characters."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator page text wait timeout",
 						"type": "thrown",
 						"description": "Thrown by SimulatorPage.until when the expression does not show the wanted words within the given seconds. The message is \"<wanted>\" did not appear within <seconds> s; last seen: <text>, where the text is the last value read, or 'error: ' and the message of a failed read, with whitespace collapsed and cut to 160 characters."
 					}
@@ -177,12 +177,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsafe simulator fixture control origin",
 						"type": "thrown",
 						"description": "Thrown by control when run.controlOrigin is not an http://127.0.0.1 origin with a port of two to five digits, with the message 'The control of the fixture is not on this machine.' No request is sent in that case."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator pairing or status fixture refused request",
 						"type": "thrown",
 						"description": "Thrown by control when the fixture answers with a status that is not OK, with the message 'The fixture refused /pairing (<status>).' or 'The fixture refused /status (<status>).', where the status is the HTTP status code of the response."
 					},
@@ -197,17 +197,17 @@
 						"description": "Rejected by response.json() inside control when the fixture answers with a body that is not valid JSON. Nothing on the way catches it, so scanEndings and cameraOnly reject with the same SyntaxError."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator launch, permission, or screenshot command failure",
 						"type": "thrown",
 						"description": "Thrown when an xcrun simctl call fails: launch in restart, privacy in cameraAccess, or io screenshot in shot. The message is 'xcrun failed (<exit code>):' followed by the last 25 lines of the tool's output."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator page evaluation retry limit",
 						"type": "thrown",
 						"description": "Thrown by SimulatorPage.evaluate after eight failed attempts; scanPressed and the plugin-method read in cameraOnly both reach it. The message is 'The page could not be read: ' followed by the first line of the last failure, cut to 160 characters."
 					},
 					{
-						"name": "Error",
+						"name": "Simulator page text wait timeout",
 						"type": "thrown",
 						"description": "Thrown by SimulatorPage.until when the expression does not show the wanted words within the given seconds. The message is \"<wanted>\" did not appear within <seconds> s; last seen: <text>, where the text is the last value read, or 'error: ' and the message of a failed read, with whitespace collapsed and cut to 160 characters."
 					}

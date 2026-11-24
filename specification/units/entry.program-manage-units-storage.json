@@ -66,7 +66,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unit ledger stream read failure",
 				"type": "thrown",
 				"description": "A ledger stream error rejects the report while its lines are being counted. Directory enumeration and file stat errors are caught and treated as empty or zero."
 			}
@@ -128,7 +128,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unit ledger stream read failure",
 						"type": "thrown",
 						"description": "A ledger stream error rejects the report while its lines are being counted. Directory enumeration and file stat errors are caught and treated as empty or zero."
 					}

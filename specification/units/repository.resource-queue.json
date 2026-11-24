@@ -235,7 +235,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Resource queue database or transaction failure",
 				"type": "thrown",
 				"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 			},
@@ -282,7 +282,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					},
@@ -333,7 +333,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					}
@@ -373,7 +373,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					},
@@ -410,7 +410,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					}
@@ -490,7 +490,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					},
@@ -532,7 +532,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					},
@@ -576,7 +576,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					},
@@ -600,7 +600,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					}
@@ -629,7 +629,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Resource queue database or transaction failure",
 						"type": "thrown",
 						"description": "A failure from ResourceDatabase or an atomic action propagates to the caller; atomic actions attempt rollback and rethrow the caught error."
 					}

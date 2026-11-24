@@ -4,6 +4,7 @@
 	import { key } from '../../../../../hub/src/utils/browserContext';
 	import { remoteContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
 	import { exampleDocument } from '../../../../../game/src/index';
+	import ChoiceRow from '../../../../../desktop/src/components/shared-primitives/ChoiceRow.svelte';
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
 	import { routePreview } from './visualUnits';
@@ -13,6 +14,7 @@
 	import NativeAtomPreview from './NativeAtomPreview.svelte';
 	import HubHomeCatalogPreview from './HubHomeCatalogPreview.svelte';
 	import { isHubHomePreview } from './hubHomeCatalogData';
+	import { noop } from './shared';
 	let { id: requested }: { id: string } = $props();
 	const id = untrack(() => requested);
 	const unit = previewUnits.find((unit) => unit.id === id);
@@ -133,6 +135,11 @@
 					<div class="hx-nav"><Component {...fixture.props} /></div>
 				{:else if id in presentationIds}
 					<PresentationPreviews {id} {variant} />
+				{:else if id === 'desktop.component.shared-primitives-choice-rows'}
+					<Component {...fixture.props}>
+						<ChoiceRow name="Main" meta="Current branch" current onchoose={noop} />
+						<ChoiceRow name="Order history" meta="Feature branch" onchoose={noop} />
+					</Component>
 				{:else if fitted}
 					<div class="flow-host">
 						<SvelteFlow bind:nodes={flowNodes} bind:edges={flowEdges} colorMode="dark" fitView>

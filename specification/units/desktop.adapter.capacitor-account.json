@@ -84,14 +84,16 @@
 						"code": "session-required",
 						"message": "Sign in is required."
 					}
-				]
+				],
+				"unknownReason": "Native plugin rejections can be arbitrary; the handler extracts a usable code and message when present."
 			},
 			{
 				"name": "decoded.data",
 				"type": "unknown",
 				"required": true,
 				"description": "Base64 string containing the answer bytes. Non-string or invalid base64 data is unreadable, and data exceeding limit is refused.",
-				"examples": ["SGVsbG8="]
+				"examples": ["SGVsbG8="],
+				"unknownReason": "The native bridge supplies unverified data that is checked for string type and a valid base64 representation."
 			},
 			{
 				"name": "decoded.limit",
@@ -296,7 +298,8 @@
 								"code": "session-required",
 								"message": "Sign in is required."
 							}
-						]
+						],
+						"unknownReason": "Native plugin rejections can be arbitrary; the handler extracts a usable code and message when present."
 					}
 				],
 				"outputs": [
@@ -317,7 +320,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Base64 string containing the answer bytes. Non-string or invalid base64 data is unreadable, and data exceeding limit is refused.",
-						"examples": ["SGVsbG8="]
+						"examples": ["SGVsbG8="],
+						"unknownReason": "The native bridge supplies unverified data that is checked for string type and a valid base64 representation."
 					},
 					{
 						"name": "decoded.limit",

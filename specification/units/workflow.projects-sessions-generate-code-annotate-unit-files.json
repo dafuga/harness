@@ -53,7 +53,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "readFileSync failure (node:fs)",
 				"type": "thrown",
 				"description": "A filesystem error from readFileSync propagates if an existing target cannot be read."
 			}
@@ -102,7 +102,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "readFileSync failure (node:fs)",
 						"type": "thrown",
 						"description": "A filesystem error from readFileSync propagates if an existing target cannot be read."
 					}

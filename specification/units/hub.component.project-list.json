@@ -33,7 +33,7 @@
 				"name": "ProjectList.projects",
 				"type": "ProjectSummary[] | null",
 				"required": true,
-				"description": "Required project summaries supplied to the list. Items with role `owner` appear under “Owned by you”; every other role appears under “Shared with you”, preserving order within each group and omitting empty groups.",
+				"description": "Project summaries to display with owners first and original order within each role group. Null represents loading.",
 				"examples": [
 					[]
 				]
@@ -42,20 +42,22 @@
 				"name": "ProjectList.failure",
 				"type": "'setup' | 'read' | null",
 				"required": false,
-				"default": null
+				"default": null,
+				"description": "Displays an unconfigured-server message for setup or an alert for read. Null allows normal loading and results."
 			},
 			{
 				"name": "ProjectList.overview",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Shows the Project overview link beside the list title when the caller is authorized to offer it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ProjectList",
 				"type": "markup",
-				"description": "Markup groups nonempty owner and non-owner project arrays under “Owned by you” and “Shared with you”, preserving order within each group. Owner rows include a Members link, every row has an Open link to the `pages` path, and an empty input renders the no-project explanation."
+				"description": "A project list with links to open each workspace, Members links for owners and an optional Project overview link. Setup, read error, loading and empty states each have their own message."
 			}
 		],
 		"errors": [],

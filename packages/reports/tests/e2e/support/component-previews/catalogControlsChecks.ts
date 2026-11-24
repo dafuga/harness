@@ -24,6 +24,24 @@ export async function assertCatalogControls({
 	await caseAssertions.assertCatalogLayout(component, unit, viewport);
 	await caseAssertions.assertCatalogDetails(component, unit.id, variant);
 	await assertVideoCatalogState({ component, unit, variant });
+	if (unit.id === 'desktop.component.explorer-ui-entity-section-tabs') {
+		await expect(component.getByRole('button', { name: 'States' })).toHaveAttribute(
+			'aria-current',
+			'page'
+		);
+		await expect(component.getByRole('button', { name: 'Conversation' })).toBeVisible();
+	}
+	if (unit.id === 'desktop.component.shared-primitives-choice-row')
+		await expect(component.getByRole('button', { name: /^Main/ })).toHaveAttribute(
+			'aria-pressed',
+			'true'
+		);
+	if (unit.id === 'desktop.component.shared-primitives-choice-rows') {
+		const group = component.getByRole('group', { name: 'Branches' });
+		await group.getByRole('button', { name: /^Main/ }).focus();
+		await group.getByRole('button', { name: /^Main/ }).press('ArrowDown');
+		await expect(group.getByRole('button', { name: /^Order history/ })).toBeFocused();
+	}
 	if (
 		['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
 			(name) => unit.id === `desktop.component.${name}`

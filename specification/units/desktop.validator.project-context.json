@@ -62,7 +62,8 @@
 						},
 						"text": "The status badge clips at this width."
 					}
-				]
+				],
+				"unknownReason": "The operation receives raw IPC data and the channel determines whether and how it is parsed."
 			},
 			{
 				"name": "ProjectContextValidator.context.input",
@@ -77,7 +78,8 @@
 					{
 						"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c"
 					}
-				]
+				],
+				"unknownReason": "The project context arrives as raw IPC data and its optional project identifier is checked here."
 			},
 			{
 				"name": "ProjectContextValidator.comment.input",
@@ -121,7 +123,8 @@
 						},
 						"text": "The status badge clips at this width."
 					}
-				]
+				],
+				"unknownReason": "The incoming IPC comment is unchecked until the validator confirms its request id and text."
 			}
 		],
 		"outputs": [
@@ -210,42 +213,42 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Expected an object",
 				"type": "thrown",
 				"description": "Thrown with the message 'Expected an object.' when a value that must be an object is null, undefined, a primitive or an array: the context or comment input, the comment's anchor, or a region that is neither null nor an object."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid text field",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid text field.' when a text value is not a string, is blank after trimming, or is longer than its limit; the anchor's version, imageSha256, state and viewport accept null instead."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid identifier",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid identifier.' when a text value that has a required format does not match it: projectId, requestId, threadId, entityId, version, imageSha256, option or commit."
 			},
 			{
-				"name": "Error",
+				"name": "ExplicitProjectRequiredError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Select an explicit project.' by operation() on the project:select channel when the parsed input has no projectId."
 			},
 			{
-				"name": "Error",
+				"name": "Incomplete image anchor",
 				"type": "thrown",
 				"description": "Thrown with the message 'Incomplete image anchor.' when the anchor mixes null and set values among version, imageSha256, state and viewport."
 			},
 			{
-				"name": "Error",
+				"name": "Draft threads have no image region",
 				"type": "thrown",
 				"description": "Thrown with the message 'Draft threads have no image region.' when the anchor's version is null but its region is not null."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid image region",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid image region.' when a non-null region has an x, y, width or height that is not a finite number from 0 to 1."
 			},
 			{
-				"name": "Error",
+				"name": "Image region is outside the image",
 				"type": "thrown",
 				"description": "Thrown with the message 'Image region is outside the image.' when a non-null region has a zero width or height, or when x plus width or y plus height exceeds 1.000001."
 			}
@@ -294,7 +297,8 @@
 								},
 								"text": "The status badge clips at this width."
 							}
-						]
+						],
+						"unknownReason": "The operation receives raw IPC data and the channel determines whether and how it is parsed."
 					}
 				],
 				"outputs": [
@@ -326,42 +330,42 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Expected an object",
 						"type": "thrown",
 						"description": "Thrown with the message 'Expected an object.' when a value that must be an object is null, undefined, a primitive or an array: the context or comment input, the comment's anchor, or a region that is neither null nor an object."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid text field",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid text field.' when a text value is not a string, is blank after trimming, or is longer than its limit; the anchor's version, imageSha256, state and viewport accept null instead."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid identifier",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid identifier.' when a text value that has a required format does not match it: projectId, requestId, threadId, entityId, version, imageSha256, option or commit."
 					},
 					{
-						"name": "Error",
+						"name": "ExplicitProjectRequiredError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Select an explicit project.' by operation() on the project:select channel when the parsed input has no projectId."
 					},
 					{
-						"name": "Error",
+						"name": "Incomplete image anchor",
 						"type": "thrown",
 						"description": "Thrown with the message 'Incomplete image anchor.' when the anchor mixes null and set values among version, imageSha256, state and viewport."
 					},
 					{
-						"name": "Error",
+						"name": "Draft threads have no image region",
 						"type": "thrown",
 						"description": "Thrown with the message 'Draft threads have no image region.' when the anchor's version is null but its region is not null."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid image region",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid image region.' when a non-null region has an x, y, width or height that is not a finite number from 0 to 1."
 					},
 					{
-						"name": "Error",
+						"name": "Image region is outside the image",
 						"type": "thrown",
 						"description": "Thrown with the message 'Image region is outside the image.' when a non-null region has a zero width or height, or when x plus width or y plus height exceeds 1.000001."
 					}
@@ -384,7 +388,8 @@
 							{
 								"projectId": "3f2b8c1e-7a4d-4e9b-9c2a-5d6e7f8a9b0c"
 							}
-						]
+						],
+						"unknownReason": "The project context arrives as raw IPC data and its optional project identifier is checked here."
 					}
 				],
 				"outputs": [
@@ -405,17 +410,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Expected an object",
 						"type": "thrown",
 						"description": "Thrown with the message 'Expected an object.' when a value that must be an object is null, undefined, a primitive or an array: the context or comment input, the comment's anchor, or a region that is neither null nor an object."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid text field",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid text field.' when a text value is not a string, is blank after trimming, or is longer than its limit; the anchor's version, imageSha256, state and viewport accept null instead."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid identifier",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid identifier.' when a text value that has a required format does not match it: projectId, requestId, threadId, entityId, version, imageSha256, option or commit."
 					}
@@ -467,7 +472,8 @@
 								},
 								"text": "The status badge clips at this width."
 							}
-						]
+						],
+						"unknownReason": "The incoming IPC comment is unchecked until the validator confirms its request id and text."
 					}
 				],
 				"outputs": [
@@ -517,37 +523,37 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Expected an object",
 						"type": "thrown",
 						"description": "Thrown with the message 'Expected an object.' when a value that must be an object is null, undefined, a primitive or an array: the context or comment input, the comment's anchor, or a region that is neither null nor an object."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid text field",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid text field.' when a text value is not a string, is blank after trimming, or is longer than its limit; the anchor's version, imageSha256, state and viewport accept null instead."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid identifier",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid identifier.' when a text value that has a required format does not match it: projectId, requestId, threadId, entityId, version, imageSha256, option or commit."
 					},
 					{
-						"name": "Error",
+						"name": "Incomplete image anchor",
 						"type": "thrown",
 						"description": "Thrown with the message 'Incomplete image anchor.' when the anchor mixes null and set values among version, imageSha256, state and viewport."
 					},
 					{
-						"name": "Error",
+						"name": "Draft threads have no image region",
 						"type": "thrown",
 						"description": "Thrown with the message 'Draft threads have no image region.' when the anchor's version is null but its region is not null."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid image region",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid image region.' when a non-null region has an x, y, width or height that is not a finite number from 0 to 1."
 					},
 					{
-						"name": "Error",
+						"name": "Image region is outside the image",
 						"type": "thrown",
 						"description": "Thrown with the message 'Image region is outside the image.' when a non-null region has a zero width or height, or when x plus width or y plus height exceeds 1.000001."
 					}

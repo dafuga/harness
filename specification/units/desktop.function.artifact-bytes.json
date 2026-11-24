@@ -93,7 +93,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ArtifactReadError",
 				"type": "thrown",
 				"description": "An Error the async function throws, so the promise rejects: with the `unreadArtifact` message when the bridge has no `artifact` reader, or with the `damagedArtifact` message when the bytes do not hash to `query.sha256`. Errors from the reader, from reading the answer's bytes, and from the SHA-256 digest are not caught and reject the promise unchanged."
 			}
@@ -160,7 +160,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ArtifactReadError",
 						"type": "thrown",
 						"description": "An Error the async function throws, so the promise rejects: with the `unreadArtifact` message when the bridge has no `artifact` reader, or with the `damagedArtifact` message when the bytes do not hash to `query.sha256`. Errors from the reader, from reading the answer's bytes, and from the SHA-256 digest are not caught and reject the promise unchanged."
 					}

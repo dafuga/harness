@@ -65,7 +65,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ProjectRevisionChangedError",
 				"type": "thrown",
 				"description": "Thrown with the message “The project revision changed. Refresh before asking the agent.” when the refreshed project's branch or commit differs from the request."
 			},
@@ -122,7 +122,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ProjectRevisionChangedError",
 						"type": "thrown",
 						"description": "Thrown with the message “The project revision changed. Refresh before asking the agent.” when the refreshed project's branch or commit differs from the request."
 					},

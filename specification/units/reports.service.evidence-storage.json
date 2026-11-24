@@ -126,37 +126,37 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ReportExpiredError",
 				"type": "thrown",
 				"description": "Thrown by store before any upload when a pending item exists and reportRetention reports the report as 30 days old or more, with the message 'Report expired after 30 days; create a new report'."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid report retention timestamp",
 				"type": "thrown",
 				"description": "Thrown by reportRetention, which store calls only when a pending item exists, with 'Invalid report retention timestamp' when report.startedAt does not parse as a date."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid R2 evidence name",
 				"type": "thrown",
 				"description": "Thrown by evidenceObjectKey, which R2EvidenceStoreAdapter.put calls for each distinct pending file only when R2 evidence storage is configured, with 'Invalid R2 evidence name' when the file is not a 64-character lowercase hex SHA-256 name ending in .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid report or asset ID",
 				"type": "thrown",
 				"description": "Thrown by safeId inside evidenceObjectKey, once a file name is valid and R2 evidence storage is configured, with 'Invalid report or asset ID' when report.id is not 1 to 100 letters, digits, underscores or hyphens."
 			},
 			{
-				"name": "Error",
+				"name": "registeredAsset failure (unregistered or invalid asset)",
 				"type": "thrown",
 				"description": "Thrown by registeredAsset, which store calls before uploading each distinct pending file when R2 evidence storage is configured: 'Unregistered asset' when the name is not in the pending list or contains a slash or backslash, 'Invalid asset' when the file is a symbolic link or not a regular file, and 'Invalid asset path' when its real path is outside the assets directory."
 			},
 			{
-				"name": "Error",
+				"name": "r2EvidenceConfig failure (storage configuration)",
 				"type": "thrown",
 				"description": "Thrown by R2EvidenceStoreAdapter.fromEnvironment through r2EvidenceConfig, which store calls once a pending item exists: 'Local-only storage is restricted to temporary test stores; real report media requires Cloudflare R2' when PROJECT_REPORTS_ASSET_STORAGE is 'local' outside a temporary test store, 'Cloudflare R2 evidence storage is partially configured; real reports require all four R2 settings' when any R2 setting is missing (unless none are set in a temporary test store), and 'R2 endpoint override must be a local test server' when an endpoint is set that is not an http://127.0.0.1 URL with a port."
 			},
 			{
-				"name": "Error",
+				"name": "filesystem and R2 client failure (realpath, lstat, readFile, S3 upload)",
 				"type": "thrown",
 				"description": "Filesystem errors from realpath, lstat and readFile (such as ENOENT for a missing asset file), non-ENOENT errors reading the local R2 config file, and failures from the R2 S3 client on upload are not caught, so store rejects with the underlying error unchanged."
 			}
@@ -275,37 +275,37 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ReportExpiredError",
 						"type": "thrown",
 						"description": "Thrown by store before any upload when a pending item exists and reportRetention reports the report as 30 days old or more, with the message 'Report expired after 30 days; create a new report'."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report retention timestamp",
 						"type": "thrown",
 						"description": "Thrown by reportRetention, which store calls only when a pending item exists, with 'Invalid report retention timestamp' when report.startedAt does not parse as a date."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid R2 evidence name",
 						"type": "thrown",
 						"description": "Thrown by evidenceObjectKey, which R2EvidenceStoreAdapter.put calls for each distinct pending file only when R2 evidence storage is configured, with 'Invalid R2 evidence name' when the file is not a 64-character lowercase hex SHA-256 name ending in .png, .jpg, .webp, .wav, .mp3, .m4a or .ogg."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Thrown by safeId inside evidenceObjectKey, once a file name is valid and R2 evidence storage is configured, with 'Invalid report or asset ID' when report.id is not 1 to 100 letters, digits, underscores or hyphens."
 					},
 					{
-						"name": "Error",
+						"name": "registeredAsset failure (unregistered or invalid asset)",
 						"type": "thrown",
 						"description": "Thrown by registeredAsset, which store calls before uploading each distinct pending file when R2 evidence storage is configured: 'Unregistered asset' when the name is not in the pending list or contains a slash or backslash, 'Invalid asset' when the file is a symbolic link or not a regular file, and 'Invalid asset path' when its real path is outside the assets directory."
 					},
 					{
-						"name": "Error",
+						"name": "r2EvidenceConfig failure (storage configuration)",
 						"type": "thrown",
 						"description": "Thrown by R2EvidenceStoreAdapter.fromEnvironment through r2EvidenceConfig, which store calls once a pending item exists: 'Local-only storage is restricted to temporary test stores; real report media requires Cloudflare R2' when PROJECT_REPORTS_ASSET_STORAGE is 'local' outside a temporary test store, 'Cloudflare R2 evidence storage is partially configured; real reports require all four R2 settings' when any R2 setting is missing (unless none are set in a temporary test store), and 'R2 endpoint override must be a local test server' when an endpoint is set that is not an http://127.0.0.1 URL with a port."
 					},
 					{
-						"name": "Error",
+						"name": "filesystem and R2 client failure (realpath, lstat, readFile, S3 upload)",
 						"type": "thrown",
 						"description": "Filesystem errors from realpath, lstat and readFile (such as ENOENT for a missing asset file), non-ENOENT errors reading the local R2 config file, and failures from the R2 S3 client on upload are not caught, so store rejects with the underlying error unchanged."
 					}

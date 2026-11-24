@@ -35,22 +35,22 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Frozen build requires an E2E run root",
 				"type": "thrown",
 				"description": "Thrown when e2eFixtures finds HARNESS_E2E_ROOT unset or empty, so the process belongs to no browser run and no build is copied. The script prints the error message to stderr and exits with status 1."
 			},
 			{
-				"name": "Error",
+				"name": "Missing or empty frozen build source",
 				"type": "thrown",
 				"description": "Thrown when the source directory is missing, cannot be listed, or contains no files, so frozenBuild cannot identify a build to copy. The script prints the error message to stderr and exits with status 1."
 			},
 			{
-				"name": "Error",
+				"name": "Frozen build copy or filesystem failure",
 				"type": "thrown",
 				"description": "A filesystem error while removing the previous per-run copy, copying source files, or reading build files. frozenBuild propagates the error without an additional cleanup attempt; the script prints its message to stderr and exits with status 1."
 			},
 			{
-				"name": "Error",
+				"name": "Frozen source or copied build changed",
 				"type": "thrown",
 				"description": "Thrown when the source identity changes during copying or the copied files do not match the original identity. frozenBuild removes the copied directory before throwing; the script prints the error message to stderr and exits with status 1."
 			}

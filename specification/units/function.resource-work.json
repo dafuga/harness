@@ -105,7 +105,7 @@
 				"description": "Thrown by resourceRequestSchema.parse for an unknown key, a priority outside its three values, a cpus or memoryMiB that is not a finite positive number (including a lease-derived cpus from a non-numeric HARNESS_RESOURCE_CPUS), or a label outside 1 to 100 characters; the same error type is also thrown when an existing config.json fails resourceConfigSchema or a stored queue row fails resourceJobSchema."
 			},
 			{
-				"name": "Error",
+				"name": "Unsupported resource queue schema",
 				"type": "thrown",
 				"description": "Thrown with the message 'Unsupported resource queue schema' while the service is constructed, when the queue database's user_version is neither 0 nor 1; the database is closed first."
 			},
@@ -115,47 +115,47 @@
 				"description": "Thrown with options.signal's abort reason (a DOMException named AbortError unless abort() was given another reason) by throwIfAborted before enqueue, while waiting, and before the action starts; a pending wait timer also rejects with an AbortError when the signal aborts."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid resource queue wait timeout",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid resource queue wait timeout' before enqueue when options.waitTimeoutMs is set but is not a finite number above 0."
 			},
 			{
-				"name": "Error",
+				"name": "Resource request owner unavailable",
 				"type": "thrown",
 				"description": "Thrown with the message 'Cannot establish resource request owner' before the queue entry is added, when the start time of the current process cannot be read."
 			},
 			{
-				"name": "Error",
+				"name": "Resource queue is full",
 				"type": "thrown",
 				"description": "Thrown with the message 'Resource queue is full' before the queue entry is added, when the queue already holds 512 or more jobs."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid inherited resource lease",
 				"type": "thrown",
 				"description": "Thrown with the message 'Invalid inherited resource lease' before the queue entry is added, when HARNESS_RESOURCE_LEASE is non-empty but names no running job or that job's identity check (resourceIdentity) fails."
 			},
 			{
-				"name": "Error",
+				"name": "Nested work exceeds parent reservation",
 				"type": "thrown",
 				"description": "Thrown with the message 'Nested work exceeds its parent resource reservation' before the queue entry is added, when a request under HARNESS_RESOURCE_LEASE asks for more cpus or memoryMiB than its parent job reserves."
 			},
 			{
-				"name": "Error",
+				"name": "Resource queue wait timed out",
 				"type": "thrown",
 				"description": "Thrown while waiting once the deadline passes (waitTimeoutMs, or 1800000 ms when omitted), with a message that starts 'Resource queue wait timed out' and adds the last reason, the sampled capacity and the running reservations."
 			},
 			{
-				"name": "Error",
+				"name": "Resource request exceeds usable capacity",
 				"type": "thrown",
 				"description": "Thrown with the message 'Resource request exceeds usable capacity after reserves' while waiting when impossibleRequest is true (cpus above usableCores after the cpuReservePercent share, or memoryMiB above memoryTotalBytes after the memory reserve, with telemetry available)."
 			},
 			{
-				"name": "Error",
+				"name": "Resource request disappeared from queue",
 				"type": "thrown",
 				"description": "Thrown with the message 'Resource request disappeared' while waiting when the queued job is missing from the queue as it is scheduled."
 			},
 			{
-				"name": "Error",
+				"name": "Parent resource reservation ended",
 				"type": "thrown",
 				"description": "Thrown with the message 'Parent resource reservation ended' while waiting when the request's parent job is no longer a running job."
 			},
@@ -266,7 +266,7 @@
 						"description": "Thrown by resourceRequestSchema.parse for an unknown key, a priority outside its three values, a cpus or memoryMiB that is not a finite positive number (including a lease-derived cpus from a non-numeric HARNESS_RESOURCE_CPUS), or a label outside 1 to 100 characters; the same error type is also thrown when an existing config.json fails resourceConfigSchema or a stored queue row fails resourceJobSchema."
 					},
 					{
-						"name": "Error",
+						"name": "Unsupported resource queue schema",
 						"type": "thrown",
 						"description": "Thrown with the message 'Unsupported resource queue schema' while the service is constructed, when the queue database's user_version is neither 0 nor 1; the database is closed first."
 					},
@@ -276,47 +276,47 @@
 						"description": "Thrown with options.signal's abort reason (a DOMException named AbortError unless abort() was given another reason) by throwIfAborted before enqueue, while waiting, and before the action starts; a pending wait timer also rejects with an AbortError when the signal aborts."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid resource queue wait timeout",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid resource queue wait timeout' before enqueue when options.waitTimeoutMs is set but is not a finite number above 0."
 					},
 					{
-						"name": "Error",
+						"name": "Resource request owner unavailable",
 						"type": "thrown",
 						"description": "Thrown with the message 'Cannot establish resource request owner' before the queue entry is added, when the start time of the current process cannot be read."
 					},
 					{
-						"name": "Error",
+						"name": "Resource queue is full",
 						"type": "thrown",
 						"description": "Thrown with the message 'Resource queue is full' before the queue entry is added, when the queue already holds 512 or more jobs."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid inherited resource lease",
 						"type": "thrown",
 						"description": "Thrown with the message 'Invalid inherited resource lease' before the queue entry is added, when HARNESS_RESOURCE_LEASE is non-empty but names no running job or that job's identity check (resourceIdentity) fails."
 					},
 					{
-						"name": "Error",
+						"name": "Nested work exceeds parent reservation",
 						"type": "thrown",
 						"description": "Thrown with the message 'Nested work exceeds its parent resource reservation' before the queue entry is added, when a request under HARNESS_RESOURCE_LEASE asks for more cpus or memoryMiB than its parent job reserves."
 					},
 					{
-						"name": "Error",
+						"name": "Resource queue wait timed out",
 						"type": "thrown",
 						"description": "Thrown while waiting once the deadline passes (waitTimeoutMs, or 1800000 ms when omitted), with a message that starts 'Resource queue wait timed out' and adds the last reason, the sampled capacity and the running reservations."
 					},
 					{
-						"name": "Error",
+						"name": "Resource request exceeds usable capacity",
 						"type": "thrown",
 						"description": "Thrown with the message 'Resource request exceeds usable capacity after reserves' while waiting when impossibleRequest is true (cpus above usableCores after the cpuReservePercent share, or memoryMiB above memoryTotalBytes after the memory reserve, with telemetry available)."
 					},
 					{
-						"name": "Error",
+						"name": "Resource request disappeared from queue",
 						"type": "thrown",
 						"description": "Thrown with the message 'Resource request disappeared' while waiting when the queued job is missing from the queue as it is scheduled."
 					},
 					{
-						"name": "Error",
+						"name": "Parent resource reservation ended",
 						"type": "thrown",
 						"description": "Thrown with the message 'Parent resource reservation ended' while waiting when the request's parent job is no longer a running job."
 					},

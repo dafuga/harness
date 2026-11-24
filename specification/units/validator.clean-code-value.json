@@ -37,21 +37,24 @@
 					},
 					null,
 					[]
-				]
+				],
+				"unknownReason": "The Jev response contains decoded data whose object shape must be validated before keys are read."
 			},
 			{
 				"name": "probabilityValue.value",
 				"type": "unknown",
 				"required": true,
 				"description": "Candidate Jev probability passed to probabilityValue. It must be a finite number from 0 through 1, inclusive.",
-				"examples": [0.25, 1, -0.1]
+				"examples": [0.25, 1, -0.1],
+				"unknownReason": "The raw Jev score is narrowed to a finite probability in the inclusive unit interval."
 			},
 			{
 				"name": "tokenCount.value",
 				"type": "unknown",
 				"required": true,
 				"description": "Candidate Jev usage count passed to tokenCount. It must be a nonnegative safe integer.",
-				"examples": [0, 37, -1]
+				"examples": [0, 37, -1],
+				"unknownReason": "The raw Jev usage field is narrowed to a nonnegative safe integer."
 			}
 		],
 		"outputs": [
@@ -82,7 +85,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidJevValueError",
 				"type": "thrown",
 				"description": "recordValue throws this Error for null, non-object, or array inputs; probabilityValue throws it for non-numbers, non-finite numbers, or values outside 0 through 1; tokenCount throws it for non-numbers, non-safe integers, or negative values. The respective messages are \"Invalid Jev response\", \"Invalid Jev probability\", and \"Invalid Jev usage\"."
 			}
@@ -105,7 +108,8 @@
 							},
 							null,
 							[]
-						]
+						],
+						"unknownReason": "The Jev response contains decoded data whose object shape must be validated before keys are read."
 					}
 				],
 				"outputs": [
@@ -124,7 +128,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidJevValueError",
 						"type": "thrown",
 						"description": "Thrown when value is null, is not an object, or is an array; the message is \"Invalid Jev response\"."
 					}
@@ -139,7 +143,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Candidate Jev probability passed to probabilityValue. It must be a finite number from 0 through 1, inclusive.",
-						"examples": [0.25, 1, -0.1]
+						"examples": [0.25, 1, -0.1],
+						"unknownReason": "The raw Jev score is narrowed to a finite probability in the inclusive unit interval."
 					}
 				],
 				"outputs": [
@@ -152,7 +157,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidJevValueError",
 						"type": "thrown",
 						"description": "Thrown when value is not a number, is not finite, or is outside the inclusive range 0 through 1; the message is \"Invalid Jev probability\"."
 					}
@@ -167,7 +172,8 @@
 						"type": "unknown",
 						"required": true,
 						"description": "Candidate Jev usage count passed to tokenCount. It must be a nonnegative safe integer.",
-						"examples": [0, 37, -1]
+						"examples": [0, 37, -1],
+						"unknownReason": "The raw Jev usage field is narrowed to a nonnegative safe integer."
 					}
 				],
 				"outputs": [
@@ -180,7 +186,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidJevValueError",
 						"type": "thrown",
 						"description": "Thrown when value is not a number, is not a safe integer, or is negative; the message is \"Invalid Jev usage\"."
 					}

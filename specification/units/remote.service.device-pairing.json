@@ -182,7 +182,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "DevicePairingError",
 				"type": "thrown",
 				"description": "The Error that each operation rejects with, whose message names the failed check: 'offer-invalid', 'offer-unsupported', 'offer-environment' or 'offer-expired' for a refused scanned text; 'Check the pairing details and try again.' for input that fails the checks; 'The relay did not present the key of this computer.' when the relay's hostKey is missing or does not derive hostId; 'The approval is not for this device.' when the approval names another device; and 'The pairing was refused or has expired.' when a relay answer is not OK. Errors from fetch, response parsing and the crypto helpers are not caught and propagate unchanged."
 			}
@@ -247,7 +247,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Pairing offer invalid, unsupported, expired, or wrong environment",
 						"type": "thrown",
 						"description": "Rejects with Error('offer-<reason>') when readPairingOffer refuses the text, where reason is invalid, unsupported, environment or expired; otherwise it rejects with whatever request rejects with."
 					}
@@ -298,7 +298,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DevicePairingError",
 						"type": "thrown",
 						"description": "Rejects with 'Check the pairing details and try again.' when the input fails the checks, with 'The relay did not present the key of this computer.' when the relay's hostKey is missing or does not derive hostId, and with 'The pairing was refused or has expired.' when either relay call is not OK. Errors from fetch, response parsing and the crypto helpers propagate unchanged."
 					}
@@ -325,7 +325,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DevicePairingError",
 						"type": "thrown",
 						"description": "Rejects with 'The pairing was refused or has expired.' when the relay's answer to the poll is not OK. Errors from fetch and response parsing propagate unchanged."
 					}
@@ -376,7 +376,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DevicePairingError",
 						"type": "thrown",
 						"description": "Rejects with 'The pairing was refused or has expired.' when the relay's answer to the exchange is not OK, and with 'The approval is not for this device.' when the relay's or the approval's deviceId differs from the pending deviceId or the credential is not 43 base64url characters. A sealed approval that does not open with approvalKey also rejects, from openPairing."
 					}

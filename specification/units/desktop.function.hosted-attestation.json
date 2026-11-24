@@ -61,7 +61,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unsupported hosted artifact declaration",
 				"type": "thrown",
 				"description": "Thrown with the message unshownHostedArtifact when the declaration is refused: its type is not in the accepted list, its text is not a type/subtype optionally followed by charset=utf-8, or it has a parameter on a type other than JSON or plain text. It is the only error thrown for a string input, and an accepted declaration returns its result object."
 			}
@@ -102,7 +102,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsupported hosted artifact declaration",
 						"type": "thrown",
 						"description": "Thrown with the message unshownHostedArtifact when the declaration is refused: its type is not in the accepted list, its text is not a type/subtype optionally followed by charset=utf-8, or it has a parameter on a type other than JSON or plain text. It is the only error thrown for a string input, and an accepted declaration returns its result object."
 					}

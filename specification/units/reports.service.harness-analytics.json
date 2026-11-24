@@ -232,17 +232,17 @@
 				"description": "fileURLToPath throws a TypeError when a file:// Git remote is not a valid local path (inside repositoryIdentity(), reached through reportSite()) or when reportRuntimeRoot() runs from a module URL that is not a file: URL while HARNESS_REPORTS_RUNTIME_ROOT is unset. The query rejects with it before the CLI starts."
 			},
 			{
-				"name": "Error",
+				"name": "Working directory unavailable",
 				"type": "thrown",
 				"description": "process.cwd() throws when HARNESS_SITE_ROOT is empty or unset and the working directory no longer exists, and realpathSync throws when the Git store of a checkout with no remote cannot be resolved (both reached through reportSite()). The query rejects with that Error before the CLI starts."
 			},
 			{
-				"name": "Error",
+				"name": "spawn failure (node:child_process)",
 				"type": "thrown",
 				"description": "The child process emits an Error when Bun cannot be started, such as ENOENT when HARNESS_BUN_PATH or bun on PATH does not exist. The query rejects with that error unchanged."
 			},
 			{
-				"name": "Error",
+				"name": "HarnessAnalyticsQueryError",
 				"type": "thrown",
 				"description": "An Error with the message 'Harness analytics query failed.' is created when the CLI process closes with any code other than 0, including null when a signal ends it. The query rejects with it."
 			},
@@ -466,17 +466,17 @@
 						"description": "fileURLToPath throws a TypeError when a file:// Git remote is not a valid local path (inside repositoryIdentity(), reached through reportSite()) or when reportRuntimeRoot() runs from a module URL that is not a file: URL while HARNESS_REPORTS_RUNTIME_ROOT is unset. The query rejects with it before the CLI starts."
 					},
 					{
-						"name": "Error",
+						"name": "Working directory unavailable",
 						"type": "thrown",
 						"description": "process.cwd() throws when HARNESS_SITE_ROOT is empty or unset and the working directory no longer exists, and realpathSync throws when the Git store of a checkout with no remote cannot be resolved (both reached through reportSite()). The query rejects with that Error before the CLI starts."
 					},
 					{
-						"name": "Error",
+						"name": "spawn failure (node:child_process)",
 						"type": "thrown",
 						"description": "The child process emits an Error when Bun cannot be started, such as ENOENT when HARNESS_BUN_PATH or bun on PATH does not exist. The query rejects with that error unchanged."
 					},
 					{
-						"name": "Error",
+						"name": "HarnessAnalyticsQueryError",
 						"type": "thrown",
 						"description": "An Error with the message 'Harness analytics query failed.' is created when the CLI process closes with any code other than 0, including null when a signal ends it. The query rejects with it."
 					},

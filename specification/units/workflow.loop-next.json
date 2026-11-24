@@ -98,7 +98,7 @@
 				"description": "Propagated when loop.json contains invalid JSON."
 			},
 			{
-				"name": "Error",
+				"name": "Loop state file read failure",
 				"type": "thrown",
 				"description": "Filesystem read errors other than a missing-file error are rethrown by readLoop."
 			}
@@ -155,7 +155,7 @@
 						"description": "Propagated when loop.json contains invalid JSON."
 					},
 					{
-						"name": "Error",
+						"name": "Loop state file read failure",
 						"type": "thrown",
 						"description": "Filesystem read errors other than a missing-file error are rethrown by readLoop."
 					}

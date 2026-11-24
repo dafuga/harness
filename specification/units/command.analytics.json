@@ -30,7 +30,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown with the message '--older-than must be between 1 and 36500 whole days.' inside the async prune action, so that action's promise rejects, when the --older-than value converted with Number() is not a safe integer from 1 to 36500. The check runs before AnalyticsRepository.open(), so an invalid value never opens the analytics store."
 			}

@@ -123,9 +123,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Invalid keep-last values throw Error('--keep-last must be a whole number between 0 and 100000.'); invalid age values throw Error('--older-than must be between 1 and 36500 whole days.'). Git lookup or cache scanning may also reject if an underlying operation fails."
+				"description": "Invalid keep-last values throw ExpectedCliError('--keep-last must be a whole number between 0 and 100000.'); invalid age values throw ExpectedCliError('--older-than must be between 1 and 36500 whole days.'). Git lookup or cache scanning may also reject if an underlying operation fails."
 			}
 		],
 		"errorStatus": "declared",
@@ -193,9 +193,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Invalid keep-last values throw Error('--keep-last must be a whole number between 0 and 100000.'); invalid age values throw Error('--older-than must be between 1 and 36500 whole days.') before scanning. Git lookup or cache scanning may also reject the promise if an underlying operation fails."
+						"description": "Invalid keep-last values throw ExpectedCliError('--keep-last must be a whole number between 0 and 100000.'); invalid age values throw ExpectedCliError('--older-than must be between 1 and 36500 whole days.') before scanning. Git lookup or cache scanning may also reject the promise if an underlying operation fails."
 					}
 				],
 				"errorStatus": "declared"

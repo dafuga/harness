@@ -205,9 +205,8 @@ function verifyNativeInvocations(
 
 function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {
 	const skill = 'skills/secret-safe-computer-use/SKILL.md';
-	const home = profiles.native;
 	const install = spawnSync('/bin/bash', ['deploy/vault/install-secret-safe-skill.sh'], {
-		env: { PATH: process.env.PATH, HOME: home }
+		env: { PATH: process.env.PATH, HOME: profiles.native }
 	});
 	expect(install.status).toBe(0);
 	const codex = readFileSync(join(home, '.codex', skill), 'utf8');

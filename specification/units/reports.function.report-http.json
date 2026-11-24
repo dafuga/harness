@@ -71,7 +71,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "R2EvidenceStorageNotConfiguredError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Cloudflare R2 evidence storage is not configured' when a file is remote with storage 'r2-evidence' and R2EvidenceStoreAdapter.fromEnvironment() returns no adapter. Rejections from repository.get, the R2 get calls, readFile and registeredAsset also propagate, because these files contain no catch."
 			},
@@ -157,7 +157,7 @@
 						"description": "Raised by error(410) with 'Evidence expired or unavailable' when evidence entries with the requested file name exist but every one of them is marked missing."
 					},
 					{
-						"name": "Error",
+						"name": "R2EvidenceStorageNotConfiguredError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Cloudflare R2 evidence storage is not configured' when a file is remote with storage 'r2-evidence' and R2EvidenceStoreAdapter.fromEnvironment() returns no adapter. Rejections from repository.get, the R2 get calls, readFile and registeredAsset also propagate, because these files contain no catch."
 					}

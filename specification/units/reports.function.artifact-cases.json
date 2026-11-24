@@ -89,7 +89,8 @@
 							"rows": []
 						}
 					}
-				]
+				],
+				"unknownReason": "The artifact reader accepts arbitrary recorded content and recognizes invocation evidence at runtime."
 			},
 			{
 				"name": "artifactCases.unit",
@@ -271,7 +272,8 @@
 									"rows": []
 								}
 							}
-						]
+						],
+						"unknownReason": "The artifact reader accepts arbitrary recorded content and recognizes invocation evidence at runtime."
 					},
 					{
 						"name": "artifactCases.unit",

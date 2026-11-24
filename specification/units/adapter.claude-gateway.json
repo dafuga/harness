@@ -226,17 +226,17 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidToolContinuationError",
 				"type": "thrown",
 				"description": "Thrown by validate, and by start through validate, with the message 'No active query owns this continuation' when the session is not running and the last input item has type function_call_output or custom_tool_call_output."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidToolContinuationError",
 				"type": "thrown",
 				"description": "Thrown by validate, and by start through validate, with the message 'Duplicate tool outputs' when the session is running and two outputs for pending calls share the same raw call_id."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidToolContinuationError",
 				"type": "thrown",
 				"description": "Thrown by validate, and by start through validate, with the message 'All pending tool results are required' when the session is running and the outputs for pending calls are empty or their count differs from session.pending.size."
 			},
@@ -251,7 +251,7 @@
 				"description": "Thrown as a GatewayContentError by GatewayContentSerializer.history when an image item is not inline base64 PNG, JPEG, GIF or WebP data (for example an image URL, local path or provider file ID), when its data is invalid or over the 5 MiB limit, or when its bytes do not match its media type. It is also thrown when a request holds more than 20 images or more than 20 MiB of image bytes."
 			},
 			{
-				"name": "Error",
+				"name": "Duplicate tool output call ID",
 				"type": "thrown",
 				"description": "Thrown by repository.deliver, which start calls for a running session, when two outputs have call_id values that differ as raw values but become the same string after String conversion, such as the number 7 and the string '7'."
 			}
@@ -361,17 +361,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidToolContinuationError",
 						"type": "thrown",
 						"description": "Thrown by validate, and by start through validate, with the message 'No active query owns this continuation' when the session is not running and the last input item has type function_call_output or custom_tool_call_output."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidToolContinuationError",
 						"type": "thrown",
 						"description": "Thrown by validate, and by start through validate, with the message 'Duplicate tool outputs' when the session is running and two outputs for pending calls share the same raw call_id."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidToolContinuationError",
 						"type": "thrown",
 						"description": "Thrown by validate, and by start through validate, with the message 'All pending tool results are required' when the session is running and the outputs for pending calls are empty or their count differs from session.pending.size."
 					},
@@ -491,17 +491,17 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidToolContinuationError",
 						"type": "thrown",
 						"description": "Thrown by validate, and by start through validate, with the message 'No active query owns this continuation' when the session is not running and the last input item has type function_call_output or custom_tool_call_output."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidToolContinuationError",
 						"type": "thrown",
 						"description": "Thrown by validate, and by start through validate, with the message 'Duplicate tool outputs' when the session is running and two outputs for pending calls share the same raw call_id."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidToolContinuationError",
 						"type": "thrown",
 						"description": "Thrown by validate, and by start through validate, with the message 'All pending tool results are required' when the session is running and the outputs for pending calls are empty or their count differs from session.pending.size."
 					},
@@ -516,7 +516,7 @@
 						"description": "Thrown as a GatewayContentError by GatewayContentSerializer.history when an image item is not inline base64 PNG, JPEG, GIF or WebP data (for example an image URL, local path or provider file ID), when its data is invalid or over the 5 MiB limit, or when its bytes do not match its media type. It is also thrown when a request holds more than 20 images or more than 20 MiB of image bytes."
 					},
 					{
-						"name": "Error",
+						"name": "Duplicate tool output call ID",
 						"type": "thrown",
 						"description": "Thrown by repository.deliver, which start calls for a running session, when two outputs have call_id values that differ as raw values but become the same string after String conversion, such as the number 7 and the string '7'."
 					}

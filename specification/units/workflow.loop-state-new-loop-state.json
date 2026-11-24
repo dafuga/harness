@@ -105,7 +105,7 @@
 				"description": "Rejected when a project template field has the wrong type, such as a non-array steps or evaluators value or a non-string id, because normalizeSteps, normalizeEvaluators, validateLoopId and validateRequiredText call array or string methods on it without a type check."
 			},
 			{
-				"name": "Error",
+				"name": "Loop template directory or file read failure",
 				"type": "thrown",
 				"description": "Rejected with a Node file-system error other than ENOENT, such as EACCES or ENOTDIR, raised while reading specification/loop-templates when from is set."
 			}
@@ -206,7 +206,7 @@
 						"description": "Rejected when a project template field has the wrong type, such as a non-array steps or evaluators value or a non-string id, because normalizeSteps, normalizeEvaluators, validateLoopId and validateRequiredText call array or string methods on it without a type check."
 					},
 					{
-						"name": "Error",
+						"name": "Loop template directory or file read failure",
 						"type": "thrown",
 						"description": "Rejected with a Node file-system error other than ENOENT, such as EACCES or ENOTDIR, raised while reading specification/loop-templates when from is set."
 					}

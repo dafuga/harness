@@ -423,7 +423,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "RemoteHostUnavailableError",
 				"type": "thrown",
 				"description": "Thrown by current() with the message 'Turn remote access on first.' when the stored record is missing or disabled, or when no runtime is running."
 			},
@@ -783,7 +783,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "RemoteHostUnavailableError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Turn remote access on first.' when the stored record is missing or disabled, or when no runtime is running."
 					}

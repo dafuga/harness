@@ -18,7 +18,7 @@
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts",
-			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts"
+			"src/adapters/projects-sessions/tracker-tmux-adapter/verifyTrackerTmuxSubmission.ts"
 		],
 		"symbols": [
 			"TrackerTmuxAdapter",
@@ -56,8 +56,8 @@
 			"trackerTmuxKeys",
 			"trackerWorkerClient",
 			"trackerGuestAuthFile",
-			"trackerManagedCodexUsage",
-			"TrackerManagedLauncherOptions"
+			"sendTrackerTmuxNudge",
+			"trackerTmuxCwd"
 		]
 	},
 	"contract": {
@@ -277,7 +277,7 @@
 			{
 				"name": "trackerTmuxKeys.message",
 				"type": "string",
-				"required": true,
+				"required": false,
 				"description": "Control-character-free message already checked by the caller."
 			},
 			{
@@ -316,25 +316,41 @@
 				"required": true
 			},
 			{
-				"name": "trackerManagedCodexUsage.directory",
+				"name": "sendTrackerTmuxNudge.input",
+				"type": "TrackerTmuxNudge",
+				"required": true
+			},
+			{
+				"name": "sendTrackerTmuxNudge.id",
+				"type": "string",
+				"required": true,
+				"description": "The identifier of the targeted tmux pane."
+			},
+			{
+				"name": "sendTrackerTmuxNudge.raw",
+				"type": "string",
+				"required": true,
+				"description": "The captured tmux layout fingerprint compared before sending keys."
+			},
+			{
+				"name": "sendTrackerTmuxNudge.effects",
+				"type": "{ command: (args: string[]) => Promise<{ code: number; stdout: string }>; capture: () => Promise<TrackerTmuxPane | undefined>; }",
+				"required": true
+			},
+			{
+				"name": "sendTrackerTmuxNudge.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "trackerTmuxCwd.id",
 				"type": "string",
 				"required": true
 			},
 			{
-				"name": "trackerManagedCodexUsage.profile",
-				"type": "string | undefined",
+				"name": "trackerTmuxCwd.command",
+				"type": "(args: string[]) => Promise<{ code: number; stdout: string }>",
 				"required": true
-			},
-			{
-				"name": "trackerManagedCodexUsage.transcriptRoots",
-				"type": "readonly string[]",
-				"required": true
-			},
-			{
-				"name": "trackerManagedHostLauncher.transcriptRoots",
-				"type": "readonly string[]",
-				"required": false,
-				"default": []
 			}
 		],
 		"outputs": [
@@ -500,12 +516,6 @@
 						"name": "trackerManagedHostLauncher.platform",
 						"type": "typeof process.platform",
 						"required": false
-					},
-					{
-						"name": "trackerManagedHostLauncher.transcriptRoots",
-						"type": "readonly string[]",
-						"required": false,
-						"default": []
 					}
 				],
 				"outputs": [
@@ -846,7 +856,7 @@
 					{
 						"name": "trackerTmuxKeys.message",
 						"type": "string",
-						"required": true,
+						"required": false,
 						"description": "Control-character-free message already checked by the caller."
 					}
 				],
@@ -927,28 +937,63 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "trackerManagedCodexUsage",
+				"name": "sendTrackerTmuxNudge",
 				"inputs": [
 					{
-						"name": "trackerManagedCodexUsage.directory",
+						"name": "sendTrackerTmuxNudge.input",
+						"type": "TrackerTmuxNudge",
+						"required": true
+					},
+					{
+						"name": "sendTrackerTmuxNudge.id",
 						"type": "string",
+						"required": true,
+						"description": "The identifier of the targeted tmux pane."
+					},
+					{
+						"name": "sendTrackerTmuxNudge.raw",
+						"type": "string",
+						"required": true,
+						"description": "The captured tmux layout fingerprint compared before sending keys."
+					},
+					{
+						"name": "sendTrackerTmuxNudge.effects",
+						"type": "{ command: (args: string[]) => Promise<{ code: number; stdout: string }>; capture: () => Promise<TrackerTmuxPane | undefined>; }",
 						"required": true
 					},
 					{
-						"name": "trackerManagedCodexUsage.profile",
-						"type": "string | undefined",
-						"required": true
-					},
-					{
-						"name": "trackerManagedCodexUsage.transcriptRoots",
-						"type": "readonly string[]",
+						"name": "sendTrackerTmuxNudge.signal",
+						"type": "AbortSignal",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "trackerManagedCodexUsage",
-						"type": "TrackerHostLaunchPort['readUsage']"
+						"name": "sendTrackerTmuxNudge",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerTmuxCwd",
+				"inputs": [
+					{
+						"name": "trackerTmuxCwd.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerTmuxCwd.command",
+						"type": "(args: string[]) => Promise<{ code: number; stdout: string }>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTmuxCwd",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -996,11 +1041,6 @@
 		},
 		{
 			"unit": "service.projects-sessions-watchdog-pane",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -104,12 +104,10 @@ test('the registry stores Select as a derived dependency of each of its consumer
 			'game-checkpoint-editor',
 			'game-create',
 			'game-level-brief',
-			'game-preview',
+			'game-live-ai',
 			'game-view-fields'
 		].map((name) => `desktop.component.${name}`),
-		...['project-switcher', 'remote-approval', 'revision-picker', 'runtime-screens'].map(
-			(name) => `desktop.component.${name}`
-		),
+		...['remote-approval', 'runtime-screens'].map((name) => `desktop.component.${name}`),
 		...['invitation-form', 'project-create'].map((name) => `hub.component.${name}`)
 	]);
 	const linked = (id: string | undefined) =>

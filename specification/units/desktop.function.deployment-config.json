@@ -74,7 +74,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Deployment settings, safety, or target failure",
 				"type": "thrown",
 				"description": "Thrown or propagated when settings or Wrangler data cannot be read or parsed, project paths fail containment, explicit target or safety checks fail, or Worker account/name pairs are not distinct."
 			}
@@ -109,7 +109,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentConfigError",
 						"type": "thrown",
 						"description": "Thrown when the resolved path is the project root or lies outside it."
 					}
@@ -156,7 +156,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Deployment settings, safety, or target failure",
 						"type": "thrown",
 						"description": "Thrown or propagated when settings or Wrangler data cannot be read or parsed, project paths fail containment, explicit target or safety checks fail, or Worker account/name pairs are not distinct."
 					}

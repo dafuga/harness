@@ -229,14 +229,14 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CommentSaveError",
 				"type": "thrown",
-				"description": "save rejects with Error('A comment needs a project.') when input.projectId is missing or empty; this check runs before the drafts file is read or written."
+				"description": "save rejects with CommentSaveError('A comment needs a project.') when input.projectId is missing or empty; this check runs before the drafts file is read or written."
 			},
 			{
-				"name": "Error",
+				"name": "CommentSaveError",
 				"type": "thrown",
-				"description": "save rejects with Error('Conflicting comment request.') when a stored draft has the same projectId and requestId but the new input serializes to different JSON than the stored input; the stored draft is left unchanged and nothing is written."
+				"description": "save rejects with CommentSaveError('Conflicting comment request.') when a stored draft has the same projectId and requestId but the new input serializes to different JSON than the stored input; the stored draft is left unchanged and nothing is written."
 			},
 			{
 				"name": "SyntaxError",
@@ -244,7 +244,7 @@
 				"description": "save and list reject with a SyntaxError from JSON.parse when the drafts file exists but is not valid JSON; save writes nothing in that case."
 			},
 			{
-				"name": "Error",
+				"name": "Comment draft filesystem failure",
 				"type": "thrown",
 				"description": "save and list reject with a Node.js filesystem Error that carries a code such as EACCES when the drafts file exists but cannot be read, or when save cannot create its directory, write its temporary file or rename it over the drafts file; a missing drafts file is not an error."
 			}
@@ -360,14 +360,14 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CommentSaveError",
 						"type": "thrown",
-						"description": "save rejects with Error('A comment needs a project.') when input.projectId is missing or empty; this check runs before the drafts file is read or written."
+						"description": "save rejects with CommentSaveError('A comment needs a project.') when input.projectId is missing or empty; this check runs before the drafts file is read or written."
 					},
 					{
-						"name": "Error",
+						"name": "CommentSaveError",
 						"type": "thrown",
-						"description": "save rejects with Error('Conflicting comment request.') when a stored draft has the same projectId and requestId but the new input serializes to different JSON than the stored input; the stored draft is left unchanged and nothing is written."
+						"description": "save rejects with CommentSaveError('Conflicting comment request.') when a stored draft has the same projectId and requestId but the new input serializes to different JSON than the stored input; the stored draft is left unchanged and nothing is written."
 					},
 					{
 						"name": "SyntaxError",
@@ -375,7 +375,7 @@
 						"description": "save rejects with a SyntaxError from JSON.parse when the drafts file exists but is not valid JSON; save writes nothing in that case."
 					},
 					{
-						"name": "Error",
+						"name": "Comment draft write failure",
 						"type": "thrown",
 						"description": "save rejects with a Node.js filesystem Error that carries a code such as EACCES when the drafts file exists but cannot be read, or when save cannot create its directory, write its temporary file or rename it over the drafts file; a missing drafts file is not an error."
 					}
@@ -489,7 +489,7 @@
 						"description": "list rejects with a SyntaxError from JSON.parse when the drafts file exists but is not valid JSON."
 					},
 					{
-						"name": "Error",
+						"name": "Comment draft read failure",
 						"type": "thrown",
 						"description": "list rejects with a Node.js filesystem Error that carries a code such as EACCES when the drafts file exists but cannot be read; a missing drafts file yields an empty array instead."
 					}

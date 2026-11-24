@@ -48,7 +48,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "readFile failure (node:fs/promises)",
 				"type": "thrown",
 				"description": "Rethrown unchanged when readFile fails with any error code other than ENOENT, such as EACCES for an unreadable package.json or EISDIR when package.json is a directory. Nothing is written when this happens."
 			},
@@ -63,7 +63,7 @@
 				"description": "Thrown when package.json parses to null, where reading manifest.name fails, or to a string, number or boolean, where assigning manifest.dependencies fails in strict-mode code. Nothing is written when this happens."
 			},
 			{
-				"name": "Error",
+				"name": "writeFile failure (node:fs/promises)",
 				"type": "thrown",
 				"description": "Propagated unchanged from writeFile when it rejects, for example with EACCES or EROFS, so ensure rejects instead of resolving."
 			}
@@ -107,7 +107,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "readFile failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "Rethrown unchanged when readFile fails with any error code other than ENOENT, such as EACCES for an unreadable package.json or EISDIR when package.json is a directory. Nothing is written when this happens."
 					},
@@ -122,7 +122,7 @@
 						"description": "Thrown when package.json parses to null, where reading manifest.name fails, or to a string, number or boolean, where assigning manifest.dependencies fails in strict-mode code. Nothing is written when this happens."
 					},
 					{
-						"name": "Error",
+						"name": "writeFile failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "Propagated unchanged from writeFile when it rejects, for example with EACCES or EROFS, so ensure rejects instead of resolving."
 					}

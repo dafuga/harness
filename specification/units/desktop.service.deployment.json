@@ -173,7 +173,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Deployment project, review, authority, or queue failure",
 				"type": "thrown",
 				"description": "Service calls can throw or reject with Error when project validation fails, no local root is selected, a reviewed plan is missing or expired, the selected project changes, or automatic deployment targets production; delegated deployment and activity operations can also reject."
 			}
@@ -203,7 +203,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentPreconditionError",
 						"type": "thrown",
 						"description": "Can throw when the session rejects the requested project ID or when no local project root is selected; the latter is an Error with message 'Select a local project first.'."
 					}
@@ -248,7 +248,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentPreconditionError",
 						"type": "thrown",
 						"description": "Can throw when the session rejects the requested project ID or when no local project root is selected; the latter is an Error with message 'Select a local project first.'. Plan review can also reject this async operation."
 					}
@@ -279,7 +279,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentPreconditionError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Please review a fresh deployment plan.' when the plan is missing or expired, and Error with message 'The selected project changed.' when the root or session project differs from the reviewed plan. Current-state validation or job scheduling can also reject."
 					}
@@ -310,7 +310,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Deployment start or scheduled job failure",
 						"type": "thrown",
 						"description": "Can reject with start's plan or project errors and with a failure from waiting for the scheduled job."
 					}
@@ -342,7 +342,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentPreconditionError",
 						"type": "thrown",
 						"description": "Throws Error with message 'Production requires the Deploy UI.' when environment is not dev, stage, or preprod. Planning and deployment failures can also reject this async operation."
 					}
@@ -374,7 +374,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentPreconditionError",
 						"type": "thrown",
 						"description": "Can throw when the session rejects the requested project ID or when no local project root is selected; the latter is an Error with message 'Select a local project first.'. The enqueue helper can also reject."
 					}
@@ -405,7 +405,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "DeploymentPreconditionError",
 						"type": "thrown",
 						"description": "Can throw when the session rejects the requested project ID or when no local project root is selected; the latter is an Error with message 'Select a local project first.'. The activity service can also reject the progress request."
 					}

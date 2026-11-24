@@ -59,32 +59,32 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CodexConnectionClosedError",
 				"type": "thrown",
 				"description": "send throws an Error with the message 'Codex connection closed.' once the connection is marked closed by a process error, process close, stdin error, oversized message or dispose."
 			},
 			{
-				"name": "Error",
+				"name": "CodexConnectionClosedError",
 				"type": "thrown",
 				"description": "Pending requests reject with an Error whose message is 'Codex connection closed.' when the child process closes, its stdin emits an error, or dispose runs."
 			},
 			{
-				"name": "Error",
+				"name": "Codex child process error",
 				"type": "thrown",
 				"description": "Pending requests reject with the error the child process emits on its 'error' event, for example when the command cannot be started."
 			},
 			{
-				"name": "Error",
+				"name": "CodexMessageTooLargeError",
 				"type": "thrown",
 				"description": "Pending requests reject with an Error whose message is 'Codex message too large.' when stdout overflows the 96000000-byte maxBytes limit of the line reader, and the owned process is killed first."
 			},
 			{
-				"name": "Error",
+				"name": "Codex RPC initialization failure",
 				"type": "thrown",
 				"description": "codexRpc rejects with the same error after disposing the connection when the initialize request or the initialized notification fails."
 			},
 			{
-				"name": "Error",
+				"name": "Codex connection setup failure",
 				"type": "thrown",
 				"description": "Synchronous errors raised while creating the connection, such as from spawn or resources.track, reject codexRpc without calling dispose because connection() runs outside the initialization try block."
 			},
@@ -140,32 +140,32 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CodexConnectionClosedError",
 						"type": "thrown",
 						"description": "send throws an Error with the message 'Codex connection closed.' once the connection is marked closed by a process error, process close, stdin error, oversized message or dispose."
 					},
 					{
-						"name": "Error",
+						"name": "CodexConnectionClosedError",
 						"type": "thrown",
 						"description": "Pending requests reject with an Error whose message is 'Codex connection closed.' when the child process closes, its stdin emits an error, or dispose runs."
 					},
 					{
-						"name": "Error",
+						"name": "Codex child process error",
 						"type": "thrown",
 						"description": "Pending requests reject with the error the child process emits on its 'error' event, for example when the command cannot be started."
 					},
 					{
-						"name": "Error",
+						"name": "CodexMessageTooLargeError",
 						"type": "thrown",
 						"description": "Pending requests reject with an Error whose message is 'Codex message too large.' when stdout overflows the 96000000-byte maxBytes limit of the line reader, and the owned process is killed first."
 					},
 					{
-						"name": "Error",
+						"name": "Codex RPC initialization failure",
 						"type": "thrown",
 						"description": "codexRpc rejects with the same error after disposing the connection when the initialize request or the initialized notification fails."
 					},
 					{
-						"name": "Error",
+						"name": "Codex connection setup failure",
 						"type": "thrown",
 						"description": "Synchronous errors raised while creating the connection, such as from spawn or resources.track, reject codexRpc without calling dispose because connection() runs outside the initialization try block."
 					},

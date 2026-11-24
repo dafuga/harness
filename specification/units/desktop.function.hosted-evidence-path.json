@@ -57,7 +57,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Invalid hosted evidence project or payload",
 				"type": "thrown",
 				"description": "Throws Error with message Invalid hosted project. when projectId fails its pattern. The payload validators also throw Error with messages Invalid text field., Invalid identifier., or Invalid option. when selected evidence fields fail their checks."
 			}
@@ -103,7 +103,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Invalid hosted evidence project or payload",
 						"type": "thrown",
 						"description": "Throws Error with message Invalid hosted project. when projectId fails its pattern. The payload validators also throw Error with messages Invalid text field., Invalid identifier., or Invalid option. when selected evidence fields fail their checks."
 					}

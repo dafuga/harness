@@ -171,7 +171,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "PrimaryKeyUpdateError",
 				"type": "thrown",
 				"description": "update throws this Error when the input has its own property matching the configured primary key. Its message is A SQLite primary key cannot be updated."
 			}
@@ -318,7 +318,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PrimaryKeyUpdateError",
 						"type": "thrown",
 						"description": "update throws this Error when the input has its own property matching the configured primary key. Its message is A SQLite primary key cannot be updated."
 					}

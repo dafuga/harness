@@ -134,7 +134,7 @@
 				"description": "The package's CollaborationInputError from fail (message 'Collaboration <code>', with a code property): invalid-input when an identity fails the strict identity schema, and cache-hash-mismatch from writeCache when a non-null artifactHash differs from SHA-256(bytes), before cache.put is called."
 			},
 			{
-				"name": "Error",
+				"name": "Cache access or key derivation failure",
 				"type": "thrown",
 				"description": "readCache catches its internal corruption Error; Web Crypto or cache adapter failures may reject operations, including when readCache deletes an invalid entry."
 			}
@@ -184,7 +184,7 @@
 						"description": "Rejects with the package's CollaborationInputError from fail, code invalid-input, when the identity fails the strict identity schema; no key is returned."
 					},
 					{
-						"name": "Error",
+						"name": "Cache digest failure",
 						"type": "thrown",
 						"description": "A Web Crypto digest failure rejects the promise."
 					}
@@ -240,7 +240,7 @@
 						"description": "Rejects with the package's CollaborationInputError from fail, code invalid-input, when the requested identity fails the identity schema, before lookup; invalid cached identities are caught and the entry is deleted."
 					},
 					{
-						"name": "Error",
+						"name": "Cache key derivation or eviction failure",
 						"type": "thrown",
 						"description": "A digest failure while deriving the requested key or a cache deletion rejection may reject the promise; lookup and integrity failures resolve as null when deletion succeeds."
 					}
@@ -301,7 +301,7 @@
 						"description": "Rejects with the package's CollaborationInputError from fail: code invalid-input when the identity fails the identity schema, or cache-hash-mismatch when a non-null artifactHash differs from the SHA-256 of bytes; both are detected before cache.put."
 					},
 					{
-						"name": "Error",
+						"name": "Cache digest or write failure",
 						"type": "thrown",
 						"description": "A Web Crypto digest failure or cache.put rejection may reject the promise."
 					}

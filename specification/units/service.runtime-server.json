@@ -55,7 +55,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Runtime server bind failure",
 				"type": "thrown",
 				"description": "The Node server error is propagated if binding fails while serve is listening."
 			}
@@ -96,7 +96,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Runtime server bind failure",
 						"type": "thrown",
 						"description": "The Node server error is propagated if binding fails while serve is listening."
 					}

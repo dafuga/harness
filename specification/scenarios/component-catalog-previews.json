@@ -4,6 +4,7 @@
 	"title": "Individual components with representative inputs",
 	"kind": "ui",
 	"units": [
+		"desktop.component.accounts-access-account-sign-in",
 		"desktop.component.agent-controls",
 		"desktop.component.agent-effort-picker",
 		"desktop.component.agent-model-picker",
@@ -26,6 +27,7 @@
 		"desktop.component.entity-card",
 		"desktop.component.entity-view",
 		"desktop.component.environment-picker",
+		"desktop.component.explorer-ui-entity-section-tabs",
 		"desktop.component.game-authoring-game-graph-fit",
 		"desktop.component.game-authoring-game-workspace-chips",
 		"desktop.component.game-checkpoint-editor",
@@ -38,6 +40,7 @@
 		"desktop.component.game-level-plan",
 		"desktop.component.game-level-preview",
 		"desktop.component.game-level-review",
+		"desktop.component.game-live-ai",
 		"desktop.component.game-live-video",
 		"desktop.component.game-mechanics",
 		"desktop.component.game-preview",
@@ -75,12 +78,15 @@
 		"desktop.component.runtime-run",
 		"desktop.component.runtime-screens",
 		"desktop.component.segmented-choice",
+		"desktop.component.shared-primitives-choice-row",
+		"desktop.component.shared-primitives-choice-rows",
 		"desktop.component.status-bar",
 		"desktop.component.thread-history",
 		"desktop.component.thread-links",
 		"desktop.component.thread-panel",
 		"desktop.component.workspace-link",
 		"desktop.component.workspace-shell",
+		"desktop.layout.root",
 		"desktop.page.game",
 		"desktop.page.harness-path",
 		"desktop.page.projects",
@@ -119,11 +125,13 @@
 		"hub.component.public-site-home-hero",
 		"hub.component.public-site-home-page",
 		"hub.component.public-site-home-steps",
+		"hub.page.accounts-access-devices",
 		"hub.page.invite-project-id-invitation-id",
 		"hub.page.native-handoff-id",
 		"hub.page.projects",
 		"hub.page.projects-project-id-harness-path",
 		"hub.page.projects-project-id-members",
+		"hub.page.public-site-about",
 		"hub.page.root",
 		"hub.page.tracker-overview",
 		"reports.component.activity-list",
@@ -368,6 +376,12 @@
 	],
 	"builds": ["shell-fixture"],
 	"states": [
+		{
+			"id": "desktop-component-accounts-access-account-sign-in",
+			"title": "Google sign-in",
+			"coverage": "required",
+			"units": ["desktop.component.accounts-access-account-sign-in"]
+		},
 		{
 			"id": "desktop-component-agent-controls",
 			"title": "Agent controls",
@@ -891,6 +905,12 @@
 			"units": ["desktop.component.environment-picker"]
 		},
 		{
+			"id": "desktop-component-explorer-ui-entity-section-tabs",
+			"title": "Entity section tabs",
+			"coverage": "required",
+			"units": ["desktop.component.explorer-ui-entity-section-tabs"]
+		},
+		{
 			"id": "desktop-component-game-authoring-game-graph-fit",
 			"title": "GameGraphFit",
 			"coverage": "required",
@@ -1147,6 +1167,12 @@
 			"title": "Level review: no providers",
 			"coverage": "required",
 			"units": ["desktop.component.game-level-review"]
+		},
+		{
+			"id": "desktop-component-game-live-ai",
+			"title": "Live AI video options",
+			"coverage": "required",
+			"units": ["desktop.component.game-live-ai"]
 		},
 		{
 			"id": "desktop-component-game-live-video",
@@ -1905,6 +1931,18 @@
 			"units": ["desktop.component.segmented-choice"]
 		},
 		{
+			"id": "desktop-component-shared-primitives-choice-row",
+			"title": "Choice row",
+			"coverage": "required",
+			"units": ["desktop.component.shared-primitives-choice-row"]
+		},
+		{
+			"id": "desktop-component-shared-primitives-choice-rows",
+			"title": "Choice rows",
+			"coverage": "required",
+			"units": ["desktop.component.shared-primitives-choice-rows"]
+		},
+		{
 			"id": "desktop-component-status-bar",
 			"title": "Status bar",
 			"coverage": "required",
@@ -1939,6 +1977,12 @@
 			"title": "Shared workspace shell",
 			"coverage": "required",
 			"units": ["desktop.component.workspace-shell"]
+		},
+		{
+			"id": "desktop-layout-root",
+			"title": "Desktop layout with child content",
+			"coverage": "required",
+			"units": ["desktop.layout.root"]
 		},
 		{
 			"id": "desktop-page-game",
@@ -2169,6 +2213,12 @@
 			"units": ["hub.component.public-site-home-steps"]
 		},
 		{
+			"id": "hub-page-accounts-access-devices",
+			"title": "Signed-in account devices",
+			"coverage": "required",
+			"units": ["hub.page.accounts-access-devices"]
+		},
+		{
 			"id": "hub-page-invite-project-id-invitation-id",
 			"title": "/invite/[projectId]/[invitationId]",
 			"coverage": "required",
@@ -2197,6 +2247,12 @@
 			"title": "/projects/[projectId]/members",
 			"coverage": "required",
 			"units": ["hub.page.projects-project-id-members"]
+		},
+		{
+			"id": "hub-page-public-site-about",
+			"title": "Harness public overview",
+			"coverage": "required",
+			"units": ["hub.page.public-site-about"]
 		},
 		{
 			"id": "hub-page-root",
@@ -8501,6 +8557,7 @@
 			"id": "screens",
 			"kind": "screenshot",
 			"states": [
+				"desktop-component-accounts-access-account-sign-in",
 				"desktop-component-agent-controls",
 				"desktop-component-agent-controls-compact",
 				"desktop-component-agent-controls-empty",
@@ -8588,6 +8645,7 @@
 				"desktop-component-environment-picker-preprod",
 				"desktop-component-environment-picker-prod",
 				"desktop-component-environment-picker-with-action",
+				"desktop-component-explorer-ui-entity-section-tabs",
 				"desktop-component-game-authoring-game-graph-fit",
 				"desktop-component-game-authoring-game-workspace-chips",
 				"desktop-component-game-authoring-game-workspace-chips-demo",
@@ -8631,6 +8689,7 @@
 				"desktop-component-game-level-review-error",
 				"desktop-component-game-level-review-unavailable",
 				"desktop-component-game-level-review-no-providers",
+				"desktop-component-game-live-ai",
 				"desktop-component-game-live-video",
 				"desktop-component-game-mechanics",
 				"desktop-component-game-preview",
@@ -8671,7 +8730,6 @@
 				"desktop-component-plan-badge",
 				"desktop-component-prior-image",
 				"desktop-component-project-agent",
-
 				"desktop-component-project-gate",
 				"desktop-component-project-gate-available",
 				"desktop-component-project-gate-busy",
@@ -8738,12 +8796,15 @@
 				"desktop-component-runtime-screens-paired",
 				"desktop-component-runtime-screens-incomparable",
 				"desktop-component-segmented-choice",
+				"desktop-component-shared-primitives-choice-row",
+				"desktop-component-shared-primitives-choice-rows",
 				"desktop-component-status-bar",
 				"desktop-component-thread-history",
 				"desktop-component-thread-links",
 				"desktop-component-thread-panel",
 				"desktop-component-workspace-link",
 				"desktop-component-workspace-shell",
+				"desktop-layout-root",
 				"desktop-page-game",
 				"desktop-page-harness-path",
 				"desktop-page-projects",
@@ -8782,11 +8843,13 @@
 				"hub-component-public-site-home-hero",
 				"hub-component-public-site-home-page",
 				"hub-component-public-site-home-steps",
+				"hub-page-accounts-access-devices",
 				"hub-page-invite-project-id-invitation-id",
 				"hub-page-native-handoff-id",
 				"hub-page-projects",
 				"hub-page-projects-project-id-harness-path",
 				"hub-page-projects-project-id-members",
+				"hub-page-public-site-about",
 				"hub-page-root",
 				"hub-page-tracker-overview",
 				"reports-component-activity-list",

@@ -52,32 +52,32 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "gitRevision failure (git-read)",
 				"type": "thrown",
 				"description": "Thrown by gitRevision with the message 'Invalid revision.' when the commit is empty, longer than 300 characters, or contains a NUL character; no git command runs and no temporary directory is created."
 			},
 			{
-				"name": "Error",
+				"name": "gitRead rev-parse failure (git-read)",
 				"type": "thrown",
 				"description": "Rejects with the error from gitRead when `git -C <root> rev-parse --verify --end-of-options <commit>^{commit}` fails (cannot start, non-zero exit such as an unresolvable commit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); no temporary directory is created."
 			},
 			{
-				"name": "Error",
+				"name": "gitRead worktree add failure (git-read)",
 				"type": "thrown",
 				"description": "Rejects with the error from gitRead when `git -C <root> worktree add --detach <directory> <resolved SHA>` fails (cannot start, non-zero exit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); the callback is not called and the temporary directory is still deleted."
 			},
 			{
-				"name": "Error",
+				"name": "gitRead worktree remove failure (git-read)",
 				"type": "thrown",
 				"description": "Rejects with the error from gitRead when `git -C <root> worktree remove --force <directory>` fails during cleanup after the callback settles (cannot start, non-zero exit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); it replaces the callback's result or error, and the temporary directory is not deleted because the following rm is skipped."
 			},
 			{
-				"name": "Error",
+				"name": "mkdtemp failure (node:fs/promises)",
 				"type": "thrown",
 				"description": "Rejects with the file-system error from mkdtemp when no harness-deployment- directory can be created under os.tmpdir(); no worktree is added."
 			},
 			{
-				"name": "Error",
+				"name": "rm failure (node:fs/promises)",
 				"type": "thrown",
 				"description": "Rejects with the file-system error from rm, called with recursive and force set, when the temporary directory cannot be deleted during cleanup; it replaces the callback's result or error."
 			},
@@ -130,32 +130,32 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "gitRevision failure (git-read)",
 						"type": "thrown",
 						"description": "Thrown by gitRevision with the message 'Invalid revision.' when the commit is empty, longer than 300 characters, or contains a NUL character; no git command runs and no temporary directory is created."
 					},
 					{
-						"name": "Error",
+						"name": "gitRead rev-parse failure (git-read)",
 						"type": "thrown",
 						"description": "Rejects with the error from gitRead when `git -C <root> rev-parse --verify --end-of-options <commit>^{commit}` fails (cannot start, non-zero exit such as an unresolvable commit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); no temporary directory is created."
 					},
 					{
-						"name": "Error",
+						"name": "gitRead worktree add failure (git-read)",
 						"type": "thrown",
 						"description": "Rejects with the error from gitRead when `git -C <root> worktree add --detach <directory> <resolved SHA>` fails (cannot start, non-zero exit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); the callback is not called and the temporary directory is still deleted."
 					},
 					{
-						"name": "Error",
+						"name": "gitRead worktree remove failure (git-read)",
 						"type": "thrown",
 						"description": "Rejects with the error from gitRead when `git -C <root> worktree remove --force <directory>` fails during cleanup after the callback settles (cannot start, non-zero exit, killed by a signal, or stdout over gitRead's 64000000-byte maxBuffer); it replaces the callback's result or error, and the temporary directory is not deleted because the following rm is skipped."
 					},
 					{
-						"name": "Error",
+						"name": "mkdtemp failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "Rejects with the file-system error from mkdtemp when no harness-deployment- directory can be created under os.tmpdir(); no worktree is added."
 					},
 					{
-						"name": "Error",
+						"name": "rm failure (node:fs/promises)",
 						"type": "thrown",
 						"description": "Rejects with the file-system error from rm, called with recursive and force set, when the temporary directory cannot be deleted during cleanup; it replaces the callback's result or error."
 					},

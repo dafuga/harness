@@ -56,7 +56,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Audit directory enumeration failure",
 				"type": "thrown",
 				"description": "A filesystem error from readdir or lstat rejects the promise and propagates to the caller because the implementation does not catch or translate it."
 			}
@@ -99,7 +99,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Audit directory enumeration failure",
 						"type": "thrown",
 						"description": "A filesystem error from readdir or lstat rejects the promise and propagates to the caller because the implementation does not catch or translate it."
 					}

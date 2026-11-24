@@ -55,27 +55,27 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Conflicting task and loop options",
 				"type": "thrown",
 				"description": "Thrown by resolvedContext when task is set together with loop or step, after the HARNESS_ANALYTICS_* defaults are applied; the message is 'Use either --task or --loop/--step.'"
 			},
 			{
-				"name": "Error",
+				"name": "Loop step requires a loop",
 				"type": "thrown",
 				"description": "Thrown by resolvedContext when step is set without loop; the message is '--step requires --loop.'"
 			},
 			{
-				"name": "Error",
+				"name": "Loop step does not exist",
 				"type": "thrown",
 				"description": "Thrown by resolvedContext when a loop is set and the loop state has no step whose id equals step; the message is 'Loop step does not exist.'"
 			},
 			{
-				"name": "Error",
+				"name": "Invalid report ID",
 				"type": "thrown",
 				"description": "Thrown by validateReport when report is set and does not match /^[a-zA-Z0-9-]+$/; the message is 'Invalid report ID.'"
 			},
 			{
-				"name": "Error",
+				"name": "Report manifest read failure",
 				"type": "thrown",
 				"description": "Rejected by validateReport when runs/<report>/manifest.json under PROJECT_REPORTS_HOME (default $HOME/.codex/project-reports) cannot be read; a missing manifest rejects with a Node ENOENT error."
 			},
@@ -85,7 +85,7 @@
 				"description": "Thrown by parseAuditProfile through fail when options.profile (or 'auto' when omitted) is not app, auto, dapp or lib; the message names the unsupported value and lists auto, app, dapp and lib."
 			},
 			{
-				"name": "Error",
+				"name": "Audit, report recording, or loop state failure",
 				"type": "thrown",
 				"description": "Propagated, not created here: runAudit has no try/catch, so an error thrown or rejected by auditProject, recordCleanCode or readLoop (called by resolvedContext when a loop is set) reaches the caller unchanged."
 			}
@@ -136,27 +136,27 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Conflicting task and loop options",
 						"type": "thrown",
 						"description": "Thrown by resolvedContext when task is set together with loop or step, after the HARNESS_ANALYTICS_* defaults are applied; the message is 'Use either --task or --loop/--step.'"
 					},
 					{
-						"name": "Error",
+						"name": "Loop step requires a loop",
 						"type": "thrown",
 						"description": "Thrown by resolvedContext when step is set without loop; the message is '--step requires --loop.'"
 					},
 					{
-						"name": "Error",
+						"name": "Loop step does not exist",
 						"type": "thrown",
 						"description": "Thrown by resolvedContext when a loop is set and the loop state has no step whose id equals step; the message is 'Loop step does not exist.'"
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report ID",
 						"type": "thrown",
 						"description": "Thrown by validateReport when report is set and does not match /^[a-zA-Z0-9-]+$/; the message is 'Invalid report ID.'"
 					},
 					{
-						"name": "Error",
+						"name": "Report manifest read failure",
 						"type": "thrown",
 						"description": "Rejected by validateReport when runs/<report>/manifest.json under PROJECT_REPORTS_HOME (default $HOME/.codex/project-reports) cannot be read; a missing manifest rejects with a Node ENOENT error."
 					},
@@ -166,7 +166,7 @@
 						"description": "Thrown by parseAuditProfile through fail when options.profile (or 'auto' when omitted) is not app, auto, dapp or lib; the message names the unsupported value and lists auto, app, dapp and lib."
 					},
 					{
-						"name": "Error",
+						"name": "Audit, report recording, or loop state failure",
 						"type": "thrown",
 						"description": "Propagated, not created here: runAudit has no try/catch, so an error thrown or rejected by auditProject, recordCleanCode or readLoop (called by resolvedContext when a loop is set) reaches the caller unchanged."
 					}

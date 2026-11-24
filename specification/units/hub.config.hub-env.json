@@ -35,7 +35,8 @@
 						"HARNESS_GOOGLE_CLIENT_ID": "hub-web.apps.exampleusercontent.com",
 						"HARNESS_EMAIL_FROM": "noreply@example.test"
 					}
-				]
+				],
+				"unknownReason": "Operators supply an environment map and the builder selects and validates the settings it recognizes."
 			}
 		],
 		"outputs": [
@@ -78,7 +79,8 @@
 								"HARNESS_GOOGLE_CLIENT_ID": "hub-web.apps.exampleusercontent.com",
 								"HARNESS_EMAIL_FROM": "noreply@example.test"
 							}
-						]
+						],
+						"unknownReason": "Operators supply an environment map and the builder selects and validates the settings it recognizes."
 					}
 				],
 				"outputs": [

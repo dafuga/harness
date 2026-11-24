@@ -65,12 +65,12 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "InvalidResourceCommandInputError",
 				"type": "thrown",
 				"description": "Rejects with an Error whose message is 'Invalid managed command timeout', before anything starts, when timeoutMs is not a finite number, is 0 or less, or is above 2147483647."
 			},
 			{
-				"name": "Error",
+				"name": "InvalidResourceCommandInputError",
 				"type": "thrown",
 				"description": "Rejects with an Error whose message is 'A managed command is required after --', before anything starts, when args is empty."
 			},
@@ -80,7 +80,7 @@
 				"description": "Rejects with the signal's abort reason, unchanged, when the signal is aborted: before anything starts if it was already aborted, otherwise after cleanup has run and the log is written."
 			},
 			{
-				"name": "Error",
+				"name": "runIsolated failure",
 				"type": "thrown",
 				"description": "Rejects with a non-abort error from runIsolated: a synchronous error from spawning the `sh` wrapper, such as an invalid argument, before the command starts, or a file-system error from creating or writing the log after the command has ended. In both cases no exit status is returned."
 			}
@@ -133,12 +133,12 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "InvalidResourceCommandInputError",
 						"type": "thrown",
 						"description": "Rejects with an Error whose message is 'Invalid managed command timeout', before anything starts, when timeoutMs is not a finite number, is 0 or less, or is above 2147483647."
 					},
 					{
-						"name": "Error",
+						"name": "InvalidResourceCommandInputError",
 						"type": "thrown",
 						"description": "Rejects with an Error whose message is 'A managed command is required after --', before anything starts, when args is empty."
 					},
@@ -148,7 +148,7 @@
 						"description": "Rejects with the signal's abort reason, unchanged, when the signal is aborted: before anything starts if it was already aborted, otherwise after cleanup has run and the log is written."
 					},
 					{
-						"name": "Error",
+						"name": "runIsolated failure",
 						"type": "thrown",
 						"description": "Rejects with a non-abort error from runIsolated: a synchronous error from spawning the `sh` wrapper, such as an invalid argument, before the command starts, or a file-system error from creating or writing the log after the command has ended. In both cases no exit status is returned."
 					}

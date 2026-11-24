@@ -75,7 +75,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "CommitFileNotFoundError",
 				"type": "thrown",
 				"description": "Thrown by read when the requested path is absent from the selected commit tree."
 			},
@@ -165,7 +165,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "CommitFileNotFoundError",
 						"type": "thrown",
 						"description": "Thrown by read when the requested path is absent from the selected commit tree."
 					}

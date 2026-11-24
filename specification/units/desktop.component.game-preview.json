@@ -11,30 +11,20 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.game-controls",
+			"desktop.component.game-live-ai",
 			"desktop.component.game-live-video",
-			"reports.component.select",
-			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-canvas",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-option",
-			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-small"
+			"reports.component.shared-primitives-atoms-html-section"
 		]
 	},
 	"owns": {
-		"source": [
-			"packages/desktop/src/components/game-authoring/game-preview/GamePreview.svelte"
-		],
-		"symbols": [
-			"GamePreview"
-		]
+		"source": ["packages/desktop/src/components/game-authoring/game-preview/GamePreview.svelte"],
+		"symbols": ["GamePreview"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.select"
-		],
+		"primitives": [],
 		"inputs": [
 			{
 				"name": "GamePreview.view",
@@ -73,10 +63,7 @@
 				"type": "string | null",
 				"required": true,
 				"description": "Project identifier forwarded to bridge.gameRender when AI video starts. A null or empty string prevents AI video availability and start.",
-				"examples": [
-					"project-42",
-					null
-				]
+				"examples": ["project-42", null]
 			},
 			{
 				"name": "GamePreview.readonly",
@@ -84,10 +71,7 @@
 				"required": false,
 				"default": false,
 				"description": "When true, disables AI video availability while local gameplay and reset remain interactive. Defaults to false.",
-				"examples": [
-					false,
-					true
-				]
+				"examples": [false, true]
 			},
 			{
 				"name": "GamePreview.onRun",
@@ -163,11 +147,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-button",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-canvas",
 			"via": "import",
 			"origin": "derived"
@@ -178,22 +157,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-option",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-small",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -68,7 +68,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Testing plugin catalog, install, or scaffold failure",
 				"type": "thrown",
 				"description": "Throws Error with joined catalog-gap text when the catalog reports gaps, when no matching installed entry has testing metadata, or when an argument matches the rejected option patterns. Rejections from catalog loading, plugin installation, resource admission, and isolated execution propagate to the caller."
 			}
@@ -120,7 +120,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Testing plugin catalog, install, or scaffold failure",
 						"type": "thrown",
 						"description": "Throws Error with joined catalog-gap text when the catalog reports gaps, when no matching installed entry has testing metadata, or when an argument matches the rejected option patterns. Rejections from catalog loading, plugin installation, resource admission, and isolated execution propagate to the caller."
 					}

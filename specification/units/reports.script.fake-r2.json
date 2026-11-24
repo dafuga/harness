@@ -17,12 +17,12 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Fake R2 server startup failure",
 				"type": "thrown",
 				"description": "Raised synchronously while the module loads, when the top-level Bun.serve call cannot start the listener on 127.0.0.1 (for example, because the port from PROJECT_REPORTS_E2E_R2_PORT, default 5590, is already in use). The script has no try/catch around that call, so evaluating the module fails with this error."
 			},
 			{
-				"name": "Error",
+				"name": "Fake R2 upload body read failure",
 				"type": "thrown",
 				"description": "Raised by await request.arrayBuffer() in the fetch handler's PUT branch when the request body cannot be read. The handler is async, so its returned promise rejects with that error, and the script does not catch it."
 			},

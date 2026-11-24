@@ -95,9 +95,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HubNoRelayError",
 				"type": "thrown",
-				"description": "Rejects when key generation, key export or import, credential hashing, or the registration callback fails. A response with an invalid relay origin or a mismatched host ID throws Error('The hub named no relay.'); dependency and callback rejections propagate."
+				"description": "Rejects when key generation, key export or import, credential hashing, or the registration callback fails. A response with an invalid relay origin or a mismatched host ID throws HubNoRelayError('The hub named no relay.'); dependency and callback rejections propagate."
 			}
 		],
 		"errorStatus": "declared",
@@ -129,7 +129,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Remote identity or credential generation failure",
 						"type": "thrown",
 						"description": "Rejects if key generation, stored-key export, host ID derivation, or credential generation fails; failures from those dependencies propagate."
 					}
@@ -183,9 +183,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HubNoRelayError",
 						"type": "thrown",
-						"description": "Rejects if stored keys cannot be imported, the registration callback rejects, or the hub response has an invalid relay origin or mismatched host ID. The explicit validation failure is Error('The hub named no relay.'); dependency and callback rejections propagate."
+						"description": "Rejects if stored keys cannot be imported, the registration callback rejects, or the hub response has an invalid relay origin or mismatched host ID. The explicit validation failure is HubNoRelayError('The hub named no relay.'); dependency and callback rejections propagate."
 					}
 				],
 				"errorStatus": "declared"

@@ -137,7 +137,7 @@
 				"description": "The run promise rejects if readLoop cannot parse the selected loop file as JSON, because readLoop rethrows the JSON.parse error."
 			},
 			{
-				"name": "Error",
+				"name": "Task audit filesystem failure",
 				"type": "thrown",
 				"description": "A filesystem failure other than a missing loop file is rethrown while loading loop state, and failures creating or writing the audit record reject TaskCompletionService.check."
 			}
@@ -206,7 +206,7 @@
 						"description": "The run promise rejects if readLoop cannot parse the selected loop file as JSON, because readLoop rethrows the JSON.parse error."
 					},
 					{
-						"name": "Error",
+						"name": "Task audit filesystem failure",
 						"type": "thrown",
 						"description": "A filesystem failure other than a missing loop file is rethrown while loading loop state, and failures creating or writing the audit record reject TaskCompletionService.check."
 					}

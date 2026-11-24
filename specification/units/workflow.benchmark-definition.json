@@ -140,7 +140,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Benchmark definition file or root lookup failure",
 				"type": "thrown",
 				"description": "Node file-system error from reading the definition file or resolving the project or repository root path, such as ENOENT for a path that does not exist."
 			},
@@ -155,32 +155,32 @@
 				"description": "Thrown when the parsed JSON fails the definition schema, including unknown keys, a version other than 1, a Codex candidate with files tools or max effort, and budget values outside their ranges."
 			},
 			{
-				"name": "Error",
+				"name": "Duplicate benchmark identifiers or paths",
 				"type": "thrown",
 				"description": "Thrown with the message 'Duplicate benchmark identifiers or paths.' when allowedFiles, check ids or candidate ids repeat a value."
 			},
 			{
-				"name": "Error",
+				"name": "Benchmark Git operation failed",
 				"type": "thrown",
 				"description": "Thrown with the message 'Benchmark Git operation failed. Verify the project and revision.' when a Git command exits nonzero, such as when the project is not inside a Git repository, the revision does not name a commit, or the revision's file tree cannot be listed."
 			},
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
 				"description": "Thrown with the message 'Benchmark project must be the Git repository root.' when the resolved project path is not the realpath of the repository's top-level directory."
 			},
 			{
-				"name": "Error",
+				"name": "Benchmark snapshot contains symlinks or submodules",
 				"type": "thrown",
 				"description": "Thrown with the message 'Benchmark snapshots do not support symlinks or submodules.' when the revision's file tree has an entry that is not a 100644 or 100755 blob."
 			},
 			{
-				"name": "Error",
+				"name": "Codex or Claude runner unavailable",
 				"type": "thrown",
 				"description": "Thrown with the message 'Codex runner is unavailable.' or 'Claude runner is unavailable.' when that runner's --version preflight exits nonzero."
 			},
 			{
-				"name": "Error",
+				"name": "Unsupported Codex tool or effort selection",
 				"type": "thrown",
 				"description": "Thrown with the message 'Unsupported Codex tool or effort setting.' by the Codex preflight for a candidate with files tools or max effort; the definition schema rejects such candidates before preflight runs."
 			},
@@ -329,7 +329,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Benchmark definition file or root lookup failure",
 						"type": "thrown",
 						"description": "Node file-system error from reading the definition file or resolving the project or repository root path, such as ENOENT for a path that does not exist."
 					},
@@ -344,32 +344,32 @@
 						"description": "Thrown when the parsed JSON fails the definition schema, including unknown keys, a version other than 1, a Codex candidate with files tools or max effort, and budget values outside their ranges."
 					},
 					{
-						"name": "Error",
+						"name": "Duplicate benchmark identifiers or paths",
 						"type": "thrown",
 						"description": "Thrown with the message 'Duplicate benchmark identifiers or paths.' when allowedFiles, check ids or candidate ids repeat a value."
 					},
 					{
-						"name": "Error",
+						"name": "Benchmark Git operation failed",
 						"type": "thrown",
 						"description": "Thrown with the message 'Benchmark Git operation failed. Verify the project and revision.' when a Git command exits nonzero, such as when the project is not inside a Git repository, the revision does not name a commit, or the revision's file tree cannot be listed."
 					},
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
 						"description": "Thrown with the message 'Benchmark project must be the Git repository root.' when the resolved project path is not the realpath of the repository's top-level directory."
 					},
 					{
-						"name": "Error",
+						"name": "Benchmark snapshot contains symlinks or submodules",
 						"type": "thrown",
 						"description": "Thrown with the message 'Benchmark snapshots do not support symlinks or submodules.' when the revision's file tree has an entry that is not a 100644 or 100755 blob."
 					},
 					{
-						"name": "Error",
+						"name": "Codex or Claude runner unavailable",
 						"type": "thrown",
 						"description": "Thrown with the message 'Codex runner is unavailable.' or 'Claude runner is unavailable.' when that runner's --version preflight exits nonzero."
 					},
 					{
-						"name": "Error",
+						"name": "Unsupported Codex tool or effort selection",
 						"type": "thrown",
 						"description": "Thrown with the message 'Unsupported Codex tool or effort setting.' by the Codex preflight for a candidate with files tools or max effort; the definition schema rejects such candidates before preflight runs."
 					},

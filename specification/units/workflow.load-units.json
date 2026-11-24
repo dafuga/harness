@@ -74,7 +74,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Source tree, registry, scenario, or index read failure",
 				"type": "thrown",
 				"description": "The returned promise rejects if a source-tree, registry, scenario, or indexing call rejects; loadUnits propagates the rejection without catching or translating it."
 			}
@@ -114,7 +114,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Source tree, registry, scenario, or index read failure",
 						"type": "thrown",
 						"description": "The returned promise rejects if a source-tree, registry, scenario, or indexing call rejects; loadUnits propagates the rejection without catching or translating it."
 					}

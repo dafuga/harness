@@ -17,7 +17,7 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Harness audit command spawn failure",
 				"type": "thrown",
 				"description": "Bun.spawnSync throws if its command cannot be started, for example when `bun` (HARNESS_CLI_PATH set) or `harness` (HARNESS_CLI_PATH unset) is not found on PATH. Nothing in this file catches that error, so the script stops before process.exit runs."
 			}

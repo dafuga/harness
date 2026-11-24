@@ -88,72 +88,72 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "Unsupported report command",
 				"type": "thrown",
 				"description": "Rejects with 'Usage: report <begin|record|finalize|import|serve|stop|cleanup|sync-storage> [options]' when argv[0] is not one of the eight operations, including when argv is empty."
 			},
 			{
-				"name": "Error",
+				"name": "Required report option missing",
 				"type": "thrown",
 				"description": "Rejects with '--<name> is required' when a flag the operation needs (run, kind, project, title, mode, environment, format or file) is missing, blank, or given without a value."
 			},
 			{
-				"name": "Error",
+				"name": "Report record JSON source missing",
 				"type": "thrown",
 				"description": "Rejects with 'Provide --data JSON or --file JSON' when record has neither a --data value nor non-empty --file content."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid report project, title, or mode",
 				"type": "thrown",
 				"description": "Rejects with 'Project, title and valid mode are required' when begin's --mode is neither feature nor suite."
 			},
 			{
-				"name": "Error",
+				"name": "Unsupported report record kind",
 				"type": "thrown",
 				"description": "Rejects with 'Unsupported record kind' when record's --kind is not check, evidence, finding, coverage, acceptance, summary or heartbeat."
 			},
 			{
-				"name": "Error",
+				"name": "Report record data must be a JSON object",
 				"type": "thrown",
 				"description": "Rejects with 'Record data is required' when the --data or --file content of a record is not a JSON object, such as null, a primitive or an array."
 			},
 			{
-				"name": "Error",
+				"name": "validate failure (ReportRecordValidator)",
 				"type": "thrown",
 				"description": "Rejects with a record field message ('Record title is required', 'Summary text is required', 'Acceptance criteria must be a list of short nonempty strings', 'Valid status is required', 'Invalid evidence status', 'Evidence path is required', 'Invalid evidence phase', 'Invalid audio duration' or 'Invalid audio transcript') when a record's fields fail the checks for its kind."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid report or asset ID",
 				"type": "thrown",
 				"description": "Rejects with 'Invalid report or asset ID' when --run, or the data.id of a check, finding, coverage or evidence record, is not 1 to 100 letters, digits, underscores or hyphens."
 			},
 			{
-				"name": "Error",
+				"name": "Invalid or missing report directory",
 				"type": "thrown",
 				"description": "Rejects with 'Invalid report directory' when the --run report directory is a symbolic link, with a filesystem ENOENT error when no report exists for --run, and with a filesystem error or SyntaxError when its manifest.json is missing or not valid JSON."
 			},
 			{
-				"name": "Error",
+				"name": "Report is finalizing or finalized",
 				"type": "thrown",
 				"description": "Rejects with 'Cannot update finalizing or finalized report' when record targets a run whose state is not active."
 			},
 			{
-				"name": "Error",
+				"name": "Report is already finalized",
 				"type": "thrown",
 				"description": "Rejects with 'Report is already finalized' when finalize targets a run that is already finalized."
 			},
 			{
-				"name": "Error",
+				"name": "Report is no longer finalizing",
 				"type": "thrown",
 				"description": "Rejects with 'Report must be finalizing' when finalize's second step finds the run in another state, which happens when another call has changed the run between the two steps."
 			},
 			{
-				"name": "Error",
+				"name": "Report directory or manifest write failure",
 				"type": "thrown",
 				"description": "Rejects with a Node filesystem error from mkdir, writeFile or rename when begin cannot create the run directory or write manifest.json."
 			},
 			{
-				"name": "Error",
+				"name": "Report input file read failure",
 				"type": "thrown",
 				"description": "Rejects with a Node filesystem error, such as ENOENT, from readFile when a record --file, or an import file for a format other than playwright, vitest or mira, cannot be read."
 			},
@@ -163,27 +163,27 @@
 				"description": "Rejects when JSON the operation parses is invalid: --acceptance for begin, --data or --file content for record, or the import file for a format other than playwright, vitest or mira."
 			},
 			{
-				"name": "Error",
+				"name": "Unsupported report import format",
 				"type": "thrown",
 				"description": "Rejects with 'Unsupported import format' when import has a --run and a format other than playwright, vitest, mira, manual or command, after the file has been read and parsed."
 			},
 			{
-				"name": "Error",
+				"name": "Report import requires a run ID",
 				"type": "thrown",
 				"description": "Rejects with '--run is required for this import format' when import has no --run and its format is not mira."
 			},
 			{
-				"name": "Error",
+				"name": "Manual import requires a record array",
 				"type": "thrown",
 				"description": "Rejects with 'Manual import must contain records' when a manual import file is neither an array nor an object with a records array."
 			},
 			{
-				"name": "Error",
+				"name": "Command import outcome must be an object",
 				"type": "thrown",
 				"description": "Rejects with 'Command outcome must be an object' when a command import file is a JSON array."
 			},
 			{
-				"name": "Error",
+				"name": "Command import requires an integer exit code",
 				"type": "thrown",
 				"description": "Rejects with 'Command exitCode is required' when Number(exitCode) of a command import file is not an integer, for example when exitCode is missing."
 			},
@@ -193,12 +193,12 @@
 				"description": "Rejects with a TypeError when a manual or command import file parses to JSON null, or when a manual import contains a null record or an evidence record without a data object."
 			},
 			{
-				"name": "Error",
+				"name": "No available report server port",
 				"type": "thrown",
 				"description": "Rejects with 'No available loopback port from preferred range' when serve finds all 30 ports from the preferred port (5588 by default) occupied or answering as another server."
 			},
 			{
-				"name": "Error",
+				"name": "Report server startup identity check timed out",
 				"type": "thrown",
 				"description": "Rejects with 'Report server failed to start on port <port>' when a started server does not report the matching identity within 40 checks spaced 250 ms apart."
 			},
@@ -208,12 +208,12 @@
 				"description": "Rejects when the recorded-server file that serve (when reusing a server) or stop reads is not valid JSON."
 			},
 			{
-				"name": "Error",
+				"name": "process.kill failure (node:process)",
 				"type": "thrown",
 				"description": "Rejects with a Node error, such as code ESRCH, from process.kill in stop when the recorded server exits between the liveness check and the signal."
 			},
 			{
-				"name": "Error",
+				"name": "Unsafe report cleanup directory",
 				"type": "thrown",
 				"description": "Rejects with 'Invalid report cleanup root' when cleanup finds the report root, or its runs, publications or retention-lock folder, to be a symbolic link."
 			}
@@ -297,72 +297,72 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "Unsupported report command",
 						"type": "thrown",
 						"description": "Rejects with 'Usage: report <begin|record|finalize|import|serve|stop|cleanup|sync-storage> [options]' when argv[0] is not one of the eight operations, including when argv is empty."
 					},
 					{
-						"name": "Error",
+						"name": "Required report option missing",
 						"type": "thrown",
 						"description": "Rejects with '--<name> is required' when a flag the operation needs (run, kind, project, title, mode, environment, format or file) is missing, blank, or given without a value."
 					},
 					{
-						"name": "Error",
+						"name": "Report record JSON source missing",
 						"type": "thrown",
 						"description": "Rejects with 'Provide --data JSON or --file JSON' when record has neither a --data value nor non-empty --file content."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report project, title, or mode",
 						"type": "thrown",
 						"description": "Rejects with 'Project, title and valid mode are required' when begin's --mode is neither feature nor suite."
 					},
 					{
-						"name": "Error",
+						"name": "Unsupported report record kind",
 						"type": "thrown",
 						"description": "Rejects with 'Unsupported record kind' when record's --kind is not check, evidence, finding, coverage, acceptance, summary or heartbeat."
 					},
 					{
-						"name": "Error",
+						"name": "Report record data must be a JSON object",
 						"type": "thrown",
 						"description": "Rejects with 'Record data is required' when the --data or --file content of a record is not a JSON object, such as null, a primitive or an array."
 					},
 					{
-						"name": "Error",
+						"name": "validate failure (ReportRecordValidator)",
 						"type": "thrown",
 						"description": "Rejects with a record field message ('Record title is required', 'Summary text is required', 'Acceptance criteria must be a list of short nonempty strings', 'Valid status is required', 'Invalid evidence status', 'Evidence path is required', 'Invalid evidence phase', 'Invalid audio duration' or 'Invalid audio transcript') when a record's fields fail the checks for its kind."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid report or asset ID",
 						"type": "thrown",
 						"description": "Rejects with 'Invalid report or asset ID' when --run, or the data.id of a check, finding, coverage or evidence record, is not 1 to 100 letters, digits, underscores or hyphens."
 					},
 					{
-						"name": "Error",
+						"name": "Invalid or missing report directory",
 						"type": "thrown",
 						"description": "Rejects with 'Invalid report directory' when the --run report directory is a symbolic link, with a filesystem ENOENT error when no report exists for --run, and with a filesystem error or SyntaxError when its manifest.json is missing or not valid JSON."
 					},
 					{
-						"name": "Error",
+						"name": "Report is finalizing or finalized",
 						"type": "thrown",
 						"description": "Rejects with 'Cannot update finalizing or finalized report' when record targets a run whose state is not active."
 					},
 					{
-						"name": "Error",
+						"name": "Report is already finalized",
 						"type": "thrown",
 						"description": "Rejects with 'Report is already finalized' when finalize targets a run that is already finalized."
 					},
 					{
-						"name": "Error",
+						"name": "Report is no longer finalizing",
 						"type": "thrown",
 						"description": "Rejects with 'Report must be finalizing' when finalize's second step finds the run in another state, which happens when another call has changed the run between the two steps."
 					},
 					{
-						"name": "Error",
+						"name": "Report directory or manifest write failure",
 						"type": "thrown",
 						"description": "Rejects with a Node filesystem error from mkdir, writeFile or rename when begin cannot create the run directory or write manifest.json."
 					},
 					{
-						"name": "Error",
+						"name": "Report input file read failure",
 						"type": "thrown",
 						"description": "Rejects with a Node filesystem error, such as ENOENT, from readFile when a record --file, or an import file for a format other than playwright, vitest or mira, cannot be read."
 					},
@@ -372,27 +372,27 @@
 						"description": "Rejects when JSON the operation parses is invalid: --acceptance for begin, --data or --file content for record, or the import file for a format other than playwright, vitest or mira."
 					},
 					{
-						"name": "Error",
+						"name": "Unsupported report import format",
 						"type": "thrown",
 						"description": "Rejects with 'Unsupported import format' when import has a --run and a format other than playwright, vitest, mira, manual or command, after the file has been read and parsed."
 					},
 					{
-						"name": "Error",
+						"name": "Report import requires a run ID",
 						"type": "thrown",
 						"description": "Rejects with '--run is required for this import format' when import has no --run and its format is not mira."
 					},
 					{
-						"name": "Error",
+						"name": "Manual import requires a record array",
 						"type": "thrown",
 						"description": "Rejects with 'Manual import must contain records' when a manual import file is neither an array nor an object with a records array."
 					},
 					{
-						"name": "Error",
+						"name": "Command import outcome must be an object",
 						"type": "thrown",
 						"description": "Rejects with 'Command outcome must be an object' when a command import file is a JSON array."
 					},
 					{
-						"name": "Error",
+						"name": "Command import requires an integer exit code",
 						"type": "thrown",
 						"description": "Rejects with 'Command exitCode is required' when Number(exitCode) of a command import file is not an integer, for example when exitCode is missing."
 					},
@@ -402,12 +402,12 @@
 						"description": "Rejects with a TypeError when a manual or command import file parses to JSON null, or when a manual import contains a null record or an evidence record without a data object."
 					},
 					{
-						"name": "Error",
+						"name": "No available report server port",
 						"type": "thrown",
 						"description": "Rejects with 'No available loopback port from preferred range' when serve finds all 30 ports from the preferred port (5588 by default) occupied or answering as another server."
 					},
 					{
-						"name": "Error",
+						"name": "Report server startup identity check timed out",
 						"type": "thrown",
 						"description": "Rejects with 'Report server failed to start on port <port>' when a started server does not report the matching identity within 40 checks spaced 250 ms apart."
 					},
@@ -417,12 +417,12 @@
 						"description": "Rejects when the recorded-server file that serve (when reusing a server) or stop reads is not valid JSON."
 					},
 					{
-						"name": "Error",
+						"name": "process.kill failure (node:process)",
 						"type": "thrown",
 						"description": "Rejects with a Node error, such as code ESRCH, from process.kill in stop when the recorded server exits between the liveness check and the signal."
 					},
 					{
-						"name": "Error",
+						"name": "Unsafe report cleanup directory",
 						"type": "thrown",
 						"description": "Rejects with 'Invalid report cleanup root' when cleanup finds the report root, or its runs, publications or retention-lock folder, to be a symbolic link."
 					}

@@ -72,7 +72,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "PromotionError",
 				"type": "thrown",
 				"description": "prepareChangeEnvironment throws for a branch other than config.sourceBranch, a dirty source worktree or an environment without a configured target, and promoteChange throws 'Change cancelled before deployment.' when context.signal is aborted before the verification command runs or after session.atBranch resolves. Errors from called helpers propagate unchanged, including changeEnvironment's 'Unknown deployment environment.' for an environment outside dev, stage, preprod and prod."
 			}
@@ -116,7 +116,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PromotionError",
 						"type": "thrown",
 						"description": "Throws for a branch other than config.sourceBranch, a dirty source worktree or an environment without a configured target. Errors from session.requireProject, deploymentConfig, gitRead and changeEnvironment propagate unchanged; changeEnvironment throws 'Unknown deployment environment.' for an environment outside dev, stage, preprod and prod."
 					}
@@ -152,7 +152,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "PromotionError",
 						"type": "thrown",
 						"description": "Throws 'Change cancelled before deployment.' when context.signal is aborted before the verification command runs or after session.atBranch resolves. Errors from deploymentCommand, session.atBranch, gitRead, sourceSnapshot, DeploymentService.enqueue and changeEnvironment propagate unchanged."
 					}

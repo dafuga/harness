@@ -88,7 +88,8 @@
 							"repairs": 1
 						}
 					}
-				]
+				],
+				"unknownReason": "The benchmark definition is parsed from raw data and validated before duplicate detection."
 			}
 		],
 		"outputs": [
@@ -181,9 +182,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown",
-				"description": "Thrown by validate() as new Error('Duplicate benchmark identifiers or paths.') when allowedFiles, the check ids or the candidate ids repeat a value within their own list, after the schema has accepted the input. Each list is checked only against itself, so the same value can appear in two different lists without error."
+				"description": "Thrown by validate() as new ExpectedCliError('Duplicate benchmark identifiers or paths.') when allowedFiles, the check ids or the candidate ids repeat a value within their own list, after the schema has accepted the input. Each list is checked only against itself, so the same value can appear in two different lists without error."
 			},
 			{
 				"name": "ZodError",
@@ -268,7 +269,8 @@
 									"repairs": 1
 								}
 							}
-						]
+						],
+						"unknownReason": "The benchmark definition is parsed from raw data and validated before duplicate detection."
 					}
 				],
 				"outputs": [
@@ -360,9 +362,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown",
-						"description": "Thrown by validate() as new Error('Duplicate benchmark identifiers or paths.') when allowedFiles, the check ids or the candidate ids repeat a value within their own list, after the schema has accepted the input. Each list is checked only against itself, so the same value can appear in two different lists without error."
+						"description": "Thrown by validate() as new ExpectedCliError('Duplicate benchmark identifiers or paths.') when allowedFiles, the check ids or the candidate ids repeat a value within their own list, after the schema has accepted the input. Each list is checked only against itself, so the same value can appear in two different lists without error."
 					},
 					{
 						"name": "ZodError",

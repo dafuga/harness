@@ -20,7 +20,7 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "NormalProductRejectedError",
 				"type": "thrown",
 				"description": "A normal simulator product is rejected if it has a local-networking exception, allows web inspection, or holds the synthetic scanner of a test copy."
 			}

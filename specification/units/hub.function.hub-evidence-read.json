@@ -90,7 +90,7 @@
 				"description": "A hubFail error with code 'artifact-corrupt', the default code of hubFail, thrown on the artifact path while the origin record's files are loaded, when a stored evidence file's git blob SHA-1 differs from its tree entry's sha."
 			},
 			{
-				"name": "Error",
+				"name": "Focused regression artifact bytes or kind invalid",
 				"type": "thrown",
 				"description": "A plain Error with no code, thrown on the focused-regression artifact path, where artifactAnswer is not wrapped in a catch: its message says the bytes are not stored, exceed artifactLimit, fail the recorded SHA-256, or are refused by artifactMedia for the capture's kind or bytes."
 			},
@@ -178,7 +178,7 @@
 						"description": "A hubFail error with code 'artifact-corrupt', the default code of hubFail, thrown on the artifact path while the origin record's files are loaded, when a stored evidence file's git blob SHA-1 differs from its tree entry's sha."
 					},
 					{
-						"name": "Error",
+						"name": "Focused regression artifact bytes or kind invalid",
 						"type": "thrown",
 						"description": "A plain Error with no code, thrown on the focused-regression artifact path, where artifactAnswer is not wrapped in a catch: its message says the bytes are not stored, exceed artifactLimit, fail the recorded SHA-256, or are refused by artifactMedia for the capture's kind or bytes."
 					},

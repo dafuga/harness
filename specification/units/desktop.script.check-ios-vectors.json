@@ -17,7 +17,7 @@
 		"outputs": [],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "iOS vector output directory creation failure",
 				"type": "thrown",
 				"description": "Thrown if mkdirSync cannot create the .cache/ios output directory because a filesystem error prevents creation. The script does not catch this error."
 			}

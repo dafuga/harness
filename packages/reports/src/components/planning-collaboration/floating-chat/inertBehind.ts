@@ -1,3 +1,4 @@
+// @harness-uid u_alymhuf2pk
 /**
  * Makes everything outside `node` inert: each sibling of its ancestors, so the page behind an open
  * sheet takes no pointer or keyboard. Returns the function that restores what it changed.

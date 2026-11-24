@@ -31,9 +31,9 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "UnsupportedResourceQueueSchemaError",
 				"type": "thrown",
-				"description": "For a user_version other than 0 or 1, the function closes the database and throws Error('Unsupported resource queue schema'); filesystem, module-loading, and SQLite calls can also throw their underlying errors."
+				"description": "For a user_version other than 0 or 1, the function closes the database and throws UnsupportedResourceQueueSchemaError('Unsupported resource queue schema'); filesystem, module-loading, and SQLite calls can also throw their underlying errors."
 			}
 		],
 		"errorStatus": "declared",
@@ -58,9 +58,9 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "UnsupportedResourceQueueSchemaError",
 						"type": "thrown",
-						"description": "For a user_version other than 0 or 1, the function closes the database and throws Error('Unsupported resource queue schema'); filesystem, module-loading, and SQLite calls can also throw their underlying errors."
+						"description": "For a user_version other than 0 or 1, the function closes the database and throws UnsupportedResourceQueueSchemaError('Unsupported resource queue schema'); filesystem, module-loading, and SQLite calls can also throw their underlying errors."
 					}
 				],
 				"errorStatus": "declared"
