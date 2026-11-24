@@ -35,6 +35,30 @@ export class PairingAccessService {
 		return { state: pairing ? pairing.state : 'expired', expiresAt: iso(stored.expiresAt) };
 	}
 
+	async requestAccount(
+		pairingId: string,
+		request: RelayPairingRequest
+	): Promise<RelayPairingPoll | undefined> {
+		const registration = this.store.host()?.credentialHash;
+		const offer = await this.offers.openAccount(pairingId, request);
+		if (!offer || !registration || this.store.host()?.credentialHash !== registration)
+			return undefined;
+		const expiresAt = iso(offer.expiresAt);
+		if (
+			!this.link.toHost({
+				type: 'pairing-request',
+				pairingId,
+				account: true,
+				expiresAt,
+				...request
+			})
+		) {
+			await this.offers.close(pairingId);
+			return undefined;
+		}
+		return { state: 'requested', expiresAt };
+	}
+
 	/**
 	 * Keeps the newest request of a phone, a limited number of times, and hands it to the host.
 	 * When the host is away the request waits in storage and is handed over when it returns.
@@ -43,7 +67,8 @@ export class PairingAccessService {
 		const pairing = this.offers.live(pairingId);
 		if (!pairing) return 'not-found';
 		const asking = pairing.state === 'open' || pairing.state === 'requested';
-		if (!asking || pairing.attempts >= remoteLimits.pairingAttempts) return 'pairing-unavailable';
+		if (pairing.account || !asking || pairing.attempts >= remoteLimits.pairingAttempts)
+			return 'pairing-unavailable';
 		const { ephemeralKey, sealed, challenge } = request;
 		this.store.savePairing({
 			pairingId,

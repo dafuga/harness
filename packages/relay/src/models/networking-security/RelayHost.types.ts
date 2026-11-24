@@ -40,6 +40,7 @@ export interface PairingRecord {
 	expiresAt: number;
 	attempts: number;
 	request?: { ephemeralKey: string; sealed: string };
+	account?: true;
 	challenge?: string;
 	deviceId?: string;
 	approval?: string;

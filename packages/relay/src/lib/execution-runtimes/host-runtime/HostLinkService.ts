@@ -76,7 +76,10 @@ export class HostLinkService {
 			const { pairingId, request, challenge } = pairing;
 			const waiting = pairing.state === 'requested' && pairing.expiresAt > now;
 			if (!waiting || !request || !challenge) return [];
-			return [{ type: 'pairing-request', pairingId, ...request, challenge }];
+			const account = pairing.account
+				? { account: pairing.account, expiresAt: new Date(pairing.expiresAt).toISOString() }
+				: {};
+			return [{ type: 'pairing-request', pairingId, ...request, challenge, ...account }];
 		});
 	}
 }

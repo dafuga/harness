@@ -34,12 +34,10 @@ export function hostRuntime(state: DurableObjectState, env: RelayEnv): HostRunti
 	const revocation = new DeviceRevocationService(store, sockets, link);
 	const access = new PairingAccessService(store, offers, link);
 	const exchanges = new PairingExchangeService(store, sockets, link);
-	const manage = new ManageController(
-		scope,
-		store,
-		new HostRegistryService(store, sockets, link),
-		revocation
-	);
+	const manage = new ManageController(scope, store, new HostRegistryService(store, sockets, link), {
+		revocation,
+		pairing: access
+	});
 	const pairing = new PairingController(store, rate, access, exchanges);
 	const accept = new SocketAcceptService(store, sockets, link, rate);
 	const commands = new HostCommandService(sockets, link, offers, revocation);

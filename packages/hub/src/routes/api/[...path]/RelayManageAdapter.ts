@@ -13,7 +13,12 @@ import { RelayReplyValidator } from '../../../validators/networking-security/Rel
 
 const MANAGE = 'https://relay.internal/manage/';
 /** The relay refusals a caller may see, each only with the status it is defined for. */
-const REFUSALS: Record<string, number> = { 'invalid-input': 400, forbidden: 403, 'not-found': 404 };
+const REFUSALS: Record<string, number> = {
+	'invalid-input': 400,
+	forbidden: 403,
+	'not-found': 404,
+	'pairing-unavailable': 409
+};
 
 /** The owner and the host, field by field: whatever else the caller's object holds stays here. */
 function ownerOf(input: RelayManageOwner): RelayManageOwner {
@@ -47,6 +52,40 @@ export class RelayManageAdapter {
 		const { hostId, hostKey, credentialHash, name } = input;
 		const body = { ...ownerOf(input), hostKey, credentialHash, name };
 		return this.replies.registered(await this.manage('register', body), hostId);
+	}
+
+	async pairingKey(input: RelayManageOwner) {
+		const result = (await this.manage('pairing-key', ownerOf(input))) as {
+			hostId?: unknown;
+			hostKey?: unknown;
+		} | null;
+		if (
+			result?.hostId !== input.hostId ||
+			typeof result.hostKey !== 'string' ||
+			!remotePatterns.key.test(result.hostKey)
+		)
+			return hubFail('unavailable');
+		return { hostId: input.hostId, hostKey: result.hostKey };
+	}
+
+	async requestPairing(input: RelayManageOwner, body: Record<string, unknown>) {
+		const { pairingId, ephemeralKey, sealed, challenge } = body;
+		const request = { ephemeralKey, sealed, challenge };
+		const result = (await this.manage('pairing-request', {
+			...ownerOf(input),
+			pairingId,
+			request
+		})) as {
+			state?: unknown;
+			expiresAt?: unknown;
+		} | null;
+		if (
+			result?.state !== 'requested' ||
+			typeof result.expiresAt !== 'string' ||
+			!Number.isFinite(Date.parse(result.expiresAt))
+		)
+			return hubFail('unavailable');
+		return { state: result.state, expiresAt: result.expiresAt };
 	}
 
 	async computers(owner: RelayManageOwner['owner']) {
@@ -91,7 +130,10 @@ export class RelayManageAdapter {
 	}
 
 	/** The JSON of a `200`. The three defined refusals keep their code; the rest is `unavailable`. */
-	private async manage(operation: Operation, body: RelayManageOwner): Promise<unknown> {
+	private async manage(
+		operation: Operation,
+		body: RelayManageOwner & { pairingId?: unknown; request?: unknown }
+	): Promise<unknown> {
 		const response = await this.send(operation, body);
 		const value = await jsonOf(response);
 		return response.status === 200 ? value : refusal(response.status, value);

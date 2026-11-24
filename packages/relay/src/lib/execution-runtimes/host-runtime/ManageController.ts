@@ -7,6 +7,8 @@ import type { DeviceRevocationService } from './DeviceRevocationService';
 import type { HostRegistryService } from './HostRegistryService';
 import { readJsonBody } from '../../../utils/development-tooling/readJsonBody';
 import { relayError, relayResponse } from '../../../utils/networking-security/relayResponse';
+import type { PairingAccessService } from './PairingAccessService';
+import { PairingBodyValidator } from '../../../validators/networking-security/PairingBodyValidator';
 import { ManageBodyValidator } from '../../../validators/development-tooling/ManageBodyValidator';
 
 const operations = [
@@ -15,7 +17,9 @@ const operations = [
 	'revoke-device',
 	'unregister',
 	'directory-list',
-	'directory-add'
+	'directory-add',
+	'pairing-key',
+	'pairing-request'
 ];
 
 /**
@@ -29,7 +33,10 @@ export class ManageController {
 		private readonly scope: HostScope,
 		private readonly store: HostStorageAdapter,
 		private readonly registry: HostRegistryService,
-		private readonly revocation: DeviceRevocationService
+		private readonly services: {
+			revocation: DeviceRevocationService;
+			pairing: PairingAccessService;
+		}
 	) {}
 
 	async handle(request: Request, operation: string): Promise<Response> {
@@ -45,7 +52,19 @@ export class ManageController {
 		const host = this.store.host();
 		if (!host || host.hostId !== call.hostId) return relayError(404, 'not-found');
 		if (host.ownerId !== call.owner.id) return relayError(403, 'forbidden');
+		if (operation === 'pairing-key')
+			return relayResponse(200, { hostId: host.hostId, hostKey: host.hostKey });
+		if (operation === 'pairing-request') return this.accountRequest(body);
 		return this.run(operation, call, host);
+	}
+
+	private async accountRequest(body: Record<string, unknown> | undefined): Promise<Response> {
+		const { pairingId, request } = body ?? {};
+		const input = new PairingBodyValidator().request(request);
+		if (typeof pairingId !== 'string' || !remotePatterns.pairingId.test(pairingId) || !input)
+			return relayError(400, 'invalid-input');
+		const pending = await this.services.pairing.requestAccount(pairingId, input);
+		return pending ? relayResponse(200, pending) : relayError(409, 'pairing-unavailable');
 	}
 
 	private directory(operation: string, body: unknown): Response {
@@ -87,7 +106,7 @@ export class ManageController {
 		host: HostRecord
 	): Promise<Response> {
 		if (operation === 'summary') return relayResponse(200, this.registry.summary(host));
-		if ('deviceId' in call) this.revocation.revoke(call.deviceId);
+		if ('deviceId' in call) this.services.revocation.revoke(call.deviceId);
 		else await this.registry.unregister();
 		return relayResponse(200, { ok: true });
 	}
