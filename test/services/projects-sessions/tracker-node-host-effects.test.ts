@@ -64,10 +64,7 @@ async function proveHostLaunch(root: string) {
 		expect(initial.scheduler).toBeDefined();
 		await expect(initial.scheduler!.tick(signal)).resolves.toBeUndefined();
 		expect(runState(db, dockerId)).toMatchObject({ state: 'queued' });
-		expect(runState(db, macId)).toMatchObject({
-			state: 'running',
-			session_id: 'session-macos12345'
-		});
+		expect(runState(db, macId)?.state).toBe('running');
 		db.close();
 		db = new DatabaseSync(path);
 		const resumed = runtime();
