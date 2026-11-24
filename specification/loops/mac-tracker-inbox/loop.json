@@ -1,0 +1,43 @@
+{
+	"name": "mac-tracker-inbox",
+	"goal": "Mac Needs you uses the shared inbox over the local Tracker API and commits only explicitly confirmed writes, with stale attention rejected atomically.",
+	"createdAt": "2026-11-24T19:51:27.381Z",
+	"updatedAt": "2026-11-24T19:52:22.635Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T19:52:22.635Z",
+			"evidence": "Electron home opens the shared inbox backed by local Tracker. Confirm/cancel note, flag and answer; a replaced question rejects an old review without a journal write. Verify with disposable SQLite and built Electron."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

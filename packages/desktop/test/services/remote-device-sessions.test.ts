@@ -201,7 +201,11 @@ test('keeps phone Tracker writes outside the paired read grant', async () => {
 	const denied = readOnly.phone(),
 		writer = permitted.phone();
 	expect((await denied.attach()).methods).not.toContain('trackerReplicaPush');
-	expect((await writer.attach()).methods).toContain('trackerReplicaPush');
+	const { methods } = await writer.attach();
+	expect(methods).toContain('trackerReplicaPush');
+	await expect(writer.client.request('trackerInboxWrite', {})).rejects.toMatchObject({
+		code: 'method-denied'
+	});
 	const intentId = '00000000-0000-4000-8000-000000000011';
 	const input = { version: 1, intentId, itemId: 'fixture001', action: 'note', text: 'Fixture' };
 	await expect(denied.client.request('trackerReplicaPush', input)).rejects.toMatchObject({
