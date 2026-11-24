@@ -10,9 +10,14 @@ beforeEach(async () => {
 afterEach(() => fixture.dispose());
 describe('scripted deployment CLI', () => {
 	it('only inspects in plan mode and promotes the same artifact through exact signoffs', () => {
-		expect(
-			fixture.run('fixture', 'staging', '--release', fixture.release.id, '--plan')
-		).toMatchObject({ parity: { blocked: false } });
+		const args = ['fixture', 'staging', '--release', fixture.release.id];
+		expect(() => fixture.run(...args, '--publish-plan')).toThrow(/requires --plan/);
+		expect(() => fixture.run(...args, '--plan', '--wait-for-go')).toThrow(/applies only/);
+		expect(() =>
+			fixture.run('fixture', 'staging', '--ref', 'a'.repeat(40), '--wait-for-go')
+		).toThrow(/immutable --release/);
+		expect(fixture.operations()).toEqual([]);
+		expect(fixture.run(...args, '--plan')).toMatchObject({ parity: { blocked: false } });
 		expect(fixture.operations()).toEqual(['inspect', 'inspect', 'inspect']);
 		const stage = fixture.promote('staging');
 		expect(stage.phase).toBe('complete');
