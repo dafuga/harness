@@ -2,9 +2,11 @@
 	"name": "agent-tool-safety",
 	"goal": "Prove raw model proposals cannot reach guarded effects without current scoped grants, applicable content and budget checks, and exact human authorization.",
 	"createdAt": "2026-11-24T00:13:47.450Z",
-	"updatedAt": "2026-11-24T00:33:52.910Z",
+	"updatedAt": "2026-11-24T08:36:47.879Z",
 	"template": "feature",
-	"templateLineage": ["feature"],
+	"templateLineage": [
+		"feature"
+	],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -32,6 +34,13 @@
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending"
+		},
+		{
+			"id": "approval-content",
+			"title": "Prove owner approval rejects changed outgoing content at execution.",
+			"status": "complete",
+			"completedAt": "2026-11-24T08:36:47.879Z",
+			"evidence": "On harbor-mbp-2, vitest run --maxWorkers=1 test/services/agents-providers/agent-tool-safety.test.ts failed on the test-only checkpoint 9d4d06adca because approval executed changed resolved content. The unchanged test and all five cases passed with 80e551968e. Harbor CLI 6b066c1 passed 135 tests with the Harness 35619814da SDK bundled, and all three one-worker Electron cases passed at Desktop 17d1218 with combined SQLite worker abb2ac9."
 		}
 	],
 	"evaluators": [
