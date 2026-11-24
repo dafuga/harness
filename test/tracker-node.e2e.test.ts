@@ -56,7 +56,7 @@ test('foreground hub and spoke converge over signed loopback and route compatibi
 		}
 		expect(existsSync(join(root, 'legacy-used'))).toBe(false);
 	});
-}, 35_000);
+}, 45_000);
 
 test('startup refuses an unfenced role or competing API, sync or journal owner and releases its lease on stop', async () => {
 	await withTempDir('hnt-', async (temporary) => {

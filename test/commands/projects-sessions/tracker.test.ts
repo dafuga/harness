@@ -133,6 +133,46 @@ test('native show prints the full human item and returns the enriched JSON for a
 	});
 });
 
+test('native remind schedules a decision without changing its state and filters attention until it wakes', async () => {
+	const { runtime, run } = await compatibilityFixture();
+	runtime.store.appendLocal({
+		itemId: fixtureItem,
+		fields: { status: 'blocked', needs_daniel: 1, question: 'Approve the fixture?' }
+	});
+	const now = new Date(fixtureTime).toISOString();
+	const at = new Date(Date.parse(now) + 60_000).toISOString();
+	expect(await run('remind', 'taskfi')).toMatchObject({
+		code: 1,
+		err: expect.stringContaining('--at')
+	});
+	for (const invalid of [now, now.slice(0, 10), now.slice(0, -1), 'tomorrow']) {
+		expect(await run('remind', 'taskfi', '--at', invalid)).toMatchObject({ code: 1 });
+	}
+	const scheduled = await run('remind', 'taskfi', '--at', at.replace('Z', '+00:00'), '--json');
+	expect(scheduled).toMatchObject({ code: 0, err: '' });
+	expect(JSON.parse(scheduled.out)).toMatchObject({
+		id: fixtureItem,
+		remind_at: at,
+		status: 'blocked',
+		needs_daniel: true,
+		question: 'Approve the fixture?'
+	});
+	expect(JSON.parse((await run('list', '--flagged', '--json')).out)).toEqual([]);
+	expect(JSON.parse((await run('digest', '--json')).out)).toMatchObject({
+		blocked: [],
+		needs_daniel: []
+	});
+	expect(JSON.parse((await run('list', '--status', 'all', '--json')).out)).toEqual(
+		expect.arrayContaining([expect.objectContaining({ id: fixtureItem, remind_at: at })])
+	);
+	const answered = await run('answer', 'taskfi', 'Approved', '--json');
+	expect(JSON.parse(answered.out)).toMatchObject({
+		id: fixtureItem,
+		resolved: true,
+		remind_at: null
+	});
+});
+
 test('native ignore and unignore restore item state and record the legacy actor and notes', async () => {
 	const { runtime, route, run } = await compatibilityFixture();
 	runtime.store.appendLocal({
