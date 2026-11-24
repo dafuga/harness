@@ -1,3 +1,13 @@
+---
+status: implemented
+shippedIn: null
+unitIds:
+  - service.agents-providers-agent-tool-safety
+  - module.runtime
+owner: harness-safety-layer
+reviewedAt: 2026-11-24
+---
+
 # Model-independent agent tool safety
 
 Harness brokers effects proposed by a model. The provider, model weights, prompt,
@@ -65,15 +75,23 @@ pending decisions through the authenticated owner surface. The host journal
 serializes read, challenge consumption, rate/spend reservation and append in one
 durable transaction. Append failure before an effect blocks execution.
 
+## Harbor integration
+
+The worker registers scoped HarborStore reads and Vault signing. It uses the
+broker before asking the independent verifier or running the adapter. Its
+SQLite journal supports concurrent admission and exposes decisions in the
+worker activity trail. Harbor Desktop presents exact signing reviews in the
+agent conversation. Phone sandbox integration is tracked separately in h7mbwh.
+
 ## Acceptance criteria
 
-- [ ] A model stub proposes undeclared tools, ungranted scopes, shell and risky writes.
-  Each is denied or held, and effect spies remain untouched until valid approval.
-- [ ] Approvals reject replay, tampering, expiry, revoked grants and changed revisions.
-  Concurrent attempts cannot overbook either a challenge or the agent’s budget.
-- [ ] Content blocks unsafe outward artifacts and fails closed on classifier errors.
-  Journal failures before dispatch prevent effects, and audit entries contain no raw
-  payloads, results or exception messages.
-- [ ] Harbor exercises the broker in its normal test worker with no chain transfers
-  and no live provider calls. The owner can see decisions and approve a held action
-  through the authenticated app path.
+- [x] A model stub proposes undeclared tools, ungranted scopes, shell and risky writes.
+      Each is denied or held, and effect spies remain untouched until valid approval.
+- [x] Approvals reject replay, tampering, expiry, revoked grants and changed revisions.
+      Concurrent attempts cannot overbook either a challenge or the agent’s budget.
+- [x] Content blocks unsafe outward artifacts and fails closed on classifier errors.
+      Journal failures before dispatch prevent effects, and audit entries contain no raw
+      payloads, results or exception messages.
+- [x] Harbor exercises the broker in its normal test worker with no chain transfers
+      and no live provider calls. The owner can see decisions and approve a held action
+      through the authenticated app path.

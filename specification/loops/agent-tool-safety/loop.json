@@ -2,11 +2,9 @@
 	"name": "agent-tool-safety",
 	"goal": "Prove raw model proposals cannot reach guarded effects without current scoped grants, applicable content and budget checks, and exact human authorization.",
 	"createdAt": "2026-11-24T00:13:47.450Z",
-	"updatedAt": "2026-11-24T00:14:24.902Z",
+	"updatedAt": "2026-11-24T00:33:52.910Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T00:33:51.206Z",
+			"evidence": "Harness SDK cce2be9407 brokers dispatch. Harbor worker c0d3401 adopts it with SQLite reservations and exact owner review. Harbor Desktop 1f21bb1 renders and decides the held action."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T00:33:52.910Z",
+			"evidence": "Harness stub suite passed five cases. Harbor worker test red 303be59 HTTP 404 and green c0d3401, 135 total. Desktop red 5b23fc5 missing review region and green 1f21bb1, three Electron cases on harbor-mbp-2 against worker 0cf2ec2."
 		},
 		{
 			"id": "verify",
