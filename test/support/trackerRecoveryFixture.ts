@@ -1,0 +1,172 @@
+import { execFileSync } from 'node:child_process';
+import { existsSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { basename, join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
+import { expect } from 'vitest';
+import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
+import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
+import { trackerNodeRuntime } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
+import {
+	managedFixtureBindings,
+	managedForegroundConfig,
+	managedTrackerItemRequest
+} from './trackerManagedProcessFixture';
+import { measureWorkload } from './measureWorkload';
+import { withTempRepo } from './temporary';
+
+export const tmuxExecutable = ['/opt/homebrew/bin/tmux', '/usr/local/bin/tmux'].find(existsSync);
+const id = 'recovr1234';
+const minute = 60_000;
+
+export function proveTrackerTmuxRecovery() {
+	return measureWorkload(
+		'service.projects-sessions-tracker-native-runtime',
+		'managed-tmux-recovery',
+		() =>
+			withTempRepo(async ({ root, git }) => {
+				git('commit', '--allow-empty', '-m', 'Tracker fixture source');
+				await proveRecovery(realpathSync(root));
+			}, 'hnt-recovery-')
+	);
+}
+
+async function proveRecovery(root: string) {
+	const { config } = managedFixtureBindings(root);
+	const socket = 'harness-' + basename(root);
+	writeFileSync(config.tmux, isolatedTmux(socket), { mode: 0o700 });
+	writeFileSync(config.native.codex, '#!/bin/sh\nexec /bin/sleep 120\n', { mode: 0o700 });
+	const tmux = (...args: string[]) =>
+		execFileSync(tmuxExecutable!, ['-L', socket, ...args], { encoding: 'utf8', stdio: 'pipe' });
+	const database = new DatabaseSync(':memory:');
+	let now = Date.now();
+	const options = trackerNodeRuntime(managedForegroundConfig(root, config, 'macos'));
+	const makeRuntime = () =>
+		new TrackerNativeRuntimeService(database, {
+			...options,
+			now: () => now,
+			hostEffects: { ...options.hostEffects, watchdog: { tmux: config.tmux } }
+		});
+	let runtime = makeRuntime();
+	const signal = AbortSignal.timeout(35_000);
+	const dispatch = () => runtime.scheduler!.tick(signal);
+	const watchdog = async (delay: number) => {
+		now += delay;
+		await runtime.watchdog!.tick(signal);
+	};
+	const items = new TrackerItemReadRepository(database);
+	try {
+		seedTask(runtime, now);
+		for (let index = 0; index < 12; index++)
+			runtime.store.appendLocal({ itemId: id, fields: { 'note+': 'Progress note ' + index } });
+		expect((await managedTrackerItemRequest(runtime, id, 'launch')).ok).toBe(true);
+		await expect
+			.poll(async () => {
+				await dispatch();
+				return database.prepare('SELECT state FROM runs WHERE id = 1').get();
+			})
+			.toMatchObject({ state: 'running' });
+		runtime.store.appendLocal({ itemId: id, fields: { schedule_off: true } });
+		tmux('kill-session', '-t', '=auto-recovr-r1');
+		await dispatch();
+		expect(database.prepare('SELECT state,outcome FROM runs WHERE id = 1').get()).toEqual({
+			state: 'finished',
+			outcome: 'abandoned'
+		});
+		await watchdog(11 * minute);
+		await expect
+			.poll(async () => {
+				await dispatch();
+				return database.prepare('SELECT state,cli,model,effort FROM runs WHERE id = 2').get();
+			})
+			.toEqual({ state: 'running', cli: 'codex', model: 'gpt-6.1-terra', effort: 'high' });
+		expect(readBrief(config.stateDirectory, 2)).toEqual(
+			expect.stringContaining('Resume the synthetic task')
+		);
+		expect(readBrief(config.stateDirectory, 2)).toContain('Progress note 11');
+		expect(readBrief(config.stateDirectory, 2)).toContain('resume from: checkpoint commit');
+		expect(items.getStored(id)).toMatchObject({ schedule_off: true, needs_daniel: false });
+		tmux('kill-session', '-t', '=auto-recovr-r2');
+		await dispatch();
+		writeFileSync(join(root, 'reject-boot'), '');
+		runtime = makeRuntime();
+		await verifyFailureBudget({ watchdog, dispatch, items, database });
+	} finally {
+		try {
+			tmux('kill-server');
+		} catch {
+			// The isolated server disappears when its final session ends.
+		}
+		database.close();
+	}
+}
+
+function seedTask(runtime: TrackerNativeRuntimeService, now: number) {
+	runtime.store.appendLocal({
+		itemId: id,
+		fields: {
+			title: 'Synthetic recovery task',
+			notes: 'Resume the synthetic task.',
+			'note+': 'stopped: reboot; resume from: checkpoint commit',
+			status: 'open',
+			kind: 'task',
+			model: 'gpt-6.1-terra:high',
+			project: 'Harness',
+			due: new Date(now + 120 * minute).toISOString()
+		}
+	});
+}
+
+async function verifyFailureBudget({
+	watchdog,
+	dispatch,
+	items,
+	database
+}: {
+	watchdog: (delay: number) => Promise<void>;
+	dispatch: () => Promise<void>;
+	items: TrackerItemReadRepository;
+	database: DatabaseSync;
+}) {
+	for (let attempt = 0; attempt < 4; attempt++) {
+		await watchdog(11 * minute);
+		await dispatch();
+		await dispatch();
+		expect(items.getStored(id).needs_daniel).toBe(false);
+		if (attempt === 2) break;
+	}
+	await watchdog(11 * minute);
+	await dispatch();
+	expect(items.getStored(id)).toMatchObject({
+		needs_daniel: true,
+		question: expect.stringMatching(/3.*relaunch/i)
+	});
+	const count = database.prepare('SELECT COUNT(*) AS total FROM runs').get();
+	await watchdog(11 * minute);
+	await dispatch();
+	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual(count);
+	expect(
+		items.getStored(id).notes_log.filter(({ text }) => text.includes('watchdog recovery-failed'))
+	).toHaveLength(1);
+}
+
+function readBrief(state: string, run: number) {
+	for (const attempt of readdirSync(state)) {
+		const receipt = join(state, attempt, 'receipt.json');
+		if (existsSync(receipt) && JSON.parse(readFileSync(receipt, 'utf8')).runId === run)
+			return readFileSync(join(state, attempt, 'brief.md'), 'utf8');
+	}
+	return '';
+}
+
+function isolatedTmux(socket: string) {
+	return `#!${process.execPath}
+const { existsSync } = require('node:fs');
+const { spawnSync } = require('node:child_process');
+const { join } = require('node:path');
+const args = process.argv.slice(2);
+args[args.indexOf('-L') + 1] = ${JSON.stringify(socket)};
+if (args.includes('new-session') && existsSync(join(__dirname, 'reject-boot'))) process.exit(1);
+const result = spawnSync(${JSON.stringify(tmuxExecutable)}, args, { stdio: 'inherit' });
+process.exit(result.status ?? 1);
+`;
+}
