@@ -1,5 +1,10 @@
 // @harness-uid u_xh7uht2d3a
 
+import type {
+	TrackerPlanning,
+	TrackerStage
+} from '../../../../../src/utils/projects-sessions/trackerPlanning.types';
+
 /** The buckets an item can sit in. Needs you comes first: an open flag always wins. */
 export type InboxBucket = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
 export type InboxFilter = 'all' | InboxBucket;
@@ -12,6 +17,7 @@ export interface InboxHeader {
 	title: string;
 	project: string;
 	status: string;
+	stage?: TrackerStage;
 	updatedAt: string | null;
 	dueAt: string | null;
 }
@@ -47,6 +53,7 @@ export interface InboxRow {
 
 export interface InboxDetail {
 	header: InboxHeader;
+	planning?: TrackerPlanning;
 	notes: InboxNote[];
 	flag: InboxFlag | null;
 	runs: InboxRun[];

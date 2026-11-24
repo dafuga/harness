@@ -83,10 +83,12 @@ extension TrackerReplicaStore {
         let runs = try children(TrackerReplicaItem.Run.self, from: "runs", item: [slot, item])
         let revision = try db.rows("SELECT value FROM attention WHERE slot = ? AND item = ?", [slot, item])
             .first?.first.flatMap { $0 }
+        let planning = try children(TrackerReplicaPlanning.self, from: "planning", item: [slot, item])
         return ["item": try TrackerReplicaJSON.object(header), "notes": try TrackerReplicaJSON.object(notes),
                 "flag": try flags.first.map(TrackerReplicaJSON.object) ?? NSNull(),
                 "runs": try TrackerReplicaJSON.object(runs),
-                "attentionRevision": revision ?? NSNull()]
+                "attentionRevision": revision ?? NSNull(),
+                "planning": try planning.first.map(TrackerReplicaJSON.object) ?? NSNull()]
     }
 
     private func search(_ input: [String: Any], slot: String) throws -> [String: Any] {

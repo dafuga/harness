@@ -11,6 +11,7 @@ import {
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
+import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import {
 	readTrackerItemDetail,
@@ -37,16 +38,12 @@ export class TrackerLocalApiService {
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
 			const phone = phoneReplicaResponse(request, url, this.options.phoneReplica);
 			if (phone) return await phone;
-			if (/^items\/[^/]+\/inbox$/.test(parts.join('/')))
-				return trackerResponse(
-					200,
-					await trackerInboxItem(request, parts[1], {
-						store: this.store,
-						items: this.items,
-						options: this.options,
-						actor: readActor(request.headers)
-					})
-				);
+			const special = trackerItemSpecialResponse(request, parts, {
+				store: this.store,
+				items: this.items,
+				options: this.options
+			});
+			if (special) return await special;
 			if (request.method === 'GET') {
 				const read = this.read(parts, Object.fromEntries(url.searchParams));
 				if (read) return read;
@@ -131,6 +128,33 @@ export class TrackerLocalApiService {
 			this.store.appendLocal({ itemId: plan.itemId, fields: plan.fields, actor }, persist);
 		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
 	}
+}
+
+function trackerItemSpecialResponse(
+	request: Request,
+	parts: string[],
+	dependencies: {
+		store: TrackerPersistenceService;
+		items: TrackerItemReadRepository;
+		options: TrackerLocalApiOptions;
+	}
+): Promise<Response> | undefined {
+	if (!/^items\/[^/]+\/(?:inbox|stage|artifact)$/.test(parts.join('/'))) return undefined;
+	const [, id, verb] = parts;
+	const actor = readActor(request.headers);
+	if (verb === 'inbox')
+		return trackerInboxItem(request, id, { ...dependencies, actor }).then((item) =>
+			trackerResponse(200, item)
+		);
+	if (request.method !== 'POST' || (verb !== 'stage' && verb !== 'artifact')) return undefined;
+	return writeTrackerPlanning(
+		request,
+		{ id, verb, actor },
+		{
+			...dependencies,
+			now: dependencies.options.now?.() ?? Date.now()
+		}
+	).then((item) => trackerResponse(200, item));
 }
 
 function phoneReplicaResponse(request: Request, url: URL, replica?: TrackerPhoneReplicaService) {

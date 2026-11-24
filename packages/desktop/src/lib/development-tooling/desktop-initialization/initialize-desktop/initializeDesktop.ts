@@ -37,7 +37,7 @@ import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
 import { prepareDesktopStorage, preserveMacProfile } from './macSafeStorage';
-import { NavigationValidator } from '../../../../validators/explorer-ui/NavigationValidator';
+import { guardDesktopNavigation } from './guardDesktopNavigation';
 
 protocol.registerSchemesAsPrivileged([
 	{ scheme: 'harness', privileges: { standard: true, secure: true, supportFetchAPI: true } }
@@ -186,13 +186,8 @@ async function openWindow(backend: Backend): Promise<BrowserWindow> {
 			nodeIntegration: false
 		}
 	});
-	window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+	guardDesktopNavigation(window.webContents);
 	confirmUnload(window, dialog);
-	const gate = new NavigationValidator();
-	window.webContents.on('will-navigate', (event, url) => {
-		if (!gate.validate(url)) event.preventDefault();
-	});
-	window.webContents.on('will-attach-webview', (event) => event.preventDefault());
 	const choose = () => chooseProject(window, dialog);
 	/* The window's own client: its session and runs, served over the loopback socket. */
 	const control = remoteControl(backend.remote),

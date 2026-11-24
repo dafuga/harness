@@ -8,7 +8,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { _electron, expect, test } from '../../../../test/support/browserTest';
 import type { ElectronApplication, Page } from '../../../../test/support/browserTest';
 import scenario from '../../../../specification/scenarios/mac-tracker-inbox.json' with { type: 'json' };
-import { captureMacInbox } from './support/macTrackerInboxEvidence';
+import { captureMacInbox, verifyMacWireframeOpen } from './support/macTrackerInboxEvidence';
 import { TrackerItemReadRepository } from '../../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../../src/services/projects-sessions/TrackerLocalApiService';
@@ -98,6 +98,19 @@ for (const viewport of scenario.viewports)
 				database
 					.prepare("INSERT INTO runs VALUES (1, ?, ?, 'finished', 'sol', 'done')")
 					.run(id, now());
+				expect((await post(api, `/items/${id}/stage`, { stage: 'detail' })).status).toBe(200);
+				expect(
+					(
+						await post(api, `/items/${id}/artifact`, {
+							stage: 'detail',
+							artifact: {
+								links: [
+									{ label: 'Mac wireframe', url: 'https://example.test/mac.png', kind: 'image' }
+								]
+							}
+						})
+					).status
+				).toBe(200);
 				await post(api, `/items/${id}/flag`, { question: firstQuestion });
 				await post(api, `/items/${id}/note`, { text: 'Synthetic initial note' });
 				const listening = once(server, 'listening');
@@ -116,6 +129,7 @@ for (const viewport of scenario.viewports)
 				const page = await seedHostedPage(app, join(temp, 'profile'), hub);
 				await page.setViewportSize({ width: viewport.width, height: viewport.height });
 				await exerciseInbox(page, api, items, id);
+				await verifyMacWireframeOpen(app, page);
 			} finally {
 				await app?.close();
 				await hub.close();
@@ -151,6 +165,9 @@ async function exerciseInbox(
 	await expect(page.getByText('Synthetic initial note', { exact: true })).toBeVisible();
 	await expect(page.getByText('finished', { exact: true })).toBeVisible();
 	await captureMacInbox(page, 'detail');
+	const planning = page.getByRole('region', { name: 'Planning stages' });
+	await expect(planning.getByRole('link', { name: 'Mac wireframe' })).toBeVisible();
+	await expect(planning.getByText(/Promoted by fixture-mac/)).toBeVisible();
 	await stage(page, 'Add note', 'Mac confirmed note');
 	await captureMacInbox(page, 'confirm-note');
 	await page.getByRole('button', { name: 'Cancel', exact: true }).click();

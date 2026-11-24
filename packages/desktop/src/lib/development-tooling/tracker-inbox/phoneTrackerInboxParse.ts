@@ -1,4 +1,8 @@
 // @harness-uid u_ymhr4iqr7u
+import {
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import type {
 	InboxDetail,
 	InboxFlag,
@@ -31,12 +35,14 @@ export function parseHeader(value: unknown): InboxHeader | null {
 	const title = text(value.title);
 	const project = text(value.project);
 	const status = text(value.status);
+	const stage = trackerStageSchema.safeParse(value.stage);
 	if (id === null || title === null || project === null || status === null) return null;
 	return {
 		id,
 		title,
 		project,
 		status,
+		...(stage.success && { stage: stage.data }),
 		updatedAt: nullableText(value.updatedAt),
 		dueAt: nullableText(value.dueAt)
 	};
@@ -96,8 +102,10 @@ export function parseDetail(data: unknown): InboxDetail | null {
 	if (!isRecord(data)) return null;
 	const header = parseHeader(data.item);
 	if (header === null) return null;
+	const planning = trackerPlanningSchema.safeParse(data.planning);
 	return {
 		header,
+		...(planning.success && { planning: planning.data }),
 		notes: parseNotes(data.notes),
 		flag: parseFlag(data.flag),
 		runs: parseRuns(data.runs),

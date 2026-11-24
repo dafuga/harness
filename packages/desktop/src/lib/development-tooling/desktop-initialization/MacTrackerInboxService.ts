@@ -1,6 +1,10 @@
 // @harness-uid u_dpbqtddngd
 import type { TrackerItem } from '../../../../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../../../../src/repositories/projects-sessions/TrackerRunReadRepository.types';
+import {
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { sanitizeTrackerText } from '../../../../../../src/utils/projects-sessions/sanitizeTrackerText';
 import type {
 	ConfirmedWrite,
@@ -136,11 +140,13 @@ function visible(item: TrackerItem): boolean {
 }
 
 function projectHeader(item: TrackerItem) {
+	const stage = trackerStageSchema.safeParse(item.stage);
 	return {
 		id: item.id,
 		title: safe(item.title),
 		project: safe(item.project || item.agent),
 		status: item.status ?? 'open',
+		...(stage.success && { stage: stage.data }),
 		updatedAt: item.updated_at,
 		dueAt: item.due
 	};
@@ -148,8 +154,10 @@ function projectHeader(item: TrackerItem) {
 
 function projectDetail({ item, revision, flaggedAt, runs }: TrackerInboxItemReply): InboxDetail {
 	const notes = item.notes_log ?? [];
+	const planning = trackerPlanningSchema.safeParse(item.planning);
 	return {
 		header: projectHeader(item),
+		...(planning.success && { planning: planning.data }),
 		revision,
 		flag:
 			item.needs_daniel || item.resolved

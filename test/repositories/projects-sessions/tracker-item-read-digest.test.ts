@@ -27,6 +27,7 @@ function summary(
 		kind: 'task',
 		title,
 		status: 'open',
+		stage: 'idea',
 		blocked_reason: null,
 		needs_daniel: false,
 		due: null,
@@ -132,21 +133,21 @@ test('digestText renders legacy section order and omits blocked rows from other 
 		[
 			'Tracker digest - 2026-07-02 00:30 Europe/Lisbon',
 			'BLOCKED (1)',
-			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent)',
+			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent; idea)',
 			'NEEDS DANIEL (1)',
-			'  - [abc200] Done item - waiting 45h 30m (task; agent fixture-agent)',
+			'  - [abc200] Done item - waiting 45h 30m (task; agent fixture-agent; idea)',
 			'QUEUED (0)',
 			'  (none)',
 			'Chased (7d) (0)',
 			'  (none)',
 			'OVERDUE (1)',
-			'  - [abc400] Resolved item - due 2026-06-30 (task; agent fixture-agent)',
+			'  - [abc400] Resolved item - due 2026-06-30 (task; agent fixture-agent; idea)',
 			'DUE TODAY (3)',
-			'  - [abc100] Timestamp today - due 2026-07-01T23:15:00.000Z (task; owner operator, agent fixture-agent)',
-			'  - [def100] Date today (plan; agent fixture-agent)',
-			'  - [xyz100] Later today - due 2026-07-02T03:00:00.000Z (task; agent fixture-agent)',
+			'  - [abc100] Timestamp today - due 2026-07-01T23:15:00.000Z (task; owner operator, agent fixture-agent; idea)',
+			'  - [def100] Date today (plan; agent fixture-agent; idea)',
+			'  - [xyz100] Later today - due 2026-07-02T03:00:00.000Z (task; agent fixture-agent; idea)',
 			'RECURRING: MISSED OR FAILED (1)',
-			"  - [def200] Missed and failed - missed 2026-06-29 08:00; failed 2026-06-30 08:00: fixture failed; every '0 12 * * *' (recurring; agent fixture-agent)"
+			"  - [def200] Missed and failed - missed 2026-06-29 08:00; failed 2026-06-30 08:00: fixture failed; every '0 12 * * *' (recurring; agent fixture-agent; idea)"
 		].join('\n')
 	);
 });

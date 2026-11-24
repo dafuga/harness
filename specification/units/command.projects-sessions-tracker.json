@@ -4,8 +4,8 @@
 	"uid": "u_r7qgepnoax",
 	"kind": "command",
 	"title": "TrackerCommand",
-	"responsibility": "Owns the TrackerCommand command registration.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Route Tracker CLI commands, including stage promotion, artifact edits and filtered item reads.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,6 +14,7 @@
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerItem.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerPlanningRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerRequest.ts",
 			"src/commands/projects-sessions/tracker-command/runNativeTracker.ts"
 		],
@@ -43,6 +44,7 @@
 			"nativeTrackerIdVerbs",
 			"nativeTrackerInspectionRequest",
 			"nativeTrackerTimedItemRequest",
+			"nativeTrackerPlanningRequest",
 			"nativeTrackerCommands",
 			"nativeTrackerArgs",
 			"selectedTrackerConfig",
@@ -148,6 +150,21 @@
 				"required": true
 			},
 			{
+				"name": "nativeTrackerPlanningRequest.command",
+				"type": "'stage' | 'artifact'",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerPlanningRequest.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerPlanningRequest.[stage, file, ...rest]",
+				"type": "string[]",
+				"required": true
+			},
+			{
 				"name": "nativeTrackerArgs.args",
 				"type": "string[]",
 				"required": true
@@ -219,6 +236,10 @@
 			{
 				"name": "nativeTrackerTimedItemRequest",
 				"type": "NativeTrackerRequest | undefined"
+			},
+			{
+				"name": "nativeTrackerPlanningRequest",
+				"type": "NativeTrackerRequest"
 			},
 			{
 				"name": "nativeTrackerCommands",
@@ -489,6 +510,39 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "nativeTrackerPlanningRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerPlanningRequest.command",
+						"type": "'stage' | 'artifact'",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerPlanningRequest.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerPlanningRequest.[stage, file, ...rest]",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerPlanningRequest",
+						"type": "NativeTrackerRequest"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "nativeTrackerArgs",
 				"inputs": [
 					{
@@ -567,6 +621,11 @@
 		},
 		{
 			"unit": "function.agents-providers-tracker-run-report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -3,7 +3,10 @@
 <!-- @harness-uid u_zj35fp7e6k -->
 <script lang="ts">
 	import type { InboxRow } from '../../../models/development-tooling/TrackerInbox.types';
-	import { bucketLabels } from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import {
+		bucketLabels,
+		trackerStageLabels
+	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
 	let {
 		rows,
@@ -32,7 +35,11 @@
 			>
 				<hx-span class="tag tag-{row.bucket}">{bucketLabels[row.bucket]}</hx-span>
 				<hx-span class="title">{row.header.title}</hx-span>
-				<hx-span class="meta">{row.header.project} · {row.header.id}</hx-span>
+				<hx-span class="meta"
+					>{row.header.project} · {row.header.id} · {trackerStageLabels[
+						row.header.stage ?? 'idea'
+					]}</hx-span
+				>
 			</hx-button>
 		</hx-li>
 	{:else}

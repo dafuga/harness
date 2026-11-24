@@ -7,6 +7,11 @@ import type {
 	TrackerSchemaAdapterConfig
 } from './TrackerSchemaAdapter.types';
 
+import {
+	trackerPlanningArtifactFields,
+	trackerPlanningPromotionFields
+} from '../../utils/projects-sessions/trackerPlanning';
+
 export const trackerItemFields = [
 	'kind',
 	'title',
@@ -54,7 +59,9 @@ export const trackerItemFields = [
 	'adapter_notice',
 	'adapter_instructions',
 	'adapter_closed',
-	'adapter_due_owner'
+	'adapter_due_owner',
+	...trackerPlanningArtifactFields,
+	...trackerPlanningPromotionFields
 ] as const;
 
 const trackerSchema = `

@@ -1,0 +1,45 @@
+{
+	"name": "tracker-planning-stages",
+	"goal": "Prove planning stages, stage artifacts and attributed promotion through the Tracker journal, CLI, and the shared Mac and iPhone item views.",
+	"createdAt": "2026-11-24T22:32:18.633Z",
+	"updatedAt": "2026-11-24T23:00:13.231Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T22:33:24.168Z",
+			"evidence": "Committed specification defines stage order and explicit promotion, per-stage artifacts, compatibility, CLI and Mac/iPhone acceptance."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:00:11.785Z",
+			"evidence": "The CLI and local API journal one promotion per target and stage-specific artifacts. The Mac and iPhone show the stage and artifacts through their existing data sources."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-24T23:00:13.231Z",
+			"evidence": "Frozen API red a8df372d84 and green 3cccec7dbb. At 74bfd2eb22 27 focused Tracker tests, 3 Mac Electron viewport cases and 8 iPhone renderer cases passed. Signed node E2E passed four cases at c2aca38451 and native Swift checks passed 370 assertions in each build configuration at fc58926b24."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

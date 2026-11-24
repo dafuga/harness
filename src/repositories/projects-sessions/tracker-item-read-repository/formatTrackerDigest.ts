@@ -55,7 +55,7 @@ function line(item: TrackerDigestItem, detail: string): string {
 		.filter(Boolean)
 		.join(', ');
 	const context = assignees ? `${item.kind}; ${assignees}` : item.kind;
-	return `  - [${item.id.slice(0, 6)}] ${item.title}${detail ? ` - ${detail}` : ''} (${context})`;
+	return `  - [${item.id.slice(0, 6)}] ${item.title}${detail ? ` - ${detail}` : ''} (${context}; ${item.stage})`;
 }
 
 function blockedDetail(item: TrackerDigestItem): string {

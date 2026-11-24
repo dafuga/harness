@@ -1,5 +1,9 @@
 // @harness-uid u_r7qgepnoax
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
+import type {
+	TrackerPlanning,
+	TrackerStage
+} from '../../../utils/projects-sessions/trackerPlanning.types';
 import type { trackerRunReport } from '../../../utils/agents-providers/trackerRunReport';
 
 export interface NativeTrackerRequest {
@@ -13,6 +17,7 @@ export interface NativeTrackerItem {
 	kind: string;
 	title: string;
 	status: string;
+	stage?: TrackerStage;
 	blocked_reason?: string;
 	ignored_reason?: string;
 	ignored_until?: string;
@@ -35,6 +40,7 @@ export interface NativeTrackerItem {
 }
 
 export interface NativeTrackerItemDetail extends NativeTrackerItem {
+	planning?: TrackerPlanning;
 	parent?: string;
 	question?: string;
 	answer?: string;
