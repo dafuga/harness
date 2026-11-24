@@ -1,0 +1,10 @@
+headless-run: local Linux VM, up to 1 CPUs. Artifacts: /Users/danielfugere/.local/state/headless-run/artifacts-AAczJm
+Catalog build exit=0
+
+Running 3 tests using 1 worker
+
+  ✓  1 tests/e2e/units/explorer-shell-unit-desktop.style.design.spec.ts:19:3 › desktop.style.design:default at desktop (1.1s)
+  ✓  2 tests/e2e/units/explorer-shell-unit-desktop.style.design.spec.ts:19:3 › desktop.style.design:default at tablet (840ms)
+  ✓  3 tests/e2e/units/explorer-shell-unit-desktop.style.design.spec.ts:19:3 › desktop.style.design:default at mobile (860ms)
+
+  3 passed (28.9s)
