@@ -2,11 +2,9 @@
 	"name": "gg97k9-deploy-approvals",
 	"goal": "Prove that both Harness app renderers can review a pinned deployment, record an authenticated decision, and that the synthetic scripted runner rejects generic answers, stale scopes, and reused receipts.",
 	"createdAt": "2026-11-24T02:50:30.228Z",
-	"updatedAt": "2026-11-24T02:52:30.925Z",
+	"updatedAt": "2026-11-24T03:09:45.669Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,7 +17,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T03:09:45.669Z",
+			"evidence": "Native account routes, shared approval UI, owner-scoped D1 CAS, and signed broker admission are implemented. The lane remains opt-in for synthetic qualification."
 		},
 		{
 			"id": "test",
