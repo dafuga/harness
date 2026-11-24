@@ -13,15 +13,20 @@ export function formatNativeTrackerItem(item: NativeTrackerItem): string {
 		item.needs_daniel && !item.resolved && 'NEEDS DANIEL',
 		item.resolved && 'resolved'
 	].filter(Boolean);
-	const meta = [
+	const meta = trackerItemMetadata(item);
+	return `[${item.id.slice(0, 6)}] ${item.title}  (${flags.join(', ')}; ${meta.join(' | ')})`;
+}
+
+function trackerItemMetadata(item: NativeTrackerItem) {
+	return [
 		item.kind,
 		item.every && `every '${item.every}' ${item.every_tz}`,
 		item.due && `${item.every ? 'next' : 'due'} ${item.due}`,
+		item.remind_at && `reminder ${item.remind_at}`,
 		item.owner && `owner ${item.owner}`,
 		item.agent && `agent ${item.agent}`,
 		item.auto && 'auto-launch'
 	].filter(Boolean);
-	return `[${item.id.slice(0, 6)}] ${item.title}  (${flags.join(', ')}; ${meta.join(' | ')})`;
 }
 
 function itemStatus(item: NativeTrackerItem): string {

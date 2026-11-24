@@ -62,6 +62,7 @@ function summarize(row: TrackerItemRow): TrackerDigestItem {
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		needs_daniel: Boolean(row.needs_daniel) && !row.resolved,
 		due: row.due,
+		...(row.remind_at && { remind_at: row.remind_at }),
 		owner: row.owner,
 		agent: row.agent,
 		question: row.question,

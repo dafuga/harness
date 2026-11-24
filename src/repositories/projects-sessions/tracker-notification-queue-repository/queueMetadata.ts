@@ -8,7 +8,7 @@ import type {
 import { TrackerNotificationQueueError } from './TrackerNotificationQueueError';
 
 const attemptSchema = z.strictObject({
-	kind: z.enum(['callback', 'reminders', 'outbox', 'attention']),
+	kind: z.enum(['callback', 'reminders', 'outbox', 'attention', 'scheduled']),
 	keys: z.array(z.string()).min(1),
 	startedAt: z.number().int().nonnegative(),
 	holdWhenPaused: z.boolean().optional(),

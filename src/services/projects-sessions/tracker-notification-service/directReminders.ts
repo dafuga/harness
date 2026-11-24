@@ -16,6 +16,7 @@ import {
 	dueTime,
 	eventId,
 	flagged,
+	holdRegularReminder,
 	isoTime,
 	localDay,
 	readyRows
@@ -59,7 +60,8 @@ export function scanDirectReminders(
 		if (!state.reminders.has(row.key)) state.reminders.set(row.key, row);
 	}
 	for (const row of state.reminders.values()) {
-		if (row.status === 'active' && !active.has(row.key)) row.status = 'closed';
+		if (row.kind !== 'scheduled' && row.status === 'active' && !active.has(row.key))
+			row.status = 'closed';
 	}
 }
 
@@ -84,7 +86,11 @@ export function nextDirectReminder(
 	destination: TrackerDestination,
 	now: number
 ): DeliveryAttempt | undefined {
-	const due = readyRows(state.reminders.values(), now, (row) => row.status === 'active');
+	const due = readyRows(
+		state.reminders.values(),
+		now,
+		(row) => row.kind !== 'scheduled' && row.status === 'active'
+	);
 	if (!due.length) return undefined;
 	const release = quietHourBoundary(now, options.quietHours);
 	if (release > now) {
@@ -93,15 +99,17 @@ export function nextDirectReminder(
 	}
 	const fresh: ReturnType<typeof brief>[] = [];
 	const repeat: ReturnType<typeof brief>[] = [];
+	const pending = [];
 	for (const row of due) {
 		const item = options.source.item(row.itemId);
 		if (!item) {
 			row.status = 'closed';
 			continue;
 		}
+		if (holdRegularReminder(item, now, options.reminderIntervalMinutes)) continue;
+		pending.push(row);
 		(row.pings === 0 ? fresh : repeat).push(brief(row, item));
 	}
-	const pending = due.filter((row) => row.status === 'active');
 	if (!pending.length) return undefined;
 	const id = eventId(pending.map((row) => `${row.key}|${row.pings}`));
 	const request = callbackRequest(id, destination, {

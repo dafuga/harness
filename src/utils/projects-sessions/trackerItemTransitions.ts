@@ -9,6 +9,7 @@ import type {
 } from './planTrackerItemMutation.types';
 import {
 	normalizeTrackerDue,
+	normalizeTrackerReminder,
 	trackerIsoTime,
 	trackerLocalStamp,
 	trackerTimeZone
@@ -16,7 +17,6 @@ import {
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 import { guardTrackerDuplicate } from './trackerItemInput';
-
 const start = { status: 'in_progress' };
 const resolved = { resolved: 1, needs_daniel: 0 };
 
@@ -32,6 +32,11 @@ export const trackerItemTransitions: Record<
 	progress: (_, body) => appendText('progress', body.text, start),
 	note: (_, body) => appendText('note', body.text, {}),
 	flag: flagItem,
+	remind: (item, body, context) => {
+		if (item.status === 'done' || item.status === 'ignored')
+			throw trackerItemError('only active items can be reminded', 409);
+		return { fields: { remind_at: normalizeTrackerReminder(body.at, context.now) } };
+	},
 	answer: (_, body, context) => {
 		if (!body.answer) throw trackerItemError('answer text required');
 		return resolveItem(body, context);

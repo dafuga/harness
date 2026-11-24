@@ -8,7 +8,7 @@ import type {
 
 export type CallbackEvent = 'done' | 'resolved';
 export type AttentionKind = 'needs_daniel' | 'launch_wait' | 'blocked' | 'done';
-export type ReminderKind = 'flag' | 'due';
+export type ReminderKind = 'flag' | 'due' | 'scheduled';
 
 export interface RetryRow {
 	key: string;
@@ -91,7 +91,7 @@ export interface AttentionItemState {
 }
 
 export interface DeliveryAttempt {
-	kind: 'callback' | 'reminders' | 'outbox' | 'attention';
+	kind: 'callback' | 'reminders' | 'outbox' | 'attention' | 'scheduled';
 	keys: string[];
 	request: TrackerDeliveryRequest;
 	startedAt: number;

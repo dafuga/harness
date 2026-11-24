@@ -16,6 +16,7 @@
 			"TrackerNotificationSourceRepository",
 			"TrackerNotificationSourceRepository.constructor",
 			"TrackerNotificationSourceRepository.items",
+			"TrackerNotificationSourceRepository.scheduledItems",
 			"TrackerNotificationSourceRepository.item",
 			"TrackerNotificationSourceRepository.agent",
 			"TrackerNotificationSourceRepository.maxSeq",
@@ -40,6 +41,11 @@
 			{
 				"name": "TrackerNotificationSourceRepository.constructor.options",
 				"type": "TrackerNotificationSourceOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.scheduledItems.through",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -94,6 +100,10 @@
 				"type": "TrackerNotificationItem[]"
 			},
 			{
+				"name": "TrackerNotificationSourceRepository.scheduledItems",
+				"type": "TrackerNotificationItem[]"
+			},
+			{
 				"name": "TrackerNotificationSourceRepository.item",
 				"type": "TrackerNotificationItem | undefined"
 			},
@@ -135,6 +145,24 @@
 				"outputs": [
 					{
 						"name": "TrackerNotificationSourceRepository.items",
+						"type": "TrackerNotificationItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNotificationSourceRepository.scheduledItems",
+				"inputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.scheduledItems.through",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNotificationSourceRepository.scheduledItems",
 						"type": "TrackerNotificationItem[]"
 					}
 				],
