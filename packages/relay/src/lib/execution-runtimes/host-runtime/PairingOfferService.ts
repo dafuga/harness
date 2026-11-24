@@ -1,7 +1,7 @@
 // @harness-uid u_m6g57qzeqs
 import type { Approval } from './PairingOfferService.types';
 import { remoteLimits, safeEqual } from '../../../../../remote/src/index';
-import type { RelayErrorCode } from '../../../../../remote/src/index';
+import type { RelayErrorCode, RelayPairingRequest } from '../../../../../remote/src/index';
 import type { HostStorageAdapter } from './HostStorageAdapter';
 import { relayConfig } from '../../../configs/networking-security/relayConfig';
 import type { PairingRecord } from '../../../models/networking-security/RelayHost.types';
@@ -31,6 +31,34 @@ export class PairingOfferService {
 		return undefined;
 	}
 
+	/** An authenticated request is installed in one turn and cannot be replaced by a public request. */
+	async openAccount(
+		pairingId: string,
+		body: RelayPairingRequest
+	): Promise<PairingRecord | undefined> {
+		const now = Date.now();
+		const held = this.store.pairings().filter((pairing) => pairing.expiresAt > now);
+		if (
+			this.live(pairingId) ||
+			held.length >= relayConfig.openPairings ||
+			held.some((pairing) => pairing.account && pairing.state === 'requested')
+		)
+			return undefined;
+		const { challenge, ...request } = body;
+		const record: PairingRecord = {
+			pairingId,
+			state: 'requested',
+			expiresAt: now + remoteLimits.pairingTtlMs,
+			attempts: 1,
+			account: true,
+			request,
+			challenge
+		};
+		this.store.savePairing(record);
+		await this.schedule();
+		return record;
+	}
+
 	/** Keeps the sealed approval for the one request the host approved. The request is dropped. */
 	approve(approval: Approval): RelayErrorCode | undefined {
 		const pairing = this.live(approval.pairingId);
@@ -47,6 +75,7 @@ export class PairingOfferService {
 			expiresAt,
 			attempts,
 			challenge,
+			...(pairing.account && { account: pairing.account }),
 			...approved
 		});
 		return undefined;

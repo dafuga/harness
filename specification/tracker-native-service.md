@@ -43,7 +43,9 @@ and `peer.listenPort`. Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
 An optional `accessFile` beside an upstream URL supplies `clientId` and
 `clientSecret` for Cloudflare Access over HTTPS. The sync listener routes
 only signed Tracker sync requests. Each spoke sends its local run records to
-the hub through the signed machine exchange, even without a machine sampler.
+the hub through the signed machine exchange. Native spokes also report their
+launcher heartbeat, active local run count, and current holds. Autolaunch status
+uses recent samples to show per-host and per-request waits on the hub.
 The hub stores them under the sender’s node and run ID for run history and
 watchdog checks. The local API keeps
 the existing health, status, item and digest paths used by local readers.
@@ -366,11 +368,22 @@ the CLI. The inventory used local installation files and did not probe MB2.
 | Legacy commands                                                                                                                                                           | Native path and scope                                                                                                                                                                                                                                                              |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `add/plan/goal`, `list/show/update/rm`, `start/reopen/done/history`, `note/progress`, `block/unblock`, `ignore/unignore`, `flag/unflag/answer/resolve`, `check`, `digest` | Native item, history, check and digest routes. History remains hub-owned.                                                                                                                                                                                                          |
-| `launch`, `launch on/off`, `unlaunch`, `pick`, `runs`, `models report`                                                                                                    | Native item and run routes. Launch records intent. The host runner executes it.                                                                                                                                                                                                    |
+| `launch`, `launch on/off`, `unlaunch`, `pick`, `runs`, `models report`                                                                                                    | Native item and run routes. A manual launch confirms the recorded run or reports its exact hold.                                                                                                                                                                                   |
 | `autolaunch [status]`, `autolaunch dry-run`                                                                                                                               | `GET /autolaunch` and `GET /autolaunch/dry-run` use the local runtime, stored state and configured due decisions. Dry-run inspects each due item without writing a token, reserving a slot, or contacting another node. Capacity across a batch remains a host admission decision. |
 | `adapter list`                                                                                                                                                            | `GET /adapters` reads non-removed source records on the persisted or configured runner. Other nodes return the legacy ownership error.                                                                                                                                             |
 | `backup list`                                                                                                                                                             | `GET /backup/list` reports regular backup files in `~/backups/tracker` or an absolute `backupDirectory` in native config. The native scheduler is external. The listing reports file metadata without opening backup contents.                                                     |
 | `status`, `sync`, `ensure`, `help`                                                                                                                                        | Native status, sync and health routes, plus local help. Native `ensure` checks the configured supervisor listener.                                                                                                                                                                 |
+
+The native CLI confirms a manual launch against the run for that exact request.
+It reports the run number, state and computer, or exits non-zero with the
+admission reason. If the target has not reported an outcome within 20 seconds,
+the CLI reports the timeout. A hold or timeout leaves the request pending.
+`tracker launch on` and `tracker launch off` still set the due-scheduling preference.
+
+The primary watchdog alerts CoS when a request has no matching run after
+60 seconds. It checks both local and replicated runs, sends one alert per request,
+and clears the alert when the request is withdrawn or receives a run. Spokes
+send signed updates promptly when their launch holds or run state change.
 
 To replace a pending managed launch, run `tracker unlaunch <item>` and then
 `tracker launch <item>`. The launcher retires a cancelled retry that was never
@@ -380,6 +393,11 @@ expiry requires absence of the exact tmux session and all startup or exit
 markers. An eligible request can retry within its existing retry limit. Old
 rows remain in run history as abandoned. Live or uncertain attempts continue to
 fence new launches for the same item while the scheduler considers other work.
+A queued legacy run without a native reservation can also expire after five minutes
+when the managed launcher confirms the exact session and its receipts are absent
+and the verified legacy run directory and tmux inventory contain no startup evidence.
+Consumed tokens remain recorded for deduplication and are excluded from the pending
+dispatch scan.
 
 - [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
       and `reject`. Verify host admission, launcher limits, `ready/skipped`,

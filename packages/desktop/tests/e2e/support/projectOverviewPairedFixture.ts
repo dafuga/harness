@@ -52,6 +52,14 @@ function pairedEmit(shell: PairedShell) {
 function pairedRemote(shell: PairedShell) {
 	return {
 		status: async () => pairedRemoteStatus(shell.state),
+		refreshTracker: async () => ({}),
+		trackerTool: async ({ name }: { name: string }) => ({
+			source: 'local_tracker',
+			freshness: shell.state === 'online' ? 'current' : 'stale',
+			lastSyncedAt: null,
+			partial: false,
+			data: name === 'tracker_status' ? { needsYou: [], recent: [], unresolvedFlags: 0 } : {}
+		}),
 		scan: async () => pairedRemoteStatus(shell.state),
 		disconnect: async () => {
 			shell.state = 'unpaired';

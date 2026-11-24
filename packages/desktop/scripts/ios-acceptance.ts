@@ -25,9 +25,11 @@ import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { SimulatorPage } from './ios-acceptance-page';
 import { pairing } from './ios-acceptance-pairing';
-import { acceptanceProducts, normalProduct } from './ios-acceptance-products';
+import { acceptanceProducts, normalProduct, signedInHome } from './ios-acceptance-products';
 import { AcceptanceRecord } from './ios-acceptance-record';
 import { releaseRefusal } from './ios-acceptance-release';
+import { restart } from './ios-acceptance-run';
+
 import type { Acceptance } from './ios-acceptance-run';
 import { cameraOnly, scanEndings } from './ios-acceptance-scanning';
 import {
@@ -56,6 +58,8 @@ async function onDevice(run: Acceptance, releaseCopy: string): Promise<void> {
 	try {
 		await normalProduct(run);
 		install(run.udid, fixtureProduct);
+		await restart(run, false);
+		await signedInHome(run);
 		run.record.begin('Debug product of the real source');
 		await cameraOnly(run, 'Debug');
 		install(run.udid, scanFixtureProduct);

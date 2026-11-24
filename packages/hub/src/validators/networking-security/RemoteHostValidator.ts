@@ -1,6 +1,9 @@
 // @harness-uid u_fdl627yh3i
 import type { Body } from './RemoteHostValidator.types';
-import type { RemoteHostRegisterInput } from '../../../../remote/src/models/networking-security/RemoteRelay.types';
+import type {
+	RelayManagePairingRequest,
+	RemoteHostRegisterInput
+} from '../../../../remote/src/models/networking-security/RemoteRelay.types';
 import { remoteIdentity, remotePatterns } from '../../../../remote/src/utils/remoteIdentity';
 import { hubFail } from '../../utils/development-tooling/hubJson';
 
@@ -41,6 +44,15 @@ export class RemoteHostValidator {
 		const name = nameOf(body.name);
 		if ((await identityOf(hostKey)) !== hostId) return invalid();
 		return { hostId, hostKey, credentialHash, name };
+	}
+
+	pairing(body: Body): RelayManagePairingRequest {
+		return {
+			pairingId: matching(body.pairingId, remotePatterns.pairingId),
+			ephemeralKey: matching(body.ephemeralKey, remotePatterns.key),
+			sealed: matching(body.sealed, remotePatterns.sealed),
+			challenge: matching(body.challenge, remotePatterns.challenge)
+		};
 	}
 
 	hostId(value: unknown): string {

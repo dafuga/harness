@@ -225,7 +225,7 @@
 			{
 				"name": "bridge",
 				"type": "DesktopBridge",
-				"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views."
+				"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views. A 503 collaboration-disabled response to listing shared projects yields an empty list while the account remains signed in."
 			}
 		],
 		"errors": [
@@ -244,7 +244,7 @@
 					{
 						"name": "CapacitorAccountAdapter.connect",
 						"type": "DesktopBridge",
-						"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views."
+						"description": "DesktopBridge combining the hosted page's shared project operations with native account status and connect/disconnect operations. Account changes invalidate prior project results and protected views. A 503 collaboration-disabled response to listing shared projects yields an empty list while the account remains signed in."
 					}
 				],
 				"errors": [],

@@ -28,10 +28,10 @@ export class SocketAcceptService {
 
 	/**
 	 * The hash of the presented credential is computed first. Then, without awaiting anything,
-	 * it is compared with the hash that is stored now and the socket is accepted: a credential
-	 * that is rotated or revoked in the meantime opens nothing.
+	 * it is checked against current storage. Host connections check again after indexing the
+	 * computer so that a rotated or revoked credential still opens nothing.
 	 */
-	async accept(request: Request): Promise<Response> {
+	async accept(request: Request, index: (host: HostRecord) => Promise<boolean>): Promise<Response> {
 		if (request.headers.get('Upgrade')?.toLowerCase() !== 'websocket') {
 			return relayError(426, 'upgrade-required', { Upgrade: 'websocket' });
 		}
@@ -42,6 +42,11 @@ export class SocketAcceptService {
 		const hash = await credentialHash({ role, hostId, deviceId, credential });
 		const host = this.store.host();
 		if (!host || !safeEqual(hash, this.expected(host, claims))) return this.refuse(host);
+		if (role === 'host') {
+			await index(host);
+			const latest = this.store.host();
+			if (!latest || latest.credentialHash !== host.credentialHash) return this.refuse(latest);
+		}
 		const client = role === 'host' ? this.host(host) : this.device(deviceId);
 		return new Response(null, { status: 101, webSocket: client });
 	}

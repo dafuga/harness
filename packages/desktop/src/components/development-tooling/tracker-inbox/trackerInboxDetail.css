@@ -1,0 +1,53 @@
+/* @harness-uid u_r5yo6df2ta */
+/* Styles for the Tracker inbox item detail. Atoms carry these classes, so they are global. */
+.detail {
+	display: grid;
+	gap: var(--hx-space-12);
+	padding: var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface);
+}
+.detail h2 {
+	margin: 0;
+	font-size: var(--hx-type-size-sm);
+}
+.detail p,
+.detail blockquote {
+	margin: var(--hx-space-4) 0;
+}
+.detail .meta {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.detail .buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-6);
+}
+.detail button {
+	font: inherit;
+	padding: var(--hx-space-6) var(--hx-space-10);
+	border-radius: var(--hx-radius-small);
+	border: var(--hx-border-thin) solid var(--hx-color-primary);
+	background: transparent;
+	color: var(--hx-color-text);
+}
+.detail button.quiet {
+	border-color: var(--hx-color-border);
+}
+.detail button:disabled {
+	opacity: 0.5;
+}
+.detail .draft {
+	display: grid;
+	gap: var(--hx-space-4);
+}
+.detail textarea {
+	font: inherit;
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	padding: var(--hx-space-8);
+}

@@ -1,12 +1,13 @@
 // @harness-uid u_bl6xl2h4a3
 import { createHash } from 'node:crypto';
+import { trackerFlagBlocksRecovery } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { WatchdogPaneService } from '../WatchdogPaneService';
 import type { WatchdogItem, WatchdogPane, WatchdogScan } from '../WatchdogPaneService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
-import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
+import { handoffRunOwnership } from './trackerHostWatchdogState';
+import { contextAlert, recordHandoffFailure } from './trackerHostWatchdogAlerts';
 import { sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerHandoffAttempt, TrackerHandoffTarget } from './trackerWatchdogContext.types';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
@@ -54,7 +55,9 @@ function handoffTarget(
 
 function handoffEligible(row?: WatchdogItem): row is WatchdogItem {
 	return (
-		row?.status === 'in_progress' && !row.deleted && (!row.needsDaniel || Boolean(row.resolved))
+		row?.status === 'in_progress' &&
+		!row.deleted &&
+		(!row.needsDaniel || row.resolved === true || !trackerFlagBlocksRecovery(row.question))
 	);
 }
 
@@ -66,8 +69,7 @@ function handoffReady(item: TrackerItem, requested: number, node: string): boole
 	return (
 		item.status === 'in_progress' &&
 		!item.deleted &&
-		!item.schedule_off &&
-		(!item.needs_daniel || item.resolved) &&
+		(!item.needs_daniel || item.resolved || !trackerFlagBlocksRecovery(item.question)) &&
 		item.notes_log.some(
 			({ at, text, node: author }) =>
 				author === node &&
@@ -114,15 +116,61 @@ async function progressHandoff(
 		);
 		return;
 	}
-	const stillComplete = () =>
-		ownedAttempt(store, { id, runId: attempt.runId, pane }) === attempt.token &&
-		handoffReady(items.getStored(id), requested, store.node);
+	await finishHandoff({ store, driver, items, now }, { target, attempt }, signal);
+}
+
+async function finishHandoff(
+	{
+		store,
+		driver,
+		items,
+		now
+	}: {
+		store: TrackerPersistenceService;
+		driver: TrackerWatchdogPort;
+		items: TrackerItemReadRepository;
+		now: number;
+	},
+	{ target, attempt }: { target: TrackerHandoffTarget; attempt: TrackerHandoffAttempt },
+	signal: AbortSignal
+) {
+	const { id, pane, requested } = target;
+	const stillComplete = () => {
+		const current = handoffRunOwnership(store, { id, runId: attempt.runId, pane });
+		return Boolean(
+			current &&
+			current.token === attempt.token &&
+			current.observed === attempt.observed &&
+			handoffReady(items.getStored(id), requested, store.node)
+		);
+	};
 	if (!stillComplete()) {
-		alert('Waiting for the handoff note before relaunch.');
+		if (
+			now - requested >= 3 * sessionHealthInterval &&
+			!handoffReady(items.getStored(id), requested, store.node)
+		)
+			recordHandoffFailure(store, target, now);
+		else contextAlert(store, target, now, 'Waiting for the handoff note before relaunch.');
 		return;
 	}
-	if (await driver.close({ pane, cli: attempt.cli, attempt: attempt.token, stillComplete }, signal))
-		alert('Saved the handoff and closed the idle pane. Tracker will request a fresh session.');
+	if (
+		await driver.close?.(
+			{
+				pane,
+				cli: attempt.cli,
+				attempt: attempt.token,
+				observed: attempt.observed,
+				stillComplete
+			},
+			signal
+		)
+	)
+		contextAlert(
+			store,
+			target,
+			now,
+			'Saved the handoff and closed the idle pane. Tracker will request a fresh session.'
+		);
 }
 
 function handoffAttempt(
@@ -132,43 +180,8 @@ function handoffAttempt(
 ): TrackerHandoffAttempt | undefined {
 	if (!runId || pane.attached || now - pane.activity < sessionHealthInterval) return undefined;
 	const cli = panes.idlePrompt(pane);
-	const token = ownedAttempt(store, { id, runId, pane });
-	return cli && token ? { cli, token, runId } : undefined;
-}
-
-function contextAlert(
-	store: TrackerPersistenceService,
-	{ pane, id }: TrackerHandoffTarget,
-	now: number,
-	detail: string
-) {
-	const reason = `Session ${pane.name} exceeded 150,000 active context tokens. ${detail}`;
-	recordWatchdogAlert(
-		store,
-		{ itemId: id, session: pane.name, kind: 'context', reason, identity: pane.key },
-		now,
-		null
-	);
-}
-
-function ownedAttempt(
-	store: TrackerPersistenceService,
-	{ id, runId, pane }: { id: string; runId: number; pane: WatchdogPane }
-): string | undefined {
-	const row = store.database
-		.prepare(
-			`SELECT session_id AS token FROM runs
-		WHERE id = ? AND item_id = ? AND tmux = ? AND state = 'running'
-		AND ABS(started_at - ?) <= 60000
-		AND NOT EXISTS (
-			SELECT 1 FROM meta link JOIN items owner ON owner.id = link.v
-			WHERE link.k GLOB ? AND owner.deleted = 0 AND owner.status NOT IN ('done', 'ignored')
-		)`
-		)
-		.get(runId, id, pane.name, pane.createdAt, `${trackerSessionItemPrefix}${runId}:*`) as
-		| { token?: string }
-		| undefined;
-	return row?.token && /^[a-f0-9]{64}$/.test(row.token) ? row.token : undefined;
+	const ownership = handoffRunOwnership(store, { id, runId, pane });
+	return cli && ownership ? { cli, runId, ...ownership } : undefined;
 }
 
 async function requestHandoff(

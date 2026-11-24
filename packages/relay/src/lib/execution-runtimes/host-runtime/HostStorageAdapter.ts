@@ -21,6 +21,18 @@ export class HostStorageAdapter {
 
 	constructor(private readonly storage: DurableObjectStorage) {}
 
+	directoryHosts(): string[] {
+		return this.list<string>('directory:');
+	}
+
+	rememberHost(hostId: string): void {
+		this.write(`directory:${hostId}`, hostId);
+	}
+
+	forgetHost(hostId: string): void {
+		this.remove(`directory:${hostId}`);
+	}
+
 	host(): HostRecord | undefined {
 		return this.read('host');
 	}

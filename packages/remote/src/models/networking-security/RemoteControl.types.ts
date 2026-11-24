@@ -143,7 +143,20 @@ export interface RemoteScanInput {
 export type RemoteScanFailure = (typeof remoteScanFailures)[number];
 
 /** The phone's control port, implemented by the native plugin. */
+export interface RemoteAccountComputer {
+	hostId: string;
+	name: string;
+	online: boolean;
+}
+
+export interface RemoteAccountComputerInput {
+	hostId: string;
+	deviceName: string;
+}
+
 export interface RemoteMobileControl {
+	computers?(): Promise<RemoteAccountComputer[]>;
+	connectAccountComputer?(input: RemoteAccountComputerInput): Promise<RemoteMobileStatus>;
 	status(): Promise<RemoteMobileStatus>;
 	/**
 	 * Opens the camera and asks with the offer it reads. It answers once a request is under way;

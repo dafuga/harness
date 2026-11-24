@@ -1,12 +1,21 @@
 // @harness-uid u_bl6xl2h4a3
 import type { WatchdogPane } from '../WatchdogPaneService.types';
-import { trackerLegacyExitReceipt } from './trackerLegacyExitReceipt';
-import { finishedTrackerSession, trackerHostInventory } from './trackerHostInventory';
+import {
+	legacyTrackerStartupProbe,
+	trackerLegacyExitReceipt,
+	trackerLegacySession
+} from './trackerLegacyExitReceipt';
+import {
+	finishedTrackerSession,
+	hasManualTrackerPane,
+	trackerHostInventory
+} from './trackerHostInventory';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import {
 	attemptKey,
-	canonicalNode
+	canonicalNode,
+	trackerFlagBlocksRecovery
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type {
 	TrackerDispatchEvent,
@@ -33,7 +42,7 @@ export function trackerHostRunner(
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
 	let sessions: TrackerHostSession[] = [];
-	let manual: WatchdogPane[] = [];
+	let panes: WatchdogPane[] = [];
 	const legacyExit = legacyRunDirectory ? trackerLegacyExitReceipt(legacyRunDirectory) : undefined;
 	const legacySession = (run: TrackerRunReceipt) =>
 		legacyExit?.(run) ?? trackerLegacySession(run, sessions);
@@ -41,7 +50,7 @@ export function trackerHostRunner(
 		inventory: () => sessions,
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
-				({ sessions, manual } = await trackerHostInventory(
+				({ sessions, panes } = await trackerHostInventory(
 					{ store, driver, tmux, node, keys: runs.map(attemptKey), now: now() },
 					signal
 				));
@@ -57,18 +66,21 @@ export function trackerHostRunner(
 				return result;
 			},
 			legacySession,
+			confirmLegacyNeverStarted: legacyTrackerStartupProbe(
+				driver,
+				tmux && legacyRunDirectory,
+				() => panes
+			),
 			async observe(run: TrackerRunReceipt, key: string, signal: AbortSignal) {
 				const event = recordedHostEvent(run, { key, sessions, items, legacySession });
 				return withTrackerRunUsage(event, { driver, run, items, now: now() }, signal);
 			},
 			confirmNeverStarted: driver.confirmNeverStarted?.bind(driver)
 		},
-		sessions(itemId: string) {
-			return {
-				openSession: manual.some((pane) => itemId.startsWith(pane.name.slice(5))),
-				activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
-			};
-		}
+		sessions: (itemId: string) => ({
+			openSession: hasManualTrackerPane(panes, itemId),
+			activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
+		})
 	};
 }
 
@@ -130,16 +142,6 @@ async function startTrackerHost(
 	return undefined;
 }
 
-function trackerLegacySession(run: TrackerRunReceipt, sessions: readonly TrackerHostSession[]) {
-	const session = sessions.find(
-		(entry) =>
-			entry.legacyRunId === run.id &&
-			entry.tmux === run.tmux &&
-			(entry.itemId === run.item_id || entry.itemId === run.item_id.slice(0, 6))
-	);
-	return session && { ...session, key: attemptKey(run) };
-}
-
 async function launchApprovedItem(
 	{
 		driver,
@@ -158,7 +160,9 @@ async function launchApprovedItem(
 		!route ||
 		item.deleted ||
 		!['open', 'in_progress'].includes(item.status ?? '') ||
-		(item.needs_daniel && !item.resolved) ||
+		(item.needs_daniel &&
+			!item.resolved &&
+			(reservation.run.launch_source !== 'recovery' || trackerFlagBlocksRecovery(item.question))) ||
 		item.auto !== reservation.run.auto_token
 	)
 		return {
@@ -171,7 +175,11 @@ async function launchApprovedItem(
 			node,
 			route,
 			reservation,
-			brief: formatTrackerHostBrief(item, instructions)
+			brief: formatTrackerHostBrief(
+				item,
+				instructions,
+				reservation.run.launch_source === 'recovery'
+			)
 		},
 		signal
 	);

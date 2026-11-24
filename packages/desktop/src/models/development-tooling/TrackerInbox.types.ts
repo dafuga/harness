@@ -1,0 +1,120 @@
+// @harness-uid u_xh7uht2d3a
+
+/** The buckets an item can sit in. Needs you comes first: an open flag always wins. */
+export type InboxBucket = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
+export type InboxFilter = 'all' | InboxBucket;
+
+export type WriteAction = 'note' | 'flag' | 'answer';
+
+/** One item's header as the phone replica holds it. */
+export interface InboxHeader {
+	id: string;
+	title: string;
+	project: string;
+	status: string;
+	updatedAt: string | null;
+	dueAt: string | null;
+}
+
+export interface InboxFlag {
+	state: string;
+	at: string | null;
+	question: string;
+}
+
+export interface InboxNote {
+	id: string;
+	author: string;
+	at: string;
+	text: string;
+}
+
+/** A run summary. Only lifecycle and outcome travel; no command lines or transcripts. */
+export interface InboxRun {
+	id: string;
+	origin: string;
+	state: string;
+	outcome: string | null;
+	queuedAt: number | null;
+	startedAt: number | null;
+	endedAt: number | null;
+}
+
+export interface InboxRow {
+	header: InboxHeader;
+	bucket: InboxBucket;
+}
+
+export interface InboxDetail {
+	header: InboxHeader;
+	notes: InboxNote[];
+	flag: InboxFlag | null;
+	runs: InboxRun[];
+	/** The attention revision the user reviews. A flag write must carry the one it was shown. */
+	revision: string | null;
+}
+
+/** The reviewed copy of an item, kept by the page until the write is confirmed or dropped. */
+export interface InboxReview {
+	itemId: string;
+	revision: string | null;
+}
+
+export type WriteState = 'pending' | 'acknowledged' | 'conflict' | 'rejected';
+
+/** One entry of the phone's protected write outbox, as `tracker_write_status` reports it. */
+export interface InboxWrite {
+	intentId: string;
+	itemId: string;
+	status: 'queued' | 'conflict' | 'accepted';
+	reason: string;
+}
+
+export interface InboxWriteView {
+	intentId: string;
+	itemId: string;
+	state: WriteState;
+	label: string;
+	discardable: boolean;
+}
+
+export type ReviewGate =
+	| { allowed: true }
+	| { allowed: false; reason: 'answered' | 'already-open' | 'unreviewed' | 'changed' | 'no-flag' };
+
+/** A write the user confirmed. Built only after an explicit confirmation. */
+export interface ConfirmedWrite {
+	action: WriteAction;
+	id: string;
+	text: string;
+	revision: string | null;
+}
+
+export type InboxFreshness = 'current' | 'stale' | 'unavailable';
+
+/** The result of one read or write, with the freshness the phone reported for it. */
+export interface InboxReply<T> {
+	value?: T;
+	code?: string;
+	freshness: InboxFreshness;
+	lastSyncedAt: string | null;
+	partial: boolean;
+	candidates?: string[];
+}
+
+export interface InboxOverview {
+	rows: InboxRow[];
+	unresolvedFlags: number;
+	/** True when the phone returned its full cap of Needs you items, so more may exist. */
+	needsYouCapped: boolean;
+}
+
+/** What the inbox page needs from a phone replica. The phone adapter implements it over the tools. */
+export interface TrackerInboxSource {
+	overview(): Promise<InboxReply<InboxOverview>>;
+	search(query: string): Promise<InboxReply<InboxRow[]>>;
+	detail(id: string): Promise<InboxReply<InboxDetail>>;
+	write(write: ConfirmedWrite): Promise<InboxReply<{ intentId: string; status: string }>>;
+	writes(): Promise<InboxReply<InboxWrite[]>>;
+	discard(intentId: string): Promise<InboxReply<unknown>>;
+}

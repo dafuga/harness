@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.page.tracker",
+	"uid": "u_hy4wyfdeiv",
+	"kind": "page",
+	"title": "/tracker",
+	"responsibility": "Owns the /tracker route page.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/routes/tracker/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-phone-tracker-inbox-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/routes/tracker/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/routes/tracker/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

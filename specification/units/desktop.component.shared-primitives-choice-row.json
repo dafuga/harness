@@ -45,6 +45,20 @@
 				"description": "Whether the choice is current and marked as pressed. Defaults to false."
 			},
 			{
+				"name": "ChoiceRow.disabled",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Makes the choice unavailable while retaining its displayed name and metadata."
+			},
+			{
+				"name": "ChoiceRow.label",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional accessible name that describes the action taken when the row is chosen."
+			},
+			{
 				"name": "ChoiceRow.onchoose",
 				"type": "() => void",
 				"required": true,

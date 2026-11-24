@@ -124,7 +124,7 @@ function claimHold(
 	if (!startable(item)) return 'item is not startable';
 	if (!ownsLaunch(intent, policy)) return 'launch is assigned to a different computer';
 	if (hasOpenSession(snapshot, policy, now, run)) return 'item already has an open session';
-	if (intent.source === 'manual') return null;
+	if (intent.source !== 'due') return null;
 	const previouslyStarted = snapshot.runs.some(
 		({ auto_token, started_at }) => auto_token === intent.token && started_at !== null
 	);

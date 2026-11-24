@@ -1,3 +1,4 @@
+import { verifyHostLaunchOutcomes } from '../../support/trackerLaunchOutcomeFixture';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -49,6 +50,7 @@ async function proveHostCapacity(root: string) {
 			.soft(db.prepare('SELECT item_id, state FROM runs WHERE id > 8').all())
 			.toEqual([{ item_id: 'next100001', state: 'running' }]);
 		expect(existsSync(closed)).toBe(false);
+		await verifyHostLaunchOutcomes(runtime, db, signal);
 		clock += 300_000;
 		writeFileSync(join(root, 'busy'), '');
 		await expectPaneRetained(runtime, signal, closed);
@@ -96,6 +98,7 @@ function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, fla
 			status: 'open',
 			project: 'Harness',
 			auto: id,
+			launch_source: 'manual',
 			computer: node,
 			launch_target: node,
 			...(flagged && { needs_daniel: 1, question: 'Fixture question' })

@@ -31,6 +31,7 @@ const publicErrors: Record<string, number> = {
 	'invalid-input': 400,
 	'invalid-invitation': 400,
 	'anchor-conflict': 409,
+	'pairing-unavailable': 409,
 	'request-conflict': 409,
 	conflict: 409,
 	'invalid-path': 400,

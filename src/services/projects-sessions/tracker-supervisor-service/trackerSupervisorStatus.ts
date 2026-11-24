@@ -1,8 +1,12 @@
 // @harness-uid u_46eur7qage
 import { z } from 'zod';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
-import { trackerFleetNodes } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import {
+	canonicalNode,
+	trackerFleetNodes
+} from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
+import { trackerRunnerSample } from '../tracker-native-runtime-service/nativeTrackerLinks';
 import type { TrackerSupervisorViews } from '../TrackerSupervisorService.types';
 
 export function trackerSupervisorStatus(
@@ -32,26 +36,19 @@ export function trackerSupervisorStatus(
 
 function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolean) {
 	const notification = runtime.notifications?.status();
-	const runs = activeRunCounts(runtime.store.database);
-	const computers = trackerFleetHealth(runtime, runs.started);
+	const autolaunch = trackerAutolaunchStatus(runtime);
 	return {
 		chief_of_staff: notification?.chiefOfStaff ?? 'not configured',
 		backup: { enabled: false, note: 'backups run on the hub (set backup.enabled to change)' },
-		machines: computers.map(machineFromComputer),
+		machines: autolaunch.computers.map(machineFromComputer),
 		webhook: notification?.webhook ?? defaultWebhookStatus(hub),
 		jobs: trackerJobsStatus(runtime),
 		adapters: runtime.adapter?.status() ?? { runner: null, active: false },
-		autolaunch: trackerAutolaunchStatus(runtime, runs.active, computers),
+		autolaunch,
 		quiet_hours: notification?.quietHours ?? null
 	};
 }
 
-/**
- * The overview status of one computer. Only a polling launcher counts as reachable; offline,
- * stale, failing, disabled and unknown computers all read as offline, so none is shown as
- * available without a fresh tick. A polling computer with launches held behind it is
- * overloaded, otherwise one with active runs is busy.
- */
 function machineFromComputer(computer: ReturnType<typeof trackerFleetHealth>[number]) {
 	let status = 'offline';
 	if (computer.state === 'polling') {
@@ -86,17 +83,22 @@ function trackerJobsStatus({ store, recurring }: TrackerNativeRuntimeService) {
 	);
 }
 
-function trackerAutolaunchStatus(
-	runtime: TrackerNativeRuntimeService,
-	activeRuns: number,
-	computers: ReturnType<typeof trackerFleetHealth>
-) {
+function trackerAutolaunchStatus(runtime: TrackerNativeRuntimeService) {
+	const runs = activeRunCounts(runtime.store.database);
+	const now = runtime.now();
+	const samples = machineSamplesByNode(runtime.fleetSamples?.() ?? []);
+	const status = runtime.scheduler?.status();
 	return {
-		enabled: false,
-		stuck: [],
-		...runtime.scheduler?.status(),
-		active_runs: activeRuns,
-		computers
+		enabled: status?.enabled ?? false,
+		stuck: (status?.stuck ?? []).map((item) => {
+			if (item.reason !== 'ready but has not started') return item;
+			const sample = samples.get(canonicalNode(item.computer, {}));
+			const runner = trackerRunnerSample.safeParse(sample?.runner).data;
+			const reason = machineOffline(sample?.at, now) ? undefined : runner?.waiting?.[item.id];
+			return reason ? { ...item, reason } : item;
+		}),
+		active_runs: runs.active,
+		computers: trackerFleetHealth(runtime, runs.started, { now, samples })
 	};
 }
 
@@ -115,51 +117,43 @@ function activeRunCounts(database: SqliteDatabase) {
 }
 
 const machineSample = z.object({ node: z.string().min(1), at: z.string(), runner: z.unknown() });
-const runnerSample = z.object({
-	enabled: z.boolean().nullish(),
-	last_tick_at: z.string().nullish(),
-	last_error: z.string().nullish(),
-	waiting_on: z.string().nullish(),
-	active: z.int().nonnegative().nullish(),
-	queued: z.int().nonnegative().nullish()
-});
-
-function trackerFleetHealth(runtime: TrackerNativeRuntimeService, startedRuns: number) {
+function trackerFleetHealth(
+	runtime: TrackerNativeRuntimeService,
+	startedRuns: number,
+	{ now, samples }: { now: number; samples: ReturnType<typeof machineSamplesByNode> }
+) {
 	const { store, scheduler, fleetSamples } = runtime;
-	const now = runtime.now();
-	const samples = machineSamplesByNode(fleetSamples?.() ?? []);
-	const localRunner: z.infer<typeof runnerSample> = scheduler?.runnerStatus() ?? { enabled: false };
+	const localRunner: z.infer<typeof trackerRunnerSample> = scheduler?.runnerStatus() ?? {
+		enabled: false
+	};
 	const nodes = new Set([...trackerFleetNodes, ...samples.keys(), store.node]);
 	return [...nodes].map((computer) => {
 		const local = computer === store.node;
 		const sample = samples.get(computer);
-		const runner = local ? localRunner : runnerSample.safeParse(sample?.runner).data;
+		const runner = local ? localRunner : trackerRunnerSample.safeParse(sample?.runner).data;
 		const offline = !local && Boolean(fleetSamples) && machineOffline(sample?.at, now);
 		return {
 			computer,
 			state: offline ? 'offline' : fleetRunnerState(runner, now),
-			...fleetRunnerDetails(runner, local ? startedRuns : runner?.active, runner?.queued)
+			...fleetRunnerDetails(runner, local ? startedRuns : runner?.active)
 		};
 	});
 }
 
 function machineOffline(sampledAt: string | undefined, now: number) {
-	const age = now - Date.parse(sampledAt ?? '');
-	return !Number.isFinite(age) || age < 0 || age > 300_000;
+	return !sampledAt || now - Date.parse(sampledAt) > 300_000;
 }
 
 function fleetRunnerDetails(
-	{ last_tick_at = null, last_error = null, waiting_on = null }: z.infer<typeof runnerSample> = {},
-	active: number | null | undefined,
-	queued: number | null | undefined
+	{
+		last_tick_at = null,
+		last_error = null,
+		waiting_on = null,
+		queued = null
+	}: z.infer<typeof trackerRunnerSample> = {},
+	active: number | null | undefined
 ) {
-	return {
-		last_tick_at,
-		last_error,
-		waiting_on,
-		active_runs: active ?? null,
-		queued: queued ?? null
-	};
+	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null, queued };
 }
 
 function machineSamplesByNode(values: readonly unknown[]) {
@@ -171,12 +165,13 @@ function machineSamplesByNode(values: readonly unknown[]) {
 	return samples;
 }
 
-function fleetRunnerState(runner: z.infer<typeof runnerSample> | undefined, now: number) {
+function fleetRunnerState(runner: z.infer<typeof trackerRunnerSample> | undefined, now: number) {
 	if (runner?.enabled == null) return 'unknown';
 	if (!runner.enabled) return 'disabled';
 	if (runner.last_error) return 'error';
-	const age = now - Date.parse(runner.last_tick_at ?? '');
-	return age >= 0 && age <= 120_000 ? 'polling' : 'stale';
+	return runner.last_tick_at && now - Date.parse(runner.last_tick_at) <= 120_000
+		? 'polling'
+		: 'stale';
 }
 
 function deliveryCounts(database: SqliteDatabase) {

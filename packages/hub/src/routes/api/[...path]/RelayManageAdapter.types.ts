@@ -4,4 +4,11 @@ export interface RelayManageAdapterConfig {
 	hosts: DurableObjectNamespace;
 }
 
-export type Operation = 'register' | 'summary' | 'revoke-device' | 'unregister';
+export type Operation =
+	| 'register'
+	| 'summary'
+	| 'revoke-device'
+	| 'unregister'
+	| 'directory-list'
+	| 'pairing-key'
+	| 'pairing-request';

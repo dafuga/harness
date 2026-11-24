@@ -15,6 +15,7 @@ function routeOf(path: string): Route | null {
 	if (parts.slice(0, 4).join('/') !== '/api/remote/hosts' || parts.includes('', 1)) return null;
 	if (parts.length === 4) return { kind: 'hosts', ids: [] };
 	if (parts.length === 5) return { kind: 'host', ids: [parts[4]] };
+	if (parts.length === 6 && parts[5] === 'pairing') return { kind: 'pairing', ids: [parts[4]] };
 	const device = parts.length === 7 && parts[5] === 'devices';
 	return device ? { kind: 'device', ids: [parts[4], parts[6]] } : null;
 }
@@ -30,6 +31,22 @@ async function register(call: Call): Promise<Response> {
 		registeredAt
 	};
 	return hubHttp(registration, 201);
+}
+
+async function computers(call: Call): Promise<Response> {
+	return hubHttp({ computers: await call.remote.relay.computers(call.owner) });
+}
+
+async function pairingKey(call: Call): Promise<Response> {
+	const hostId = validator.hostId(call.ids[0]);
+	const key = await call.remote.relay.pairingKey({ owner: call.owner, hostId });
+	return hubHttp({ ...key, origin: call.remote.origin });
+}
+
+async function requestPairing(call: Call): Promise<Response> {
+	const hostId = validator.hostId(call.ids[0]);
+	const body = validator.pairing(await hubBody(call.request));
+	return hubHttp(await call.remote.relay.requestPairing({ owner: call.owner, hostId }, body), 202);
 }
 
 async function summary(call: Call): Promise<Response> {
@@ -50,7 +67,10 @@ async function revokeDevice(call: Call): Promise<Response> {
 
 const ACTIONS = new Map<string, (call: Call) => Promise<Response>>([
 	['POST hosts', register],
+	['GET hosts', computers],
 	['GET host', summary],
+	['GET pairing', pairingKey],
+	['POST pairing', requestPairing],
 	['DELETE host', unregister],
 	['DELETE device', revokeDevice]
 ]);

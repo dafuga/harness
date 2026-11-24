@@ -30,6 +30,6 @@ export class HostObjectController {
 		if (!route || route.kind === 'health') return relayError(404, 'not-found');
 		if (!this.scope.owns(route.hostId)) return relayError(404, 'not-found');
 		if (route.kind === 'pairing') return this.pairing.handle(request, route);
-		return this.sockets.accept(request);
+		return this.sockets.accept(request, (host) => this.manage.index(host));
 	}
 }

@@ -34,6 +34,7 @@ export function trackerHostLaunch(
 	config: TrackerHostLaunchConfig,
 	effects: {
 		tmuxExecutable?: string;
+		recoverDroppedSessions?: boolean;
 		adapter?: TrackerHostAdapterConfig;
 		workerClient?: TrackerWorkerClient;
 		transcriptRoots?: readonly string[];
@@ -65,6 +66,7 @@ export function trackerHostLaunch(
 		sessions: host.sessions,
 		policy: {
 			timezone: 'Europe/Lisbon',
+			recoverDroppedSessions: effects.recoverDroppedSessions,
 			chooseHost: chooseTrackerHost(routeFor, node),
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
@@ -145,6 +147,7 @@ export function configuredHostDispatch(
 		? trackerHostLaunch(store, launch, {
 				workerClient,
 				transcriptRoots: watchdog?.transcriptRoots,
+				recoverDroppedSessions: watchdog && ('tmux' in watchdog || 'driver' in watchdog),
 				adapter,
 				now,
 				tmuxExecutable: watchdog && 'tmux' in watchdog ? watchdog.tmux : undefined

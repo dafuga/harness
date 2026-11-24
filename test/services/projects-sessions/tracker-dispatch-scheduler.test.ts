@@ -70,6 +70,14 @@ async function proveIndependentDispatch() {
 		runner: { start, observe: async () => undefined }
 	});
 	try {
+		const consumed = 'already000';
+		queueFixtureItem(store, consumed);
+		const previous = await dispatcher.claim(consumed, consumed);
+		if (previous.status !== 'start') throw new Error('fixture failed to reserve a run');
+		await dispatcher.record(consumed, previous.run, {
+			type: 'session',
+			session: { key: previous.key, id: 'existing', startedAt: clock, state: 'live' }
+		});
 		queueFixtureItem(store, refused);
 		queueFixtureItem(store, failed);
 		queueFixtureItem(store, runnable);
@@ -84,6 +92,8 @@ async function proveIndependentDispatch() {
 			(reason: unknown) => reason
 		);
 		expect.soft(error).toBeUndefined();
+		expect.soft(scheduler.runnerStatus().waiting_on).toBe('no approved repository');
+		expect.soft(scheduler.runnerStatus(0)).toMatchObject({ queued: 2, waiting: {} });
 		expect.soft(repo.readSnapshot(refused).runs).toEqual([]);
 		expect.soft(repo.readSnapshot(failed).runs).toMatchObject([{ state: 'queued' }]);
 		expect.soft(repo.readSnapshot(runnable).runs).toMatchObject([{ state: 'running' }]);

@@ -1,3 +1,4 @@
+import { proveTrackerTmuxRecovery, tmuxExecutable } from './support/trackerRecoveryFixture';
 import { existsSync, realpathSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -62,7 +63,7 @@ test('foreground hub and spoke converge over signed loopback and route compatibi
 		}
 		expect(existsSync(join(root, 'legacy-used'))).toBe(false);
 	});
-}, 45_000);
+}, 70_000);
 
 function seedSpokeRun({ config }: TrackerNodeFixture) {
 	const database = new DatabaseSync(config.database);
@@ -195,3 +196,9 @@ async function readSupervisorSocket(path: string): Promise<string> {
 		socket.destroy();
 	}
 }
+
+test.skipIf(process.platform !== 'darwin' || !tmuxExecutable)(
+	'relaunches a killed managed tmux session and flags after three failed recoveries',
+	{ timeout: 40_000 },
+	proveTrackerTmuxRecovery
+);

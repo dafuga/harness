@@ -47,6 +47,11 @@
 				"type": "Request",
 				"required": true,
 				"description": "Carries the Upgrade header and connect claims used by the service to authenticate a WebSocket connection. Requests without a WebSocket upgrade, valid claims, a host record, or a current matching credential are refused with an HTTP error response."
+			},
+			{
+				"name": "SocketAcceptService.accept.index",
+				"type": "(host: HostRecord) => Promise<boolean>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -67,6 +72,11 @@
 						"type": "Request",
 						"required": true,
 						"description": "Carries the Upgrade header and connect claims used by the service to authenticate a WebSocket connection. Requests without a WebSocket upgrade, valid claims, a host record, or a current matching credential are refused with an HTTP error response."
+					},
+					{
+						"name": "SocketAcceptService.accept.index",
+						"type": "(host: HostRecord) => Promise<boolean>",
+						"required": true
 					}
 				],
 				"outputs": [

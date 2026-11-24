@@ -3,6 +3,7 @@ import { trackerManagedToken } from '../../../adapters/projects-sessions/tracker
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
+import { watchdogManualPrefix } from '../WatchdogPaneService';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
 import type {
@@ -46,10 +47,14 @@ export async function trackerHostInventory(
 			: [];
 	});
 	if (tmux) await sweepCompletedTrackerSessions(store, { tmux, panes, node, now }, signal);
-	return {
-		sessions: [...sessions, ...direct],
-		manual: panes.filter((pane) => pane.live && /^auto-[a-z0-9]{6,10}$/.test(pane.name))
-	};
+	return { sessions: [...sessions, ...direct], panes };
+}
+
+export function hasManualTrackerPane(panes: readonly WatchdogPane[], itemId: string) {
+	return panes.some((pane) => {
+		const prefix = watchdogManualPrefix(pane.name);
+		return pane.live && prefix !== undefined && itemId.startsWith(prefix);
+	});
 }
 
 function legacyTmuxSession(pane: WatchdogPane): TrackerHostSession | undefined {

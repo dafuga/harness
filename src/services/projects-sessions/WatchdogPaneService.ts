@@ -13,7 +13,14 @@ import { codexStartupMenus } from './watchdog-pane-service/codexStartupMenus';
 const escape = '\u001b';
 const controls = new RegExp(escape + '\\[[0-9;:]*m', 'g');
 const faint = new RegExp('^' + escape + '\\[(?:2|2;[0-9;]+)m');
-const manualName = /^auto-([a-z0-9]{6,10})$/;
+const manualName = /^(?:auto-([a-z0-9]{6,10})|([a-z0-9]{6})(?:-[a-z0-9][a-z0-9_-]{0,63})?)$/;
+export const trackerWatchdogSessionName =
+	/^(?:auto-[a-z0-9]{6,10}(?:-r[0-9]+)?|[a-z0-9]{6}(?:-[a-z0-9][a-z0-9_-]{0,63})?)$/;
+
+export function watchdogManualPrefix(name: string): string | undefined {
+	const match = manualName.exec(name);
+	return match?.[1] ?? match?.[2];
+}
 const busy =
 	/\b(?:esc to (?:interrupt|cancel)|ctrl\+c to interrupt|queued messages?|waiting for (?:approval|permission)|usage limit|out of credits|credit balance is too low)\b/i;
 const alertMenus = [
@@ -152,11 +159,11 @@ export class WatchdogPaneService {
 	}
 
 	isManual(pane: WatchdogPane): boolean {
-		return manualName.test(pane.name);
+		return watchdogManualPrefix(pane.name) !== undefined;
 	}
 
 	manualItem(pane: WatchdogPane, items: readonly WatchdogItem[]): WatchdogItem | undefined {
-		const id = manualName.exec(pane.name)?.[1];
+		const id = watchdogManualPrefix(pane.name);
 		if (!id) return undefined;
 		const matching = items.filter((item) => !item.deleted && item.id.startsWith(id));
 		return (
@@ -186,7 +193,12 @@ export class WatchdogPaneService {
 	}
 
 	matchesRun(pane: WatchdogPane, run: WatchdogRun): boolean {
-		return pane.live && pane.runnerSocket && pane.name === run.tmux;
+		return (
+			pane.live &&
+			(run.state === 'observed'
+				? run.watchPane === pane.key
+				: pane.runnerSocket && pane.name === run.tmux)
+		);
 	}
 
 	private blankCodexComposer(pane: WatchdogPane): boolean {

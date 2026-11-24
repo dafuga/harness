@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-tracker-inbox-tracker-inbox-messages",
+	"uid": "u_wjfyfu2l5m",
+	"kind": "module",
+	"title": "trackerInboxMessages",
+	"responsibility": "Owns the trackerInboxMessages library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
+		],
+		"symbols": ["writeSentMessage", "writeFailureMessage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "writeSentMessage.action",
+				"type": "WriteAction",
+				"required": true
+			},
+			{
+				"name": "writeFailureMessage.code",
+				"type": "string | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "writeSentMessage",
+				"type": "string"
+			},
+			{
+				"name": "writeFailureMessage",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "writeSentMessage",
+				"inputs": [
+					{
+						"name": "writeSentMessage.action",
+						"type": "WriteAction",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeSentMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "writeFailureMessage",
+				"inputs": [
+					{
+						"name": "writeFailureMessage.code",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeFailureMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

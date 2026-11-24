@@ -5,6 +5,8 @@ export interface TrackerContextSample {
 	cwd: string;
 	started: number;
 	tokens: number;
+	model?: string;
+	effort?: string;
 }
 
 export type TrackerTranscriptRecord = Record<string, unknown>;
@@ -16,4 +18,9 @@ export type TrackerHandoffTarget = {
 	runId?: number;
 };
 
-export type TrackerHandoffAttempt = { cli: WatchdogCli; token: string; runId: number };
+export type TrackerHandoffAttempt = {
+	cli: WatchdogCli;
+	token?: string;
+	observed?: boolean;
+	runId: number;
+};

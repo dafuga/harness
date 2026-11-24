@@ -37,6 +37,7 @@ test('a scan that ends without an offer says why and can be tried again; nothing
 	await page.goto('/');
 	const panel = computer(page);
 	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
+	await panel.getByText('Other connection options', { exact: true }).click();
 	await captured(page, testInfo, 'phone-before-scan', panel);
 	const outcomes = [
 		['camera-denied', 'Camera access is off for Harness'],

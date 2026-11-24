@@ -3,16 +3,23 @@ import type { RelayManageAdapterConfig, Operation } from './RelayManageAdapter.t
 import type {
 	RelayManageDevice,
 	RelayManageOwner,
+	RelayManagePairingRequest,
 	RelayManageRegister,
 	RelayRegistered,
 	RemoteHostSummary
 } from '../../../../../remote/src/models/networking-security/RemoteRelay.types';
+import { remotePatterns } from '../../../../../remote/src/utils/remoteIdentity';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 import { RelayReplyValidator } from '../../../validators/networking-security/RelayReplyValidator';
 
 const MANAGE = 'https://relay.internal/manage/';
 /** The relay refusals a caller may see, each only with the status it is defined for. */
-const REFUSALS: Record<string, number> = { 'invalid-input': 400, forbidden: 403, 'not-found': 404 };
+const REFUSALS: Record<string, number> = {
+	'invalid-input': 400,
+	forbidden: 403,
+	'not-found': 404,
+	'pairing-unavailable': 409
+};
 
 /** The owner and the host, field by field: whatever else the caller's object holds stays here. */
 function ownerOf(input: RelayManageOwner): RelayManageOwner {
@@ -48,6 +55,68 @@ export class RelayManageAdapter {
 		return this.replies.registered(await this.manage('register', body), hostId);
 	}
 
+	async pairingKey(input: RelayManageOwner) {
+		const result = (await this.manage('pairing-key', ownerOf(input))) as {
+			hostId?: unknown;
+			hostKey?: unknown;
+		} | null;
+		if (
+			result?.hostId !== input.hostId ||
+			typeof result.hostKey !== 'string' ||
+			!remotePatterns.key.test(result.hostKey)
+		)
+			return hubFail('unavailable');
+		return { hostId: input.hostId, hostKey: result.hostKey };
+	}
+
+	async requestPairing(input: RelayManageOwner, body: RelayManagePairingRequest) {
+		const { pairingId, ephemeralKey, sealed, challenge } = body;
+		const request = { ephemeralKey, sealed, challenge };
+		const result = (await this.manage('pairing-request', {
+			...ownerOf(input),
+			pairingId,
+			request
+		})) as {
+			state?: unknown;
+			expiresAt?: unknown;
+		} | null;
+		if (
+			result?.state !== 'requested' ||
+			typeof result.expiresAt !== 'string' ||
+			!Number.isFinite(Date.parse(result.expiresAt))
+		)
+			return hubFail('unavailable');
+		return { state: result.state, expiresAt: result.expiresAt };
+	}
+
+	async computers(owner: RelayManageOwner['owner']) {
+		const reply = await this.send('directory-list', { owner }, `owner:${owner.id}`);
+		const ids = await jsonOf(reply);
+		if (
+			reply.status !== 200 ||
+			!Array.isArray(ids) ||
+			!ids.every((id: unknown) => typeof id === 'string' && remotePatterns.hostId.test(id))
+		)
+			return hubFail('unavailable');
+		const computers = [];
+		for (const hostId of ids as string[]) {
+			const computer = await this.discover(owner, hostId);
+			if (computer) computers.push(computer);
+		}
+		return computers;
+	}
+
+	private async discover(owner: RelayManageOwner['owner'], hostId: string) {
+		try {
+			const { name, online } = await this.summary({ owner, hostId });
+			return { hostId, name, online };
+		} catch (error) {
+			const code = (error as { code?: string }).code;
+			if (code === 'not-found' || code === 'forbidden') return null;
+			throw error;
+		}
+	}
+
 	async summary(input: RelayManageOwner): Promise<RemoteHostSummary> {
 		return this.replies.summary(await this.manage('summary', ownerOf(input)), input.hostId);
 	}
@@ -62,18 +131,25 @@ export class RelayManageAdapter {
 	}
 
 	/** The JSON of a `200`. The three defined refusals keep their code; the rest is `unavailable`. */
-	private async manage(operation: Operation, body: RelayManageOwner): Promise<unknown> {
+	private async manage(
+		operation: Operation,
+		body: RelayManageOwner & { pairingId?: unknown; request?: unknown }
+	): Promise<unknown> {
 		const response = await this.send(operation, body);
 		const value = await jsonOf(response);
 		return response.status === 200 ? value : refusal(response.status, value);
 	}
 
-	private async send(operation: Operation, body: RelayManageOwner): Promise<Response> {
+	private async send(
+		operation: Operation,
+		body: { owner: RelayManageOwner['owner']; hostId?: string },
+		name = body.hostId ?? ''
+	): Promise<Response> {
 		const { hosts } = this.config;
 		const headers = { 'Content-Type': 'application/json' };
 		const init = { method: 'POST', headers, body: JSON.stringify(body) };
 		try {
-			return await hosts.get(hosts.idFromName(body.hostId)).fetch(MANAGE + operation, init);
+			return await hosts.get(hosts.idFromName(name)).fetch(MANAGE + operation, init);
 		} catch {
 			return hubFail('unavailable');
 		}
