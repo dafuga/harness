@@ -1,3 +1,7 @@
+---
+status: planned
+---
+
 # Tracker planning stages
 
 Tracker item `y3y8892zc6` · Harness CLI, Mac and iPhone
