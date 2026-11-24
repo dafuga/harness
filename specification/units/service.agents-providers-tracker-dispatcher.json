@@ -86,9 +86,10 @@
 			"matchesRequest",
 			"requestLaunch",
 			"previewDueLaunch",
+			"launchStartupGrace",
 			"claimLaunch",
 			"prepareRetry",
-			"cancelUnstartedRun",
+			"retireUnstartedRun",
 			"monitorRun",
 			"completeRun",
 			"etaFor",
@@ -451,18 +452,18 @@
 				"required": true
 			},
 			{
-				"name": "cancelUnstartedRun.snapshot",
+				"name": "retireUnstartedRun.snapshot",
 				"type": "TrackerDispatchSnapshot",
 				"required": true
 			},
 			{
-				"name": "cancelUnstartedRun.run",
+				"name": "retireUnstartedRun.run",
 				"type": "TrackerRunReceipt",
 				"required": true
 			},
 			{
-				"name": "cancelUnstartedRun.now",
-				"type": "number",
+				"name": "retireUnstartedRun.clock",
+				"type": "{ policy: TrackerDispatchPolicy; now: number }",
 				"required": true
 			},
 			{
@@ -1320,27 +1321,27 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "cancelUnstartedRun",
+				"name": "retireUnstartedRun",
 				"inputs": [
 					{
-						"name": "cancelUnstartedRun.snapshot",
+						"name": "retireUnstartedRun.snapshot",
 						"type": "TrackerDispatchSnapshot",
 						"required": true
 					},
 					{
-						"name": "cancelUnstartedRun.run",
+						"name": "retireUnstartedRun.run",
 						"type": "TrackerRunReceipt",
 						"required": true
 					},
 					{
-						"name": "cancelUnstartedRun.now",
-						"type": "number",
+						"name": "retireUnstartedRun.clock",
+						"type": "{ policy: TrackerDispatchPolicy; now: number }",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "cancelUnstartedRun",
+						"name": "retireUnstartedRun",
 						"type": "TrackerDispatchDecision"
 					}
 				],

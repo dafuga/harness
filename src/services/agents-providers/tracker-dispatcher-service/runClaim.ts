@@ -14,12 +14,17 @@ import {
 	canonicalNode,
 	dueItemHold,
 	hasOpenSession,
+	matchesRequest,
 	mayScheduleHere,
+	minute,
 	ownsLaunch,
 	skip,
 	startable
 } from './launchEligibility';
-import { etaFor, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
+import { etaFor, failRun, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
+
+// Give an interrupted host start time to publish its session evidence.
+export const launchStartupGrace = 5 * minute;
 
 export function claimLaunch(
 	snapshot: TrackerDispatchSnapshot,
@@ -51,7 +56,11 @@ export function prepareRetry(
 	if (run.state !== 'queued' || run.dispatch_at !== undefined || run.cli === 'none') {
 		return skip('ignored', 'attempt is no longer awaiting dispatch');
 	}
-	if (item?.launch?.token !== run.auto_token) return cancelUnstartedRun(snapshot, run, now);
+	if (
+		item?.launch?.token !== run.auto_token ||
+		(!startable(item) && now - run.queued_at >= launchStartupGrace)
+	)
+		return retireUnstartedRun(snapshot, run, { policy, now });
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
 	const rung = {
@@ -66,25 +75,35 @@ export function prepareRetry(
 	return reserveStart(item, { run, rung }, policy, now);
 }
 
-export function cancelUnstartedRun(
+export function retireUnstartedRun(
 	snapshot: TrackerDispatchSnapshot,
 	run: TrackerRunReceipt,
-	now: number
+	clock: { policy: TrackerDispatchPolicy; now: number }
 ): TrackerDispatchDecision {
 	const { item, activeSessionKeys } = snapshot;
+	const { now, policy } = clock;
 	const hasSession = [run.session_id, run.host_session_id, run.tmux].some(Boolean);
 	if (
 		run.state !== 'queued' ||
 		run.started_at !== null ||
 		hasSession ||
-		item?.launch?.token === run.auto_token ||
 		activeSessionKeys?.includes(attemptKey(run))
 	) {
-		return skip('ignored', 'attempt is not a cancelled, unstarted launch');
+		return skip('ignored', 'attempt is no longer an unstarted launch');
 	}
-	return recordRun(
-		finishRun(run, { outcome: 'abandoned', reason: 'launch cancelled before startup', now })
-	);
+	if (item?.launch?.token !== run.auto_token)
+		return recordRun(
+			finishRun(run, { outcome: 'abandoned', reason: 'launch cancelled before startup', now })
+		);
+	if (
+		!matchesRequest(item, run, policy) ||
+		now - (run.dispatch_at ?? run.queued_at) < launchStartupGrace
+	)
+		return skip('ignored', 'launch reservation is owned elsewhere or still within startup grace');
+	const failure = { outcome: 'abandoned', reason: 'launch expired before startup', now } as const;
+	if (run.dispatch_at !== undefined && startable(item))
+		return failRun(snapshot, run, { ...failure, startup: true }, clock);
+	return recordRun(finishRun(run, failure), { launch: null });
 }
 
 function claimHold(
