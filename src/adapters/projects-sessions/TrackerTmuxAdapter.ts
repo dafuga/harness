@@ -19,6 +19,7 @@ import {
 	trackerTmuxPane
 } from './tracker-tmux-adapter/trackerTmuxPane';
 
+import { closePaneCandidate, closePaneNames } from './tracker-tmux-adapter/trackerTmuxClose';
 import {
 	sendTrackerTmuxNudge,
 	trackerTmuxCwd
@@ -42,8 +43,10 @@ export class TrackerTmuxAdapter {
 	async scan(signal: AbortSignal, names: RegExp = trackerSessionName): Promise<WatchdogPane[]> {
 		const layouts = await this.layouts(signal, names);
 		const captured = [];
-		for (const layout of layouts.slice(0, 100))
-			captured.push(await this.capture(layout, signal, names === trackerSessionName));
+		for (const [index, layout] of layouts.entries())
+			captured.push(
+				index < 100 ? await this.capture(layout, signal, names === trackerSessionName) : layout
+			);
 		return captured.map(({ pane }) => pane);
 	}
 
@@ -80,16 +83,10 @@ export class TrackerTmuxAdapter {
 
 	/** Close an unattended owned run only while the same single pane is idle. */
 	async closeIdle(input: TrackerTmuxClose, signal: AbortSignal): Promise<boolean> {
-		const { pane, cli, attempt, stillComplete } = input;
-		const names = /^auto-[a-z0-9]{6,10}-r[1-9][0-9]*$/;
-		if (!names.test(pane.name) || (attempt && !/^[a-f0-9]{64}$/.test(attempt))) return false;
-		const candidate = (await this.layouts(signal, names)).find(
-			({ pane: observed }) =>
-				observed.runnerSocket &&
-				!observed.attached &&
-				observed.name === pane.name &&
-				matchesTrackerTmuxPane(observed, pane)
-		);
+		const { cli, attempt, stillComplete } = input;
+		const names = closePaneNames(input);
+		if (!names) return false;
+		const candidate = closePaneCandidate(input, await this.layouts(signal, names));
 		if (!candidate) return false;
 		const observed = await this.capture(candidate, signal);
 		if (decisions.idlePrompt(observed.pane) !== cli || !stillComplete()) return false;

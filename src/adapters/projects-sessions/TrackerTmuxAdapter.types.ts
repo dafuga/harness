@@ -26,5 +26,6 @@ export interface TrackerTmuxClose {
 	pane: TrackerTmuxNudge['pane'];
 	cli: WatchdogCli;
 	attempt?: string;
+	observed?: boolean;
 	stillComplete(): boolean;
 }

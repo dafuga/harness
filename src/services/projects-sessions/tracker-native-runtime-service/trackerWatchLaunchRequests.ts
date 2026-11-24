@@ -50,7 +50,7 @@ function unclaimedRequests(store: TrackerPersistenceService, now: number) {
 			`SELECT id, auto, json_extract(clocks, '$.auto') AS clock,
 			coalesce(nullif(launch_target,'auto'),nullif(computer,'auto'),created_by,?) AS target
 		FROM items WHERE deleted = 0 AND auto IS NOT NULL AND title IS NOT NULL
-		AND status IN ('open','in_progress')`
+		AND status IN ('open','in_progress') AND coalesce(launch_source, 'manual') <> 'recovery'`
 		)
 		.all(store.node) as { id: string; auto: string; clock: string | null; target: string }[];
 	return rows.flatMap(({ id, auto, clock, target }) => {

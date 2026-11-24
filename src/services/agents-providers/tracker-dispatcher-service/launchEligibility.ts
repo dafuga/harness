@@ -63,12 +63,20 @@ export function inactive(item: TrackerDispatchItem) {
 	return item.deleted === true || item.status === 'done' || item.status === 'ignored';
 }
 
+// A flag can request feedback while work continues. Explicit dependencies hold recovery.
+export function trackerFlagBlocksRecovery(question?: string | null): boolean {
+	return /(?:^\s*(?:Blocked:|Tracker recovery:)|\b(?:cannot|can[’']t|unable to|must not|do not|don't)\s+(?:safely\s+)?(?:continue|proceed|resume|relaunch)\b|\b(?:blocked(?: on| by| until)|(?:waiting|paused|on hold) (?:on|for|until))\b)/i.test(
+		question ?? ''
+	);
+}
+
 export function startable(item: TrackerDispatchItem) {
 	return (
 		!inactive(item) &&
 		item.kind === 'task' &&
 		(item.status === 'open' || item.status === 'in_progress') &&
-		!item.awaitingAnswer
+		(!item.awaitingAnswer ||
+			(item.launch?.source === 'recovery' && !trackerFlagBlocksRecovery(item.question)))
 	);
 }
 

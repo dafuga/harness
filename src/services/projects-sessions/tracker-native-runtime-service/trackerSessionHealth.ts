@@ -3,18 +3,20 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import {
 	canonicalNode,
-	trackerFleetNodes
+	trackerFleetNodes,
+	trackerFlagBlocksRecovery
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
-import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type {
 	TrackerSessionHealthIssue,
 	TrackerSessionHealthSnapshot
 } from './trackerSessionHealth.types';
 
+import { handLaunchNode } from './trackerHandLaunchSelection';
 import { recoveryGrace } from '../watchdog-recovery-service/watchdogRecoverySessions';
 
 export const sessionHealthInterval = recoveryGrace;
-const sessionName = /^auto-([a-z0-9]{6,10})(?:-r([1-9][0-9]*))?$/;
+import { paneItems, unownedPane } from './trackerSessionHealthPanes';
+export const recoveryPollInterval = 60_000;
 
 export function trackerSessionHealth(snapshot: TrackerSessionHealthSnapshot) {
 	const { host, items, panes } = snapshot;
@@ -41,77 +43,38 @@ function healthItem(item: TrackerItem): boolean {
 	);
 }
 
-function paneItems(snapshot: TrackerSessionHealthSnapshot, pane: WatchdogPane): string[] {
-	const match = sessionName.exec(pane.name);
-	if (!match) return [];
-	const [, prefix, runId] = match;
-	const exact = snapshot.items.find(({ id }) => id === prefix);
-	const matches = exact ? [exact] : snapshot.items.filter(({ id }) => id.startsWith(prefix));
-	const owner = runId ? managedOwner(snapshot, matches, pane, Number(runId)) : matches;
-	// An ambiguous prefix protects all possible owners from duplicate launches.
-	return [
-		...new Set([
-			...owner.map(({ id }) => id),
-			...(runId ? snapshot.linkedItems(Number(runId)) : [])
-		])
-	];
-}
-
-function managedOwner(
-	snapshot: TrackerSessionHealthSnapshot,
-	matches: readonly TrackerItem[],
-	pane: WatchdogPane,
-	runId: number
-) {
-	const confirmed = matches.filter(({ id }) =>
-		snapshot
-			.runs(id)
-			.some((run) => run.node === snapshot.host && run.id === runId && run.tmux === pane.name)
-	);
-	return confirmed.length ? confirmed : matches;
-}
-
-function unownedPane(
-	host: string,
-	pane: WatchdogPane,
-	associated: readonly string[],
-	items: ReadonlyMap<string, TrackerItem>
-): TrackerSessionHealthIssue | undefined {
-	const current = associated.map((id) => items.get(id)).filter((item) => item && !item.deleted);
-	if (current.some((item) => item?.status !== 'done' && item?.status !== 'ignored'))
-		return undefined;
-	const finished = current.length > 0;
-	return {
-		item_id: current[0]?.id ?? sessionName.exec(pane.name)?.[1] ?? 'unknown',
-		host,
-		kind: finished ? 'finished' : 'orphan',
-		session: pane.name,
-		reason: finished
-			? `Session ${pane.name} is still live after its Tracker item finished.`
-			: `Session ${pane.name} has no matching Tracker item.`,
-		identity: pane.key
-	};
-}
-
 function itemHealth(
 	snapshot: TrackerSessionHealthSnapshot,
 	item: TrackerItem,
 	live: boolean
 ): TrackerSessionHealthIssue | undefined {
 	const history = snapshot.runs(item.id);
-	const target = owner(item, history.at(-1));
-	if (!canInspectItem(snapshot, target, history)) return undefined;
 	const pending = pendingLaunch(snapshot, item, history);
-	if (pending) {
-		return snapshot.now - pending.at >= sessionHealthInterval
-			? stalledIssue(snapshot.host, item, pending.at, pending.run)
-			: undefined;
-	}
-	if (item.status !== 'in_progress' || live) return undefined;
+	const target = owner(item, history, Boolean(pending));
+	if (!canInspectItem(snapshot, target, history) || live) return undefined;
+	if (pending?.run || item.status === 'open')
+		return pending && overdueLaunch(snapshot, item, pending);
+	if (pending && waitingForPriorRequest(item, snapshot.now - pending.at)) return undefined;
 	const issue = missingIssue(snapshot, item, history);
 	return target === snapshot.host
 		? issue
 		: { ...issue, recover: false, reason: `${issue.reason} No Tracker computer is assigned.` };
+}
+
+function overdueLaunch(
+	snapshot: TrackerSessionHealthSnapshot,
+	item: TrackerItem,
+	pending: { at: number; run?: TrackerListedRun }
+) {
+	const recovering = item.launch_source === 'recovery' && item.status === 'in_progress';
+	const threshold = recovering ? 3 * sessionHealthInterval : sessionHealthInterval;
+	if (snapshot.now - pending.at >= threshold)
+		return stalledIssue(snapshot.host, item, pending, recovering);
+	return undefined;
+}
+
+function waitingForPriorRequest(item: TrackerItem, age: number) {
+	return item.launch_source !== 'recovery' && age < sessionHealthInterval;
 }
 
 function canInspectItem(
@@ -122,7 +85,7 @@ function canInspectItem(
 	const unassigned = !target || !trackerFleetNodes.includes(target);
 	if (target !== host && !(reportUnassigned && unassigned)) return false;
 	return !history.some(
-		(run) => run.node !== host && ['running', 'verifying', 'observed'].includes(run.state)
+		(run) => run.node !== host && ['queued', 'running', 'verifying', 'observed'].includes(run.state)
 	);
 }
 
@@ -145,8 +108,17 @@ function pendingLaunch(
 	return undefined;
 }
 
-function owner(item: TrackerItem, latest?: TrackerListedRun): string {
-	const choices = [item.launch_target, item.computer, latest?.node, item.created_by];
+function owner(item: TrackerItem, history: readonly TrackerListedRun[], pending: boolean): string {
+	const latest = history.filter(({ started_at }) => started_at != null).at(-1) ?? history.at(-1);
+	const choices = pending
+		? [item.launch_target, item.computer, latest?.node, item.created_by]
+		: [
+				handLaunchNode(item, latest?.started_at ?? 0),
+				latest?.node,
+				item.launch_target,
+				item.computer,
+				item.created_by
+			];
 	const node = choices.find((value) => value && value !== 'auto');
 	return node ? canonicalNode(node, {}) : '';
 }
@@ -154,8 +126,8 @@ function owner(item: TrackerItem, latest?: TrackerListedRun): string {
 function stalledIssue(
 	host: string,
 	item: TrackerItem,
-	at: number,
-	run?: TrackerListedRun
+	{ at, run }: { at: number; run?: TrackerListedRun },
+	recovering: boolean
 ): TrackerSessionHealthIssue {
 	return {
 		item_id: item.id,
@@ -163,7 +135,7 @@ function stalledIssue(
 		kind: 'launch-stuck',
 		session: run?.tmux ?? null,
 		reason: run
-			? `Tracker run #${run.id} has been queued for over 10 minutes without a live session.`
+			? `Tracker run #${run.id} has been queued for over ${recovering ? 30 : 10} minutes without a live session.`
 			: 'Launch already requested for over 10 minutes without a run.',
 		identity: `${run?.id ?? 'request'}:${at}`
 	};
@@ -178,8 +150,8 @@ function missingIssue(
 		({ node, state }) => node === host && ['running', 'verifying'].includes(state)
 	);
 	const latest = history.at(-1);
-	const aged = now - Math.max(scheduleAt(item.id), latest?.ended_at ?? 0) >= sessionHealthInterval;
-	const hasBrief = [item.notes, item.adapter_instructions, latest, item.auto].some(Boolean);
+	const aged = eligibleRecoveryAge(item, latest, now - scheduleAt(item.id));
+	const hasBrief = hasRecoveryBrief(item, latest);
 	const recover = aged && hasBrief && !localActive && restartableItem(item);
 	return {
 		item_id: item.id,
@@ -192,12 +164,27 @@ function missingIssue(
 	};
 }
 
+function eligibleRecoveryAge(item: TrackerItem, latest: TrackerListedRun | undefined, age: number) {
+	return (
+		latest?.state === 'finished' ||
+		item.launch_source === 'recovery' ||
+		age >= sessionHealthInterval
+	);
+}
+
+function hasRecoveryBrief(item: TrackerItem, latest?: TrackerListedRun) {
+	if (!item.title) return false;
+	return (
+		[item.notes, item.adapter_instructions, latest, item.auto].some(Boolean) ||
+		item.notes_log.some(({ text }) => /^stopped:|\b(?:hand|manually)[ -]launched\b/i.test(text))
+	);
+}
+
 function restartableItem(item: TrackerItem): boolean {
 	return (
 		item.kind === 'task' &&
 		!item.recurring &&
-		!item.schedule_off &&
-		(!item.needs_daniel || item.resolved)
+		(!item.needs_daniel || item.resolved || !trackerFlagBlocksRecovery(item.question))
 	);
 }
 
@@ -208,8 +195,8 @@ function missingReason(
 	if (localActive)
 		return 'Tracker run has no live tmux session. The launcher has not settled the run.';
 	const reason = 'In-progress item has no live run or session.';
-	if (item.needs_daniel && !item.resolved) return reason + ' Recovery is waiting on Daniel.';
-	if (item.schedule_off) return reason + ' Automatic launch is opted out.';
+	if (item.needs_daniel && !item.resolved && trackerFlagBlocksRecovery(item.question))
+		return reason + ' Recovery is waiting on Daniel.';
 	if (!hasBrief) return reason + ' No launch brief is available.';
 	return reason;
 }

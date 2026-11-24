@@ -14,7 +14,8 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import {
 	attemptKey,
-	canonicalNode
+	canonicalNode,
+	trackerFlagBlocksRecovery
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type {
 	TrackerDispatchEvent,
@@ -159,7 +160,9 @@ async function launchApprovedItem(
 		!route ||
 		item.deleted ||
 		!['open', 'in_progress'].includes(item.status ?? '') ||
-		(item.needs_daniel && !item.resolved) ||
+		(item.needs_daniel &&
+			!item.resolved &&
+			(reservation.run.launch_source !== 'recovery' || trackerFlagBlocksRecovery(item.question))) ||
 		item.auto !== reservation.run.auto_token
 	)
 		return {
@@ -172,7 +175,11 @@ async function launchApprovedItem(
 			node,
 			route,
 			reservation,
-			brief: formatTrackerHostBrief(item, instructions)
+			brief: formatTrackerHostBrief(
+				item,
+				instructions,
+				reservation.run.launch_source === 'recovery'
+			)
 		},
 		signal
 	);

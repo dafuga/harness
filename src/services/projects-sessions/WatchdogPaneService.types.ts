@@ -37,6 +37,8 @@ export interface WatchdogPane {
 	screen: string | null;
 	cwd?: string;
 	contextTokens?: number;
+	model?: string;
+	effort?: string;
 }
 
 export interface WatchdogNote {
