@@ -547,6 +547,11 @@
 				"name": "TypeError",
 				"type": "thrown",
 				"description": "The adapter constructor throws when units is not an array or an active unit lacks runtime.targets or owns.source, and watchMethod throws when its owner is null or undefined or its method is non-writable and non-configurable."
+			},
+			{
+				"name": "ProfileRunnerConfigError",
+				"type": "thrown",
+				"description": "Vite returned no source-profile runner configuration. Import and configuration-loading failures propagate."
 			}
 		],
 		"errorStatus": "declared",
@@ -980,9 +985,9 @@
 				],
 				"errors": [
 					{
-						"name": "Source-profile runner configuration unavailable",
+						"name": "ProfileRunnerConfigError",
 						"type": "thrown",
-						"description": "Rejects with 'Harness source-profile runner configuration did not load.' when Vite returns no configuration, and propagates vite import or configuration load failures."
+						"description": "Vite returned no source-profile runner configuration. Import and configuration-loading failures propagate."
 					}
 				],
 				"errorStatus": "declared"

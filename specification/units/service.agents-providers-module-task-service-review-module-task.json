@@ -9,7 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/agents-providers/module-task-service/ConflictingTaskReviewVerdictError.ts",
 			"src/services/agents-providers/module-task-service/StaleTaskReviewError.ts",
+			"src/services/agents-providers/module-task-service/TaskAcceptanceEvidenceError.ts",
 			"src/services/agents-providers/module-task-service/acceptanceEvidence.ts",
 			"src/services/agents-providers/module-task-service/acceptanceEvidence.types.ts",
 			"src/services/agents-providers/module-task-service/recordedReview.ts",
@@ -17,7 +19,9 @@
 			"src/services/agents-providers/module-task-service/reviewModuleTask.types.ts"
 		],
 		"symbols": [
+			"ConflictingTaskReviewVerdictError",
 			"StaleTaskReviewError",
+			"TaskAcceptanceEvidenceError",
 			"acceptanceEvidence",
 			"TaskAcceptanceEvidence",
 			"EvidenceScope",
@@ -122,6 +126,16 @@
 				"name": "StaleTaskReviewError",
 				"type": "thrown",
 				"description": "The task status, claim, contract, or result changed before the review could be saved."
+			},
+			{
+				"name": "TaskAcceptanceEvidenceError",
+				"type": "thrown",
+				"description": "The submission has to name a checkpoint with changed files. The cited commit must carry those files unchanged and have an intact verification record covering the module. Git lookup failures can also reject."
+			},
+			{
+				"name": "ConflictingTaskReviewVerdictError",
+				"type": "thrown",
+				"description": "Resending the recorded verdict is idempotent. An existing review for the same attempt with a different verdict is refused."
 			}
 		],
 		"errorStatus": "declared",
@@ -153,7 +167,7 @@
 				],
 				"errors": [
 					{
-						"name": "Invalid checkpoint or verification evidence",
+						"name": "TaskAcceptanceEvidenceError",
 						"type": "thrown",
 						"description": "The submission has to name a checkpoint with changed files. The cited commit must carry those files unchanged and have an intact verification record covering the module. Git lookup failures can also reject."
 					}
@@ -182,7 +196,7 @@
 				],
 				"errors": [
 					{
-						"name": "Conflicting review verdict",
+						"name": "ConflictingTaskReviewVerdictError",
 						"type": "thrown",
 						"description": "Resending the recorded verdict is idempotent. An existing review for the same attempt with a different verdict is refused."
 					}
