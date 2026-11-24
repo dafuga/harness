@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
+	"uid": "u_eaodnfratq",
+	"kind": "component",
+	"title": "TrackerInboxRecord",
+	"responsibility": "Displays the current flag, notes and run summaries for one Tracker item.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRecord.svelte"
+		],
+		"symbols": ["TrackerInboxRecord"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerInboxRecord.detail",
+				"type": "InboxDetail",
+				"required": true,
+				"description": "The current item, its reviewed flag, notes and run summaries."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerInboxRecord",
+				"type": "markup",
+				"description": "Displays the current flag, notes and run summaries for one Tracker item."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRecord.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRecord.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_gp2k2ksjwv -->
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { getContext, onMount, setContext } from 'svelte';
 	import { createRemoteHostStore } from '../lib/stores/networking-security/remoteHost.svelte';
 	import { createRemotePhoneStore } from '../lib/stores/networking-security/remotePhone.svelte';
@@ -104,6 +105,9 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
+		{#if account.environment?.tracker}
+			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
+		{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
 			<hx-p class="account-status">

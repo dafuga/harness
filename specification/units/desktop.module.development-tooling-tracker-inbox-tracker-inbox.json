@@ -1,0 +1,344 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+	"uid": "u_fy55qn2j57",
+	"kind": "module",
+	"title": "trackerInbox",
+	"responsibility": "Owns the trackerInbox library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInbox.ts"],
+		"symbols": [
+			"inboxFilters",
+			"bucketLabels",
+			"itemBucket",
+			"countBuckets",
+			"filterRows",
+			"matchesQuery",
+			"writeView",
+			"writeGate",
+			"flagQuestion",
+			"confirmedWrite"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "itemBucket.status",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "itemBucket.flagOpen",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "countBuckets.rows",
+				"type": "readonly InboxRow[]",
+				"required": true
+			},
+			{
+				"name": "filterRows.rows",
+				"type": "readonly InboxRow[]",
+				"required": true
+			},
+			{
+				"name": "filterRows.filter",
+				"type": "InboxFilter",
+				"required": true
+			},
+			{
+				"name": "matchesQuery.row",
+				"type": "InboxRow",
+				"required": true
+			},
+			{
+				"name": "matchesQuery.query",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeView.entry",
+				"type": "InboxWrite",
+				"required": true
+			},
+			{
+				"name": "writeGate.action",
+				"type": "WriteAction",
+				"required": true
+			},
+			{
+				"name": "writeGate.detail",
+				"type": "Pick<InboxDetail, 'flag' | 'revision'>",
+				"required": true
+			},
+			{
+				"name": "writeGate.reviewed",
+				"type": "{ revision: string | null } | null",
+				"required": true
+			},
+			{
+				"name": "flagQuestion.flag",
+				"type": "InboxFlag | null",
+				"required": true
+			},
+			{
+				"name": "confirmedWrite.draft",
+				"type": "{ action: WriteAction; id: string; text: string; revision: string | null }",
+				"required": true
+			},
+			{
+				"name": "confirmedWrite.confirmed",
+				"type": "boolean",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "inboxFilters",
+				"type": "readonly InboxFilter[]"
+			},
+			{
+				"name": "bucketLabels",
+				"type": "Record<InboxBucket, string>"
+			},
+			{
+				"name": "itemBucket",
+				"type": "InboxBucket"
+			},
+			{
+				"name": "countBuckets",
+				"type": "Record<InboxFilter, number>"
+			},
+			{
+				"name": "filterRows",
+				"type": "InboxRow[]"
+			},
+			{
+				"name": "matchesQuery",
+				"type": "boolean"
+			},
+			{
+				"name": "writeView",
+				"type": "InboxWriteView"
+			},
+			{
+				"name": "writeGate",
+				"type": "ReviewGate"
+			},
+			{
+				"name": "flagQuestion",
+				"type": "string"
+			},
+			{
+				"name": "confirmedWrite",
+				"type": "ConfirmedWrite | null"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "itemBucket",
+				"inputs": [
+					{
+						"name": "itemBucket.status",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "itemBucket.flagOpen",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "itemBucket",
+						"type": "InboxBucket"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "countBuckets",
+				"inputs": [
+					{
+						"name": "countBuckets.rows",
+						"type": "readonly InboxRow[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "countBuckets",
+						"type": "Record<InboxFilter, number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "filterRows",
+				"inputs": [
+					{
+						"name": "filterRows.rows",
+						"type": "readonly InboxRow[]",
+						"required": true
+					},
+					{
+						"name": "filterRows.filter",
+						"type": "InboxFilter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "filterRows",
+						"type": "InboxRow[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesQuery",
+				"inputs": [
+					{
+						"name": "matchesQuery.row",
+						"type": "InboxRow",
+						"required": true
+					},
+					{
+						"name": "matchesQuery.query",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesQuery",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeView",
+				"inputs": [
+					{
+						"name": "writeView.entry",
+						"type": "InboxWrite",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeView",
+						"type": "InboxWriteView"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeGate",
+				"inputs": [
+					{
+						"name": "writeGate.action",
+						"type": "WriteAction",
+						"required": true
+					},
+					{
+						"name": "writeGate.detail",
+						"type": "Pick<InboxDetail, 'flag' | 'revision'>",
+						"required": true
+					},
+					{
+						"name": "writeGate.reviewed",
+						"type": "{ revision: string | null } | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeGate",
+						"type": "ReviewGate"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "flagQuestion",
+				"inputs": [
+					{
+						"name": "flagQuestion.flag",
+						"type": "InboxFlag | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "flagQuestion",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "confirmedWrite",
+				"inputs": [
+					{
+						"name": "confirmedWrite.draft",
+						"type": "{ action: WriteAction; id: string; text: string; revision: string | null }",
+						"required": true
+					},
+					{
+						"name": "confirmedWrite.confirmed",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "confirmedWrite",
+						"type": "ConfirmedWrite | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInbox.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInbox.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
