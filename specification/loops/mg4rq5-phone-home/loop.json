@@ -2,7 +2,7 @@
 	"name": "mg4rq5-phone-home",
 	"goal": "Signed-in iPhone home keeps Overview and computer pairing usable when hosted collaboration is disabled, and account actions on both the iPhone and Hub return page have visible spacing.",
 	"createdAt": "2026-11-24T12:01:36.261Z",
-	"updatedAt": "2026-11-24T12:12:22.958Z",
+	"updatedAt": "2026-11-24T12:13:27.142Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T12:13:27.142Z",
+			"evidence": "siblings-e82bd515-8aba-4410-9475-cee00e6bfa9d.json"
 		},
 		{
 			"id": "verify",
