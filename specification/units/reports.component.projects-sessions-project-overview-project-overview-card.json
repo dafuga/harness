@@ -27,17 +27,11 @@
 			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewCard.svelte",
 			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewCard.types.ts"
 		],
-		"symbols": [
-			"ProjectOverviewCard",
-			"ProjectOverviewCard.callout",
-			"ProjectOverviewCardProps"
-		]
+		"symbols": ["ProjectOverviewCard", "ProjectOverviewCard.callout", "ProjectOverviewCardProps"]
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": [
-			"reports.component.explorer-ui-explorer-kit-card"
-		],
+		"primitives": ["reports.component.explorer-ui-explorer-kit-card"],
 		"inputs": [
 			{
 				"name": "ProjectOverviewCard.card",
