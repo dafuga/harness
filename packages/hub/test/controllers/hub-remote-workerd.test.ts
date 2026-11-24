@@ -65,7 +65,20 @@ test(
 			registeredAt: answer.registeredAt,
 			devices: []
 		});
+		expect(await outcome(await f.hub(null, 'GET', '/hosts'))).toBe('401 session-required');
+		const hidden = await f.hub(other, 'GET', '/hosts');
+		expect([hidden.status, await hidden.json()]).toEqual([200, { computers: [] }]);
+		const listed = await f.hub(owner, 'GET', '/hosts');
+		expect(listed.headers.get('Cache-Control')).toBe('no-store');
+		expect([listed.status, await listed.json()]).toEqual([
+			200,
+			{ computers: [{ hostId: host.hostId, name: host.name, online: false }] }
+		]);
 		const socket = await connectHost(f.relay, host);
+		const online = await f.hub(owner, 'GET', '/hosts');
+		expect(await online.json()).toEqual({
+			computers: [{ hostId: host.hostId, name: host.name, online: true }]
+		});
 		expect((await summaryOf(owner, host.hostId)) as unknown).toMatchObject({ online: true });
 		socket.close();
 	},
@@ -100,6 +113,10 @@ test(
 		expect(await outcome(await f.hub(owner, 'GET', path))).toBe('404 not-found');
 		const direct = { owner: { id: 'google:fixture-owner' }, hostId: host.hostId };
 		expect((await f.relay.post('/manage/summary', direct)).status).toBe(404);
+		const discovery = await f.hub(owner, 'GET', '/hosts');
+		expect(discovery.status).toBe(200);
+		const { computers } = (await discovery.json()) as { computers: { hostId: string }[] };
+		expect(computers.map(({ hostId }) => hostId)).not.toContain(host.hostId);
 	},
 	limit
 );
