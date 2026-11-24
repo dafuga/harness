@@ -2,7 +2,7 @@
 	"name": "project-overview-owner-parity",
 	"goal": "Prove owner-only fleet status and fresh Project Overview data, item, decision, and run detail from the shared Mac and iOS fixture.",
 	"createdAt": "2026-11-24T09:03:29.843Z",
-	"updatedAt": "2026-11-24T09:15:07.804Z",
+	"updatedAt": "2026-11-24T09:25:16.811Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -24,7 +24,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T09:25:16.811Z",
+			"evidence": "Before: overview projection assertions lacked queue and run metadata, Hub API omitted expiry/revocation states, and the paired renderer could not find Review decision. After: 131 focused units, 30 Hub browser cases, 17 shared renderer cases, 5 built Mac cases, and all 8 native iOS Overview assertions passed with one synthetic owner fixture. Inspected Mac, native iOS, and Hub captures."
 		},
 		{
 			"id": "verify",

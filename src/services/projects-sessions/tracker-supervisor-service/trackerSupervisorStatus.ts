@@ -46,15 +46,13 @@ function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolea
 	};
 }
 
-type FleetComputer = ReturnType<typeof trackerFleetHealth>[number];
-
 /**
  * The overview status of one computer. Only a polling launcher counts as reachable; offline,
  * stale, failing, disabled and unknown computers all read as offline, so none is shown as
  * available without a fresh tick. A polling computer with launches held behind it is
  * overloaded, otherwise one with active runs is busy.
  */
-function machineFromComputer(computer: FleetComputer) {
+function machineFromComputer(computer: ReturnType<typeof trackerFleetHealth>[number]) {
 	let status = 'offline';
 	if (computer.state === 'polling') {
 		if ((computer.queued ?? 0) > 0) status = 'overloaded';
@@ -91,7 +89,7 @@ function trackerJobsStatus({ store, recurring }: TrackerNativeRuntimeService) {
 function trackerAutolaunchStatus(
 	runtime: TrackerNativeRuntimeService,
 	activeRuns: number,
-	computers: FleetComputer[]
+	computers: ReturnType<typeof trackerFleetHealth>
 ) {
 	return {
 		enabled: false,
