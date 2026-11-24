@@ -3,6 +3,10 @@ import type { SqliteStatement } from '../../../core/development-tooling/sqliteTy
 import type { TrackerItem, TrackerItemRow } from '../TrackerItemReadRepository.types';
 import type { StoredTrackerCallback, StoredTrackerNote } from './serializeTrackerItem.types';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
+import {
+	trackerPlanning,
+	trackerPlanningStage
+} from '../../../utils/projects-sessions/trackerPlanning';
 import { TrackerItemReadError } from './TrackerItemReadError';
 
 /** Shape an item for public reads. SQLite-only fields and callback targets stay private. */
@@ -12,6 +16,8 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		kind: row.kind,
 		title: row.title,
 		status: row.status,
+		stage: trackerPlanningStage(row),
+		planning: trackerPlanning(row),
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		...ignoredFields(row),
 		...trackerChaseFields(row),

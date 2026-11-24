@@ -4,7 +4,7 @@
 	"uid": "u_xba7ieg4je",
 	"kind": "repository",
 	"title": "TrackerItemReadRepository",
-	"responsibility": "Reads Tracker items and digests from injected SQLite using the legacy public response shape.",
+	"responsibility": "Read Tracker items and digests from SQLite with stage projection and stage filters.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -637,6 +637,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-next-tracker-clock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		},

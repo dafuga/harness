@@ -21,6 +21,7 @@ export function formatNativeTrackerItem(item: NativeTrackerItem): string {
 function trackerItemMetadata(item: NativeTrackerItem) {
 	return [
 		item.kind,
+		item.stage,
 		item.every && `every '${item.every}' ${item.every_tz}`,
 		item.due && `${item.every ? 'next' : 'due'} ${item.due}`,
 		item.remind_at && `reminder ${item.remind_at}`,

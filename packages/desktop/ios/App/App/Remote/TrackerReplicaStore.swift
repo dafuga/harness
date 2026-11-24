@@ -93,13 +93,15 @@ final class TrackerReplicaStore {
         let db = try TrackerReplicaSQLite(path: path)
         try files.setAttributes(protection, ofItemAtPath: path)
         try createSchema(db)
-        try db.run("""
-            CREATE TABLE IF NOT EXISTS attention (
-                slot INTEGER NOT NULL, item TEXT NOT NULL, position INTEGER NOT NULL, value TEXT NOT NULL,
-                PRIMARY KEY (slot, item, position),
-                FOREIGN KEY (slot, item) REFERENCES items (slot, id) ON DELETE CASCADE
-            )
-            """)
+        for table in ["attention", "planning"] {
+            try db.run("""
+                CREATE TABLE IF NOT EXISTS \(table) (
+                    slot INTEGER NOT NULL, item TEXT NOT NULL, position INTEGER NOT NULL, value TEXT NOT NULL,
+                    PRIMARY KEY (slot, item, position),
+                    FOREIGN KEY (slot, item) REFERENCES items (slot, id) ON DELETE CASCADE
+                )
+                """)
+        }
         return db
     }
 

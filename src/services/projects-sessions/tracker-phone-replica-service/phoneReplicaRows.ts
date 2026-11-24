@@ -2,6 +2,12 @@
 import { createHash } from 'node:crypto';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
+import {
+	trackerPlanning,
+	trackerPlanningArtifactFields,
+	trackerPlanningPromotionFields,
+	trackerPlanningStage
+} from '../../../utils/projects-sessions/trackerPlanning';
 import type {
 	PhoneItemSource,
 	PhoneNoteSource,
@@ -51,6 +57,8 @@ function projectItem(
 		title: excerpt(item.title, 240),
 		project: excerpt(item.project, 120),
 		status: item.status,
+		stage: trackerPlanningStage(item),
+		planning: trackerPlanning(item),
 		updatedAt: phoneDate(item.updated_at),
 		dueAt: phoneDate(item.due),
 		attentionRevision: attentionRevision(item),
@@ -105,6 +113,7 @@ const itemSql = `
 		CASE WHEN length(coalesce(nullif(project, ''), agent)) <= 1024
 			THEN coalesce(nullif(project, ''), agent) END AS project,
 		updated_at, due, needs_daniel, resolved,
+		${[...trackerPlanningArtifactFields, ...trackerPlanningPromotionFields].join(', ')},
 		CASE WHEN length(question) <= 16384 THEN question END AS question,
 		coalesce(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel')) AS flag_clock,
 		json_array(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel'),

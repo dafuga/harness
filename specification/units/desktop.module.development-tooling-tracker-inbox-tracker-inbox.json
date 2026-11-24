@@ -10,6 +10,7 @@
 	"owns": {
 		"source": ["packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInbox.ts"],
 		"symbols": [
+			"trackerStageLabels",
 			"inboxFilters",
 			"bucketLabels",
 			"itemBucket",
@@ -97,6 +98,10 @@
 			}
 		],
 		"outputs": [
+			{
+				"name": "trackerStageLabels",
+				"type": "Record<TrackerStage, string>"
+			},
 			{
 				"name": "inboxFilters",
 				"type": "readonly InboxFilter[]"
@@ -321,6 +326,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		}

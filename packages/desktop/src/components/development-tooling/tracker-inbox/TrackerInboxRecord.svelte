@@ -3,7 +3,12 @@
 <!-- @harness-uid u_eaodnfratq -->
 <script lang="ts">
 	import type { InboxDetail } from '../../../models/development-tooling/TrackerInbox.types';
-	import { flagQuestion } from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import type { TrackerArtifact } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
+	import { trackerStages } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
+	import {
+		flagQuestion,
+		trackerStageLabels
+	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
 	let { detail, mode = 'phone' }: { detail: InboxDetail; mode?: 'phone' | 'mac' } = $props();
 
@@ -11,6 +16,53 @@
 		return stamp === null ? '' : new Date(stamp).toLocaleString();
 	}
 </script>
+
+{#snippet designLinks(links: TrackerArtifact['links'])}
+	{#each links ?? [] as link (link)}
+		<hx-p
+			><hx-a
+				class="artifact-link"
+				href={link.url}
+				target={mode === 'mac' ? 'tracker-artifact' : '_blank'}
+				rel="noopener noreferrer">{link.label}</hx-a
+			></hx-p
+		>
+	{/each}
+{/snippet}
+
+<hx-section aria-label="Planning stages">
+	<hx-h3>Planning stages</hx-h3>
+	<hx-ul class="plain">
+		{#each trackerStages as stage (stage)}
+			{@const artifact = detail.planning?.artifacts[stage]}
+			{@const promotion = detail.planning?.promotions.find((entry) => entry.stage === stage)}
+			<hx-li aria-current={(detail.header.stage ?? 'idea') === stage ? 'step' : undefined}>
+				<hx-h4>{trackerStageLabels[stage]}</hx-h4>
+				{#if (detail.header.stage ?? 'idea') === stage}
+					<hx-p class="meta">Current stage</hx-p>
+				{/if}
+				{#if promotion}
+					<hx-p class="meta"
+						>Promoted by {promotion.by} · {new Date(promotion.at).toLocaleString()}</hx-p
+					>
+				{/if}
+				{#if artifact}
+					{#if artifact.summary}<hx-p>{artifact.summary}</hx-p>{/if}
+					{@render designLinks(artifact.links)}
+					{#each artifact.pages ?? [] as page (page)}
+						<hx-p><hx-strong>{page.name}</hx-strong></hx-p>
+						{#each Object.entries(page.states ?? {}) as [state, description] (state)}
+							<hx-p><hx-strong>{state}</hx-strong> · {description}</hx-p>
+						{/each}
+						{@render designLinks(page.links)}
+					{/each}
+				{:else}
+					<hx-p class="meta">No artifacts yet.</hx-p>
+				{/if}
+			</hx-li>
+		{/each}
+	</hx-ul>
+</hx-section>
 
 {#if detail.flag}
 	<hx-section class="flag" data-flag-state={detail.flag.state}>
@@ -61,6 +113,9 @@
 </hx-section>
 
 <style>
+	:global(.detail .artifact-link) {
+		text-decoration: underline;
+	}
 	:global(.flag) {
 		border-left: var(--hx-border-thick) solid var(--hx-color-primary);
 		padding-left: var(--hx-space-8);

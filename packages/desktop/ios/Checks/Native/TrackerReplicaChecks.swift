@@ -9,6 +9,11 @@ private func item(_ id: String, _ title: String = "Review Ünicode 100%") -> [St
         "notes": [["id": "note-a", "author": "Fixture", "at": stamp, "text": "Reviewed"]],
         "flag": ["state": "open", "at": stamp, "question": "Which one?"],
         "runs": [["id": "1", "origin": "fixture", "state": "running", "queuedAt": 10]],
+        "stage": "detail",
+        "planning": [
+            "artifacts": ["detail": ["summary": "Main page designs"]],
+            "promotions": [["stage": "detail", "by": "Fixture", "at": stamp]]
+        ],
         "ignoredTransportField": "never persisted"
     ]
 }
@@ -82,6 +87,12 @@ private func trackerOfflineChecks(_ offline: Bench) {
     let shown = data(saved)
     check(saved["freshness"] as? String == "stale" && saved["lastSyncedAt"] as? String == stamp,
           "tracker: a restarted disconnected session reads the dated SQLite copy")
+    let planning = shown["planning"] as? [String: Any]
+    let artifacts = planning?["artifacts"] as? [String: [String: String]]
+    check((shown["item"] as? [String: String])?["stage"] == "detail", "tracker: show includes the stage")
+    check(artifacts?["detail"]?["summary"] == "Main page designs", "tracker: retains the planning artifact offline")
+    check((planning?["promotions"] as? [[String: String]])?.first?["by"] == "Fixture",
+          "tracker: retains promotion attribution offline")
     check((shown["flag"] as? [String: String])?["state"] == "open", "tracker: show includes the flag")
     check((shown["notes"] as? [[String: Any]])?.first?["text"] as? String == "Reviewed", "tracker: show includes notes")
     check((shown["runs"] as? [[String: Any]])?.first?["state"] as? String == "running", "tracker: show includes runs")

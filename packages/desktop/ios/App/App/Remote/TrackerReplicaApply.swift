@@ -74,8 +74,9 @@ extension TrackerReplicaStore {
         let children = [try row.notes.map(TrackerReplicaJSON.string),
                         try row.flag.map { [try TrackerReplicaJSON.string($0)] } ?? [],
                         try row.runs.map(TrackerReplicaJSON.string),
-                        row.attentionRevision.map { [$0] } ?? []]
-        for (table, values) in zip(["notes", "flags", "runs", "attention"], children) {
+                        row.attentionRevision.map { [$0] } ?? [],
+                        try row.planning.map { [try TrackerReplicaJSON.string($0)] } ?? []]
+        for (table, values) in zip(["notes", "flags", "runs", "attention", "planning"], children) {
             for (index, value) in values.enumerated() {
                 try db.run("INSERT INTO \(table) VALUES (?, ?, ?, ?)", [slot, row.id, String(index), value])
             }

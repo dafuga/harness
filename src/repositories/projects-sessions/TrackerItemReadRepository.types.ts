@@ -1,6 +1,11 @@
 // @harness-uid u_xba7ieg4je
 import type { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
 
+import type {
+	TrackerPlanning,
+	TrackerStage
+} from '../../utils/projects-sessions/trackerPlanning.types';
+
 type ItemFlags = 'needs_daniel' | 'resolved' | 'deleted';
 
 export type TrackerItemRow = Omit<
@@ -26,6 +31,7 @@ type TrackerChase = {
 
 export type TrackerItemListFilters = {
 	status?: string;
+	stage?: string;
 	kind?: string;
 	owner?: string;
 	agent?: string;
@@ -62,6 +68,8 @@ type TrackerNextStep = { next_step?: string; parked_until?: string };
 export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> &
 	TrackerNextStep &
 	TrackerChase & {
+		stage: TrackerStage;
+		planning: TrackerPlanning;
 		blocked_reason: string | null;
 		ignored_reason?: string | null;
 		ignored_by?: string | null;
@@ -98,6 +106,7 @@ export type TrackerDigestItem = Pick<
 	| 'kind'
 	| 'title'
 	| 'status'
+	| 'stage'
 	| 'blocked_reason'
 	| 'needs_daniel'
 	| 'due'

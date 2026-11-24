@@ -1,3 +1,4 @@
+import { qualifyPlanningStages } from './trackerPlanningAssertions';
 import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
 import type { IncomingMessage, ServerResponse } from 'node:http';
@@ -40,11 +41,13 @@ export async function proveForegroundSync(
 				sink.base + '/callback'
 			]);
 			await qualifyItemCommands(spoke, id);
+			await qualifyPlanningStages(spoke, id);
 			const sync = await trackerProcess(spoke, ['sync']).exited;
 			expect(sync).toMatchObject({ code: 0, stdout: 'sync triggered\n' });
 			await expect
 				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
 				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
+			expect(await fixtureTrackerJson(hub, ['show', id])).toMatchObject({ stage: 'build' });
 			await verifySpokePublication(hub);
 			await verifyDefaultPickup(hub);
 			await verifyTrackerWire(syncPort, id);

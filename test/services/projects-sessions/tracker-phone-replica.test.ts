@@ -18,6 +18,7 @@ function checkSnapshot(first: unknown) {
 				title: 'Review task',
 				project: 'harness',
 				status: 'open',
+				stage: 'idea',
 				updatedAt,
 				dueAt: null,
 				notes: [{ id: expect.any(String), author: 'fixture', at: updatedAt, text: '[redacted]' }],
@@ -74,8 +75,9 @@ test('bootstraps a redacted snapshot and sends a replayable delta for a run with
 		});
 		fixture.restart();
 		expect(await (await fixture.pull(request)).json()).toEqual(delta);
+		const planningCursor = await checkPlanningDelta(fixture, delta.cursor);
 		fixture.item('fixture001', { deleted: true });
-		const removed = await (await fixture.pull('&cursor=' + delta.cursor)).json();
+		const removed = await (await fixture.pull('&cursor=' + planningCursor)).json();
 		expect(removed.operations).toEqual([{ id: 'fixture001', row: null }]);
 		const caughtUp = await (await fixture.pull('&cursor=' + removed.cursor)).json();
 		expect(caughtUp).toMatchObject({ operations: [], cursor: removed.cursor, hasMore: false });
@@ -83,6 +85,27 @@ test('bootstraps a redacted snapshot and sends a replayable delta for a run with
 		fixture.db.close();
 	}
 });
+
+async function checkPlanningDelta(fixture: ReturnType<typeof hub>, cursor: string) {
+	fixture.item('fixture001', {
+		planning_artifact_detail: '{"summary":"Designs are ready"}',
+		planning_promotion_detail: JSON.stringify({ by: 'Fixture Planner', at: updatedAt })
+	});
+	const changed = await (await fixture.pull('&cursor=' + cursor)).json();
+	expect(changed.operations).toMatchObject([
+		{
+			id: 'fixture001',
+			row: {
+				stage: 'detail',
+				planning: {
+					artifacts: { detail: { summary: 'Designs are ready' } },
+					promotions: [{ stage: 'detail', by: 'Fixture Planner', at: updatedAt }]
+				}
+			}
+		}
+	]);
+	return changed.cursor as string;
+}
 
 test('rejects another scope cursor, malformed scope and replica reads from a spoke', async () => {
 	const central = hub();

@@ -72,10 +72,13 @@ export const nativeTrackerCommandOptions = new Map<
 	['launch', launchOptions],
 	['unlaunch', {}],
 	['show', {}],
+	['stage', {}],
+	['artifact', {}],
 	[
 		'list',
 		{
 			status: text,
+			stage: text,
 			kind: text,
 			agent: text,
 			owner: text,
