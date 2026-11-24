@@ -1,5 +1,6 @@
 // @harness-uid u_fyf7e7kyi5
 import { constants } from 'node:fs';
+import type { Stats } from 'node:fs';
 import { open, readdir } from 'node:fs/promises';
 import type { FileHandle } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -70,27 +71,9 @@ async function codexRolloutUsage(
 	if (!file) return undefined;
 	try {
 		const stat = await file.stat();
-		if (
-			!stat.isFile() ||
-			stat.uid !== process.getuid?.() ||
-			stat.nlink !== 1 ||
-			(stat.mode & 0o022) !== 0 ||
-			stat.mtimeMs < startedAt - 1000
-		)
-			return undefined;
+		if (!ownedRecentRollout(stat, startedAt)) return undefined;
 		const [header] = await codexRolloutLines(file, 0, codexHeaderBytes);
-		const row = parseCodexLine(header);
-		const meta = row?.payload;
-		const started = typeof meta?.timestamp === 'string' ? Date.parse(meta.timestamp) : NaN;
-		if (
-			row?.type !== 'session_meta' ||
-			meta?.id !== id ||
-			meta?.cwd !== worktree ||
-			!Number.isFinite(started) ||
-			started < startedAt - 1000 ||
-			started > Date.now() + 1000
-		)
-			return undefined;
+		if (!matchesAttempt(header, { id, worktree, startedAt })) return undefined;
 		const tail = await codexRolloutLines(
 			file,
 			Math.max(0, stat.size - codexTailBytes),
@@ -100,6 +83,33 @@ async function codexRolloutUsage(
 	} finally {
 		await file.close();
 	}
+}
+
+function ownedRecentRollout(stat: Stats, startedAt: number): boolean {
+	return (
+		stat.isFile() &&
+		stat.uid === process.getuid?.() &&
+		stat.nlink === 1 &&
+		(stat.mode & 0o022) === 0 &&
+		stat.mtimeMs >= startedAt - 1000
+	);
+}
+
+function matchesAttempt(
+	header: string,
+	{ id, worktree, startedAt }: { id: string; worktree: string; startedAt: number }
+): boolean {
+	const row = parseCodexLine(header);
+	if (row?.type !== 'session_meta' || !row.payload) return false;
+	const { id: sessionId, cwd, timestamp } = row.payload;
+	const started = typeof timestamp === 'string' ? Date.parse(timestamp) : NaN;
+	return (
+		sessionId === id &&
+		cwd === worktree &&
+		Number.isFinite(started) &&
+		started >= startedAt - 1000 &&
+		started <= Date.now() + 1000
+	);
 }
 
 async function codexRolloutLines(file: FileHandle, offset: number, length: number) {
@@ -119,29 +129,33 @@ function lastCodexUsage(lines: readonly string[]): TrackerReceiptUsage | undefin
 		if (!line.includes('"token_count"')) continue;
 		const row = parseCodexLine(line);
 		if (row?.type !== 'event_msg' || row.payload?.type !== 'token_count') continue;
-		const usage = row.payload.info?.total_token_usage;
-		if (!usage || typeof usage !== 'object' || Array.isArray(usage)) continue;
-		const {
-			inputTokens: input,
-			cacheReadTokens: cached,
-			outputTokens: output
-		} = taskUsage('codex', [{ type: 'turn.completed', usage }]);
-		if (
-			input === null ||
-			cached === null ||
-			output === null ||
-			cached > input ||
-			![input, cached, output].every(Number.isSafeInteger)
-		)
-			continue;
-		return {
-			input_tokens: input - cached,
-			cache_read_tokens: cached,
-			cache_write_tokens: 0,
-			output_tokens: output
-		};
+		const usage = codexTokenCounters(row.payload.info?.total_token_usage);
+		if (usage) return usage;
 	}
 	return undefined;
+}
+
+function codexTokenCounters(usage: unknown): TrackerReceiptUsage | undefined {
+	if (!usage || typeof usage !== 'object' || Array.isArray(usage)) return undefined;
+	const {
+		inputTokens: input,
+		cacheReadTokens: cached,
+		outputTokens: output
+	} = taskUsage('codex', [{ type: 'turn.completed', usage: usage as Record<string, unknown> }]);
+	if (
+		input === null ||
+		cached === null ||
+		output === null ||
+		cached > input ||
+		![input, cached, output].every(Number.isSafeInteger)
+	)
+		return undefined;
+	return {
+		input_tokens: input - cached,
+		cache_read_tokens: cached,
+		cache_write_tokens: 0,
+		output_tokens: output
+	};
 }
 
 function parseCodexLine(line: string) {

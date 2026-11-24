@@ -1,5 +1,4 @@
 // @harness-uid u_lst54o5ptr
-import { trackerRunCost } from '../../services/agents-providers/module-task-analytics-service/trackerRunRecords';
 import type { TaskApiCost } from '../../repositories/agents-providers/ModuleTaskRepository.types';
 import type { TrackerModelHistory } from './pickTrackerModel.types';
 import type { TrackerHistoryScope, TrackerRunRow } from './trackerRunReport.types';
@@ -43,11 +42,14 @@ function summarizeOutcomes(rows: readonly TrackerRunRow[]) {
 }
 
 /** Roll up one snapshot of local and replicated attempts, keyed at source by node and run ID. */
-export function trackerRunReport(rows: readonly TrackerRunRow[]) {
+export function trackerRunReport(
+	rows: readonly TrackerRunRow[],
+	costFor: (row: TrackerRunRow) => TaskApiCost
+) {
 	const groups = new Map<string, ReturnType<typeof reportGroup>>();
 	for (const row of rows) {
 		if (row.state !== 'finished') continue;
-		const metrics = { quote: trackerRunCost(row), duration: measuredDuration(row) };
+		const metrics = { quote: costFor(row), duration: measuredDuration(row) };
 		accumulate(groups, row, row.kind ?? '?', metrics);
 		accumulate(groups, row, '*', metrics);
 	}
@@ -88,11 +90,7 @@ function accumulate(
 	group[reportOutcome(row.outcome)]++;
 	group.redone += Number(row.redone_by != null);
 	group.idle_nudges += row.idle_nudges ?? 0;
-	group.cost += quote.usd ?? 0;
-	group.priced += Number(quote.usd != null);
-	group.ranged += Number(quote.usd == null && quote.minimumUsd != null && quote.maximumUsd != null);
-	group.min_cost += quote.minimumUsd ?? 0;
-	group.max_cost += quote.maximumUsd ?? 0;
+	accumulateCost(group, quote);
 	group.tokens +=
 		(row.input_tokens ?? 0) +
 		(row.output_tokens ?? 0) +
@@ -101,6 +99,14 @@ function accumulate(
 	group.ms += duration ?? 0;
 	group.timed += Number(duration !== null);
 	groups.set(key, group);
+}
+
+function accumulateCost(group: ReturnType<typeof reportGroup>, quote: TaskApiCost) {
+	group.cost += quote.usd ?? 0;
+	group.priced += Number(quote.usd != null);
+	group.ranged += Number(quote.usd == null && quote.minimumUsd != null && quote.maximumUsd != null);
+	group.min_cost += quote.minimumUsd ?? 0;
+	group.max_cost += quote.maximumUsd ?? 0;
 }
 
 function measuredDuration(row: TrackerRunRow): number | null {

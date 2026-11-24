@@ -31,20 +31,7 @@ test('preserves linked attempts, rework, and the meaning of historical Tracker p
 		'service.agents-providers-module-task-analytics-service-tracker-run-records',
 		'linked-attempt-cost-provenance',
 		() => {
-			const retry = {
-				...recorded,
-				id: 8,
-				attempt: 2,
-				escalated_from: 7,
-				outcome: 'done',
-				rung: 'sol',
-				model: 'gpt-6.2-sol',
-				cli: 'codex',
-				cache_write_tokens: 0,
-				cost_usd: null
-			} satisfies TrackerRunRow;
-			const sameModel = { ...retry, id: 9, attempt: 3, escalated_from: 8, cost_usd: 0 };
-			const [first, second, third] = trackerRunRecords([recorded, retry, sameModel]);
+			const [first, second, third] = linkedAttempts();
 			expect(first).toMatchObject({
 				schemaVersion: 1,
 				source: 'tracker',
@@ -84,6 +71,23 @@ test('preserves linked attempts, rework, and the meaning of historical Tracker p
 			expect(third).toMatchObject({ attempt: 3, retries: 2, escalations: 1, apiEquivalentUsd: 0 });
 		}
 	));
+
+function linkedAttempts() {
+	const retry = {
+		...recorded,
+		id: 8,
+		attempt: 2,
+		escalated_from: 7,
+		outcome: 'done',
+		rung: 'sol',
+		model: 'gpt-6.2-sol',
+		cli: 'codex',
+		cache_write_tokens: 0,
+		cost_usd: null
+	} satisfies TrackerRunRow;
+	const sameModel = { ...retry, id: 9, attempt: 3, escalated_from: 8, cost_usd: 0 };
+	return trackerRunRecords([recorded, retry, sameModel]);
+}
 
 test('retains node-scoped identities, launch chains, and historically missing facts', () => {
 	const remote = {

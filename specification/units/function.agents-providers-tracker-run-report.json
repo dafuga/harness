@@ -47,6 +47,12 @@
 				"type": "readonly TrackerRunRow[]",
 				"required": true,
 				"description": "Run attempts from both local and replicated histories, keyed by node and run ID."
+			},
+			{
+				"name": "trackerRunReport.costFor",
+				"type": "(row: TrackerRunRow) => TaskApiCost",
+				"required": true,
+				"description": "Supplies the recorded estimate or price bounds for each finished attempt."
 			}
 		],
 		"outputs": [
@@ -105,6 +111,12 @@
 						"type": "readonly TrackerRunRow[]",
 						"required": true,
 						"description": "Run attempts from both local and replicated histories, keyed by node and run ID."
+					},
+					{
+						"name": "trackerRunReport.costFor",
+						"type": "(row: TrackerRunRow) => TaskApiCost",
+						"required": true,
+						"description": "Supplies the recorded estimate or price bounds for each finished attempt."
 					}
 				],
 				"outputs": [
@@ -128,11 +140,6 @@
 		},
 		{
 			"unit": "repository.agents-providers-module-task",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.agents-providers-module-task-analytics-service-tracker-run-records",
 			"via": "import",
 			"origin": "derived"
 		}

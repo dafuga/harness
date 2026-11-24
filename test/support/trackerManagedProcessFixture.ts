@@ -171,9 +171,8 @@ export async function verifyCancelledClaim(
 	const tick = () => runtime.scheduler!.tick(signal);
 	expect((await managedTrackerItemRequest(runtime, itemId, 'done')).ok).toBe(true);
 	await tick();
-	for (const action of ['reopen', 'unlaunch', 'launch']) {
+	for (const action of ['reopen', 'unlaunch', 'launch'])
 		expect((await managedTrackerItemRequest(runtime, itemId, action)).ok).toBe(true);
-	}
 	const token = database.prepare('SELECT auto FROM items WHERE id = ?').get(itemId)!.auto;
 	const directory = join(
 		attempts,
@@ -191,7 +190,6 @@ export async function verifyCancelledClaim(
 	expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
 	await tick();
 	expect(runs()).toEqual(held);
-
 	const clock = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 6 * 60_000);
 	const probe = join(attempts, '..', 'tmux-presence');
 	try {

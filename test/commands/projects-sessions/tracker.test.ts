@@ -2,7 +2,6 @@ import { expect, afterEach, beforeEach, onTestFinished, test, vi } from 'vitest'
 import { rmSync } from 'node:fs';
 import { createTempDirectory } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
-import { trackerRunReport } from '../../../src/utils/agents-providers/trackerRunReport';
 import { TrackerCommand } from '../../../src/commands/projects-sessions/TrackerCommand';
 import { formatNativeTrackerRunRead } from '../../../src/commands/projects-sessions/tracker-command/formatNativeTrackerItem';
 import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
@@ -42,7 +41,7 @@ test('Tracker rejects a shim that points back at Harness', () => {
 });
 
 test('native Tracker forwards existing run, report and model selection commands', () =>
-	measureWorkload('command.projects-sessions-tracker', 'run-report-cli', () => {
+	measureWorkload('command.projects-sessions-tracker', 'run-report-cli', async () => {
 		expect(
 			nativeTrackerArgs(['runs', '--item', 'abc123', '--limit', '4', '--json']).request
 		).toEqual({
@@ -75,28 +74,24 @@ test('native Tracker forwards existing run, report and model selection commands'
 		).toBe(
 			'sol (gpt-6.2-sol medium, codex) - named on the item\n  named on the item\n  computer: fixture-mac'
 		);
-		const report = trackerRunReport([
-			{
-				node: 'fixture-mac',
-				id: 1,
-				item_id: 'example000',
-				state: 'finished',
-				outcome: 'done',
-				cli: 'codex',
-				model: 'gpt-6.2-sol',
-				rung: 'sol',
-				kind: 'triage',
-				input_tokens: 300_000,
-				cache_read_tokens: 100_000,
-				cache_write_tokens: 0,
-				output_tokens: 10_000
-			}
-		]);
-		const rendered = formatNativeTrackerRunRead('models', { ladder: ['sol'], rows: report });
-		expect(rendered).toContain('$0.71–$1.37');
-		expect(rendered).toContain('1/1');
-		expect(rendered).toContain('API-equivalent estimate');
+		await verifyCodexReportRange();
 	}));
+
+async function verifyCodexReportRange() {
+	const { database, run } = await compatibilityFixture();
+	database
+		.prepare(
+			`INSERT INTO runs (item_id, model, rung, cli, state, outcome, queued_at,
+			input_tokens, output_tokens, cache_read_tokens, cache_write_tokens)
+		VALUES (?, 'gpt-6.2-sol', 'sol', 'codex', 'finished', 'done', ?, 300000, 10000, 100000, 0)`
+		)
+		.run(fixtureItem, Date.parse(fixtureTime));
+	const { code, out } = await run('models', 'report');
+	expect(code).toBe(0);
+	expect(out).toContain('$0.71–$1.37');
+	expect(out).toContain('1/1');
+	expect(out).toContain('API-equivalent estimate');
+}
 
 test('native show prints the full human item and returns the enriched JSON for a prefix', async () => {
 	const { database, runtime, run } = await compatibilityFixture();

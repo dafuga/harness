@@ -51,12 +51,7 @@ export async function withTrackerRunUsage(
 ): Promise<TrackerDispatchEvent | undefined> {
 	if (event?.type !== 'monitor' || run.cli !== 'codex' || !driver.readUsage) return event;
 	const status = trackerItemStatus(items, run.item_id);
-	if (
-		event.session === 'live' &&
-		(status === 'open' || status === 'in_progress') &&
-		now <= (run.eta_at ?? run.queued_at + 8 * 60 * 60_000)
-	)
-		return event;
+	if (event.session === 'live' && withinActiveRunWindow(run, status, now)) return event;
 	try {
 		const usage = await driver.readUsage(run, signal);
 		return usage ? { ...event, usage } : event;
@@ -64,6 +59,13 @@ export async function withTrackerRunUsage(
 		signal.throwIfAborted();
 		return event;
 	}
+}
+
+function withinActiveRunWindow(run: TrackerRunReceipt, status: string | null, now: number) {
+	return (
+		(status === 'open' || status === 'in_progress') &&
+		now <= (run.eta_at ?? run.queued_at + 8 * 60 * 60_000)
+	);
 }
 
 export function trackerItemStatus(items: TrackerItemReadRepository, id: string): string | null {

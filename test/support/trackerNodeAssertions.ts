@@ -7,7 +7,6 @@ import {
 	fixtureTrackerJson,
 	loopback,
 	startTrackerFixture,
-	trackerFixtureKey,
 	trackerProcess,
 	verifyTrackerWire
 } from './trackerNodeProcess';
