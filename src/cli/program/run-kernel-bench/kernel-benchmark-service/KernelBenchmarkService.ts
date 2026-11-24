@@ -142,17 +142,24 @@ export class KernelBenchmarkService {
 		const base = { target, metric: 'memory-bytes', unitOfMeasure: 'bytes', workload: run.id };
 		if (runtime instanceof WasmRuntimeAdapter) {
 			const method = 'Linear memory size of the instantiated module after the warm loop.';
+			const value = await runtime.memoryBytes();
 			return benchMeasurement(this.context, {
 				...base,
-				value: await runtime.memoryBytes(),
-				method
+				value,
+				method,
+				samples: value > 0 ? 1 : undefined
 			});
 		}
 		if (target === 'process' && this.artifacts.native) {
 			const peak = await peakMemory(this.artifacts.native, [], JSON.stringify(run.request));
 			const value = 'bytes' in peak ? peak.bytes : peak;
 			const method = 'Peak resident set size of one native process run, from /usr/bin/time.';
-			return benchMeasurement(this.context, { ...base, value, method });
+			return benchMeasurement(this.context, {
+				...base,
+				value,
+				method,
+				samples: typeof value === 'number' && value > 0 ? 1 : undefined
+			});
 		}
 		const unavailable =
 			target === 'http'
