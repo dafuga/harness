@@ -42,7 +42,12 @@ export async function proveForegroundSync(
 			expect(sync).toMatchObject({ code: 0, stdout: 'sync triggered\n' });
 			await expect
 				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
-				.toMatchObject([{ id }]);
+				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
+			await expect
+				.poll(() => fixtureTrackerJson(hub, ['runs', '--item', 'spokerun22']), { timeout: 8_000 })
+				.toMatchObject([
+					{ id: 22, node: 'synthetic-spoke', state: 'running', auto_token: 'spoke-token' }
+				]);
 			await verifyTrackerWire(syncPort, id);
 			const reverse = await fixtureTrackerJson(hub, ['add', 'Reverse fixture item']);
 			await expect
