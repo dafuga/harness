@@ -78,7 +78,7 @@ if (basename(process.argv[1]) === 'codex') {
 	const cwd = process.cwd();
 	const usage = { input_tokens: 120, cached_input_tokens: 25, output_tokens: 10 };
 	const competing = existsSync(join(process.env.HOME, '..', 'competing-codex-transcript'));
-	const session = (id) => ({ type: 'session_meta', payload: { id, cwd, timestamp } });
+	const session = (id) => ({ type: 'session_meta', payload: { id, cwd, timestamp, base_instructions: 'x'.repeat(30 * 1024) } });
 	const counters = { type: 'event_msg', payload: { type: 'token_count', info: { total_token_usage: usage } } };
 	for (const suffix of competing ? ['1', '2'] : ['1']) {
 		const id = '9c0f0000-0000-4000-8000-00000000000' + suffix;
