@@ -104,7 +104,7 @@ export async function runNotificationTick(
 	const { chiefOfStaff, queue, source } = options;
 	const { issued, paused } = queue.update((state) => {
 		const issued = state.inFlight;
-		if (issued?.kind === 'scheduled' && !currentScheduledAttempt(state, issued, options))
+		if (issued?.kind === 'scheduled' && !currentScheduledAttempt(state, issued, options.source))
 			delete state.inFlight;
 		return { issued: state.inFlight, paused: Boolean(state.paused) };
 	});

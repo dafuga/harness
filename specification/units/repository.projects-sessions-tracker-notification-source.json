@@ -46,8 +46,7 @@
 			{
 				"name": "TrackerNotificationSourceRepository.scheduledItems.through",
 				"type": "number",
-				"required": true,
-				"description": "Latest reminder time to select, in epoch milliseconds."
+				"required": true
 			},
 			{
 				"name": "TrackerNotificationSourceRepository.item.id",
@@ -102,8 +101,7 @@
 			},
 			{
 				"name": "TrackerNotificationSourceRepository.scheduledItems",
-				"type": "TrackerNotificationItem[]",
-				"description": "Active items whose reminder time is at or before the supplied clock."
+				"type": "TrackerNotificationItem[]"
 			},
 			{
 				"name": "TrackerNotificationSourceRepository.item",
@@ -159,15 +157,13 @@
 					{
 						"name": "TrackerNotificationSourceRepository.scheduledItems.through",
 						"type": "number",
-						"required": true,
-						"description": "Latest reminder time to select, in epoch milliseconds."
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "TrackerNotificationSourceRepository.scheduledItems",
-						"type": "TrackerNotificationItem[]",
-						"description": "Active items whose reminder time is at or before the supplied clock."
+						"type": "TrackerNotificationItem[]"
 					}
 				],
 				"errors": [],

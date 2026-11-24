@@ -147,15 +147,7 @@ export function nativeTrackerTimedItemRequest(
 	[id, ...words]: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
-	if (command === 'remind') {
-		if (!id || !values.at || words.length)
-			throw new TypeError('usage: tracker remind <id> --at <time>');
-		return {
-			method: 'POST',
-			path: `/items/${encodeURIComponent(id)}/remind`,
-			body: { at: values.at }
-		};
-	}
+	if (command === 'remind') return reminderRequest(id, words, values.at);
 	if (command !== 'ignore' && command !== 'unignore') return undefined;
 	const reason = [values.reason, words.join(' ')].find(Boolean);
 	if (command === 'ignore' && !reason)
@@ -166,4 +158,13 @@ export function nativeTrackerTimedItemRequest(
 		path: `/items/${encodeURIComponent(id)}/${command}`,
 		body: command === 'ignore' ? { reason, until: values.until } : { note: values.note }
 	};
+}
+
+function reminderRequest(
+	id: string | undefined,
+	words: string[],
+	at: string | boolean | undefined
+): NativeTrackerRequest {
+	if (!id || !at || words.length) throw new TypeError('usage: tracker remind <id> --at <time>');
+	return { method: 'POST', path: `/items/${encodeURIComponent(id)}/remind`, body: { at } };
 }

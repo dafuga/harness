@@ -34,9 +34,9 @@ export function scanScheduledReminders(
 	if (options.role !== 'hub' || !scheduledDestination(options)) return;
 	const { source } = options;
 	for (const item of source.scheduledItems?.(now) ?? source.items()) {
-		if (!activeItem(item) || !item.remind_at || !item.clocks.remind_at) continue;
-		const at = Date.parse(item.remind_at);
-		if (!Number.isFinite(at) || at > now) continue;
+		if (!activeItem(item)) continue;
+		const at = readyTime(item, now);
+		if (at === undefined) continue;
 		const key = scheduledKey(item);
 		if (!state.reminders.has(key))
 			state.reminders.set(key, {
@@ -49,6 +49,11 @@ export function scanScheduledReminders(
 				pings: 0
 			});
 	}
+}
+
+function readyTime(item: TrackerNotificationItem, now: number): number | undefined {
+	const at = Date.parse(item.remind_at ?? '');
+	return item.clocks.remind_at && at <= now ? at : undefined;
 }
 
 export function nextScheduledReminder(
@@ -73,6 +78,7 @@ export function nextScheduledReminder(
 		});
 		return { kind: 'scheduled', keys: [row.key], request, startedAt: now };
 	}
+	return undefined;
 }
 
 function isPending(row: { kind: string; status: string }): boolean {
@@ -125,11 +131,10 @@ function scheduledRequest(
 export function currentScheduledAttempt(
 	state: TrackerNotificationState,
 	attempt: DeliveryAttempt,
-	options: TrackerNotificationOptions,
-	TrackerNotificationSource
+	source: TrackerNotificationSource
 ): boolean {
 	const row = state.reminders.get(attempt.keys[0]);
-	const item = row && options.source.item(row.itemId);
+	const item = row && source.item(row.itemId);
 	if (activeItem(item) && item.remind_at && row?.key === scheduledKey(item)) return true;
 	if (row) row.status = 'closed';
 	return false;

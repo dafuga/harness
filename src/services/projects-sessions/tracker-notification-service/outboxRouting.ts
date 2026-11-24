@@ -89,15 +89,7 @@ function sendReady(
 		if (!currentOccurrence(row, item)) drop(row, 'superseded');
 		return row.status !== 'dropped';
 	}
-	const remindAt = Date.parse(item?.remind_at ?? '');
-	if (row.kind === 'needs_daniel' || row.kind === 'blocked') {
-		if (remindAt > Date.parse(row.payload.occurred_at as string)) {
-			drop(row, 'item reminder supersedes attention');
-			return false;
-		}
-	}
-	if (row.kind === 'due' && item && holdRegularReminder(item, now, options.reminderIntervalMinutes))
-		return false;
+	if (heldByReminder(row, item, options, now)) return false;
 	if (!quietOutboxEvent(row)) return true;
 	if (!relevant(row, item)) {
 		drop(row, 'no longer relevant');
@@ -106,6 +98,24 @@ function sendReady(
 	const release = quietHourBoundary(now, options.quietHours);
 	if (release > now) row.nextAt = release;
 	return release <= now;
+}
+
+function heldByReminder(
+	row: OutboxRow,
+	item: TrackerNotificationItem | undefined,
+	options: TrackerNotificationOptions,
+	now: number
+): boolean {
+	if (!item?.remind_at) return false;
+	const remindAt = Date.parse(item.remind_at);
+	if (
+		(row.kind === 'needs_daniel' || row.kind === 'blocked') &&
+		remindAt > Date.parse(String(row.payload.occurred_at))
+	) {
+		drop(row, 'item reminder supersedes attention');
+		return true;
+	}
+	return row.kind === 'due' && holdRegularReminder(item, now, options.reminderIntervalMinutes);
 }
 
 function eligible(

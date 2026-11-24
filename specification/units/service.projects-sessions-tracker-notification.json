@@ -658,15 +658,10 @@
 				"description": "Issued reminder request being recovered."
 			},
 			{
-				"name": "currentScheduledAttempt.options",
-				"type": "TrackerNotificationOptions",
+				"name": "currentScheduledAttempt.source",
+				"type": "TrackerNotificationSource",
 				"required": true,
 				"description": "Notification source used to verify the current reminder."
-			},
-			{
-				"name": "currentScheduledAttempt.TrackerNotificationSource",
-				"type": "unknown",
-				"required": true
 			},
 			{
 				"name": "trackerNotificationStatus.options",
@@ -2227,15 +2222,10 @@
 						"description": "Issued reminder request being recovered."
 					},
 					{
-						"name": "currentScheduledAttempt.options",
-						"type": "TrackerNotificationOptions",
+						"name": "currentScheduledAttempt.source",
+						"type": "TrackerNotificationSource",
 						"required": true,
 						"description": "Notification source used to verify the current reminder."
-					},
-					{
-						"name": "currentScheduledAttempt.TrackerNotificationSource",
-						"type": "unknown",
-						"required": true
 					}
 				],
 				"outputs": [
