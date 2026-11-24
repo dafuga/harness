@@ -61,7 +61,17 @@ test('tick holds direct reminders through quiet hours, groups once, and repeats 
 });
 
 test('tick delivers the current explicit reminder once at its timestamp across restarts and quiet hours', async () => {
-	const f = notificationFixture({ options: { chiefOfStaff: chief } });
+	let uncertain = true;
+	const f = notificationFixture({
+		options: { chiefOfStaff: chief },
+		send: async () => {
+			if (uncertain) {
+				uncertain = false;
+				throw new Error('synthetic lost acknowledgement');
+			}
+			return { status: 'sent' };
+		}
+	});
 	const night = start + 180 * minute;
 	const wake = night + 2 * minute;
 	const snooze = (at: number) => new Date(at).toISOString();
@@ -96,9 +106,17 @@ test('tick delivers the current explicit reminder once at its timestamp across r
 	expect(f.calls).toHaveLength(0);
 
 	f.at(wake);
-	await measureTick(f.restart(), 'explicit-reminder-at-wake');
+	await expect(f.restart().tick()).rejects.toThrow('synthetic lost acknowledgement');
 	expect(f.calls).toHaveLength(1);
-	expect(wire(f.calls[0])).toMatchObject({
+	const parkedUntil = wake + 10 * minute;
+	f.rows.set('delayed', { ...f.rows.get('delayed')!, parked_until: snooze(parkedUntil) });
+	f.at(parkedUntil - 1);
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(1);
+	f.at(parkedUntil);
+	await measureTick(f.restart(), 'explicit-reminder-at-wake');
+	expect(f.calls.map(({ id }) => id)).toEqual([f.calls[0].id, f.calls[0].id]);
+	expect(wire(f.calls[1])).toMatchObject({
 		type: 'attention',
 		new: [
 			{
@@ -110,7 +128,7 @@ test('tick delivers the current explicit reminder once at its timestamp across r
 		]
 	});
 	await f.restart().tick();
-	expect(f.calls).toHaveLength(1);
+	expect(f.calls).toHaveLength(2);
 });
 
 test('tick sends a scheduled reminder through a webhook when it is the only hub destination', async () => {
