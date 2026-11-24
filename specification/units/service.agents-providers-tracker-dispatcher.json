@@ -312,6 +312,11 @@
 				"required": true
 			},
 			{
+				"name": "schedulingHold.policy",
+				"type": "Pick<TrackerDispatchPolicy, 'opsWorkdirAvailable'>",
+				"required": false
+			},
+			{
 				"name": "isDueNow.due",
 				"type": "string | null | undefined",
 				"required": true
@@ -1065,6 +1070,11 @@
 						"name": "schedulingHold.item",
 						"type": "TrackerDispatchItem",
 						"required": true
+					},
+					{
+						"name": "schedulingHold.policy",
+						"type": "Pick<TrackerDispatchPolicy, 'opsWorkdirAvailable'>",
+						"required": false
 					}
 				],
 				"outputs": [

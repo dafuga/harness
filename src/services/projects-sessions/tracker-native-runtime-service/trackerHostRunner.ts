@@ -14,10 +14,10 @@ import type {
 } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerReservedStart } from '../TrackerDispatchSchedulerService.types';
-import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
 import type {
 	TrackerHostLaunchPort,
 	TrackerHostRoute,
+	TrackerHostTarget,
 	TrackerHostRunnerOptions,
 	TrackerHostSession
 } from './trackerHostLaunch.types';
@@ -92,7 +92,7 @@ async function startTrackerHost(
 	driver: TrackerHostLaunchPort,
 	input: {
 		node: string;
-		route: TrackerHostRepository;
+		route: TrackerHostTarget;
 		reservation: TrackerReservedStart;
 		brief: string;
 	},
@@ -163,7 +163,7 @@ async function launchApprovedItem(
 	)
 		return {
 			type: 'startup-failed',
-			reason: 'Tracker launch no longer has an approved repository'
+			reason: 'Tracker launch no longer has an approved execution directory'
 		};
 	return startTrackerHost(
 		driver,

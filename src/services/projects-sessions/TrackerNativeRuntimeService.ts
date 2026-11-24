@@ -6,6 +6,7 @@ import type { TrackerDispatchSchedulerService } from './TrackerDispatchScheduler
 import { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerNotificationQueueRepository } from '../../repositories/projects-sessions/TrackerNotificationQueueRepository';
 import { TrackerNotificationSourceRepository } from '../../repositories/projects-sessions/TrackerNotificationSourceRepository';
+import { trackerRunSchema } from '../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
 import type { TrackerAdapterPollService } from './TrackerAdapterPollService';
@@ -75,6 +76,8 @@ export class TrackerNativeRuntimeService {
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch = options.dispatch ?? configuredHostDispatch(store, hostEffects, this.now);
 		const workerOptions = { ...options, dispatch };
+		if (!dispatch && (options.syncResponder || options.links?.length))
+			database.exec(trackerRunSchema);
 		({
 			dispatch: this.dispatch,
 			scheduler: this.scheduler,
@@ -87,7 +90,7 @@ export class TrackerNativeRuntimeService {
 			runs,
 			workerOptions
 		));
-		this.sync = composeResponder(store, runs, options, this.dispatch);
+		this.sync = composeResponder(store, runs, options);
 	}
 
 	spokeStatus() {
@@ -146,11 +149,10 @@ function composeItemApi(
 function composeResponder(
 	store: TrackerPersistenceService,
 	runs: TrackerRunReadRepository,
-	{ syncResponder }: TrackerNativeRuntimeOptions,
-	dispatch?: TrackerDispatcherService
+	{ syncResponder, role }: TrackerNativeRuntimeOptions
 ) {
 	if (!syncResponder) return undefined;
-	const runStore = dispatch ? () => runs : undefined;
+	const runStore = role === 'hub' ? () => runs : undefined;
 	return new TrackerHubSyncService({ runs: runStore, ...syncResponder, store });
 }
 

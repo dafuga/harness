@@ -50,6 +50,7 @@
 			"trackerManagedProviderCommand",
 			"workerScript",
 			"launchTmux",
+			"prepareTrackerWorkingDirectory",
 			"trackerSocket",
 			"managedBrief",
 			"trackerPaneFormat",
@@ -244,6 +245,21 @@
 			},
 			{
 				"name": "launchTmux.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "prepareTrackerWorkingDirectory.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "prepareTrackerWorkingDirectory.input",
+				"type": "TrackerHostStartRequest",
+				"required": true
+			},
+			{
+				"name": "prepareTrackerWorkingDirectory.signal",
 				"type": "AbortSignal",
 				"required": true
 			},
@@ -787,6 +803,34 @@
 					{
 						"name": "launchTmux",
 						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "prepareTrackerWorkingDirectory",
+				"inputs": [
+					{
+						"name": "prepareTrackerWorkingDirectory.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "prepareTrackerWorkingDirectory.input",
+						"type": "TrackerHostStartRequest",
+						"required": true
+					},
+					{
+						"name": "prepareTrackerWorkingDirectory.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareTrackerWorkingDirectory",
+						"type": "Promise<string | null>"
 					}
 				],
 				"errors": [],
