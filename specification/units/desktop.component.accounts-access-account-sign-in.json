@@ -4,8 +4,8 @@
 	"uid": "u_2vrw624qcu",
 	"kind": "component",
 	"title": "AccountSignIn",
-	"responsibility": "Owns the AccountSignIn Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows the native sign-in gate and offers Google, one-time code, cancel and retry actions as the hosted status changes.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
