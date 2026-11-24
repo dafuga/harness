@@ -89,7 +89,16 @@ for (const { name, width, height } of viewports) {
 			await page.goto('/');
 			await expect(page.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
 			const link = page.getByRole('link', { name: 'Deploy approvals' });
+			await expect(link).toBeVisible();
 			await approvalEvidence(page, info, 'entry');
+			if (name === 'mobile') {
+				const tracker = page.getByRole('link', { name: 'Needs you' });
+				await expect(tracker).toBeVisible();
+				const approvalTarget = await link.boundingBox();
+				const trackerTarget = await tracker.boundingBox();
+				expect(approvalTarget?.height, 'Deploy approvals tap target').toBeGreaterThanOrEqual(44);
+				expect(trackerTarget?.height, 'Needs you tap target').toBeGreaterThanOrEqual(44);
+			}
 			await link.click({ timeout: 5000 });
 			await expect(page).toHaveURL(/\/deploy-approvals$/);
 			await page.goto('/deploy-approvals');
