@@ -37,6 +37,7 @@ import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
 import { prepareDesktopStorage, preserveMacProfile } from './macSafeStorage';
+import { trackerArtifactUrlSchema } from '../../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { NavigationValidator } from '../../../../validators/explorer-ui/NavigationValidator';
 
 protocol.registerSchemesAsPrivileged([
@@ -190,7 +191,16 @@ async function openWindow(backend: Backend): Promise<BrowserWindow> {
 	confirmUnload(window, dialog);
 	const gate = new NavigationValidator();
 	window.webContents.on('will-navigate', (event, url) => {
-		if (!gate.validate(url)) event.preventDefault();
+		if (gate.validate(url)) return;
+		event.preventDefault();
+		const source = window.webContents.getURL();
+		if (
+			gate.validate(source) &&
+			/^\/tracker\/?$/.test(new URL(source).pathname) &&
+			trackerArtifactUrlSchema.safeParse(url).success
+		) {
+			void shell.openExternal(url).catch(() => {});
+		}
 	});
 	window.webContents.on('will-attach-webview', (event) => event.preventDefault());
 	const choose = () => chooseProject(window, dialog);

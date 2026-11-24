@@ -19,7 +19,13 @@
 
 {#snippet designLinks(links: TrackerArtifact['links'])}
 	{#each links ?? [] as link}
-		<hx-p><hx-a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</hx-a></hx-p>
+		<hx-p
+			><hx-a
+				href={link.url}
+				target={mode === 'mac' ? undefined : '_blank'}
+				rel="noopener noreferrer">{link.label}</hx-a
+			></hx-p
+		>
 	{/each}
 {/snippet}
 

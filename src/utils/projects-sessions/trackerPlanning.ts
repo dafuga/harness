@@ -20,13 +20,13 @@ export const trackerPlanningPromotionFields = [
 
 export const trackerStageSchema = z.enum(trackerStages);
 const planningText = z.string().trim().min(1).transform(sanitizeTrackerText);
-const safeUrl = z.url({ protocol: /^https$/ }).refine((value) => {
+export const trackerArtifactUrlSchema = z.url({ protocol: /^https$/ }).refine((value) => {
 	const { username, password, href } = new URL(value);
 	return !username && !password && sanitizeTrackerText(href) === href;
 });
 const link = z.strictObject({
 	label: planningText,
-	url: safeUrl,
+	url: trackerArtifactUrlSchema,
 	kind: z.enum(['link', 'image']).optional()
 });
 const page = z.strictObject({

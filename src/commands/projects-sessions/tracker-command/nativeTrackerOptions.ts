@@ -1,6 +1,6 @@
 // @harness-uid u_r7qgepnoax
+import { closeSync, constants, fstatSync, openSync, readSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { closeSync, fstatSync, openSync, readSync } from 'node:fs';
 import { trackerArtifactMaxBytes } from '../../../utils/projects-sessions/trackerPlanning';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
@@ -235,7 +235,7 @@ function planningRequest(
 
 function readPlanningArtifact(file: string): unknown {
 	try {
-		const fd = openSync(file, 'r');
+		const fd = openSync(file, constants.O_RDONLY | constants.O_NONBLOCK);
 		try {
 			const info = fstatSync(fd);
 			const limit = trackerArtifactMaxBytes * 2;
