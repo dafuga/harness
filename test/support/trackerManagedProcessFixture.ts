@@ -1,3 +1,4 @@
+import { loadTrackerNodeConfig } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { DatabaseSync } from 'node:sqlite';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -158,4 +159,40 @@ export function managedTrackerItemRequest(
 			body: '{}'
 		})
 	);
+}
+
+export function managedForegroundConfig(
+	root: string,
+	managed: ReturnType<typeof managedFixtureBindings>['config'],
+	platform: 'linux' | 'macos' = 'linux',
+	ops?: string
+) {
+	const path = join(root, 'foreground.json');
+	const syncSecretFile = join(root, 'secret');
+	writeFileSync(syncSecretFile, 'synthetic-host-worker-wire-key', { mode: 0o600 });
+	const config = {
+		version: 1,
+		node: 'daniel-primary-mbp',
+		role: 'hub',
+		apiPort: 49281,
+		syncPort: 49282,
+		database: join(root, 'test-db'),
+		legacyFenceFile: join(root, 'fence'),
+		syncSecretFile,
+		hostEffects: {
+			mode: 'active',
+			checkpoint: 'fixture',
+			...(platform === 'macos' && {
+				watchdog: { transcriptRoots: [join(root, 'tracker-test-codex-transcripts')] }
+			}),
+			launch: {
+				maxConcurrent: 1,
+				managed: { ...managed, ...(ops && { opsWorkdir: ops }) },
+				...(ops && { due: true }),
+				repositories: { Harness: { repo: root, platform } }
+			}
+		}
+	};
+	writeFileSync(path, JSON.stringify(config), { mode: 0o600 });
+	return loadTrackerNodeConfig(path);
 }
