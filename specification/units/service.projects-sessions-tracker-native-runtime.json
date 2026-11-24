@@ -716,13 +716,8 @@
 				"required": true
 			},
 			{
-				"name": "contextAlert.pane",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "contextAlert.id",
-				"type": "unknown",
+				"name": "contextAlert.target",
+				"type": "TrackerHandoffTarget",
 				"required": true
 			},
 			{
@@ -741,13 +736,8 @@
 				"required": true
 			},
 			{
-				"name": "recordHandoffFailure.pane",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "recordHandoffFailure.id",
-				"type": "unknown",
+				"name": "recordHandoffFailure.target",
+				"type": "TrackerHandoffTarget",
 				"required": true
 			},
 			{
@@ -2443,13 +2433,8 @@
 						"required": true
 					},
 					{
-						"name": "contextAlert.pane",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "contextAlert.id",
-						"type": "unknown",
+						"name": "contextAlert.target",
+						"type": "TrackerHandoffTarget",
 						"required": true
 					},
 					{
@@ -2481,13 +2466,8 @@
 						"required": true
 					},
 					{
-						"name": "recordHandoffFailure.pane",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "recordHandoffFailure.id",
-						"type": "unknown",
+						"name": "recordHandoffFailure.target",
+						"type": "TrackerHandoffTarget",
 						"required": true
 					},
 					{

@@ -93,10 +93,11 @@ export function recordWatchdogAlert(
 }
 export function contextAlert(
 	store: TrackerPersistenceService,
-	{ pane, id }: TrackerHandoffTarget,
+	target: TrackerHandoffTarget,
 	now: number,
 	detail: string
 ) {
+	const { pane, id } = target;
 	const reason = `Session ${pane.name} exceeded 150,000 active context tokens. ${detail}`;
 	recordWatchdogAlert(
 		store,
@@ -108,9 +109,10 @@ export function contextAlert(
 
 export function recordHandoffFailure(
 	store: TrackerPersistenceService,
-	{ pane, id }: TrackerHandoffTarget,
+	target: TrackerHandoffTarget,
 	now: number
 ) {
+	const { pane, id } = target;
 	const reason = `Session ${pane.name} exceeded 150,000 context tokens and stayed idle without filing its requested handoff after 30 minutes.`;
 	recordWatchdogAlert(
 		store,

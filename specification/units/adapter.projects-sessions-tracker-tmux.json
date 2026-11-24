@@ -277,28 +277,13 @@
 				"required": true
 			},
 			{
-				"name": "closePaneNames.pane",
-				"type": "unknown",
+				"name": "closePaneNames.input",
+				"type": "TrackerTmuxClose",
 				"required": true
 			},
 			{
-				"name": "closePaneNames.attempt",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "closePaneNames.observed",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "closePaneCandidate.pane",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "closePaneCandidate.observed",
-				"type": "unknown",
+				"name": "closePaneCandidate.input",
+				"type": "TrackerTmuxClose",
 				"required": true
 			},
 			{
@@ -909,18 +894,8 @@
 				"name": "closePaneNames",
 				"inputs": [
 					{
-						"name": "closePaneNames.pane",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "closePaneNames.attempt",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "closePaneNames.observed",
-						"type": "unknown",
+						"name": "closePaneNames.input",
+						"type": "TrackerTmuxClose",
 						"required": true
 					}
 				],
@@ -937,13 +912,8 @@
 				"name": "closePaneCandidate",
 				"inputs": [
 					{
-						"name": "closePaneCandidate.pane",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "closePaneCandidate.observed",
-						"type": "unknown",
+						"name": "closePaneCandidate.input",
+						"type": "TrackerTmuxClose",
 						"required": true
 					},
 					{
