@@ -19,6 +19,8 @@ export interface HostPairingOffer {
 
 export interface HostPairingFrame extends RelayPairingRequest {
 	pairingId: string;
+	account?: true;
+	expiresAt?: string;
 }
 
 export interface HostPairingApproved {
