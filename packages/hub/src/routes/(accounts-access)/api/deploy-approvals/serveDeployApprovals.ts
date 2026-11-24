@@ -6,11 +6,13 @@ import {
 	deployApprovalPath,
 	runnerInput
 } from '../../../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox';
+import type { ApprovalCard } from '../../../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox.types';
 import {
 	admitDeployRun,
 	DeployApprovalRepository,
 	reportDeployRun
 } from '../../../../repositories/accounts-access/DeployApprovalRepository';
+import type { RunnerScope } from '../../../../repositories/accounts-access/DeployApprovalRepository.types';
 import { safeEqual } from '../../../../utils/verification-evidence/authSecrets';
 import { readOverviewText } from '../../../api/tracker-overview/trackerOverviewInput';
 import { hubHttpFailure } from '../../../api/[...path]/hub-api-controller/hubHttp';
@@ -107,7 +109,14 @@ async function serveRunner(
 		return (await reportDeployRun(context.db, input, runner))
 			? json({ status: 'recorded' })
 			: conflict();
-	const { card } = input;
+	return registerRun(context, input.card, runner);
+}
+
+async function registerRun(
+	context: DeployApprovalContext,
+	card: ApprovalCard,
+	runner: RunnerScope
+) {
 	if (!validCardScope(card)) return conflict();
 	if (
 		card.expiresAt <= context.now ||
@@ -119,23 +128,29 @@ async function serveRunner(
 		: conflict();
 }
 
-function validCardScope(
-	card: Extract<ReturnType<typeof runnerInput.parse>, { kind: 'register' }>['card']
-) {
-	if (!card.control)
+function validCardScope(card: ApprovalCard) {
+	const { control } = card;
+	if (!control)
 		return card.environment !== 'staging' && card.action !== 'signoff' && Boolean(card.artifact);
-	if (card.action === 'signoff')
-		return Boolean(
-			card.artifact &&
-			card.control.review &&
-			!card.control.preview &&
-			!card.control.rollbackFrom &&
-			card.control.run !== card.id
-		);
+	if (card.action === 'signoff') return validSignoffCard(card, control);
+	return validControlledRun(card, control);
+}
+
+function validSignoffCard(card: ApprovalCard, control: NonNullable<ApprovalCard['control']>) {
+	return Boolean(
+		card.artifact &&
+		control.review &&
+		!control.preview &&
+		!control.rollbackFrom &&
+		control.run !== card.id
+	);
+}
+
+function validControlledRun(card: ApprovalCard, control: NonNullable<ApprovalCard['control']>) {
 	return (
-		!card.control.review &&
-		card.control.run === card.id &&
-		Boolean(card.control.rollbackFrom) === (card.action === 'rollback') &&
+		!control.review &&
+		control.run === card.id &&
+		Boolean(control.rollbackFrom) === (card.action === 'rollback') &&
 		(Boolean(card.artifact) || (card.action === 'rollback' && card.environment === 'staging'))
 	);
 }

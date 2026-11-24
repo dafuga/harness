@@ -41,10 +41,7 @@ export function runControlClient(registry: DeployRegistry): DeployApprovalClient
 
 export function deployApprovalCard(context: ApprovalContext, script: string) {
 	const { plan, chain, differences, controlled, rollbackFrom } = context;
-	const candidate = plan.restore ?? plan.release;
-	const legacyRestore = controlled && plan.environment === 'staging' && plan.action === 'rollback';
-	if (!candidate || (!candidate.artifact && !legacyRestore))
-		throw new ExpectedCliError('Exact deploy approval requires a pinned artifact.');
+	const candidate = approvalCandidate(plan, controlled);
 	const { target, version, source, artifact } = plan.restore ?? plan.previous;
 	return approvalCard.parse({
 		id: plan.id,
@@ -60,14 +57,23 @@ export function deployApprovalCard(context: ApprovalContext, script: string) {
 		allowedDifferences: differences,
 		smoke: script,
 		manifest: plan.manifest,
-		predecessor:
-			chain?.smoke && plan.signoff
-				? { id: chain.plan.id, signoff: plan.signoff, smoke: chain.smoke.checks }
-				: null,
+		predecessor: predecessorEvidence(chain, plan.signoff),
 		rollback: { target, version, source, artifact },
 		...(controlled ? { control: { run: plan.id, rollbackFrom } } : {}),
 		expiresAt: plan.createdAt + approvalWindowMs
 	});
+}
+
+function approvalCandidate(plan: Plan, controlled = false) {
+	const candidate = plan.restore ?? plan.release;
+	const legacyRestore = controlled && plan.environment === 'staging' && plan.action === 'rollback';
+	if (!candidate || (!candidate.artifact && !legacyRestore))
+		throw new ExpectedCliError('Exact deploy approval requires a pinned artifact.');
+	return candidate;
+}
+
+function predecessorEvidence(chain: Journal | null, signoff: string | null) {
+	return chain?.smoke && signoff ? { id: chain.plan.id, signoff, smoke: chain.smoke.checks } : null;
 }
 
 export function controlScope(plan: Plan) {

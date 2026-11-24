@@ -1,6 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test, vi } from 'vitest';
+import type { Journal } from '../../../../../src/core/execution-runtimes/scripted-deploy/contracts';
 import { runnerInput } from '../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox';
 import type {
 	ApprovalCard,
@@ -39,29 +40,7 @@ test('staging requires native Go for deploy, signed sign-off and legacy rollback
 			result: { observed: { version: 'initial-staging', artifact: null } }
 		});
 		const cards: ApprovalCards = await (await hub.session()).json();
-		expect(cards).toEqual(
-			expect.arrayContaining([
-				expect.objectContaining({
-					id: deploy.plan.id,
-					progress: expect.objectContaining({ phase: 'complete', checks: deploy.smoke?.checks })
-				}),
-				expect.objectContaining({
-					action: 'signoff',
-					control: expect.objectContaining({ run: deploy.plan.id }),
-					progress: { phase: 'signed-off', reference: proof.payload.reference }
-				}),
-				expect.objectContaining({
-					id: rollback.plan.id,
-					artifact: null,
-					control: { run: rollback.plan.id, rollbackFrom: deploy.plan.id },
-					progress: expect.objectContaining({
-						phase: 'complete',
-						version: 'initial-staging',
-						checks: rollback.smoke?.checks
-					})
-				})
-			])
-		);
+		assertRunReceipts(cards, deploy, rollback, proof.payload.reference);
 		expect(authority.phases).toEqual([
 			'applying',
 			'deployed',
@@ -111,6 +90,37 @@ test('a dropped provider receipt reconciles without a second apply and revoked a
 		await hub.close();
 	}
 }, 30_000);
+
+function assertRunReceipts(
+	cards: ApprovalCards,
+	deploy: Journal,
+	rollback: Journal,
+	reviewReference: string
+) {
+	expect(cards).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({
+				id: deploy.plan.id,
+				progress: expect.objectContaining({ phase: 'complete', checks: deploy.smoke?.checks })
+			}),
+			expect.objectContaining({
+				action: 'signoff',
+				control: expect.objectContaining({ run: deploy.plan.id }),
+				progress: { phase: 'signed-off', reference: reviewReference }
+			}),
+			expect.objectContaining({
+				id: rollback.plan.id,
+				artifact: null,
+				control: { run: rollback.plan.id, rollbackFrom: deploy.plan.id },
+				progress: expect.objectContaining({
+					phase: 'complete',
+					version: 'initial-staging',
+					checks: rollback.smoke?.checks
+				})
+			})
+		])
+	);
+}
 
 function enrolledService(cli: Awaited<ReturnType<typeof deployFixture>>, key: string) {
 	const keyFile = join(cli.root, 'synthetic-staging-runner.key');

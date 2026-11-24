@@ -93,13 +93,7 @@ async function routeDeploy(
 	},
 	options: DeployOptions
 ) {
-	if (options.ref && (options.release || target !== 'staging')) {
-		throw new ExpectedCliError('--ref is staging-only and cannot be combined with --release.');
-	}
-	if (!options.release && !options.ref)
-		throw new ExpectedCliError('Select --ref or --release for this deployment.');
-	if (options.waitForGo && options.ref)
-		throw new ExpectedCliError('Prepare the artifact first and pass its immutable --release ID.');
+	validateReleaseSelection(options, target);
 	const source = options.ref ? sha.parse(options.ref) : undefined;
 	const release = options.release ? store.getRelease(options.release) : null;
 	if (options.plan)
@@ -113,6 +107,18 @@ async function routeDeploy(
 		{ environment: target, release: prepared, from: options.from },
 		options.waitForGo
 	);
+}
+
+function validateReleaseSelection(
+	{ ref, release, waitForGo }: DeployOptions,
+	target: string
+): void {
+	if (ref && (release || target !== 'staging'))
+		throw new ExpectedCliError('--ref is staging-only and cannot be combined with --release.');
+	if (!release && !ref)
+		throw new ExpectedCliError('Select --ref or --release for this deployment.');
+	if (waitForGo && ref)
+		throw new ExpectedCliError('Prepare the artifact first and pass its immutable --release ID.');
 }
 
 function operationProject(operation: Operation, store: DeployRunRepository): string {

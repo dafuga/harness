@@ -11,12 +11,7 @@ afterEach(() => fixture.dispose());
 describe('scripted deployment CLI', () => {
 	it('only inspects in plan mode and promotes the same artifact through exact signoffs', () => {
 		const args = ['fixture', 'staging', '--release', fixture.release.id];
-		expect(() => fixture.run(...args, '--publish-plan')).toThrow(/requires --plan/);
-		expect(() => fixture.run(...args, '--plan', '--wait-for-go')).toThrow(/applies only/);
-		expect(() =>
-			fixture.run('fixture', 'staging', '--ref', 'a'.repeat(40), '--wait-for-go')
-		).toThrow(/immutable --release/);
-		expect(fixture.operations()).toEqual([]);
+		assertConflictingControlOptions(args);
 		expect(fixture.run(...args, '--plan')).toMatchObject({ parity: { blocked: false } });
 		expect(fixture.operations()).toEqual(['inspect', 'inspect', 'inspect']);
 		const stage = fixture.promote('staging');
@@ -71,3 +66,12 @@ describe('scripted deployment CLI', () => {
 		expect(fixture.store.active('fixture', 'staging')).toBeNull();
 	});
 });
+
+function assertConflictingControlOptions(args: string[]) {
+	expect(() => fixture.run(...args, '--publish-plan')).toThrow(/requires --plan/);
+	expect(() => fixture.run(...args, '--plan', '--wait-for-go')).toThrow(/applies only/);
+	expect(() => fixture.run('fixture', 'staging', '--ref', 'a'.repeat(40), '--wait-for-go')).toThrow(
+		/immutable --release/
+	);
+	expect(fixture.operations()).toEqual([]);
+}

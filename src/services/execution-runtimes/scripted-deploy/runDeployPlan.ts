@@ -24,13 +24,7 @@ export async function runDeployPlan(
 	controlled: boolean
 ): Promise<Journal> {
 	const { registry, store, config, planning } = context;
-	const { plan, parity, predecessor } = await planning.plan(input);
-	if (parity.blocked)
-		throw new ExpectedCliError(
-			'Deployment parity has unexpected differences. Run with --plan to view them.'
-		);
-	if (!plan.release && !plan.restore)
-		throw new ExpectedCliError('Deployment requires a prepared release.');
+	const { plan, parity, predecessor } = await executablePlan(planning, input);
 	const artifact = await verifyPreparedArtifact(context, plan);
 	const record: Journal = { plan, phase: 'pending', ...(controlled ? { controlled: true } : {}) };
 	try {
@@ -57,6 +51,17 @@ export async function runDeployPlan(
 		if (record.phase !== 'applying' && store.active(plan.project, plan.environment) === plan.id)
 			store.unlock(record);
 	}
+}
+
+async function executablePlan(planning: DeployRunContext['planning'], input: DeployRequest) {
+	const result = await planning.plan(input);
+	if (result.parity.blocked)
+		throw new ExpectedCliError(
+			'Deployment parity has unexpected differences. Run with --plan to view them.'
+		);
+	if (!result.plan.release && !result.plan.restore)
+		throw new ExpectedCliError('Deployment requires a prepared release.');
+	return result;
 }
 
 async function apply(
