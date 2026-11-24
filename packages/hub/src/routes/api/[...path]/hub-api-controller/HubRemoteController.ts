@@ -32,6 +32,10 @@ async function register(call: Call): Promise<Response> {
 	return hubHttp(registration, 201);
 }
 
+async function computers(call: Call): Promise<Response> {
+	return hubHttp({ computers: await call.remote.relay.computers(call.owner) });
+}
+
 async function summary(call: Call): Promise<Response> {
 	const hostId = validator.hostId(call.ids[0]);
 	return hubHttp(await call.remote.relay.summary({ owner: call.owner, hostId }));
@@ -50,6 +54,7 @@ async function revokeDevice(call: Call): Promise<Response> {
 
 const ACTIONS = new Map<string, (call: Call) => Promise<Response>>([
 	['POST hosts', register],
+	['GET hosts', computers],
 	['GET host', summary],
 	['DELETE host', unregister],
 	['DELETE device', revokeDevice]

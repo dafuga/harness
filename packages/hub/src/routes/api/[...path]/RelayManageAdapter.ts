@@ -7,6 +7,7 @@ import type {
 	RelayRegistered,
 	RemoteHostSummary
 } from '../../../../../remote/src/models/networking-security/RemoteRelay.types';
+import { remotePatterns } from '../../../../../remote/src/utils/remoteIdentity';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 import { RelayReplyValidator } from '../../../validators/networking-security/RelayReplyValidator';
 
@@ -48,6 +49,34 @@ export class RelayManageAdapter {
 		return this.replies.registered(await this.manage('register', body), hostId);
 	}
 
+	async computers(owner: RelayManageOwner['owner']) {
+		const reply = await this.send('directory-list', { owner }, `owner:${owner.id}`);
+		const ids = await jsonOf(reply);
+		if (
+			reply.status !== 200 ||
+			!Array.isArray(ids) ||
+			!ids.every((id: unknown) => typeof id === 'string' && remotePatterns.hostId.test(id))
+		)
+			return hubFail('unavailable');
+		const computers = [];
+		for (const hostId of ids as string[]) {
+			const computer = await this.discover(owner, hostId);
+			if (computer) computers.push(computer);
+		}
+		return computers;
+	}
+
+	private async discover(owner: RelayManageOwner['owner'], hostId: string) {
+		try {
+			const { name, online } = await this.summary({ owner, hostId });
+			return { hostId, name, online };
+		} catch (error) {
+			const code = (error as { code?: string }).code;
+			if (code === 'not-found' || code === 'forbidden') return null;
+			throw error;
+		}
+	}
+
 	async summary(input: RelayManageOwner): Promise<RemoteHostSummary> {
 		return this.replies.summary(await this.manage('summary', ownerOf(input)), input.hostId);
 	}
@@ -68,12 +97,16 @@ export class RelayManageAdapter {
 		return response.status === 200 ? value : refusal(response.status, value);
 	}
 
-	private async send(operation: Operation, body: RelayManageOwner): Promise<Response> {
+	private async send(
+		operation: Operation,
+		body: { owner: RelayManageOwner['owner']; hostId?: string },
+		name = body.hostId ?? ''
+	): Promise<Response> {
 		const { hosts } = this.config;
 		const headers = { 'Content-Type': 'application/json' };
 		const init = { method: 'POST', headers, body: JSON.stringify(body) };
 		try {
-			return await hosts.get(hosts.idFromName(body.hostId)).fetch(MANAGE + operation, init);
+			return await hosts.get(hosts.idFromName(name)).fetch(MANAGE + operation, init);
 		} catch {
 			return hubFail('unavailable');
 		}

@@ -13,6 +13,7 @@ export interface RelayEnv {
 export interface HostScope {
 	/** Whether this object is the one a host id names (`idFromName(hostId)`). */
 	owns(hostId: string): boolean;
+	directory(ownerId: string): DurableObjectStub;
 }
 
 /** Everything a host object keeps. Credentials are kept as hashes only. */

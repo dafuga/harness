@@ -23,7 +23,8 @@ import { SocketFrameService } from './socket-frame-service/SocketFrameService';
  */
 export function hostRuntime(state: DurableObjectState, env: RelayEnv): HostRuntime {
 	const scope: HostScope = {
-		owns: (hostId) => env.REMOTE_HOSTS.idFromName(hostId).equals(state.id)
+		owns: (hostId) => env.REMOTE_HOSTS.idFromName(hostId).equals(state.id),
+		directory: (ownerId) => env.REMOTE_HOSTS.get(env.REMOTE_HOSTS.idFromName(`owner:${ownerId}`))
 	};
 	const store = new HostStorageAdapter(state.storage);
 	const sockets = new HostSocketsAdapter(state);
