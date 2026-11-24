@@ -81,11 +81,12 @@ export async function launchTmux(
 	);
 }
 
+/** Resolve the configured ops directory or create a detached checkout for the attempt. */
 export async function prepareTrackerWorkingDirectory(
 	directory: string,
 	input: TrackerHostStartRequest,
 	signal: AbortSignal
-) {
+): Promise<string | null> {
 	const source = realpathSync('workdir' in input ? input.workdir : input.repo);
 	if (!statSync(source).isDirectory()) return null;
 	if ('workdir' in input) return source;
