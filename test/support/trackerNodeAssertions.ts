@@ -8,6 +8,7 @@ import {
 	loopback,
 	startTrackerFixture,
 	trackerProcess,
+	verifyDefaultPickup,
 	verifyTrackerWire
 } from './trackerNodeProcess';
 import type { TrackerFixtureReceipts, TrackerNodeFixture } from './trackerNodeProcess.types';
@@ -64,29 +65,6 @@ export async function proveForegroundSync(
 		expect((await hubOwner.stop()).code).toBe(0);
 	}
 	expect((await trackerProcess(spoke, ['ensure']).exited).code).toBe(3);
-}
-
-async function verifyDefaultPickup(hub: TrackerNodeFixture) {
-	const ready = await fixtureTrackerJson(hub, [
-		'add',
-		'Synthetic delegated work',
-		'--by',
-		'Chief of Staff'
-	]);
-	const later = await fixtureTrackerJson(hub, [
-		'add',
-		'Synthetic deferred paperwork',
-		'--by',
-		'Daniel',
-		'--later'
-	]);
-	expect(ready).toMatchObject({ auto: expect.any(String), launch_target: 'synthetic-hub' });
-	expect(later).toMatchObject({ auto: null, schedule_off: true });
-	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({
-		queued: [{ id: ready.id, waiting_minutes: expect.any(Number) }]
-	});
-	await fixtureTrackerJson(hub, ['done', ready.id]);
-	await fixtureTrackerJson(hub, ['done', later.id]);
 }
 
 async function verifySpokePublication(hub: TrackerNodeFixture) {

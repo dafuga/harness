@@ -186,3 +186,41 @@ function launchReply(runtime: TrackerNativeRuntimeService, id: string) {
 		'fixture'
 	);
 }
+
+export async function verifyIdleCapacityQueue(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	signal: AbortSignal,
+	advance: (elapsed: number) => void
+) {
+	const states = {
+		'idle-task1': {},
+		'later-task': { schedule_off: 1 },
+		'blocked-id': { needs_daniel: 1, question: 'Blocked: approval' }
+	};
+	const setActivity = database.prepare('UPDATE items SET updated_at = ? WHERE id = ?');
+	const lastActivity = new Date(runtime.now() - 119 * 60_000).toISOString();
+	for (const [id, state] of Object.entries(states)) {
+		const fields = { title: id, kind: 'task', status: 'open', project: 'Harness', ...state };
+		runtime.store.appendLocal({ itemId: id, fields });
+		setActivity.run(lastActivity, id);
+	}
+	await runtime.watchdog!.tick(signal);
+	const read = async (path: string) =>
+		await (await runtime.items.handle(new Request(`http://localhost${path}`))).json();
+	expect(await read('/items/idle-task1')).toMatchObject({ auto: null });
+	advance(60_000);
+	await runtime.watchdog!.tick(signal);
+	const queued = await read('/items/idle-task1');
+	expect(queued).toMatchObject({ auto: expect.any(String), launch_target: runtime.store.node });
+	expect(await read('/items/later-task')).toMatchObject({ auto: null });
+	expect(await read('/items/blocked-id')).toMatchObject({ auto: null });
+	advance(180_000);
+	await runtime.scheduler!.tick(signal);
+	expect(await read('/items/idle-task1')).toMatchObject({ auto: queued.auto });
+	expect(await read('/digest')).toMatchObject({
+		queued: expect.arrayContaining([
+			expect.objectContaining({ id: 'idle-task1', waiting_minutes: 3 })
+		])
+	});
+}

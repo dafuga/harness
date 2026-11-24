@@ -40,8 +40,7 @@ test('the primary hub delivers a reminder once through its CoS host binding with
 				() => runtime.notifications?.tick()
 			);
 			await create().notifications?.tick();
-			const lines = readFileSync(receipts, 'utf8').trim().split('\n');
-			expect(lines.map((line) => JSON.parse(line))).toMatchObject([
+			expect(receivedReceipts(receipts)).toMatchObject([
 				{
 					operation: 'watchdog-cos',
 					alerts: [{ item_id: 'fixture123', kind: 'remind_at', at: wake }]
@@ -50,9 +49,11 @@ test('the primary hub delivers a reminder once through its CoS host binding with
 			await verifyAskFollowThrough(
 				runtime,
 				create,
-				() => now,
-				(at) => {
-					now = at;
+				{
+					now: () => now,
+					at: (at) => {
+						now = at;
+					}
 				},
 				receipts
 			);
@@ -64,8 +65,7 @@ test('the primary hub delivers a reminder once through its CoS host binding with
 async function verifyAskFollowThrough(
 	runtime: TrackerNativeRuntimeService,
 	restart: () => TrackerNativeRuntimeService,
-	now: () => number,
-	at: (time: number) => void,
+	{ now, at }: { now: () => number; at: (time: number) => void },
 	receipts: string
 ) {
 	runtime.store.appendLocal({
@@ -79,10 +79,7 @@ async function verifyAskFollowThrough(
 	await restart().notifications?.tick();
 	at(morning + 120 * 60_000);
 	await restart().notifications?.tick();
-	const alerts = readFileSync(receipts, 'utf8')
-		.trim()
-		.split('\n')
-		.map((line) => JSON.parse(line).alerts[0]);
+	const alerts = receivedReceipts(receipts).flatMap(({ alerts }) => alerts);
 	expect(alerts.slice(1)).toMatchObject([
 		{
 			item_id: 'decision01',
@@ -102,7 +99,14 @@ async function verifyAskFollowThrough(
 	expect((await runtime.items.handle(answer))?.ok).toBe(true);
 	at(morning + 360 * 60_000);
 	await restart().notifications?.tick();
-	expect(readFileSync(receipts, 'utf8').trim().split('\n')).toHaveLength(3);
+	expect(receivedReceipts(receipts)).toHaveLength(3);
+}
+
+function receivedReceipts(path: string) {
+	return readFileSync(path, 'utf8')
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line));
 }
 
 const driver = `

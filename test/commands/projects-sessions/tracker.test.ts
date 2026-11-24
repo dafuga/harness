@@ -137,7 +137,7 @@ test('native show prints the full human item and returns the enriched JSON for a
 	});
 });
 
-test('native remind schedules a decision without changing its state and filters attention until it wakes', async () => {
+test('native remind holds delivery and keeps the ask visible in the digest', async () => {
 	const { runtime, run } = await compatibilityFixture();
 	runtime.store.appendLocal({
 		itemId: fixtureItem,
@@ -147,7 +147,7 @@ test('native remind schedules a decision without changing its state and filters 
 	expect(JSON.parse((await run('list', '--flagged', '--json')).out)).toEqual([]);
 	expect(JSON.parse((await run('digest', '--json')).out)).toMatchObject({
 		blocked: [],
-		needs_daniel: []
+		needs_daniel: [{ id: 'taskfixture', remind_at: at, waiting_minutes: 0 }]
 	});
 	expect(JSON.parse((await run('list', '--status', 'all', '--json')).out)).toEqual(
 		expect.arrayContaining([expect.objectContaining({ id: fixtureItem, remind_at: at })])

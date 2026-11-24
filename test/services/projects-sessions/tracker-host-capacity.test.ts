@@ -1,4 +1,7 @@
-import { verifyHostLaunchOutcomes } from '../../support/trackerLaunchOutcomeFixture';
+import {
+	verifyHostLaunchOutcomes,
+	verifyIdleCapacityQueue
+} from '../../support/trackerLaunchOutcomeFixture';
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -34,11 +37,7 @@ async function proveHostCapacity(root: string) {
 	const signal = new AbortController().signal;
 	const closed = join(root, 'closed');
 	try {
-		seedRetainedRuns(db, now);
-		runtime.store.appendLocal({
-			itemId: 'old008abcd',
-			fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
-		});
+		seedCompletedRetainedRun(runtime, db);
 		for (const id of ['next100001', 'next100002', 'next100003'])
 			queueCapacityItem(runtime, id, id === 'next100003');
 		clock += 300_000;
@@ -83,51 +82,6 @@ async function proveHostCapacity(root: string) {
 	}
 }
 
-async function verifyIdleCapacityQueue(
-	runtime: TrackerNativeRuntimeService,
-	database: DatabaseSync,
-	signal: AbortSignal,
-	advance: (elapsed: number) => void
-) {
-	for (const id of ['idle-task1', 'later-task', 'blocked-id']) {
-		runtime.store.appendLocal({
-			itemId: id,
-			fields: {
-				title: id,
-				kind: 'task',
-				status: 'open',
-				project: 'Harness',
-				...(id === 'later-task' && { schedule_off: 1 }),
-				...(id === 'blocked-id' && { needs_daniel: 1, question: 'Blocked: approval' })
-			}
-		});
-	}
-	// Older items share the current fixture with the original, recently active host sessions.
-	database
-		.prepare(
-			"UPDATE items SET updated_at = ? WHERE id IN ('idle-task1', 'later-task', 'blocked-id')"
-		)
-		.run(new Date(now - 114 * 60_000).toISOString());
-	await runtime.watchdog!.tick(signal);
-	const read = async (path: string) =>
-		await (await runtime.items.handle(new Request(`http://localhost${path}`)))!.json();
-	expect(await read('/items/idle-task1')).toMatchObject({ auto: null });
-	advance(60_000);
-	await runtime.watchdog!.tick(signal);
-	const queued = await read('/items/idle-task1');
-	expect(queued).toMatchObject({ auto: expect.any(String), launch_target: node });
-	expect(await read('/items/later-task')).toMatchObject({ auto: null });
-	expect(await read('/items/blocked-id')).toMatchObject({ auto: null });
-	advance(180_000);
-	await runtime.scheduler!.tick(signal);
-	expect(await read('/items/idle-task1')).toMatchObject({ auto: queued.auto });
-	expect(await read('/digest')).toMatchObject({
-		queued: expect.arrayContaining([
-			expect.objectContaining({ id: 'idle-task1', waiting_minutes: 3 })
-		])
-	});
-}
-
 async function expectPaneRetained(
 	runtime: TrackerNativeRuntimeService,
 	signal: AbortSignal,
@@ -135,6 +89,14 @@ async function expectPaneRetained(
 ) {
 	await runtime.scheduler!.tick(signal);
 	expect(existsSync(closed)).toBe(false);
+}
+
+function seedCompletedRetainedRun(runtime: TrackerNativeRuntimeService, database: DatabaseSync) {
+	seedRetainedRuns(database, now);
+	runtime.store.appendLocal({
+		itemId: 'old008abcd',
+		fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
+	});
 }
 
 function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, flagged: boolean) {

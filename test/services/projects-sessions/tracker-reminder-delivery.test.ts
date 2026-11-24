@@ -8,7 +8,8 @@ import {
 	minute,
 	notificationFixture,
 	start,
-	wire
+	wire,
+	verifyDirectFollowUps
 } from './tracker-notification/fixture';
 
 test('tick holds direct reminders through quiet hours, groups once, and repeats only active flags after retry', async () => {
@@ -56,36 +57,7 @@ test('tick holds direct reminders through quiet hours, groups once, and repeats 
 			{ id: 'due', reminder_number: 0, reason: 'due' }
 		]
 	});
-	const first = release + 5 * minute;
-	f.at(first + 119 * minute);
-	await f.service.tick();
-	expect(f.calls).toHaveLength(2);
-	f.at(first + 120 * minute);
-	await f.restart().tick();
-	expect(wire(f.calls[2])).toMatchObject({
-		new: [],
-		reminders: [{ id: 'flag', reminder_number: 1, waiting_minutes: 665 }]
-	});
-	f.at(first + 360 * minute);
-	await f.restart().tick();
-	expect(wire(f.calls[3])).toMatchObject({
-		reminders: [{ id: 'flag', reminder_number: 2, waiting_minutes: 905 }]
-	});
-	const nextMorning = Date.parse('2026-02-04T08:00:00Z');
-	f.rows.set('flag', { ...f.rows.get('flag')!, status: 'done' });
-	f.at(nextMorning - 1);
-	await f.service.tick();
-	expect(f.calls).toHaveLength(4);
-	f.at(nextMorning);
-	await f.restart().tick();
-	expect(wire(f.calls[4])).toMatchObject({
-		reminders: [{ id: 'flag', reminder_number: 3, waiting_minutes: 1980 }]
-	});
-	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
-	f.at(nextMorning + 24 * 60 * minute);
-	await f.service.tick();
-	expect(f.calls).toHaveLength(5);
-	expect([...f.queue.read().reminders.values()].every((r) => r.status === 'closed')).toBe(true);
+	await verifyDirectFollowUps(f, release + 5 * minute);
 });
 
 test('tick delivers the current explicit reminder once at its timestamp across restarts and quiet hours', async () => {
