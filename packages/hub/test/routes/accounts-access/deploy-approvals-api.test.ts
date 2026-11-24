@@ -101,6 +101,37 @@ test('denial, expiration, and revoked device or runner grants all prevent collec
 	}
 }, 20_000);
 
+test('a controlled plan requires a separate exact Go and action-time admission before reporting provider progress', async () => {
+	const fixture = await deployApprovalFixture();
+	try {
+		const original = approvalCardFixture(fixture.now + 30_000);
+		const card = { ...original, control: { run: original.id } };
+		const collect = await register(fixture, card);
+		const { id, plan } = card;
+		const go = { id, plan, decision: 'go' };
+		expect((await fixture.session(go)).status).toBe(409);
+		expect((await fixture.session({ id, plan, decision: 'allow' })).status).toBe(200);
+		expect(await response(await fixture.runner(collect))).toEqual([200, { status: 'pending' }]);
+		expect((await fixture.nonOwner(go)).status).toBe(404);
+		expect((await fixture.session({ ...go, plan: '9'.repeat(64) })).status).toBe(409);
+		const starts = await Promise.all([fixture.session(go), fixture.session(go)]);
+		expect(starts.map((item) => item.status).sort()).toEqual([200, 409]);
+		expect((await (await fixture.runner(collect)).json()).status).toBe('allowed');
+		expect((await (await fixture.runner(collect)).json()).status).toBe('refused');
+		const admit = { ...collect, kind: 'admit' };
+		const report = { ...collect, kind: 'report', progress: { phase: 'applying' } };
+		expect((await fixture.runner(report)).status).toBe(409);
+		expect((await fixture.runner(admit)).status).toBe(200);
+		expect((await fixture.runner(admit)).status).toBe(409);
+		expect((await fixture.runner(report)).status).toBe(200);
+		expect(await (await fixture.session()).json()).toEqual([
+			expect.objectContaining({ id, plan, progress: { phase: 'applying' } })
+		]);
+	} finally {
+		await fixture.close();
+	}
+}, 20_000);
+
 async function refuseUnscopedDecisions(
 	fixture: Awaited<ReturnType<typeof deployApprovalFixture>>,
 	decide: { id: string; plan: string; decision: string },
