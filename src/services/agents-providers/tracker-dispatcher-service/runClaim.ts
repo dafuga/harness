@@ -22,6 +22,9 @@ import {
 } from './launchEligibility';
 import { etaFor, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
 
+const staleSensitiveReason =
+	'sensitive setting changed after this launch was requested; cancel it and request again';
+
 export function claimLaunch(
 	snapshot: TrackerDispatchSnapshot,
 	{ token, grant }: { token: string; grant?: TrackerDueGrant },
@@ -88,6 +91,11 @@ export function cancelUnstartedRun(
 	);
 }
 
+/** A request made for a non-sensitive item must not start once the item is sensitive, and the reverse. */
+function sensitivityChanged(intent: TrackerLaunchIntent, item: TrackerDispatchItem) {
+	return intent.sensitive !== undefined && intent.sensitive !== Boolean(item.sensitive);
+}
+
 function claimHold(
 	snapshot: TrackerDispatchSnapshot,
 	{
@@ -99,6 +107,7 @@ function claimHold(
 	now: number
 ): string | null {
 	const intent = item.launch!;
+	if (sensitivityChanged(intent, item)) return staleSensitiveReason;
 	if (policy.enabled === false) return 'launcher disabled';
 	if (!startable(item)) return 'item is not startable';
 	if (!ownsLaunch(intent, policy)) return 'launch is assigned to a different computer';

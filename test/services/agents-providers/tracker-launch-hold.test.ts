@@ -52,3 +52,20 @@ test('a new request writes no hold and the journal stores the hold as its own fi
 		dispatchJournalFields({ launch: { token: sampleToken, source: 'manual', target: null } })
 	).toMatchObject({ launch_hold: null });
 });
+
+test('a queued launch is held and never started when the item becomes sensitive after the request', async () => {
+	const fixture = dispatcherFixture();
+	const { service, store, changeItem } = fixture;
+	await service.request(sampleId, { source: 'manual', token: sampleToken });
+	changeItem({ id: sampleId, sensitive: true });
+	const result = await service.claim(sampleId, sampleToken);
+	expect(result).toEqual({
+		status: 'held',
+		reason: expect.stringContaining('sensitive setting changed')
+	});
+	expect(store.runs(sampleId)).toEqual([]);
+	expect(store.item(sampleId)!.launch).toMatchObject({
+		token: sampleToken,
+		hold: { reason: expect.stringContaining('sensitive setting changed') }
+	});
+});

@@ -55,7 +55,12 @@ function manualIntent(
 	const target = manualTarget(updated, wanted, policy);
 	if (!target.node) return skip('held', target.why);
 	return writeIntent(
-		{ token, target: canonicalNode(target.node, policy), source: 'manual' },
+		{
+			token,
+			target: canonicalNode(target.node, policy),
+			source: 'manual',
+			sensitive: Boolean(updated.sensitive)
+		},
 		options
 	);
 }

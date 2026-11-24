@@ -27,6 +27,13 @@ export interface NativeTrackerItem {
 	last_result?: { occurrence: string; status: string; note?: string };
 }
 
+export interface NativeTrackerLaunchStatus {
+	status: 'queued' | 'waiting' | 'started' | 'refused' | 'withdrawn';
+	reason?: string;
+	computer?: string | null;
+	attempt?: number | null;
+}
+
 export interface NativeTrackerItemDetail extends NativeTrackerItem {
 	parent?: string;
 	question?: string;
@@ -47,7 +54,7 @@ export interface NativeTrackerItemDetail extends NativeTrackerItem {
 	launch_target?: string;
 	model?: string;
 	sensitive?: boolean;
-	launch_status?: { computer: string | null; reason: string };
+	launch_status?: NativeTrackerLaunchStatus | null;
 	runs?: NativeTrackerListedRun[];
 	created_at?: string;
 	created_by?: string;

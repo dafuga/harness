@@ -119,7 +119,7 @@ export class TrackerLocalApiService {
 				{ itemId: plan.itemId, fields: plan.fields, actor: readActor(request.headers) },
 				persist
 			);
-		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
+		return writeResponse(this.items, this.options, { action, verb, itemId: plan.itemId });
 	}
 
 	private mutationContext(): TrackerItemMutationContext {
@@ -142,6 +142,17 @@ export class TrackerLocalApiService {
 					))
 		};
 	}
+}
+
+/** A manual launch answers with the item's launch status; other writes answer with the stored item. */
+function writeResponse(
+	items: TrackerItemReadRepository,
+	options: TrackerLocalApiOptions,
+	{ action, verb, itemId }: { action?: string; verb?: string; itemId: string }
+): Response {
+	if (!action && verb === 'launch')
+		return trackerResponse(200, readTrackerItemDetail(items.get(itemId), options));
+	return trackerResponse(action === 'add' ? 201 : 200, items.getStored(itemId));
 }
 
 function phoneReplicaResponse(request: Request, url: URL, replica?: TrackerPhoneReplicaService) {

@@ -15,13 +15,14 @@ import {
 	trackerRunReport
 } from '../../../utils/agents-providers/trackerRunReport';
 import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
+import { launchRequestStatus } from './launchRequestStatus';
 
 export function readTrackerItemDetail(item: TrackerItem, options: TrackerLocalApiOptions) {
 	const runs = options.runs?.list({ itemId: item.id }) ?? [];
 	const launch = itemLaunchStatus(item, runs);
 	return {
 		...item,
-		...(item.auto || runs.length ? { runs, launch_status: launch } : {}),
+		...(item.auto || runs.length ? { runs, launch_status: launchRequestStatus(item, runs) } : {}),
 		schedule_preview: readSchedulePreview(item, options, launch)
 	};
 }
