@@ -2,11 +2,9 @@
 	"name": "tracker-model-routing-xepp6d",
 	"goal": "Route Tracker work by actual activity and use medium Sol by default. Verify native model selection and escalation.",
 	"createdAt": "2026-11-24T23:16:51.477Z",
-	"updatedAt": "2026-11-24T23:24:53.069Z",
+	"updatedAt": "2026-11-24T23:28:37.841Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T23:28:37.841Z",
+			"evidence": "Sealed c4d2d24cf1 red and b651944d98 green on the same 21 picker, policy, catalog, analytics and local API checks."
 		},
 		{
 			"id": "siblings",
