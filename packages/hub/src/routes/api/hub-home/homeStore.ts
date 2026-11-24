@@ -34,6 +34,25 @@ export async function readHomeSnapshot(
 	ownerId: string,
 	deps: Pick<HomeDeps, 'now' | 'sessions'>
 ): Promise<OwnerHomeSnapshot | null> {
+	const home = await currentHome(bucket, ownerId, deps);
+	if (home) return home;
+	const overview = await readOverview(bucket, await overviewKey(ownerId), { ...deps, ownerId });
+	return overview.status === 'ready' || overview.reason
+		? {
+				overview,
+				agents: [],
+				plans: [],
+				scheduled: [],
+				providers: { routines: null, quota: null }
+			}
+		: null;
+}
+
+async function currentHome(
+	bucket: OverviewBucket,
+	ownerId: string,
+	deps: Pick<HomeDeps, 'now' | 'sessions'>
+): Promise<OwnerHomeSnapshot | null> {
 	const stored = await bucket.get(await homeKey(ownerId));
 	if (stored) {
 		try {
@@ -48,17 +67,8 @@ export async function readHomeSnapshot(
 			)
 				return parseHomePayload(snapshot);
 		} catch {
-			// The older overview is independently verified and can still supply the work view.
+			// The caller can still use the independently verified overview.
 		}
 	}
-	const overview = await readOverview(bucket, await overviewKey(ownerId), { ...deps, ownerId });
-	return overview.status === 'ready' || overview.reason
-		? {
-				overview,
-				agents: [],
-				plans: [],
-				scheduled: [],
-				providers: { routines: null, quota: null }
-			}
-		: null;
+	return null;
 }

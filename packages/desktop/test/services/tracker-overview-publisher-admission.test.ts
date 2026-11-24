@@ -176,7 +176,7 @@ test('the owner snapshot validates both subscriptions and routine freshness with
 					}))
 				})
 			);
-			await vi.advanceTimersByTimeAsync(3_600_000);
+			vi.setSystemTime(now + 3_900_000);
 			await publisher.tick();
 			expect(authority.put).toHaveBeenLastCalledWith(
 				credential,

@@ -155,23 +155,33 @@ export function overviewSelection(
 		);
 		const item = card.items.find((entry) => entry.id === selection.itemId) ?? surfaced?.item;
 		if (!item) continue;
-		if (selection.kind === 'decision' && card.attention?.item.id !== item.id) return null;
-		if (selection.kind === 'run') {
-			const run = item.runs?.find(
-				(entry) => entry.id === selection.run.id && entry.computer === selection.run.computer
-			);
-			return run ? { item, title: `Run #${run.id}`, run } : null;
-		}
-		return {
-			item,
-			title: selection.kind === 'decision' ? 'Review decision' : item.title,
-			run: null,
-			project: card.agent,
-			context: surfaced?.text,
-			decision: selection.kind === 'decision'
-		};
+		return detailFor(card, item, selection, surfaced?.text);
 	}
 	return null;
+}
+
+function detailFor(
+	card: OverviewCard,
+	item: OverviewItem,
+	selection: ProjectOverviewSelection,
+	context: string | undefined
+) {
+	if (selection.kind === 'run') {
+		const run = item.runs?.find(
+			(entry) => entry.id === selection.run.id && entry.computer === selection.run.computer
+		);
+		return run ? { item, title: `Run #${run.id}`, run } : null;
+	}
+	const decision = selection.kind === 'decision';
+	if (decision && card.attention?.item.id !== item.id) return null;
+	return {
+		item,
+		title: decision ? 'Review decision' : item.title,
+		run: null,
+		project: card.agent,
+		context,
+		decision
+	};
 }
 
 export function overviewDetailRows(

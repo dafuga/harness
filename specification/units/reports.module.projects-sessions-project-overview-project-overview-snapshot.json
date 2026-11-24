@@ -58,7 +58,7 @@
 				"outputs": [
 					{
 						"name": "projectOverviewSnapshot",
-						"type": "OverviewSnapshot",
+						"type": "Extract<OverviewSnapshot, { status: 'ready' }>",
 						"description": "A display-ready snapshot with cards in status order, machines and a live session total."
 					}
 				],

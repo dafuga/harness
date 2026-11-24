@@ -50,6 +50,12 @@
 				"type": "(item: OverviewItem) => void",
 				"required": true,
 				"description": "Opens the work item provided by the card or action."
+			},
+			{
+				"name": "ProjectOverviewCard.onDecision",
+				"type": "(item: OverviewItem) => void",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [

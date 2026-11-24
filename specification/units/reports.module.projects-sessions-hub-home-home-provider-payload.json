@@ -11,9 +11,11 @@
 		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts"],
 		"symbols": [
 			"homeRunPayload",
+			"overviewProviderBudgetPayload",
 			"homeSubscriptionPayload",
 			"homeProviders",
-			"homeProviderReadingIsStale"
+			"homeProviderReadingIsStale",
+			"overviewProviderBudgets"
 		]
 	},
 	"contract": {
@@ -28,11 +30,25 @@
 				"name": "homeProviderReadingIsStale.now",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "overviewProviderBudgets.quota",
+				"type": "HomeProviderReadings['quota']",
+				"required": true
+			},
+			{
+				"name": "overviewProviderBudgets.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "homeRunPayload",
+				"type": "unknown"
+			},
+			{
+				"name": "overviewProviderBudgetPayload",
 				"type": "unknown"
 			},
 			{
@@ -46,6 +62,10 @@
 			{
 				"name": "homeProviderReadingIsStale",
 				"type": "unknown"
+			},
+			{
+				"name": "overviewProviderBudgets",
+				"type": "OverviewProviderBudget[] | null"
 			}
 		],
 		"errors": [],
@@ -73,13 +93,46 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "overviewProviderBudgets",
+				"inputs": [
+					{
+						"name": "overviewProviderBudgets.quota",
+						"type": "HomeProviderReadings['quota']",
+						"required": true
+					},
+					{
+						"name": "overviewProviderBudgets.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewProviderBudgets",
+						"type": "OverviewProviderBudget[] | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
 		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
 			"via": "import",
 			"origin": "derived"
 		}

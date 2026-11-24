@@ -27,8 +27,8 @@
 			"inProgressItems",
 			"sessionsText",
 			"countsText",
-			"surfacedContext",
-			"projectOf",
+			"overviewSelection",
+			"overviewDetailRows",
 			"OverviewFilter",
 			"OverviewChip",
 			"OverviewBandId",
@@ -154,28 +154,24 @@
 				"description": "The counts for the project’s displayed tracker statuses."
 			},
 			{
-				"name": "surfacedContext.cards",
+				"name": "overviewSelection.cards",
 				"type": "OverviewCard[]",
-				"required": true,
-				"description": "The display-ready projects considered for a filter, band, count, or item detail."
+				"required": true
 			},
 			{
-				"name": "surfacedContext.item",
-				"type": "OverviewItem",
-				"required": true,
-				"description": "The tracker item being visited or checked for display."
+				"name": "overviewSelection.selection",
+				"type": "ProjectOverviewSelection | null",
+				"required": true
 			},
 			{
-				"name": "projectOf.cards",
-				"type": "OverviewCard[]",
-				"required": true,
-				"description": "The display-ready projects considered for a filter, band, count, or item detail."
+				"name": "overviewDetailRows.detail",
+				"type": "ReturnType<typeof overviewSelection>",
+				"required": true
 			},
 			{
-				"name": "projectOf.item",
-				"type": "OverviewItem",
-				"required": true,
-				"description": "The tracker item being visited or checked for display."
+				"name": "overviewDetailRows.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -574,52 +570,46 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "surfacedContext",
+				"name": "overviewSelection",
 				"inputs": [
 					{
-						"name": "surfacedContext.cards",
+						"name": "overviewSelection.cards",
 						"type": "OverviewCard[]",
-						"required": true,
-						"description": "The display-ready projects considered for a filter, band, count, or item detail."
+						"required": true
 					},
 					{
-						"name": "surfacedContext.item",
-						"type": "OverviewItem",
-						"required": true,
-						"description": "The tracker item being visited or checked for display."
+						"name": "overviewSelection.selection",
+						"type": "ProjectOverviewSelection | null",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "surfacedContext",
-						"type": "string | null",
-						"description": "The matching question or blocked reason, or null when neither applies."
+						"name": "overviewSelection",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "projectOf",
+				"name": "overviewDetailRows",
 				"inputs": [
 					{
-						"name": "projectOf.cards",
-						"type": "OverviewCard[]",
-						"required": true,
-						"description": "The display-ready projects considered for a filter, band, count, or item detail."
+						"name": "overviewDetailRows.detail",
+						"type": "ReturnType<typeof overviewSelection>",
+						"required": true
 					},
 					{
-						"name": "projectOf.item",
-						"type": "OverviewItem",
-						"required": true,
-						"description": "The tracker item being visited or checked for display."
+						"name": "overviewDetailRows.now",
+						"type": "number",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "projectOf",
-						"type": "string | null",
-						"description": "The project name for the selected task, or null after the item disappears."
+						"name": "overviewDetailRows",
+						"type": "ProjectOverviewDetailRow[]"
 					}
 				],
 				"errors": [],
@@ -629,6 +619,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.component.projects-sessions-project-overview-project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
 			"via": "import",

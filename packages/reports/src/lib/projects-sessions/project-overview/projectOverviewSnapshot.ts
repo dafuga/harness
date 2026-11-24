@@ -73,12 +73,13 @@ function currentRuns(
 	const current = new Map<string, OverviewRun[]>();
 	for (const run of runs) {
 		if (run.state !== 'running' || run.ended_at !== null || !itemIds.has(run.item_id)) continue;
-		if (run.node && offline.has(run.node)) continue;
-		const key = `${run.node ?? ''}:${run.id}`;
+		const node = run.node ?? '';
+		if (offline.has(node)) continue;
+		const key = `${node}:${run.id}`;
 		if (seen.has(key)) continue;
 		seen.add(key);
 		const rows = current.get(run.item_id) ?? [];
-		rows.push({ id: run.id, computer: run.node ? sanitizeText(run.node) : null });
+		rows.push({ id: run.id, computer: sanitizeText(node) || null });
 		current.set(run.item_id, rows);
 	}
 	return current;

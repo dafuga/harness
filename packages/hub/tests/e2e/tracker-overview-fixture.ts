@@ -114,6 +114,8 @@ function answer(control: OverviewControl, state: HostedState): { status: number;
 	if (!owner || control.mode === 'denied')
 		return { status: 403, json: { error: 'owner-required' } };
 	if (control.mode === 'unavailable') return { status: 503, json: { status: 'unavailable' } };
+	if (control.mode === 'stale' || control.mode === 'host-revoked')
+		return { status: 503, json: { status: 'unavailable', reason: control.mode } };
 	if (control.mode === 'empty') {
 		return { status: 200, json: { status: 'ready', projects: [], machines: [], liveSessions: 0 } };
 	}
