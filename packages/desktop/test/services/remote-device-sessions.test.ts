@@ -201,8 +201,7 @@ test('keeps phone Tracker writes outside the paired read grant', async () => {
 	const denied = readOnly.phone(),
 		writer = permitted.phone();
 	expect((await denied.attach()).methods).not.toContain('trackerReplicaPush');
-	const { methods } = await writer.attach();
-	expect(methods).toContain('trackerReplicaPush');
+	expect((await writer.attach()).methods).toContain('trackerReplicaPush');
 	await expect(writer.client.request('trackerInboxWrite', {})).rejects.toMatchObject({
 		code: 'method-denied'
 	});
