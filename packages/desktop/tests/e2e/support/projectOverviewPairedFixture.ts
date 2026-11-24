@@ -1,3 +1,4 @@
+import { pairedTrackerData } from './projectOverviewPairedTrackerFixture';
 import type { Page } from '@playwright/test';
 import { pairedAccount, pairedOverviewReply, pairedReply } from './projectOverviewAccountFixture';
 import { overviewSnapshot } from './projectOverviewNativeFixture';
@@ -46,38 +47,6 @@ function pairedEmit(shell: PairedShell) {
 	shell.listeners.forEach((item) => {
 		if (item.eventName === 'status') item.callback(pairedRemoteStatus(shell.state));
 	});
-}
-
-function pairedTrackerData(name: string) {
-	const item = {
-		id: 'example01',
-		title: 'Fixture planning item',
-		project: 'fixture',
-		status: 'open',
-		updatedAt: null,
-		dueAt: null,
-		stage: 'detail'
-	};
-	if (name === 'tracker_status') return { needsYou: [item], recent: [], unresolvedFlags: 1 };
-	if (name === 'tracker_show')
-		return {
-			item,
-			notes: [],
-			flag: null,
-			runs: [],
-			planning: {
-				artifacts: {
-					detail: {
-						summary: 'Two main pages',
-						links: [
-							{ label: 'Main page design', url: 'https://example.test/design.png', kind: 'image' }
-						]
-					}
-				},
-				promotions: [{ stage: 'detail', by: 'Fixture Planner', at: '2026-11-24T12:00:00.000Z' }]
-			}
-		};
-	return {};
 }
 
 /** The `HarnessRemote` double: the computer is only ever asked for its empty project list. */

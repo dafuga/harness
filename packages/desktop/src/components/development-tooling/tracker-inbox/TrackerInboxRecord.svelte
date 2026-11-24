@@ -18,7 +18,7 @@
 </script>
 
 {#snippet designLinks(links: TrackerArtifact['links'])}
-	{#each links ?? [] as link}
+	{#each links ?? [] as link (link)}
 		<hx-p
 			><hx-a
 				class="artifact-link"
@@ -49,7 +49,7 @@
 				{#if artifact}
 					{#if artifact.summary}<hx-p>{artifact.summary}</hx-p>{/if}
 					{@render designLinks(artifact.links)}
-					{#each artifact.pages ?? [] as page}
+					{#each artifact.pages ?? [] as page (page)}
 						<hx-p><hx-strong>{page.name}</hx-strong></hx-p>
 						{#each Object.entries(page.states ?? {}) as [state, description] (state)}
 							<hx-p><hx-strong>{state}</hx-strong> · {description}</hx-p>
