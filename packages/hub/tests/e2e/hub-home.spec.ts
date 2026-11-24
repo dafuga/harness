@@ -6,7 +6,7 @@ import {
 	recordCapture
 } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { hubHomeFixture } from './hub-home-fixture';
+import { fit, hubHomeFixture, unavailableHome } from './hub-home-fixture';
 import type { CapturePosition, HomeFixture } from './hub-home-fixture.types';
 import manifest from '../../../../specification/scenarios/hub-home.json' with { type: 'json' };
 const screens = [
@@ -20,11 +20,20 @@ const screens = [
 test.setTimeout(90000);
 for (const viewport of manifest.viewports) {
 	for (const scheme of ['dark', 'light'] as const) {
-		for (const mode of ['default', 'busy', 'empty', 'loading'] as const) {
-			test(`Hub home ${viewport.id} ${scheme} ${mode}`, async ({ page }) => {
+		for (const mode of ['default', 'busy', 'empty', 'loading', 'unavailable'] as const) {
+			test(`Hub home ${viewport.id} ${scheme} ${mode}`, async ({
+				page,
+				baseURL,
+				browserErrors
+			}) => {
 				await page.setViewportSize({ width: viewport.width, height: viewport.height });
 				await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
 				const fixture = await hubHomeFixture(page, mode);
+				const path = [viewport.id, scheme, mode] as const;
+				if (mode === 'unavailable')
+					return unavailableHome({ page, baseURL, browserErrors }, fixture, (screen) =>
+						capture(page, path, screen)
+					);
 				await page.goto('/');
 				await expect(page).toHaveTitle('Harness · Home');
 				await expect(page.getByRole('heading', { level: 1 })).toHaveText(
@@ -38,7 +47,6 @@ for (const viewport of manifest.viewports) {
 					await expect(page.locator('.hh-projects .hh-change').first()).toBeVisible();
 				}
 				await fit(page, viewport.width);
-				const path = [viewport.id, scheme, mode] as const;
 				await capture(page, path, 'root');
 				const fullMatrix =
 					mode === 'default' || (scheme === 'dark' && ['phone', 'laptop'].includes(viewport.id));
@@ -165,16 +173,6 @@ async function fullDialog(page: Page, position: CapturePosition, screen: string)
 	} finally {
 		await page.setViewportSize(viewport);
 	}
-}
-
-async function fit(page: Page, width: number) {
-	const bounds = await page.evaluate(() => ({
-		width: document.documentElement.scrollWidth,
-		columns: getComputedStyle(document.querySelector('.hh-grid')!).gridTemplateColumns.split(' ')
-			.length
-	}));
-	expect(bounds.width).toBeLessThanOrEqual(width);
-	expect(bounds.columns).toBe(width === 390 ? 1 : width === 834 ? 2 : width === 1440 ? 3 : 4);
 }
 
 async function capture(page: Page, position: CapturePosition, screen: string, full = false) {

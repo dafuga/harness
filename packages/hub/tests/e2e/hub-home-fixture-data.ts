@@ -28,7 +28,9 @@ for (const name of ['data', 'data-work', 'data-busy', 'data-quota']) {
 }
 
 export function mockup(state: HomeFixtureState): MockupHomeData {
-	return fixtures.window.HH.data[state === 'loading' ? 'default' : state];
+	return fixtures.window.HH.data[
+		state === 'loading' || state === 'unavailable' ? 'default' : state
+	];
 }
 
 function workCards(data: MockupHomeData): OverviewCard[] {

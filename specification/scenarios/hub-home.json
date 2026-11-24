@@ -28,6 +28,12 @@
 			"title": "Cards and dialogs reserve room while data loads",
 			"coverage": "required",
 			"units": ["hub.page.root"]
+		},
+		{
+			"id": "unavailable",
+			"title": "Home explains missing Mac data and recovers Tracker projects",
+			"coverage": "required",
+			"units": ["hub.page.root"]
 		}
 	],
 	"viewports": [
@@ -65,7 +71,7 @@
 		{
 			"id": "home-screen",
 			"kind": "screenshot",
-			"states": ["default", "busy", "empty", "loading"],
+			"states": ["default", "busy", "empty", "loading", "unavailable"],
 			"viewports": ["phone", "tablet", "laptop", "wide"],
 			"provenance": "actual-capture",
 			"capture": "full-page",

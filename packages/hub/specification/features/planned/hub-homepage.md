@@ -40,8 +40,10 @@ Home follows the OS color scheme and uses the approved design in
   answer action for an open question. A phone uses separate list and chat steps.
 - Plans are Tracker plan items. Progress and next steps come from their child items.
 - Scheduled combines Tracker due dates and Claude scheduled routines. Box cron is deferred.
-- Projects use the signed-in member's Hub projects and the project's authorized catalog
-  and commit history.
+- Projects use the signed-in member's Hub projects and their authorized catalog and commit
+  history. When Shared Projects cannot be read, the configured owner can see the already
+  authorized, fresh Tracker projects and open Project Overview. A failed first read ends
+  loading, and the Projects dialog can retry. A successful shared list takes precedence.
 - Work in progress orders open tasks by due date. By project uses the existing overview
   and only includes done projects when Show done is selected.
 - Quota shows provider-reported remaining allowance, reset times, stale readings, and up
@@ -49,6 +51,9 @@ Home follows the OS color scheme and uses the approved design in
   10 percent. These are display warnings.
 - Empty and loading views keep the section structure. Busy views clamp previews and long
   titles. Owner data is cleared when the verified account changes.
+- When the verified owner has no usable Tracker snapshot, Home asks them to open Harness on
+  their Mac and sign in with the same Google account. The existing refresh shows fresh data
+  when it arrives. An account without owner access receives no owner data or linking prompt.
 
 ### Owner-host data
 
