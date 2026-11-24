@@ -10,6 +10,9 @@ const visualModule = { title: 'Review module screenshots', agent: 'Harness' };
 test('picks the cheapest eligible model for the requested activity', () => {
 	const routes = [
 		['Review screenshots', 'claude-haiku-5-5', 'high'],
+		['Review the designs', 'claude-haiku-5-5', 'high'],
+		['Create a visual design', 'claude-haiku-5-5', 'high'],
+		['Build a dashboard mock-up', 'claude-haiku-5-5', 'high'],
 		['Design a dashboard mockup', 'claude-haiku-5-5', 'high'],
 		['Polish the dashboard layout', 'claude-haiku-5-5', 'high'],
 		['Open the dashboard in Chrome and review its layout', 'gpt-6.1-terra', 'medium'],
