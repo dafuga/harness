@@ -2,7 +2,7 @@
 	"name": "tracker-follow-through-shpe9k",
 	"goal": "Replay item chasing, unattended work admission, and unanswered asks through the native Tracker lifecycle",
 	"createdAt": "2026-11-24T21:14:26.755Z",
-	"updatedAt": "2026-11-24T21:34:00.054Z",
+	"updatedAt": "2026-11-24T21:41:39.937Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T21:41:37.299Z",
+			"evidence": "Synced journal chase events, dispatcher admission for idle work, and durable Lisbon follow-ups use existing Tracker boundaries."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-24T21:41:39.937Z",
+			"evidence": "Frozen corpus failed at 3027531294 and passed at c2cd0bc4ea. Exact native CLI and tmux replay on harbor-mbp-2 passed eight tests."
 		},
 		{
 			"id": "siblings",

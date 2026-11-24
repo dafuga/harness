@@ -653,41 +653,13 @@
 				"required": true
 			},
 			{
-				"name": "trackerHostWatchdog.now",
-				"type": "() => number",
+				"name": "trackerHostWatchdog.options",
+				"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork'>",
 				"required": true
 			},
 			{
-				"name": "trackerHostWatchdog.launch",
-				"type": "TrackerWatchdogLaunch",
-				"required": true
-			},
-			{
-				"name": "trackerHostWatchdog.idleWork",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "configuredHostWatchdog.store",
-				"type": "TrackerPersistenceService",
-				"required": true,
-				"description": "Tracker state and watch metadata store used by the host watchdog."
-			},
-			{
-				"name": "configuredHostWatchdog.now",
-				"type": "() => number",
-				"required": true,
-				"description": "Clock callback used to schedule watchdog work and timestamp observations."
-			},
-			{
-				"name": "configuredHostWatchdog.dispatch",
-				"type": "TrackerDispatcherService | undefined",
-				"required": true,
-				"description": "Dispatch scheduler used when the watchdog recovers a launch."
-			},
-			{
-				"name": "configuredHostWatchdog.role",
-				"type": "unknown",
+				"name": "configuredHostWatchdog.runtime",
+				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
 				"required": true
 			},
 			{
@@ -2358,18 +2330,8 @@
 						"required": true
 					},
 					{
-						"name": "trackerHostWatchdog.now",
-						"type": "() => number",
-						"required": true
-					},
-					{
-						"name": "trackerHostWatchdog.launch",
-						"type": "TrackerWatchdogLaunch",
-						"required": true
-					},
-					{
-						"name": "trackerHostWatchdog.idleWork",
-						"type": "unknown",
+						"name": "trackerHostWatchdog.options",
+						"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork'>",
 						"required": true
 					}
 				],
@@ -2386,26 +2348,8 @@
 				"name": "configuredHostWatchdog",
 				"inputs": [
 					{
-						"name": "configuredHostWatchdog.store",
-						"type": "TrackerPersistenceService",
-						"required": true,
-						"description": "Tracker state and watch metadata store used by the host watchdog."
-					},
-					{
-						"name": "configuredHostWatchdog.now",
-						"type": "() => number",
-						"required": true,
-						"description": "Clock callback used to schedule watchdog work and timestamp observations."
-					},
-					{
-						"name": "configuredHostWatchdog.dispatch",
-						"type": "TrackerDispatcherService | undefined",
-						"required": true,
-						"description": "Dispatch scheduler used when the watchdog recovers a launch."
-					},
-					{
-						"name": "configuredHostWatchdog.role",
-						"type": "unknown",
+						"name": "configuredHostWatchdog.runtime",
+						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
 						"required": true
 					},
 					{
