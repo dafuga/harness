@@ -32,6 +32,8 @@ test('the Capacitor environment pairs by scanning: no link, code or address is e
 	const panel = computer(page);
 	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
 	await remoteEvidence(page, testInfo, 'phone-start');
+	await expect(panel.getByRole('button', { name: 'Scan QR code', exact: true })).toBeHidden();
+	await panel.getByText('Other connection options', { exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Phone access' })).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Shared projects' })).toHaveCount(0);
