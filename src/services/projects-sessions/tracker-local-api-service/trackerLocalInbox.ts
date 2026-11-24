@@ -17,8 +17,9 @@ import type {
 export async function trackerInboxItem(
 	request: Request,
 	id: string,
-	{ store, items, options, actor }: TrackerInboxRoute
+	ports: TrackerInboxRoute
 ): Promise<TrackerInboxResult> {
+	const { store, items, options, actor } = ports;
 	if (request.method === 'GET') {
 		const { revision, flaggedAt } = readInboxItem(store.database, id);
 		const runs = options.runs?.list({ itemId: id }).slice(-5).reverse() ?? [];

@@ -99,23 +99,8 @@
 				"required": true
 			},
 			{
-				"name": "trackerInboxItem.store",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "trackerInboxItem.items",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "trackerInboxItem.options",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "trackerInboxItem.actor",
-				"type": "unknown",
+				"name": "trackerInboxItem.ports",
+				"type": "TrackerInboxRoute",
 				"required": true
 			},
 			{
@@ -379,23 +364,8 @@
 						"required": true
 					},
 					{
-						"name": "trackerInboxItem.store",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "trackerInboxItem.items",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "trackerInboxItem.options",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "trackerInboxItem.actor",
-						"type": "unknown",
+						"name": "trackerInboxItem.ports",
+						"type": "TrackerInboxRoute",
 						"required": true
 					}
 				],
