@@ -130,6 +130,7 @@ const DISPLAY_LABEL_SNAPSHOT = {
 					updatedAt: '2026-11-20T19:41:00.000Z',
 					due: null,
 					live: true,
+					runs: [{ id: 1, computer: 'box' }],
 					stale: false
 				}
 			],

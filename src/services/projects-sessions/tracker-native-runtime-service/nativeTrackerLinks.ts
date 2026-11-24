@@ -74,6 +74,7 @@ function launchSampleRevision(
 	runner: {
 		enabled: boolean;
 		last_error?: string | null;
+		queued?: number;
 		waiting?: unknown;
 		waiting_tokens?: unknown;
 	},
@@ -83,6 +84,7 @@ function launchSampleRevision(
 	return JSON.stringify([
 		runner.enabled,
 		runner.last_error,
+		runner.queued,
 		runner.waiting,
 		runner.waiting_tokens,
 		latestId,
@@ -96,6 +98,7 @@ export const trackerRunnerSample = z.object({
 	last_error: z.string().nullish(),
 	waiting_on: z.string().nullish(),
 	active: z.int().nonnegative().nullish(),
+	queued: z.int().nonnegative().nullish(),
 	waiting: z.record(z.string(), z.string()).optional(),
 	waiting_tokens: z.record(z.string(), z.string()).optional()
 });

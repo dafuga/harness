@@ -2,6 +2,7 @@
 import type { MachineStatus } from './projectOverview.types';
 import type {
 	TrackerItemRecord,
+	TrackerMachineRecord,
 	TrackerItemStatus,
 	TrackerNote,
 	TrackerRunRecord,
@@ -145,12 +146,20 @@ function parseRun(value: unknown): TrackerRunRecord {
 	};
 }
 
-function parseMachine(value: unknown): { node: string; status: MachineStatus } {
+function parseMachine(value: unknown): TrackerMachineRecord {
 	const row = asRecord(value, 'machine');
 	return {
 		node: requiredText(row.node, 'machine node'),
-		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus
+		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus,
+		...(row.last_tick_at === undefined
+			? {}
+			: { lastTickAt: optionalTime(row.last_tick_at, 'last tracker tick') ?? null }),
+		...(row.queued === undefined ? {} : { queued: parseQueue(row.queued) })
 	};
+}
+
+function parseQueue(value: unknown): number | null {
+	return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 ? value : null;
 }
 
 function optionalNotes(value: unknown): TrackerNote[] | undefined {

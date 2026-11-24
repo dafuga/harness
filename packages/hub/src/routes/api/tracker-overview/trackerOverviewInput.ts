@@ -1,4 +1,5 @@
 // @harness-uid u_k4rxbz6pq3
+import { overviewProviderBudgetPayload } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 export { MAX_BODY_BYTES, readOverviewText } from './trackerOverviewBody';
@@ -37,7 +38,11 @@ export function readySnapshot(value: OverviewRecord): ReadyOverviewPayload {
 }
 
 function ready(value: OverviewRecord): ReadyOverviewPayload {
-	const body = record(value, ['status', 'projects', 'machines', 'liveSessions']);
+	const body = record(
+		value,
+		['status', 'projects', 'machines', 'liveSessions'],
+		['providerBudgets']
+	);
 	if (body.status !== 'ready') invalid();
 	const projects = list(body.projects, MAX_PROJECTS).map(card);
 	const agents = new Set(projects.map((project) => project.agent));
@@ -47,7 +52,10 @@ function ready(value: OverviewRecord): ReadyOverviewPayload {
 		status: 'ready',
 		projects,
 		machines: list(body.machines, MAX_MACHINES).map(machine),
-		liveSessions: live
+		liveSessions: live,
+		...(body.providerBudgets === undefined
+			? {}
+			: { providerBudgets: budgets(body.providerBudgets) })
 	};
 }
 
@@ -77,7 +85,11 @@ function card(value: unknown) {
 }
 
 function item(value: unknown) {
-	const body = record(value, ['id', 'title', 'status', 'updatedAt', 'due', 'live', 'stale']);
+	const body = record(
+		value,
+		['id', 'title', 'status', 'updatedAt', 'due', 'live', 'stale'],
+		['runs']
+	);
 	return {
 		id: identifier(body.id, 200),
 		title: excerpt(body.title, 500),
@@ -85,8 +97,16 @@ function item(value: unknown) {
 		updatedAt: time(body.updatedAt),
 		due: body.due === null ? null : time(body.due),
 		live: flag(body.live),
-		stale: flag(body.stale)
+		stale: flag(body.stale),
+		...(body.runs === undefined ? {} : { runs: list(body.runs, 10).map(run) })
 	};
+}
+
+function run(value: unknown) {
+	const body = record(value, ['id', 'computer']);
+	const id = body.id;
+	if (typeof id !== 'number' || !Number.isSafeInteger(id) || id <= 0) return invalid();
+	return { id, computer: body.computer === null ? null : identifier(body.computer, 200) };
 }
 
 function callout(value: unknown) {
@@ -102,11 +122,24 @@ function milestone(value: unknown) {
 }
 
 function machine(value: unknown) {
-	const body = record(value, ['name', 'status']);
+	const body = record(value, ['name', 'status'], ['lastTickAt', 'queued']);
 	return {
 		name: identifier(body.name, 200),
-		status: oneOf(body.status, MACHINE_STATUSES)
+		status: oneOf(body.status, MACHINE_STATUSES),
+		...(body.lastTickAt === undefined ? {} : { lastTickAt: nullableTime(body.lastTickAt) }),
+		...(body.queued === undefined
+			? {}
+			: { queued: body.queued === null ? null : count(body.queued) })
 	};
+}
+
+function budgets(value: unknown) {
+	const result = overviewProviderBudgetPayload.safeParse(value);
+	return result.success ? result.data : invalid();
+}
+
+function nullableTime(value: unknown) {
+	return value === null ? null : time(value);
 }
 
 function counts(value: unknown) {
@@ -121,9 +154,15 @@ function objectOf(value: unknown): OverviewRecord {
 }
 
 /** An exact key set: no missing key and no extra one. */
-function record(value: unknown, keys: readonly string[]): OverviewRecord {
+function record(
+	value: unknown,
+	keys: readonly string[],
+	optional: readonly string[] = []
+): OverviewRecord {
 	const body = objectOf(value);
-	const exact = Object.keys(body).length === keys.length && keys.every((key) => key in body);
+	const exact =
+		keys.every((key) => Object.hasOwn(body, key)) &&
+		Object.keys(body).every((key) => keys.includes(key) || optional.includes(key));
 	return exact ? body : invalid();
 }
 

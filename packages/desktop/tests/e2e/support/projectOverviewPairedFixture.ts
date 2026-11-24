@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { pairedAccount, pairedOverviewReply, pairedReply } from './projectOverviewAccountFixture';
-import { overviewSnapshot } from './projectOverviewNativeFixture';
+import { fixtureOverview } from './projectOverviewNativeFixture';
 import type {
 	PairedAccountCall,
 	PairedInstall,
@@ -165,7 +165,7 @@ function pairedScript(input: PairedInstall): string {
 /** A paired phone of the given mode, its account signed in as the synthetic owner. */
 export async function pairedPhoneFixture(page: Page, mode: PairedMode = 'owner') {
 	await page.addInitScript({
-		content: pairedScript({ mode, snapshot: overviewSnapshot })
+		content: pairedScript({ mode, snapshot: await fixtureOverview() })
 	});
 }
 

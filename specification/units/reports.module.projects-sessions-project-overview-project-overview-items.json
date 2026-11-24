@@ -56,10 +56,9 @@
 				"description": "The tracker item after sensitivity and state filtering."
 			},
 			{
-				"name": "toOverviewItem.live",
-				"type": "boolean",
-				"required": true,
-				"description": "Whether a live run maps to this item."
+				"name": "toOverviewItem.runs",
+				"type": "OverviewRun[]",
+				"required": true
 			},
 			{
 				"name": "toOverviewItem.now",
@@ -80,10 +79,9 @@
 				"description": "The text to inspect before displaying it."
 			},
 			{
-				"name": "toCallout.live",
-				"type": "boolean",
-				"required": true,
-				"description": "Whether a live run maps to this item."
+				"name": "toCallout.runs",
+				"type": "OverviewRun[]",
+				"required": true
 			},
 			{
 				"name": "toCallout.now",
@@ -223,10 +221,9 @@
 						"description": "The tracker item after sensitivity and state filtering."
 					},
 					{
-						"name": "toOverviewItem.live",
-						"type": "boolean",
-						"required": true,
-						"description": "Whether a live run maps to this item."
+						"name": "toOverviewItem.runs",
+						"type": "OverviewRun[]",
+						"required": true
 					},
 					{
 						"name": "toOverviewItem.now",
@@ -261,10 +258,9 @@
 						"description": "The text to inspect before displaying it."
 					},
 					{
-						"name": "toCallout.live",
-						"type": "boolean",
-						"required": true,
-						"description": "Whether a live run maps to this item."
+						"name": "toCallout.runs",
+						"type": "OverviewRun[]",
+						"required": true
 					},
 					{
 						"name": "toCallout.now",

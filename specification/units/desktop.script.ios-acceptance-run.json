@@ -26,6 +26,9 @@
 			"FixtureView",
 			"PairingOffer",
 			"Acceptance",
+			"seen",
+			"overviewDetails",
+			"overviewShot",
 			"FixtureControlOriginError",
 			"FixtureControlRefusedError",
 			"FixtureView",
@@ -129,6 +132,41 @@
 				"type": "Acceptance",
 				"required": true,
 				"description": "The TEST ONLY Acceptance context supplying the page and synthetic project name used by this flow. The operation also opens the fixture page through its card and waits for an image with nonzero naturalWidth."
+			},
+			{
+				"name": "seen.run",
+				"type": "Acceptance",
+				"required": true
+			},
+			{
+				"name": "seen.expression",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "seen.words",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "seen.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "overviewDetails.run",
+				"type": "Acceptance",
+				"required": true
+			},
+			{
+				"name": "overviewShot.run",
+				"type": "Acceptance",
+				"required": true
+			},
+			{
+				"name": "overviewShot.name",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -454,6 +492,80 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "seen",
+				"inputs": [
+					{
+						"name": "seen.run",
+						"type": "Acceptance",
+						"required": true
+					},
+					{
+						"name": "seen.expression",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "seen.words",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "seen.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "seen",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "overviewDetails",
+				"inputs": [
+					{
+						"name": "overviewDetails.run",
+						"type": "Acceptance",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewDetails",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "overviewShot",
+				"inputs": [
+					{
+						"name": "overviewShot.run",
+						"type": "Acceptance",
+						"required": true
+					},
+					{
+						"name": "overviewShot.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewShot",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

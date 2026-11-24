@@ -1,10 +1,14 @@
+import type { HomeDeps } from './homePolicy.types';
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import {
 	overviewKey,
 	OVERVIEW_TTL_MS,
 	readOverview
 } from '../tracker-overview/trackerOverviewCache';
-import type { OverviewBucket } from '../tracker-overview/trackerOverviewCache.types';
+import type {
+	OverviewBucket,
+	OverviewProvenance
+} from '../tracker-overview/trackerOverviewCache.types';
 import { parseHomePayload } from './homePayload';
 
 const prefix = 'hub-home/v1/';
@@ -18,9 +22,9 @@ export async function storeHome(
 	bucket: OverviewBucket,
 	ownerId: string,
 	snapshot: OwnerHomeSnapshot,
-	now: number
+	provenance: OverviewProvenance
 ) {
-	await bucket.put(await homeKey(ownerId), JSON.stringify({ snapshot, receivedAt: now }), {
+	await bucket.put(await homeKey(ownerId), JSON.stringify({ snapshot, ...provenance }), {
 		httpMetadata: { contentType: 'application/json' }
 	});
 }
@@ -28,21 +32,12 @@ export async function storeHome(
 export async function readHomeSnapshot(
 	bucket: OverviewBucket,
 	ownerId: string,
-	now: number
+	deps: Pick<HomeDeps, 'now' | 'sessions'>
 ): Promise<OwnerHomeSnapshot | null> {
-	const stored = await bucket.get(await homeKey(ownerId));
-	if (stored) {
-		try {
-			const { receivedAt, snapshot } = JSON.parse(await stored.text());
-			const age = now - receivedAt;
-			if (Number.isSafeInteger(receivedAt) && age >= 0 && age <= OVERVIEW_TTL_MS)
-				return parseHomePayload(snapshot);
-		} catch {
-			// The older overview is independently verified and can still supply the work view.
-		}
-	}
-	const overview = await readOverview(bucket, await overviewKey(ownerId), now);
-	return overview
+	const home = await currentHome(bucket, ownerId, deps);
+	if (home) return home;
+	const overview = await readOverview(bucket, await overviewKey(ownerId), { ...deps, ownerId });
+	return overview.status === 'ready' || overview.reason
 		? {
 				overview,
 				agents: [],
@@ -51,4 +46,29 @@ export async function readHomeSnapshot(
 				providers: { routines: null, quota: null }
 			}
 		: null;
+}
+
+async function currentHome(
+	bucket: OverviewBucket,
+	ownerId: string,
+	deps: Pick<HomeDeps, 'now' | 'sessions'>
+): Promise<OwnerHomeSnapshot | null> {
+	const stored = await bucket.get(await homeKey(ownerId));
+	if (stored) {
+		try {
+			const { receivedAt, snapshot, publisher } = JSON.parse(await stored.text());
+			const age = deps.now - receivedAt;
+			if (
+				Number.isSafeInteger(receivedAt) &&
+				age >= 0 &&
+				age <= OVERVIEW_TTL_MS &&
+				typeof publisher === 'string' &&
+				(await deps.sessions?.publisherLive(publisher, ownerId))
+			)
+				return parseHomePayload(snapshot);
+		} catch {
+			// The caller can still use the independently verified overview.
+		}
+	}
+	return null;
 }

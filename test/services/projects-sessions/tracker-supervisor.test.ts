@@ -19,6 +19,31 @@ const statusUnits = [
 	'service.agents-providers-tracker-dispatcher'
 ];
 
+test('marks a polling computer with held launches as overloaded', async () => {
+	const database = new DatabaseSync(':memory:');
+	const runtime = configuredSpoke(database, 1);
+	const abort = new AbortController();
+	const service = new TrackerSupervisorService(runtime, {
+		ticks: { notifications: async () => {}, adapter: async () => {} },
+		intervalMs: 5,
+		now
+	});
+	const running = service.run(abort.signal);
+	try {
+		await expect
+			.poll(() => service.status())
+			.toMatchObject({
+				machines: expect.arrayContaining([
+					{ node: secondary, status: 'overloaded', last_tick_at: timestamp, queued: 1 }
+				])
+			});
+	} finally {
+		abort.abort();
+		await running;
+		database.close();
+	}
+});
+
 test('reports node status and waits for in-flight work after cancellation', async () => {
 	const measureStatus = statusUnits.reduceRight(
 		(run, unit) => () => measureWorkload(unit, 'worker-lifecycle', run),
@@ -29,7 +54,7 @@ test('reports node status and waits for in-flight work after cancellation', asyn
 
 async function proveWorkerLifecycle() {
 	const database = new DatabaseSync(':memory:');
-	const runtime = configuredSpoke(database);
+	const runtime = configuredSpoke(database, 0);
 	const abort = new AbortController();
 	const blocked = Promise.withResolvers<void>();
 	const entered = Promise.withResolvers<void>();
@@ -83,6 +108,11 @@ function expectConnectedFleet(
 				lastError: null,
 				pending_push: 0
 			},
+			machines: [
+				{ node: primary, status: 'ok' },
+				{ node: secondary, status: 'busy', last_tick_at: timestamp },
+				{ node: 'grok-box', status: 'offline', last_tick_at: null }
+			],
 			autolaunch: {
 				computers: [
 					{ computer: primary, state: 'polling', active_runs: 0 },
@@ -93,7 +123,7 @@ function expectConnectedFleet(
 		});
 }
 
-function configuredSpoke(database: DatabaseSync) {
+function configuredSpoke(database: DatabaseSync, queued: number) {
 	let pulled = false;
 	const runtime = new TrackerNativeRuntimeService(database, {
 		node: primary,
@@ -118,7 +148,8 @@ function configuredSpoke(database: DatabaseSync) {
 									runner: {
 										enabled: true,
 										last_tick_at: timestamp,
-										active: 2
+										active: 2,
+										queued
 									}
 								}
 							]

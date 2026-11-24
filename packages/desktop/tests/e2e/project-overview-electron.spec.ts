@@ -4,11 +4,8 @@ import { mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import {
-	LEAK_SENTINELS,
-	syntheticTrackerPayloads,
-	TRACKER_URLS
-} from './support/projectOverviewElectronFixture';
+import { LEAK_SENTINELS } from './support/projectOverviewElectronFixture';
+import { fixtureOverview } from './support/projectOverviewNativeFixture';
 import {
 	makeTemporaryDesktopEntry,
 	OWNER,
@@ -16,7 +13,6 @@ import {
 	startHubSpy
 } from './support/trackerOverviewPublisherFixture';
 import type { HubSpy } from './support/trackerOverviewPublisherFixture';
-import { readProjectOverview } from '../../../reports/src/lib/projects-sessions/project-overview/readProjectOverview';
 
 /** The built desktop app: package.json main is dist/main.cjs, produced by `bun run build`. */
 const desktopRoot = resolve(import.meta.dirname, '../..');
@@ -88,16 +84,7 @@ function expectOwnerReads(hub: HubSpy) {
 }
 
 async function overviewHub(ready: boolean) {
-	const now = Date.now();
-	const payloads = syntheticTrackerPayloads(now);
-	const fetcher = async (url: RequestInfo | URL) => {
-		const key = Object.entries(TRACKER_URLS).find(
-			([, path]) => path === String(url)
-		)?.[0] as keyof typeof payloads;
-		if (!key) return new Response(null, { status: 404 });
-		return Response.json(payloads[key]);
-	};
-	return startHubSpy(ready ? await readProjectOverview(fetcher as typeof fetch, now) : undefined);
+	return startHubSpy(ready ? await fixtureOverview() : undefined);
 }
 
 test('the built app opens the owner overview through the signed-in Hub account', async ({
@@ -173,6 +160,20 @@ test('an open item shows read-only detail and writes nothing to the tracker', as
 		);
 		await page.keyboard.press('Escape');
 		await expect(detail).toHaveCount(0);
+		const phase = process.env.SCREENSHOT_LABEL ?? 'current';
+		await captureOverview(page, `${phase}-navigation`);
+		await expect(page.getByLabel('Computers')).toContainText('Queued 0');
+		await expect(page.getByLabel('Provider budget')).toContainText('Weekly 72% left');
+		await page.getByRole('button', { name: 'Review decision', exact: true }).click();
+		await expect(page.getByRole('dialog', { name: 'Review decision' })).toContainText(
+			'Synthetic question for the owner?'
+		);
+		await captureOverview(page, `${phase}-decision`);
+		await page.keyboard.press('Escape');
+		await page.getByRole('button', { name: /Synthetic live item/ }).click();
+		await page.getByRole('button', { name: 'Open run #101' }).click();
+		await expect(page.getByRole('dialog', { name: 'Run #101' })).toContainText('fixture-computer');
+		await captureOverview(page, `${phase}-run`);
 		expectOwnerReads(hub);
 	} finally {
 		await app?.close();

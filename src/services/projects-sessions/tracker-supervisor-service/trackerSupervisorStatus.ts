@@ -36,15 +36,30 @@ export function trackerSupervisorStatus(
 
 function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolean) {
 	const notification = runtime.notifications?.status();
+	const autolaunch = trackerAutolaunchStatus(runtime);
 	return {
 		chief_of_staff: notification?.chiefOfStaff ?? 'not configured',
 		backup: { enabled: false, note: 'backups run on the hub (set backup.enabled to change)' },
-		machines: [],
+		machines: autolaunch.computers.map(machineFromComputer),
 		webhook: notification?.webhook ?? defaultWebhookStatus(hub),
 		jobs: trackerJobsStatus(runtime),
 		adapters: runtime.adapter?.status() ?? { runner: null, active: false },
-		autolaunch: trackerAutolaunchStatus(runtime),
+		autolaunch,
 		quiet_hours: notification?.quietHours ?? null
+	};
+}
+
+function machineFromComputer(computer: ReturnType<typeof trackerFleetHealth>[number]) {
+	let status = 'offline';
+	if (computer.state === 'polling') {
+		if ((computer.queued ?? 0) > 0) status = 'overloaded';
+		else status = (computer.active_runs ?? 0) > 0 ? 'busy' : 'ok';
+	}
+	return {
+		node: computer.computer,
+		status,
+		last_tick_at: computer.last_tick_at,
+		queued: computer.state === 'polling' ? computer.queued : null
 	};
 }
 
@@ -133,11 +148,12 @@ function fleetRunnerDetails(
 	{
 		last_tick_at = null,
 		last_error = null,
-		waiting_on = null
+		waiting_on = null,
+		queued = null
 	}: z.infer<typeof trackerRunnerSample> = {},
 	active: number | null | undefined
 ) {
-	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null };
+	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null, queued };
 }
 
 function machineSamplesByNode(values: readonly unknown[]) {

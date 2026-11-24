@@ -93,6 +93,7 @@ async function proveIndependentDispatch() {
 		);
 		expect.soft(error).toBeUndefined();
 		expect.soft(scheduler.runnerStatus().waiting_on).toBe('no approved repository');
+		expect.soft(scheduler.runnerStatus(0)).toMatchObject({ queued: 2, waiting: {} });
 		expect.soft(repo.readSnapshot(refused).runs).toEqual([]);
 		expect.soft(repo.readSnapshot(failed).runs).toMatchObject([{ state: 'queued' }]);
 		expect.soft(repo.readSnapshot(runnable).runs).toMatchObject([{ state: 'running' }]);

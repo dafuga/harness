@@ -163,14 +163,26 @@ for (const viewport of viewports) {
 		browserErrors,
 		baseURL
 	}, testInfo) => {
-		refusal(browserErrors, baseURL!, unavailable);
-		await overviewFixture(page, 'unavailable');
+		refusal(browserErrors, baseURL!, unavailable, 3);
+		const { overview } = await overviewFixture(page, 'unavailable');
 		await open(page, viewport);
-		await expect(
-			page.getByText('The tracker could not be reached from this host, so no projects are shown.')
-		).toBeVisible();
+		const alert = page.getByRole('alert');
+		await expect(alert).toContainText('The tracker could not be reached');
 		await expect(page.getByText('synthetic-sync', { exact: true })).toHaveCount(0);
 		await capture(page, testInfo, 'unavailable', viewport);
+		for (const [mode, words] of [
+			['stale', 'The last Project Overview update expired'],
+			['host-revoked', 'The publishing host no longer has access']
+		] as const) {
+			overview.mode = mode;
+			await open(page, viewport);
+			await expect(alert).toContainText(words);
+			await expect(page.getByText('synthetic-sync', { exact: true })).toHaveCount(0);
+			if (process.env.TAKE_SCREENSHOT === 'true') {
+				await page.evaluate(() => document.fonts.ready);
+				await page.screenshot({ path: testInfo.outputPath(`${mode}-${viewport.id}.png`) });
+			}
+		}
 	});
 
 	test(`denied shows the refusal and no data at ${viewport.id}`, async ({

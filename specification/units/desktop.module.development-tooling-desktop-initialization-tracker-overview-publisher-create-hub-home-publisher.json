@@ -17,9 +17,9 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "createHubHomePublisher.file",
-				"type": "string",
-				"required": false
+				"name": "createHubHomePublisher.providers",
+				"type": "ReturnType<typeof createHomeProviderReader>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -29,15 +29,15 @@
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "none-found",
 		"operations": [
 			{
 				"name": "createHubHomePublisher",
 				"inputs": [
 					{
-						"name": "createHubHomePublisher.file",
-						"type": "string",
-						"required": false
+						"name": "createHubHomePublisher.providers",
+						"type": "ReturnType<typeof createHomeProviderReader>",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -47,7 +47,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "none-found"
 			}
 		],
 		"initialization": []

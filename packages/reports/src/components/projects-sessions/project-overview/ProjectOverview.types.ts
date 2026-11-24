@@ -1,5 +1,8 @@
 // @harness-uid u_n72w2an74r
-import type { OverviewSnapshot } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
+import type {
+	OverviewRun,
+	OverviewSnapshot
+} from '../../../lib/projects-sessions/project-overview/projectOverview.types';
 
 /** The Project Overview page; the component reads nothing itself and only shows what it is given. */
 export interface ProjectOverviewProps {
@@ -19,3 +22,7 @@ export interface ProjectOverviewDetailRow {
 	term: string;
 	value: string;
 }
+
+export type ProjectOverviewSelection =
+	| { kind: 'item' | 'decision'; itemId: string }
+	| { kind: 'run'; itemId: string; run: OverviewRun };

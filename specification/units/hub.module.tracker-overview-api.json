@@ -26,6 +26,7 @@
 			"clearOverview",
 			"readOverview",
 			"OverviewBucket",
+			"OverviewProvenance",
 			"StoredOverview",
 			"MAX_BODY_BYTES",
 			"readOverviewText",
@@ -37,6 +38,7 @@
 			"overviewSessions",
 			"OVERVIEW_PATH",
 			"serveTrackerOverview",
+			"OverviewSessions",
 			"OverviewDeps"
 		]
 	},
@@ -74,8 +76,8 @@
 				"required": true
 			},
 			{
-				"name": "storeOverview.now",
-				"type": "number",
+				"name": "storeOverview.provenance",
+				"type": "OverviewProvenance",
 				"required": true
 			},
 			{
@@ -99,8 +101,8 @@
 				"required": true
 			},
 			{
-				"name": "readOverview.now",
-				"type": "number",
+				"name": "readOverview.deps",
+				"type": "Pick<OverviewDeps, 'now' | 'ownerId' | 'sessions'>",
 				"required": true
 			},
 			{
@@ -205,8 +207,8 @@
 						"required": true
 					},
 					{
-						"name": "storeOverview.now",
-						"type": "number",
+						"name": "storeOverview.provenance",
+						"type": "OverviewProvenance",
 						"required": true
 					}
 				],
@@ -256,15 +258,15 @@
 						"required": true
 					},
 					{
-						"name": "readOverview.now",
-						"type": "number",
+						"name": "readOverview.deps",
+						"type": "Pick<OverviewDeps, 'now' | 'ownerId' | 'sessions'>",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "readOverview",
-						"type": "Promise<ReadyOverviewPayload | null>"
+						"type": "Promise<OverviewPayload>"
 					}
 				],
 				"errors": [],
@@ -318,7 +320,7 @@
 				"outputs": [
 					{
 						"name": "overviewSessions",
-						"type": "Pick<RequestSessionService, 'resolve'> | null"
+						"type": "OverviewSessions | null"
 					}
 				],
 				"errors": [],
@@ -388,6 +390,11 @@
 		},
 		{
 			"unit": "hub.service.request-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
 			"via": "import",
 			"origin": "derived"
 		},

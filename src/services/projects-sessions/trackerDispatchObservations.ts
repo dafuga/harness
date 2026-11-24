@@ -14,6 +14,7 @@ export function schedulerWaits(
 ) {
 	const entries = [...waits].slice(0, limit);
 	return {
+		queued: waits.size,
 		waiting_on: entries[0]?.[1].reason ?? null,
 		waiting: Object.fromEntries(entries.map(([id, { reason }]) => [id, reason])),
 		waiting_tokens: Object.fromEntries(entries.map(([id, { token }]) => [id, token]))

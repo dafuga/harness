@@ -16,7 +16,6 @@ import {
 	snapshot,
 	streamedPublish
 } from '../support/trackerOverviewFixture';
-
 const TTL = 90_000;
 
 test('an unconfigured owner answers every method with the opaque not-found', async () => {
@@ -84,6 +83,17 @@ test('the owner publishes with a bearer and reads back the same snapshot, never 
 		expect(await get.json()).toEqual(snapshot());
 		expect(get.headers.get('cache-control')).toBe('private, no-store');
 		expect(get.headers.get('access-control-allow-origin')).toBeNull();
+
+		await f.revoke(bearer);
+		const revoked = await f.handle(overviewRequest('GET', { cookie }));
+		expect(revoked.status).toBe(503);
+		expect(await revoked.json()).toEqual({ status: 'unavailable', reason: 'host-revoked' });
+		expect((await f.handle(overviewRequest('GET', { bearer }))).status).toBe(401);
+		const replacement = await f.native();
+		expect(
+			(await f.handle(overviewRequest('PUT', { bearer: replacement }, snapshot()))).status
+		).toBe(204);
+		expect((await f.handle(overviewRequest('GET', { cookie }))).status).toBe(200);
 	}));
 
 test('a snapshot is served for exactly 90 seconds and then unavailable', async () => {
@@ -95,9 +105,8 @@ test('a snapshot is served for exactly 90 seconds and then unavailable', async (
 	f.advance(1);
 	const late = await f.handle(overviewRequest('GET', { bearer }));
 	expect(late.status).toBe(503);
-	expect(await late.json()).toEqual({ status: 'unavailable' });
+	expect(await late.json()).toEqual({ status: 'unavailable', reason: 'stale' });
 });
-
 test('a changed owner cannot read the previous owner data', async () => {
 	const f = overviewFixture();
 	const bearer = await f.native();
@@ -124,7 +133,6 @@ test('a stored record from the future, with a bad shape, or not JSON is unavaila
 		expect((await f.handle(overviewRequest('GET', { bearer }))).status).toBe(503);
 	}
 });
-
 test('strictly rejects unknown, credential-bearing, malformed and inconsistent snapshots', async () => {
 	const f = overviewFixture();
 	const bearer = await f.native();
@@ -135,7 +143,6 @@ test('strictly rejects unknown, credential-bearing, malformed and inconsistent s
 	}
 	expect(f.bucket.objects.size).toBe(0);
 });
-
 test('a non-JSON content type or a malformed JSON body is refused', async () => {
 	const f = overviewFixture();
 	const bearer = await f.native();
@@ -149,7 +156,6 @@ test('a non-JSON content type or a malformed JSON body is refused', async () => 
 	expect((await f.handle(plain)).status).toBe(400);
 	expect((await f.handle(malformed)).status).toBe(400);
 });
-
 test('bodies over 256 KiB are refused, and exactly 256 KiB is accepted', async () => {
 	const f = overviewFixture();
 	const bearer = await f.native();

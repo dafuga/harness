@@ -1,5 +1,5 @@
 // @harness-uid u_6d3toxchme
-import type { OverviewCallout, OverviewItem } from './projectOverview.types';
+import type { OverviewCallout, OverviewItem, OverviewRun } from './projectOverview.types';
 import type { IncludedTrackerItem } from './projectOverviewTracker.types';
 import { sanitizeText } from './projectOverviewPrivacy';
 
@@ -19,7 +19,7 @@ export function isWithin(updatedAt: string, windowMs: number, now: number): bool
 /** @pure An item as shown on a card. Stale means in progress, not live, and unchanged for over 24 hours. */
 export function toOverviewItem(
 	record: IncludedTrackerItem,
-	live: boolean,
+	runs: OverviewRun[],
 	now: number
 ): OverviewItem {
 	const updatedAt = isoTime(record.updated_at);
@@ -29,20 +29,25 @@ export function toOverviewItem(
 		status: record.status,
 		updatedAt,
 		due: record.due ? isoTime(record.due) : null,
-		live,
-		stale: record.status === 'in_progress' && !live && !isWithin(updatedAt, DAY_MS, now)
+		live: runs.length > 0,
+		...(runs.length ? { runs: [...runs].sort(compareRuns).slice(0, 10) } : {}),
+		stale: record.status === 'in_progress' && runs.length === 0 && !isWithin(updatedAt, DAY_MS, now)
 	};
+}
+
+function compareRuns(a: OverviewRun, b: OverviewRun): number {
+	return b.id - a.id || compareText(a.computer ?? '', b.computer ?? '');
 }
 
 /** @pure A callout pairs an item with its sanitized question or reason. */
 export function toCallout(
 	record: IncludedTrackerItem,
 	text: string | null | undefined,
-	live: boolean,
+	runs: OverviewRun[],
 	now: number
 ): OverviewCallout {
 	return {
-		item: toOverviewItem(record, live, now),
+		item: toOverviewItem(record, runs, now),
 		text: sanitizeText(text || record.title)
 	};
 }

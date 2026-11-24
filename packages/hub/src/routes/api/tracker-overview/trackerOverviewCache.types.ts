@@ -5,7 +5,11 @@ import type { OverviewRecord } from './trackerOverviewInput.types';
 export type OverviewBucket = Pick<R2Bucket, 'get' | 'put' | 'delete'>;
 
 /** What is stored: the snapshot as the server received it, and when that was. */
-export interface StoredOverview {
+export interface OverviewProvenance {
 	receivedAt: number;
+	publisher: string;
+}
+
+export interface StoredOverview extends OverviewProvenance {
 	snapshot: OverviewRecord;
 }

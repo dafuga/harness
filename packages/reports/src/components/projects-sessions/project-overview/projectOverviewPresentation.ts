@@ -1,6 +1,6 @@
 // @harness-uid u_heb2rvinqp
+import type { ProjectOverviewDetailRow, ProjectOverviewSelection } from './ProjectOverview.types';
 import type {
-	OverviewCallout,
 	OverviewCard,
 	OverviewItem,
 	ProjectState
@@ -143,19 +143,72 @@ export function countsText(counts: OverviewCard['counts']): string {
 	return parts.length ? parts.join(' · ') : 'No items';
 }
 
-/** @pure The text a card shows of an item that was surfaced for attention. */
-export function surfacedContext(cards: OverviewCard[], item: OverviewItem): string | null {
-	const match = (callout: OverviewCallout | null) =>
-		callout !== null && callout.item.id === item.id ? callout.text : null;
+/** Resolve against the current owner snapshot so an expired item, decision or run closes. */
+export function overviewSelection(
+	cards: OverviewCard[],
+	selection: ProjectOverviewSelection | null
+) {
+	if (!selection) return null;
 	for (const card of cards) {
-		const text = match(card.attention) ?? match(card.blocked);
-		if (text !== null) return text;
+		const surfaced = [card.attention, card.blocked].find(
+			(entry) => entry?.item.id === selection.itemId
+		);
+		const item = card.items.find((entry) => entry.id === selection.itemId) ?? surfaced?.item;
+		if (!item) continue;
+		return detailFor(card, item, selection, surfaced?.text);
 	}
 	return null;
 }
 
-/** @pure The project an item belongs to, or null when no project lists it. */
-export function projectOf(cards: OverviewCard[], item: OverviewItem): string | null {
-	const owner = cards.find((card) => card.items.some((candidate) => candidate.id === item.id));
-	return owner ? owner.agent : null;
+function detailFor(
+	card: OverviewCard,
+	item: OverviewItem,
+	selection: ProjectOverviewSelection,
+	context: string | undefined
+) {
+	if (selection.kind === 'run') {
+		const run = item.runs?.find(
+			(entry) => entry.id === selection.run.id && entry.computer === selection.run.computer
+		);
+		return run ? { item, title: `Run #${run.id}`, run } : null;
+	}
+	const decision = selection.kind === 'decision';
+	if (decision && card.attention?.item.id !== item.id) return null;
+	return {
+		item,
+		title: decision ? 'Review decision' : item.title,
+		run: null,
+		project: card.agent,
+		context,
+		decision
+	};
+}
+
+export function overviewDetailRows(
+	detail: ReturnType<typeof overviewSelection>,
+	now: number
+): ProjectOverviewDetailRow[] {
+	if (!detail) return [];
+	const { item, run } = detail;
+	if (run) {
+		return [
+			{ term: 'Item', value: item.title },
+			{ term: 'Run ID', value: String(run.id) },
+			{ term: 'Computer', value: run.computer ?? 'Unavailable' },
+			{ term: 'Status', value: 'Running' }
+		];
+	}
+
+	const rows = [
+		{ term: 'Project', value: detail.project },
+		{ term: 'Status', value: statusLabel(item.status) },
+		{ term: 'ETA', value: etaFor(item.due, now).text },
+		{ term: 'Live', value: item.live ? 'Yes' : 'No' },
+		{ term: 'Stale', value: item.stale ? 'Yes' : 'No' },
+		{ term: 'Updated', value: formatWhen(item.updatedAt) },
+		{ term: 'Id', value: item.id }
+	];
+	if (detail.context)
+		rows.push({ term: detail.decision ? 'Question' : 'Context', value: detail.context });
+	return rows;
 }

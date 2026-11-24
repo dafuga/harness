@@ -1,5 +1,12 @@
 /** How the owner endpoint answers in one test. `held` keeps the read in flight until released. */
-export type OverviewMode = 'ready' | 'empty' | 'unavailable' | 'denied' | 'held';
+export type OverviewMode =
+	| 'ready'
+	| 'empty'
+	| 'unavailable'
+	| 'stale'
+	| 'host-revoked'
+	| 'denied'
+	| 'held';
 
 /** One request the page made to the owner endpoint, without any header or body. */
 export interface OverviewCall {

@@ -13,20 +13,22 @@
 	import ProjectOverviewCard from './ProjectOverviewCard.svelte';
 	import {
 		bandsFor,
-		etaFor,
 		filterChips,
 		formatWhen,
 		headline,
-		projectOf,
-		statusLabel,
+		overviewSelection,
+		overviewDetailRows,
 		stateLabel,
-		surfacedContext,
 		totalsLine,
 		visibleCards
 	} from './projectOverviewPresentation';
 	import type { OverviewFilter } from './projectOverviewPresentation.types';
 	import type { OverviewItem } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
-	import type { ProjectOverviewDetailRow, ProjectOverviewProps } from './ProjectOverview.types';
+	import type {
+		ProjectOverviewDetailRow,
+		ProjectOverviewProps,
+		ProjectOverviewSelection
+	} from './ProjectOverview.types';
 	import '../../../lib/styles/project-overview.css';
 	import '../../../lib/styles/project-overview-cards.css';
 	import '../../../lib/styles/project-overview-controls.css';
@@ -38,31 +40,20 @@
 	let filter = $state<OverviewFilter>('all');
 	const visible = $derived(visibleCards(cards, filter));
 	const now = Date.now();
-	let selected = $state<OverviewItem | null>(null);
-	let opener: HTMLElement | null = null;
-	const detailRows = $derived.by((): ProjectOverviewDetailRow[] => {
-		if (!selected) return [];
-		const item = selected;
-		const context = surfacedContext(cards, item);
-		const rows: ProjectOverviewDetailRow[] = [
-			{ term: 'Project', value: projectOf(cards, item) ?? 'Not listed' },
-			{ term: 'Status', value: statusLabel(item.status) },
-			{ term: 'ETA', value: etaFor(item.due, now).text },
-			{ term: 'Live', value: item.live ? 'Yes' : 'No' },
-			{ term: 'Stale', value: item.stale ? 'Yes' : 'No' },
-			{ term: 'Updated', value: formatWhen(item.updatedAt) },
-			{ term: 'Id', value: item.id }
-		];
-		if (context) rows.push({ term: 'Context', value: context });
-		return rows;
+	let selection = $state<ProjectOverviewSelection | null>(null);
+	const selected = $derived(overviewSelection(cards, selection));
+	$effect(() => {
+		if (selection && !selected) closeItem();
 	});
-	function openItem(item: OverviewItem): void {
+	let opener: HTMLElement | null = null;
+	const detailRows = $derived(overviewDetailRows(selected, now));
+	function openItem(item: OverviewItem, kind: 'item' | 'decision' = 'item'): void {
 		opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-		selected = item;
+		selection = { kind, itemId: item.id };
 	}
 	function closeItem(): void {
 		const target = opener;
-		selected = null;
+		selection = null;
 		opener = null;
 		void tick().then(() => target?.focus());
 	}
@@ -84,6 +75,38 @@
 					<Pill as="li" tone="po-machine" state={machine.status}>
 						<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
 						{machine.name} <hx-span class="po-machine-status">{machine.status}</hx-span>
+						<hx-span
+							>{machine.queued == null ? 'Queue unavailable' : `Queued ${machine.queued}`}</hx-span
+						>
+						<hx-span
+							>{machine.lastTickAt
+								? `Checked ${formatWhen(machine.lastTickAt)}`
+								: 'Check time unavailable'}</hx-span
+						>
+					</Pill>
+				{/each}
+			</hx-ul>
+			{#if !ready.machines.length}
+				<hx-p class="po-totals">Computer status unavailable</hx-p>
+			{/if}
+			<hx-ul class="po-machines" aria-label="Provider budget">
+				{#each ['claude', 'codex'] as provider (provider)}
+					{@const budget = ready.providerBudgets?.find((reading) => reading.provider === provider)}
+					<Pill as="li" tone="po-machine">
+						{provider === 'claude' ? 'Claude' : 'Codex'}
+						{#if budget}
+							{#each budget.limits as limit (limit)}
+								<hx-span
+									>{limit.label}
+									{limit.left}% left{limit.resetsAt
+										? ` · resets ${formatWhen(limit.resetsAt)}`
+										: ''}</hx-span
+								>
+							{/each}
+							<hx-span>Checked {formatWhen(budget.readAt)}</hx-span>
+						{:else}
+							<hx-span>Budget unavailable</hx-span>
+						{/if}
 					</Pill>
 				{/each}
 			</hx-ul>
@@ -96,7 +119,11 @@
 		<EmptyState as="div" className="po-empty" role="status">Loading projects…</EmptyState>
 	{:else if snapshot.status === 'unavailable'}
 		<Notice as="div" className="po-notice" role="alert"
-			>The tracker could not be reached from this host, so no projects are shown.</Notice
+			>{snapshot.reason === 'stale'
+				? 'The last Project Overview update expired. Waiting for a fresh update from the host.'
+				: snapshot.reason === 'host-revoked'
+					? 'The publishing host no longer has access to Project Overview.'
+					: 'The tracker could not be reached from this host, so no projects are shown.'}</Notice
 		>
 	{:else if cards.length === 0}
 		<EmptyState as="div" className="po-empty" role="status"
@@ -126,7 +153,12 @@
 					>
 					<hx-div class="po-grid" class:po-grid-compact={band.id === 'quiet' || band.id === 'done'}>
 						{#each band.cards as card (card)}
-							<ProjectOverviewCard {card} {now} onOpen={openItem} />
+							<ProjectOverviewCard
+								{card}
+								{now}
+								onOpen={openItem}
+								onDecision={(item) => openItem(item, 'decision')}
+							/>
 						{/each}
 					</hx-div>
 				</hx-section>
@@ -160,5 +192,18 @@
 			{#snippet label(row: ProjectOverviewDetailRow)}{row.term}{/snippet}
 			{#snippet children(row: ProjectOverviewDetailRow)}{row.value}{/snippet}
 		</DetailList>
+		{#if selection?.kind === 'item'}
+			{#each selected.item.runs ?? [] as run (run)}
+				<hx-button
+					type="button"
+					class="po-action"
+					onclick={() => {
+						if (selected) selection = { kind: 'run', itemId: selected.item.id, run };
+					}}
+				>
+					Open run #{run.id}
+				</hx-button>
+			{/each}
+		{/if}
 	{/if}
 </Modal>

@@ -1,5 +1,7 @@
 // @harness-uid u_6dm7i22pxp
 import { z } from 'zod';
+import type { HomeProviderReadings } from './hubHome.types';
+import type { OverviewProviderBudget } from '../project-overview/projectOverview.types';
 import { sanitizeText } from '../project-overview/projectOverviewPrivacy';
 
 const text = (max: number) =>
@@ -26,6 +28,20 @@ export const homeRunPayload = z.object({
 
 const limit = z.object({ id, label: short, left: percent, resetsAt: time.nullable() });
 
+export const overviewProviderBudgetPayload = z
+	.array(
+		z.strictObject({
+			provider: z.enum(['claude', 'codex']),
+			readAt: time,
+			limits: z
+				.array(z.strictObject({ label: short, left: percent, resetsAt: time.nullable() }))
+				.max(10)
+		})
+	)
+	.max(2)
+	.refine((rows) => new Set(rows.map((row) => row.provider)).size === rows.length)
+	.nullable();
+
 export const homeSubscriptionPayload = z.object({
 	id,
 	provider: z.enum(['claude', 'codex']),
@@ -51,4 +67,22 @@ export const homeProviders = z.object({
 export function homeProviderReadingIsStale(readAt: string | null | undefined, now: number) {
 	const age = now - Date.parse(readAt ?? '');
 	return !Number.isFinite(age) || age < 0 || age > 3_600_000;
+}
+
+/** Publish one unambiguous, current reading per provider, limited to displayable quota windows. */
+export function overviewProviderBudgets(
+	quota: HomeProviderReadings['quota'],
+	now: number
+): OverviewProviderBudget[] | null {
+	const budgets = (['claude', 'codex'] as const).flatMap((provider) => {
+		const accounts = quota?.filter((account) => account.provider === provider) ?? [];
+		if (accounts.length !== 1) return [];
+		const [reading] = accounts;
+		if (homeProviderReadingIsStale(reading.readAt, now) || !reading.limits.length) return [];
+		const limits = reading.limits
+			.filter(({ resetsAt }) => resetsAt === null || Date.parse(resetsAt) > now)
+			.map(({ label, left, resetsAt }) => ({ label, left, resetsAt }));
+		return limits.length ? [{ provider, readAt: reading.readAt, limits }] : [];
+	});
+	return budgets.length ? budgets : null;
 }
