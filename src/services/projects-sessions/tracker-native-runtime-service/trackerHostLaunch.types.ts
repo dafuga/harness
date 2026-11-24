@@ -19,11 +19,13 @@ export interface TrackerHostRouteItem {
 	repo?: string | null;
 }
 
-export type TrackerHostRoute = (item: TrackerHostRouteItem) => TrackerHostRepository | undefined;
+export type TrackerHostTarget = TrackerHostRepository | { workdir: string; platform: 'macos' };
+
+export type TrackerHostRoute = (item: TrackerHostRouteItem) => TrackerHostTarget | undefined;
 
 export type TrackerHostStartReply = z.infer<typeof hostStart>;
 
-export interface TrackerHostStartRequest extends TrackerHostRepository {
+export type TrackerHostStartRequest = TrackerHostTarget & {
 	node: string;
 	itemId: string;
 	runId: number;
@@ -32,7 +34,7 @@ export interface TrackerHostStartRequest extends TrackerHostRepository {
 	brief: string;
 	backend: 'native' | 'docker';
 	queuedAt: number;
-}
+};
 
 export interface TrackerHostLaunchPort {
 	inspect(

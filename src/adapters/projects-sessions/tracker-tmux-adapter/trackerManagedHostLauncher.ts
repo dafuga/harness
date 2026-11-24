@@ -1,5 +1,5 @@
 // @harness-uid u_fyf7e7kyi5
-import { mkdirSync, realpathSync, statSync, writeFileSync } from 'node:fs';
+import { mkdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { TrackerRunReceipt } from '../../../services/agents-providers/TrackerDispatcherService.types';
 import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
@@ -30,7 +30,8 @@ import {
 	workerScript,
 	launchTmux,
 	managedBrief,
-	trackerSocket
+	trackerSocket,
+	prepareTrackerWorkingDirectory
 } from './trackerManagedWorkerProcess';
 import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
 import {
@@ -134,15 +135,8 @@ async function prepareManagedLaunch(
 	client: TrackerWorkerClient,
 	signal: AbortSignal
 ) {
-	const repo = realpathSync(input.repo);
-	if (!statSync(repo).isDirectory()) return null;
-	const worktree = join(directory, 'worktree');
-	const git = await runTrackerHostCommand(
-		'/usr/bin/git',
-		['-C', repo, '-c', 'core.hooksPath=/dev/null', 'worktree', 'add', '--detach', worktree, 'HEAD'],
-		signal
-	);
-	if (git.code !== 0) return null;
+	const worktree = await prepareTrackerWorkingDirectory(directory, input, signal);
+	if (!worktree) return null;
 	const receipt: TrackerManagedReceipt = {
 		node: input.node,
 		key: input.key,

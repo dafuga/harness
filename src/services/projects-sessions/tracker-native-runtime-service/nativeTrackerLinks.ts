@@ -33,7 +33,7 @@ export function composeTrackerTelemetry(
 	const link = options.links?.find((entry) => (entry.link ?? 'hub') === 'hub');
 	const machines = options.syncResponder?.machines;
 	if (machines) return { tick: undefined, samples: () => machines.latestSamples() };
-	if (!telemetry || !link) return { tick: undefined, samples: undefined };
+	if (!link) return { tick: undefined, samples: undefined };
 	const now = options.now ?? Date.now;
 	let nextPoll = -Infinity;
 	let samples: readonly unknown[] = [];
@@ -45,13 +45,13 @@ export function composeTrackerTelemetry(
 			store,
 			transport: (request) => link.transport(request, signal)
 		});
-		const received = await client.exchangeMachine(telemetry.sample(), runs.exportLocal());
+		const received = await client.exchangeMachine(telemetry?.sample(), runs.exportLocal());
 		signal.throwIfAborted();
 		if (received.run_history) runs.importHubHistory(received.run_history);
 		samples = received.machines;
-		telemetry.onMachines?.(samples);
+		telemetry?.onMachines?.(samples);
 	};
-	return { tick, samples: () => samples };
+	return { tick, samples: telemetry ? () => samples : undefined };
 }
 
 export function trackerSpokeStatus(links: readonly TrackerSpokeLoopService[]) {

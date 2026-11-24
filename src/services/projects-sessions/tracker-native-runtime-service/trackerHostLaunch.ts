@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { statSync } from 'node:fs';
 import { trackerHostAdmission } from './trackerHostAdmission';
 import { trackerHostLaunchPort } from './trackerHostLaunchPort';
 import { canonicalNode } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
@@ -16,7 +17,7 @@ import type {
 	TrackerHostRepository,
 	TrackerWorkerClient
 } from './nativeTrackerHostEffects.types';
-import type { TrackerHostRouteItem } from './trackerHostLaunch.types';
+import type { TrackerHostRouteItem, TrackerHostTarget } from './trackerHostLaunch.types';
 import { trackerHostRunner } from './trackerHostRunner';
 
 const macNodes = new Set(['daniel-primary-mbp', 'harbor-mbp-2']);
@@ -40,7 +41,9 @@ export function trackerHostLaunch(
 	const repositories = new Map(
 		Object.entries(config.repositories).map(([project, route]) => [project.toLowerCase(), route])
 	);
-	const routeFor = (item: TrackerHostRouteItem) => approvedRoute(item, repositories, node);
+	const opsWorkdir = 'managed' in config ? config.managed.opsWorkdir : undefined;
+	const routeFor = (item: TrackerHostRouteItem) =>
+		approvedRoute(item, repositories, node, opsWorkdir);
 	const tmux = tmuxExecutable
 		? new TrackerTmuxAdapter({ executable: tmuxExecutable, node })
 		: undefined;
@@ -56,11 +59,25 @@ export function trackerHostLaunch(
 		policy: {
 			timezone: 'Europe/Lisbon',
 			chooseHost(item, { requestedNode }) {
-				if ((!requestedNode || canonicalNode(requestedNode, {}) === node) && routeFor(item))
-					return { node, why: 'approved local Tracker repository' };
-				return { node: null, why: 'no approved local Tracker repository' };
+				const route = routeFor(item);
+				if (route && (!requestedNode || canonicalNode(requestedNode, {}) === node))
+					return {
+						node,
+						why:
+							'workdir' in route
+								? 'approved local operations workdir'
+								: 'approved local Tracker repository'
+					};
+				return {
+					node: null,
+					why: 'no approved Tracker repository or operations workdir on the selected computer'
+				};
 			},
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
+			opsWorkdirAvailable(item) {
+				const route = routeFor(item);
+				return Boolean(route && 'workdir' in route);
+			},
 			admit,
 			pickModel: pickHostModel,
 			retryModel: retryTrackerModel
@@ -78,13 +95,25 @@ export function trackerHostLaunch(
 function approvedRoute(
 	item: TrackerHostRouteItem,
 	repositories: ReadonlyMap<string, TrackerHostRepository>,
-	node: string
-) {
+	node: string,
+	opsWorkdir?: string
+): TrackerHostTarget | undefined {
 	const project = (item.project ?? item.agent)?.toLowerCase();
 	const route = project
 		? repositories.get(project)
 		: [...repositories.values()].find(({ repo }) => item.repo === repo);
-	if (!route || (item.repo && item.repo !== route.repo)) return undefined;
+	if (!route) {
+		if (
+			!item.repo &&
+			!item.project &&
+			opsWorkdir &&
+			macNodes.has(node) &&
+			statSync(opsWorkdir, { throwIfNoEntry: false })?.isDirectory()
+		)
+			return { workdir: opsWorkdir, platform: 'macos' };
+		return undefined;
+	}
+	if (item.repo && item.repo !== route.repo) return undefined;
 	return route.platform !== 'macos' || macNodes.has(node) ? route : undefined;
 }
 

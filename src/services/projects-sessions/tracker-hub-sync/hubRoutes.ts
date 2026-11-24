@@ -33,17 +33,18 @@ export function recordFleetTelemetry(
 	peer: string
 ): Response {
 	const { machines } = options;
-	if (!machines) return trackerHubResponse(404, { error: 'machine tracking disabled on the hub' });
+	const runStore = options.runs?.();
+	if (!machines && !runStore)
+		return trackerHubResponse(404, { error: 'machine tracking disabled on the hub' });
 	const { sample, runs } = parseBody(body);
 	if (sample) {
 		if (!isRecord(sample)) throw new TrackerHubInputError(400, 'malformed machine sample');
-		machines.record({ ...sample, node: peer });
+		machines?.record({ ...sample, node: peer });
 	}
-	const runStore = options.runs?.();
 	if (runStore && Array.isArray(runs)) runStore.importRemote(peer, runs);
 	return trackerHubResponse(200, {
 		ok: true,
-		machines: machines.latestSamples(),
+		machines: machines?.latestSamples() ?? [],
 		...(runStore ? { run_history: runStore.historyRowsFor(peer) } : {})
 	});
 }
