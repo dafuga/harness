@@ -1,3 +1,13 @@
+---
+id: vault-setup
+status: planned
+owner: vault-setup-installer
+reviewedAt: 2026-11-24
+unitIds:
+  - command.accounts-access-vault-setup
+  - desktop.component.accounts-access-vault-setup
+---
+
 # Vault setup on this computer
 
 Harness owns the local executor lifecycle. The CLI exposes `harness vault setup`,
