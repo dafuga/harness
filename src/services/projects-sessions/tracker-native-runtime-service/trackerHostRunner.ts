@@ -22,6 +22,7 @@ import type {
 	TrackerHostSession
 } from './trackerHostLaunch.types';
 import { formatTrackerHostBrief } from './trackerHostBrief';
+import { trackerItemStatus, withTrackerRunUsage } from './trackerHostLaunchPort';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -56,8 +57,9 @@ export function trackerHostRunner(
 				return result;
 			},
 			legacySession,
-			async observe(run: TrackerRunReceipt, key: string) {
-				return recordedHostEvent(run, { key, sessions, items, legacySession });
+			async observe(run: TrackerRunReceipt, key: string, signal: AbortSignal) {
+				const event = recordedHostEvent(run, { key, sessions, items, legacySession });
+				return withTrackerRunUsage(event, { driver, run, items, now: now() }, signal);
 			},
 			confirmNeverStarted: driver.confirmNeverStarted?.bind(driver)
 		},
@@ -196,7 +198,7 @@ function recordedHostEvent(
 			);
 	if (run.state === 'queued') return session && { type: 'session', session };
 	if (!session || session.id !== (run.host_session_id ?? run.session_id))
-		return finishedTrackerItem(items, run.item_id)
+		return trackerItemStatus(items, run.item_id) === 'done'
 			? { type: 'monitor', session: 'unknown' }
 			: undefined;
 	if (run.outcome === 'blocked' && session.state === 'live') return { type: 'resume', session };
@@ -206,12 +208,4 @@ function recordedHostEvent(
 		activityAt: session.activityAt,
 		exitCode: session.exitCode
 	};
-}
-
-function finishedTrackerItem(items: TrackerItemReadRepository, id: string): boolean {
-	try {
-		return items.getStored(id).status === 'done';
-	} catch {
-		return false;
-	}
 }

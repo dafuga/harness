@@ -7,6 +7,31 @@ struct TrackerReplicaIntent: Codable {
     let action: String
     let text: String
     let revision: String?
+    /// The item status the phone showed. Only lifecycle actions carry it; older payloads decode as nil.
+    let expectedStatus: String?
+}
+
+struct TrackerReplicaActionRule {
+    let textRequired: Bool
+    let expectsStatus: Bool
+    let needsOpenFlag: Bool
+}
+
+/// Mirrors the server allowlist in phoneReplicaActions.ts. Anything else is refused before queueing.
+enum TrackerReplicaActions {
+    static let rules: [String: TrackerReplicaActionRule] = [
+        "note": TrackerReplicaActionRule(textRequired: true, expectsStatus: false, needsOpenFlag: false),
+        "flag": TrackerReplicaActionRule(textRequired: true, expectsStatus: false, needsOpenFlag: false),
+        "answer": TrackerReplicaActionRule(textRequired: true, expectsStatus: false, needsOpenFlag: true),
+        "start": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "reopen": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "block": TrackerReplicaActionRule(textRequired: true, expectsStatus: true, needsOpenFlag: false),
+        "unblock": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "resolve": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: true),
+        "done": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "ignore": TrackerReplicaActionRule(textRequired: true, expectsStatus: true, needsOpenFlag: false),
+        "unignore": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+    ]
 }
 
 struct TrackerReplicaConfirmation {
@@ -22,24 +47,26 @@ enum TrackerReplicaWriteError: String, Error {
 }
 
 extension TrackerReplicaStore {
-    /// The user is shown the stored item and, for an answer, the exact flag being answered.
+    /// The user is shown the stored item and, for an answer or resolve, the exact flag being acted on.
+    /// Lifecycle actions take the status shown here as the expected status, as the server checks it.
     func prepareWrite(scope: String, action: String, input: [String: Any]) throws -> TrackerReplicaConfirmation {
-        guard ["note", "flag", "answer"].contains(action), input.keys.sorted() == ["id", "text"],
+        guard let rule = TrackerReplicaActions.rules[action], input.keys.sorted() == ["id", "text"],
             let id = input["id"] as? String, id.utf8.count >= 6, TrackerReplicaItem.short(id, 80),
             let text = input["text"] as? String, TrackerReplicaItem.short(text, 512),
-            !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, safeDraft(text)
+            !rule.textRequired || !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, safeDraft(text)
         else { throw TrackerReplicaWriteError.invalidInput }
         let state = try writableState()
         let item = try itemForWrite(id.lowercased(), slot: state.slot)
-        if action == "answer", item.flag?.state != "open" { throw TrackerReplicaWriteError.noFlag }
+        if rule.needsOpenFlag, item.flag?.state != "open" { throw TrackerReplicaWriteError.noFlag }
         if action != "note", item.revision == nil { throw TrackerReplicaWriteError.noReplica }
         let intent = TrackerReplicaIntent(
             version: 1, intentId: UUID().uuidString.lowercased(), itemId: item.header.id,
-            action: action, text: text, revision: action == "note" ? nil : item.revision
+            action: action, text: text, revision: action == "note" ? nil : item.revision,
+            expectedStatus: rule.expectsStatus ? item.header.status : nil
         )
         return TrackerReplicaConfirmation(
-            scope: scope, itemTitle: item.header.title, question: action == "answer" ? item.flag?.question : nil,
-            intent: intent, discard: false
+            scope: scope, itemTitle: item.header.title,
+            question: rule.needsOpenFlag ? item.flag?.question : nil, intent: intent, discard: false
         )
     }
 

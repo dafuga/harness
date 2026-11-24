@@ -4,7 +4,7 @@
 	"uid": "u_b5x7mlx577",
 	"kind": "function",
 	"title": "parseTrackerModelSpec",
-	"responsibility": "Resolve Tracker model pins and preserve the installed catalog, effort defaults, and project allowlist.",
+	"responsibility": "Resolve explicit Tracker model pins and preserve the installed catalog and effort defaults.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -42,18 +42,6 @@
 				"type": "readonly TrackerModelRung[]",
 				"required": true,
 				"description": "Current ladder entries and their model and effort defaults."
-			},
-			{
-				"name": "parseTrackerModelSpec.project",
-				"type": "string | null",
-				"required": true,
-				"description": "Project name used for model allowlists, or null."
-			},
-			{
-				"name": "parseTrackerModelSpec.config",
-				"type": "TrackerLadderConfig",
-				"required": false,
-				"description": "Optional Tracker configuration with project allowlists."
 			}
 		],
 		"outputs": [
@@ -70,17 +58,17 @@
 			{
 				"name": "parseTrackerModelSpec",
 				"type": "TrackerModelRung",
-				"description": "Validated pinned model and effort selected for this project."
+				"description": "Validated pinned model and effort selected from the explicit model specification."
 			}
 		],
 		"errors": [
 			{
 				"name": "RangeError",
 				"type": "thrown",
-				"description": "The model syntax, model version, named effort, or project is invalid for the requested pin."
+				"description": "The model specification, version, or effort is invalid for the requested pin."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "ladderFrom",
@@ -116,34 +104,23 @@
 						"type": "readonly TrackerModelRung[]",
 						"required": true,
 						"description": "Current ladder entries and their model and effort defaults."
-					},
-					{
-						"name": "parseTrackerModelSpec.project",
-						"type": "string | null",
-						"required": true,
-						"description": "Project name used for model allowlists, or null."
-					},
-					{
-						"name": "parseTrackerModelSpec.config",
-						"type": "TrackerLadderConfig",
-						"required": false,
-						"description": "Optional Tracker configuration with project allowlists."
 					}
 				],
 				"outputs": [
 					{
 						"name": "parseTrackerModelSpec",
 						"type": "TrackerModelRung",
-						"description": "Validated pinned model and effort selected for this project."
+						"description": "Validated pinned model and effort selected from the explicit model specification."
 					}
 				],
 				"errors": [
 					{
 						"name": "RangeError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "The model specification, version, or effort is invalid for the requested pin."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

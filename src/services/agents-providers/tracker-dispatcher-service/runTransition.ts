@@ -9,7 +9,7 @@ import type {
 	TrackerSessionEvidence
 } from '../TrackerDispatcherService.types';
 import { attemptKey, hasOpenSession, matchesRequest, skip } from './launchEligibility';
-import { cancelUnstartedRun } from './runClaim';
+import { retireUnstartedRun } from './runClaim';
 import { completeRun, monitorRun } from './runMonitor';
 import { etaFor, failRun, recordRun, reviseRun } from './runReceipt';
 
@@ -27,7 +27,7 @@ export function transitionRun(
 		case 'startup-failed':
 			return recordStartupFailure(snapshot, run, event, clock);
 		case 'never-started':
-			return cancelUnstartedRun(snapshot, run, clock.now);
+			return retireUnstartedRun(snapshot, run, clock);
 		case 'verified':
 			return recordVerification(snapshot, run, event, clock);
 		case 'resume':

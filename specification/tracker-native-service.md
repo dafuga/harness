@@ -85,8 +85,13 @@ operator verifies the stopped database and chooses a rollback.
   `launch`, `status`, `digest`, and `sync`, plus the item and inspection
   commands listed in `tracker help`. Item commands accept unique ID
   prefixes and JSON output. Duplicate exit codes 4 and 5 are retained.
-  `runs`, `models report`, and `pick` read the same native journal and keep
-  the established human-readable and JSON formats.
+  `runs`, `models report`, and `pick` read the same native journal and support
+  human-readable and JSON output. Use `tracker launch ITEM --model fable:high`
+  to explicitly pin Fable for any project. Automatic selection excludes Fable.
+  `models report` shows API-equivalent cost estimates with run coverage and
+  ranges when retained Codex usage spans unknown context tiers. Managed native
+  Codex receipts persist token counters when one rollout matches the attempt’s
+  owned worktree. Older or ambiguous attempts may have no usage.
   `show` includes retained run history and the local schedule preview.
   `ignore` and `unignore` use journal transitions and retain the actor, notes,
   and prior status. Automatic expiry for `ignore --until` is still pending.
@@ -338,10 +343,12 @@ the CLI. The inventory used local installation files and did not probe MB2.
 
 To replace a pending managed launch, run `tracker unlaunch <item>` and then
 `tracker launch <item>`. The launcher retires a cancelled retry that was never
-dispatched. After five minutes from dispatch, it also retires a cancelled
-reservation if the exact tmux session is absent and no startup or exit marker
-exists. The old row remains in run history as abandoned. Live or uncertain
-attempts continue to fence a new launch.
+dispatched. After five minutes, it also retires an undispatched retry whose item
+became ineligible, preserving any open question. For a dispatched reservation,
+expiry requires absence of the exact tmux session and all startup or exit
+markers. An eligible request can retry within its existing retry limit. Old
+rows remain in run history as abandoned. Live or uncertain attempts continue to
+fence new launches for the same item while the scheduler considers other work.
 
 - [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
       and `reject`. Verify host admission, launcher limits, `ready/skipped`,

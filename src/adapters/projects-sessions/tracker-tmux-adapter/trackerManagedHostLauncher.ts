@@ -21,7 +21,11 @@ import {
 	trackerManagedEvidence,
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
-import type { TrackerManagedReceipt } from './trackerManagedHostLauncher.types';
+import type {
+	TrackerManagedLauncherOptions,
+	TrackerManagedReceipt
+} from './trackerManagedHostLauncher.types';
+import { trackerManagedCodexUsage } from './trackerManagedCodexUsage';
 import {
 	workerScript,
 	launchTmux,
@@ -37,26 +41,21 @@ import {
 
 export function trackerManagedHostLauncher(
 	config: TrackerManagedLaunchConfig,
-	{
-		client,
-		platform = process.platform
-	}: { client: TrackerWorkerClient; platform?: typeof process.platform }
+	{ client, platform = process.platform, transcriptRoots = [] }: TrackerManagedLauncherOptions
 ): TrackerHostLaunchPort {
 	const tmux = controlledTrackerExecutable(config.tmux);
 	const directory = privateTrackerDirectory(config.stateDirectory);
 	const trackerBin = realpathSync(config.trackerBinDirectory);
 	const trackerExecutable = controlledTrackerExecutable(join(trackerBin, 'harness'));
 	const profiles = validateManagedProfiles(config);
-
 	return {
-		async inspect({ node, keys }, signal) {
-			const sessions = [];
-			for (const key of keys) {
-				const session = await inspectManagedSession({ directory, tmux, node, key }, signal);
-				if (session) sessions.push(session);
-			}
-			return sessions;
-		},
+		readUsage: trackerManagedCodexUsage(
+			directory,
+			platform === 'darwin' ? profiles.native?.profile : undefined,
+			transcriptRoots
+		),
+		inspect: ({ node, keys }, signal) =>
+			inspectManagedSessions({ directory, tmux, node, keys }, signal),
 		confirmNeverStarted: (run, signal) =>
 			confirmManagedStartupAbsent({ directory, tmux }, run, signal),
 		async start(input, signal) {
@@ -165,6 +164,23 @@ async function prepareManagedLaunch(
 		guestAuthFile:
 			input.backend === 'docker' ? trackerGuestAuthFile(directory, receipt, client) : undefined
 	};
+}
+
+async function inspectManagedSessions(
+	{
+		directory,
+		tmux,
+		node,
+		keys
+	}: { directory: string; tmux: string; node: string; keys: readonly string[] },
+	signal: AbortSignal
+) {
+	const sessions = [];
+	for (const key of keys) {
+		const session = await inspectManagedSession({ directory, tmux, node, key }, signal);
+		if (session) sessions.push(session);
+	}
+	return sessions;
 }
 
 async function inspectManagedSession(

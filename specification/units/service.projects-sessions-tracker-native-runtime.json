@@ -125,7 +125,9 @@
 			"trackerTranscriptMatches",
 			"trackerTranscriptScan",
 			"trackerWatchdogPort",
-			"TrackerWatchdogPort"
+			"TrackerWatchdogPort",
+			"withTrackerRunUsage",
+			"trackerItemStatus"
 		]
 	},
 	"contract": {
@@ -383,7 +385,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; now?: () => number; }",
+				"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
 				"required": false,
 				"default": {}
 			},
@@ -591,6 +593,51 @@
 				"name": "trackerWatchdogPort.node",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "trackerHostLaunchPort.transcriptRoots",
+				"type": "readonly string[]",
+				"required": false
+			},
+			{
+				"name": "withTrackerRunUsage.event",
+				"type": "TrackerDispatchEvent | undefined",
+				"required": true
+			},
+			{
+				"name": "withTrackerRunUsage.driver",
+				"type": "TrackerHostLaunchPort",
+				"required": true
+			},
+			{
+				"name": "withTrackerRunUsage.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "withTrackerRunUsage.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "withTrackerRunUsage.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "withTrackerRunUsage.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "trackerItemStatus.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerItemStatus.id",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -789,6 +836,14 @@
 			{
 				"name": "trackerWatchdogPort",
 				"type": "TrackerWatchdogPort"
+			},
+			{
+				"name": "withTrackerRunUsage",
+				"type": "Promise<TrackerDispatchEvent | undefined>"
+			},
+			{
+				"name": "trackerItemStatus",
+				"type": "string | null"
 			}
 		],
 		"errors": [
@@ -1306,7 +1361,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; now?: () => number; }",
+						"type": "{ tmuxExecutable?: string; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
 						"required": false,
 						"default": {}
 					}
@@ -1359,6 +1414,11 @@
 					{
 						"name": "trackerHostLaunchPort.client",
 						"type": "TrackerWorkerClient",
+						"required": false
+					},
+					{
+						"name": "trackerHostLaunchPort.transcriptRoots",
+						"type": "readonly string[]",
 						"required": false
 					}
 				],
@@ -1725,6 +1785,72 @@
 					{
 						"name": "trackerWatchdogPort",
 						"type": "TrackerWatchdogPort"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withTrackerRunUsage",
+				"inputs": [
+					{
+						"name": "withTrackerRunUsage.event",
+						"type": "TrackerDispatchEvent | undefined",
+						"required": true
+					},
+					{
+						"name": "withTrackerRunUsage.driver",
+						"type": "TrackerHostLaunchPort",
+						"required": true
+					},
+					{
+						"name": "withTrackerRunUsage.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "withTrackerRunUsage.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "withTrackerRunUsage.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "withTrackerRunUsage.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withTrackerRunUsage",
+						"type": "Promise<TrackerDispatchEvent | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemStatus",
+				"inputs": [
+					{
+						"name": "trackerItemStatus.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "trackerItemStatus.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemStatus",
+						"type": "string | null"
 					}
 				],
 				"errors": [],

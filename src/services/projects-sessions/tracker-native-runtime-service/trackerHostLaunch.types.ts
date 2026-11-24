@@ -2,6 +2,10 @@
 import type { z } from 'zod';
 import type { WatchdogCli } from '../WatchdogPaneService.types';
 import type { TrackerDispatchRunner } from '../TrackerDispatchSchedulerService.types';
+import type {
+	TrackerRunReceipt,
+	TrackerReceiptUsage
+} from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
 import type { TaskSelection } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
@@ -36,6 +40,7 @@ export interface TrackerHostLaunchPort {
 		signal: AbortSignal
 	): Promise<TrackerHostSession[]>;
 	start(input: TrackerHostStartRequest, signal: AbortSignal): Promise<TrackerHostStartReply>;
+	readUsage?(run: TrackerRunReceipt, signal: AbortSignal): Promise<TrackerReceiptUsage | undefined>;
 	confirmNeverStarted?: TrackerDispatchRunner['confirmNeverStarted'];
 }
 
