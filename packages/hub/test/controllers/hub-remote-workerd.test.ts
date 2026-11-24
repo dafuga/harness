@@ -125,7 +125,7 @@ test(
 		const hidden = await f.hub(other, 'GET', '/hosts');
 		expect([hidden.status, await hidden.json()]).toEqual([200, { computers: [] }]);
 		const listed = await f.hub(owner, 'GET', '/hosts');
-		expect(listed.headers.get('Cache-Control')).toBe('no-store');
+		expect(listed.headers.get('Cache-Control')).toBe('private, no-store');
 		expect([listed.status, await listed.json()]).toEqual([
 			200,
 			{ computers: [{ hostId: host.hostId, name: host.name, online: false }] }

@@ -35,11 +35,13 @@ final class Bench {
         self.root = root
         vault = MemoryVault(record)
         cache = RemoteCache(root: root, budget: budget)
-        session = RemoteSession(vault: vault, cache: cache, trackerStore: TrackerReplicaStore(root: trackerRoot)) { [weak self] _, _ in
-            let link = FakeLink()
-            self?.links.append(link)
-            return link
-        }
+        session = RemoteSession(
+            vault: vault, cache: cache, trackerStore: TrackerReplicaStore(root: trackerRoot),
+            makeLink: { [weak self] _, _ in
+                let link = FakeLink()
+                self?.links.append(link)
+                return link
+            })
         session.onStatus = { [weak self] in self?.statuses.append($0) }
         session.onEvent = { [weak self] in self?.events.append($0) }
     }

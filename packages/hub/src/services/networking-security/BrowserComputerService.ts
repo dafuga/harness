@@ -2,6 +2,7 @@
 import {
 	DeviceConnectionService,
 	DevicePairingService,
+	RemoteFailure,
 	randomId,
 	remoteLimits,
 	remotePatterns,
@@ -18,7 +19,8 @@ function browserSocket(path: string): RemoteSocket {
 	const socket = new WebSocket(url);
 	const opened = new Promise<void>((resolve, reject) => {
 		socket.addEventListener('open', () => resolve(), { once: true });
-		const fail = () => reject(new Error('Could not open the computer connection.'));
+		const fail = () =>
+			reject(new RemoteFailure('failed', 'Could not open the computer connection.'));
 		socket.addEventListener('error', fail, { once: true });
 		socket.addEventListener('close', fail, { once: true });
 	});
@@ -46,7 +48,8 @@ export class BrowserComputerService {
 	constructor(private readonly api: BrowserApi) {}
 
 	async connect(hostId: string, lost: () => void): Promise<RemoteGrant['projects']> {
-		if (!remotePatterns.hostId.test(hostId)) throw new Error('Computer address is invalid.');
+		if (!remotePatterns.hostId.test(hostId))
+			throw new RemoteFailure('failed', 'Computer address is invalid.');
 		const host = `/api/remote/hosts/${hostId}`;
 		const credentials = await this.credentials(host, hostId);
 		this.cancel.signal.throwIfAborted();
@@ -81,7 +84,8 @@ export class BrowserComputerService {
 		const path = `${host}/pairing`;
 		const info = await this.api.get<{ hostId: string; origin: string; hostKey: string }>(path);
 		this.cancel.signal.throwIfAborted();
-		if (info.hostId !== hostId) throw new Error('The Hub answered for a different computer.');
+		if (info.hostId !== hostId)
+			throw new RemoteFailure('failed', 'The Hub answered for a different computer.');
 		const pairingId = randomId();
 		const pairing = new DevicePairingService({ fetch: this.pairingFetch(path, pairingId) });
 		const input = {
@@ -92,7 +96,7 @@ export class BrowserComputerService {
 			platform: 'web' as const
 		};
 		const pending = await pairing.requestAccount(input, info.hostKey, (body) =>
-			this.api.send('POST', path, { pairingId, ...body })
+			this.api.send('POST', path, { pairingId, ...body }).then(() => undefined)
 		);
 		const deadline = Date.now() + 20_000;
 		do {
@@ -102,7 +106,7 @@ export class BrowserComputerService {
 			if (status !== 'requested') break;
 			await new Promise((resolve) => setTimeout(resolve, 350));
 		} while (Date.now() < deadline);
-		throw new Error('The computer did not accept the connection.');
+		throw new RemoteFailure('failed', 'The computer did not accept the connection.');
 	}
 
 	private pairingFetch(path: string, pairingId: string): typeof fetch {
@@ -110,7 +114,7 @@ export class BrowserComputerService {
 			this.cancel.signal.throwIfAborted();
 			const operation = new URL(String(target)).pathname.split('/').at(-1);
 			if (operation !== 'poll' && operation !== 'exchange')
-				throw new Error('Invalid computer connection operation.');
+				throw new RemoteFailure('failed', 'Invalid computer connection operation.');
 			const body = JSON.parse(String(init?.body));
 			const answer = await this.api.send('POST', `${path}/${pairingId}/${operation}`, body);
 			return Response.json(answer);

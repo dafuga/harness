@@ -132,7 +132,7 @@
 			},
 			{
 				"name": "DevicePairingService.requestAccount.submit",
-				"type": "(body: RelayPairingRequest) => Promise<unknown>",
+				"type": "(body: RelayPairingRequest) => Promise<void>",
 				"required": true
 			},
 			{
@@ -336,7 +336,7 @@
 					},
 					{
 						"name": "DevicePairingService.requestAccount.submit",
-						"type": "(body: RelayPairingRequest) => Promise<unknown>",
+						"type": "(body: RelayPairingRequest) => Promise<void>",
 						"required": true
 					}
 				],

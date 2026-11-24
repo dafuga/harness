@@ -13,6 +13,7 @@ import type {
 	RemoteHostSummary
 } from '../../../../../remote/src/models/networking-security/RemoteRelay.types';
 import { remotePatterns } from '../../../../../remote/src/utils/remoteIdentity';
+import { hubHttp } from '../../../utils/networking-security/hub-http/hubHttp';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 import { RelayReplyValidator } from '../../../validators/networking-security/RelayReplyValidator';
 
@@ -124,12 +125,19 @@ export class RelayManageAdapter {
 		const { pairingId, operation, proof } = call;
 		const headers = { 'Content-Type': 'application/json' };
 		const init = { method: 'POST', headers, body: JSON.stringify(proof) };
-		return browser(this.config.hosts, input, `pairings/${pairingId}/${operation}`, init);
+		const reply = await browser(
+			this.config.hosts,
+			input,
+			`pairings/${pairingId}/${operation}`,
+			init
+		);
+		return hubHttp(await jsonOf(reply), reply.status);
 	}
 
 	async browserSocket(input: RelayManageDevice): Promise<Response> {
 		const headers = { Upgrade: 'websocket', 'X-Harness-Account-Device': input.deviceId };
-		return browser(this.config.hosts, input, 'connect', { headers });
+		const reply = await browser(this.config.hosts, input, 'connect', { headers });
+		return reply.status === 101 ? reply : hubHttp(await jsonOf(reply), reply.status);
 	}
 
 	async computers(owner: RelayManageOwner['owner'], accountOnly = false) {

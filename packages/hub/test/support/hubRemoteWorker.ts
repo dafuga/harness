@@ -1,4 +1,5 @@
 import type { SessionRecord } from '../../src/models/accounts-access/HubAuthStore.types';
+import { HubResponsesMiddleware } from '../../src/lib/development-tooling/server-hooks/HubResponsesMiddleware';
 import type { Actor } from 'collaboration';
 import { hubEnvConfig } from '../../src/configs/development-tooling/hubEnvConfig';
 import { HubApiController } from '../../src/routes/api/[...path]/hub-api-controller/HubApiController';
@@ -46,6 +47,8 @@ export default {
 			},
 			remote: hubRemote(hubEnvConfig(env))
 		});
-		return controller.handle(request);
+		return controller
+			.handle(request)
+			.then((response) => new HubResponsesMiddleware().handle(response));
 	}
 };

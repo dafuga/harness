@@ -177,7 +177,8 @@ test('verified account links two Macs and securely opens browser and phone proje
 			]);
 			expect(await iPhone.wire.request('listProjects')).toMatchObject([{ id: studio.project.id }]);
 			expect((await studio.host.status()).requests).toEqual([]);
-			await studio.host.disable();
+			expect((await fixture.hub(browser, 'DELETE', `/hosts/${studio.hostId}`)).status).toBe(200);
+			await expect.poll(async () => (await studio.host.status()).state).toBe('disabled');
 		} finally {
 			iPhone.close();
 			iPhone.wire.close();

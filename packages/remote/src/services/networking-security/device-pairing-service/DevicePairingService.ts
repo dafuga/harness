@@ -85,7 +85,7 @@ export class DevicePairingService {
 	requestAccount(
 		input: DevicePairingInput,
 		hostKey: string,
-		submit: (body: RelayPairingRequest) => Promise<unknown>
+		submit: (body: RelayPairingRequest) => Promise<void>
 	): Promise<PendingPairing> {
 		if (input.code !== '') throw new DevicePairingError('An account connection takes no code.');
 		return this.sealRequest(input, hostKey, submit);

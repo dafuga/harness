@@ -1,3 +1,4 @@
+// @harness-uid u_zbflrtevgf
 import { powerMonitor, safeStorage } from 'electron';
 import { resolve } from 'node:path';
 import type { DesktopRemoteOptions } from './desktopRemote.types';

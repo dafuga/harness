@@ -27,6 +27,7 @@ function hostRuntime(
 		link,
 		locked,
 		changed: () => quietly(host.published()),
+		unlinked: state.ownerId ? () => host.relayUnlinked(state) : undefined,
 		accountRequest: (runtime, request) => quietly(host.devices.approveAccount(runtime, request)),
 		ready: () => quietly(host.devices.flush().then(() => host.saved())),
 		revoked: (deviceId) => quietly(host.devices.dropped(deviceId)),
@@ -92,6 +93,9 @@ export class RemoteHostService {
 	}
 	endAccount(): void {
 		this.account.end();
+	}
+	relayUnlinked(state: RemoteHostState): void {
+		this.account.relayUnlinked(state);
 	}
 	screen(locked: boolean): void {
 		const state = locked ? 'locked' : 'unlocked';

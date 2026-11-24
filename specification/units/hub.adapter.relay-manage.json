@@ -599,6 +599,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.function.hub-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.hub-json",
 			"via": "import",
 			"origin": "derived"

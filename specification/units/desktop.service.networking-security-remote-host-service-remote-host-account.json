@@ -16,7 +16,8 @@
 			"RemoteHostAccountService.constructor",
 			"RemoteHostAccountService.link",
 			"RemoteHostAccountService.end",
-			"RemoteHostAccountService.unlink"
+			"RemoteHostAccountService.unlink",
+			"RemoteHostAccountService.relayUnlinked"
 		]
 	},
 	"contract": {
@@ -51,6 +52,11 @@
 				"name": "RemoteHostAccountService.link.running",
 				"type": "boolean",
 				"required": true
+			},
+			{
+				"name": "RemoteHostAccountService.relayUnlinked.state",
+				"type": "RemoteHostState",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -65,6 +71,10 @@
 			{
 				"name": "RemoteHostAccountService.unlink",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "RemoteHostAccountService.relayUnlinked",
+				"type": "void"
 			}
 		],
 		"errors": [],
@@ -116,6 +126,24 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostAccountService.relayUnlinked",
+				"inputs": [
+					{
+						"name": "RemoteHostAccountService.relayUnlinked.state",
+						"type": "RemoteHostState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostAccountService.relayUnlinked",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -155,6 +183,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.adapter.remote-host-store",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.service.remote-host-record",
 			"via": "import",

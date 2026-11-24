@@ -17,6 +17,7 @@ export interface RemoteHostRuntimeOptions {
 	link?: RelayLinkTuning;
 	locked?: () => boolean | undefined;
 	changed: () => void;
+	unlinked?: () => void;
 	accountRequest: (
 		runtime: import('./RemoteHostRuntimeService').RemoteHostRuntimeService,
 		request: RemotePairingRequest

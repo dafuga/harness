@@ -23,6 +23,7 @@
 			"RemoteHostService.disable",
 			"RemoteHostService.linkAccount",
 			"RemoteHostService.endAccount",
+			"RemoteHostService.relayUnlinked",
 			"RemoteHostService.screen",
 			"RemoteHostService.suspend",
 			"RemoteHostService.resume",
@@ -54,6 +55,11 @@
 			{
 				"name": "RemoteHostService.linkAccount.ownerId",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "RemoteHostService.relayUnlinked.state",
+				"type": "RemoteHostState",
 				"required": true
 			},
 			{
@@ -654,6 +660,24 @@
 				"outputs": [
 					{
 						"name": "RemoteHostService.endAccount",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostService.relayUnlinked",
+				"inputs": [
+					{
+						"name": "RemoteHostService.relayUnlinked.state",
+						"type": "RemoteHostState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostService.relayUnlinked",
 						"type": "void"
 					}
 				],

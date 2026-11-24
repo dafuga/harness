@@ -30,7 +30,8 @@ export class RemoteHostRuntimeService {
 			hostId,
 			credential: state.credential,
 			onFrame: (frame) => this.frame(frame),
-			onState: (linked) => this.linked(linked)
+			onState: (linked) => this.linked(linked),
+			onUnlinked: options.unlinked
 		});
 	}
 	start(): void {

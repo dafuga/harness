@@ -17,6 +17,7 @@ export interface RelayLinkOptions {
 	credential: string;
 	onFrame: (frame: RelayHostFrame) => void;
 	onState: (state: RelayLinkState) => void;
+	onUnlinked?: () => void;
 	retryMs?: number[];
 	pingMs?: number;
 	idleMs?: number;

@@ -94,7 +94,8 @@
 			{
 				"name": "accountHolder.value",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"unknownReason": "The Hub-managed session reference arrives as an untyped header or body field and is validated here."
 			}
 		],
 		"outputs": [
@@ -336,7 +337,8 @@
 					{
 						"name": "accountHolder.value",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"unknownReason": "The Hub-managed session reference arrives as an untyped header or body field and is validated here."
 					}
 				],
 				"outputs": [

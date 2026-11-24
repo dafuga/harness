@@ -1,4 +1,5 @@
 // @harness-uid u_k6dohe6btd
+import type { RemoteHostState } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import type { RemoteHostRecordService } from './RemoteHostRecordService';
 import type { RemoteHostSwitchService } from './remote-host-switch-service/RemoteHostSwitchService';
 
@@ -40,6 +41,13 @@ export class RemoteHostAccountService {
 		await this.unregister?.(state.hostId, ownerId);
 		state.devices = [];
 		state.revoked = [];
+	}
+
+	relayUnlinked(state: RemoteHostState): void {
+		if (this.record.value !== state || this.ownerId !== state.ownerId) return;
+		state.devices = [];
+		state.revoked = [];
+		void this.turns.disable().then(this.changed, () => undefined);
 	}
 
 	private async reconcile(ownerId: string): Promise<void> {
