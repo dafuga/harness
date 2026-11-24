@@ -18,6 +18,7 @@ function checkSnapshot(first: unknown) {
 				title: 'Review task',
 				project: 'harness',
 				status: 'open',
+				stage: 'idea',
 				updatedAt,
 				dueAt: null,
 				notes: [{ id: expect.any(String), author: 'fixture', at: updatedAt, text: '[redacted]' }],

@@ -48,6 +48,38 @@ function pairedEmit(shell: PairedShell) {
 	});
 }
 
+function pairedTrackerData(name: string) {
+	const item = {
+		id: 'example01',
+		title: 'Fixture planning item',
+		project: 'fixture',
+		status: 'open',
+		updatedAt: null,
+		dueAt: null,
+		stage: 'detail'
+	};
+	if (name === 'tracker_status') return { needsYou: [item], recent: [], unresolvedFlags: 1 };
+	if (name === 'tracker_show')
+		return {
+			item,
+			notes: [],
+			flag: null,
+			runs: [],
+			planning: {
+				artifacts: {
+					detail: {
+						summary: 'Two main pages',
+						links: [
+							{ label: 'Main page design', url: 'https://example.test/design.png', kind: 'image' }
+						]
+					}
+				},
+				promotions: [{ stage: 'detail', by: 'Fixture Planner', at: '2026-11-24T12:00:00.000Z' }]
+			}
+		};
+	return {};
+}
+
 /** The `HarnessRemote` double: the computer is only ever asked for its empty project list. */
 function pairedRemote(shell: PairedShell) {
 	return {
@@ -58,7 +90,7 @@ function pairedRemote(shell: PairedShell) {
 			freshness: shell.state === 'online' ? 'current' : 'stale',
 			lastSyncedAt: null,
 			partial: false,
-			data: name === 'tracker_status' ? { needsYou: [], recent: [], unresolvedFlags: 0 } : {}
+			data: pairedTrackerData(name)
 		}),
 		scan: async () => pairedRemoteStatus(shell.state),
 		disconnect: async () => {
@@ -149,6 +181,7 @@ const pairedHelpers: Array<(...args: never[]) => unknown> = [
 	pairedShell,
 	pairedEmit,
 	pairedOverviewReply,
+	pairedTrackerData,
 	pairedRemote,
 	pairedAccount,
 	pairedListen,
