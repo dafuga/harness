@@ -2,6 +2,7 @@
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
+import type { TrackerHandoffTarget } from './trackerWatchdogContext.types';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
 
 export function recordStartupAlerts(
@@ -89,4 +90,32 @@ export function recordWatchdogAlert(
 	};
 	if (localOnly) persist();
 	else store.appendLocal({ itemId, fields }, persist);
+}
+export function contextAlert(
+	store: TrackerPersistenceService,
+	{ pane, id }: TrackerHandoffTarget,
+	now: number,
+	detail: string
+) {
+	const reason = `Session ${pane.name} exceeded 150,000 active context tokens. ${detail}`;
+	recordWatchdogAlert(
+		store,
+		{ itemId: id, session: pane.name, kind: 'context', reason, identity: pane.key },
+		now,
+		null
+	);
+}
+
+export function recordHandoffFailure(
+	store: TrackerPersistenceService,
+	{ pane, id }: TrackerHandoffTarget,
+	now: number
+) {
+	const reason = `Session ${pane.name} exceeded 150,000 context tokens and stayed idle without filing its requested handoff after 30 minutes.`;
+	recordWatchdogAlert(
+		store,
+		{ itemId: id, session: pane.name, kind: 'handoff-failed', reason, identity: pane.key },
+		now,
+		`Tracker recovery: ${reason} Chief of Staff should inspect the pane and recover its worktree before clearing the flag.`
+	);
 }

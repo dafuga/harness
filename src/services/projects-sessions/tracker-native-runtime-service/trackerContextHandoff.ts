@@ -7,7 +7,7 @@ import { WatchdogPaneService } from '../WatchdogPaneService';
 import type { WatchdogItem, WatchdogPane, WatchdogScan } from '../WatchdogPaneService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { handoffRunOwnership } from './trackerHostWatchdogState';
-import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
+import { contextAlert, recordHandoffFailure } from './trackerHostWatchdogAlerts';
 import { sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerHandoffAttempt, TrackerHandoffTarget } from './trackerWatchdogContext.types';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
@@ -182,35 +182,6 @@ function handoffAttempt(
 	const cli = panes.idlePrompt(pane);
 	const ownership = handoffRunOwnership(store, { id, runId, pane });
 	return cli && ownership ? { cli, runId, ...ownership } : undefined;
-}
-
-function contextAlert(
-	store: TrackerPersistenceService,
-	{ pane, id }: TrackerHandoffTarget,
-	now: number,
-	detail: string
-) {
-	const reason = `Session ${pane.name} exceeded 150,000 active context tokens. ${detail}`;
-	recordWatchdogAlert(
-		store,
-		{ itemId: id, session: pane.name, kind: 'context', reason, identity: pane.key },
-		now,
-		null
-	);
-}
-
-function recordHandoffFailure(
-	store: TrackerPersistenceService,
-	{ pane, id }: TrackerHandoffTarget,
-	now: number
-) {
-	const reason = `Session ${pane.name} exceeded 150,000 context tokens and stayed idle without filing its requested handoff after 30 minutes.`;
-	recordWatchdogAlert(
-		store,
-		{ itemId: id, session: pane.name, kind: 'handoff-failed', reason, identity: pane.key },
-		now,
-		`Tracker recovery: ${reason} Chief of Staff should inspect the pane and recover its worktree before clearing the flag.`
-	);
 }
 
 async function requestHandoff(

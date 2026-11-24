@@ -141,6 +141,8 @@
 			"TrackerWatchdogAlert",
 			"recordStartupAlerts",
 			"recordWatchdogAlert",
+			"contextAlert",
+			"recordHandoffFailure",
 			"applyIdleDecision",
 			"watchdogScan",
 			"watchdogEffectReceipt",
@@ -707,6 +709,51 @@
 				"name": "recordWatchdogAlert.question",
 				"type": "| string | null",
 				"required": false
+			},
+			{
+				"name": "contextAlert.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "contextAlert.pane",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "contextAlert.id",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "contextAlert.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "contextAlert.detail",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordHandoffFailure.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordHandoffFailure.pane",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "recordHandoffFailure.id",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "recordHandoffFailure.now",
+				"type": "number",
+				"required": true
 			},
 			{
 				"name": "applyIdleDecision.store",
@@ -2382,6 +2429,77 @@
 					{
 						"name": "recordWatchdogAlert",
 						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "contextAlert",
+				"inputs": [
+					{
+						"name": "contextAlert.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "contextAlert.pane",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "contextAlert.id",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "contextAlert.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "contextAlert.detail",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "contextAlert",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordHandoffFailure",
+				"inputs": [
+					{
+						"name": "recordHandoffFailure.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordHandoffFailure.pane",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "recordHandoffFailure.id",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "recordHandoffFailure.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordHandoffFailure",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
