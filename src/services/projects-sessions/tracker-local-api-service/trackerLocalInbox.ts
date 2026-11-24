@@ -2,7 +2,10 @@
 import { createHash } from 'node:crypto';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItemRow } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
-import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
+import type {
+	TrackerItemInput,
+	TrackerItemValue
+} from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import { planTrackerItemMutation } from '../../../utils/projects-sessions/planTrackerItemMutation';
 import type { TrackerItemMutationContext } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
@@ -73,28 +76,37 @@ function readInboxItem(database: SqliteDatabase, id: string): TrackerInboxReview
 	return { item, revision, flaggedAt: clock ? new Date(Number(clock[1])).toISOString() : null };
 }
 
+const inboxTextField = { note: 'text', flag: 'question', answer: 'answer' } as const;
+
 function planInboxWrite(
 	review: TrackerInboxReview,
 	draft: TrackerItemInput,
 	context: TrackerItemMutationContext
 ) {
-	const { item, revision } = review;
-	const { action, text, revision: reviewed } = draft;
+	const { action } = draft;
 	if (action !== 'note' && action !== 'flag' && action !== 'answer')
 		throw trackerItemError('invalid inbox action');
-	if (typeof text !== 'string' || !text.trim() || Buffer.byteLength(text.trim()) > 512)
-		throw trackerItemError('invalid inbox write text');
-	if (action !== 'note' && revision !== reviewed) throw staleReview();
-	const open = item.needs_daniel && !item.resolved;
-	if ((action === 'answer' && !open) || (action === 'flag' && open)) throw staleReview();
-	const value = text.trim();
-	const body =
-		action === 'note'
-			? { text: value }
-			: action === 'flag'
-				? { question: value }
-				: { answer: value, by: 'daniel' };
-	return planTrackerItemMutation({ action, item, body }, context);
+	const text = inboxWriteText(draft.text);
+	if (action !== 'note') requireReviewedFlag(review, action, draft.revision);
+	return planTrackerItemMutation(
+		{ action, item: review.item, body: { [inboxTextField[action]]: text } },
+		context
+	);
+}
+
+function inboxWriteText(input: TrackerItemValue): string {
+	const text = typeof input === 'string' ? input.trim() : '';
+	if (!text || Buffer.byteLength(text) > 512) throw trackerItemError('invalid inbox write text');
+	return text;
+}
+
+function requireReviewedFlag(
+	{ item, revision }: TrackerInboxReview,
+	action: 'flag' | 'answer',
+	reviewed: TrackerItemValue
+) {
+	const open = Boolean(item.needs_daniel && !item.resolved);
+	if (revision !== reviewed || open !== (action === 'answer')) throw staleReview();
 }
 
 function staleReview() {

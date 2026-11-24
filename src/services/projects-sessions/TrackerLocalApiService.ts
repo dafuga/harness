@@ -37,7 +37,7 @@ export class TrackerLocalApiService {
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
 			const phone = phoneReplicaResponse(request, url, this.options.phoneReplica);
 			if (phone) return await phone;
-			if (parts.length === 3 && parts[0] === 'items' && parts[2] === 'inbox')
+			if (/^items\/[^/]+\/inbox$/.test(parts.join('/')))
 				return trackerResponse(
 					200,
 					await trackerInboxItem(request, parts[1], {

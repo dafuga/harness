@@ -37,22 +37,14 @@ export class MacTrackerInboxService {
 	}
 
 	async write(input: Partial<ConfirmedWrite>): Promise<InboxReply<InboxWriteReceipt>> {
-		const { action, id, text, revision } = input;
-		if (
-			(action !== 'note' && action !== 'flag' && action !== 'answer') ||
-			typeof id !== 'string' ||
-			!safeId.test(id) ||
-			typeof text !== 'string' ||
-			(revision !== null && typeof revision !== 'string')
-		)
-			return current({ code: 'invalidInput' });
-		const write = confirmedWrite({ action, id, text, revision }, true);
+		const write = parseWrite(input);
 		if (!write) return current({ code: 'invalidInput' });
+		const { id, ...body } = write;
 		try {
 			const response = await trackerRequest(`/items/${id}/inbox`, {
 				method: 'POST',
 				headers: { 'content-type': 'application/json' },
-				body: JSON.stringify({ action, text: write.text, revision: write.revision })
+				body: JSON.stringify(body)
 			});
 			if (!response.ok) return current({ code: await writeError(response) });
 			const result = (await response.json()) as { status?: string };
@@ -98,6 +90,19 @@ export class MacTrackerInboxService {
 			return unavailable();
 		}
 	}
+}
+
+function parseWrite(input: Partial<ConfirmedWrite>): ConfirmedWrite | null {
+	const { action, id, text, revision } = input;
+	if (
+		(action !== 'note' && action !== 'flag' && action !== 'answer') ||
+		typeof id !== 'string' ||
+		!safeId.test(id) ||
+		typeof text !== 'string' ||
+		(revision !== null && typeof revision !== 'string')
+	)
+		return null;
+	return confirmedWrite({ action, id, text, revision }, true);
 }
 
 function trackerRequest(path: string, init?: RequestInit): Promise<Response> {
