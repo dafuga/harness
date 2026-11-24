@@ -11,6 +11,7 @@
 		"source": [
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
@@ -31,6 +32,7 @@
 			"TrackerTmuxPane",
 			"TrackerTmuxNudge",
 			"TrackerTmuxClose",
+			"trackerManagedCodexUsage",
 			"trackerManagedHostLauncher",
 			"TrackerManagedPresence",
 			"TrackerManagedReceipt",
@@ -38,6 +40,7 @@
 			"TrackerManagedProfiles",
 			"TrackerManagedTarget",
 			"TrackerManagedExec",
+			"TrackerManagedLauncherOptions",
 			"trackerManagedToken",
 			"checkTrackerManagedReceipt",
 			"trackerManagedEvidence",
@@ -110,6 +113,21 @@
 				"required": true
 			},
 			{
+				"name": "trackerManagedCodexUsage.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedCodexUsage.profile",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "trackerManagedCodexUsage.transcriptRoots",
+				"type": "readonly string[]",
+				"required": true
+			},
+			{
 				"name": "trackerManagedHostLauncher.config",
 				"type": "TrackerManagedLaunchConfig",
 				"required": true
@@ -123,6 +141,12 @@
 				"name": "trackerManagedHostLauncher.platform",
 				"type": "typeof process.platform",
 				"required": false
+			},
+			{
+				"name": "trackerManagedHostLauncher.transcriptRoots",
+				"type": "unknown[]",
+				"required": false,
+				"default": []
 			},
 			{
 				"name": "trackerManagedToken.node",
@@ -500,6 +524,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerManagedCodexUsage",
+				"inputs": [
+					{
+						"name": "trackerManagedCodexUsage.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedCodexUsage.profile",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "trackerManagedCodexUsage.transcriptRoots",
+						"type": "readonly string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedCodexUsage",
+						"type": "TrackerHostLaunchPort['readUsage']"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerManagedHostLauncher",
 				"inputs": [
 					{
@@ -516,6 +568,12 @@
 						"name": "trackerManagedHostLauncher.platform",
 						"type": "typeof process.platform",
 						"required": false
+					},
+					{
+						"name": "trackerManagedHostLauncher.transcriptRoots",
+						"type": "unknown[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [
@@ -1024,6 +1082,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-module-task-runner-adapter-task-usage",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.projects-sessions-tracker-host-process",
 			"via": "import",

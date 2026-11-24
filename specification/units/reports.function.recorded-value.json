@@ -13,7 +13,14 @@
 			"packages/reports/src/utils/shared-primitives/recordedValue.ts",
 			"packages/reports/src/utils/shared-primitives/recordedValue.types.ts"
 		],
-		"symbols": ["recordedValue", "read", "recordedValue", "RecordedNode", "RecordedNode"]
+		"symbols": [
+			"recordedValue",
+			"read",
+			"recordedValue",
+			"RecordedNode",
+			"RecordedField",
+			"RecordedNode"
+		]
 	},
 	"contract": {
 		"origin": "declared",
