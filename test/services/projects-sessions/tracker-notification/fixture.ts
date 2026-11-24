@@ -164,14 +164,19 @@ export async function verifyDirectFollowUps(
 		reminders: [{ id: 'flag', reminder_number: 2, waiting_minutes: 905 }]
 	});
 	const nextMorning = Date.parse('2026-02-04T08:00:00Z');
-	f.rows.set('flag', { ...f.rows.get('flag')!, status: 'done' });
-	f.at(nextMorning - 1);
+	const parkedUntil = nextMorning + 10 * minute;
+	f.rows.set('flag', {
+		...f.rows.get('flag')!,
+		status: 'done',
+		parked_until: new Date(parkedUntil).toISOString()
+	});
+	f.at(nextMorning);
 	await f.service.tick();
 	expect(f.calls).toHaveLength(4);
-	f.at(nextMorning);
+	f.at(parkedUntil);
 	await f.restart().tick();
 	expect(wire(f.calls[4])).toMatchObject({
-		reminders: [{ id: 'flag', reminder_number: 3, waiting_minutes: 1980 }]
+		reminders: [{ id: 'flag', reminder_number: 3, waiting_minutes: 1990 }]
 	});
 	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
 	f.at(nextMorning + 24 * 60 * minute);
