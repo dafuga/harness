@@ -1,4 +1,4 @@
-import { mkdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { mkdirSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
 import { expect, vi } from 'vitest';
@@ -93,4 +93,36 @@ export async function verifyExpiredClaim(
 	} finally {
 		clock.mockRestore();
 	}
+}
+
+export async function verifyLegacyQueuedClaim(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	root: string,
+	itemId: string
+) {
+	const tick = () => runtime.scheduler!.tick(new AbortController().signal);
+	for (const action of ['done', 'reopen', 'unlaunch']) {
+		expect((await managedTrackerItemRequest(runtime, itemId, action)).ok).toBe(true);
+		await tick();
+	}
+	const retained = join(root, 'run-8');
+	mkdirSync(retained, { mode: 0o700 });
+	database
+		.prepare(
+			`INSERT INTO runs (id,item_id,auto_token,rung,cli,model,state,queued_at)
+		VALUES (8,?,'legacy-claim','sol','codex','gpt-6.2-sol','queued',?)`
+		)
+		.run(itemId, Date.now() - 6 * 60_000);
+	expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
+	const runs = () =>
+		database.prepare('SELECT id,state,outcome FROM runs WHERE id >= 8 ORDER BY id').all();
+	await tick();
+	expect(runs()).toEqual([{ id: 8, state: 'queued', outcome: null }]);
+	rmdirSync(retained);
+	await tick();
+	expect(runs()).toEqual([
+		{ id: 8, state: 'finished', outcome: 'abandoned' },
+		{ id: 9, state: 'running', outcome: null }
+	]);
 }

@@ -48,7 +48,8 @@ export class TrackerDispatchSchedulerService {
 			enabled: this.options.policy?.enabled !== false,
 			last_tick_at: this.lastTickAt,
 			last_error: this.lastError,
-			waiting_on: this.waits.values().next().value ?? null
+			waiting_on: this.waits.values().next().value ?? null,
+			waiting: Object.fromEntries([...this.waits].slice(0, 100))
 		};
 	}
 
@@ -59,7 +60,7 @@ export class TrackerDispatchSchedulerService {
 		try {
 			await this.options.runner.refresh?.(signal, this.repository.managedRuns());
 			signal.throwIfAborted();
-			adoptLegacyRuns(this.repository, this.options.runner);
+			await reconcileLegacyRuns(this.repository, this.options.runner, signal);
 			if (!(await this.reconcile(signal))) await this.requestWork(signal);
 			if (signal.aborted) return;
 			this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
@@ -76,24 +77,16 @@ export class TrackerDispatchSchedulerService {
 		for (const run of this.repository.managedRuns()) {
 			signal.throwIfAborted();
 			if (run.state === 'queued' && run.dispatch_at === undefined) {
-				if (await this.prepare(run, signal)) return true;
+				const decision = await prepareQueuedRun(run, this.dispatcher, this.options, signal);
+				if (await this.release(run.item_id, decision, signal)) return true;
 				continue;
 			}
-			const event =
-				(await this.options.runner.observe(run, attemptKey(run), signal)) ??
-				(await expiredStartEvent(run, this.options, signal));
+			const event = await observeReservedRun(run, this.options, signal);
 			if (event) await this.dispatcher.record(run.item_id, run, event);
+			else if (run.state === 'queued' && !this.waits.has(run.item_id))
+				this.waits.set(run.item_id, 'waiting for host startup evidence');
 		}
 		return false;
-	}
-
-	private async prepare(run: TrackerRunReceipt, signal: AbortSignal): Promise<boolean> {
-		const grant =
-			run.launch_source === 'due'
-				? await this.options.grant?.(run.item_id, run.auto_token, signal)
-				: undefined;
-		signal.throwIfAborted();
-		return this.release(await this.dispatcher.prepare(run.item_id, run, grant), signal);
 	}
 
 	private async requestWork(signal: AbortSignal): Promise<void> {
@@ -122,12 +115,11 @@ export class TrackerDispatchSchedulerService {
 		const permission =
 			intent.source === 'due' ? await grant?.(id, intent.token, signal) : undefined;
 		signal.throwIfAborted();
-		const decision = await this.dispatcher.claim(id, intent.token, permission);
-		if (decision.status === 'held' && !this.waits.has(id)) this.waits.set(id, decision.reason);
-		return this.release(decision, signal);
+		return this.release(id, await this.dispatcher.claim(id, intent.token, permission), signal);
 	}
 
-	private async release(result: TrackerDispatchResult, signal: AbortSignal): Promise<boolean> {
+	private async release(id: string, result: TrackerDispatchResult, signal: AbortSignal) {
+		if (result.status === 'held' && !this.waits.has(id)) this.waits.set(id, result.reason);
 		if (result.status !== 'start') return false;
 		const { run } = result;
 		const event = await startReservedRun(this.options.runner, result, signal);
@@ -138,6 +130,18 @@ export class TrackerDispatchSchedulerService {
 		const observed = await this.dispatcher.record(run.item_id, run, event);
 		return event.type === 'session' && observed.status === 'recorded';
 	}
+}
+
+async function prepareQueuedRun(
+	run: TrackerRunReceipt,
+	dispatcher: TrackerDispatcherService,
+	{ grant }: TrackerDispatchSchedulerOptions,
+	signal: AbortSignal
+) {
+	const permission =
+		run.launch_source === 'due' ? await grant?.(run.item_id, run.auto_token, signal) : undefined;
+	signal.throwIfAborted();
+	return dispatcher.prepare(run.item_id, run, permission);
 }
 
 async function startReservedRun(
@@ -158,6 +162,17 @@ async function startReservedRun(
 	} finally {
 		signal.throwIfAborted();
 	}
+}
+
+async function observeReservedRun(
+	run: TrackerRunReceipt,
+	options: TrackerDispatchSchedulerOptions,
+	signal: AbortSignal
+) {
+	return (
+		(await options.runner.observe(run, attemptKey(run), signal)) ??
+		(await expiredStartEvent(run, options, signal))
+	);
 }
 
 async function expiredStartEvent(
@@ -183,13 +198,21 @@ function launchCompletionInstructions(itemId: string): string {
 	].join('\n');
 }
 
-function adoptLegacyRuns(
+async function reconcileLegacyRuns(
 	repository: TrackerDispatchRepository,
-	runner: TrackerDispatchRunner
-): void {
-	if (!runner.legacySession) return;
+	runner: TrackerDispatchRunner,
+	signal: AbortSignal
+): Promise<void> {
+	if (!runner.legacySession && !runner.confirmLegacyNeverStarted) return;
 	for (const run of repository.legacyRuns()) {
-		const session = runner.legacySession(run);
+		signal.throwIfAborted();
+		if (run.state === 'queued') {
+			const absent = await runner.confirmLegacyNeverStarted?.(run, signal).catch(() => false);
+			signal.throwIfAborted();
+			if (absent) repository.retireLegacy(run);
+			continue;
+		}
+		const session = runner.legacySession?.(run);
 		if (session) repository.adoptLegacy(run, session);
 	}
 }

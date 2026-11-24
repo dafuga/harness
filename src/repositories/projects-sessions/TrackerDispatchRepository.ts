@@ -9,6 +9,7 @@ import type {
 	TrackerSessionEvidence
 } from '../../services/agents-providers/TrackerDispatcherService.types';
 import { canonicalNode } from '../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
+import { launchStartupGrace } from '../../services/agents-providers/tracker-dispatcher-service/runClaim';
 import type { TrackerPersistenceService } from '../../services/projects-sessions/TrackerPersistenceService';
 import { trackerClockMilliseconds } from '../../utils/projects-sessions/nextTrackerClock';
 import type {
@@ -25,6 +26,7 @@ import {
 	assertLegacyDispatchRollbackSafe,
 	dispatchRunRows,
 	legacyDispatchRuns,
+	legacyUnstarted,
 	managedDispatchRuns,
 	persistDispatchRun
 } from './tracker-dispatch-repository/dispatchRunRows';
@@ -64,11 +66,28 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 	}
 
 	legacyRuns(): TrackerRunReceipt[] {
-		return legacyDispatchRuns(this.store.database, this.node);
+		const now = this.options.now?.() ?? Date.now();
+		return legacyDispatchRuns(this.store.database, this.node, now - launchStartupGrace);
 	}
 
 	adoptLegacy(run: TrackerRunReceipt, session: TrackerSessionEvidence): void {
 		adoptLegacyDispatchRun(this.store, run, session);
+	}
+
+	retireLegacy(run: TrackerRunReceipt): void {
+		this.store.commitLocal(() => {
+			const now = this.options.now?.() ?? Date.now();
+			this.store.database
+				.prepare(
+					`UPDATE runs AS r SET state = 'finished', outcome = 'abandoned',
+					failure_reason = 'legacy launch expired before startup', ended_at = ?
+				WHERE r.id = ? AND r.item_id = ? AND r.auto_token = ? AND r.queued_at = ?
+				AND ${legacyUnstarted}
+				AND NOT EXISTS (SELECT 1 FROM meta WHERE k = 'harness_dispatch_run:' || r.id)`
+				)
+				.run(now, run.id, run.item_id, run.auto_token, run.queued_at);
+			return { result: undefined };
+		});
 	}
 
 	/** Call after quiescing the native writer, before starting the legacy dispatcher. */
@@ -80,8 +99,12 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		return this.store.database
 			.prepare(
 				`SELECT id, auto, launch_source, nullif(coalesce(launch_target, computer), 'auto') AS launch_target
-			FROM items WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1)
+			FROM items i WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1)
 			AND status IN ('open','in_progress') AND every IS NULL
+			AND (i.auto IS NULL OR (
+				NOT EXISTS (SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
+				AND NOT EXISTS (SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
+			))
 			ORDER BY (due IS NULL), due, created_at, id`
 			)
 			.all() as TrackerDispatchCandidate[];
@@ -110,29 +133,33 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 			runs,
 			nextRunId: id,
 			activeSessionKeys: sessions?.activeSessionKeys,
-			openSession: Boolean(sessions?.openSession) || this.unmanagedSession(itemId),
+			openSession:
+				Boolean(sessions?.openSession) || hasUnmanagedSession(database, itemId, this.options),
 			due: this.options.due?.(),
 			lastDueStartAt: lastDueStartAt === null ? undefined : Number(lastDueStartAt)
 		};
 	}
+}
 
-	private unmanagedSession(itemId: string): boolean {
-		const now = this.options.now?.() ?? Date.now();
-		const recent = now - (this.options.policy?.maxRunMinutes ?? 480) * 60_000;
-		const db = this.store.database;
-		return Boolean(
-			db
-				.prepare(
-					"SELECT 1 FROM runs WHERE item_id = ? AND (auto_token IS NULL OR state = 'observed') AND state IN ('queued','running','verifying','observed') LIMIT 1"
-				)
-				.get(itemId) ??
-			db
-				.prepare(
-					"SELECT 1 FROM remote_runs WHERE item_id = ? AND (auto_token IS NULL OR state = 'observed') AND state IN ('queued','running','verifying','observed') AND coalesce(resumed_at, started_at, queued_at, 0) >= ? LIMIT 1"
-				)
-				.get(itemId, recent)
-		);
-	}
+function hasUnmanagedSession(
+	db: SqliteDatabase,
+	itemId: string,
+	options: TrackerDispatchRepositoryOptions
+): boolean {
+	const now = options.now?.() ?? Date.now();
+	const recent = now - (options.policy?.maxRunMinutes ?? 480) * 60_000;
+	return Boolean(
+		db
+			.prepare(
+				"SELECT 1 FROM runs WHERE item_id = ? AND (auto_token IS NULL OR state = 'observed') AND state IN ('queued','running','verifying','observed') LIMIT 1"
+			)
+			.get(itemId) ??
+		db
+			.prepare(
+				"SELECT 1 FROM remote_runs WHERE item_id = ? AND (auto_token IS NULL OR state = 'observed') AND state IN ('queued','running','verifying','observed') AND coalesce(resumed_at, started_at, queued_at, 0) >= ? LIMIT 1"
+			)
+			.get(itemId, recent)
+	);
 }
 
 function trackerStuckRequests(database: SqliteDatabase, now: number) {
@@ -141,10 +168,14 @@ function trackerStuckRequests(database: SqliteDatabase, now: number) {
 			`SELECT i.id, i.title, i.clocks, (i.needs_daniel = 1 AND i.resolved = 0) AS flagged,
 		nullif(coalesce(i.launch_target, i.computer), 'auto') AS computer
 		FROM items i WHERE i.deleted = 0 AND i.title IS NOT NULL AND i.status IN ('open','in_progress')
-		AND i.auto IS NOT NULL AND NOT EXISTS
-			(SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
-		AND NOT EXISTS
-			(SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto AND r.started_at IS NOT NULL)
+		AND i.auto IS NOT NULL AND NOT EXISTS (
+			SELECT count(*) FROM (
+				SELECT state, started_at FROM runs WHERE item_id = i.id AND auto_token = i.auto
+				UNION ALL
+				SELECT state, started_at FROM remote_runs WHERE item_id = i.id AND auto_token = i.auto
+			)
+			HAVING count(started_at) > 0 OR (count(*) > 0 AND count(CASE WHEN state = 'queued' THEN 1 END) = 0)
+		)
 		ORDER BY i.id`
 		)
 		.all() as {

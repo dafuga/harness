@@ -22,7 +22,8 @@ import {
 } from '../../support/trackerManagedProcessFixture';
 import {
 	verifyCancelledClaim,
-	verifyExpiredClaim
+	verifyExpiredClaim,
+	verifyLegacyQueuedClaim
 } from '../../support/trackerManagedLaunchAssertions';
 
 const itemId = 'abc123def4';
@@ -93,6 +94,7 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 		await verifyLostSession(runtime, database, config.stateDirectory);
 		await verifyCancelledClaim(runtime, database, config.stateDirectory, itemId);
 		await verifyExpiredClaim(runtime, database, config.stateDirectory, itemId);
+		await verifyLegacyQueuedClaim(runtime, database, root, itemId);
 	} finally {
 		database.close();
 	}

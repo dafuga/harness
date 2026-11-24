@@ -43,7 +43,9 @@ and `peer.listenPort`. Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
 An optional `accessFile` beside an upstream URL supplies `clientId` and
 `clientSecret` for Cloudflare Access over HTTPS. The sync listener routes
 only signed Tracker sync requests. Each spoke sends its local run records to
-the hub through the signed machine exchange, even without a machine sampler.
+the hub through the signed machine exchange. Native spokes also report their
+launcher heartbeat, active local run count, and current holds. Autolaunch status
+uses recent samples to show per-host and per-request waits on the hub.
 The hub stores them under the sender’s node and run ID for run history and
 watchdog checks. The local API keeps
 the existing health, status, item and digest paths used by local readers.
@@ -380,6 +382,11 @@ expiry requires absence of the exact tmux session and all startup or exit
 markers. An eligible request can retry within its existing retry limit. Old
 rows remain in run history as abandoned. Live or uncertain attempts continue to
 fence new launches for the same item while the scheduler considers other work.
+A queued legacy run without a native reservation can also expire after five minutes
+when the managed launcher confirms the exact session and its receipts are absent
+and the verified legacy run directory and tmux inventory contain no startup evidence.
+Consumed tokens remain recorded for deduplication and are excluded from the pending
+dispatch scan.
 
 - [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
       and `reject`. Verify host admission, launcher limits, `ready/skipped`,

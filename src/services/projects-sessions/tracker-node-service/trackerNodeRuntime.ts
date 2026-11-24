@@ -12,6 +12,7 @@ import {
 import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { TrackerItemSnapshot } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
+import { trackerFleetMachineStore } from '../tracker-native-runtime-service/nativeTrackerLinks';
 import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
@@ -37,15 +38,21 @@ export function trackerNodeRuntime(
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
 		manualLaunch: true,
-		...(config.role === 'hub' || config.peer
-			? { syncResponder: { auth: new TrackerSyncAuthService(secret) } }
-			: {}),
+		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
 		validateModel(model) {
 			parseTrackerModelSpec(String(model), ladder);
 		},
 		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
+	};
+}
+
+function configuredSyncResponder(config: TrackerNodeConfig, secret: string) {
+	if (config.role === 'spoke' && !config.peer) return undefined;
+	return {
+		auth: new TrackerSyncAuthService(secret),
+		...(config.role === 'hub' && { machines: trackerFleetMachineStore() })
 	};
 }
 

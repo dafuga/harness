@@ -46,10 +46,14 @@ export async function trackerHostInventory(
 			: [];
 	});
 	if (tmux) await sweepCompletedTrackerSessions(store, { tmux, panes, node, now }, signal);
-	return {
-		sessions: [...sessions, ...direct],
-		manual: panes.filter((pane) => pane.live && /^auto-[a-z0-9]{6,10}$/.test(pane.name))
-	};
+	return { sessions: [...sessions, ...direct], panes };
+}
+
+export function hasManualTrackerPane(panes: readonly WatchdogPane[], itemId: string) {
+	return panes.some(
+		(pane) =>
+			pane.live && /^auto-[a-z0-9]{6,10}$/.test(pane.name) && itemId.startsWith(pane.name.slice(5))
+	);
 }
 
 function legacyTmuxSession(pane: WatchdogPane): TrackerHostSession | undefined {

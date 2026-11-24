@@ -187,6 +187,7 @@ export function managedForegroundConfig(
 			}),
 			launch: {
 				maxConcurrent: 1,
+				legacyRunDirectory: root,
 				managed: { ...managed, ...(ops && { opsWorkdir: ops }) },
 				...(ops && { due: true }),
 				repositories: { Harness: { repo: root, platform } }

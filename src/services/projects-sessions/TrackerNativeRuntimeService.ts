@@ -88,7 +88,8 @@ export class TrackerNativeRuntimeService {
 		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
 			store,
 			runs,
-			workerOptions
+			workerOptions,
+			this.scheduler
 		));
 		this.sync = composeResponder(store, runs, options);
 	}
