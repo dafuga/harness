@@ -1572,15 +1572,21 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "2d4af23868ccb155011ea1d04fbf7259bfe2a0e39353c1a2ff0ea9cced89c33b",
+			"definition": "9cb27a1f849ef82ea7c420cc3b26ab94f203afb42d2bf97dd411ece1cd99b6e6",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "e336491c115d614e5ae5fcc45deb3fb031b27b09",
+				"commit": "2ee196aab6f5c7cce9891ff981c31e36d11c6ac0",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "2d4af23868ccb155011ea1d04fbf7259bfe2a0e39353c1a2ff0ea9cced89c33b",
-				"reason": "Hand off approved Tracker links in a named target while declining the Electron popup."
+				"definition": "9cb27a1f849ef82ea7c420cc3b26ab94f203afb42d2bf97dd411ece1cd99b6e6",
+				"reason": "Give the privileged window an explicit owner for its navigation and Tracker artifact link handling."
 			},
 			"previousReviews": [
+				{
+					"commit": "e336491c115d614e5ae5fcc45deb3fb031b27b09",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "2d4af23868ccb155011ea1d04fbf7259bfe2a0e39353c1a2ff0ea9cced89c33b",
+					"reason": "Hand off approved Tracker links in a named target while declining the Electron popup."
+				},
 				{
 					"commit": "51bc1b1aebb9ec1c947bdd6a3a204013d8da83e9",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",

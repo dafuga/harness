@@ -20,6 +20,7 @@
 			"packages/desktop/src/initializers/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/desktop-initialization/initializeDesktop.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/guardDesktopNavigation.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.types.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/macSafeStorage.ts"
@@ -28,6 +29,7 @@
 			"initializeDesktop",
 			"initializeDesktop",
 			"initializeDesktop",
+			"guardDesktopNavigation",
 			"initializeDesktop",
 			"desktopBackend",
 			"Backend",
@@ -38,6 +40,11 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "guardDesktopNavigation.contents",
+				"type": "WebContents",
+				"required": true
+			},
 			{
 				"name": "preserveMacProfile.app",
 				"type": "App",
@@ -68,6 +75,24 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "guardDesktopNavigation",
+				"inputs": [
+					{
+						"name": "guardDesktopNavigation.contents",
+						"type": "WebContents",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "guardDesktopNavigation",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "initializeDesktop",
 				"inputs": [],
