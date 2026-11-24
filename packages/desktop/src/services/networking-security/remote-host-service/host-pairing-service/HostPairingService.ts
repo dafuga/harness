@@ -109,7 +109,7 @@ export class HostPairingService {
 		const account = frame.account === true;
 		const offer = account ? this.accountOffer(frame) : this.live(false);
 		if (!offer || offer.pairingId !== frame.pairingId || offer.request) return null;
-		const request = await openRequest(this.options, offer, frame, this.now()).catch(() => null);
+		const request = await this.opened(offer, frame).catch(() => null);
 		if (this.live(account) !== offer || offer.request) return null;
 		if (!request) return this.miss(offer, account);
 		offer.request = request;
@@ -160,6 +160,9 @@ export class HostPairingService {
 			this.live(true) ??
 			(this.account = { pairingId, code: '', expiresAt, misses: 0, request: null })
 		);
+	}
+	private opened(offer: Offer, frame: HostPairingFrame): Promise<Requested | null> {
+		return openRequest(this.options, offer, frame, this.now());
 	}
 	private miss(offer: Offer, account: boolean): null {
 		const limit = this.options.attempts ?? remoteLimits.pairingAttempts;
