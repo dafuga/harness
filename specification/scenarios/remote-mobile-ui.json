@@ -83,6 +83,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "phone-connection-dialog",
+			"title": "Connection details and actions beneath the connected status",
+			"coverage": "required"
+		},
+		{
 			"id": "phone-workspace",
 			"title": "phone workspace",
 			"coverage": "required"
@@ -147,6 +152,11 @@
 		{
 			"id": "mobile",
 			"width": 390,
+			"height": 844
+		},
+		{
+			"id": "mobile-narrow",
+			"width": 320,
 			"height": 844
 		},
 		{
@@ -222,11 +232,22 @@
 				"phone-scan-invalid",
 				"phone-scan-expired",
 				"phone-connected",
+				"phone-connection-dialog",
 				"phone-workspace",
 				"phone-offline",
 				"phone-revoked"
 			],
 			"viewports": ["mobile"],
+			"provenance": "actual-capture",
+			"build": "desktop-renderer",
+			"capture": "viewport",
+			"required": true
+		},
+		{
+			"id": "remote-screens-mobile-narrow",
+			"kind": "screenshot",
+			"states": ["phone-connected", "phone-connection-dialog"],
+			"viewports": ["mobile-narrow"],
 			"provenance": "actual-capture",
 			"build": "desktop-renderer",
 			"capture": "viewport",
