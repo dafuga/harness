@@ -40,13 +40,13 @@ async function confirmTrackerLaunch(
 	const deadline = performance.now() + confirmationMs;
 	while (performance.now() < deadline) {
 		const item = items.getStored(request.id);
-		if (item.deleted || item.auto !== request.auto)
-			return Response.json({ error: 'launch request was withdrawn or replaced' }, { status: 409 });
 		const run = runs
 			.list({ itemId: item.id })
 			.filter((candidate) => candidate.auto_token === request.auto && candidate.node === node)
 			.at(-1);
 		if (run) return launchRunResponse(item, run);
+		if (item.deleted || item.auto !== request.auto)
+			return Response.json({ error: 'launch request was withdrawn or replaced' }, { status: 409 });
 		const hold = itemHold(item) ?? launchHold(runtime, item, node);
 		if (hold) return pendingResponse(hold, node, 409);
 		await delay(250, undefined, { signal });
