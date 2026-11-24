@@ -119,14 +119,8 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 				...(ops ? { agent: 'cos', due: '2000-01-01', created_by: node } : { project: 'Harness' })
 			}
 		});
-		if (ops) {
-			runtime.store.appendLocal({ itemId, fields: { repo: join(root, 'unapproved') } });
-			expect(runtime.duePreview.preview?.(itemId)).not.toHaveProperty('target');
-			runtime.store.appendLocal({ itemId, fields: { repo: null } });
-			expect(runtime.duePreview.preview?.(itemId)).toMatchObject({ target: node });
-		} else {
-			expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
-		}
+		if (ops) expectApprovedOpsRoute(runtime, root);
+		else expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
 		await runtime.scheduler!.tick(signal);
 		if (ops) {
 			const invocation = JSON.parse(
@@ -146,14 +140,29 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 		).toEqual({
 			state: 'finished',
 			outcome: 'done',
-			input_tokens: competing || ops ? null : 95,
-			output_tokens: competing || ops ? null : 10,
-			cache_read_tokens: competing || ops ? null : 25,
-			cache_write_tokens: competing || ops ? null : 0
+			...expectedTokenUsage(Boolean(competing || ops))
 		});
 	} finally {
 		database.close();
 	}
+}
+
+function expectApprovedOpsRoute(runtime: TrackerNativeRuntimeService, root: string) {
+	runtime.store.appendLocal({ itemId, fields: { repo: join(root, 'unapproved') } });
+	expect(runtime.duePreview.preview?.(itemId)).not.toHaveProperty('target');
+	runtime.store.appendLocal({ itemId, fields: { repo: null } });
+	expect(runtime.duePreview.preview?.(itemId)).toMatchObject({ target: node });
+}
+
+function expectedTokenUsage(missing: boolean) {
+	if (!missing)
+		return { input_tokens: 95, output_tokens: 10, cache_read_tokens: 25, cache_write_tokens: 0 };
+	return {
+		input_tokens: null,
+		output_tokens: null,
+		cache_read_tokens: null,
+		cache_write_tokens: null
+	};
 }
 
 async function verifyLostSession(

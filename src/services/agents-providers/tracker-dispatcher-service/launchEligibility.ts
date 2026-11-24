@@ -131,10 +131,10 @@ function nonWorkReason(
 	item: TrackerDispatchItem,
 	opsAvailable?: TrackerDispatchPolicy['opsWorkdirAvailable']
 ): string | null {
-	if (nonWorkTitle.test(item.title) || /^daniel(?: fugere)?$/i.test(item.owner?.trim() ?? '')) {
+	if (nonWorkTitle.test(item.title) || /^daniel(?: fugere)?$/i.test((item.owner ?? '').trim())) {
 		return 'decision or reminder for Daniel';
 	}
-	const agent = item.agent?.trim() ?? '';
+	const agent = (item.agent ?? '').trim();
 	if (operationsAgent.test(agent) && opsAvailable?.(item)) return null;
 	return nonWorkAgent.test(agent) ? 'personal, brainstorming or Chief of Staff agent' : null;
 }

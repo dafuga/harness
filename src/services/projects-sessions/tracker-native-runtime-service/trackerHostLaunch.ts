@@ -8,7 +8,10 @@ import {
 	pickTrackerModel,
 	retryTrackerModel
 } from '../../../utils/agents-providers/pickTrackerModel';
-import type { TrackerDispatchItem } from '../../agents-providers/TrackerDispatcherService.types';
+import type {
+	TrackerDispatchItem,
+	TrackerDispatchPolicy
+} from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type {
@@ -17,7 +20,11 @@ import type {
 	TrackerHostRepository,
 	TrackerWorkerClient
 } from './nativeTrackerHostEffects.types';
-import type { TrackerHostRouteItem, TrackerHostTarget } from './trackerHostLaunch.types';
+import type {
+	TrackerHostRoute,
+	TrackerHostRouteItem,
+	TrackerHostTarget
+} from './trackerHostLaunch.types';
 import { trackerHostRunner } from './trackerHostRunner';
 
 const macNodes = new Set(['daniel-primary-mbp', 'harbor-mbp-2']);
@@ -58,26 +65,9 @@ export function trackerHostLaunch(
 		sessions: host.sessions,
 		policy: {
 			timezone: 'Europe/Lisbon',
-			chooseHost(item, { requestedNode }) {
-				const route = routeFor(item);
-				if (route && (!requestedNode || canonicalNode(requestedNode, {}) === node))
-					return {
-						node,
-						why:
-							'workdir' in route
-								? 'approved local operations workdir'
-								: 'approved local Tracker repository'
-					};
-				return {
-					node: null,
-					why: 'no approved Tracker repository or operations workdir on the selected computer'
-				};
-			},
+			chooseHost: chooseTrackerHost(routeFor, node),
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
-			opsWorkdirAvailable(item) {
-				const route = routeFor(item);
-				return Boolean(route && 'workdir' in route);
-			},
+			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
 			admit,
 			pickModel: pickHostModel,
 			retryModel: retryTrackerModel
@@ -92,6 +82,28 @@ export function trackerHostLaunch(
 	};
 }
 
+function chooseTrackerHost(
+	routeFor: TrackerHostRoute,
+	node: string
+): TrackerDispatchPolicy['chooseHost'] {
+	return (item, { requestedNode }) => {
+		const route = routeFor(item);
+		if (!route || (requestedNode && canonicalNode(requestedNode, {}) !== node)) {
+			return {
+				node: null,
+				why: 'no approved Tracker repository or operations workdir on the selected computer'
+			};
+		}
+		return {
+			node,
+			why:
+				'workdir' in route
+					? 'approved local operations workdir'
+					: 'approved local Tracker repository'
+		};
+	};
+}
+
 function approvedRoute(
 	item: TrackerHostRouteItem,
 	repositories: ReadonlyMap<string, TrackerHostRepository>,
@@ -102,19 +114,16 @@ function approvedRoute(
 	const route = project
 		? repositories.get(project)
 		: [...repositories.values()].find(({ repo }) => item.repo === repo);
-	if (!route) {
-		if (
-			!item.repo &&
-			!item.project &&
-			opsWorkdir &&
-			macNodes.has(node) &&
-			statSync(opsWorkdir, { throwIfNoEntry: false })?.isDirectory()
-		)
-			return { workdir: opsWorkdir, platform: 'macos' };
-		return undefined;
-	}
+	if (!route) return approvedOpsWorkdir(item, node, opsWorkdir);
 	if (item.repo && item.repo !== route.repo) return undefined;
 	return route.platform !== 'macos' || macNodes.has(node) ? route : undefined;
+}
+
+function approvedOpsWorkdir(item: TrackerHostRouteItem, node: string, workdir?: string) {
+	if (item.repo || item.project || !workdir || !macNodes.has(node)) return undefined;
+	if (statSync(workdir, { throwIfNoEntry: false })?.isDirectory())
+		return { workdir, platform: 'macos' } as const;
+	return undefined;
 }
 
 function pickHostModel(item: TrackerDispatchItem) {

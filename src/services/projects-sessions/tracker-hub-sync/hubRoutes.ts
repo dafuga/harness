@@ -3,6 +3,7 @@ import type {
 	TrackerHubOperation,
 	TrackerHubOptions,
 	TrackerHubStore,
+	TrackerWireValue,
 	TrackerWireObject
 } from '../TrackerHubSyncService.types';
 import { trackerHubResponse } from './hubHttp';
@@ -37,16 +38,23 @@ export function recordFleetTelemetry(
 	if (!machines && !runStore)
 		return trackerHubResponse(404, { error: 'machine tracking disabled on the hub' });
 	const { sample, runs } = parseBody(body);
-	if (sample) {
-		if (!isRecord(sample)) throw new TrackerHubInputError(400, 'malformed machine sample');
-		machines?.record({ ...sample, node: peer });
-	}
+	recordMachineSample(machines, sample, peer);
 	if (runStore && Array.isArray(runs)) runStore.importRemote(peer, runs);
 	return trackerHubResponse(200, {
 		ok: true,
 		machines: machines?.latestSamples() ?? [],
 		...(runStore ? { run_history: runStore.historyRowsFor(peer) } : {})
 	});
+}
+
+function recordMachineSample(
+	machines: TrackerHubOptions['machines'],
+	sample: TrackerWireValue | undefined,
+	peer: string
+): void {
+	if (!sample) return;
+	if (!isRecord(sample)) throw new TrackerHubInputError(400, 'malformed machine sample');
+	machines?.record({ ...sample, node: peer });
 }
 
 function parseBody(body: string): TrackerWireObject {
