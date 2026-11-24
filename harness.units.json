@@ -165,6 +165,18 @@
 		},
 		{
 			"from": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "The Projects dialog uses the shared empty state."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+			"specifier": "$reports/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"reason": "The Projects dialog embeds the owner Tracker overview when shared projects are unavailable."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
@@ -254,10 +266,22 @@
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte",
 			"specifier": "$reports/helpers/strings/shortCommit",
 			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "The Projects card uses the shared empty state."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte",
+			"specifier": "$reports/components/projects-sessions/project-overview/projectOverviewPresentation",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/projectOverviewPresentation.ts",
+			"reason": "The Projects card uses the same Tracker states as Project Overview."
 		},
 		{
 			"from": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",

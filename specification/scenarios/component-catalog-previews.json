@@ -118,6 +118,7 @@
 		"hub.component.projects-sessions-hub-home-dialogs",
 		"hub.component.projects-sessions-hub-home-header",
 		"hub.component.projects-sessions-hub-home-plans",
+		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
 		"hub.component.projects-sessions-hub-home-quota",
 		"hub.component.projects-sessions-hub-home-row",
@@ -2175,6 +2176,12 @@
 			"title": "HubHomePlans",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-plans"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-project-card",
+			"title": "HubHomeProjectCard",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-project-card"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-projects",
@@ -8878,6 +8885,7 @@
 				"hub-component-projects-sessions-hub-home-dialogs",
 				"hub-component-projects-sessions-hub-home-header",
 				"hub-component-projects-sessions-hub-home-plans",
+				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",
 				"hub-component-projects-sessions-hub-home-quota",
 				"hub-component-projects-sessions-hub-home-row",
