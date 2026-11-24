@@ -123,18 +123,18 @@
 	};
 
 	function status(card: ApprovalCards[number]) {
-		if (card.control?.preview)
-			return card.control.preview.blocked ? 'Plan blocked by parity' : 'Read-only plan';
+		const preview = card.control?.preview;
+		if (preview) return preview.blocked ? 'Plan blocked by parity' : 'Read-only plan';
 		if (card.receipt?.decision === 'deny') return 'Denied';
 		if (card.progress) return phases[card.progress.phase];
-		if (card.control && card.goAt) {
-			if (card.used && card.expiresAt <= now) return 'Outcome needs reconciliation';
-			if (card.used) return 'Runner checking prerequisites';
-			if (card.expiresAt > now) return 'Go recorded';
-		}
-		if (card.used) return 'Claimed by runner';
-		if (card.expiresAt <= now) return 'Expired';
+		const expired = card.expiresAt <= now;
+		if (card.used) return card.goAt ? goClaimStatus(expired) : 'Claimed by runner';
+		if (expired) return 'Expired';
+		if (card.goAt) return 'Go recorded';
 		return card.receipt ? 'Allowed' : 'Pending';
+	}
+	function goClaimStatus(expired: boolean) {
+		return expired ? 'Outcome needs reconciliation' : 'Runner checking prerequisites';
 	}
 </script>
 

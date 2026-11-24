@@ -51,29 +51,7 @@ async function fixture(page: Page, phone: boolean, controlled = false) {
 		if (!online) throw new Error('Synthetic authority unavailable');
 		if (!input) return cards;
 		decisions.push(input);
-		const card = cards.find((item) => item.id === input.id && item.plan === input.plan);
-		if (controlled && input.decision === 'go' && card?.receipt?.decision === 'allow') {
-			Object.assign(card, {
-				goAt: clock,
-				progress: {
-					phase: 'complete',
-					operation: 'provider-operation-fixture',
-					version: 'routed-fixture',
-					checks: ['routed-smoke-fixture']
-				}
-			});
-			return { id: card.id, plan: card.plan, goAt: clock };
-		}
-		if (!card || card.receipt || input.decision === 'go')
-			throw new Error('Synthetic decision refused');
-		card.receipt = {
-			...input,
-			decision: input.decision,
-			actor: 'google-synthetic',
-			receipt: '46cac0e9-4c91-4f98-a056-2ce9fe192f4c',
-			decidedAt: clock
-		};
-		return card.receipt;
+		return applyFixtureDecision(cards, input, controlled);
 	});
 	if (phone) await remotePhoneFixture(page, 'unpaired');
 	else await installMacBridge(page);
@@ -85,6 +63,32 @@ async function fixture(page: Page, phone: boolean, controlled = false) {
 			online = false;
 		}
 	};
+}
+
+function applyFixtureDecision(cards: ApprovalCards, input: ApprovalDecision, controlled: boolean) {
+	const card = cards.find((item) => item.id === input.id && item.plan === input.plan);
+	if (controlled && input.decision === 'go' && card?.receipt?.decision === 'allow') {
+		Object.assign(card, {
+			goAt: clock,
+			progress: {
+				phase: 'complete',
+				operation: 'provider-operation-fixture',
+				version: 'routed-fixture',
+				checks: ['routed-smoke-fixture']
+			}
+		});
+		return { id: card.id, plan: card.plan, goAt: clock };
+	}
+	if (!card || card.receipt || input.decision === 'go')
+		throw new Error('Synthetic decision refused');
+	card.receipt = {
+		...input,
+		decision: input.decision,
+		actor: 'google-synthetic',
+		receipt: '46cac0e9-4c91-4f98-a056-2ce9fe192f4c',
+		decidedAt: clock
+	};
+	return card.receipt;
 }
 
 async function installMacBridge(page: Page) {
