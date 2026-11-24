@@ -10,6 +10,7 @@ import type {
 	TrackerLaunchRung
 } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { trackerHostCapacityHold } from './trackerHostAdmission';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { recoveryPollInterval, sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerWatchdogLaunch } from './trackerSessionHealth.types';
@@ -51,8 +52,11 @@ function recoveryBudget(
 	const stored = JSON.parse(store.getMeta(key) ?? 'null') as TrackerRecoveryState | null;
 	const exhausted = stored?.failures.length === maxAttempts;
 	const cleared = !item.needs_daniel || item.resolved;
-	if ((exhausted && cleared) || resetBudget(stored, latest, item)) return emptyState;
-	return stored ?? emptyState;
+	if (!stored || (exhausted && cleared) || resetBudget(stored, latest, item)) return emptyState;
+	return {
+		...stored,
+		failures: stored.failures.filter((reason) => reason !== trackerHostCapacityHold)
+	};
 }
 
 async function submitRecovery(
@@ -76,13 +80,22 @@ async function submitRecovery(
 	}
 	const reason =
 		result && 'reason' in result ? result.reason : 'Tracker could not submit the launch request.';
+	if (result?.status === 'held' && reason === trackerHostCapacityHold) {
+		saveRecovery(store, key, state);
+		return 'Tracker is waiting for a free host session slot.';
+	}
 	if (
 		/^(?:no approved Tracker repository or platform|no supported Tracker provider|Tracker model cannot be selected|launcher disabled)/.test(
 			reason
 		)
 	)
 		return flagRecovery(store, { item, key, state }, now, reason);
-	return recordFailure(store, { item, key, state }, now, reason);
+	return recordFailure(
+		store,
+		{ item, key, state: { ...state, requestedAt: pending.requestedAt } },
+		now,
+		reason
+	);
 }
 
 function recoveryRequestChanged(result?: TrackerDispatchResult) {
