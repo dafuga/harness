@@ -88,25 +88,28 @@
 		<hx-section class="remote-connection gate" aria-label="Computer connection">
 			<hx-h2>{labels.title}</hx-h2>
 			{#if status.state === 'unpaired'}
-				<hx-p class="muted">{how}</hx-p>
 				{#if status.reason}<hx-span class="error" role="alert">{status.reason}</hx-span>{/if}
-				<hx-form
-					onsubmit={(event) => {
-						event.preventDefault();
-						void store.scan(deviceName);
-					}}
-				>
-					<hx-label
-						>Name of this phone<hx-input
-							type="text"
-							bind:value={deviceName}
-							maxlength="80"
-						/></hx-label
+				<hx-details class="connection-options">
+					<hx-summary>Other connection options</hx-summary>
+					<hx-p class="muted">{how}</hx-p>
+					<hx-form
+						onsubmit={(event) => {
+							event.preventDefault();
+							void store.scan(deviceName);
+						}}
 					>
-					<hx-button class="primary" disabled={store.busy}
-						>{store.scanFailure ? 'Scan again' : 'Scan QR code'}</hx-button
-					>
-				</hx-form>
+						<hx-label
+							>Name of this phone<hx-input
+								type="text"
+								bind:value={deviceName}
+								maxlength="80"
+							/></hx-label
+						>
+						<hx-button class="primary" disabled={store.busy}
+							>{store.scanFailure ? 'Scan again' : 'Scan QR code'}</hx-button
+						>
+					</hx-form>
+				</hx-details>
 			{:else}
 				{#if labels.detail}<hx-p class="muted">{labels.detail}</hx-p>{/if}
 				<hx-button type="button" disabled={store.busy} onclick={() => void store.disconnect()}
@@ -126,6 +129,13 @@
 		gap: var(--hx-space-12);
 		margin: 0;
 		text-align: center;
+	}
+	.connection-options {
+		width: 100%;
+	}
+	.connection-options summary {
+		padding: var(--hx-space-12);
+		cursor: pointer;
 	}
 	.remote-chip {
 		min-height: 44px;
