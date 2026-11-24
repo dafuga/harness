@@ -21,10 +21,14 @@ import { managedFixtureBindings } from '../../support/trackerManagedProcessFixtu
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
 
-test('the configured foreground releases a managed Docker reservation and completes after the normal Tracker done request', () =>
-	measureWorkload('service.projects-sessions-tracker-node', 'managed-foreground', () =>
-		withTempRepo(proveManagedForeground)
-	));
+test('the configured foreground completes managed runs through the normal Tracker done request', () =>
+	measureWorkload('service.projects-sessions-tracker-node', 'managed-foreground', async () => {
+		await withTempRepo(proveManagedForeground);
+		if (process.platform === 'darwin') {
+			await withTempRepo((repo) => proveNativeUsage(repo, false));
+			await withTempRepo((repo) => proveNativeUsage(repo, true));
+		}
+	}));
 
 async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	git('commit', '--allow-empty', '-m', 'Fixture source');
@@ -67,6 +71,45 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 		expect(existsSync(launched.guestAuthFile)).toBe(false);
 		await verifyLostSession(runtime, database, config.stateDirectory);
 		await verifyCancelledClaim(runtime, database, config.stateDirectory);
+	} finally {
+		database.close();
+	}
+}
+
+async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean) {
+	git('commit', '--allow-empty', '-m', 'Fixture source');
+	const { config } = managedFixtureBindings(root);
+	if (competing) writeFileSync(join(root, 'competing-codex-transcript'), '', { mode: 0o600 });
+	const database = new DatabaseSync(':memory:');
+	const signal = new AbortController().signal;
+	try {
+		const runtime = new TrackerNativeRuntimeService(
+			database,
+			trackerNodeRuntime(foregroundConfig(root, config, 'macos'))
+		);
+		runtime.store.appendLocal({
+			itemId,
+			fields: { title: 'Synthetic Codex work', status: 'open', kind: 'task', project: 'Harness' }
+		});
+		expect((await itemRequest(runtime, 'launch')).ok).toBe(true);
+		await runtime.scheduler!.tick(signal);
+		expect(database.prepare('SELECT state FROM runs').get()).toEqual({ state: 'running' });
+		expect((await itemRequest(runtime, 'done')).ok).toBe(true);
+		await runtime.scheduler!.tick(signal);
+		expect(
+			database
+				.prepare(
+					'SELECT state,outcome,input_tokens,output_tokens,cache_read_tokens,cache_write_tokens FROM runs'
+				)
+				.get()
+		).toEqual({
+			state: 'finished',
+			outcome: 'done',
+			input_tokens: competing ? null : 95,
+			output_tokens: competing ? null : 10,
+			cache_read_tokens: competing ? null : 25,
+			cache_write_tokens: competing ? null : 0
+		});
 	} finally {
 		database.close();
 	}
@@ -176,7 +219,8 @@ function itemRequest(runtime: TrackerNativeRuntimeService, action: string) {
 
 function foregroundConfig(
 	root: string,
-	managed: ReturnType<typeof managedFixtureBindings>['config']
+	managed: ReturnType<typeof managedFixtureBindings>['config'],
+	platform: 'linux' | 'macos' = 'linux'
 ) {
 	const path = join(root, 'foreground.json');
 	const syncSecretFile = join(root, 'secret');
@@ -195,10 +239,13 @@ function foregroundConfig(
 			hostEffects: {
 				mode: 'active',
 				checkpoint: 'fixture',
+				...(platform === 'macos' && {
+					watchdog: { transcriptRoots: [join(root, 'tracker-test-codex-transcripts')] }
+				}),
 				launch: {
 					maxConcurrent: 1,
 					managed,
-					repositories: { Harness: { repo: root, platform: 'linux' } }
+					repositories: { Harness: { repo: root, platform } }
 				}
 			}
 		}),
