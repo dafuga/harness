@@ -200,7 +200,8 @@
 			"TrackerDispatchSchedulerService",
 			"TrackerSupervisorService",
 			"trackerStructuredAsk",
-			"hubSessionMessages"
+			"hubSessionMessages",
+			"AgentToolSafetyService"
 		]
 	},
 	"contract": {
@@ -785,6 +786,11 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-agent-tool-safety",
 			"via": "reexport",
 			"origin": "derived"
 		},
