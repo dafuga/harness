@@ -209,8 +209,8 @@ function verifySecretSafety(profiles: { native: string; docker: string }, briefs
 		env: { PATH: process.env.PATH, HOME: profiles.native }
 	});
 	expect(install.status).toBe(0);
-	const codex = readFileSync(join(home, '.codex', skill), 'utf8');
-	expect(readFileSync(join(home, '.claude', skill), 'utf8')).toBe(codex);
+	const codex = readFileSync(join(profiles.native, '.codex', skill), 'utf8');
+	expect(readFileSync(join(profiles.native, '.claude', skill), 'utf8')).toBe(codex);
 	const rule = codex.split('---\n')[2].trim();
 	for (const brief of briefs) {
 		expect(brief.startsWith(rule + '\n\n')).toBe(true);
