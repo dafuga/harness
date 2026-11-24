@@ -4,9 +4,7 @@
 	"createdAt": "2026-11-24T02:51:00.445Z",
 	"updatedAt": "2026-11-24T03:07:14.531Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -22,7 +20,7 @@
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
 			"status": "complete",
 			"completedAt": "2026-11-24T02:51:32.187Z",
-			"evidence": "This is repository manifest maintenance. Reused the existing strict registry check covering stored and rederived contracts. The checker identified the failing data before any repair; no checker or product test behavior changes are needed for this regression."
+			"evidence": "The existing validator example used synthetic manifests only. Its existing contractFailureCounts case now also checks all committed unit manifests, including top-level, operation, initialization, and snippet entries. The unchanged CLI check covers both stored and rederived contracts."
 		},
 		{
 			"id": "red",
@@ -41,7 +39,8 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "pending",
+			"evidence": "The same validator command passes all six cases on repair commit 3ba6a63363. Native pairing is pending because it classifies audit.config.json and hub.config.hub-env.json under specification/units as frozen runner configuration. The test, its fixtures, and actual runner configuration are unchanged. The independent strict CLI returns zero stored and fresh findings."
 		},
 		{
 			"id": "siblings",
