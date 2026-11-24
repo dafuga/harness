@@ -61,22 +61,7 @@ async function proveRecovery(root: string) {
 	const items = new TrackerItemReadRepository(database);
 	try {
 		await startAndDrop(runtime, database, { dispatch, tmux });
-		seedTask(runtime, Date.now(), occupantId);
-		expect((await managedTrackerItemRequest(runtime, occupantId, 'launch')).ok).toBe(true);
-		await expect
-			.poll(async () => {
-				await dispatch();
-				return database.prepare('SELECT state FROM runs WHERE id = 2').get();
-			})
-			.toEqual({ state: 'running' });
-		for (let step = 0; step < 4; step++) await watchdog(11 * minute);
-		const waiting = items.getStored(id);
-		expect(waiting.needs_daniel).toBe(false);
-		expect(waiting.notes_log.some(({ text }) => /Relaunch [0-9]+\/3 failed:/.test(text))).toBe(
-			false
-		);
-		expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 2 });
-		tmux('kill-session', '-t', '=auto-occupy-r2');
+		await waitForRecoveryCapacity(runtime, database, { dispatch, tmux, watchdog });
 		await watchdog(11 * minute);
 		await expect
 			.poll(async () => {
@@ -100,6 +85,35 @@ async function proveRecovery(root: string) {
 		database.close();
 		clock.mockRestore();
 	}
+}
+
+async function waitForRecoveryCapacity(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	{
+		dispatch,
+		tmux,
+		watchdog
+	}: {
+		dispatch: () => Promise<void>;
+		tmux: (...args: string[]) => string;
+		watchdog: (delay: number) => Promise<void>;
+	}
+) {
+	seedTask(runtime, Date.now(), occupantId);
+	expect((await managedTrackerItemRequest(runtime, occupantId, 'launch')).ok).toBe(true);
+	await expect
+		.poll(async () => {
+			await dispatch();
+			return database.prepare('SELECT state FROM runs WHERE id = 2').get();
+		})
+		.toEqual({ state: 'running' });
+	for (let step = 0; step < 4; step++) await watchdog(11 * minute);
+	const waiting = new TrackerItemReadRepository(database).getStored(id);
+	expect(waiting.needs_daniel).toBe(false);
+	expect(waiting.notes_log.some(({ text }) => /Relaunch [0-9]+\/3 failed:/.test(text))).toBe(false);
+	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 2 });
+	tmux('kill-session', '-t', '=auto-occupy-r2');
 }
 
 async function startAndDrop(

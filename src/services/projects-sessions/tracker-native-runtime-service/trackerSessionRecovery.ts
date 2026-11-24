@@ -74,13 +74,22 @@ async function submitRecovery(
 	const result = await launch(item, { token: pending.token, rung }).catch(() => undefined);
 	if (result?.status === 'requested' || result?.status === 'existing')
 		return `Tracker requested relaunch ${state.failures.length + 1}/${maxAttempts} on ${store.node}${rung ? ` using ${rung.model}` : ''}.`;
+	return rejectRecoverySubmission(store, { item, key, state }, now, result);
+}
+
+function rejectRecoverySubmission(
+	store: TrackerPersistenceService,
+	{ item, key, state }: { item: TrackerItem; key: string; state: TrackerRecoveryState },
+	now: number,
+	result?: TrackerDispatchResult
+) {
 	if (recoveryRequestChanged(result)) {
 		saveRecovery(store, key, state);
 		return null;
 	}
 	const reason =
 		result && 'reason' in result ? result.reason : 'Tracker could not submit the launch request.';
-	if (result?.status === 'held' && reason === trackerHostCapacityHold) {
+	if (reason === trackerHostCapacityHold) {
 		saveRecovery(store, key, state);
 		return 'Tracker is waiting for a free host session slot.';
 	}
@@ -90,12 +99,7 @@ async function submitRecovery(
 		)
 	)
 		return flagRecovery(store, { item, key, state }, now, reason);
-	return recordFailure(
-		store,
-		{ item, key, state: { ...state, requestedAt: pending.requestedAt } },
-		now,
-		reason
-	);
+	return recordFailure(store, { item, key, state: { ...state, requestedAt: now } }, now, reason);
 }
 
 function recoveryRequestChanged(result?: TrackerDispatchResult) {
