@@ -32,6 +32,8 @@ test('the Capacitor environment pairs by scanning: no link, code or address is e
 	const panel = computer(page);
 	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
 	await remoteEvidence(page, testInfo, 'phone-start');
+	await expect(panel.getByRole('button', { name: 'Scan QR code', exact: true })).toBeHidden();
+	await panel.getByText('Other connection options', { exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Open project', exact: true })).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Phone access' })).toHaveCount(0);
 	await expect(page.getByRole('region', { name: 'Shared projects' })).toHaveCount(0);
@@ -64,10 +66,16 @@ test('the Capacitor environment pairs by scanning: no link, code or address is e
 test('approval on the desktop connects the phone and lists only what it was granted', async ({
 	page
 }, testInfo) => {
-	await remotePhoneFixture(page, 'pending-approval');
+	await remotePhoneFixture(page);
 	await page.goto('/');
 	const panel = computer(page);
+	await expect(panel.getByRole('heading', { name: 'Connect to computer' })).toBeVisible();
+	await remoteEvidence(page, testInfo, 'phone-account-discovery');
+	await panel.getByRole('button', { name: `Connect to ${hostName}`, exact: true }).click();
 	await expect(panel.getByText(/Waiting for approval/)).toBeVisible();
+	await expect(projects(page)).toHaveCount(0);
+	expect(await made(page, 'native.scan')).toEqual([]);
+	expect(await made(page, 'native.connectAccountComputer')).toHaveLength(1);
 	await announce(page, 'online');
 	await expect(
 		panel.getByRole('button', { name: `Connected to ${hostName}`, exact: true })

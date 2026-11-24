@@ -16,6 +16,14 @@ Require explicit project/revision context, isolated connection state, shared rep
 
 Prove real socket transport, cross-device isolation, unauthorized/revoked access, historical write denial, hosted execution denial, reconnect, and locked-screen lifecycle. Exercise shared desktop and phone layouts, build/install a Capacitor simulator artifact, and attempt physical-device deployment after verification and commit. Live relay deployment and TestFlight publication remain separate release steps.
 
+## Connect with the same Google account
+
+After Google sign-in, the unpaired phone shows computers registered for phone access under the same Hub account. The Hub derives the owner from the session and checks the relay's current registration before showing a computer. A Mac registered before the directory was added becomes discoverable when it next authenticates its relay connection. Show only the computer name, connection state and the identifier needed to select it. An empty or unavailable list keeps Other connection options available.
+
+Selecting an online computer sends a short-lived, account-authenticated pairing request for that host. The phone creates and keeps its pairing proof in the native shell. The Mac still approves the specific phone and chooses the projects to grant. Until then, the phone has no access to projects from that computer. Denying, expiring, or disconnecting a request cannot grant access. Account changes discard outstanding phone requests and results. QR scanning remains an explicit fallback.
+
+The existing renderer scan case covers QR and the pending state but has no account-host fixture or discovery assertion. Extend the existing pending-to-approved case to select the account's computer first and show that its projects appear only after approval. Extend the Hub controller cases to show that an unsigned or different account cannot discover the host and that unregistering it removes it from discovery.
+
 ## Decision notifications
 
 Harness Studio uses one APNs topic for Tracker and deploy decision alerts and Vault request alerts. The app accepts one known custom object alongside the Apple notification dictionary. Decision objects contain only the category, opaque reference, and source fingerprint.

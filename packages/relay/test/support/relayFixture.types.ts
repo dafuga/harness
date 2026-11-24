@@ -45,6 +45,7 @@ export interface RelayFixture {
 	strict(url: string, init?: RequestInit): Promise<Response>;
 	/** What the object of a host keeps, as stored. Empty when it never stored anything. */
 	rows(hostId: string): Promise<StoredRow[]>;
+	removeDirectoryHost(ownerId: string, hostId: string): Promise<void>;
 	/** An extra Worker, called directly as a platform would call it. */
 	worker(name: string): Promise<{ fetch: Fetcher }>;
 	stop(): Promise<void>;

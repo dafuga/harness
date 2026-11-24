@@ -86,6 +86,16 @@ function installPhonePlugin() {
 	const { phone, scans, listeners, status, set, request } = host.__remotePhone;
 	const methods: Record<string, (input: never) => Promise<unknown>> = {
 		status: async () => status(),
+		computers: async () => {
+			const { id: hostId, name } = host.__remotePhone.options.host;
+			return { computers: [{ hostId, name, online: true }] };
+		},
+		connectAccountComputer: async (input: { hostId: string }) => {
+			host.__calls.push({ op: 'native.connectAccountComputer', ...input });
+			phone.deviceName = host.__remotePhone.options.device.name;
+			set('pending-approval');
+			return status();
+		},
 		/** SYNTHETIC scanner: no camera and no code; it ends the way the test says, or well. */
 		scan: async (input: { deviceName: string }) => {
 			const outcome = scans.shift() ?? 'ok';

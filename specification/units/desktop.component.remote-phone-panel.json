@@ -10,8 +10,10 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"desktop.component.shared-primitives-choice-row",
 			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-form",
 			"reports.component.shared-primitives-atoms-html-h2",
@@ -20,7 +22,8 @@
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-small",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-summary"
 		]
 	},
 	"owns": {
@@ -51,7 +54,7 @@
 			{
 				"name": "RemotePhonePanel",
 				"type": "markup",
-				"description": "The Computer connection section renders only when status and labels are set: in full mode its unpaired state shows the heading, instructions and a Name of this phone input limited to 80 characters with a Scan QR code button (Scan again when the store reports a scan failure), while other states show the title, any detail and one action (Cancel for pairing or pending-approval, Connect again for revoked, Disconnect otherwise), and full mode adds the grant and this phone's name and key. Store errors render as role=alert text in every state, the unpaired reason does so in full mode, and while the store is busy its buttons are disabled."
+				"description": "The Computer connection section renders only when status and labels are set: in full mode its unpaired state shows account computers available for local approval and a collapsed Other connection options disclosure that contains the scan instructions and a Name of this phone input limited to 80 characters with a Scan QR code button (Scan again when the store reports a scan failure), while other states show the title, any detail and one action (Cancel for pairing or pending-approval, Connect again for revoked, Disconnect otherwise), and full mode adds the grant and this phone's name and key. Store errors render as role=alert text in every state, the unpaired reason does so in full mode, and while the store is busy its buttons are disabled."
 			}
 		],
 		"errors": [],
@@ -75,6 +78,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "desktop.component.shared-primitives-choice-row",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.function.remote-labels",
 			"via": "import",
 			"origin": "derived"
@@ -90,12 +98,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "remote.model.remote-control-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-details",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -141,6 +159,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-summary",
 			"via": "import",
 			"origin": "derived"
 		}

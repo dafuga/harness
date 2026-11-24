@@ -17,6 +17,7 @@ final class HubAccountSession {
     var open: (URL) -> Void = { _ in }
     var authenticate: (URL, String) -> Void = { _, _ in }
     var cancelAuthentication: () -> Void = {}
+    var accountEnded: () -> Void = {}
     var deviceName = "Harness iPhone"
     var now: () -> Date = { Date() }
     var credential: HubAccountCredential?
@@ -101,6 +102,7 @@ final class HubAccountSession {
         handoff = nil
         cancelAuthentication()
         generation += 1
+        accountEnded()
     }
 
     /// Asks the Hub to end a session this phone no longer keeps. Its answer changes nothing here.

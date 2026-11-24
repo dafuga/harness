@@ -10,11 +10,15 @@
 		name,
 		meta = '',
 		current = false,
+		disabled = false,
+		label,
 		onchoose
 	}: {
 		name: string;
 		meta?: string;
 		current?: boolean;
+		disabled?: boolean;
+		label?: string;
 		onchoose: () => void;
 	} = $props();
 </script>
@@ -22,6 +26,8 @@
 <hx-button
 	type="button"
 	class="choice-row"
+	{disabled}
+	aria-label={label}
 	aria-pressed={current ? 'true' : 'false'}
 	onclick={onchoose}
 	title={name}

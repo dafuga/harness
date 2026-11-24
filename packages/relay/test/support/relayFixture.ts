@@ -64,6 +64,12 @@ export async function startRelay(options: RelayOptions = {}): Promise<RelayFixtu
 			hub.fetch(bindingUrl(operation, body, call), bindingInit(body, call)),
 		strict: (url, init) => strict.fetch(url, init),
 		rows: (hostId) => storedRows(miniflare, hostId),
+		removeDirectoryHost: async (ownerId, hostId) => {
+			const storage = await miniflare.unsafeGetDurableObjectStorage('relay', className, {
+				name: `owner:${ownerId}`
+			});
+			await storage.exec('DELETE FROM records WHERE key = ?', `directory:${hostId}`);
+		},
 		worker: async (name) => (await miniflare.getWorker(name)) as unknown as { fetch: Fetcher },
 		stop: () => miniflare.dispose()
 	};

@@ -38,7 +38,10 @@ test('only the camera hands a scanned text to pairing, and only one scanner exis
 	const conforms = /(class|struct|enum|extension) \w+:[^{\n]*\bRemoteScanner\b/;
 	const scanners = product.filter((file) => conforms.test(read(file)));
 	expect(short(scanners)).toEqual(['Scanner/RemoteCameraScanner.swift']);
-	const made = product.filter((file) => /(?<!case )\.text\(/.test(read(file)));
+	const made = product.filter((file) => {
+		const source = read(file);
+		return /\bRemoteScanOutcome\b/.test(source) && /(?<!case )\.text\(/.test(source);
+	});
 	expect(short(made)).toEqual(['Scanner/RemoteScannerViewController.swift']);
 	const controller = read(join(app, 'Scanner/RemoteScannerViewController.swift'));
 	expect(controller.match(/\.text\(/g)).toHaveLength(1);
@@ -53,10 +56,24 @@ test('only the camera hands a scanned text to pairing, and only one scanner exis
 test('the plugin offers a scan and no way to be handed an address, a code or a link', () => {
 	const plugin = read(join(app, 'Remote/HarnessRemotePlugin.swift'));
 	const methods = [...plugin.matchAll(/CAPPluginMethod\(name: "(\w+)"/g)].map((found) => found[1]);
-	expect(methods).toEqual(['status', 'scan', 'disconnect', 'request']);
+	expect(methods).toEqual([
+		'status',
+		'scan',
+		'computers',
+		'connectAccountComputer',
+		'disconnect',
+		'request',
+		'trackerTool',
+		'refreshTracker'
+	]);
 	expect(plugin).not.toMatch(
-		/#if|capacitorOpenURL|pairingLink|getString\("(origin|code|hostId|pairingId)"\)/
+		/#if|capacitorOpenURL|pairingLink|getString\("(origin|code|pairingId|hostKey|challenge|sealed|verifier)"\)/
 	);
+	expect(plugin.match(/getString\("hostId"\)/g)).toHaveLength(1);
+	expect(plugin).toContain('sharedSession.computerPairing(hostId, name: name)');
+	const computers = read(join(app, 'Account/HubAccountComputers.swift'));
+	expect(computers).toContain('HubAccountPolicy.matches(hostId, Self.hostPattern)');
+	expect(computers).toContain('let pairingId = RemoteCoding.hex(RemoteCoding.random(16))');
 	expect(plugin.match(/RemoteCameraScanner\(/g)).toHaveLength(1);
 	const debug = read(join(app, 'Remote/RemotePolicy.swift'));
 	const hooks = debug.slice(debug.indexOf('enum RemoteDebug'), debug.indexOf('#endif'));

@@ -58,6 +58,11 @@
 			"coverage": "required"
 		},
 		{
+			"id": "phone-account-discovery",
+			"title": "Signed-in phone lists its online computer with QR under other options",
+			"coverage": "required"
+		},
+		{
 			"id": "phone-scan-denied",
 			"title": "Scan refused: camera access is off",
 			"coverage": "required"
@@ -226,6 +231,7 @@
 			"kind": "screenshot",
 			"states": [
 				"phone-start",
+				"phone-account-discovery",
 				"phone-pending",
 				"phone-scan-denied",
 				"phone-scan-cancelled",
