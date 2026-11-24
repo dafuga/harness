@@ -1,3 +1,4 @@
+import { verifyAdoption } from '../../support/trackerObservedRunFixture';
 import {
 	verifyLaunchWatchdogBoundary,
 	verifyIdleWatchdogAlert
@@ -107,12 +108,13 @@ async function assertDryRun(runtime: TrackerNativeRuntimeService, trace: string)
 }
 
 const watchdogDriver = `
-const { appendFileSync, readFileSync } = require('node:fs');
+const { appendFileSync, existsSync, readFileSync } = require('node:fs');
 const { dirname, join } = require('node:path');
 const operation = process.argv[2];
 const input = JSON.parse(readFileSync(0, 'utf8'));
+const hand = existsSync(join(dirname(process.argv[1]), 'hand-session'));
 const result = operation === 'watchdog-scan' ? [{
-  name: 'auto-abc123', key: 'synthetic-pane', activity: ${firstPoll - 11 * minute}, createdAt: ${firstPoll - 12 * minute},
+  name: hand ? 'man123-recovery' : 'auto-abc123', key: hand ? 'hand-pane' : 'synthetic-pane', activity: ${firstPoll - 11 * minute}, createdAt: ${firstPoll - 12 * minute},
   live: true, runnerSocket: true, readable: true, ready: true, attached: false, x: 2, y: 2,
   currentCommand: 'codex', screen: 'fixture\\n\\n› \\n\\n100% context left\\n'
 }] : { sent: true };
@@ -176,6 +178,9 @@ async function proveObserved(root: string) {
 		expect(runtime.watchdog!.alerts()).toMatchObject([
 			{ item_id: itemId, host: 'harbor-mbp-2', kind: 'finished', session: 'auto-abc123' }
 		]);
+		await verifyAdoption(runtime, db, root, () => {
+			clock += minute;
+		});
 	} finally {
 		db.close();
 	}

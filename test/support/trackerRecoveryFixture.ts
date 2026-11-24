@@ -59,27 +59,7 @@ async function proveRecovery(root: string) {
 	};
 	const items = new TrackerItemReadRepository(database);
 	try {
-		seedTask(runtime, Date.now());
-		for (let index = 0; index < 12; index++)
-			runtime.store.appendLocal({ itemId: id, fields: { 'note+': 'Progress note ' + index } });
-		expect((await managedTrackerItemRequest(runtime, id, 'launch')).ok).toBe(true);
-		await expect
-			.poll(async () => {
-				await dispatch();
-				return database.prepare('SELECT state FROM runs WHERE id = 1').get();
-			})
-			.toMatchObject({ state: 'running' });
-		expect((await managedTrackerItemRequest(runtime, id, 'start')).ok).toBe(true);
-		runtime.store.appendLocal({
-			itemId: id,
-			fields: { schedule_off: true, model: 'gpt-6.2-sol:low' }
-		});
-		tmux('kill-session', '-t', '=auto-recovr-r1');
-		await dispatch();
-		expect(database.prepare('SELECT state,outcome FROM runs WHERE id = 1').get()).toEqual({
-			state: 'finished',
-			outcome: 'abandoned'
-		});
+		await startAndDrop(runtime, database, { dispatch, tmux });
 		await watchdog(11 * minute);
 		await expect
 			.poll(async () => {
@@ -87,11 +67,7 @@ async function proveRecovery(root: string) {
 				return database.prepare('SELECT state,cli,model,effort FROM runs WHERE id = 2').get();
 			})
 			.toEqual({ state: 'running', cli: 'codex', model: 'gpt-6.1-terra', effort: 'high' });
-		expect(readBrief(config.stateDirectory, 2)).toEqual(
-			expect.stringContaining('Resume the synthetic task')
-		);
-		expect(readBrief(config.stateDirectory, 2)).toContain('Progress note 11');
-		expect(readBrief(config.stateDirectory, 2)).toContain('resume from: checkpoint commit');
+		verifyResumeBrief(config.stateDirectory);
 		expect(items.getStored(id)).toMatchObject({ schedule_off: true, needs_daniel: false });
 		tmux('kill-session', '-t', '=auto-recovr-r2');
 		await dispatch();
@@ -107,6 +83,34 @@ async function proveRecovery(root: string) {
 		database.close();
 		clock.mockRestore();
 	}
+}
+
+async function startAndDrop(
+	runtime: TrackerNativeRuntimeService,
+	database: DatabaseSync,
+	{ dispatch, tmux }: { dispatch: () => Promise<void>; tmux: (...args: string[]) => string }
+) {
+	seedTask(runtime, Date.now());
+	for (let index = 0; index < 12; index++)
+		runtime.store.appendLocal({ itemId: id, fields: { 'note+': 'Progress note ' + index } });
+	expect((await managedTrackerItemRequest(runtime, id, 'launch')).ok).toBe(true);
+	await expect
+		.poll(async () => {
+			await dispatch();
+			return database.prepare('SELECT state FROM runs WHERE id = 1').get();
+		})
+		.toMatchObject({ state: 'running' });
+	expect((await managedTrackerItemRequest(runtime, id, 'start')).ok).toBe(true);
+	runtime.store.appendLocal({
+		itemId: id,
+		fields: { schedule_off: true, model: 'gpt-6.2-sol:low' }
+	});
+	tmux('kill-session', '-t', '=auto-recovr-r1');
+	await dispatch();
+	expect(database.prepare('SELECT state,outcome FROM runs WHERE id = 1').get()).toEqual({
+		state: 'finished',
+		outcome: 'abandoned'
+	});
 }
 
 function seedTask(runtime: TrackerNativeRuntimeService, now: number) {
@@ -149,6 +153,13 @@ async function verifyFailureBudget({
 	expect(
 		items.getStored(id).notes_log.filter(({ text }) => text.includes('watchdog recovery-failed'))
 	).toHaveLength(1);
+}
+
+function verifyResumeBrief(directory: string) {
+	const brief = readBrief(directory, 2);
+	expect(brief).toContain('Resume the synthetic task');
+	expect(brief).toContain('Progress note 11');
+	expect(brief).toContain('resume from: checkpoint commit');
 }
 
 function readBrief(state: string, run: number) {
