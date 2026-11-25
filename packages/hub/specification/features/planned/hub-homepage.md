@@ -80,10 +80,23 @@ linked Macs, with the most recent observation taking precedence.
 
 Mac Home reads the same data locally and offers sign-in commands in its quota dialog.
 iPhone Home reads quota while its linked Mac is online. Hub and iPhone direct readers
-to the Mac app when quota is unavailable. Chief of Staff and local provider tools can call `harness provider quota --json`
-on a Mac to read the same normalized shape. Unknown providers are `null`. Credits denote
-Codex subscription credits. Provider preferences and explicitly selected models remain
-the launch policy.
+to the Mac app when quota is unavailable. Chief of Staff status and the preferred-provider
+setting can call `harness provider quota --json` in the signed-in Mac desktop session.
+Use `readAt` for freshness, `limits[].left` for percentage remaining, and `limits[].resetsAt`
+for the reported reset. Unknown providers are `null` and missing windows are omitted.
+Credits denote Codex subscription credits. Provider preferences and explicitly selected
+models remain the launch policy.
+
+### Account quota persistence
+
+Once a Mac has a verified account scope key, it can write its latest readings as one
+`quota.subscription` object. Derive its opaque object ID from the account index key,
+the record kind, and the enrolled device ID. Include the device ID and readings inside
+the encrypted payload. Readers open records with their granted account key, then select
+the freshest reading per provider. The sealed sync fixture exercises the quota round trip,
+access with an unrelated scope key, and the absence of quota values from server-visible data.
+The Mac publisher and the Hub and iPhone readers need their enrollment handoffs to activate
+this path.
 
 ### Owner-host data
 

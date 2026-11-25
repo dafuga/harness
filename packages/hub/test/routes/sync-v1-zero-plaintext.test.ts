@@ -40,6 +40,8 @@ const canary = {
 	device: "Daniel's iPhone canary",
 	output: 'bun test sealed: 29 passed canary',
 	project: 'grok private roadmap canary',
+	quotaReset: '2041-07-31T23:17:09.000Z',
+	quotaCredits: '1278409.37621',
 	big: 'transcript segment canary '
 };
 const A = 'session-a';
@@ -84,6 +86,31 @@ async function streamFrame(keys: Keys): Promise<Uint8Array> {
 	return sealedFrame(keys, await sealedStreamKey(keys, streamId), { streamId, counter: 0n, data });
 }
 
+async function checkQuotaRoundTrip(keys: Keys, scope: string): Promise<void> {
+	const reading = {
+		kind: 'quota.subscription',
+		device,
+		readings: [
+			{
+				provider: 'codex',
+				readAt: '2041-07-30T13:06:07.000Z',
+				credits: canary.quotaCredits,
+				limits: [{ id: 'weekly', left: 42, resetsAt: canary.quotaReset }]
+			}
+		]
+	};
+	const objectId = await sealedObjectId(keys, reading.kind, device);
+	const path = `objects/${scope}/${toBase64Url(objectId)}`;
+	const envelope = await sealedRecord(keys, { objectId, revision: 1n }, reading);
+	await store('PUT', path, toBase64Url(envelope));
+	const response = await f.call(A, 'GET', path, { headers });
+	expect(response.status).toBe(200);
+	const bytes = fromBase64Url(await response.text());
+	expect((await openSealedRecord(keys, bytes)).value).toEqual(reading);
+	const otherAccount = await sealedScopeKeys(newScopeKeys());
+	await expect(openSealedRecord(otherAccount, bytes)).rejects.toThrow(/other scope keys/);
+}
+
 async function subscribed(scope: string, device: string) {
 	const socket = await f.socket(A, device);
 	socket.send(JSON.stringify({ t: 'subscribe', scopes: [scope] }));
@@ -114,6 +141,7 @@ test('the server never holds a canary, and the owner of the keys can still read 
 	expect((await openSealedRecord(keys, fromBase64Url(big))).value).toMatchObject({
 		text: canary.big.repeat(4000)
 	});
+	await checkQuotaRoundTrip(keys, scope);
 	expect((await f.bucket.list()).objects.length).toBe(1);
 
 	const everything = await captured();
