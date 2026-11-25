@@ -18,3 +18,10 @@ test('every session brief tells the agent to flag with 2 to 4 options and one re
 	expect(brief).toContain('--confirm deploy|money|secret');
 	expect(brief.indexOf('## Secret-safe computer use')).toBeLessThan(brief.indexOf('## Asking'));
 });
+
+test('every session brief points browser work at the automation Chrome, not the main profile', () => {
+	const brief = formatTrackerHostBrief(item, 'Finish by running tracker done.');
+	expect(brief).toContain('http://127.0.0.1:9333');
+	expect(brief).toContain('Do not turn on or ask for remote debugging');
+	expect(brief.indexOf('## Asking Daniel')).toBeLessThan(brief.indexOf('## Automation Chrome'));
+});
