@@ -6555,6 +6555,86 @@
 			"definition": "9818446ee17d960bc6e4a0bd9557ee64a4b5d2e424b1a9b6b0771d716ae8f91f",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/composeHubAuth.ts",
 			"ownerSource": "packages/hub/src/lib/verification-evidence/server/auth/auth.ts"
+		},
+		{
+			"unit": "desktop.function.artifact-media",
+			"name": "artifactMedia",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "880261ae09bf4f585de14ab06335f03999e58a52706321d5f0c6791fe2a2c243",
+			"to": "packages/desktop/src/utils/verification-evidence/artifact-answer/artifactMedia.ts",
+			"ownerSource": "packages/desktop/src/utils/verification-evidence/artifact-answer/artifactAnswer.ts"
+		},
+		{
+			"unit": "desktop.function.ipc-fields",
+			"name": "regionField",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "fef3e77790f17af9304235525859f645dec95b0169a3107b59412c12a32ab9d2",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/regionField.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "threadPayload",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "c48e8d60df16eb6baf0252a617dae81181f59ab43298f96031cfd2c4b3a44fff",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "creationPayload",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "8adaea991904511fcbbf3298f344fcea8064a9ebb2a737289fdf696b4dd6d79a",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "runPayload",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "3d891781378fb3bfb34253fe652fdc43f7705ae9f638fd2a5f800995f2275a5d",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "desktop.function.recorded-projection",
+			"name": "recordedProjection",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "3937ea2625adebea4ef673c8776ccec0e6738d58b03e281d34b22d7272c22064",
+			"to": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedProjection.ts",
+			"ownerSource": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.ts"
+		},
+		{
+			"unit": "desktop.function.scan-notice",
+			"name": "scanFailure",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "32249aa25dc97083116e9517b0561f83977557d529203697e45851bb98bbbe24",
+			"to": "packages/desktop/src/utils/networking-security/scan-notice/scanNotice.ts",
+			"ownerSource": "packages/desktop/src/utils/networking-security/scan-notice/scanNotice.ts"
+		},
+		{
+			"unit": "desktop.function.scrub-environment",
+			"name": "scrubEnvironment",
+			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
+			"definition": "0db72e2a49862f3859a846b448bab964d5f991bf03d548b80704c4a95ed5aad0",
+			"to": "packages/desktop/src/utils/execution-runtimes/cli-environment/scrubEnvironment.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/cli-environment/cliEnvironment.ts"
+		},
+		{
+			"unit": "reports.function.activity-client",
+			"name": "activityClient",
+			"commit": "767cc7ce137ab34328e466fe2d46eb5474f47a5f",
+			"reason": "The Reports cleanup retired the refresh client after its last consumer was removed.",
+			"definition": "e770b23a9d2553ee87a094b05ffedc900267ee8052ee4deab37b589953f749d6",
+			"retired": true
 		}
 	],
 	"retiredOwners": [

@@ -2356,13 +2356,13 @@
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
+			"definition": "40e046dba953b85b037acbe99c986536dd1607eaae587f21e4a6fe6e3feec2f6",
 			"relocationDefinition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-				"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
-				"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
+				"definition": "40e046dba953b85b037acbe99c986536dd1607eaae587f21e4a6fe6e3feec2f6",
+				"reason": "Keep the same detach sequence in a file-local helper so the service class meets the audit limit."
 			},
 			"previousReviews": [
 				{
@@ -2376,6 +2376,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
 					"definition": "304ec40005d70807352f970b2f87fdc7357629b98cf212b75d3ae33cbac9dee3",
 					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-device-sessions, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
+					"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
 				}
 			]
 		},
@@ -2481,13 +2487,13 @@
 			"unit": "hub.controller.hub-remote",
 			"from": "packages/hub/src/controllers/HubRemoteController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-			"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
+			"definition": "1fb7f21d703747a416d5de11590eada81b75336fd1c72ea1e8f4690377e880d0",
 			"relocationDefinition": "69949fa0a61ff7bc03b458c831cc2500e441bad89a146faab9191123f86bbbfc",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-				"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "1fb7f21d703747a416d5de11590eada81b75336fd1c72ea1e8f4690377e880d0",
+				"reason": "Keep the same accepted path shapes while extracting browser route matching."
 			},
 			"previousReviews": [
 				{
@@ -2501,6 +2507,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
 					"definition": "72bb6aded5ebd01c24422c3168f34c4a389a60e5f6a6ebe99484c0b17940c8f4",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
+					"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -3523,14 +3535,22 @@
 			"unit": "reports.function.report-cleanup-log",
 			"from": "packages/reports/src/services/report-retention-service/reportCleanupLog.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
-			"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
+			"definition": "6c1d4a6b865cab4688720e1b28c09ddf06877d2041d5e7e75d68dd71f0671d92",
 			"relocationDefinition": "f990585337ff82846ecf52563a07087274b1985f0bb5efecad806929ecb4d8a1",
 			"review": {
-				"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
-				"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged."
-			}
+				"definition": "6c1d4a6b865cab4688720e1b28c09ddf06877d2041d5e7e75d68dd71f0671d92",
+				"reason": "Keep the cleanup log fields and move the exported type into its companion file."
+			},
+			"previousReviews": [
+				{
+					"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+					"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
+					"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "reports.function.report-local-cleanup",
@@ -3675,13 +3695,13 @@
 			"unit": "desktop.service.project-session",
 			"from": "packages/desktop/src/services/ProjectSessionService.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-			"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
+			"definition": "bb297bdc3d467bd12e175b4a4c33da49fc6c702871a14b50da7cc742fe16395f",
 			"relocationDefinition": "0d0e15a7a7474cac77d924f1b80a3a0198d40d983f1f6f4db3086dec6a43609e",
 			"review": {
-				"commit": "928dbd0877bbe55f75bb4b060551d1c5fa3c884d",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-				"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-session, written by luna); messages and behavior unchanged."
+				"definition": "bb297bdc3d467bd12e175b4a4c33da49fc6c702871a14b50da7cc742fe16395f",
+				"reason": "Share the existing writable-tip predicate between the snapshot and the session mutation gate."
 			},
 			"previousReviews": [
 				{
@@ -3689,6 +3709,12 @@
 					"path": "packages/desktop/src/services/ProjectSessionService.ts",
 					"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
 					"reason": "Retain the game branch’s selection state and game project identity."
+				},
+				{
+					"commit": "928dbd0877bbe55f75bb4b060551d1c5fa3c884d",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
+					"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-session, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -5396,13 +5422,13 @@
 			"unit": "desktop.adapter.capacitor-bridge",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+			"definition": "84e98062cdce91cc3b331c2f7e49aa29be686b8a1cc23327f563ace1bde4a8e2",
 			"relocationDefinition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2",
 			"review": {
-				"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-				"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
+				"definition": "84e98062cdce91cc3b331c2f7e49aa29be686b8a1cc23327f563ace1bde4a8e2",
+				"reason": "Move the existing bridge event listener binding into a file-local helper."
 			},
 			"previousReviews": [
 				{
@@ -5410,6 +5436,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 					"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+					"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
