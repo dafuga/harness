@@ -6,7 +6,11 @@
 	"title": "Analytics number formatting",
 	"responsibility": "Formats assessment proportions and counts for analytics views.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Retired in deferred plan wave 4: no live consumer (qjv47y).",
+		"at": "2026-11-25T16:19:40.821Z"
+	},
 	"owns": {
 		"source": ["packages/reports/src/utils/reports-media/analyticsDisplay.ts"],
 		"symbols": ["analyticsDisplay", "analyticsCount"]

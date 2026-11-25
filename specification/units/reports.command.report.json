@@ -6,7 +6,11 @@
 	"title": "ReportCommand",
 	"responsibility": "Owns the ReportCommand command registration.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Retired in deferred plan wave 4: no live consumer (qjv47y).",
+		"at": "2026-11-25T16:18:59.930Z"
+	},
 	"owns": {
 		"source": ["packages/reports/src/commands/reports-media/ReportCommand.ts"],
 		"symbols": ["ReportCommand", "ReportCommand.run"]
