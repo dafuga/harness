@@ -1,0 +1,61 @@
+{
+	"name": "tz3ygn-tracker-digest",
+	"goal": "Prove the native Tracker digest reports each project, rolls up Phase 4 workers, and ends with Daniel-owned actions while retaining existing digest data.",
+	"createdAt": "2026-11-25T08:02:43.534Z",
+	"updatedAt": "2026-11-25T08:04:12.106Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-25T08:04:09.311Z",
+			"evidence": "Native text digest shows blocked, flagged, due, queue, chase, and recurring lists; it has no complete per-project totals, notes or ETAs, and no Daniel-only closing list."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-25T08:04:12.106Z",
+			"evidence": "The existing digestText repository case has one agent and only checks the legacy slices. Extend its SQLite fixture with explicit and fallback project names, Phase 4 worker items, chronological notes, and flagged and unflagged blockers; extend the existing native CLI route fixture."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
