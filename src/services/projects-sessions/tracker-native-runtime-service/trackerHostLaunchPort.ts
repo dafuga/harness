@@ -5,8 +5,13 @@ import type {
 	TrackerHostLaunchConfig,
 	TrackerWorkerClient
 } from './nativeTrackerHostEffects.types';
+import type {
+	ClaudeStartupFailure,
+	TrackerHostLaunchPort,
+	TrackerHostSession,
+	TrackerHostTarget
+} from './trackerHostLaunch.types';
 import type { TrackerReservedStart } from '../TrackerDispatchSchedulerService.types';
-import type { TrackerHostLaunchPort, TrackerHostTarget } from './trackerHostLaunch.types';
 import { hostInventory, hostStart } from './trackerHostLaunchSchema';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type {
@@ -108,13 +113,34 @@ export async function startTrackerHost(
 		signal
 	);
 	if (result.status === 'rejected')
-		return { type: 'startup-failed', reason: 'Tracker host declined the reserved launch' };
+		return {
+			type: 'startup-failed',
+			reason: result.reason
+				? claudeStartupMessage[result.reason]
+				: 'Tracker host declined the reserved launch'
+		};
 	if (
 		result.status === 'started' &&
 		result.session.key === key &&
 		result.session.itemId === run.item_id &&
 		!result.session.legacyRunId
 	)
-		return { type: 'session', session: result.session };
+		return trackerHostStartupEvent(result.session);
 	return undefined;
 }
+
+export function trackerHostStartupEvent(
+	session: TrackerHostSession | undefined
+): TrackerDispatchEvent | undefined {
+	if (!session) return undefined;
+	return session.startupFailure
+		? { type: 'startup-failed', reason: claudeStartupMessage[session.startupFailure] }
+		: { type: 'session', session };
+}
+
+const claudeStartupMessage: Record<ClaudeStartupFailure, string> = {
+	'claude-sign-in': 'Sign in to Claude Code on the target host before relaunching.',
+	'claude-auth-unverified': 'Claude Code authentication could not be verified on the target host.',
+	'claude-onboarding': 'Complete Claude Code onboarding on the target host before relaunching.',
+	'claude-not-ready': 'Claude Code did not reach its composer on the target host.'
+};

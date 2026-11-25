@@ -9,7 +9,9 @@ import type {
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { TrackerHostRepository } from './nativeTrackerHostEffects.types';
 import type { TaskSelection } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
-import type { hostSession, hostStart } from './trackerHostLaunchSchema';
+import type { claudeStartupFailure, hostSession, hostStart } from './trackerHostLaunchSchema';
+
+export type ClaudeStartupFailure = z.infer<typeof claudeStartupFailure>;
 
 export type TrackerHostSession = z.infer<typeof hostSession>;
 

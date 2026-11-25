@@ -1,8 +1,6 @@
 // @harness-uid u_fyf7e7kyi5
-import { mkdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { TrackerRunReceipt } from '../../../services/agents-providers/TrackerDispatcherService.types';
-import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
 import { controlledTrackerExecutable } from '../tracker-host-process-adapter/trackerHostCommand';
 import type {
 	TrackerManagedLaunchConfig,
@@ -10,32 +8,37 @@ import type {
 } from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type {
 	TrackerHostLaunchPort,
+	TrackerHostStartReply,
+	TrackerHostSession,
 	TrackerHostStartRequest
 } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import {
 	checkTrackerManagedReceipt,
-	hasManagedStartupEvidence,
+	confirmManagedClaudeStartup,
 	trackerManagedEvidence,
 	managedSessionName,
-	managedTmuxEnvironment,
-	missingTmuxSession,
-	stopManagedRun,
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
 import type {
 	TrackerManagedLauncherOptions,
+	TrackerManagedStartBindings,
 	TrackerManagedReceipt
 } from './trackerManagedHostLauncher.types';
 import { trackerManagedCodexUsage } from './trackerManagedCodexUsage';
 import {
+	confirmManagedStartupAbsent,
+	probeManagedTmuxSession,
 	workerScript,
 	launchTmux,
 	managedBrief,
-	prepareTrackerWorkingDirectory
+	prepareTrackerWorkingDirectory,
+	trackerSocket
 } from './trackerManagedWorkerProcess';
+import { stopManagedRun } from './trackerTmuxClose';
 import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
 import {
 	privateTrackerDirectory,
+	trackerClaudeAuthProblem,
 	trackerManagedProviderCommand,
 	validateManagedProfiles
 } from './trackerManagedProviderCommands';
@@ -61,58 +64,72 @@ export function trackerManagedHostLauncher(
 		stop: (run, signal) => stopManagedRun({ directory, tmux }, run, signal),
 		confirmNeverStarted: (run, signal) =>
 			confirmManagedStartupAbsent({ directory, tmux }, run, signal),
-		async start(input, signal) {
-			const token = trackerManagedToken(input.node, input.key);
-			const runDirectory = join(directory, token);
-			const script = join(runDirectory, 'launch.sh');
-			const briefPath = join(runDirectory, 'brief.md');
-			const command = trackerManagedProviderCommand(profiles, input, briefPath, platform);
-			if (!command || !validStartInput(input)) return { status: 'rejected' };
-			if (reserveLaunchDirectory(runDirectory)) {
-				const plan = await prepareManagedLaunch(
-					{ directory: runDirectory, script, briefPath },
-					input,
-					client,
-					signal
-				);
-				if (!plan) return { status: 'rejected' };
-				await launchTmux(
-					{ tmux, trackerBin, trackerExecutable, worktree: plan.worktree },
-					plan.receipt,
-					{ script, command, clientPath: plan.clientPath, guestAuthFile: plan.guestAuthFile },
-					signal
-				);
-			}
-			const session = await inspectManagedSession(
-				{ directory, tmux, node: input.node, key: input.key },
+		start: (input, signal) =>
+			startManagedSession(
+				{ directory, tmux, trackerBin, trackerExecutable, profiles, platform, client },
+				input,
 				signal
-			);
-			return session ? { status: 'started', session } : { status: 'pending' };
-		}
+			)
 	};
+}
+
+async function startManagedSession(
+	{
+		directory,
+		tmux,
+		trackerBin,
+		trackerExecutable,
+		profiles,
+		platform,
+		client
+	}: TrackerManagedStartBindings,
+	input: TrackerHostStartRequest,
+	signal: AbortSignal
+): Promise<TrackerHostStartReply> {
+	const token = trackerManagedToken(input.node, input.key);
+	const runDirectory = join(directory, token);
+	const script = join(runDirectory, 'launch.sh');
+	const briefPath = join(runDirectory, 'brief.md');
+	const command = trackerManagedProviderCommand(profiles, input, briefPath, platform);
+	if (!command || !validStartInput(input)) return { status: 'rejected' };
+	if (
+		input.backend === 'native' &&
+		input.selection.provider === 'claude' &&
+		!existsSync(runDirectory)
+	) {
+		const reason = await trackerClaudeAuthProblem(trackerBin, command, signal);
+		if (reason) return { status: 'rejected', reason };
+	}
+	if (reserveLaunchDirectory(runDirectory)) {
+		const plan = await prepareManagedLaunch(
+			{ directory: runDirectory, script, briefPath },
+			input,
+			client,
+			signal
+		);
+		if (!plan) return { status: 'rejected' };
+		await launchTmux(
+			{ tmux, trackerBin, trackerExecutable, worktree: plan.worktree },
+			plan.receipt,
+			{ script, command, clientPath: plan.clientPath, guestAuthFile: plan.guestAuthFile },
+			signal
+		);
+	}
+	const session = await inspectManagedSession(
+		{ directory, tmux, node: input.node, key: input.key },
+		signal
+	);
+	return managedStartReply(session);
+}
+
+function managedStartReply(session: TrackerHostSession | undefined): TrackerHostStartReply {
+	if (session?.startupFailure) return { status: 'rejected', reason: session.startupFailure };
+	return session ? { status: 'started', session } : { status: 'pending' };
 }
 
 function validStartInput(input: TrackerHostStartRequest): boolean {
 	return (
 		/^[a-z0-9]{6,10}$/.test(input.itemId) && Number.isSafeInteger(input.runId) && input.runId > 0
-	);
-}
-
-async function confirmManagedStartupAbsent(
-	{ directory, tmux }: { directory: string; tmux: string },
-	run: TrackerRunReceipt,
-	signal: AbortSignal
-) {
-	const { node, item_id: itemId, id: runId } = run;
-	const key = attemptKey(run);
-	const path = join(directory, trackerManagedToken(node, key));
-	const name = managedSessionName(itemId, runId);
-	const record = checkTrackerManagedReceipt(path, node, key);
-	if (record && (record.itemId !== itemId || record.runId !== runId || record.tmux !== name))
-		return false;
-	const probe = await managedTmuxEnvironment(tmux, node, name, signal);
-	return (
-		probe.code === 1 && missingTmuxSession(probe.stderr, name) && !hasManagedStartupEvidence(path)
 	);
 }
 
@@ -141,7 +158,9 @@ async function prepareManagedLaunch(
 		runId: input.runId,
 		token: trackerManagedToken(input.node, input.key),
 		tmux: managedSessionName(input.itemId, input.runId),
-		issuedAt: Date.now()
+		issuedAt: Date.now(),
+		...(input.backend === 'native' &&
+			input.selection.provider === 'claude' && { checkClaudeStartup: true })
 	};
 	writeFileSync(briefPath, managedBrief(input), { mode: 0o600, flag: 'wx' });
 	writeFileSync(script, workerScript, { mode: 0o600, flag: 'wx' });
@@ -182,10 +201,14 @@ async function inspectManagedSession(
 	const path = join(directory, trackerManagedToken(node, key));
 	const record = checkTrackerManagedReceipt(path, node, key);
 	if (!record) return undefined;
-	const result = await managedTmuxEnvironment(tmux, node, record.tmux, signal);
-	const live =
-		result.code === 0 && result.stdout.trim() === `HARNESS_TRACKER_ATTEMPT=${record.token}`;
-	const absent = result.code === 1 && missingTmuxSession(result.stderr, record.tmux);
-	const presence = live ? 'live' : 'unknown';
-	return trackerManagedEvidence(path, record, absent ? 'absent' : presence);
+	const socket = trackerSocket(node);
+	const presence = await probeManagedTmuxSession({ tmux, node }, record.tmux, record.token, signal);
+	const session = trackerManagedEvidence(path, record, presence);
+	return session && record.checkClaudeStartup
+		? confirmManagedClaudeStartup(
+				{ path, receipt: record, tmux, socket, live: presence === 'live' },
+				session,
+				signal
+			)
+		: session;
 }

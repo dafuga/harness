@@ -310,6 +310,12 @@ as their homes. Native Claude uses the service account's home and login name
 to find its existing Claude Code session. Point `native.claude` at the
 installed Claude Code executable when using the default account configuration.
 A wrapper that overrides `CLAUDE_CONFIG_DIR` can hide the saved sign-in.
+Tracker runs `claude auth status` in the worker's account environment before
+creating the attempt worktree. It refuses a signed-out or unverifiable CLI.
+New Claude attempts stay queued until the tmux pane reaches its composer.
+A sign-in screen, first-run theme chooser, or two minutes without a composer
+counts as a startup failure and follows Tracker's retry and flag policy.
+Tracker saves the startup verdict without retaining the captured terminal text.
 
 The worker's host-side
 Tracker client only receives the verified loopback role and port. The

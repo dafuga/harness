@@ -13,7 +13,7 @@ export function managedFixtureBindings(root: string) {
 	const docker = join(root, 'docker-profile');
 	const accountHome = join(root, 'account-home');
 	for (const dir of [stateDirectory, native, docker, accountHome]) mkdirSync(dir, { mode: 0o700 });
-	writeFileSync(join(accountHome, '.claude-session-fixture'), '', { mode: 0o600 });
+	writeFileSync(join(accountHome, '.claude-session-fixture'), 'ready', { mode: 0o600 });
 	const tmux = fixtureProgram(root, 'tmux', tmuxProgram);
 	const harness = fixtureProgram(root, 'harness', providerProgram);
 	const codex = fixtureProgram(root, 'codex', providerProgram);
@@ -39,21 +39,32 @@ function fixtureProgram(root: string, name: string, program: string) {
 const tmuxProgram = `
 const { spawnSync } = require('node:child_process');
 const args = process.argv.slice(2);
-if (args.includes('list-panes')) process.exit(0);
+const fs = require('node:fs');
+const { join } = require('node:path');
+const target = args[args.indexOf('-t') + 1]?.replace(/^=/, '').replace(/:$/, '');
+const pane = (name) => join(__dirname, 'claude-pane-' + name);
+if (args.includes('capture-pane')) {
+	process.stdout.write(fs.readFileSync(join(__dirname, 'account-home', '.claude-session-fixture'), 'utf8') === 'onboarding'
+		? 'Choose the text style that looks best with your terminal\\n'
+		: '────────────\\n❯ \\n────────────\\n  ? for shortcuts\\n');
+	process.exit(0);
+}
+if (args.includes('if-shell')) fs.rmSync(pane(target), { force: true });
+if (args.includes('list-panes') || args.includes('if-shell')) process.exit(0);
 if (args.includes('show-environment')) {
-	const { existsSync, readFileSync } = require('node:fs');
-	const mode = require('node:path').join(__dirname, 'tmux-presence');
-	const reply = existsSync(mode) ? readFileSync(mode, 'utf8') : '';
-	if (reply.startsWith('HARNESS_TRACKER_ATTEMPT=')) {
-		process.stdout.write(reply);
-		process.exit(0);
-	}
-	process.stderr.write(reply || 'no such session: ' + args[args.indexOf('-t') + 1]);
-	process.exit(1);
+	const override = join(__dirname, 'tmux-presence');
+	const file = fs.existsSync(override) ? override : pane(target);
+	const reply = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+	const matches = reply.startsWith('HARNESS_TRACKER_ATTEMPT=');
+	(matches ? process.stdout : process.stderr).write(reply || 'no such session: =' + target);
+	process.exit(matches ? 0 : 1);
 }
 if (!args.includes('new-session')) process.exit(2);
 const dir = args.indexOf('-c');
 const [command, ...workerArgs] = args.slice(dir + 2);
+if (workerArgs.includes(join(__dirname, 'claude'))) {
+	fs.writeFileSync(pane(args[args.indexOf('-s') + 1]), args[args.indexOf('-e') + 1]);
+}
 const run = spawnSync(command, workerArgs, {
 	cwd: args[dir + 1], env: { ...process.env, FIXTURE_SECRET: 'synthetic' }, stdio: 'inherit'
 });
@@ -67,8 +78,17 @@ const { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } = r
 const { basename, join } = require('node:path');
 const argv = process.argv.slice(2);
 if (basename(process.argv[1]) === 'claude') {
-	if (!existsSync(join(process.env.HOME, '.claude-session-fixture'))) process.exit(41);
+	const mode = join(process.env.HOME, '.claude-session-fixture');
+	if (!existsSync(mode)) process.exit(41);
 	if (process.env.USER !== require('node:os').userInfo().username) process.exit(42);
+	const startup = readFileSync(mode, 'utf8');
+	if (argv[0] === 'auth' && argv[1] === 'status') {
+		if (startup === 'unverified') { process.stdout.write('synthetic private diagnostic'); process.exit(2); }
+		const loggedIn = startup !== 'signed-out';
+		process.stdout.write(JSON.stringify({ loggedIn, authMethod: loggedIn ? 'claude.ai' : 'none' }));
+		process.exit(loggedIn ? 0 : 1);
+	}
+	if (startup === 'onboarding') process.exit(0);
 }
 if (basename(process.argv[1]) === 'codex') {
 	const timestamp = new Date().toISOString();
@@ -97,26 +117,6 @@ appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
 	legacy: process.env.HARNESS_TRACKER_LEGACY_BIN,
 	guestAuthFile: process.env.HARNESS_TRACKER_GUEST_AUTH_FILE ?? null
 }) + '\\n');
-`;
-
-export const retainedTrackerTmuxFixture = (at: number) => `
-const fs = require('node:fs');
-const path = require('node:path');
-const [,,, socket, command, ...args] = process.argv;
-const closed = path.join(__dirname, 'closed');
-const busy = path.join(__dirname, 'busy');
-const attached = Number(fs.existsSync(path.join(__dirname, 'attached')));
-const raw = 'auto-old008-r8|${at / 1000}|71|%9|200|${at / 1000}|2|2|0|0|0|' + attached + '|1|1|codex';
-if (socket !== 'default') process.exit(2);
-if (command === 'list-panes' || command === 'display-message') {
-	if (!fs.existsSync(closed)) process.stdout.write(raw + '\\n');
-} else if (command === 'capture-pane') {
-	const idle = !fs.existsSync(busy) || fs.readFileSync(busy, 'utf8') === 'idle';
-	process.stdout.write(idle ? 'fixture\\n\\n› \\n\\n100% context left\\n' : 'Working');
-} else if (command === 'if-shell') {
-	fs.writeFileSync(closed, args.join(' '));
-	process.stdout.write('tracker-session-closed\\n');
-} else process.exit(2);
 `;
 
 export function seedRetainedRuns(db: DatabaseSync, now: number) {

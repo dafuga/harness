@@ -2,8 +2,14 @@
 import { execFileSync } from 'node:child_process';
 import { realpathSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { controlledTrackerExecutable } from '../tracker-host-process-adapter/trackerHostCommand';
-import type { TrackerHostStartRequest } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
+import {
+	controlledTrackerExecutable,
+	runTrackerHostCommand
+} from '../tracker-host-process-adapter/trackerHostCommand';
+import type {
+	ClaudeStartupFailure,
+	TrackerHostStartRequest
+} from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import type {
 	TrackerManagedCommand,
 	TrackerManagedProfiles
@@ -104,4 +110,38 @@ function nativeTrackerProviderCommand(
 			prompt
 		]
 	};
+}
+
+export function trackerManagedProviderEnvironment(
+	trackerBin: string,
+	command: TrackerManagedCommand
+): Record<string, string> {
+	const { home, username } = command;
+	return {
+		HOME: home,
+		...(username && { USER: username }),
+		TERM: 'xterm-256color',
+		PATH: `${trackerBin}:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin`
+	};
+}
+
+export async function trackerClaudeAuthProblem(
+	trackerBin: string,
+	command: TrackerManagedCommand,
+	signal: AbortSignal
+): Promise<ClaudeStartupFailure | undefined> {
+	try {
+		const { code, stdout } = await runTrackerHostCommand(
+			command.argv[0],
+			['auth', 'status'],
+			AbortSignal.any([signal, AbortSignal.timeout(8_000)]),
+			{ environment: trackerManagedProviderEnvironment(trackerBin, command) }
+		);
+		const status = JSON.parse(stdout);
+		if (code === 0 && status?.loggedIn === true) return undefined;
+		if (code === 1 && status?.loggedIn === false) return 'claude-sign-in';
+	} catch {
+		signal.throwIfAborted();
+	}
+	return 'claude-auth-unverified';
 }

@@ -9,6 +9,7 @@ import {
 	fixtureDockerImage as image,
 	managedFixtureBindings
 } from '../../support/trackerManagedProcessFixture';
+import { verifyClaudeRefusals } from '../../support/trackerClaudeStartupFixture';
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
@@ -17,11 +18,9 @@ vi.mock('node:os', async (importOriginal) => {
 	const os = await importOriginal<typeof Os>();
 	return { ...os, userInfo: () => ({ ...os.userInfo(), username: 'unknown' }) };
 });
-
 const node = 'daniel-primary-mbp';
 const signal = new AbortController().signal;
 const client = { node, role: 'hub' as const, apiPort: 49281, syncPort: 49282 };
-
 test('launches native and managed Docker workers through isolated tmux and reuses their durable attempt evidence', () =>
 	measureWorkload('adapter.projects-sessions-tracker-tmux', 'managed-worker-roundtrip', () =>
 		withTempRepo(proveManagedWorker)
@@ -56,6 +55,7 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 				session: { key: input.key, state: 'exited', exitCode: 0 }
 			});
 		}
+		await verifyClaudeRefusals(launcher, claude, paths.profiles.accountHome);
 	} finally {
 		vi.unstubAllEnvs();
 	}

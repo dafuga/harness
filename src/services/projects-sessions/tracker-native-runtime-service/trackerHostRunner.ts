@@ -31,7 +31,12 @@ import type {
 	TrackerHostSession
 } from './trackerHostLaunch.types';
 import { formatTrackerHostBrief } from './trackerHostBrief';
-import { startTrackerHost, trackerItemStatus, withTrackerRunUsage } from './trackerHostLaunchPort';
+import {
+	startTrackerHost,
+	trackerHostStartupEvent,
+	trackerItemStatus,
+	withTrackerRunUsage
+} from './trackerHostLaunchPort';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -188,7 +193,7 @@ function recordedHostEvent(
 		: sessions.find(
 				(entry) => !entry.legacyRunId && entry.key === key && entry.itemId === run.item_id
 			);
-	if (run.state === 'queued') return session && { type: 'session', session };
+	if (run.state === 'queued') return trackerHostStartupEvent(session);
 	if (!session || session.id !== (run.host_session_id ?? run.session_id))
 		return trackerItemStatus(items, run.item_id) === 'done'
 			? { type: 'monitor', session: 'unknown' }

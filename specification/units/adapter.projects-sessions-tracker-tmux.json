@@ -4,7 +4,7 @@
 	"uid": "u_fyf7e7kyi5",
 	"kind": "adapter",
 	"title": "Tracker tmux",
-	"responsibility": "Reads retained Tracker panes and guards terminal writes against pane, cursor, and provider changes.",
+	"responsibility": "Launches managed Tracker sessions, reads retained panes, and guards terminal writes against pane, cursor, and provider changes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -42,24 +42,30 @@
 			"TrackerManagedTarget",
 			"TrackerManagedExec",
 			"TrackerManagedLauncherOptions",
+			"TrackerManagedStartBindings",
 			"trackerManagedToken",
 			"checkTrackerManagedReceipt",
 			"trackerManagedEvidence",
 			"hasManagedStartupEvidence",
+			"confirmManagedClaudeStartup",
 			"managedSessionName",
-			"stopManagedRun",
-			"managedTmuxEnvironment",
-			"missingTmuxSession",
 			"validateManagedProfiles",
 			"privateTrackerDirectory",
 			"trackerManagedProviderCommand",
+			"trackerManagedProviderEnvironment",
+			"trackerClaudeAuthProblem",
 			"workerScript",
 			"launchTmux",
 			"prepareTrackerWorkingDirectory",
 			"trackerSocket",
 			"managedBrief",
+			"confirmManagedStartupAbsent",
+			"probeManagedTmuxSession",
 			"closePaneNames",
 			"closePaneCandidate",
+			"stopManagedRun",
+			"managedTmuxEnvironment",
+			"missingTmuxSession",
 			"trackerPaneFormat",
 			"trackerSessionName",
 			"trackerTmuxPane",
@@ -191,6 +197,41 @@
 				"required": true
 			},
 			{
+				"name": "confirmManagedClaudeStartup.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "confirmManagedClaudeStartup.receipt",
+				"type": "TrackerManagedReceipt",
+				"required": true
+			},
+			{
+				"name": "confirmManagedClaudeStartup.tmux",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "confirmManagedClaudeStartup.socket",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "confirmManagedClaudeStartup.live",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "confirmManagedClaudeStartup.session",
+				"type": "TrackerHostSession",
+				"required": true
+			},
+			{
+				"name": "confirmManagedClaudeStartup.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
 				"name": "managedSessionName.itemId",
 				"type": "string",
 				"required": true
@@ -198,56 +239,6 @@
 			{
 				"name": "managedSessionName.runId",
 				"type": "number",
-				"required": true
-			},
-			{
-				"name": "stopManagedRun.directory",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "stopManagedRun.tmux",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "stopManagedRun.run",
-				"type": "TrackerRunReceipt",
-				"required": true
-			},
-			{
-				"name": "stopManagedRun.signal",
-				"type": "AbortSignal",
-				"required": true
-			},
-			{
-				"name": "managedTmuxEnvironment.tmux",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "managedTmuxEnvironment.node",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "managedTmuxEnvironment.name",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "managedTmuxEnvironment.signal",
-				"type": "AbortSignal",
-				"required": true
-			},
-			{
-				"name": "missingTmuxSession.stderr",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "missingTmuxSession.name",
-				"type": "string",
 				"required": true
 			},
 			{
@@ -278,6 +269,31 @@
 			{
 				"name": "trackerManagedProviderCommand.host",
 				"type": "typeof process.platform",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderEnvironment.trackerBin",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerManagedProviderEnvironment.command",
+				"type": "TrackerManagedCommand",
+				"required": true
+			},
+			{
+				"name": "trackerClaudeAuthProblem.trackerBin",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerClaudeAuthProblem.command",
+				"type": "TrackerManagedCommand",
+				"required": true
+			},
+			{
+				"name": "trackerClaudeAuthProblem.signal",
+				"type": "AbortSignal",
 				"required": true
 			},
 			{
@@ -341,6 +357,51 @@
 				"required": true
 			},
 			{
+				"name": "confirmManagedStartupAbsent.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "confirmManagedStartupAbsent.tmux",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "confirmManagedStartupAbsent.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "confirmManagedStartupAbsent.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.tmux",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.token",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
 				"name": "closePaneNames.input",
 				"type": "TrackerTmuxClose",
 				"required": true
@@ -353,6 +414,56 @@
 			{
 				"name": "closePaneCandidate.layouts",
 				"type": "TrackerTmuxPane[]",
+				"required": true
+			},
+			{
+				"name": "stopManagedRun.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "stopManagedRun.tmux",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "stopManagedRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "stopManagedRun.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "managedTmuxEnvironment.tmux",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "managedTmuxEnvironment.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "managedTmuxEnvironment.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "managedTmuxEnvironment.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "missingTmuxSession.stderr",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "missingTmuxSession.name",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -655,7 +766,8 @@
 				"outputs": [
 					{
 						"name": "trackerManagedHostLauncher",
-						"type": "TrackerHostLaunchPort"
+						"type": "TrackerHostLaunchPort",
+						"description": "Managed driver that refuses unsigned Claude before launch and waits for the reserved Claude pane to reach its composer."
 					}
 				],
 				"errors": [],
@@ -764,6 +876,54 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "confirmManagedClaudeStartup",
+				"inputs": [
+					{
+						"name": "confirmManagedClaudeStartup.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "confirmManagedClaudeStartup.receipt",
+						"type": "TrackerManagedReceipt",
+						"required": true
+					},
+					{
+						"name": "confirmManagedClaudeStartup.tmux",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "confirmManagedClaudeStartup.socket",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "confirmManagedClaudeStartup.live",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "confirmManagedClaudeStartup.session",
+						"type": "TrackerHostSession",
+						"required": true
+					},
+					{
+						"name": "confirmManagedClaudeStartup.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "confirmManagedClaudeStartup",
+						"type": "Promise<TrackerHostSession | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "managedSessionName",
 				"inputs": [
 					{
@@ -781,95 +941,6 @@
 					{
 						"name": "managedSessionName",
 						"type": "string"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "stopManagedRun",
-				"inputs": [
-					{
-						"name": "stopManagedRun.directory",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "stopManagedRun.tmux",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "stopManagedRun.run",
-						"type": "TrackerRunReceipt",
-						"required": true
-					},
-					{
-						"name": "stopManagedRun.signal",
-						"type": "AbortSignal",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "stopManagedRun",
-						"type": "Promise<boolean>"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "managedTmuxEnvironment",
-				"inputs": [
-					{
-						"name": "managedTmuxEnvironment.tmux",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "managedTmuxEnvironment.node",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "managedTmuxEnvironment.name",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "managedTmuxEnvironment.signal",
-						"type": "AbortSignal",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "managedTmuxEnvironment",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "missingTmuxSession",
-				"inputs": [
-					{
-						"name": "missingTmuxSession.stderr",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "missingTmuxSession.name",
-						"type": "string",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "missingTmuxSession",
-						"type": "boolean"
 					}
 				],
 				"errors": [],
@@ -949,6 +1020,57 @@
 					{
 						"name": "trackerManagedProviderCommand",
 						"type": "TrackerManagedCommand | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedProviderEnvironment",
+				"inputs": [
+					{
+						"name": "trackerManagedProviderEnvironment.trackerBin",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerManagedProviderEnvironment.command",
+						"type": "TrackerManagedCommand",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedProviderEnvironment",
+						"type": "Record<string, string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerClaudeAuthProblem",
+				"inputs": [
+					{
+						"name": "trackerClaudeAuthProblem.trackerBin",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerClaudeAuthProblem.command",
+						"type": "TrackerManagedCommand",
+						"required": true
+					},
+					{
+						"name": "trackerClaudeAuthProblem.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerClaudeAuthProblem",
+						"type": "Promise<ClaudeStartupFailure | undefined>"
 					}
 				],
 				"errors": [],
@@ -1067,6 +1189,77 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "confirmManagedStartupAbsent",
+				"inputs": [
+					{
+						"name": "confirmManagedStartupAbsent.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "confirmManagedStartupAbsent.tmux",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "confirmManagedStartupAbsent.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "confirmManagedStartupAbsent.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "confirmManagedStartupAbsent",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "probeManagedTmuxSession",
+				"inputs": [
+					{
+						"name": "probeManagedTmuxSession.tmux",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "probeManagedTmuxSession.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "probeManagedTmuxSession.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "probeManagedTmuxSession.token",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "probeManagedTmuxSession.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "probeManagedTmuxSession",
+						"type": "Promise<TrackerManagedPresence>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "closePaneNames",
 				"inputs": [
 					{
@@ -1102,6 +1295,95 @@
 					{
 						"name": "closePaneCandidate",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "stopManagedRun",
+				"inputs": [
+					{
+						"name": "stopManagedRun.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "stopManagedRun.tmux",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "stopManagedRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "stopManagedRun.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stopManagedRun",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "managedTmuxEnvironment",
+				"inputs": [
+					{
+						"name": "managedTmuxEnvironment.tmux",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "managedTmuxEnvironment.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "managedTmuxEnvironment.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "managedTmuxEnvironment.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "managedTmuxEnvironment",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "missingTmuxSession",
+				"inputs": [
+					{
+						"name": "missingTmuxSession.stderr",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "missingTmuxSession.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "missingTmuxSession",
+						"type": "boolean"
 					}
 				],
 				"errors": [],
