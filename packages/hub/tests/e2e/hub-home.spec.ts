@@ -45,6 +45,10 @@ for (const viewport of manifest.viewports) {
 				);
 				if (mode === 'default' || mode === 'busy') {
 					await expect(page.locator('.hh-projects .hh-change').first()).toBeVisible();
+					const agents = page.getByRole('region', { name: 'Agents', exact: true });
+					await expect(agents.locator('.hh-agent-list > *')).toHaveCount(1);
+					await expect(agents.locator('.hh-agent-list')).toContainText('Chief of Staff');
+					await expect(agents.locator('.hh-agent-list')).toContainText('sub-agent session');
 				}
 				await fit(page, viewport.width);
 				await capture(page, path, 'root');
