@@ -129,7 +129,7 @@ test('startup refuses an unfenced role or competing API, sync or journal owner a
 async function verifyNoteOnlyBlocker(hub: TrackerNodeFixture, id: string) {
 	await fixtureTrackerJson(hub, ['start', id]);
 	await fixtureTrackerJson(hub, ['note', id, 'BLOCKED: missing credential for sandbox']);
-	const text = await trackerProcess(hub, ['blockers']).exited;
+	const text = await finishedTrackerProcess(hub, ['blockers']);
 	expect(text.code).toBe(0);
 	expect(text.stdout).toContain('reported in notes');
 	const sync = await fixtureTrackerJson(hub, ['blockers', '--sync']);
