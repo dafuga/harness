@@ -60,7 +60,7 @@ export function queueRun(
 	};
 }
 
-function modelFields(
+export function modelFields(
 	item: TrackerDispatchItem,
 	pick: TrackerLaunchPick | { error: string },
 	previous?: TrackerRunReceipt

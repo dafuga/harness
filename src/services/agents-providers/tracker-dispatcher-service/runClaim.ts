@@ -1,4 +1,5 @@
 // @harness-uid u_rzpjc6wqqy
+import { pickTrackerMediaModel } from '../../../utils/agents-providers/pickTrackerModel';
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchItem,
@@ -21,7 +22,15 @@ import {
 	startable
 } from './launchEligibility';
 import { dueGrantHold } from './dueGrantHold';
-import { etaFor, failRun, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
+import {
+	etaFor,
+	failRun,
+	finishRun,
+	modelFields,
+	queueRun,
+	recordRun,
+	reviseRun
+} from './runReceipt';
 
 // Give an interrupted host start time to publish its session evidence.
 export const launchStartupGrace = 5 * minute;
@@ -38,7 +47,7 @@ export function claimLaunch(
 		return skip('held', 'launch token was already claimed');
 	const hold = claimHold(snapshot, { item, grant }, policy, now);
 	if (hold) return skip('held', hold);
-	const pick = item.launch.scheduledPick ?? policy.pickModel(item);
+	const pick = pickTrackerMediaModel(item) ?? item.launch.scheduledPick ?? policy.pickModel(item);
 	const problem = policy.admit(item, item.launch, 'error' in pick ? null : pick.rung);
 	if (problem) return skip('held', problem);
 	const run = queueRun(snapshot, { token, item, pick }, policy, now);
@@ -65,7 +74,8 @@ export function prepareRetry(
 		});
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
-	const rung = {
+	const media = pickTrackerMediaModel(item);
+	const rung = media?.rung ?? {
 		id: run.rung,
 		cli: run.cli,
 		model: run.model,
@@ -74,7 +84,8 @@ export function prepareRetry(
 	};
 	const problem = policy.admit(item, item.launch, rung);
 	if (problem) return skip('held', problem);
-	return reserveStart(item, { run, rung }, policy, now);
+	const current = media ? { ...run, ...modelFields(item, media) } : run;
+	return reserveStart(item, { run: current, rung }, policy, now);
 }
 
 function awaitingRetry(
