@@ -6603,6 +6603,14 @@
 			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
 			"definition": "a7092bdf2a687b5df2386a9cb98a5a78581a31e22681d67d21c824501310755a",
 			"retired": true
+		},
+		{
+			"unit": "reports.function.activity-client",
+			"name": "activityClient",
+			"commit": "767cc7ce137ab34328e466fe2d46eb5474f47a5f",
+			"reason": "Retired in deferred plan wave 4: no live consumer.",
+			"definition": "e770b23a9d2553ee87a094b05ffedc900267ee8052ee4deab37b589953f749d6",
+			"retired": true
 		}
 	],
 	"retiredOwners": [
