@@ -44,7 +44,5 @@ export function trackerItemLaunchFields(
 	if (!requestsTrackerLaunch(fields.auto)) return fields;
 	if (!context.planLaunch)
 		throw new TypeError('Tracker launch planning requires a placement collaborator');
-	const plan = context.planLaunch(fields, current);
-	if (context.explicitLaunch || (current?.auto && plan.auto === current.auto)) return plan;
-	return { ...plan, launch_source: 'automatic' };
+	return context.planLaunch(fields, current);
 }

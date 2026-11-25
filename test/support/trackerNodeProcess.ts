@@ -207,6 +207,7 @@ export async function verifyDefaultPickup(hub: TrackerNodeFixture) {
 		'--later'
 	]);
 	expect(ready).toMatchObject({ auto: expect.any(String), launch_target: 'synthetic-hub' });
+	expect(ready.launch_source).toBe('automatic');
 	expect(later).toMatchObject({ auto: null, schedule_off: true });
 	expect(await fixtureTrackerJson(hub, ['digest'])).toMatchObject({
 		queued: [{ id: ready.id, waiting_minutes: expect.any(Number) }]

@@ -4,7 +4,11 @@ import type { PhoneReplicaWriteGrant } from './tracker-phone-replica-service/Pho
 import type { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerItem } from '../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerLadderConfig } from '../../utils/agents-providers/parseTrackerModelSpec.types';
-import type { TrackerItemMutationContext } from '../../utils/projects-sessions/planTrackerItemMutation.types';
+import type { TrackerItemInput } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
+import type {
+	TrackerItemMutationContext,
+	TrackerItemSnapshot
+} from '../../utils/projects-sessions/planTrackerItemMutation.types';
 
 export interface TrackerLocalApiOptions {
 	now?: () => number;
@@ -20,5 +24,9 @@ export interface TrackerLocalApiOptions {
 	};
 	ladderConfig?: TrackerLadderConfig;
 	validateModel?: TrackerItemMutationContext['validateModel'];
-	planLaunch?: TrackerItemMutationContext['planLaunch'];
+	planLaunch?(
+		fields: TrackerItemInput,
+		current: TrackerItemSnapshot | undefined,
+		source: 'manual' | 'automatic'
+	): TrackerItemInput;
 }

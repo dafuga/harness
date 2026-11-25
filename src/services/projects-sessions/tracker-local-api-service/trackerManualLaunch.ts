@@ -48,7 +48,7 @@ function planTrackerExplicitLaunch(
 			item,
 			body: { project, repo, computer, model, sensitive, auto: true }
 		},
-		{ ...context, explicitLaunch: true }
+		context
 	);
 	if (plan.fields.auto === item.auto) return { itemId: item.id, fields: null };
 	const modelLabel = model ? ` (model ${model})` : '';

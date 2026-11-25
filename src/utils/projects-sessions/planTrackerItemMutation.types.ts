@@ -56,7 +56,6 @@ export type TrackerItemMutation<Receipt extends object = object> = {
 );
 
 export interface TrackerItemMutationContext extends TrackerItemClock {
-	readonly explicitLaunch?: boolean;
 	readonly candidates: readonly TrackerMatchRow[];
 	/** Validate a named model against the integration's ladder and project policy. */
 	readonly validateModel?: (model: unknown, project: unknown) => void;
