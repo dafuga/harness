@@ -5,11 +5,13 @@ The store keeps the bot credential and a metadata-only receipt in an owner-only 
 the Harness Slack smoke consumer reads. Nothing here prints or logs the credential.
 """
 
+import fcntl
 import json
 import os
 import re
 import stat
 import sys
+from contextlib import contextmanager
 
 BINDING = {
     'project': 'harness',
@@ -40,6 +42,11 @@ def read_receipt(path):
         receipt = json.loads(read_private(path, 8192))
     except (OSError, ValueError):
         raise BindingError('The receipt is unreadable.') from None
+    validate_receipt(receipt)
+    return receipt
+
+
+def validate_receipt(receipt):
     if not isinstance(receipt, dict) or set(receipt) - RECEIPT_KEYS:
         raise BindingError('The receipt has unexpected fields.')
     expected = {
@@ -51,7 +58,6 @@ def read_receipt(path):
         raise BindingError('The receipt does not match the pinned binding.')
     if not BOT_ID.match(str(receipt.get('botId'))) or not USER_ID.match(str(receipt.get('botUserId'))):
         raise BindingError('The receipt lacks verified bot IDs.')
-    return receipt
 
 
 def binding_id():
@@ -88,21 +94,46 @@ def write_private(path, data):
 
 
 def binding_directory(root):
-    path = os.path.join(root, BINDING['project'], BINDING['environment'], BINDING['installationId'])
-    os.makedirs(path, mode=0o700, exist_ok=True)
-    for part in (root, path):
-        info = os.lstat(part)
-        if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & 0o077:
-            raise BindingError('The binding directory must be a private directory you own.')
+    require_directory(root, 0o077)
+    path = root
+    for field in ('project', 'environment', 'installationId'):
+        path = os.path.join(path, BINDING[field])
+        try:
+            os.mkdir(path, mode=0o700)
+        except FileExistsError:
+            pass
+        require_directory(path, 0o077 if field == 'installationId' else 0o022)
     return path
+
+
+def require_directory(path, forbidden):
+    info = os.lstat(path)
+    if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or info.st_mode & forbidden:
+        raise BindingError('The binding directory must be an owner-controlled directory.')
+
+
+@contextmanager
+def binding_write_lock(directory):
+    handle = os.open(directory, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        yield
+    finally:
+        os.close(handle)
 
 
 def store(root, receipt_path, token):
     """Write the credential beside its receipt after the receipt passes the pins."""
-    if not TOKEN.match(bytes(token).decode('ascii', 'replace')):
-        raise BindingError('The credential is not a Slack bot token.')
     receipt = read_receipt(receipt_path)
     directory = binding_directory(root)
+    with binding_write_lock(directory):
+        store_in_locked_binding(directory, receipt, token)
+
+
+def store_in_locked_binding(directory, receipt, token):
+    if not TOKEN.fullmatch(bytes(token).decode('ascii', 'replace')):
+        raise BindingError('The credential is not a Slack bot token.')
+    validate_receipt(receipt)
     write_private(os.path.join(directory, 'bot.receipt.json'), json.dumps(receipt, sort_keys=True).encode())
     write_private(os.path.join(directory, 'bot.token'), bytes(token))
 
@@ -110,13 +141,14 @@ def store(root, receipt_path, token):
 def emit(root, out):
     """Write the consumer's `{token}` packet to `out` after re-checking the stored receipt."""
     directory = binding_directory(root)
-    read_receipt(os.path.join(directory, 'bot.receipt.json'))
+    with binding_write_lock(directory):
+        read_receipt(os.path.join(directory, 'bot.receipt.json'))
+        try:
+            token = bytearray(read_private(os.path.join(directory, 'bot.token'), 1024))
+        except OSError:
+            raise BindingError('The binding holds no credential.') from None
     try:
-        token = bytearray(read_private(os.path.join(directory, 'bot.token'), 1024))
-    except OSError:
-        raise BindingError('The binding holds no credential.') from None
-    try:
-        if not TOKEN.match(token.decode('ascii', 'replace')):
+        if not TOKEN.fullmatch(token.decode('ascii', 'replace')):
             raise BindingError('The stored credential is invalid.')
         out.write(b'{"token":"' + bytes(token) + b'"}')
         out.flush()
