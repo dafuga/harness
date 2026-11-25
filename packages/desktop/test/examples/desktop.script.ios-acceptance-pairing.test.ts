@@ -47,34 +47,41 @@ afterEach(() => {
 		rmSync(directory, { recursive: true, force: true });
 });
 
+const pairingStates = new Map<string, string>([
+	['does not accept', 'That code is for a relay this build of Harness does not accept.'],
+	['Debug build for a test fixture', 'Connect to computer. Debug build for a test fixture'],
+	['Waiting for approval', 'Waiting for approval'],
+	['declined on your computer', 'Connect to computer; declined on your computer'],
+	[
+		'Connected to',
+		`Connected to Harness fixture computer
+Acceptance iPhone
+Key ${key}`
+	]
+]);
+
 function createRun(): Acceptance & { checks: string[] } {
 	const output = mkdtempSync(join(tmpdir(), 'ios-pairing-'));
 	directories.push(output);
 	const checks: string[] = [];
-	fixtures.page.until.mockImplementation(async (_script: string, expected: string) => {
-		if (expected === 'does not accept')
-			return 'That code is for a relay this build of Harness does not accept.';
-		if (expected === 'Debug build for a test fixture')
-			return 'Connect to computer. Debug build for a test fixture';
-		if (expected === 'Waiting for approval') return 'Waiting for approval';
-		if (expected === 'declined on your computer')
-			return 'Connect to computer; declined on your computer';
-		if (expected === 'Connected to')
-			return `Connected to Harness fixture computer\nAcceptance iPhone\nKey ${key}`;
-		return 'capacitor | Connect to computer | Scan QR code';
-	});
+	fixtures.page.until.mockImplementation(
+		async (_script: string, expected: string) =>
+			pairingStates.get(expected) ?? 'capacitor | Connect to computer | Scan QR code'
+	);
 	fixtures.page.evaluate.mockImplementation(async (script: string) =>
 		script === 'return panel();' ? 'Waiting for approval' : 'safe page data'
 	);
-	let statusCall = 0;
+	const pending = [
+		{ requests: [], devices: [] },
+		{ requests: [{ deviceName: 'Acceptance iPhone' }], devices: [] },
+		{ devices: [] },
+		{ requests: [], devices: [] }
+	];
 	fixtures.status.mockImplementation(async (_run: unknown, path: string) => {
 		if (path !== '/status') return {};
-		statusCall += 1;
-		if (statusCall === 1) return { requests: [], devices: [] };
-		if (statusCall === 2) return { requests: [{ deviceName: 'Acceptance iPhone' }], devices: [] };
-		if (statusCall === 3) return { devices: [] };
-		if (statusCall === 4) return { requests: [], devices: [] };
-		return { devices: [{ online: true, name: 'Acceptance iPhone', deviceId: key }] };
+		return (
+			pending.shift() ?? { devices: [{ online: true, name: 'Acceptance iPhone', deviceId: key }] }
+		);
 	});
 	fixtures.groups
 		.mockReturnValueOnce([])

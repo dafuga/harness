@@ -15,7 +15,7 @@ import type {
 } from '../../models/explorer-ui/Harness.types';
 import { focusedCaptures, focusedScenario } from './explorer-evidence/focusedCaptures';
 import { captureProvenance } from '../reports-media/captureProvenance';
-import { covering, incomparable, merged, united } from './explorerComparison';
+import { covering, explorerComparison, merged, united } from './explorerComparison';
 import { explorerCoverage } from './explorer-verdict/explorerCoverage';
 import { verdictCoverage, verdictRecord } from './explorer-verdict/explorerVerdict';
 
@@ -163,7 +163,7 @@ export function explorerEvidence(
 		after,
 		before,
 		initial: scope.mode === 'commit' && scope.parent === null ? first : null,
-		incomparable: before ? incomparable(before, after, unit.id) : []
+		incomparable: before ? explorerComparison(before, after, unit.id) : []
 	};
 }
 

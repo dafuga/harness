@@ -45,6 +45,10 @@ function pickerSnapshot(variant: string) {
 			controlConnected: false,
 			message: 'Desktop control is unavailable; the request stays pending.'
 		};
+	return requestSnapshot(variant);
+}
+
+function requestSnapshot(variant: string) {
 	const status = variant === 'request-cancelled' ? 'cancelled' : variant;
 	if (!['applying', 'applied', 'failed', 'cancelled'].includes(status) || variant === 'cancelled')
 		return picker;

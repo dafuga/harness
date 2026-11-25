@@ -1,32 +1,25 @@
 import { test } from 'vitest';
 import { createHash } from 'node:crypto';
-import { githubLfs } from '../../src/utils/git-source-history/create-git-hub-source/githubLfs';
-import type { GitHubOptions } from '../../src/models/planning-collaboration/Collaboration.types';
-import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
+import {
+	encode,
+	observe,
+	record,
+	run,
+	installationToken
+} from './collaboration.function.github-lfs.cases';
+export { sentOf, observe } from './collaboration.function.github-lfs.cases';
 
-/**
- * The real githubLfs, called as its caller calls it, with a scripted fetch that answers the batch
- * request, then the download, in order. Nothing leaves the test; each state's calls are recorded.
- */
-const unitId = 'collaboration.function.github-lfs';
-const repository = { id: 202, owner: 'acme', name: 'pilot', private: true, installationId: 7 };
 const batchUrl = 'https://github.com/acme/pilot.git/info/lfs/objects/batch';
 const cdnHref = 'https://objects.githubusercontent.com/example/hello';
 const s3Href = 'https://github-cloud.s3.amazonaws.com/example/s3';
 const mediaHref = 'https://media.githubusercontent.com/example/empty';
 const pointerPrefix = 'version https://git-lfs.github.com/spec/v1\n';
-const installationToken = 'example-installation-token';
 const helloText = 'Hello from LFS.\n';
 /** A lowercase 64-character OID that no example object has, so only a batch reply can name it. */
 const foreignOid = '0123456789abcdef'.repeat(4);
 const invalid = 'invalid-lfs-pointer';
 const unavailable = 'lfs-unavailable';
-
-type Reply = { status: number; json?: unknown; text?: string; headers?: Record<string, string> };
-type Observed = Awaited<ReturnType<typeof observe>>;
-
-const encode = (value: string) => new TextEncoder().encode(value);
 const sha256 = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
 const pointerTo = (oid: string, size: number) =>
 	encode(`${pointerPrefix}oid sha256:${oid}\nsize ${size}\n`);
@@ -35,75 +28,6 @@ const batchReply = (oid: string, size: number, href: string, header?: object) =>
 	status: 200,
 	json: { objects: [{ oid, size, actions: { download: { href, header } } }] }
 });
-const shown = (bytes: Uint8Array) => ({
-	length: bytes.length,
-	text: new TextDecoder().decode(bytes)
-});
-
-/** A request as the fake received it: method, URL, redirect mode, headers and any JSON body. */
-function sentOf(url: string, init: RequestInit = {}) {
-	return {
-		method: init.method ?? 'GET',
-		url,
-		redirect: init.redirect ?? 'follow',
-		headers: (init.headers as Record<string, string> | undefined) ?? null,
-		body: typeof init.body === 'string' ? JSON.parse(init.body) : null
-	};
-}
-type Sent = ReturnType<typeof sentOf>;
-
-/**
- * Answers each request with the next scripted reply and keeps every request that was sent. A request
- * past the script gets a 599, so the recorded requests show it and the code reports it as unavailable.
- */
-function scripted(server: Reply[]) {
-	const requests: Sent[] = [];
-	const answer = async (input: RequestInfo | URL, init?: RequestInit) => {
-		requests.push(sentOf(String(input), init));
-		const { status, json, text, headers }: Reply = server[requests.length - 1] ?? { status: 599 };
-		return json === undefined
-			? new Response(text ?? '', { status, headers })
-			: new Response(JSON.stringify(json), {
-					status,
-					headers: { 'content-type': 'application/json' }
-				});
-	};
-	return { answer, requests };
-}
-
-/** One call as its caller makes it: the bytes or the refusal code that came back, and what was sent. */
-async function run(blob: Uint8Array, server: Reply[], tokenFails: boolean) {
-	const transport = scripted(server);
-	const tokens: unknown[] = [];
-	const base: Omit<GitHubOptions, 'repository'> = {
-		token: async (scope) => {
-			tokens.push(scope);
-			if (tokenFails) throw new Error('token service unavailable');
-			return installationToken;
-		},
-		fetch: transport.answer
-	};
-	try {
-		const value = await githubLfs({ ...base, repository }, blob);
-		return { value, code: undefined, requests: transport.requests, tokens };
-	} catch (error) {
-		if (!(error instanceof Error && 'code' in error)) throw error;
-		return { value: undefined, code: String(error.code), requests: transport.requests, tokens };
-	}
-}
-
-/** One call: the outcome the test asserts on, and the case that records it as evidence. */
-async function observe(name: string, blob: Uint8Array, server: Reply[] = [], tokenFails = false) {
-	const outcome = await run(blob, server, tokenFails);
-	const token = tokenFails ? 'refuses to issue a token' : 'issues a contents-read token';
-	const input = { repository, blob: shown(blob), server, token };
-	const trace = { requests: outcome.requests, tokens: outcome.tokens };
-	const recorded =
-		outcome.value === undefined
-			? { name, input, error: { code: outcome.code, ...trace } }
-			: { name, input, output: { bytes: shown(outcome.value), ...trace } };
-	return { outcome, recorded };
-}
 
 /** A download that the batch endpoint offers at href and the storage then serves in full. */
 const offering = (name: string, bytes: Uint8Array, href: string, header?: object) => {
@@ -111,29 +35,6 @@ const offering = (name: string, bytes: Uint8Array, href: string, header?: object
 	const reply = { status: 200, text: new TextDecoder().decode(bytes) };
 	return observe(name, pointerTo(oid, size), [batchReply(oid, size, href, header), reply]);
 };
-
-/** Records one state's calls as its cases, under the unit and the function they show. */
-const record = (state: string, calls: Observed[]) =>
-	recordExampleCases(
-		{ unitId, symbol: 'githubLfs', state, evidence: 'examples-cases', file: `${state}.json` },
-		calls.map(({ recorded }) => recorded)
-	);
-
-test('Returns bytes that are not an LFS pointer unchanged', async () => {
-	const readme = encode('# Notes\nSee the design doc.\n');
-	const image = Uint8Array.of(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0xff);
-	const mention = encode('Read https://git-lfs.github.com/spec/v1 for the format.\n');
-	const calls = [
-		await observe('plain text is returned unchanged', readme),
-		await observe('binary bytes are returned unchanged', image),
-		await observe('text that mentions the spec is unchanged', mention)
-	];
-	record('returns-bytes-that-are-not-an-lfs-pointer-unchanged', calls);
-	expect(calls[0].outcome.value).toBe(readme);
-	expect(calls[1].outcome.value).toBe(image);
-	expect(calls[2].outcome.value).toBe(mention);
-	expect(calls.map(({ outcome }) => outcome.requests.length)).toEqual([0, 0, 0]);
-});
 
 test('Downloads a pointed-to object whose size and hash match', async () => {
 	const hello = encode(helloText);

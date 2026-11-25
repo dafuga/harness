@@ -1,39 +1,33 @@
 import type { Page, Route } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { catalogFixtureMedia } from './catalogFixtureMedia';
-import { shellMedia } from './shellArtworkImages';
-import { serveVideoPlayerFixture, serveVideoPlayerFrameFixture } from './videoPlayerFixture';
+import { previewMedia } from './previewMedia';
+import { serveVideoPlayerFrameFixture } from './videoPlayerFixture';
 import { serveVideoFeedback } from './videoFeedbackFixture';
 import { shellActivity } from './shellCatalogRoutes';
 import { index, revision, record } from '../../../../test/entityFixture';
 import { commits } from '../../../../test/entityUnits';
 
 import { activity, live } from './activity';
-import { image, layoutImage, ordersPageImage } from './shared';
-import {
-	checkoutBefore,
-	checkoutConfirmation,
-	checkoutMobile,
-	checkoutTablet
-} from './evidenceCardMedia';
 import { pickerFixture } from './providerPickerApi';
 import { consoleProviders } from './consoleProviders';
-import { audioFixture } from '../../../../test/audioFixture';
 import { routeIndex, routeRevision } from './routeHistory';
 import { routePreview } from './visualUnits';
 /** The pages a route module was opened in, by the unit their document asked for. */
 const routed = new WeakSet<Page>();
-const fixtureMedia = new Set(
-	Object.values(commits).flatMap((commit) =>
-		record(commit).scenarios.flatMap((scenario) =>
-			scenario.states.flatMap((state) =>
-				state.captures.map((capture) => capture.media?.split('/').pop())
-			)
-		)
-	)
-);
 export const previewOrigin = 'http://127.0.0.1:47999';
+const requests = new Map<string, (route: Route) => Promise<void>>([
+	['/api/project-activity', activityFixture],
+	['/api/agent', consoleAgentFixture],
+	['/api/video-flags', serveVideoFeedback],
+	['/api/video-flag-frame', serveVideoPlayerFrameFixture],
+	[
+		'/api/replay-video',
+		(route) => route.fulfill({ contentType: 'video/mp4', body: 'Synthetic export response.' })
+	],
+	['/tools', pickerFixture]
+]);
+
 export async function servePreview(route: Route, home: string, markup = '') {
 	const url = new URL(route.request().url());
 	const file = /\/(page\.(?:iife\.js|css))$/.exec(url.pathname)?.[1];
@@ -42,14 +36,9 @@ export async function servePreview(route: Route, home: string, markup = '') {
 			contentType: file.endsWith('css') ? 'text/css' : 'text/javascript',
 			body: readFileSync(join(home, 'catalog', file))
 		});
-	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return media(route, url.pathname, home);
-	if (url.pathname === '/api/project-activity') return activityFixture(route);
-	if (url.pathname === '/api/agent') return consoleAgentFixture(route);
-	if (url.pathname === '/api/video-flags') return serveVideoFeedback(route);
-	if (url.pathname === '/api/video-flag-frame') return serveVideoPlayerFrameFixture(route);
-	if (url.pathname === '/api/replay-video')
-		return route.fulfill({ contentType: 'video/mp4', body: 'Synthetic export response.' });
-	if (url.pathname === '/tools') return pickerFixture(route);
+	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return previewMedia(route, url.pathname, home);
+	const fixture = requests.get(url.pathname);
+	if (fixture) return fixture(route);
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
 		'/harness/data/index.json': shown.index,
@@ -155,67 +144,4 @@ function historyOf(route: Route, url: URL) {
 	}
 	if (routed.has(page)) return { index: routeIndex, revision: routeRevision };
 	return { index, revision: (commit: string) => revision(commit, [record(commit)]) };
-}
-async function media(route: Route, path: string, home: string) {
-	const all = catalogFixtureMedia(home);
-	const file = path.split('/').pop()!;
-	if (file === 'video-player-fixture.mp4') return serveVideoPlayerFixture(route);
-	const artifact = artifactByName(all, file);
-	if (artifact)
-		return route.fulfill({ contentType: artifact.mediaType, body: Buffer.from(artifact.data) });
-	// A sealed result is kept under its hash, as the function results of the route history are.
-	const kept = storedMedia(all, file);
-	if (kept) return route.fulfill({ contentType: kept.mediaType, body: Buffer.from(kept.data) });
-	if (file === 'preview.wav')
-		return route.fulfill({ contentType: 'audio/wav', body: audioFixture(42) });
-	if (file === 'preview-corrupt.wav')
-		return route.fulfill({ contentType: 'audio/wav', body: 'Invalid audio fixture.' });
-	if (file === 'checkout-confirmation.svg')
-		return route.fulfill({ contentType: 'image/svg+xml', body: checkoutConfirmation });
-	if (file === 'checkout-before.svg')
-		return route.fulfill({ contentType: 'image/svg+xml', body: checkoutBefore });
-	if (file === 'checkout-mobile.svg')
-		return route.fulfill({ contentType: 'image/svg+xml', body: checkoutMobile });
-	if (file === 'checkout-tablet.svg')
-		return route.fulfill({ contentType: 'image/svg+xml', body: checkoutTablet });
-	if (file === 'preview-invalid-image.svg')
-		return route.fulfill({ contentType: 'image/svg+xml', body: 'Invalid image fixture.' });
-	if (file === 'synthetic-layout-input.svg')
-		return route.fulfill({ contentType: 'image/svg+xml', body: layoutImage });
-	if (file === 'synthetic-orders-page-input.svg')
-		return route.fulfill({ contentType: 'image/svg+xml', body: ordersPageImage });
-	if (file !== 'synthetic-card-input.svg' && !fixtureMedia.has(file))
-		return route.fulfill({
-			status: 404,
-			contentType: 'text/plain',
-			body: 'Undeclared preview media'
-		});
-	return route.fulfill({
-		contentType: 'image/svg+xml',
-		body: decodeURIComponent(image.split(',')[1])
-	});
-}
-
-/** Additional shell artwork shares the existing immutable-media response path. */
-function storedMedia(all: ReturnType<typeof catalogFixtureMedia>, file: string) {
-	const svg = shellMedia(file);
-	return (
-		all.bytes[file.replace(/\.[^.]+$/, '')] ??
-		(svg ? { mediaType: 'image/svg+xml', data: [...Buffer.from(svg)] } : undefined)
-	);
-}
-
-/** Recorded artifact bytes by their served filename; a declared artifact cannot fall back to a stand-in. */
-function artifactByName(all: ReturnType<typeof catalogFixtureMedia>, file: string) {
-	for (const result of Object.values(all.results)) {
-		for (const row of result.behavior.rows) {
-			for (const capture of [row.before, row.after]) {
-				if (capture?.media?.split('/').pop() !== file) continue;
-				const held = all.bytes[capture.sha256];
-				if (!held) throw new Error(`Missing recorded fixture artifact ${file}`);
-				return held;
-			}
-		}
-	}
-	return undefined;
 }

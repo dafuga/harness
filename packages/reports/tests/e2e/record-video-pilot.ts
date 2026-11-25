@@ -86,14 +86,7 @@ const result = await new VideoCaptureService(context.repository).record({
 			fixture,
 			expectedBuild: { buildId: compiled?.buildId ?? 'not-built', revision: context.source.commit }
 		};
-		const script = clip.script.path.endsWith('/platformSearchVideo.ts')
-			? search(setup)
-			: clip.script.path.endsWith('/platformInteractionVideo.ts')
-				? interaction(setup)
-				: clip.script.path.endsWith('/loadingStateVideo.ts')
-					? loading(setup)
-					: null;
-		if (!script) throw Error('No literal pilot factory is registered for this clip.');
+		const script = pilotScript(clip.script.path, setup);
 		return {
 			...script,
 			async prepare(session) {
@@ -122,3 +115,10 @@ console.log(
 		batches: result.videoBatches.length
 	})
 );
+
+function pilotScript(path: string, setup: Parameters<typeof search>[0]) {
+	if (path.endsWith('/platformSearchVideo.ts')) return search(setup);
+	if (path.endsWith('/platformInteractionVideo.ts')) return interaction(setup);
+	if (path.endsWith('/loadingStateVideo.ts')) return loading(setup);
+	throw Error('No literal pilot factory is registered for this clip.');
+}

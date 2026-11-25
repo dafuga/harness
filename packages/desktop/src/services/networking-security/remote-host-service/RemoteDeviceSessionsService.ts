@@ -41,19 +41,19 @@ export class RemoteDeviceSessionsService {
 	}
 	close(address: DeviceAddress): void {
 		const entry = this.entries.get(address.deviceId);
-		if (entry?.connectionId === address.connectionId) this.detach(entry);
+		if (entry?.connectionId === address.connectionId) detach(entry);
 	}
 	/** The session ends: its runs are cancelled and late answers are never sent. */
 	revoke(deviceId: string): void {
 		const entry = this.entries.get(deviceId);
 		if (!entry) return;
 		this.entries.delete(deviceId);
-		this.detach(entry);
+		detach(entry);
 		entry.session.end();
 	}
 	/** The host's socket is gone: every connection is void; the sessions wait for the next. */
 	detachAll(): void {
-		for (const entry of this.entries.values()) this.detach(entry);
+		for (const entry of this.entries.values()) detach(entry);
 	}
 	/** An event for every phone that is connected now. It is not kept for the others. */
 	announce(channel: WireChannel, value: RemoteConnectionEvent): void {
@@ -71,7 +71,7 @@ export class RemoteDeviceSessionsService {
 		}
 		const entry = this.entry(record),
 			host = this.options.host();
-		this.detach(entry);
+		detach(entry);
 		const channel = new SecureChannelService({
 			role: 'host',
 			hostId: host.id,
@@ -133,16 +133,17 @@ export class RemoteDeviceSessionsService {
 				}
 			: { projects: [], agents: false };
 	}
-	private detach(entry: Entry): void {
-		entry.link?.close();
-		entry.link = null;
-		entry.channel = null;
-		entry.connectionId = null;
-	}
 	private violation(address: DeviceAddress): void {
 		this.close(address);
 		this.options.drop(address, relayCloseCodes.protocol);
 	}
+}
+
+function detach(entry: Entry): void {
+	entry.link?.close();
+	entry.link = null;
+	entry.channel = null;
+	entry.connectionId = null;
 }
 
 export type {

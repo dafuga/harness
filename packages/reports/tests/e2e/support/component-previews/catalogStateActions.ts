@@ -106,6 +106,10 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 	await prepareDesktopGameState(component, id, variant);
 	await preparePresentationState(component, id, variant);
 	if (await prepareReportState(component, id, variant)) return;
+	await prepareReportsCatalog(component, id, variant);
+}
+
+async function prepareReportsCatalog(component: Locator, id: string, variant: string) {
 	if (id === 'reports.component.entity-search' && variant)
 		return prepareEntitySearchState(component, variant);
 	if (id === 'reports.component.provider-picker')

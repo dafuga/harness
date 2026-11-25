@@ -142,6 +142,10 @@ function variantProps(id: string, props: PreviewCases[string], variant: string) 
 	if (id.startsWith('desktop.component.')) return props;
 	const report = reportVariantProps(id, props, variant);
 	if (report) return report;
+	return moduleVariant(id, props, variant);
+}
+
+function moduleVariant(id: string, props: PreviewCases[string], variant: string) {
 	if (id === 'reports.component.entity-search') return props;
 	if (id === 'reports.component.status-badge') return { ...props, status: variant };
 	const shown = modulePreview(props as unknown as ExplorerScreenProps, variant);

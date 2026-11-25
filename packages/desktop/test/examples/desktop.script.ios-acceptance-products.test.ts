@@ -1,17 +1,17 @@
-import { mkdtempSync, rmSync } from 'node:fs';
+import { rmSync } from 'node:fs';
 import type * as Fs from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
 import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { acceptanceProducts, normalProduct } from '../../scripts/ios-acceptance-products';
-import type {
-	Ledger,
-	RecordLike,
-	ReadLike,
-	AcceptanceLike
-} from './desktop.script.ios-acceptance-products.test.types';
+import type { AcceptanceLike } from './desktop.script.ios-acceptance-products.test.types';
+
+import {
+	setupRoot,
+	recordOf,
+	reading,
+	thrownBy
+} from './desktop.script.ios-acceptance-products.fixture';
 
 // The build and simulator helpers are replaced by fakes that record their calls and write the
 // App binaries a real build would leave, so the unit's own orchestration runs unchanged.
@@ -86,42 +86,8 @@ vi.mock('../../scripts/ios-acceptance-simulator', () => ({
 	running: () => true
 }));
 
-function setupRoot(): string {
-	fake.root = mkdtempSync(join(tmpdir(), 'ios-acceptance-products-'));
-	fake.calls = [];
-	fake.failOn = '';
-	return fake.root;
-}
-
-function recordOf(): { ledger: Ledger; record: RecordLike } {
-	const ledger: Ledger = { begun: [], checks: [] };
-	const record = {
-		begin: (name: string) => {
-			ledger.begun.push(name);
-		},
-		check: (ok: boolean, text: string) => {
-			ledger.checks.push([ok, text]);
-		}
-	};
-	return { ledger, record: record as unknown as RecordLike };
-}
-
-function reading(): ReadLike {
-	return { renderer: new Map(), native: new Map(), fixtureComputer: new Map() };
-}
-
-function thrownBy(run: () => unknown): Error {
-	try {
-		run();
-	} catch (error) {
-		if (error instanceof Error) return error;
-		throw error;
-	}
-	throw new Error('Expected a thrown error.');
-}
-
 test('builds the five products and proves the renderer they carry', () => {
-	const root = setupRoot();
+	const root = setupRoot(fake);
 	try {
 		const { ledger, record } = recordOf();
 		const result = acceptanceProducts(record, reading());
@@ -177,7 +143,7 @@ test('builds the five products and proves the renderer they carry', () => {
 });
 
 test('stops with the tool error when a build step fails', () => {
-	const root = setupRoot();
+	const root = setupRoot(fake);
 	try {
 		fake.failOn = 'cap:sync';
 		const { ledger, record } = recordOf();

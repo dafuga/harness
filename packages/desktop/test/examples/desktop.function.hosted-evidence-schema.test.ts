@@ -6,24 +6,28 @@ import { hostedEvidenceSchema } from '../../src/utils/verification-evidence/host
 const sha = 'a'.repeat(40);
 const side = { commit: sha, detail: null, record: null, gap: null, coverage: [], captures: [] };
 
+function identity() {
+	return {
+		principalId: 'example-user',
+		projectId: 'demo-project',
+		repositoryId: 17,
+		requestedRef: 'main',
+		sourceCommit: sha,
+		sourceTree: sha,
+		notesRef: 'refs/notes/harness',
+		notesRevision: null,
+		evidenceRef: 'refs/heads/harness-evidence',
+		evidenceRevision: null,
+		historyIndexRevision: null,
+		collaborationRevision: null,
+		artifactHash: null,
+		profile: 'ci'
+	};
+}
+
 function answer() {
 	return {
-		identity: {
-			principalId: 'example-user',
-			projectId: 'demo-project',
-			repositoryId: 17,
-			requestedRef: 'main',
-			sourceCommit: sha,
-			sourceTree: sha,
-			notesRef: 'refs/notes/harness',
-			notesRevision: null,
-			evidenceRef: 'refs/heads/harness-evidence',
-			evidenceRevision: null,
-			historyIndexRevision: null,
-			collaborationRevision: null,
-			artifactHash: null,
-			profile: 'ci'
-		},
+		identity: identity(),
 		scope: {
 			location: {
 				branch: 'main',
