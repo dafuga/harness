@@ -26,6 +26,8 @@ test('the signed-in iPhone shows both Macs without a scanner, code, or address',
 	await expect(panel.getByRole('button', { name: `Connect to ${hostName}` })).toBeVisible();
 	await expect(panel.getByRole('button', { name: 'Connect to Studio Mac' })).toBeVisible();
 	await remoteEvidence(page, testInfo, 'phone-start');
+	await page.getByRole('button', { name: 'Devices', exact: true }).click();
+	await expect.poll(() => made(page, 'native.sealedDevices')).toHaveLength(1);
 	await expect(panel.getByText('Other connection options', { exact: true })).toHaveCount(0);
 	await expect(panel.getByRole('textbox')).toHaveCount(0);
 	await expect(panel.getByRole('button', { name: /Scan|QR code/ })).toHaveCount(0);

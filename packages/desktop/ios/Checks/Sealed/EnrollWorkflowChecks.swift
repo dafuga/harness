@@ -1,7 +1,7 @@
 import Foundation
 
 @available(iOS 17.0, macOS 14.0, *)
-func checkEnrollmentWorkflow() {
+func checkEnrollmentWorkflow() async {
     do {
         var fixture = ChainFixture.genesis()
         let state = try SealedChain.verify(fixture.entries, account: "acct")
@@ -16,11 +16,11 @@ func checkEnrollmentWorkflow() {
             _ = try EnrollApproval(
                 opening: request.opening, claim: claim, reveal: claim.nonce, approver: fixture.admin)
         }
-        let change = try review.authorize(
+        let change = try await review.authorize(
             with: EnrollAdmin(device: fixture.admin, state: state, keys: [keys.name: keys]),
             at: 2, authenticate: { false })
         check(change == nil, "biometric denial produces no signed enrollment or grants")
-        guard let approved = try review.authorize(
+        guard let approved = try await review.authorize(
             with: EnrollAdmin(device: fixture.admin, state: state, keys: [keys.name: keys]),
             at: 2, authenticate: { true }) else { throw SealedError("Synthetic approval failed.") }
         fixture.entries += approved.entries

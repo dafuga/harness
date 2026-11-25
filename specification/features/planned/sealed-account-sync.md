@@ -48,6 +48,7 @@ device a stale view until it meets a device with a newer head.
 | Recovery secret    | 32 random bytes, shown once              | Credential Vault and Daniel's printed copy                                    | Opens the recovery device blob           |
 
 A scope is the account scope or one project scope; each has a random 16-byte id.
+The first scope in the signed genesis entry is the account scope.
 Scoped bots such as Grok Bot hold only their project scopes.
 
 **Algorithms.** HPKE (RFC 9180) base mode, suite DHKEM(P-256, HKDF-SHA256),
@@ -198,6 +199,15 @@ forwarding to the account object. The device header only labels a mailbox
 sender. Clients verify sender keys, the committed transcript and the signed
 chain independently. Device names, comparison codes and recovery secrets
 are never mailbox fields.
+
+For existing accounts, `POST /api/sync/v1/devices` accepts `{entries, grants}`
+from the active admin who signed the mutation. Its single D1 transaction adds
+one enroll entry and all its current grants, or adds a revoke entry and all
+required rotations and grants. The request is limited to 256 KiB and 96
+entries plus grants, and the chain to 2,048 entries for this operation.
+The response is `{seq, hash}` with status 201, or 200 for an exact retry.
+A competing update returns 409 without a partial write. The existing client
+chain verification and grant checks remain mandatory.
 
 Revisions are limited to 2^53 - 1. Live socket: the client sends `{"t":"subscribe","scopes":[...],
 "after":ring}`; the server answers `{"t":"subscribed","ring":n}` and then sends text

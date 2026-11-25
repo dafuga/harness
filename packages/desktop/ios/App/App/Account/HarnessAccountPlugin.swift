@@ -15,7 +15,8 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "connect", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "sealedDevices", returnType: CAPPluginReturnPromise)
     ]
 
     static let sharedSession: HubAccountSession = {
@@ -101,6 +102,21 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
             switch result {
             case .success(let reply): call.resolve(reply.object)
             case .failure(let failure): call.reject(failure.message, failure.code)
+            }
+        }
+    }
+
+    @objc func sealedDevices(_ call: CAPPluginCall) {
+        Task { @MainActor in
+            guard #available(iOS 17.0, *), let owner = bridge?.viewController else {
+                return call.reject("Device approval requires iOS 17 or later.")
+            }
+            let panel = EnrollPanel(owner: owner, session: session)
+            do {
+                try await panel.show()
+                call.resolve()
+            } catch {
+                call.reject((error as? HubAccountFailure)?.message ?? "Could not open Devices.")
             }
         }
     }

@@ -40,6 +40,7 @@ export interface Environment extends RemotePorts {
 	local: boolean;
 	/** Capacitor only: this phone has a Hub account of its own, read without any computer. */
 	account?: boolean;
+	sealedDevices?: () => Promise<void>;
 	/** Capacitor only: local Tracker reads and an independent app refresh control. */
 	tracker?: PhoneTrackerTools;
 }
@@ -130,6 +131,7 @@ export type AccountNativeStatus = Omit<NativeHostedStatus, 'state'> & { state: s
  * verifier, the nonce and the session, and signs every call; none of them crosses this interface.
  */
 export interface AccountNativePlugin {
+	sealedDevices?(): Promise<void>;
 	status(): Promise<AccountNativeStatus>;
 	connect(input?: { google?: boolean }): Promise<AccountNativeStatus>;
 	disconnect(): Promise<AccountNativeStatus>;

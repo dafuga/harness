@@ -12,6 +12,7 @@ const root = resolve(import.meta.dirname, '..');
 const remote = resolve(root, 'ios/App/App/Remote');
 const account = resolve(root, 'ios/App/App/Account');
 const notifications = resolve(root, 'ios/App/App/Notifications');
+const sealed = resolve(root, 'ios/App/App/Sealed');
 const checks = resolve(root, 'ios/Checks/Native');
 const output = resolve(root, '.cache/ios');
 const plugins = ['HarnessRemotePlugin.swift', 'HarnessAccountPlugin.swift'];
@@ -19,7 +20,13 @@ const swift = (folder: string) =>
 	readdirSync(folder)
 		.filter((name) => name.endsWith('.swift') && !plugins.includes(name))
 		.map((name) => resolve(folder, name));
-const sources = [...swift(remote), ...swift(account), ...swift(notifications), ...swift(checks)];
+const sources = [
+	...swift(remote),
+	...swift(account),
+	...swift(sealed),
+	...swift(notifications),
+	...swift(checks)
+];
 
 function run(command: string[]): number {
 	return Bun.spawnSync(command, { stdout: 'inherit', stderr: 'inherit' }).exitCode;

@@ -84,6 +84,18 @@
 		AFC9321B54A240FA8C43DBB9 /* DecisionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057229D7C1CA44DCB864A471 /* DecisionAlert.swift */; };
 		D7B5450B1594477CB62C549A /* DecisionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37133F1636C5417E9029A427 /* DecisionRouter.swift */; };
 		0275AA7497154C91BF8E5342 /* PushAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF17086A468489BB994C872 /* PushAlert.swift */; };
+		869F8FCCDB6A581BFD460543 /* EnrollAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CED5DE11E43BE3C36781506 /* EnrollAdmin.swift */; };
+		C372A5B70178D2BC870C15B5 /* EnrollApproval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2907EBF5DC9EA2D7F3849AFD /* EnrollApproval.swift */; };
+		B613129211811760A7F02F78 /* EnrollBiometrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AB6766516B80E8774543CD /* EnrollBiometrics.swift */; };
+		1FBF7C0E7196997C10837D3D /* EnrollHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8257D3A49E355E952F4EC948 /* EnrollHub.swift */; };
+		CBE7ABF0BD2D2A3CC2EB063E /* EnrollHubChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA141A11B3EC0B9CF9871642 /* EnrollHubChain.swift */; };
+		AEFEF321B2C933107072D8A0 /* EnrollMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB17124302CEEA6CB36098E /* EnrollMailbox.swift */; };
+		B1F9E83B1518A8AF498FF9F9 /* EnrollRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E19DD55FAAD25B4D85B913 /* EnrollRequest.swift */; };
+		B3F7094A3E5B813F5FDDFE18 /* EnrollWorkflow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59659C6CD82DA32ACCAC98B /* EnrollWorkflow.swift */; };
+		E2CA808E92C724AE56E5C50B /* EnrollNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0DEA8B2EE2CF3DA7A76505 /* EnrollNames.swift */; };
+		D79A6274BC7AFEB5905A1360 /* EnrollPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2202FBD4D76C11A4B20641C0 /* EnrollPanel.swift */; };
+		2BF41A109734131D8B618EA8 /* EnrollPanelAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF5E60DA49ADC601CFD5684 /* EnrollPanelAlerts.swift */; };
+		5386C75868B089BB145D8101 /* EnrollStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB40EAB9916B19529249577 /* EnrollStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -166,6 +178,18 @@
 		057229D7C1CA44DCB864A471 /* DecisionAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/DecisionAlert.swift; sourceTree = "<group>"; };
 		37133F1636C5417E9029A427 /* DecisionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/DecisionRouter.swift; sourceTree = "<group>"; };
 		4BF17086A468489BB994C872 /* PushAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/PushAlert.swift; sourceTree = "<group>"; };
+		4CED5DE11E43BE3C36781506 /* EnrollAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollAdmin.swift; sourceTree = "<group>"; };
+		2907EBF5DC9EA2D7F3849AFD /* EnrollApproval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollApproval.swift; sourceTree = "<group>"; };
+		54AB6766516B80E8774543CD /* EnrollBiometrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollBiometrics.swift; sourceTree = "<group>"; };
+		8257D3A49E355E952F4EC948 /* EnrollHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollHub.swift; sourceTree = "<group>"; };
+		DA141A11B3EC0B9CF9871642 /* EnrollHubChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollHubChain.swift; sourceTree = "<group>"; };
+		6BB17124302CEEA6CB36098E /* EnrollMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollMailbox.swift; sourceTree = "<group>"; };
+		24E19DD55FAAD25B4D85B913 /* EnrollRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollRequest.swift; sourceTree = "<group>"; };
+		D59659C6CD82DA32ACCAC98B /* EnrollWorkflow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollWorkflow.swift; sourceTree = "<group>"; };
+		4A0DEA8B2EE2CF3DA7A76505 /* EnrollNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollNames.swift; sourceTree = "<group>"; };
+		2202FBD4D76C11A4B20641C0 /* EnrollPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollPanel.swift; sourceTree = "<group>"; };
+		EEF5E60DA49ADC601CFD5684 /* EnrollPanelAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollPanelAlerts.swift; sourceTree = "<group>"; };
+		1AB40EAB9916B19529249577 /* EnrollStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/EnrollStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +284,18 @@
 				D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */,
+				1AB40EAB9916B19529249577 /* EnrollStorage.swift */,
+				EEF5E60DA49ADC601CFD5684 /* EnrollPanelAlerts.swift */,
+				2202FBD4D76C11A4B20641C0 /* EnrollPanel.swift */,
+				4A0DEA8B2EE2CF3DA7A76505 /* EnrollNames.swift */,
+				D59659C6CD82DA32ACCAC98B /* EnrollWorkflow.swift */,
+				24E19DD55FAAD25B4D85B913 /* EnrollRequest.swift */,
+				6BB17124302CEEA6CB36098E /* EnrollMailbox.swift */,
+				DA141A11B3EC0B9CF9871642 /* EnrollHubChain.swift */,
+				8257D3A49E355E952F4EC948 /* EnrollHub.swift */,
+				54AB6766516B80E8774543CD /* EnrollBiometrics.swift */,
+				2907EBF5DC9EA2D7F3849AFD /* EnrollApproval.swift */,
+				4CED5DE11E43BE3C36781506 /* EnrollAdmin.swift */,
 				F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */,
 				F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */,
 				F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */,
@@ -451,6 +487,18 @@
 				150A06A937141DE718B77115 /* RemoteSession.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F2F /* HubAccountModels.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F30 /* HubAccountVault.swift in Sources */,
+				5386C75868B089BB145D8101 /* EnrollStorage.swift in Sources */,
+				2BF41A109734131D8B618EA8 /* EnrollPanelAlerts.swift in Sources */,
+				D79A6274BC7AFEB5905A1360 /* EnrollPanel.swift in Sources */,
+				E2CA808E92C724AE56E5C50B /* EnrollNames.swift in Sources */,
+				B3F7094A3E5B813F5FDDFE18 /* EnrollWorkflow.swift in Sources */,
+				B1F9E83B1518A8AF498FF9F9 /* EnrollRequest.swift in Sources */,
+				AEFEF321B2C933107072D8A0 /* EnrollMailbox.swift in Sources */,
+				CBE7ABF0BD2D2A3CC2EB063E /* EnrollHubChain.swift in Sources */,
+				1FBF7C0E7196997C10837D3D /* EnrollHub.swift in Sources */,
+				B613129211811760A7F02F78 /* EnrollBiometrics.swift in Sources */,
+				C372A5B70178D2BC870C15B5 /* EnrollApproval.swift in Sources */,
+				869F8FCCDB6A581BFD460543 /* EnrollAdmin.swift in Sources */,
 				F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */,
 				F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */,
 				F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */,

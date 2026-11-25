@@ -11,7 +11,8 @@ import { serveSync } from '../../src/routes/api/sync/syncPolicy';
 const actors: Record<string, string> = {
 	'session-a': 'google:fixture-a',
 	'session-a-browser': 'google:fixture-a',
-	'session-b': 'google:fixture-b'
+	'session-b': 'google:fixture-b',
+	'session-enroll': 'google:fixture-enroll'
 };
 
 function withHeaders(request: Request): Request {

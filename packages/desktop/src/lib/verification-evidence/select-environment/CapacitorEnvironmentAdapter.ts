@@ -69,7 +69,12 @@ export class CapacitorEnvironmentAdapter {
 			cloud,
 			mac
 		}).connect();
-		return { ...local, bridge, account: true };
+		return {
+			...local,
+			bridge,
+			account: true,
+			sealedDevices: this.account.sealedDevices?.bind(this.account)
+		};
 	}
 
 	private listen<K extends keyof RemoteNativeEvents>(

@@ -159,6 +159,9 @@ function installPhonePlugin() {
 function installPhoneAccount() {
 	const { Capacitor } = window as unknown as PhoneHost;
 	const account = {
+		sealedDevices: async () => {
+			(window as unknown as PhoneHost).__calls.push({ op: 'native.sealedDevices' });
+		},
 		status: async () => ({
 			configured: true,
 			state: 'signed-in',

@@ -17,7 +17,9 @@ const list = (pattern: string) =>
 const shared = [
 	resolve(root, 'ios/App/App/Remote/RemoteCoding.swift'),
 	...list('ios/App/App/Sealed/*.swift'),
-	...list('ios/App/App/Account/Enroll*.swift')
+	...['EnrollRequest', 'EnrollApproval', 'EnrollAdmin'].map((name) =>
+		resolve(root, `ios/App/App/Account/${name}.swift`)
+	)
 ];
 
 function run(command: string[]): number {
