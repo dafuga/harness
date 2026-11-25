@@ -63,6 +63,19 @@ Build, install and launch two distinct signed builds in sequence. For each cycle
 
 Expect zero events for `/usr/bin/codesign`, `/Applications/Harness.app`, and `HarnessKeychainMigration` across each ordinary build, installation, and launch.
 
+### Tracker inside the app
+
+`Harness.app` carries the Tracker: the compiled Harness CLI at `Contents/Helpers/harness` (the same executable `harness tracker serve` runs, signed with the app's Developer ID and hardened runtime, with the entitlements in `scripts/mac-tracker-entitlements.plist` that Bun's JIT needs) and the `tracker` shim at `Contents/Resources/tracker-shim.sh`. `bun run package:mac --verify` refuses an app without them, with the wrong signature, or whose executable does not report a version.
+
+Installing or replacing the app is the only step. Each packaged launch starts `startBundledTracker` in the background, which:
+
+1. Copies the executable and shim to an immutable release at `~/.local/state/tracker/harness-releases/<id>/` (content-named, `SHA256SUMS`, `BUILD_COMMIT`), so the running service survives the app being replaced, and keeps the last three releases it staged.
+2. Points `~/.local/libexec/harness/harness` and `~/.local/bin/tracker` at that release with atomic link swaps. A regular file at either path is never replaced; the install stops and reports it.
+3. Repoints only the executable (`ProgramArguments[0]`) of the existing `local.harness.tracker` LaunchAgent, then reloads it. The `--config` path, role, environment, logs, SQLite journal, secrets and fence files are not touched. If there is no agent but `~/.config/harness/tracker.json` exists, it writes one for that file's role; with no configuration it installs the command line only.
+4. Waits for `harness tracker ensure` to report ready. If the new release does not become ready in 30 seconds, it restores the previous executable, links and agent and reports `rolled-back`.
+
+A second launch with the same app changes and restarts nothing. Another app instance or an installer already running holds a lock, so two installs never interleave. A LaunchAgent whose command is not `tracker serve` is refused. Rollback of a bad app is the previous release directory plus `launchctl bootout`/`bootstrap` of the previous agent file; the previous app bundle remains the rollback source for the executable.
+
 ## Projects and shared collaboration
 
 The top-left picker switches between saved local projects and shared GitHub projects. Local projects retain Plan/Change controls. Shared project actions follow membership: readers browse, commenters discuss, and writers can request agent work when a project executor is available. Launch with the dedicated `HARNESS_HUB_ORIGIN` to sign in with Google through your system browser. One-time device codes remain available for recovery. The main process stores the session through Electron safeStorage; credentials never enter the renderer.

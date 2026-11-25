@@ -9,6 +9,7 @@ import { buildDesktopMain, releaseDefine } from './build-main';
 import { macIcon } from './mac-icon/mac-icon';
 import { MacPackageError } from './package-mac.types';
 import { isRevision, releaseRevision } from './release-revision';
+import { stageTrackerBundle, trackerSigning, verifyTrackerBundle } from './package-mac-tracker';
 const bundleId = 'dev.harness.desktop';
 const teamId = 'PAC8VHDW3G';
 const codesign = '/usr/bin/codesign';
@@ -70,6 +71,7 @@ function verifyIdentity(binary: string): void {
 function verifyRelease(app: string): void {
 	verifyIdentity(app);
 	verifyIdentity(join(app, migrationBinary));
+	verifyTrackerBundle(app, verifyIdentity);
 	execFileSync(codesign, ['--verify', '--deep', '--strict', '-R', `=${requirement}`, app], {
 		stdio: 'inherit'
 	});
@@ -126,6 +128,7 @@ async function populateApp(output: string, bundles: string, revision: string): P
 		'-o',
 		helper
 	]);
+	await stageTrackerBundle(output);
 }
 
 async function packageRelease(): Promise<void> {
@@ -152,7 +155,7 @@ async function packageRelease(): Promise<void> {
 			optionsForFile: (file) =>
 				file === join(candidate, migrationBinary)
 					? { additionalArguments: ['--identifier', bundleId] }
-					: {}
+					: (trackerSigning(candidate, file, bundleId) ?? {})
 		});
 		verifyRelease(candidate);
 		await rm(output, { recursive: true, force: true });

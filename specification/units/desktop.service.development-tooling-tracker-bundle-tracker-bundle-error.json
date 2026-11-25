@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-error",
+	"uid": "u_xrklrpg3zi",
+	"kind": "service",
+	"title": "TrackerBundleError",
+	"responsibility": "Owns the TrackerBundleError service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/development-tooling/tracker-bundle/TrackerBundleError.ts"
+		],
+		"symbols": ["TrackerBundleError"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/TrackerBundleError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/TrackerBundleError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

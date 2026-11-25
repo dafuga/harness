@@ -1,0 +1,199 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-record",
+	"uid": "u_tb5vh2cjta",
+	"kind": "service",
+	"title": "trackerBundleRecord",
+	"responsibility": "Owns the trackerBundleRecord service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/development-tooling/tracker-bundle/trackerBundleRecord.ts"
+		],
+		"symbols": ["readRecord", "writeRecord", "recordRelease", "withLock"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readRecord.file",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeRecord.file",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeRecord.record",
+				"type": "TrackerBundleRecord",
+				"required": true
+			},
+			{
+				"name": "recordRelease.input",
+				"type": "{ file: string; releases: string; revision: string }",
+				"required": true
+			},
+			{
+				"name": "recordRelease.release",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordRelease.keep",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "withLock.file",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "withLock.work",
+				"type": "() => Promise<T>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "readRecord",
+				"type": "Promise<TrackerBundleRecord>"
+			},
+			{
+				"name": "writeRecord",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "recordRelease",
+				"type": "Promise<TrackerBundleRecord>"
+			},
+			{
+				"name": "withLock",
+				"type": "Promise<T | null>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readRecord",
+				"inputs": [
+					{
+						"name": "readRecord.file",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readRecord",
+						"type": "Promise<TrackerBundleRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeRecord",
+				"inputs": [
+					{
+						"name": "writeRecord.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeRecord.record",
+						"type": "TrackerBundleRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeRecord",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordRelease",
+				"inputs": [
+					{
+						"name": "recordRelease.input",
+						"type": "{ file: string; releases: string; revision: string }",
+						"required": true
+					},
+					{
+						"name": "recordRelease.release",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordRelease.keep",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordRelease",
+						"type": "Promise<TrackerBundleRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withLock",
+				"inputs": [
+					{
+						"name": "withLock.file",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "withLock.work",
+						"type": "() => Promise<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withLock",
+						"type": "Promise<T | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-service-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/trackerBundleRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/trackerBundleRecord.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
