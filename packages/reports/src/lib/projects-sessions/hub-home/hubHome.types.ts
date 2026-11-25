@@ -9,7 +9,8 @@ export interface HomeMessage {
 	id: string;
 	text: string;
 	at: string;
-	from: 'agent' | 'you';
+	/** 'tracker': a note posted to the Tracker item, not a reply from the agent. */
+	from: 'agent' | 'you' | 'tracker';
 }
 
 export interface HomeAgent {
