@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.login-panel",
 			"hub.component.projects-sessions-hub-home",
+			"hub.module.sealed-client-sealed-home-sessions",
 			"reports.component.brand-mark",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
@@ -31,7 +32,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "Renders the public marketing home for a visitor and the six-section Hub home after a verified sign-in."
+				"description": "Renders Google sign-in or Home with default cards, busy previews, empty, loading and unavailable states. For an approved browser, sealed-cached shows a prior transcript while sync is unavailable and sealed-live shows the transcript alongside authenticated live output."
 			}
 		],
 		"errors": [
@@ -59,6 +60,11 @@
 		{
 			"unit": "hub.function.browser-context",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-home-sessions",
+			"via": "dynamic-import",
 			"origin": "derived"
 		},
 		{

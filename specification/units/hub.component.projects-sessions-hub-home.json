@@ -23,7 +23,15 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "HubHome.children",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional signed-in Home content rendered above the dashboard cards."
+			}
+		],
 		"outputs": [
 			{
 				"name": "HubHome",

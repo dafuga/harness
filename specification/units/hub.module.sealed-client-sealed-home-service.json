@@ -1,0 +1,157 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.sealed-client-sealed-home-service",
+	"uid": "u_pwotvhqpjv",
+	"kind": "module",
+	"title": "SealedHomeService",
+	"responsibility": "Publishes the locally decrypted Home session list before starting sync and live subscriptions.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/lib/sealed-client/SealedHomeService.ts",
+			"packages/hub/src/lib/sealed-client/SealedHomeService.types.ts"
+		],
+		"symbols": [
+			"SealedHomeService",
+			"SealedHomeService.constructor",
+			"SealedHomeService.start",
+			"SealedHomeService.close",
+			"SealedHomeCallbacks"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SealedHomeService.constructor.account",
+				"type": "string",
+				"required": true,
+				"description": "Verified Google actor ID used to partition the browser cache."
+			},
+			{
+				"name": "SealedHomeService.constructor.show",
+				"type": "SealedHomeCallbacks",
+				"required": true,
+				"description": "Home callbacks for replacing the decrypted session list and updating live output."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SealedHomeService.start",
+				"type": "Promise<void>",
+				"description": "Loads authenticated cached sessions and begins background sync when approval exists."
+			},
+			{
+				"name": "SealedHomeService.close",
+				"type": "void",
+				"description": "Cancels this Home instance’s refresh timer, in-flight reads and live connection."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SealedHomeService.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SealedHomeService.start",
+						"type": "Promise<void>",
+						"description": "Loads authenticated cached sessions and begins background sync when approval exists."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedHomeService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SealedHomeService.close",
+						"type": "void",
+						"description": "Cancels this Home instance’s refresh timer, in-flight reads and live connection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SealedHomeService.constructor",
+				"inputs": [
+					{
+						"name": "SealedHomeService.constructor.account",
+						"type": "string",
+						"required": true,
+						"description": "Verified Google actor ID used to partition the browser cache."
+					},
+					{
+						"name": "SealedHomeService.constructor.show",
+						"type": "SealedHomeCallbacks",
+						"required": true,
+						"description": "Home callbacks for replacing the decrypted session list and updating live output."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedHomeService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.module.sealed-client-sealed-browser-cache",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-delta",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-enrollment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-sessions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/sealed-client/SealedHomeService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/sealed-client/SealedHomeService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

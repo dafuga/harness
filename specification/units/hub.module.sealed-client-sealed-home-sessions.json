@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.sealed-client-sealed-home-sessions",
+	"uid": "u_itxfqio6qi",
+	"kind": "module",
+	"title": "SealedHomeSessions",
+	"responsibility": "Shows the approved browser’s cached session transcript and authenticated live output on Home.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-pre",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/lib/sealed-client/SealedHomeSessions.svelte"],
+		"symbols": ["SealedHomeSessions"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SealedHomeSessions.account",
+				"type": "string",
+				"required": true,
+				"description": "Verified Google actor ID used to partition the browser cache."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SealedHomeSessions",
+				"type": "markup",
+				"description": "Session disclosures for a locally approved account with available session records."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.module.sealed-client-sealed-home-service",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-sessions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-pre",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/sealed-client/SealedHomeSessions.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/sealed-client/SealedHomeSessions.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

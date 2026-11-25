@@ -1,0 +1,324 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.sealed-client-sealed-browser-cache",
+	"uid": "u_j5kk77ld3m",
+	"kind": "module",
+	"title": "SealedBrowserCache",
+	"responsibility": "Stores account-partitioned ciphertext, sealed enrollment keys and scope cursors in IndexedDB.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/lib/sealed-client/SealedBrowserCache.ts",
+			"packages/hub/src/lib/sealed-client/SealedBrowserCache.types.ts"
+		],
+		"symbols": [
+			"SealedBrowserCache",
+			"SealedBrowserCache.open",
+			"SealedBrowserCache.close",
+			"SealedBrowserCache.enrollment",
+			"SealedBrowserCache.keys",
+			"SealedBrowserCache.objects",
+			"SealedBrowserCache.cursor",
+			"SealedBrowserCache.applyPage",
+			"SealedBrowserCache.saveEnrollment",
+			"SealedEnrollment",
+			"SealedObject",
+			"SealedObjectPage",
+			"StoredGrant"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SealedBrowserCache.open.account",
+				"type": "string",
+				"required": true,
+				"description": "Verified Google actor ID used to partition the browser cache."
+			},
+			{
+				"name": "SealedBrowserCache.keys.scope",
+				"type": "string",
+				"required": true,
+				"description": "Opaque base64url scope ID from the signed device chain."
+			},
+			{
+				"name": "SealedBrowserCache.keys.epoch",
+				"type": "number",
+				"required": true,
+				"description": "Scope key generation used to decrypt the envelope."
+			},
+			{
+				"name": "SealedBrowserCache.objects.scope",
+				"type": "string",
+				"required": true,
+				"description": "Opaque base64url scope ID from the signed device chain."
+			},
+			{
+				"name": "SealedBrowserCache.cursor.scope",
+				"type": "string",
+				"required": true,
+				"description": "Opaque base64url scope ID from the signed device chain."
+			},
+			{
+				"name": "SealedBrowserCache.applyPage.scope",
+				"type": "string",
+				"required": true,
+				"description": "Opaque base64url scope ID from the signed device chain."
+			},
+			{
+				"name": "SealedBrowserCache.applyPage.page",
+				"type": "SealedObjectPage",
+				"required": true,
+				"description": "Scope cursor before and after this page, with its original ciphertext envelopes."
+			},
+			{
+				"name": "SealedBrowserCache.saveEnrollment.enrollment",
+				"type": "SealedEnrollment",
+				"required": true,
+				"description": "This browser device and the signed chain entries used to verify its access."
+			},
+			{
+				"name": "SealedBrowserCache.saveEnrollment.grants",
+				"type": "StoredGrant[]",
+				"required": true,
+				"description": "Scope keys unwrapped and checked against the device chain’s signed commitments."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SealedBrowserCache.open",
+				"type": "Promise<SealedBrowserCache>",
+				"description": "Browser cache handle for the account partition."
+			},
+			{
+				"name": "SealedBrowserCache.close",
+				"type": "void",
+				"description": "Releases this browser’s IndexedDB connection."
+			},
+			{
+				"name": "SealedBrowserCache.enrollment",
+				"type": "Promise<SealedEnrollment | undefined>",
+				"description": "Stored account device and chain, or undefined before approval."
+			},
+			{
+				"name": "SealedBrowserCache.keys",
+				"type": "Promise<ScopeKeys | undefined>",
+				"description": "Non-extractable scope keys for the requested epoch, or undefined."
+			},
+			{
+				"name": "SealedBrowserCache.objects",
+				"type": "Promise<SealedObject[]>",
+				"description": "Original object envelopes and their opaque revision metadata in the scope."
+			},
+			{
+				"name": "SealedBrowserCache.cursor",
+				"type": "Promise<number>",
+				"description": "Last committed scope change cursor, with zero for a new scope."
+			},
+			{
+				"name": "SealedBrowserCache.applyPage",
+				"type": "Promise<boolean>",
+				"description": "True when the page and its cursor committed together. False when another tab advanced first."
+			},
+			{
+				"name": "SealedBrowserCache.saveEnrollment",
+				"type": "Promise<boolean>",
+				"description": "True when the verified chain and grants committed. False when the stored device or chain moved."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SealedBrowserCache.open",
+				"inputs": [
+					{
+						"name": "SealedBrowserCache.open.account",
+						"type": "string",
+						"required": true,
+						"description": "Verified Google actor ID used to partition the browser cache."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedBrowserCache.open",
+						"type": "Promise<SealedBrowserCache>",
+						"description": "Browser cache handle for the account partition."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedBrowserCache.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SealedBrowserCache.close",
+						"type": "void",
+						"description": "Releases this browser’s IndexedDB connection."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedBrowserCache.enrollment",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SealedBrowserCache.enrollment",
+						"type": "Promise<SealedEnrollment | undefined>",
+						"description": "Stored account device and chain, or undefined before approval."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedBrowserCache.keys",
+				"inputs": [
+					{
+						"name": "SealedBrowserCache.keys.scope",
+						"type": "string",
+						"required": true,
+						"description": "Opaque base64url scope ID from the signed device chain."
+					},
+					{
+						"name": "SealedBrowserCache.keys.epoch",
+						"type": "number",
+						"required": true,
+						"description": "Scope key generation used to decrypt the envelope."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedBrowserCache.keys",
+						"type": "Promise<ScopeKeys | undefined>",
+						"description": "Non-extractable scope keys for the requested epoch, or undefined."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedBrowserCache.objects",
+				"inputs": [
+					{
+						"name": "SealedBrowserCache.objects.scope",
+						"type": "string",
+						"required": true,
+						"description": "Opaque base64url scope ID from the signed device chain."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedBrowserCache.objects",
+						"type": "Promise<SealedObject[]>",
+						"description": "Original object envelopes and their opaque revision metadata in the scope."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedBrowserCache.cursor",
+				"inputs": [
+					{
+						"name": "SealedBrowserCache.cursor.scope",
+						"type": "string",
+						"required": true,
+						"description": "Opaque base64url scope ID from the signed device chain."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedBrowserCache.cursor",
+						"type": "Promise<number>",
+						"description": "Last committed scope change cursor, with zero for a new scope."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedBrowserCache.applyPage",
+				"inputs": [
+					{
+						"name": "SealedBrowserCache.applyPage.scope",
+						"type": "string",
+						"required": true,
+						"description": "Opaque base64url scope ID from the signed device chain."
+					},
+					{
+						"name": "SealedBrowserCache.applyPage.page",
+						"type": "SealedObjectPage",
+						"required": true,
+						"description": "Scope cursor before and after this page, with its original ciphertext envelopes."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedBrowserCache.applyPage",
+						"type": "Promise<boolean>",
+						"description": "True when the page and its cursor committed together. False when another tab advanced first."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedBrowserCache.saveEnrollment",
+				"inputs": [
+					{
+						"name": "SealedBrowserCache.saveEnrollment.enrollment",
+						"type": "SealedEnrollment",
+						"required": true,
+						"description": "This browser device and the signed chain entries used to verify its access."
+					},
+					{
+						"name": "SealedBrowserCache.saveEnrollment.grants",
+						"type": "StoredGrant[]",
+						"required": true,
+						"description": "Scope keys unwrapped and checked against the device chain’s signed commitments."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedBrowserCache.saveEnrollment",
+						"type": "Promise<boolean>",
+						"description": "True when the verified chain and grants committed. False when the stored device or chain moved."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/sealed-client/SealedBrowserCache.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/sealed-client/SealedBrowserCache.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

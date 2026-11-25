@@ -1,0 +1,134 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.sealed-client-sealed-sessions",
+	"uid": "u_thdvp7j4r2",
+	"kind": "module",
+	"title": "sealedSessions",
+	"responsibility": "Projects authenticated publisher envelopes into Home session status and ordered transcript text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/lib/sealed-client/sealedSessions.ts",
+			"packages/hub/src/lib/sealed-client/sealedSessions.types.ts"
+		],
+		"symbols": [
+			"sealedSessions",
+			"SealedSession",
+			"SessionStatus",
+			"TranscriptSegment",
+			"SessionPayload",
+			"SessionRecord"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedSessions.scope",
+				"type": "string",
+				"required": true,
+				"description": "Opaque base64url scope ID from the signed device chain."
+			},
+			{
+				"name": "sealedSessions.objects",
+				"type": "SealedObject[]",
+				"required": true,
+				"description": "Scope objects with their exact server ciphertext and opaque object IDs."
+			},
+			{
+				"name": "sealedSessions.keys",
+				"type": "(epoch: number) => Promise<ScopeKeys | undefined>",
+				"required": true,
+				"description": "Non-extractable browser scope keys or the resolver for keys by envelope epoch."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedSessions",
+				"type": "Promise<SealedSession[]>",
+				"description": "Session rows assembled from authenticated status objects and ordered transcript segments."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedSessions",
+				"inputs": [
+					{
+						"name": "sealedSessions.scope",
+						"type": "string",
+						"required": true,
+						"description": "Opaque base64url scope ID from the signed device chain."
+					},
+					{
+						"name": "sealedSessions.objects",
+						"type": "SealedObject[]",
+						"required": true,
+						"description": "Scope objects with their exact server ciphertext and opaque object IDs."
+					},
+					{
+						"name": "sealedSessions.keys",
+						"type": "(epoch: number) => Promise<ScopeKeys | undefined>",
+						"required": true,
+						"description": "Non-extractable browser scope keys or the resolver for keys by envelope epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedSessions",
+						"type": "Promise<SealedSession[]>",
+						"description": "Session rows assembled from authenticated status objects and ordered transcript segments."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.module.sealed-client-sealed-browser-cache",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-scope-keys",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/sealed-client/sealedSessions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/sealed-client/sealedSessions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

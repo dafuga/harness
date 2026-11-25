@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.sealed-client-sealed-live",
+	"uid": "u_jsxj7qkjr5",
+	"kind": "module",
+	"title": "SealedLive",
+	"responsibility": "Authenticates replayable binary session frames on the same-origin account subscription.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/lib/sealed-client/SealedLive.ts",
+			"packages/hub/src/lib/sealed-client/SealedLive.types.ts"
+		],
+		"symbols": [
+			"SealedLive",
+			"SealedLive.constructor",
+			"SealedLive.connect",
+			"SealedLive.close",
+			"SealedLiveOptions",
+			"StreamTail",
+			"LiveChunk",
+			"SealedLiveNotice"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "SealedLive.constructor.options",
+				"type": "SealedLiveOptions",
+				"required": true,
+				"description": "Account device, granted scope IDs, epoch key lookup and live update callbacks."
+			}
+		],
+		"outputs": [
+			{
+				"name": "SealedLive.connect",
+				"type": "void",
+				"description": "Subscribes to account scopes and emits authenticated session output and delta notifications."
+			},
+			{
+				"name": "SealedLive.close",
+				"type": "void",
+				"description": "Stops the socket and reconnect timer and clears transient stream text."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SealedLive.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SealedLive.connect",
+						"type": "void",
+						"description": "Subscribes to account scopes and emits authenticated session output and delta notifications."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedLive.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SealedLive.close",
+						"type": "void",
+						"description": "Stops the socket and reconnect timer and clears transient stream text."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SealedLive.constructor",
+				"inputs": [
+					{
+						"name": "SealedLive.constructor.options",
+						"type": "SealedLiveOptions",
+						"required": true,
+						"description": "Account device, granted scope IDs, epoch key lookup and live update callbacks."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SealedLive.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-padding",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/sealed-client/SealedLive.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/sealed-client/SealedLive.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

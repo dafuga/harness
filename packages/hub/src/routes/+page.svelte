@@ -2,16 +2,35 @@
 <!-- @harness-atoms ../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_5k4pvex6a2 -->
 <script lang="ts">
+	import type { Component } from 'svelte';
 	import HubHome from '../components/projects-sessions/HubHome.svelte';
 	import { browserContext } from '../utils/development-tooling/browserContext';
 	import BrandMark from '$shared/shared-primitives/BrandMark.svelte';
 	import LoginPanel from '../components/accounts-access/login-panel/LoginPanel.svelte';
 	const { session } = browserContext();
+	let SealedHomeSessions = $state<Component<{ account: string }>>();
+
+	$effect(() => {
+		if (!session.actor) return;
+		let active = true;
+		void import('../lib/sealed-client/SealedHomeSessions.svelte')
+			.then(({ default: Sessions }) => {
+				if (active) SealedHomeSessions = Sessions;
+			})
+			.catch(() => {});
+		return () => {
+			active = false;
+		};
+	});
 </script>
 
 <svelte:head><title>{session.actor ? 'Harness · Home' : 'Harness · Sign in'}</title></svelte:head>
 {#if session.actor}
-	{#key session.actor.id}<HubHome />{/key}
+	{#key session.actor.id}
+		<HubHome>
+			{#if SealedHomeSessions}<SealedHomeSessions account={session.actor.id} />{/if}
+		</HubHome>
+	{/key}
 {:else if session.status || session.error}
 	<hx-main class="sign-in">
 		<hx-div class="sign-in-inner">
