@@ -52,8 +52,8 @@ async function sampleTracker(nodes: string[], fetcher: TrackerFetch) {
 	const { runs, items } = await readTrackerSnapshot(fetcher);
 	const live = new Map(nodes.map((node) => [node, new Set<number>()]));
 	const byId = new Map(items.map((item) => [item.id, item]));
-	for (const run of runs) {
-		if (run.state !== 'running' || run.ended_at !== null) continue;
+	const running = runs.filter((run) => run.state === 'running' && run.ended_at === null);
+	for (const run of running) {
 		if (!run.node) throw new Error('A live Tracker run has no computer.');
 		const node = live.get(run.node);
 		if (!node) continue;
