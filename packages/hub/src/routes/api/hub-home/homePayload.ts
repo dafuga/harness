@@ -28,6 +28,12 @@ const agent = z.object({
 	id,
 	name: short,
 	state: z.enum(['needs-you', 'working', 'idle', 'offline']),
+	// Older Mac apps omit these; zero sessions and no tasks is what they meant.
+	sessions: unsigned.default(0),
+	tasks: z
+		.array(z.object({ itemId: id, title, machine: short.nullable() }))
+		.max(5)
+		.default([]),
 	itemId: id.nullable(),
 	task: title,
 	machine: short.nullable(),

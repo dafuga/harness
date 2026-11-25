@@ -79,3 +79,39 @@ test('native chat refuses an outdated question and calls only the fixed Tracker 
 		})
 	);
 });
+
+test('working means a live run now: flagged projects with runs count, touched-today projects without runs do not', () => {
+	const run = (id: number, item_id: string, node: string) => ({
+		id,
+		node,
+		item_id,
+		state: 'running',
+		ended_at: null
+	});
+	const flagged = { ...base, id: 'flagged', agent: 'flagged', needs_daniel: true, question };
+	const live = { ...base, id: 'live', agent: 'flagged' };
+	const touched = { ...base, id: 'touched', agent: 'touched' };
+	const away = { ...base, id: 'away', agent: 'away' };
+	const home = buildHomeSnapshot(
+		{
+			items: [flagged, live, touched, away],
+			runs: [
+				run(1, 'live', 'primary'),
+				run(2, 'flagged', 'second'),
+				{ ...run(3, 'touched', 'primary'), state: 'finished', ended_at: 5 },
+				run(4, 'away', 'gone')
+			],
+			machines: [{ node: 'gone', status: 'offline' }]
+		},
+		noProviders,
+		now
+	);
+	const byName = Object.fromEntries(home.agents.map((agent) => [agent.name, agent]));
+	expect(byName.flagged).toMatchObject({ state: 'needs-you', sessions: 2 });
+	expect(byName.flagged.tasks.map((task) => [task.itemId, task.machine])).toEqual(
+		expect.arrayContaining([['live', 'primary']])
+	);
+	expect(byName.touched).toMatchObject({ state: 'idle', sessions: 0, tasks: [] });
+	expect(byName.away).toMatchObject({ state: 'offline', sessions: 0 });
+	expect(home.agents.filter((agent) => agent.sessions > 0)).toHaveLength(1);
+});

@@ -18,6 +18,8 @@
 			"providerNames",
 			"usageLinks",
 			"count",
+			"isWorking",
+			"agentActivity",
 			"homeHeadline",
 			"currentAgent",
 			"soonestWork",
@@ -60,6 +62,18 @@
 				"type": "string",
 				"required": false,
 				"description": "Plural label. Defaults to the singular label followed by s."
+			},
+			{
+				"name": "isWorking.agent",
+				"type": "HomeAgent",
+				"required": true,
+				"description": "One agent with its live session count; it is working when at least one session is running now."
+			},
+			{
+				"name": "agentActivity.agent",
+				"type": "HomeAgent",
+				"required": true,
+				"description": "One agent with its live session count, live tasks and current Tracker task, summarised as one activity line."
 			},
 			{
 				"name": "homeHeadline.agents",
@@ -398,6 +412,44 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "isWorking",
+				"inputs": [
+					{
+						"name": "isWorking.agent",
+						"type": "HomeAgent",
+						"required": true,
+						"description": "One agent with its live session count; it is working when at least one session is running now."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isWorking",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "agentActivity",
+				"inputs": [
+					{
+						"name": "agentActivity.agent",
+						"type": "HomeAgent",
+						"required": true,
+						"description": "One agent with its live session count, live tasks and current Tracker task, summarised as one activity line."
+					}
+				],
+				"outputs": [
+					{
+						"name": "agentActivity",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "homeHeadline",

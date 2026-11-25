@@ -4,7 +4,7 @@ import type {
 	TrackerItemRecord,
 	TrackerSources
 } from '../project-overview/projectOverviewTracker.types';
-import type { HomeAgent, HomeMessage } from './hubHome.types';
+import type { HomeAgent, HomeAgentTask, HomeMessage } from './hubHome.types';
 import { homeText, openQuestion } from './homeTrackerText';
 
 const precedence: Record<HomeAgent['state'], number> = {
@@ -44,7 +44,12 @@ function messages(item: TrackerItemRecord | undefined, question: string | null):
 	return notes;
 }
 
-function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
+function isOffline(sources: TrackerSources, machine: string | null | undefined): boolean {
+	return sources.machines.find((entry) => entry.node === machine)?.status === 'offline';
+}
+
+/** The item an agent shows: the one needing Daniel, else a live one, else one in progress or blocked. */
+function currentWork(card: OverviewCard, sources: TrackerSources) {
 	const active =
 		card.items.find((item) => item.live) ??
 		card.items.find((item) => ['in_progress', 'blocked'].includes(item.status));
@@ -53,15 +58,18 @@ function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
 	const run = sources.runs.find(
 		(entry) => entry.item_id === id && entry.ended_at === null && entry.state === 'running'
 	);
-	const machine = run?.node ?? item?.computer;
-	const unavailable =
-		sources.machines.find((entry) => entry.node === machine)?.status === 'offline';
-	const state = agentState(card, Boolean(unavailable));
+	return { item, machine: run?.node ?? item?.computer };
+}
+
+function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
+	const { item, machine } = currentWork(card, sources);
 	const question = item ? openQuestion(item) : null;
 	return {
 		id: card.agent,
 		name: card.agent,
-		state,
+		state: agentState(card, isOffline(sources, machine)),
+		sessions: card.liveSessions,
+		tasks: liveTasks(card, sources),
 		itemId: item?.id ?? null,
 		task: homeText(item?.title, 500) ?? 'No current Tracker item',
 		machine: homeText(machine, 200),
@@ -72,11 +80,27 @@ function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
 	};
 }
 
+/** Working means a run is live now; a project merely touched today is idle. A flag for Daniel outranks both. */
 function agentState(card: OverviewCard, offline: boolean): HomeAgent['state'] {
 	if (card.state === 'needs-you') return 'needs-you';
-	if (offline) return 'offline';
-	if (card.state === 'active') return 'working';
-	return 'idle';
+	if (card.liveSessions > 0) return 'working';
+	return offline ? 'offline' : 'idle';
+}
+
+function liveTasks(card: OverviewCard, sources: TrackerSources): HomeAgentTask[] {
+	return card.items
+		.filter((item) => item.live)
+		.slice(0, 5)
+		.map((item) => {
+			const run = sources.runs.find(
+				(entry) => entry.item_id === item.id && entry.ended_at === null && entry.state === 'running'
+			);
+			return {
+				itemId: item.id,
+				title: homeText(item.title, 500) ?? 'Untitled task',
+				machine: homeText(run?.node, 200)
+			};
+		});
 }
 
 export function buildHomeAgents(overview: OverviewSnapshot, sources: TrackerSources): HomeAgent[] {
