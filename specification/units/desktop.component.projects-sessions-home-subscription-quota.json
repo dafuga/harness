@@ -4,8 +4,8 @@
 	"uid": "u_p2jtepvziq",
 	"kind": "component",
 	"title": "HomeSubscriptionQuota",
-	"responsibility": "Owns the HomeSubscriptionQuota Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows subscription limits and reset times from Home and offers sign-in instructions on the Mac.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -23,24 +23,27 @@
 		"symbols": ["HomeSubscriptionQuota"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HomeSubscriptionQuota.read",
 				"type": "() => Promise<OwnerHomeSnapshot>",
-				"required": true
+				"required": true,
+				"description": "Reads the latest available Home snapshot from this Mac or its encrypted device connection."
 			},
 			{
 				"name": "HomeSubscriptionQuota.isMac",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Enables terminal sign-in instructions on the Mac. The default shows guidance to use the Mac when no reading is available."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HomeSubscriptionQuota",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders a Subscription quota button and dialog for current provider windows, resets, and Codex credits."
 			}
 		],
 		"errors": [],
