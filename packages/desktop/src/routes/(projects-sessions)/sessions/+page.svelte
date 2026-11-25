@@ -11,7 +11,6 @@
 		NativeSessionSummary,
 		SessionNativePlugin
 	} from '../../../models/development-tooling/Environment.types';
-
 	const account = getContext<NativeAccountContext>(nativeAccountContext);
 	const plugin = account.environment?.sessions;
 	let sessions = $state<NativeSessionSummary[]>([]);
@@ -23,6 +22,7 @@
 	let segment = $state(0);
 	let canRead = $state(false);
 	let cursor: NativeSessionCursor = {};
+	let captured: NativeSessionCursor = {};
 	let decoder = new TextDecoder();
 	let active = true;
 	let selection = 0;
@@ -30,7 +30,6 @@
 	let queued = false;
 	const bytes = (value: string) =>
 		Uint8Array.from(atob(value), (character) => character.charCodeAt(0));
-
 	onMount(() => {
 		if (!plugin) return;
 		const listener = plugin.addListener('changed', () => void refresh()).catch(() => undefined);
@@ -41,7 +40,6 @@
 			void plugin.stop().catch(() => undefined);
 		};
 	});
-
 	async function refresh() {
 		if (!active || !plugin) return;
 		if (refreshing) {
@@ -71,20 +69,16 @@
 			}
 		}
 	}
-
 	function select(item: NativeSessionSummary | undefined) {
 		selection += 1;
 		selected = item;
 		transcript = '';
-		live = '';
-		gap = false;
 		canRead = false;
 		segment = 0;
-		cursor = {};
-		decoder = new TextDecoder();
+		captured = {};
+		resetLive();
 		if (item) void refresh();
 	}
-
 	async function readSegment(item: NativeSessionSummary, index: number) {
 		const asked = selection;
 		if (!plugin) return;
@@ -92,25 +86,27 @@
 		if (!active || asked !== selection) return;
 		canRead = result.data !== null;
 		if (result.data === null) return;
+		if (
+			index !== segment ||
+			captured.stream !== result.captured?.stream ||
+			captured.after !== result.captured?.counter
+		) {
+			captured = { stream: result.captured?.stream, after: result.captured?.counter };
+			resetLive();
+		}
 		segment = index;
 		transcript = new TextDecoder().decode(bytes(result.data));
 	}
-
 	async function readLive(item: NativeSessionSummary) {
 		const asked = selection;
 		if (!plugin) return;
+		const page = captured;
 		const reply = await plugin.live({ scope: item.scope, runId: item.runId, ...cursor });
-		if (!active || asked !== selection || !reply.stream) return;
-		if (reply.stream !== cursor.stream) {
-			cursor = { stream: reply.stream };
-			decoder = new TextDecoder();
-			live = '';
-			gap = false;
-		}
+		if (!active || asked !== selection || page !== captured || !reply.stream) return;
+		if (reply.stream !== cursor.stream) resetLive(reply.stream);
 		appendFrames(reply.frames);
 		if (reply.frames.length === 8) queued = true;
 	}
-
 	function appendFrames(frames: { counter: string; data: string }[]) {
 		for (const frame of frames) {
 			const previous = cursor.after === undefined ? -1n : BigInt(cursor.after);
@@ -119,21 +115,33 @@
 				gap = true;
 				decoder = new TextDecoder();
 			}
-			live = (live + decoder.decode(bytes(frame.data), { stream: true })).slice(-262_144);
 			cursor.after = frame.counter;
+			if (captured.stream === cursor.stream && captured.after === frame.counter) {
+				decoder = new TextDecoder();
+				continue;
+			}
+			live = (live + decoder.decode(bytes(frame.data), { stream: true })).slice(-262_144);
 		}
 	}
-
+	function resetLive(stream?: string) {
+		cursor = { stream };
+		decoder = new TextDecoder();
+		live = '';
+		gap = false;
+	}
 	function showSegment(index: number) {
-		if (selected)
-			void readSegment(selected, index).catch(() => {
-				syncState = 'offline';
-			});
+		const item = selected;
+		if (item)
+			void readSegment(item, index).then(
+				() => refresh(),
+				() => {
+					syncState = 'offline';
+				}
+			);
 	}
 </script>
 
 <svelte:head><title>Sessions · Harness</title></svelte:head>
-
 <hx-section data-harness-view="sessions" class="sessions-page">
 	{#if selected}
 		<hx-button type="button" onclick={() => select(undefined)}>All sessions</hx-button>
@@ -141,7 +149,7 @@
 		<hx-h2>Transcript</hx-h2>
 		{#if transcript}
 			<hx-pre>{transcript}</hx-pre>
-			<hx-div class="segments">
+			<hx-div>
 				<hx-button type="button" disabled={segment === 0} onclick={() => showSegment(segment - 1)}
 					>Previous</hx-button
 				>
@@ -166,7 +174,7 @@
 					<hx-li>
 						<hx-button
 							type="button"
-							class="recent-project session-row"
+							class="recent-project"
 							aria-label={item.runId}
 							onclick={() => select(item)}
 						>
@@ -199,22 +207,14 @@
 		list-style: none;
 		padding: 0;
 	}
-	.session-row {
-		width: 100%;
-	}
 	.sync-status {
 		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-xs);
 	}
 	pre {
 		white-space: pre-wrap;
-		overflow-wrap: anywhere;
 	}
-	.segments {
-		display: flex;
-		gap: var(--hx-space-8);
-	}
-	.sessions-page :global(button) {
-		min-height: 44px;
+	.session-list :global(button) {
+		width: 100%;
 	}
 </style>

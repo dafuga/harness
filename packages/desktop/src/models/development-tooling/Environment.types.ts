@@ -156,7 +156,7 @@ export interface SessionNativePlugin {
 		scope: string;
 		runId: string;
 		index: number;
-	}): Promise<{ data: string | null }>;
+	}): Promise<{ data: string | null; captured?: { stream: string; counter: string } }>;
 	live(input: { scope: string; runId: string } & NativeSessionCursor): Promise<{
 		stream?: string;
 		frames: { counter: string; data: string }[];

@@ -7,8 +7,8 @@ struct TrackerSealedFixture {
     let stream = RemoteCoding.random(16)
     var keys: TrackerReplicaSessionKeys { TrackerReplicaSessionKeys(current: scope, epochs: [scope.epoch: scope]) }
 
-    func record(_ kind: String, revision: UInt64 = 1, status: String = "running") throws -> String {
-        let id = kind == "session" ? run : TrackerReplicaSealedRecord.segmentId(run, 0)
+    func record(_ kind: String, revision: UInt64 = 1, status: String = "running", captured: Bool = false) throws -> String {
+        var id = kind == "session" ? run : TrackerReplicaSealedRecord.segmentId(run, 0)
         var body: [String: Any] = ["kind": kind, "runId": run]
         if kind == "session" {
             body["streamId"] = RemoteCoding.base64url(stream)
@@ -17,6 +17,12 @@ struct TrackerSealedFixture {
         } else {
             body["index"] = 0
             body["data"] = RemoteCoding.base64url(Data(sessionTimingText.utf8))
+            if captured {
+                let name = RemoteCoding.base64url(stream)
+                body["streamId"] = name
+                body["throughCounter"] = "18446744073709551615"
+                id = SealedJson.array([.string(run), .string(name), .string("18446744073709551615")]).canonical
+            }
         }
         let object = try scope.objectId(kind: kind, localId: id)
         let record = try SealedRecord.seal(RemoteCoding.json(body)!, keys: scope,
@@ -46,6 +52,7 @@ func trackerSealedCacheChecks() {
         check(text == Data(sessionTimingText.utf8), "a fresh native replica decrypts saved first text without a Mac or Hub")
         let cursor = try restarted.cursor(fixture.scope.name)
         check(cursor == 3, "revisions and durable cursor survive a restart")
+        try checkCapturedTranscript(fixture, cache: restarted)
         try checkCiphertext(fixture, root: root)
         if ProcessInfo.processInfo.environment["HARNESS_IOS_SESSION_TIMING"] == "1" {
             try measureSealedRead(fixture, cache: restarted)
@@ -59,6 +66,15 @@ func trackerSealedCacheChecks() {
     } catch {
         check(false, "sealed cache fixture completed")
     }
+}
+
+private func checkCapturedTranscript(_ fixture: TrackerSealedFixture, cache: TrackerReplicaSealed) throws {
+    let record = try TrackerReplicaSealedRecord.open(fixture.record("transcript", captured: true), keys: fixture.scope)
+    try cache.advance(4, scope: fixture.scope.name, record: record)
+    let page = try cache.transcriptPage(fixture.run, index: 0, keys: fixture.keys)
+    check(page?.data == Data(sessionTimingText.utf8)
+        && page?.captured == ["stream": RemoteCoding.base64url(fixture.stream), "counter": "18446744073709551615"],
+        "the publisher's stream-addressed transcript opens by page and preserves its full frame counter")
 }
 
 private func storedSession(_ fixture: TrackerSealedFixture, root: URL) throws -> TrackerReplicaSealed {
@@ -85,7 +101,7 @@ private func checkSealedLive(_ fixture: TrackerSealedFixture, cache: TrackerRepl
     let replay = try TrackerReplicaLiveFrame(SealedBytes.u64(4) + first.envelope)
     try cache.accept(replay, keys: fixture.scope)
     let forged = try TrackerReplicaLiveFrame(SealedBytes.u64(9) + first.envelope.dropLast() + Data([first.envelope.last! ^ 1]))
-    let accepted = try? cache.accept(forged, keys: fixture.scope)
+    let accepted: Void? = try? cache.accept(forged, keys: fixture.scope)
     let ring = try cache.ring()
     check(accepted == nil && ring == 4, "a tampered frame does not advance the replay position")
     let stored = try cache.liveBytes(stream: fixture.stream, keys: fixture.scope, after: nil)

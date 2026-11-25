@@ -35,8 +35,11 @@ public final class HarnessSessionPlugin: CAPPlugin, CAPBridgedPlugin {
         perform(call) {
             let (run, keys) = try self.selection(call)
             guard let index = call.getInt("index"), index >= 0 else { throw HubAccountFailure.refused }
-            let bytes = try self.replica.cache.transcript(run, index: Int64(index), keys: keys)
-            return ["data": bytes.map { $0.base64EncodedString() } as Any? ?? NSNull()]
+            guard let page = try self.replica.cache.transcriptPage(run, index: Int64(index), keys: keys)
+            else { return ["data": NSNull()] }
+            var reply: [String: Any] = ["data": page.data.base64EncodedString()]
+            reply["captured"] = page.captured
+            return reply
         }
     }
 

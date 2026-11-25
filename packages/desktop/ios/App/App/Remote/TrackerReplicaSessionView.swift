@@ -11,10 +11,17 @@ extension TrackerReplicaSealed {
     }
 
     func transcript(_ run: String, index: Int64, keys: TrackerReplicaSessionKeys) throws -> Data? {
+        try transcriptPage(run, index: index, keys: keys)?.data
+    }
+
+    func transcriptPage(_ run: String, index: Int64, keys: TrackerReplicaSessionKeys)
+        throws -> TrackerReplicaTranscriptPage? {
         guard index >= 0 else { throw TrackerReplicaError.invalidPage }
         let id = try keys.current.objectId(kind: "transcript",
             localId: TrackerReplicaSealedRecord.segmentId(run, index))
-        return try record(id, in: keys)?.json["data"]?.text.flatMap({ RemoteCoding.data(base64url: $0) })
+        guard let page = try capturedTranscript(run, index: index, in: keys) ?? record(id, in: keys),
+            let text = page.json["data"]?.text, let data = RemoteCoding.data(base64url: text) else { return nil }
+        return TrackerReplicaTranscriptPage(data: data, captured: page.captured)
     }
 
     func live(_ run: String, keys: TrackerReplicaSessionKeys, cursor: TrackerReplicaFrameCursor) throws -> [String: Any] {
@@ -33,4 +40,9 @@ extension TrackerReplicaSealed {
 struct TrackerReplicaFrameCursor {
     let stream: String?
     let counter: UInt64?
+}
+
+struct TrackerReplicaTranscriptPage {
+    let data: Data
+    let captured: [String: String]?
 }

@@ -71,6 +71,20 @@ final class TrackerReplicaSealed {
         return try rows.compactMap { try open($0, with: scope) }.filter { $0.kind == "session" }
     }
 
+    func capturedTranscript(_ run: String, index: Int64, in scope: TrackerReplicaSessionKeys)
+        throws -> TrackerReplicaSealedRecord? {
+        let category = try TrackerReplicaSealedRecord.transcriptCategory(run, index: index, keys: scope.current)
+        let rows = try database().rows("""
+            SELECT epoch, envelope FROM sealed_objects
+            WHERE scope = ? AND category = ? AND envelope IS NOT NULL ORDER BY seq DESC LIMIT 8
+            """, [scope.current.name, RemoteCoding.base64url(category)])
+        for row in rows {
+            if let record = try open(row, with: scope), record.runId == run,
+                record.json["index"]?.number == index, record.captured != nil { return record }
+        }
+        return nil
+    }
+
     private func open(_ row: [String?], with scope: TrackerReplicaSessionKeys) throws -> TrackerReplicaSealedRecord? {
         guard let epochValue = row[0], let epoch = UInt32(epochValue),
             let keys = scope.epochs[epoch], let wire = row[1] else { return nil }

@@ -150,6 +150,7 @@ extension TrackerReplicaStore {
                 envelope TEXT, category TEXT NOT NULL, seq INTEGER NOT NULL, PRIMARY KEY (scope, id)
             )
             """)
+        try db.run("CREATE INDEX IF NOT EXISTS sealed_category ON sealed_objects(scope, category, seq DESC)")
         try db.run("""
             CREATE TABLE IF NOT EXISTS sealed_frames (
                 scope TEXT NOT NULL, epoch INTEGER NOT NULL, stream TEXT NOT NULL, counter TEXT NOT NULL,
