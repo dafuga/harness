@@ -1,0 +1,43 @@
+{
+	"name": "1yw97w-sealed-device-enrollment",
+	"goal": "Prove Google sign-in leaves data locked, a matching six-digit transcript and biometric approval enroll exactly the intended keys, revocation rotates all affected scopes, and recovery stays in Credential Vault",
+	"createdAt": "2026-11-25T16:32:23.000Z",
+	"updatedAt": "2026-11-25T16:33:33.605Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T16:33:33.605Z",
+			"evidence": "PR #310 specification and merged dependencies #312/#314/#315 verified on origin/main. Defined mailbox wire shapes and privacy checks. Flagged independent Vault custody dependency on tracker."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -175,10 +175,20 @@ Scope ids, device ids and object ids are base64url (16, 16 and 32 bytes); envelo
 | `PUT objects/:scope/:id`      | Body is the base64url record envelope; header scope, object id and revision are checked against the path. Up to 4 MiB; over 32 KiB it goes to R2. 409 `stale-revision` unless newer |
 | `GET objects/:scope/:id`      | The envelope as base64url text, revision in `X-Sealed-Revision`                                                                                                                     |
 | `GET objects/:scope?after=N`  | `{objects: [{id, revision, size, change}], next, more}`: what changed since the scope's change counter N                                                                            |
-| `POST enroll`                 | The new device's request as a JSON object (public keys and commitment, at most 4 KiB). 201 `{id, steps}`; 429 with 16 requests waiting                                              |
+| `POST enroll`                 | Only `{kemPublic, signingPublic, commit}` (at most 4 KiB). 201 `{id, steps}`; 429 with 16 requests waiting                                                                          |
 | `GET enroll`, `GET enroll/ID` | Pending requests, or one request with its steps; requests expire after 10 minutes                                                                                                   |
-| `POST enroll/ID`              | Appends a step (claim, reveal, approval) as a JSON object. At most 8 steps. Steps are opaque to the server                                                                          |
+| `POST enroll/ID`              | Appends a claim, reveal or approval. Hub validates fields before the account object stores the step. At most 8 steps                                                                |
 | `GET live` (WebSocket)        | Upgrade to the account's `AccountSyncObject`                                                                                                                                        |
+
+Enrollment keys are base64url uncompressed 65-byte P-256 points, and
+`commit` is lowercase 64-digit hex. A claim is `{approver, nonce}` with the
+approver equal to the device header, a reveal is `{nonce}`, and the approval
+notice is `{entryHash}`, the lowercase hex hash of the signed enroll entry.
+Nonces are base64url 32-byte values. Hub rejects additional fields before
+forwarding to the account object. The device header only labels a mailbox
+sender. Clients verify sender keys, the committed transcript and the signed
+chain independently. Device names, comparison codes and recovery secrets
+are never mailbox fields.
 
 Revisions are limited to 2^53 - 1. Live socket: the client sends `{"t":"subscribe","scopes":[...],
 "after":ring}`; the server answers `{"t":"subscribed","ring":n}` and then sends text

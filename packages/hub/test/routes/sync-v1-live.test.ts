@@ -9,6 +9,8 @@ import {
 	newScopeKeys,
 	sealedScopeKeys
 } from '../../../remote/src/utils/networking-security/sealedScopeKeys';
+import { sealedDevice } from '../../../remote/src/utils/networking-security/sealedDevice';
+import { sealedEnrollCommit } from '../../../remote/src/utils/networking-security/sealedSas';
 import { startSync } from '../support/syncFixture';
 import type { SyncFixture } from '../support/syncFixture.types';
 
@@ -123,7 +125,13 @@ test('a sign-in request is a mailbox the approver hears about and fills', async 
 	const approver = await f.socket(A, phone);
 	approver.send(JSON.stringify({ t: 'subscribe', scopes: [] }));
 	await approver.until(1);
-	const body = JSON.stringify({ kemPublic: 'k', signingPublic: 's', commit: 'c' });
+	const keys = await sealedDevice();
+	const requestNonce = crypto.getRandomValues(new Uint8Array(32));
+	const body = JSON.stringify({
+		kemPublic: toBase64Url(keys.kemPublic),
+		signingPublic: toBase64Url(keys.signingPublic),
+		commit: await sealedEnrollCommit(keys, requestNonce)
+	});
 	const opened = await f.call(A, 'POST', 'enroll', { body: body, headers: as(web) });
 	expect(opened.status).toBe(201);
 	const request = (await opened.json()) as {
@@ -137,24 +145,42 @@ test('a sign-in request is a mailbox the approver hears about and fills', async 
 		requests: { id: string }[];
 	};
 	expect(pending.requests.map((item) => item.id)).toContain(request.id);
-	const claim = JSON.stringify({ approver: phone, nonce: 'n' });
+	const nonce = toBase64Url(crypto.getRandomValues(new Uint8Array(32)));
+	const claim = JSON.stringify({ approver: phone, nonce });
+	const path = `enroll/${request.id}`;
+	const refusedClaim = await f.call(A, 'POST', path, {
+		body: claim,
+		headers: as(mac)
+	});
+	expect(refusedClaim.status).toBe(400);
+	expect(await refusedClaim.json()).toEqual({ error: 'invalid-input' });
 	expect(
 		(await f.call(A, 'POST', `enroll/${request.id}`, { body: claim, headers: as(phone) })).status
 	).toBe(201);
+	const reveal = JSON.stringify({ nonce: toBase64Url(requestNonce) });
+	const approval = JSON.stringify({ entryHash: '1'.repeat(64) });
+	expect((await f.call(A, 'POST', path, { body: reveal, headers: as(web) })).status).toBe(201);
+	expect((await f.call(A, 'POST', path, { body: approval, headers: as(phone) })).status).toBe(201);
 	const read = (await (
 		await f.call(A, 'GET', `enroll/${request.id}`, { headers: as(web) })
 	).json()) as {
-		steps: { by: string }[];
+		steps: { n: number; by: string; body: string }[];
 	};
-	expect(read.steps.map((step) => step.by)).toEqual([web, phone]);
+	expect(read.steps).toEqual([
+		{ n: 0, by: web, body },
+		{ n: 1, by: phone, body: claim },
+		{ n: 2, by: web, body: reveal },
+		{ n: 3, by: phone, body: approval }
+	]);
 	const hidden = await f.call(B, 'GET', `enroll/${request.id}`, { headers: as(web) });
 	expect(hidden.status).toBe(404);
 	expect((await f.call(A, 'POST', 'enroll', { body: '[1]', headers: as(web) })).status).toBe(400);
 	expect(
-		(await f.call(A, 'POST', 'enroll/not-an-id', { body: claim, headers: as(web) })).status
+		(await f.call(A, 'POST', 'enroll/not-an-id', { body: claim, headers: as(phone) })).status
 	).toBe(400);
 	expect(
-		(await f.call(A, 'POST', `enroll/${'0'.repeat(32)}`, { body: claim, headers: as(web) })).status
+		(await f.call(A, 'POST', `enroll/${'0'.repeat(32)}`, { body: claim, headers: as(phone) }))
+			.status
 	).toBe(409);
 	approver.close();
 }, 60_000);
