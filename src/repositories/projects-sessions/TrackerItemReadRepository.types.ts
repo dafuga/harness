@@ -1,4 +1,8 @@
 // @harness-uid u_xba7ieg4je
+import type {
+	TrackerBlockerRoute,
+	TrackerBlockerType
+} from '../../utils/projects-sessions/trackerBlockerTypes.types';
 import type { TrackerItemPriority } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
 
@@ -155,4 +159,45 @@ export type TrackerDigest = TrackerDigestGroups & {
 	local_time: string;
 	today: string;
 	counts: Record<keyof TrackerDigestGroups, number>;
+};
+
+export type TrackerBlocker = {
+	id: string;
+	title: string;
+	kind: 'block' | 'flag' | 'block+flag';
+	type: TrackerBlockerType;
+	label: string;
+	route: TrackerBlockerRoute;
+	route_to: string | null;
+	owner: string | null;
+	agent: string | null;
+	parent: string | null;
+	/** The exact blocked reason or question. */
+	action: string;
+	since: string;
+	age_minutes: number;
+	escalated: boolean;
+	/** A Daniel-typed block that has not reached Needs Daniel. */
+	needs_escalation: boolean;
+	stale: boolean;
+	chased_at: string | null;
+	waits_on: string | null;
+	dependency_status: string | null;
+	recheck: string | null;
+	/** Other items deduplicated into this one. */
+	duplicates: string[];
+};
+
+export type TrackerBlockerGroup = {
+	type: TrackerBlockerType;
+	label: string;
+	items: TrackerBlocker[];
+};
+
+export type TrackerBlockerInbox = {
+	generated_at: string;
+	total: number;
+	unescalated: number;
+	stale: number;
+	groups: TrackerBlockerGroup[];
 };

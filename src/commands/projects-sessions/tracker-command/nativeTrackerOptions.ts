@@ -119,6 +119,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['sync', {}],
 	['watchdog', { item: text }],
 	['needs-attention', {}],
+	['blockers', { sync: flag }],
 	['ensure', {}]
 ]);
 
@@ -165,11 +166,22 @@ function nativeTrackerAdapterRequest(
 	return { method: 'POST', path: '/adapters/run?' + query };
 }
 
+function nativeTrackerBlockersRequest(
+	words: string[],
+	values: Record<string, string | boolean | undefined>
+): NativeTrackerRequest {
+	if (words.length) throw new TypeError('usage: tracker blockers [--sync] [--json]');
+	return values.sync
+		? { method: 'POST', path: '/blockers/sync' }
+		: { method: 'GET', path: '/blockers' };
+}
+
 export function nativeTrackerInspectionRequest(
 	command: string,
 	words: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
+	if (command === 'blockers') return nativeTrackerBlockersRequest(words, values);
 	const adapter = command === 'adapter' ? nativeTrackerAdapterRequest(words, values) : undefined;
 	return adapter ?? nativeTrackerReadInspection(command, words);
 }

@@ -1,4 +1,6 @@
 // @harness-uid u_xba7ieg4je
+import { classifyTrackerBlocker } from '../../../utils/projects-sessions/classifyTrackerBlocker';
+import { trackerBlockerLabels } from '../../../utils/projects-sessions/trackerBlockerTypes';
 import type {
 	TrackerDigest,
 	TrackerDigestItem,
@@ -60,13 +62,17 @@ function line(item: TrackerDigestItem, detail: string): string {
 
 function blockedDetail(item: TrackerDigestItem): string {
 	return [
-		item.blocked_reason && `blocked: ${item.blocked_reason}`,
+		item.blocked_reason && `blocked (${blockerLabel(item.blocked_reason)}): ${item.blocked_reason}`,
 		item.needs_daniel &&
 			`NEEDS DANIEL · ${item.next_step ? askDetail(item) : waitText(item.waiting_minutes)}`,
 		item.due && `due ${item.due}`
 	]
 		.filter(Boolean)
 		.join('; ');
+}
+
+function blockerLabel(reason: string): string {
+	return trackerBlockerLabels[classifyTrackerBlocker(reason).type];
 }
 
 function askDetail(item: TrackerDigestItem): string {

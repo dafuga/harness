@@ -2,10 +2,14 @@
 import type { SqliteDatabase, SqliteStatement } from '../../core/development-tooling/sqliteTypes';
 import { TrackerRunReadRepository } from './TrackerRunReadRepository';
 import { TrackerItemReadError } from './tracker-item-read-repository/TrackerItemReadError';
+import { groupTrackerBlockers } from './tracker-item-read-repository/buildTrackerBlockers';
+import { readTrackerBlockerEntries } from './tracker-item-read-repository/readTrackerBlockerEntries';
 import { buildTrackerDigest } from './tracker-item-read-repository/buildTrackerDigest';
 import { formatTrackerDigest } from './tracker-item-read-repository/formatTrackerDigest';
 import { serializeTrackerItem } from './tracker-item-read-repository/serializeTrackerItem';
 import type {
+	TrackerBlocker,
+	TrackerBlockerInbox,
 	TrackerDigest,
 	TrackerItem,
 	TrackerItemListFilters,
@@ -96,6 +100,16 @@ export class TrackerItemReadRepository {
 		);
 	}
 
+	/** Every blocked item and open Daniel ask, typed, routed, aged and deduplicated. */
+	blockers(nowMs: number): TrackerBlockerInbox {
+		return groupTrackerBlockers(this.blockerEntries(nowMs), nowMs);
+	}
+
+	/** One typed entry per blocked item or Daniel ask, before deduplication. */
+	blockerEntries(nowMs: number): TrackerBlocker[] {
+		return readTrackerBlockerEntries(this.database, nowMs);
+	}
+
 	/** Format a digest using the legacy CLI section order and summaries. */
 	digestText(nowMs: number, timeZone: string = defaultTimeZone): string {
 		return formatTrackerDigest(this.digest(nowMs, timeZone));
@@ -170,4 +184,4 @@ function queryFlag(value: string | boolean | undefined): boolean {
 	return value === true || value === '1' || value === 'true';
 }
 
-export type { TrackerDigest, TrackerItem, TrackerItemListFilters };
+export type { TrackerBlockerInbox, TrackerDigest, TrackerItem, TrackerItemListFilters };

@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import type { TrackerBlockerInbox } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import type {
 	TrackerPlanning,
@@ -111,3 +112,9 @@ export type NativeTrackerRunRead =
 	| NativeTrackerListedRun[]
 	| NativeTrackerRunReport
 	| NativeTrackerPick;
+
+export interface NativeTrackerBlockerSync {
+	escalated: string[];
+	rechecked: string[];
+	blockers: TrackerBlockerInbox;
+}

@@ -170,3 +170,31 @@ test('ignore records the previous status and unignore restores it with a pending
 		'note+': 'unignored by operator: resumed; back to blocked'
 	});
 });
+
+test('block keeps a technical blocker off Needs Daniel when asked, but never a credential one', () => {
+	const open = { ...item, status: 'open', needs_daniel: 0, resolved: 0 };
+	const technical = plan(
+		{ action: 'block', item: open, body: { reason: 'unit tests fail on CI', needs_daniel: false } },
+		context
+	);
+	expect(technical.fields).toEqual({
+		status: 'blocked',
+		blocked_reason: 'unit tests fail on CI',
+		'note+': 'blocked: unit tests fail on CI'
+	});
+	const credential = plan(
+		{
+			action: 'block',
+			item: open,
+			body: { reason: 'GitHub credential with Issues write is absent', needs_daniel: false }
+		},
+		context
+	);
+	expect(credential.fields).toMatchObject({
+		status: 'blocked',
+		needs_daniel: 1,
+		resolved: 0,
+		question: 'Blocked: GitHub credential with Issues write is absent'
+	});
+	expect(String(credential.fields['note+'])).toContain('escalated to Needs Daniel');
+});

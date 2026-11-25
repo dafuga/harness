@@ -10,6 +10,7 @@ import {
 	recordTrackerSessionItem,
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { trackerBlockersRoute } from './tracker-local-api-service/trackerLocalBlockers';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
@@ -139,9 +140,11 @@ function trackerItemSpecialResponse(
 		options: TrackerLocalApiOptions;
 	}
 ): Promise<Response> | undefined {
+	const actor = readActor(request.headers);
+	const blockers = trackerBlockersRoute(request, parts, dependencies, actor);
+	if (blockers !== undefined) return Promise.resolve(trackerResponse(200, blockers));
 	if (!/^items\/[^/]+\/(?:inbox|stage|artifact)$/.test(parts.join('/'))) return undefined;
 	const [, id, verb] = parts;
-	const actor = readActor(request.headers);
 	if (verb === 'inbox')
 		return trackerInboxItem(request, id, { ...dependencies, actor }).then((item) =>
 			trackerResponse(200, item)
