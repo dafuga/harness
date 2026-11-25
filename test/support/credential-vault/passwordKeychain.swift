@@ -13,7 +13,7 @@ func fixtureKeychain() -> Bool {
     }
     guard SecKeychainOpen(path, &keychain) == errSecSuccess, let keychain = keychain else { return false }
     if action == "delete" { return SecKeychainDelete(keychain) == errSecSuccess }
-    if action != "verify" { return false }
+    if action != "verify" && action != "absent" { return false }
     let query: [String: Any] = [
         kSecClass as String: kSecClassGenericPassword,
         kSecMatchSearchList as String: [keychain],
@@ -21,7 +21,8 @@ func fixtureKeychain() -> Bool {
         kSecAttrAccount as String: "owner@example.test",
         kSecReturnAttributes as String: true
     ]
-    return SecItemCopyMatching(query as CFDictionary, nil) == errSecSuccess
+    let status = SecItemCopyMatching(query as CFDictionary, nil)
+    return status == (action == "verify" ? errSecSuccess : errSecItemNotFound)
 }
 
 exit(fixtureKeychain() ? 0 : 1)

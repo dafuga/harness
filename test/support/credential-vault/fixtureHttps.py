@@ -29,6 +29,8 @@ SIGNUP = ('<form method="post" action="/signup"><input id="identity" name="ident
           '<input id="password" name="password" type="password" autocomplete="new-password">'
           '<input id="confirm" name="confirm" type="password" autocomplete="new-password">'
           '<button id="signup" type="submit">Create</button></form>')
+SIGNUP_DRIFT = ('<script>document.querySelector("#identity").oninput = event => '
+                'event.target.form.action = "/signup?changed";</script>')
 CHALLENGES = set()
 SESSIONS = set()
 EVENTS = []
@@ -50,7 +52,7 @@ class Fixture(BaseHTTPRequestHandler):
             self.html(CAPTURE)
         elif self.path == '/created' and self.cookie('session') in SESSIONS:
             self.html('<p id="generated">synthetic-capture-canary</p>')
-        elif self.path in ('/signup', '/registered'):
+        elif self.path in ('/signup', '/signup-drift', '/registered'):
             self.signup_page()
         elif self.path == '/logout':
             self.logout()
@@ -97,12 +99,13 @@ class Fixture(BaseHTTPRequestHandler):
         self.end_headers()
 
     def signup_page(self):
-        if self.path == '/signup':
-            self.html(SIGNUP)
-        elif self.cookie('session') in SESSIONS:
+        if self.path in ('/signup', '/signup-drift'):
+            self.html(SIGNUP + (SIGNUP_DRIFT if self.path == '/signup-drift' else ''))
+            return
+        if self.cookie('session') in SESSIONS:
             self.html('<p id="registered">owner@example.test</p>')
-        else:
-            self.reply(403, 'Denied')
+            return
+        self.reply(403, 'Denied')
 
     def logout(self):
         value = self.cookie('session')

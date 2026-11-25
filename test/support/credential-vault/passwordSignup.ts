@@ -13,7 +13,7 @@ import { approval, origin, vaultBroker } from './broker';
 import { approved, withHttpsFixture } from './dockerBrowser';
 import { signupFixtureRecipe } from './recipe';
 
-export async function verifyPasswordSignup(image: string) {
+export async function verifyPasswordSignup(image: string, outcome: 'completed' | 'failed') {
 	const run = vaultBroker();
 	const keychain = join(run.state, 'signup.keychain');
 	const fixture = compile(
@@ -32,11 +32,17 @@ export async function verifyPasswordSignup(image: string) {
 				dockerContext: process.env.HARNESS_TEST_VAULT_DOCKER_CONTEXT!,
 				network: { id, hosts: { [new URL(approved).hostname]: ip } }
 			};
-			await verifySignupCommand(run, settings);
-			fixture(keychain, 'verify');
+			await verifySignupCommand(run, settings, outcome);
+			const completed = outcome === 'completed';
+			expect(
+				() => fixture(keychain, completed ? 'verify' : 'absent'),
+				'Keychain should contain an entry only for the unchanged signup form.'
+			).not.toThrow();
 			const status = JSON.parse(await securityLog());
 			expect(status.active).toBe(0);
-			expect(status.events.map(({ kind }: { kind: string }) => kind)).toEqual(['signup', 'other']);
+			expect(status.events.map(({ kind }: { kind: string }) => kind)).toEqual(
+				completed ? ['signup', 'other'] : []
+			);
 		});
 	} finally {
 		fixture(keychain, 'delete');
@@ -51,8 +57,16 @@ function compile(source: string, binary: string) {
 	};
 }
 
-async function verifySignupCommand(run: ReturnType<typeof vaultBroker>, settings: object) {
-	const files = signupBrokerFiles(run, settings);
+async function verifySignupCommand(
+	run: ReturnType<typeof vaultBroker>,
+	settings: object,
+	status: 'completed' | 'failed'
+) {
+	const files = signupBrokerFiles(
+		run,
+		settings,
+		status === 'completed' ? '/signup' : '/signup-drift'
+	);
 	const socketPath = join(run.state, 'broker', 'vault.sock');
 	const state = join(run.state, 'server');
 	const launch = [
@@ -89,16 +103,8 @@ async function verifySignupCommand(run: ReturnType<typeof vaultBroker>, settings
 		expect(ticket.status).toBe('requested');
 		const client = new VaultBrokerClientAdapter({ socketPath });
 		await approveSignup(client, run, ticket);
-		const invoke = () =>
-			JSON.parse(
-				execFileSync('bun', [...launch, 'generate-password', ticket.requestId], {
-					env: { ...env, HARNESS_VAULT_RECEIPT: ticket.receipt },
-					encoding: 'utf8',
-					stdio: ['ignore', 'pipe', 'ignore']
-				})
-			);
-		expect(invoke()).toEqual({ status: 'completed' });
-		expect(invoke()).toEqual({ status: 'completed' });
+		expect(invokeSignup(launch, env, ticket)).toEqual({ status });
+		expect(invokeSignup(launch, env, ticket)).toEqual({ status });
 		expect(readdirSync(join(state, 'password-browsers'))).toEqual([]);
 	} finally {
 		child.kill('SIGTERM');
@@ -106,8 +112,22 @@ async function verifySignupCommand(run: ReturnType<typeof vaultBroker>, settings
 	}
 }
 
-function signupBrokerFiles(run: ReturnType<typeof vaultBroker>, settings: object) {
-	const { input, review, reviewers, script } = signupFixtureRecipe();
+function invokeSignup(
+	launch: string[],
+	env: typeof process.env,
+	ticket: Parameters<typeof approval>[1]
+) {
+	return JSON.parse(
+		execFileSync('bun', [...launch, 'generate-password', ticket.requestId], {
+			env: { ...env, HARNESS_VAULT_RECEIPT: ticket.receipt },
+			encoding: 'utf8',
+			stdio: ['ignore', 'pipe', 'ignore']
+		})
+	);
+}
+
+function signupBrokerFiles(run: ReturnType<typeof vaultBroker>, settings: object, start: string) {
+	const { input, review, reviewers, script } = signupFixtureRecipe(start);
 	const write = (name: string, value: unknown) => {
 		const file = join(run.state, name);
 		writeFileSync(file, Buffer.isBuffer(value) ? value : JSON.stringify(value), { mode: 0o600 });

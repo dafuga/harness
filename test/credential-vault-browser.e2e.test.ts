@@ -27,9 +27,9 @@ import { verifyPasswordSignup } from './support/credential-vault/passwordSignup'
 const image = process.env.HARNESS_TEST_VAULT_DOCKER_IMAGE;
 const requester = crossUserRequester();
 
-test.skipIf(!image || process.platform !== 'darwin')(
-	'a signed CLI request stores and fills one password before the private browser is destroyed',
-	() => verifyPasswordSignup(image!),
+test.skipIf(!image || process.platform !== 'darwin').each(['completed', 'failed'] as const)(
+	'a signed CLI signup finishes with %s and destroys its private browser',
+	(outcome) => verifyPasswordSignup(image!, outcome),
 	90_000
 );
 

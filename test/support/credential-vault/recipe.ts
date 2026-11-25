@@ -62,7 +62,7 @@ export function signedFixtureRecipe(capture: boolean) {
 	return { recipe: vaultRecipe(input, review, reviewers), script };
 }
 
-export function signupFixtureRecipe() {
+export function signupFixtureRecipe(start = '/signup') {
 	const script = Buffer.from(
 		JSON.stringify({
 			identity: '#identity',
@@ -78,7 +78,7 @@ export function signupFixtureRecipe() {
 		redirects: [],
 		login: [],
 		otp: [],
-		actions: [{ id: 'generate-password', mode: 'write', start: '/signup' }],
+		actions: [{ id: 'generate-password', mode: 'write', start }],
 		methods: [
 			{
 				kind: 'browser',
