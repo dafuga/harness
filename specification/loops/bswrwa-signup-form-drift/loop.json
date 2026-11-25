@@ -2,7 +2,7 @@
 	"name": "bswrwa-signup-form-drift",
 	"goal": "If entering the account identity changes the reviewed signup form, refuse before saving a generated password.",
 	"createdAt": "2026-11-25T16:04:02.113Z",
-	"updatedAt": "2026-11-25T16:04:02.113Z",
+	"updatedAt": "2026-11-25T16:12:17.713Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,37 +11,51 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T16:08:05.880Z",
+			"evidence": "An identity input handler changes the reviewed signup POST destination before any secret is filled. The scoped Keychain entry must remain absent and the browser must be destroyed."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T16:08:06.606Z",
+			"evidence": "The existing signed CLI signup scenario asserted success, Keychain presence and cleanup. Its new changed-form state uses the same broker, Keychain and Chromium with a site that replaces the reviewed action when the executor fills the identity."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T16:08:07.956Z",
+			"evidence": "Recorded on MB2 at 2f1eee14b4. The exact packaged signup returned failed, while the Keychain-absence assertion reproduced the stale entry."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T16:08:09.463Z",
+			"evidence": "Complete identity entry and recheck the signed form during browser preparation. Check again immediately before filling the persisted password."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T16:08:11.846Z",
+			"evidence": "Recorded on MB2 at f035f752b9 with the unchanged assertion and command. The changed form returned failed, Keychain remained empty, and the browser journal was empty after teardown."
 		},
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T16:11:15.026Z",
+			"evidence": "siblings-3f54e128-00e8-4658-843a-7ed9f6535605.json"
 		},
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T16:12:17.713Z",
+			"evidence": "Eight packaged browser and native software-approval E2Es passed on MB2 at f035f752b9. The focused process took 39.54 seconds with 209666048 bytes maximum RSS. Thirty-five focused unit tests, typecheck, changed-file lint, Harness audit and unit registry passed. The tests used a disposable synthetic Keychain and browser. Evidence contains no screenshots."
 		}
 	],
 	"evaluators": [

@@ -56,6 +56,11 @@ Use `harness credential status <id>` to read the final result if the execution c
 failure after storage may leave the password in Keychain for account recovery. The writer refuses
 to replace an existing entry. Check the scoped entry and provider state before requesting a retry.
 
+The paired native inbox needs to select `VaultApprovalIntent.generatePassword` for a reviewed
+`generate-password` request after its regular pairing and executor checks. This intent signs the
+project and environment with a null sealed payload. The broker refuses a generation decision
+carrying a sealed login credential.
+
 The Node-API peer lookup uses `getpeereid` on macOS and `SO_PEERCRED` on Linux. It requires a
 supported Node runtime with headers and compiler to build `peer.node`. Bun 1.2.18 does not expose
 the accepted socket descriptor. Missing peer credentials fail closed. The fixture runs as one host
