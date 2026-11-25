@@ -1,7 +1,7 @@
-import { mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { afterEach, beforeEach, expect, test } from 'vitest';
+import { createTempDirectory } from '../../support/temporary';
 import { DesignCanvasService } from '../../../src/services/planning-collaboration/design-canvas-service/DesignCanvasService';
 import { canvasArtifact } from '../../../src/services/planning-collaboration/design-canvas-service/canvasArtifact';
 import { githubRepository } from '../../../src/services/planning-collaboration/design-canvas-service/committedCanvas';
@@ -10,8 +10,8 @@ import { artboardViolations } from '../../../packages/reports/src/utils/planning
 
 let root: string;
 let service: DesignCanvasService;
-beforeEach(() => {
-	root = mkdtempSync(join(tmpdir(), 'design-'));
+beforeEach(async () => {
+	root = await createTempDirectory('design-');
 	service = new DesignCanvasService(root);
 });
 afterEach(() => rmSync(root, { recursive: true, force: true }));
