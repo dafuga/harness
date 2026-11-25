@@ -22,9 +22,16 @@ import { verifyCrashRecovery } from './support/credential-vault/crashFixture';
 import { crossUserRequester, verifyCrossUserCdp } from './support/credential-vault/crossUserCdp';
 import { loginSyntheticFixture } from './support/credential-vault/privateBrowser';
 import { finishSyntheticFixture } from './support/credential-vault/teardownFixture';
+import { verifyPasswordSignup } from './support/credential-vault/passwordSignup';
 
 const image = process.env.HARNESS_TEST_VAULT_DOCKER_IMAGE;
 const requester = crossUserRequester();
+
+test.skipIf(!image || process.platform !== 'darwin').each(['completed', 'failed'] as const)(
+	'a signed CLI signup finishes with %s and destroys its private browser',
+	(outcome) => verifyPasswordSignup(image!, outcome),
+	90_000
+);
 
 // A task-owned image and Docker engine are needed to exercise the Chromium namespace sandbox.
 test.skipIf(!image).each(['sms', 'email'] as const)(

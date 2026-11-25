@@ -216,3 +216,4 @@ export { TrackerDispatchRepository } from './repositories/projects-sessions/Trac
 export { TrackerDispatchSchedulerService } from './services/projects-sessions/TrackerDispatchSchedulerService';
 export { TrackerSupervisorService } from './services/projects-sessions/TrackerSupervisorService';
 export * from './lib/agents-providers/projectAssistant';
+export { VaultPasswordService } from './services/accounts-access/VaultPasswordService';

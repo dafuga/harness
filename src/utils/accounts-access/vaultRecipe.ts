@@ -3,6 +3,7 @@ import { createHash, createPublicKey, verify } from 'node:crypto';
 import { z } from 'zod';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { canonical, hash } from '../../core/execution-runtimes/scripted-deploy/contracts';
+import { vaultPasswordAction } from '../../validators/accounts-access/VaultWireValidator';
 import { vaultMethod } from './vaultMethod';
 import type {
 	RecipeReviewer,
@@ -51,13 +52,11 @@ const method = z.discriminatedUnion('kind', [
 		scriptSha256
 	})
 ]);
-
 const action = z.strictObject({
 	id: identifier,
 	mode: z.enum(['read', 'write']),
 	start: pathPattern
 });
-
 const recipeBase = z.strictObject({
 	schemaVersion: z.literal(1),
 	site: identifier,
@@ -203,8 +202,14 @@ function checkRecipe(recipe: z.output<typeof recipeBase>, context: z.RefinementC
 			context.addIssue({ code: 'custom', path: ['methods'], message: 'Unknown action ' + id });
 		}
 	}
-	const browser = recipe.methods.some(({ kind }) => kind === 'browser');
-	if (browser && (recipe.login.length === 0 || recipe.teardown.logout === null)) {
+	const browser = recipe.methods.filter(({ kind }) => kind === 'browser');
+	const needsLogin = browser.some(({ actions }) =>
+		actions.some((id) => id !== vaultPasswordAction)
+	);
+	if (
+		(needsLogin && recipe.login.length === 0) ||
+		(browser.length && recipe.teardown.logout === null)
+	) {
 		context.addIssue({
 			code: 'custom',
 			path: ['login'],

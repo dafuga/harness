@@ -140,6 +140,7 @@ export const commandHelp = [
 		term: 'deploy [options] [project] [environment]',
 		aliases: []
 	},
+	plainHelp('credential', 'Request Vault logins and generated passwords, and check site recipes.'),
 	{
 		name: 'module',
 		signature: 'module',

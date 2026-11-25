@@ -25,6 +25,7 @@ export function binary(min: number, max = min) {
 }
 
 export const vaultMaxPlaintext = 8192;
+export const vaultPasswordAction = 'generate-password';
 
 const recipeRef = z.strictObject({
 	site: identifier,
@@ -82,6 +83,8 @@ export const vaultDecision = z.discriminatedUnion('decision', [
 		method: methodKind,
 		mode,
 		account: identifier,
+		project: identifier.optional(),
+		environment: identifier.optional(),
 		session: text(100),
 		action: identifier,
 		host: identifier,

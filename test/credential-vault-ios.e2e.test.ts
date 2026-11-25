@@ -38,6 +38,7 @@ test.skipIf(process.platform !== 'darwin')(
 			await verifyDecision(run, 'api-token', 'token', { token: 'synthetic-ios-api-token' });
 			await verifyDecision(run, 'oauth-device', 'grant', null);
 			await verifyDecision(run, 'browser', 'deny', null);
+			await verifyDecision(run, 'browser', 'generate-password', null);
 		} finally {
 			await phone.close();
 		}
@@ -101,23 +102,57 @@ async function verifyDecision(
 ): Promise<void> {
 	const runner = run.fixture.seal.runnerKey();
 	const uid = process.getuid!();
-	const ticket = run.broker.create(sessionRequest(runner, { method }), uid);
+	const generated = decision === 'generate-password';
+	const broker = generated
+		? new VaultBrokerService(
+				run.devices,
+				run.fixture.audit,
+				() => run.fixture.clock.now,
+				() => async () => undefined
+			)
+		: run.broker;
+	const ticket = broker.create(
+		sessionRequest(runner, {
+			method,
+			...(generated && { action: 'generate-password', mode: 'write' })
+		}),
+		uid
+	);
 	const queue = await run.phone.write<VaultProof>(challenge(run));
-	const request = run.broker.queue(queue).find((entry) => entry.requestId === ticket.requestId);
+	const request = broker.queue(queue).find((entry) => entry.requestId === ticket.requestId);
 	if (!request) throw new Error('The native phone could not read the pending request.');
-	expect(() => run.broker.queue(queue)).toThrow('invalid or expired');
+	expect(() => broker.queue(queue)).toThrow('invalid or expired');
 	if (decision === 'password') await verifyNativeRefusals(run, request);
 	const proof = await run.phone.write<VaultProof>({ ...challenge(run), request, decision });
-	expect(run.broker.decide(proof)).toBe(decision === 'deny' ? 'denied' : 'approved');
-	expect(() => run.broker.decide(proof)).toThrow('pending request');
+	expect(broker.decide(proof)).toBe(decision === 'deny' ? 'denied' : 'approved');
+	expect(() => broker.decide(proof)).toThrow('pending request');
 	if (decision === 'deny') return;
 	const delivered = { requestId: ticket.requestId, receipt: ticket.receipt };
-	const { approval } = run.broker.claim(delivered, uid);
+	if (generated) {
+		const payload = JSON.parse(Buffer.from(proof.payload, 'base64url').toString()) as VaultApproval;
+		expect(payload).toMatchObject({
+			sealed: null,
+			project: request.project,
+			environment: request.environment
+		});
+		await expect(broker.generatePassword(delivered, uid)).resolves.toBe('completed');
+		return;
+	}
+	const { approval } = broker.claim(delivered, uid);
+	verifyOpenedDecision(approval, delivered.requestId, runner, credential);
+}
+
+function verifyOpenedDecision(
+	approval: VaultProof,
+	requestId: string,
+	runner: ReturnType<ReturnType<typeof vaultBroker>['seal']['runnerKey']>,
+	credential: Record<string, string> | null
+): void {
 	const payload = JSON.parse(
 		Buffer.from(approval.payload, 'base64url').toString()
 	) as VaultApproval;
 	if (payload.sealed) {
-		const opened = runner.open(ticket.requestId, payload.sealed);
+		const opened = runner.open(requestId, payload.sealed);
 		try {
 			expect(JSON.parse(opened.toString())).toEqual(credential);
 		} finally {

@@ -1,0 +1,45 @@
+{
+	"name": "bswrwa-vault-password-generation",
+	"goal": "Prove that a single scoped approval can generate and store a password, fill only the reviewed signup form in a disposable browser, and return a secret-free result after teardown.",
+	"createdAt": "2026-11-25T15:16:02.268Z",
+	"updatedAt": "2026-11-25T15:34:44.100Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:16:52.192Z",
+			"evidence": "Require exact reviewed project/environment/account/recipe scope and a single phone decision. Store before filling a private POST form, verify account and tear down before success, and return status only. Synthetic account qualification uses no real provider or existing browser."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:34:41.515Z",
+			"evidence": "Draft PR #324 implements a signed one-shot broker action, private POST signup and scoped create-only Keychain write. Test checkpoint 26bfff4307 reproduces scope admission before the implementation."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:34:44.100Z",
+			"evidence": "At 1b3596fa41, 35 focused unit tests and seven MB2 browser/native E2Es passed. The packaged CLI stored, filled and submitted once, verified signup and logout, and left no fixture containers or networks. Benchmarked signup fixture including Keychain and browser startup at 6691 ms. The two-file E2E process reported 225492992 bytes maximum RSS after 27.30 s elapsed. The emitted CLI was 19851177 bytes."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

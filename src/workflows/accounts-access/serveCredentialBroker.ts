@@ -15,7 +15,13 @@ export async function serveCredentialBroker(options: CredentialBrokerOptions) {
 	const trust = JSON.parse(readFileSync(options.trust, 'utf8')) as { devices: VaultDevice[] };
 	const devices = new VaultDeviceRepository(trust.devices, options.origin);
 	const audit = new VaultAuditRepository(join(options.state, 'audit'));
-	const broker = new VaultBrokerService(devices, audit);
+	const prepare = options.passwordConfig
+		? (await import('./prepareCredentialPasswords')).prepareCredentialPasswords(
+				options.passwordConfig,
+				options.state
+			)
+		: undefined;
+	const broker = new VaultBrokerService(devices, audit, Date.now, prepare);
 	const keeper = new VaultLeaseKeeperService(broker, audit, join(options.state, 'run'));
 	const server = new VaultBrokerServerAdapter({
 		broker,

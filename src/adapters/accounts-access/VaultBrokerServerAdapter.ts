@@ -39,6 +39,9 @@ export class VaultBrokerServerAdapter {
 				status: broker.status(body, uid)
 			})),
 			'/v1/session/claim': route(vaultTicket, (body, uid) => broker.claim(body, uid)),
+			'/v1/session/generate-password': route(vaultTicket, async (body, uid) => ({
+				status: await broker.generatePassword(body, uid)
+			})),
 			'/v1/session/cancel': route(vaultTicket, (body, uid) => ({
 				status: broker.cancel(body, uid)
 			})),
@@ -93,7 +96,7 @@ export class VaultBrokerServerAdapter {
 			}
 			const uid = this.config.peerUid?.(request.socket) ?? null;
 			const body = this.wire.json(route.schema, await this.read(request), 'request');
-			this.send(response, 200, route.run(body as never, uid));
+			this.send(response, 200, await route.run(body as never, uid));
 		} catch (error) {
 			const known = error instanceof VaultBrokerError;
 			this.send(response, known ? error.status : 500, {

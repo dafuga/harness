@@ -198,7 +198,8 @@
 			"TrackerAdapterLeaseAdapter",
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
-			"TrackerSupervisorService"
+			"TrackerSupervisorService",
+			"VaultPasswordService"
 		]
 	},
 	"contract": {
@@ -773,6 +774,11 @@
 		},
 		{
 			"unit": "serializer.gateway-content",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.accounts-access-vault-password",
 			"via": "reexport",
 			"origin": "derived"
 		},

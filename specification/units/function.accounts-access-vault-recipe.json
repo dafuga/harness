@@ -307,6 +307,11 @@
 			"unit": "function.execution-runtimes-scripted-deploy-contracts",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "validator.accounts-access-vault-wire",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

@@ -2,7 +2,6 @@
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { VaultSealAdapter } from '../../adapters/accounts-access/VaultSealAdapter';
 import type { VaultAuditRepository } from '../../repositories/accounts-access/VaultAuditRepository';
-import type { VaultAuditEventName } from '../../repositories/accounts-access/VaultAuditRepository.types';
 import type { VaultDeviceRepository } from '../../repositories/accounts-access/VaultDeviceRepository';
 import { digestDisplay } from '../../utils/accounts-access/vaultRecipe';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
@@ -11,19 +10,28 @@ import {
 	vaultDecision
 } from '../../validators/accounts-access/VaultWireValidator';
 import type {
-	VaultApproval,
 	VaultProof,
 	VaultSessionRequest,
 	VaultTicket
 } from '../../validators/accounts-access/VaultWireValidator.types';
 import type {
 	VaultCreated,
+	VaultPasswordPreparation,
 	VaultQueueEntry,
 	VaultRequestEntry,
 	VaultRequestStatus
 } from './VaultBrokerService.types';
 
-export const vaultRequestLimits = { offerMs: 120_000, deliveryMs: 60_000, queue: 16 } as const;
+import {
+	endVaultRequest,
+	preparePasswordOperation,
+	runApprovedPassword,
+	vaultAuditFields
+} from './vault-broker-service/requestState';
+import { checkApprovalScope, vaultRequestLimits } from './vault-broker-service/requestApproval';
+
+export { vaultAuditFields } from './vault-broker-service/requestState';
+export { vaultRequestLimits } from './vault-broker-service/requestApproval';
 const wire = new VaultWireValidator();
 const seal = new VaultSealAdapter();
 function digest(text: string): string {
@@ -41,12 +49,16 @@ export class VaultBrokerService {
 	constructor(
 		private readonly devices: VaultDeviceRepository,
 		private readonly audit: VaultAuditRepository,
-		private readonly now: () => number = Date.now
+		private readonly now: () => number = Date.now,
+		private readonly preparePassword?: VaultPasswordPreparation
 	) {}
 
 	create(input: VaultSessionRequest, uid: number | null): VaultCreated {
 		const all = [...this.requests.values()];
-		if (all.filter((entry) => this.live(entry)).length >= vaultRequestLimits.queue) {
+		if (
+			all.filter((entry) => this.live(entry) || entry.status === 'executing').length >=
+			vaultRequestLimits.queue
+		) {
 			throw new VaultBrokerError(429, 'The broker queue is full.');
 		}
 		const runnerFingerprint = seal.keyFingerprint(input.runnerPublicKey);
@@ -54,7 +66,8 @@ export class VaultBrokerService {
 			throw new VaultBrokerError(409, 'Use a fresh runner key for each request.');
 		}
 		const { entry, receipt } = newEntry(input, uid, runnerFingerprint, this.now());
-		this.record(entry, 'request');
+		entry.generatePassword = preparePasswordOperation(input, this.preparePassword);
+		this.audit.append(vaultAuditFields(entry), 'request');
 		this.requests.set(entry.id, entry);
 		return { requestId: entry.id, receipt, expiresAt: entry.expiresAt, runnerFingerprint };
 	}
@@ -86,9 +99,9 @@ export class VaultBrokerService {
 		) {
 			throw new VaultBrokerError(409, 'The decision is for another runner or recipe.');
 		}
-		if (decision.decision === 'deny') return this.end(entry, 'denied', 'denial');
+		if (decision.decision === 'deny') return endVaultRequest(entry, this.audit, 'denied', 'denial');
 		checkApprovalScope(entry, decision, this.now());
-		this.record(entry, 'approval');
+		this.audit.append(vaultAuditFields(entry), 'approval');
 		entry.status = 'approved';
 		entry.approval = { proof, expiresAt: decision.expiresAt };
 		return entry.status;
@@ -100,12 +113,18 @@ export class VaultBrokerService {
 		uid: number | null
 	): { approval: VaultProof; request: VaultSessionRequest } {
 		const entry = this.find(ticket, uid);
+		if (entry.generatePassword)
+			throw new VaultBrokerError(409, 'Use the separate password generation operation.');
 		if (entry.status !== 'approved' || !entry.approval) {
 			throw new VaultBrokerError(409, 'Approval is unavailable.');
 		}
 		const approval = entry.approval.proof;
-		this.end(entry, 'delivered', 'delivery');
+		endVaultRequest(entry, this.audit, 'delivered', 'delivery');
 		return { approval, request: entry.input };
+	}
+
+	async generatePassword(ticket: VaultTicket, uid: number | null): Promise<VaultRequestStatus> {
+		return runApprovedPassword(this.find(ticket, uid), this.audit);
 	}
 
 	status(ticket: VaultTicket, uid: number | null): VaultRequestStatus {
@@ -115,7 +134,7 @@ export class VaultBrokerService {
 	cancel(ticket: VaultTicket, uid: number | null): VaultRequestStatus {
 		const entry = this.find(ticket, uid);
 		return ['pending', 'approved'].includes(entry.status)
-			? this.end(entry, 'canceled', 'revoke')
+			? endVaultRequest(entry, this.audit, 'canceled', 'revoke')
 			: entry.status;
 	}
 
@@ -140,19 +159,8 @@ export class VaultBrokerService {
 		if (!['pending', 'approved'].includes(entry.status)) return false;
 		const now = this.now();
 		const lapsed = Math.min(entry.expiresAt, entry.approval?.expiresAt ?? Infinity) <= now;
-		if (lapsed) this.end(entry, 'expired', 'expiry');
+		if (lapsed) endVaultRequest(entry, this.audit, 'expired', 'expiry');
 		return !lapsed;
-	}
-
-	private end(entry: VaultRequestEntry, status: VaultRequestStatus, event: VaultAuditEventName) {
-		this.record(entry, event);
-		entry.status = status;
-		entry.approval = undefined;
-		return status;
-	}
-
-	private record(entry: VaultRequestEntry, event: VaultAuditEventName): void {
-		this.audit.append(vaultAuditFields(entry), event);
 	}
 }
 
@@ -178,27 +186,6 @@ function newEntry(
 function receiptMatches(entry: VaultRequestEntry, receipt: string): boolean {
 	const expected = Buffer.from(entry.receiptDigest, 'hex');
 	return timingSafeEqual(expected, Buffer.from(digest(receipt), 'hex'));
-}
-
-/** The journal fields of a request: identifiers and digests only. */
-export function vaultAuditFields(entry: VaultRequestEntry) {
-	const { item, site, action, method, recipe, host } = entry.input;
-	return { request: entry.id, item, site, action, method, recipeDigest: recipe.digest, host };
-}
-
-function checkApprovalScope(entry: VaultRequestEntry, decision: VaultApproval, now: number): void {
-	const { input } = entry;
-	const keys = ['method', 'mode', 'account', 'session', 'action', 'host', 'leaseMs'] as const;
-	if (keys.some((key) => decision[key] !== input[key])) {
-		throw new VaultBrokerError(409, 'The approval scope differs from the request; approve again.');
-	}
-	if ((decision.sealed === null) !== (input.method === 'oauth-device')) {
-		throw new VaultBrokerError(409, 'Only a device grant approval carries no sealed credential.');
-	}
-	const latest = Math.min(now + vaultRequestLimits.deliveryMs, entry.expiresAt);
-	if (decision.expiresAt <= now || decision.expiresAt > latest) {
-		throw new VaultBrokerError(409, 'Approval expiry is outside the delivery window.');
-	}
 }
 
 function queueEntry(entry: VaultRequestEntry): VaultQueueEntry {
