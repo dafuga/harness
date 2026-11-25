@@ -82,5 +82,6 @@ overviewRequestChecks()
 accountReuseChecks()
 accountHttpChecks()
 await enrollTransportChecks()
+if #available(iOS 17.0, macOS 14.0, *) { await enrollTranscriptChecks() }
 print("\(flavor): \(passes) passed, \(failures) failed.")
 exit(failures == 0 ? 0 : 1)
