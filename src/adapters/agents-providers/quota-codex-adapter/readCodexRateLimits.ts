@@ -1,3 +1,4 @@
+// @harness-uid u_jcivcx7cf2
 import { spawn } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { createInterface } from 'node:readline';

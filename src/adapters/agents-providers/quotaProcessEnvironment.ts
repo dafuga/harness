@@ -1,8 +1,9 @@
+// @harness-uid u_ovkxav7k5o
 import { homedir } from 'node:os';
 import { delimiter, join } from 'node:path';
 
 /** Native clients use the local account. API keys and provider overrides stay outside this process. */
-export function quotaProcessEnvironment(): NodeJS.ProcessEnv {
+export function quotaProcessEnvironment(): Record<string, string | undefined> {
 	const home = homedir();
 	return {
 		HOME: home,

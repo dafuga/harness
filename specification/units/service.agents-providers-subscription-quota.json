@@ -31,7 +31,7 @@
 			},
 			{
 				"name": "SubscriptionQuotaService.read.now",
-				"type": "unknown",
+				"type": "number",
 				"required": false
 			},
 			{
@@ -54,7 +54,7 @@
 				"inputs": [
 					{
 						"name": "SubscriptionQuotaService.read.now",
-						"type": "unknown",
+						"type": "number",
 						"required": false
 					},
 					{

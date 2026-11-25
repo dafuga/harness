@@ -1,3 +1,4 @@
+// @harness-uid u_ehveho7jdf
 import { execFile } from 'node:child_process';
 import { lstat, mkdir, mkdtemp, realpath, rm } from 'node:fs/promises';
 import { homedir, tmpdir } from 'node:os';
@@ -55,16 +56,16 @@ export async function readClaudeUsage(): Promise<string> {
 
 async function claudeQuotaDirectory(): Promise<string | null> {
 	const folder = join(homedir(), 'Library', 'Caches', 'harness-claude-quota');
-	await mkdir(folder, { mode: 0o700 }).catch((error: NodeJS.ErrnoException) => {
-		if (error.code !== 'EEXIST') throw error;
-	});
+	await mkdir(folder, { mode: 0o700, recursive: true });
 	const stat = await lstat(folder);
 	if (!stat.isDirectory() || stat.uid !== process.getuid?.() || (stat.mode & 0o077) !== 0)
 		return null;
 	return await realpath(folder);
 }
 
-async function hasClaudeSubscription(env: NodeJS.ProcessEnv): Promise<boolean> {
+async function hasClaudeSubscription(
+	env: ReturnType<typeof quotaProcessEnvironment>
+): Promise<boolean> {
 	try {
 		const { stdout } = await exec('claude', ['auth', 'status', '--json'], {
 			env,

@@ -8,12 +8,12 @@ import type { RemoteNativeStatus } from '../../../../models/development-tooling/
 
 const reads: readonly string[] = [...readMethods, ...commentMethods];
 
-const device: readonly string[] = [...reads, ...agentMethods];
+const device: readonly string[] = [...reads, ...agentMethods, 'homeSnapshot'];
 
 const paired: RemoteNativeStatus['state'][] = ['connecting', 'online', 'offline'];
 
-/** Recorded evidence is read only where a computer attached it: a grant alone never says so. */
-const attachedOnly: readonly string[] = ['evidence', 'artifact'];
+/** Recorded evidence and Home data require the computer to advertise the methods explicitly. */
+const attachedOnly: readonly string[] = ['evidence', 'artifact', 'homeSnapshot'];
 
 const unattached = (methods: readonly string[]) =>
 	methods.filter((item) => !attachedOnly.includes(item));
@@ -22,7 +22,7 @@ const assumed = { reads: unattached(reads), device: unattached(device) };
 
 /**
  * What a phone may ask of its computer right now. The methods the computer attached decide;
- * where a status carries none, its grant does, for all but recorded evidence. A phone that is
+ * where a status carries none, its grant offers the base project methods. A phone that is
  * not paired is offered nothing, and no status can add an operation of the desktop itself.
  */
 export function remoteGrant(status: RemoteNativeStatus | null): Set<string> {

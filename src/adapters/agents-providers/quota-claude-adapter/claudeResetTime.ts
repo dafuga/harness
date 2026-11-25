@@ -1,3 +1,4 @@
+// @harness-uid u_ljgh67kaav
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const dayMs = 86_400_000;
 
@@ -12,17 +13,19 @@ export function claudeResetTime(line: string, now: number): string | null {
 	const hour = Number(clock);
 	if (hour < 1 || hour > 12 || Number(minute) > 59) return null;
 	const hour24 = (hour % 12) + (meridiem.toLowerCase() === 'pm' ? 12 : 0);
+	return resetDate(month, Number(day), (hour24 * 60 + Number(minute)) * 60_000, now);
+}
+
+function resetDate(month: string | undefined, day: number, clockMs: number, now: number) {
 	const date = new Date(now);
 	const year = date.getUTCFullYear();
-	const clockMs = (hour24 * 60 + Number(minute)) * 60_000;
 	if (!month) {
 		const today = Date.UTC(year, date.getUTCMonth(), date.getUTCDate()) + clockMs;
 		return new Date(today + (today + 59_999 < now ? dayMs : 0)).toISOString();
 	}
 	const index = months.findIndex((name) => name.toLowerCase() === month.toLowerCase());
-	const numericDay = Number(day);
-	if (index < 0 || numericDay < 1 || numericDay > 31) return null;
+	if (index < 0 || day < 1 || day > 31) return null;
 	const resetYear = date.getUTCMonth() === 11 && index === 0 ? year + 1 : year;
-	const reset = new Date(Date.UTC(resetYear, index, numericDay) + clockMs);
-	return reset.getUTCDate() === numericDay ? reset.toISOString() : null;
+	const reset = new Date(Date.UTC(resetYear, index, day) + clockMs);
+	return reset.getUTCDate() === day ? reset.toISOString() : null;
 }

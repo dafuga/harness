@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "adapter.agents-providers-quota-process-environment",
+	"uid": "u_ovkxav7k5o",
 	"kind": "adapter",
 	"title": "quotaProcessEnvironment",
 	"responsibility": "Owns the quotaProcessEnvironment integration boundary.",
@@ -16,7 +17,7 @@
 		"outputs": [
 			{
 				"name": "quotaProcessEnvironment",
-				"type": "NodeJS.ProcessEnv"
+				"type": "Record<string, string | undefined>"
 			}
 		],
 		"errors": [],
@@ -28,7 +29,7 @@
 				"outputs": [
 					{
 						"name": "quotaProcessEnvironment",
-						"type": "NodeJS.ProcessEnv"
+						"type": "Record<string, string | undefined>"
 					}
 				],
 				"errors": [],

@@ -31,16 +31,16 @@ const plans: Readonly<Record<string, string>> = {
 	edu: 'Edu'
 };
 
+const windows = new Map([
+	[300, { id: '5h', label: '5-hour' }],
+	[10080, { id: 'weekly', label: 'Weekly' }]
+]);
+
 function limitWindow(value: unknown): SubscriptionLimit | null {
 	const parsed = windowPayload.safeParse(value);
 	if (!parsed.success) return null;
 	const { usedPercent, windowDurationMins, resetsAt } = parsed.data;
-	const window =
-		windowDurationMins === 300
-			? { id: '5h', label: '5-hour' }
-			: windowDurationMins === 10080
-				? { id: 'weekly', label: 'Weekly' }
-				: null;
+	const window = windows.get(windowDurationMins);
 	if (!window) return null;
 	const epoch = z.number().int().positive().max(253402300799).safeParse(resetsAt);
 	return {

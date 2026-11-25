@@ -21,7 +21,7 @@ export class SubscriptionQuotaService {
 	}
 
 	/** Concurrent Home requests share a refresh. A failed provider retains its original timestamp. */
-	async read(now = Date.now(), waitMs?: number): Promise<SubscriptionReading[]> {
+	async read(now: number = Date.now(), waitMs?: number): Promise<SubscriptionReading[]> {
 		if (!this.refreshing && (now < this.attemptedAt || now - this.attemptedAt >= refreshInterval)) {
 			this.attemptedAt = now;
 			this.refreshing = this.refresh(now).finally(() => {
