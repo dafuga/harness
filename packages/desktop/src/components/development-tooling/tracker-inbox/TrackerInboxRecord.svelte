@@ -3,7 +3,7 @@
 <!-- @harness-uid u_eaodnfratq -->
 <script lang="ts">
 	import type { InboxDetail } from '../../../models/development-tooling/TrackerInbox.types';
-	import TrackerPlanningDetails from '../../../../../reports/src/components/projects-sessions/TrackerPlanningDetails.svelte';
+	import TrackerPlanningDetails from '$reports/components/projects-sessions/TrackerPlanningDetails.svelte';
 	import { flagQuestion } from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
 	let { detail, mode = 'phone' }: { detail: InboxDetail; mode?: 'phone' | 'mac' } = $props();

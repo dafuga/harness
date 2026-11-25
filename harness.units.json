@@ -68,6 +68,12 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRecord.svelte",
+			"specifier": "$reports/components/projects-sessions/TrackerPlanningDetails.svelte",
+			"to": "packages/reports/src/components/projects-sessions/TrackerPlanningDetails.svelte",
+			"reason": "Mac and iPhone Tracker item details use the Reports planning section through the desktop build alias."
+		},
+		{
 			"from": "packages/desktop/test/examples/desktop.function.artifact-query.test.ts",
 			"specifier": "$reports/models/explorer-ui/ExplorerEvidence.types",
 			"to": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts",

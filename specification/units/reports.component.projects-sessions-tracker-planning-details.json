@@ -4,8 +4,8 @@
 	"uid": "u_mvlweghhmy",
 	"kind": "component",
 	"title": "TrackerPlanningDetails",
-	"responsibility": "Owns the TrackerPlanningDetails Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Show a Tracker item's current planning stage, saved artifacts, and promotion history.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "molecule",
@@ -25,30 +25,34 @@
 		"symbols": ["TrackerPlanningDetails", "TrackerPlanningDetails.designLinks"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "TrackerPlanningDetails.stage",
 				"type": "TrackerStage",
-				"required": true
+				"required": true,
+				"description": "The item's current stage, marked in the four-stage list."
 			},
 			{
 				"name": "TrackerPlanningDetails.planning",
 				"type": "TrackerPlanning",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Artifacts and promotion receipts by stage. Omit to show empty artifacts."
 			},
 			{
 				"name": "TrackerPlanningDetails.linkTarget",
 				"type": "'_blank' | 'tracker-artifact'",
 				"required": false,
-				"default": "_blank"
+				"default": "_blank",
+				"description": "Opens artifact links in a new tab or delegates them to the Mac's system browser."
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerPlanningDetails",
-				"type": "markup"
+				"type": "markup",
+				"description": "A read-only planning section with stage labels, receipts, page states, and links."
 			}
 		],
 		"errors": [],

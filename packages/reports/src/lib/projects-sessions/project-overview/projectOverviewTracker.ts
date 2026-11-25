@@ -100,6 +100,8 @@ async function closeBody(response: Response): Promise<void> {
 
 function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecord {
 	const row = asRecord(value, 'item');
+	const includePlanning =
+		!row.sensitive && !row.deleted && row.status !== 'ignored' && row.stage !== undefined;
 	return {
 		id: requiredText(row.id, 'item id'),
 		title: requiredText(row.title, 'item title'),
@@ -114,7 +116,7 @@ function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecor
 		resolved: optionalBoolean(row.resolved, 'item resolved'),
 		question: optionalText(row.question, 'item question'),
 		notes_log: optionalNotes(row.notes_log),
-		...(row.stage !== undefined && { stage: row.stage, planning: row.planning }),
+		...(includePlanning && { stage: row.stage, planning: row.planning }),
 		...(includeHomeFields ? { ...homeFields(row), ...askFields(row) } : {})
 	};
 }
