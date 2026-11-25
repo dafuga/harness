@@ -4,7 +4,13 @@
 	"compatibility_date": "2026-10-12",
 	"vars": { "HARNESS_ENVIRONMENT": "local", "HARNESS_RELAY_ALLOWED_ORIGINS": "" },
 	"durable_objects": {
-		"bindings": [{ "name": "REMOTE_HOSTS", "class_name": "RemoteHostObject" }]
+		"bindings": [
+			{ "name": "REMOTE_HOSTS", "class_name": "RemoteHostObject" },
+			{ "name": "ACCOUNT_SYNC", "class_name": "AccountSyncObject" }
+		]
 	},
-	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["RemoteHostObject"] }]
+	"migrations": [
+		{ "tag": "v1", "new_sqlite_classes": ["RemoteHostObject"] },
+		{ "tag": "v2", "new_sqlite_classes": ["AccountSyncObject"] }
+	]
 }

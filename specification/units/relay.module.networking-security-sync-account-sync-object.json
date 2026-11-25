@@ -1,0 +1,194 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.module.networking-security-sync-account-sync-object",
+	"uid": "u_hbhmrjigug",
+	"kind": "module",
+	"title": "AccountSyncObject",
+	"responsibility": "Owns the AccountSyncObject library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/lib/networking-security/sync/AccountSyncObject.ts"],
+		"symbols": [
+			"AccountSyncObject",
+			"AccountSyncObject.constructor",
+			"AccountSyncObject.fetch",
+			"AccountSyncObject.webSocketMessage",
+			"AccountSyncObject.alarm"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "AccountSyncObject.constructor.state",
+				"type": "DurableObjectState",
+				"required": true
+			},
+			{
+				"name": "AccountSyncObject.constructor.env",
+				"type": "RelayEnv",
+				"required": true
+			},
+			{
+				"name": "AccountSyncObject.fetch.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "AccountSyncObject.webSocketMessage.socket",
+				"type": "WebSocket",
+				"required": true
+			},
+			{
+				"name": "AccountSyncObject.webSocketMessage.message",
+				"type": "string | ArrayBuffer",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "AccountSyncObject.fetch",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "AccountSyncObject.webSocketMessage",
+				"type": "void"
+			},
+			{
+				"name": "AccountSyncObject.alarm",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "AccountSyncObject.fetch",
+				"inputs": [
+					{
+						"name": "AccountSyncObject.fetch.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AccountSyncObject.fetch",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AccountSyncObject.webSocketMessage",
+				"inputs": [
+					{
+						"name": "AccountSyncObject.webSocketMessage.socket",
+						"type": "WebSocket",
+						"required": true
+					},
+					{
+						"name": "AccountSyncObject.webSocketMessage.message",
+						"type": "string | ArrayBuffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AccountSyncObject.webSocketMessage",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "AccountSyncObject.alarm",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "AccountSyncObject.alarm",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AccountSyncObject.constructor",
+				"inputs": [
+					{
+						"name": "AccountSyncObject.constructor.state",
+						"type": "DurableObjectState",
+						"required": true
+					},
+					{
+						"name": "AccountSyncObject.constructor.env",
+						"type": "RelayEnv",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "AccountSyncObject.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "relay.model.relay-host-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-enrollments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-ring",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-sockets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/lib/networking-security/sync/AccountSyncObject.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/lib/networking-security/sync/AccountSyncObject.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

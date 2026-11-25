@@ -1,0 +1,171 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.module.networking-security-sync-sync-wire",
+	"uid": "u_ve3glysnyy",
+	"kind": "module",
+	"title": "syncWire",
+	"responsibility": "Owns the syncWire library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/relay/src/lib/networking-security/sync/syncWire.ts"],
+		"symbols": ["syncLimits", "frameScope", "isScopeId", "ringPrefix", "numbered"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "frameScope.frame",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "isScopeId.value",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ringPrefix.ring",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "numbered.ring",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "numbered.frame",
+				"type": "Uint8Array",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "syncLimits",
+				"type": "unknown"
+			},
+			{
+				"name": "frameScope",
+				"type": "string | null"
+			},
+			{
+				"name": "isScopeId",
+				"type": "boolean"
+			},
+			{
+				"name": "ringPrefix",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "numbered",
+				"type": "Uint8Array"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "frameScope",
+				"inputs": [
+					{
+						"name": "frameScope.frame",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "frameScope",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isScopeId",
+				"inputs": [
+					{
+						"name": "isScopeId.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isScopeId",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ringPrefix",
+				"inputs": [
+					{
+						"name": "ringPrefix.ring",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ringPrefix",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "numbered",
+				"inputs": [
+					{
+						"name": "numbered.ring",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "numbered.frame",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "numbered",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/lib/networking-security/sync/syncWire.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/lib/networking-security/sync/syncWire.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
