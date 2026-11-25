@@ -18,7 +18,8 @@ import type {
 import { confirmedWrite, itemBucket, matchesQuery } from '../tracker-inbox/trackerInbox';
 import type { TrackerInboxItemReply, TrackerInboxReadInput } from './MacTrackerInboxService.types';
 
-const trackerOrigin = 'http://127.0.0.1:7701';
+import { trackerRequest, readReply, writeError } from './macTrackerInboxRequest';
+
 const safeId = /^[a-z0-9_-]{1,80}$/;
 
 export class MacTrackerInboxService {
@@ -113,22 +114,6 @@ function parseWrite(input: Partial<ConfirmedWrite>): ConfirmedWrite | null {
 	return confirmedWrite({ action, id, text, revision, option }, true);
 }
 
-function trackerRequest(path: string, init?: RequestInit): Promise<Response> {
-	return fetch(trackerOrigin + path, {
-		...init,
-		redirect: 'error',
-		cache: 'no-store',
-		credentials: 'omit',
-		signal: AbortSignal.timeout(5000)
-	});
-}
-
-async function readReply<T>(response: Response): Promise<T> {
-	if (response.ok) return (await response.json()) as T;
-	await response.body?.cancel();
-	throw new TypeError('Tracker did not return item data');
-}
-
 async function readRows(): Promise<InboxRow[]> {
 	const items = await readReply<TrackerItem[]>(await trackerRequest('/items?status=all&limit=-1'));
 	return items
@@ -196,15 +181,6 @@ function projectRun(run: TrackerListedRun) {
 
 function safe(text: string | null): string {
 	return sanitizeTrackerText(text ?? '');
-}
-
-async function writeError(response: Response): Promise<string> {
-	const { code } = (await response.json()) as { code?: string };
-	if (code === 'staleReview') return code;
-	if (response.status === 404) return 'noLocalMatch';
-	if (response.status === 400) return 'invalidInput';
-	if (response.status === 409) return 'writeConflict';
-	return 'unavailable';
 }
 
 function current<T>(result: { value?: T; code?: string }): InboxReply<T> {

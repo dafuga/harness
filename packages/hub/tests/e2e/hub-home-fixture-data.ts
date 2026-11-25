@@ -4,7 +4,6 @@ import { createContext, runInContext } from 'node:vm';
 import type {
 	HomePlanState,
 	HomeRun,
-	HomeSubscription,
 	OwnerHomeSnapshot
 } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import type {
@@ -14,8 +13,8 @@ import type {
 import { directAgentsOnly } from '../../../reports/src/lib/projects-sessions/hub-home/homeDirectAgents';
 import type { HomeFixtureState, MockupHomeData } from './hub-home-fixture.types';
 
-export const homeClock = Date.parse('2026-11-21T22:30:00.000Z');
-const at = (minutes = 0) => new Date(homeClock + minutes * 60000).toISOString();
+import { at, quotas } from './hub-home-fixture-quota';
+export { homeClock } from './hub-home-fixture-quota';
 
 const fixtures = createContext({ window: {} });
 runInContext("Object.defineProperty(globalThis, 'HH', { get: () => window.HH })", fixtures);
@@ -111,25 +110,6 @@ function scheduled(data: MockupHomeData): HomeRun[] {
 			paused: Boolean(run.paused)
 		};
 	});
-}
-
-function quotas(data: MockupHomeData): HomeSubscription[] {
-	return data.quota.map((sub, index) => ({
-		id: `subscription-${index}`,
-		provider: sub.provider === 'Claude Code' ? 'claude' : 'codex',
-		plan: sub.plan,
-		account: sub.account,
-		readAt: at(sub.stale ? -180 : -2),
-		limits: sub.limits.map((limit, pos) => ({
-			id: `limit-${pos}`,
-			label: limit.label,
-			left: limit.left,
-			resetsAt: at(pos ? 3600 : 85)
-		})),
-		credits: sub.credits?.left ?? null,
-		history: sub.history.map((used, pos) => ({ day: at((pos - 6) * 1440).slice(0, 10), used })),
-		agents: sub.top.map(([name, usage]) => ({ name, description: `${usage}%` }))
-	}));
 }
 
 function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {

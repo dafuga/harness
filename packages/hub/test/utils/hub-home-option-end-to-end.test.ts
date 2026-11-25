@@ -42,7 +42,7 @@ function liveTracker() {
 async function askedAgent(tracker: ReturnType<typeof liveTracker>, confirm?: string) {
 	tracker.store.appendLocal({
 		itemId: 'asked1',
-		fields: { title: 'Synthetic release', agent: 'Synthetic agent', status: 'open' }
+		fields: { title: 'Synthetic release', agent: 'cos', status: 'open' }
 	});
 	const flag = await tracker.post('/items/asked1/flag', {
 		question: 'Ship the synthetic release?',
@@ -60,7 +60,7 @@ test('a flag with options reaches the Hub, and a tap answers it on the Tracker b
 		const home = await askedAgent(tracker);
 		const parsed = parseHomePayload(JSON.parse(JSON.stringify(home)));
 		const agent = parsed.agents[0];
-		expect(agent).toMatchObject({ question: 'Ship the synthetic release?', options });
+		expect(agent).toMatchObject({ id: 'cos', question: 'Ship the synthetic release?', options });
 		const tap = chatInput.parse({
 			id: crypto.randomUUID(),
 			agentId: agent.id,

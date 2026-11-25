@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeChoices.ts"],
-		"symbols": ["HomeChoice", "orderedChoices"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/hubHomeChoices.ts",
+			"packages/hub/src/components/projects-sessions/hubHomeChoices.types.ts"
+		],
+		"symbols": ["orderedChoices", "HomeChoice"]
 	},
 	"contract": {
 		"origin": "declared",

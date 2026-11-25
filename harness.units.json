@@ -2760,6 +2760,24 @@
 			"specifier": "$reports/helpers/strings/plural",
 			"to": "packages/reports/src/helpers/strings/plural.ts",
 			"reason": "The desktop wrapper reuses the Reports plural helper through the build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/api/hub-home/homePayload.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeDirectAgents",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"reason": "The Hub builds this Home projection with the shared Reports alias."
+		},
+		{
+			"from": "packages/hub/src/services/networking-security/LinkedHomeService.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeDirectAgents",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"reason": "The Hub builds this Home projection with the shared Reports alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeChoices.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Hub choices reuse the Reports Home type through the build alias."
 		}
 	]
 }

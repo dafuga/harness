@@ -295,6 +295,20 @@
 			],
 			"output": "string",
 			"pure": true,
+			"examples": [
+				{
+					"name": "One keeps the singular word",
+					"call": "plural(1, 'agent')",
+					"input": [1, "agent"],
+					"output": "1 agent"
+				},
+				{
+					"name": "A count above one appends an s",
+					"call": "plural(2, 'agent')",
+					"input": [2, "agent"],
+					"output": "2 agents"
+				}
+			],
 			"consumers": [
 				{
 					"unit": "desktop.component.agents-providers-chat-agents"

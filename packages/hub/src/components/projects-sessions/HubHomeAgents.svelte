@@ -22,7 +22,6 @@
 	import HubHomeChoices from './HubHomeChoices.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
-
 	let {
 		agents,
 		agentId,

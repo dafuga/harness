@@ -200,7 +200,6 @@ test('Without a workspace phone port nothing is asked and no error is invented',
 		{ name: 'blank name still reports the name notice', input: { name: '' }, output: store.error }
 	]);
 });
-
 test('disconnect asks the port to forget the computer and shows what it answers', async () => {
 	const { store, port } = phone(at('online'));
 	await store.start();
