@@ -17,7 +17,14 @@
 			"ProjectAssistantService",
 			"assistantTools",
 			"ProjectAssistantConfigValidator",
-			"ProjectAssistantConfig"
+			"ProjectAssistantConfig",
+			"QaEligibilityService",
+			"QaThreadService",
+			"QaLedgerRepository",
+			"RunbookCanvasService",
+			"QaLabelEvent",
+			"QaThreadPorts",
+			"RunbookCanvasPorts"
 		]
 	},
 	"contract": {
@@ -56,12 +63,42 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.agents-providers-qa-thread-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-runbook-canvas-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-qa-ledger",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-project-assistant",
 			"via": "reexport",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.agents-providers-project-assistant-service-assistant-tools",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-eligibility",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-thread",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-runbook-canvas",
 			"via": "reexport",
 			"origin": "derived"
 		},

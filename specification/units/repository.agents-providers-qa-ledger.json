@@ -1,0 +1,197 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.agents-providers-qa-ledger",
+	"uid": "u_kg5hqz6vwx",
+	"kind": "repository",
+	"title": "QaLedgerRepository",
+	"responsibility": "Owns the QaLedgerRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/agents-providers/QaLedgerRepository.ts",
+			"src/repositories/agents-providers/QaLedgerRepository.types.ts"
+		],
+		"symbols": [
+			"QaLedgerRepository",
+			"QaLedgerRepository.constructor",
+			"QaLedgerRepository.reserve",
+			"QaLedgerRepository.recordPost",
+			"QaLedgerRepository.unresolved",
+			"QaLedgerLine"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "QaLedgerRepository.constructor.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaLedgerRepository.reserve.eventId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaLedgerRepository.reserve.issue",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "QaLedgerRepository.recordPost.eventId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaLedgerRepository.recordPost.issue",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "QaLedgerRepository.recordPost.channelId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaLedgerRepository.recordPost.parentTs",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "QaLedgerRepository.reserve",
+				"type": "Promise<'new' | 'duplicate'>"
+			},
+			{
+				"name": "QaLedgerRepository.recordPost",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "QaLedgerRepository.unresolved",
+				"type": "Promise<number[]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "QaLedgerRepository.reserve",
+				"inputs": [
+					{
+						"name": "QaLedgerRepository.reserve.eventId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "QaLedgerRepository.reserve.issue",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaLedgerRepository.reserve",
+						"type": "Promise<'new' | 'duplicate'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "QaLedgerRepository.recordPost",
+				"inputs": [
+					{
+						"name": "QaLedgerRepository.recordPost.eventId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "QaLedgerRepository.recordPost.issue",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "QaLedgerRepository.recordPost.channelId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "QaLedgerRepository.recordPost.parentTs",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaLedgerRepository.recordPost",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "QaLedgerRepository.unresolved",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "QaLedgerRepository.unresolved",
+						"type": "Promise<number[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "QaLedgerRepository.constructor",
+				"inputs": [
+					{
+						"name": "QaLedgerRepository.constructor.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaLedgerRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/agents-providers/QaLedgerRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/agents-providers/QaLedgerRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

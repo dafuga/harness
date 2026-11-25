@@ -1,0 +1,187 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-thread-service-qa-thread-text",
+	"uid": "u_kg5hqx4pqr",
+	"kind": "service",
+	"title": "qaThreadText",
+	"responsibility": "Owns the qaThreadText service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/qa-thread-service/qaThreadText.ts"],
+		"symbols": ["qaParentText", "qaReminderText", "qaStepsText", "parseQaSteps"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "qaParentText.task",
+				"type": "QaTask",
+				"required": true
+			},
+			{
+				"name": "qaParentText.stagingUrl",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "qaParentText.stagingBranch",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "qaReminderText.task",
+				"type": "QaTask",
+				"required": true
+			},
+			{
+				"name": "qaStepsText.steps",
+				"type": "readonly QaRunbookStep[]",
+				"required": true
+			},
+			{
+				"name": "parseQaSteps.raw",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "qaParentText",
+				"type": "string"
+			},
+			{
+				"name": "qaReminderText",
+				"type": "string"
+			},
+			{
+				"name": "qaStepsText",
+				"type": "string"
+			},
+			{
+				"name": "parseQaSteps",
+				"type": "QaRunbookStep[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "qaParentText",
+				"inputs": [
+					{
+						"name": "qaParentText.task",
+						"type": "QaTask",
+						"required": true
+					},
+					{
+						"name": "qaParentText.stagingUrl",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "qaParentText.stagingBranch",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "qaParentText",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "qaReminderText",
+				"inputs": [
+					{
+						"name": "qaReminderText.task",
+						"type": "QaTask",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "qaReminderText",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "qaStepsText",
+				"inputs": [
+					{
+						"name": "qaStepsText.steps",
+						"type": "readonly QaRunbookStep[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "qaStepsText",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseQaSteps",
+				"inputs": [
+					{
+						"name": "parseQaSteps.raw",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseQaSteps",
+						"type": "QaRunbookStep[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-thread-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-redact-secrets",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/qa-thread-service/qaThreadText.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/qa-thread-service/qaThreadText.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
