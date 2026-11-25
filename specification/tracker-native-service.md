@@ -303,8 +303,13 @@ override must match it exactly. Configure the lanes qualified on each host.
 Linux uses plain Docker through the pinned Harness
 `harness task orchestrate --platform linux` entry point and its managed provider
 adapter. Mac-only projects use interactive native Codex or Claude in the
-retained tmux socket on a registered Mac. The launcher creates a detached
-task worktree and records the attempt key before opening the worker pane.
+retained tmux socket on a registered Mac. For each new Git-backed attempt,
+the launcher queries `origin` for its default commit, fetches that commit and
+creates a detached task worktree at it. It leaves the source checkout, refs and
+`FETCH_HEAD` in place. If the remote commit cannot be resolved or fetched,
+the launcher rejects the attempt before opening a worker pane. The checkout
+can use Git LFS from the host's standard installation directories. Explicit
+operations work directories are used directly.
 Native Codex and the Docker launcher use separate private profile directories
 as their homes. Native Claude uses the service account's home and login name
 to find its existing Claude Code session. Point `native.claude` at the

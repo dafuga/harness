@@ -13,6 +13,7 @@ import { expect, test } from 'vitest';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { trackerNodeRuntime } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
 import { withTempRepo } from '../../support/temporary';
+import { seedManagedFixtureOrigin } from '../../support/trackerManagedGitFixture';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
@@ -53,8 +54,9 @@ test(
 		})
 );
 
-async function proveManagedForeground({ root, git }: TemporaryRepo) {
-	git('commit', '--allow-empty', '-m', 'Fixture source');
+async function proveManagedForeground(repo: TemporaryRepo) {
+	const { root } = repo;
+	seedManagedFixtureOrigin(repo);
 	const { config, profiles } = managedFixtureBindings(root);
 	const database = new DatabaseSync(':memory:');
 	const signal = new AbortController().signal;
@@ -104,9 +106,10 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	}
 }
 
-async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean, ops?: string) {
+async function proveNativeUsage(repo: TemporaryRepo, competing: boolean, ops?: string) {
+	const { root } = repo;
 	if (ops) mkdirSync(ops, { mode: 0o700 });
-	else git('commit', '--allow-empty', '-m', 'Fixture source');
+	else seedManagedFixtureOrigin(repo);
 	const { config } = managedFixtureBindings(root);
 	if (competing) writeFileSync(join(root, 'competing-codex-transcript'), '', { mode: 0o600 });
 	const database = new DatabaseSync(':memory:');

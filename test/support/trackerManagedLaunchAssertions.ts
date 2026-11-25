@@ -1,4 +1,5 @@
-import { mkdirSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { mkdirSync, readFileSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
 import { expect, vi } from 'vitest';
@@ -183,4 +184,19 @@ async function verifyLaunchCliTimeout(spoke: TrackerNodeFixture, short: string, 
 		stderr: expect.stringContaining('no run confirmation within 20 seconds on grok-box')
 	});
 	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({ id, auto: null });
+}
+
+export function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {
+	const skill = 'skills/secret-safe-computer-use/SKILL.md';
+	const install = spawnSync('/bin/bash', ['deploy/vault/install-secret-safe-skill.sh'], {
+		env: { PATH: process.env.PATH, HOME: profiles.native }
+	});
+	expect(install.status).toBe(0);
+	const codex = readFileSync(join(profiles.native, '.codex', skill), 'utf8');
+	expect(readFileSync(join(profiles.native, '.claude', skill), 'utf8')).toBe(codex);
+	const rule = codex.split('---\n')[2].trim();
+	for (const brief of briefs) {
+		expect(brief.startsWith(rule + '\n\n')).toBe(true);
+		expect(brief.split(rule)).toHaveLength(2);
+	}
 }
