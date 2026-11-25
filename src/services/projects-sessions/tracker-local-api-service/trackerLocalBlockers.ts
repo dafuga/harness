@@ -26,6 +26,7 @@ export function syncTrackerBlockers(
 	const escalated: string[] = [];
 	const rechecked: string[] = [];
 	for (const entry of items.blockerEntries(now)) {
+		if (entry.kind === 'note') continue;
 		const context = itemMutationContext(store, items, options);
 		const item = items.resolve(entry.id);
 		if (entry.needs_escalation) {

@@ -25,6 +25,8 @@ export type TrackerItemRow = Omit<
 		chased_by?: string | null;
 		chased_reason?: string | null;
 		chased_count?: number | null;
+		blocker_note?: string | null;
+		blocker_note_clock?: string | null;
 	};
 
 type TrackerChase = {
@@ -164,7 +166,7 @@ export type TrackerDigest = TrackerDigestGroups & {
 export type TrackerBlocker = {
 	id: string;
 	title: string;
-	kind: 'block' | 'flag' | 'block+flag';
+	kind: 'block' | 'flag' | 'block+flag' | 'note';
 	type: TrackerBlockerType;
 	label: string;
 	route: TrackerBlockerRoute;

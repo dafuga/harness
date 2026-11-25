@@ -43,7 +43,10 @@ export function groupTrackerBlockers(
 ): TrackerBlockerInbox {
 	const merged = new Map<string, TrackerBlocker>();
 	for (const blocker of entries) {
-		const key = `${blocker.type}|${blocker.agent ?? ''}|${normalize(blocker.action)}`;
+		const key =
+			blocker.kind === 'note'
+				? `note|${blocker.id}`
+				: `${blocker.type}|${blocker.agent ?? ''}|${normalize(blocker.action)}`;
 		const first = merged.get(key);
 		if (!first) merged.set(key, blocker);
 		else merged.set(key, mergeDuplicate(first, blocker));
@@ -72,16 +75,17 @@ function toBlocker(
 ): TrackerBlocker {
 	const blocked = row.status === 'blocked';
 	const asking = Boolean(row.needs_daniel) && !row.resolved;
-	const action = blockerAction(row, blocked);
-	const { type, waitsOn } = classifyTrackerBlocker(action, blocked ? 'block' : 'flag');
-	const at = blockerStart(row, blocked, nowMs);
+	const noteOnly = !blocked && !asking;
+	const action = noteOnly ? (row.blocker_note ?? '').trim() : blockerAction(row, blocked);
+	const { type, waitsOn } = classifyTrackerBlocker(action, asking && !blocked ? 'flag' : 'block');
+	const at = noteOnly ? noteBlockerStart(row, nowMs) : blockerStart(row, blocked, nowMs);
 	const age = Math.max(0, Math.floor((nowMs - at) / 60_000));
 	const dependencyStatus = waitsOn ? (statuses.get(waitsOn) ?? null) : null;
 	const route = trackerBlockerRoute(type);
 	return {
 		id: row.id,
 		title: row.title ?? '',
-		kind: blockerKind(blocked, asking),
+		kind: noteOnly ? 'note' : blockerKind(blocked, asking),
 		type,
 		label: trackerBlockerLabels[type],
 		route,
@@ -93,7 +97,7 @@ function toBlocker(
 		since: new Date(at).toISOString(),
 		age_minutes: age,
 		escalated: asking,
-		needs_escalation: needsEscalation({ row, blocked, asking, type, at }),
+		needs_escalation: needsEscalation({ row, blocked: blocked || noteOnly, asking, type, at }),
 		stale: age >= trackerBlockerStaleMinutes,
 		chased_at: chasedAt(row),
 		waits_on: waitsOn,
@@ -131,6 +135,15 @@ function blockerStart(row: TrackerItemRow, blocked: boolean, nowMs: number): num
 	const clocks = JSON.parse(row.clocks) as Record<string, string | undefined>;
 	const since = trackerClockMilliseconds((blocked ? clocks.status : clocks.needs_daniel) ?? '');
 	return since || Date.parse(row.updated_at ?? row.created_at ?? '') || nowMs;
+}
+
+function noteBlockerStart(row: TrackerItemRow, nowMs: number): number {
+	const clocks = JSON.parse(row.clocks) as Record<string, string | undefined>;
+	return (
+		trackerClockMilliseconds(row.blocker_note_clock ?? clocks.notes ?? '') ||
+		Date.parse(row.updated_at ?? row.created_at ?? '') ||
+		nowMs
+	);
 }
 
 function chasedAt(row: TrackerItemRow): string | null {
