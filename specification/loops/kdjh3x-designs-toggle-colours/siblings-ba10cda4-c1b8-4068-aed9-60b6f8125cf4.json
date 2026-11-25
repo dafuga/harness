@@ -1,0 +1,1912 @@
+{
+	"schemaVersion": 1,
+	"revision": "fe1b0e0f8665ac18d17c9b281c27b6d2c973806e",
+	"bugClass": {
+		"id": "singleton-segmented-style-conflict",
+		"title": "Singleton segmented controls inherit unintended active styling",
+		"cause": "A shared CSS selector targets an active button when it is the only child, causing singleton segmented groups to receive styling intended for a different state or context. The selector does not account for independent groups or the state-specific visual treatment required by the viewport.",
+		"criteria": "Match when a stylesheet has a singleton structural selector such as :only-child or :only-of-type combined with active/selected state and segmented-control button styling, and that rule can override state-specific styling across independently rendered groups. Each conflicting singleton selector is sufficient; neutral singleton styling without a state conflict does not match.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": ":only-child",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": ":only-of-type",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": ".active:only-child",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": ":only-child.active",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": ":checked",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "aria-pressed",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "aria-selected",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "segmented-choice",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "[aria-pressed=\"true\"]",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "[aria-selected=\"true\"]",
+				"weight": 3
+			}
+		],
+		"contextTerms": [
+			"css",
+			"segmented",
+			"active",
+			"selected",
+			"only-child",
+			"only-of-type",
+			"button",
+			"viewport",
+			"report",
+			"hub"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/desktop/",
+				"weight": 5
+			},
+			{
+				"contains": "packages/reports/",
+				"weight": 4
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 4
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "src/services/",
+				"weight": -2
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": -2
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 8488,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "6e0117f65c689783ad8c",
+			"path": "packages/desktop/src/components/shared-primitives/SegmentedChoice.svelte",
+			"line": 12,
+			"lastLine": 16,
+			"score": 26,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "segmented-choice",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 12–16 show a segmented-choice group with buttons whose active class and aria-pressed state track the selected value. No stylesheet or singleton selector is included, so the presence of a conflicting :only-child/:only-of-type active rule and its trigger cannot be established."
+		},
+		{
+			"id": "92e48467e0983a921635",
+			"path": "packages/desktop/src/lib/styles/design-2.css",
+			"line": 20,
+			"lastLine": 28,
+			"score": 26,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "segmented-choice",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c3cd7bf9ec81b095cab5",
+			"path": "packages/desktop/src/lib/styles/design-2.css",
+			"line": 11,
+			"lastLine": 15,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "segmented-choice",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ddc69fd9ccb7a1205853",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopControls.ts",
+			"line": 182,
+			"lastLine": 182,
+			"score": 22,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "segmented-choice",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6ddea3809e5144c539e5",
+			"path": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"line": 79,
+			"lastLine": 79,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "[aria-pressed=\"true\"]",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2a5aa29387e4d6ac08b2",
+			"path": "packages/desktop/tests/e2e/ui-projects.spec.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "[aria-pressed=\"true\"]",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "18758193c2cf5c93d0a6",
+			"path": "packages/desktop/tests/e2e/picker-rows.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "[aria-pressed=\"true\"]",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "21db973446eeea17c744",
+			"path": "packages/reports/src/components/verification-evidence/EvidenceViewer.svelte",
+			"line": 147,
+			"lastLine": 147,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d3c98e0a09791c1ba948",
+			"path": "packages/desktop/src/components/agents-providers/AgentControls.svelte",
+			"line": 59,
+			"lastLine": 59,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a6b5ba71fcf3000a2c20",
+			"path": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
+			"line": 118,
+			"lastLine": 124,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e12d0b7dd11be7e62251",
+			"path": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
+			"line": 135,
+			"lastLine": 142,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "772810334fe31bfa6236",
+			"path": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
+			"line": 150,
+			"lastLine": 155,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "118319479e8f07c2a58c",
+			"path": "packages/reports/src/lib/styles/explorer-controls.css",
+			"line": 97,
+			"lastLine": 98,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4547825f15c1b1b26b3c",
+			"path": "packages/reports/src/lib/styles/harness.css",
+			"line": 81,
+			"lastLine": 81,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "956b7ffb9fa2b148d97a",
+			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+			"line": 182,
+			"lastLine": 182,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "20c23202e9a091c76ab5",
+			"path": "packages/desktop/src/components/agents-providers/AgentEffortPicker.svelte",
+			"line": 34,
+			"lastLine": 34,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f838d172fffac9792f55",
+			"path": "packages/desktop/src/components/agents-providers/AgentModelPicker.svelte",
+			"line": 36,
+			"lastLine": 36,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "17e1ec5c9aca62e1f406",
+			"path": "packages/desktop/src/components/agents-providers/project-agent/projectAgent.css",
+			"line": 39,
+			"lastLine": 39,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e21e0cf5c93549d512d1",
+			"path": "packages/desktop/src/components/explorer-ui/thread-links/ThreadLinks.svelte",
+			"line": 36,
+			"lastLine": 36,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1fe212f076d8a65fb7ff",
+			"path": "packages/desktop/src/components/shared-primitives/Composer.svelte",
+			"line": 115,
+			"lastLine": 115,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "65e9866f5ca6824930a3",
+			"path": "packages/desktop/tests/e2e/ui-comments.spec.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a0046aa960dd9fc277d2",
+			"path": "packages/desktop/tests/e2e/ui-design-options-review.spec.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "323414ec115710869787",
+			"path": "packages/reports/src/components/explorer-ui/EntityScreens.svelte",
+			"line": 101,
+			"lastLine": 101,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f6ebc75c9036e6271ae8",
+			"path": "packages/reports/src/components/explorer-ui/EntitySearchResults.svelte",
+			"line": 48,
+			"lastLine": 48,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "854f8d43f212f974b8c1",
+			"path": "packages/reports/src/components/explorer-ui/HarnessTabs.svelte",
+			"line": 71,
+			"lastLine": 78,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c49d72edcf8505804f00",
+			"path": "packages/reports/src/components/reports-media/AudioComparisonViewer.svelte",
+			"line": 55,
+			"lastLine": 55,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d5f44e0ef149d5143773",
+			"path": "packages/reports/src/components/shared-primitives/image-zoom/ImageZoom.svelte",
+			"line": 113,
+			"lastLine": 116,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4e786c5268e704108c61",
+			"path": "packages/reports/src/components/verification-evidence/evidence-grid/EvidenceGrid.svelte",
+			"line": 107,
+			"lastLine": 112,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "65955ebfbf98f5333f6e",
+			"path": "packages/reports/src/lib/styles/entity-evidence.css",
+			"line": 51,
+			"lastLine": 51,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0b0874144b5eebac63e4",
+			"path": "packages/reports/src/lib/styles/entity-history.css",
+			"line": 101,
+			"lastLine": 101,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "004a81637e85d10bdb21",
+			"path": "packages/reports/tests/e2e/explorer-shell-search.spec.ts",
+			"line": 72,
+			"lastLine": 75,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f6ed3c05fe86b0c854aa",
+			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+			"line": 149,
+			"lastLine": 149,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ada2077c8d2de612ca0",
+			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+			"line": 205,
+			"lastLine": 211,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "74398d8269512cefe6ae",
+			"path": "packages/reports/tests/e2e/harness-explorer-measures.spec.ts",
+			"line": 86,
+			"lastLine": 86,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ad74f5ebb4df8b3af493",
+			"path": "packages/reports/tests/e2e/support/component-previews/compatibilityPreviewAssertions.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "459de53a8f3dd71181bd",
+			"path": "packages/reports/tests/e2e/support/component-previews/consoleChatActions.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ebf552e4dba756f14671",
+			"path": "packages/reports/tests/e2e/support/component-previews/consoleChatActions.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3ea28c0c50e16c6fd8b2",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopControls.ts",
+			"line": 77,
+			"lastLine": 77,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c0b4e40938e9b0a3a624",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopPickerAssertions.ts",
+			"line": 73,
+			"lastLine": 73,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c7338a2e549495f3fc69",
+			"path": "packages/reports/tests/e2e/support/component-previews/entitySearchPreviewActions.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fb3324904993e385891c",
+			"path": "packages/reports/tests/e2e/support/component-previews/evidenceGridActions.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "180f48b849c537c0951d",
+			"path": "packages/reports/tests/e2e/support/component-previews/evidenceGridActions.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6f2ba43cd1fc9095698e",
+			"path": "packages/reports/tests/e2e/support/component-previews/evidenceGridActions.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "00389f11e9e549e35a92",
+			"path": "packages/reports/tests/e2e/support/component-previews/searchResultsPreviewAssertions.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6a339da32666a9db90f6",
+			"path": "packages/reports/tests/e2e/support/component-previews/shellCatalogActions.ts",
+			"line": 79,
+			"lastLine": 79,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "98966a23aa9d1966f554",
+			"path": "packages/reports/tests/e2e/support/explorerSearch.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fd3e052096858169359a",
+			"path": "packages/reports/tests/e2e/support/explorerShells.ts",
+			"line": 17,
+			"lastLine": 17,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bf794188fd317ab27b5b",
+			"path": "packages/reports/tests/e2e/support/explorerStates.ts",
+			"line": 84,
+			"lastLine": 84,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bccb45f780a52f651aac",
+			"path": "packages/reports/tests/e2e/support/shell/NativeAtomsForm.svelte",
+			"line": 29,
+			"lastLine": 29,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "414e44de71e81eb1068a",
+			"path": "packages/reports/tests/e2e/support/shellChecks.ts",
+			"line": 153,
+			"lastLine": 153,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "33558200f516480421cf",
+			"path": "packages/reports/tests/e2e/support/styleCatalog.ts",
+			"line": 143,
+			"lastLine": 144,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4b04988ba1672a85808a",
+			"path": "packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
+			"line": 49,
+			"lastLine": 49,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "800c6d2d06496cf2e493",
+			"path": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
+			"line": 101,
+			"lastLine": 101,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "785976988175d1760b8b",
+			"path": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
+			"line": 196,
+			"lastLine": 196,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9ef5eab319292f8953f3",
+			"path": "packages/desktop/src/components/explorer-ui/CatalogView.svelte",
+			"line": 103,
+			"lastLine": 103,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3a6bf3874a9297c71fe5",
+			"path": "packages/desktop/src/components/game-authoring/GameViewFields.svelte",
+			"line": 62,
+			"lastLine": 62,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3dc7b16d7575e7598fc7",
+			"path": "packages/desktop/src/components/shared-primitives/ChoiceRow.svelte",
+			"line": 31,
+			"lastLine": 31,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ae0341a1f669e096de70",
+			"path": "packages/desktop/tests/e2e/agent-settings-availability.spec.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c486d3673822579f2c26",
+			"path": "packages/desktop/tests/e2e/ui-composer.spec.ts",
+			"line": 148,
+			"lastLine": 148,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6ad96b30e796d45c297e",
+			"path": "packages/desktop/tests/e2e/ui-composer.spec.ts",
+			"line": 185,
+			"lastLine": 185,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "35698a3769e5a08e3197",
+			"path": "packages/desktop/tests/e2e/ui-design-options-review.spec.ts",
+			"line": 94,
+			"lastLine": 94,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e920991cb2eee70d9709",
+			"path": "packages/desktop/tests/e2e/ui-design-options.spec.ts",
+			"line": 123,
+			"lastLine": 130,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "24ac387800da9f641290",
+			"path": "packages/desktop/tests/e2e/ui-remote-host.spec.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "970fe5bd2e7cb64fadfa",
+			"path": "packages/desktop/tests/e2e/ui-remote-phone.spec.ts",
+			"line": 152,
+			"lastLine": 152,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6c331912cbf714b9bc1c",
+			"path": "packages/desktop/tests/e2e/ui-search.spec.ts",
+			"line": 63,
+			"lastLine": 66,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f4941ab83bba49134192",
+			"path": "packages/hub/src/components/projects-sessions/HubHomePlans.svelte",
+			"line": 43,
+			"lastLine": 51,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ffd9547a492d23db39e",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte",
+			"line": 39,
+			"lastLine": 39,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5879034276b696d75a4c",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte",
+			"line": 26,
+			"lastLine": 32,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b750dbce8b0ddaec30c9",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte",
+			"line": 45,
+			"lastLine": 45,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a9376d43b86ac9893d9c",
+			"path": "packages/hub/src/lib/styles/hub-home/modal.css",
+			"line": 107,
+			"lastLine": 107,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a82dbe5a6d778a60981f",
+			"path": "packages/reports/src/components/explorer-ui/EntitySearchResults.svelte",
+			"line": 127,
+			"lastLine": 127,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "80825e417fa2630bef99",
+			"path": "packages/reports/src/components/projects-sessions/project-overview/ProjectOverview.svelte",
+			"line": 111,
+			"lastLine": 111,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7620f414ee10343c9937",
+			"path": "packages/reports/src/lib/styles/entity-index.css",
+			"line": 83,
+			"lastLine": 87,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8cd39312e602e1cfcbbd",
+			"path": "packages/reports/src/lib/styles/explorer.css",
+			"line": 178,
+			"lastLine": 178,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8c1eb7c2f439493aea5e",
+			"path": "packages/reports/src/lib/styles/project-overview-controls.css",
+			"line": 18,
+			"lastLine": 18,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4258c0b3375d3b098b5e",
+			"path": "packages/reports/tests/e2e/explorer-shell.spec.ts",
+			"line": 137,
+			"lastLine": 137,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "df0681af7b18d991ac56",
+			"path": "packages/reports/tests/e2e/harness-explorer-usage.spec.ts",
+			"line": 67,
+			"lastLine": 67,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "49d028eb65c90a578d1b",
+			"path": "packages/reports/tests/e2e/support/component-previews/catalogControlsChecks.ts",
+			"line": 72,
+			"lastLine": 72,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "04840084fdf9da6b1ca9",
+			"path": "packages/reports/tests/e2e/support/explorerShells.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5084aec27b4262ff7f1e",
+			"path": "packages/reports/tests/e2e/support/projectOverviewAssertions.ts",
+			"line": 48,
+			"lastLine": 48,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ce4913d6c7377216eef6",
+			"path": "test/reports-run-pages.e2e.test.ts",
+			"line": 55,
+			"lastLine": 55,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "[aria-pressed=\"true\"]",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bdd1206da190d65b4e0b",
+			"path": "packages/desktop/src/components/explorer-ui/CatalogView.svelte",
+			"line": 186,
+			"lastLine": 190,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eed4dbf93929588fe2c3",
+			"path": "packages/desktop/src/components/shared-primitives/ChoiceRow.svelte",
+			"line": 76,
+			"lastLine": 76,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ee8e335fd1dfd0165394",
+			"path": "packages/desktop/tests/e2e/ui-revision-pickers.spec.ts",
+			"line": 27,
+			"lastLine": 28,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "821a75dc08036c21281a",
+			"path": "packages/reports/test/components/entity-search-results.test.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "03940c0650ee043ae899",
+			"path": "packages/reports/test/components/harness-shell-legacy.test.ts",
+			"line": 137,
+			"lastLine": 137,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9c494c78df74849c15ef",
+			"path": "packages/reports/test/components/harness-shell-legacy.test.ts",
+			"line": 162,
+			"lastLine": 165,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2e63d19a29455dc07cf9",
+			"path": "packages/reports/test/entityPreviewUsage.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "24a3d297178be7b8658a",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopPresentationAssertions.ts",
+			"line": 119,
+			"lastLine": 119,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3396c69785347edb6343",
+			"path": "packages/reports/tests/e2e/support/shell/ShellPrimitives.svelte",
+			"line": 137,
+			"lastLine": 137,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "70f4a9a227cb7ab7be65",
+			"path": "packages/reports/test/components/entity-overview.test.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f5065085fe9dfecee5d1",
+			"path": "packages/reports/test/components/harness-navbar.test.ts",
+			"line": 126,
+			"lastLine": 126,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4509aa3f32e8aa0f9230",
+			"path": "packages/reports/test/entity-usage.test.ts",
+			"line": 112,
+			"lastLine": 112,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b1cada3e3e5f1c57156c",
+			"path": "packages/reports/test/entity-usage.test.ts",
+			"line": 123,
+			"lastLine": 123,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1798865b274855625b74",
+			"path": "specification/designs/hub-home/mockup/modal-wip.js",
+			"line": 6,
+			"lastLine": 6,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "07e252e08c46f4200dff",
+			"path": "specification/designs/hub-home/mockup/modal.css",
+			"line": 88,
+			"lastLine": 88,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0178960c8aa0be2ed6e2",
+			"path": "specification/designs/hub-home/mockup/ui.js",
+			"line": 75,
+			"lastLine": 75,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0963049f8c3a4a0e785d",
+			"path": "test/support/project-template/atoms.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1c463498c5e5305baf95",
+			"path": "packages/reports/tests/e2e/units/explorer-shell-unit-reports.style.entity-evidence.spec.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "[aria-pressed=\"true\"]",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 19–31 show an E2E assertion for a group named Viewport and its pressed button's inset box-shadow. This is test code, not an implementation selector; it provides no singleton structural rule or conflicting styling mechanism."
+		},
+		{
+			"id": "f5882602914fbf45d0ec",
+			"path": "packages/reports/tests/e2e/support/component-previews/consoleChatActions.ts",
+			"line": 71,
+			"lastLine": 72,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "[aria-pressed=\"true\"]",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 59–72 show test assertions that a picker has exactly one pressed and one unpressed button and that their computed styles differ. This test setup does not show a singleton selector or the implementation cause."
+		},
+		{
+			"id": "833b6b9dcb062d80f981",
+			"path": "packages/reports/src/components/explorer-ui/HarnessTabs.svelte",
+			"line": 38,
+			"lastLine": 38,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "[aria-selected=\"true\"]",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 26–38 show selected-tab lookup and scrolling logic that reveals the selected tab when the strip overflows or its width changes. The excerpt contains no singleton selector or segmented-button styling conflict."
+		},
+		{
+			"id": "5100023abbad454981be",
+			"path": "packages/reports/src/components/planning-collaboration/ConsoleChat.svelte",
+			"line": 151,
+			"lastLine": 153,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": "aria-selected",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 151–153 show a state styling rule for active/pressed/checked/selected buttons inside .console-chat, but no :only-child or :only-of-type condition. It styles selected buttons generally, so the specified singleton structural conflict is not visible."
+		},
+		{
+			"id": "bdad09c3a3195c32d6fb",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopPresentationAssertions.ts",
+			"line": 143,
+			"lastLine": 150,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "aria-pressed",
+					"weight": 2
+				},
+				{
+					"kind": "text",
+					"value": ":checked",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 131–150 show test assertions for mode-button aria-pressed state and a checked option. This is test code and contains no singleton structural selector or conflicting segmented-control styling."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/singleton-segmented-style-conflict.json"
+}
