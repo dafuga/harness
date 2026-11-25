@@ -14,6 +14,7 @@ export interface TrackerManagedReceipt {
 	token: string;
 	tmux: string;
 	issuedAt: number;
+	checkClaudeStartup?: true;
 }
 
 export interface TrackerManagedCommand {
@@ -43,4 +44,14 @@ export interface TrackerManagedLauncherOptions {
 	client: TrackerWorkerClient;
 	platform?: typeof process.platform;
 	transcriptRoots?: readonly string[];
+}
+
+export interface TrackerManagedStartBindings {
+	directory: string;
+	tmux: string;
+	trackerBin: string;
+	trackerExecutable: string;
+	profiles: TrackerManagedProfiles;
+	platform: typeof process.platform;
+	client: TrackerWorkerClient;
 }

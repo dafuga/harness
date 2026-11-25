@@ -128,6 +128,7 @@
 			"finishedTrackerSession",
 			"trackerHostLaunch",
 			"configuredHostDispatch",
+			"ClaudeStartupFailure",
 			"TrackerHostSession",
 			"TrackerHostRouteItem",
 			"TrackerHostTarget",
@@ -140,6 +141,9 @@
 			"trackerHostLaunchPort",
 			"withTrackerRunUsage",
 			"trackerItemStatus",
+			"startTrackerHost",
+			"trackerHostStartupEvent",
+			"claudeStartupFailure",
 			"hostSession",
 			"hostInventory",
 			"hostStart",
@@ -607,6 +611,26 @@
 			{
 				"name": "trackerItemStatus.id",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "startTrackerHost.driver",
+				"type": "TrackerHostLaunchPort",
+				"required": true
+			},
+			{
+				"name": "startTrackerHost.input",
+				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+				"required": true
+			},
+			{
+				"name": "startTrackerHost.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "trackerHostStartupEvent.session",
+				"type": "TrackerHostSession | undefined",
 				"required": true
 			},
 			{
@@ -1328,7 +1352,8 @@
 			},
 			{
 				"name": "hostSession",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Recorded session evidence. Claude startup failures are surfaced to dispatch without adopting the attempt as running."
 			},
 			{
 				"name": "hostInventory",
@@ -1336,7 +1361,8 @@
 			},
 			{
 				"name": "hostStart",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Host launch reply with authenticated session evidence, a pending verdict, or a refusal with an optional fixed Claude startup reason."
 			},
 			{
 				"name": "trackerHostRunner",
@@ -2269,6 +2295,52 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "startTrackerHost",
+				"inputs": [
+					{
+						"name": "startTrackerHost.driver",
+						"type": "TrackerHostLaunchPort",
+						"required": true
+					},
+					{
+						"name": "startTrackerHost.input",
+						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+						"required": true
+					},
+					{
+						"name": "startTrackerHost.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "startTrackerHost",
+						"type": "Promise<TrackerDispatchEvent | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHostStartupEvent",
+				"inputs": [
+					{
+						"name": "trackerHostStartupEvent.session",
+						"type": "TrackerHostSession | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostStartupEvent",
+						"type": "TrackerDispatchEvent | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "trackerHostRunner",

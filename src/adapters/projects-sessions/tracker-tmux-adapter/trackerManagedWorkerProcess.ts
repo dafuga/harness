@@ -10,6 +10,16 @@ import type {
 	TrackerManagedReceipt
 } from './trackerManagedHostLauncher.types';
 
+import type { TrackerRunReceipt } from '../../../services/agents-providers/TrackerDispatcherService.types';
+import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
+import {
+	checkTrackerManagedReceipt,
+	hasManagedStartupEvidence,
+	probeManagedTmuxSession,
+	trackerManagedToken
+} from './trackerManagedLaunchReceipt';
+import { trackerManagedProviderEnvironment } from './trackerManagedProviderCommands';
+
 export const workerScript = `#!/bin/sh
 set -u
 umask 077
@@ -41,15 +51,14 @@ export async function launchTmux(
 	const { node, itemId, runId, token } = receipt;
 	const { script, command, clientPath, guestAuthFile } = execution;
 	const environment = [
-		`HOME=${command.home}`,
-		...(command.username ? [`USER=${command.username}`] : []),
+		...Object.entries(trackerManagedProviderEnvironment(trackerBin, command)).map(
+			([name, value]) => `${name}=${value}`
+		),
 		`HARNESS_TRACKER_CONFIG=${clientPath}`,
 		`HARNESS_EXECUTABLE=${trackerExecutable}`,
 		'HARNESS_TRACKER_LEGACY_BIN=/dev/null/tracker',
 		`TRACKER_ITEM_ID=${itemId}`,
 		`TRACKER_RUN_ID=${runId}`,
-		'TERM=xterm-256color',
-		`PATH=${trackerBin}:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin`,
 		...(command.image ? [`HARNESS_TASK_DOCKER_IMAGE=${command.image}`] : []),
 		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : [])
 	];
@@ -126,4 +135,29 @@ export function managedBrief(input: TrackerHostStartRequest): string {
 	return (
 		header + '\n\nRead the full task with `tracker show ' + itemId + '`.\n\n' + finalInstructions
 	);
+}
+
+export function managedSessionName(itemId: string, runId: number): string {
+	return `auto-${itemId.slice(0, 6)}-r${runId}`;
+}
+
+export async function confirmManagedStartupAbsent(
+	{ directory, tmux }: { directory: string; tmux: string },
+	run: TrackerRunReceipt,
+	signal: AbortSignal
+) {
+	const { node, item_id: itemId, id: runId } = run;
+	const key = attemptKey(run);
+	const path = join(directory, trackerManagedToken(node, key));
+	const name = managedSessionName(itemId, runId);
+	const record = checkTrackerManagedReceipt(path, node, key);
+	if (record && (record.itemId !== itemId || record.runId !== runId || record.tmux !== name))
+		return false;
+	const presence = await probeManagedTmuxSession(
+		{ tmux, socket: trackerSocket(node) },
+		name,
+		record?.token,
+		signal
+	);
+	return presence === 'absent' && !hasManagedStartupEvidence(path);
 }

@@ -5,7 +5,13 @@ import type {
 	TrackerHostLaunchConfig,
 	TrackerWorkerClient
 } from './nativeTrackerHostEffects.types';
-import type { TrackerHostLaunchPort } from './trackerHostLaunch.types';
+import type {
+	ClaudeStartupFailure,
+	TrackerHostLaunchPort,
+	TrackerHostSession,
+	TrackerHostTarget
+} from './trackerHostLaunch.types';
+import type { TrackerReservedStart } from '../TrackerDispatchSchedulerService.types';
 import { hostInventory, hostStart } from './trackerHostLaunchSchema';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type {
@@ -75,3 +81,66 @@ export function trackerItemStatus(items: TrackerItemReadRepository, id: string):
 		return null;
 	}
 }
+
+export async function startTrackerHost(
+	driver: TrackerHostLaunchPort,
+	input: {
+		node: string;
+		route: TrackerHostTarget;
+		reservation: TrackerReservedStart;
+		brief: string;
+	},
+	signal: AbortSignal
+): Promise<TrackerDispatchEvent | undefined> {
+	const {
+		node,
+		route,
+		reservation: { run, key, selection },
+		brief
+	} = input;
+	const result = await driver.start(
+		{
+			node,
+			itemId: run.item_id,
+			runId: run.id,
+			key,
+			selection,
+			brief,
+			...route,
+			backend: route.platform === 'macos' ? 'native' : 'docker',
+			queuedAt: run.queued_at
+		},
+		signal
+	);
+	if (result.status === 'rejected')
+		return {
+			type: 'startup-failed',
+			reason: result.reason
+				? claudeStartupMessage[result.reason]
+				: 'Tracker host declined the reserved launch'
+		};
+	if (
+		result.status === 'started' &&
+		result.session.key === key &&
+		result.session.itemId === run.item_id &&
+		!result.session.legacyRunId
+	)
+		return trackerHostStartupEvent(result.session);
+	return undefined;
+}
+
+export function trackerHostStartupEvent(
+	session: TrackerHostSession | undefined
+): TrackerDispatchEvent | undefined {
+	if (!session) return undefined;
+	return session.startupFailure
+		? { type: 'startup-failed', reason: claudeStartupMessage[session.startupFailure] }
+		: { type: 'session', session };
+}
+
+const claudeStartupMessage: Record<ClaudeStartupFailure, string> = {
+	'claude-sign-in': 'Sign in to Claude Code on the target host before relaunching.',
+	'claude-auth-unverified': 'Claude Code authentication could not be verified on the target host.',
+	'claude-onboarding': 'Complete Claude Code onboarding on the target host before relaunching.',
+	'claude-not-ready': 'Claude Code did not reach its composer on the target host.'
+};

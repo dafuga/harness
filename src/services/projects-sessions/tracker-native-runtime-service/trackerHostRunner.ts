@@ -26,12 +26,16 @@ import type { TrackerReservedStart } from '../TrackerDispatchSchedulerService.ty
 import type {
 	TrackerHostLaunchPort,
 	TrackerHostRoute,
-	TrackerHostTarget,
 	TrackerHostRunnerOptions,
 	TrackerHostSession
 } from './trackerHostLaunch.types';
 import { formatTrackerHostBrief } from './trackerHostBrief';
-import { trackerItemStatus, withTrackerRunUsage } from './trackerHostLaunchPort';
+import {
+	startTrackerHost,
+	trackerHostStartupEvent,
+	trackerItemStatus,
+	withTrackerRunUsage
+} from './trackerHostLaunchPort';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -100,48 +104,6 @@ function activeTrackerSessionKeys(
 		.map(({ key }) => key);
 }
 
-async function startTrackerHost(
-	driver: TrackerHostLaunchPort,
-	input: {
-		node: string;
-		route: TrackerHostTarget;
-		reservation: TrackerReservedStart;
-		brief: string;
-	},
-	signal: AbortSignal
-): Promise<TrackerDispatchEvent | undefined> {
-	const {
-		node,
-		route,
-		reservation: { run, key, selection },
-		brief
-	} = input;
-	const result = await driver.start(
-		{
-			node,
-			itemId: run.item_id,
-			runId: run.id,
-			key,
-			selection,
-			brief,
-			...route,
-			backend: route.platform === 'macos' ? 'native' : 'docker',
-			queuedAt: run.queued_at
-		},
-		signal
-	);
-	if (result.status === 'rejected')
-		return { type: 'startup-failed', reason: 'Tracker host declined the reserved launch' };
-	if (
-		result.status === 'started' &&
-		result.session.key === key &&
-		result.session.itemId === run.item_id &&
-		!result.session.legacyRunId
-	)
-		return { type: 'session', session: result.session };
-	return undefined;
-}
-
 async function launchApprovedItem(
 	{
 		driver,
@@ -204,7 +166,7 @@ function recordedHostEvent(
 		: sessions.find(
 				(entry) => !entry.legacyRunId && entry.key === key && entry.itemId === run.item_id
 			);
-	if (run.state === 'queued') return session && { type: 'session', session };
+	if (run.state === 'queued') return trackerHostStartupEvent(session);
 	if (!session || session.id !== (run.host_session_id ?? run.session_id))
 		return trackerItemStatus(items, run.item_id) === 'done'
 			? { type: 'monitor', session: 'unknown' }
