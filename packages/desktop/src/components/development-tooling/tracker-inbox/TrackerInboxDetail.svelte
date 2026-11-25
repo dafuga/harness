@@ -13,6 +13,7 @@
 	import {
 		confirmedWrite,
 		flagQuestion,
+		optionWrite,
 		writeGate
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 	import {
@@ -20,6 +21,7 @@
 		writeSentMessage
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import TrackerInboxRecord from './TrackerInboxRecord.svelte';
+	import TrackerInboxChoices from './TrackerInboxChoices.svelte';
 
 	let {
 		source,
@@ -113,6 +115,26 @@
 		}
 	}
 
+	/** A tapped option is the answer. Any confirm step has already happened in the choices. */
+	async function pick(number: number) {
+		const write = detail && reviewed ? optionWrite(detail, reviewed, number) : null;
+		if (!write || busy) {
+			message = 'The item changed since you reviewed it. Review it again before you answer.';
+			return;
+		}
+		busy = true;
+		try {
+			const reply = await source.write(write);
+			message = reply.value
+				? writeSentMessage('answer', mode)
+				: writeFailureMessage(reply.code, mode);
+			await onchanged();
+			await refresh();
+		} finally {
+			busy = false;
+		}
+	}
+
 	$effect(() => {
 		void open(id);
 	});
@@ -127,6 +149,10 @@
 		</hx-header>
 
 		<TrackerInboxRecord {detail} {mode} />
+
+		{#if detail.flag?.state === 'open' && detail.flag.options}
+			<TrackerInboxChoices flag={detail.flag} {busy} onpick={pick} />
+		{/if}
 
 		<hx-section class="actions" aria-label="Confirm a write">
 			<hx-div class="buttons">

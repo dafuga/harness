@@ -4,10 +4,12 @@ import {
 	trackerStageSchema
 } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import type {
+	InboxConfirmKind,
 	InboxDetail,
 	InboxFlag,
 	InboxHeader,
 	InboxNote,
+	InboxOption,
 	InboxRun,
 	InboxWrite
 } from '../../../models/development-tooling/TrackerInbox.types';
@@ -58,7 +60,26 @@ function parseFlag(value: unknown): InboxFlag | null {
 	const state = text(value.state);
 	const question = text(value.question);
 	if (state === null || question === null) return null;
-	return { state, at: nullableText(value.at), question };
+	const options = parseOptions(value.options);
+	const confirm = ['deploy', 'money', 'secret'].find((kind) => kind === value.confirm);
+	return {
+		state,
+		at: nullableText(value.at),
+		question,
+		...(options.length >= 2 && { options }),
+		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind })
+	};
+}
+
+function parseOptions(value: unknown): InboxOption[] {
+	if (!Array.isArray(value) || value.length > 4) return [];
+	return value.flatMap((entry) => {
+		if (!isRecord(entry)) return [];
+		const label = text(entry.label);
+		const effect = text(entry.effect);
+		if (!label || effect === null) return [];
+		return [{ label, effect, ...(entry.recommended === true && { recommended: true as const }) }];
+	});
 }
 
 function parseNotes(value: unknown): InboxNote[] {

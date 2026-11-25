@@ -22,10 +22,22 @@ export interface InboxHeader {
 	dueAt: string | null;
 }
 
+/** One tappable answer to an open ask. `recommended` is the one the asking session suggests. */
+export interface InboxOption {
+	label: string;
+	effect: string;
+	recommended?: true;
+}
+
+export type InboxConfirmKind = 'deploy' | 'money' | 'secret';
+
 export interface InboxFlag {
 	state: string;
 	at: string | null;
 	question: string;
+	options?: InboxOption[];
+	/** Deploy, money and secret asks need an extra confirm step (Face ID on the phone). */
+	confirm?: InboxConfirmKind;
 }
 
 export interface InboxNote {
@@ -95,6 +107,8 @@ export interface ConfirmedWrite {
 	id: string;
 	text: string;
 	revision: string | null;
+	/** The 1-based number of the tapped option; `text` is then that option's label. */
+	option?: number;
 }
 
 export interface InboxWriteReceipt {
