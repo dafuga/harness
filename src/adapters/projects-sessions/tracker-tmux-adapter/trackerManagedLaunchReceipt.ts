@@ -181,7 +181,7 @@ async function claudePaneStartup(
 		signal
 	);
 	if (code !== 0) return undefined;
-	if (/^─{8}.*\n❯(?: .*)?\n─{8}.*\n\s*(?:[⏵⏸]+\s|\? for shortcuts\b)/mu.test(stdout))
+	if (/^─{8}.*\n❯(?:[ \u00A0].*)?\n─{8}.*\n\s*(?:[⏵⏸]+\s|\? for shortcuts\b)/mu.test(stdout))
 		return 'ready';
 	if (/^\s*Choose the text style that looks best with your terminal/m.test(stdout))
 		return 'claude-onboarding';
