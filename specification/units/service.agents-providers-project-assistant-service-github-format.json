@@ -1,0 +1,226 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-github-format",
+	"uid": "u_kg5hqq4vwx",
+	"kind": "service",
+	"title": "githubFormat",
+	"responsibility": "Owns the githubFormat service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/project-assistant-service/githubFormat.ts"],
+		"symbols": ["positiveInt", "str", "arr", "issueLine", "sourceOf"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "positiveInt.value",
+				"type": "UntrustedValue",
+				"required": true
+			},
+			{
+				"name": "str.value",
+				"type": "UntrustedValue",
+				"required": true
+			},
+			{
+				"name": "str.max",
+				"type": "number",
+				"required": false,
+				"default": 200
+			},
+			{
+				"name": "arr.value",
+				"type": "UntrustedValue",
+				"required": true
+			},
+			{
+				"name": "issueLine.issue",
+				"type": "ToolInput",
+				"required": true
+			},
+			{
+				"name": "sourceOf.item",
+				"type": "ToolInput",
+				"required": true
+			},
+			{
+				"name": "sourceOf.label",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "positiveInt",
+				"type": "number"
+			},
+			{
+				"name": "str",
+				"type": "string"
+			},
+			{
+				"name": "arr",
+				"type": "ToolInput[]"
+			},
+			{
+				"name": "issueLine",
+				"type": "string"
+			},
+			{
+				"name": "sourceOf",
+				"type": "AssistantSource[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "positiveInt",
+				"inputs": [
+					{
+						"name": "positiveInt.value",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "positiveInt",
+						"type": "number"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "str",
+				"inputs": [
+					{
+						"name": "str.value",
+						"type": "UntrustedValue",
+						"required": true
+					},
+					{
+						"name": "str.max",
+						"type": "number",
+						"required": false,
+						"default": 200
+					}
+				],
+				"outputs": [
+					{
+						"name": "str",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "arr",
+				"inputs": [
+					{
+						"name": "arr.value",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "arr",
+						"type": "ToolInput[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "issueLine",
+				"inputs": [
+					{
+						"name": "issueLine.issue",
+						"type": "ToolInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "issueLine",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sourceOf",
+				"inputs": [
+					{
+						"name": "sourceOf.item",
+						"type": "ToolInput",
+						"required": true
+					},
+					{
+						"name": "sourceOf.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceOf",
+						"type": "AssistantSource[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/githubFormat.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/githubFormat.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

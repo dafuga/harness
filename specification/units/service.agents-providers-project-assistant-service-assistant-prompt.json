@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-assistant-prompt",
+	"uid": "u_kg5hqm7klm",
+	"kind": "service",
+	"title": "assistantPrompt",
+	"responsibility": "Owns the assistantPrompt service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/project-assistant-service/assistantPrompt.ts"],
+		"symbols": ["assistantSystemPrompt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assistantSystemPrompt.displayName",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assistantSystemPrompt.writer",
+				"type": "boolean",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "assistantSystemPrompt",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assistantSystemPrompt",
+				"inputs": [
+					{
+						"name": "assistantSystemPrompt.displayName",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "assistantSystemPrompt.writer",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assistantSystemPrompt",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/assistantPrompt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/assistantPrompt.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

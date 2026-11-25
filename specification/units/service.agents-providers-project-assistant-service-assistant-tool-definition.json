@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-assistant-tool-definition",
+	"uid": "u_kg5hqj5fgh",
+	"kind": "service",
+	"title": "assistantToolDefinition",
+	"responsibility": "Owns the assistantToolDefinition service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/project-assistant-service/assistantToolDefinition.ts"
+		],
+		"symbols": ["assistantToolDefinition"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assistantToolDefinition.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assistantToolDefinition.description",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assistantToolDefinition.shape",
+				"type": "ToolShape",
+				"required": true
+			},
+			{
+				"name": "assistantToolDefinition.run",
+				"type": "(input: ToolInput) => Promise<AssistantToolResult>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "assistantToolDefinition",
+				"type": "AssistantToolDefinition"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assistantToolDefinition",
+				"inputs": [
+					{
+						"name": "assistantToolDefinition.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "assistantToolDefinition.description",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "assistantToolDefinition.shape",
+						"type": "ToolShape",
+						"required": true
+					},
+					{
+						"name": "assistantToolDefinition.run",
+						"type": "(input: ToolInput) => Promise<AssistantToolResult>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assistantToolDefinition",
+						"type": "AssistantToolDefinition"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/assistantToolDefinition.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/assistantToolDefinition.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

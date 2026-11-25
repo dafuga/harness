@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant",
+	"uid": "u_kg5hqn7mno",
+	"kind": "service",
+	"title": "ProjectAssistantService",
+	"responsibility": "Owns the ProjectAssistantService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/ProjectAssistantService.ts",
+			"src/services/agents-providers/ProjectAssistantService.types.ts"
+		],
+		"symbols": [
+			"ProjectAssistantService",
+			"ProjectAssistantService.constructor",
+			"ProjectAssistantService.toolNames",
+			"ProjectAssistantService.answer",
+			"ProjectAssistantServiceConfig",
+			"ProjectAssistantServiceConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ProjectAssistantService.constructor.options",
+				"type": "ProjectAssistantServiceConfig",
+				"required": true
+			},
+			{
+				"name": "ProjectAssistantService.answer.question",
+				"type": "AssistantQuestion",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ProjectAssistantService.toolNames",
+				"type": "string[]"
+			},
+			{
+				"name": "ProjectAssistantService.answer",
+				"type": "Promise<AssistantAnswer>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ProjectAssistantService.toolNames",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ProjectAssistantService.toolNames",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ProjectAssistantService.answer",
+				"inputs": [
+					{
+						"name": "ProjectAssistantService.answer.question",
+						"type": "AssistantQuestion",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectAssistantService.answer",
+						"type": "Promise<AssistantAnswer>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ProjectAssistantService.constructor",
+				"inputs": [
+					{
+						"name": "ProjectAssistantService.constructor.options",
+						"type": "ProjectAssistantServiceConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectAssistantService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-claude-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-redact-secrets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-prompt",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-run-assistant-tools",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/ProjectAssistantService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/ProjectAssistantService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

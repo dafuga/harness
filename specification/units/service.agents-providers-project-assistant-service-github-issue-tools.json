@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-github-issue-tools",
+	"uid": "u_kg5hqr5yza",
+	"kind": "service",
+	"title": "githubIssueTools",
+	"responsibility": "Owns the githubIssueTools service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/project-assistant-service/githubIssueTools.ts"],
+		"symbols": ["githubIssueTools"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "githubIssueTools.github",
+				"type": "GitHubAppAdapter",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubIssueTools",
+				"type": "AssistantToolDefinition[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "githubIssueTools",
+				"inputs": [
+					{
+						"name": "githubIssueTools.github",
+						"type": "GitHubAppAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubIssueTools",
+						"type": "AssistantToolDefinition[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-definition",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-github-format",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/githubIssueTools.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/githubIssueTools.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

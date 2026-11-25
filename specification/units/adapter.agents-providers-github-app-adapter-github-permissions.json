@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-github-app-adapter-github-permissions",
+	"uid": "u_kg5hqc4klm",
+	"kind": "adapter",
+	"title": "githubPermissions",
+	"responsibility": "Owns the githubPermissions integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/agents-providers/github-app-adapter/githubPermissions.ts"],
+		"symbols": ["githubPermissions", "validRepoPart"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "validRepoPart.value",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "githubPermissions",
+				"type": "Readonly<Record<GitHubTokenScope, Record<string, string>>>"
+			},
+			{
+				"name": "validRepoPart",
+				"type": "boolean"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "validRepoPart",
+				"inputs": [
+					{
+						"name": "validRepoPart.value",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "validRepoPart",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/github-app-adapter/githubPermissions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/github-app-adapter/githubPermissions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

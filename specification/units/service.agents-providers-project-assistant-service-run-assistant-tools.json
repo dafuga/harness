@@ -1,0 +1,101 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-run-assistant-tools",
+	"uid": "u_kg5hqu7hij",
+	"kind": "service",
+	"title": "runAssistantTools",
+	"responsibility": "Owns the runAssistantTools service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/project-assistant-service/runAssistantTools.ts"],
+		"symbols": ["runAssistantTools"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runAssistantTools.uses",
+				"type": "readonly ClaudeBlock[]",
+				"required": true
+			},
+			{
+				"name": "runAssistantTools.round",
+				"type": "ToolRound",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "runAssistantTools",
+				"type": "Promise<ClaudeBlock[]>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runAssistantTools",
+				"inputs": [
+					{
+						"name": "runAssistantTools.uses",
+						"type": "readonly ClaudeBlock[]",
+						"required": true
+					},
+					{
+						"name": "runAssistantTools.round",
+						"type": "ToolRound",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runAssistantTools",
+						"type": "Promise<ClaudeBlock[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-claude-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-redact-secrets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tool-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/runAssistantTools.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/runAssistantTools.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

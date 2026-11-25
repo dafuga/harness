@@ -1,0 +1,151 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-health-probe",
+	"uid": "u_kg5hqf7tuv",
+	"kind": "adapter",
+	"title": "HealthProbeAdapter",
+	"responsibility": "Owns the HealthProbeAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/HealthProbeAdapter.ts",
+			"src/adapters/agents-providers/HealthProbeAdapter.types.ts"
+		],
+		"symbols": [
+			"HealthProbeAdapter",
+			"HealthProbeAdapter.constructor",
+			"HealthProbeAdapter.names",
+			"HealthProbeAdapter.probe",
+			"HealthProbeResult",
+			"HealthProbeResult"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HealthProbeAdapter.constructor.targets",
+				"type": "Readonly<Record<string, string>>",
+				"required": true
+			},
+			{
+				"name": "HealthProbeAdapter.constructor.call",
+				"type": "typeof fetch",
+				"required": false
+			},
+			{
+				"name": "HealthProbeAdapter.probe.name",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HealthProbeAdapter.names",
+				"type": "string[]"
+			},
+			{
+				"name": "HealthProbeAdapter.probe",
+				"type": "Promise<HealthProbeResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "HealthProbeAdapter.names",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HealthProbeAdapter.names",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "HealthProbeAdapter.probe",
+				"inputs": [
+					{
+						"name": "HealthProbeAdapter.probe.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HealthProbeAdapter.probe",
+						"type": "Promise<HealthProbeResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "HealthProbeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "HealthProbeAdapter.constructor.targets",
+						"type": "Readonly<Record<string, string>>",
+						"required": true
+					},
+					{
+						"name": "HealthProbeAdapter.constructor.call",
+						"type": "typeof fetch",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HealthProbeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/HealthProbeAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/HealthProbeAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
