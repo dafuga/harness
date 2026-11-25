@@ -60,12 +60,14 @@
 			{
 				"name": "HubHomeCards.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Submits an answer typed or chosen on an Agents card ask and returns its receipt."
 			},
 			{
 				"name": "HubHomeCards.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
-				"required": true
+				"required": true,
+				"description": "Reads the delivery status of a submitted answer by its chat command identifier."
 			}
 		],
 		"outputs": [

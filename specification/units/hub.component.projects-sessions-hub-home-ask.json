@@ -4,8 +4,8 @@
 	"uid": "u_gnhmm7tirz",
 	"kind": "component",
 	"title": "HubHomeAsk",
-	"responsibility": "Owns the HubHomeAsk Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows one agent's open Tracker question on the Agents card with its option buttons and a short reply, and sends the answer to the owner chat queue.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -24,28 +24,32 @@
 		"symbols": ["HubHomeAsk"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeAsk.agent",
 				"type": "HomeAgent",
-				"required": true
+				"required": true,
+				"description": "The agent whose open question is shown, with its options, confirm kind and current Tracker item."
 			},
 			{
 				"name": "HubHomeAsk.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Submits the chosen option or typed reply as an answer and returns its receipt."
 			},
 			{
 				"name": "HubHomeAsk.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
-				"required": true
+				"required": true,
+				"description": "Reads the delivery status of a submitted answer by its chat command identifier."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeAsk",
-				"type": "markup"
+				"type": "markup",
+				"description": "Shows one agent's open Tracker question on the Agents card with its option buttons and a short reply, and sends the answer to the owner chat queue."
 			}
 		],
 		"errors": [],

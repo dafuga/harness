@@ -4,8 +4,8 @@
 	"uid": "u_ebjbhjawbq",
 	"kind": "component",
 	"title": "HubHomeAddSession",
-	"responsibility": "Owns the HubHomeAddSession Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Lets Daniel add or remove the Tracker agents of sessions he created himself, which are the only ones listed under Agents.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -22,23 +22,26 @@
 		"symbols": ["HubHomeAddSession"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeAddSession.added",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Tracker agent values Daniel has added as sessions he controls."
 			},
 			{
 				"name": "HubHomeAddSession.change",
 				"type": "ChangeSession",
-				"required": true
+				"required": true,
+				"description": "Adds or removes one session id, rejecting when the Hub cannot store the change."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeAddSession",
-				"type": "markup"
+				"type": "markup",
+				"description": "Lets Daniel add or remove the Tracker agents of sessions he created himself, which are the only ones listed under Agents."
 			}
 		],
 		"errors": [],

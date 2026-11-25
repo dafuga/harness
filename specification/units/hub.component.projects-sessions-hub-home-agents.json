@@ -51,18 +51,21 @@
 				"name": "HubHomeAgents.asks",
 				"type": "HomeAgent[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Other projects' agents that need Daniel. They are not listed sessions but their questions and option buttons still show."
 			},
 			{
 				"name": "HubHomeAgents.added",
 				"type": "string[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Tracker agent values Daniel added as sessions he controls, shown for removal."
 			},
 			{
 				"name": "HubHomeAgents.changeSession",
 				"type": "ChangeSession",
-				"required": true
+				"required": true,
+				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
 			},
 			{
 				"name": "HubHomeAgents.agentId",
