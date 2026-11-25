@@ -8,6 +8,8 @@ const models = [
 	['claude-haiku-5-5', 'claude'],
 	['gpt-6.2-sol', 'codex']
 ] as const;
+// Managed fixtures may wait for an execution slot when the full suite is busy.
+const orchestrationTimeoutMs = 60_000;
 
 test.each(models)(
 	'managed %s orchestration simplifies the contract before success and records the result',
@@ -42,7 +44,7 @@ test.each(models)(
 			await f.dispose();
 		}
 	},
-	30000
+	orchestrationTimeoutMs
 );
 
 test.each(models)(
