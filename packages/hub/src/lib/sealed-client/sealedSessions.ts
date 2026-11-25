@@ -71,9 +71,27 @@ async function namedRecord(
 	if (!value || typeof value !== 'object') return null;
 	const record = statusRecord(value) || segmentRecord(value) ? value : null;
 	if (!record) return null;
-	const id =
-		record.kind === 'session' ? record.runId : JSON.stringify([record.runId, record.index]);
+	const id = record.kind === 'session' ? record.runId : transcriptIdentity(record);
+	if (id === undefined) return null;
 	return toBase64Url(await sealedObjectId(keys, record.kind, id)) === objectId ? record : null;
+}
+
+function transcriptIdentity(segment: TranscriptSegment): string | undefined {
+	const { runId, index, streamId, throughCounter } = segment;
+	if (streamId === undefined && throughCounter === undefined) return JSON.stringify([runId, index]);
+	if (typeof streamId !== 'string' || !/^[A-Za-z0-9_-]{22}$/.test(streamId)) return;
+	if (typeof throughCounter !== 'string' || !/^(0|[1-9][0-9]{0,19})$/.test(throughCounter)) return;
+	if (BigInt(throughCounter) > 0xffff_ffff_ffff_ffffn) return;
+	return JSON.stringify([runId, streamId, throughCounter]);
+}
+
+function storedCounters(segments: TranscriptSegment[], streamId: string): ReadonlySet<string> {
+	const counters = new Set<string>();
+	for (const segment of segments) {
+		if (segment.streamId === streamId && segment.throughCounter !== undefined)
+			counters.add(segment.throughCounter);
+	}
+	return counters;
 }
 
 function joinSegments(segments: TranscriptSegment[]): string {
@@ -110,12 +128,16 @@ export async function sealedSessions(
 		if (entries) entries.push(record);
 		else segments.set(record.runId, [record]);
 	}
-	return statuses.map((status) => ({
-		id: JSON.stringify([scope, status.runId]),
-		scope,
-		streamId: status.streamId,
-		title: sessionTitle(status),
-		status: status.status,
-		transcript: joinSegments(segments.get(status.runId) ?? [])
-	}));
+	return statuses.map((status) => {
+		const history = segments.get(status.runId) ?? [];
+		return {
+			id: JSON.stringify([scope, status.runId]),
+			scope,
+			streamId: status.streamId,
+			title: sessionTitle(status),
+			status: status.status,
+			transcript: joinSegments(history),
+			storedCounters: storedCounters(history, status.streamId)
+		};
+	});
 }

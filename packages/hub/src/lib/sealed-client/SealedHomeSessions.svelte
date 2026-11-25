@@ -5,21 +5,22 @@
 	import { onMount } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { SealedHomeService } from './SealedHomeService';
+	import type { LiveChunk } from './SealedLive.types';
 	import type { SealedSession } from './sealedSessions.types';
 
 	let { account }: { account: string } = $props();
 	let sessions = $state<SealedSession[]>([]);
 	let selected = $state<string>();
-	const tails = new SvelteMap<string, string>();
+	const tails = new SvelteMap<string, LiveChunk[]>();
 
 	onMount(() => {
 		const service = new SealedHomeService(account, {
 			sessions: (rows) => {
 				sessions = rows;
 			},
-			output: (stream, text) => {
+			output: (stream, chunks) => {
 				if (tails.size >= 64 && !tails.has(stream)) tails.delete(tails.keys().next().value!);
-				tails.set(stream, text);
+				tails.set(stream, chunks);
 			}
 		});
 		void service.start().catch(() => {});
@@ -34,7 +35,11 @@
 		</hx-div>
 		<hx-ul class="po-items hh-section-body">
 			{#each sessions as session (session.id)}
-				{@const tail = tails.get(JSON.stringify([session.scope, session.streamId]))}
+				{@const chunks = tails.get(JSON.stringify([session.scope, session.streamId])) ?? []}
+				{@const tail = chunks
+					.filter((chunk) => !session.storedCounters.has(chunk.counter))
+					.map((chunk) => chunk.text)
+					.join('')}
 				<hx-li>
 					<hx-button
 						type="button"

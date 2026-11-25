@@ -6,6 +6,7 @@ export interface SealedSession {
 	title: string;
 	status: string;
 	transcript: string;
+	storedCounters: ReadonlySet<string>;
 }
 
 export interface SessionStatus {
@@ -21,6 +22,8 @@ export interface TranscriptSegment {
 	runId: string;
 	index: number;
 	data: string;
+	streamId?: string;
+	throughCounter?: string;
 }
 
 export type SessionPayload = Partial<

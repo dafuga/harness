@@ -54,6 +54,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.module.sealed-client-sealed-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.module.sealed-client-sealed-sessions",
 			"via": "import",
 			"origin": "derived"

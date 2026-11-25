@@ -6,13 +6,19 @@ export interface SealedLiveOptions {
 	scopes: string[];
 	readKeys: (scope: string, epoch: number) => Promise<ScopeKeys | undefined>;
 	onObjects: () => void;
-	onOutput: (stream: string, text: string) => void;
+	onOutput: (stream: string, chunks: LiveChunk[]) => void;
 }
 
 export interface StreamTail {
 	key: CryptoKey;
 	counter: bigint;
 	decoder: TextDecoder;
+	chunks: LiveChunk[];
+	chars: number;
+}
+
+export interface LiveChunk {
+	counter: string;
 	text: string;
 }
 

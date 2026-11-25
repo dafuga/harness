@@ -68,12 +68,14 @@ test('a cached session accepts authenticated delta and live frames only', async 
 	await expect(page.getByLabel('Transcript', { exact: true })).toHaveText(
 		'Cached transcript canary'
 	);
-	await expect(page.getByLabel('Live output', { exact: true })).toHaveText('Live frame canary');
+	const live = page.getByLabel('Live output', { exact: true });
+	await expect(live).toHaveText('· Durable delta canaryLive frame canary');
 	await expect.poll(() => delta.cursors.length).toBeGreaterThan(0);
 	expect(delta.cursors).toEqual(delta.cursors.map(() => 2));
 	delta.release();
 	const transcript = 'Cached transcript canary · Durable delta canary';
 	await expect(page.getByLabel('Transcript', { exact: true })).toHaveText(transcript);
+	await expect(live).toHaveText('Live frame canary');
 	expect(await inspectSealedHome(page, fixture.scope, delta.id)).toEqual({
 		cursor: 3,
 		envelope: delta.envelope,

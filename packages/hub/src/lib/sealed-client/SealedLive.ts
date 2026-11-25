@@ -93,7 +93,7 @@ export class SealedLive {
 		const tail = appendTail(key, header.counter, data, known);
 		if (!known && this.tails.size >= 64) this.tails.delete(this.tails.keys().next().value!);
 		this.tails.set(stream, tail);
-		this.options.onOutput(stream, tail.text);
+		this.options.onOutput(stream, tail.chunks);
 	}
 }
 
@@ -103,12 +103,21 @@ function appendTail(
 	data: Uint8Array,
 	known?: StreamTail
 ): StreamTail {
-	const gap = known && counter !== known.counter + 1n;
+	const gap = isFrameGap(known, counter);
 	const decoder = gap ? new TextDecoder() : (known?.decoder ?? new TextDecoder());
 	const text = (
-		(known?.text ?? '') +
-		(gap ? '\n…\n' : '') +
-		decoder.decode(sealedUnpadding(data), { stream: true })
+		(gap ? '\n…\n' : '') + decoder.decode(sealedUnpadding(data), { stream: true })
 	).slice(-256_000);
-	return { key, counter, decoder, text };
+	const chunks = [...(known?.chunks ?? []), { counter: String(counter), text }];
+	let chars = (known?.chars ?? 0) + text.length;
+	while (overTailLimit(chars, chunks.length)) chars -= chunks.shift()!.text.length;
+	return { key, counter, decoder, chunks, chars };
+}
+
+function isFrameGap(known: StreamTail | undefined, counter: bigint): boolean {
+	return known !== undefined && counter !== known.counter + 1n;
+}
+
+function overTailLimit(chars: number, chunks: number): boolean {
+	return chars > 256_000 || chunks > 256;
 }

@@ -15,7 +15,11 @@ export async function sealedHomeDelta(
 	fixture: Awaited<ReturnType<typeof seedSealedHome>>
 ) {
 	const { scope, keys, streamId, device } = fixture;
-	const objectId = await sealedObjectId(keys, 'transcript', JSON.stringify(['fixture-run', 1]));
+	const objectId = await sealedObjectId(
+		keys,
+		'transcript',
+		JSON.stringify(['fixture-run', toBase64Url(streamId), '1'])
+	);
 	const id = toBase64Url(objectId);
 	const data = toBase64Url(new TextEncoder().encode(' · Durable delta canary'));
 	const envelope = toBase64Url(
@@ -26,7 +30,9 @@ export async function sealedHomeDelta(
 				kind: 'transcript',
 				runId: 'fixture-run',
 				index: 1,
-				data
+				data,
+				streamId: toBase64Url(streamId),
+				throughCounter: '1'
 			}
 		)
 	);
@@ -52,8 +58,9 @@ export async function sealedHomeDelta(
 	});
 	const rejected = await wireFrame(keys, streamId, 1, 'Rejected frame canary');
 	rejected[rejected.length - 1] ^= 1;
-	const frame = await wireFrame(keys, streamId, 2, 'Live frame canary');
-	const poke = await routeWire(page, scope, [rejected, frame]);
+	const frame = await wireFrame(keys, streamId, 2, ' · Durable delta canary');
+	const tail = await wireFrame(keys, streamId, 3, 'Live frame canary');
+	const poke = await routeWire(page, scope, [rejected, frame, tail]);
 	return {
 		cursors,
 		id,
@@ -65,17 +72,18 @@ export async function sealedHomeDelta(
 	};
 }
 
-async function routeWire(page: Page, scope: string, [rejected, frame]: Uint8Array[]) {
+async function routeWire(page: Page, scope: string, [rejected, frame, tail]: Uint8Array[]) {
 	let poke: (() => void) | undefined;
 	await page.routeWebSocket('**/api/sync/v1/live?*', (socket) => {
 		socket.onMessage((message) => {
 			const subscribe = JSON.parse(String(message));
 			if (subscribe.t !== 'subscribe' || subscribe.scopes.join() !== scope)
 				throw new Error('Wrong sealed subscription');
-			socket.send(JSON.stringify({ t: 'subscribed', ring: 2 }));
+			socket.send(JSON.stringify({ t: 'subscribed', ring: 3 }));
 			socket.send(Buffer.from(rejected));
 			socket.send(Buffer.from(frame));
 			socket.send(Buffer.from(frame));
+			socket.send(Buffer.from(tail));
 			poke = () => socket.send(JSON.stringify({ t: 'poke', scope, kind: 'objects', seq: 3 }));
 		});
 	});
