@@ -6,6 +6,7 @@ import {
 	controlledTrackerExecutable,
 	runTrackerHostCommand
 } from '../tracker-host-process-adapter/trackerHostCommand';
+import { trackerEgressArguments } from '../../../utils/projects-sessions/trackerEgressPolicy';
 import type {
 	ClaudeStartupFailure,
 	TrackerHostStartRequest
@@ -92,6 +93,7 @@ function nativeTrackerProviderCommand(
 			}).trim(),
 			argv: [
 				profile.claude,
+				...(profile.egress ? trackerEgressArguments('claude', profile.egress) : []),
 				'--dangerously-skip-permissions',
 				'--model',
 				model,
@@ -103,7 +105,9 @@ function nativeTrackerProviderCommand(
 		home: profile.profile,
 		argv: [
 			profile.codex,
-			'--dangerously-bypass-approvals-and-sandbox',
+			...(profile.egress
+				? ['-a', 'never', ...trackerEgressArguments('codex', profile.egress)]
+				: ['--dangerously-bypass-approvals-and-sandbox']),
 			'-m',
 			model,
 			...(intelligence ? ['-c', `model_reasoning_effort=${JSON.stringify(intelligence)}`] : []),
