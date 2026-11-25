@@ -27,34 +27,45 @@ function auditFile(relativePath: string, structuralLines: string[]) {
 	};
 }
 
+const errorClass = ['export class InvalidAddressError extends Error {}'];
+
+const namingInputs = [
+	{
+		name: 'rejects a kebab-case model filename',
+		file: auditFile('src/models/user-profile.ts', [
+			'export class UserProfile {',
+			'\tname: string;',
+			'}'
+		])
+	},
+	{
+		name: 'finds utility filename and export mismatches',
+		file: auditFile('src/utils/format-date.ts', [
+			'export function parseDate(value: string): Date {',
+			'\treturn new Date(value);',
+			'}'
+		])
+	},
+	{
+		name: 'accepts matching utility filename and export',
+		file: auditFile('src/utils/formatDate.ts', [
+			'export function formatDate(value: string): string {',
+			'\treturn value;',
+			'}'
+		])
+	},
+	{
+		name: 'accepts a matching standalone utility error class',
+		file: auditFile('src/utils/networking-security/InvalidAddressError.ts', errorClass)
+	},
+	{
+		name: 'rejects an error filename that differs from its exported class',
+		file: auditFile('src/utils/networking-security/OtherError.ts', errorClass)
+	}
+];
+
 test('Finds scaffold naming violations and accepts a valid utility', () => {
-	const inputs = [
-		{
-			name: 'rejects a kebab-case model filename',
-			file: auditFile('src/models/user-profile.ts', [
-				'export class UserProfile {',
-				'\tname: string;',
-				'}'
-			])
-		},
-		{
-			name: 'finds utility filename and export mismatches',
-			file: auditFile('src/utils/format-date.ts', [
-				'export function parseDate(value: string): Date {',
-				'\treturn new Date(value);',
-				'}'
-			])
-		},
-		{
-			name: 'accepts matching utility filename and export',
-			file: auditFile('src/utils/formatDate.ts', [
-				'export function formatDate(value: string): string {',
-				'\treturn value;',
-				'}'
-			])
-		}
-	];
-	const cases = inputs.map(({ name, file }) => {
+	const cases = namingInputs.map(({ name, file }) => {
 		const output = auditScaffoldTypeScriptNaming(file);
 		return {
 			name,
@@ -71,6 +82,8 @@ test('Finds scaffold naming violations and accepts a valid utility', () => {
 	]);
 	expect(cases[1]?.output).toHaveLength(2);
 	expect(cases[2]?.output).toEqual([]);
+	expect(cases[3]?.output).toEqual([]);
+	expect(cases[4]?.output.map((finding) => finding.rule)).toEqual(['file-name-pattern']);
 	recordExampleCases(
 		{
 			unitId: 'audit.scaffold-naming-rules',
