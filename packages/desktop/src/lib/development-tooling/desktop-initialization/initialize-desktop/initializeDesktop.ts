@@ -7,7 +7,6 @@ import { ProjectionCacheService } from '../projection-cache-service/ProjectionCa
 import { createTrackerOverviewPublisher } from '../tracker-overview-publisher/createTrackerOverviewPublisher';
 import { app, BrowserWindow, dialog, ipcMain, protocol, safeStorage, shell } from 'electron';
 import type { IpcMainInvokeEvent } from 'electron';
-import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 import type { LocalBootstrap } from '../../../../../../remote/src/index';
 import { LocalClientService } from '../LocalClientService';
@@ -25,7 +24,6 @@ import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
 import { prepareDesktopStorage, preserveMacProfile } from './macSafeStorage';
 import { guardDesktopNavigation } from './guardDesktopNavigation';
-import { startBundledTracker } from '../../../../services/development-tooling/tracker-bundle/startBundledTracker';
 
 protocol.registerSchemesAsPrivileged([
 	{ scheme: 'harness', privileges: { standard: true, secure: true, supportFetchAPI: true } }
@@ -49,7 +47,6 @@ export async function initializeDesktop(): Promise<BrowserWindow | null> {
 		window?.focus();
 	});
 	if (!(await prepareDesktopStorage(app))) return null;
-	if (app.isPackaged && process.platform === 'darwin') installTracker();
 	const backend = desktopBackend(),
 		port = await backend.transport.listen(),
 		assets = resolve(app.getAppPath(), 'build');
@@ -60,14 +57,6 @@ export async function initializeDesktop(): Promise<BrowserWindow | null> {
 	appLifecycle(backend);
 
 	return openWindow(backend);
-}
-
-/** Installs or updates the bundled Tracker in the background; a failure never stops the app. */
-function installTracker(): void {
-	startBundledTracker(app.getAppPath(), homedir()).then(
-		(outcome) => console.info(`Harness Tracker bundle: ${JSON.stringify(outcome)}`),
-		(error: unknown) => console.error('Harness Tracker bundle failed', error)
-	);
 }
 
 /** A ticket for the loopback socket: for the trusted top frame of the open window, nobody else. */

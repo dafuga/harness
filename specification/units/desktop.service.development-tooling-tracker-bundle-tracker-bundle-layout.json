@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-layout",
+	"uid": "u_tb4lyx3rsa",
+	"kind": "service",
+	"title": "trackerBundleLayout",
+	"responsibility": "Owns the trackerBundleLayout service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/development-tooling/tracker-bundle/trackerBundleLayout.ts",
+			"packages/desktop/src/services/development-tooling/tracker-bundle/trackerBundleLayout.types.ts"
+		],
+		"symbols": ["trackerLabel", "trackerBundleLayout", "bundledTrackerFiles", "TrackerBundleLayout"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerBundleLayout.home",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "bundledTrackerFiles.app",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerLabel",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerBundleLayout",
+				"type": "unknown"
+			},
+			{
+				"name": "bundledTrackerFiles",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerBundleLayout",
+				"inputs": [
+					{
+						"name": "trackerBundleLayout.home",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBundleLayout",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "bundledTrackerFiles",
+				"inputs": [
+					{
+						"name": "bundledTrackerFiles.app",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "bundledTrackerFiles",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/trackerBundleLayout.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/trackerBundleLayout.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.development-tooling-tracker-bundle-replace-symlink",
+	"uid": "u_tb7nr5eqgf",
+	"kind": "service",
+	"title": "replaceSymlink",
+	"responsibility": "Owns the replaceSymlink service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/development-tooling/tracker-bundle/replaceSymlink.ts"
+		],
+		"symbols": ["inspectLink", "replaceSymlink"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "inspectLink.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "replaceSymlink.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "replaceSymlink.target",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "inspectLink",
+				"type": "Promise<{ kind: 'absent' } | { kind: 'link'; target: string } | { kind: 'other' }>"
+			},
+			{
+				"name": "replaceSymlink",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "inspectLink",
+				"inputs": [
+					{
+						"name": "inspectLink.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inspectLink",
+						"type": "Promise<{ kind: 'absent' } | { kind: 'link'; target: string } | { kind: 'other' }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "replaceSymlink",
+				"inputs": [
+					{
+						"name": "replaceSymlink.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "replaceSymlink.target",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "replaceSymlink",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/replaceSymlink.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/replaceSymlink.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

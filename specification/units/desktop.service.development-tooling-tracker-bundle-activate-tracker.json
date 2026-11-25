@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.development-tooling-tracker-bundle-activate-tracker",
+	"uid": "u_rasgr3cqn3",
+	"kind": "service",
+	"title": "activateTrackerService",
+	"responsibility": "Owns the activateTrackerService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/development-tooling/tracker-bundle/activateTrackerService.ts",
+			"packages/desktop/src/services/development-tooling/tracker-bundle/activateTrackerService.types.ts"
+		],
+		"symbols": ["activateService", "LinkState", "ActivateInput", "Activation"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "activateService.a",
+				"type": "ActivateInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "activateService",
+				"type": "Promise<Activation>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerBundleError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "activateService",
+				"inputs": [
+					{
+						"name": "activateService.a",
+						"type": "ActivateInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "activateService",
+						"type": "Promise<Activation>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-replace-symlink",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-layout",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-service-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-launch-agent",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/activateTrackerService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/activateTrackerService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

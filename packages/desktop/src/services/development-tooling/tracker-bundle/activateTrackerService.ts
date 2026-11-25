@@ -1,3 +1,4 @@
+// @harness-uid u_rasgr3cqn3
 // @harness-uid u_tb9xk4nsyl
 import { rm } from 'node:fs/promises';
 import { basename, dirname } from 'node:path';

@@ -1,3 +1,4 @@
+// @harness-uid u_wsau7njqqr
 // @harness-uid u_tb8wj3mrxk
 import { access } from 'node:fs/promises';
 import { join } from 'node:path';

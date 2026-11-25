@@ -1,0 +1,108 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.development-tooling-tracker-bundle-install-bundled-tracker",
+	"uid": "u_wsau7njqqr",
+	"kind": "service",
+	"title": "installBundledTracker",
+	"responsibility": "Owns the installBundledTracker service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/development-tooling/tracker-bundle/installBundledTracker.ts"
+		],
+		"symbols": ["installBundledTracker"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "installBundledTracker.input",
+				"type": "TrackerBundleInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "installBundledTracker",
+				"type": "Promise<TrackerBundleOutcome>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "installBundledTracker",
+				"inputs": [
+					{
+						"name": "installBundledTracker.input",
+						"type": "TrackerBundleInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "installBundledTracker",
+						"type": "Promise<TrackerBundleOutcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-activate-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-replace-symlink",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-stage-tracker-release",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-layout",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-bundle-service-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.development-tooling-tracker-bundle-tracker-launch-agent",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/installBundledTracker.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/development-tooling/tracker-bundle/installBundledTracker.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
