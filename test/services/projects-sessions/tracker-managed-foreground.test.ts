@@ -33,7 +33,7 @@ const node = 'daniel-primary-mbp';
 
 test(
 	'the configured foreground completes managed runs through the normal Tracker done request',
-	{ timeout: 15_000 },
+	{ timeout: 30_000 },
 	() =>
 		measureWorkload('service.projects-sessions-tracker-node', 'managed-foreground', async () => {
 			await withTempRepo(proveManagedForeground);
@@ -47,6 +47,7 @@ test(
 						await withTempRepo((repo) => proveNativeUsage(repo, false, join(repo.root, 'ops')));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'signed-out'));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'onboarding'));
+						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'untrusted'));
 					}
 				);
 			}

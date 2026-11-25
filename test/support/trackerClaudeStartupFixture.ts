@@ -35,7 +35,7 @@ export async function verifyClaudeRefusals(
 
 export async function verifyClaudeStartupRejection(
 	{ root, git }: TemporaryRepo,
-	mode: 'signed-out' | 'onboarding'
+	mode: 'signed-out' | 'onboarding' | 'untrusted'
 ) {
 	git('commit', '--allow-empty', '-m', 'Fixture source');
 	const { config, profiles } = managedFixtureBindings(root);
@@ -65,7 +65,7 @@ export async function verifyClaudeStartupRejection(
 			database.prepare('SELECT state,started_at FROM runs ORDER BY id').all()
 		).not.toContainEqual({ state: 'running', started_at: expect.any(Number) });
 		await tick();
-		const cause = mode === 'signed-out' ? /sign in/i : /onboarding/i;
+		const cause = { 'signed-out': /sign in/i, onboarding: /onboarding/i, untrusted: /trust this project folder/i }[mode];
 		expect(
 			database.prepare('SELECT status,needs_daniel,blocked_reason FROM items WHERE id = ?').get(id)
 		).toMatchObject({
