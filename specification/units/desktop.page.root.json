@@ -16,13 +16,14 @@
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-nav",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/routes/+page.svelte"],
-		"symbols": ["+page", "+page.phoneAccess"]
+		"symbols": ["+page", "+page.trackerDestination", "+page.phoneAccess"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -39,6 +40,18 @@
 		"operations": [],
 		"initialization": [],
 		"snippets": [
+			{
+				"name": "+page.trackerDestination",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "+page.trackerDestination",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "+page.phoneAccess",
 				"inputs": [],
@@ -121,6 +134,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-nav",
 			"via": "import",
 			"origin": "derived"
 		},

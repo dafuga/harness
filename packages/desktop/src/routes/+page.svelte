@@ -105,11 +105,13 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
-		{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
-			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
-		{/if}
 		{#if account.signedIn && account.environment?.sessions}
-			<hx-a class="project-overview-link" href={resolve('/sessions')}>Sessions</hx-a>
+			<hx-nav class="phone-destinations" aria-label="Harness phone">
+				{@render trackerDestination()}
+				<hx-a class="project-overview-link" href={resolve('/sessions')}>Sessions</hx-a>
+			</hx-nav>
+		{:else}
+			{@render trackerDestination()}
 		{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
@@ -120,9 +122,23 @@
 		{/if}
 	</ProjectGate>{#if workspace.error}<hx-p class="error" role="alert">{workspace.error}</hx-p
 		>{/if}{/if}
+{#snippet trackerDestination()}
+	{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
+		<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
+	{/if}
+{/snippet}
 {#snippet phoneAccess()}<RemoteConnection {workspace} />{/snippet}
 
 <style>
+	.phone-destinations {
+		display: flex;
+		gap: var(--hx-space-16);
+	}
+	.phone-destinations :global(a) {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+	}
 	.account-status {
 		display: flex;
 		flex-wrap: wrap;
