@@ -1,6 +1,10 @@
 import { expect, test } from 'vitest';
 import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
-import { homeHeadline } from '../../src/components/projects-sessions/hubHomePresentation';
+import {
+	agentActivity,
+	homeHeadline,
+	isWorking
+} from '../../src/components/projects-sessions/hubHomePresentation';
 import type {
 	HomeAgent,
 	HomeSubscription,
@@ -13,6 +17,7 @@ const agent = (id: string, state: HomeAgent['state'], since: string): HomeAgent 
 	state,
 	sessions: state === 'working' ? 1 : 0,
 	tasks: [],
+	subAgents: { sessions: 0, tasks: [] },
 	itemId: null,
 	task: 'Synthetic task',
 	machine: null,
@@ -108,4 +113,27 @@ test('an agent with a flag and live runs still counts as working, and sessions a
 	expect(merged?.agents[0]).toMatchObject({ sessions: 3, state: 'needs-you' });
 	expect(merged?.agents[0].tasks.map((task) => task.title)).toEqual(['a', 'b', 'c', 'd']);
 	expect(homeHeadline(merged?.agents ?? [])).toBe('1 agent working, 1 needs you');
+});
+
+test('sub-agent sessions count once across computers and make their parent agent working', () => {
+	const parent = (sessions: number): HomeAgent => ({
+		...agent('cos', 'working', '2026-11-25T10:00:00Z'),
+		sessions: 0,
+		subAgents: {
+			sessions,
+			tasks: Array.from({ length: sessions }, (_, index) => ({
+				itemId: `sub-${index}`,
+				title: `Sub task ${index}`,
+				machine: null
+			}))
+		}
+	});
+	const merged = mergeHomeSnapshots([snapshot([parent(3)], null), snapshot([parent(2)], null)]);
+	expect(merged?.agents).toHaveLength(1);
+	expect(merged?.agents[0].subAgents.sessions).toBe(3);
+	expect(isWorking(merged!.agents[0])).toBe(true);
+	expect(agentActivity(merged!.agents[0])).toBe(
+		'3 sessions running (3 sub-agent sessions) · Sub task 0 (+2 more)'
+	);
+	expect(homeHeadline(merged?.agents ?? [])).toBe('1 agent working');
 });

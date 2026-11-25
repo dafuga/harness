@@ -3,6 +3,7 @@ import {
 	homeProviders,
 	homeRunPayload
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
+import { directAgentsOnly } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
 
@@ -17,6 +18,7 @@ const short = text(200);
 const title = text(500);
 const unsigned = z.number().int().min(0).max(100000);
 
+const task = z.object({ itemId: id, title, machine: short.nullable() });
 const message = z.object({
 	id,
 	text: text(2000),
@@ -42,10 +44,10 @@ const agent = z.object({
 	state: z.enum(['needs-you', 'working', 'idle', 'offline']),
 	// Older Mac apps omit these; zero sessions and no tasks is what they meant.
 	sessions: unsigned.default(0),
-	tasks: z
-		.array(z.object({ itemId: id, title, machine: short.nullable() }))
-		.max(5)
-		.default([]),
+	tasks: z.array(task).max(5).default([]),
+	subAgents: z
+		.object({ sessions: unsigned.default(0), tasks: z.array(task).max(5).default([]) })
+		.default({ sessions: 0, tasks: [] }),
 	itemId: id.nullable(),
 	task: title,
 	machine: short.nullable(),
@@ -79,7 +81,9 @@ const snapshot = z.object({
 });
 
 export function parseHomePayload(value: unknown) {
-	const result = snapshot.parse(value);
+	const parsed = snapshot.parse(value);
+	// Older Mac apps publish every Tracker project as an agent; only direct agents are listed.
+	const result = { ...parsed, agents: directAgentsOnly(parsed.agents) };
 	const overview = parseOverviewPayload(JSON.stringify(result.overview));
 	return { ...result, overview };
 }

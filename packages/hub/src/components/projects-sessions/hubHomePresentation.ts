@@ -46,17 +46,26 @@ export function count(value: number, singular: string, plural: string = `${singu
 	return `${value} ${value === 1 ? singular : plural}`;
 }
 
+/** Sessions running for an agent now: its own plus those of the sub-agents working under it. */
+export function agentSessions(agent: HomeAgent) {
+	return agent.sessions + agent.subAgents.sessions;
+}
+
 /** Working means a run is live now, even when the agent also has a question for you. */
 export function isWorking(agent: HomeAgent) {
-	return agent.sessions > 0;
+	return agentSessions(agent) > 0;
 }
 
 /** The task line under an agent: its live sessions and the task being worked, else its latest task. */
 export function agentActivity(agent: HomeAgent) {
 	if (!isWorking(agent)) return agent.task;
-	const first = agent.tasks[0]?.title ?? agent.task;
-	const more = agent.sessions > 1 ? ` (+${agent.sessions - 1} more)` : '';
-	return `${count(agent.sessions, 'session')} running · ${first}${more}`;
+	const total = agentSessions(agent);
+	const first = agent.tasks[0]?.title ?? agent.subAgents.tasks[0]?.title ?? agent.task;
+	const more = total > 1 ? ` (+${total - 1} more)` : '';
+	const subs = agent.subAgents.sessions
+		? ` (${count(agent.subAgents.sessions, 'sub-agent session')})`
+		: '';
+	return `${count(total, 'session')} running${subs} · ${first}${more}`;
 }
 
 export function homeHeadline(agents: HomeAgent[], liveSessions = 0) {

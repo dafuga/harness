@@ -11,6 +11,7 @@ import type {
 	OverviewCard,
 	OverviewItem
 } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
+import { directAgentsOnly } from '../../../reports/src/lib/projects-sessions/hub-home/homeDirectAgents';
 import type { HomeFixtureState, MockupHomeData } from './hub-home-fixture.types';
 
 export const homeClock = Date.parse('2026-11-21T22:30:00.000Z');
@@ -132,10 +133,14 @@ function quotas(data: MockupHomeData): HomeSubscription[] {
 }
 
 function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {
-	return data.agents.map((agent, index) => ({
-		id: `agent-${index}`,
+	const all: OwnerHomeSnapshot['agents'] = data.agents.map((agent, index) => ({
+		// The Mac publishes every Tracker project as an agent keyed by its Tracker agent value.
+		id: agent.name === 'Chief of Staff' ? 'cos' : `agent-${index}`,
 		name: agent.name,
 		state: agent.state,
+		sessions: agent.state === 'working' ? 1 : 0,
+		tasks: [],
+		subAgents: { sessions: 0, tasks: [] },
 		since: at(-15),
 		itemId: agent.state === 'offline' ? null : `item-${index}`,
 		task: agent.task,
@@ -178,6 +183,8 @@ function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {
 					]
 				: []
 	}));
+	// The Hub lists only the agents Daniel talks to; the rest become sub-agent session counts.
+	return directAgentsOnly(all);
 }
 
 export function homeData(data: MockupHomeData): OwnerHomeSnapshot {

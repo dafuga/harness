@@ -16,7 +16,7 @@ const base = {
 	id: 'task-one',
 	title: 'Synthetic work',
 	status: 'in_progress' as const,
-	agent: 'Synthetic agent',
+	agent: 'cos',
 	updated_at,
 	due: '2026-11-21T23:30:00Z'
 };
@@ -44,7 +44,7 @@ test('Tracker plan children, due items, current question and privacy survive pro
 	);
 	expect(home.plans).toMatchObject([{ id: plan.id, total: 2, done: 1, state: 'draft' }]);
 	expect(home.scheduled.map((entry) => entry.id)).toEqual(['routine', 'plan-one', 'task-one']);
-	expect(home.agents).toMatchObject([{ itemId: base.id, question }]);
+	expect(home.agents).toMatchObject([{ name: 'Chief of Staff', itemId: base.id, question }]);
 	expect(soonestWork(home.overview)).toMatchObject([{ id: base.id }]);
 	expect(JSON.stringify(home)).not.toContain('"hidden"');
 	expect([9, 10, 24, 25].map(warningFor)).toEqual(['critical', 'low', 'low', null]);
@@ -80,7 +80,7 @@ test('native chat refuses an outdated question and calls only the fixed Tracker 
 	);
 });
 
-test('working means a live run now: flagged projects with runs count, touched-today projects without runs do not', () => {
+test('only Chief of Staff is an agent: every other project is a sub-agent counted under it', () => {
 	const run = (id: number, item_id: string, node: string) => ({
 		id,
 		node,
@@ -88,13 +88,14 @@ test('working means a live run now: flagged projects with runs count, touched-to
 		state: 'running',
 		ended_at: null
 	});
+	const chief = { ...base, id: 'chief', agent: 'cos' };
 	const flagged = { ...base, id: 'flagged', agent: 'flagged', needs_daniel: true, question };
 	const live = { ...base, id: 'live', agent: 'flagged' };
 	const touched = { ...base, id: 'touched', agent: 'touched' };
 	const away = { ...base, id: 'away', agent: 'away' };
 	const home = buildHomeSnapshot(
 		{
-			items: [flagged, live, touched, away],
+			items: [chief, flagged, live, touched, away],
 			runs: [
 				run(1, 'live', 'primary'),
 				run(2, 'flagged', 'second'),
@@ -106,14 +107,30 @@ test('working means a live run now: flagged projects with runs count, touched-to
 		noProviders,
 		now
 	);
-	const byName = Object.fromEntries(home.agents.map((agent) => [agent.name, agent]));
-	expect(byName.flagged).toMatchObject({ state: 'needs-you', sessions: 2 });
-	expect(byName.flagged.tasks.map((task) => [task.itemId, task.machine])).toEqual(
-		expect.arrayContaining([['live', 'primary']])
+	expect(home.agents.map((agent) => agent.name)).toEqual(['Chief of Staff']);
+	const [chiefOfStaff] = home.agents;
+	expect(chiefOfStaff).toMatchObject({ id: 'cos', sessions: 0, state: 'working' });
+	expect(chiefOfStaff.subAgents.sessions).toBe(2);
+	expect(chiefOfStaff.subAgents.tasks.map((task) => task.itemId).sort()).toEqual([
+		'flagged',
+		'live'
+	]);
+	expect(JSON.stringify(home.agents)).not.toContain('touched');
+	expect(soonestWork(home.overview).map((item) => item.id)).toContain('touched');
+});
+
+test('no sub-agent sessions and no Chief of Staff gives no agents, and an idle Chief stays idle', () => {
+	const chief = { ...base, id: 'chief', agent: 'cos' };
+	const other = { ...base, id: 'other', agent: 'other' };
+	const none = buildHomeSnapshot({ items: [other], runs: [], machines: [] }, noProviders, now);
+	expect(none.agents).toEqual([]);
+	const idle = buildHomeSnapshot(
+		{ items: [chief, other], runs: [], machines: [] },
+		noProviders,
+		now
 	);
-	expect(byName.touched).toMatchObject({ state: 'idle', sessions: 0, tasks: [] });
-	expect(byName.away).toMatchObject({ state: 'offline', sessions: 0 });
-	expect(home.agents.filter((agent) => agent.sessions > 0)).toHaveLength(1);
+	expect(idle.agents).toMatchObject([{ name: 'Chief of Staff', state: 'idle' }]);
+	expect(idle.agents[0].subAgents).toEqual({ sessions: 0, tasks: [] });
 });
 
 test('an open ask carries its options and confirm kind; a closed ask or malformed options carry none', () => {

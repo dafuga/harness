@@ -18,6 +18,7 @@
 			"providerNames",
 			"usageLinks",
 			"count",
+			"agentSessions",
 			"isWorking",
 			"agentActivity",
 			"homeHeadline",
@@ -62,6 +63,12 @@
 				"type": "string",
 				"required": false,
 				"description": "Plural label. Defaults to the singular label followed by s."
+			},
+			{
+				"name": "agentSessions.agent",
+				"type": "HomeAgent",
+				"required": true,
+				"description": "The agent whose live sessions are counted: its own plus those of its sub-agents."
 			},
 			{
 				"name": "isWorking.agent",
@@ -414,6 +421,25 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "agentSessions",
+				"inputs": [
+					{
+						"name": "agentSessions.agent",
+						"type": "HomeAgent",
+						"required": true,
+						"description": "The agent whose live sessions are counted."
+					}
+				],
+				"outputs": [
+					{
+						"name": "agentSessions",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "isWorking",
 				"inputs": [
 					{
@@ -430,7 +456,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "agentActivity",
