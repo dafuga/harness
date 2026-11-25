@@ -14,8 +14,18 @@ export function planData(value: unknown): string {
 }
 export const hash = (value: string | Uint8Array) =>
 	createHash('sha256').update(value).digest('hex');
+/** A planning operation refused with a stable code; `path` is null until a caller attaches one. */
+export class PlanningError extends Error {
+	code: PlanningErrorCode;
+	path: string | null = null;
+
+	constructor(code: PlanningErrorCode, message: string) {
+		super(message);
+		this.code = code;
+	}
+}
 export function fail(code: PlanningErrorCode, message: string): never {
-	throw Object.assign(new Error(message), { code, path: null });
+	throw new PlanningError(code, message);
 }
 export const json = (value: unknown) => `${planData(value)}\n`;
 export const now = () => new Date().toISOString();

@@ -9,7 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/planning/src/utils/planning-collaboration/planData.ts"],
-		"symbols": ["planData", "hash", "fail", "json", "now", "parse"]
+		"symbols": [
+			"planData",
+			"hash",
+			"PlanningError",
+			"PlanningError.constructor",
+			"fail",
+			"json",
+			"now",
+			"parse"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -26,6 +35,20 @@
 				"type": "string | Uint8Array",
 				"required": true,
 				"description": "Text or bytes to hash with SHA-256."
+			},
+			{
+				"name": "PlanningError.constructor.code",
+				"type": "PlanningErrorCode",
+				"required": true,
+				"description": "Stable planning failure code that callers read from the thrown error; it is stored unchanged as the code property.",
+				"examples": ["artifact-corrupt"]
+			},
+			{
+				"name": "PlanningError.constructor.message",
+				"type": "string",
+				"required": true,
+				"description": "Human-readable failure message, used unchanged as the Error message.",
+				"examples": ["Invalid artifact JSON"]
 			},
 			{
 				"name": "fail.code",
@@ -70,7 +93,7 @@
 			{
 				"name": "fail",
 				"type": "never",
-				"description": "Never returns; throws an Error carrying code and path null."
+				"description": "Never returns; throws a PlanningError carrying code and path null."
 			},
 			{
 				"name": "json",
@@ -90,9 +113,9 @@
 		],
 		"errors": [
 			{
-				"name": "PlanningFailure",
+				"name": "PlanningError",
 				"type": "thrown",
-				"description": "A plain Error carrying the PlanningFailure fields, not an ExpectedCliError instance: fail throws one with the supplied code and message and path null on every call, and parse throws one with code artifact-corrupt and message Invalid artifact JSON when the bytes are not valid JSON."
+				"description": "A PlanningError (an Error subclass, not an ExpectedCliError): fail throws one with the supplied code and message and path null on every call, and parse throws one with code artifact-corrupt and message Invalid artifact JSON when the bytes are not valid JSON."
 			},
 			{
 				"name": "TypeError",
@@ -182,14 +205,14 @@
 					{
 						"name": "fail",
 						"type": "never",
-						"description": "Never returns; throws an Error carrying code and path null."
+						"description": "Never returns; throws a PlanningError carrying code and path null."
 					}
 				],
 				"errors": [
 					{
-						"name": "PlanningFailure",
+						"name": "PlanningError",
 						"type": "thrown",
-						"description": "Thrown on every call: a plain Error whose message is the given message, with code set to the given code and path null. fail never returns."
+						"description": "Thrown on every call: a PlanningError whose message is the given message, with code set to the given code and path null. fail never returns."
 					}
 				],
 				"errorStatus": "declared"
@@ -258,15 +281,51 @@
 				],
 				"errors": [
 					{
-						"name": "PlanningFailure",
+						"name": "PlanningError",
 						"type": "thrown",
-						"description": "parse replaces any JSON parse failure with the plain Error from fail whose code is artifact-corrupt, message is Invalid artifact JSON and path is null."
+						"description": "parse replaces any JSON parse failure with the PlanningError from fail whose code is artifact-corrupt, message is Invalid artifact JSON and path is null."
 					}
 				],
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "PlanningError.constructor",
+				"inputs": [
+					{
+						"name": "PlanningError.constructor.code",
+						"type": "PlanningErrorCode",
+						"required": true,
+						"description": "Stable planning failure code that callers read from the thrown error; it is stored unchanged as the code property.",
+						"examples": ["artifact-corrupt"]
+					},
+					{
+						"name": "PlanningError.constructor.message",
+						"type": "string",
+						"required": true,
+						"description": "Human-readable failure message, used unchanged as the Error message.",
+						"examples": ["Invalid artifact JSON"]
+					}
+				],
+				"outputs": [
+					{
+						"name": "PlanningError.constructor",
+						"type": "PlanningError",
+						"description": "An Error instance with the supplied message and code and a path of null; its name stays Error so existing message and code checks behave as before.",
+						"examples": [
+							{
+								"code": "artifact-corrupt",
+								"message": "Invalid artifact JSON",
+								"path": null
+							}
+						]
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
 	},
 	"dependencies": [
 		{
