@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
+import { VaultBrokerService } from '../../../src/services/accounts-access/VaultBrokerService';
 import {
 	approval,
 	origin,
@@ -98,4 +99,32 @@ test('only a device grant approval may omit the sealed credential, and keys are 
 	const empty = approval(run.input, run.created, run, { sealed: null });
 	expect(() => run.broker.decide(sign(run, run.input, empty))).toThrow('device grant');
 	expect(() => run.broker.create(run.input, sessionUid)).toThrow('fresh runner key');
+});
+
+test('password generation requires one approved scope and executes once with a status-only result', async () => {
+	const run = vaultBroker();
+	const input = sessionRequest(run.seal.runnerKey(), { action: 'generate-password', mode: 'write' });
+	const execute = vi.fn(async () => undefined);
+	const broker = new VaultBrokerService(run.devices, run.audit, () => run.clock.now, (request) =>
+		request === input ? execute : undefined
+	);
+	expect(() => broker.create({ ...input, environment: 'production' }, sessionUid)).toThrow('unavailable');
+	const ticket = broker.create(input, sessionUid);
+	await expect(broker.generatePassword(ticket, sessionUid)).rejects.toThrow('Approval is unavailable');
+	const decision = approval(input, ticket, run, {
+		sealed: null,
+		otpIncluded: false,
+		project: input.project,
+		environment: input.environment
+	});
+	const wrongScope = { ...decision, environment: 'production' };
+	expect(() => broker.decide(sign(run, input, wrongScope))).toThrow('approval scope');
+	expect(broker.decide(sign(run, input, decision))).toBe('approved');
+	expect(() => broker.claim(ticket, sessionUid)).toThrow('password generation');
+	await expect(broker.generatePassword(ticket, 777)).rejects.toThrow('Request not found');
+	const operation = broker.generatePassword(ticket, sessionUid);
+	await expect(broker.generatePassword(ticket, sessionUid)).resolves.toBe('executing');
+	await expect(operation).resolves.toBe('completed');
+	await expect(broker.generatePassword(ticket, sessionUid)).resolves.toBe('completed');
+	expect(execute).toHaveBeenCalledTimes(1);
 });
