@@ -1,4 +1,5 @@
 // @harness-uid u_grqcubeu7b
+import { TrackerNodeTransportError } from '../tracker-node-service/TrackerNodeTransportError';
 import { randomBytes } from 'node:crypto';
 
 import {
@@ -76,10 +77,12 @@ export class TrackerSealedSyncService {
 			base64url(header.objectId) !== entry.opId ||
 			base64url(header.scopeId) !== base64url(this.options.currentKeys.scopeId)
 		)
-			throw new Error('Invalid sealed Tracker operation header');
+			throw new TrackerNodeTransportError('Invalid sealed Tracker operation header');
 		const { value } = await openSealedRecord<TrackerOperation>(keys, envelope);
 		if (this.options.acceptOperation && !this.options.acceptOperation(value))
-			throw new Error('Sealed Tracker operation falls outside its authorized scope');
+			throw new TrackerNodeTransportError(
+				'Sealed Tracker operation falls outside its authorized scope'
+			);
 		return value;
 	}
 
@@ -89,7 +92,8 @@ export class TrackerSealedSyncService {
 			redirect: 'error',
 			headers: { 'Content-Type': 'application/json', 'X-Harness-Device': this.options.deviceId }
 		});
-		if (!response.ok) throw new Error(`Tracker sealed sync failed (HTTP ${response.status})`);
+		if (!response.ok)
+			throw new TrackerNodeTransportError(`Tracker sealed sync failed (HTTP ${response.status})`);
 		return response.json();
 	}
 }
@@ -108,19 +112,19 @@ function batch(pending: readonly OutboxEntry[]): OutboxEntry[] {
 function assertReceipt(payload: unknown, entries: readonly OutboxEntry[]): void {
 	const receipt = payload as { ops?: { opId: string; seq: number }[] } | null;
 	if (!Array.isArray(receipt?.ops) || receipt.ops.length !== entries.length)
-		throw new Error('Incomplete sealed Tracker receipt');
+		throw new TrackerNodeTransportError('Incomplete sealed Tracker receipt');
 	for (const [index, entry] of entries.entries()) {
 		const id = sealedRecordHeader(Buffer.from(entry.envelope, 'base64url')).objectId;
 		const row = receipt.ops[index];
 		if (row?.opId !== base64url(id) || !Number.isSafeInteger(row.seq) || row.seq <= 0)
-			throw new Error('Invalid sealed Tracker receipt');
+			throw new TrackerNodeTransportError('Invalid sealed Tracker receipt');
 	}
 }
 
 function assertPage(page: SyncPage, after: number): void {
 	if (!Array.isArray(page?.ops) || typeof page.more !== 'boolean')
-		throw new Error('Invalid sealed Tracker page');
+		throw new TrackerNodeTransportError('Invalid sealed Tracker page');
 	const contiguous = page.ops.every((entry, index) => entry?.seq === after + index + 1);
 	if (!contiguous || page.next !== after + page.ops.length || (page.more && !page.ops.length))
-		throw new Error('Invalid sealed Tracker cursor');
+		throw new TrackerNodeTransportError('Invalid sealed Tracker cursor');
 }

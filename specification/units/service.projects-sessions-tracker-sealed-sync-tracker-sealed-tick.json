@@ -1,0 +1,135 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-tick",
+	"uid": "u_ilwvw422yo",
+	"kind": "service",
+	"title": "trackerSealedTick",
+	"responsibility": "Owns the trackerSealedTick service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-sealed-sync/trackerSealedTick.ts"],
+		"symbols": ["trackerSealedTicks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerSealedTicks.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "trackerSealedTicks.localNode",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerSealedTicks.scopes",
+				"type": "readonly TrackerSealedNodeOptions[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerSealedTicks",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerNodeTransportError",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerSealedTicks",
+				"inputs": [
+					{
+						"name": "trackerSealedTicks.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "trackerSealedTicks.localNode",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerSealedTicks.scopes",
+						"type": "readonly TrackerSealedNodeOptions[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSealedTicks",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-sealed-sync-replay-tracker-sealed-journal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-journal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-sync",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-sealed-sync/trackerSealedTick.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-sealed-sync/trackerSealedTick.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

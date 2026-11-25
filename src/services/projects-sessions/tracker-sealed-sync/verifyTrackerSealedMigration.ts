@@ -1,3 +1,4 @@
+// @harness-uid u_3yhwkjpypp
 import { TrackerSnapshotAdapter } from '../../../adapters/projects-sessions/TrackerSnapshotAdapter';
 import type { TrackerSnapshotSyncOptions } from '../../../adapters/projects-sessions/TrackerSnapshotAdapter.types';
 

@@ -1,3 +1,5 @@
+// @harness-uid u_xxre5ppz6x
+import { TrackerNodeTransportError } from '../tracker-node-service/TrackerNodeTransportError';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { TrackerOperationRepository } from '../../../repositories/projects-sessions/TrackerOperationRepository';
 import type { TrackerOperation } from '../../../repositories/projects-sessions/TrackerOperationRepository.types';
@@ -26,7 +28,8 @@ export class TrackerSealedJournal implements TrackerSealedSyncStore {
 		`);
 	}
 
-	stage({ localSeq, envelope }: OutboxEntry): void {
+	stage(entry: OutboxEntry): void {
+		const { localSeq, envelope } = entry;
 		this.database
 			.prepare(
 				'INSERT OR IGNORE INTO sealed_tracker_outbox(log, localSeq, envelope) VALUES (?, ?, ?)'
@@ -80,7 +83,8 @@ export class TrackerSealedJournal implements TrackerSealedSyncStore {
 
 	apply(after: number, next: number, operations: readonly TrackerOperation[]): void {
 		this.operations.applyOps(operations, () => {
-			if (this.cursor() !== after) throw new Error('Tracker sealed cursor changed during pull');
+			if (this.cursor() !== after)
+				throw new TrackerNodeTransportError('Tracker sealed cursor changed during pull');
 			this.database
 				.prepare(
 					'INSERT INTO sealed_tracker_cursor(log, cursor) VALUES (?, ?) ON CONFLICT(log) DO UPDATE SET cursor = excluded.cursor'

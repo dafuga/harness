@@ -1,3 +1,5 @@
+// @harness-uid u_ilwvw422yo
+import { TrackerNodeTransportError } from '../tracker-node-service/TrackerNodeTransportError';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { TrackerOperationRepository } from '../../../repositories/projects-sessions/TrackerOperationRepository';
 import { replayTrackerSealedJournal } from './replayTrackerSealedJournal';
@@ -44,7 +46,7 @@ export function trackerSealedTicks(
 		sealedSync: async (signal: AbortSignal) => {
 			const outcomes = await Promise.allSettled(ticks.map((tick) => tick(signal)));
 			if (outcomes.some(({ status }) => status === 'rejected'))
-				throw new Error('Tracker sealed scope sync failed');
+				throw new TrackerNodeTransportError('Tracker sealed scope sync failed');
 		}
 	};
 }

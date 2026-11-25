@@ -1,0 +1,289 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-journal",
+	"uid": "u_xxre5ppz6x",
+	"kind": "service",
+	"title": "TrackerSealedJournal",
+	"responsibility": "Owns the TrackerSealedJournal service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-sealed-sync/TrackerSealedJournal.ts"],
+		"symbols": [
+			"TrackerSealedJournal",
+			"TrackerSealedJournal.constructor",
+			"TrackerSealedJournal.stage",
+			"TrackerSealedJournal.pending",
+			"TrackerSealedJournal.acknowledge",
+			"TrackerSealedJournal.scanCursor",
+			"TrackerSealedJournal.advanceScan",
+			"TrackerSealedJournal.cursor",
+			"TrackerSealedJournal.apply"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSealedJournal.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedJournal.constructor.logId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedJournal.stage.entry",
+				"type": "OutboxEntry",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedJournal.acknowledge.entries",
+				"type": "readonly OutboxEntry[]",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedJournal.advanceScan.cursor",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedJournal.apply.after",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedJournal.apply.next",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedJournal.apply.operations",
+				"type": "readonly TrackerOperation[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerSealedJournal.stage",
+				"type": "void"
+			},
+			{
+				"name": "TrackerSealedJournal.pending",
+				"type": "OutboxEntry[]"
+			},
+			{
+				"name": "TrackerSealedJournal.acknowledge",
+				"type": "void"
+			},
+			{
+				"name": "TrackerSealedJournal.scanCursor",
+				"type": "number"
+			},
+			{
+				"name": "TrackerSealedJournal.advanceScan",
+				"type": "void"
+			},
+			{
+				"name": "TrackerSealedJournal.cursor",
+				"type": "number"
+			},
+			{
+				"name": "TrackerSealedJournal.apply",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerNodeTransportError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerSealedJournal.stage",
+				"inputs": [
+					{
+						"name": "TrackerSealedJournal.stage.entry",
+						"type": "OutboxEntry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedJournal.stage",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSealedJournal.pending",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSealedJournal.pending",
+						"type": "OutboxEntry[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSealedJournal.acknowledge",
+				"inputs": [
+					{
+						"name": "TrackerSealedJournal.acknowledge.entries",
+						"type": "readonly OutboxEntry[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedJournal.acknowledge",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSealedJournal.scanCursor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSealedJournal.scanCursor",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSealedJournal.advanceScan",
+				"inputs": [
+					{
+						"name": "TrackerSealedJournal.advanceScan.cursor",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedJournal.advanceScan",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSealedJournal.cursor",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerSealedJournal.cursor",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSealedJournal.apply",
+				"inputs": [
+					{
+						"name": "TrackerSealedJournal.apply.after",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerSealedJournal.apply.next",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerSealedJournal.apply.operations",
+						"type": "readonly TrackerOperation[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedJournal.apply",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSealedJournal.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSealedJournal.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "TrackerSealedJournal.constructor.logId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedJournal.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-sync",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-sealed-sync/TrackerSealedJournal.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-sealed-sync/TrackerSealedJournal.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
