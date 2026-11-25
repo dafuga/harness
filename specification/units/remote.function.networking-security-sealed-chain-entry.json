@@ -18,64 +18,76 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sealedCanonical.value",
 				"type": "SealedJsonValue",
-				"required": true
+				"required": true,
+				"description": "JSON value to serialize with consistently ordered object keys."
 			},
 			{
 				"name": "chainEntryBytes.entry",
 				"type": "UnsignedChainEntry",
-				"required": true
+				"required": true,
+				"description": "Unsigned device chain entry to serialize for signing."
 			},
 			{
 				"name": "sealedChainEntry.signer",
 				"type": "SealedDeviceKeys",
-				"required": true
+				"required": true,
+				"description": "Device signing key and signer identity for the new entry."
 			},
 			{
 				"name": "sealedChainEntry.entry",
 				"type": "UnsignedChainEntry",
-				"required": true
+				"required": true,
+				"description": "Unsigned chain entry whose signer and signature will be attached."
 			},
 			{
 				"name": "verifyChainEntry.entry",
 				"type": "SealedChainEntry",
-				"required": true
+				"required": true,
+				"description": "Signed entry to verify."
 			},
 			{
 				"name": "verifyChainEntry.signingPublic",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Base64url-encoded P-256 public signing key expected for the signer."
 			},
 			{
 				"name": "chainEntryHash.entry",
 				"type": "SealedChainEntry",
-				"required": true
+				"required": true,
+				"description": "Signed chain entry to hash."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sealedCanonical",
-				"type": "string"
+				"type": "string",
+				"description": "Canonical JSON string for the supplied value."
 			},
 			{
 				"name": "chainEntryBytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "UTF-8 bytes used as the signature input."
 			},
 			{
 				"name": "sealedChainEntry",
-				"type": "Promise<SealedChainEntry>"
+				"type": "Promise<SealedChainEntry>",
+				"description": "Chain entry with signer identity and signature attached."
 			},
 			{
 				"name": "verifyChainEntry",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "Whether the supplied public key verifies the entry signature."
 			},
 			{
 				"name": "chainEntryHash",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Hex digest referenced by the next chain entry."
 			}
 		],
 		"errors": [],
@@ -87,13 +99,15 @@
 					{
 						"name": "sealedCanonical.value",
 						"type": "SealedJsonValue",
-						"required": true
+						"required": true,
+						"description": "JSON value to serialize with consistently ordered object keys."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedCanonical",
-						"type": "string"
+						"type": "string",
+						"description": "Canonical JSON string for the supplied value."
 					}
 				],
 				"errors": [],
@@ -105,13 +119,15 @@
 					{
 						"name": "chainEntryBytes.entry",
 						"type": "UnsignedChainEntry",
-						"required": true
+						"required": true,
+						"description": "Unsigned device chain entry to serialize for signing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "chainEntryBytes",
-						"type": "Uint8Array"
+						"type": "Uint8Array",
+						"description": "UTF-8 bytes used as the signature input."
 					}
 				],
 				"errors": [],
@@ -123,18 +139,21 @@
 					{
 						"name": "sealedChainEntry.signer",
 						"type": "SealedDeviceKeys",
-						"required": true
+						"required": true,
+						"description": "Device signing key and signer identity for the new entry."
 					},
 					{
 						"name": "sealedChainEntry.entry",
 						"type": "UnsignedChainEntry",
-						"required": true
+						"required": true,
+						"description": "Unsigned chain entry whose signer and signature will be attached."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedChainEntry",
-						"type": "Promise<SealedChainEntry>"
+						"type": "Promise<SealedChainEntry>",
+						"description": "Chain entry with signer identity and signature attached."
 					}
 				],
 				"errors": [],
@@ -146,18 +165,21 @@
 					{
 						"name": "verifyChainEntry.entry",
 						"type": "SealedChainEntry",
-						"required": true
+						"required": true,
+						"description": "Signed entry to verify."
 					},
 					{
 						"name": "verifyChainEntry.signingPublic",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Base64url-encoded P-256 public signing key expected for the signer."
 					}
 				],
 				"outputs": [
 					{
 						"name": "verifyChainEntry",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "Whether the supplied public key verifies the entry signature."
 					}
 				],
 				"errors": [],
@@ -169,13 +191,15 @@
 					{
 						"name": "chainEntryHash.entry",
 						"type": "SealedChainEntry",
-						"required": true
+						"required": true,
+						"description": "Signed chain entry to hash."
 					}
 				],
 				"outputs": [
 					{
 						"name": "chainEntryHash",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Hex digest referenced by the next chain entry."
 					}
 				],
 				"errors": [],

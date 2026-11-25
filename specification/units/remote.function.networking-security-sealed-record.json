@@ -12,66 +12,78 @@
 		"symbols": ["recordHeaderBytes", "sealedRecordHeader", "sealedRecord", "openSealedRecord"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "recordHeaderBytes.header",
 				"type": "SealedRecordHeader",
-				"required": true
+				"required": true,
+				"description": "Scope, epoch, object identifier, and revision to encode in the record header."
 			},
 			{
 				"name": "sealedRecordHeader.envelope",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "Encoded record from which to read the versioned header."
 			},
 			{
 				"name": "sealedRecord.keys",
 				"type": "ScopeKeys",
-				"required": true
+				"required": true,
+				"description": "Scope keys to derive the encryption key for this object."
 			},
 			{
 				"name": "sealedRecord.header",
 				"type": "Omit<SealedRecordHeader, 'scopeId' | 'epoch'>",
-				"required": true
+				"required": true,
+				"description": "Object and revision metadata to authenticate with the encrypted record."
 			},
 			{
 				"name": "sealedRecord.value",
 				"type": "SealedJsonValue",
-				"required": true
+				"required": true,
+				"description": "JSON-serializable value to encrypt."
 			},
 			{
 				"name": "openSealedRecord.keys",
 				"type": "ScopeKeys",
-				"required": true
+				"required": true,
+				"description": "Scope keys expected to match the record's header."
 			},
 			{
 				"name": "openSealedRecord.envelope",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "Encoded record to authenticate, decrypt, and decode."
 			}
 		],
 		"outputs": [
 			{
 				"name": "recordHeaderBytes",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "Versioned header bytes used as authenticated data."
 			},
 			{
 				"name": "sealedRecordHeader",
-				"type": "SealedRecordHeader"
+				"type": "SealedRecordHeader",
+				"description": "Parsed record header. Opening the record authenticates its header."
 			},
 			{
 				"name": "sealedRecord",
-				"type": "Promise<Uint8Array>"
+				"type": "Promise<Uint8Array>",
+				"description": "Record envelope containing the header, nonce, and authenticated ciphertext."
 			},
 			{
 				"name": "openSealedRecord",
-				"type": "Promise<{ header: SealedRecordHeader; value: T }>"
+				"type": "Promise<{ header: SealedRecordHeader; value: T }>",
+				"description": "Authenticated header and decoded JSON value."
 			}
 		],
 		"errors": [
 			{
 				"name": "SealedError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The header or revision is invalid, the scope does not match, or authentication fails."
 			}
 		],
 		"errorStatus": "unknown",
@@ -82,13 +94,15 @@
 					{
 						"name": "recordHeaderBytes.header",
 						"type": "SealedRecordHeader",
-						"required": true
+						"required": true,
+						"description": "Scope, epoch, object identifier, and revision to encode in the record header."
 					}
 				],
 				"outputs": [
 					{
 						"name": "recordHeaderBytes",
-						"type": "Uint8Array"
+						"type": "Uint8Array",
+						"description": "Versioned header bytes used as authenticated data."
 					}
 				],
 				"errors": [
@@ -105,13 +119,15 @@
 					{
 						"name": "sealedRecordHeader.envelope",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "Encoded record from which to read the versioned header."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedRecordHeader",
-						"type": "SealedRecordHeader"
+						"type": "SealedRecordHeader",
+						"description": "Parsed record header. Opening the record authenticates its header."
 					}
 				],
 				"errors": [
@@ -128,23 +144,27 @@
 					{
 						"name": "sealedRecord.keys",
 						"type": "ScopeKeys",
-						"required": true
+						"required": true,
+						"description": "Scope keys to derive the encryption key for this object."
 					},
 					{
 						"name": "sealedRecord.header",
 						"type": "Omit<SealedRecordHeader, 'scopeId' | 'epoch'>",
-						"required": true
+						"required": true,
+						"description": "Object and revision metadata to authenticate with the encrypted record."
 					},
 					{
 						"name": "sealedRecord.value",
 						"type": "SealedJsonValue",
-						"required": true
+						"required": true,
+						"description": "JSON-serializable value to encrypt."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedRecord",
-						"type": "Promise<Uint8Array>"
+						"type": "Promise<Uint8Array>",
+						"description": "Record envelope containing the header, nonce, and authenticated ciphertext."
 					}
 				],
 				"errors": [],
@@ -156,18 +176,21 @@
 					{
 						"name": "openSealedRecord.keys",
 						"type": "ScopeKeys",
-						"required": true
+						"required": true,
+						"description": "Scope keys expected to match the record's header."
 					},
 					{
 						"name": "openSealedRecord.envelope",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "Encoded record to authenticate, decrypt, and decode."
 					}
 				],
 				"outputs": [
 					{
 						"name": "openSealedRecord",
-						"type": "Promise<{ header: SealedRecordHeader; value: T }>"
+						"type": "Promise<{ header: SealedRecordHeader; value: T }>",
+						"description": "Authenticated header and decoded JSON value."
 					}
 				],
 				"errors": [

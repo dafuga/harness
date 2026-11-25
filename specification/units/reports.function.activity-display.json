@@ -277,6 +277,39 @@
 			"origin": "derived"
 		}
 	],
+	"helperContracts": [
+		{
+			"name": "plural",
+			"source": "packages/reports/src/helpers/strings/plural.ts",
+			"inputs": [
+				{
+					"name": "plural.count",
+					"type": "number",
+					"required": true
+				},
+				{
+					"name": "plural.word",
+					"type": "string",
+					"required": true
+				}
+			],
+			"output": "string",
+			"pure": true,
+			"consumers": [
+				{
+					"unit": "desktop.component.agents-providers-chat-agents"
+				},
+				{
+					"unit": "desktop.function.remote-labels",
+					"symbol": "grantSummary"
+				},
+				{
+					"unit": "desktop.function.remote-labels",
+					"symbol": "hostSummary"
+				}
+			]
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/utils/projects-sessions/activityDisplay.ts",

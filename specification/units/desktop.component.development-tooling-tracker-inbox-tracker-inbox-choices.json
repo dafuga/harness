@@ -4,8 +4,8 @@
 	"uid": "u_dq2f5r7w3h",
 	"kind": "component",
 	"title": "TrackerInboxChoices",
-	"responsibility": "Owns the TrackerInboxChoices Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Displays the available answers to a tracker ask and confirms sensitive choices before dispatch.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -27,29 +27,33 @@
 		"symbols": ["TrackerInboxChoices"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "TrackerInboxChoices.flag",
 				"type": "InboxFlag",
-				"required": true
+				"required": true,
+				"description": "Tracker flag carrying the current answer options and confirmation requirement."
 			},
 			{
 				"name": "TrackerInboxChoices.busy",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Whether answer buttons are disabled while an answer is being submitted. Defaults to false."
 			},
 			{
 				"name": "TrackerInboxChoices.onpick",
 				"type": "(number: number) => void",
-				"required": true
+				"required": true,
+				"description": "Callback accepting the selected option's original number and whether the user confirmed it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerInboxChoices",
-				"type": "markup"
+				"type": "markup",
+				"description": "Choice buttons and a confirmation prompt when the selected answer requires confirmation."
 			}
 		],
 		"errors": [],

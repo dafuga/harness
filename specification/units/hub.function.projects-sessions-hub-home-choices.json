@@ -4,26 +4,28 @@
 	"uid": "u_jnjcxmplge",
 	"kind": "function",
 	"title": "hubHomeChoices",
-	"responsibility": "Owns the hubHomeChoices shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Places recommended Hub answer options first while preserving their original tracker option numbers.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubHomeChoices.ts"],
 		"symbols": ["HomeChoice", "orderedChoices"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "orderedChoices.agent",
 				"type": "Pick<HomeAgent, 'options'>",
-				"required": true
+				"required": true,
+				"description": "Agent payload containing an optional list of answer options."
 			}
 		],
 		"outputs": [
 			{
 				"name": "orderedChoices",
-				"type": "HomeChoice[]"
+				"type": "HomeChoice[]",
+				"description": "Options in display order with each original one-based number."
 			}
 		],
 		"errors": [],
@@ -35,13 +37,15 @@
 					{
 						"name": "orderedChoices.agent",
 						"type": "Pick<HomeAgent, 'options'>",
-						"required": true
+						"required": true,
+						"description": "Agent payload containing an optional list of answer options."
 					}
 				],
 				"outputs": [
 					{
 						"name": "orderedChoices",
-						"type": "HomeChoice[]"
+						"type": "HomeChoice[]",
+						"description": "Options in display order with each original one-based number."
 					}
 				],
 				"errors": [],
@@ -50,7 +54,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/hub/src/components/projects-sessions/hubHomeChoices.ts",

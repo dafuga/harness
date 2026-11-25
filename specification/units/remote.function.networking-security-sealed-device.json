@@ -12,38 +12,44 @@
 		"symbols": ["sealedDevice", "sealedDevicePublic", "sealedKemCurve", "sealedSigningCurve"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sealedDevice.options",
 				"type": "{ extractable?: boolean }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Key extractability option. Defaults to non-extractable private keys."
 			},
 			{
 				"name": "sealedDevicePublic.keys",
 				"type": "SealedDeviceKeys",
-				"required": true
+				"required": true,
+				"description": "Device ID and key pairs to represent in the chain."
 			},
 			{
 				"name": "sealedDevicePublic.role",
 				"type": "SealedRole",
-				"required": true
+				"required": true,
+				"description": "Role to record for the device."
 			},
 			{
 				"name": "sealedDevicePublic.scopes",
 				"type": "string[]",
-				"required": true
+				"required": true,
+				"description": "Scope identifiers to record for the device."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sealedDevice",
-				"type": "Promise<SealedDeviceKeys>"
+				"type": "Promise<SealedDeviceKeys>",
+				"description": "Fresh device identity, key-agreement and signing pairs, and raw public keys."
 			},
 			{
 				"name": "sealedDevicePublic",
-				"type": "SealedDevicePublic"
+				"type": "SealedDevicePublic",
+				"description": "Chain-ready public record with encoded public keys and sorted scopes."
 			}
 		],
 		"errors": [],
@@ -56,13 +62,15 @@
 						"name": "sealedDevice.options",
 						"type": "{ extractable?: boolean }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Key extractability option. Defaults to non-extractable private keys."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedDevice",
-						"type": "Promise<SealedDeviceKeys>"
+						"type": "Promise<SealedDeviceKeys>",
+						"description": "Fresh device identity, key-agreement and signing pairs, and raw public keys."
 					}
 				],
 				"errors": [],
@@ -74,23 +82,27 @@
 					{
 						"name": "sealedDevicePublic.keys",
 						"type": "SealedDeviceKeys",
-						"required": true
+						"required": true,
+						"description": "Device ID and key pairs to represent in the chain."
 					},
 					{
 						"name": "sealedDevicePublic.role",
 						"type": "SealedRole",
-						"required": true
+						"required": true,
+						"description": "Role to record for the device."
 					},
 					{
 						"name": "sealedDevicePublic.scopes",
 						"type": "string[]",
-						"required": true
+						"required": true,
+						"description": "Scope identifiers to record for the device."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedDevicePublic",
-						"type": "SealedDevicePublic"
+						"type": "SealedDevicePublic",
+						"description": "Chain-ready public record with encoded public keys and sorted scopes."
 					}
 				],
 				"errors": [],

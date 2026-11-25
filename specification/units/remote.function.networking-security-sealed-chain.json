@@ -15,29 +15,33 @@
 		"symbols": ["sealedChain", "Body", "ChainExpectation"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sealedChain.entries",
 				"type": "SealedChainEntry[]",
-				"required": true
+				"required": true,
+				"description": "Ordered signed entries from genesis to the next state to verify."
 			},
 			{
 				"name": "sealedChain.expect",
 				"type": "ChainExpectation",
-				"required": true
+				"required": true,
+				"description": "Expected account identifier and optional previous chain pin."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sealedChain",
-				"type": "Promise<SealedChainState>"
+				"type": "Promise<SealedChainState>",
+				"description": "Verified device membership, scope grants, and latest chain position."
 			}
 		],
 		"errors": [
 			{
 				"name": "SealedError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The chain is empty, invalid, unauthorized, or incompatible with the supplied pin."
 			}
 		],
 		"errorStatus": "unknown",
@@ -48,18 +52,21 @@
 					{
 						"name": "sealedChain.entries",
 						"type": "SealedChainEntry[]",
-						"required": true
+						"required": true,
+						"description": "Ordered signed entries from genesis to the next state to verify."
 					},
 					{
 						"name": "sealedChain.expect",
 						"type": "ChainExpectation",
-						"required": true
+						"required": true,
+						"description": "Expected account identifier and optional previous chain pin."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedChain",
-						"type": "Promise<SealedChainState>"
+						"type": "Promise<SealedChainState>",
+						"description": "Verified device membership, scope grants, and latest chain position."
 					}
 				],
 				"errors": [

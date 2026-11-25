@@ -4,8 +4,8 @@
 	"uid": "u_qoahc5zxzf",
 	"kind": "component",
 	"title": "HubHomeChoices",
-	"responsibility": "Owns the HubHomeChoices Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows the Hub agent's answer options and requires confirmation when the ask specifies it.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -22,29 +22,33 @@
 		"symbols": ["HubHomeChoices"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeChoices.agent",
 				"type": "Pick<HomeAgent, 'options' | 'confirm'>",
-				"required": true
+				"required": true,
+				"description": "Agent's answer options and confirmation requirement."
 			},
 			{
 				"name": "HubHomeChoices.busy",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Whether an answer is being submitted. Defaults to false."
 			},
 			{
 				"name": "HubHomeChoices.onpick",
 				"type": "(number: number, confirmed: boolean) => void",
-				"required": true
+				"required": true,
+				"description": "Callback accepting the selected option's original number and whether the user confirmed it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeChoices",
-				"type": "markup"
+				"type": "markup",
+				"description": "Choice buttons and any required confirmation prompt for agents with at least two options."
 			}
 		],
 		"errors": [],
@@ -80,6 +84,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

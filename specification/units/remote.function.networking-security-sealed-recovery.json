@@ -15,47 +15,55 @@
 		"symbols": ["newRecoverySecret", "sealedRecovery", "openSealedRecovery", "RecoveryMaterial"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sealedRecovery.secret",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "Recovery secret used to encrypt the recovery device's private keys."
 			},
 			{
 				"name": "sealedRecovery.device",
 				"type": "SealedDeviceKeys",
-				"required": true
+				"required": true,
+				"description": "Recovery device identity and extractable private keys."
 			},
 			{
 				"name": "openSealedRecovery.secret",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "Recovery secret used when the blob was created."
 			},
 			{
 				"name": "openSealedRecovery.blob",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Encrypted recovery blob to authenticate and open."
 			}
 		],
 		"outputs": [
 			{
 				"name": "newRecoverySecret",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "Fresh random 32-byte recovery secret."
 			},
 			{
 				"name": "sealedRecovery",
-				"type": "Promise<string>"
+				"type": "Promise<string>",
+				"description": "Encrypted recovery device payload and the metadata needed to open it."
 			},
 			{
 				"name": "openSealedRecovery",
-				"type": "Promise<SealedDeviceKeys>"
+				"type": "Promise<SealedDeviceKeys>",
+				"description": "Recovered device identity with private keys imported as non-extractable."
 			}
 		],
 		"errors": [
 			{
 				"name": "SealedError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The secret length is invalid, the recovery keys are unavailable for export, or the secret cannot authenticate the blob."
 			}
 		],
 		"errorStatus": "unknown",
@@ -66,7 +74,8 @@
 				"outputs": [
 					{
 						"name": "newRecoverySecret",
-						"type": "Uint8Array"
+						"type": "Uint8Array",
+						"description": "Fresh random 32-byte recovery secret."
 					}
 				],
 				"errors": [],
@@ -78,18 +87,21 @@
 					{
 						"name": "sealedRecovery.secret",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "Recovery secret used to encrypt the recovery device's private keys."
 					},
 					{
 						"name": "sealedRecovery.device",
 						"type": "SealedDeviceKeys",
-						"required": true
+						"required": true,
+						"description": "Recovery device identity and extractable private keys."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedRecovery",
-						"type": "Promise<string>"
+						"type": "Promise<string>",
+						"description": "Encrypted recovery device payload and the metadata needed to open it."
 					}
 				],
 				"errors": [],
@@ -101,18 +113,21 @@
 					{
 						"name": "openSealedRecovery.secret",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "Recovery secret used when the blob was created."
 					},
 					{
 						"name": "openSealedRecovery.blob",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Encrypted recovery blob to authenticate and open."
 					}
 				],
 				"outputs": [
 					{
 						"name": "openSealedRecovery",
-						"type": "Promise<SealedDeviceKeys>"
+						"type": "Promise<SealedDeviceKeys>",
+						"description": "Recovered device identity with private keys imported as non-extractable."
 					}
 				],
 				"errors": [
