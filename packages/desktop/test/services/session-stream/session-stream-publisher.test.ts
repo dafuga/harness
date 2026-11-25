@@ -74,9 +74,12 @@ test('orders binary chunks and consumes a counter even if delivery fails', async
 		throw new Error('ambiguous delivery');
 	});
 	const publisher = new SessionStreamPublisherService(keys, 'run', transport);
-	const output = new Uint8Array(128 * 1024 + 1).fill(231);
+	const output = Buffer.alloc(128 * 1024 + 1, 231);
+	const expected = Uint8Array.from(output);
 	await expect(publisher.publishOutput(Uint8Array.of(3))).rejects.toThrow('ambiguous delivery');
-	await Promise.all([publisher.publishOutput(output), publisher.publishOutput(Uint8Array.of(7))]);
+	const sending = publisher.publishOutput(output);
+	output.fill(0);
+	await Promise.all([sending, publisher.publishOutput(Uint8Array.of(7))]);
 	const headers = frames.map(sealedFrameHeader);
 	const key = await sealedStreamKey(keys, headers[0].streamId);
 	expect(headers.map(({ counter }) => counter)).toEqual([0n, 1n, 2n, 3n]);
@@ -89,7 +92,7 @@ test('orders binary chunks and consumes a counter even if delivery fails', async
 	);
 	expect(plain).toEqual([
 		Uint8Array.of(3),
-		output.slice(0, -1),
+		expected.slice(0, -1),
 		Uint8Array.of(231),
 		Uint8Array.of(7)
 	]);

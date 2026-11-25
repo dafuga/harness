@@ -16,6 +16,8 @@ import type {
 	SessionStreamTransport
 } from './SessionStreamPublisherService.types';
 
+import { SessionPublishError } from './SessionPublishError';
+
 const chunkBytes = 128 * 1024;
 
 /** One run on one enrolled device. Reopening a run starts a fresh live stream. */
@@ -46,7 +48,7 @@ export class SessionStreamPublisherService {
 	}
 
 	publishOutput(bytes: Uint8Array): Promise<void> {
-		const data = bytes.slice();
+		const data = Uint8Array.from(bytes);
 		return this.enqueue(async () => {
 			if (!data.length) return;
 			const key = await (this.streamKey ??= sealedStreamKey(this.keys, this.streamId));
@@ -67,7 +69,7 @@ export class SessionStreamPublisherService {
 	/** The caller supplies a stable segment index for retries and history ordering. */
 	publishTranscriptSegment(index: number, bytes: Uint8Array): Promise<void> {
 		if (!Number.isSafeInteger(index) || index < 0 || bytes.length > chunkBytes)
-			return Promise.reject(new Error('Invalid transcript segment.'));
+			return Promise.reject(new SessionPublishError('Invalid transcript segment.'));
 		const data = toBase64Url(bytes);
 		return this.enqueue(async () => {
 			await this.publishRecord('transcript', JSON.stringify([this.runId, index]), {
@@ -92,13 +94,14 @@ export class SessionStreamPublisherService {
 		const objectId = await sealedObjectId(this.keys, kind, id);
 		const address = toBase64Url(objectId);
 		const revision = (await this.transport.readRevision(scope, address)) + 1n;
-		if (revision > BigInt(Number.MAX_SAFE_INTEGER)) throw new Error('Session revision exhausted.');
+		if (revision > BigInt(Number.MAX_SAFE_INTEGER))
+			throw new SessionPublishError('Session revision exhausted.');
 		const envelope = await sealedRecord(this.keys, { objectId, revision }, value);
 		await this.transport.putObject(scope, address, envelope);
 	}
 
 	private enqueue(operation: () => Promise<void>): Promise<void> {
-		if (this.closed) return Promise.reject(new Error('Session publisher is closed.'));
+		if (this.closed) return Promise.reject(new SessionPublishError('Session publisher is closed.'));
 		const result = this.pending.then(operation);
 		this.pending = result.catch(() => undefined);
 		return result;

@@ -83,7 +83,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "SessionPublishError",
 				"type": "thrown"
 			}
 		],
@@ -193,6 +193,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.service.session-stream-session-publish-error",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "remote.function.networking-security-sealed-frame",
 			"via": "import",

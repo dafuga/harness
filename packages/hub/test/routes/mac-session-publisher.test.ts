@@ -1,4 +1,5 @@
 import { expect, test, vi } from 'vitest';
+import type { ClientOptions, WebSocket as WebSocketClient } from 'ws';
 import { startSync } from '../support/syncFixture';
 import { storedByObject, storedObjects, storedRows } from '../support/syncCapture';
 import { expectNoPlaintext } from '../../../remote/test/support/plaintextCanary';
@@ -29,10 +30,10 @@ const runId = 'local private run identifier';
 const output = 'session output canary';
 
 vi.mock('ws', async (load) => {
-	const { WebSocket } = await load<typeof import('ws')>();
+	const { WebSocket } = await load<{ WebSocket: typeof WebSocketClient }>();
 	return {
 		WebSocket: class extends WebSocket {
-			constructor(url: URL, options: import('ws').ClientOptions) {
+			constructor(url: URL, options: ClientOptions) {
 				expect(url.href).toBe('wss://hub.example.test/api/sync/v1/live');
 				expect(options.followRedirects).toBe(false);
 				expect(options.headers?.Authorization).toBe(`Bearer ${bearer}`);

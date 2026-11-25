@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.service.session-stream-session-sync-transport",
+	"uid": "u_sfqm2yuzvp",
 	"kind": "service",
 	"title": "SessionSyncTransport",
 	"responsibility": "Owns the SessionSyncTransport service workflow.",
@@ -76,7 +77,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "SessionPublishError",
 				"type": "thrown"
 			}
 		],
@@ -104,7 +105,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "SessionPublishError",
 						"type": "thrown"
 					}
 				],
@@ -137,7 +138,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "SessionPublishError",
 						"type": "thrown"
 					}
 				],
@@ -192,7 +193,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "SessionPublishError",
 						"type": "thrown"
 					}
 				],
@@ -201,6 +202,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.service.session-stream-session-publish-error",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.service.session-stream-session-stream-publisher",
 			"via": "import",
