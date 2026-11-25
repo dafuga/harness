@@ -40,8 +40,8 @@ export interface TrackerManagedLaunchConfig {
 		codex: string;
 		claude: string;
 		profile: string;
-		/** Opt-in pilot: default-deny egress for native launches. Omitted keeps open access. */
-		egress?: TrackerEgressPolicy;
+		/** Opt-in pilot: default-deny egress for the listed Tracker items only; others keep open access. */
+		egress?: { items: readonly string[]; policy: TrackerEgressPolicy };
 	};
 	docker?: { harness: string; image: string; profile: string };
 }

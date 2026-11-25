@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import { isAbsolute } from 'node:path';
 import { z } from 'zod';
+import { trackerEgressPolicy } from '../../../utils/projects-sessions/trackerEgressPolicy';
 
 const absolutePath = z.string().refine(isAbsolute);
 const driver = absolutePath;
@@ -44,6 +45,24 @@ const launchPolicy = {
 	),
 	due: z.literal(true).optional()
 };
+const egressHost = z.string().trim().min(1).max(253);
+const egressPilot = z
+	.strictObject({
+		items: z
+			.array(z.string().regex(/^[a-z0-9]{10}$/))
+			.min(1)
+			.max(20),
+		trackerHosts: z.array(egressHost).min(1).max(20),
+		projectHosts: z.array(egressHost).max(50).optional()
+	})
+	.transform(({ items, ...hosts }, ctx) => {
+		try {
+			return { items, policy: trackerEgressPolicy(hosts) };
+		} catch (error) {
+			ctx.addIssue({ code: 'custom', message: (error as Error).message });
+			return z.NEVER;
+		}
+	});
 const managedLauncher = z
 	.strictObject({
 		tmux: absolutePath,
@@ -51,7 +70,12 @@ const managedLauncher = z
 		trackerBinDirectory: absolutePath,
 		opsWorkdir: absolutePath.optional(),
 		native: z
-			.strictObject({ codex: absolutePath, claude: absolutePath, profile: absolutePath })
+			.strictObject({
+				codex: absolutePath,
+				claude: absolutePath,
+				profile: absolutePath,
+				egress: egressPilot.optional()
+			})
 			.optional(),
 		docker: z
 			.strictObject({

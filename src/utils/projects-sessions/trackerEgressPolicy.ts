@@ -28,6 +28,9 @@ export const TRACKER_EGRESS_BASELINE_HOSTS = [
 	'claude.ai'
 ] as const;
 
+/** The Tracker CLI talks to its node-local service here; sessions need it to report progress. */
+const TRACKER_LOCAL_HOST = '127.0.0.1';
+
 const HOSTNAME = /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/u;
 
 /**
@@ -37,12 +40,23 @@ const HOSTNAME = /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,6
 export function trackerEgressPolicy(input: TrackerEgressPolicyInput): TrackerEgressPolicy {
 	if (input.trackerHosts.length === 0)
 		throw new TypeError('The egress pilot needs at least one Tracker callback host');
-	const extra = [...input.trackerHosts, ...(input.projectHosts ?? [])].map(exactHost);
+	const extra = [
+		...input.trackerHosts.map((host) => exactHost(host, true)),
+		...(input.projectHosts ?? []).map((host) => exactHost(host, false))
+	];
 	return { hosts: [...new Set([...TRACKER_EGRESS_BASELINE_HOSTS, ...extra])].sort() };
 }
 
-function exactHost(raw: string): string {
+/** Tailnet nodes are reached by address, so Tracker hosts may be exact 100.64.0.0/10 addresses. */
+function isTailnetAddress(host: string): boolean {
+	if (isIP(host) !== 4) return false;
+	const [first, second] = host.split('.').map(Number);
+	return first === 100 && second >= 64 && second <= 127;
+}
+
+function exactHost(raw: string, allowTailnet: boolean): string {
 	const host = raw.trim().toLowerCase();
+	if (allowTailnet && isTailnetAddress(host)) return host;
 	if (isIP(host) !== 0 || !HOSTNAME.test(host))
 		throw new TypeError(`Egress hosts must be exact DNS names without wildcards or ports: ${raw}`);
 	return host;
@@ -53,7 +67,9 @@ function exactHost(raw: string): string {
  * proxy covers Codex-started shell children; it is not a substitute for host-level enforcement.
  */
 export function codexEgressArguments(policy: TrackerEgressPolicy): string[] {
-	const domains = Object.fromEntries(policy.hosts.map((host) => [host, 'allow']));
+	const domains = Object.fromEntries(
+		[...policy.hosts, TRACKER_LOCAL_HOST].map((host) => [host, 'allow'])
+	);
 	return [
 		'--enable',
 		'network_proxy',
@@ -65,6 +81,8 @@ export function codexEgressArguments(policy: TrackerEgressPolicy): string[] {
 		'permissions.tracker-egress.network.enabled=true',
 		'-c',
 		'permissions.tracker-egress.network.mode="full"',
+		'-c',
+		'permissions.tracker-egress.network.allow_local_binding=true',
 		'-c',
 		`permissions.tracker-egress.network.domains=${tomlInlineTable(domains)}`
 	];

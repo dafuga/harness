@@ -5,6 +5,7 @@ import {
 	codexEgressArguments,
 	trackerEgressPolicy
 } from '../../../src/utils/projects-sessions/trackerEgressPolicy';
+import { trackerHostEffectsSchema } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema';
 import { trackerManagedProviderCommand } from '../../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedProviderCommands';
 
 const policy = trackerEgressPolicy({
@@ -47,6 +48,8 @@ test('renders a Codex profile that denies unlisted hosts by default and keeps th
 	expect(args).toContain('permissions.tracker-egress.network.mode="full"');
 	expect(args.join(' ')).toContain('"hub.example.com"="allow"');
 	expect(args.join(' ')).not.toContain('"deny"');
+	expect(args).toContain('permissions.tracker-egress.network.allow_local_binding=true');
+	expect(args.join(' ')).toContain('"127.0.0.1"="allow"');
 	expect(args).not.toContain('--dangerously-bypass-approvals-and-sandbox');
 });
 
@@ -86,7 +89,7 @@ test('native launches without a policy keep the November 23 open-access commands
 });
 
 test('native launches with a policy drop the Codex sandbox bypass and add the allowlist', () => {
-	const native = { ...base, egress: policy };
+	const native = { ...base, egress: { items: ['abc123def4'], policy } };
 	const codex = trackerManagedProviderCommand({ native }, request('codex'), '/b.md', 'darwin');
 	expect(codex?.argv).not.toContain('--dangerously-bypass-approvals-and-sandbox');
 	expect(codex?.argv).toEqual(
@@ -94,4 +97,48 @@ test('native launches with a policy drop the Codex sandbox bypass and add the al
 	);
 	const claude = trackerManagedProviderCommand({ native }, request('claude'), '/b.md', 'darwin');
 	expect(claude?.argv).toEqual(expect.arrayContaining(claudeEgressArguments(policy)));
+});
+
+test('native launches for items outside the pilot keep open access even when a policy exists', () => {
+	const native = { ...base, egress: { items: ['zzzzzzzzzz'], policy } };
+	const codex = trackerManagedProviderCommand({ native }, request('codex'), '/b.md', 'darwin');
+	expect(codex?.argv).toContain('--dangerously-bypass-approvals-and-sandbox');
+	const claude = trackerManagedProviderCommand({ native }, request('claude'), '/b.md', 'darwin');
+	expect(claude?.argv).not.toContain('--settings');
+});
+
+const active = (egress: unknown) => ({
+	mode: 'active',
+	checkpoint: 'pilot',
+	launch: {
+		managed: {
+			tmux: '/usr/bin/tmux',
+			stateDirectory: '/state',
+			trackerBinDirectory: '/bin',
+			native: { codex: '/c', claude: '/cl', profile: '/p', egress }
+		},
+		repositories: {}
+	}
+});
+
+test('launcher config accepts a pilot policy and fails closed on bad hosts or items', () => {
+	const hosts = { items: ['abc123def4'], trackerHosts: ['daniel-primary-mbp.example.ts.net'] };
+	const ok = trackerHostEffectsSchema.safeParse(active(hosts));
+	expect(ok.success).toBe(true);
+	for (const bad of [
+		{ ...hosts, trackerHosts: ['*.example.com'] },
+		{ ...hosts, projectHosts: ['10.0.0.1'] },
+		{ ...hosts, items: [] },
+		{ ...hosts, extra: true }
+	])
+		expect(trackerHostEffectsSchema.safeParse(active(bad)).success).toBe(false);
+});
+
+test('Tracker hosts may be exact tailnet addresses, project hosts and other addresses may not', () => {
+	expect(trackerEgressPolicy({ trackerHosts: ['100.69.65.18'] }).hosts).toContain('100.69.65.18');
+	for (const host of ['100.63.0.1', '100.128.0.1', '10.0.0.5', '8.8.8.8'])
+		expect(() => trackerEgressPolicy({ trackerHosts: [host] })).toThrow(/exact DNS names/u);
+	expect(() =>
+		trackerEgressPolicy({ trackerHosts: ['hub.example.com'], projectHosts: ['100.69.65.18'] })
+	).toThrow(/exact DNS names/u);
 });
