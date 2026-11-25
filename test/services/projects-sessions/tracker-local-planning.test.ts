@@ -7,6 +7,10 @@ import { TrackerPersistenceService } from '../../../src/services/projects-sessio
 test('projects and journals stage artifacts and sequential promotions', async () => {
 	const { id, item, request, stage, artifact, store } = planningFixture();
 	expect(await (await request(item)).json()).toMatchObject({ stage: 'idea' });
+	const created = await (
+		await request('/items', 'POST', { title: 'Add a project dashboard', later: true })
+	).json();
+	expect(created).toMatchObject({ kind: 'task', stage: 'idea' });
 	expect((await stage('design')).status).toBe(409);
 	expect((await stage('unknown')).status).toBe(400);
 	expect(
@@ -39,7 +43,9 @@ test('projects and journals stage artifacts and sequential promotions', async ()
 	expect(await (await request('/items?stage=build&limit=1')).json()).toMatchObject([
 		{ id, stage: 'build' }
 	]);
-	expect(await (await request('/items?stage=idea')).json()).toEqual([]);
+	expect(await (await request('/items?stage=idea')).json()).toMatchObject([
+		{ id: created.id, stage: 'idea' }
+	]);
 	expect((await request('/items?stage=wrong')).status).toBe(400);
 	expect(await (await request('/digest')).json()).toMatchObject({
 		due_today: [{ id, stage: 'build' }]

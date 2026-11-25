@@ -135,6 +135,17 @@ for (const viewport of viewports) {
 		expect(close!.y).toBeLessThan(title!.y + title!.height);
 		expect(await dialog.evaluate((el) => getComputedStyle(el).borderTopWidth)).toBe('1px');
 		await capture(page, testInfo, 'item-detail', viewport);
+		const planning = dialog.getByRole('region', { name: 'Planning stages' });
+		await expect(planning.locator('[aria-current=step]')).toContainText('Full design');
+		await expect(planning.getByText('Promoted by fixture-planner', { exact: false })).toBeVisible();
+		await expect(
+			planning.getByText('Show the next available window.', { exact: false })
+		).toBeVisible();
+		await expect(planning.getByRole('link', { name: 'Dashboard design' })).toHaveAttribute(
+			'href',
+			'https://example.test/dashboard.png'
+		);
+		await expect(planning.getByText('No artifacts yet.')).toHaveCount(3);
 		await page.keyboard.press('Escape');
 		await expect(dialog).toHaveCount(0);
 		await expect(control).toBeFocused();

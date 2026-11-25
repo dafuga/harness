@@ -149,15 +149,47 @@ describe('readProjectOverview', () => {
 	);
 
 	it('keeps secrets, deleted, sensitive and unmapped records out of the snapshot', async () => {
-		const { fetcher } = syntheticTrackerFetch();
+		const stage = 'design';
+		const { fetcher } = syntheticTrackerFetch({
+			items: jsonReply(
+				syntheticItems().map((item) => ({
+					...item,
+					stage,
+					planning: {
+						artifacts: {
+							design: {
+								summary: item.sensitive
+									? 'Sensitive design document'
+									: `Use mock data ${SECRET_NOTE_TOKEN}`
+							}
+						},
+						promotions: []
+					}
+				}))
+			)
+		});
 
 		const snapshot = await readProjectOverview(fetcher, NOW);
 		const text = JSON.stringify(snapshot);
 
 		expect(snapshot.status).toBe('ready');
 		const hidden = [SECRET_NOTE_TOKEN, 'example.invalid', 'wrong-project', 'secret thing'];
-		for (const leak of [...hidden, 'Private draft', 'Deleted plan', 'No project']) {
+		for (const leak of [
+			...hidden,
+			'Private draft',
+			'Deleted plan',
+			'No project',
+			'Sensitive design document'
+		]) {
 			expect(text).not.toContain(leak);
 		}
+		const item =
+			snapshot.status === 'ready'
+				? snapshot.projects.find(({ agent }) => agent === 'alpha-app')?.items[0]
+				: undefined;
+		expect(item).toMatchObject({
+			stage,
+			planning: { artifacts: { design: { summary: 'Use mock data [redacted]' } } }
+		});
 	});
 });

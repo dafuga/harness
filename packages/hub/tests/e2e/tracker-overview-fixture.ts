@@ -39,7 +39,31 @@ function item(
 	return { id, title, status, updatedAt: at, due: null, live, stale: false };
 }
 
-const cutover = item('SYN-1', 'Confirm the cutover window', 'in_progress');
+const cutover = {
+	...item('SYN-1', 'Confirm the cutover window', 'in_progress'),
+	stage: 'design' as const,
+	planning: {
+		artifacts: {
+			design: {
+				summary: 'Review the cutover screens.',
+				pages: [
+					{
+						name: 'Cutover dashboard',
+						states: { empty: 'Show the next available window.' },
+						links: [
+							{
+								label: 'Dashboard design',
+								url: 'https://example.test/dashboard.png',
+								kind: 'image' as const
+							}
+						]
+					}
+				]
+			}
+		},
+		promotions: [{ stage: 'design' as const, by: 'fixture-planner', at }]
+	}
+};
 const audit = item('SYN-2', 'Rotate the audit key', 'blocked');
 const docs = item('SYN-3', 'Draft the release notes', 'in_progress', true);
 const notes = item('SYN-4', 'Summarise the field notes', 'open');

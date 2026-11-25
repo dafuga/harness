@@ -6,7 +6,8 @@
 	"units": [
 		"hub.page.tracker-overview",
 		"reports.component.projects-sessions-project-overview-project-overview",
-		"reports.component.projects-sessions-project-overview-project-overview-card"
+		"reports.component.projects-sessions-project-overview-project-overview-card",
+		"reports.component.projects-sessions-tracker-planning-details"
 	],
 	"states": [
 		{
@@ -57,11 +58,12 @@
 		},
 		{
 			"id": "item-detail",
-			"title": "Open item shows the read-only detail and returns focus on close",
+			"title": "Open item shows planning stages, populated and empty artifacts, and returns focus",
 			"coverage": "required",
 			"units": [
 				"hub.page.tracker-overview",
-				"reports.component.projects-sessions-project-overview-project-overview"
+				"reports.component.projects-sessions-project-overview-project-overview",
+				"reports.component.projects-sessions-tracker-planning-details"
 			]
 		}
 	],
