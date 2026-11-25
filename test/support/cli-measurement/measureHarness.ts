@@ -1,6 +1,7 @@
 import type { Input, Runner } from './measureHarness.types';
 import { pluginMeasuredUnits } from './pluginMeasuredUnits';
 import { apiMeasuredUnits, apiWorkloadArgs } from './apiMeasuredUnits';
+import { cliWorkloadScope, securityMeasuredWorkloads } from './securityMeasuredWorkloads';
 import { existsSync } from 'node:fs';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -11,7 +12,6 @@ import {
 	recordCapture
 } from '../../../src/utils/reports-media/record-capture/recordCapture';
 import type { CommandResult } from '../cli';
-
 /** Observe successful standard CLI workloads without changing their output or verification context. */
 export async function measureHarness(input: Input, run: Runner): Promise<CommandResult> {
 	const units = measuredUnits(input.args).filter((unit) =>
@@ -48,7 +48,7 @@ export async function measureHarness(input: Input, run: Runner): Promise<Command
 function measuredUnits(args: string[]): string[] {
 	if (args[0] === 'api') return apiMeasuredUnits(args);
 	if (args[0] === 'plugin') return pluginMeasuredUnits(args);
-	const workload = measuredWorkloads[args.slice(0, 2).join(':')];
+	const workload = measuredWorkloads[cliWorkloadScope(args).join(':')];
 	if (workload) return workload;
 	if (args[0] === 'new') return ['template.project-guidance'];
 	if (args[0] === 'history' && args[1] === 'build')
@@ -91,6 +91,7 @@ const benchmarkRunUnits = [
 ];
 
 const measuredWorkloads: Record<string, string[]> = {
+	...securityMeasuredWorkloads,
 	'task:orchestrate': [
 		'command.task',
 		'command.agents-providers-task-orchestration',
@@ -183,8 +184,7 @@ function recordUsage(units: string[], args: string[], duration: number, usage: s
 	if (!resident) throw new Error('The CLI workload did not report peak RSS.');
 	const memory = Number(resident[1]) * (process.platform === 'darwin' ? 1 : 1024);
 	const phase = args.includes('--phase') ? args[args.indexOf('--phase') + 1] : '';
-	const scope = args.slice(0, args[0] === 'plugin' && args[1] !== 'list' ? 3 : 2);
-	const workload = [...scope, phase].filter(Boolean).join('-');
+	const workload = [...cliWorkloadScope(args), phase].filter(Boolean).join('-');
 	const measurements = units.flatMap((unit) => {
 		const context = { unit, workload, target: 'process', samples: 1 };
 		return [

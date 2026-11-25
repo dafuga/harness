@@ -19,7 +19,8 @@
 			"CommitTreeAdapter.open",
 			"CommitTreeAdapter.list",
 			"CommitTreeAdapter.read",
-			"CommitFileNotFoundError"
+			"CommitFileNotFoundError",
+			"PendingRead"
 		]
 	},
 	"contract": {
@@ -38,6 +39,11 @@
 				"required": true,
 				"description": "Revision expression resolved with git rev-parse --verify --quiet after appending ^{commit}. It must resolve to a commit in the selected repository.",
 				"examples": ["HEAD"]
+			},
+			{
+				"name": "CommitTreeAdapter.open.signal",
+				"type": "AbortSignal",
+				"required": false
 			},
 			{
 				"name": "CommitTreeAdapter.read.path",
@@ -103,6 +109,11 @@
 						"required": true,
 						"description": "Revision expression resolved with git rev-parse --verify --quiet after appending ^{commit}. It must resolve to a commit in the selected repository.",
 						"examples": ["HEAD"]
+					},
+					{
+						"name": "CommitTreeAdapter.open.signal",
+						"type": "AbortSignal",
+						"required": false
 					}
 				],
 				"outputs": [

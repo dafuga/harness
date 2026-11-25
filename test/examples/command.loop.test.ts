@@ -4,6 +4,8 @@ import { registerLoopCommand } from '../../src/cli/program/loop';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { expect } from '../verificationExpect';
 
+const expectedSecurityCommands = ['init', 'scan', 'revalidate', 'prepare-repair'];
+
 test('Registers the loop command tree', () => {
 	const program = new Command().name('harness');
 	const returnValue = registerLoopCommand(program);
@@ -21,6 +23,7 @@ test('Registers the loop command tree', () => {
 		'close <loop>',
 		'siblings [loop]',
 		'review-bugs <base>',
+		'security',
 		'record <loop>',
 		'create <name>',
 		'add <loop> <step>',
@@ -34,6 +37,9 @@ test('Registers the loop command tree', () => {
 	expect(loopCommand?.name()).toBe('loop');
 	expect(returnValue).toBeUndefined();
 	expect(subcommands).toEqual(expectedSubcommands);
+	const security = loopCommand?.commands.find((command) => command.name() === 'security');
+	const securityCommands = security?.commands.map((command) => command.name());
+	expect(securityCommands).toEqual(expectedSecurityCommands);
 	recordExampleCases(
 		{
 			unitId: 'command.loop',
@@ -49,7 +55,8 @@ test('Registers the loop command tree', () => {
 				output: {
 					returnValue: returnValue ?? null,
 					command: loopCommand?.name() ?? null,
-					subcommands
+					subcommands,
+					securityCommands
 				}
 			}
 		]

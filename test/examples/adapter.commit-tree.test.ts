@@ -95,7 +95,8 @@ test('Reads contents from the selected commit', async () => {
 		commitFile(repo, 'docs/guide.md', 'Guide from the first commit.\n');
 		commitFile(repo, 'docs/guide.md', 'Guide from the current commit.\n');
 
-		const adapter = await CommitTreeAdapter.open(repo.root, 'HEAD^');
+		const deadline = new AbortController();
+		const adapter = await CommitTreeAdapter.open(repo.root, 'HEAD^', deadline.signal);
 		const contents = await adapter.read('docs/guide.md');
 		expect(contents).toBe('Guide from the first commit.\n');
 
@@ -106,6 +107,10 @@ test('Reads contents from the selected commit', async () => {
 			readError = error;
 		}
 		expect(readError).toMatchObject({ name: 'CommitFileNotFoundError' });
+		const timedOutRead = adapter.read('docs/guide.md');
+		const reason = new Error('Committed source deadline reached');
+		deadline.abort(reason);
+		await expect(timedOutRead).rejects.toBe(reason);
 
 		recordExampleCases(
 			{

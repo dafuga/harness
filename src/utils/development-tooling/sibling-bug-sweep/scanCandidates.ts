@@ -17,22 +17,32 @@ export async function scanCandidates(
 		ranges?: Map<string, SourceRange[]>;
 		origin?: { path: string; line: number };
 		reviewLimit: number;
+		signal?: AbortSignal;
+		checkDeadline?: () => void;
 	}
 ) {
-	const files = await committedSourcePaths(options.root, tree.revision, options.ranges);
+	const files = await committedSourcePaths(
+		options.root,
+		tree.revision,
+		options.ranges,
+		options.signal
+	);
 	const paths = files.filter(({ bytes }) => bytes <= maxSourceLength).map(({ path }) => path);
 	const candidates: CandidateContext[] = [];
 	const skipped = files.filter(({ bytes }) => bytes > maxSourceLength).map(({ path }) => path);
 	let scannedFiles = 0;
 	for (let index = 0; index < paths.length; index += 24) {
+		options.signal?.throwIfAborted();
 		const batch = paths.slice(index, index + 24);
 		const texts = await Promise.all(batch.map((path) => tree.read(path)));
 		batch.forEach((path, offset) => {
+			options.checkDeadline?.();
 			const source = texts[offset];
 			if (source.includes('\0')) skipped.push(path);
 			else {
 				scannedFiles++;
-				candidates.push(...fileCandidates(path, source, bugClass, options.ranges?.get(path)));
+				for (const candidate of fileCandidates(path, source, bugClass, options.ranges?.get(path)))
+					candidates.push(candidate);
 			}
 		});
 	}

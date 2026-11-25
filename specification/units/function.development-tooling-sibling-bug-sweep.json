@@ -22,9 +22,19 @@
 			"src/utils/development-tooling/sibling-bug-sweep/sourceLayout.ts",
 			"src/utils/development-tooling/siblingBugSweep.ts",
 			"src/utils/development-tooling/siblingBugSweep.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/initSecurityReview.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/loopSiblingReport.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/prepareSecurityRepair.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/repairSibling.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/repairSibling.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/scanSecurityClass.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/scanSecurityClass.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewBudget.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewBudget.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewSchemas.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewSchemas.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewer.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewer.types.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/siblingRepairProof.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/siblingRepairProof.types.ts"
 		],
@@ -47,6 +57,7 @@
 			"registeredBugClass",
 			"recordBugClass",
 			"reviewCandidates",
+			"redactSource",
 			"reviewKnownClasses",
 			"scanCandidates",
 			"SourceRange",
@@ -61,14 +72,39 @@
 			"BugSweepReport",
 			"SweepReviewInput",
 			"BugEvaluator",
+			"initSecurityReview",
 			"beginSiblingReport",
 			"requireSiblingReport",
 			"siblingReportComplete",
+			"prepareSecurityRepair",
 			"repairSiblings",
 			"RepairOptions",
 			"RepairDependencies",
 			"SiblingRepairResult",
 			"RepairContext",
+			"scanSecurityClass",
+			"SecurityScanInput",
+			"SecurityReviewBudget",
+			"SecurityReviewBudget.constructor",
+			"SecurityReviewBudget.checkTime",
+			"SecurityReviewBudget.timeExpired",
+			"SecurityReviewBudget.reserve",
+			"SecurityReviewBudget.summary",
+			"SecurityReviewLimits",
+			"maxSecurityCandidates",
+			"securityClassesPath",
+			"attackSurfacePath",
+			"securityClassesSchema",
+			"securityScanSchema",
+			"securityDecisionSchema",
+			"securityDecisionsSchema",
+			"securityReviewSchema",
+			"SecurityScanReport",
+			"SecurityReviewReport",
+			"SecurityDecision",
+			"revalidateSecurityScan",
+			"readSecurityJson",
+			"SecurityReviewer",
 			"enableRepairProof",
 			"recordFailingRepair",
 			"recordPassingRepair",
@@ -95,6 +131,11 @@
 				"type": "Map<string, SourceRange[]>",
 				"required": false,
 				"description": "Optional map of source paths with changed line ranges to consider."
+			},
+			{
+				"name": "committedSourcePaths.signal",
+				"type": "AbortSignal",
+				"required": false
 			},
 			{
 				"name": "patternHits.path",
@@ -175,6 +216,11 @@
 				"description": "Evaluator model and maximum candidate sites to review."
 			},
 			{
+				"name": "redactSource.source",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "reviewKnownClasses.input",
 				"type": "SweepReviewInput",
 				"required": true,
@@ -200,7 +246,7 @@
 			},
 			{
 				"name": "scanCandidates.options",
-				"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; }",
+				"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; signal?: AbortSignal; checkDeadline?: () => void; }",
 				"required": true,
 				"description": "Repository path, optional diff ranges and original site, and the semantic review limit."
 			},
@@ -221,6 +267,11 @@
 				"type": "BugEvaluator",
 				"required": false,
 				"description": "Optional evaluator. Defaults to the authenticated Codex evaluator."
+			},
+			{
+				"name": "initSecurityReview.root",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "beginSiblingReport.root",
@@ -271,6 +322,26 @@
 				"description": "Scan with evaluator errors, skipped files, and any requested repair results."
 			},
 			{
+				"name": "prepareSecurityRepair.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "prepareSecurityRepair.reviewPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "prepareSecurityRepair.findingId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "prepareSecurityRepair.budget",
+				"type": "SecurityReviewBudget",
+				"required": true
+			},
+			{
 				"name": "repairSiblings.report",
 				"type": "BugSweepReport",
 				"required": true,
@@ -293,6 +364,56 @@
 				"type": "(results: SiblingRepairResult[]) => Promise<void>",
 				"required": false,
 				"description": "Optional callback to persist accumulated outcomes after each repair."
+			},
+			{
+				"name": "scanSecurityClass.input",
+				"type": "SecurityScanInput",
+				"required": true
+			},
+			{
+				"name": "scanSecurityClass.budget",
+				"type": "SecurityReviewBudget",
+				"required": true
+			},
+			{
+				"name": "SecurityReviewBudget.constructor.limits",
+				"type": "SecurityReviewLimits",
+				"required": true
+			},
+			{
+				"name": "SecurityReviewBudget.reserve.maximumMicrousd",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "revalidateSecurityScan.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "revalidateSecurityScan.scanFile",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "revalidateSecurityScan.reviewer",
+				"type": "SecurityReviewer",
+				"required": true
+			},
+			{
+				"name": "revalidateSecurityScan.budget",
+				"type": "SecurityReviewBudget",
+				"required": true
+			},
+			{
+				"name": "readSecurityJson.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readSecurityJson.signal",
+				"type": "AbortSignal",
+				"required": false
 			},
 			{
 				"name": "enableRepairProof.root",
@@ -499,6 +620,11 @@
 						"type": "Map<string, SourceRange[]>",
 						"required": false,
 						"description": "Optional map of source paths with changed line ranges to consider."
+					},
+					{
+						"name": "committedSourcePaths.signal",
+						"type": "AbortSignal",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -672,6 +798,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "redactSource",
+				"inputs": [
+					{
+						"name": "redactSource.source",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "redactSource",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "reviewKnownClasses",
 				"inputs": [
 					{
@@ -714,7 +858,7 @@
 					},
 					{
 						"name": "scanCandidates.options",
-						"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; }",
+						"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; signal?: AbortSignal; checkDeadline?: () => void; }",
 						"required": true,
 						"description": "Repository path, optional diff ranges and original site, and the semantic review limit."
 					}
@@ -773,6 +917,29 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "initSecurityReview",
+				"inputs": [
+					{
+						"name": "initSecurityReview.root",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "initSecurityReview",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -872,6 +1039,44 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "prepareSecurityRepair",
+				"inputs": [
+					{
+						"name": "prepareSecurityRepair.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "prepareSecurityRepair.reviewPath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "prepareSecurityRepair.findingId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "prepareSecurityRepair.budget",
+						"type": "SecurityReviewBudget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareSecurityRepair",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "repairSiblings",
 				"inputs": [
 					{
@@ -907,6 +1112,159 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanSecurityClass",
+				"inputs": [
+					{
+						"name": "scanSecurityClass.input",
+						"type": "SecurityScanInput",
+						"required": true
+					},
+					{
+						"name": "scanSecurityClass.budget",
+						"type": "SecurityReviewBudget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanSecurityClass",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecurityReviewBudget.checkTime",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.checkTime",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecurityReviewBudget.timeExpired",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.timeExpired",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecurityReviewBudget.reserve",
+				"inputs": [
+					{
+						"name": "SecurityReviewBudget.reserve.maximumMicrousd",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.reserve",
+						"type": "boolean"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SecurityReviewBudget.summary",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.summary",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "revalidateSecurityScan",
+				"inputs": [
+					{
+						"name": "revalidateSecurityScan.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "revalidateSecurityScan.scanFile",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "revalidateSecurityScan.reviewer",
+						"type": "SecurityReviewer",
+						"required": true
+					},
+					{
+						"name": "revalidateSecurityScan.budget",
+						"type": "SecurityReviewBudget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "revalidateSecurityScan",
+						"type": "Promise<SecurityReviewReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readSecurityJson",
+				"inputs": [
+					{
+						"name": "readSecurityJson.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readSecurityJson.signal",
+						"type": "AbortSignal",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "readSecurityJson",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -1012,7 +1370,31 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "SecurityReviewBudget.constructor",
+				"inputs": [
+					{
+						"name": "SecurityReviewBudget.constructor.limits",
+						"type": "SecurityReviewLimits",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -1042,6 +1424,11 @@
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-run-loop-evaluator-process",
 			"via": "import",
 			"origin": "derived"
 		},

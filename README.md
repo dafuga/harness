@@ -175,6 +175,12 @@ for confirmed findings or incomplete semantic review. Add it to a project loop
 as an evaluator when reviewing a candidate branch. Both commands accept
 `--project`, `--commit`, `--model`, and `--review-limit` (48 by default).
 
+For defensive security review, `harness loop security init` creates a repository
+attack-surface description and starter bug classes. Scan the committed files,
+revalidate the leads, and prepare a separate red/green loop for each confirmed
+finding. The [security review guide](specification/features/implemented/security-review.md)
+covers the commands and run limits.
+
 ## API access from the CLI
 
 `harness api` calls the same HTTP APIs as the app. It works from any directory;

@@ -10,9 +10,12 @@ const generated =
 export async function committedSourcePaths(
 	root: string,
 	revision: string,
-	ranges?: Map<string, SourceRange[]>
+	ranges?: Map<string, SourceRange[]>,
+	signal?: AbortSignal
 ) {
-	const output = await new GitAdapter(root).bytes(['ls-tree', '-rlz', '--full-tree', revision]);
+	const output = await new GitAdapter(root).bytes(['ls-tree', '-rlz', '--full-tree', revision], {
+		signal
+	});
 	return output
 		.toString('utf8')
 		.split('\0')

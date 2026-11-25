@@ -10,10 +10,21 @@
 	"owns": {
 		"source": [
 			"src/cli/program/loop.ts",
+			"src/cli/program/loopSecurity.ts",
+			"src/cli/program/loopSecurity.types.ts",
 			"src/cli/program/loopSiblings.ts",
 			"src/cli/program/loopSiblings.types.ts"
 		],
-		"symbols": ["registerLoopCommand", "registerLoopSiblingCommands", "SiblingFlags", "ReviewFlags"]
+		"symbols": [
+			"registerLoopCommand",
+			"registerLoopSecurityCommands",
+			"SecurityRunFlags",
+			"SecurityScanFlags",
+			"SecurityReviewFlags",
+			"registerLoopSiblingCommands",
+			"SiblingFlags",
+			"ReviewFlags"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,6 +34,11 @@
 				"type": "Command",
 				"required": true,
 				"description": "The Commander program that receives the `loop` command, which the function adds with `program.command('loop')`. The function keeps no reference to it, so it matters only while registration runs, and it must be a Commander `Command` because `.command()` is the only method the function calls on it."
+			},
+			{
+				"name": "registerLoopSecurityCommands.parent",
+				"type": "Command",
+				"required": true
 			},
 			{
 				"name": "registerLoopSiblingCommands.parent",
@@ -60,6 +76,24 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "registerLoopSecurityCommands",
+				"inputs": [
+					{
+						"name": "registerLoopSecurityCommands.parent",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerLoopSecurityCommands",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "registerLoopSiblingCommands",
