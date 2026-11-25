@@ -274,3 +274,19 @@ Wave 3: 9. Hub sealed cache and live Home (`d7ddya`,
 sessions (`pkkbnh`, `TrackerReplica*` sealed source); then latency
 measurements, the hub/spoke migration with backup and count/hash checks,
 and production deploys after Daniel's go.
+
+### iPhone session replica
+
+The phone keeps account session objects and a bounded live frame tail in a
+separate account database through the native Tracker replica store. It
+authenticates each envelope before accepting it, and advances its opaque server
+cursor in the same transaction as each accepted object. It opens saved transcript text locally
+before network catch-up. The bridge exposes session views, while credentials
+and scope keys stay in the native process. Sign-out closes the socket and
+purges the active account cache. The phone shows saved transcript chunks and the live tail separately. When
+a saved chunk identifies its stream and frame counter, the phone suppresses
+that same frame from the live tail while the chunk is displayed.
+
+The current relay has no session transcript read. Its native round trip and
+saved read can be timed using the transcript fixture text in a project read,
+with the fixture transport and host identified in the comparison.

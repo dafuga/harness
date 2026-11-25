@@ -189,7 +189,7 @@ function installPhoneAccount() {
 }
 
 /** A phone in the given state; its computer granted it the two local projects, with agents. */
-export async function remotePhoneFixture(page: Page, state = 'unpaired') {
+export async function remotePhoneFixture(page: Page, state = 'unpaired', sessions = false) {
 	const outbox = await projectFixture(page);
 	const options: PhoneOptions = {
 		state,
@@ -206,5 +206,43 @@ export async function remotePhoneFixture(page: Page, state = 'unpaired') {
 	await page.addInitScript(installPhoneRequests);
 	await page.addInitScript(installPhonePlugin);
 	await page.addInitScript(installPhoneAccount);
+	if (sessions) await page.addInitScript(installSealedSessions);
 	return outbox;
+}
+
+/** Synthetic native account cache for renderer coverage, independent of any paired computer. */
+function installSealedSessions() {
+	const { Capacitor } = window as unknown as PhoneHost;
+	const scope = 'AAAAAAAAAAAAAAAAAAAAAA';
+	const methods = {
+		list: () => ({
+			state: 'offline',
+			sessions: [{ scope, runId: 'run-fixture', status: 'running' }]
+		}),
+		transcript: ({ index }: { index: number }) => ({
+			data: index === 0 ? btoa('Saved session text') : null,
+			captured: index === 0 ? { stream: 'synthetic-stream', counter: '0' } : undefined
+		}),
+		live: () => ({
+			stream: 'synthetic-stream',
+			frames: [
+				{ counter: '0', data: btoa('Saved session text') },
+				{ counter: '1', data: btoa('Live fixture output') }
+			]
+		}),
+		stop: () => ({})
+	};
+	Capacitor.PluginHeaders.push({
+		name: 'HarnessSession',
+		methods: [
+			...Object.keys(methods).map((name) => ({ name, rtype: 'promise' })),
+			{ name: 'addListener' },
+			{ name: 'removeListener' }
+		]
+	});
+	const native = Capacitor.nativePromise;
+	Capacitor.nativePromise = async (plugin, method, input) =>
+		plugin === 'HarnessSession'
+			? methods[method as keyof typeof methods](input as { index: number })
+			: native(plugin, method, input);
 }

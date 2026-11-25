@@ -113,6 +113,8 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 async function readyRoute(page: Page, id: string) {
 	if (overviewPreviews.has(id))
 		await expect(page.getByText('Atlas', { exact: true })).toBeVisible();
+	if (id === 'desktop.page.projects-sessions-sessions')
+		await expect(page.getByRole('button', { name: 'Review the Orders workspace' })).toBeVisible();
 	if (publicDownloadPreview.has(id))
 		await expect(page.getByRole('link', { name: 'Download for Mac' }).first()).toBeVisible();
 	const headings: Record<string, string> = {

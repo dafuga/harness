@@ -3,6 +3,7 @@
 <!-- @harness-uid u_f5w3bdi732 -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { Capacitor, registerPlugin } from '@capacitor/core';
 	import { resolve } from '$app/paths';
 	import { onMount, setContext, type Snippet } from 'svelte';
 	import AccountSignIn from '../components/accounts-access/AccountSignIn.svelte';
@@ -11,7 +12,8 @@
 	import type {
 		Environment,
 		EnvironmentHost,
-		NativeAccountContext
+		NativeAccountContext,
+		SessionNativePlugin
 	} from '../models/development-tooling/Environment.types';
 	import { selectEnvironment } from '../lib/verification-evidence/select-environment/selectEnvironment';
 	import '../lib/styles/workspace.css';
@@ -102,7 +104,12 @@
 
 	onMount(() => {
 		const selected = selectEnvironment(window as unknown as EnvironmentHost);
-		environment = selected;
+		environment =
+			selected.kind === 'capacitor' &&
+			selected.account &&
+			Capacitor.isPluginAvailable('HarnessSession')
+				? { ...selected, sessions: registerPlugin<SessionNativePlugin>('HarnessSession') }
+				: selected;
 		document.documentElement.dataset.environment = selected.kind;
 		required =
 			selected.kind === 'capacitor' ||

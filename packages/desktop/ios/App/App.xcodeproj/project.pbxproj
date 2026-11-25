@@ -84,6 +84,17 @@
 		AFC9321B54A240FA8C43DBB9 /* DecisionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057229D7C1CA44DCB864A471 /* DecisionAlert.swift */; };
 		D7B5450B1594477CB62C549A /* DecisionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37133F1636C5417E9029A427 /* DecisionRouter.swift */; };
 		0275AA7497154C91BF8E5342 /* PushAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF17086A468489BB994C872 /* PushAlert.swift */; };
+		8A551A20E7C8A1EFF4B4A318 /* HarnessSessionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F0E054D3E03C014795E38C /* HarnessSessionPlugin.swift */; };
+		0FC7481A9534156D05A0C0F6 /* TrackerSealedAuthority.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0973F1B63F0961694ACBF /* TrackerSealedAuthority.swift */; };
+		06ABC1D6D5CB1C04F886D140 /* TrackerSealedGrantRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC98F845E18C3909CBA7674 /* TrackerSealedGrantRefresh.swift */; };
+		A4DCB62FF769E50CCF387627 /* TrackerSealedHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 856DEB3E7A085FCBB50A26BB /* TrackerSealedHub.swift */; };
+		77BC7319982EB1645477EFE6 /* TrackerSealedLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C75A069C2E0AA98DE92EA1B /* TrackerSealedLive.swift */; };
+		3C747F35B48DDADF55457267 /* TrackerSealedPull.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C68D503BF7C679B9782F1E5 /* TrackerSealedPull.swift */; };
+		CF6327F5EACA1EF852AA6391 /* TrackerSealedSessions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A653306C2A8713C19D1F30 /* TrackerSealedSessions.swift */; };
+		D648A3E7FCC6BD6651FAD682 /* TrackerReplicaSealed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01F47819052D5007F7569F6 /* TrackerReplicaSealed.swift */; };
+		CA1F2B57B6B4D6D2900E356D /* TrackerReplicaSealedFrames.swift in Sources */ = {isa = PBXBuildFile; fileRef = E217C8C6A024D6FE2C57B1B7 /* TrackerReplicaSealedFrames.swift */; };
+		60D65ED5E0D549A95E1269B2 /* TrackerReplicaSealedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722126C93A4CF10E856733D3 /* TrackerReplicaSealedRecord.swift */; };
+		83627D0756F2F94A5110207A /* TrackerReplicaSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E891EBBEC6533811089BE4D /* TrackerReplicaSessionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -166,6 +177,17 @@
 		057229D7C1CA44DCB864A471 /* DecisionAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/DecisionAlert.swift; sourceTree = "<group>"; };
 		37133F1636C5417E9029A427 /* DecisionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/DecisionRouter.swift; sourceTree = "<group>"; };
 		4BF17086A468489BB994C872 /* PushAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/PushAlert.swift; sourceTree = "<group>"; };
+		C2F0E054D3E03C014795E38C /* HarnessSessionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HarnessSessionPlugin.swift; sourceTree = "<group>"; };
+		E6C0973F1B63F0961694ACBF /* TrackerSealedAuthority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/TrackerSealedAuthority.swift; sourceTree = "<group>"; };
+		CAC98F845E18C3909CBA7674 /* TrackerSealedGrantRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/TrackerSealedGrantRefresh.swift; sourceTree = "<group>"; };
+		856DEB3E7A085FCBB50A26BB /* TrackerSealedHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/TrackerSealedHub.swift; sourceTree = "<group>"; };
+		1C75A069C2E0AA98DE92EA1B /* TrackerSealedLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/TrackerSealedLive.swift; sourceTree = "<group>"; };
+		2C68D503BF7C679B9782F1E5 /* TrackerSealedPull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/TrackerSealedPull.swift; sourceTree = "<group>"; };
+		70A653306C2A8713C19D1F30 /* TrackerSealedSessions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/TrackerSealedSessions.swift; sourceTree = "<group>"; };
+		A01F47819052D5007F7569F6 /* TrackerReplicaSealed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaSealed.swift; sourceTree = "<group>"; };
+		E217C8C6A024D6FE2C57B1B7 /* TrackerReplicaSealedFrames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaSealedFrames.swift; sourceTree = "<group>"; };
+		722126C93A4CF10E856733D3 /* TrackerReplicaSealedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaSealedRecord.swift; sourceTree = "<group>"; };
+		3E891EBBEC6533811089BE4D /* TrackerReplicaSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaSessionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +273,17 @@
 				74849CFCC184F740E095FC8B /* TrackerReplicaBackground.swift */,
 				CAD4918755FDABFA8250DAAC /* TrackerReplicaModels.swift */,
 				3FE28E0BAF4DD29CC245822D /* TrackerReplicaSQLite.swift */,
+				C2F0E054D3E03C014795E38C /* HarnessSessionPlugin.swift */,
+				E6C0973F1B63F0961694ACBF /* TrackerSealedAuthority.swift */,
+				CAC98F845E18C3909CBA7674 /* TrackerSealedGrantRefresh.swift */,
+				856DEB3E7A085FCBB50A26BB /* TrackerSealedHub.swift */,
+				1C75A069C2E0AA98DE92EA1B /* TrackerSealedLive.swift */,
+				2C68D503BF7C679B9782F1E5 /* TrackerSealedPull.swift */,
+				70A653306C2A8713C19D1F30 /* TrackerSealedSessions.swift */,
+				A01F47819052D5007F7569F6 /* TrackerReplicaSealed.swift */,
+				E217C8C6A024D6FE2C57B1B7 /* TrackerReplicaSealedFrames.swift */,
+				722126C93A4CF10E856733D3 /* TrackerReplicaSealedRecord.swift */,
+				3E891EBBEC6533811089BE4D /* TrackerReplicaSessionView.swift */,
 				BF2B61EA0D90CE974A2A5EDC /* TrackerReplicaStore.swift */,
 				DD52FB429F22D70824637ED3 /* TrackerReplicaOutbox.swift */,
 				588D145A5C198FBBE2C3453A /* TrackerReplicaWrites.swift */,
@@ -442,6 +475,17 @@
 				2EB68EA766483AC58514F47B /* TrackerReplicaBackground.swift in Sources */,
 				F2E64A12C68CCD8B38AC6CB9 /* TrackerReplicaModels.swift in Sources */,
 				8538B5A2F237765E6573D2C1 /* TrackerReplicaSQLite.swift in Sources */,
+				8A551A20E7C8A1EFF4B4A318 /* HarnessSessionPlugin.swift in Sources */,
+				0FC7481A9534156D05A0C0F6 /* TrackerSealedAuthority.swift in Sources */,
+				06ABC1D6D5CB1C04F886D140 /* TrackerSealedGrantRefresh.swift in Sources */,
+				A4DCB62FF769E50CCF387627 /* TrackerSealedHub.swift in Sources */,
+				77BC7319982EB1645477EFE6 /* TrackerSealedLive.swift in Sources */,
+				3C747F35B48DDADF55457267 /* TrackerSealedPull.swift in Sources */,
+				CF6327F5EACA1EF852AA6391 /* TrackerSealedSessions.swift in Sources */,
+				D648A3E7FCC6BD6651FAD682 /* TrackerReplicaSealed.swift in Sources */,
+				CA1F2B57B6B4D6D2900E356D /* TrackerReplicaSealedFrames.swift in Sources */,
+				60D65ED5E0D549A95E1269B2 /* TrackerReplicaSealedRecord.swift in Sources */,
+				83627D0756F2F94A5110207A /* TrackerReplicaSessionView.swift in Sources */,
 				BB2BC599687224C72E766A49 /* TrackerReplicaStore.swift in Sources */,
 				06D587CB7FC6B410746F8B24 /* TrackerReplicaOutbox.swift in Sources */,
 				D699CCB9AABD37B7EB869653 /* TrackerReplicaWrites.swift in Sources */,

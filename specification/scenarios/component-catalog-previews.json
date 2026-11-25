@@ -96,6 +96,7 @@
 		"desktop.page.harness-path",
 		"desktop.page.projects",
 		"desktop.page.projects-project-id-harness-path",
+		"desktop.page.projects-sessions-sessions",
 		"desktop.page.root",
 		"desktop.page.settings",
 		"desktop.page.tracker",
@@ -2045,6 +2046,12 @@
 			"title": "/projects/[projectId]/harness/[...path]",
 			"coverage": "required",
 			"units": ["desktop.page.projects-project-id-harness-path"]
+		},
+		{
+			"id": "desktop-page-projects-sessions-sessions",
+			"title": "Sessions",
+			"coverage": "required",
+			"units": ["desktop.page.projects-sessions-sessions"]
 		},
 		{
 			"id": "desktop-page-root",
@@ -8870,6 +8877,7 @@
 				"desktop-page-harness-path",
 				"desktop-page-projects",
 				"desktop-page-projects-project-id-harness-path",
+				"desktop-page-projects-sessions-sessions",
 				"desktop-page-root",
 				"desktop-page-settings",
 				"desktop-page-tracker",

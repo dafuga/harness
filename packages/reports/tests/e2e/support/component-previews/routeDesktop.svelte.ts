@@ -16,6 +16,10 @@ export const desktopRoutes: Record<string, { route: string; path: string }> = {
 	// No project is chosen yet: the gate lists the one the bridge remembers.
 	'desktop.page.root': { route: '/', path: '/' },
 	'desktop.page.projects': { route: '/projects', path: '/projects' },
+	'desktop.page.projects-sessions-sessions': {
+		route: '/(projects-sessions)/sessions',
+		path: '/sessions'
+	},
 	// An address that names no project; once read, the workspace names the project it shows.
 	'desktop.page.harness-path': { route: '/harness/[...path]', path: tip },
 	'desktop.page.projects-project-id-harness-path': {

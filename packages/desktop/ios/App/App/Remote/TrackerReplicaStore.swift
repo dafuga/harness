@@ -9,6 +9,7 @@ final class TrackerReplicaStore {
     private var scope: String?
     private var entered = false
     private var connection: TrackerReplicaSQLite?
+    private var sealedSchemaReady = false
 
     init(root: URL? = nil, now: @escaping () -> Date = Date.init) {
         self.now = now
@@ -20,6 +21,7 @@ final class TrackerReplicaStore {
         guard !entered || next != scope else { return }
         entered = true
         connection = nil
+        sealedSchemaReady = false
         scope = next
         for child in (try? files.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)) ?? [] {
             if child.lastPathComponent != next { try? files.removeItem(at: child) }
@@ -28,6 +30,7 @@ final class TrackerReplicaStore {
 
     func purge() {
         connection = nil
+        sealedSchemaReady = false
         scope = nil
         try? files.removeItem(at: root)
     }
@@ -133,5 +136,35 @@ extension TrackerReplicaStore {
             }
             try db.run("PRAGMA user_version = 1")
         }
+    }
+}
+
+extension TrackerReplicaStore {
+    func sealedDatabase() throws -> TrackerReplicaSQLite {
+        let db = try db()
+        if sealedSchemaReady { return db }
+        try db.run("CREATE TABLE IF NOT EXISTS sealed_cursor (scope TEXT PRIMARY KEY, seq INTEGER NOT NULL)")
+        try db.run("""
+            CREATE TABLE IF NOT EXISTS sealed_objects (
+                scope TEXT NOT NULL, id TEXT NOT NULL, epoch INTEGER NOT NULL, revision INTEGER NOT NULL,
+                envelope TEXT, category TEXT NOT NULL, seq INTEGER NOT NULL, PRIMARY KEY (scope, id)
+            )
+            """)
+        try db.run("CREATE INDEX IF NOT EXISTS sealed_category ON sealed_objects(scope, category, seq DESC)")
+        try db.run("""
+            CREATE TABLE IF NOT EXISTS sealed_frames (
+                scope TEXT NOT NULL, epoch INTEGER NOT NULL, stream TEXT NOT NULL, counter TEXT NOT NULL,
+                envelope TEXT NOT NULL, received INTEGER NOT NULL, PRIMARY KEY(scope, epoch, stream, counter)
+            )
+            """)
+        try db.run("""
+            CREATE TABLE IF NOT EXISTS sealed_streams (
+                scope TEXT NOT NULL, epoch INTEGER NOT NULL, stream TEXT NOT NULL, counter TEXT NOT NULL,
+                PRIMARY KEY(scope, epoch, stream)
+            )
+            """)
+        try db.run("CREATE TABLE IF NOT EXISTS sealed_ring (id INTEGER PRIMARY KEY CHECK (id = 1), position INTEGER)")
+        sealedSchemaReady = true
+        return db
     }
 }
