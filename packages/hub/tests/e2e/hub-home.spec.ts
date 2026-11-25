@@ -5,7 +5,7 @@ import {
 	evidenceRequested,
 	recordCapture
 } from '../../../../src/utils/reports-media/record-capture/recordCapture';
-import { expect, test, type Page } from '../../../../test/support/browserTest';
+import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import { fit, hubHomeFixture, unavailableHome } from './hub-home-fixture';
 import type { CapturePosition, HomeFixture } from './hub-home-fixture.types';
 import manifest from '../../../../specification/scenarios/hub-home.json' with { type: 'json' };
@@ -122,11 +122,12 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 	expect(fixture.sent).toMatchObject([
 		{ itemId: 'item-0', kind: 'note', text: 'Synthetic Tracker note' }
 	]);
+	await optionTap(chat, fixture);
 	await chat
 		.getByRole('textbox', { name: 'Answer to open question' })
 		.fill('Synthetic Tracker answer');
 	await chat.getByRole('button', { name: 'Answer', exact: true }).click();
-	expect(fixture.sent[1]).toMatchObject({
+	expect(fixture.sent[2]).toMatchObject({
 		itemId: 'item-0',
 		kind: 'answer',
 		question: 'Approve the Nudge production window, Sat 09:00?',
@@ -134,6 +135,35 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 	});
 	await dialog.getByRole('button', { name: 'Back to agents' }).click();
 	await expect(chat).toBeHidden();
+}
+
+/** Option buttons list the recommended choice first; a deploy ask needs its confirm step. */
+async function optionTap(chat: Locator, fixture: HomeFixture) {
+	const choices = chat.getByRole('group', { name: 'Choose an answer' });
+	const buttons = choices.getByRole('button');
+	await expect(buttons).toHaveCount(2);
+	await expect(buttons.first()).toContainText('Approve Saturday 09:00');
+	await expect(buttons.first()).toContainText('Recommended');
+	await buttons.first().click();
+	const confirm = chat.getByRole('group', { name: 'Confirm this deploy answer' });
+	await expect(confirm).toBeVisible();
+	expect(fixture.sent).toHaveLength(1);
+	await confirm.getByRole('button', { name: 'Cancel' }).click();
+	await expect(confirm).toBeHidden();
+	await buttons.first().click();
+	await confirm.getByRole('button', { name: 'Confirm answer' }).click();
+	const thread = chat.getByRole('list', { name: 'Tracker conversation' });
+	await expect(
+		thread.getByRole('listitem').filter({ hasText: 'Approve Saturday 09:00' })
+	).toBeVisible();
+	await expect(confirm).toBeHidden();
+	expect(fixture.sent[1]).toMatchObject({
+		itemId: 'item-0',
+		kind: 'answer',
+		text: 'Approve Saturday 09:00',
+		option: 1,
+		confirmed: true
+	});
 }
 
 async function workByProject(page: Page, position: CapturePosition) {

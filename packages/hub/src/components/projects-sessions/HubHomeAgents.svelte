@@ -20,6 +20,7 @@
 		quickReplies
 	} from './hubHomePresentation';
 	import type { SendHomeChat } from './hubHomeView.types';
+	import HubHomeChoices from './HubHomeChoices.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
@@ -80,7 +81,12 @@
 		await answerWith(answer);
 	}
 
-	async function answerWith(text: string) {
+	async function pickOption(number: number, confirmed: boolean) {
+		const option = active?.options?.[number - 1];
+		if (option) await answerWith(option.label, { number, confirmed });
+	}
+
+	async function answerWith(text: string, tap?: { number: number; confirmed: boolean }) {
 		if (!active?.itemId || !active.question || !text.trim() || answering) return;
 		const message: HomeChatInput = {
 			id: crypto.randomUUID(),
@@ -88,7 +94,8 @@
 			itemId: active.itemId,
 			kind: 'answer',
 			question: active.question,
-			text: text.trim()
+			text: text.trim(),
+			...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
 		};
 		answering = true;
 		try {
@@ -185,8 +192,9 @@
 				{/each}
 			</hx-ol>
 			{#if active.question}
+				<HubHomeChoices agent={active} busy={answering} onpick={pickOption} />
 				<hx-div class="hh-quick-replies" role="group" aria-label="Quick replies">
-					{#each quickReplies(active.question) as reply, index (reply)}
+					{#each active.options?.length ? [] : quickReplies(active.question) as reply, index (reply)}
 						<hx-button
 							type="button"
 							class={index ? 'po-action' : 'po-action hh-primary'}

@@ -158,3 +158,34 @@
 	border-radius: var(--hx-radius-compact);
 	background: var(--hx-color-surface);
 }
+/* Option buttons for an open ask: the recommended choice first, then the rest. */
+.hh-home .hh-choices {
+	display: grid;
+	gap: var(--hx-space-8);
+}
+.hh-home .hh-choice {
+	display: grid;
+	gap: var(--hx-space-4);
+	text-align: left;
+	font: inherit;
+	padding: var(--hx-space-8) var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: transparent;
+	color: inherit;
+}
+.hh-home .hh-choice[data-recommended='true'] {
+	border-color: var(--hx-color-primary);
+}
+.hh-home .hh-choice:disabled {
+	opacity: 0.5;
+}
+.hh-home .hh-choice-badge,
+.hh-home .hh-choice-effect {
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.hh-home .hh-choice-confirm {
+	display: grid;
+	gap: var(--hx-space-8);
+}

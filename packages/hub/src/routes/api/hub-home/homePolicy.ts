@@ -109,5 +109,14 @@ async function postChat(request: Request, deps: HomeDeps, actor: string) {
 
 function matchesCurrentItem(message: HomeChatInput, agent: HomeAgent | undefined) {
 	if (!agent?.itemId || agent.itemId !== message.itemId) return false;
-	return message.kind === 'note' || agent.question === message.question;
+	if (message.kind === 'note') return true;
+	if (agent.question !== message.question) return false;
+	return message.option === undefined || matchesChosenOption(message, agent);
+}
+
+/** A tap must name a real option of the open ask, and a deploy, money or secret ask must be confirmed. */
+function matchesChosenOption(message: HomeChatInput, agent: HomeAgent) {
+	const chosen = agent.options?.[(message.option ?? 0) - 1];
+	if (!chosen || message.text !== chosen.label) return false;
+	return !agent.confirm || message.confirmed === true;
 }

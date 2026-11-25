@@ -115,3 +115,16 @@ test('working means a live run now: flagged projects with runs count, touched-to
 	expect(byName.away).toMatchObject({ state: 'offline', sessions: 0 });
 	expect(home.agents.filter((agent) => agent.sessions > 0)).toHaveLength(1);
 });
+
+test('an open ask carries its options and confirm kind; a closed ask or malformed options carry none', () => {
+	const options = [
+		{ label: 'Ship it', effect: 'Merges the change.', recommended: true as const },
+		{ label: 'Wait', effect: '' }
+	];
+	const asked = { ...base, needs_daniel: true, question, options, confirm: 'deploy' as const };
+	const project = (item: TrackerItemRecord) =>
+		buildHomeSnapshot({ items: [item], runs: [], machines: [] }, noProviders, now).agents[0];
+	expect(project(asked)).toMatchObject({ question, options, confirm: 'deploy' });
+	expect(project({ ...asked, resolved: true })).not.toHaveProperty('options');
+	expect(project({ ...asked, options: options.slice(0, 1) })).not.toHaveProperty('options');
+});
