@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"revision": "79f5449a776c8b7abed6f4dbdc8a40ec3ce05cbe",
+	"bugClass": {
+		"id": "stale-blocker-filter",
+		"title": "Blocker inbox omits in-progress rows with blocker notes",
+		"cause": "A blocker inbox filters rows using a flag/status field but fails to include in-progress rows whose current blocker note independently marks them as blocked. The same eligibility contract can be missed in sibling CLI or API list paths.",
+		"criteria": "A site exhibits this cause if a blocker-focused list omits an in-progress item with a current blocker note when its explicit flag is unset. Each relevant list path can exhibit the failure independently; status summaries that intentionally show only status and flags do not qualify.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "blockerNote",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "blocker_note",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "in_progress",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "inProgress",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "flagged",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "is_blocked",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "blocker",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "filter",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "findMany",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "where",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "{#each",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "$derived",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"blocker",
+			"flagged",
+			"in_progress",
+			"inprogress",
+			"blocked",
+			"notes",
+			"cli",
+			"api",
+			"status"
+		],
+		"pathHints": [
+			{
+				"contains": "src/cli/",
+				"weight": 5
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			},
+			{
+				"contains": "packages/relay/",
+				"weight": -1
+			}
+		]
+	}
+}
