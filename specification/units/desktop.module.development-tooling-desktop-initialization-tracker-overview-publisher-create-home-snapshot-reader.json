@@ -61,6 +61,21 @@
 			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-provider-reader",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-projection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

@@ -4393,13 +4393,13 @@
 			"unit": "desktop.service.device-session",
 			"from": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-			"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
+			"definition": "b74a8ec0ea8e41df0c368608faccb8c9d71dca30b9ca254048239083c66a7a9a",
 			"relocationDefinition": "b7d6fcb27f7bddb260c21675238683b8dd638ab0e3360df590dd1a39a8c7a51f",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "32f91c2f702b2f1ec6652b91124f368be40639a2",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-				"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
-				"reason": "Advertises granted Tracker operations and cancels in-flight writes when the device session ends."
+				"definition": "b74a8ec0ea8e41df0c368608faccb8c9d71dca30b9ca254048239083c66a7a9a",
+				"reason": "Answers the read-only homeSnapshot method so the signed-in Hub Home can read this computer over the encrypted device channel."
 			},
 			"previousReviews": [
 				{
@@ -4407,6 +4407,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
 					"definition": "35a8cc71a4e882dbc3f2c662a0d0228eaed1f28d785dfbf3a069e06861145745",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
+					"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
+					"reason": "Advertises granted Tracker operations and cancels in-flight writes when the device session ends."
 				}
 			]
 		},
@@ -5285,13 +5291,13 @@
 			"unit": "desktop.service.device-operations",
 			"from": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-			"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
+			"definition": "fbde4a5560b9777c1b7499ffe81f114e9619e132120b19f89bf2a1dbc7b0205e",
 			"relocationDefinition": "6af0c5d46f2451c29e1730ba56ac45579308fe38681e82c0a939181c136a54db",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "32f91c2f702b2f1ec6652b91124f368be40639a2",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-				"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
-				"reason": "Requires a granted callback and a live encrypted session when dispatching Tracker pulls and pushes."
+				"definition": "fbde4a5560b9777c1b7499ffe81f114e9619e132120b19f89bf2a1dbc7b0205e",
+				"reason": "Answers the read-only homeSnapshot method so the signed-in Hub Home can read this computer over the encrypted device channel."
 			},
 			"previousReviews": [
 				{
@@ -5299,6 +5305,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
 					"definition": "784d078f78fda8536a0c75c96171242770e87a91e28a752b0216454dd34e7811",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
+					"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
+					"reason": "Requires a granted callback and a live encrypted session when dispatching Tracker pulls and pushes."
 				}
 			]
 		},

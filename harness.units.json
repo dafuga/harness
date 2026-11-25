@@ -2700,6 +2700,36 @@
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
 			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeTrackerProjection",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerProjection.ts",
+			"reason": "The Mac Home snapshot reader reuses the Reports Home projection through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Mac Home snapshot reader reuses the Reports Home projection through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewTracker",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.ts",
+			"reason": "The Mac Home snapshot reader reuses the Reports Home projection through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports display contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/services/networking-security/LinkedHomeService.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		}
 	]
 }
