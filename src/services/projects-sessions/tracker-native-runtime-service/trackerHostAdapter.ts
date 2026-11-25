@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import { TrackerHostProcessAdapter } from '../../../adapters/projects-sessions/TrackerHostProcessAdapter';
 import { TrackerAdapterLeaseAdapter } from '../../../adapters/projects-sessions/TrackerAdapterLeaseAdapter';
+import { trackerTesterLogin } from '../tracker-adapter-poll-service/readTrackerIntake';
 import { trackerGithubCli } from './trackerGithubCli';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -35,6 +36,8 @@ export function trackerHostAdapter(
 				? {
 						titlePrefix: followUp.titlePrefix,
 						instructions: followUp.issueInstructions,
+						priority: (_item, event) =>
+							trackerTesterLogin(followUp, event.actor) ? 'urgent' : 'normal',
 						matchesItem: (item) =>
 							[item.agent, item.project].some(
 								(name) => name?.toLowerCase() === source.project.toLowerCase()

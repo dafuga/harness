@@ -71,6 +71,7 @@ export interface TrackerHubOptions {
 	store: TrackerHubStore;
 	machines?: TrackerHubMachineStore;
 	runs?: () => TrackerHubRunStore | null | undefined;
+	permitAutomatic?: () => boolean;
 	permitDue?: (id: string, token: string, node: string) => boolean | undefined;
 	duePolicy?: () => unknown;
 	now?: () => number;

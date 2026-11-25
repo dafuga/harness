@@ -3,6 +3,7 @@ import { TrackerHostProcessAdapter } from '../../../adapters/projects-sessions/T
 import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema';
+import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 
@@ -56,7 +57,9 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		async send(alerts, signal) {
 			const now = Date.now();
 			const hour = Number(lisbon.format(now));
-			if (hour < 8 || hour >= 22 || now < nextCosTick) return false;
+			if (hour < 8 || hour >= 22) return false;
+			if (now < nextCosTick && !alerts.some(({ kind }) => kind === urgentQueueAlertKind))
+				return false;
 			const panes = await tmux.scan(signal, /^cos$/);
 			if (panes.length !== 1) return false;
 			const summary = alerts.map(

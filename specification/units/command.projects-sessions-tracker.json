@@ -16,6 +16,7 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerPlanningRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerRequest.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerTimedItemRequest.ts",
 			"src/commands/projects-sessions/tracker-command/runNativeTracker.ts"
 		],
 		"symbols": [
@@ -43,10 +44,11 @@
 			"nativeTrackerCommandOptions",
 			"nativeTrackerIdVerbs",
 			"nativeTrackerInspectionRequest",
-			"nativeTrackerTimedItemRequest",
+			"launchAction",
 			"nativeTrackerPlanningRequest",
 			"nativeTrackerCommands",
 			"nativeTrackerArgs",
+			"nativeTrackerTimedItemRequest",
 			"selectedTrackerConfig",
 			"runNativeTracker"
 		]
@@ -135,17 +137,17 @@
 				"required": true
 			},
 			{
-				"name": "nativeTrackerTimedItemRequest.command",
+				"name": "launchAction.path",
 				"type": "string",
 				"required": true
 			},
 			{
-				"name": "nativeTrackerTimedItemRequest.[id, ...words]",
+				"name": "launchAction.[target, ...rest]",
 				"type": "string[]",
 				"required": true
 			},
 			{
-				"name": "nativeTrackerTimedItemRequest.values",
+				"name": "launchAction.values",
 				"type": "Record<string, string | boolean | undefined>",
 				"required": true
 			},
@@ -167,6 +169,21 @@
 			{
 				"name": "nativeTrackerArgs.args",
 				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerTimedItemRequest.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerTimedItemRequest.[id, ...words]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerTimedItemRequest.values",
+				"type": "Record<string, string | boolean | undefined>",
 				"required": true
 			},
 			{
@@ -234,8 +251,8 @@
 				"type": "NativeTrackerRequest | undefined"
 			},
 			{
-				"name": "nativeTrackerTimedItemRequest",
-				"type": "NativeTrackerRequest | undefined"
+				"name": "launchAction",
+				"type": "NativeTrackerRequest"
 			},
 			{
 				"name": "nativeTrackerPlanningRequest",
@@ -248,6 +265,10 @@
 			{
 				"name": "nativeTrackerArgs",
 				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerTimedItemRequest",
+				"type": "NativeTrackerRequest | undefined"
 			},
 			{
 				"name": "selectedTrackerConfig",
@@ -477,28 +498,28 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "nativeTrackerTimedItemRequest",
+				"name": "launchAction",
 				"inputs": [
 					{
-						"name": "nativeTrackerTimedItemRequest.command",
+						"name": "launchAction.path",
 						"type": "string",
 						"required": true
 					},
 					{
-						"name": "nativeTrackerTimedItemRequest.[id, ...words]",
+						"name": "launchAction.[target, ...rest]",
 						"type": "string[]",
 						"required": true
 					},
 					{
-						"name": "nativeTrackerTimedItemRequest.values",
+						"name": "launchAction.values",
 						"type": "Record<string, string | boolean | undefined>",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "nativeTrackerTimedItemRequest",
-						"type": "NativeTrackerRequest | undefined"
+						"name": "launchAction",
+						"type": "NativeTrackerRequest"
 					}
 				],
 				"errors": [
@@ -563,6 +584,34 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerTimedItemRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerTimedItemRequest.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerTimedItemRequest.[id, ...words]",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerTimedItemRequest.values",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerTimedItemRequest",
+						"type": "NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{

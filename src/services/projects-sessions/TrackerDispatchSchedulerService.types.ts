@@ -2,6 +2,8 @@
 import type {
 	TrackerDispatchEvent,
 	TrackerDispatchPolicy,
+	TrackerDispatchItem,
+	TrackerLaunchIntent,
 	TrackerDispatchResult,
 	TrackerDueGrant,
 	TrackerRunReceipt,
@@ -12,6 +14,8 @@ export type TrackerReservedStart = Extract<TrackerDispatchResult, { status: 'sta
 
 export interface TrackerDispatchRunner {
 	/** Refresh authoritative session evidence before reconciling or claiming work. */
+	capacity?(): { freeSlots: number; projects: Record<string, { freePct: number; freeGB: number }> };
+	stop?(run: TrackerRunReceipt, signal: AbortSignal): Promise<boolean>;
 	refresh?(signal: AbortSignal, runs: readonly TrackerRunReceipt[]): Promise<void>;
 	legacySession?(run: TrackerRunReceipt): TrackerSessionEvidence | undefined;
 	confirmLegacyNeverStarted?(run: TrackerRunReceipt, signal: AbortSignal): Promise<boolean>;
@@ -35,5 +39,7 @@ export interface TrackerDispatchSchedulerOptions {
 	runner: TrackerDispatchRunner;
 	policy?: TrackerDispatchPolicy;
 	scheduleDue?: boolean;
+	alternateAdapterHost?(item: TrackerDispatchItem, intent: TrackerLaunchIntent): string | undefined;
+	permitAutomatic?(itemId: string, token: string, signal: AbortSignal): Promise<boolean> | boolean;
 	grant?(itemId: string, token: string, signal: AbortSignal): Promise<TrackerDueGrant>;
 }

@@ -1,9 +1,11 @@
 // @harness-uid u_bl6xl2h4a3
+import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogPaneService } from '../WatchdogPaneService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
+import { automaticQuietHour } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { queueIdleWork } from './trackerWatchLaunchRequests';
 import { recordStartupAlerts } from './trackerHostWatchdogAlerts';
 import { applyIdleDecision } from './trackerHostWatchdogIdle';
@@ -59,8 +61,13 @@ async function scanHostSessions(
 	);
 	adoptTrackerHandLaunches(hosts.store, rows, panes);
 	const snapshot = watchdogSnapshot(hosts.store, rows, panes, now);
-	await inspectHostSessions(hosts, { rows, snapshot, launch: options.launch }, signal);
-	if (options.idleWork)
+	const canLaunch = options.automaticEnabled?.() !== false && !automaticQuietHour(now);
+	await inspectHostSessions(
+		hosts,
+		{ rows, snapshot, launch: canLaunch ? options.launch : undefined },
+		signal
+	);
+	if (canLaunch && options.idleWork)
 		await queueIdleWork(hosts.store, { rows, snapshot, ...options.idleWork }, signal);
 }
 
@@ -104,7 +111,7 @@ async function inspectHostSessions(
 		if (
 			!pane ||
 			handoffs.has(pane.key) ||
-			!idleWatchdogItem(activeWatchdogItem(items, decision.id))
+			!idleWatchdogItem(activeWatchdogItem(items, decision.id), snapshot.now)
 		)
 			continue;
 		if (paneService.idlePrompt(pane) !== decision.cli) continue;
@@ -112,6 +119,6 @@ async function inspectHostSessions(
 	}
 }
 
-function idleWatchdogItem(item?: TrackerItem): boolean {
-	return item?.status === 'in_progress' && (!item.needs_daniel || item.resolved);
+function idleWatchdogItem(item: TrackerItem | undefined, now: number): boolean {
+	return item?.status === 'in_progress' && !trackerStoredSchedulingHold(item, now);
 }

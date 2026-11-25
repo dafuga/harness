@@ -1,10 +1,10 @@
 // @harness-uid u_bl6xl2h4a3
+import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import {
 	canonicalNode,
-	trackerFleetNodes,
-	trackerFlagBlocksRecovery
+	trackerFleetNodes
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type {
 	TrackerSessionHealthIssue,
@@ -39,6 +39,7 @@ export function trackerSessionHealth(snapshot: TrackerSessionHealthSnapshot) {
 function healthItem(item: TrackerItem): boolean {
 	return (
 		!item.deleted &&
+		(item.kind ?? 'task') === 'task' &&
 		(item.status === 'in_progress' || (item.status === 'open' && Boolean(item.auto)))
 	);
 }
@@ -152,13 +153,14 @@ function missingIssue(
 	const latest = history.at(-1);
 	const aged = eligibleRecoveryAge(item, latest, now - scheduleAt(item.id));
 	const hasBrief = hasRecoveryBrief(item, latest);
-	const recover = aged && hasBrief && !localActive && restartableItem(item);
+	const hold = trackerStoredSchedulingHold(item, now);
+	const recover = aged && hasBrief && !localActive && !hold;
 	return {
 		item_id: item.id,
 		host,
 		kind: 'missing',
 		session: latest?.tmux ?? null,
-		reason: missingReason(item, { localActive, hasBrief }),
+		reason: missingReason({ localActive, hasBrief, hold }),
 		identity: `${latest?.id ?? 'no-run'}:${scheduleAt(item.id)}`,
 		recover
 	};
@@ -180,23 +182,19 @@ function hasRecoveryBrief(item: TrackerItem, latest?: TrackerListedRun) {
 	);
 }
 
-function restartableItem(item: TrackerItem): boolean {
-	return (
-		item.kind === 'task' &&
-		!item.recurring &&
-		(!item.needs_daniel || item.resolved || !trackerFlagBlocksRecovery(item.question))
-	);
-}
-
-function missingReason(
-	item: TrackerItem,
-	{ localActive, hasBrief }: { localActive: boolean; hasBrief: boolean }
-) {
+function missingReason({
+	localActive,
+	hasBrief,
+	hold
+}: {
+	localActive: boolean;
+	hasBrief: boolean;
+	hold: string | null;
+}) {
 	if (localActive)
 		return 'Tracker run has no live tmux session. The launcher has not settled the run.';
 	const reason = 'In-progress item has no live run or session.';
-	if (item.needs_daniel && !item.resolved && trackerFlagBlocksRecovery(item.question))
-		return reason + ' Recovery is waiting on Daniel.';
+	if (hold) return reason + ` Recovery held: ${hold}.`;
 	if (!hasBrief) return reason + ' No launch brief is available.';
 	return reason;
 }

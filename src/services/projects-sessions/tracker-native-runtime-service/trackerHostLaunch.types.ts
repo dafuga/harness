@@ -43,6 +43,7 @@ export interface TrackerHostLaunchPort {
 	): Promise<TrackerHostSession[]>;
 	start(input: TrackerHostStartRequest, signal: AbortSignal): Promise<TrackerHostStartReply>;
 	readUsage?(run: TrackerRunReceipt, signal: AbortSignal): Promise<TrackerReceiptUsage | undefined>;
+	stop?: TrackerDispatchRunner['stop'];
 	confirmNeverStarted?: TrackerDispatchRunner['confirmNeverStarted'];
 }
 
@@ -50,6 +51,7 @@ export interface TrackerHostRunnerOptions {
 	tmux?: TrackerTmuxAdapter;
 	legacyRunDirectory?: string;
 	now?: () => number;
+	automaticEnabled?(): boolean;
 }
 
 export interface CompletedTrackerPaneRun {

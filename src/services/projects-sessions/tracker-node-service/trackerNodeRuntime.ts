@@ -1,4 +1,5 @@
 // @harness-uid u_gvqtr5mdwv
+import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import {
@@ -15,7 +16,7 @@ import { trackerItemError } from '../../../utils/projects-sessions/trackerItemEr
 import { trackerFleetMachineStore } from '../tracker-native-runtime-service/nativeTrackerLinks';
 import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
-import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
+import { readPrivateJson, readPrivateText, trackerSyncPort } from './trackerNodeConfig';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 import { trackerNodeNotifications } from './trackerNodeNotifications';
 import { trackerUpstreamLink } from './trackerUpstreamLink';
@@ -38,6 +39,7 @@ export function trackerNodeRuntime(
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
 		manualLaunch: true,
+		automaticEnabled: trackerAutomaticSetting(config),
 		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
@@ -45,6 +47,26 @@ export function trackerNodeRuntime(
 			parseTrackerModelSpec(String(model), ladder);
 		},
 		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
+	};
+}
+
+function trackerAutomaticSetting(config: TrackerNodeConfig): () => boolean {
+	const native = config.autolaunch;
+	if (native) return () => native.enabled;
+	const path = join(homedir(), '.config/tracker/config.json');
+	let enabled = false;
+	let refreshAt = 0;
+	return () => {
+		const now = Date.now();
+		if (now < refreshAt) return enabled;
+		refreshAt = now + 1000;
+		try {
+			const legacy = readPrivateJson(path) as { autolaunch?: { enabled?: boolean } };
+			enabled = legacy.autolaunch?.enabled !== false;
+		} catch (error) {
+			enabled = error instanceof Error && 'code' in error && error.code === 'ENOENT';
+		}
+		return enabled;
 	};
 }
 

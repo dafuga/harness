@@ -16,6 +16,7 @@ export interface WatchdogSessionScan {
 	readItems: () => readonly TrackerItem[];
 	now: () => number;
 	launch?: TrackerWatchdogLaunch;
+	automaticEnabled?(): boolean;
 	idleWork?: { dispatch: TrackerDispatcherService; minutes: number };
 	roots?: readonly string[];
 }

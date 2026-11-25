@@ -129,6 +129,7 @@
 			"scanScheduledReminders",
 			"nextScheduledReminder",
 			"currentScheduledAttempt",
+			"isScheduledReminderAttempt",
 			"trackerNotificationStatus",
 			"outboxBatch",
 			"outboxSingle",
@@ -751,6 +752,21 @@
 				"type": "TrackerNotificationSource",
 				"required": true,
 				"description": "Notification source used to verify the current reminder."
+			},
+			{
+				"name": "isScheduledReminderAttempt.state",
+				"type": "TrackerNotificationState",
+				"required": true
+			},
+			{
+				"name": "isScheduledReminderAttempt.attempt",
+				"type": "DeliveryAttempt",
+				"required": true
+			},
+			{
+				"name": "isScheduledReminderAttempt.source",
+				"type": "TrackerNotificationSource",
+				"required": true
 			},
 			{
 				"name": "trackerNotificationStatus.options",
@@ -2482,6 +2498,34 @@
 						"name": "currentScheduledAttempt",
 						"type": "boolean",
 						"description": "Whether the issued request still matches the active reminder."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isScheduledReminderAttempt",
+				"inputs": [
+					{
+						"name": "isScheduledReminderAttempt.state",
+						"type": "TrackerNotificationState",
+						"required": true
+					},
+					{
+						"name": "isScheduledReminderAttempt.attempt",
+						"type": "DeliveryAttempt",
+						"required": true
+					},
+					{
+						"name": "isScheduledReminderAttempt.source",
+						"type": "TrackerNotificationSource",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isScheduledReminderAttempt",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

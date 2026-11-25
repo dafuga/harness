@@ -9,7 +9,7 @@ export type {
 	TrackerSessionEvidence
 } from './tracker-dispatcher-service/runReceipt.types';
 
-export type TrackerLaunchSource = 'manual' | 'due' | 'recovery';
+export type TrackerLaunchSource = 'manual' | 'automatic' | 'due' | 'recovery';
 export type TrackerItemStatus = 'open' | 'in_progress' | 'blocked' | 'done' | 'ignored';
 export type TrackerDispatchOutcome =
 	| 'done'
@@ -49,6 +49,7 @@ export interface TrackerDispatchItem extends TrackerLaunchOptions {
 	scheduleOff?: boolean;
 	deleted?: boolean;
 	awaitingAnswer?: boolean;
+	parkedUntil?: number;
 	question?: string | null;
 	/** The item journal has confirmed this answer wins over the current question and block. */
 	answeredCurrentBlock?: boolean;
@@ -80,6 +81,9 @@ export interface TrackerDispatchPolicy {
 	hub?: boolean;
 	enabled?: boolean;
 	recoverDroppedSessions?: boolean;
+	/** Live operator setting for unattended launches. Explicit launches use the host safety setting. */
+	automaticEnabled?(): boolean;
+	allowDelegatedAdapterDue?: boolean;
 	timezone: string;
 	now(): number;
 	/** Resolve custom aliases and known nodes. Built-in fleet aliases are resolved locally. */
@@ -171,8 +175,8 @@ export type TrackerLaunchRequest =
 			source: 'manual';
 			token: string;
 			options?: TrackerLaunchOptions;
-			unattended?: { unchangedSince: number };
 	  }
+	| { source: 'automatic'; token: string; unchangedSince: number }
 	| { source: 'due'; token: string }
 	| { source: 'recovery'; token: string; expectedAuto: string | null; rung?: TrackerLaunchRung };
 

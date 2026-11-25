@@ -1,7 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
-import { trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
+import { stopTrackerRun, trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
 import { readTrackerNodeInspection } from './readTrackerNodeInspection';
 
 const host = '127.0.0.1';
@@ -122,6 +122,8 @@ function trackerOperationalApi(
 		case 'GET /needs-attention':
 		case 'GET /watchdog/alerts':
 			return Response.json(runtime.watchdog?.alerts() ?? []);
+		case 'POST /stop':
+			return stopTrackerRun(request, runtime);
 		case 'POST /sync':
 			runtime.kickLinks();
 			return Response.json({ ok: true });

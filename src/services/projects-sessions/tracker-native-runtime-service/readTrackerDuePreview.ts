@@ -25,7 +25,8 @@ export function readTrackerDuePreview(runtime: TrackerNativeRuntimeService) {
 		.map((row) => {
 			const entry = { id: row.id, title: row.title, due: row.due };
 			const plan = duePreview.preview?.(row.id);
-			if (!plan?.pick) return { ...entry, reason: plan?.reason ?? holdWithoutRunner(row, paused) };
+			if (!plan?.pick)
+				return { ...entry, reason: plan?.reason ?? holdWithoutRunner(row, paused, now) };
 			return {
 				...entry,
 				computer: plan.target,
@@ -45,10 +46,10 @@ export function readTrackerDuePreview(runtime: TrackerNativeRuntimeService) {
 	};
 }
 
-function holdWithoutRunner(row: TrackerDispatchRow, paused: boolean): string {
+function holdWithoutRunner(row: TrackerDispatchRow, paused: boolean, now: number): string {
 	const item = dispatchItem(row, []);
 	return (
-		schedulingHold(item) ??
+		schedulingHold(item, now) ??
 		(paused ? 'due scheduling is paused' : 'native due scheduler is disabled')
 	);
 }

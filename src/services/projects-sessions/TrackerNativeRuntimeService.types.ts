@@ -49,6 +49,7 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 	hostEffects?: TrackerHostEffects;
 	hostEffectsHeld?: boolean;
 	recurring?: { jobs?: TrackerRecurringJobRunner };
+	automaticEnabled?(): boolean;
 	dispatch?: Omit<TrackerDispatchSchedulerOptions, 'policy'> &
 		Pick<TrackerDispatchRepositoryOptions, 'due' | 'sessions'> & {
 			policy: Omit<TrackerDispatchPolicy, 'node' | 'now' | 'hub'>;

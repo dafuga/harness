@@ -18,8 +18,10 @@ export function receiveJournalPush(store: TrackerHubStore, body: string): Respon
 export function grantDuePermission(
 	options: TrackerHubOptions,
 	body: string,
-	peer: string
+	peer: string,
+	automatic = false
 ): Response {
+	if (automatic) return trackerHubResponse(200, { allowed: options.permitAutomatic?.() === true });
 	const { id, token } = parseBody(body);
 	const allowed =
 		typeof id === 'string' &&

@@ -36,6 +36,7 @@ export async function readGithubIntakeRecord(
 	const actors = new Map(timeline.map((event) => [`state:${event.id}`, event.actor?.login]));
 	return {
 		...planned,
+		actor: issue.user?.login,
 		state: issue.state,
 		title: options.titlePrefix
 			? `${options.titlePrefix}${planned.title.slice(source.target.length)}`
@@ -65,6 +66,7 @@ export function githubCommentEvent(
 	return {
 		key,
 		id: `comment:${comment.id}`,
+		actor: login,
 		time,
 		nudge: true,
 		note: `GitHub comment by @${safeLine(login, redactText)}: ${url}`
@@ -123,6 +125,7 @@ export function planGithubFollowUp(
 	return {
 		key: event.key,
 		externalId: event.id,
+		actor: event.actor,
 		title,
 		url,
 		state: 'open',
