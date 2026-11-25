@@ -53,10 +53,8 @@
 			({ state: syncState, sessions } = next);
 			const current = selected;
 			if (!current) return;
-			if (!sessions.some((item) => item.scope === current.scope && item.runId === current.runId)) {
-				select(undefined);
-				return;
-			}
+			if (!sessions.some((item) => item.scope === current.scope && item.runId === current.runId))
+				return select(undefined);
 			if (!transcript) await readSegment(current, 0);
 			if (active && selected === current) await readLive(current);
 		} catch {
@@ -87,7 +85,6 @@
 		canRead = result.data !== null;
 		if (result.data === null) return;
 		if (
-			index !== segment ||
 			captured.stream !== result.captured?.stream ||
 			captured.after !== result.captured?.counter
 		) {
@@ -213,6 +210,9 @@
 	}
 	pre {
 		white-space: pre-wrap;
+	}
+	.sessions-page :global(button) {
+		min-height: 44px;
 	}
 	.session-list :global(button) {
 		width: 100%;
