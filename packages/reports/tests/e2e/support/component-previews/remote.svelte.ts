@@ -2,6 +2,7 @@ import type { PreviewCases } from './shared';
 import { stamp, done } from './shared';
 import { phoneTrackerInboxSource } from '../../../../../desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxSource';
 import { writeView } from '../../../../../desktop/src/lib/development-tooling/tracker-inbox/trackerInbox';
+import type { SessionNativePlugin } from '../../../../../desktop/src/models/development-tooling/Environment.types';
 import type { PhoneTrackerTools } from '../../../../../desktop/src/models/development-tooling/PhoneTracker.types';
 import type {
 	InboxDetail,
@@ -167,3 +168,14 @@ function trackerInboxCases(): PreviewCases {
 		'desktop.page.tracker': {}
 	};
 }
+
+export const previewSessions: SessionNativePlugin = {
+	list: async () => ({
+		state: 'offline',
+		sessions: [{ scope: 'preview-scope', runId: 'Review the Orders workspace', status: 'finished' }]
+	}),
+	transcript: async () => ({ data: btoa('The Orders workspace checks passed.') }),
+	live: async () => ({ frames: [] }),
+	stop: trackerNoop,
+	addListener: async () => ({ remove: trackerNoop })
+};

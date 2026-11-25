@@ -11,7 +11,7 @@
 	import ChoiceRow from '../../../../../desktop/src/components/shared-primitives/ChoiceRow.svelte';
 	import { previewUnits, previewComponent } from './units';
 	import { previewFixture } from './fixtures.svelte';
-	import { previewTracker } from './remote.svelte';
+	import { previewSessions, previewTracker } from './remote.svelte';
 	import { routePreview } from './visualUnits';
 	import PresentationPreviews from './PresentationPreviews.svelte';
 	import ExplorerIndexPreview from './ExplorerIndexPreview.svelte';
@@ -83,6 +83,12 @@
 	if (id === 'desktop.page.tracker')
 		setContext<NativeAccountContext>(nativeAccountContext, {
 			environment: { kind: 'capacitor', bridge: undefined, local: false, tracker: previewTracker },
+			signedIn: true,
+			signOut: () => {}
+		});
+	if (id === 'desktop.page.projects-sessions-sessions')
+		setContext<NativeAccountContext>(nativeAccountContext, {
+			environment: { kind: 'capacitor', bridge: undefined, local: false, sessions: previewSessions },
 			signedIn: true,
 			signOut: () => {}
 		});
