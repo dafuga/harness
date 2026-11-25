@@ -19,6 +19,12 @@ const signedInDevices = {
 		{ id: 'preview-phone', name: 'iPhone', lastSeenAt: stamp }
 	]
 };
+const linkedComputers = {
+	computers: [
+		{ hostId: 'a'.repeat(40), name: 'Desk Mac', online: true },
+		{ hostId: 'b'.repeat(40), name: 'Studio Mac', online: false }
+	]
+};
 const proof = { email: actor.email, sent: true, expiresAt: '2026-10-20T10:10:05Z' };
 /** `shown` is the desktop previews' project, which the web workspace reads through the hub API. */
 export function hubPreview(id: string, shown: ProjectSnapshot) {
@@ -56,6 +62,7 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 	const api = {
 		get: async (path: string) => {
 			if (path === '/api/account/devices') return signedInDevices;
+			if (path === '/api/remote/hosts') return linkedComputers;
 			if (path === '/api/hub-home') return catalogHome;
 			if (path === `/api/projects/${project.id}/snapshot`) return hostedSnapshot(shown);
 			return hosted.read(path) ?? request;
@@ -75,6 +82,7 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 function hubCases(): PreviewCases {
 	return {
 		'hub.component.account-menu': { projectId: project.id },
+		'hub.component.accounts-access-linked-computers': {},
 		'hub.component.email-proof-panel': { proof },
 		'hub.component.hosted-workspace': {},
 		'hub.component.hub-frame': { children },

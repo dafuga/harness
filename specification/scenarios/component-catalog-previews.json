@@ -100,6 +100,7 @@
 		"desktop.page.settings",
 		"desktop.page.tracker",
 		"hub.component.account-menu",
+		"hub.component.accounts-access-linked-computers",
 		"hub.component.email-proof-panel",
 		"hub.component.hosted-workspace",
 		"hub.component.hub-frame",
@@ -2068,6 +2069,12 @@
 			"title": "Account menu",
 			"coverage": "required",
 			"units": ["hub.component.account-menu"]
+		},
+		{
+			"id": "hub-component-accounts-access-linked-computers",
+			"title": "Linked computers",
+			"coverage": "required",
+			"units": ["hub.component.accounts-access-linked-computers"]
 		},
 		{
 			"id": "hub-component-email-proof-panel",
@@ -8867,6 +8874,7 @@
 				"desktop-page-settings",
 				"desktop-page-tracker",
 				"hub-component-account-menu",
+				"hub-component-accounts-access-linked-computers",
 				"hub-component-email-proof-panel",
 				"hub-component-hosted-workspace",
 				"hub-component-hub-frame",
