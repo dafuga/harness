@@ -52,6 +52,14 @@ const blocked = summary('abc100', 'Blocked item', {
 	waiting_minutes: 2730
 });
 
+const doneItem = summary('abc200', 'Done item', {
+	status: 'done',
+	needs_daniel: true,
+	due: '2026-06-28',
+	asked_at: UPDATED,
+	waiting_minutes: 2730
+});
+
 const problem = {
 	...summary('def200', 'Missed and failed', { kind: 'recurring', due: '2026-07-01' }),
 	every: '0 12 * * *',
@@ -71,13 +79,7 @@ test('digest returns counts, unanswered asks and the configured local day', () =
 		blocked: [blocked],
 		needs_daniel: [
 			blocked,
-			summary('abc200', 'Done item', {
-				status: 'done',
-				needs_daniel: true,
-				due: '2026-06-28',
-				asked_at: UPDATED,
-				waiting_minutes: 2730
-			})
+			doneItem
 		],
 		overdue: [blocked, summary('abc400', 'Resolved item', { due: '2026-06-30' })],
 		due_today: [
@@ -88,12 +90,17 @@ test('digest returns counts, unanswered asks and the configured local day', () =
 			summary('def100', 'Date today', { kind: 'plan', status: 'in_progress', due: '2026-07-02' }),
 			summary('xyz100', 'Later today', { due: '2026-07-02T03:00:00.000Z' })
 		],
+		daniel_decisions: [blocked, doneItem],
+		pings: [],
 		recurring_missed: [problem],
 		queued: [],
 		chased_7d: [],
 		counts: {
 			blocked: 1,
 			needs_daniel: 2,
+			daniel_decisions: 2,
+			pings: 0,
+			stale_decisions: 2,
 			overdue: 2,
 			due_today: 3,
 			recurring_missed: 1,
@@ -135,8 +142,11 @@ test('digestText renders legacy section order and omits blocked rows from other 
 			'Tracker digest - 2026-07-02 00:30 Europe/Lisbon',
 			'BLOCKED (1)',
 			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent; priority normal; idea)',
-			'NEEDS DANIEL (1)',
-			'  - [abc200] Done item - waiting 45h 30m (task; agent fixture-agent; priority normal; idea)',
+			'DANIEL DECISIONS (2; oldest first; 24h+ is STALE)',
+			'  - [abc100] Blocked item - STALE 1d 21h old; blocked: Needs a plan; Q: Approve? (task; owner operator, agent fixture-agent; priority normal; idea)',
+			'  - [abc200] Done item - STALE 1d 21h old; ITEM DONE, FLAG STILL OPEN (task; agent fixture-agent; priority normal; idea)',
+			'CoS/WORKER PINGS (0)',
+			'  (none)',
 			'QUEUED (0)',
 			'  (none)',
 			'Chased (7d) (0)',
@@ -151,4 +161,29 @@ test('digestText renders legacy section order and omits blocked rows from other 
 			"  - [def200] Missed and failed - missed 2026-06-29 08:00; failed 2026-06-30 08:00: fixture failed; every '0 12 * * *' (recurring; agent fixture-agent; priority normal; idea)"
 		].join('\n')
 	);
+});
+
+test('pings are separate from Daniel decisions, collapsed, and never hide an old decision', () => {
+	const ping = (id: string, hours: number) =>
+		insertItem(fixture.database, {
+			id,
+			title: `Worker ${id}`,
+			status: 'in_progress',
+			needs_daniel: 1,
+			question: `daniel-primary-mbp: Session auto-${id}-r1 is idle again after a watchdog check-in. Chief of Staff, please inspect the session.`,
+			clocks: JSON.stringify({ needs_daniel: `${String(NOW - hours * 3_600_000).padStart(15, '0')}-000000-n` })
+		});
+	for (const [index, id] of ['pa0001', 'pa0002', 'pa0003', 'pa0004', 'pa0005', 'pa0006'].entries())
+		ping(id, index);
+	const digest = fixture.repository.digest(NOW);
+	expect(digest.pings.map(({ id }) => id)).toEqual(
+		['pa0006', 'pa0005', 'pa0004', 'pa0003', 'pa0002', 'pa0001']
+	);
+	expect(digest.daniel_decisions.map(({ id }) => id)).toEqual(['abc100', 'abc200']);
+	expect(digest.counts).toMatchObject({ needs_daniel: 8, daniel_decisions: 2, pings: 6 });
+	const text = fixture.repository.digestText(NOW);
+	expect(text).toContain('CoS/WORKER PINGS (6)');
+	expect(text).toContain('  ... and 1 more');
+	expect(text).not.toMatch(/NEEDS DANIEL \(\d+\)\n/);
+	expect(text.indexOf('DANIEL DECISIONS')).toBeLessThan(text.indexOf('CoS/WORKER PINGS'));
 });
