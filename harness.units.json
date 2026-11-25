@@ -2678,6 +2678,12 @@
 			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
 		},
 		{
+			"from": "packages/hub/src/components/accounts-access/LinkedComputers.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Linked Computers uses the same shared dialog in the Hub build and source graph."
+		},
+		{
 			"from": "packages/hub/src/components/shared-primitives/HubFrame.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
