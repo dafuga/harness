@@ -69,10 +69,16 @@ test('loop workflow fails cleanly for invalid or conflicting input', async () =>
 		await expect(createLoop({ root, name: 'BadName', goal: 'x' })).rejects.toThrow(
 			'Loop name must use lowercase kebab-case'
 		);
-		await createLoop({ root, name: 'support-chat', goal: 'Ship chat' });
-		await expect(createLoop({ root, name: 'support-chat', goal: 'Again' })).rejects.toThrow(
-			'Loop already exists'
+		const attempts = await Promise.allSettled(
+			['Ship chat', 'Again'].map((goal) => createLoop({ root, name: 'support-chat', goal }))
 		);
+		expect(
+			attempts.filter(({ status }) => status === 'fulfilled'),
+			'one loop creator wins'
+		).toHaveLength(1);
+		expect(attempts.find(({ status }) => status === 'rejected')).toMatchObject({
+			reason: { message: 'Loop already exists.' }
+		});
 		await addLoopStep({ root, loop: 'support-chat', step: 'spec', title: 'Write spec' });
 		await expect(
 			addLoopStep({ root, loop: 'support-chat', step: 'spec', title: 'Again' })
