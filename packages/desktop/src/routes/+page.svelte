@@ -120,7 +120,11 @@
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
 			<hx-div class="account-status" class:phone-account={!local}>
-				<hx-span>Signed in with Google</hx-span>
+				{#if account.sealedApprovalRequired}
+					<hx-span>Approve this device on your iPhone or Mac</hx-span>
+				{:else}
+					<hx-span>Signed in with Google</hx-span>
+				{/if}
 				{#if account.environment?.sealedDevices}
 					<hx-button type="button" onclick={showDevices}>Devices</hx-button>
 				{/if}

@@ -95,6 +95,7 @@ export interface NativeHostedStatus {
 	configured: boolean;
 	state: 'signed-out' | 'pending' | 'signed-in';
 	actor?: { id: string; name: string; email: string };
+	sealedApprovalRequired?: boolean;
 	handoff?: {
 		userCode: string;
 		verificationUrl: string;

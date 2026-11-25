@@ -26,6 +26,7 @@ test('the signed-in iPhone shows both Macs without a scanner, code, or address',
 	await expect(panel.getByRole('button', { name: `Connect to ${hostName}` })).toBeVisible();
 	await expect(panel.getByRole('button', { name: 'Connect to Studio Mac' })).toBeVisible();
 	await remoteEvidence(page, testInfo, 'phone-start');
+	await expect(page.getByText('Approve this device on your iPhone or Mac')).toBeVisible();
 	await page.getByRole('button', { name: 'Devices', exact: true }).click();
 	await expect.poll(() => made(page, 'native.sealedDevices')).toHaveLength(1);
 	await expect(panel.getByText('Other connection options', { exact: true })).toHaveCount(0);
@@ -103,6 +104,7 @@ for (const width of [320, 390]) {
 			await expect(dialog.getByText(/^Key /)).toBeVisible();
 			await expect(dialog.getByRole('button', { name: 'Disconnect', exact: true })).toBeVisible();
 			await expect(dialog.getByRole('button', { name: 'Sign out', exact: true })).toBeVisible();
+			await expect(dialog.getByRole('button', { name: 'Devices', exact: true })).toBeVisible();
 			expect(await fits(page)).toBe(true);
 			await remoteEvidence(page, testInfo, 'phone-connection-dialog');
 			await dialog.getByRole('button', { name: 'Disconnect', exact: true }).click();

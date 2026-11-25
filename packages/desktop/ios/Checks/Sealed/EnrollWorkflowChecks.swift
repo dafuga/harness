@@ -24,10 +24,10 @@ func checkEnrollmentWorkflow() async {
             with: EnrollAdmin(device: fixture.admin, state: state, keys: [keys.name: keys]),
             at: 2, authenticate: { true }) else { throw SealedError("Synthetic approval failed.") }
         fixture.entries += approved.entries
-        let accepted = try request.accept(
-            entries: fixture.entries, grants: approved.grants,
-            approval: EnrollReceipt(account: "acct", claim: claim,
-                approverSigningPublic: fixture.admin.signingPublic, entryHash: approved.entries[0].hash))
+        let receipt = EnrollReceipt(account: "acct", claim: claim,
+            approverSigningPublic: fixture.admin.signingPublic, entryHash: approved.entries[0].hash)
+        let accepted = try request.accept(entries: fixture.entries, grants: approved.grants, approval: receipt)
+        checkGrantAndSignerRefusals(request, fixture, approved, receipt)
         check(accepted.pin.seq == 1 && accepted.keys[keys.name]?.commitment == keys.commitment,
               "approved device pins the signed chain and opens its committed grant")
         check(accepted.pin.head == fixture.entries.last?.hash, "the pin contains the verified head")
@@ -53,4 +53,18 @@ private func checkRevocationWorkflow(_ fixture: ChainFixture, keys: SealedScopeK
     let current = try after.openGrant(grant, as: fixture.admin)
     check(current.raw.dataKey != keys.raw.dataKey && current.raw.indexKey == keys.raw.indexKey,
           "rotation changes the content key and preserves object identifiers")
+}
+
+@available(iOS 17.0, macOS 14.0, *)
+private func checkGrantAndSignerRefusals(
+    _ request: EnrollRequest, _ fixture: ChainFixture, _ change: EnrollChange, _ receipt: EnrollReceipt
+) {
+    refuses("a joining device never pins before receiving each current grant") {
+        _ = try request.accept(entries: fixture.entries, grants: [], approval: receipt)
+    }
+    refuses("a valid chain signed by a different key does not match the compared code") {
+        let other = EnrollReceipt(account: receipt.account, claim: receipt.claim,
+            approverSigningPublic: fixture.recovery.signingPublic, entryHash: receipt.entryHash)
+        _ = try request.accept(entries: fixture.entries, grants: change.grants, approval: other)
+    }
 }

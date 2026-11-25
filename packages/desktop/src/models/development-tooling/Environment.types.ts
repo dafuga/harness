@@ -18,6 +18,7 @@ export { nativeAccountContext } from './EnvironmentValues';
 export interface NativeAccountContext {
 	readonly environment?: Environment;
 	readonly signedIn: boolean;
+	readonly sealedApprovalRequired?: boolean;
 	signOut(): void;
 }
 

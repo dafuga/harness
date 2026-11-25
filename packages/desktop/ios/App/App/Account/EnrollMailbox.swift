@@ -54,13 +54,6 @@ struct EnrollMailbox {
         return try steps[2].bytes("nonce")
     }
 
-    func approval(by approver: String) throws -> String? {
-        guard steps.count > 3 else { return nil }
-        guard steps[3].by == approver, let hash = steps[3].fields["entryHash"]?.text,
-            HubAccountPolicy.matches(hash, "\\A[0-9a-f]{64}\\z")
-        else { throw HubAccountFailure.failed }
-        return hash
-    }
 }
 
 extension EnrollHub {

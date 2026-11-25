@@ -165,6 +165,7 @@ function installPhoneAccount() {
 		status: async () => ({
 			configured: true,
 			state: 'signed-in',
+			sealedApprovalRequired: true,
 			actor: {
 				id: 'google:fixture-phone',
 				name: 'Fixture Phone',

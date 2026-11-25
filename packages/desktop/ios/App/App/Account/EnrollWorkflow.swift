@@ -89,9 +89,11 @@ final class EnrollJoin {
         let grants = try await hub.grants(as: device)
         let enrolled = try request.accept(entries: history, grants: grants, approval: receipt)
         guard let scope = history[0].body["scopes"]?.items?.first?["scope"]?.text,
-            let accountKeys = enrolled.keys[scope] else { throw HubAccountFailure.failed }
-        try EnrollStorage(origin: hub.origin, account: hub.account).pin(enrolled.pin)
-        try await hub.writeName(name, device: device, keys: accountKeys)
+            enrolled.keys[scope] != nil else { throw HubAccountFailure.failed }
+        let storage = EnrollStorage(origin: hub.origin, account: hub.account)
+        try storage.queueName(name, scope: scope)
+        try storage.pin(enrolled.pin)
+        try await storage.publishName(hub, device: device, keys: enrolled.keys)
         return enrolled
     }
 }

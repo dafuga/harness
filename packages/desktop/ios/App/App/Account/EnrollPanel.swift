@@ -17,6 +17,7 @@ final class EnrollPanel {
         let storage = EnrollStorage(origin: hub.origin, account: hub.account)
         if let pin = try storage.pin(), let device = try storage.device() {
             let admin = try await hub.admin(device, pin: pin)
+            try await storage.publishName(hub, device: device.deviceId, keys: admin.keys)
             return try await manage(hub, admin: admin)
         }
         let alert = prompt("Approve this device on your iPhone or Mac",

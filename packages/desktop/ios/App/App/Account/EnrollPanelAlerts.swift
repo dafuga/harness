@@ -1,4 +1,5 @@
 #if canImport(UIKit)
+import Capacitor
 import UIKit
 
 @available(iOS 17.0, *)
@@ -23,5 +24,22 @@ extension EnrollPanel {
             }
         })
     }
+}
+extension HarnessAccountPlugin {
+    @objc func sealedDevices(_ call: CAPPluginCall) {
+        Task { @MainActor in
+            guard #available(iOS 17.0, *), let owner = bridge?.viewController else {
+                return call.reject("Device approval requires iOS 17 or later.")
+            }
+            let panel = EnrollPanel(owner: owner, session: Self.sharedSession)
+            do {
+                try await panel.show()
+                call.resolve()
+            } catch {
+                call.reject((error as? HubAccountFailure)?.message ?? "Could not open Devices.")
+            }
+        }
+    }
+
 }
 #endif
