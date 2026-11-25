@@ -25,8 +25,9 @@ const pairing = (frame: Fields) =>
 	matches(frame.ephemeralKey, remotePatterns.key) &&
 	matches(frame.sealed, remotePatterns.sealed) &&
 	matches(frame.challenge, remotePatterns.challenge) &&
-	((frame.account === undefined && frame.expiresAt === undefined) ||
+	((frame.account === undefined && frame.expiresAt === undefined && frame.holder === undefined) ||
 		(frame.account === true &&
+			(frame.holder === undefined || matches(frame.holder, /^[a-f0-9]{64}$/)) &&
 			typeof frame.expiresAt === 'string' &&
 			Number.isFinite(Date.parse(frame.expiresAt))));
 

@@ -20,7 +20,8 @@ export class ManageBodyValidator {
 		const id = value.owner.id;
 		const hostId = value.hostId;
 		if (!isText(id) || !matchesPattern(hostId, remotePatterns.hostId)) return undefined;
-		return { owner: { id }, hostId };
+		const holder = accountHolder(value.holder);
+		return { owner: { id }, hostId, ...(holder && { holder }) };
 	}
 
 	register(value: unknown): RelayManageRegister | undefined {
@@ -29,7 +30,8 @@ export class ManageBodyValidator {
 		const { hostKey, credentialHash, name } = value;
 		if (!matchesPattern(hostKey, remotePatterns.key)) return undefined;
 		if (!matchesPattern(credentialHash, remotePatterns.hash) || !isText(name)) return undefined;
-		return { ...call, hostKey, credentialHash, name };
+		const linked = value.accountLinked === true && call.holder !== undefined;
+		return { ...call, hostKey, credentialHash, name, ...(linked && { accountLinked: true }) };
 	}
 
 	device(value: unknown): RelayManageDevice | undefined {
@@ -42,4 +44,9 @@ export class ManageBodyValidator {
 
 function isText(value: unknown): value is string {
 	return typeof value === 'string' && value.length > 0 && value.length <= maxText;
+}
+
+/** Recognizes Hub's internal, keyed session identifier. */
+export function accountHolder(value: unknown): string | undefined {
+	return typeof value === 'string' && /^[a-f0-9]{64}$/.test(value) ? value : undefined;
 }

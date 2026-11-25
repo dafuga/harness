@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.service.networking-security-browser-computer",
+	"uid": "u_edfppauhtv",
+	"kind": "service",
+	"title": "BrowserComputerService",
+	"responsibility": "Owns the BrowserComputerService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/services/networking-security/BrowserComputerService.ts"],
+		"symbols": [
+			"BrowserComputerService",
+			"BrowserComputerService.constructor",
+			"BrowserComputerService.connect",
+			"BrowserComputerService.close"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "BrowserComputerService.constructor.api",
+				"type": "BrowserApi",
+				"required": true
+			},
+			{
+				"name": "BrowserComputerService.connect.hostId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserComputerService.connect.lost",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "BrowserComputerService.connect",
+				"type": "Promise<RemoteGrant['projects']>"
+			},
+			{
+				"name": "BrowserComputerService.close",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "RemoteFailure",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "BrowserComputerService.connect",
+				"inputs": [
+					{
+						"name": "BrowserComputerService.connect.hostId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BrowserComputerService.connect.lost",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserComputerService.connect",
+						"type": "Promise<RemoteGrant['projects']>"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserComputerService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "BrowserComputerService.close",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "BrowserComputerService.constructor",
+				"inputs": [
+					{
+						"name": "BrowserComputerService.constructor.api",
+						"type": "BrowserApi",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserComputerService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/services/networking-security/BrowserComputerService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/services/networking-security/BrowserComputerService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

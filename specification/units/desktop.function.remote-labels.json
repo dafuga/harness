@@ -258,7 +258,7 @@
 				"type": "string",
 				"description": "Fixed guidance that approved phones work while the computer is locked and awake, and that a sleeping computer is offline.",
 				"examples": [
-					"Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline."
+					"Linked devices keep working while this Mac is locked and awake. A sleeping Mac is offline."
 				]
 			},
 			{
@@ -295,7 +295,7 @@
 				"name": "revokedNote",
 				"type": "string",
 				"description": "Fixed instruction shown after the computer removes the phone’s access.",
-				"examples": ["Pair again from your computer to continue."]
+				"examples": ["Sign in again to request access."]
 			},
 			{
 				"name": "relayName",
@@ -338,15 +338,15 @@
 				"type": "string",
 				"description": "A phone-access-on line containing the relay host and, for registering, connecting, or offline states, the corresponding fixed suffix.",
 				"examples": [
-					"Phone access is on · relay.example:8443 · registering…",
-					"Phone access is on · relay.example:8443 · relay unreachable"
+					"This Mac is linked · relay.example:8443 · registering…",
+					"This Mac is linked · relay.example:8443 · relay unreachable"
 				]
 			},
 			{
 				"name": "hostSummary",
 				"type": "string",
-				"description": "Disabled access returns Phone access off. Enabled access reports the device count as phones, or no phone when the list is empty.",
-				"examples": ["Phone access off", "Phone access on · 1 phone"]
+				"description": "Disabled access returns Mac unlinked. Enabled access reports the device count as phones, or no phone when the list is empty.",
+				"examples": ["Mac unlinked", "Phone access on · 1 phone"]
 			},
 			{
 				"name": "remoteLabels",
@@ -363,7 +363,7 @@
 					},
 					{
 						"title": "This phone’s access was removed on the computer.",
-						"detail": "Pair again from your computer to continue."
+						"detail": "Sign in again to request access."
 					}
 				]
 			}
@@ -446,8 +446,8 @@
 						"type": "string",
 						"description": "A phone-access-on line containing the relay host and, for registering, connecting, or offline states, the corresponding fixed suffix.",
 						"examples": [
-							"Phone access is on · relay.example:8443 · registering…",
-							"Phone access is on · relay.example:8443 · relay unreachable"
+							"This Mac is linked · relay.example:8443 · registering…",
+							"This Mac is linked · relay.example:8443 · relay unreachable"
 						]
 					}
 				],
@@ -505,8 +505,8 @@
 					{
 						"name": "hostSummary",
 						"type": "string",
-						"description": "Disabled access returns Phone access off. Enabled access reports the device count as phones, or no phone when the list is empty.",
-						"examples": ["Phone access off", "Phone access on · 1 phone"]
+						"description": "Disabled access returns Mac unlinked. Enabled access reports the device count as phones, or no phone when the list is empty.",
+						"examples": ["Mac unlinked", "Phone access on · 1 phone"]
 					}
 				],
 				"errors": [],
@@ -605,7 +605,7 @@
 							},
 							{
 								"title": "This phone’s access was removed on the computer.",
-								"detail": "Pair again from your computer to continue."
+								"detail": "Sign in again to request access."
 							}
 						]
 					}

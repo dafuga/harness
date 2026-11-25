@@ -7,5 +7,7 @@ export interface NativeConnectionOptions {
 	onCacheStatus?: (status: CacheStatus) => void;
 	file: string;
 	cache: ProjectionCacheService;
+	onSignIn?: (ownerId: string) => void;
+	onDisconnect?: () => void;
 	open: (url: string) => Promise<void>;
 }

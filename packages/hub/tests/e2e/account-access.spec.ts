@@ -1,6 +1,7 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { GoogleBrowserCallbackService } from '../../../desktop/src/services/accounts-access/GoogleBrowserCallbackService';
 import { hostedFixture } from './hosted-fixture';
+import { linkedComputersFixture } from './linked-computers-fixture';
 import { macRelease } from './hosted-home';
 
 const signIn = { name: 'Sign in with Google' };
@@ -29,8 +30,11 @@ test('the Hub opens at Google sign-in and shows Home only after authentication',
 	await expect(page.getByRole('button', signIn)).toHaveCount(0);
 });
 
-test('the account menu lists devices and removes only the selected device', async ({ page }) => {
+test('the account menu lists signed-in devices and reaches the linked Macs', async ({
+	page
+}, testInfo) => {
 	await hostedFixture(page);
+	await linkedComputersFixture(page);
 	await page.route('**/api/hub-home', (route) =>
 		route.fulfill({ json: { agents: [], plans: [], scheduled: [], quota: [] } })
 	);
@@ -59,6 +63,26 @@ test('the account menu lists devices and removes only the selected device', asyn
 	await page.getByRole('link', { name: 'Devices', exact: true }).click();
 	await expect(page.getByRole('heading', { name: 'Devices', exact: true })).toBeVisible();
 	await expect(page.getByText('Office Mac')).toBeVisible();
+	const linked = page.getByRole('list', { name: 'Linked computers' });
+	await expect(linked.getByText('Studio Mac')).toBeVisible();
+	await linked.getByRole('button', { name: 'Connect to Desk Mac' }).click();
+	const desk = page.getByRole('dialog', { name: 'Desk Mac' });
+	await expect(desk.getByRole('list', { name: 'Projects on this Mac' })).toContainText(
+		'Desk project'
+	);
+	await expect(page).toHaveURL(/\/devices$/);
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		for (const width of [1440, 820, 390]) {
+			await page.setViewportSize({ width, height: 900 });
+			await expect(desk.getByText('Desk project')).toBeVisible();
+			await page.evaluate(() => document.fonts.ready);
+			await page.mouse.move(0, 0);
+			await page.screenshot({ path: testInfo.outputPath(`browser-linked-mac-${width}.png`) });
+		}
+		await page.setViewportSize({ width: 1280, height: 720 });
+	}
+	await page.keyboard.press('Escape');
+	await expect(desk).toHaveCount(0);
 	const mac = page.getByRole('listitem').filter({ hasText: 'Office Mac' });
 	await expect(mac.getByText('Last seen', { exact: false })).toBeVisible();
 	if (process.env.TAKE_SCREENSHOT === 'true') {
@@ -72,6 +96,10 @@ test('the account menu lists devices and removes only the selected device', asyn
 	await page.getByRole('button', { name: 'Confirm removal' }).click();
 	await expect(page.getByText('Office Mac')).toHaveCount(0);
 	await expect(currentBrowser).toBeVisible();
+	await linked.getByRole('button', { name: 'Manage Studio Mac' }).click();
+	await page.getByRole('button', { name: 'Confirm unlink' }).click();
+	await expect(linked.getByText('Studio Mac')).toHaveCount(0);
+	await expect(linked.getByText('Desk Mac')).toBeVisible();
 });
 
 test('Google sign-in returns to the desktop loopback without typing a code', async ({

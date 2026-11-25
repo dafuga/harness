@@ -1,0 +1,218 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.service.networking-security-remote-host-service-remote-host-account",
+	"uid": "u_k6dohe6btd",
+	"kind": "service",
+	"title": "RemoteHostAccountService",
+	"responsibility": "Owns the RemoteHostAccountService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/services/networking-security/remote-host-service/RemoteHostAccountService.ts"
+		],
+		"symbols": [
+			"RemoteHostAccountService",
+			"RemoteHostAccountService.constructor",
+			"RemoteHostAccountService.link",
+			"RemoteHostAccountService.end",
+			"RemoteHostAccountService.unlink",
+			"RemoteHostAccountService.relayUnlinked"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "RemoteHostAccountService.constructor.record",
+				"type": "RemoteHostRecordService",
+				"required": true
+			},
+			{
+				"name": "RemoteHostAccountService.constructor.turns",
+				"type": "RemoteHostSwitchService",
+				"required": true
+			},
+			{
+				"name": "RemoteHostAccountService.constructor.changed",
+				"type": "() => void",
+				"required": true
+			},
+			{
+				"name": "RemoteHostAccountService.constructor.unregister",
+				"type": "(hostId: string, ownerId: string) => Promise<void>",
+				"required": false
+			},
+			{
+				"name": "RemoteHostAccountService.link.ownerId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "RemoteHostAccountService.link.running",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "RemoteHostAccountService.relayUnlinked.state",
+				"type": "RemoteHostState",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "RemoteHostAccountService.link",
+				"type": "void"
+			},
+			{
+				"name": "RemoteHostAccountService.end",
+				"type": "void"
+			},
+			{
+				"name": "RemoteHostAccountService.unlink",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "RemoteHostAccountService.relayUnlinked",
+				"type": "void"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "RemoteHostAccountService.link",
+				"inputs": [
+					{
+						"name": "RemoteHostAccountService.link.ownerId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "RemoteHostAccountService.link.running",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostAccountService.link",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostAccountService.end",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostAccountService.end",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostAccountService.unlink",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "RemoteHostAccountService.unlink",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostAccountService.relayUnlinked",
+				"inputs": [
+					{
+						"name": "RemoteHostAccountService.relayUnlinked.state",
+						"type": "RemoteHostState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostAccountService.relayUnlinked",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "RemoteHostAccountService.constructor",
+				"inputs": [
+					{
+						"name": "RemoteHostAccountService.constructor.record",
+						"type": "RemoteHostRecordService",
+						"required": true
+					},
+					{
+						"name": "RemoteHostAccountService.constructor.turns",
+						"type": "RemoteHostSwitchService",
+						"required": true
+					},
+					{
+						"name": "RemoteHostAccountService.constructor.changed",
+						"type": "() => void",
+						"required": true
+					},
+					{
+						"name": "RemoteHostAccountService.constructor.unregister",
+						"type": "(hostId: string, ownerId: string) => Promise<void>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostAccountService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.remote-host-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.remote-host-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.remote-host-switch",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostAccountService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostAccountService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

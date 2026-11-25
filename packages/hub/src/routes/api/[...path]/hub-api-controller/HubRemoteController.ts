@@ -1,4 +1,5 @@
 // @harness-uid u_vusx2wyapy
+import type { SessionRecord } from '../../../../models/accounts-access/HubAuthStore.types';
 import type { Route, Call } from './HubRemoteController.types';
 import type { Actor } from 'collaboration';
 import type { RemoteHostRegistration } from '../../../../../../remote/src/models/networking-security/RemoteRelay.types';
@@ -16,14 +17,28 @@ function routeOf(path: string): Route | null {
 	if (parts.length === 4) return { kind: 'hosts', ids: [] };
 	if (parts.length === 5) return { kind: 'host', ids: [parts[4]] };
 	if (parts.length === 6 && parts[5] === 'pairing') return { kind: 'pairing', ids: [parts[4]] };
+	if (parts.length === 7 && parts[5] === 'connect')
+		return { kind: 'browser-socket', ids: [parts[4], parts[6]] };
+	if (parts.length === 8 && parts[5] === 'pairing') {
+		const action = parts[7];
+		if (action === 'poll' || action === 'exchange')
+			return { kind: `browser-${action}`, ids: [parts[4], parts[6]] };
+	}
 	const device = parts.length === 7 && parts[5] === 'devices';
 	return device ? { kind: 'device', ids: [parts[4], parts[6]] } : null;
 }
 
 async function register(call: Call): Promise<Response> {
-	const { remote, owner } = call;
+	const { remote, owner, session } = call;
 	const input = await validator.registration(await hubBody(call.request));
-	const { hostId, generation, registeredAt } = await remote.relay.register({ owner, ...input });
+	if (input.accountLinked && session?.kind !== 'native')
+		return hubHttp({ error: 'forbidden' }, 403);
+	const holder = input.accountLinked ? session?.idHash : undefined;
+	const { hostId, generation, registeredAt } = await remote.relay.register({
+		owner,
+		holder,
+		...input
+	});
 	const registration: RemoteHostRegistration = {
 		hostId,
 		origin: remote.origin,
@@ -34,7 +49,8 @@ async function register(call: Call): Promise<Response> {
 }
 
 async function computers(call: Call): Promise<Response> {
-	return hubHttp({ computers: await call.remote.relay.computers(call.owner) });
+	const accountOnly = new URL(call.request.url).searchParams.get('linked') === '1';
+	return hubHttp({ computers: await call.remote.relay.computers(call.owner, accountOnly) });
 }
 
 async function pairingKey(call: Call): Promise<Response> {
@@ -46,7 +62,11 @@ async function pairingKey(call: Call): Promise<Response> {
 async function requestPairing(call: Call): Promise<Response> {
 	const hostId = validator.hostId(call.ids[0]);
 	const body = validator.pairing(await hubBody(call.request));
-	return hubHttp(await call.remote.relay.requestPairing({ owner: call.owner, hostId }, body), 202);
+	const holder = call.session?.idHash;
+	return hubHttp(
+		await call.remote.relay.requestPairing({ owner: call.owner, hostId, holder }, body),
+		202
+	);
 }
 
 async function summary(call: Call): Promise<Response> {
@@ -65,12 +85,44 @@ async function revokeDevice(call: Call): Promise<Response> {
 	return hubHttp(await call.remote.relay.revokeDevice({ owner: call.owner, hostId, deviceId }));
 }
 
+function browserHolder(call: Call): string {
+	const { session, request } = call;
+	const origin = new URL(request.url).origin;
+	if (session?.kind !== 'browser' || request.headers.get('Origin') !== origin)
+		return hubFail('forbidden');
+	return session.idHash;
+}
+
+async function browserPairing(call: Call, operation: 'poll' | 'exchange'): Promise<Response> {
+	const holder = browserHolder(call);
+	const hostId = validator.hostId(call.ids[0]);
+	const pairingId = validator.pairingId(call.ids[1]);
+	const body = await hubBody(call.request);
+	const proof = operation === 'exchange' ? { verifier: body.verifier } : {};
+	return call.remote.relay.browserPairing(
+		{ owner: call.owner, hostId, holder },
+		{ pairingId, operation, proof }
+	);
+}
+
+async function browserSocket(call: Call): Promise<Response> {
+	const holder = browserHolder(call);
+	const hostId = validator.hostId(call.ids[0]);
+	const deviceId = validator.deviceId(call.ids[1]);
+	if (call.request.headers.get('Upgrade')?.toLowerCase() !== 'websocket')
+		return hubHttp({ error: 'upgrade-required' }, 426);
+	return call.remote.relay.browserSocket({ owner: call.owner, hostId, holder, deviceId });
+}
+
 const ACTIONS = new Map<string, (call: Call) => Promise<Response>>([
 	['POST hosts', register],
 	['GET hosts', computers],
 	['GET host', summary],
 	['GET pairing', pairingKey],
 	['POST pairing', requestPairing],
+	['POST browser-poll', (call) => browserPairing(call, 'poll')],
+	['POST browser-exchange', (call) => browserPairing(call, 'exchange')],
+	['GET browser-socket', browserSocket],
 	['DELETE host', unregister],
 	['DELETE device', revokeDevice]
 ]);
@@ -82,12 +134,12 @@ const ACTIONS = new Map<string, (call: Call) => Promise<Response>>([
 export class HubRemoteController {
 	constructor(private readonly remote?: HubRemoteRuntime | null) {}
 
-	async handle(request: Request, actor: Actor): Promise<Response> {
+	async handle(request: Request, actor: Actor, session?: SessionRecord | null): Promise<Response> {
 		const route = routeOf(new URL(request.url).pathname);
 		if (!route) return hubHttp({ error: 'not-found' }, 404);
 		const action = ACTIONS.get(`${request.method} ${route.kind}`);
 		if (!action) return hubHttp({ error: 'method-denied' }, 405);
 		const remote = this.remote ?? hubFail('remote-disabled');
-		return action({ request, remote, owner: { id: actor.id }, ids: route.ids });
+		return action({ request, remote, owner: { id: actor.id }, session, ids: route.ids });
 	}
 }

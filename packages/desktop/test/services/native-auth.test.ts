@@ -20,14 +20,14 @@ function nativeReceipt(nonce: string) {
 		expiresAt: new Date(Date.now() + 300000).toISOString()
 	};
 }
-
 function setup(wrongNonce = false) {
 	let challenge = '',
 		nonce = '',
 		now = Date.now(),
 		port = 0;
 	const save = vi.fn(),
-		open = vi.fn();
+		open = vi.fn(),
+		onSignIn = vi.fn();
 	const store = {
 		available: () => true,
 		read: async () => null,
@@ -62,9 +62,10 @@ function setup(wrongNonce = false) {
 		fetch: transport as unknown as typeof fetch
 	});
 	return {
-		service: new NativeAuthService({ origin, http, store, open, now: () => now }),
+		service: new NativeAuthService({ origin, http, store, open, onSignIn, now: () => now }),
 		save,
 		open,
+		onSignIn,
 		returnFromBrowser: () =>
 			fetch(`http://127.0.0.1:${port}/harness-account?state=fixture-id&code=${browserCode}`),
 		advance: () => {
@@ -96,14 +97,15 @@ test('Google sign-in uses a system browser loopback callback before it exchanges
 	fixture.advance();
 	expect((await fixture.service.status()).state).toBe('pending');
 	expect(fixture.service.admitted).toBe(false);
+	expect(fixture.onSignIn).not.toHaveBeenCalled();
 	const result = await fixture.returnFromBrowser();
 	expect(new URL(result.url).search).toBe('');
 	fixture.advance();
 	expect((await fixture.service.status()).state).toBe('signed-in');
 	expect(fixture.service.admitted).toBe(true);
 	expect(fixture.save).toHaveBeenCalledOnce();
+	expect(fixture.onSignIn).toHaveBeenCalledExactlyOnceWith('google:fixture');
 });
-
 test('a wrong native nonce never persists a credential', async () => {
 	const f = setup(true);
 	await f.service.connect();
@@ -111,7 +113,6 @@ test('a wrong native nonce never persists a credential', async () => {
 	await expect(f.service.status()).rejects.toThrow('handoff');
 	expect(f.save).not.toHaveBeenCalled();
 });
-
 test.each([401, 403, 200])(
 	'revoked or mismatched native status %s drops the session and protected cache',
 	async (status) => {
@@ -162,7 +163,6 @@ test.each([401, 403, 200])(
 		expect(clearCache).toHaveBeenCalledOnce();
 	}
 );
-
 test('a temporary native status failure preserves the encrypted login', async () => {
 	const credential = {
 		origin,
@@ -191,7 +191,6 @@ test('a temporary native status failure preserves the encrypted login', async ()
 	await expect(service.status()).rejects.toThrow();
 	expect(store.clear).not.toHaveBeenCalled();
 });
-
 test('a stored session for another Hub is cleared without contacting the current Hub', async () => {
 	const credential = {
 		origin: 'https://other-hub.example.invalid',

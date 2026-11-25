@@ -65,7 +65,7 @@ function deviceOf(
 function viewOf(active: RemoteHostState | null, runtime: RemoteHostRuntimeService | null) {
 	return {
 		pairing: active && runtime ? offerOf(active, runtime) : null,
-		requests: runtime ? runtime.pairing.requests() : [],
+		requests: runtime && !active?.ownerId ? runtime.pairing.requests() : [],
 		devices: active ? active.devices.map((device) => deviceOf(device, runtime)) : []
 	};
 }

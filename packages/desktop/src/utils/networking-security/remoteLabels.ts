@@ -1,6 +1,6 @@
 // @harness-uid u_5oh2kzpy56
 export const lockNote =
-	'Approved phones keep working while this Mac is locked and awake. A sleeping Mac is offline.';
+	'Linked devices keep working while this Mac is locked and awake. A sleeping Mac is offline.';
 
 export const awakeNote = 'Computer awake · works while its screen is locked';
 
@@ -12,7 +12,7 @@ export const approveNote = 'Approve this phone in Harness on your computer.';
 
 export const awayNote = 'It is asleep or has no network. Nothing is sent until it is back.';
 
-export const revokedNote = 'Pair again from your computer to continue.';
+export const revokedNote = 'Sign in again to request access.';
 
 /** The start of a device identity, which is the hash of its key, in groups a person can compare. */
 export function keyLabel(deviceId: string): string {

@@ -20,6 +20,8 @@ export interface RemoteHostDevice {
 /** Everything this computer keeps for remote access. It exists on disk only encrypted. */
 export interface RemoteHostState {
 	enabled: boolean;
+	/** The verified Hub account under which this Mac was linked. */
+	ownerId?: string;
 	origin: string | null;
 	hostId: string;
 	keys: StoredRemoteKeys;

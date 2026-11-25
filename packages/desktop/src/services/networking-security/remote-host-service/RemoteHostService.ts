@@ -5,21 +5,42 @@ import type { RemoteHostStatus, RemoteKeyPair } from '../../../../../remote/src/
 import type { RemoteHostState } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { remoteHostStatus } from './remoteHostStatus';
 import { RemoteHostRecordService } from './RemoteHostRecordService';
+import { RemoteHostAccountService } from './RemoteHostAccountService';
 import { RemoteHostRuntimeService } from './RemoteHostRuntimeService';
 import { RemoteHostSwitchService } from './remote-host-switch-service/RemoteHostSwitchService';
 import { RemotePairingControlService } from './RemotePairingControlService';
 
-/**
- * Remote access of this computer: off until the person turns it on, and only with OS encryption.
- * `screen` tells connected phones that the screen was locked or unlocked and changes nothing else.
- * `suspend` is system suspension: offline until `resume`, with sessions and runs kept. `stop` is
- * Quit: the socket closes and the phones' runs are cancelled; the approvals stay stored.
- * Launch, on, off and Quit go through the switch, which keeps a late answer from undoing them.
- */
+function hostRuntime(
+	state: RemoteHostState,
+	keys: RemoteKeyPair,
+	options: RemoteHostOptions,
+	host: RemoteHostService
+) {
+	const { open, shared, link, locked } = options,
+		quietly = (work: Promise<unknown>) => void work.catch(() => undefined);
+	return new RemoteHostRuntimeService({
+		state,
+		keys,
+		name: host.name(),
+		open,
+		shared,
+		link,
+		locked,
+		changed: () => quietly(host.published()),
+		unlinked: state.ownerId ? () => host.account.relayUnlinked(state) : undefined,
+		accountRequest: (runtime, request) => quietly(host.devices.approveAccount(runtime, request)),
+		ready: () => quietly(host.devices.flush().then(() => host.saved())),
+		revoked: (deviceId) => quietly(host.devices.dropped(deviceId)),
+		seen: (deviceId) => quietly(host.devices.seen(deviceId))
+	});
+}
+
+/** Runs the account-linked host and reports its current state to the desktop. */
 export class RemoteHostService {
 	readonly devices: RemotePairingControlService;
 	private readonly record: RemoteHostRecordService;
 	private readonly turns: RemoteHostSwitchService;
+	readonly account: RemoteHostAccountService;
 	private runtime: RemoteHostRuntimeService | null = null;
 	private readonly listeners = new Set<(status: RemoteHostStatus) => void>();
 	constructor(private readonly options: RemoteHostOptions) {
@@ -32,10 +53,16 @@ export class RemoteHostService {
 			close: () => this.close(),
 			changed: () => this.changed()
 		});
+		this.account = new RemoteHostAccountService(
+			this.record,
+			this.turns,
+			() => this.changed(),
+			options.unregister
+		);
 		this.devices = new RemotePairingControlService(this, options.shared.registry);
 	}
 	enabled(): boolean {
-		return this.record.value?.enabled === true;
+		return this.active()?.enabled === true;
 	}
 	name(): string {
 		return this.options.name ? this.options.name() : hostname();
@@ -46,16 +73,23 @@ export class RemoteHostService {
 	}
 	/** At launch: an enabled host goes online again with what is stored. Nothing is registered. */
 	start(): Promise<void> {
-		return this.turns.start();
+		return this.options.accountOnly ? Promise.resolve() : this.turns.start();
 	}
 	async enable(): Promise<RemoteHostStatus> {
-		if (!this.record.available()) return this.status();
-		await this.turns.enable();
+		if (!this.record.available() || (this.options.accountOnly && !this.account.ownerId))
+			return this.status();
+		await this.turns.enable(this.account.ownerId);
 		return this.published();
 	}
 	async disable(): Promise<RemoteHostStatus> {
+		const owner = this.account.ownerId;
+		await this.account.unlink();
+		if (owner !== this.account.ownerId) return this.status();
 		await this.turns.disable();
 		return this.published();
+	}
+	linkAccount(ownerId: string): void {
+		this.account.link(ownerId, Boolean(this.runtime));
 	}
 	screen(locked: boolean): void {
 		const state = locked ? 'locked' : 'unlocked';
@@ -74,7 +108,7 @@ export class RemoteHostService {
 	async status(): Promise<RemoteHostStatus> {
 		const { runtime } = this,
 			{ phase, reason } = this.turns,
-			{ value: state } = this.record,
+			state = this.active(),
 			supported = this.record.available(),
 			projects = await this.options.shared.registry.list().catch(() => []);
 		return remoteHostStatus({
@@ -103,6 +137,11 @@ export class RemoteHostService {
 		await this.record.save();
 		return this.published();
 	}
+	private active() {
+		const { value } = this.record;
+		const { ownerId } = this.account;
+		return !this.options.accountOnly || (ownerId && value?.ownerId === ownerId) ? value : null;
+	}
 	private changed(): void {
 		void this.published().catch(() => undefined);
 	}
@@ -111,22 +150,8 @@ export class RemoteHostService {
 		this.runtime = null;
 	}
 	private run(state: RemoteHostState, keys: RemoteKeyPair): void {
-		const { open, shared, link, locked } = this.options,
-			quietly = (work: Promise<unknown>) => void work.catch(() => undefined);
 		this.close();
-		this.runtime = new RemoteHostRuntimeService({
-			state,
-			keys,
-			name: this.name(),
-			open,
-			shared,
-			link,
-			locked,
-			changed: () => this.changed(),
-			ready: () => quietly(this.devices.flush().then(() => this.saved())),
-			revoked: (deviceId) => quietly(this.devices.dropped(deviceId)),
-			seen: (deviceId) => quietly(this.devices.seen(deviceId))
-		});
+		this.runtime = hostRuntime(state, keys, this.options, this);
 		this.runtime.start();
 	}
 }

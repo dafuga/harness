@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "page",
 		"uses": [
+			"hub.component.accounts-access-linked-computers",
 			"hub.component.hub-frame",
 			"hub.component.login-panel",
 			"reports.component.shared-primitives-atoms-html-button",
@@ -44,6 +45,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.accounts-access-linked-computers",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.hub-frame",
 			"via": "import",

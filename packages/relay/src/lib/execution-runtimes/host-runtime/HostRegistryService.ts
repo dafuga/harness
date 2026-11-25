@@ -30,9 +30,13 @@ export class HostRegistryService {
 		const generation = (current?.generation ?? 0) + 1;
 		const registeredAt = current?.registeredAt ?? new Date().toISOString();
 		const ownerId = input.owner.id;
+		const accountLinked = current?.accountLinked ?? input.accountLinked;
+		if (accountLinked && !current?.accountLinked) this.clearLegacy();
+		for (const { pairingId } of this.store.pairings()) this.store.removePairing(pairingId);
 		this.store.saveHost({
 			hostId,
 			ownerId,
+			...(accountLinked && { accountLinked }),
 			hostKey,
 			credentialHash,
 			name,
@@ -44,8 +48,16 @@ export class HostRegistryService {
 		return { hostId, generation, registeredAt };
 	}
 
+	private clearLegacy(): void {
+		for (const { deviceId } of this.store.devices()) {
+			this.store.removeDevice(deviceId);
+			for (const socket of this.sockets.device(deviceId))
+				this.link.drop(socket, relayCloseCodes.unauthorized);
+		}
+	}
+
 	summary(host: HostRecord): RemoteHostSummary {
-		const { hostId, name, generation, registeredAt } = host;
+		const { hostId, name, generation, registeredAt, accountLinked } = host;
 		const devices = this.store.devices().map(({ deviceId, createdAt, lastSeenAt }) => ({
 			deviceId,
 			online: this.sockets.device(deviceId).length > 0,
@@ -53,7 +65,15 @@ export class HostRegistryService {
 			lastSeenAt
 		}));
 		const online = this.sockets.host() !== undefined;
-		return { hostId, name, online, generation, registeredAt, devices };
+		return {
+			hostId,
+			name,
+			online,
+			generation,
+			registeredAt,
+			devices,
+			...(accountLinked && { accountLinked })
+		};
 	}
 
 	/** Closes every socket with 4401 and deletes everything the object keeps. */

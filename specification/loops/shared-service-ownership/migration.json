@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "9cb27a1f849ef82ea7c420cc3b26ab94f203afb42d2bf97dd411ece1cd99b6e6",
+			"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "2ee196aab6f5c7cce9891ff981c31e36d11c6ac0",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "9cb27a1f849ef82ea7c420cc3b26ab94f203afb42d2bf97dd411ece1cd99b6e6",
-				"reason": "Give the privileged window an explicit owner for its navigation and Tracker artifact link handling."
+				"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -1640,6 +1640,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 					"definition": "e25b8420c7df981d1cbeda1dde62442dec3e558bae0cf23581afa908186998a5",
 					"reason": "Passes the approved phone device settings and the dedicated write grant to the private device service."
+				},
+				{
+					"commit": "2ee196aab6f5c7cce9891ff981c31e36d11c6ac0",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "9cb27a1f849ef82ea7c420cc3b26ab94f203afb42d2bf97dd411ece1cd99b6e6",
+					"reason": "Give the privileged window an explicit owner for its navigation and Tracker artifact link handling."
 				}
 			]
 		},
@@ -1647,13 +1653,13 @@
 			"unit": "desktop.service.native-connection",
 			"from": "packages/desktop/src/services/NativeConnectionService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-			"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
+			"definition": "99886d91cc045a453995ebcd6230348e48ac82f4c90d267d0893d55007cc44f9",
 			"relocationDefinition": "d2e47f584c82ec1dc1ee8b2633bfda9fd0b18e23c0d7bea61f4d3eccc4347133",
 			"review": {
-				"commit": "caea83354142413dd97edae29bdd055924c9847b",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
-				"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
-				"reason": "Exposes the fixed Tracker overview operation through native session authority."
+				"definition": "99886d91cc045a453995ebcd6230348e48ac82f4c90d267d0893d55007cc44f9",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -1661,6 +1667,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
 					"definition": "35091df5a8f74b97d97a0396da7d31c5fe8b14aa38a812d54d8c8ee3129f0b81",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "caea83354142413dd97edae29bdd055924c9847b",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeConnectionService.ts",
+					"definition": "f95a39e59fd26b8ff9fc17f70cf265ecef85c0481be8a4eeee6443ef7e27abbe",
+					"reason": "Exposes the fixed Tracker overview operation through native session authority."
 				}
 			]
 		},
@@ -1668,13 +1680,13 @@
 			"unit": "desktop.service.native-auth",
 			"from": "packages/desktop/src/services/NativeAuthService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-			"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
+			"definition": "63ba90535b06b8ac3b2a83415d17cd3d045ad739c83dbd72dc94c87b7eee48ff",
 			"relocationDefinition": "67a3c6213e0976f629348ba23061f5fa8274ef5c97eb067ee00cba2f8005485f",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
-				"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
-				"reason": "Enroll and refresh the native account through the Hub while preserving typed-code fallback."
+				"definition": "63ba90535b06b8ac3b2a83415d17cd3d045ad739c83dbd72dc94c87b7eee48ff",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -1700,6 +1712,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
 					"definition": "11320e6d5b82ebd8669a90d972996bc48246dc328a09bd57bceedada92cc671f",
 					"reason": "Reads the Tracker overview through the current native account and rejects stale sessions."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/NativeAuthService.ts",
+					"definition": "dbb0bc320b5f033457136f31c50f5bdf20042f3800c8e70e737093484be823d7",
+					"reason": "Enroll and refresh the native account through the Hub while preserving typed-code fallback."
 				}
 			]
 		},
@@ -2317,14 +2335,22 @@
 			"unit": "desktop.service.remote-host-runtime",
 			"from": "packages/desktop/src/services/RemoteHostRuntimeService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
-			"definition": "e07bc9a43531cb70496d2dd330cd0e3ed4e934084bb6b80b375539cd6f542997",
+			"definition": "8949f90edc7485164c0b85df3e4516502fa4e0116a7e87b56e12da9a0c9d2587",
 			"relocationDefinition": "a051c6220e08e2287a7067ad22e9c2703627421b10f5d8b400a169581376c7e7",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
-				"definition": "e07bc9a43531cb70496d2dd330cd0e3ed4e934084bb6b80b375539cd6f542997",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "8949f90edc7485164c0b85df3e4516502fa4e0116a7e87b56e12da9a0c9d2587",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRuntimeService.ts",
+					"definition": "e07bc9a43531cb70496d2dd330cd0e3ed4e934084bb6b80b375539cd6f542997",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.remote-device-sessions",
@@ -2357,13 +2383,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
+			"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
-				"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
+				"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -2383,6 +2409,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 					"definition": "a23cd83c2d144ca80865a2a6235e3848dd6375d25edb1f0aee4faf4366c11098",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
+					"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
 				}
 			]
 		},
@@ -2449,13 +2481,13 @@
 			"unit": "hub.controller.hub-remote",
 			"from": "packages/hub/src/controllers/HubRemoteController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-			"definition": "72bb6aded5ebd01c24422c3168f34c4a389a60e5f6a6ebe99484c0b17940c8f4",
+			"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
 			"relocationDefinition": "69949fa0a61ff7bc03b458c831cc2500e441bad89a146faab9191123f86bbbfc",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-				"definition": "72bb6aded5ebd01c24422c3168f34c4a389a60e5f6a6ebe99484c0b17940c8f4",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -2463,6 +2495,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
 					"definition": "568871fa63ff61e5b24d72dedd89947269410a8242f0c4def23667d56e4354f8",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
+					"definition": "72bb6aded5ebd01c24422c3168f34c4a389a60e5f6a6ebe99484c0b17940c8f4",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -2938,26 +2976,34 @@
 			"unit": "desktop.service.relay-link",
 			"from": "packages/desktop/src/services/relay-link-service/RelayLinkService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/RelayLinkService.ts",
-			"definition": "e2f64cb89192d7646c2d6d144735f6ec4ef5ee62b6fb9e91de735cee1db7ed50",
+			"definition": "752ca8162bc0a91f80942f1465aca4858cb093add00dff9335c963b2fc2a0a36",
 			"relocationDefinition": "001bc6336fe43c5f2ba0a17caa6c00c55fa2ef254a9089931ef3bfd8773d22d3",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/RelayLinkService.ts",
-				"definition": "e2f64cb89192d7646c2d6d144735f6ec4ef5ee62b6fb9e91de735cee1db7ed50",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "752ca8162bc0a91f80942f1465aca4858cb093add00dff9335c963b2fc2a0a36",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/RelayLinkService.ts",
+					"definition": "e2f64cb89192d7646c2d6d144735f6ec4ef5ee62b6fb9e91de735cee1db7ed50",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.relay-frame",
 			"from": "packages/desktop/src/services/relay-link-service/relayFrame.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
-			"definition": "da403987e099b1b3b6d4678f91ad7da1f5ba076c4eeede6fd369bcc393cbeef2",
+			"definition": "90000782bb56f08c67e0d4a59c7b0183ab8f7d99a40bef6336055695e235a75f",
 			"relocationDefinition": "c73bfca3686cc759002345ef1fc8b27750c7cb3ad6e44628483fbd48a8da992a",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
-				"definition": "da403987e099b1b3b6d4678f91ad7da1f5ba076c4eeede6fd369bcc393cbeef2",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "90000782bb56f08c67e0d4a59c7b0183ab8f7d99a40bef6336055695e235a75f",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -2965,6 +3011,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
 					"definition": "a514558bdfc54e7528760fe6651f143fd7d6582d2aea2911c8b65a5afeb8fe1f",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
+					"definition": "da403987e099b1b3b6d4678f91ad7da1f5ba076c4eeede6fd369bcc393cbeef2",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -3828,7 +3880,14 @@
 			"unit": "relay.service.host-registry",
 			"from": "packages/relay/src/services/HostRegistryService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
-			"definition": "69de43d51c22d8b417cf4aa274ff4b0f4ceced25ff4562a850aa1392f9b28706"
+			"definition": "d6057ad874e9ec173e6eac3291ef53f1d5ecb0c8f5e13002fde811f723267743",
+			"relocationDefinition": "69de43d51c22d8b417cf4aa274ff4b0f4ceced25ff4562a850aa1392f9b28706",
+			"review": {
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
+				"definition": "d6057ad874e9ec173e6eac3291ef53f1d5ecb0c8f5e13002fde811f723267743",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			}
 		},
 		{
 			"unit": "workflow.build-history",
@@ -3951,14 +4010,22 @@
 			"unit": "relay.adapter.host-storage",
 			"from": "packages/relay/src/adapters/HostStorageAdapter.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
-			"definition": "27218e35b4d1f75b0961f5ead2bdd1e16e177c523f0a6a2fc6a16ad1a67b0d5a",
+			"definition": "2beacf4d33f9e98117833434d15f5922cd40cd1ba11f97645122107ea1ada028",
 			"relocationDefinition": "45aaedb5d41741a10415019233bae813cd5414dd8fa7ff1fc05f810c369b8506",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
-				"definition": "27218e35b4d1f75b0961f5ead2bdd1e16e177c523f0a6a2fc6a16ad1a67b0d5a",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "2beacf4d33f9e98117833434d15f5922cd40cd1ba11f97645122107ea1ada028",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostStorageAdapter.ts",
+					"definition": "27218e35b4d1f75b0961f5ead2bdd1e16e177c523f0a6a2fc6a16ad1a67b0d5a",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				}
+			]
 		},
 		{
 			"unit": "command.info",
@@ -3970,14 +4037,22 @@
 			"unit": "relay.service.host-link",
 			"from": "packages/relay/src/services/HostLinkService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts",
-			"definition": "ac83c49f97ea12b07e983bd5cf616075820e17e3f9603ad378c602eb7d572ee4",
+			"definition": "705f44680322a36581ec016c6e9483924a1fd130954b54b6a5415826f596f857",
 			"relocationDefinition": "41c2d0283b52598883d5e8d3f4e97cd8804bcb9102bee337b1ac799a881b2276",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts",
-				"definition": "ac83c49f97ea12b07e983bd5cf616075820e17e3f9603ad378c602eb7d572ee4",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "705f44680322a36581ec016c6e9483924a1fd130954b54b6a5415826f596f857",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostLinkService.ts",
+					"definition": "ac83c49f97ea12b07e983bd5cf616075820e17e3f9603ad378c602eb7d572ee4",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.google-identity",
@@ -4459,13 +4534,13 @@
 			"unit": "desktop.service.remote-pairing-control",
 			"from": "packages/desktop/src/services/RemotePairingControlService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-			"definition": "1fcf3e365bcd0aff9aac864c40e7b955d8c3433ccab7668a8f1bddae74b62b5f",
+			"definition": "ccd542c5d7a8701b7e9800c6559c0df58bc333a297b5d4cc044748f45cf32819",
 			"relocationDefinition": "387180118bceee12a21e4a25d91232047e1844acc24e79528c4902816fd1df06",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-				"definition": "1fcf3e365bcd0aff9aac864c40e7b955d8c3433ccab7668a8f1bddae74b62b5f",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "ccd542c5d7a8701b7e9800c6559c0df58bc333a297b5d4cc044748f45cf32819",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -4479,6 +4554,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
 					"definition": "08ddc6ce251aade3c8593921d8044da50ddf93a66ca49f8742005b895efc0ba7",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.remote-pairing-control, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
+					"definition": "1fcf3e365bcd0aff9aac864c40e7b955d8c3433ccab7668a8f1bddae74b62b5f",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -4546,7 +4627,14 @@
 			"unit": "relay.controller.pairing",
 			"from": "packages/relay/src/controllers/PairingController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
-			"definition": "b29d4ffd67bbd63067c9444a8c092596f5543dde219be6ba3d2109137756b6f3"
+			"definition": "8273a8be374c129d3a6415998e305173b1ccbff6b26803837e83eb9559b4e4c0",
+			"relocationDefinition": "b29d4ffd67bbd63067c9444a8c092596f5543dde219be6ba3d2109137756b6f3",
+			"review": {
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
+				"definition": "8273a8be374c129d3a6415998e305173b1ccbff6b26803837e83eb9559b4e4c0",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			}
 		},
 		{
 			"unit": "service.history-status",
@@ -4773,26 +4861,34 @@
 			"unit": "relay.controller.manage",
 			"from": "packages/relay/src/controllers/ManageController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
-			"definition": "4bef6043008b147cdd84be05837bc3faeb08ec539f45a0332f252d039d7030d8",
+			"definition": "40c6e95cbd8944a8532aabd479867a61fd5948cea154fc9ab3fa1ce43faa3482",
 			"relocationDefinition": "19f3865289625f04165dce6082558f633a40500c264a6d15e47ca519fbf5b8ee",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
-				"definition": "4bef6043008b147cdd84be05837bc3faeb08ec539f45a0332f252d039d7030d8",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "40c6e95cbd8944a8532aabd479867a61fd5948cea154fc9ab3fa1ce43faa3482",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
+					"definition": "4bef6043008b147cdd84be05837bc3faeb08ec539f45a0332f252d039d7030d8",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				}
+			]
 		},
 		{
 			"unit": "desktop.adapter.remote-registration",
 			"from": "packages/desktop/src/adapters/RemoteRegistrationAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
-			"definition": "4e285fb9ef37f065ba3270b9c7ce7f3154c93a049a3a605f9bc0b6f277e375eb",
+			"definition": "755d00b74c27519040293afb2412cda77e5a6af85de949c3ea2586047bcb8fa4",
 			"relocationDefinition": "0b6b8fd1d9cbd054a71db55cd499d6ad412a4e65d86ea520e3ab8bf6414549a5",
 			"review": {
-				"commit": "f3e39664e1ffc6da75a8706534891256ed85d362",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
-				"definition": "4e285fb9ef37f065ba3270b9c7ce7f3154c93a049a3a605f9bc0b6f277e375eb",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-registration, written by haiku); messages and behavior unchanged."
+				"definition": "755d00b74c27519040293afb2412cda77e5a6af85de949c3ea2586047bcb8fa4",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -4800,6 +4896,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
 					"definition": "0a9926f6641d205003dc13959832bf6c59ba9bf7d74a03183e08ac3d9888d1e4",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "f3e39664e1ffc6da75a8706534891256ed85d362",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/RemoteRegistrationAdapter.ts",
+					"definition": "4e285fb9ef37f065ba3270b9c7ce7f3154c93a049a3a605f9bc0b6f277e375eb",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-registration, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -5170,7 +5272,14 @@
 			"unit": "hub.middleware.hub-responses",
 			"from": "packages/hub/src/middleware/HubResponsesMiddleware.ts",
 			"to": "packages/hub/src/lib/development-tooling/server-hooks/HubResponsesMiddleware.ts",
-			"definition": "b277bdb93533368ac620de101aea1dbea180dbb933a7d346265624358f4e72ae"
+			"definition": "57692f3c0adc1b841871ea27259802b52b8fe760ff2d26b024b2e4a848469578",
+			"relocationDefinition": "b277bdb93533368ac620de101aea1dbea180dbb933a7d346265624358f4e72ae",
+			"review": {
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"path": "packages/hub/src/lib/development-tooling/server-hooks/HubResponsesMiddleware.ts",
+				"definition": "57692f3c0adc1b841871ea27259802b52b8fe760ff2d26b024b2e4a848469578",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			}
 		},
 		{
 			"unit": "desktop.service.device-operations",
@@ -5493,13 +5602,13 @@
 			"unit": "remote.service.host-pairing",
 			"from": "packages/remote/src/services/host-pairing-service/HostPairingService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-			"definition": "d53b256a7547dd55930612f628edc1c7596dfc2ba4092b93a0cac46399960016",
+			"definition": "8525549e0f84f7df0b8a8dabc2b83483dd4e0055bc75808915d2ebdbe0fab422",
 			"relocationDefinition": "4a40e61e9dd41177d106b1e6d73e1040b90d29be5ecaba311a76a91c200e708e",
 			"review": {
-				"commit": "5ee7dddd9750c6b8f5ac5323e639aaec400d3a9e",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-				"definition": "d53b256a7547dd55930612f628edc1c7596dfc2ba4092b93a0cac46399960016",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "8525549e0f84f7df0b8a8dabc2b83483dd4e0055bc75808915d2ebdbe0fab422",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -5513,6 +5622,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
 					"definition": "04b3c301f20c04f16d7d6407b9c6fa55855f1c2f360a36ce71b8e24b6c154040",
 					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-remote.service.host-pairing, written by luna); messages and behavior unchanged."
+				},
+				{
+					"commit": "5ee7dddd9750c6b8f5ac5323e639aaec400d3a9e",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
+					"definition": "d53b256a7547dd55930612f628edc1c7596dfc2ba4092b93a0cac46399960016",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -5653,14 +5768,22 @@
 			"unit": "relay.service.socket-accept",
 			"from": "packages/relay/src/services/SocketAcceptService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
-			"definition": "e082352d563473f0720e10ef1fb107d943037339c8867efb4dd325afefc7497b",
+			"definition": "c258b98191c03fde1343c8652509bd91b54f76d8d36775ad123bc688908992c3",
 			"relocationDefinition": "ba7aed08b415ca4ad794733e064241bb1f2895ffa5130175c371293a4498e539",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
-				"definition": "e082352d563473f0720e10ef1fb107d943037339c8867efb4dd325afefc7497b",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "c258b98191c03fde1343c8652509bd91b54f76d8d36775ad123bc688908992c3",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
+					"definition": "e082352d563473f0720e10ef1fb107d943037339c8867efb4dd325afefc7497b",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				}
+			]
 		},
 		{
 			"unit": "workflow.loop-next",
@@ -5775,7 +5898,14 @@
 			"unit": "relay.service.device-revocation",
 			"from": "packages/relay/src/services/DeviceRevocationService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
-			"definition": "627c57b9882dd21b7415d799c30bef537f4d1d95e1c4c81c9132d8c3520339ae"
+			"definition": "2689bd500d067c3f101f452a14d76e9e615fe8781eba9bfd56144b3d7d2b7759",
+			"relocationDefinition": "627c57b9882dd21b7415d799c30bef537f4d1d95e1c4c81c9132d8c3520339ae",
+			"review": {
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
+				"definition": "2689bd500d067c3f101f452a14d76e9e615fe8781eba9bfd56144b3d7d2b7759",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			}
 		},
 		{
 			"unit": "hub.adapter.github-api",
@@ -5943,13 +6073,13 @@
 			"unit": "relay.service.pairing-offer",
 			"from": "packages/relay/src/services/PairingOfferService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
-			"definition": "2b9b448ceb003dc7f79239c63844d95604204ce8034f3a6e7cd8996c7f59aead",
+			"definition": "4c9709b19997d87bf4bd552ff818566474bf455d1a8e271d15247230826d4cc6",
 			"relocationDefinition": "445fee03b5c60d9fcaed7dd87b6aac01ff99f0c4d466b5c773277c30f850a2cf",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
-				"definition": "2b9b448ceb003dc7f79239c63844d95604204ce8034f3a6e7cd8996c7f59aead",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "4c9709b19997d87bf4bd552ff818566474bf455d1a8e271d15247230826d4cc6",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -5957,6 +6087,12 @@
 					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
 					"definition": "82b37373fbde6ba0e24b105c49e8f3f089578d39496dac61e478c8bffc2cdcf8",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
+					"definition": "2b9b448ceb003dc7f79239c63844d95604204ce8034f3a6e7cd8996c7f59aead",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -6438,7 +6574,14 @@
 			"unit": "relay.service.pairing-exchange",
 			"from": "packages/relay/src/services/PairingExchangeService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
-			"definition": "b28c17e09c6f5ce8283c1d279470f18f04d146de0163ab966dca1dee630e759f"
+			"definition": "72b853b7646440d814e408ee760c1a2e3c30df8d8e4fd4f5d84a7348d9db0bb5",
+			"relocationDefinition": "b28c17e09c6f5ce8283c1d279470f18f04d146de0163ab966dca1dee630e759f",
+			"review": {
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
+				"definition": "72b853b7646440d814e408ee760c1a2e3c30df8d8e4fd4f5d84a7348d9db0bb5",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			}
 		},
 		{
 			"unit": "service.hook-run",
@@ -6588,13 +6731,13 @@
 			"unit": "hub.adapter.relay-manage",
 			"from": "packages/hub/src/adapters/RelayManageAdapter.ts",
 			"to": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
-			"definition": "2e0c540f89c0812a2ccc68f3ba15a9f5cdc31565b0c33e2be4cc791bccf6dd5b",
+			"definition": "f6a8c3dfcaa21a538ca8f0e281dd58c85e05118c80e5cbb54e01fac4b3f000bd",
 			"relocationDefinition": "0c67bdcde714a6f787737cc23805ec2b4431d89c4c5bb50343f3ce050778635b",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
-				"definition": "2e0c540f89c0812a2ccc68f3ba15a9f5cdc31565b0c33e2be4cc791bccf6dd5b",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "f6a8c3dfcaa21a538ca8f0e281dd58c85e05118c80e5cbb54e01fac4b3f000bd",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 			},
 			"previousReviews": [
 				{
@@ -6602,6 +6745,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
 					"definition": "f4c6d6ef0af020d40bf86958136a919cb614ff040ca45404a4c19aab58c9f35a",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/hub/src/routes/api/[...path]/RelayManageAdapter.ts",
+					"definition": "2e0c540f89c0812a2ccc68f3ba15a9f5cdc31565b0c33e2be4cc791bccf6dd5b",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -6609,27 +6758,43 @@
 			"unit": "desktop.service.remote-host-switch",
 			"from": "packages/desktop/src/services/remote-host-switch-service/RemoteHostSwitchService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
-			"definition": "b14ed3ff42222595be4b2ac0f64fd812ee9e82b2a21c7dd74a98806ebc487f96",
+			"definition": "7bac662e8d9c60ac094621b9440e832a503331282170a955eb0f7dc15b8ddd13",
 			"relocationDefinition": "e59ff23491834c18f7a944895835a6ecbf1feaac050bc2fdc4093317eac99e3f",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
-				"definition": "b14ed3ff42222595be4b2ac0f64fd812ee9e82b2a21c7dd74a98806ebc487f96",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "7bac662e8d9c60ac094621b9440e832a503331282170a955eb0f7dc15b8ddd13",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts",
+					"definition": "b14ed3ff42222595be4b2ac0f64fd812ee9e82b2a21c7dd74a98806ebc487f96",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.remote-host-identity",
 			"from": "packages/desktop/src/services/remote-host-switch-service/remoteHostIdentity.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
-			"definition": "20ad420e59bb9bcdff11ef246a28e3b5c9a088a244339374dcc009616235f6b7",
+			"definition": "bd671d625191e0ebbbbce663cf47a48249a0b084c2d9ab50ca91f66de1a43f8b",
 			"relocationDefinition": "dd1ca75e359a546992a7f79e13d4a296479b5d83feaa14e9f18b2b480e5ef630",
 			"review": {
-				"commit": "259888fc1e51b3f0248c53bac14ee7e1b5d6d1c2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
-				"definition": "20ad420e59bb9bcdff11ef246a28e3b5c9a088a244339374dcc009616235f6b7",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.remote-host-identity, written by haiku); messages and behavior unchanged."
-			}
+				"definition": "bd671d625191e0ebbbbce663cf47a48249a0b084c2d9ab50ca91f66de1a43f8b",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "259888fc1e51b3f0248c53bac14ee7e1b5d6d1c2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
+					"definition": "20ad420e59bb9bcdff11ef246a28e3b5c9a088a244339374dcc009616235f6b7",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.remote-host-identity, written by haiku); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.github-grant",
@@ -6916,27 +7081,43 @@
 			"unit": "relay.service.pairing-access",
 			"from": "packages/relay/src/services/PairingAccessService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
-			"definition": "62fb3d875f784d58cefbbdc4b0ca0463940be2a5247839dadff1a2bf52c84e0a",
+			"definition": "51d8f8a7aa532bb9b79bd66cd5926e815f9cb13e1f72d0aa5e964280a74296a6",
 			"relocationDefinition": "b056388ba66ef3c9d73956b73ee81b46521c717be7bc3cb703029f503625153e",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
-				"definition": "62fb3d875f784d58cefbbdc4b0ca0463940be2a5247839dadff1a2bf52c84e0a",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "51d8f8a7aa532bb9b79bd66cd5926e815f9cb13e1f72d0aa5e964280a74296a6",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
+					"definition": "62fb3d875f784d58cefbbdc4b0ca0463940be2a5247839dadff1a2bf52c84e0a",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				}
+			]
 		},
 		{
 			"unit": "relay.controller.host-object",
 			"from": "packages/relay/src/controllers/HostObjectController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
-			"definition": "b9950ca1e247d8c9e097881010aef61ec9e42eb695f6d0ee7d214e832aedd14c",
+			"definition": "5db5f0a2d814f0c3fdc8583858e54dc56093379531a23c2df155e1782e36db58",
 			"relocationDefinition": "32c9ce541f85805628b326ae3c56805974d8b6d463531ba47d9f7f4edcdf0064",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
-				"definition": "b9950ca1e247d8c9e097881010aef61ec9e42eb695f6d0ee7d214e832aedd14c",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
-			}
+				"definition": "5db5f0a2d814f0c3fdc8583858e54dc56093379531a23c2df155e1782e36db58",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
+					"definition": "b9950ca1e247d8c9e097881010aef61ec9e42eb695f6d0ee7d214e832aedd14c",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				}
+			]
 		},
 		{
 			"unit": "reports.repository.site-report",
@@ -7126,14 +7307,22 @@
 			"unit": "desktop.service.remote-host-record",
 			"from": "packages/desktop/src/services/RemoteHostRecordService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
-			"definition": "5186a27daa908f9fc2615ecdbcb41ef317013084269298b89d30eb491962e4b6",
+			"definition": "ba606f330258c5c5f7ecba9748c660fc264a14adbf5745a5941c20d8ea4fe9e7",
 			"relocationDefinition": "f7513cb284eebfa427a14af5bacf7f5cb61c58162b6a1e7a5073f03eaf7c9672",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
-				"definition": "5186a27daa908f9fc2615ecdbcb41ef317013084269298b89d30eb491962e4b6",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "ba606f330258c5c5f7ecba9748c660fc264a14adbf5745a5941c20d8ea4fe9e7",
+				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteHostRecordService.ts",
+					"definition": "5186a27daa908f9fc2615ecdbcb41ef317013084269298b89d30eb491962e4b6",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.project-task",

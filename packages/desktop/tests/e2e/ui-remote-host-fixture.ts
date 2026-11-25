@@ -51,14 +51,27 @@ function installHostState(options: HostOptions) {
 		listeners.forEach((listener) => listener(copy()));
 		return copy();
 	};
-	const at = new Date(Date.now() + 300000).toISOString();
 	const { deviceId, name } = options.phone;
-	const asking = { deviceId, deviceName: name, platform: 'ios', requestedAt: at, expiresAt: at };
-	/** A phone scanned the offer: the desktop now shows who asks, with the identity of its key. */
 	const request = () => {
-		const open = status.pairing as { pairingId: string } | null;
-		const pairingId = open?.pairingId ?? options.pairing.pairingId;
-		void done('fixture.request', {}, { requests: [{ pairingId, ...asking }] });
+		void done(
+			'fixture.link',
+			{},
+			{
+				devices: [
+					{
+						deviceId,
+						name,
+						platform: 'ios',
+						approvedAt: new Date().toISOString(),
+						lastSeenAt: null,
+						projectIds: options.projects.map(({ id }) => id),
+						agents: false,
+						comments: false,
+						online: true
+					}
+				]
+			}
+		);
 	};
 	host.__remoteHost = { status, listeners, copy, done, request };
 }
@@ -81,7 +94,7 @@ function installHostPort(options: HostOptions) {
 	};
 	const { deviceId, name } = options.phone;
 	const approved = { deviceId, name, platform: 'ios', approvedAt: expiresAt, lastSeenAt: null };
-	const closed = { enabled: false, state: 'disabled', pairing: null, requests: [] };
+	const closed = { enabled: false, state: 'disabled', pairing: null, requests: [], devices: [] };
 	host.harnessRemote = {
 		status: async () => copy(),
 		enable: () => done('remote.enable', {}, { enabled: true, state: 'online' }),

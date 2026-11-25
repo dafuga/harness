@@ -14,6 +14,7 @@
 			"PairingAccessService.constructor",
 			"PairingAccessService.info",
 			"PairingAccessService.poll",
+			"PairingAccessService.heldBy",
 			"PairingAccessService.requestAccount",
 			"PairingAccessService.request"
 		]
@@ -62,6 +63,16 @@
 				]
 			},
 			{
+				"name": "PairingAccessService.heldBy.pairingId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PairingAccessService.heldBy.holder",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "PairingAccessService.requestAccount.pairingId",
 				"type": "string",
 				"required": true
@@ -70,6 +81,11 @@
 				"name": "PairingAccessService.requestAccount.request",
 				"type": "RelayPairingRequest",
 				"required": true
+			},
+			{
+				"name": "PairingAccessService.requestAccount.holder",
+				"type": "string",
+				"required": false
 			},
 			{
 				"name": "PairingAccessService.request.pairingId",
@@ -258,6 +274,29 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "PairingAccessService.heldBy",
+				"inputs": [
+					{
+						"name": "PairingAccessService.heldBy.pairingId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PairingAccessService.heldBy.holder",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PairingAccessService.heldBy",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "PairingAccessService.requestAccount",
 				"inputs": [
 					{
@@ -269,6 +308,11 @@
 						"name": "PairingAccessService.requestAccount.request",
 						"type": "RelayPairingRequest",
 						"required": true
+					},
+					{
+						"name": "PairingAccessService.requestAccount.holder",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [

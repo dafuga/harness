@@ -9,6 +9,7 @@ import { DevicePairingError } from './DevicePairingService.types';
 import type {
 	RelayPairingExchange,
 	RelayPairingInfo,
+	RelayPairingRequest,
 	RelayPairingPoll,
 	RelayPairingState
 } from '../../../models/networking-security/RemoteRelay.types';
@@ -70,14 +71,41 @@ export class DevicePairingService {
 	}
 	/** Pins the host key by its identifier, then asks with the code sealed to that key. */
 	async request(input: DevicePairingInput, keys?: RemoteKeyPair): Promise<PendingPairing> {
-		const origin = checked(input),
-			{ hostId, pairingId } = input;
+		const origin = checked(input);
 		const info = (await this.call({ origin, input }, '')) as RelayPairingInfo;
-		if (typeof info.hostKey !== 'string' || (await remoteIdentity(info.hostKey)) !== hostId)
+		return this.sealRequest(
+			input,
+			info.hostKey,
+			(body) => this.call({ origin, input }, 'request', body),
+			keys
+		);
+	}
+
+	/** The account port obtained the exact host key and submits under a verified Hub session. */
+	requestAccount(
+		input: DevicePairingInput,
+		hostKey: string,
+		submit: (body: RelayPairingRequest) => Promise<void>
+	): Promise<PendingPairing> {
+		if (input.code !== '') throw new DevicePairingError('An account connection takes no code.');
+		return this.sealRequest(input, hostKey, submit);
+	}
+
+	private async sealRequest(
+		input: DevicePairingInput,
+		publicKey: string,
+		submit: (body: RelayPairingRequest) => Promise<unknown>,
+		keys?: RemoteKeyPair
+	): Promise<PendingPairing> {
+		const { hostId, pairingId } = input;
+		const origin = relayOrigin(input.origin);
+		if (!origin || !remotePatterns.pairingId.test(pairingId))
+			throw new DevicePairingError('The computer connection is invalid.');
+		if (typeof publicKey !== 'string' || (await remoteIdentity(publicKey)) !== hostId)
 			throw new DevicePairingError('The relay did not present the key of this computer.');
 		const device = keys ?? (await remoteKeys()),
 			ephemeral = await remoteKeys(),
-			hostKey = fromBase64Url(info.hostKey),
+			hostKey = fromBase64Url(publicKey),
 			verifier = toBase64Url(randomBytes(32)),
 			challenge = await pkceChallenge(verifier);
 		const secret = await sharedSecret(ephemeral.privateKey, hostKey);
@@ -91,9 +119,9 @@ export class DevicePairingService {
 			challenge
 		} satisfies PairingSecret);
 		const body = { ephemeralKey: toBase64Url(ephemeral.publicKey), sealed, challenge };
-		await this.call({ origin, input }, 'request', body);
+		await submit(body);
 		const deviceId = await remoteIdentity(device.publicKey);
-		const held = { keys: device, hostKey: info.hostKey, deviceId, verifier };
+		const held = { keys: device, hostKey: publicKey, deviceId, verifier };
 		return { input, origin, ...held, approvalKey: envelope.approval };
 	}
 	async poll(pending: PendingPairing): Promise<RelayPairingState> {

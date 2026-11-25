@@ -16,6 +16,7 @@
 			"RemoteHostValidator",
 			"RemoteHostValidator.registration",
 			"RemoteHostValidator.pairing",
+			"RemoteHostValidator.pairingId",
 			"RemoteHostValidator.hostId",
 			"RemoteHostValidator.deviceId",
 			"Body"
@@ -48,6 +49,12 @@
 				"name": "RemoteHostValidator.pairing.body",
 				"type": "Body",
 				"required": true
+			},
+			{
+				"name": "RemoteHostValidator.pairingId.value",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "The identifier comes from the browser request path and is validated before the relay can use it."
 			},
 			{
 				"name": "RemoteHostValidator.hostId.value",
@@ -187,6 +194,25 @@
 					{
 						"name": "RemoteHostValidator.pairing",
 						"type": "RelayManagePairingRequest"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "RemoteHostValidator.pairingId",
+				"inputs": [
+					{
+						"name": "RemoteHostValidator.pairingId.value",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "The identifier comes from the browser request path and is validated before the relay can use it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemoteHostValidator.pairingId",
+						"type": "string"
 					}
 				],
 				"errors": [],

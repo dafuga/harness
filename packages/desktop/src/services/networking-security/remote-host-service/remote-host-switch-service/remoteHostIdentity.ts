@@ -41,7 +41,7 @@ export async function registerRemoteHost(
 		keys = await importRemoteKeys(state.keys),
 		hash = await credentialHash({ role: 'host', hostId, credential });
 	const input = { hostId, hostKey: state.keys.publicKey, credentialHash: hash, name },
-		registration = await register(input),
+		registration = await register(input, state.ownerId),
 		origin = relayOrigin(registration.origin);
 	if (!origin || registration.hostId !== hostId)
 		throw new HubNoRelayError('The hub named no relay.');

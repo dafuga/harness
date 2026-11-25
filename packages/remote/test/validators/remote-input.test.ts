@@ -22,12 +22,14 @@ test('attach names protocol 1, a client and a resume point or null', () => {
 		resumed = { protocol: 1, client, resume: { epoch: 'ab12'.repeat(8), sequence: 7 } };
 	expect(validator.attach(fresh)).toEqual(fresh);
 	expect(validator.attach(resumed)).toEqual(resumed);
+	const browser = { ...fresh, client: { kind: 'web', name: 'Browser' } };
+	expect(validator.attach(browser)).toEqual(browser);
 	expect(code(() => validator.attach({ ...fresh, protocol: 2 }))).toBe('protocol-unsupported');
 	const refused: unknown[] = [
 		{},
 		{ protocol: 1 },
 		{ protocol: 1, client },
-		{ ...fresh, client: { kind: 'web', name: 'x' } },
+		{ ...fresh, client: { kind: 'chrome', name: 'x' } },
 		{ ...fresh, client: { kind: 'ios', name: '' } },
 		{ ...fresh, client: { kind: 'ios', name: 'n'.repeat(81) } },
 		{ ...fresh, resume: { epoch: 'x', sequence: 1 } },

@@ -51,6 +51,15 @@ export class SocketAcceptService {
 		return new Response(null, { status: 101, webSocket: client });
 	}
 
+	/** The same-origin Hub verified the browser session and the device is bound to it. */
+	account(request: Request, holder: string, deviceId: string): Response {
+		if (request.headers.get('Upgrade')?.toLowerCase() !== 'websocket')
+			return relayError(426, 'upgrade-required', { Upgrade: 'websocket' });
+		if (this.store.revokedHolder(holder) || this.store.device(deviceId)?.holder !== holder)
+			return relayError(403, 'forbidden');
+		return new Response(null, { status: 101, webSocket: this.device(deviceId) });
+	}
+
 	private expected(host: HostRecord, claims: ConnectClaims): string {
 		if (claims.role === 'host') return host.credentialHash;
 		return this.store.device(claims.deviceId)?.credentialHash ?? '';

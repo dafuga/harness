@@ -4,7 +4,7 @@ import UIKit
 
 /// Delivers system wakeups to the same bounded sync used by the foreground app.
 enum TrackerRefresh {
-    static let session = RemoteSession()
+    static let session = RemoteSession(account: HarnessAccountPlugin.storedSubject)
     private static let identifier = "com.dafuga.harness.tracker-refresh"
     private static let path = NWPathMonitor()
 

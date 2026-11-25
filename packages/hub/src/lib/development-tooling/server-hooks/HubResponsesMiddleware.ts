@@ -2,6 +2,8 @@
 /** The hosted workspace and browser approval flow cannot be embedded by another site. */
 export class HubResponsesMiddleware {
 	handle(response: Response): Response {
+		// Returning the upgrade intact preserves the Durable Object WebSocket.
+		if (response.status === 101) return response;
 		response.headers.set('X-Frame-Options', 'DENY');
 		response.headers.set('Content-Security-Policy', "frame-ancestors 'none'");
 		response.headers.set('Referrer-Policy', 'no-referrer');

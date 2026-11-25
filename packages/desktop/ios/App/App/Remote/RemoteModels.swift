@@ -110,4 +110,5 @@ struct RemoteRecord: Codable {
     var epoch: String?
     var sequence: Int
     var methods: [String]?
+    var accountSubject: String? = nil
 }

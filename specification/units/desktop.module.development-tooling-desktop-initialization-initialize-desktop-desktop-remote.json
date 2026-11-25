@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-desktop-remote",
+	"uid": "u_zbflrtevgf",
+	"kind": "module",
+	"title": "desktopRemote",
+	"responsibility": "Owns the desktopRemote library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopRemote.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopRemote.types.ts"
+		],
+		"symbols": ["desktopRemote", "DesktopRemoteOptions"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "desktopRemote.options",
+				"type": "DesktopRemoteOptions",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "desktopRemote",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "desktopRemote",
+				"inputs": [
+					{
+						"name": "desktopRemote.options",
+						"type": "DesktopRemoteOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "desktopRemote",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.native-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.relay-socket",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.remote-host-store",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.remote-registration",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.remote-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.remote-lifecycle",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopRemote.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/desktopRemote.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -24,12 +24,14 @@ export class PairingController {
 		private readonly exchanges: PairingExchangeService
 	) {}
 
-	async handle(request: Request, route: PairingRoute): Promise<Response> {
+	async handle(request: Request, route: PairingRoute, holder?: string): Promise<Response> {
 		if (!this.store.host()) return relayError(404, 'not-found');
 		if (!this.rate.hit('pairing', relayConfig.pairingCalls)) return relayError(429, 'rate-limited');
 		if (route.action === 'info') return found(this.access.info(route.pairingId));
+		if (holder && !this.access.heldBy(route.pairingId, holder)) return relayError(403, 'forbidden');
 		const body = await readJsonBody(request);
-		if (route.action === 'exchange') return this.exchange(route.pairingId, body);
+		if (holder && !this.access.heldBy(route.pairingId, holder)) return relayError(403, 'forbidden');
+		if (route.action === 'exchange') return this.exchange(route.pairingId, body, holder);
 		if (!body) return relayError(400, 'invalid-input');
 		if (route.action === 'poll') return found(this.access.poll(route.pairingId));
 		return this.request(route.pairingId, body);
@@ -44,8 +46,12 @@ export class PairingController {
 	}
 
 	/** Every failure of an exchange looks the same, and every attempt uses the pairing up. */
-	private async exchange(pairingId: string, body: unknown): Promise<Response> {
-		const exchanged = await this.exchanges.exchange(pairingId, this.validator.verifier(body));
+	private async exchange(pairingId: string, body: unknown, holder?: string): Promise<Response> {
+		const exchanged = await this.exchanges.exchange(
+			pairingId,
+			this.validator.verifier(body),
+			holder
+		);
 		return exchanged ? relayResponse(200, exchanged) : relayError(400, 'pairing-invalid');
 	}
 }

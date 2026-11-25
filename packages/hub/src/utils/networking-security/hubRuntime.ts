@@ -8,7 +8,7 @@ import type { HubRemoteRuntime } from './hubRemote';
 export interface HubApiRuntime {
 	/** Explicit deployment injection only; absent until a project executor is connected. */
 	agent?: HubAgentPort;
-	auth: Pick<HubAuth, 'actor' | 'handle'>;
+	auth: Pick<HubAuth, 'actor' | 'handle' | 'session'>;
 	connect(): { api: CollaborationApi; projection: HubProjectionService };
 	/** Null or absent when the relay binding or its origin is not configured. */
 	remote?: HubRemoteRuntime | null;

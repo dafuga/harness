@@ -26,6 +26,7 @@
 			"RemotePairingControlService.createPairing",
 			"RemotePairingControlService.closePairing",
 			"RemotePairingControlService.approvePairing",
+			"RemotePairingControlService.approveAccount",
 			"RemotePairingControlService.denyPairing",
 			"RemotePairingControlService.revokeDevice",
 			"RemotePairingControlService.dropped",
@@ -77,6 +78,16 @@
 					}
 				],
 				"unknownReason": "The local pairing decision is parsed against the approval schema at the service boundary."
+			},
+			{
+				"name": "RemotePairingControlService.approveAccount.runtime",
+				"type": "RemoteHostRuntimeService",
+				"required": true
+			},
+			{
+				"name": "RemotePairingControlService.approveAccount.request",
+				"type": "RemotePairingRequest",
+				"required": true
 			},
 			{
 				"name": "RemotePairingControlService.denyPairing.input",
@@ -726,6 +737,29 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "RemotePairingControlService.approveAccount",
+				"inputs": [
+					{
+						"name": "RemotePairingControlService.approveAccount.runtime",
+						"type": "RemoteHostRuntimeService",
+						"required": true
+					},
+					{
+						"name": "RemotePairingControlService.approveAccount.request",
+						"type": "RemotePairingRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "RemotePairingControlService.approveAccount",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "RemotePairingControlService.denyPairing",

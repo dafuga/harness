@@ -28,7 +28,7 @@ import { pairingCode } from './remoteIdentity';
 import { remotePatterns } from '../../../../../../remote/src/utils/remoteIdentity';
 import { sharedSecret } from '../../../../../../remote/src/utils/remoteKeys';
 
-const platforms = ['ios', 'test'];
+const platforms = ['ios', 'web', 'test'];
 
 function secretOf(value: unknown): PairingSecret | null {
 	const item = (value ?? {}) as Partial<PairingSecret>,

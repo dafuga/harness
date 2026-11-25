@@ -13,6 +13,8 @@ export interface RemoteHostOptions {
 	store: RemoteHostStoreAdapter;
 	/** Registers this computer under the signed-in hosted identity; rejects when there is none. */
 	register: RegisterRemoteHost;
+	unregister?: (hostId: string, ownerId: string) => Promise<void>;
+	accountOnly?: boolean;
 	open: (url: string, headers: Record<string, string>) => RemoteSocket;
 	shared: RemoteDeviceSessionsOptions['shared'];
 	name?: () => string;

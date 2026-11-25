@@ -19,11 +19,11 @@ const progress: Partial<Record<RemoteHostStatus['state'], string>> = {
 
 /** The desktop's own state in one line; the relay is named so a person sees where phones go. */
 export function hostLine(status: RemoteHostStatus): string {
-	return `Phone access is on · ${relayName(status.origin)}${progress[status.state] ?? ''}`;
+	return `This Mac is linked · ${relayName(status.origin)}${progress[status.state] ?? ''}`;
 }
 
 export function hostSummary(status: RemoteHostStatus): string {
-	if (!status.enabled) return 'Phone access off';
+	if (!status.enabled) return 'Mac unlinked';
 	const count = status.devices.length;
-	return `Phone access on · ${count ? plural(count, 'phone') : 'no phone'}`;
+	return `Mac linked · ${count ? plural(count, 'device') : 'no devices'}`;
 }
