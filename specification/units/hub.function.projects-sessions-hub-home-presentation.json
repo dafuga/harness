@@ -68,6 +68,13 @@
 				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
 			},
 			{
+				"name": "homeHeadline.liveSessions",
+				"type": "number",
+				"required": false,
+				"default": 0,
+				"description": "Sessions the Tracker reports running. They name the headline when no agent card exists. Defaults to 0."
+			},
+			{
 				"name": "currentAgent.agents",
 				"type": "HomeAgent[]",
 				"required": true,
@@ -400,6 +407,13 @@
 						"type": "HomeAgent[]",
 						"required": true,
 						"description": "Agents and their current Tracker context. A null value indicates loading where supported."
+					},
+					{
+						"name": "homeHeadline.liveSessions",
+						"type": "number",
+						"required": false,
+						"default": 0,
+						"description": "Sessions the Tracker reports running. They name the headline when no agent card exists. Defaults to 0."
 					}
 				],
 				"outputs": [

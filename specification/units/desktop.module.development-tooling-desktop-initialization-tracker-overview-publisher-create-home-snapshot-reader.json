@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-create-home-snapshot-reader",
+	"uid": "u_xyoozv6qf7",
+	"kind": "module",
+	"title": "createHomeSnapshotReader",
+	"responsibility": "Builds this Mac’s Home view on request: the Tracker work and sessions running here plus the provider quota it knows, never stored.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts"
+		],
+		"symbols": ["createHomeSnapshotReader"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "createHomeSnapshotReader.providerFile",
+				"type": "string",
+				"required": false,
+				"description": "Optional owner-managed provider quota file. Defaults to none, which leaves quota unknown."
+			}
+		],
+		"outputs": [
+			{
+				"name": "createHomeSnapshotReader",
+				"type": "unknown",
+				"description": "A function that reads the Tracker and quota now and returns the Home view; an unreadable Tracker yields an unavailable overview."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createHomeSnapshotReader",
+				"inputs": [
+					{
+						"name": "createHomeSnapshotReader.providerFile",
+						"type": "string",
+						"required": false,
+						"description": "Optional owner-managed provider quota file. Defaults to none, which leaves quota unknown."
+					}
+				],
+				"outputs": [
+					{
+						"name": "createHomeSnapshotReader",
+						"type": "unknown",
+						"description": "A function that reads the Tracker and quota now and returns the Home view; an unreadable Tracker yields an unavailable overview."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-provider-reader",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-projection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

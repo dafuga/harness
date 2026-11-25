@@ -55,6 +55,18 @@ Home follows the OS color scheme and uses the approved design in
   their Mac and sign in with the same Google account. The existing refresh shows fresh data
   when it arrives. An account without owner access receives no owner data or linking prompt.
 
+### Live sessions from linked computers
+
+Signing in is enough. Home asks every online computer linked to the signed-in Google account
+for its Home view (running agents and sessions, plans, schedule, quota) over the same
+end-to-end encrypted device connection as Devices, with no click and no stored copy on the
+Hub. The Mac answers the read-only `homeSnapshot` wire method. Each browser keeps one device
+key pair per computer, so a reload is the same device and adds no new one. Views from several
+computers are merged: work the Tracker syncs between them appears once. The headline counts
+running sessions. Quota stays Unknown until a computer reports it. `Connect a computer`
+appears only when the account has no linked computer. The owner snapshot below remains a
+fallback.
+
 ### Owner-host data
 
 The signed-in Projects card and dialog use the existing per-member project APIs. Tracker chat

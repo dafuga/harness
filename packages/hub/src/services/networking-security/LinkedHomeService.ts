@@ -1,0 +1,96 @@
+// @harness-uid u_ppvcb4vola
+import type { RemoteAccountComputer } from '../../../../remote/src/models/networking-security/RemoteControl.types';
+import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import { mergeHomeSnapshots } from '../../components/projects-sessions/hubHomeMerge';
+import { parseHomePayload } from '../../routes/api/hub-home/homePayload';
+import type { BrowserApi } from '../../utils/browserApi';
+import { browserDeviceKeys } from '../../utils/networking-security/browserDeviceKeys';
+import { BrowserComputerService } from './BrowserComputerService';
+
+const hosts = '/api/remote/hosts';
+const readMs = 15_000;
+const parallel = 6;
+
+export interface LinkedHome {
+	/** Computers linked to the signed-in account, online or not. */
+	linked: number;
+	/** How many of them answered this read. */
+	answered: number;
+	snapshot: OwnerHomeSnapshot | null;
+}
+
+type Connect = (hostId: string) => BrowserComputerService;
+
+function within<T>(work: Promise<T>, ms: number): Promise<T> {
+	return new Promise((resolve, reject) => {
+		const timer = setTimeout(() => reject(new Error('timeout')), ms);
+		work.then(resolve, reject).finally(() => clearTimeout(timer));
+	});
+}
+
+/**
+ * Home for a signed-in account: every online computer linked to it is asked for what runs
+ * there, over the same end-to-end encrypted device connection as the Devices page, with no
+ * click. Each connection is kept for the next read and closed with the page.
+ */
+export class LinkedHomeService {
+	private readonly open = new Map<string, BrowserComputerService>();
+	private closed = false;
+
+	constructor(
+		private readonly api: BrowserApi,
+		private readonly actor: string,
+		private readonly create: Connect = (hostId) =>
+			new BrowserComputerService(this.api, () => browserDeviceKeys(this.actor, hostId))
+	) {}
+
+	async read(): Promise<LinkedHome> {
+		const computers = await this.computers();
+		const online = computers.filter((computer) => computer.online).slice(0, parallel);
+		const results = await Promise.all(online.map((computer) => this.ask(computer.hostId)));
+		const snapshots = results.filter((entry): entry is OwnerHomeSnapshot => entry !== null);
+		return {
+			linked: computers.length,
+			answered: snapshots.length,
+			snapshot: mergeHomeSnapshots(snapshots)
+		};
+	}
+
+	close(): void {
+		this.closed = true;
+		for (const link of this.open.values()) link.close();
+		this.open.clear();
+	}
+
+	private async computers(): Promise<RemoteAccountComputer[]> {
+		try {
+			const reply = await this.api.get<{ computers: RemoteAccountComputer[] }>(hosts, {
+				linked: '1'
+			});
+			return reply.computers;
+		} catch {
+			return [];
+		}
+	}
+
+	private async ask(hostId: string): Promise<OwnerHomeSnapshot | null> {
+		if (this.closed) return null;
+		const link = this.open.get(hostId) ?? this.create(hostId);
+		this.open.set(hostId, link);
+		try {
+			const value = await within(
+				link.home(hostId, () => this.drop(hostId, link)),
+				readMs
+			);
+			return this.closed ? null : (parseHomePayload(value) as OwnerHomeSnapshot);
+		} catch {
+			this.drop(hostId, link);
+			return null;
+		}
+	}
+
+	private drop(hostId: string, link: BrowserComputerService): void {
+		link.close();
+		if (this.open.get(hostId) === link) this.open.delete(hostId);
+	}
+}

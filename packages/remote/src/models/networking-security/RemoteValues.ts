@@ -40,6 +40,8 @@ export const readMethods = [
 	'pendingComments',
 	'providers'
 ] as const;
+/** The account's Home view of this computer: its running agents, work and quota. Read-only. */
+export const homeMethods = ['homeSnapshot'] as const;
 /** A person's own comment, and the thread it needs. No planning, approval or run comes with it. */
 export const commentMethods = ['addComment', 'openThread'] as const;
 /** Planning writes and agent runs: only with the `agents` permission of a grant. */
@@ -83,6 +85,7 @@ export const controlMethods = [
 export const remoteMethods = [
 	attachMethod,
 	...readMethods,
+	...homeMethods,
 	'trackerReplicaPull',
 	'trackerReplicaPush',
 	...commentMethods,
@@ -101,6 +104,7 @@ export const revisionMethods: readonly RemoteMethod[] = [
 export const projectlessMethods: readonly RemoteMethod[] = [
 	attachMethod,
 	'listProjects',
+	'homeSnapshot',
 	'deploymentActivities',
 	'trackerReplicaPull',
 	'trackerReplicaPush',

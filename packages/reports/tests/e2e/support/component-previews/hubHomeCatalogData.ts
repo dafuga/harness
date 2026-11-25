@@ -104,6 +104,7 @@ export const catalogHomeView: HomeView = {
 	work: soonestWork(snapshot.overview),
 	owner: true,
 	needsMac: false,
+	linkedComputers: 1,
 	trackerConnected: true,
 	routinesConnected: true,
 	quotaConnected: true,

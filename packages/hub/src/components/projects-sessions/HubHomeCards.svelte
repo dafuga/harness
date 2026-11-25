@@ -94,9 +94,11 @@
 		{:else if view.trackerConnected}
 			<EmptyState as="div" className="po-empty hh-empty"
 				><hx-p>No agents are connected. Start a session on any computer and it appears here.</hx-p>
-				<hx-a class="po-action" href={homeDownloadConfig.mac.path} data-sveltekit-reload
-					>Connect a computer</hx-a
-				>
+				{#if !view.linkedComputers}
+					<hx-a class="po-action" href={homeDownloadConfig.mac.path} data-sveltekit-reload
+						>Connect a computer</hx-a
+					>
+				{/if}
 			</EmptyState>
 		{:else}
 			{@render empty('Agent activity appears when Tracker data is available.')}

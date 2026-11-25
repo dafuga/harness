@@ -46,10 +46,11 @@ export function count(value: number, singular: string, plural: string = `${singu
 	return `${value} ${value === 1 ? singular : plural}`;
 }
 
-export function homeHeadline(agents: HomeAgent[]) {
+export function homeHeadline(agents: HomeAgent[], liveSessions = 0) {
 	const working = agents.filter((agent) => agent.state === 'working').length;
 	const needs = agents.filter((agent) => agent.state === 'needs-you').length;
-	if (!agents.length) return 'Nothing is running yet';
+	if (!agents.length)
+		return liveSessions ? `${count(liveSessions, 'session')} running` : 'Nothing is running yet';
 	return `${count(working, 'agent')} working${needs ? `, ${needs} ${needs === 1 ? 'needs' : 'need'} you` : ''}`;
 }
 
