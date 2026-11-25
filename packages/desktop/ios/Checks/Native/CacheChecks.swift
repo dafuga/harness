@@ -128,3 +128,39 @@ func denialChecks() {
     let failed = refuse(plain, "failed")
     check(failed.failure?.code == "failed" && entries(plain.root) == 1 && plain.state == "online", "an ordinary failure purges nothing and ends nothing")
 }
+
+func sessionRelayBaseline() {
+    let bench = Bench()
+    bench.online()
+    let value = ["text": sessionTimingText]
+    var relay: [Double] = []
+    var cached: [Double] = []
+    for _ in 0..<120 {
+        let began = DispatchTime.now().uptimeNanoseconds
+        let reply = bench.ask("snapshot", snapshotInput)
+        bench.answer(bench.link, "snapshot", value: value)
+        guard (reply.answer?.value as? [String: String])?["text"] == sessionTimingText else {
+            return check(false, "relay timing fixture returned first text")
+        }
+        relay.append(Double(DispatchTime.now().uptimeNanoseconds - began) / 1_000_000)
+    }
+    bench.close(bench.link, .lost)
+    for _ in 0..<120 {
+        let began = DispatchTime.now().uptimeNanoseconds
+        guard (bench.ask("snapshot", snapshotInput).answer?.value as? [String: String])?["text"] == sessionTimingText else {
+            return check(false, "saved relay timing fixture returned first text")
+        }
+        cached.append(Double(DispatchTime.now().uptimeNanoseconds - began) / 1_000_000)
+    }
+    printSessionTiming("Fixture relay read", relay)
+    printSessionTiming("Fixture saved relay read", cached)
+}
+
+let sessionTimingText = String(repeating: "native-session-timing-fixture\n", count: 1024)
+
+func printSessionTiming(_ path: String, _ milliseconds: [Double]) {
+    let sorted = milliseconds.sorted()
+    let p50 = sorted[Int(ceil(Double(sorted.count) * 0.50)) - 1]
+    let p95 = sorted[Int(ceil(Double(sorted.count) * 0.95)) - 1]
+    print(String(format: "%@ (%d samples): p50 %.3f ms, p95 %.3f ms", path, sorted.count, p50, p95))
+}

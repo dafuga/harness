@@ -11,10 +11,13 @@ import type {
 	RemoteMobileControl,
 	RemoteNativeEvents,
 	RemoteNativePlugin,
-	RemoteNativeStatus
+	RemoteNativeStatus,
+	SessionNativePlugin
 } from '../../../models/development-tooling/Environment.types';
 
 export const remotePluginName = 'HarnessRemote';
+
+const sessionPluginName = 'HarnessSession';
 
 export const accountPluginName = 'HarnessAccount';
 
@@ -57,11 +60,16 @@ export class CapacitorEnvironmentAdapter {
 			phone.connectAccountComputer = async (input) => note(await connect(input));
 		}
 		const tracker = phoneTrackerTools(plugin);
+		const sessions =
+			this.account && Capacitor.isPluginAvailable(sessionPluginName)
+				? registerPlugin<SessionNativePlugin>(sessionPluginName)
+				: undefined;
 		const local = {
 			kind: 'capacitor',
 			local: false,
 			phone,
-			...(tracker ? { tracker } : {})
+			...(tracker ? { tracker } : {}),
+			...(sessions ? { sessions } : {})
 		} as const;
 		if (!this.account) return { ...local, bridge: mac };
 		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();

@@ -108,6 +108,9 @@
 		{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
 			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
 		{/if}
+		{#if account.signedIn && account.environment?.sessions}
+			<hx-a class="project-overview-link" href={resolve('/sessions')}>Sessions</hx-a>
+		{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
 			<hx-div class="account-status" class:phone-account={!local}>

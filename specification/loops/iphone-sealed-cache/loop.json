@@ -1,0 +1,45 @@
+{
+	"name": "iphone-sealed-cache",
+	"goal": "Prove the iPhone keeps only sealed account session data on disk, opens prior text offline, and catches up through the account socket",
+	"createdAt": "2026-11-25T17:38:14.166Z",
+	"updatedAt": "2026-11-25T17:50:28.771Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T17:39:01.493Z",
+			"evidence": "sealed-account-sync.md defines ciphertext-only, cache-first, and relay timing scope; Tracker records enrollment and publisher dependencies"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-25T17:50:28.771Z",
+			"evidence": "Swift account cache, native bridge, and Sessions renderer wired; browser red d2388e5a26 failed at missing Sessions link across three widths on harbor-mbp-2"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

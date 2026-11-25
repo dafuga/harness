@@ -7,5 +7,8 @@ class HarnessViewController: CAPBridgeViewController {
     override open func capacitorDidLoad() {
         bridge?.registerPluginInstance(HarnessRemotePlugin())
         bridge?.registerPluginInstance(HarnessAccountPlugin())
+        if #available(iOS 17.0, *) {
+            bridge?.registerPluginInstance(HarnessSessionPlugin())
+        }
     }
 }

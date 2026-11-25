@@ -18,6 +18,7 @@ final class HubAccountSession {
     var authenticate: (URL, String) -> Void = { _, _ in }
     var cancelAuthentication: () -> Void = {}
     var accountEnded: () -> Void = {}
+    var sealedAccountEnded: (Int, String?) -> Void = { _, _ in }
     var deviceName = "Harness iPhone"
     var now: () -> Date = { Date() }
     var credential: HubAccountCredential?
@@ -97,12 +98,14 @@ final class HubAccountSession {
     /// The session leaves the Keychain and memory, a sign-in under way ends, and every answer
     /// still awaited is refused when it arrives.
     func erase() {
+        let namespace = credential.map { TrackerSealedIdentity.namespace(origin: $0.origin, subject: $0.subject) }
         vault.wipe()
         credential = nil
         handoff = nil
         cancelAuthentication()
         generation += 1
         accountEnded()
+        sealedAccountEnded(generation, namespace)
     }
 
     /// Asks the Hub to end a session this phone no longer keeps. Its answer changes nothing here.

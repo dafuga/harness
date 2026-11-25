@@ -42,6 +42,7 @@ export interface Environment extends RemotePorts {
 	account?: boolean;
 	/** Capacitor only: local Tracker reads and an independent app refresh control. */
 	tracker?: PhoneTrackerTools;
+	sessions?: SessionNativePlugin;
 }
 
 /** What a page can see of its host besides the document. */
@@ -135,6 +136,35 @@ export interface AccountNativePlugin {
 	disconnect(): Promise<AccountNativeStatus>;
 	request(call: AccountNativeCall): Promise<AccountNativeReply>;
 }
+export interface NativeSessionSummary {
+	scope: string;
+	runId: string;
+	status: string;
+}
+
+export interface NativeSessionCursor {
+	stream?: string;
+	after?: string;
+}
+
+export interface SessionNativePlugin {
+	list(): Promise<{
+		state: 'connecting' | 'ready' | 'offline' | 'approval-required';
+		sessions: NativeSessionSummary[];
+	}>;
+	transcript(input: {
+		scope: string;
+		runId: string;
+		index: number;
+	}): Promise<{ data: string | null }>;
+	live(input: { scope: string; runId: string } & NativeSessionCursor): Promise<{
+		stream?: string;
+		frames: { counter: string; data: string }[];
+	}>;
+	stop(): Promise<void>;
+	addListener(event: 'changed', listener: () => void): Promise<{ remove(): Promise<void> }>;
+}
+
 export {
 	type RemoteBinary,
 	type RemoteGrant,
