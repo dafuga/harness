@@ -25,10 +25,12 @@ for (const { name, width, height } of viewports) {
 		await captured(page, info, 'sessions-list');
 		await page.getByRole('button', { name: 'run-fixture' }).click();
 		await expect(page.getByText('Saved session text', { exact: true })).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Live output' })).toBeVisible();
+		await captured(page, info, 'sessions-detail');
+		await expect(page.getByText('Saved session text', { exact: true })).toHaveCount(1);
 		await expect(page.getByText('Live fixture output', { exact: true })).toBeVisible();
 		expect(
 			await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
 		).toBe(true);
-		await captured(page, info, 'sessions-detail');
 	});
 }

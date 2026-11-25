@@ -220,11 +220,15 @@ function installSealedSessions() {
 			sessions: [{ scope, runId: 'run-fixture', status: 'running' }]
 		}),
 		transcript: ({ index }: { index: number }) => ({
-			data: index === 0 ? btoa('Saved session text') : null
+			data: index === 0 ? btoa('Saved session text') : null,
+			captured: index === 0 ? { stream: 'synthetic-stream', counter: '0' } : undefined
 		}),
 		live: () => ({
 			stream: 'synthetic-stream',
-			frames: [{ counter: '0', data: btoa('Live fixture output') }]
+			frames: [
+				{ counter: '0', data: btoa('Saved session text') },
+				{ counter: '1', data: btoa('Live fixture output') }
+			]
 		}),
 		stop: () => ({})
 	};
