@@ -1,0 +1,131 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.planning-collaboration-design-canvas-artboard-full",
+	"uid": "u_mzorbd5tem",
+	"kind": "component",
+	"title": "ArtboardFull",
+	"responsibility": "Shows one artboard on its own, fitted or at actual size, in a modal dialog.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.planning-collaboration-design-canvas-sandboxed-artboard",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-dialog",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/planning-collaboration/design-canvas/ArtboardFull.svelte"
+		],
+		"symbols": ["ArtboardFull"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ArtboardFull.board",
+				"type": "CanvasBoard",
+				"required": true,
+				"description": "The placed artboard, or the artboard name being changed."
+			},
+			{
+				"name": "ArtboardFull.theme",
+				"type": "ArtboardTheme",
+				"required": true,
+				"description": "light, dark or both for rendering; light or dark for a viewer."
+			},
+			{
+				"name": "ArtboardFull.onclose",
+				"type": "() => void",
+				"required": true,
+				"description": "Closes the full view."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ArtboardFull",
+				"type": "markup",
+				"description": "Renders: Shows one artboard on its own, fitted or at actual size, in a modal dialog."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.planning-collaboration-design-canvas-sandboxed-artboard",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-fit-view",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/planning-collaboration/design-canvas/ArtboardFull.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/planning-collaboration/design-canvas/ArtboardFull.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

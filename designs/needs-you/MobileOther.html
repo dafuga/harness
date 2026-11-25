@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="artboard-size" content="390x844">
+<style>
+:root{--bg:#f3eee1;--surface:#fbfaf6;--raised:#eeeadf;--text:#0d1a26;--soft:#2f3c48;--muted:#59636d;
+--border:#d5d4cc;--strong:#b3b4b0;--gold:#f3c33b;--gold-soft:#f8e6ad;--gold-ink:#6b5a20;--on-gold:#0d1a26;
+--error:#b0414a;--scrim:rgba(243,238,225,.86)}
+:root[data-theme="dark"]{--bg:#0d1a26;--surface:#101f2d;--raised:#14273a;--text:#f2f5fa;--soft:#cbd5e1;
+--muted:#8fa1b8;--border:#1f3144;--strong:#2c4259;--gold-soft:#2a2d28;--gold-ink:#f4cf63;
+--error:#f2545b;--scrim:rgba(13,26,38,.84)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 ui-sans-serif,system-ui,sans-serif;position:relative;height:100vh}
+header{display:flex;align-items:center;gap:12px;padding:16px 32px;border-bottom:1px solid var(--border)}
+header b{font-size:15px}header span{color:var(--muted)}
+main{padding:28px 32px}
+h1{font-size:22px;display:flex;align-items:center;gap:10px}
+.count{background:var(--gold);color:var(--on-gold);border-radius:99px;font-size:13px;padding:1px 10px}
+.sub{color:var(--muted);margin:4px 0 20px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.meta{color:var(--muted);font-size:12px;display:flex;justify-content:space-between}
+.q{font-weight:600;font-size:15px;line-height:1.4}
+.option{display:block;width:100%;text-align:left;border:1px solid var(--strong);border-radius:9px;background:var(--raised);color:var(--text);padding:10px 12px;font:inherit}
+.option strong{display:flex;justify-content:space-between;gap:8px}
+.option small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.option.rec{border-color:var(--gold);background:var(--gold-soft)}
+.badge{color:var(--gold-ink);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.other{background:transparent;border-style:dashed;color:var(--soft)}
+.confirm{font-size:12px;color:var(--muted)}
+.scrim{position:absolute;inset:0;background:var(--scrim);display:flex;align-items:center;justify-content:center}
+.modal{width:560px;background:var(--surface);border:1px solid var(--strong);border-radius:14px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.modal h2{font-size:17px;margin-bottom:6px}.modal p{color:var(--muted);margin-bottom:14px}
+label{display:block;font-size:12px;color:var(--soft);margin-bottom:6px}
+.field{min-height:132px;border:2px solid var(--gold);border-radius:9px;padding:10px 12px;background:var(--bg);box-shadow:0 0 0 4px rgba(243,195,59,.25)}
+.caret{display:inline-block;width:1.5px;height:17px;background:var(--text);vertical-align:-3px}
+.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+.btn{border:1px solid var(--strong);background:transparent;color:var(--text);border-radius:9px;padding:9px 16px;font:inherit}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:var(--on-gold);font-weight:700}
+.btn.off{opacity:.45}
+/* phone */
+body.phone header{padding:14px 16px}body.phone main{padding:18px 16px}
+body.phone .cards{grid-template-columns:1fr;gap:12px}
+body.phone .card{padding:14px}
+body.phone .option,body.phone .btn{min-height:44px}
+body.phone .scrim{align-items:flex-end}
+body.phone .modal{width:100%;border-radius:16px 16px 0 0;padding:18px 16px 24px}
+.states{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.state h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.empty{align-items:center;text-align:center;padding:40px 18px;color:var(--muted)}
+.empty b{color:var(--text);font-size:16px}
+.alert{color:var(--error);font-weight:600}
+</style>
+</head>
+<body class="phone">
+<header><b>Harness</b><span>Home</span></header><main><h1>Needs you <span class="count">3</span></h1><p class="sub">Only open questions with choices. Blocked work is listed under Blockers.</p><div class="cards"><article class="card"><div class="meta"><span>Harness · Hub release</span><span>12 min ago</span></div><p class="q">Deploy the Hub release candidate to production now?</p><button class="option rec"><strong>Deploy now<span class="badge">Recommended</span></strong><small>Ships the tested revision; rollback is ready</small></button><button class="option"><strong>Wait until morning</strong><small>Nothing changes tonight</small></button><button class="option other"><strong>Other…</strong><small>Write your own answer</small></button><p class="confirm">A deploy decision: a tap asks you to confirm.</p></article><article class="card"><div class="meta"><span>Harbor · Tasks page</span><span>1 h ago</span></div><p class="q">Which layout should the Tasks page use on desktop?</p><button class="option rec"><strong>Three columns<span class="badge">Recommended</span></strong><small>Scheduled, in progress and blocked side by side</small></button><button class="option"><strong>One list</strong><small>Grouped sections in a single column</small></button><button class="option"><strong>Table</strong><small>One row per task with filters</small></button><button class="option other"><strong>Other…</strong><small>Write your own answer</small></button></article></div></main><div class="scrim"><div class="modal" role="dialog"><h2>Your answer</h2><p>Which layout should the Tasks page use on desktop?</p><label>Write what you want instead</label><div class="field">Three columns, but put blocked work first<span class="caret"></span></div><div class="actions"><button class="btn">Cancel</button><button class="btn primary">Send answer</button></div></div></div>
+</body>
+</html>

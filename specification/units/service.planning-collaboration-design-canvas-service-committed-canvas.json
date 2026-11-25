@@ -1,0 +1,139 @@
+{
+	"schemaVersion": 1,
+	"id": "service.planning-collaboration-design-canvas-service-committed-canvas",
+	"uid": "u_kggn23yn3a",
+	"kind": "service",
+	"title": "committedCanvas",
+	"responsibility": "Confirms a canvas is committed and pushed and derives its credential-free GitHub address.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/planning-collaboration/design-canvas-service/committedCanvas.ts"],
+		"symbols": ["committedCanvas", "githubRepository"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "committedCanvas.root",
+				"type": "string",
+				"required": true,
+				"description": "Project root folder."
+			},
+			{
+				"name": "committedCanvas.folder",
+				"type": "string",
+				"required": true,
+				"description": "Canvas folder relative to the project root."
+			},
+			{
+				"name": "githubRepository.remote",
+				"type": "string",
+				"required": true,
+				"description": "Git remote address."
+			}
+		],
+		"outputs": [
+			{
+				"name": "committedCanvas",
+				"type": "{ commit: string; repository: string; branch: string }",
+				"description": "The pushed commit, GitHub repository address and branch."
+			},
+			{
+				"name": "githubRepository",
+				"type": "string",
+				"description": "Result: Confirms a canvas is committed and pushed and derives its credential-free GitHub address."
+			}
+		],
+		"errors": [
+			{
+				"name": "DesignCanvasError",
+				"type": "thrown",
+				"description": "A canvas, artboard, option or prerequisite is not usable; the message says why."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "committedCanvas",
+				"inputs": [
+					{
+						"name": "committedCanvas.root",
+						"type": "string",
+						"required": true,
+						"description": "Project root folder."
+					},
+					{
+						"name": "committedCanvas.folder",
+						"type": "string",
+						"required": true,
+						"description": "Canvas folder relative to the project root."
+					}
+				],
+				"outputs": [
+					{
+						"name": "committedCanvas",
+						"type": "{ commit: string; repository: string; branch: string }",
+						"description": "The pushed commit, GitHub repository address and branch."
+					}
+				],
+				"errors": [
+					{
+						"name": "DesignCanvasError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "githubRepository",
+				"inputs": [
+					{
+						"name": "githubRepository.remote",
+						"type": "string",
+						"required": true,
+						"description": "Git remote address."
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubRepository",
+						"type": "string",
+						"description": "Result: Confirms a canvas is committed and pushed and derives its credential-free GitHub address."
+					}
+				],
+				"errors": [
+					{
+						"name": "DesignCanvasError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/planning-collaboration/design-canvas-service/committedCanvas.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/planning-collaboration/design-canvas-service/committedCanvas.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

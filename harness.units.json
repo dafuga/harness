@@ -68,6 +68,54 @@
 	],
 	"references": [
 		{
+			"from": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "The hosted designs header shows the viewed commit with the shared short form."
+		},
+		{
+			"from": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The hosted designs header lists a revision's branches and canvases through the shared canvas types."
+		},
+		{
+			"from": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The hosted designs view reads the canvas answer through the shared canvas types."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubDesignCanvasRead.ts",
+			"specifier": "$reports/utils/planning-collaboration/canvasManifest",
+			"to": "packages/reports/src/utils/planning-collaboration/canvasManifest.ts",
+			"reason": "The canvas endpoint admits only canvas names the shared format allows."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesignCanvases.ts",
+			"specifier": "$reports/utils/planning-collaboration/canvasManifest",
+			"to": "packages/reports/src/utils/planning-collaboration/canvasManifest.ts",
+			"reason": "The Hub reads committed canvas manifests with the same rules as the CLI."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesignCanvases.ts",
+			"specifier": "$reports/utils/planning-collaboration/canvasBoards",
+			"to": "packages/reports/src/utils/planning-collaboration/canvasBoards.ts",
+			"reason": "The Hub places artboards with the same layout as the CLI."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesignCanvases.ts",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The Hub answers with the shared canvas types."
+		},
+		{
+			"from": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte",
+			"specifier": "$shared/planning-collaboration/design-canvas/DesignCanvas.svelte",
+			"to": "packages/reports/src/components/planning-collaboration/design-canvas/DesignCanvas.svelte",
+			"reason": "Hosted designs show the shared canvas viewer."
+		},
+		{
 			"from": "packages/desktop/test/examples/desktop.function.artifact-query.test.ts",
 			"specifier": "$reports/models/explorer-ui/ExplorerEvidence.types",
 			"to": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts",
