@@ -216,3 +216,6 @@ export { TrackerDispatchRepository } from './repositories/projects-sessions/Trac
 export { TrackerDispatchSchedulerService } from './services/projects-sessions/TrackerDispatchSchedulerService';
 export { TrackerSupervisorService } from './services/projects-sessions/TrackerSupervisorService';
 export * from './lib/agents-providers/projectAssistant';
+export { QuotaCodexAdapter } from './adapters/agents-providers/QuotaCodexAdapter';
+export { QuotaClaudeAdapter } from './adapters/agents-providers/QuotaClaudeAdapter';
+export { SubscriptionQuotaService } from './services/agents-providers/SubscriptionQuotaService';

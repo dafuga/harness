@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-quota-codex",
+	"uid": "u_hixn27hjr2",
+	"kind": "adapter",
+	"title": "QuotaCodexAdapter",
+	"responsibility": "Reads the signed-in user's Codex subscription rate limits",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/QuotaCodexAdapter.ts",
+			"src/adapters/agents-providers/QuotaCodexAdapter.types.ts"
+		],
+		"symbols": [
+			"QuotaCodexAdapter",
+			"QuotaCodexAdapter.constructor",
+			"QuotaCodexAdapter.connect",
+			"QuotaCodexAdapterConfig",
+			"QuotaCodexAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "QuotaCodexAdapter.constructor.config",
+				"type": "QuotaCodexAdapterConfig",
+				"required": false,
+				"default": {}
+			}
+		],
+		"outputs": [
+			{
+				"name": "QuotaCodexAdapter.connect",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "QuotaCodexAdapter.connect",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "QuotaCodexAdapter.connect",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": [
+			{
+				"name": "QuotaCodexAdapter.constructor",
+				"inputs": [
+					{
+						"name": "QuotaCodexAdapter.constructor.config",
+						"type": "QuotaCodexAdapterConfig",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "QuotaCodexAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/QuotaCodexAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/QuotaCodexAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
