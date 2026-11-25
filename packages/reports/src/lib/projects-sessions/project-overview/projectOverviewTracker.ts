@@ -114,6 +114,7 @@ function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecor
 		resolved: optionalBoolean(row.resolved, 'item resolved'),
 		question: optionalText(row.question, 'item question'),
 		notes_log: optionalNotes(row.notes_log),
+		...(row.stage !== undefined && { stage: row.stage, planning: row.planning }),
 		...(includeHomeFields ? { ...homeFields(row), ...askFields(row) } : {})
 	};
 }

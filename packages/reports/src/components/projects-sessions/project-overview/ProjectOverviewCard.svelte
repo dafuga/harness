@@ -3,6 +3,7 @@
 <!-- @harness-uid u_5zc2xsq34f -->
 <script lang="ts">
 	import Card from '../../explorer-ui/explorer-kit/Card.svelte';
+	import { trackerStageLabels } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 	import type { OverviewCallout } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
 	import ProjectOverviewItem from './ProjectOverviewItem.svelte';
 	import ProjectOverviewState from './ProjectOverviewState.svelte';
@@ -29,6 +30,9 @@
 		<hx-div class="po-callout-head">
 			<hx-span class="po-callout-label">{label}</hx-span>
 			<hx-span class="po-callout-meta">updated {formatWhen(surfaced.item.updatedAt)}</hx-span>
+			{#if surfaced.item.stage}
+				<hx-span class="po-callout-meta">{trackerStageLabels[surfaced.item.stage]}</hx-span>
+			{/if}
 			<hx-span class="po-callout-id">{surfaced.item.id}</hx-span>
 		</hx-div>
 		<hx-p class="po-callout-text">{surfaced.text}</hx-p>

@@ -1,4 +1,9 @@
 // @harness-uid u_2aj7ipsk7y
+import type {
+	TrackerPlanning,
+	TrackerStage
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
+
 /** The five project states, in the order they are picked. */
 export type ProjectState = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
 
@@ -14,6 +19,8 @@ export type OverviewItem = {
 	due: string | null;
 	live: boolean;
 	stale: boolean;
+	stage?: TrackerStage;
+	planning?: TrackerPlanning;
 };
 
 /** A question or blocked reason with the item it belongs to. */

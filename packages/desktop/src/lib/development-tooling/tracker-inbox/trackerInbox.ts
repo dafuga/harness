@@ -1,5 +1,5 @@
 // @harness-uid u_fy55qn2j57
-import type { TrackerStage } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
+export { trackerStageLabels } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 
 import type {
 	ConfirmedWrite,
@@ -15,13 +15,6 @@ import type {
 	WriteAction,
 	WriteState
 } from '../../../models/development-tooling/TrackerInbox.types';
-
-export const trackerStageLabels: Record<TrackerStage, string> = {
-	idea: 'Idea',
-	detail: 'Detailed idea',
-	design: 'Full design',
-	build: 'Implementation'
-};
 
 export const inboxFilters: readonly InboxFilter[] = [
 	'all',

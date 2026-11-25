@@ -10,14 +10,11 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-h3",
-			"reports.component.shared-primitives-atoms-html-h4",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong",
 			"reports.component.shared-primitives-atoms-html-ul"
 		]
 	},
@@ -25,7 +22,7 @@
 		"source": [
 			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRecord.svelte"
 		],
-		"symbols": ["TrackerInboxRecord", "TrackerInboxRecord.designLinks"]
+		"symbols": ["TrackerInboxRecord"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -88,22 +85,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.projects-sessions-tracker-planning",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-a",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-h3",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-h4",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -124,11 +106,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
 		},

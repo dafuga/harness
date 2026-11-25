@@ -10,6 +10,7 @@
 	import Pill from '../../explorer-ui/explorer-kit/Pill.svelte';
 	import DetailList from '../../shared-primitives/DetailList.svelte';
 	import Modal from '../../shared-primitives/Modal.svelte';
+	import TrackerPlanningDetails from '../TrackerPlanningDetails.svelte';
 	import ProjectOverviewCard from './ProjectOverviewCard.svelte';
 	import {
 		bandsFor,
@@ -160,5 +161,8 @@
 			{#snippet label(row: ProjectOverviewDetailRow)}{row.term}{/snippet}
 			{#snippet children(row: ProjectOverviewDetailRow)}{row.value}{/snippet}
 		</DetailList>
+		{#if selected.stage}
+			<TrackerPlanningDetails stage={selected.stage} planning={selected.planning} />
+		{/if}
 	{/if}
 </Modal>

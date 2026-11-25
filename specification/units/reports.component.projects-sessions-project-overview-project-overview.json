@@ -16,6 +16,7 @@
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.modal",
 			"reports.component.projects-sessions-project-overview-project-overview-card",
+			"reports.component.projects-sessions-tracker-planning-details",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -164,6 +165,11 @@
 		},
 		{
 			"unit": "reports.component.projects-sessions-project-overview-project-overview-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-tracker-planning-details",
 			"via": "import",
 			"origin": "derived"
 		},

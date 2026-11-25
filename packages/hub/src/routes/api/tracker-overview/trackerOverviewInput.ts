@@ -1,4 +1,8 @@
 // @harness-uid u_k4rxbz6pq3
+import {
+	trackerPlanningSchema,
+	trackerStages
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 import { hubFail } from '../../../utils/development-tooling/hubJson';
 export { MAX_BODY_BYTES, readOverviewText } from './trackerOverviewBody';
@@ -77,7 +81,11 @@ function card(value: unknown) {
 }
 
 function item(value: unknown) {
-	const body = record(value, ['id', 'title', 'status', 'updatedAt', 'due', 'live', 'stale']);
+	const body = record(
+		value,
+		['id', 'title', 'status', 'updatedAt', 'due', 'live', 'stale'],
+		['stage', 'planning']
+	);
 	return {
 		id: identifier(body.id, 200),
 		title: excerpt(body.title, 500),
@@ -85,8 +93,17 @@ function item(value: unknown) {
 		updatedAt: time(body.updatedAt),
 		due: body.due === null ? null : time(body.due),
 		live: flag(body.live),
-		stale: flag(body.stale)
+		stale: flag(body.stale),
+		...itemPlanning(body)
 	};
+}
+
+function itemPlanning(body: OverviewRecord) {
+	const stage = body.stage === undefined ? undefined : oneOf(body.stage, trackerStages);
+	if (body.planning === undefined) return stage ? { stage } : {};
+	const parsed = trackerPlanningSchema.safeParse(body.planning);
+	if (!stage || !parsed.success) return invalid();
+	return { stage, planning: parsed.data };
 }
 
 function callout(value: unknown) {
@@ -120,10 +137,16 @@ function objectOf(value: unknown): OverviewRecord {
 	return value as OverviewRecord;
 }
 
-/** An exact key set: no missing key and no extra one. */
-function record(value: unknown, keys: readonly string[]): OverviewRecord {
+/** Require every declared key and refuse unknown keys. */
+function record(
+	value: unknown,
+	keys: readonly string[],
+	optional: readonly string[] = []
+): OverviewRecord {
 	const body = objectOf(value);
-	const exact = Object.keys(body).length === keys.length && keys.every((key) => key in body);
+	const exact =
+		keys.every((key) => Object.hasOwn(body, key)) &&
+		Object.keys(body).every((key) => keys.includes(key) || optional.includes(key));
 	return exact ? body : invalid();
 }
 

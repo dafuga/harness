@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_et5rodvng6 -->
 <script lang="ts">
+	import { trackerStageLabels } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 	import { etaFor, formatWhen, statusLabel } from './projectOverviewPresentation';
 	import type { ProjectOverviewItemProps } from './ProjectOverviewItem.types';
 	let { item, now, onOpen, extra = false }: ProjectOverviewItemProps = $props();
@@ -9,6 +10,7 @@
 	const meta = $derived(
 		[
 			statusLabel(item.status),
+			item.stage ? trackerStageLabels[item.stage] : '',
 			item.live ? 'Live' : '',
 			item.stale ? 'Stale' : '',
 			`updated ${formatWhen(item.updatedAt)}`

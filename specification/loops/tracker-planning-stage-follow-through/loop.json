@@ -2,7 +2,7 @@
 	"name": "tracker-planning-stage-follow-through",
 	"goal": "Prove feature briefs require sequential planning, and owner Hub item details preserve the same stages and artifacts as Mac and iPhone without leaking private Tracker records.",
 	"createdAt": "2026-11-25T20:54:13.980Z",
-	"updatedAt": "2026-11-25T20:56:32.431Z",
+	"updatedAt": "2026-11-25T21:05:16.078Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T20:58:08.900Z",
+			"evidence": "At f43e803c3f, the brief misses Current planning stage: idea, Hub PUT returns 400 instead of 204, and Reports discards stage/artifacts. New native item stage and digest cases already pass. The Hub viewport regression is running on harbor-mbp-2."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T21:05:16.078Z",
+			"evidence": "The owner overview validates and projects the Tracker planning record. The existing item dialog shares the Mac and iPhone planning section. Tracker briefs give the exact artifact and sequential promotion commands."
 		},
 		{
 			"id": "green",
