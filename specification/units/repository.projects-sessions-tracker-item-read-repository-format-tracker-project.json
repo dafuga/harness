@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.projects-sessions-tracker-item-read-repository-format-tracker-project",
+	"uid": "u_4lnas6a65x",
+	"kind": "repository",
+	"title": "formatTrackerProject",
+	"responsibility": "Render one project status as a digest line with counts, ETA and latest note.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/projects-sessions/tracker-item-read-repository/formatTrackerProject.ts"
+		],
+		"symbols": ["formatTrackerProject"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "formatTrackerProject.project",
+				"type": "TrackerProjectStatus",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "formatTrackerProject",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "formatTrackerProject",
+				"inputs": [
+					{
+						"name": "formatTrackerProject.project",
+						"type": "TrackerProjectStatus",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatTrackerProject",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read-repository-clip-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/projects-sessions/tracker-item-read-repository/formatTrackerProject.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/projects-sessions/tracker-item-read-repository/formatTrackerProject.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -4,14 +4,19 @@
 	"uid": "u_ha3divi7yk",
 	"kind": "repository",
 	"title": "splitTrackerAsks",
-	"responsibility": "Split open Tracker flags into Daniel decisions and automated pings, oldest first, and judge when a decision is stale.",
+	"responsibility": "Split open Tracker flags into Daniel decisions and automated pings, judge stale decisions, and list what only Daniel can unblock.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/repositories/projects-sessions/tracker-item-read-repository/splitTrackerAsks.ts"
 		],
-		"symbols": ["trackerStaleDecisionMinutes", "isStaleDecision", "splitTrackerAsks"]
+		"symbols": [
+			"trackerStaleDecisionMinutes",
+			"isStaleDecision",
+			"splitTrackerAsks",
+			"listTrackerUnblocks"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -23,6 +28,11 @@
 			},
 			{
 				"name": "splitTrackerAsks.groups",
+				"type": "TrackerDigestGroups",
+				"required": true
+			},
+			{
+				"name": "listTrackerUnblocks.groups",
 				"type": "TrackerDigestGroups",
 				"required": true
 			}
@@ -39,6 +49,10 @@
 			{
 				"name": "splitTrackerAsks",
 				"type": "void"
+			},
+			{
+				"name": "listTrackerUnblocks",
+				"type": "TrackerDigestItem[]"
 			}
 		],
 		"errors": [],
@@ -79,11 +93,34 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "listTrackerUnblocks",
+				"inputs": [
+					{
+						"name": "listTrackerUnblocks.groups",
+						"type": "TrackerDigestGroups",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "listTrackerUnblocks",
+						"type": "TrackerDigestItem[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-is-tracker-blocked-on-daniel",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-is-tracker-ping",
 			"via": "import",

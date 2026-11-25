@@ -4,6 +4,8 @@ import { TrackerRunReadRepository } from './TrackerRunReadRepository';
 import { TrackerItemReadError } from './tracker-item-read-repository/TrackerItemReadError';
 import { buildTrackerDigest } from './tracker-item-read-repository/buildTrackerDigest';
 import { formatTrackerDigest } from './tracker-item-read-repository/formatTrackerDigest';
+import { summarizeTrackerProjects } from './tracker-item-read-repository/summarizeTrackerProjects';
+import type { TrackerProjectNoteRow } from './tracker-item-read-repository/summarizeTrackerProjects.types';
 import { serializeTrackerItem } from './tracker-item-read-repository/serializeTrackerItem';
 import type {
 	TrackerDigest,
@@ -88,12 +90,25 @@ export class TrackerItemReadRepository {
 				)`
 			)
 			.all(new Date(nowMs).toISOString()) as TrackerItemRow[];
-		return buildTrackerDigest(
-			rows,
-			nowMs,
-			timeZone,
-			new TrackerRunReadRepository(this.database, '')
-		);
+		return buildTrackerDigest(rows, nowMs, timeZone, {
+			runs: new TrackerRunReadRepository(this.database, ''),
+			projects: this.projectStatuses(nowMs)
+		});
+	}
+
+	/** Count every unfinished item, including snoozed ones the digest lists leave out. */
+	private projectStatuses(nowMs: number) {
+		const unfinished = `${visibleItems} AND ${activeStatus}`;
+		const rows = this.database
+			.prepare(`SELECT * FROM items WHERE ${unfinished}`)
+			.all() as TrackerItemRow[];
+		const notes = this.database
+			.prepare(
+				`SELECT item_id, hlc, text FROM item_notes
+				 WHERE item_id IN (SELECT id FROM items WHERE ${unfinished}) ORDER BY hlc DESC`
+			)
+			.all() as TrackerProjectNoteRow[];
+		return summarizeTrackerProjects(rows, notes, nowMs);
 	}
 
 	/** Format a digest using the legacy CLI section order and summaries. */

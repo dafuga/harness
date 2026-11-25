@@ -11,15 +11,15 @@ import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import { trackerChaseFields, trackerAskFields } from './serializeTrackerItem';
 import { trackerPlanningStage } from '../../../utils/projects-sessions/trackerPlanning';
-import { splitTrackerAsks, isStaleDecision } from './splitTrackerAsks';
-import type { StoredRecurringResult } from './buildTrackerDigest.types';
+import { splitTrackerAsks, listTrackerUnblocks, isStaleDecision } from './splitTrackerAsks';
+import type { StoredRecurringResult, TrackerDigestSources } from './buildTrackerDigest.types';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
 export function buildTrackerDigest(
 	rows: TrackerItemRow[],
 	nowMs: number,
 	timeZone: string,
-	runs: TrackerRunReadRepository
+	{ runs, projects }: TrackerDigestSources
 ): TrackerDigest {
 	const localTime = stamp(nowMs, timeZone);
 	const [today] = localTime.split(' ');
@@ -42,16 +42,21 @@ export function buildTrackerDigest(
 	splitTrackerAsks(groups);
 	groups.chased_7d.sort((a, b) => (b.chased_at ?? '').localeCompare(a.chased_at ?? ''));
 	groups.queued.sort((a, b) => a.requested_at.localeCompare(b.requested_at));
+	const toUnblock = listTrackerUnblocks(groups);
 	return {
 		generated_at: new Date(nowMs).toISOString(),
 		local_time: `${localTime} ${timeZone}`,
 		today,
 		...groups,
+		projects,
+		to_unblock: toUnblock,
 		counts: {
 			...(Object.fromEntries(
 				Object.entries(groups).map(([key, items]) => [key, items.length])
 			) as Record<keyof TrackerDigestGroups, number>),
-			stale_decisions: groups.daniel_decisions.filter(isStaleDecision).length
+			stale_decisions: groups.daniel_decisions.filter(isStaleDecision).length,
+			projects: projects.length,
+			to_unblock: toUnblock.length
 		}
 	};
 }
