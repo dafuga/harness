@@ -78,6 +78,9 @@
 	:global(.tracker-planning) {
 		overflow-wrap: anywhere;
 	}
+	:global(.tracker-planning :is(h3, h4, p)) {
+		margin: var(--hx-space-4) 0;
+	}
 	:global(.tracker-planning-stages) {
 		list-style: none;
 		margin: 0;

@@ -2,11 +2,9 @@
 	"name": "tracker-planning-stage-follow-through",
 	"goal": "Prove feature briefs require sequential planning, and owner Hub item details preserve the same stages and artifacts as Mac and iPhone without leaking private Tracker records.",
 	"createdAt": "2026-11-25T20:54:13.980Z",
-	"updatedAt": "2026-11-25T21:05:16.078Z",
+	"updatedAt": "2026-11-25T21:12:05.619Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T21:12:05.619Z",
+			"evidence": "The frozen brief regression failed at ba8fe4313a and passed unchanged at b8fd5a0ae4. Hub API and Reports projection now pass, and the compiled Hub passed 30 browser/API cases on harbor-mbp-2. Final screenshot and native-renderer verification are open."
 		},
 		{
 			"id": "verify",
