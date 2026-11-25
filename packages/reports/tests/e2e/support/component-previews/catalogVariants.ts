@@ -39,6 +39,7 @@ const variants: Record<string, string[]> = {
 	...usageExampleCatalogVariants,
 	...moduleCatalogVariants,
 	'reports.component.recorded-value': recordedValueStates,
+	'reports.component.projects-sessions-tracker-planning-details': ['empty'],
 
 	'reports.component.image-zoom': imageZoomStates,
 

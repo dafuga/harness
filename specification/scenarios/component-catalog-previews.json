@@ -238,6 +238,7 @@
 		"reports.component.projects-sessions-project-overview-project-overview-card",
 		"reports.component.projects-sessions-project-overview-project-overview-item",
 		"reports.component.projects-sessions-project-overview-project-overview-state",
+		"reports.component.projects-sessions-tracker-planning-details",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
 		"reports.component.recorded-value",
@@ -6538,6 +6539,18 @@
 			"units": ["reports.component.projects-sessions-project-overview-project-overview-state"]
 		},
 		{
+			"id": "reports-component-projects-sessions-tracker-planning-details",
+			"title": "TrackerPlanningDetails with a design artifact",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-tracker-planning-details"]
+		},
+		{
+			"id": "reports-component-projects-sessions-tracker-planning-details-empty",
+			"title": "TrackerPlanningDetails before artifacts are added",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-tracker-planning-details"]
+		},
+		{
 			"id": "reports-component-provider-picker",
 			"title": "Session model picker",
 			"coverage": "required",
@@ -9639,6 +9652,8 @@
 				"reports-component-projects-sessions-project-overview-project-overview-card",
 				"reports-component-projects-sessions-project-overview-project-overview-item",
 				"reports-component-projects-sessions-project-overview-project-overview-state",
+				"reports-component-projects-sessions-tracker-planning-details",
+				"reports-component-projects-sessions-tracker-planning-details-empty",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-loading",
 				"reports-component-provider-picker-connection-error",

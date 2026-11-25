@@ -28,6 +28,8 @@ export async function assertCatalogBeforeCapture({
 	await assertCatalogNames(component, unit.id, variant);
 	await assertCatalogState(component, unit.id, variant, viewport.id);
 	await assertPluginKitPreview(component, unit.id, variant);
+	if (unit.id === 'reports.component.projects-sessions-tracker-planning-details')
+		await assertTrackerPlanning(component, variant);
 	if (unit.id === 'reports.component.entity-contract' && viewport.id === 'mobile')
 		await assertMobileContractFields(component);
 	if (unit.id === 'reports.component.explorer-ui-explorer-module-card')
@@ -40,6 +42,23 @@ export async function assertCatalogBeforeCapture({
 		await assertPermissionPanelStyles(component);
 	if (unit.id === 'desktop.component.project-agent')
 		await assertAgentPreview(page, component, variant);
+}
+
+async function assertTrackerPlanning(component: Locator, variant: string) {
+	const planning = component.getByRole('region', { name: 'Planning stages' });
+	const current = planning.locator('[aria-current="step"]');
+	if (variant === 'empty') {
+		await expect(current.getByRole('heading', { name: 'Idea', exact: true })).toBeVisible();
+		await expect(planning.getByText('No artifacts yet.')).toHaveCount(4);
+		return;
+	}
+	await expect(current.getByRole('heading', { name: 'Full design' })).toBeVisible();
+	await expect(current.getByText(/Promoted by Fixture planner/)).toBeVisible();
+	await expect(current.getByText(/Show when no shipments are scheduled/)).toBeVisible();
+	await expect(current.getByRole('link', { name: 'Shipment dashboard design' })).toHaveAttribute(
+		'href',
+		'https://example.test/design'
+	);
 }
 
 async function assertAgentPreview(page: Page, component: Locator, variant: string) {

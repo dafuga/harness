@@ -43,6 +43,24 @@ export const reportCases: PreviewCases = {
 	'reports.component.projects-sessions-project-overview-project-overview-state': {
 		state: card.state
 	},
+	'reports.component.projects-sessions-tracker-planning-details': {
+		stage: 'design',
+		planning: {
+			artifacts: {
+				design: {
+					summary: 'Plan the shipment dashboard.',
+					pages: [
+						{
+							name: 'Shipments',
+							states: { empty: 'Show when no shipments are scheduled.' },
+							links: [{ label: 'Shipment dashboard design', url: 'https://example.test/design' }]
+						}
+					]
+				}
+			},
+			promotions: [{ stage: 'design', by: 'Fixture planner', at: '2026-11-20T10:00:00.000Z' }]
+		}
+	},
 	'reports.component.verification-evidence-audio-icon': {},
 	'reports.component.audio-comparison': {
 		before: baselineNarration,
