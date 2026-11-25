@@ -15,7 +15,6 @@ import type {
 	SessionRunStatus,
 	SessionStreamTransport
 } from './SessionStreamPublisherService.types';
-
 import { SessionPublishError } from './SessionPublishError';
 
 const chunkBytes = 128 * 1024;
@@ -50,37 +49,68 @@ export class SessionStreamPublisherService {
 	publishOutput(bytes: Uint8Array): Promise<void> {
 		const data = Uint8Array.from(bytes);
 		return this.enqueue(async () => {
-			if (!data.length) return;
-			const key = await (this.streamKey ??= sealedStreamKey(this.keys, this.streamId));
 			for (let offset = 0; offset < data.length; offset += chunkBytes) {
-				const counter = this.counter++;
-				const chunk = data.subarray(offset, offset + chunkBytes);
-				await this.transport.sendFrame(
-					await sealedFrame(this.keys, key, {
-						streamId: this.streamId,
-						counter,
-						data: sealedPadding(chunk)
-					})
-				);
+				await this.sendOutput(this.counter++, data.subarray(offset, offset + chunkBytes));
+			}
+		});
+	}
+
+	/** Stores a captured chunk before sending it live. A socket failure leaves history readable. */
+	publishCapturedOutput(index: number, bytes: Uint8Array): Promise<'live' | 'stored'> {
+		if (!validSegment(index, bytes) || bytes.length === 0)
+			return Promise.reject(new SessionPublishError('Invalid captured output segment.'));
+		const data = Uint8Array.from(bytes);
+		return this.enqueue(async () => {
+			const streamId = toBase64Url(this.streamId);
+			const counter = this.counter++;
+			await this.publishRecord(
+				'transcript',
+				JSON.stringify([this.runId, streamId, String(counter)]),
+				{
+					...this.transcriptSegment(index, toBase64Url(data)),
+					streamId,
+					throughCounter: String(counter)
+				}
+			);
+			try {
+				await this.sendOutput(counter, data);
+				return 'live';
+			} catch {
+				return 'stored';
 			}
 		});
 	}
 
 	/** The caller supplies a stable segment index for retries and history ordering. */
 	publishTranscriptSegment(index: number, bytes: Uint8Array): Promise<void> {
-		if (!Number.isSafeInteger(index) || index < 0 || bytes.length > chunkBytes)
+		if (!validSegment(index, bytes))
 			return Promise.reject(new SessionPublishError('Invalid transcript segment.'));
-		const data = toBase64Url(bytes);
-		return this.enqueue(async () => {
-			await this.publishRecord('transcript', JSON.stringify([this.runId, index]), {
-				kind: 'transcript',
-				runId: this.runId,
-				index,
-				data,
-				// Keep short segments above the object API's 32 KiB inline threshold.
-				padding: ' '.repeat(Math.max(0, 32 * 1024 - data.length))
-			});
-		});
+		const segment = this.transcriptSegment(index, toBase64Url(bytes));
+		return this.enqueue(() =>
+			this.publishRecord('transcript', JSON.stringify([this.runId, index]), segment)
+		);
+	}
+
+	private transcriptSegment(index: number, data: string) {
+		return {
+			kind: 'transcript',
+			runId: this.runId,
+			index,
+			data,
+			// Keep short segments above the object API's 32 KiB inline threshold.
+			padding: ' '.repeat(Math.max(0, 32 * 1024 - data.length))
+		};
+	}
+
+	private async sendOutput(counter: bigint, data: Uint8Array): Promise<void> {
+		const key = await (this.streamKey ??= sealedStreamKey(this.keys, this.streamId));
+		await this.transport.sendFrame(
+			await sealedFrame(this.keys, key, {
+				streamId: this.streamId,
+				counter,
+				data: sealedPadding(data)
+			})
+		);
 	}
 
 	async close(): Promise<void> {
@@ -100,10 +130,17 @@ export class SessionStreamPublisherService {
 		await this.transport.putObject(scope, address, envelope);
 	}
 
-	private enqueue(operation: () => Promise<void>): Promise<void> {
+	private enqueue<T>(operation: () => Promise<T>): Promise<T> {
 		if (this.closed) return Promise.reject(new SessionPublishError('Session publisher is closed.'));
 		const result = this.pending.then(operation);
-		this.pending = result.catch(() => undefined);
+		this.pending = result.then(
+			() => undefined,
+			() => undefined
+		);
 		return result;
 	}
+}
+
+function validSegment(index: number, bytes: Uint8Array): boolean {
+	return Number.isSafeInteger(index) && index >= 0 && bytes.length <= chunkBytes;
 }

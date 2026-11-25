@@ -17,6 +17,7 @@
 			"SessionStreamPublisherService.constructor",
 			"SessionStreamPublisherService.publishStatus",
 			"SessionStreamPublisherService.publishOutput",
+			"SessionStreamPublisherService.publishCapturedOutput",
 			"SessionStreamPublisherService.publishTranscriptSegment",
 			"SessionStreamPublisherService.close",
 			"SessionStreamTarget",
@@ -53,6 +54,16 @@
 				"required": true
 			},
 			{
+				"name": "SessionStreamPublisherService.publishCapturedOutput.index",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SessionStreamPublisherService.publishCapturedOutput.bytes",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
 				"name": "SessionStreamPublisherService.publishTranscriptSegment.index",
 				"type": "number",
 				"required": true
@@ -71,6 +82,10 @@
 			{
 				"name": "SessionStreamPublisherService.publishOutput",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "SessionStreamPublisherService.publishCapturedOutput",
+				"type": "Promise<'live' | 'stored'>"
 			},
 			{
 				"name": "SessionStreamPublisherService.publishTranscriptSegment",
@@ -120,6 +135,29 @@
 					{
 						"name": "SessionStreamPublisherService.publishOutput",
 						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SessionStreamPublisherService.publishCapturedOutput",
+				"inputs": [
+					{
+						"name": "SessionStreamPublisherService.publishCapturedOutput.index",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "SessionStreamPublisherService.publishCapturedOutput.bytes",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SessionStreamPublisherService.publishCapturedOutput",
+						"type": "Promise<'live' | 'stored'>"
 					}
 				],
 				"errors": [],

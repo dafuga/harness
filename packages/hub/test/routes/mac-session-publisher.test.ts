@@ -1,13 +1,25 @@
 import { expect, test, vi } from 'vitest';
 import type { ClientOptions, WebSocket as WebSocketClient } from 'ws';
 import { startSync } from '../support/syncFixture';
+import type { SyncFixture } from '../support/syncFixture.types';
+import type { ScopeKeys } from '../../../remote/src/models/networking-security/Sealed.types';
+import { commitmentOf } from '../../../remote/test/support/sealedFixture';
+import { sealedChain } from '../../../remote/src/utils/networking-security/sealedChain';
+import { sealedChainEntry } from '../../../remote/src/utils/networking-security/sealedChainEntry';
+import {
+	sealedDevice,
+	sealedDevicePublic
+} from '../../../remote/src/utils/networking-security/sealedDevice';
+import {
+	openSealedGrant,
+	sealedGrant
+} from '../../../remote/src/utils/networking-security/sealedGrant';
 import { storedByObject, storedObjects, storedRows } from '../support/syncCapture';
 import { expectNoPlaintext } from '../../../remote/test/support/plaintextCanary';
 import {
 	newScopeKeys,
 	scopeName,
-	sealedObjectId,
-	sealedScopeKeys
+	sealedObjectId
 } from '../../../remote/src/utils/networking-security/sealedScopeKeys';
 import {
 	fromBase64Url,
@@ -24,6 +36,7 @@ import { openSessionPublisher } from '../../../desktop/src/services/session-stre
 
 const bridge = vi.hoisted(() => ({ origin: '' }));
 const trusted = 'https://hub.example.test';
+const account = 'google:fixture-a';
 const bearer = 'session-a';
 const encoder = new TextEncoder();
 const runId = 'local private run identifier';
@@ -60,10 +73,33 @@ function bridgeFetch() {
 	});
 }
 
-async function assertFrame(
-	keys: Awaited<ReturnType<typeof sealedScopeKeys>>,
-	messages: (string | Uint8Array)[]
-) {
+async function enrollFixture(hub: SyncFixture) {
+	const raw = newScopeKeys();
+	const mac = await sealedDevice();
+	const commitment = await commitmentOf(raw);
+	const device = sealedDevicePublic(mac, 'admin', [commitment.scope]);
+	const headers = { 'X-Harness-Device': device.deviceId };
+	const entry = await sealedChainEntry(mac, {
+		seq: 0,
+		prev: '',
+		at: 1,
+		by: device.deviceId,
+		body: { type: 'genesis', account, devices: [device], scopes: [commitment] }
+	});
+	expect((await hub.call(bearer, 'POST', 'chain', { body: entry, headers })).status).toBe(201);
+	const grant = await sealedGrant(account, raw, device);
+	expect((await hub.call(bearer, 'POST', 'grants', { body: grant, headers })).status).toBe(201);
+	const response = await hub.call(bearer, 'GET', `grants?device=${device.deviceId}`, { headers });
+	const stored = (await response.json()) as { grants: (typeof grant)[] };
+	const keys = await openSealedGrant(
+		stored.grants[0],
+		mac,
+		await sealedChain([entry], { account })
+	);
+	return { keys, device: device.deviceId };
+}
+
+async function assertFrame(keys: ScopeKeys, messages: (string | Uint8Array)[]) {
 	const relayed = messages.find((message) => message instanceof Uint8Array);
 	if (!relayed) throw new Error('The account object did not relay a binary frame.');
 	const frame = relayed.slice(8);
@@ -79,8 +115,7 @@ test('the native publisher writes sealed state, binary live output and an R2 tra
 	const hub = await startSync();
 	bridge.origin = hub.origin;
 	const fetchSpy = bridgeFetch();
-	const keys = await sealedScopeKeys(newScopeKeys());
-	const device = toBase64Url(crypto.getRandomValues(new Uint8Array(16)));
+	const { keys, device } = await enrollFixture(hub);
 	const scope = scopeName(keys);
 	const publisher = openSessionPublisher({ origin: trusted, bearer, device, keys }, runId);
 	const watcher = await hub.socket(bearer, device);
@@ -88,8 +123,7 @@ test('the native publisher writes sealed state, binary live output and an R2 tra
 		watcher.send(JSON.stringify({ t: 'subscribe', scopes: [scope] }));
 		await watcher.until(1);
 		await publisher.publishStatus({ status: 'running' });
-		await publisher.publishOutput(encoder.encode(output));
-		await publisher.publishTranscriptSegment(0, encoder.encode(output));
+		await expect(publisher.publishCapturedOutput(0, encoder.encode(output))).resolves.toBe('live');
 		const messages = await watcher.until(4);
 		const streamId = await assertFrame(keys, messages);
 
@@ -104,14 +138,21 @@ test('the native publisher writes sealed state, binary live output and an R2 tra
 		const [objectKey, transcript] = await storedObjects(hub);
 		expect(objectKey).toEqual(expect.any(String));
 		expect(await openSealedRecord(keys, transcript as Uint8Array)).toMatchObject({
-			value: { kind: 'transcript', runId, index: 0, data: toBase64Url(encoder.encode(output)) }
+			value: {
+				kind: 'transcript',
+				runId,
+				index: 0,
+				data: toBase64Url(encoder.encode(output)),
+				streamId,
+				throughCounter: '0'
+			}
 		});
 		expectNoPlaintext(
 			[
 				...messages,
 				...(await storedRows(hub)),
 				...(await storedObjects(hub)),
-				...(await storedByObject(hub, 'google:fixture-a'))
+				...(await storedByObject(hub, account))
 			],
 			[runId, output]
 		);

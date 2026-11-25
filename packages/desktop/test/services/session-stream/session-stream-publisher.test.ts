@@ -118,3 +118,45 @@ test('seals even a short transcript above the R2 threshold and uses a stable ret
 		value: { kind: 'transcript', runId: 'run', index: 6, data: toBase64Url(data) }
 	});
 });
+
+test('records the exact live frame boundary even when the socket loses a captured chunk', async () => {
+	const keys = await sealedScopeKeys(newScopeKeys());
+	const { transport, frames } = fixture();
+	const publisher = new SessionStreamPublisherService(keys, 'run', transport);
+	transport.sendFrame.mockRejectedValueOnce(new Error('socket closed'));
+	await expect(publisher.publishCapturedOutput(10, Uint8Array.of(1))).resolves.toBe('stored');
+	await expect(publisher.publishCapturedOutput(11, Uint8Array.of(2))).resolves.toBe('live');
+
+	const header = sealedFrameHeader(frames[0]);
+	const [, , first] = transport.putObject.mock.calls[0];
+	const [, , second] = transport.putObject.mock.calls[1];
+	expect(header.counter).toBe(1n);
+	expect((await openSealedRecord(keys, first)).value).toMatchObject({
+		index: 10,
+		throughCounter: '0',
+		streamId: toBase64Url(header.streamId),
+		data: 'AQ'
+	});
+	expect((await openSealedRecord(keys, second)).value).toMatchObject({
+		index: 11,
+		throughCounter: '1',
+		streamId: toBase64Url(header.streamId),
+		data: 'Ag'
+	});
+	expect(transport.putObject.mock.invocationCallOrder[1]).toBeLessThan(
+		transport.sendFrame.mock.invocationCallOrder[1]
+	);
+});
+
+test('does not send a live frame before the durable write succeeds', async () => {
+	const keys = await sealedScopeKeys(newScopeKeys());
+	const { transport, frames } = fixture();
+	const publisher = new SessionStreamPublisherService(keys, 'run', transport);
+	transport.putObject.mockRejectedValueOnce(new Error('object write failed'));
+	await expect(publisher.publishCapturedOutput(0, Uint8Array.of(9))).rejects.toThrow(
+		'object write failed'
+	);
+	expect(transport.sendFrame).not.toHaveBeenCalled();
+	await publisher.publishCapturedOutput(0, Uint8Array.of(9));
+	expect(sealedFrameHeader(frames[0]).counter).toBe(1n);
+});
