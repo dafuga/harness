@@ -16,6 +16,7 @@
 		"cap:open:ios": "cap open ios",
 		"ios:build:simulator": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/build-ios-simulator.ts \"$@\"' --",
 		"ios:check:vectors": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/check-ios-vectors.ts \"$@\"' --",
+		"ios:check:sealed": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/check-ios-sealed.ts \"$@\"' --",
 		"ios:check:native": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/check-ios-native.ts \"$@\"' --",
 		"desktop": "bun scripts/start-electron.ts",
 		"package:mac": "bun scripts/package-mac.ts",

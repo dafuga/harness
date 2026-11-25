@@ -34,6 +34,22 @@
 		47FE69F250EC78B675F7372E /* HarnessRemotePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5615B84648E3DBF68605069E /* HarnessRemotePlugin.swift */; };
 		9D8B139CFC5490F81876029C /* RemoteChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9192536BB1DFA531C4D41C /* RemoteChannel.swift */; };
 		EAB63F810D290BBE9065EA4C /* RemoteCoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0DDE774D5E4E90DCFCB2B0 /* RemoteCoding.swift */; };
+		625995DF4E38087725C34197 /* SealedBytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE12237D0E6719312420E8C /* SealedBytes.swift */; };
+		546C6B47C09BD3DF3F051C21 /* SealedChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC35F5265A1D0C09CFD4A505 /* SealedChain.swift */; };
+		59BCF79131F54D072D7D7617 /* SealedChainApply.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0D32CE6F18667E53C9918A /* SealedChainApply.swift */; };
+		3DB02ED102DD5D75ADBC6644 /* SealedChainEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E2AD2A837486059012CEEC /* SealedChainEntry.swift */; };
+		056EF46DB499D5A077F6969D /* SealedChainGrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057816CF243503AB2E842473 /* SealedChainGrant.swift */; };
+		541F10007FFB1621B62F1513 /* SealedChainState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0253A11847429B0D5E25CB78 /* SealedChainState.swift */; };
+		9693F5960D99D4FF7A97E4A0 /* SealedDeviceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E4B84A1985F19CEDFD9054 /* SealedDeviceStore.swift */; };
+		B159B7F126BEDE5CF38364DB /* SealedEnroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A41341725F5BC07257C7ED1 /* SealedEnroll.swift */; };
+		A2CC2B354CE6CDA7667376BC /* SealedFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A508EB8F81E004A927D9CF /* SealedFrame.swift */; };
+		25A85B0472B4F327FD8021D8 /* SealedGrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECC007002BA4AECA6746BBC /* SealedGrant.swift */; };
+		F109CF5A789AC9D223D54D65 /* SealedJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723646625221F6D8F204B707 /* SealedJson.swift */; };
+		D66F2E96A743A9478B2B68F0 /* SealedKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E765C56DCE202CBB8F8D49D /* SealedKeys.swift */; };
+		10A05E5B7657F82783C31E61 /* SealedPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19A2A74F9DDF755EEB92D587 /* SealedPadding.swift */; };
+		05F174C503382947A3ECABC4 /* SealedRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2763C180354D73602E4C00B9 /* SealedRecord.swift */; };
+		99ED426CCA490690CD61A3B5 /* SealedRecovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BEAE556A4DFD4B357C8995 /* SealedRecovery.swift */; };
+		4068E49D6C6A740964F8EF2E /* SealedScopeKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80413D0826A1614F52E4356 /* SealedScopeKeys.swift */; };
 		E9C6B37FCBE0EA626CF8DC11 /* RemoteCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96C862D5F1207DCFAA99445 /* RemoteCrypto.swift */; };
 		7003C6CFFD32D09695A76B60 /* RemoteKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3E68C44A4FB5D9A3FFDDB0 /* RemoteKeychain.swift */; };
 		951FAA6FF304450D9161495A /* RemoteModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DCF2EC2D3D174AC15178180 /* RemoteModels.swift */; };
@@ -98,6 +114,22 @@
 		5615B84648E3DBF68605069E /* HarnessRemotePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/HarnessRemotePlugin.swift; sourceTree = "<group>"; };
 		DC9192536BB1DFA531C4D41C /* RemoteChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteChannel.swift; sourceTree = "<group>"; };
 		DB0DDE774D5E4E90DCFCB2B0 /* RemoteCoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteCoding.swift; sourceTree = "<group>"; };
+		BCE12237D0E6719312420E8C /* SealedBytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedBytes.swift; sourceTree = "<group>"; };
+		FC35F5265A1D0C09CFD4A505 /* SealedChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedChain.swift; sourceTree = "<group>"; };
+		EF0D32CE6F18667E53C9918A /* SealedChainApply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedChainApply.swift; sourceTree = "<group>"; };
+		48E2AD2A837486059012CEEC /* SealedChainEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedChainEntry.swift; sourceTree = "<group>"; };
+		057816CF243503AB2E842473 /* SealedChainGrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedChainGrant.swift; sourceTree = "<group>"; };
+		0253A11847429B0D5E25CB78 /* SealedChainState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedChainState.swift; sourceTree = "<group>"; };
+		52E4B84A1985F19CEDFD9054 /* SealedDeviceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedDeviceStore.swift; sourceTree = "<group>"; };
+		1A41341725F5BC07257C7ED1 /* SealedEnroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedEnroll.swift; sourceTree = "<group>"; };
+		A5A508EB8F81E004A927D9CF /* SealedFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedFrame.swift; sourceTree = "<group>"; };
+		8ECC007002BA4AECA6746BBC /* SealedGrant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedGrant.swift; sourceTree = "<group>"; };
+		723646625221F6D8F204B707 /* SealedJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedJson.swift; sourceTree = "<group>"; };
+		7E765C56DCE202CBB8F8D49D /* SealedKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedKeys.swift; sourceTree = "<group>"; };
+		19A2A74F9DDF755EEB92D587 /* SealedPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedPadding.swift; sourceTree = "<group>"; };
+		2763C180354D73602E4C00B9 /* SealedRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedRecord.swift; sourceTree = "<group>"; };
+		21BEAE556A4DFD4B357C8995 /* SealedRecovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedRecovery.swift; sourceTree = "<group>"; };
+		C80413D0826A1614F52E4356 /* SealedScopeKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sealed/SealedScopeKeys.swift; sourceTree = "<group>"; };
 		B96C862D5F1207DCFAA99445 /* RemoteCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteCrypto.swift; sourceTree = "<group>"; };
 		AA3E68C44A4FB5D9A3FFDDB0 /* RemoteKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteKeychain.swift; sourceTree = "<group>"; };
 		3DCF2EC2D3D174AC15178180 /* RemoteModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteModels.swift; sourceTree = "<group>"; };
@@ -193,6 +225,22 @@
 				5615B84648E3DBF68605069E /* HarnessRemotePlugin.swift */,
 				DC9192536BB1DFA531C4D41C /* RemoteChannel.swift */,
 				DB0DDE774D5E4E90DCFCB2B0 /* RemoteCoding.swift */,
+				BCE12237D0E6719312420E8C /* SealedBytes.swift */,
+				FC35F5265A1D0C09CFD4A505 /* SealedChain.swift */,
+				EF0D32CE6F18667E53C9918A /* SealedChainApply.swift */,
+				48E2AD2A837486059012CEEC /* SealedChainEntry.swift */,
+				057816CF243503AB2E842473 /* SealedChainGrant.swift */,
+				0253A11847429B0D5E25CB78 /* SealedChainState.swift */,
+				52E4B84A1985F19CEDFD9054 /* SealedDeviceStore.swift */,
+				1A41341725F5BC07257C7ED1 /* SealedEnroll.swift */,
+				A5A508EB8F81E004A927D9CF /* SealedFrame.swift */,
+				8ECC007002BA4AECA6746BBC /* SealedGrant.swift */,
+				723646625221F6D8F204B707 /* SealedJson.swift */,
+				7E765C56DCE202CBB8F8D49D /* SealedKeys.swift */,
+				19A2A74F9DDF755EEB92D587 /* SealedPadding.swift */,
+				2763C180354D73602E4C00B9 /* SealedRecord.swift */,
+				21BEAE556A4DFD4B357C8995 /* SealedRecovery.swift */,
+				C80413D0826A1614F52E4356 /* SealedScopeKeys.swift */,
 				B96C862D5F1207DCFAA99445 /* RemoteCrypto.swift */,
 				AA3E68C44A4FB5D9A3FFDDB0 /* RemoteKeychain.swift */,
 				3DCF2EC2D3D174AC15178180 /* RemoteModels.swift */,
@@ -368,6 +416,22 @@
 				47FE69F250EC78B675F7372E /* HarnessRemotePlugin.swift in Sources */,
 				9D8B139CFC5490F81876029C /* RemoteChannel.swift in Sources */,
 				EAB63F810D290BBE9065EA4C /* RemoteCoding.swift in Sources */,
+				625995DF4E38087725C34197 /* SealedBytes.swift in Sources */,
+				546C6B47C09BD3DF3F051C21 /* SealedChain.swift in Sources */,
+				59BCF79131F54D072D7D7617 /* SealedChainApply.swift in Sources */,
+				3DB02ED102DD5D75ADBC6644 /* SealedChainEntry.swift in Sources */,
+				056EF46DB499D5A077F6969D /* SealedChainGrant.swift in Sources */,
+				541F10007FFB1621B62F1513 /* SealedChainState.swift in Sources */,
+				9693F5960D99D4FF7A97E4A0 /* SealedDeviceStore.swift in Sources */,
+				B159B7F126BEDE5CF38364DB /* SealedEnroll.swift in Sources */,
+				A2CC2B354CE6CDA7667376BC /* SealedFrame.swift in Sources */,
+				25A85B0472B4F327FD8021D8 /* SealedGrant.swift in Sources */,
+				F109CF5A789AC9D223D54D65 /* SealedJson.swift in Sources */,
+				D66F2E96A743A9478B2B68F0 /* SealedKeys.swift in Sources */,
+				10A05E5B7657F82783C31E61 /* SealedPadding.swift in Sources */,
+				05F174C503382947A3ECABC4 /* SealedRecord.swift in Sources */,
+				99ED426CCA490690CD61A3B5 /* SealedRecovery.swift in Sources */,
+				4068E49D6C6A740964F8EF2E /* SealedScopeKeys.swift in Sources */,
 				E9C6B37FCBE0EA626CF8DC11 /* RemoteCrypto.swift in Sources */,
 				7003C6CFFD32D09695A76B60 /* RemoteKeychain.swift in Sources */,
 				951FAA6FF304450D9161495A /* RemoteModels.swift in Sources */,
