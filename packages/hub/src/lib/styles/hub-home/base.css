@@ -13,6 +13,14 @@
 	font: inherit;
 	color: inherit;
 }
+/* A link styled as a button is an inline <a>, so its min-height and padding never lay out the
+   label; as a flex box it centres the label in the same box as the <button> actions beside it. */
+.hh-home a.po-action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+}
 :where(.hh-home code) {
 	font-family: var(--hx-font-family-code);
 	font-size: var(--hx-type-size-inline);
