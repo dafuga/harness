@@ -1,0 +1,55 @@
+{
+	"name": "1yw97w-sealed-device-enrollment",
+	"goal": "Prove Google sign-in leaves data locked, a matching six-digit transcript and biometric approval enroll exactly the intended keys, revocation rotates all affected scopes, and recovery stays in Credential Vault",
+	"createdAt": "2026-11-25T16:32:23.000Z",
+	"updatedAt": "2026-11-25T17:18:46.528Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T16:33:33.605Z",
+			"evidence": "PR #310 specification and merged dependencies #312/#314/#315 verified on origin/main. Defined mailbox wire shapes and privacy checks. Flagged independent Vault custody dependency on tracker."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		},
+		{
+			"id": "mailbox",
+			"title": "Verify the enrollment mailbox accepts only public protocol fields",
+			"status": "complete",
+			"completedAt": "2026-11-25T16:36:56.084Z",
+			"evidence": "Red assertions: the Workerd live and zero-plaintext tests expected HTTP 400 for a mismatched approver and plaintext device name, but received 201. Green d7f878d1f5 on harbor-mbp-2: cd packages/hub && node ../../node_modules/vitest/vitest.mjs run test/routes/sync-v1-*.test.ts --maxWorkers=1, 16/16 pass, including preserved claim/reveal/approval order and no plaintext name in account-object storage."
+		},
+		{
+			"id": "existing-account",
+			"title": "Verify native enrollment and atomic revocation for an existing sealed account",
+			"status": "complete",
+			"completedAt": "2026-11-25T17:18:46.528Z",
+			"evidence": "At b9723e45a2: signed-in phone browser fixture routes Devices to native and renders approval copy, connected 320px/390px dialogs pass, 17 Hub Workerd API cases pass at one worker on harbor-mbp-2. Swift sealed vectors and interop, mismatched signer/missing grant, biometric denial and revoke-to-next-epoch checks pass. Simulator product compiles. Native fake-Hub transport additionally proves no bootstrap, token kept in header, and disconnected session rejection. Physical Face ID and independent Vault recovery remain open."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -35,6 +35,15 @@
 	const local = $derived(kind !== 'capacitor');
 	/** The phone offers Project Overview after the Hub confirms this account may read it. */
 	let overview = $state(false);
+	let deviceError = $state(false);
+	async function showDevices() {
+		deviceError = false;
+		try {
+			await account.environment?.sealedDevices?.();
+		} catch {
+			deviceError = true;
+		}
+	}
 	onMount(() => {
 		/** One adapter per runtime: the desktop preload, the phone's native plugin, or neither. */
 		const environment = account.environment;
@@ -111,7 +120,15 @@
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
 			<hx-div class="account-status" class:phone-account={!local}>
-				<hx-span>Signed in with Google</hx-span>
+				{#if account.sealedApprovalRequired}
+					<hx-span>Approve this device on your iPhone or Mac</hx-span>
+				{:else}
+					<hx-span>Signed in with Google</hx-span>
+				{/if}
+				{#if account.environment?.sealedDevices}
+					<hx-button type="button" onclick={showDevices}>Devices</hx-button>
+				{/if}
+				{#if deviceError}<hx-span role="alert">Could not open Devices.</hx-span>{/if}
 				<hx-button type="button" onclick={account.signOut}>Sign out</hx-button>
 			</hx-div>
 		{/if}

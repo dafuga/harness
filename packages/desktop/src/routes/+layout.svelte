@@ -97,6 +97,9 @@
 		get signedIn() {
 			return signedIn;
 		},
+		get sealedApprovalRequired() {
+			return status?.sealedApprovalRequired;
+		},
 		signOut
 	});
 

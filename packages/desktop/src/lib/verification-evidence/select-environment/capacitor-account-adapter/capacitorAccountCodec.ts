@@ -113,7 +113,12 @@ export function publicStatus(value: AccountNativeStatus): NativeHostedStatus {
 	const status: NativeHostedStatus = { configured: value?.configured === true, state };
 	const actor = state === 'signed-in' ? publicActor(value.actor) : undefined;
 	const handoff = state === 'pending' ? publicHandoff(value.handoff) : undefined;
-	if (actor) status.actor = actor;
+	if (actor) {
+		status.actor = actor;
+		if (typeof value.sealedApprovalRequired === 'boolean') {
+			status.sealedApprovalRequired = value.sealedApprovalRequired;
+		}
+	}
 	if (handoff) status.handoff = handoff;
 	return status;
 }

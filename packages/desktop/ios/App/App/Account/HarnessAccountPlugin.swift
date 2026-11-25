@@ -15,7 +15,8 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "connect", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "sealedDevices", returnType: CAPPluginReturnPromise)
     ]
 
     static let sharedSession: HubAccountSession = {
@@ -107,7 +108,7 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
 
     private static func settle(_ call: CAPPluginCall, _ result: Result<[String: Any], HubAccountFailure>) {
         switch result {
-        case .success(let status): call.resolve(status)
+        case .success(let status): call.resolve(EnrollStorage.publicStatus(status, origin: hubOrigin))
         case .failure(let failure): call.reject(failure.message, failure.code)
         }
     }

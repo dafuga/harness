@@ -3,6 +3,7 @@ import type { SyncCall, SyncDeps } from './syncPolicy.types';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
 import { appendChain, readChain } from './syncChain';
 import { enroll } from './syncEnroll';
+import { changeDevices } from './syncDevices';
 import { putGrants, readGrants } from './syncGrants';
 import { isDeviceId, SYNC_PREFIX, syncProblem } from './syncHttp';
 import { live } from './syncLive';
@@ -18,6 +19,7 @@ const routes: Record<string, Record<string, { handler: Handler; parts: number[] 
 		PUT: { handler: putObject, parts: [3] }
 	},
 	live: { GET: { handler: live, parts: [1] } },
+	devices: { POST: { handler: changeDevices, parts: [1] } },
 	enroll: {
 		GET: { handler: enroll, parts: [1, 2] },
 		POST: { handler: enroll, parts: [1, 2] }

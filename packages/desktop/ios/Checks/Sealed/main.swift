@@ -34,6 +34,7 @@ vectors.checkChainEntryAndGrant()
 checkPadding()
 checkDeviceKeys()
 checkChainRules()
+if #available(iOS 17.0, macOS 14.0, *) { await checkEnrollmentWorkflow() }
 
 print(failures == 0 ? "all sealed checks passed" : "\(failures) sealed checks failed")
 exit(failures == 0 ? 0 : 1)

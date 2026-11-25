@@ -25,7 +25,7 @@
 			{
 				"name": "account status",
 				"type": "NativeHostedStatus",
-				"description": "The public status says whether this build is configured and whether the account is signed-out, pending approval, or signed-in. It includes only an actor's id, name and email or a pending handoff code, verification URL, expiry and 1–30 second poll interval; approval waits are limited to 15 minutes.",
+				"description": "The public status says whether this build is configured and whether the account is signed-out, pending approval, or signed-in. It includes only an actor's id, name and email or a pending handoff code, verification URL, expiry and 1–30 second poll interval; approval waits are limited to 15 minutes. A signed-in iOS 17 client may report sealedApprovalRequired from its local device-chain pin.",
 				"examples": [
 					{
 						"configured": true,

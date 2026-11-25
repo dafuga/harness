@@ -48,6 +48,7 @@ device a stale view until it meets a device with a newer head.
 | Recovery secret    | 32 random bytes, shown once              | Credential Vault and Daniel's printed copy                                    | Opens the recovery device blob           |
 
 A scope is the account scope or one project scope; each has a random 16-byte id.
+The first scope in the signed genesis entry is the account scope.
 Scoped bots such as Grok Bot hold only their project scopes.
 
 **Algorithms.** HPKE (RFC 9180) base mode, suite DHKEM(P-256, HKDF-SHA256),
@@ -105,6 +106,15 @@ grant signature.
 5. The new device checks the approver in the chain, verifies the chain to
    genesis, pins its head, unwraps its grants and writes its own sealed
    device name.
+
+For an existing account, an approver checks the revealed commitment and its
+own active admin key against its pinned chain before approval. Approval signs
+only the reviewed request. The joining device verifies the signed enrollment
+entry came from the key used in its displayed code, that the entry names its
+own public keys, and that it can open the latest grant for every assigned
+scope before saving a pin. Revocation uses the current, committed scope keys
+to preserve each index key, rotate every stale scope, and grant each new
+epoch only to active recipients other than the revoked device.
 
 No QR code is needed; scanning one is an optional shortcut for the code. Sign-in alone shows "Approve this
 device on your iPhone or Mac". Revoking appends `revoke`, then `rotate` for
@@ -175,10 +185,29 @@ Scope ids, device ids and object ids are base64url (16, 16 and 32 bytes); envelo
 | `PUT objects/:scope/:id`      | Body is the base64url record envelope; header scope, object id and revision are checked against the path. Up to 4 MiB; over 32 KiB it goes to R2. 409 `stale-revision` unless newer |
 | `GET objects/:scope/:id`      | The envelope as base64url text, revision in `X-Sealed-Revision`                                                                                                                     |
 | `GET objects/:scope?after=N`  | `{objects: [{id, revision, size, change}], next, more}`: what changed since the scope's change counter N                                                                            |
-| `POST enroll`                 | The new device's request as a JSON object (public keys and commitment, at most 4 KiB). 201 `{id, steps}`; 429 with 16 requests waiting                                              |
+| `POST enroll`                 | Only `{kemPublic, signingPublic, commit}` (at most 4 KiB). 201 `{id, steps}`; 429 with 16 requests waiting                                                                          |
 | `GET enroll`, `GET enroll/ID` | Pending requests, or one request with its steps; requests expire after 10 minutes                                                                                                   |
-| `POST enroll/ID`              | Appends a step (claim, reveal, approval) as a JSON object. At most 8 steps. Steps are opaque to the server                                                                          |
+| `POST enroll/ID`              | Appends a claim, reveal or approval. Hub validates fields before the account object stores the step. At most 8 steps                                                                |
 | `GET live` (WebSocket)        | Upgrade to the account's `AccountSyncObject`                                                                                                                                        |
+
+Enrollment keys are base64url uncompressed 65-byte P-256 points, and
+`commit` is lowercase 64-digit hex. A claim is `{approver, nonce}` with the
+approver equal to the device header, a reveal is `{nonce}`, and the approval
+notice is `{entryHash}`, the lowercase hex hash of the signed enroll entry.
+Nonces are base64url 32-byte values. Hub rejects additional fields before
+forwarding to the account object. The device header only labels a mailbox
+sender. Clients verify sender keys, the committed transcript and the signed
+chain independently. Device names, comparison codes and recovery secrets
+are never mailbox fields.
+
+For existing accounts, `POST /api/sync/v1/devices` accepts `{entries, grants}`
+from the active admin who signed the mutation. Its single D1 transaction adds
+one enroll entry and all its current grants, or adds a revoke entry and all
+required rotations and grants. The request is limited to 256 KiB and 96
+entries plus grants, and the chain to 2,048 entries for this operation.
+The response is `{seq, hash}` with status 201, or 200 for an exact retry.
+A competing update returns 409 without a partial write. The existing client
+chain verification and grant checks remain mandatory.
 
 Revisions are limited to 2^53 - 1. Live socket: the client sends `{"t":"subscribe","scopes":[...],
 "after":ring}`; the server answers `{"t":"subscribed","ring":n}` and then sends text

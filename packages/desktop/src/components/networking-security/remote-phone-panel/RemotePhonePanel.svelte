@@ -15,7 +15,16 @@
 	import { identityLabel } from '../../../helpers/networking-security/identityLabel';
 	let { store, compact = false }: { store: RemotePhone; compact?: boolean } = $props();
 	let connection = $state(false);
+	let deviceError = $state(false);
 	const account = getContext<NativeAccountContext | undefined>(nativeAccountContext);
+	async function showDevices() {
+		deviceError = false;
+		try {
+			await account?.environment?.sealedDevices?.();
+		} catch {
+			deviceError = true;
+		}
+	}
 	const status = $derived(store.status);
 	const discover = $derived(
 		!compact && account?.signedIn && status?.state === 'unpaired'
@@ -95,7 +104,11 @@
 				{#if status.grant}<hx-p>{grantSummary(status.grant)}</hx-p>{/if}
 				{#if status.device}<hx-p class="muted">This phone: {status.device.name}</hx-p>
 					<hx-p class="muted remote-key">Key {identityLabel(status.device.id)}</hx-p>{/if}
+				{#if deviceError}<hx-p role="alert">Could not open Devices.</hx-p>{/if}
 				<hx-div class="connection-actions">
+					{#if account?.signedIn && account.environment?.sealedDevices}
+						<hx-button type="button" class="quiet" onclick={showDevices}>Devices</hx-button>
+					{/if}
 					<hx-button type="button" disabled={store.busy} onclick={() => void store.disconnect()}
 						>Disconnect</hx-button
 					>

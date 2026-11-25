@@ -33,7 +33,11 @@ struct SealedKeychain: SealedSecretStore {
     }
 
     func save(_ name: String, _ data: Data) throws {
-        SecItemDelete(query(name) as CFDictionary)
+        let existing = query(name) as CFDictionary
+        let attributes = [kSecValueData as String: data] as CFDictionary
+        let replaced = SecItemUpdate(existing, attributes)
+        if replaced == errSecSuccess { return }
+        guard replaced == errSecItemNotFound else { throw SealedError("Keychain refused the key (\(replaced)).") }
         var item = query(name)
         item[kSecValueData as String] = data
         item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
