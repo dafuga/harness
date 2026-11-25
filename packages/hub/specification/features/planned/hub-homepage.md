@@ -78,8 +78,9 @@ cross the encrypted Home connection. The managed owner snapshot does not receive
 collected readings. There is one displayed subscription per provider across the account's
 linked Macs, with the most recent observation taking precedence.
 
-Mac Home reads the same data locally. iPhone Home can read it while its linked Mac is
-online. Chief of Staff and local provider tools can call `harness provider quota --json`
+Mac Home reads the same data locally and offers sign-in commands in its quota dialog.
+iPhone Home reads quota while its linked Mac is online. Hub and iPhone direct readers
+to the Mac app when quota is unavailable. Chief of Staff and local provider tools can call `harness provider quota --json`
 on a Mac to read the same normalized shape. Unknown providers are `null`. Credits denote
 Codex subscription credits. Provider preferences and explicitly selected models remain
 the launch policy.

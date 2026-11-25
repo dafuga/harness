@@ -149,7 +149,7 @@
 				<HubHomeProjects projects={view.projects} snapshots={view.projectSnapshots} {readProject} />
 			{/if}
 		{:else if selected === 'quota'}
-			<HubHomeQuota quota={view.quota} now={view.now} connected={view.quotaConnected} {reload} />
+			<HubHomeQuota quota={view.quota} now={view.now} {reload} />
 		{:else}
 			<HubHomeWork overview={view.overview} work={view.work} now={view.now} />
 		{/if}

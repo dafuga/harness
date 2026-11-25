@@ -9,8 +9,10 @@
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { homeProviderReadingIsStale } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 
-	let { read }: { read: () => Promise<OwnerHomeSnapshot> } = $props();
+	let { read, isMac = false }: { read: () => Promise<OwnerHomeSnapshot>; isMac?: boolean } =
+		$props();
 	let open = $state(false);
+	let setup = $state(false);
 	let readings = $state<HomeSubscription[]>([]);
 	const labels = { claude: 'Claude Code', codex: 'Codex' } as const;
 	const resetFormatter = new Intl.DateTimeFormat(undefined, {
@@ -62,7 +64,15 @@
 >
 	Subscription quota
 </hx-button>
-<Modal {open} title="Subscription quota" variant="text" onClose={() => (open = false)}>
+<Modal
+	{open}
+	title="Subscription quota"
+	variant="text"
+	onClose={() => {
+		open = false;
+		setup = false;
+	}}
+>
 	{#each readings as reading (reading.id)}
 		<hx-section class="quota-provider" aria-label={labels[reading.provider]}>
 			<hx-h3 class="quota-line">{labels[reading.provider]}</hx-h3>
@@ -82,6 +92,21 @@
 			<hx-p class="muted">{name} quota is unknown.</hx-p>
 		{/if}
 	{/each}
+	{#if isMac}
+		<hx-button
+			type="button"
+			class="quiet quota-trigger"
+			aria-expanded={setup}
+			onclick={() => (setup = !setup)}>Connect a subscription</hx-button
+		>
+		{#if setup}
+			<hx-p>In Terminal on this Mac, run the sign-in command for your subscription.</hx-p>
+			<hx-p>Claude Code <hx-strong>claude auth login</hx-strong></hx-p>
+			<hx-p>Codex <hx-strong>codex login</hx-strong></hx-p>
+		{/if}
+	{:else if !readings.length}
+		<hx-p class="muted">Connect subscriptions in the Harness Mac app.</hx-p>
+	{/if}
 </Modal>
 
 <style>

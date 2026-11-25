@@ -63,12 +63,18 @@ for (const [width, height] of [
 		await expect(dialog.getByText('Weekly · 24% left')).toBeVisible();
 		await expect(dialog.getByText('Credits left: 124')).toBeVisible();
 		await captured(page, info, `${process.env.SCREENSHOT_LABEL}-quota-${width}`);
-		await dialog.getByRole('button', { name: 'Connect a subscription', exact: true }).click();
-		await expect(dialog.getByText('claude auth login', { exact: true })).toBeVisible();
-		await expect(dialog.getByText('codex login', { exact: true })).toBeVisible();
 		await scenarioCapture(page, scenario as ScenarioManifest, {
 			state: 'quota',
 			name: 'dialog',
+			note
+		});
+		await dialog.getByRole('button', { name: 'Connect a subscription', exact: true }).click();
+		await expect(dialog.getByText('claude auth login', { exact: true })).toBeVisible();
+		await expect(dialog.getByText('codex login', { exact: true })).toBeVisible();
+		await captured(page, info, `${process.env.SCREENSHOT_LABEL}-setup-${width}`);
+		await scenarioCapture(page, scenario as ScenarioManifest, {
+			state: 'mac-setup',
+			name: 'instructions',
 			note
 		});
 		await page.keyboard.press('Escape');

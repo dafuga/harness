@@ -111,7 +111,11 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
-		{#if homeSnapshot}<HomeSubscriptionQuota read={homeSnapshot} />{/if}
+		{#if homeSnapshot}
+			<HomeSubscriptionQuota read={homeSnapshot} isMac={kind === 'electron'} />
+		{:else if kind === 'capacitor'}
+			<hx-p class="muted">Connect subscriptions in the Harness Mac app.</hx-p>
+		{/if}
 		{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
 			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
 		{/if}

@@ -14,7 +14,8 @@
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section"
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-strong"
 		]
 	},
 	"owns": {
@@ -28,6 +29,12 @@
 				"name": "HomeSubscriptionQuota.read",
 				"type": "() => Promise<OwnerHomeSnapshot>",
 				"required": true
+			},
+			{
+				"name": "HomeSubscriptionQuota.isMac",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -64,6 +71,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
 		},

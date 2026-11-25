@@ -7,6 +7,7 @@
 	"states": [
 		{ "id": "home", "title": "Home with a subscription quota control", "coverage": "required" },
 		{ "id": "quota", "title": "Quota dialog with two providers", "coverage": "required" },
+		{ "id": "mac-setup", "title": "Mac sign-in instructions", "coverage": "required" },
 		{ "id": "phone-home", "title": "iPhone Home linked to a Mac", "coverage": "required" },
 		{ "id": "phone-quota", "title": "iPhone quota for the linked Mac", "coverage": "required" }
 	],
@@ -30,7 +31,7 @@
 		{
 			"id": "native-home-quota-screens",
 			"kind": "screenshot",
-			"states": ["home", "quota"],
+			"states": ["home", "quota", "mac-setup"],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"required": true,
 			"build": "desktop-renderer",
@@ -50,7 +51,7 @@
 		{
 			"id": "native-home-quota-workload",
 			"kind": "benchmark",
-			"states": ["home", "quota"],
+			"states": ["home", "quota", "mac-setup"],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"required": true
 		},
