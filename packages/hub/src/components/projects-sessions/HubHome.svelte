@@ -19,6 +19,7 @@
 		LinkedHomeService,
 		type LinkedHome
 	} from '../../services/networking-security/LinkedHomeService';
+	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 	import { soonestWork, staleReading } from './hubHomePresentation';
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
 	import HubHomeHeader from './HubHomeHeader.svelte';
@@ -41,7 +42,10 @@
 	let now = $state(Date.now());
 	let flight = 0;
 	let opener: HTMLElement | null = null;
-	const snapshot = $derived(live?.snapshot ?? homeSnapshot(home));
+	const controlled = $derived(home?.controlled ?? []);
+	/** Every project's agents as reported; Home lists only the sessions Daniel controls. */
+	const raw = $derived(live?.snapshot ?? homeSnapshot(home));
+	const snapshot = $derived(raw ? listedHomeSnapshot(raw, controlled) : null);
 	/** Both reads answered, or one already supplied data: loading ends once Home has something to say. */
 	const settled = $derived(Boolean(snapshot) || (home !== null && live !== null));
 	const routinesConnected = $derived(
@@ -56,6 +60,8 @@
 	const view: HomeView = $derived({
 		overview,
 		agents: snapshot?.agents ?? (settled ? [] : null),
+		asks: snapshot?.asks ?? [],
+		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
 		schedule:
 			snapshot?.scheduled.filter((run) => routinesConnected || run.source === 'tracker') ??
@@ -154,6 +160,18 @@
 		return api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message);
 	}
 
+	async function changeSession(id: string, add: boolean) {
+		const result = await api.send<{ controlled: string[] }>(
+			add ? 'POST' : 'DELETE',
+			'/api/hub-home/agents',
+			{
+				id
+			}
+		);
+		if (home) home = { ...home, controlled: result.controlled };
+		refresh();
+	}
+
 	function receipt(id: string) {
 		return api.get<HomeChatReceipt>('/api/hub-home/chat', { id });
 	}
@@ -163,7 +181,7 @@
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} />
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} />
+			<HubHomeCards {view} {open} {send} {receipt} />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs
@@ -172,6 +190,7 @@
 				{agentId}
 				{open}
 				{send}
+				{changeSession}
 				{receipt}
 				{readProject}
 				reload={refresh}

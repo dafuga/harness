@@ -3,6 +3,7 @@ import {
 	buildHomeSnapshot,
 	noProviders
 } from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
+import { listHomeAgents } from '../../../reports/src/lib/projects-sessions/hub-home/homeDirectAgents';
 import type { TrackerItemRecord } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
 import {
@@ -44,7 +45,9 @@ test('Tracker plan children, due items, current question and privacy survive pro
 	);
 	expect(home.plans).toMatchObject([{ id: plan.id, total: 2, done: 1, state: 'draft' }]);
 	expect(home.scheduled.map((entry) => entry.id)).toEqual(['routine', 'plan-one', 'task-one']);
-	expect(home.agents).toMatchObject([{ name: 'Chief of Staff', itemId: base.id, question }]);
+	expect(listHomeAgents(home.agents).agents).toMatchObject([
+		{ name: 'Chief of Staff', itemId: base.id, question }
+	]);
 	expect(soonestWork(home.overview)).toMatchObject([{ id: base.id }]);
 	expect(JSON.stringify(home)).not.toContain('"hidden"');
 	expect([9, 10, 24, 25].map(warningFor)).toEqual(['critical', 'low', 'low', null]);
@@ -107,15 +110,18 @@ test('only Chief of Staff is an agent: every other project is a sub-agent counte
 		noProviders,
 		now
 	);
-	expect(home.agents.map((agent) => agent.name)).toEqual(['Chief of Staff']);
-	const [chiefOfStaff] = home.agents;
+	const listed = listHomeAgents(home.agents);
+	expect(listed.agents.map((agent) => agent.name)).toEqual(['Chief of Staff']);
+	// Another project that needs Daniel is not listed, but its ask is kept with its question.
+	expect(listed.asks).toMatchObject([{ id: 'flagged', state: 'needs-you', question }]);
+	const [chiefOfStaff] = listed.agents;
 	expect(chiefOfStaff).toMatchObject({ id: 'cos', sessions: 0, state: 'working' });
 	expect(chiefOfStaff.subAgents.sessions).toBe(2);
 	expect(chiefOfStaff.subAgents.tasks.map((task) => task.itemId).sort()).toEqual([
 		'flagged',
 		'live'
 	]);
-	expect(JSON.stringify(home.agents)).not.toContain('touched');
+	expect(JSON.stringify(listed)).not.toContain('touched');
 	expect(soonestWork(home.overview).map((item) => item.id)).toContain('touched');
 });
 
@@ -123,14 +129,29 @@ test('no sub-agent sessions and no Chief of Staff gives no agents, and an idle C
 	const chief = { ...base, id: 'chief', agent: 'cos' };
 	const other = { ...base, id: 'other', agent: 'other' };
 	const none = buildHomeSnapshot({ items: [other], runs: [], machines: [] }, noProviders, now);
-	expect(none.agents).toEqual([]);
+	expect(listHomeAgents(none.agents).agents).toEqual([]);
 	const idle = buildHomeSnapshot(
 		{ items: [chief, other], runs: [], machines: [] },
 		noProviders,
 		now
 	);
-	expect(idle.agents).toMatchObject([{ name: 'Chief of Staff', state: 'idle' }]);
-	expect(idle.agents[0].subAgents).toEqual({ sessions: 0, tasks: [] });
+	const [chiefOfStaff] = listHomeAgents(idle.agents).agents;
+	expect(chiefOfStaff).toMatchObject({ name: 'Chief of Staff', state: 'idle' });
+	expect(chiefOfStaff.subAgents).toEqual({ sessions: 0, tasks: [] });
+});
+
+test('a session Daniel adds is listed, and no longer folded or asked about', () => {
+	const chief = { ...base, id: 'chief', agent: 'cos' };
+	const mine = { ...base, id: 'mine', agent: 'mine', needs_daniel: true, question };
+	const home = buildHomeSnapshot(
+		{ items: [chief, mine], runs: [], machines: [] },
+		noProviders,
+		now
+	);
+	expect(listHomeAgents(home.agents).asks).toMatchObject([{ id: 'mine' }]);
+	const listed = listHomeAgents(home.agents, ['mine']);
+	expect(listed.agents.map((agent) => agent.id).sort()).toEqual(['cos', 'mine']);
+	expect(listed.asks).toEqual([]);
 });
 
 test('an open ask carries its options and confirm kind; a closed ask or malformed options carry none', () => {

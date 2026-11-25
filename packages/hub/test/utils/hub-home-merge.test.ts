@@ -133,7 +133,7 @@ test('sub-agent sessions count once across computers and make their parent agent
 	expect(merged?.agents[0].subAgents.sessions).toBe(3);
 	expect(isWorking(merged!.agents[0])).toBe(true);
 	expect(agentActivity(merged!.agents[0])).toBe(
-		'3 sessions running (3 sub-agent sessions) · Sub task 0 (+2 more)'
+		'3 sessions running (3 sub-agent sessions) · Synthetic task (+2 more)'
 	);
 	expect(homeHeadline(merged?.agents ?? [])).toBe('1 agent working');
 });

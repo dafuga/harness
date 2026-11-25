@@ -11,10 +11,13 @@
 		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts"],
 		"symbols": [
 			"directAgentNames",
-			"isDirectAgent",
+			"controlledIdPattern",
 			"noSubAgents",
-			"directAgentsOnly",
-			"directHomeSnapshot"
+			"isDirectAgent",
+			"HomeLists",
+			"listHomeAgents",
+			"completeHomeSnapshot",
+			"listedHomeSnapshot"
 		]
 	},
 	"contract": {
@@ -26,14 +29,37 @@
 				"required": true
 			},
 			{
-				"name": "directAgentsOnly.agents",
+				"name": "isDirectAgent.added",
+				"type": "readonly string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "listHomeAgents.agents",
 				"type": "HomeAgent[]",
 				"required": true
 			},
 			{
-				"name": "directHomeSnapshot.snapshot",
+				"name": "listHomeAgents.added",
+				"type": "readonly string[]",
+				"required": false,
+				"default": []
+			},
+			{
+				"name": "completeHomeSnapshot.snapshot",
 				"type": "OwnerHomeSnapshot",
 				"required": true
+			},
+			{
+				"name": "listedHomeSnapshot.snapshot",
+				"type": "OwnerHomeSnapshot",
+				"required": true
+			},
+			{
+				"name": "listedHomeSnapshot.added",
+				"type": "readonly string[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -42,43 +68,33 @@
 				"type": "Readonly<Record<string, string>>"
 			},
 			{
-				"name": "isDirectAgent",
-				"type": "boolean"
+				"name": "controlledIdPattern",
+				"type": "unknown"
 			},
 			{
 				"name": "noSubAgents",
 				"type": "HomeAgent['subAgents']"
 			},
 			{
-				"name": "directAgentsOnly",
-				"type": "HomeAgent[]"
+				"name": "isDirectAgent",
+				"type": "boolean"
 			},
 			{
-				"name": "directHomeSnapshot",
+				"name": "listHomeAgents",
+				"type": "HomeLists"
+			},
+			{
+				"name": "completeHomeSnapshot",
 				"type": "OwnerHomeSnapshot"
+			},
+			{
+				"name": "listedHomeSnapshot",
+				"type": "OwnerHomeSnapshot & HomeLists"
 			}
 		],
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
-			{
-				"name": "isDirectAgent",
-				"inputs": [
-					{
-						"name": "isDirectAgent.agent",
-						"type": "Pick<HomeAgent, 'id' | 'name'>",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "isDirectAgent",
-						"type": "boolean"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
 			{
 				"name": "noSubAgents",
 				"inputs": [],
@@ -92,36 +108,90 @@
 				"errorStatus": "none-found"
 			},
 			{
-				"name": "directAgentsOnly",
+				"name": "isDirectAgent",
 				"inputs": [
 					{
-						"name": "directAgentsOnly.agents",
-						"type": "HomeAgent[]",
+						"name": "isDirectAgent.agent",
+						"type": "Pick<HomeAgent, 'id' | 'name'>",
 						"required": true
+					},
+					{
+						"name": "isDirectAgent.added",
+						"type": "readonly string[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [
 					{
-						"name": "directAgentsOnly",
-						"type": "HomeAgent[]"
+						"name": "isDirectAgent",
+						"type": "boolean"
 					}
 				],
 				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "directHomeSnapshot",
+				"name": "listHomeAgents",
 				"inputs": [
 					{
-						"name": "directHomeSnapshot.snapshot",
+						"name": "listHomeAgents.agents",
+						"type": "HomeAgent[]",
+						"required": true
+					},
+					{
+						"name": "listHomeAgents.added",
+						"type": "readonly string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "listHomeAgents",
+						"type": "HomeLists"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "completeHomeSnapshot",
+				"inputs": [
+					{
+						"name": "completeHomeSnapshot.snapshot",
 						"type": "OwnerHomeSnapshot",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "directHomeSnapshot",
+						"name": "completeHomeSnapshot",
 						"type": "OwnerHomeSnapshot"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "listedHomeSnapshot",
+				"inputs": [
+					{
+						"name": "listedHomeSnapshot.snapshot",
+						"type": "OwnerHomeSnapshot",
+						"required": true
+					},
+					{
+						"name": "listedHomeSnapshot.added",
+						"type": "readonly string[]",
+						"required": false,
+						"default": []
+					}
+				],
+				"outputs": [
+					{
+						"name": "listedHomeSnapshot",
+						"type": "OwnerHomeSnapshot & HomeLists"
 					}
 				],
 				"errors": [],

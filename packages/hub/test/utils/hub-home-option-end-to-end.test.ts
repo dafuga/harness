@@ -10,6 +10,7 @@ import { TrackerItemReadRepository } from '../../../../src/repositories/projects
 import { TrackerRunReadRepository } from '../../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../../src/services/projects-sessions/TrackerLocalApiService';
 import { TrackerPersistenceService } from '../../../../src/services/projects-sessions/TrackerPersistenceService';
+import { listHomeAgents } from '../../../reports/src/lib/projects-sessions/hub-home/homeDirectAgents';
 import { chatInput, parseHomePayload } from '../../src/routes/api/hub-home/homePayload';
 
 const now = Date.UTC(2026, 10, 25, 12);
@@ -59,7 +60,10 @@ test('a flag with options reaches the Hub, and a tap answers it on the Tracker b
 	try {
 		const home = await askedAgent(tracker);
 		const parsed = parseHomePayload(JSON.parse(JSON.stringify(home)));
-		const agent = parsed.agents[0];
+		// The asking project is not a user-controlled session, so it is an ask, not an agent.
+		const listed = listHomeAgents(parsed.agents);
+		expect(listed.agents).toEqual([]);
+		const agent = listed.asks[0];
 		expect(agent).toMatchObject({ question: 'Ship the synthetic release?', options });
 		const tap = chatInput.parse({
 			id: crypto.randomUUID(),
@@ -89,7 +93,7 @@ test('a deploy ask is refused until the tap is confirmed, then it is answered', 
 	const tracker = liveTracker();
 	try {
 		const home = await askedAgent(tracker, 'deploy');
-		expect(home.agents[0]).toMatchObject({ confirm: 'deploy' });
+		expect(listHomeAgents(home.agents).asks[0]).toMatchObject({ confirm: 'deploy' });
 		const base = {
 			id: crypto.randomUUID(),
 			agentId: home.agents[0].id,

@@ -66,6 +66,12 @@
 				"description": "Submits the agent note or answer to the owner chat queue and returns its receipt."
 			},
 			{
+				"name": "HubHomeDialogs.changeSession",
+				"type": "ChangeSession",
+				"required": true,
+				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
+			},
+			{
 				"name": "HubHomeDialogs.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
 				"required": true,

@@ -80,12 +80,21 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 		};
 	});
 	const sent: unknown[] = [];
+	const controlled = new Set<string>();
+	await page.route('**/api/hub-home/agents', async (route) => {
+		const { id } = route.request().postDataJSON() as { id: string };
+		if (route.request().method() === 'POST') controlled.add(id);
+		else controlled.delete(id);
+		await route.fulfill({ json: { controlled: [...controlled] } });
+	});
 	await projectFixture(page, data.projects, mode === 'loading' ? pending : undefined);
 	await page.route('**/api/hub-home', async (route) => {
 		if (mode === 'loading') await pending;
 		const granted = state.signedIn && state.actor.id === ada.id;
 		const hasSnapshot = granted && (mode !== 'unavailable' || released);
-		await route.fulfill({ json: { granted, snapshot: hasSnapshot ? snapshot : null } });
+		await route.fulfill({
+			json: { granted, snapshot: hasSnapshot ? snapshot : null, controlled: [...controlled] }
+		});
 	});
 	await page.route(/\/api\/hub-home\/chat(?:\?|$)/, async (route) => {
 		if (route.request().method() === 'POST') {

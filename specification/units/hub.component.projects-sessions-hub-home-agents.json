@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-add-session",
 			"hub.component.projects-sessions-hub-home-choices",
 			"hub.component.projects-sessions-hub-home-composer",
 			"hub.component.projects-sessions-hub-home-skeleton",
@@ -45,6 +46,26 @@
 				"type": "HomeAgent[] | null",
 				"required": true,
 				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
+			},
+			{
+				"name": "HubHomeAgents.asks",
+				"type": "HomeAgent[]",
+				"required": false,
+				"default": [],
+				"description": "Other projects' agents that need Daniel. They are not listed sessions but their questions and option buttons still show."
+			},
+			{
+				"name": "HubHomeAgents.added",
+				"type": "string[]",
+				"required": false,
+				"default": [],
+				"description": "Tracker agent values Daniel added as sessions he controls, shown for removal."
+			},
+			{
+				"name": "HubHomeAgents.changeSession",
+				"type": "ChangeSession",
+				"required": true,
+				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
 			},
 			{
 				"name": "HubHomeAgents.agentId",
@@ -93,6 +114,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-add-session",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-choices",
 			"via": "import",

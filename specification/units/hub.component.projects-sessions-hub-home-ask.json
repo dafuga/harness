@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-ask",
+	"uid": "u_gnhmm7tirz",
+	"kind": "component",
+	"title": "HubHomeAsk",
+	"responsibility": "Shows one agent's open Tracker question on the Agents card with its option buttons and a short reply, and sends the answer to the owner chat queue.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-choices",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-input",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeAsk.svelte"],
+		"symbols": ["HubHomeAsk"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeAsk.agent",
+				"type": "HomeAgent",
+				"required": true,
+				"description": "The agent whose open question is shown, with its options, confirm kind and current Tracker item."
+			},
+			{
+				"name": "HubHomeAsk.send",
+				"type": "SendHomeChat",
+				"required": true,
+				"description": "Submits the chosen option or typed reply as an answer and returns its receipt."
+			},
+			{
+				"name": "HubHomeAsk.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true,
+				"description": "Reads the delivery status of a submitted answer by its chat command identifier."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeAsk",
+				"type": "markup",
+				"description": "Shows one agent's open Tracker question on the Agents card with its option buttons and a short reply, and sends the answer to the owner chat queue."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-choices",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
