@@ -6,6 +6,7 @@ import {
 	trackerTimeZone,
 	validateTrackerTimeZone
 } from './normalizeTrackerDue';
+import { normalizeTrackerAskConfirm, normalizeTrackerAskOptions } from './trackerAskOptions';
 import { trackerItemPriority } from './trackerItemPriority';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
@@ -30,6 +31,7 @@ const textFields = new Set([
 	'answer',
 	'answered_at',
 	'answered_by',
+	'answer_option',
 	'created_at',
 	'created_by',
 	'blocked_reason',
@@ -81,7 +83,9 @@ const normalizers = {
 	occurrence: normalizeInstant,
 	missed: normalizeInstant,
 	last_result: normalizeResult,
-	auto: normalizeLaunchToken
+	auto: normalizeLaunchToken,
+	options: normalizeTrackerAskOptions,
+	confirm: normalizeTrackerAskConfirm
 };
 
 export function normalizeTrackerItemFields(

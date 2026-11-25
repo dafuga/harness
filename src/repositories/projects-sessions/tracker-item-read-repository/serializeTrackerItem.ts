@@ -8,6 +8,7 @@ import {
 	trackerPlanning,
 	trackerPlanningStage
 } from '../../../utils/projects-sessions/trackerPlanning';
+import { readTrackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { TrackerItemReadError } from './TrackerItemReadError';
 
 /** Shape an item for public reads. SQLite-only fields and callback targets stay private. */
@@ -55,6 +56,7 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		})),
 		needs_daniel: Boolean(row.needs_daniel),
 		question: row.question,
+		...askFields(row),
 		answer: row.answer,
 		answered_at: row.answered_at,
 		answered_by: row.answered_by,
@@ -86,6 +88,16 @@ export function trackerAskAge(row: TrackerItemRow, now: number) {
 	return {
 		asked_at: new Date(at).toISOString(),
 		waiting_minutes: Math.max(0, Math.floor((now - at) / 60_000))
+	};
+}
+
+/** Options travel only on asks that have them, so plain items keep their old shape. */
+function askFields(row: TrackerItemRow) {
+	const options = readTrackerAskOptions(row.options);
+	return {
+		...(options.length && { options }),
+		...(options.length && row.confirm && { confirm: row.confirm }),
+		...(row.answer_option && { answer_option: Number(row.answer_option) })
 	};
 }
 

@@ -86,12 +86,19 @@ function planInboxWrite(
 	const { action } = draft;
 	if (action !== 'note' && action !== 'flag' && action !== 'answer')
 		throw trackerItemError('invalid inbox action');
-	const text = inboxWriteText(draft.text);
+	const chosen = action === 'answer' && draft.option !== undefined;
+	const body = chosen
+		? { option: inboxOption(draft.option), confirmed: draft.confirmed === true }
+		: { [inboxTextField[action]]: inboxWriteText(draft.text) };
 	if (action !== 'note') requireReviewedFlag(review, action, draft.revision);
-	return planTrackerItemMutation(
-		{ action, item: review.item, body: { [inboxTextField[action]]: text } },
-		context
-	);
+	return planTrackerItemMutation({ action, item: review.item, body }, context);
+}
+
+/** A tapped option is its 1-based number; the Store checks it against the ask's own options. */
+function inboxOption(input: TrackerItemValue): number {
+	if (typeof input !== 'number' || !Number.isInteger(input) || input < 1 || input > 4)
+		throw trackerItemError('invalid inbox option');
+	return input;
 }
 
 function inboxWriteText(input: TrackerItemValue): string {

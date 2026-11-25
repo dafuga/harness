@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import { readTrackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
 import type {
 	TrackerDigest,
@@ -114,6 +115,8 @@ function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
 		owner: row.owner,
 		agent: row.agent,
 		question: row.question,
+		...(needsDaniel && row.options && { options: readTrackerAskOptions(row.options) }),
+		...(needsDaniel && row.confirm && { confirm: row.confirm }),
 		created_by: row.created_by,
 		updated_at: row.updated_at
 	};

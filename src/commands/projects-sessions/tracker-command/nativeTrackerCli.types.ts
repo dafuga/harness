@@ -44,6 +44,9 @@ export interface NativeTrackerItemDetail extends NativeTrackerItem {
 	planning?: TrackerPlanning;
 	parent?: string;
 	question?: string;
+	options?: { label: string; effect: string; recommended?: true }[];
+	confirm?: string | null;
+	answer_option?: number | null;
 	answer?: string;
 	answered_by?: string;
 	answered_at?: string;

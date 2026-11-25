@@ -23,6 +23,8 @@ const apiFields = [
 	'notes',
 	'parent',
 	'question',
+	'options',
+	'confirm',
 	'needs_daniel',
 	'auto',
 	'remind_at',
