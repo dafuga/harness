@@ -12,6 +12,8 @@
 			"src/services/projects-sessions/TrackerLocalApiService.ts",
 			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalBlockers.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalBlockers.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
@@ -25,6 +27,9 @@
 			"TrackerLocalApiOptions",
 			"readTrackerItemDetail",
 			"readTrackerRunEndpoint",
+			"syncTrackerBlockers",
+			"trackerBlockersRoute",
+			"TrackerBlockerSyncResult",
 			"trackerInboxItem",
 			"TrackerInboxReview",
 			"TrackerInboxRoute",
@@ -88,6 +93,36 @@
 			{
 				"name": "readTrackerRunEndpoint.options",
 				"type": "TrackerLocalApiOptions & { items: TrackerItemReadRepository }",
+				"required": true
+			},
+			{
+				"name": "syncTrackerBlockers.ports",
+				"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository; options: TrackerLocalApiOptions; }",
+				"required": true
+			},
+			{
+				"name": "syncTrackerBlockers.actor",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "trackerBlockersRoute.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerBlockersRoute.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerBlockersRoute.ports",
+				"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository; options: TrackerLocalApiOptions; }",
+				"required": true
+			},
+			{
+				"name": "trackerBlockersRoute.actor",
+				"type": "string | null",
 				"required": true
 			},
 			{
@@ -261,6 +296,14 @@
 				"type": "unknown"
 			},
 			{
+				"name": "syncTrackerBlockers",
+				"type": "TrackerBlockerSyncResult"
+			},
+			{
+				"name": "trackerBlockersRoute",
+				"type": "object | undefined"
+			},
+			{
 				"name": "trackerInboxItem",
 				"type": "Promise<TrackerInboxResult>"
 			},
@@ -372,6 +415,62 @@
 					{
 						"name": "readTrackerRunEndpoint",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "syncTrackerBlockers",
+				"inputs": [
+					{
+						"name": "syncTrackerBlockers.ports",
+						"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository; options: TrackerLocalApiOptions; }",
+						"required": true
+					},
+					{
+						"name": "syncTrackerBlockers.actor",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncTrackerBlockers",
+						"type": "TrackerBlockerSyncResult"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerBlockersRoute",
+				"inputs": [
+					{
+						"name": "trackerBlockersRoute.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerBlockersRoute.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerBlockersRoute.ports",
+						"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository; options: TrackerLocalApiOptions; }",
+						"required": true
+					},
+					{
+						"name": "trackerBlockersRoute.actor",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBlockersRoute",
+						"type": "object | undefined"
 					}
 				],
 				"errors": [],

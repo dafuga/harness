@@ -134,7 +134,7 @@ test('digestText renders legacy section order and omits blocked rows from other 
 		[
 			'Tracker digest - 2026-07-02 00:30 Europe/Lisbon',
 			'BLOCKED (1)',
-			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent; priority normal; idea)',
+			'  - [abc100] Blocked item - blocked (Technical): Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent; priority normal; idea)',
 			'NEEDS DANIEL (1)',
 			'  - [abc200] Done item - waiting 45h 30m (task; agent fixture-agent; priority normal; idea)',
 			'QUEUED (0)',

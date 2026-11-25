@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"src/commands/projects-sessions/TrackerCommand.ts",
+			"src/commands/projects-sessions/tracker-command/formatNativeTrackerBlockers.ts",
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerInspection.ts",
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerItem.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
@@ -23,6 +24,7 @@
 			"TrackerCommand",
 			"TrackerCommand.register",
 			"TrackerCommand.run",
+			"formatNativeTrackerBlockers",
 			"formatNativeTrackerInspection",
 			"formatNativeTrackerAdapterRun",
 			"formatNativeTrackerItem",
@@ -39,6 +41,7 @@
 			"NativeTrackerRunReport",
 			"NativeTrackerPick",
 			"NativeTrackerRunRead",
+			"NativeTrackerBlockerSync",
 			"nativeTrackerCommonOptions",
 			"itemFields",
 			"nativeTrackerCommandOptions",
@@ -64,6 +67,11 @@
 			{
 				"name": "TrackerCommand.run.args",
 				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "formatNativeTrackerBlockers.data",
+				"type": "TrackerBlockerInbox | NativeTrackerBlockerSync",
 				"required": true
 			},
 			{
@@ -207,6 +215,10 @@
 				"type": "number | Promise<number>"
 			},
 			{
+				"name": "formatNativeTrackerBlockers",
+				"type": "unknown"
+			},
+			{
 				"name": "formatNativeTrackerInspection",
 				"type": "unknown"
 			},
@@ -318,6 +330,24 @@
 					{
 						"name": "TrackerCommand.run",
 						"type": "number | Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatNativeTrackerBlockers",
+				"inputs": [
+					{
+						"name": "formatNativeTrackerBlockers.data",
+						"type": "TrackerBlockerInbox | NativeTrackerBlockerSync",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatNativeTrackerBlockers",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -675,6 +705,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
 			"via": "import",
 			"origin": "derived"
 		},

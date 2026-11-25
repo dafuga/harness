@@ -12,9 +12,11 @@
 			"src/repositories/projects-sessions/TrackerItemReadRepository.ts",
 			"src/repositories/projects-sessions/TrackerItemReadRepository.types.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/TrackerItemReadError.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/buildTrackerBlockers.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/buildTrackerDigest.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/buildTrackerDigest.types.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/formatTrackerDigest.ts",
+			"src/repositories/projects-sessions/tracker-item-read-repository/readTrackerBlockerEntries.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.ts",
 			"src/repositories/projects-sessions/tracker-item-read-repository/serializeTrackerItem.types.ts"
 		],
@@ -26,8 +28,11 @@
 			"TrackerItemReadRepository.candidates",
 			"TrackerItemReadRepository.list",
 			"TrackerItemReadRepository.digest",
+			"TrackerItemReadRepository.blockers",
+			"TrackerItemReadRepository.blockerEntries",
 			"TrackerItemReadRepository.digestText",
 			"TrackerItemReadRepository.resolve",
+			"TrackerBlockerInbox",
 			"TrackerDigest",
 			"TrackerItem",
 			"TrackerItemListFilters",
@@ -39,11 +44,19 @@
 			"TrackerRecurringProblem",
 			"TrackerDigestGroups",
 			"TrackerDigest",
+			"TrackerBlocker",
+			"TrackerBlockerGroup",
+			"TrackerBlockerInbox",
 			"TrackerItemReadError",
 			"TrackerItemReadError.constructor",
+			"trackerBlockerStaleMinutes",
+			"buildTrackerBlockers",
+			"trackerBlockerEntries",
+			"groupTrackerBlockers",
 			"buildTrackerDigest",
 			"StoredRecurringResult",
 			"formatTrackerDigest",
+			"readTrackerBlockerEntries",
 			"serializeTrackerItem",
 			"trackerChaseFields",
 			"trackerAskAge",
@@ -98,6 +111,16 @@
 				"description": "IANA time zone used to group ordinary due dates and format the local time."
 			},
 			{
+				"name": "TrackerItemReadRepository.blockers.nowMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerItemReadRepository.blockerEntries.nowMs",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "TrackerItemReadRepository.digestText.nowMs",
 				"type": "number",
 				"required": true,
@@ -127,6 +150,46 @@
 				"default": 400
 			},
 			{
+				"name": "buildTrackerBlockers.rows",
+				"type": "readonly TrackerItemRow[]",
+				"required": true
+			},
+			{
+				"name": "buildTrackerBlockers.nowMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "buildTrackerBlockers.statuses",
+				"type": "ReadonlyMap<string, string>",
+				"required": true
+			},
+			{
+				"name": "trackerBlockerEntries.rows",
+				"type": "readonly TrackerItemRow[]",
+				"required": true
+			},
+			{
+				"name": "trackerBlockerEntries.nowMs",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerBlockerEntries.statuses",
+				"type": "ReadonlyMap<string, string>",
+				"required": true
+			},
+			{
+				"name": "groupTrackerBlockers.entries",
+				"type": "readonly TrackerBlocker[]",
+				"required": true
+			},
+			{
+				"name": "groupTrackerBlockers.nowMs",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "buildTrackerDigest.rows",
 				"type": "TrackerItemRow[]",
 				"required": true
@@ -149,6 +212,16 @@
 			{
 				"name": "formatTrackerDigest.digest",
 				"type": "TrackerDigest",
+				"required": true
+			},
+			{
+				"name": "readTrackerBlockerEntries.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "readTrackerBlockerEntries.nowMs",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -383,6 +456,42 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "TrackerItemReadRepository.blockers",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.blockers.nowMs",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.blockers",
+						"type": "TrackerBlockerInbox"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerItemReadRepository.blockerEntries",
+				"inputs": [
+					{
+						"name": "TrackerItemReadRepository.blockerEntries.nowMs",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerItemReadRepository.blockerEntries",
+						"type": "TrackerBlocker[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerItemReadRepository.digestText",
 				"inputs": [
 					{
@@ -443,6 +552,85 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "buildTrackerBlockers",
+				"inputs": [
+					{
+						"name": "buildTrackerBlockers.rows",
+						"type": "readonly TrackerItemRow[]",
+						"required": true
+					},
+					{
+						"name": "buildTrackerBlockers.nowMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "buildTrackerBlockers.statuses",
+						"type": "ReadonlyMap<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildTrackerBlockers",
+						"type": "TrackerBlockerInbox"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerBlockerEntries",
+				"inputs": [
+					{
+						"name": "trackerBlockerEntries.rows",
+						"type": "readonly TrackerItemRow[]",
+						"required": true
+					},
+					{
+						"name": "trackerBlockerEntries.nowMs",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerBlockerEntries.statuses",
+						"type": "ReadonlyMap<string, string>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBlockerEntries",
+						"type": "TrackerBlocker[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "groupTrackerBlockers",
+				"inputs": [
+					{
+						"name": "groupTrackerBlockers.entries",
+						"type": "readonly TrackerBlocker[]",
+						"required": true
+					},
+					{
+						"name": "groupTrackerBlockers.nowMs",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupTrackerBlockers",
+						"type": "TrackerBlockerInbox"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "buildTrackerDigest",
 				"inputs": [
 					{
@@ -498,6 +686,29 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "readTrackerBlockerEntries",
+				"inputs": [
+					{
+						"name": "readTrackerBlockerEntries.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "readTrackerBlockerEntries.nowMs",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerBlockerEntries",
+						"type": "TrackerBlocker[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "serializeTrackerItem",

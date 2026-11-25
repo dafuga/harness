@@ -9,6 +9,7 @@ import {
 	formatNativeTrackerRunRead,
 	nativeItemPrefix
 } from './formatNativeTrackerItem';
+import { formatNativeTrackerBlockers } from './formatNativeTrackerBlockers';
 import {
 	formatNativeTrackerAdapterRun,
 	formatNativeTrackerInspection
@@ -180,6 +181,11 @@ function renderNativeTracker(
 		}
 		case 'sync':
 			console.log('sync triggered');
+			return;
+		case 'blockers':
+			console.log(
+				formatNativeTrackerBlockers(data as Parameters<typeof formatNativeTrackerBlockers>[0])
+			);
 			return;
 		case 'digest':
 			console.log(String(data).trimEnd());

@@ -9,6 +9,7 @@ import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { automaticQuietHour } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { watchLaunchRequests } from './trackerWatchLaunchRequests';
+import { trackerBlockerTick } from './trackerBlockerTick';
 import { sendWatchdogAlerts } from './trackerHostCos';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import {
@@ -38,6 +39,7 @@ export function trackerHostWatchdog(
 	const chiefOfStaff = config.chiefOfStaff === true && store.node === 'daniel-primary-mbp';
 	let lastCosPoll = -Infinity;
 	let peerAlerts: readonly TrackerWatchdogAlert[] = [];
+	const syncBlockers = trackerBlockerTick({ store, items }, { enabled: chiefOfStaff, now });
 	const readItems = () => items.list({ status: 'all', limit: -1 });
 	const alerts = () => [...localAlerts(store, items), ...peerAlerts];
 	const pollSessions = watchHostSessions(
@@ -61,6 +63,7 @@ export function trackerHostWatchdog(
 			const launchAlert =
 				chiefOfStaff &&
 				watchLaunchRequests(store, now(), !watchdogLaunchHold(now(), automaticEnabled));
+			syncBlockers();
 			if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
 				lastCosPoll = now();
 				peerAlerts = (await driver.peers?.(signal)) ?? peerAlerts;

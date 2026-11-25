@@ -11,6 +11,7 @@
 		"source": [
 			"src/utils/projects-sessions/planTrackerItemMutation.ts",
 			"src/utils/projects-sessions/planTrackerItemMutation.types.ts",
+			"src/utils/projects-sessions/trackerBlockItem.ts",
 			"src/utils/projects-sessions/trackerItemInput.ts",
 			"src/utils/projects-sessions/trackerItemLaunchFields.ts",
 			"src/utils/projects-sessions/trackerItemTransitions.ts"
@@ -29,6 +30,7 @@
 			"TrackerItemChange",
 			"TrackerItemTransition",
 			"TrackerDuplicateProbe",
+			"trackerBlockItem",
 			"trackerItemInput",
 			"trackerNextStepFields",
 			"trackerMoveOn",
@@ -54,6 +56,24 @@
 				"type": "TrackerItemMutationContext",
 				"required": true,
 				"description": "The caller supplies the node, epoch milliseconds and applicable policy or time-zone inputs."
+			},
+			{
+				"name": "trackerBlockItem.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "Resolved Tracker item being blocked."
+			},
+			{
+				"name": "trackerBlockItem.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "Block request: the reason, and needs_daniel false to keep a technical blocker off Needs Daniel."
+			},
+			{
+				"name": "trackerBlockItem.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Clock and duplicate-ask candidates for the planned write."
 			},
 			{
 				"name": "trackerItemInput.body",
@@ -189,6 +209,37 @@
 						"name": "planTrackerItemMutation",
 						"type": "TrackerItemMutationPlan<Receipt>",
 						"description": "Target item ID, journal fields and the original receipt when supplied."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerBlockItem",
+				"inputs": [
+					{
+						"name": "trackerBlockItem.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "Resolved Tracker item being blocked."
+					},
+					{
+						"name": "trackerBlockItem.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "Block request: the reason, and needs_daniel false to keep a technical blocker off Needs Daniel."
+					},
+					{
+						"name": "trackerBlockItem.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Clock and duplicate-ask candidates for the planned write."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBlockItem",
+						"type": "TrackerItemChange"
 					}
 				],
 				"errors": [],

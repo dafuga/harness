@@ -9,15 +9,21 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/utils/projects-sessions/classifyTrackerBlocker.ts",
 			"src/utils/projects-sessions/normalizeTrackerCron.ts",
 			"src/utils/projects-sessions/normalizeTrackerCron.types.ts",
 			"src/utils/projects-sessions/normalizeTrackerDue.ts",
 			"src/utils/projects-sessions/normalizeTrackerItemFields.ts",
 			"src/utils/projects-sessions/normalizeTrackerItemFields.types.ts",
+			"src/utils/projects-sessions/trackerBlockerTypes.ts",
+			"src/utils/projects-sessions/trackerBlockerTypes.types.ts",
 			"src/utils/projects-sessions/trackerItemPriority.ts",
 			"src/utils/projects-sessions/trackerItemValueOr.ts"
 		],
 		"symbols": [
+			"classifyTrackerBlocker",
+			"trackerBlockerRoute",
+			"escalatesToDaniel",
 			"normalizeTrackerCron",
 			"trackerCronOccurrences",
 			"CronField",
@@ -40,6 +46,11 @@
 			"TrackerItemInput",
 			"TrackerItemFields",
 			"TrackerItemPriority",
+			"trackerBlockerTypes",
+			"trackerBlockerLabels",
+			"TrackerBlockerType",
+			"TrackerBlockerRoute",
+			"TrackerBlockerClassification",
 			"trackerItemPriority",
 			"trackerItemValueOr"
 		]
@@ -47,6 +58,31 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "classifyTrackerBlocker.text",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Blocked reason or question to classify; empty or missing text is classified as technical (a block) or a Daniel decision (a flag)."
+			},
+			{
+				"name": "classifyTrackerBlocker.fallback",
+				"type": "'block' | 'flag'",
+				"required": false,
+				"default": "block",
+				"description": "Whether the text is a block reason or a flag question; sets the type used when no keyword matches."
+			},
+			{
+				"name": "trackerBlockerRoute.type",
+				"type": "TrackerBlockerType",
+				"required": true,
+				"description": "Blocker type to route: Daniel-owned types go to Needs Daniel, technical to the orchestrator."
+			},
+			{
+				"name": "escalatesToDaniel.type",
+				"type": "TrackerBlockerType",
+				"required": true,
+				"description": "Blocker type to test for automatic escalation to Needs Daniel."
+			},
 			{
 				"name": "normalizeTrackerCron.value",
 				"type": "TrackerItemValue",
@@ -220,6 +256,70 @@
 		],
 		"errorStatus": "found",
 		"operations": [
+			{
+				"name": "classifyTrackerBlocker",
+				"inputs": [
+					{
+						"name": "classifyTrackerBlocker.text",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Blocked reason or question to classify; empty or missing text is classified as technical (a block) or a Daniel decision (a flag)."
+					},
+					{
+						"name": "classifyTrackerBlocker.fallback",
+						"type": "'block' | 'flag'",
+						"required": false,
+						"default": "block",
+						"description": "Whether the text is a block reason or a flag question; sets the type used when no keyword matches."
+					}
+				],
+				"outputs": [
+					{
+						"name": "classifyTrackerBlocker",
+						"type": "TrackerBlockerClassification"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerBlockerRoute",
+				"inputs": [
+					{
+						"name": "trackerBlockerRoute.type",
+						"type": "TrackerBlockerType",
+						"required": true,
+						"description": "Blocker type to route: Daniel-owned types go to Needs Daniel, technical to the orchestrator."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBlockerRoute",
+						"type": "TrackerBlockerRoute"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "escalatesToDaniel",
+				"inputs": [
+					{
+						"name": "escalatesToDaniel.type",
+						"type": "TrackerBlockerType",
+						"required": true,
+						"description": "Blocker type to test for automatic escalation to Needs Daniel."
+					}
+				],
+				"outputs": [
+					{
+						"name": "escalatesToDaniel",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "normalizeTrackerCron",
 				"inputs": [

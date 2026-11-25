@@ -32,6 +32,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerBlockerTick.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerGithubCli.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHandLaunchSelection.ts",
@@ -114,6 +115,7 @@
 			"adapterFailover",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
+			"trackerBlockerTick",
 			"trackerContextHandoffs",
 			"trackerGithubCli",
 			"handLaunchSelection",
@@ -342,6 +344,16 @@
 			{
 				"name": "trackerDueItemPreview.item",
 				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerBlockerTick.ports",
+				"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository }",
+				"required": true
+			},
+			{
+				"name": "trackerBlockerTick.options",
+				"type": "{ enabled: boolean; now: () => number }",
 				"required": true
 			},
 			{
@@ -1837,6 +1849,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerBlockerTick",
+				"inputs": [
+					{
+						"name": "trackerBlockerTick.ports",
+						"type": "{ store: TrackerPersistenceService; items: TrackerItemReadRepository }",
+						"required": true
+					},
+					{
+						"name": "trackerBlockerTick.options",
+						"type": "{ enabled: boolean; now: () => number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBlockerTick",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "trackerContextHandoffs",
