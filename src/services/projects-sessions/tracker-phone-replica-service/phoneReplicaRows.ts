@@ -1,4 +1,5 @@
 // @harness-uid u_st4dufvqxm
+import { readTrackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { createHash } from 'node:crypto';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
@@ -43,7 +44,15 @@ export function readPhoneReplicaItem(db: SqliteDatabase, id: string, now: number
 /** An opaque revision changes on a replacement question, flag or answer. */
 export function attentionRevision(item: PhoneItemSource): string {
 	return createHash('sha256')
-		.update(JSON.stringify([item.attention_clock, item.question, item.needs_daniel, item.resolved]))
+		.update(
+			JSON.stringify([
+				item.attention_clock,
+				item.question,
+				item.needs_daniel,
+				item.resolved,
+				...(item.options ? [item.options] : [])
+			])
+		)
 		.digest('hex');
 }
 
@@ -73,7 +82,8 @@ function projectItem(
 				? {
 						state: item.resolved ? 'resolved' : 'open',
 						at: clockTime(item.flag_clock),
-						question: excerpt(item.question, 512)
+						question: excerpt(item.question, 512),
+						...phoneAskChoices(item)
 					}
 				: null,
 		runs: runs.map((run) => ({
@@ -85,6 +95,20 @@ function projectItem(
 			startedAt: run.started_at,
 			endedAt: run.ended_at
 		}))
+	};
+}
+
+/** Choices travel on the flag so the phone can show buttons; plain asks keep their old shape. */
+function phoneAskChoices(item: PhoneItemSource) {
+	const options = readTrackerAskOptions(item.options);
+	if (!options.length) return {};
+	return {
+		options: options.map(({ label, effect, recommended }) => ({
+			label: excerpt(label, 80),
+			effect: excerpt(effect, 400),
+			...(recommended && { recommended: true as const })
+		})),
+		...(item.confirm && { confirm: item.confirm })
 	};
 }
 
@@ -115,6 +139,7 @@ const itemSql = `
 		updated_at, due, needs_daniel, resolved,
 		${[...trackerPlanningArtifactFields, ...trackerPlanningPromotionFields].join(', ')},
 		CASE WHEN length(question) <= 16384 THEN question END AS question,
+		CASE WHEN length(options) <= 4096 THEN options END AS options, confirm,
 		coalesce(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel')) AS flag_clock,
 		json_array(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel'),
 			json_extract(clocks, '$.resolved'), json_extract(clocks, '$.answered_at'),
