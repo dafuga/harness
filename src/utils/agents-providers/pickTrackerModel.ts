@@ -21,6 +21,44 @@ import type {
 } from './pickTrackerModel.types';
 import type { TrackerModelItem } from './classifyTrackerTask.types';
 
+const mediaNames = [
+	'(?:qa|video|recorded)[ -]walkthroughs?',
+	'(?:screen|app|browser)[ -]recordings?',
+	'(?:qa|demo|walkthrough|training|tutorial)[ -]videos?',
+	'video evidence'
+];
+const namedMedia = `(?:${mediaNames.join('|')})`;
+const mediaTitle = new RegExp(
+	String.raw`^(?:[\w./-]+:?\s+)?${namedMedia}\b` +
+		String.raw`(?:$|\s+(?:for|of|showing|must be)\b|:(?!\s*(?:fix|remove|refactor|update|build|debug|add|investigate)\b))`,
+	'i'
+);
+const mediaRerecord = new RegExp(String.raw`\b${namedMedia}\s+re[- ]record(?:ing)?\b`, 'i');
+const mediaRequest = new RegExp(
+	String.raw`(?<!\bnot )(?<!\bnever )(?<!\bdon't )\b` +
+		String.raw`(?:(?:re[- ]?)?(?:record|capture|film|produce|deliver|publish|post|upload|share|attach|create|make|send|provide)|then)` +
+		String.raw`\s+(?:[\w–-]+\s+){0,7}(?:${namedMedia}|videos?(?!\s+evidence\b)|recordings?)\b` +
+		String.raw`(?!\s+(?:generator|recorder|pipeline|runner|worker|feature|support|metadata|frames?)\b)`,
+	'i'
+);
+
+export function pickTrackerMediaModel(item: TrackerModelItem): TrackerModelSelection | null {
+	const title = item.title?.trim() ?? '';
+	if (
+		!mediaTitle.test(title) &&
+		!mediaRerecord.test(title) &&
+		!mediaRequest.test(title) &&
+		!mediaRequest.test(item.notes ?? '')
+	)
+		return null;
+	const rung = parseTrackerModelSpec('claude-sonnet-5-5', ladderFrom());
+	return {
+		rung: { ...rung, pinned: false },
+		kind: classifyTrackerTask(item),
+		reason: 'media deliverable requires Claude Sonnet 5.5'
+	};
+}
+
 function eligibleLadder(item: TrackerModelItem, ladder: TrackerModelRung[], restricted: boolean) {
 	const haiku = !restricted && isHarnessModule(item);
 	const terra = !restricted && isVisualInspection(item);
@@ -31,6 +69,8 @@ export function pickTrackerModel(
 	item: TrackerModelItem,
 	options: TrackerModelSelectionOptions = {}
 ): TrackerModelSelection {
+	const media = pickTrackerMediaModel(item);
+	if (media) return media;
 	const { cfg, history } = options;
 	const ladder = ladderFrom(cfg);
 	const kind = classifyTrackerTask(item);
@@ -73,6 +113,8 @@ export function retryTrackerModel(
 	run: TrackerRetryRun,
 	cfg?: TrackerLadderConfig
 ): TrackerModelRung {
+	const media = pickTrackerMediaModel(item);
+	if (media) return media.rung;
 	if (run.pinned)
 		return pickTrackerModel({ ...item, model: `${run.model}:${run.effort ?? ''}` }, { cfg }).rung;
 	const sol = ladderFrom(cfg).at(-1)!;

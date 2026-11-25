@@ -4,7 +4,7 @@
 	"uid": "u_gs5pnxnxt4",
 	"kind": "function",
 	"title": "pickTrackerModel",
-	"responsibility": "Select the earliest eligible Tracker model, honor valid pins, and escalate from measured outcomes.",
+	"responsibility": "Route media deliverables to Claude Sonnet 5.5 and select the earliest eligible Tracker model for other work using valid pins and measured outcomes.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -13,6 +13,7 @@
 			"src/utils/agents-providers/pickTrackerModel.types.ts"
 		],
 		"symbols": [
+			"pickTrackerMediaModel",
 			"pickTrackerModel",
 			"retryTrackerModel",
 			"TrackerModelHistory",
@@ -24,6 +25,12 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "pickTrackerMediaModel.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker title and notes that may request a media deliverable."
+			},
 			{
 				"name": "pickTrackerModel.item",
 				"type": "TrackerModelItem",
@@ -65,12 +72,32 @@
 			{
 				"name": "retryTrackerModel",
 				"type": "TrackerModelRung",
-				"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
+				"description": "Sonnet for a media deliverable, or the existing pinned or escalated model for other work."
 			}
 		],
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "pickTrackerMediaModel",
+				"inputs": [
+					{
+						"name": "pickTrackerMediaModel.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker title and notes that may request a media deliverable."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pickTrackerMediaModel",
+						"type": "TrackerModelSelection | null",
+						"description": "The fixed Sonnet selection for a media deliverable, or null for normal routing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "pickTrackerModel",
 				"inputs": [
@@ -124,7 +151,7 @@
 					{
 						"name": "retryTrackerModel",
 						"type": "TrackerModelRung",
-						"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
+						"description": "Sonnet for a media deliverable, or the existing pinned or escalated model for other work."
 					}
 				],
 				"errors": [],

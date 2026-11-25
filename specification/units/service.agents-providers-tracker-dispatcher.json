@@ -109,6 +109,7 @@
 			"completeRun",
 			"etaFor",
 			"queueRun",
+			"modelFields",
 			"reviseRun",
 			"recordRun",
 			"finishRun",
@@ -675,6 +676,21 @@
 				"name": "queueRun.now",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "modelFields.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "modelFields.pick",
+				"type": "TrackerLaunchPick | { error: string }",
+				"required": true
+			},
+			{
+				"name": "modelFields.previous",
+				"type": "TrackerRunReceipt",
+				"required": false
 			},
 			{
 				"name": "reviseRun.run",
@@ -1830,6 +1846,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "modelFields",
+				"inputs": [
+					{
+						"name": "modelFields.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "modelFields.pick",
+						"type": "TrackerLaunchPick | { error: string }",
+						"required": true
+					},
+					{
+						"name": "modelFields.previous",
+						"type": "TrackerRunReceipt",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "modelFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "reviseRun",
 				"inputs": [
 					{
@@ -2019,6 +2063,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "helper.attention-timing-is-quiet-hour",
 			"via": "import",

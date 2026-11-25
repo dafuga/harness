@@ -6,6 +6,7 @@ import {
 } from '../../../src/utils/agents-providers/pickTrackerModel';
 
 const visualModule = { title: 'Review module screenshots', agent: 'Harness' };
+const sonnet = { id: 'sonnet', cli: 'claude', model: 'claude-sonnet-5-5', effort: 'medium' };
 
 test('picks the lowest capable automatic rung in the Tracker ladder', () => {
 	expect(pickTrackerModel(visualModule)).toMatchObject({
@@ -21,6 +22,28 @@ test('picks the lowest capable automatic rung in the Tracker ladder', () => {
 		rung: { id: 'sol', effort: 'medium' },
 		reason: 'feature/small: sol'
 	});
+	for (const item of [
+		{ title: 'QA walkthrough for checkout' },
+		{ title: 'Screen recording of the real app', model: 'sol:high' },
+		{ title: 'Retest checkout', notes: 'Then record a short video of the real app.' },
+		{ title: 'Fix tutor quiz cards. Then a 1-2 min captioned demo video.' },
+		{ title: 'BuildFlexity QA video re-record for staging' }
+	]) {
+		expect.soft(pickTrackerModel(item), item.title).toMatchObject({
+			rung: sonnet,
+			reason: 'media deliverable requires Claude Sonnet 5.5'
+		});
+	}
+	for (const title of [
+		'Fix the screen recording pipeline',
+		'Model routing: video/media deliverable tasks (QA walkthroughs, screen recordings)',
+		'QA video: remove the checklist fallback in the generator',
+		'Design and build a QA video recorder'
+	]) {
+		expect.soft(pickTrackerModel({ title, model: 'sol:high' }), title).toMatchObject({
+			rung: { id: 'sol', effort: 'high', pinned: true }
+		});
+	}
 });
 
 test('keeps explicit model and effort even when the automatic choice can run cheaper', () =>
@@ -84,6 +107,14 @@ test('retains the large-work floor and exact learning thresholds', () => {
 });
 
 test('retries a pin on its named effort and advances Sol effort to its ceiling', () => {
+	for (const previous of [
+		{ rung: 'sol', model: 'gpt-6.2-sol', effort: 'high', pinned: true },
+		{ rung: 'sonnet', model: 'claude-sonnet-5-5', effort: 'medium' }
+	]) {
+		expect
+			.soft(retryTrackerModel({ title: 'Record a QA walkthrough' }, previous))
+			.toMatchObject(sonnet);
+	}
 	expect(
 		retryTrackerModel(visualModule, {
 			rung: 'opus',

@@ -159,6 +159,13 @@ export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: stri
 		effort: 'high',
 		pinned: true
 	});
+	const media = await fixtureTrackerJson(spoke, ['add', 'Record the checkout QA walkthrough']);
+	expect(await fixtureTrackerJson(spoke, ['pick', media.id])).toMatchObject({
+		rung: 'sonnet',
+		model: 'claude-sonnet-5-5',
+		cli: 'claude',
+		reason: 'media deliverable requires Claude Sonnet 5.5'
+	});
 	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
 		1
 	);

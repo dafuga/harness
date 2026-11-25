@@ -1,4 +1,5 @@
 // @harness-uid u_rzpjc6wqqy
+import { pickTrackerMediaModel } from '../../../utils/agents-providers/pickTrackerModel';
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchItem,
@@ -21,7 +22,15 @@ import {
 	startable
 } from './launchEligibility';
 import { dueGrantHold } from './dueGrantHold';
-import { etaFor, failRun, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
+import {
+	etaFor,
+	failRun,
+	finishRun,
+	modelFields,
+	queueRun,
+	recordRun,
+	reviseRun
+} from './runReceipt';
 
 // Give an interrupted host start time to publish its session evidence.
 export const launchStartupGrace = 5 * minute;
@@ -38,10 +47,19 @@ export function claimLaunch(
 		return skip('held', 'launch token was already claimed');
 	const hold = claimHold(snapshot, { item, grant }, policy, now);
 	if (hold) return skip('held', hold);
-	const pick = item.launch.scheduledPick ?? policy.pickModel(item);
-	const problem = policy.admit(item, item.launch, 'error' in pick ? null : pick.rung);
+	return admitClaim(snapshot, item, { policy, now });
+}
+
+function admitClaim(
+	snapshot: TrackerDispatchSnapshot,
+	item: TrackerDispatchItem,
+	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
+): TrackerDispatchDecision {
+	const intent = item.launch!;
+	const pick = pickTrackerMediaModel(item) ?? intent.scheduledPick ?? policy.pickModel(item);
+	const problem = policy.admit(item, intent, 'error' in pick ? null : pick.rung);
 	if (problem) return skip('held', problem);
-	const run = queueRun(snapshot, { token, item, pick }, policy, now);
+	const run = queueRun(snapshot, { token: intent.token, item, pick }, policy, now);
 	if ('error' in pick) return invalidPick(run, pick.error, now);
 	return reserveStart(item, { run, rung: pick.rung }, policy, now);
 }
@@ -65,16 +83,20 @@ export function prepareRetry(
 		});
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
-	const rung = {
-		id: run.rung,
-		cli: run.cli,
-		model: run.model,
-		effort: run.effort,
-		pinned: run.pinned
-	};
-	const problem = policy.admit(item, item.launch, rung);
+	const selection = retrySelection(item, run);
+	const problem = policy.admit(item, item.launch, selection.rung);
 	if (problem) return skip('held', problem);
-	return reserveStart(item, { run, rung }, policy, now);
+	return reserveStart(item, selection, policy, now);
+}
+
+function retrySelection(
+	item: TrackerDispatchItem,
+	run: TrackerRunReceipt & { cli: TrackerLaunchRung['cli'] }
+) {
+	const media = pickTrackerMediaModel(item);
+	if (media) return { run: { ...run, ...modelFields(item, media) }, rung: media.rung };
+	const { rung: id, cli, model, effort, pinned } = run;
+	return { run, rung: { id, cli, model, effort, pinned } };
 }
 
 function awaitingRetry(

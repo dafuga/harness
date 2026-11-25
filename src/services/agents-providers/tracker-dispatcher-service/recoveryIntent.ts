@@ -1,4 +1,5 @@
 // @harness-uid u_rzpjc6wqqy
+import { pickTrackerMediaModel } from '../../../utils/agents-providers/pickTrackerModel';
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchItem,
@@ -44,9 +45,11 @@ function admitRecovery(
 	policy: TrackerDispatchPolicy
 ): TrackerDispatchDecision {
 	const target = canonicalNode(policy.node, policy);
-	const pick = request.rung
-		? { rung: request.rung, kind: item.kind, reason: 'resume on the same provider and model' }
-		: policy.pickModel(item);
+	const pick =
+		pickTrackerMediaModel(item) ??
+		(request.rung
+			? { rung: request.rung, kind: item.kind, reason: 'resume on the same provider and model' }
+			: policy.pickModel(item));
 	if ('error' in pick) return skip('held', 'Tracker model cannot be selected for recovery');
 	const intent = { source: 'recovery', target, token: request.token, scheduledPick: pick } as const;
 	const hold = policy.admit(item, intent, pick.rung);
