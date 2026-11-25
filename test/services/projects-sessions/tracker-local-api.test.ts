@@ -208,7 +208,7 @@ test('reports persisted run history and selects a model through the native item 
 	]);
 	const report = await request('/models/report');
 	expect(await report.json()).toMatchObject({
-		ladder: expect.arrayContaining(['sol']),
+		ladder: ['haiku', 'sonnet', 'terra', 'sol', 'opus'],
 		rows: expect.arrayContaining([
 			expect.objectContaining({ rung: 'sol', kind: '*', runs: 2, done: 1, blocked: 1 })
 		])

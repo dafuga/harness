@@ -10,14 +10,17 @@ test('preserves canonical model identities and allows only matching rung customi
 		autolaunch: {
 			ladder: [
 				{ id: 'sol', model: 'gpt-6.1-sol', effort: 'low' },
-				{ id: 'terra', model: 'gpt-6.1-terra', effort: 'high', cli: 'claude' }
+				{ id: 'terra', model: 'gpt-6.1-terra', effort: 'high', cli: 'claude' },
+				{ id: 'opus', model: 'claude-opus-5-5', effort: 'xhigh' }
 			]
 		}
 	});
 	expect(ladder.map(({ id, model, cli, effort }) => [id, model, cli, effort])).toEqual([
 		['haiku', 'claude-haiku-5-5', 'claude', 'high'],
+		['sonnet', 'claude-sonnet-5-5', 'claude', 'medium'],
 		['terra', 'gpt-6.1-terra', 'codex', 'high'],
-		['sol', 'gpt-6.2-sol', 'codex', 'medium']
+		['sol', 'gpt-6.2-sol', 'codex', 'medium'],
+		['opus', 'claude-opus-5-5', 'claude', 'high']
 	]);
 });
 
