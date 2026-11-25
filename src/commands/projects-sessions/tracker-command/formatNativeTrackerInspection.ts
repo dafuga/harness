@@ -39,15 +39,20 @@ function itemNotes(item: NativeTrackerItemDetail): string[] {
 		lines.push(`  promoted to ${promotion.stage} by ${promotion.by} at ${promotion.at}`);
 	if (item.parent) lines.push(`  parent: ${item.parent}`);
 	if (item.question) lines.push(`  question: ${item.question}`);
-	for (const [index, option] of (item.options ?? []).entries())
-		lines.push(
-			`  option ${index + 1}${option.recommended ? ' (recommended)' : ''}: ${option.label}${option.effect ? ` - ${option.effect}` : ''}`
-		);
-	if (item.confirm) lines.push(`  confirm step required: ${item.confirm}`);
+	lines.push(...optionLines(item));
 	if (item.answer)
 		lines.push(`  answer: ${item.answer} (by ${item.answered_by} at ${item.answered_at})`);
 	if (item.notes) lines.push(`  notes: ${item.notes}`);
 	for (const n of item.notes_log ?? []) lines.push(`  note ${n.at} [${n.node}]: ${n.text}`);
+	return lines;
+}
+
+function optionLines(item: NativeTrackerItemDetail): string[] {
+	const lines = (item.options ?? []).map((option, index) => {
+		const mark = option.recommended ? ' (recommended)' : '';
+		return `  option ${index + 1}${mark}: ${option.label}${option.effect ? ` - ${option.effect}` : ''}`;
+	});
+	if (item.confirm) lines.push(`  confirm step required: ${item.confirm}`);
 	return lines;
 }
 

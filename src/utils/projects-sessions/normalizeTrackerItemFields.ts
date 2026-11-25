@@ -6,7 +6,7 @@ import {
 	trackerTimeZone,
 	validateTrackerTimeZone
 } from './normalizeTrackerDue';
-import { normalizeTrackerAskConfirm, normalizeTrackerAskOptions } from './trackerAskOptions';
+import { trackerAskNormalizers } from './trackerAskOptions';
 import { trackerItemPriority } from './trackerItemPriority';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
@@ -31,7 +31,6 @@ const textFields = new Set([
 	'answer',
 	'answered_at',
 	'answered_by',
-	'answer_option',
 	'created_at',
 	'created_by',
 	'blocked_reason',
@@ -84,8 +83,7 @@ const normalizers = {
 	missed: normalizeInstant,
 	last_result: normalizeResult,
 	auto: normalizeLaunchToken,
-	options: normalizeTrackerAskOptions,
-	confirm: normalizeTrackerAskConfirm
+	...trackerAskNormalizers
 };
 
 export function normalizeTrackerItemFields(
@@ -107,10 +105,8 @@ function normalizeField(
 ): string | number | null {
 	if (textFields.has(key)) return normalizeText(value);
 	if (flagFields.has(key)) return normalizeFlag(value);
-	if (Object.hasOwn(normalizers, key)) {
-		return normalizers[key as keyof typeof normalizers](value, clock, input);
-	}
-	throw trackerItemError(`unknown field "${key}"`);
+	if (!Object.hasOwn(normalizers, key)) throw trackerItemError(`unknown field "${key}"`);
+	return normalizers[key as keyof typeof normalizers](value, clock, input);
 }
 
 function normalizeKind(value: TrackerItemValue): string {

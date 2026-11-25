@@ -1,5 +1,5 @@
 // @harness-uid u_st4dufvqxm
-import { readTrackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
+import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { createHash } from 'node:crypto';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
@@ -100,7 +100,7 @@ function projectItem(
 
 /** Choices travel on the flag so the phone can show buttons; plain asks keep their old shape. */
 function phoneAskChoices(item: PhoneItemSource) {
-	const options = readTrackerAskOptions(item.options);
+	const options = trackerAskOptions(item.options);
 	if (!options.length) return {};
 	return {
 		options: options.map(({ label, effect, recommended }) => ({

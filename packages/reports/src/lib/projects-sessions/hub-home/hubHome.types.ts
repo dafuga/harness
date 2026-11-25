@@ -19,6 +19,9 @@ export interface HomeAgentTask {
 	machine: string | null;
 }
 
+/** A raw JSON value as the Tracker sends it, before it is checked. */
+export type HomeAskInput = object | string | number | boolean | null | undefined;
+
 /** One tappable answer to an open ask; recommended is true on at most one. */
 export interface HomeAskOption {
 	label: string;

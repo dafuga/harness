@@ -1,6 +1,6 @@
 // @harness-uid u_xba7ieg4je
 import type { TrackerItemPriority } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
-import type { TrackerAskOption } from '../../utils/projects-sessions/trackerAskOptions';
+import type { TrackerAskOption } from '../../utils/projects-sessions/trackerAskOptions.types';
 import type { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
 
 import type {

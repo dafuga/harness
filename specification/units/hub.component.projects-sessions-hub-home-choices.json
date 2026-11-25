@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-choices",
+	"uid": "u_qoahc5zxzf",
+	"kind": "component",
+	"title": "HubHomeChoices",
+	"responsibility": "Owns the HubHomeChoices Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"],
+		"symbols": ["HubHomeChoices"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomeChoices.agent",
+				"type": "Pick<HomeAgent, 'options' | 'confirm'>",
+				"required": true
+			},
+			{
+				"name": "HubHomeChoices.busy",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "HubHomeChoices.onpick",
+				"type": "(number: number, confirmed: boolean) => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeChoices",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-choices",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

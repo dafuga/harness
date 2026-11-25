@@ -1,17 +1,11 @@
+// @harness-uid u_liy3gizotu
 // @harness-uid u_ask0pt10ns
 import { trackerItemError } from './trackerItemError';
 import type { TrackerItemValue } from './normalizeTrackerItemFields.types';
-
-/** One answer Daniel can tap: a short label and what happens when it is chosen. */
-export interface TrackerAskOption {
-	label: string;
-	effect: string;
-	recommended?: true;
-}
+import type { TrackerAskConfirm, TrackerAskOption } from './trackerAskOptions.types';
 
 /** Asks of these kinds change something that is hard to undo, so a tap needs a confirm step. */
-export const trackerAskConfirmKinds = ['deploy', 'money', 'secret'] as const;
-export type TrackerAskConfirm = (typeof trackerAskConfirmKinds)[number];
+export const trackerAskConfirmKinds: readonly TrackerAskConfirm[] = ['deploy', 'money', 'secret'];
 
 const minOptions = 2;
 const maxOptions = 4;
@@ -63,7 +57,7 @@ function oneOption(raw: TrackerItemValue): TrackerAskOption {
 }
 
 /** Read stored options. Unreadable or missing text means the ask has none. */
-export function readTrackerAskOptions(stored: string | null | undefined): TrackerAskOption[] {
+export function trackerAskOptions(stored: string | null | undefined): TrackerAskOption[] {
 	if (!stored) return [];
 	try {
 		const list = JSON.parse(stored);
@@ -71,15 +65,6 @@ export function readTrackerAskOptions(stored: string | null | undefined): Tracke
 	} catch {
 		return [];
 	}
-}
-
-/** The recommended option first; every other option keeps its order. Indexes stay original. */
-export function trackerAskDisplayOrder(options: readonly TrackerAskOption[]): number[] {
-	const indexes = options.map((_, index) => index);
-	return indexes.sort(
-		(a, b) =>
-			Number(Boolean(options[b].recommended)) - Number(Boolean(options[a].recommended)) || a - b
-	);
 }
 
 export function normalizeTrackerAskConfirm(value: TrackerItemValue): string | null {
@@ -94,10 +79,17 @@ export function chosenTrackerAskOption(
 	stored: string | null | undefined,
 	choice: TrackerItemValue
 ): { index: number; option: TrackerAskOption } {
-	const options = readTrackerAskOptions(stored);
+	const options = trackerAskOptions(stored);
 	if (!options.length) throw trackerItemError('this ask has no options', 409);
 	const index = Number(choice) - 1;
 	if (!Number.isInteger(index) || index < 0 || index >= options.length)
 		throw trackerItemError(`option must be 1 to ${options.length}`);
 	return { index, option: options[index] };
 }
+
+/** How the ask's fields are checked on the way into an item. */
+export const trackerAskNormalizers = {
+	options: normalizeTrackerAskOptions,
+	confirm: normalizeTrackerAskConfirm,
+	answer_option: (value: TrackerItemValue) => (value === null ? null : String(value))
+};

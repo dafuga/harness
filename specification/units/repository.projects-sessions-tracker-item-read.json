@@ -47,6 +47,7 @@
 			"serializeTrackerItem",
 			"trackerChaseFields",
 			"trackerAskAge",
+			"trackerAskFields",
 			"StoredTrackerNote",
 			"StoredTrackerCallback"
 		]
@@ -177,6 +178,21 @@
 				"type": "number",
 				"required": true,
 				"description": "Current time in epoch milliseconds."
+			},
+			{
+				"name": "trackerAskFields.row",
+				"type": "TrackerItemRow",
+				"required": true
+			},
+			{
+				"name": "trackerAskFields.open",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "trackerAskFields.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -581,6 +597,34 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAskFields",
+				"inputs": [
+					{
+						"name": "trackerAskFields.row",
+						"type": "TrackerItemRow",
+						"required": true
+					},
+					{
+						"name": "trackerAskFields.open",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "trackerAskFields.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAskFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -642,6 +686,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-ask-options",
 			"via": "import",
 			"origin": "derived"
 		},

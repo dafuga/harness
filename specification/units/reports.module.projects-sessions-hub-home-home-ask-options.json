@@ -1,0 +1,145 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-ask-options",
+	"uid": "u_nz6sw6sbnv",
+	"kind": "module",
+	"title": "homeAskOptions",
+	"responsibility": "Owns the homeAskOptions library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeAskOptions.ts"],
+		"symbols": ["readHomeAskOptions", "readHomeAskConfirm", "homeAskFields"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readHomeAskOptions.value",
+				"type": "HomeAskInput",
+				"required": true
+			},
+			{
+				"name": "readHomeAskConfirm.value",
+				"type": "HomeAskInput",
+				"required": true
+			},
+			{
+				"name": "homeAskFields.item",
+				"type": "{ options?: HomeAskOption[]; confirm?: HomeAskConfirm } | undefined",
+				"required": true
+			},
+			{
+				"name": "homeAskFields.question",
+				"type": "string | null",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "readHomeAskOptions",
+				"type": "HomeAskOption[]"
+			},
+			{
+				"name": "readHomeAskConfirm",
+				"type": "HomeAskConfirm | undefined"
+			},
+			{
+				"name": "homeAskFields",
+				"type": "Pick<HomeAgent, 'options' | 'confirm'>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readHomeAskOptions",
+				"inputs": [
+					{
+						"name": "readHomeAskOptions.value",
+						"type": "HomeAskInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readHomeAskOptions",
+						"type": "HomeAskOption[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readHomeAskConfirm",
+				"inputs": [
+					{
+						"name": "readHomeAskConfirm.value",
+						"type": "HomeAskInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readHomeAskConfirm",
+						"type": "HomeAskConfirm | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "homeAskFields",
+				"inputs": [
+					{
+						"name": "homeAskFields.item",
+						"type": "{ options?: HomeAskOption[]; confirm?: HomeAskConfirm } | undefined",
+						"required": true
+					},
+					{
+						"name": "homeAskFields.question",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeAskFields",
+						"type": "Pick<HomeAgent, 'options' | 'confirm'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeAskOptions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeAskOptions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

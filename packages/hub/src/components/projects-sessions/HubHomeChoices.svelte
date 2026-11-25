@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_hh0ch01c3s -->
+<!-- @harness-uid u_qoahc5zxzf -->
 <script lang="ts">
 	import type { HomeAgent } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { orderedChoices } from './hubHomeChoices';

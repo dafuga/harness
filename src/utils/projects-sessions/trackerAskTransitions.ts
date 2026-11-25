@@ -1,3 +1,4 @@
+// @harness-uid u_3rvpzml4j7
 // @harness-uid u_ask0tr4ns1
 import { chosenTrackerAskOption } from './trackerAskOptions';
 import { trackerItemError } from './trackerItemError';
@@ -10,20 +11,23 @@ import type {
 import type { TrackerItemInput } from './normalizeTrackerItemFields.types';
 
 /** What a new question stores about its choices: the new ones, or none when it replaces the ask. */
-export function trackerAskChoiceFields(
+function trackerAskChoiceFields(
 	item: TrackerItemSnapshot,
 	body: TrackerItemInput
 ): TrackerItemInput {
 	if (body.options !== undefined) {
 		return { options: body.options, confirm: body.confirm ?? null, ...clearedChoice(item) };
 	}
-	if (body.question) return { ...clearedAsk(item), ...clearedChoice(item) };
+	if (body.question) return clearedAsk(item);
 	return {};
 }
 
 /** Clear the old ask's choices, but only when it had some, so plain items write nothing extra. */
-export function clearedAsk(item: TrackerItemSnapshot): TrackerItemInput {
-	return item.options || item.confirm ? { options: null, confirm: null } : {};
+function clearedAsk(item: TrackerItemSnapshot): TrackerItemInput {
+	return {
+		...(item.options || item.confirm ? { options: null, confirm: null } : {}),
+		...clearedChoice(item)
+	};
 }
 
 function clearedChoice(item: TrackerItemSnapshot): TrackerItemInput {
@@ -31,7 +35,7 @@ function clearedChoice(item: TrackerItemSnapshot): TrackerItemInput {
 }
 
 /** Answer an ask by tapping one of its options, or with free text ("Other"). */
-export function trackerAnswerItem(
+function trackerAnswerItem(
 	item: TrackerItemSnapshot,
 	body: TrackerItemInput,
 	context: TrackerItemMutationContext
@@ -57,3 +61,10 @@ function answerWithText(
 	const change = trackerResolveItem(item, body, context);
 	return { ...change, fields: { ...change.fields, ...clearedChoice(item) } };
 }
+
+/** The steps of an item transition that deal with an ask's choices. */
+export const trackerAskTransitions = {
+	answer: trackerAnswerItem,
+	choiceFields: trackerAskChoiceFields,
+	cleared: clearedAsk
+};

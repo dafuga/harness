@@ -2,8 +2,8 @@
 import { parseArgs } from 'node:util';
 import { nativeTrackerTimedItemRequest } from './nativeTrackerTimedItemRequest';
 import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
-import type { NativeTrackerRequest } from './nativeTrackerCli.types';
-import { nativeTrackerAskBody } from './nativeTrackerAskOptions';
+import type { NativeTrackerAskValues, NativeTrackerRequest } from './nativeTrackerCli.types';
+import { nativeTrackerAnswerBody, nativeTrackerFlagBody } from './nativeTrackerAskOptions';
 
 import {
 	nativeTrackerCommandOptions,
@@ -175,16 +175,12 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		case 'progress':
 			return { text };
 		case 'flag':
-			return {
-				question: text.length ? text : values.question,
-				force: values.force,
-				...nativeTrackerAskBody(values)
-			};
+			return nativeTrackerFlagBody(text, values as NativeTrackerAskValues);
 		case 'block':
 			return blockBody(text, values);
 		case 'answer':
 		case 'resolve':
-			return resolveBody(text, values);
+			return nativeTrackerAnswerBody(text, values as NativeTrackerAskValues);
 		case 'done':
 			return {
 				note: values.note,
@@ -197,16 +193,6 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		default:
 			return undefined;
 	}
-}
-
-function resolveBody(answer: string, values: Record<string, unknown>) {
-	return {
-		answer: answer.length ? answer : undefined,
-		option: values.option,
-		confirmed: values.confirmed,
-		done: values.done,
-		by: values.by
-	};
 }
 
 function blockBody(reason: string, values: Record<string, unknown>) {

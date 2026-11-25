@@ -1,5 +1,6 @@
 // @harness-uid u_nves237tvx
 import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptions';
+import type { HomeAskInput } from '../hub-home/hubHome.types';
 import type { MachineStatus } from './projectOverview.types';
 import type {
 	TrackerItemRecord,
@@ -118,8 +119,8 @@ function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecor
 }
 
 function askFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
-	const options = readHomeAskOptions(row.options);
-	const confirm = readHomeAskConfirm(row.confirm);
+	const options = readHomeAskOptions(row.options as HomeAskInput);
+	const confirm = readHomeAskConfirm(row.confirm as HomeAskInput);
 	return { ...(options.length && { options }), ...(options.length && confirm && { confirm }) };
 }
 

@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices",
+	"uid": "u_dq2f5r7w3h",
+	"kind": "component",
+	"title": "TrackerInboxChoices",
+	"responsibility": "Owns the TrackerInboxChoices Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxChoices.svelte"
+		],
+		"symbols": ["TrackerInboxChoices"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerInboxChoices.flag",
+				"type": "InboxFlag",
+				"required": true
+			},
+			{
+				"name": "TrackerInboxChoices.busy",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "TrackerInboxChoices.onpick",
+				"type": "(number: number) => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerInboxChoices",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxChoices.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxChoices.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

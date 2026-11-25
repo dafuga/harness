@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-choices",
 			"hub.component.projects-sessions-hub-home-composer",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
@@ -92,6 +93,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-choices",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-composer",
 			"via": "import",

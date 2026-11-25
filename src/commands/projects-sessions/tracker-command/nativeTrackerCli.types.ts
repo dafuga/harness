@@ -12,6 +12,9 @@ export interface NativeTrackerRequest {
 	body?: Readonly<Record<string, unknown>>;
 }
 
+/** The parsed command-line words of one `tracker` command, as `parseArgs` returns them. */
+export type NativeTrackerAskValues = Record<string, string | string[] | boolean | undefined>;
+
 export interface NativeTrackerItem {
 	id: string;
 	kind: string;

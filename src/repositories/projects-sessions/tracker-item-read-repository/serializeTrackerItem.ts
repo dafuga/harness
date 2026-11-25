@@ -8,7 +8,7 @@ import {
 	trackerPlanning,
 	trackerPlanningStage
 } from '../../../utils/projects-sessions/trackerPlanning';
-import { readTrackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
+import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { TrackerItemReadError } from './TrackerItemReadError';
 
 /** Shape an item for public reads. SQLite-only fields and callback targets stay private. */
@@ -49,11 +49,7 @@ export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement
 		parent: row.parent,
 		notes: row.notes,
 		...(row.adapter_instructions ? { adapter_instructions: row.adapter_instructions } : {}),
-		notes_log: (notes.all(row.id) as StoredTrackerNote[]).map(({ hlc, node, text }) => ({
-			at: new Date(hlcMilliseconds(hlc)).toISOString(),
-			node,
-			text
-		})),
+		notes_log: notesLog(row, notes),
 		needs_daniel: Boolean(row.needs_daniel),
 		question: row.question,
 		...askFields(row),
@@ -91,9 +87,27 @@ export function trackerAskAge(row: TrackerItemRow, now: number) {
 	};
 }
 
+function notesLog(row: TrackerItemRow, notes: SqliteStatement) {
+	return (notes.all(row.id) as StoredTrackerNote[]).map(({ hlc, node, text }) => ({
+		at: new Date(hlcMilliseconds(hlc)).toISOString(),
+		node,
+		text
+	}));
+}
+
+/** What the digest shows of an open ask: how long it has waited, its choices and confirm kind. */
+export function trackerAskFields(row: TrackerItemRow, open: boolean, now: number) {
+	if (!open) return {};
+	return {
+		...trackerAskAge(row, now),
+		...(row.options && { options: trackerAskOptions(row.options) }),
+		...(row.confirm && { confirm: row.confirm })
+	};
+}
+
 /** Options travel only on asks that have them, so plain items keep their old shape. */
 function askFields(row: TrackerItemRow) {
-	const options = readTrackerAskOptions(row.options);
+	const options = trackerAskOptions(row.options);
 	return {
 		...(options.length && { options }),
 		...(options.length && row.confirm && { confirm: row.confirm }),

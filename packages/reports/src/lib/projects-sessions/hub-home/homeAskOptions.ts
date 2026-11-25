@@ -1,11 +1,12 @@
+// @harness-uid u_nz6sw6sbnv
 // @harness-uid u_h0m3ask0p1
 import { sanitizeText } from '../project-overview/projectOverviewPrivacy';
-import type { HomeAgent, HomeAskConfirm, HomeAskOption } from './hubHome.types';
+import type { HomeAgent, HomeAskConfirm, HomeAskInput, HomeAskOption } from './hubHome.types';
 
 const confirmKinds: readonly HomeAskConfirm[] = ['deploy', 'money', 'secret'];
 
 /** The tracker's choices for an ask, cleaned for display. Anything malformed means no choices. */
-export function readHomeAskOptions(value: unknown): HomeAskOption[] {
+export function readHomeAskOptions(value: HomeAskInput): HomeAskOption[] {
 	if (!Array.isArray(value) || value.length < 2 || value.length > 4) return [];
 	const options = value.map(readOption);
 	if (options.some((option) => option === null)) return [];
@@ -24,7 +25,7 @@ function readOption(entry: unknown): HomeAskOption | null {
 	};
 }
 
-export function readHomeAskConfirm(value: unknown): HomeAskConfirm | undefined {
+export function readHomeAskConfirm(value: HomeAskInput): HomeAskConfirm | undefined {
 	return confirmKinds.find((kind) => kind === value);
 }
 
