@@ -1,7 +1,9 @@
+import { existsSync } from 'node:fs';
 import type { DatabaseSync } from 'node:sqlite';
 import { expect } from 'vitest';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerSupervisorService } from '../../src/services/projects-sessions/TrackerSupervisorService';
+import { watchLaunchRequests } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests';
 import { trackerNodeApi } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
 
 export async function verifyLaunchWatchdogBoundary(
@@ -18,7 +20,8 @@ export async function verifyLaunchWatchdogBoundary(
 			kind: 'task',
 			status: 'open',
 			launch_target: 'harbor-mbp-2',
-			auto: 'fixture-request'
+			auto: 'fixture-request',
+			'note+': 'auto-launch requested on harbor-mbp-2'
 		}
 	});
 	advance(minute - 1);
@@ -89,7 +92,6 @@ export async function verifyHostLaunchOutcomes(
 		}
 	}
 }
-
 function seedUnlaunchableItems(runtime: TrackerNativeRuntimeService, database: DatabaseSync) {
 	const computer = runtime.store.node;
 	for (const [id, overrides] of [
@@ -109,6 +111,7 @@ function seedUnlaunchableItems(runtime: TrackerNativeRuntimeService, database: D
 				computer,
 				launch_target: computer,
 				launch_source: 'manual',
+				'note+': 'auto-launch requested on ' + computer,
 				...overrides
 			}
 		});
@@ -120,7 +123,6 @@ function seedUnlaunchableItems(runtime: TrackerNativeRuntimeService, database: D
 		)
 		.run(runtime.now(), runtime.now());
 }
-
 function launchReply(runtime: TrackerNativeRuntimeService, id: string) {
 	return trackerNodeApi(
 		new Request(`http://tracker-fixture.invalid/items/${id}/launch?outcome=run`, {
@@ -132,7 +134,6 @@ function launchReply(runtime: TrackerNativeRuntimeService, id: string) {
 		'fixture'
 	);
 }
-
 export async function verifyIdleCapacityQueue(
 	runtime: TrackerNativeRuntimeService,
 	database: DatabaseSync,
@@ -169,4 +170,49 @@ export async function verifyIdleCapacityQueue(
 			expect.objectContaining({ id: 'idle-task1', waiting_minutes: 3 })
 		])
 	});
+	const at = Date.parse(queued.updated_at) + 30 * 60_000;
+	watchLaunchRequests(runtime.store, at);
+	expect(
+		runtime
+			.watchdog!.alerts()
+			.some(({ kind, item_id }) => item_id === 'idle-task1' && kind === 'launch-queue-stuck')
+	).toBe(false);
+	watchLaunchRequests(runtime.store, at + 1);
+	expect(runtime.watchdog!.alerts()).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ item_id: 'idle-task1', kind: 'launch-queue-stuck' })
+		])
+	);
+	expect(watchLaunchRequests(runtime.store, at + 1)).toBe(false);
+	verifyUrgentQueueAlert(runtime);
+}
+export async function expectPaneRetained(
+	runtime: TrackerNativeRuntimeService,
+	signal: AbortSignal,
+	closed: string
+) {
+	await runtime.scheduler!.tick(signal);
+	expect(existsSync(closed)).toBe(false);
+}
+function verifyUrgentQueueAlert(runtime: TrackerNativeRuntimeService) {
+	const id = 'urgent0001';
+	const now = runtime.now();
+	runtime.store.appendLocal({
+		itemId: id,
+		fields: {
+			title: 'Urgent tester intake',
+			kind: 'task',
+			status: 'open',
+			priority: 'urgent',
+			adapter_due_owner: runtime.store.node,
+			due: new Date(now).toISOString()
+		}
+	});
+	const alerts = () => runtime.watchdog!.alerts().filter(({ item_id }) => item_id === id);
+	watchLaunchRequests(runtime.store, now + 15 * 60_000);
+	expect(alerts()).toEqual([]);
+	watchLaunchRequests(runtime.store, now + 15 * 60_000 + 1);
+	expect(alerts()).toMatchObject([
+		{ kind: 'urgent-launch-queue-stuck', reason: expect.stringContaining('15 minutes') }
+	]);
 }

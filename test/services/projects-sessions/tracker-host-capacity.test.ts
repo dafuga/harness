@@ -1,4 +1,5 @@
 import {
+	expectPaneRetained,
 	verifyHostLaunchOutcomes,
 	verifyIdleCapacityQueue
 } from '../../support/trackerLaunchOutcomeFixture';
@@ -18,7 +19,7 @@ import {
 } from '../../support/trackerManagedProcessFixture';
 
 const node = 'daniel-primary-mbp';
-const now = 1_800_000_000_000;
+const now = Date.parse('2026-11-25T12:00:00Z');
 
 test('honors the host cap while retaining finished panes and reporting a flagged request', () =>
 	measureWorkload(
@@ -32,7 +33,8 @@ async function proveHostCapacity(root: string) {
 	let clock = now;
 	const runtime = new TrackerNativeRuntimeService(db, {
 		...trackerNodeRuntime(writeConfig(root, undefined, true)),
-		now: () => clock
+		now: () => clock,
+		automaticEnabled: () => true
 	});
 	const signal = new AbortController().signal;
 	const closed = join(root, 'closed');
@@ -81,16 +83,6 @@ async function proveHostCapacity(root: string) {
 		db.close();
 	}
 }
-
-async function expectPaneRetained(
-	runtime: TrackerNativeRuntimeService,
-	signal: AbortSignal,
-	closed: string
-) {
-	await runtime.scheduler!.tick(signal);
-	expect(existsSync(closed)).toBe(false);
-}
-
 function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, flagged: boolean) {
 	runtime.store.appendLocal({
 		itemId: id,
@@ -101,6 +93,7 @@ function queueCapacityItem(runtime: TrackerNativeRuntimeService, id: string, fla
 			project: 'Harness',
 			auto: id,
 			launch_source: 'manual',
+			'note+': 'auto-launch requested on mac',
 			computer: node,
 			launch_target: node,
 			...(flagged && { needs_daniel: 1, question: 'Fixture question' })
@@ -117,7 +110,9 @@ function writeConfig(
 	const syncSecretFile = join(root, 'secret');
 	const tmux = join(root, 'tmux-fixture');
 	if (withTmux)
-		writeFileSync(tmux, `#!${process.execPath}\n${retainedTrackerTmuxFixture}`, { mode: 0o700 });
+		writeFileSync(tmux, `#!${process.execPath}\n${retainedTrackerTmuxFixture(now)}`, {
+			mode: 0o700
+		});
 	const config = join(root, 'node.json');
 	writeFileSync(driver, `#!${process.execPath}\n${driverProgram}`, { mode: 0o700 });
 	writeFileSync(syncSecretFile, 'synthetic-capacity-wire-key', { mode: 0o600 });
@@ -184,7 +179,8 @@ async function proveAdapterDueDisk(root: string) {
 	const config = writeConfig(root, { freePct: 5, freeGB: 1e12 });
 	const runtime = new TrackerNativeRuntimeService(database, {
 		...trackerNodeRuntime(config),
-		now: () => now
+		now: () => now,
+		automaticEnabled: () => true
 	});
 	const itemId = 'disk000001';
 	const signal = new AbortController().signal;
@@ -209,7 +205,11 @@ async function proveAdapterDueDisk(root: string) {
 		expect(runtime.scheduler!.runnerStatus().waiting_on).toMatch(/disk thresholds/);
 		runtime.store.appendLocal({
 			itemId,
-			fields: { auto: 'manual-token', launch_source: 'manual' }
+			fields: {
+				auto: 'manual-token',
+				launch_source: 'manual',
+				'note+': 'auto-launch requested on mac'
+			}
 		});
 		await runtime.scheduler!.tick(signal);
 		expect(database.prepare('SELECT state FROM runs').all()).toEqual([{ state: 'running' }]);

@@ -139,6 +139,9 @@ async function proveHandoff() {
 		expect(nudge).not.toHaveBeenCalled();
 		await trackerContextHandoffs(store, driver, scan(createdAt), signal);
 		await trackerContextHandoffs(store, driver, scan(createdAt), signal);
+		expect(nudge).not.toHaveBeenCalled();
+		store.appendLocal({ itemId, fields: { schedule_off: 0, needs_daniel: 0 } });
+		await trackerContextHandoffs(store, driver, scan(createdAt), signal);
 		expect(nudge).toHaveBeenCalledOnce();
 		expect(close).not.toHaveBeenCalled();
 		store.appendLocal({

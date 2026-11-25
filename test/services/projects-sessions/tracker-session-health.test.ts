@@ -28,36 +28,19 @@ async function proveRecovery() {
 	const database = new DatabaseSync(':memory:');
 	try {
 		const store = new TrackerPersistenceService(database, host, { now: () => now - 720_000 });
-		store.appendLocal({
-			itemId,
-			fields: {
-				title: 'Recoverable item',
-				status: 'in_progress',
-				kind: 'task',
-				computer: host,
-				notes: 'A short brief',
-				schedule_off: true,
-				needs_daniel: 1,
-				question: 'Please review the proposed wording when you have time.'
-			}
-		});
-		store.appendLocal({
-			itemId: queued,
-			fields: {
-				title: 'Stranded intent',
-				status: 'open',
-				kind: 'task',
-				computer: host,
-				auto: 'fixture-intent'
-			}
-		});
+		seedRecoveryItems(store);
 		const items = new TrackerItemReadRepository(store.database);
 		const item = items.getStored(itemId);
 		const orphan = observedPane('auto-noitem');
 		const issues = readTrackerSessionHealth(store, items.list(), [orphan], now);
 		expect(issues).toEqual(
 			expect.arrayContaining([
-				expect.objectContaining({ item_id: itemId, kind: 'missing', recover: true }),
+				expect.objectContaining({
+					item_id: itemId,
+					kind: 'missing',
+					recover: false,
+					reason: expect.stringContaining('automatic launch opted out')
+				}),
 				expect.objectContaining({
 					item_id: queued,
 					kind: 'launch-stuck',
@@ -69,7 +52,10 @@ async function proveRecovery() {
 		await verifyRecoveryRecheck(store, item);
 		store.appendLocal({
 			itemId,
-			fields: { question: 'Blocked: Cannot proceed without Daniel approving the release.' }
+			fields: {
+				needs_daniel: 1,
+				question: 'Blocked: Cannot proceed without Daniel approving the release.'
+			}
 		});
 		expect(readTrackerSessionHealth(store, items.list(), [], now)).toContainEqual(
 			expect.objectContaining({ item_id: itemId, kind: 'missing', recover: false })
@@ -110,7 +96,38 @@ async function verifyRecoveryRecheck(store: TrackerPersistenceService, item: Tra
 	expect(launch).not.toHaveBeenCalled();
 	driver.scan.mockResolvedValue([]);
 	expect(await recheckTrackerRecovery(request, item, launch, now)).toMatchObject({
+		status: 'held'
+	});
+	expect(launch).not.toHaveBeenCalled();
+	store.appendLocal({ itemId: item.id, fields: { schedule_off: 0, needs_daniel: 0 } });
+	expect(await recheckTrackerRecovery(request, item, launch, now)).toMatchObject({
 		status: 'ignored'
 	});
 	expect(launch).toHaveBeenCalledOnce();
+}
+
+function seedRecoveryItems(store: TrackerPersistenceService) {
+	store.appendLocal({
+		itemId,
+		fields: {
+			title: 'Recoverable item',
+			status: 'in_progress',
+			kind: 'task',
+			computer: host,
+			notes: 'A short brief',
+			schedule_off: true,
+			needs_daniel: 1,
+			question: 'Please review the proposed wording when you have time.'
+		}
+	});
+	store.appendLocal({
+		itemId: queued,
+		fields: {
+			title: 'Stranded intent',
+			status: 'open',
+			kind: 'task',
+			computer: host,
+			auto: 'fixture-intent'
+		}
+	});
 }

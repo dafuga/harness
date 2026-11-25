@@ -15,6 +15,8 @@ test('due intent uses a local-zone date, holds future or ineligible work and kee
 	});
 	const { changeItem, service, policy, runs } = fixture;
 	const due = { source: 'due', token: sampleToken } as const;
+	await verifyRecoveryGates(fixture);
+
 	changeItem({ due: '2026-11-21' });
 	expect(await service.request(sampleId, due)).toEqual({
 		status: 'held',
@@ -58,6 +60,44 @@ test('due intent uses a local-zone date, holds future or ineligible work and kee
 		intelligence: 'high'
 	});
 });
+
+async function verifyRecoveryGates({
+	changeItem,
+	service,
+	policy
+}: ReturnType<typeof dispatcherFixture>) {
+	const recovery = { source: 'recovery', token: 'resume', expectedAuto: null } as const;
+	for (const item of [
+		{ scheduleOff: true },
+		{ agent: 'cos' },
+		{ agent: 'dad' },
+		{ title: 'Remind Daniel tomorrow' },
+		{ title: 'Watch: next update' },
+		{ title: 'Approved PROD DEPLOY' },
+		{ kind: 'reminder' },
+		{ kind: 'plan' },
+		{ awaitingAnswer: true, question: 'What do you think?' },
+		{ parkedUntil: policy.now() + 60_000 },
+		{ status: 'blocked' as const },
+		{ status: 'done' as const }
+	]) {
+		changeItem({
+			status: 'in_progress',
+			kind: 'task',
+			agent: null,
+			title: 'Update synthetic fixture',
+			scheduleOff: false,
+			awaitingAnswer: false,
+			parkedUntil: 0,
+			...item
+		});
+		expect.soft(await service.request(sampleId, recovery), JSON.stringify(item)).not.toMatchObject({
+			status: 'requested'
+		});
+		changeItem({ launch: null });
+	}
+	changeItem({ status: 'open', parkedUntil: 0 });
+}
 
 test('a reachable denial beats local fallback, while a sole owner can start during an outage', async () => {
 	const fixture = dispatcherFixture({ due: { enabled: true, paused: false, localDue: true } });

@@ -99,14 +99,14 @@ appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
 }) + '\\n');
 `;
 
-export const retainedTrackerTmuxFixture = `
+export const retainedTrackerTmuxFixture = (at: number) => `
 const fs = require('node:fs');
 const path = require('node:path');
 const [,,, socket, command, ...args] = process.argv;
 const closed = path.join(__dirname, 'closed');
 const busy = path.join(__dirname, 'busy');
 const attached = Number(fs.existsSync(path.join(__dirname, 'attached')));
-const raw = 'auto-old008-r8|1800000000|71|%9|200|1800000000|2|2|0|0|0|' + attached + '|1|1|codex';
+const raw = 'auto-old008-r8|${at / 1000}|71|%9|200|${at / 1000}|2|2|0|0|0|' + attached + '|1|1|codex';
 if (socket !== 'default') process.exit(2);
 if (command === 'list-panes' || command === 'display-message') {
 	if (!fs.existsSync(closed)) process.stdout.write(raw + '\\n');
@@ -172,6 +172,7 @@ export function managedForegroundConfig(
 	writeFileSync(syncSecretFile, 'synthetic-host-worker-wire-key', { mode: 0o600 });
 	const config = {
 		version: 1,
+		autolaunch: { enabled: true },
 		node: 'daniel-primary-mbp',
 		role: 'hub',
 		apiPort: 49281,
