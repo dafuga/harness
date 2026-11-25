@@ -11,6 +11,7 @@ import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import { trackerChaseFields, trackerAskFields } from './serializeTrackerItem';
 import { trackerPlanningStage } from '../../../utils/projects-sessions/trackerPlanning';
+import { splitTrackerAsks, isStaleDecision } from './splitTrackerAsks';
 import type { StoredRecurringResult } from './buildTrackerDigest.types';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
@@ -25,6 +26,8 @@ export function buildTrackerDigest(
 	const groups: TrackerDigestGroups = {
 		blocked: [],
 		needs_daniel: [],
+		daniel_decisions: [],
+		pings: [],
 		overdue: [],
 		due_today: [],
 		recurring_missed: [],
@@ -36,6 +39,7 @@ export function buildTrackerDigest(
 		followThrough(groups, { row, item, nowMs, runs });
 		if (digestActive(row, nowMs)) groupActive(groups, row, item, { today, timeZone });
 	}
+	splitTrackerAsks(groups);
 	groups.chased_7d.sort((a, b) => (b.chased_at ?? '').localeCompare(a.chased_at ?? ''));
 	groups.queued.sort((a, b) => a.requested_at.localeCompare(b.requested_at));
 	return {
@@ -43,11 +47,15 @@ export function buildTrackerDigest(
 		local_time: `${localTime} ${timeZone}`,
 		today,
 		...groups,
-		counts: Object.fromEntries(
-			Object.entries(groups).map(([key, items]) => [key, items.length])
-		) as TrackerDigest['counts']
+		counts: {
+			...(Object.fromEntries(
+				Object.entries(groups).map(([key, items]) => [key, items.length])
+			) as Record<keyof TrackerDigestGroups, number>),
+			stale_decisions: groups.daniel_decisions.filter(isStaleDecision).length
+		}
 	};
 }
+
 function followThrough(
 	groups: TrackerDigestGroups,
 	{
