@@ -11,7 +11,6 @@ import type {
 	OverviewCard,
 	OverviewItem
 } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
-import { directAgentsOnly } from '../../../reports/src/lib/projects-sessions/hub-home/homeDirectAgents';
 import type { HomeFixtureState, MockupHomeData } from './hub-home-fixture.types';
 
 export const homeClock = Date.parse('2026-11-21T22:30:00.000Z');
@@ -183,8 +182,8 @@ function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {
 					]
 				: []
 	}));
-	// The Hub lists only the agents Daniel talks to; the rest become sub-agent session counts.
-	return directAgentsOnly(all);
+	// Home lists only the sessions Daniel controls; the rest are counted under them or shown as asks.
+	return all;
 }
 
 export function homeData(data: MockupHomeData): OwnerHomeSnapshot {

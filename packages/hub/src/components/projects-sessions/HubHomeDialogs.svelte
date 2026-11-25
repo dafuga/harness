@@ -17,6 +17,7 @@
 	import type {
 		HomeView,
 		OpenHomeSection,
+		ChangeSession,
 		ReadHomeProject,
 		SendHomeChat
 	} from './hubHomeView.types';
@@ -32,6 +33,7 @@
 		agentId,
 		open,
 		send,
+		changeSession,
 		receipt,
 		readProject,
 		reload,
@@ -42,6 +44,7 @@
 		agentId?: string;
 		open: OpenHomeSection;
 		send: SendHomeChat;
+		changeSession: ChangeSession;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 		readProject: ReadHomeProject;
 		reload: () => void;
@@ -113,7 +116,17 @@
 	{/snippet}
 	{#key selected}
 		{#if selected === 'agents'}
-			<HubHomeAgents agents={view.agents} {agentId} {send} {receipt} bind:chatOpen bind:chatName />
+			<HubHomeAgents
+				agents={view.agents}
+				asks={view.asks}
+				added={view.controlled}
+				{changeSession}
+				{agentId}
+				{send}
+				{receipt}
+				bind:chatOpen
+				bind:chatName
+			/>
 		{:else if selected === 'plans'}
 			<HubHomePlans
 				plans={view.plans}

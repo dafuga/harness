@@ -66,6 +66,11 @@
 				"description": "Submits the agent note or answer to the owner chat queue and returns its receipt."
 			},
 			{
+				"name": "HubHomeDialogs.changeSession",
+				"type": "ChangeSession",
+				"required": true
+			},
+			{
 				"name": "HubHomeDialogs.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
 				"required": true,

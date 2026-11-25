@@ -7,7 +7,7 @@ import type {
 import type { HomeAgent, HomeAgentTask, HomeMessage } from './hubHome.types';
 import { homeAskFields } from './homeAskOptions';
 import { homeText, openQuestion } from './homeTrackerText';
-import { directAgentsOnly, noSubAgents } from './homeDirectAgents';
+import { noSubAgents } from './homeDirectAgents';
 
 const precedence: Record<HomeAgent['state'], number> = {
 	'needs-you': 0,
@@ -109,7 +109,8 @@ function liveTasks(card: OverviewCard, sources: TrackerSources): HomeAgentTask[]
 
 export function buildHomeAgents(overview: OverviewSnapshot, sources: TrackerSources): HomeAgent[] {
 	if (overview.status !== 'ready') return [];
-	return directAgentsOnly(overview.projects.map((card) => homeAgent(card, sources)))
+	return overview.projects
+		.map((card) => homeAgent(card, sources))
 		.sort(
 			(left, right) =>
 				precedence[left.state] - precedence[right.state] || left.name.localeCompare(right.name)

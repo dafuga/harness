@@ -3,7 +3,7 @@ import {
 	homeProviders,
 	homeRunPayload
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
-import { directAgentsOnly } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
+import { controlledIdPattern } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
 
@@ -81,9 +81,8 @@ const snapshot = z.object({
 });
 
 export function parseHomePayload(value: unknown) {
-	const parsed = snapshot.parse(value);
-	// Older Mac apps publish every Tracker project as an agent; only direct agents are listed.
-	const result = { ...parsed, agents: directAgentsOnly(parsed.agents) };
+	// Every Tracker project is kept; Home lists the user-controlled ones when it is read.
+	const result = snapshot.parse(value);
 	const overview = parseOverviewPayload(JSON.stringify(result.overview));
 	return { ...result, overview };
 }
@@ -112,3 +111,7 @@ export const chatOutcome = z
 		status: z.enum(['sent', 'refused', 'unconfirmed'])
 	})
 	.strict();
+
+/** A Tracker agent value Daniel adds or removes as a session he controls himself. */
+export const controlledChange = z.object({ id: z.string().regex(controlledIdPattern) });
+export const controlledIds = z.array(z.string().regex(controlledIdPattern)).max(20);
