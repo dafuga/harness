@@ -56,6 +56,50 @@ beforeEach(() => {
 	});
 });
 
+function seedBlockerNotes() {
+	const { database } = fixture;
+	const note = database.prepare('INSERT INTO item_notes (item_id, hlc, text) VALUES (?, ?, ?)');
+	insertItem(database, { id: 'new001', title: 'Note-only credential', status: 'in_progress' });
+	note.run('new001', clock(2 * HOUR), 'BLOCKED: missing credential for the sandbox');
+	note.run('new001', clock(HOUR), 'watchdog launch-queue-stuck: launch has been queued');
+	insertItem(database, {
+		id: 'new002',
+		title: 'Legacy note-only wait',
+		status: 'in_progress',
+		notes: 'Awaits approval from Daniel'
+	});
+	insertItem(database, { id: 'new003', title: 'Recovered', status: 'in_progress' });
+	note.run('new003', clock(HOUR), 'BLOCKED: missing credential');
+	note.run('new003', clock(0), 'Access restored and work resumed');
+	insertItem(database, {
+		id: 'new004',
+		title: 'Already flagged',
+		status: 'in_progress',
+		needs_daniel: 1,
+		question: 'Which option should we pick?',
+		notes: 'BLOCKED: cannot run tests'
+	});
+	insertItem(database, {
+		id: 'new005',
+		title: 'Ordinary progress',
+		status: 'in_progress',
+		notes: 'Fixed a test that awaits a promise'
+	});
+	insertItem(database, {
+		id: 'new006',
+		title: 'Missing access',
+		status: 'in_progress',
+		notes: 'Missing credential for API access'
+	});
+	insertItem(database, {
+		id: 'new007',
+		title: 'Parked',
+		status: 'in_progress',
+		parked_until: new Date(NOW + HOUR).toISOString(),
+		notes: 'BLOCKED: waiting on a reply'
+	});
+}
+
 afterEach(() => fixture.database.close());
 
 test('types, routes, ages and groups every blocked item and Daniel ask', () => {
@@ -91,6 +135,16 @@ test('rechecks a blocker whose dependency is done', () => {
 });
 
 test('counts what still needs escalation and what is stale', () => {
+	seedBlockerNotes();
 	const inbox = fixture.repository.blockers(NOW);
-	expect(inbox).toMatchObject({ total: 4, unescalated: 1, stale: 1 });
+	const notes = inbox.groups.flatMap(({ items }) => items).filter(({ kind }) => kind === 'note');
+	expect(notes.map(({ id }) => id).sort()).toEqual(['new001', 'new002', 'new006']);
+	expect(notes.find(({ id }) => id === 'new001')).toMatchObject({
+		action: 'BLOCKED: missing credential for the sandbox',
+		type: 'credential_access',
+		age_minutes: 120,
+		escalated: false,
+		needs_escalation: true
+	});
+	expect(inbox.total).toBe(7);
 });

@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-25T17:43:36.580Z","name":"tracker-blocker-notes","goal":"List unresolved blocker notes on in-progress items with no open flag","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-25T17:44:35.173Z","loop":"tracker-blocker-notes","step":"spec","evidence":"The existing blockers query selects blocked or flagged rows only. In-progress rows with a current blocker note and no flag should appear in the inbox."}
+{"event":"step.completed","timestamp":"2026-11-25T17:44:36.462Z","loop":"tracker-blocker-notes","step":"coverage","evidence":"Extended the repository method case and local blockers sync API case with note-only, legacy, recovered, parked and already flagged rows."}

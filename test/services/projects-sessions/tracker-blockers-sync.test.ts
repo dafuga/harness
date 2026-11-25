@@ -47,12 +47,21 @@ test('sync puts a credential blocker on Needs Daniel once, and leaves a technica
 		needs_daniel: false
 	});
 	database.prepare('UPDATE items SET needs_daniel = 0 WHERE id = ?').run(credential);
+	const noteOnly = await add('Needs sandbox access');
+	await call(`/items/${noteOnly}/start`, 'POST');
+	await call(`/items/${noteOnly}/note`, 'POST', { text: 'Missing credential for the sandbox' });
 	const before = await (await call('/blockers')).json();
-	expect(before).toMatchObject({ total: 2, unescalated: 1 });
+	expect(before).toMatchObject({ total: 3, unescalated: 2 });
 
 	const synced = await (await call('/blockers/sync', 'POST')).json();
 	expect(synced).toMatchObject({ escalated: [credential], rechecked: [] });
-	expect(synced.blockers.unescalated).toBe(0);
+	expect(synced.blockers.unescalated).toBe(1);
+	const notes = synced.blockers.groups.flatMap(({ items }: { items: unknown[] }) => items);
+	expect(notes).toContainEqual(expect.objectContaining({ id: noteOnly, kind: 'note' }));
+	expect(await (await call(`/items/${noteOnly}`)).json()).toMatchObject({
+		status: 'in_progress',
+		needs_daniel: false
+	});
 	const item = await (await call(`/items/${credential}`)).json();
 	expect(item).toMatchObject({
 		needs_daniel: true,
