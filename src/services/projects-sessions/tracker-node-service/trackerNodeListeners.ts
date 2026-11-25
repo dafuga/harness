@@ -3,6 +3,7 @@ import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { stopTrackerRun, trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
 import { readTrackerNodeInspection } from './readTrackerNodeInspection';
+import { serveTrackerChanges } from '../tracker-change-feed/serveTrackerChanges';
 
 const host = '127.0.0.1';
 const nativePrefix = '/native/v1';
@@ -119,6 +120,8 @@ function trackerOperationalApi(
 	switch (`${request.method} ${path}`) {
 		case 'GET /watchdog/dry-run':
 			return trackerWatchdogDryRun(request, runtime);
+		case 'GET /changes':
+			return serveTrackerChanges(request, runtime.store);
 		case 'GET /needs-attention':
 		case 'GET /watchdog/alerts':
 			return Response.json(runtime.watchdog?.alerts() ?? []);

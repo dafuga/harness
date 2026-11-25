@@ -31,6 +31,7 @@ export class TrackerOverviewPublisher {
 	private flight: Promise<void> | null = null;
 	private epoch = 0;
 	private running = false;
+	private nudged = false;
 	/** The authority version whose connection was refused or is not the owner; no flight runs for it. */
 	private blocked: number | null = null;
 
@@ -62,8 +63,17 @@ export class TrackerOverviewPublisher {
 		if (!this.running) return Promise.resolve();
 		this.flight ??= this.publish(this.epoch).finally(() => {
 			this.flight = null;
+			if (!this.nudged) return;
+			this.nudged = false;
+			void this.tick();
 		});
 		return this.flight;
+	}
+
+	/** Publishes now because something changed; a flight already under way is followed by another. */
+	nudge(): void {
+		if (this.flight) this.nudged = true;
+		else void this.tick();
 	}
 
 	private async publish(epoch: number): Promise<void> {

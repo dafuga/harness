@@ -1,4 +1,5 @@
 // @harness-uid u_u3ui3ii2hx
+import type { TrackerChangeEvent } from '$reports/lib/projects-sessions/realtime/realtime.types';
 import type { LocalClientOptions } from './LocalClientService.types';
 import { hostname } from 'node:os';
 import {
@@ -106,7 +107,10 @@ export class LocalClientService {
 			framing.reset();
 		});
 	}
-	emit(channel: WireChannel, value: RunEvent | CacheStatus | RemoteConnectionEvent): void {
+	emit(
+		channel: WireChannel,
+		value: RunEvent | CacheStatus | RemoteConnectionEvent | TrackerChangeEvent
+	): void {
 		this.wire.emit(channel, value);
 	}
 	/** The runs of this window. Runs of phones and of other windows are not touched. */

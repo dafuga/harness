@@ -5,7 +5,7 @@ import { appendChain, readChain } from './syncChain';
 import { enroll } from './syncEnroll';
 import { putGrants, readGrants } from './syncGrants';
 import { isDeviceId, SYNC_PREFIX, syncProblem } from './syncHttp';
-import { live } from './syncLive';
+import { foreignOrigin, live, protocolDevice } from './syncLive';
 import { getObject, listObjects, putObject } from './syncObjects';
 import { postOps, readOps } from './syncOps';
 
@@ -53,9 +53,12 @@ async function dispatch(request: Request, deps: SyncDeps): Promise<Response> {
 	if (!route) return syncProblem(405, 'method-not-allowed');
 	if (!route.parts.includes(parts.length) || parts.includes(''))
 		return syncProblem(404, 'not-found');
+	const upgrade = parts[0] === 'live';
+	if (upgrade && foreignOrigin(request, url)) return syncProblem(403, 'origin-denied');
 	const session = deps.sessions ? await deps.sessions.resolve(request) : null;
 	if (!session) return syncProblem(401, 'session-required');
-	const device = request.headers.get('X-Harness-Device');
+	const named = request.headers.get('X-Harness-Device');
+	const device = named ?? (upgrade ? protocolDevice(request) : null);
 	if (!isDeviceId(device)) return syncProblem(400, 'device-required');
 	const call = {
 		request,
