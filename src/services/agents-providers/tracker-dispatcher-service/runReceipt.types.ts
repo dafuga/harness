@@ -60,6 +60,12 @@ export interface TrackerSessionEvidence {
 	tmux?: string;
 }
 
+export interface TrackerFinalReportEvent {
+	type: 'final-report';
+	outcome: 'blocked' | 'abandoned';
+	reason: string;
+}
+
 export type TrackerDispatchEvent =
 	| { type: 'session'; session: TrackerSessionEvidence }
 	| {
@@ -75,4 +81,6 @@ export type TrackerDispatchEvent =
 	| { type: 'never-started' }
 	| { type: 'verified'; passed: boolean; reason?: string; usage?: TrackerReceiptUsage }
 	| { type: 'resume'; session: TrackerSessionEvidence }
+	| { type: 'answered-without-session' }
+	| TrackerFinalReportEvent
 	| { type: 'reject'; reason: string };

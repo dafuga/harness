@@ -3,7 +3,6 @@ import type { TrackerNativeRuntimeService } from '../../src/services/projects-se
 import type { DatabaseSync } from 'node:sqlite';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect } from 'vitest';
 
 export const fixtureDockerImage = 'sha256:' + 'a'.repeat(64);
 
@@ -134,18 +133,6 @@ export function seedRetainedRuns(db: DatabaseSync, now: number) {
 			'auto-old00' + id + '-r' + id
 		);
 	}
-}
-
-export async function startLinkedItem(runtime: TrackerNativeRuntimeService) {
-	runtime.store.appendLocal({
-		itemId: 'linked0001',
-		fields: { title: 'Work started from the retained pane', kind: 'task', status: 'open' }
-	});
-	const request = new Request('http://tracker-fixture.invalid/items/linked0001/start', {
-		method: 'POST',
-		body: JSON.stringify({ session_run: '8' })
-	});
-	expect((await runtime.items.handle(request)).ok).toBe(true);
 }
 
 export function managedTrackerItemRequest(

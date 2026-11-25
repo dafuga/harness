@@ -182,6 +182,20 @@ function unattendedTitleOrAgentHold({
 		: null;
 }
 
+export const finalReportPrefix = 'Final report:';
+
+/** A session that reported and stopped stays stopped until something changes on its item. */
+export function finalReportHold(
+	run: { outcome?: string | null; failure_reason?: string | null; ended_at?: number | null },
+	changedAt: number
+): string | null {
+	return run.outcome === 'abandoned' &&
+		run.failure_reason?.startsWith(finalReportPrefix) &&
+		changedAt <= (run.ended_at ?? 0)
+		? 'the last session ended with a final report'
+		: null;
+}
+
 export function trackerReminderTitle(title: string) {
 	return reminderTitle.test(title);
 }
