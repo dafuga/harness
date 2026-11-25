@@ -4,7 +4,7 @@
 	"uid": "u_6owiaffoxw",
 	"kind": "function",
 	"title": "classifyTrackerTask",
-	"responsibility": "Classify Tracker work, identify its automatic model route and eligibility, and set initial Sol effort.",
+	"responsibility": "Classify Tracker work, identify its automatic model route, eligibility and explicit hardness, and set initial Sol effort.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -21,6 +21,8 @@
 			"isHarnessModule",
 			"isVisualInspection",
 			"solEffort",
+			"isExplicitlyHard",
+			"isLightClaudeWork",
 			"TrackerModelItem",
 			"TrackerTaskKind",
 			"TrackerTaskSize",
@@ -83,6 +85,30 @@
 				"type": "TrackerTaskSize",
 				"required": true,
 				"description": "Estimated work size retained for existing callers. Initial effort depends on difficulty."
+			},
+			{
+				"name": "isExplicitlyHard.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item whose title or notes may carry an explicit hard marker."
+			},
+			{
+				"name": "isLightClaudeWork.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item whose title may describe a watch, reminder or check."
+			},
+			{
+				"name": "isLightClaudeWork.kind",
+				"type": "TrackerTaskKind",
+				"required": true,
+				"description": "Classified work type: docs, tests and small chores qualify."
+			},
+			{
+				"name": "isLightClaudeWork.size",
+				"type": "TrackerTaskSize",
+				"required": true,
+				"description": "Estimated work size; only small chores qualify as mechanical units."
 			}
 		],
 		"outputs": [
@@ -110,6 +136,16 @@
 				"name": "isHarnessModule",
 				"type": "boolean",
 				"description": "Whether this item qualifies as Harness module work."
+			},
+			{
+				"name": "isExplicitlyHard",
+				"type": "boolean",
+				"description": "True when the title or notes mark the work hard."
+			},
+			{
+				"name": "isLightClaudeWork",
+				"type": "boolean",
+				"description": "True for tests, docs, small mechanical chores and watch or check items."
 			},
 			{
 				"name": "isVisualInspection",
@@ -295,6 +331,58 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "isExplicitlyHard",
+				"inputs": [
+					{
+						"name": "isExplicitlyHard.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item whose title or notes may carry an explicit hard marker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isExplicitlyHard",
+						"type": "boolean",
+						"description": "True when the title or notes mark the work hard."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isLightClaudeWork",
+				"inputs": [
+					{
+						"name": "isLightClaudeWork.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item whose title may describe a watch, reminder or check."
+					},
+					{
+						"name": "isLightClaudeWork.kind",
+						"type": "TrackerTaskKind",
+						"required": true,
+						"description": "Classified work type: docs, tests and small chores qualify."
+					},
+					{
+						"name": "isLightClaudeWork.size",
+						"type": "TrackerTaskSize",
+						"required": true,
+						"description": "Estimated work size; only small chores qualify as mechanical units."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isLightClaudeWork",
+						"type": "boolean",
+						"description": "True for tests, docs, small mechanical chores and watch or check items."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

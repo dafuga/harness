@@ -19,6 +19,8 @@ export interface TrackerLadderConfig {
 	autolaunch?: {
 		ladder?: readonly (Partial<TrackerModelRung> & Pick<TrackerModelRung, 'id' | 'model'>)[];
 		learning?: TrackerLearningConfig;
+		/** ISO time of the Codex weekly reset; automatic routing is Claude-only before it. */
+		claudeOnlyUntil?: string;
 	};
 }
 

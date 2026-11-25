@@ -77,6 +77,8 @@ const liveTargetField = new RegExp(
 );
 const computerUse =
 	/^\[?computer[- ]use\b|\b(?:use|using|via|requires?)\s+(?:codex\s+)?computer[- ]use\b|^(?:please\s+)?(?:open|visit|navigate|browse|interact|click|tap|use|manually (?:test|verify|check))\b[^.!?\n;]*\b(?:browser|chrome|safari|firefox|edge|desktop app|mobile app|iphone|ipad)\b/i;
+const qaVideo =
+	/\bqa\s+(?:videos?|recordings?)\b|^(?:please\s+)?(?:record|capture|make|produce|create)\b[^.!?\n;]*\b(?:videos?|screen\s+recordings?)\b/i;
 const visualDesign =
 	/^(?:mock[ -]?ups?|wireframes?|designs? for|visual (?:polish|designs?)|screenshot review|review (?:the )?designs)\b|\b(?:design|redesign|build|create|draw|generate|review|revise|prepare|polish|restyle)\b[^.!?\n;]*\b(?:mock[ -]?ups?|wireframes?|visual (?:designs?|polish))\b|\b(?:design|redesign|polish|restyle)\b[^.!?\n;]*\b(?:screens?|ui|dashboard|pages?|views?|layout|components?)\b/i;
 
@@ -93,7 +95,7 @@ export function trackerTaskRoute(item: TrackerModelItem): TrackerTaskRoute {
 		(releaseVerb.test(title.trim()) && liveTargetField.test(details))
 	)
 		return 'live-deploy';
-	if (actions.some((part) => computerUse.test(part))) return 'computer-use';
+	if (actions.some((part) => computerUse.test(part) || qaVideo.test(part))) return 'computer-use';
 	if (
 		actions.some((part) => visualDesign.test(part)) ||
 		isVisualInspection(item) ||
@@ -150,4 +152,28 @@ export function isVisualInspection(item: TrackerModelItem): boolean {
 
 export function solEffort(kind: TrackerTaskKind, _size: TrackerTaskSize): string {
 	return kind === 'hard' ? 'high' : 'medium';
+}
+
+const explicitHard = /\[hard\]|\bhard (?:bug|problem|debugging|design)\b/i;
+
+/** Daniel marked the work hard; a keyword guess does not count. */
+export function isExplicitlyHard(item: TrackerModelItem): boolean {
+	return explicitHard.test(item.title ?? '') || /\[hard\]/i.test(item.notes ?? '');
+}
+
+const watchWork =
+	/^\W*(?:watch|monitor|remind|babysit|poll)\b|\b(?:reminder|watch item)\b|^\W*(?:run|verify|confirm)\b[^.!?\n;]*\b(?:tests?|checks?|ci|lint|typecheck)\b/i;
+
+/** Tests, docs, clear pass/fail checks, small mechanical units and watch items. */
+export function isLightClaudeWork(
+	item: TrackerModelItem,
+	kind: TrackerTaskKind,
+	size: TrackerTaskSize
+): boolean {
+	if (kind === 'docs' || kind === 'test') return true;
+	if (kind === 'chore') return size === 'small';
+	return (
+		(kind === 'triage' || kind === 'feature' || kind === 'bugfix') &&
+		watchWork.test(item.title ?? '')
+	);
 }

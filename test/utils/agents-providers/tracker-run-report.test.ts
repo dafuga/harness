@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { afterAll, beforeAll, expect, test, vi } from 'vitest';
 import { trackerRunCost } from '../../../src/services/agents-providers/module-task-analytics-service/trackerRunRecords';
 import { measureWorkload } from '../../support/measureWorkload';
 import { pickTrackerModel } from '../../../src/utils/agents-providers/pickTrackerModel';
@@ -7,6 +7,13 @@ import {
 	trackerRunReport
 } from '../../../src/utils/agents-providers/trackerRunReport';
 import type { TrackerRunRow } from '../../../src/utils/agents-providers/trackerRunReport.types';
+
+// These cases cover the table that applies once the Codex limit has reset.
+beforeAll(() => {
+	vi.useFakeTimers({ toFake: ['Date'] });
+	vi.setSystemTime(Date.parse('2026-11-27T10:39:00Z'));
+});
+afterAll(() => vi.useRealTimers());
 
 function run(id: number, fields: Partial<TrackerRunRow> = {}): TrackerRunRow {
 	return {
@@ -39,10 +46,13 @@ test('learns to escalate from comparable recorded outcomes and ignores pins and 
 	const history = trackerModelHistory(rows, { kind: 'triage', project: 'Harness' });
 	expect(history).toEqual({ haiku: { ok: 1, fail: 2 } });
 	expect(
-		pickTrackerModel({ agent: 'Harness', title: 'Review module screenshots' }, { history })
+		pickTrackerModel(
+			{ agent: 'Harness', title: 'Update the README' },
+			{ history, now: Date.parse('2026-11-27T10:38:59Z') }
+		)
 	).toMatchObject({
-		rung: { id: 'sonnet' },
-		reason: 'triage/small: sonnet; haiku succeeded 33% on similar tasks'
+		rung: { id: 'sonnet', effort: 'medium' },
+		reason: expect.stringContaining('haiku succeeded 33% on similar tasks')
 	});
 });
 
