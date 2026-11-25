@@ -1,0 +1,43 @@
+{
+	"name": "hub-sealed-home",
+	"goal": "Prove ciphertext-only scoped storage, cached transcript before network, delta and live delivery with a verified browser enrollment, and browser latency budget",
+	"createdAt": "2026-11-25T17:36:38.295Z",
+	"updatedAt": "2026-11-25T17:37:28.867Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T17:37:28.867Z",
+			"evidence": "Approved design #310; compare existing Home and an enrolled browser with the same synthetic workload, verify offline first text, then delta and authenticated live output. Existing Home has no transcript action."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
