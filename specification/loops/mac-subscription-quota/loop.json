@@ -2,7 +2,7 @@
 	"name": "mac-subscription-quota",
 	"goal": "Read real Claude and Codex subscription quota on each Mac without exposing credentials. Prove only normalized readings travel over the authenticated encrypted Home route and unknown or stale readings never drive provider selection.",
 	"createdAt": "2026-11-25T17:54:49.338Z",
-	"updatedAt": "2026-11-25T18:13:45.010Z",
+	"updatedAt": "2026-11-25T18:22:03.580Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -26,7 +26,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T18:22:03.580Z",
+			"evidence": "Five unchanged parser/cache contracts passed after initial failing scaffold; the authorized device decrypted the quota while balance and reset canaries were absent from transport packets. Three native Home viewports and the iPhone attachment/revocation case passed in a compiled renderer at 2c9cfe8a00 on harbor-mbp-2, after their documented missing-control failures. Synthetic provider fixtures were used for screenshots."
 		},
 		{
 			"id": "verify",

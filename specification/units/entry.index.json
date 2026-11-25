@@ -199,8 +199,6 @@
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
 			"TrackerSupervisorService",
-			"QuotaCodexAdapter",
-			"QuotaClaudeAdapter",
 			"SubscriptionQuotaService"
 		]
 	},
@@ -226,16 +224,6 @@
 		},
 		{
 			"unit": "adapter.agents-providers-provider-session",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "adapter.agents-providers-quota-claude",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
-			"unit": "adapter.agents-providers-quota-codex",
 			"via": "reexport",
 			"origin": "derived"
 		},

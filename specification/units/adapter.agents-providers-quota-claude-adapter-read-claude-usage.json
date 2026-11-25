@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.ts"],
-		"symbols": ["readClaudeUsage"]
+		"source": [
+			"src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.ts",
+			"src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.types.ts"
+		],
+		"symbols": ["readClaudeUsage", "Tmux"]
 	},
 	"contract": {
 		"origin": "derived",

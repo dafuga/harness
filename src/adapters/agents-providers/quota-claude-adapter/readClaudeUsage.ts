@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { promisify } from 'node:util';
 import { quotaProcessEnvironment } from '../quotaProcessEnvironment';
+import type { Tmux } from './readClaudeUsage.types';
 
 const exec = promisify(execFile);
 const composer = /^\s*❯\s*$/m;
@@ -21,8 +22,6 @@ const args = [
 	'--tools',
 	''
 ];
-
-type Tmux = (...args: string[]) => Promise<string>;
 
 /** Uses a private server and a dedicated folder. No terminal output or auth response is logged. */
 export async function readClaudeUsage(): Promise<string> {
