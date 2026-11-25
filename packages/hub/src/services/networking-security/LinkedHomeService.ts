@@ -1,6 +1,7 @@
 // @harness-uid u_ppvcb4vola
 import type { RemoteAccountComputer } from '../../../../remote/src/models/networking-security/RemoteControl.types';
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import { directHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { mergeHomeSnapshots } from '../../components/projects-sessions/hubHomeMerge';
 import { parseHomePayload } from '../../routes/api/hub-home/homePayload';
 import type { BrowserApi } from '../../utils/browserApi';
@@ -52,7 +53,7 @@ export class LinkedHomeService {
 		return {
 			linked: computers.length,
 			answered: snapshots.length,
-			snapshot: mergeHomeSnapshots(snapshots)
+			snapshot: mergeHomeSnapshots(snapshots.map(directHomeSnapshot))
 		};
 	}
 

@@ -31,7 +31,15 @@ function withLiveWork(winner: HomeAgent, entries: HomeAgent[]): HomeAgent {
 	return {
 		...winner,
 		sessions: Math.max(...entries.map((entry) => entry.sessions)),
-		tasks: [...tasks.values()].slice(0, 5)
+		tasks: [...tasks.values()].slice(0, 5),
+		subAgents: {
+			sessions: Math.max(...entries.map((entry) => entry.subAgents.sessions)),
+			tasks: [
+				...new Map(
+					entries.flatMap((entry) => entry.subAgents.tasks).map((task) => [task.itemId, task])
+				).values()
+			].slice(0, 5)
+		}
 	};
 }
 

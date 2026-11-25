@@ -7,6 +7,7 @@ import type {
 import type { HomeAgent, HomeAgentTask, HomeMessage } from './hubHome.types';
 import { homeAskFields } from './homeAskOptions';
 import { homeText, openQuestion } from './homeTrackerText';
+import { directAgentsOnly, noSubAgents } from './homeDirectAgents';
 
 const precedence: Record<HomeAgent['state'], number> = {
 	'needs-you': 0,
@@ -71,6 +72,7 @@ function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
 		state: agentState(card, isOffline(sources, machine)),
 		sessions: card.liveSessions,
 		tasks: liveTasks(card, sources),
+		subAgents: noSubAgents(),
 		itemId: item?.id ?? null,
 		task: homeText(item?.title, 500) ?? 'No current Tracker item',
 		machine: homeText(machine, 200),
@@ -107,8 +109,7 @@ function liveTasks(card: OverviewCard, sources: TrackerSources): HomeAgentTask[]
 
 export function buildHomeAgents(overview: OverviewSnapshot, sources: TrackerSources): HomeAgent[] {
 	if (overview.status !== 'ready') return [];
-	return overview.projects
-		.map((card) => homeAgent(card, sources))
+	return directAgentsOnly(overview.projects.map((card) => homeAgent(card, sources)))
 		.sort(
 			(left, right) =>
 				precedence[left.state] - precedence[right.state] || left.name.localeCompare(right.name)

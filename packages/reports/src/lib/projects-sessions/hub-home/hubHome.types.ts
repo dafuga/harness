@@ -40,6 +40,8 @@ export interface HomeAgent {
 	sessions: number;
 	/** The tasks with a live run, newest first, at most five. */
 	tasks: HomeAgentTask[];
+	/** Live sessions and tasks of the sub-agents working under this agent, never listed as agents themselves. */
+	subAgents: { sessions: number; tasks: HomeAgentTask[] };
 	itemId: string | null;
 	task: string;
 	machine: string | null;

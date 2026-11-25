@@ -10,6 +10,7 @@
 		agentLabels,
 		count,
 		isWorking,
+		agentSessions,
 		currentAgent,
 		initials,
 		overviewTone,
@@ -42,7 +43,9 @@
 	const attention = $derived(
 		view.agents?.filter((agent) => agent.state === 'needs-you').length ?? 0
 	);
-	const sessions = $derived(view.agents?.reduce((sum, agent) => sum + agent.sessions, 0) ?? 0);
+	const sessions = $derived(
+		view.agents?.reduce((sum, agent) => sum + agentSessions(agent), 0) ?? 0
+	);
 	const idle = $derived(
 		view.agents?.filter((agent) => !isWorking(agent) && agent.state !== 'needs-you').length ?? 0
 	);

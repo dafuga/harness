@@ -14,11 +14,12 @@ const migration = readFileSync(
 const url = ORIGIN + '/api/hub-home';
 const id = '548e9822-86b2-4b55-9a7f-beedac7525b8';
 const agent = {
-	id: 'synthetic-project',
-	name: 'Synthetic project',
+	id: 'cos',
+	name: 'Chief of Staff',
 	state: 'needs-you',
 	sessions: 0,
 	tasks: [],
+	subAgents: { sessions: 0, tasks: [] },
 	itemId: 'item-1',
 	task: 'Choose wording',
 	machine: null,
@@ -131,6 +132,38 @@ test('the browser owner queues one scoped message, only native claims it, and a 
 		const browser = await serve(homeRequest('GET', { cookie }, `/chat?id=${id}`));
 		expect(await browser.json()).toEqual({ id, status: 'sent' });
 		expect((await serve(homeRequest('GET', { cookie: other }, `/chat?id=${id}`))).status).toBe(404);
+	} finally {
+		await close();
+	}
+});
+
+test('the Hub lists only direct agents, and counts the sub-agents running under them', async () => {
+	const { db, close } = await sheets();
+	try {
+		const fixture = overviewFixture();
+		const serve = (request: Request) => serveHubHome(request, { ...fixture.homeDeps(), db });
+		const cookie = await fixture.browser();
+		const bearer = await fixture.native();
+		const sub = (name: string, sessions: number) => ({
+			...agent,
+			id: name,
+			name,
+			state: 'working',
+			sessions,
+			itemId: null,
+			question: null
+		});
+		// An older Mac app publishes every Tracker project as an agent, without sub-agent counts.
+		const legacy = { ...payload, agents: [sub('harbor', 2), agent, sub('nudge', 1)] };
+		await serve(homeRequest('PUT', { bearer }, '', legacy));
+		const read = (await (await serve(homeRequest('GET', { cookie }))).json()) as {
+			snapshot: { agents: { name: string; state: string; subAgents: { sessions: number } }[] };
+		};
+		expect(read.snapshot.agents.map((entry) => entry.name)).toEqual(['Chief of Staff']);
+		expect(read.snapshot.agents[0]).toMatchObject({
+			state: 'needs-you',
+			subAgents: { sessions: 3 }
+		});
 	} finally {
 		await close();
 	}
