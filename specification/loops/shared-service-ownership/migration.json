@@ -2211,15 +2211,21 @@
 			"unit": "command.loop",
 			"from": "src/commands/loop.ts",
 			"to": "src/cli/program/loop.ts",
-			"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
+			"definition": "68b0c27101cababf9923d3c384b1b44dfb4e46f2fee4d7cc5c6778a71cc9c582",
 			"relocationDefinition": "f4704c6ab8a779e681e90ae7d8f18e9606693fc44eded629342354c860663bf2",
 			"review": {
-				"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
+				"commit": "3da22b94ae7280c9a6fdbfc249f2fe26c0329aaa",
 				"path": "src/cli/program/loop.ts",
-				"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
-				"reason": "Register the loop siblings and review-bugs commands alongside the existing loop commands."
+				"definition": "68b0c27101cababf9923d3c384b1b44dfb4e46f2fee4d7cc5c6778a71cc9c582",
+				"reason": "Register security initialization, scan, revalidation, and repair preparation under the existing loop command."
 			},
 			"previousReviews": [
+				{
+					"commit": "6a64ad41350d11e2360f6d8b4f01a85035fcd927",
+					"path": "src/cli/program/loop.ts",
+					"definition": "2de34a44084c28ef32c0fc5da7bfa238cd36cf909bfede891f0140e08f1857ec",
+					"reason": "Register the loop siblings and review-bugs commands alongside the existing loop commands."
+				},
 				{
 					"commit": "ea51bbcbf69c324dd7913254e50715cdf24e6278",
 					"path": "src/cli/program/loop.ts",

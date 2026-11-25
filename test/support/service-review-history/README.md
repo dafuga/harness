@@ -90,3 +90,6 @@ Google sign-in retains implementation commit `58700be943` for the native account
 Hub handoff and device storage changes, and the iOS account adapter.
 
 Hub Home live sessions retains implementation commit `32f91c2f7` for the read-only homeSnapshot device method in the desktop device session and operations services.
+
+Security review retains implementation commit `3da22b94ae` for registering the loop security
+subcommands while preserving the earlier loop command reviews.
