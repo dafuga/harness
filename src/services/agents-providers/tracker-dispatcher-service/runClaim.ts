@@ -47,10 +47,19 @@ export function claimLaunch(
 		return skip('held', 'launch token was already claimed');
 	const hold = claimHold(snapshot, { item, grant }, policy, now);
 	if (hold) return skip('held', hold);
-	const pick = pickTrackerMediaModel(item) ?? item.launch.scheduledPick ?? policy.pickModel(item);
-	const problem = policy.admit(item, item.launch, 'error' in pick ? null : pick.rung);
+	return admitClaim(snapshot, item, { policy, now });
+}
+
+function admitClaim(
+	snapshot: TrackerDispatchSnapshot,
+	item: TrackerDispatchItem,
+	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
+): TrackerDispatchDecision {
+	const intent = item.launch!;
+	const pick = pickTrackerMediaModel(item) ?? intent.scheduledPick ?? policy.pickModel(item);
+	const problem = policy.admit(item, intent, 'error' in pick ? null : pick.rung);
 	if (problem) return skip('held', problem);
-	const run = queueRun(snapshot, { token, item, pick }, policy, now);
+	const run = queueRun(snapshot, { token: intent.token, item, pick }, policy, now);
 	if ('error' in pick) return invalidPick(run, pick.error, now);
 	return reserveStart(item, { run, rung: pick.rung }, policy, now);
 }
@@ -74,18 +83,20 @@ export function prepareRetry(
 		});
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
-	const media = pickTrackerMediaModel(item);
-	const rung = media?.rung ?? {
-		id: run.rung,
-		cli: run.cli,
-		model: run.model,
-		effort: run.effort,
-		pinned: run.pinned
-	};
-	const problem = policy.admit(item, item.launch, rung);
+	const selection = retrySelection(item, run);
+	const problem = policy.admit(item, item.launch, selection.rung);
 	if (problem) return skip('held', problem);
-	const current = media ? { ...run, ...modelFields(item, media) } : run;
-	return reserveStart(item, { run: current, rung }, policy, now);
+	return reserveStart(item, selection, policy, now);
+}
+
+function retrySelection(
+	item: TrackerDispatchItem,
+	run: TrackerRunReceipt & { cli: TrackerLaunchRung['cli'] }
+) {
+	const media = pickTrackerMediaModel(item);
+	if (media) return { run: { ...run, ...modelFields(item, media) }, rung: media.rung };
+	const { rung: id, cli, model, effort, pinned } = run;
+	return { run, rung: { id, cli, model, effort, pinned } };
 }
 
 function awaitingRetry(
