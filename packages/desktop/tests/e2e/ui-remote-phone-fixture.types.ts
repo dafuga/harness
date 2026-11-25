@@ -12,6 +12,7 @@ export interface PhoneOptions {
 	seenAt: string;
 	granted: { id: string; name: string }[];
 	homeSnapshot?: object;
+	capabilities?: { methods: string[] };
 }
 
 export interface PhoneState {

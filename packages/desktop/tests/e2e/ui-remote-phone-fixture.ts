@@ -36,7 +36,7 @@ function installPhoneState(options: PhoneOptions) {
 		host: phone.state === 'unpaired' ? null : phone.host,
 		device: phone.deviceName ? { id: options.device.id, name: phone.deviceName } : null,
 		grant: paired() ? { projects: options.granted, agents: true } : null,
-		...(options.homeSnapshot ? { methods: ['listProjects', 'homeSnapshot'] } : {}),
+		...options.capabilities,
 		reason: phone.state === 'offline' ? 'The computer is asleep or has no network.' : null,
 		lastOnlineAt: paired() ? options.seenAt : null
 	});
@@ -46,7 +46,6 @@ function installPhoneState(options: PhoneOptions) {
 			if (item.eventName === 'status') item.callback(status());
 		});
 	};
-	const request = async () => undefined;
 	const computers = {
 		computers: async () => {
 			const { id: hostId, name } = options.host;
@@ -74,7 +73,7 @@ function installPhoneState(options: PhoneOptions) {
 		listeners,
 		status,
 		set,
-		request,
+		request: async () => undefined,
 		computers
 	};
 }
@@ -201,6 +200,7 @@ export async function remotePhoneFixture(page: Page, state = 'unpaired', homeSna
 		device: { id: phone.deviceId, name: deviceName },
 		seenAt,
 		homeSnapshot,
+		capabilities: homeSnapshot ? { methods: ['listProjects', 'homeSnapshot'] } : undefined,
 		granted: [
 			{ id: alpha, name: 'Alpha' },
 			{ id: beta, name: 'Beta' }
