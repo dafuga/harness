@@ -131,7 +131,7 @@ test('on a phone the Project chat is a bottom sheet over a scrim, and the page b
 	await expect(panel(page)).toBeHidden();
 });
 
-test('only the chosen design option is outlined gold; others and one-option groups read as secondary', async ({
+test('the chosen design option is outlined gold and Default reads as secondary', async ({
 	page
 }) => {
 	await page.setViewportSize(laptop);
@@ -176,8 +176,7 @@ test('only the chosen design option is outlined gold; others and one-option grou
 		expect(plain.border).not.toBe(gold);
 		expect(plain.color).not.toBe(chosen.color);
 	}
-	// A one-option group (the only viewport) has nothing to choose and is not marked gold.
-	const single = page.getByRole('group', { name: 'Viewport', exact: true }).getByRole('button');
+	const single = page.getByRole('group', { name: 'Image state', exact: true }).getByRole('button');
 	await expect(single).toHaveCount(1);
 	const only = await normal(
 		await single.evaluate((node) => {

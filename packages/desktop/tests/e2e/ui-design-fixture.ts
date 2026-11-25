@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import { expect, type Page } from '../../../../test/support/browserTest';
 import type { PlanFixtureCapture } from './ui-design-fixture.types';
 import { nativeImageFixture } from './native-image-fixture';
 const hash = 'a'.repeat(40),
@@ -187,4 +187,28 @@ function installFixture({
 export async function fixture(page: Page, headless = false, captures: PlanFixtureCapture[] = []) {
 	const image = Array.from(nativeImageFixture());
 	await page.addInitScript(installFixture, fixtureData(image, headless, captures));
+}
+
+export async function expectDesignToggleColours(page: Page) {
+	const viewport = page.getByRole('group', { name: 'Viewport', exact: true });
+	const imageState = page.getByRole('group', { name: 'Image state', exact: true });
+	const desktop = viewport.getByRole('button', { name: /^desktop$/i });
+	const defaultState = imageState.getByRole('button', { name: /^default$/i });
+	const colours = await page.evaluate(() => {
+		const probe = document.createElement('span');
+		document.body.append(probe);
+		probe.style.color = 'var(--hx-color-primary)';
+		probe.style.backgroundColor = 'var(--hx-color-surface-raised)';
+		const style = getComputedStyle(probe);
+		const result = { gold: style.color, secondary: style.backgroundColor };
+		probe.remove();
+		return result;
+	});
+	await expect(desktop, 'Desktop has the gold selection outline').toHaveCSS(
+		'border-top-color',
+		colours.gold
+	);
+	await expect(defaultState).toHaveCSS('background-color', colours.secondary);
+	await expect(defaultState).not.toHaveCSS('border-top-color', colours.gold);
+	await expect(defaultState).not.toHaveCSS('color', colours.gold);
 }
