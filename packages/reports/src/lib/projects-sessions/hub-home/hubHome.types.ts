@@ -12,10 +12,21 @@ export interface HomeMessage {
 	from: 'agent' | 'you';
 }
 
+/** One task an agent has a live run on right now. */
+export interface HomeAgentTask {
+	itemId: string;
+	title: string;
+	machine: string | null;
+}
+
 export interface HomeAgent {
 	id: string;
 	name: string;
 	state: HomeAgentState;
+	/** Live Tracker runs on computers that are not offline. An agent is working when this is above zero. */
+	sessions: number;
+	/** The tasks with a live run, newest first, at most five. */
+	tasks: HomeAgentTask[];
 	itemId: string | null;
 	task: string;
 	machine: string | null;

@@ -17,6 +17,8 @@ const agent = {
 	id: 'synthetic-project',
 	name: 'Synthetic project',
 	state: 'needs-you',
+	sessions: 0,
+	tasks: [],
 	itemId: 'item-1',
 	task: 'Choose wording',
 	machine: null,

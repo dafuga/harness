@@ -6,8 +6,10 @@
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import {
+		agentActivity,
 		agentLabels,
 		count,
+		isWorking,
 		currentAgent,
 		initials,
 		overviewTone,
@@ -29,7 +31,7 @@
 	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
 	const recipient = $derived(currentAgent(view.agents ?? []));
-	const working = $derived(view.agents?.filter((agent) => agent.state === 'working').length ?? 0);
+	const working = $derived(view.agents?.filter(isWorking).length ?? 0);
 	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
 	const lows = $derived(
 		(view.quota ?? [])
@@ -39,6 +41,10 @@
 	const level = $derived(warning ? warningFor(warning.limit.left) : null);
 	const attention = $derived(
 		view.agents?.filter((agent) => agent.state === 'needs-you').length ?? 0
+	);
+	const sessions = $derived(view.agents?.reduce((sum, agent) => sum + agent.sessions, 0) ?? 0);
+	const idle = $derived(
+		view.agents?.filter((agent) => !isWorking(agent) && agent.state !== 'needs-you').length ?? 0
 	);
 </script>
 
@@ -60,7 +66,7 @@
 				? 'No activity data'
 				: !view.agents.length
 					? 'No agents yet'
-					: `${working} working · ${view.agents.length - working - attention} idle or offline`}
+					: `${working} working${sessions ? ` (${count(sessions, 'session')})` : ''} · ${idle} idle or offline`}
 		open={() => open('agents')}
 	>
 		{#if view.agents === null}
@@ -68,7 +74,7 @@
 		{:else if view.agents.length}
 			<hx-ul class="po-items hh-agent-list">
 				{#each view.agents.slice(0, 4) as agent, index (agent.id)}
-					<HubHomeRow title={agent.name} meta={agent.task} extra={index >= 2}>
+					<HubHomeRow title={agent.name} meta={agentActivity(agent)} extra={index >= 2}>
 						{#snippet lead()}<hx-span class="hh-avatar" data-state={agent.state} aria-hidden="true"
 								>{initials(agent.name)}</hx-span
 							>{/snippet}

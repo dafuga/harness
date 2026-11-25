@@ -22,14 +22,28 @@ function newest<T>(items: T[], key: (item: T) => string, better: (a: T, b: T) =>
 	return [...kept.values()];
 }
 
+/**
+ * Computers report the same synced runs, so an agent's live sessions are the most any one of
+ * them saw (summing would count each run once per computer), and its tasks are the union.
+ */
+function withLiveWork(winner: HomeAgent, entries: HomeAgent[]): HomeAgent {
+	const tasks = new Map(entries.flatMap((entry) => entry.tasks).map((task) => [task.itemId, task]));
+	return {
+		...winner,
+		sessions: Math.max(...entries.map((entry) => entry.sessions)),
+		tasks: [...tasks.values()].slice(0, 5)
+	};
+}
+
 function mergeAgents(all: HomeAgent[]): HomeAgent[] {
 	const wins = (a: HomeAgent, b: HomeAgent) =>
 		precedence[a.state] !== precedence[b.state]
 			? precedence[a.state] < precedence[b.state]
 			: Date.parse(a.since) > Date.parse(b.since);
-	return newest(all, (agent) => agent.id, wins).sort(
-		(a, b) => precedence[a.state] - precedence[b.state] || a.name.localeCompare(b.name)
-	);
+	const byId = Map.groupBy(all, (agent) => agent.id);
+	return newest(all, (agent) => agent.id, wins)
+		.map((winner) => withLiveWork(winner, byId.get(winner.id) ?? [winner]))
+		.sort((a, b) => precedence[a.state] - precedence[b.state] || a.name.localeCompare(b.name));
 }
 
 function mergeQuota(all: (HomeSubscription[] | null)[]): HomeSubscription[] | null {

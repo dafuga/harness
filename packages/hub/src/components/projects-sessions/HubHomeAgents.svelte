@@ -11,6 +11,7 @@
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import {
 		agentGroups,
+		agentActivity,
 		agentLabels,
 		currentAgent,
 		runTime,
@@ -132,7 +133,7 @@
 										>
 										<hx-span class="po-item-text">
 											<hx-span class="po-item-title">{agent.name}</hx-span>
-											<hx-span class="po-item-meta">{agent.task}</hx-span>
+											<hx-span class="po-item-meta">{agentActivity(agent)}</hx-span>
 											<hx-span class="po-item-meta hh-agent-where"
 												>{[agent.machine, agent.model].filter(Boolean).join(' · ')}</hx-span
 											>
