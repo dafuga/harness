@@ -3,9 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { AuthRecordValidator } from '../../src/validators/accounts-access/AuthRecordValidator';
 import { AuthRecordCorruptError } from '../../src/validators/accounts-access/AuthRecordValidator.types';
-
-type Validate = (input: unknown) => unknown;
-type Case = { name: string; input: unknown } & ({ output: unknown } | { error: string });
+import type { Validate, Case } from './hub.validator.auth-record.test.types';
 
 const unitId = 'hub.validator.auth-record';
 const validator = new AuthRecordValidator();

@@ -6,10 +6,12 @@ import {
 	withoutViewportSuffix,
 	focusedScenario
 } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
-
-type Detail = Parameters<typeof focusedCaptures>[0];
-type Side = NonNullable<Parameters<typeof focusedScenario>[0][number]>;
-type Size = { width: number; height: number };
+import type {
+	Size,
+	PointInput,
+	Detail,
+	Side
+} from './reports.function.explorer-evidence-focused-captures.test.types';
 
 const UNIT = 'reports.component.evidence-grid';
 const OTHER_UNIT = 'reports.function.entity-behavior';
@@ -46,15 +48,6 @@ function shot(state: string, viewport: string, revision: string, size: Size) {
 	};
 	return { unit: UNIT, capture, viewport: size };
 }
-
-type PointInput = {
-	commit: string;
-	tree: string;
-	id: string;
-	status: string;
-	finishedAt: string;
-	captures: unknown[];
-};
 
 function point({ commit, tree, id, status, finishedAt, captures }: PointInput) {
 	const command = 'pnpm exec playwright test tests/e2e/evidence-grid.spec.ts';

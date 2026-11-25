@@ -5,6 +5,7 @@ import { activityDisplay } from '../../src/components/projects-sessions/activity
 import { commitHref } from '../../src/components/projects-sessions/project-activity/activityDisplay';
 import { plural } from '../../src/helpers/strings/plural';
 import { agentStates, activityTime } from '../../src/utils/projects-sessions/activityDisplay';
+import type { Roster } from './reports.function.activity-display.test.types';
 
 const UNIT_ID = 'reports.function.activity-display';
 const UNKNOWN = 'No agent has registered in this repository, so who is working is not known.';
@@ -12,8 +13,6 @@ const SINGULAR = 'registered agent is working now. Agents that do not register a
 const PLURAL = 'registered agents are working now. Agents that do not register are not counted.';
 const BASE = 'https://reports.example.test';
 const COMMIT = '3f2a6b8c1d4e5f60718293a4b5c6d7e8f9012345';
-
-type Roster = Parameters<typeof activityDisplay>[0];
 
 const roster = (working: number | null): Roster => ({ working }) as Roster;
 

@@ -6,13 +6,12 @@ import type {
 	ComparisonPane,
 	ComparisonSide
 } from '../../src/helpers/verification-evidence/comparisonPanes.types';
+import type { Result } from './reports.helper.verification-evidence-comparison-panes.test.types';
 
 const UNIT_ID = 'reports.helper.verification-evidence-comparison-panes';
 const PARENT = '0123456789abcdef0123456789abcdef01234567';
 const SELECTED = '89abcdef0123456789abcdef0123456789abcdef';
 const DEFAULT_GAP = 'No evidence is recorded for this side.';
-
-type Result = { checks: number; passed: boolean };
 
 const beforeSide: ComparisonSide<Result> = {
 	value: { checks: 12, passed: true },

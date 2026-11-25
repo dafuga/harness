@@ -3,14 +3,7 @@ import type { Plugin, UserConfig } from 'vite';
 import { existsSync } from 'node:fs';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-
-/**
- * The config reads SHELL_FIXTURE_PAGE when its module loads, so each case loads it again with its
- * own environment. Only noncatalog pages are invoked: the catalog page runs buildData through bun.
- */
-
-type ShellConfigModule = { default: () => Promise<UserConfig> };
-type FixtureVariable = 'SHELL_FIXTURE_PAGE' | 'SHELL_FIXTURE_OUT';
+import type { FixtureVariable, ShellConfigModule } from './reports.config.shell-vite.test.types';
 
 const unitId = 'reports.config.shell-vite';
 const variables: FixtureVariable[] = ['SHELL_FIXTURE_PAGE', 'SHELL_FIXTURE_OUT'];

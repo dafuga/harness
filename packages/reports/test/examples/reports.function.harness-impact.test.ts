@@ -7,11 +7,12 @@ import {
 } from '../../src/components/explorer-ui/harness-compare/harnessImpact';
 import type { Groups } from '../../src/components/explorer-ui/harness-compare/harnessImpact.types';
 import type { HarnessImpact, ComparedSides } from '../../src/utils/explorer-ui/harnessImpact';
-
-type Revision = NonNullable<Parameters<typeof harnessImpact>[1]>;
-type Unit = Revision['registry']['units'][number];
-type SourceImpact = NonNullable<Revision['sourceImpact']>;
-type Client = Parameters<typeof comparedSides>[0];
+import type {
+	Unit,
+	Revision,
+	SourceImpact,
+	Client
+} from './reports.function.harness-impact.test.types';
 
 const NO_GROUPS: Groups = { direct: [], indirect: [], added: [], removed: [] };
 

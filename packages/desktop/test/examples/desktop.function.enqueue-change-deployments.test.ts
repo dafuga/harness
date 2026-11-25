@@ -2,9 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { enqueueChangeDeployments } from '../../src/utils/projects-sessions/enqueueChangeDeployments';
-
-type Runtime = Parameters<typeof enqueueChangeDeployments>[2];
-type Input = Parameters<typeof enqueueChangeDeployments>[1];
+import type { Runtime, Input } from './desktop.function.enqueue-change-deployments.test.types';
 
 const root = '/workspace/project';
 const commit = '9f4c2a1d7b6e8f0a3c5d9e2b1a6f4c8d0e7b3a5c';

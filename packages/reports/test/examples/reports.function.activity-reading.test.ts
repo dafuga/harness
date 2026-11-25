@@ -4,8 +4,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { activityReading } from '../../src/components/projects-sessions/activity-agents/activityReading';
 import { readingAge } from '../../src/utils/projects-sessions/activityReading';
 import type { ActivityReading } from '../../src/utils/projects-sessions/activityReading.types';
-
-type Roster = Parameters<typeof activityReading>[0];
+import type { Roster } from './reports.function.activity-reading.test.types';
 
 const sampledAt = '2026-11-15T09:30:00.000Z';
 

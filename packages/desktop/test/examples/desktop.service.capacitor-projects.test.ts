@@ -7,10 +7,7 @@ import type {
 	Input,
 	Operation
 } from '../../src/lib/verification-evidence/select-environment/CapacitorProjectsService.types';
-
-type Bridge = CapacitorProjectsServiceConfig['cloud'];
-type Methods = Record<string, unknown>;
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Methods, Bridge, Cases } from './desktop.service.capacitor-projects.test.types';
 
 const unsubscribe = () => undefined;
 

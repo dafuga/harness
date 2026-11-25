@@ -11,6 +11,7 @@ import type {
 	GoogleIdentity,
 	GoogleIdentityOptions
 } from '../../src/lib/verification-evidence/server/auth/GoogleIdentityService.types';
+import type { Failure, Sign, Row, Case } from './hub.service.google-identity.test.types';
 
 const CLIENT_ID = 'hub-example.apps.googleusercontent.com';
 const KID = 'hub-example-google-key';
@@ -32,17 +33,6 @@ const REJECTED = {
 	code: 'credential-invalid',
 	status: 401
 };
-
-type Sign = (claims: JWTPayload) => Promise<string>;
-type Row = [name: string, claims: JWTPayload, sign?: Sign];
-interface Failure {
-	name: string;
-	message: string;
-	code: unknown;
-	status: unknown;
-}
-type Outcome = { output: GoogleIdentity } | { error: Failure };
-type Case = { name: string; input: { claims: JWTPayload; nonce: string } } & Outcome;
 
 /** An RS256 signer; its public key is published under KID, as Google publishes its keys. */
 async function signer() {

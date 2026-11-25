@@ -8,10 +8,7 @@ import type { ExplorerSide } from '../../src/models/explorer-ui/Explorer.types';
 import { capture, declared, record, result, sha } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Shot = ReturnType<typeof capture>;
-type Behavior = ReturnType<typeof explorerBehavior>;
-type Row = Behavior['rows'][number];
+import type { Shot, Behavior, Row } from './reports.function.explorer-behavior.test.types';
 
 const nothing = 'Neither side recorded an output, assertions or a trace for this unit.';
 const unread =

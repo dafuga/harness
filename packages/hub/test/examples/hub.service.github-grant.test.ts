@@ -20,9 +20,7 @@ import { githubFake } from '../support/githubFake';
 import { memoryAuthStore } from '../support/memoryAuthStore';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-
-type Observed = Parameters<typeof recordExampleCases>[1];
-type Outcome = { output: unknown } | { error: { name: string; code: string; message: string } };
+import type { Outcome, Observed } from './hub.service.github-grant.test.types';
 const ORIGIN = 'https://hub.example.com';
 const AUTHORIZE = 'https://github.com/login/oauth/authorize';
 const SECRET = 'synthetic-session-secret-for-github-grant-examples';

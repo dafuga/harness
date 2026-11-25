@@ -3,17 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { analyticsCpuClient } from '../../src/components/reports-media/analytics-cpu/analyticsCpuClient';
 import type { CpuState } from '../../src/utils/reports-media/analyticsCpuClient';
-
-interface FakeResponse {
-	ok: boolean;
-	json: () => Promise<unknown>;
-}
-
-interface FetchCall {
-	url: string;
-	cache: string | undefined;
-	abortable: boolean;
-}
+import type { FakeResponse, FetchCall } from './reports.function.analytics-cpu-client.test.types';
 
 const snapshot = {
 	status: 'available',

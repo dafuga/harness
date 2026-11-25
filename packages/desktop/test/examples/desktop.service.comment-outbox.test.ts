@@ -6,6 +6,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { CommentOutboxService } from '../../src/services/projects-sessions/CommentOutboxService';
 import type { HumanCommentDraft } from '../../src/models/projects-sessions/ProjectContext.types';
+import type { SavedComment } from './desktop.service.comment-outbox.test.types';
 
 const temporaryDirectories = new Set<string>();
 
@@ -37,8 +38,6 @@ function comment(projectId: string, requestId: string, text: string): HumanComme
 		text
 	};
 }
-
-type SavedComment = Awaited<ReturnType<CommentOutboxService['save']>>;
 
 function summary(saved: SavedComment) {
 	return {

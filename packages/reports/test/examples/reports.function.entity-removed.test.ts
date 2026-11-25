@@ -9,8 +9,7 @@ import type {
 	ExplorerSide,
 	ExplorerStateCoverage
 } from '../../src/models/explorer-ui/Explorer.types';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.entity-removed.test.types';
 
 const unitId = 'reports.function.entity-removed';
 const symbol = 'entityRemoved';

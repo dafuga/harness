@@ -5,9 +5,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { PlaywrightReportAdapter } from '../../src/services/reports-media/report-command-service/PlaywrightReportAdapter';
-
-type Store = Parameters<PlaywrightReportAdapter['ingest']>[0];
-type Written = { id: string; entry: { kind: string; data: Record<string, unknown> } };
+import type { Written, Store } from './reports.adapter.playwright-report.test.types';
 
 const REPORT_ID = 'report-2026-11-15-001';
 const FILE_NAME = 'playwright-report.json';

@@ -10,10 +10,7 @@ import {
 	R2EvidenceStoreAdapter
 } from '../../src/adapters/reports-media/R2EvidenceStoreAdapter';
 import { R2EvidenceStoreError } from '../../src/adapters/reports-media/R2EvidenceStoreAdapter.types';
-
-type Client = NonNullable<ConstructorParameters<typeof R2EvidenceStoreAdapter>[1]>;
-type Sent = { key: string; type: string | undefined };
-type FakeCommand = { input: { Key: string; Body?: Buffer; ContentType?: string } };
+import type { Sent, Client, FakeCommand } from './reports.adapter.r2-evidence-store.test.types';
 
 const REPORT = '5b0e7c3a-9f2d-4c8e-8a1b-6d3f2e1c0b9a';
 const PNG = '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824.png';

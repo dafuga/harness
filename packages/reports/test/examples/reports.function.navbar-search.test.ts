@@ -5,8 +5,7 @@ import { navbarSearch as navbarSearchComponent } from '../../src/components/expl
 import { navbarSearch } from '../../src/utils/explorer-ui/navbarSearch';
 import type { SearchEntry } from '../../src/utils/explorer-ui/entitySearch';
 import { sha, shellBranch, shellScope } from '../../tests/e2e/support/shellData';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.navbar-search.test.types';
 const unitId = 'reports.function.navbar-search';
 const record = (state: string, cases: Cases) =>
 	recordExampleCases(

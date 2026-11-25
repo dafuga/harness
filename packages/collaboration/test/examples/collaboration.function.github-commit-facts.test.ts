@@ -2,9 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { githubCommitFacts } from '../../src/utils/git-source-history/create-git-hub-source/githubCommitFacts';
-
-type Client = Parameters<typeof githubCommitFacts>[0];
-type Case = { name: string; input: unknown } & ({ output: unknown } | { error: unknown });
+import type { Client, Case } from './collaboration.function.github-commit-facts.test.types';
 
 const UNIT = 'collaboration.function.github-commit-facts';
 const single = '9f2c4e7a1b3d586e0c9a2f47d1e8b5a03c6d9e21';

@@ -6,14 +6,12 @@ import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { acceptanceProducts, normalProduct } from '../../scripts/ios-acceptance-products';
-
-type RecordLike = Parameters<typeof acceptanceProducts>[0];
-type ReadLike = Parameters<typeof acceptanceProducts>[1];
-type AcceptanceLike = Parameters<typeof normalProduct>[0];
-interface Ledger {
-	begun: string[];
-	checks: Array<[boolean, string]>;
-}
+import type {
+	Ledger,
+	RecordLike,
+	ReadLike,
+	AcceptanceLike
+} from './desktop.script.ios-acceptance-products.test.types';
 
 // The build and simulator helpers are replaced by fakes that record their calls and write the
 // App binaries a real build would leave, so the unit's own orchestration runs unchanged.

@@ -10,6 +10,7 @@ import {
 } from '../../src/utils/git-source-history/githubTransport';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
+import type { RequestCall } from './collaboration.function.github-transport.test.types';
 
 const unitId = 'collaboration.function.github-transport';
 const repository = {
@@ -20,8 +21,6 @@ const repository = {
 	installationId: 73
 };
 const commit = '4e19d0b830e3f36f21f71e86850a1e79d62fd2bb';
-
-type RequestCall = { url: string; method: string; redirect: RequestRedirect; body?: string };
 
 function clientWithResponses(permission: 'read' | 'write', responses: Response[]) {
 	const calls: RequestCall[] = [];

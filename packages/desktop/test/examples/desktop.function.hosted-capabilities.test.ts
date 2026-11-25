@@ -3,12 +3,11 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { hostedCapabilities } from '../../src/utils/networking-security/hostedCapabilities';
 import { UnknownHostedProjectAccessError } from '../../src/utils/networking-security/hostedCapabilities.types';
+import type { RejectInput } from './desktop.function.hosted-capabilities.test.types';
 
 const ownerId = '3f6d2a8e-5b1c-4e9a-8d7f-0c2b9e4a6d13';
 const writerId = 'c0a8e5f1-7b2d-4e6a-b3c9-1d8f5a2e7b04';
 const viewerId = '9b1e4c7a-2d3f-4a8b-9c5e-6f7a8b9c0d1e';
-
-type RejectInput = { name: string; value: unknown; projectId: string };
 
 function response(id: string, role: string, executionAvailable: boolean) {
 	return { id, name: 'Example Project', role, executionAvailable };

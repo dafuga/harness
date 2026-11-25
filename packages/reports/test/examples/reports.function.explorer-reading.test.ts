@@ -13,8 +13,7 @@ import {
 import { capture } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.explorer-reading.test.types';
 const unitId = 'reports.function.explorer-reading';
 const record = (symbol: string, state: string, cases: Cases) =>
 	recordExampleCases(

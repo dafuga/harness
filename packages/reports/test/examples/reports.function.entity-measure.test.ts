@@ -6,12 +6,12 @@ import { entityMeasure } from '../../src/components/explorer-ui/entity-sections/
 import type * as harness from '../../src/models/explorer-ui/Harness.types';
 import { record as fixtureRecord } from '../entityFixture';
 import { commits } from '../entityUnits';
-
-type Measurement = harness.HarnessRecord['measurements'][number];
-type Budget = harness.HarnessUnit['budgets']['performance'][number];
-type Cases = Parameters<typeof recordExampleCases>[1];
-
-type Patch = Partial<harness.HarnessUnit>;
+import type {
+	Cases,
+	Patch,
+	Budget,
+	Measurement
+} from './reports.function.entity-measure.test.types';
 
 const subject = 'app.function.filter-orders';
 const base = { unitId: 'reports.function.entity-measure', evidence: 'examples-cases' };

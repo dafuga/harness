@@ -4,10 +4,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { reportState } from '../../src/repositories/reports-media/report-repository/reportState';
 import { InvalidReportStateInputError } from '../../src/repositories/reports-media/report-repository/reportState.types';
 import { resultStatus, interrupted } from '../../src/utils/reports-media/reportState';
-
-type BeginInput = Parameters<typeof reportState>[0];
-type Report = ReturnType<typeof reportState>;
-type Status = Report['status'];
+import type { BeginInput, Report, Status } from './reports.function.report-state.test.types';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 

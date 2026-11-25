@@ -6,8 +6,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { ReplayStorageService } from '../../src/services/reports-media/ReplayStorageService';
 import { ReplayStorageError } from '../../src/services/reports-media/ReplayStorageService.types';
-
-type Report = Parameters<ReplayStorageService['store']>[0];
+import type { Report } from './reports.service.replay-storage.test.types';
 
 const UNIT = 'reports.service.replay-storage';
 const REPORT_ID = '378413ad-29d3-4b7c-be71-828250cf0123';

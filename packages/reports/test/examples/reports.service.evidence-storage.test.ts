@@ -6,8 +6,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { EvidenceStorageService } from '../../src/services/verification-evidence/EvidenceStorageService';
 import { ReportExpiredError } from '../../src/services/verification-evidence/EvidenceStorageService.types';
-
-type Report = Parameters<EvidenceStorageService['store']>[0];
+import type { Report } from './reports.service.evidence-storage.test.types';
 
 const RECENT = '2026-11-12T09:14:05.318Z';
 const EXPIRED = '2026-09-01T00:00:00.000Z';

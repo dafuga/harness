@@ -5,12 +5,12 @@ import {
 	serviceContract,
 	modelContract
 } from '../../src/components/explorer-ui/entity-contract/serviceMethods';
-
-type Unit = Parameters<typeof serviceContract>[0];
-type Result = ReturnType<typeof serviceContract>;
-type Fields = Pick<Unit, 'owns' | 'contract'> &
-	Partial<Pick<Unit, 'serviceClasses' | 'modelDefinitions'>>;
-type Call = { symbol: string; input: unknown; run: () => unknown };
+import type {
+	Unit,
+	Fields,
+	Call,
+	Result
+} from './reports.component.explorer-ui-entity-contract-service-methods.test.types';
 
 const ID = 'reports.component.explorer-ui-entity-contract-service-methods';
 const STORE_SOURCE = 'packages/reports/src/components/report-store/ReportStore.ts';

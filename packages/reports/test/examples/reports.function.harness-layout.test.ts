@@ -7,8 +7,7 @@ import {
 } from '../../src/components/explorer-ui/harness-map/harnessLayout';
 import { nodeSize } from '../../src/utils/explorer-ui/harnessLayout';
 import type { HarnessLayout } from '../../src/utils/explorer-ui/harnessLayout.types';
-
-type Unit = Parameters<typeof harnessLayout>[0][number];
+import type { Unit } from './reports.function.harness-layout.test.types';
 
 const unitId = 'reports.function.harness-layout';
 

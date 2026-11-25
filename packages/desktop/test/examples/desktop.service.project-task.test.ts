@@ -8,6 +8,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { ProjectTaskService } from '../../src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService';
 import type { ProjectTaskContext } from '../../src/utils/agents-providers/prepareProjectTask';
 import { promoteChange } from '../../src/utils/projects-sessions/promoteChange';
+import type { Outcome, Agent, AgentInput } from './desktop.service.project-task.test.types';
 
 vi.mock('../../src/utils/projects-sessions/promoteChange', () => ({
 	promoteChange: vi.fn(async () => 'Promoted to stage.')
@@ -19,10 +20,6 @@ const OWNED = 'src/owned.ts';
 const CHANGED = 'Changes recorded. Verification is still required.';
 const REFUSED = 'The read-only agent changed files. Changes were preserved for review.';
 const CANCELLED = 'The run was cancelled.';
-
-type AgentInput = { cwd: string; access: string; signal: AbortSignal; onFile: (p: string) => void };
-type Agent = (input: AgentInput) => Promise<{ text: string }>;
-type Outcome = { output: unknown } | { error: string };
 
 let root: string;
 let controller: AbortController;

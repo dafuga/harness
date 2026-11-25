@@ -2,11 +2,12 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { confirmUnload } from '../../src/lib/development-tooling/desktop-initialization/initialize-desktop/confirmUnload';
-
-type ExampleWindow = Parameters<typeof confirmUnload>[0];
-type ExampleDialog = Parameters<typeof confirmUnload>[1];
-type UnloadEvent = { defaultPrevented: boolean; preventDefault: () => void };
-type UnloadListener = (event: UnloadEvent) => void;
+import type {
+	UnloadListener,
+	ExampleWindow,
+	ExampleDialog,
+	UnloadEvent
+} from './desktop.module.initialize-desktop-confirm-unload.test.types';
 
 const meta = (state: string) => ({
 	unitId: 'desktop.module.initialize-desktop-confirm-unload',

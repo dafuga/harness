@@ -5,9 +5,7 @@ import { join } from 'node:path';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { LocalDocumentAdapter } from '../../src/adapters/reports-media/LocalDocumentAdapter';
-
-type Document = { items: string[] };
-type Counter = { count: number };
+import type { Document, Counter } from './desktop.adapter.local-document.test.types';
 
 const temporaryDirectories: string[] = [];
 

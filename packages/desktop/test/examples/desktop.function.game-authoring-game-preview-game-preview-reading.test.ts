@@ -8,9 +8,10 @@ import {
 	atSpawn
 } from '../../src/components/game-authoring/game-preview/gamePreviewReading';
 import type { PreviewSummaryInput } from '../../src/components/game-authoring/game-preview/gamePreviewReading';
-
-type View = Parameters<typeof levelKey>[0];
-type Run = Parameters<typeof atSpawn>[0];
+import type {
+	View,
+	Run
+} from './desktop.function.game-authoring-game-preview-game-preview-reading.test.types';
 
 const READY: PreviewSummaryInput = {
 	readonly: false,

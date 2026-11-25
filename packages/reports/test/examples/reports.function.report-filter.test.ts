@@ -8,10 +8,7 @@ import {
 	projectFilter
 } from '../../src/utils/verification-evidence/reportFilter';
 import type { Filters } from '../../src/utils/verification-evidence/reportFilter.types';
-
-type Evidence = Parameters<typeof reportFilter>[0][number];
-type Report = Parameters<typeof projectFilter>[0];
-type Status = Evidence['status'];
+import type { Status, Evidence, Report } from './reports.function.report-filter.test.types';
 
 const UNIT_ID = 'reports.function.report-filter';
 

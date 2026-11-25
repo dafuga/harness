@@ -4,12 +4,11 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { browserEvidenceReads } from '../../src/adapters/explorer-ui/browser-project-adapter/browserEvidenceReads';
 import type { Guard } from '../../src/adapters/explorer-ui/browser-project-adapter/browserEvidenceReads.types';
+import type { BrowserApiLike } from './hub.function.browser-evidence-reads.test.types';
 
 const commit = 'a'.repeat(40);
 const artifactBytes = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]);
 const sha256 = createHash('sha256').update(artifactBytes).digest('hex');
-
-type BrowserApiLike = Parameters<typeof browserEvidenceReads>[0];
 
 function fakeApi(overrides: Partial<BrowserApiLike> = {}): BrowserApiLike {
 	return {

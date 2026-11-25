@@ -4,6 +4,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { prepareProjectRun } from '../../src/services/agents-providers/desktop-run-service/prepareProjectRun';
 import type { Preparation } from '../../src/utils/agents-providers/prepareRun';
 import type { ProjectRunRequest } from '../../src/models/development-tooling/DesktopBridge.types';
+import type { RunContext } from './desktop.function.prepare-project-run.test.types';
 
 const projectId = '9f2c7a61-b4e3-4a8d-9f01-2c6b5a7d8e90';
 const request = {
@@ -51,8 +52,6 @@ function fakePreparation({
 	} as unknown as Preparation;
 	return { preparation, calls, runner };
 }
-
-type RunContext = Awaited<ReturnType<typeof prepareProjectRun>>;
 function recordCreatePlanCase(calls: string[], context: RunContext) {
 	recordExampleCases(
 		{

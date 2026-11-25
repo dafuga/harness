@@ -11,10 +11,7 @@ import {
 } from '../../src/components/explorer-ui/harness-map/focusView';
 import { pad, wholeView } from '../../src/utils/explorer-ui/focusView';
 import type { MapView } from '../../src/utils/explorer-ui/focusView.types';
-
-type Layout = Parameters<typeof focusOn>[0];
-type Edges = Layout['edges'];
-type Unit = Layout['nodes'][number]['unit'];
+import type { Layout, Unit, Edges } from './reports.function.focus-view.test.types';
 
 function node(id: string, x: number, y: number): Layout['nodes'][number] {
 	return { unit: { id } as Unit, x, y };

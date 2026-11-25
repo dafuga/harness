@@ -5,23 +5,12 @@ import { googleButton } from '../../src/components/accounts-access/login-panel/g
 import { GoogleSignInLoadError } from '../../src/components/accounts-access/login-panel/googleButton.types';
 import type { GoogleIdentity } from '../../src/components/accounts-access/login-panel/googleButton.types';
 import { googleIdentityScript } from '../../src/utils/accounts-access/googleButton';
+import type { Seen, FakeScript } from './hub.function.google-button.test.types';
 
 const unitId = 'hub.function.google-button';
 const CLIENT_ID = 'fixture-client.example';
 const NONCE = 'fixture-nonce-7f3a';
 const SLOT = { id: 'fixture-button-slot' } as unknown as HTMLElement;
-
-type InitConfig = Parameters<GoogleIdentity['initialize']>[0];
-interface Seen {
-	init?: InitConfig;
-	rendered?: { element: HTMLElement; options: Record<string, string> };
-}
-interface FakeScript {
-	src: string;
-	async: boolean;
-	onload: (() => void) | null;
-	onerror: (() => void) | null;
-}
 
 // Stands in for the browser globals; the real code reads them only inside the load path.
 const host = globalThis as unknown as { document?: unknown; google?: unknown };

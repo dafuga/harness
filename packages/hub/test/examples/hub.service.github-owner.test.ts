@@ -4,27 +4,11 @@ import { GithubOwnerService } from '../../src/lib/verification-evidence/server/a
 import type { GithubOwnerOptions } from '../../src/lib/verification-evidence/server/auth/GithubOwnerService.types';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-
-type ApiRepository = Omit<RepositoryIdentity, 'installationId'> & { admin: boolean };
-
-interface InstallationPage {
-	repositories: ApiRepository[];
-	total: number;
-}
-
-interface OwnerFixture {
-	installations: { ids: number[]; total: number } | null;
-	identity?: RepositoryIdentity;
-	admin?: boolean;
-	pages?: Map<number, InstallationPage>;
-}
-
-interface AuthorizationExample {
-	name: string;
-	repositoryId: number;
-	fixture: OwnerFixture;
-	expected: { output: RepositoryIdentity } | { error: string };
-}
+import type {
+	AuthorizationExample,
+	InstallationPage,
+	OwnerFixture
+} from './hub.service.github-owner.test.types';
 
 const actor: Actor = {
 	id: 'google-109876543210123456789',
