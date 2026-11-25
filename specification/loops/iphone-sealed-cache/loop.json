@@ -2,7 +2,7 @@
 	"name": "iphone-sealed-cache",
 	"goal": "Prove the iPhone keeps only sealed account session data on disk, opens prior text offline, and catches up through the account socket",
 	"createdAt": "2026-11-25T17:38:14.166Z",
-	"updatedAt": "2026-11-25T17:50:28.771Z",
+	"updatedAt": "2026-11-25T17:59:15.334Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -26,7 +26,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T17:59:15.334Z",
+			"evidence": "Native Debug 416 / Release 394 on the delivered Swift source; Swift sealed vectors and TS interoperability green. Chromium red d2388e5a26 missed the Sessions link; a385433579 passed 4 cases on harbor-mbp-2, covering 3 viewport widths and the existing paired footer. Final touch-target capture pending."
 		},
 		{
 			"id": "verify",
