@@ -3,18 +3,19 @@ import type { TrackerAdapterSource } from '../../../repositories/projects-sessio
 import type {
 	TrackerAdapterAction,
 	TrackerAdapterCommentEvent,
+	TrackerGithubFollowUpPolicy,
 	TrackerAdapterIntakeContext,
 	TrackerAdapterReadQuery,
 	TrackerGithubComment,
 	TrackerGithubIssue
 } from '../TrackerAdapterPollService.types';
-import { applyTrackerIntakeEvent, applyTrackerIntakeEvents } from './applyTrackerIntakeEvents';
-import { assertTrackerPollActive } from './trackerAdapterPollError';
 import {
-	commitTrackerIntake,
-	planTrackerIntake,
+	applyTrackerIntakeEvent,
+	applyTrackerIntakeEvents,
 	recordIssueAcceptance
-} from './commitTrackerIntake';
+} from './applyTrackerIntakeEvents';
+import { assertTrackerPollActive } from './trackerAdapterPollError';
+import { commitTrackerIntake, planTrackerIntake } from './commitTrackerIntake';
 import {
 	followUpInstructions,
 	githubCommentEvent,
@@ -69,10 +70,7 @@ function issueAcceptance(
 	const rule = policy?.followUp;
 	if (!rule) return undefined;
 	const key = String(issue.number);
-	if (
-		issue.user?.login?.toLowerCase() === rule.author.toLowerCase() ||
-		repository.hasFollowUp(source.id, key)
-	)
+	if (trackerTesterLogin(rule, issue.user?.login) || repository.hasFollowUp(source.id, key))
 		return followUpInstructions(rule, key);
 	return undefined;
 }
@@ -129,13 +127,22 @@ function commentIntake(
 	return async (comment: TrackerGithubComment, event: TrackerAdapterCommentEvent) => {
 		const login = comment.user?.login?.toLowerCase();
 		if (followUp && isMaintainerComment(source, comment, login)) return { events: 0 };
-		if (processFollowUp && login === followUp?.author.toLowerCase())
+		if (processFollowUp && followUp && trackerTesterLogin(followUp, login))
 			return { events: 0, action: await processFollowUp(comment, event) };
 		const link = notesOnly && repository.linkByKey(source.id, event.key);
 		return {
 			events: Number(Boolean(link && applyTrackerIntakeEvent(repository, store, link, event)))
 		};
 	};
+}
+
+export function trackerTesterLogin(rule: TrackerGithubFollowUpPolicy, actor?: string): boolean {
+	return Boolean(
+		actor &&
+		[rule.author, ...(rule.additionalAuthors ?? [])].some(
+			(login) => login.toLowerCase() === actor.toLowerCase()
+		)
+	);
 }
 
 function isMaintainerComment(

@@ -11,10 +11,12 @@
 		"source": [
 			"src/services/agents-providers/TrackerDispatcherService.ts",
 			"src/services/agents-providers/TrackerDispatcherService.types.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/dueGrantHold.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/launchIntent.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/recoveryIntent.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runClaim.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runIdentity.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runMonitor.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.types.ts",
@@ -67,13 +69,13 @@
 			"TrackerDispatchStore",
 			"TrackerLaunchRequest",
 			"TrackerAttemptVersion",
+			"dueGrantHold",
 			"trackerFleetNodes",
 			"trackerNodeNames",
 			"minute",
 			"canonicalNode",
 			"knownNode",
 			"ownsLaunch",
-			"activeRun",
 			"inactive",
 			"trackerFlagBlocksRecovery",
 			"startable",
@@ -81,18 +83,28 @@
 			"dueOwner",
 			"mayScheduleHere",
 			"dueItemHold",
+			"automaticEnabled",
+			"automaticRequestHold",
+			"automaticQuietHour",
 			"schedulingHold",
+			"trackerReminderTitle",
 			"isDueNow",
+			"activeRun",
 			"hasOpenSession",
 			"attemptKey",
 			"matchesRequest",
 			"requestLaunch",
 			"previewDueLaunch",
 			"recoveryIntent",
+			"unattendedIntent",
 			"launchStartupGrace",
 			"claimLaunch",
 			"prepareRetry",
 			"retireUnstartedRun",
+			"activeRun",
+			"hasOpenSession",
+			"attemptKey",
+			"matchesRequest",
 			"monitorRun",
 			"completeRun",
 			"etaFor",
@@ -190,6 +202,36 @@
 				"description": "Trusted session, monitor, verification, startup failure, confirmed startup absence, answer or rejection evidence supplied by the caller."
 			},
 			{
+				"name": "dueGrantHold.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "dueGrantHold.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "dueGrantHold.intent",
+				"type": "TrackerLaunchIntent",
+				"required": true
+			},
+			{
+				"name": "dueGrantHold.grant",
+				"type": "TrackerDueGrant",
+				"required": false
+			},
+			{
+				"name": "dueGrantHold.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "dueGrantHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "trackerNodeNames.node",
 				"type": "string",
 				"required": true
@@ -230,23 +272,8 @@
 				"required": true
 			},
 			{
-				"name": "activeRun.run",
-				"type": "TrackerRunReceipt",
-				"required": true
-			},
-			{
-				"name": "activeRun.policy",
-				"type": "TrackerDispatchPolicy",
-				"required": true
-			},
-			{
-				"name": "activeRun.now",
-				"type": "number",
-				"required": true
-			},
-			{
 				"name": "inactive.item",
-				"type": "TrackerDispatchItem",
+				"type": "Pick<TrackerDispatchItem, 'deleted' | 'status'>",
 				"required": true
 			},
 			{
@@ -315,14 +342,44 @@
 				"required": true
 			},
 			{
-				"name": "schedulingHold.item",
+				"name": "automaticEnabled.policy",
+				"type": "Pick<TrackerDispatchPolicy, 'enabled' | 'automaticEnabled'>",
+				"required": true
+			},
+			{
+				"name": "automaticRequestHold.item",
 				"type": "TrackerDispatchItem",
 				"required": true
 			},
 			{
-				"name": "schedulingHold.policy",
-				"type": "Pick<TrackerDispatchPolicy, 'opsWorkdirAvailable'>",
-				"required": false
+				"name": "automaticRequestHold.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "automaticRequestHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "automaticQuietHour.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "schedulingHold.item",
+				"type": "Pick< TrackerDispatchItem, | 'title' | 'kind' | 'status' | 'agent' | 'owner' | 'deleted' | 'awaitingAnswer' | 'scheduleOff' | 'recurring' | 'parkedUntil' >",
+				"required": true
+			},
+			{
+				"name": "schedulingHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerReminderTitle.title",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "isDueNow.due",
@@ -337,46 +394,6 @@
 			{
 				"name": "isDueNow.now",
 				"type": "number",
-				"required": true
-			},
-			{
-				"name": "hasOpenSession.snapshot",
-				"type": "TrackerDispatchSnapshot",
-				"required": true
-			},
-			{
-				"name": "hasOpenSession.policy",
-				"type": "TrackerDispatchPolicy",
-				"required": true
-			},
-			{
-				"name": "hasOpenSession.now",
-				"type": "number",
-				"required": true
-			},
-			{
-				"name": "hasOpenSession.except",
-				"type": "TrackerRunReceipt",
-				"required": false
-			},
-			{
-				"name": "attemptKey.run",
-				"type": "TrackerRunReceipt",
-				"required": true
-			},
-			{
-				"name": "matchesRequest.item",
-				"type": "TrackerDispatchItem | null",
-				"required": true
-			},
-			{
-				"name": "matchesRequest.run",
-				"type": "TrackerRunReceipt",
-				"required": true
-			},
-			{
-				"name": "matchesRequest.policy",
-				"type": "TrackerDispatchPolicy",
 				"required": true
 			},
 			{
@@ -436,6 +453,26 @@
 			},
 			{
 				"name": "recoveryIntent.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "unattendedIntent.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "unattendedIntent.request",
+				"type": "Extract<TrackerLaunchRequest, { source: 'automatic' }> & { item: TrackerDispatchItem; }",
+				"required": true
+			},
+			{
+				"name": "unattendedIntent.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "unattendedIntent.now",
 				"type": "number",
 				"required": true
 			},
@@ -502,6 +539,61 @@
 			{
 				"name": "retireUnstartedRun.clock",
 				"type": "{ policy: TrackerDispatchPolicy; now: number }",
+				"required": true
+			},
+			{
+				"name": "activeRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "activeRun.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "activeRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "hasOpenSession.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "hasOpenSession.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "hasOpenSession.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "hasOpenSession.except",
+				"type": "TrackerRunReceipt",
+				"required": false
+			},
+			{
+				"name": "attemptKey.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "matchesRequest.item",
+				"type": "TrackerDispatchItem | null",
+				"required": true
+			},
+			{
+				"name": "matchesRequest.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "matchesRequest.policy",
+				"type": "TrackerDispatchPolicy",
 				"required": true
 			},
 			{
@@ -834,6 +926,49 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "dueGrantHold",
+				"inputs": [
+					{
+						"name": "dueGrantHold.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "dueGrantHold.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "dueGrantHold.intent",
+						"type": "TrackerLaunchIntent",
+						"required": true
+					},
+					{
+						"name": "dueGrantHold.grant",
+						"type": "TrackerDueGrant",
+						"required": false
+					},
+					{
+						"name": "dueGrantHold.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "dueGrantHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "dueGrantHold",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerNodeNames",
 				"inputs": [
 					{
@@ -926,39 +1061,11 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "activeRun",
-				"inputs": [
-					{
-						"name": "activeRun.run",
-						"type": "TrackerRunReceipt",
-						"required": true
-					},
-					{
-						"name": "activeRun.policy",
-						"type": "TrackerDispatchPolicy",
-						"required": true
-					},
-					{
-						"name": "activeRun.now",
-						"type": "number",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "activeRun",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "inactive",
 				"inputs": [
 					{
 						"name": "inactive.item",
-						"type": "TrackerDispatchItem",
+						"type": "Pick<TrackerDispatchItem, 'deleted' | 'status'>",
 						"required": true
 					}
 				],
@@ -1115,23 +1222,105 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "schedulingHold",
+				"name": "automaticEnabled",
 				"inputs": [
 					{
-						"name": "schedulingHold.item",
+						"name": "automaticEnabled.policy",
+						"type": "Pick<TrackerDispatchPolicy, 'enabled' | 'automaticEnabled'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "automaticEnabled",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "automaticRequestHold",
+				"inputs": [
+					{
+						"name": "automaticRequestHold.item",
 						"type": "TrackerDispatchItem",
 						"required": true
 					},
 					{
-						"name": "schedulingHold.policy",
-						"type": "Pick<TrackerDispatchPolicy, 'opsWorkdirAvailable'>",
-						"required": false
+						"name": "automaticRequestHold.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "automaticRequestHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "automaticRequestHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "automaticQuietHour",
+				"inputs": [
+					{
+						"name": "automaticQuietHour.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "automaticQuietHour",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "schedulingHold",
+				"inputs": [
+					{
+						"name": "schedulingHold.item",
+						"type": "Pick< TrackerDispatchItem, | 'title' | 'kind' | 'status' | 'agent' | 'owner' | 'deleted' | 'awaitingAnswer' | 'scheduleOff' | 'recurring' | 'parkedUntil' >",
+						"required": true
+					},
+					{
+						"name": "schedulingHold.now",
+						"type": "number",
+						"required": true
 					}
 				],
 				"outputs": [
 					{
 						"name": "schedulingHold",
 						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerReminderTitle",
+				"inputs": [
+					{
+						"name": "trackerReminderTitle.title",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerReminderTitle",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -1160,85 +1349,6 @@
 					{
 						"name": "isDueNow",
 						"type": "boolean"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "hasOpenSession",
-				"inputs": [
-					{
-						"name": "hasOpenSession.snapshot",
-						"type": "TrackerDispatchSnapshot",
-						"required": true
-					},
-					{
-						"name": "hasOpenSession.policy",
-						"type": "TrackerDispatchPolicy",
-						"required": true
-					},
-					{
-						"name": "hasOpenSession.now",
-						"type": "number",
-						"required": true
-					},
-					{
-						"name": "hasOpenSession.except",
-						"type": "TrackerRunReceipt",
-						"required": false
-					}
-				],
-				"outputs": [
-					{
-						"name": "hasOpenSession",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "attemptKey",
-				"inputs": [
-					{
-						"name": "attemptKey.run",
-						"type": "TrackerRunReceipt",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "attemptKey",
-						"type": "string"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "matchesRequest",
-				"inputs": [
-					{
-						"name": "matchesRequest.item",
-						"type": "TrackerDispatchItem | null",
-						"required": true
-					},
-					{
-						"name": "matchesRequest.run",
-						"type": "TrackerRunReceipt",
-						"required": true
-					},
-					{
-						"name": "matchesRequest.policy",
-						"type": "TrackerDispatchPolicy",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "matchesRequest",
-						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -1344,6 +1454,39 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "unattendedIntent",
+				"inputs": [
+					{
+						"name": "unattendedIntent.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "unattendedIntent.request",
+						"type": "Extract<TrackerLaunchRequest, { source: 'automatic' }> & { item: TrackerDispatchItem; }",
+						"required": true
+					},
+					{
+						"name": "unattendedIntent.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "unattendedIntent.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "unattendedIntent",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "claimLaunch",
 				"inputs": [
 					{
@@ -1442,6 +1585,113 @@
 					{
 						"name": "retireUnstartedRun",
 						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "activeRun",
+				"inputs": [
+					{
+						"name": "activeRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "activeRun.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "activeRun.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "activeRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasOpenSession",
+				"inputs": [
+					{
+						"name": "hasOpenSession.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "hasOpenSession.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "hasOpenSession.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "hasOpenSession.except",
+						"type": "TrackerRunReceipt",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasOpenSession",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "attemptKey",
+				"inputs": [
+					{
+						"name": "attemptKey.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "attemptKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesRequest",
+				"inputs": [
+					{
+						"name": "matchesRequest.item",
+						"type": "TrackerDispatchItem | null",
+						"required": true
+					},
+					{
+						"name": "matchesRequest.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "matchesRequest.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesRequest",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -1769,6 +2019,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "helper.attention-timing-is-quiet-hour",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "repository.agents-providers-module-task",
 			"via": "import",

@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import { trackerReminderTitle } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerItemSnapshot } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import type { TrackerItemInput } from '../../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import { normalizeTrackerItemFields } from '../../../utils/projects-sessions/normalizeTrackerItemFields';
@@ -28,6 +29,16 @@ export function planTrackerManualLaunch(
 			}
 		};
 	}
+	return planTrackerExplicitLaunch(item, body, context);
+}
+
+function planTrackerExplicitLaunch(
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+) {
+	if (item.kind === 'reminder' || trackerReminderTitle(item.title ?? ''))
+		throw trackerItemError('reminders cannot launch', 409);
 	if (item.status === 'ignored') throw trackerItemError('item is ignored', 409);
 	const { project, repo, computer, model, sensitive } = body;
 	const reset = item.status === 'blocked' || item.status === 'done';
@@ -37,7 +48,7 @@ export function planTrackerManualLaunch(
 			item,
 			body: { project, repo, computer, model, sensitive, auto: true }
 		},
-		context
+		{ ...context, explicitLaunch: true }
 	);
 	if (plan.fields.auto === item.auto) return { itemId: item.id, fields: null };
 	const modelLabel = model ? ` (model ${model})` : '';

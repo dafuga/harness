@@ -3,10 +3,7 @@ import { mkdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { TrackerRunReceipt } from '../../../services/agents-providers/TrackerDispatcherService.types';
 import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
-import {
-	controlledTrackerExecutable,
-	runTrackerHostCommand
-} from '../tracker-host-process-adapter/trackerHostCommand';
+import { controlledTrackerExecutable } from '../tracker-host-process-adapter/trackerHostCommand';
 import type {
 	TrackerManagedLaunchConfig,
 	TrackerWorkerClient
@@ -19,6 +16,10 @@ import {
 	checkTrackerManagedReceipt,
 	hasManagedStartupEvidence,
 	trackerManagedEvidence,
+	managedSessionName,
+	managedTmuxEnvironment,
+	missingTmuxSession,
+	stopManagedRun,
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
 import type {
@@ -30,7 +31,6 @@ import {
 	workerScript,
 	launchTmux,
 	managedBrief,
-	trackerSocket,
 	prepareTrackerWorkingDirectory
 } from './trackerManagedWorkerProcess';
 import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
@@ -58,6 +58,7 @@ export function trackerManagedHostLauncher(
 		),
 		inspect: ({ node, keys }, signal) =>
 			inspectManagedSessions({ directory, tmux, node, keys }, signal),
+		stop: (run, signal) => stopManagedRun({ directory, tmux }, run, signal),
 		confirmNeverStarted: (run, signal) =>
 			confirmManagedStartupAbsent({ directory, tmux }, run, signal),
 		async start(input, signal) {
@@ -95,10 +96,6 @@ function validStartInput(input: TrackerHostStartRequest): boolean {
 	return (
 		/^[a-z0-9]{6,10}$/.test(input.itemId) && Number.isSafeInteger(input.runId) && input.runId > 0
 	);
-}
-
-function managedSessionName(itemId: string, runId: number): string {
-	return `auto-${itemId.slice(0, 6)}-r${runId}`;
 }
 
 async function confirmManagedStartupAbsent(
@@ -191,21 +188,4 @@ async function inspectManagedSession(
 	const absent = result.code === 1 && missingTmuxSession(result.stderr, record.tmux);
 	const presence = live ? 'live' : 'unknown';
 	return trackerManagedEvidence(path, record, absent ? 'absent' : presence);
-}
-
-function managedTmuxEnvironment(tmux: string, node: string, name: string, signal: AbortSignal) {
-	return runTrackerHostCommand(
-		tmux,
-		['-L', trackerSocket(node), 'show-environment', '-t', `=${name}`, 'HARNESS_TRACKER_ATTEMPT'],
-		signal
-	);
-}
-
-function missingTmuxSession(stderr: string, name: string): boolean {
-	return (
-		stderr.trim() === `no such session: =${name}` ||
-		/^(?:no server running on |no sessions$|error connecting to .+ \(No such file or directory\)$)/.test(
-			stderr.trim()
-		)
-	);
 }

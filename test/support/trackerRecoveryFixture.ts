@@ -1,5 +1,12 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import {
+	existsSync,
+	readFileSync,
+	readdirSync,
+	realpathSync,
+	unlinkSync,
+	writeFileSync
+} from 'node:fs';
 import { basename, join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, vi } from 'vitest';
@@ -11,6 +18,12 @@ import {
 	managedForegroundConfig,
 	managedTrackerItemRequest
 } from './trackerManagedProcessFixture';
+import {
+	seedTask,
+	verifyFailureBudget,
+	verifyKilledReminder,
+	verifyStoppedRun
+} from './trackerRecoveryAssertions';
 import { measureWorkload } from './measureWorkload';
 import { withTempRepo } from './temporary';
 
@@ -39,7 +52,7 @@ async function proveRecovery(root: string) {
 	const tmux = (...args: string[]) =>
 		execFileSync(tmuxExecutable!, ['-L', socket, ...args], { encoding: 'utf8', stdio: 'pipe' });
 	const database = new DatabaseSync(':memory:');
-	let offset = 0;
+	let offset = Date.parse('2026-11-25T09:00:00Z') - Date.now();
 	const realNow = Date.now;
 	const clock = vi.spyOn(Date, 'now').mockImplementation(() => realNow() + offset);
 	const options = trackerNodeRuntime(managedForegroundConfig(root, config, 'macos'));
@@ -61,21 +74,21 @@ async function proveRecovery(root: string) {
 	const items = new TrackerItemReadRepository(database);
 	try {
 		await startAndDrop(runtime, database, { dispatch, tmux });
-		await waitForRecoveryCapacity(runtime, database, { dispatch, tmux, watchdog });
-		await watchdog(11 * minute);
-		await expect
-			.poll(async () => {
-				await dispatch();
-				return database.prepare('SELECT state,cli,model,effort FROM runs WHERE id = 3').get();
-			})
-			.toEqual({ state: 'running', cli: 'codex', model: 'gpt-6.1-terra', effort: 'high' });
-		verifyResumeBrief(config.stateDirectory, 3);
-		expect(items.getStored(id)).toMatchObject({ schedule_off: true, needs_daniel: false });
+		await watchdog(minute);
+		await verifyEligibleRecovery(
+			runtime,
+			{ database, directory: config.stateDirectory, items },
+			{ dispatch, tmux, watchdog }
+		);
 		tmux('kill-session', '-t', '=auto-recovr-r3');
 		await dispatch();
 		writeFileSync(join(root, 'reject-boot'), '');
 		runtime = makeRuntime();
-		await verifyFailureBudget({ watchdog, items, database });
+		await verifyFailureBudget({ id, watchdog, items, database });
+		const rejectBoot = join(root, 'reject-boot');
+		unlinkSync(rejectBoot);
+		await verifyStoppedRun(runtime, { dispatch, tmux, watchdog });
+		await verifyKilledReminder(runtime, { dispatch, tmux, watchdog });
 	} finally {
 		try {
 			tmux('kill-server');
@@ -85,6 +98,37 @@ async function proveRecovery(root: string) {
 		database.close();
 		clock.mockRestore();
 	}
+}
+async function verifyEligibleRecovery(
+	runtime: TrackerNativeRuntimeService,
+	{
+		database,
+		directory,
+		items
+	}: { database: DatabaseSync; directory: string; items: TrackerItemReadRepository },
+	{
+		dispatch,
+		tmux,
+		watchdog
+	}: {
+		dispatch: () => Promise<void>;
+		tmux: (...args: string[]) => string;
+		watchdog: (delay: number) => Promise<void>;
+	}
+) {
+	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 1 });
+	expect(items.getStored(id).auto).not.toBeNull();
+	runtime.store.appendLocal({ itemId: id, fields: { schedule_off: 0 } });
+	await waitForRecoveryCapacity(runtime, database, { dispatch, tmux, watchdog });
+	await watchdog(11 * minute);
+	await expect
+		.poll(async () => {
+			await dispatch();
+			return database.prepare('SELECT state,cli,model,effort FROM runs WHERE id = 3').get();
+		})
+		.toEqual({ state: 'running', cli: 'codex', model: 'gpt-6.1-terra', effort: 'high' });
+	verifyResumeBrief(directory, 3);
+	expect(items.getStored(id)).toMatchObject({ schedule_off: false, needs_daniel: false });
 }
 
 async function waitForRecoveryCapacity(
@@ -113,6 +157,7 @@ async function waitForRecoveryCapacity(
 	expect(waiting.needs_daniel).toBe(false);
 	expect(waiting.notes_log.some(({ text }) => /Relaunch [0-9]+\/3 failed:/.test(text))).toBe(false);
 	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 2 });
+	expect((await managedTrackerItemRequest(runtime, occupantId, 'done')).ok).toBe(true);
 	tmux('kill-session', '-t', '=auto-occupy-r2');
 }
 
@@ -121,7 +166,7 @@ async function startAndDrop(
 	database: DatabaseSync,
 	{ dispatch, tmux }: { dispatch: () => Promise<void>; tmux: (...args: string[]) => string }
 ) {
-	seedTask(runtime, Date.now());
+	seedTask(runtime, Date.now(), id);
 	for (let index = 0; index < 12; index++)
 		runtime.store.appendLocal({ itemId: id, fields: { 'note+': 'Progress note ' + index } });
 	expect((await managedTrackerItemRequest(runtime, id, 'launch')).ok).toBe(true);
@@ -142,48 +187,6 @@ async function startAndDrop(
 		state: 'finished',
 		outcome: 'abandoned'
 	});
-}
-
-function seedTask(runtime: TrackerNativeRuntimeService, now: number, itemId = id) {
-	runtime.store.appendLocal({
-		itemId,
-		fields: {
-			title: 'Synthetic recovery task',
-			notes: 'Resume the synthetic task.',
-			'note+': 'stopped: reboot; resume from: checkpoint commit',
-			status: 'open',
-			kind: 'task',
-			model: 'gpt-6.1-terra:high',
-			project: 'Harness',
-			due: new Date(now + 120 * minute).toISOString()
-		}
-	});
-}
-
-async function verifyFailureBudget({
-	watchdog,
-	items,
-	database
-}: {
-	watchdog: (delay: number) => Promise<void>;
-	items: TrackerItemReadRepository;
-	database: DatabaseSync;
-}) {
-	for (let step = 0; step < 4; step++) {
-		await watchdog(11 * minute);
-		expect(items.getStored(id).needs_daniel).toBe(false);
-	}
-	await watchdog(11 * minute);
-	expect(items.getStored(id)).toMatchObject({
-		needs_daniel: true,
-		question: expect.stringMatching(/3.*relaunch/i)
-	});
-	const count = database.prepare('SELECT COUNT(*) AS total FROM runs').get();
-	await watchdog(11 * minute);
-	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual(count);
-	expect(
-		items.getStored(id).notes_log.filter(({ text }) => text.includes('watchdog recovery-failed'))
-	).toHaveLength(1);
 }
 
 function verifyResumeBrief(directory: string, run: number) {

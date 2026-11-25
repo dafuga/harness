@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import type { TrackerItemPriority } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
 
 import type {
@@ -65,8 +66,9 @@ type TrackerItemDetailFields =
 
 type TrackerNextStep = { next_step?: string; parked_until?: string };
 
-export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> &
-	TrackerNextStep &
+export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
+	priority: TrackerItemPriority;
+} & TrackerNextStep &
 	TrackerChase & {
 		stage: TrackerStage;
 		planning: TrackerPlanning;
@@ -107,6 +109,7 @@ export type TrackerDigestItem = Pick<
 	| 'title'
 	| 'status'
 	| 'stage'
+	| 'priority'
 	| 'blocked_reason'
 	| 'needs_daniel'
 	| 'due'

@@ -1,3 +1,4 @@
+import { verifyReminderItemCadence } from './tracker-notification/reminderItemCadence';
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import {
@@ -111,9 +112,12 @@ test('tick delivers the current explicit reminder once at its timestamp across r
 
 test('tick sends a scheduled reminder through a webhook when it is the only hub destination', async () => {
 	const f = notificationFixture();
-	const wake = start + minute;
+	const wake = start + 2 * minute;
 	const at = new Date(wake).toISOString();
-	f.rows.set('wake', fixtureItem('wake', { remind_at: at, clocks: { remind_at: clock() } }));
+	f.rows.set(
+		'wake',
+		fixtureItem('wake', { kind: 'reminder', remind_at: at, clocks: { remind_at: clock() } })
+	);
 	await f.service.tick();
 	expect(f.calls).toHaveLength(0);
 	f.at(wake);
@@ -125,6 +129,7 @@ test('tick sends a scheduled reminder through a webhook when it is the only hub 
 		to: 'chief_of_staff',
 		items: [{ item_id: 'wake', reason: 'remind_at', remind_at: at }]
 	});
+	await verifyReminderItemCadence(f, wake);
 });
 
 test('tick follows up webhook asks on their own cadence and closes them on answer', async () => {

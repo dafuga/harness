@@ -1,6 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import { createHash } from 'node:crypto';
-import { trackerFlagBlocksRecovery } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { WatchdogPaneService } from '../WatchdogPaneService';
@@ -55,9 +55,7 @@ function handoffTarget(
 
 function handoffEligible(row?: WatchdogItem): row is WatchdogItem {
 	return (
-		row?.status === 'in_progress' &&
-		!row.deleted &&
-		(!row.needsDaniel || row.resolved === true || !trackerFlagBlocksRecovery(row.question))
+		row?.status === 'in_progress' && !row.deleted && (!row.needsDaniel || row.resolved === true)
 	);
 }
 
@@ -65,11 +63,11 @@ function handoffKey(pane: WatchdogPane) {
 	return 'tracker_watchdog_context:' + createHash('sha256').update(pane.key).digest('hex');
 }
 
-function handoffReady(item: TrackerItem, requested: number, node: string): boolean {
+function handoffReady(item: TrackerItem, requested: number, node: string, now: number): boolean {
 	return (
 		item.status === 'in_progress' &&
 		!item.deleted &&
-		(!item.needs_daniel || item.resolved || !trackerFlagBlocksRecovery(item.question)) &&
+		!trackerStoredSchedulingHold(item, now) &&
 		item.notes_log.some(
 			({ at, text, node: author }) =>
 				author === node &&
@@ -98,7 +96,10 @@ async function progressHandoff(
 	signal: AbortSignal
 ) {
 	const { pane, id, requested } = target;
-	const attempt = canRelaunch && handoffAttempt(store, target, now);
+	const attempt =
+		canRelaunch &&
+		!trackerStoredSchedulingHold(items.getStored(id), now) &&
+		handoffAttempt(store, target, now);
 	const alert = (detail: string) => contextAlert(store, target, now, detail);
 	if (!attempt || !driver.close) {
 		alert('Chief of Staff can arrange a handoff when the pane is safe to pause.');
@@ -141,13 +142,13 @@ async function finishHandoff(
 			current &&
 			current.token === attempt.token &&
 			current.observed === attempt.observed &&
-			handoffReady(items.getStored(id), requested, store.node)
+			handoffReady(items.getStored(id), requested, store.node, now)
 		);
 	};
 	if (!stillComplete()) {
 		if (
 			now - requested >= 3 * sessionHealthInterval &&
-			!handoffReady(items.getStored(id), requested, store.node)
+			!handoffReady(items.getStored(id), requested, store.node, now)
 		)
 			recordHandoffFailure(store, target, now);
 		else contextAlert(store, target, now, 'Waiting for the handoff note before relaunch.');

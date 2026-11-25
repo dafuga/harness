@@ -1,6 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
-import { statSync } from 'node:fs';
-import { trackerHostAdmission } from './trackerHostAdmission';
+import { statfsSync, statSync } from 'node:fs';
+import { occupiedHostSlots, trackerHostAdmission } from './trackerHostAdmission';
 import { trackerHostLaunchPort } from './trackerHostLaunchPort';
 import { canonicalNode } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
@@ -35,6 +35,7 @@ export function trackerHostLaunch(
 	effects: {
 		tmuxExecutable?: string;
 		recoverDroppedSessions?: boolean;
+		automaticEnabled?(): boolean;
 		adapter?: TrackerHostAdapterConfig;
 		workerClient?: TrackerWorkerClient;
 		transcriptRoots?: readonly string[];
@@ -42,8 +43,6 @@ export function trackerHostLaunch(
 	} = {}
 ): NonNullable<TrackerNativeRuntimeOptions['dispatch']> {
 	const { adapter } = effects;
-	const tmuxExecutable =
-		effects.tmuxExecutable ?? ('managed' in config ? config.managed.tmux : undefined);
 	const driver = trackerHostLaunchPort(config, effects.workerClient, effects.transcriptRoots);
 	const node = canonicalNode(store.node, {});
 	const repositories = new Map(
@@ -52,21 +51,21 @@ export function trackerHostLaunch(
 	const opsWorkdir = 'managed' in config ? config.managed.opsWorkdir : undefined;
 	const routeFor = (item: TrackerHostRouteItem) =>
 		approvedRoute(item, repositories, node, opsWorkdir);
-	const tmux = tmuxExecutable
-		? new TrackerTmuxAdapter({ executable: tmuxExecutable, node })
-		: undefined;
+	const tmux = trackerLaunchTmux(config, node, effects.tmuxExecutable);
 	const host = trackerHostRunner(store, driver, routeFor, {
 		tmux,
 		legacyRunDirectory: config.legacyRunDirectory,
-		now: effects.now
+		now: effects.now,
+		automaticEnabled: effects.automaticEnabled
 	});
 	const admit = trackerHostAdmission(store, { config, adapter, routeFor }, host.inventory);
 	return {
-		runner: host.runner,
+		runner: trackerCapacityRunner(host, store, config, repositories),
 		sessions: host.sessions,
 		policy: {
 			timezone: 'Europe/Lisbon',
 			recoverDroppedSessions: effects.recoverDroppedSessions,
+			automaticEnabled: effects.automaticEnabled,
 			chooseHost: chooseTrackerHost(routeFor, node),
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
@@ -82,6 +81,59 @@ export function trackerHostLaunch(
 			adapterDue: adapter?.scheduleDue === true
 		})
 	};
+}
+
+function trackerLaunchTmux(config: TrackerHostLaunchConfig, node: string, configured?: string) {
+	const executable = configured ?? ('managed' in config ? config.managed.tmux : undefined);
+	return executable ? new TrackerTmuxAdapter({ executable, node }) : undefined;
+}
+
+function trackerCapacityRunner(
+	host: ReturnType<typeof trackerHostRunner>,
+	store: TrackerPersistenceService,
+	config: TrackerHostLaunchConfig,
+	repositories: ReadonlyMap<string, TrackerHostRepository>
+) {
+	return {
+		...host.runner,
+		capacity: () => ({
+			freeSlots: Math.max(
+				0,
+				(config.maxConcurrent ?? 2) - occupiedHostSlots(store, host.inventory())
+			),
+			projects: adapterProjectCapacity(config, repositories)
+		})
+	};
+}
+
+function adapterProjectCapacity(
+	config: TrackerHostLaunchConfig,
+	repositories: ReadonlyMap<string, TrackerHostRepository>
+) {
+	const projects: Record<string, { freePct: number; freeGB: number }> = {};
+	if (!('managed' in config)) return projects;
+	for (const [project, route] of repositories) {
+		if (!canAdvertiseAdapterRoute(config.managed, route.platform)) continue;
+		try {
+			const disks = [statfsSync(route.repo), statfsSync(config.managed.stateDirectory)];
+			projects[project] = {
+				freeGB: Math.floor(Math.min(...disks.map(({ bavail, bsize }) => (bavail * bsize) / 1e9))),
+				freePct: Math.floor(Math.min(...disks.map(({ bavail, blocks }) => (100 * bavail) / blocks)))
+			};
+		} catch {
+			// A host without its checkout or worktree filesystem cannot take the task.
+		}
+	}
+	return projects;
+}
+
+function canAdvertiseAdapterRoute(
+	config: Extract<TrackerHostLaunchConfig, { managed: unknown }>['managed'],
+	platform: TrackerHostRepository['platform']
+) {
+	return platform === 'macos'
+		? process.platform === 'darwin' && Boolean(config.native)
+		: process.platform === 'linux' && Boolean(config.docker);
 }
 
 function chooseTrackerHost(
@@ -140,12 +192,14 @@ function pickHostModel(item: TrackerDispatchItem) {
 export function configuredHostDispatch(
 	store: TrackerPersistenceService,
 	effects: TrackerNativeRuntimeOptions['hostEffects'],
-	now: () => number
+	now: () => number,
+	automaticEnabled?: () => boolean
 ) {
 	const { launch, watchdog, adapter, workerClient } = effects ?? {};
 	return launch
 		? trackerHostLaunch(store, launch, {
 				workerClient,
+				automaticEnabled,
 				transcriptRoots: watchdog?.transcriptRoots,
 				recoverDroppedSessions: watchdog && ('tmux' in watchdog || 'driver' in watchdog),
 				adapter,

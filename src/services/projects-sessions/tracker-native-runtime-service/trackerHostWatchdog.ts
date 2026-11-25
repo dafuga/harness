@@ -7,6 +7,7 @@ import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { automaticQuietHour } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { watchLaunchRequests } from './trackerWatchLaunchRequests';
 import { sendWatchdogAlerts } from './trackerHostCos';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
@@ -27,9 +28,9 @@ const minute = 60_000;
 export function trackerHostWatchdog(
 	store: TrackerPersistenceService,
 	config: NonNullable<TrackerHostEffects['watchdog']>,
-	options: Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork'>
+	options: Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork' | 'automaticEnabled'>
 ) {
-	const { now, launch, idleWork } = options;
+	const { now, launch, idleWork, automaticEnabled } = options;
 	const driver = trackerWatchdogPort(config, store.node);
 	store.database.exec(trackerRunSchema);
 	const scanTranscripts = trackerTranscriptScan(store, config.transcriptRoots ?? [], now);
@@ -46,17 +47,20 @@ export function trackerHostWatchdog(
 			now,
 			launch,
 			idleWork,
+			automaticEnabled,
 			roots: config.transcriptRoots
 		}
 	);
 	return {
 		alerts,
 		chiefOfStaff,
-		inspect: inspectHostWatchdog({ store, items, driver }, { readItems, now }),
+		inspect: inspectHostWatchdog({ store, items, driver }, { readItems, now, automaticEnabled }),
 		async tick(signal: AbortSignal) {
 			if (config.transcriptRoots?.length) await scanTranscripts(signal);
 			await pollSessions(signal);
-			const launchAlert = chiefOfStaff && watchLaunchRequests(store, now());
+			const launchAlert =
+				chiefOfStaff &&
+				watchLaunchRequests(store, now(), !watchdogLaunchHold(now(), automaticEnabled));
 			if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
 				lastCosPoll = now();
 				peerAlerts = (await driver.peers?.(signal)) ?? peerAlerts;
@@ -73,7 +77,8 @@ export function trackerHostWatchdog(
 
 export function configuredHostWatchdog(
 	runtime: Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>,
-	watchdog?: TrackerHostEffects['watchdog']
+	watchdog?: TrackerHostEffects['watchdog'],
+	automaticEnabled?: () => boolean
 ) {
 	if (!watchdog) return undefined;
 	const { store, now, dispatch, role } = runtime;
@@ -82,6 +87,7 @@ export function configuredHostWatchdog(
 	return trackerHostWatchdog(store, watchdog, {
 		now,
 		launch: trackerRecoveryLaunch(dispatch),
+		automaticEnabled,
 		idleWork
 	});
 }
@@ -106,22 +112,40 @@ function inspectHostWatchdog(
 		items: TrackerItemReadRepository;
 		driver: TrackerWatchdogPort;
 	},
-	{ readItems, now }: { readItems: () => readonly TrackerItem[]; now: () => number }
+	{
+		readItems,
+		now,
+		automaticEnabled
+	}: { readItems: () => readonly TrackerItem[]; now: () => number; automaticEnabled?(): boolean }
 ) {
 	return async (id: string | null, signal: AbortSignal) => {
 		const panes = await driver.scan(signal);
 		if (!panes) return { computer: store.node, available: false, sessions: [], recovery: [] };
 		const rows = readItems();
 		const snapshot = watchdogSnapshot(store, rows, panes, now());
+		const automaticHold = watchdogLaunchHold(snapshot.now, automaticEnabled);
 		const itemId = id ? items.resolve(id).id : undefined;
 		return {
 			computer: store.node,
 			available: true,
 			sessions: new WatchdogIdleService().plan({ ...snapshot, itemId }).actions,
 			startup: new WatchdogStartupService().plan({ ...snapshot, itemId }).actions,
-			recovery: readTrackerSessionHealth(store, rows, panes, snapshot.now).filter(
-				(issue) => !itemId || itemId === issue.item_id
-			)
+			recovery: readTrackerSessionHealth(store, rows, panes, snapshot.now)
+				.filter((issue) => !itemId || itemId === issue.item_id)
+				.map((issue) =>
+					issue.recover && automaticHold
+						? {
+								...issue,
+								recover: false,
+								reason: `${issue.reason} Recovery held: ${automaticHold}.`
+							}
+						: issue
+				)
 		};
 	};
+}
+
+function watchdogLaunchHold(now: number, enabled?: () => boolean): string | null {
+	if (enabled?.() === false) return 'automatic launcher disabled';
+	return automaticQuietHour(now) ? 'automatic launch night hold' : null;
 }

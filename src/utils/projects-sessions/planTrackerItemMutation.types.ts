@@ -12,6 +12,7 @@ export interface TrackerItemSnapshot extends TrackerMatchRow {
 	readonly kind?: string | null;
 	readonly every?: string | null;
 	readonly every_tz?: string | null;
+	readonly remind_at?: string | null;
 	readonly occurrence?: string | null;
 	readonly ignored_prev_status?: string | null;
 	readonly project?: string | null;
@@ -38,6 +39,7 @@ export type TrackerItemAction =
 	| 'park'
 	| 'move-on'
 	| 'remind'
+	| 'priority'
 	| 'answer'
 	| 'unflag'
 	| 'resolve'
@@ -54,6 +56,7 @@ export type TrackerItemMutation<Receipt extends object = object> = {
 );
 
 export interface TrackerItemMutationContext extends TrackerItemClock {
+	readonly explicitLaunch?: boolean;
 	readonly candidates: readonly TrackerMatchRow[];
 	/** Validate a named model against the integration's ladder and project policy. */
 	readonly validateModel?: (model: unknown, project: unknown) => void;

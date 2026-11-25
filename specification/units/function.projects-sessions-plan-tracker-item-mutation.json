@@ -12,6 +12,7 @@
 			"src/utils/projects-sessions/planTrackerItemMutation.ts",
 			"src/utils/projects-sessions/planTrackerItemMutation.types.ts",
 			"src/utils/projects-sessions/trackerItemInput.ts",
+			"src/utils/projects-sessions/trackerItemLaunchFields.ts",
 			"src/utils/projects-sessions/trackerItemTransitions.ts"
 		],
 		"symbols": [
@@ -34,6 +35,8 @@
 			"trackerParkNextStep",
 			"trackerResolveItem",
 			"guardTrackerDuplicate",
+			"trackerReminderLaunchFields",
+			"trackerItemLaunchFields",
 			"trackerItemTransitions"
 		]
 	},
@@ -129,6 +132,24 @@
 				"type": "TrackerDuplicateProbe",
 				"required": true,
 				"description": "Duplicate search text, scope, and optional force setting."
+			},
+			{
+				"name": "trackerItemLaunchFields.fields",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "Item fields collected from the command or API, including kind, placement options, and an optional reminder time."
+			},
+			{
+				"name": "trackerItemLaunchFields.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Clock, explicit launch state and approved placement callback for this item mutation."
+			},
+			{
+				"name": "trackerItemLaunchFields.current",
+				"type": "TrackerItemSnapshot",
+				"required": false,
+				"description": "Existing item used for updates. Missing when this request creates an item."
 			}
 		],
 		"outputs": [
@@ -201,12 +222,7 @@
 						"type": "TrackerItemInput"
 					}
 				],
-				"errors": [
-					{
-						"name": "TypeError",
-						"type": "thrown"
-					}
-				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -354,6 +370,42 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemLaunchFields",
+				"inputs": [
+					{
+						"name": "trackerItemLaunchFields.fields",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "Item fields collected from the command or API, including kind, placement options, and an optional reminder time."
+					},
+					{
+						"name": "trackerItemLaunchFields.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Clock, explicit launch state and approved placement callback for this item mutation."
+					},
+					{
+						"name": "trackerItemLaunchFields.current",
+						"type": "TrackerItemSnapshot",
+						"required": false,
+						"description": "Existing item used for updates. Missing when this request creates an item."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemLaunchFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			}
 		],

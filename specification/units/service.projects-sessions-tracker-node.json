@@ -7,6 +7,14 @@
 	"responsibility": "Owns the TrackerNodeService service workflow.",
 	"responsibilityOrigin": "derived",
 	"status": "active",
+	"configControls": [
+		{
+			"source": "src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
+			"name": "autolaunch",
+			"audience": "operator",
+			"purpose": "Enable or disable unattended Tracker launches. If omitted, follow the existing legacy autolaunch setting."
+		}
+	],
 	"owns": {
 		"source": [
 			"src/services/projects-sessions/TrackerNodeService.ts",
@@ -33,6 +41,7 @@
 			"TrackerNodeStartupError",
 			"TrackerNodeTransportError",
 			"trackerLaunchAwareItemResponse",
+			"stopTrackerRun",
 			"holdLegacySupervisorSocket",
 			"readTrackerBackupList",
 			"readTrackerNodeInspection",
@@ -70,6 +79,16 @@
 			},
 			{
 				"name": "trackerLaunchAwareItemResponse.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "stopTrackerRun.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "stopTrackerRun.runtime",
 				"type": "TrackerNativeRuntimeService",
 				"required": true
 			},
@@ -234,6 +253,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "stopTrackerRun",
+				"type": "unknown"
+			},
+			{
 				"name": "holdLegacySupervisorSocket",
 				"type": "Promise<()"
 			},
@@ -362,6 +385,29 @@
 				"outputs": [
 					{
 						"name": "trackerLaunchAwareItemResponse",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "stopTrackerRun",
+				"inputs": [
+					{
+						"name": "stopTrackerRun.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "stopTrackerRun.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stopTrackerRun",
 						"type": "unknown"
 					}
 				],

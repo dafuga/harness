@@ -9,6 +9,7 @@ import type {
 	TrackerItemSnapshot
 } from './planTrackerItemMutation.types';
 import { normalizeTrackerParkUntil, trackerIsoTime, trackerTimeZone } from './normalizeTrackerDue';
+import { trackerItemLaunchFields } from './trackerItemLaunchFields';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 
@@ -24,6 +25,7 @@ const apiFields = [
 	'question',
 	'needs_daniel',
 	'auto',
+	'remind_at',
 	'project',
 	'repo',
 	'computer',
@@ -51,10 +53,7 @@ export function trackerItemInput(
 		fields.schedule_off = 1;
 	}
 	checkItemInput(fields, context, body.force, current);
-	if (!requestsTrackerLaunch(fields.auto)) return fields;
-	if (!context.planLaunch)
-		throw new TypeError('Tracker launch planning requires a placement collaborator');
-	return context.planLaunch(fields, current);
+	return trackerItemLaunchFields(fields, context, current);
 }
 
 function checkItemInput(

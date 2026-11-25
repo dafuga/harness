@@ -1,5 +1,6 @@
 // @harness-uid u_r7qgepnoax
 import { parseArgs } from 'node:util';
+import { nativeTrackerTimedItemRequest } from './nativeTrackerTimedItemRequest';
 import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
@@ -8,7 +9,7 @@ import {
 	nativeTrackerCommonOptions,
 	itemFields,
 	nativeTrackerIdVerbs,
-	nativeTrackerTimedItemRequest,
+	launchAction,
 	nativeTrackerInspectionRequest
 } from './nativeTrackerOptions';
 
@@ -34,7 +35,7 @@ function nativeTrackerRequest(
 ): NativeTrackerRequest {
 	const item =
 		itemQuery(command, words, values) ??
-		runReadRequest(command, words, values) ??
+		runRequest(command, words, values) ??
 		nativeTrackerInspectionRequest(command, words, values);
 	if (item) return item;
 	if (nativeTrackerIdVerbs.has(command)) return itemAction(command, words, values);
@@ -47,12 +48,14 @@ function nativeTrackerRequest(
 	};
 }
 
-function runReadRequest(
+function runRequest(
 	command: string,
 	words: string[],
 	values: Record<string, unknown>
 ): NativeTrackerRequest | undefined {
 	switch (command) {
+		case 'stop':
+			return stopRequest(words);
 		case 'watchdog':
 			return watchdogRequest(words, values);
 		case 'runs':
@@ -68,6 +71,11 @@ function runReadRequest(
 		default:
 			return undefined;
 	}
+}
+
+function stopRequest(words: string[]): NativeTrackerRequest {
+	if (words.length !== 1) throw new TypeError('usage: tracker stop <run|item>');
+	return { method: 'POST', path: '/stop?target=' + encodeURIComponent(words[0]) };
 }
 
 function watchdogRequest(
@@ -98,7 +106,11 @@ function itemQuery(
 			return {
 				method: 'POST',
 				path: '/items',
-				body: { ...body, title, kind: command === 'add' ? fields.kind : command }
+				body: {
+					...body,
+					title,
+					kind: creationKind(command, { ...fields, remind_at: values.at })
+				}
 			};
 		}
 		case 'list':
@@ -115,6 +127,14 @@ function itemQuery(
 		default:
 			return nativeTrackerTimedItemRequest(command, words, values);
 	}
+}
+
+function creationKind(command: string, fields: Record<string, unknown>) {
+	if (command !== 'add') return command;
+	if (fields.reminder) return 'reminder';
+	if (fields.remind_at && fields.kind !== 'reminder')
+		throw new TypeError('tracker add --at requires --reminder');
+	return fields.kind;
 }
 
 function itemAction(
@@ -145,18 +165,6 @@ function itemAction(
 		default:
 			return { method: 'POST', path: `${id}/${command}`, body: actionBody(command, rest, values) };
 	}
-}
-
-function launchAction(
-	path: string,
-	[target, ...rest]: string[],
-	values: Record<string, string | boolean | undefined>
-): NativeTrackerRequest {
-	if (target !== 'on' && target !== 'off')
-		return { method: 'POST', path: path + '/launch?outcome=run', body: itemFields(values) };
-	if (rest.length !== 1) throw new TypeError(`usage: tracker launch ${target} <id>`);
-	const verb = target === 'off' ? 'unlaunch' : 'schedule-on';
-	return { method: 'POST', path: `/items/${encodeURIComponent(rest[0])}/${verb}` };
 }
 
 function actionBody(command: string, words: string[], values: Record<string, unknown>) {

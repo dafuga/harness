@@ -15,6 +15,7 @@ export interface NativeTrackerRequest {
 export interface NativeTrackerItem {
 	id: string;
 	kind: string;
+	priority?: 'urgent' | 'normal' | 'low';
 	title: string;
 	status: string;
 	stage?: TrackerStage;

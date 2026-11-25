@@ -40,6 +40,12 @@ export async function verifyAdoption(
 		{ state: 'finished', model: 'gpt-6.1-terra', effort: 'high', tmux: 'man123-recovery' }
 	]);
 	expect((await runtime.watchdog!.inspect(manual, signal)).recovery).toMatchObject([
-		{ item_id: manual, host: runtime.store.node, kind: 'missing', recover: true }
+		{
+			item_id: manual,
+			host: runtime.store.node,
+			kind: 'missing',
+			recover: false,
+			reason: expect.stringContaining('automatic launch opted out')
+		}
 	]);
 }

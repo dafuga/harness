@@ -9,6 +9,7 @@ import type {
 	TrackerLaunchRequest
 } from '../TrackerDispatcherService.types';
 import {
+	automaticRequestHold,
 	canonicalNode,
 	dueItemHold,
 	dueOwner,
@@ -16,11 +17,11 @@ import {
 	inactive,
 	knownNode,
 	mayScheduleHere,
-	schedulingHold,
 	skip,
-	startable
+	startable,
+	trackerReminderTitle
 } from './launchEligibility';
-import { recoveryIntent } from './recoveryIntent';
+import { recoveryIntent, unattendedIntent } from './recoveryIntent';
 
 export function requestLaunch(
 	snapshot: TrackerDispatchSnapshot,
@@ -33,6 +34,8 @@ export function requestLaunch(
 	if (!request.token.trim()) return skip('conflict', 'launch token is required');
 	if (request.source === 'recovery')
 		return recoveryIntent(snapshot, { item, request }, policy, now);
+	if (request.source === 'automatic')
+		return unattendedIntent(snapshot, { ...request, item }, policy, now);
 	return request.source === 'manual'
 		? manualIntent(snapshot, { ...request, item }, policy, now)
 		: dueIntent(snapshot, { item, token: request.token }, policy, now);
@@ -44,9 +47,9 @@ function manualIntent(
 	policy: TrackerDispatchPolicy,
 	now: number
 ): TrackerDispatchDecision {
-	const { item, options, token, unattended } = request;
-	const hold = unattended && unattendedHold(item, unattended.unchangedSince, policy);
-	if (hold) return hold;
+	const { item, options, token } = request;
+	if (item.kind === 'reminder' || trackerReminderTitle(item.title))
+		return skip('held', 'reminders cannot launch');
 	const updated = { ...item, ...options };
 	const wanted = (updated.computer ?? 'auto').trim().toLowerCase() || 'auto';
 	const busy = hasOpenSession(snapshot, policy, now);
@@ -57,20 +60,12 @@ function manualIntent(
 	if (busy) return skip('conflict', 'a session is already open for this item');
 	if (snapshot.runs.some((run) => run.auto_token === token))
 		return skip('conflict', 'launch token was already used');
-	const target = manualTarget(updated, wanted, policy, !unattended);
+	const target = manualTarget(updated, wanted, policy);
 	if (!target.node) return skip('held', target.why);
 	return writeIntent(
 		{ token, target: canonicalNode(target.node, policy), source: 'manual' },
 		options
 	);
-}
-
-function unattendedHold(item: TrackerDispatchItem, cutoff: number, policy: TrackerDispatchPolicy) {
-	const hold = schedulingHold(item, policy);
-	if (hold) return skip('held', hold);
-	if (!startable(item) || (item.updatedAt ?? Infinity) > cutoff)
-		return skip('ignored', 'item changed while checking idle work');
-	return undefined;
 }
 
 function existingIntent(
@@ -112,15 +107,10 @@ function repeatedRequest(
 	);
 }
 
-function manualTarget(
-	item: TrackerDispatchItem,
-	wanted: string,
-	policy: TrackerDispatchPolicy,
-	useFallback: boolean
-) {
+function manualTarget(item: TrackerDispatchItem, wanted: string, policy: TrackerDispatchPolicy) {
 	if (wanted === 'auto') {
 		const choice = policy.chooseHost(item, { source: 'manual', requestedNode: null });
-		return { ...choice, node: choice.node ?? (useFallback ? manualFallback(item, policy) : null) };
+		return { ...choice, node: choice.node ?? manualFallback(item, policy) };
 	}
 	if (knownNode(wanted, policy)) return { node: canonicalNode(wanted, policy), why: '' };
 	return { node: null, why: 'computer must be mac, mb2, box, auto, or a known tracker node' };
@@ -158,7 +148,8 @@ export function previewDueLaunch(
 ) {
 	const { item, due } = snapshot;
 	if (!item || inactive(item)) return { reason: 'item is missing or inactive' };
-	const hold = schedulingHold(item, policy) ?? dueIntentHold(snapshot, item, policy, now);
+	const hold =
+		automaticRequestHold(item, policy, now) ?? dueIntentHold(snapshot, item, policy, now);
 	if (hold) return { reason: hold };
 	if (due?.paused) return { reason: 'due scheduling is paused' };
 	if (!due || !mayScheduleHere(item, due, policy))

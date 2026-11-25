@@ -45,7 +45,7 @@ export function trackerHostAdmission(
 	};
 }
 
-function occupiedHostSlots(
+export function occupiedHostSlots(
 	store: TrackerPersistenceService,
 	sessions: readonly TrackerHostSession[]
 ): number {

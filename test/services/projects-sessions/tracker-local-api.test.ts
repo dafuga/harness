@@ -59,9 +59,12 @@ test('commits item and notes under the actor, serves the overview feed and retur
 	expect(store.opsSince(0, 10).map((op) => op.actor)).toEqual(['fixture-actor', 'fixture-actor']);
 	const overview = await request('/items?status=all&limit=-1');
 	expect(await overview.json()).toMatchObject([{ id, status: 'in_progress' }]);
+	const priority = await request('/items/' + id + '/priority', 'POST', { priority: 'urgent' });
+	expect(await priority.json()).toMatchObject({ priority: 'urgent' });
+	expect(await (await request('/items')).json()).toMatchObject([{ priority: 'urgent' }]);
 	const digest = await request('/digest?format=text');
 	expect(digest.headers.get('content-type')).toBe('text/plain; charset=utf-8');
-	expect(await digest.text()).toContain('Fixture bridge rollout');
+	expect(await digest.text()).toMatch(/Fixture bridge rollout.*priority urgent/);
 	const firstChase = await request(`/items/${prefix}/chase`, 'POST', { note: 'Asked for status' });
 	expect(firstChase.status).toBe(200);
 	expect(await firstChase.json()).toMatchObject({

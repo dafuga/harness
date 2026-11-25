@@ -1,0 +1,63 @@
+{
+	"name": "tracker-launch-7zvwk6",
+	"goal": "Keep Tracker automatic launches safe, paced and behind explicit launches. Deliver reminders without sessions.",
+	"createdAt": "2026-11-25T08:28:14.146Z",
+	"updatedAt": "2026-11-25T08:38:45.139Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-25T08:29:36.848Z",
+			"evidence": "A dropped session can requeue ineligible work. Deploy tasks require an explicit launch. Reminder items deliver to CoS without a worker."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-25T08:29:38.589Z",
+			"evidence": "Due tests checked opt-outs but recovery had a separate predicate. Reminder tests covered only one-shot delivery. Scheduler fixture had no explicit-versus-auto backlog or shared rate check."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-25T08:38:43.153Z",
+			"evidence": "Committed failing checkpoint 93b5f96a2f. Recovery accepted opted-out and personal tasks. A scheduled reminder did not repeat with the existing ask cadence."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-25T08:38:45.139Z",
+			"evidence": "Shared launch admission, durable signed pacing, exact stop, reminder delivery, and delegated tester intake."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

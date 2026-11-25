@@ -19,10 +19,54 @@ export function planTrackerIntake(
 	source: TrackerAdapterSource,
 	record: TrackerAdapterIntakeRecord
 ): TrackerAdapterAction {
-	const { repository, policy } = context;
+	const coveredId = record.followUp?.coveredItem;
+	const manual = existingIntakeItem(context, source, record);
+	const action = manual ? 'link' : missingIntakeAction(coveredId);
+	return intakeAction(context, record, action, manual?.id ?? coveredId);
+}
+
+function missingIntakeAction(coveredId?: string) {
+	return coveredId ? 'covered' : 'create';
+}
+
+function intakeAction(
+	context: TrackerAdapterIntakeContext,
+	record: TrackerAdapterIntakeRecord,
+	action: TrackerAdapterAction['action'],
+	itemId?: string
+): TrackerAdapterAction {
+	return {
+		action,
+		external_id: record.externalId,
+		title: record.title,
+		url: record.url,
+		auto_launch: action === 'create' && record.autoLaunch,
+		...(itemId && { item_id: itemId }),
+		...assignedPriority(context, record, action)
+	};
+}
+
+function assignedPriority(
+	context: TrackerAdapterIntakeContext,
+	record: TrackerAdapterIntakeRecord,
+	action: TrackerAdapterAction['action']
+) {
+	if (action !== 'create') return {};
+	const priority = context.policy?.priority?.(record, {
+		actor: record.actor,
+		kind: record.followUp ? 'comment' : 'issue'
+	});
+	return priority && priority !== 'normal' ? { priority } : {};
+}
+
+function existingIntakeItem(
+	{ repository, policy }: TrackerAdapterIntakeContext,
+	source: TrackerAdapterSource,
+	record: TrackerAdapterIntakeRecord
+) {
 	const coveredId = record.followUp?.coveredItem;
 	const issueItem = repository.linkByKey(source.id, record.key)?.item_id;
-	const manual = coveredId
+	return coveredId
 		? repository.candidates().find((item) => item.id === coveredId)
 		: repository.candidates().find(
 				(item) =>
@@ -32,17 +76,6 @@ export function planTrackerIntake(
 						followUps: Boolean(policy?.followUp)
 					})
 			);
-	const missingAction = coveredId ? 'covered' : 'create';
-	const action = manual ? 'link' : missingAction;
-	const itemId = manual?.id ?? coveredId;
-	return {
-		action,
-		external_id: record.externalId,
-		title: record.title,
-		url: record.url,
-		auto_launch: action === 'create' && record.autoLaunch,
-		...(itemId && { item_id: itemId })
-	};
 }
 
 function matchesTrackerIntakeScope(
@@ -80,7 +113,7 @@ export function commitTrackerIntake(
 		sync_pending: Number(record.syncBack && (owned || !record.followUp))
 	};
 	const fields = owned
-		? newItemFields(source, record, context, now)
+		? { ...newItemFields(source, record, context, now), priority: action.priority ?? 'normal' }
 		: linkedItemFields(context, record, itemId);
 	context.store.appendLocal({ itemId, fields, actor: source.id }, () =>
 		context.repository.saveLink(link)
@@ -164,43 +197,4 @@ function trackerInstructions(record: TrackerAdapterIntakeRecord, base?: string):
 function trackerItemId(): string {
 	const alphabet = '0123456789abcdefghjkmnpqrstvwxyz';
 	return Array.from(randomBytes(10), (byte) => alphabet[byte & 31]).join('');
-}
-
-export function recordIssueAcceptance(
-	context: TrackerAdapterIntakeContext,
-	source: TrackerAdapterSource,
-	record: TrackerAdapterIntakeRecord
-): void {
-	const instructions = record.followUp?.instructions;
-	if (!instructions) return;
-	const original = context.repository.linkByKey(source.id, record.key);
-	for (const item of context.repository.candidates()) {
-		if (item.adapter_instructions?.includes(instructions)) continue;
-		if (!isIssueWork(item, context, source, { record, issueItem: original?.item_id })) continue;
-		context.store.appendLocal({
-			itemId: item.id,
-			actor: source.id,
-			fields: {
-				adapter_instructions: [item.adapter_instructions, instructions]
-					.filter(Boolean)
-					.join('\n\n'),
-				adapter_notice: record.externalId,
-				'note+': `${instructions}\nTester follow-up: ${record.url}`
-			}
-		});
-	}
-}
-
-function isIssueWork(
-	item: TrackerAdapterCandidate,
-	{ policy }: TrackerAdapterIntakeContext,
-	source: TrackerAdapterSource,
-	{ record, issueItem }: { record: TrackerAdapterIntakeRecord; issueItem?: string }
-): boolean {
-	if (item.id === issueItem || item.id === record.followUp?.coveredItem) return true;
-	return (
-		item.kind === 'task' &&
-		matchesGithubIssue(source, record, item, policy?.matchesItem) &&
-		[...item.title.matchAll(/#(\d+)/g)].every(([, key]) => key === record.key)
-	);
 }

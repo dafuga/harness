@@ -1,8 +1,14 @@
 // @harness-uid u_wlip653voz
+import { matchesGithubIssue } from './githubIntakeRecord';
 import type { TrackerAdapterRepository } from '../../../repositories/projects-sessions/TrackerAdapterRepository';
-import type { TrackerAdapterLink } from '../../../repositories/projects-sessions/TrackerAdapterRepository.types';
+import type {
+	TrackerAdapterCandidate,
+	TrackerAdapterLink,
+	TrackerAdapterSource
+} from '../../../repositories/projects-sessions/TrackerAdapterRepository.types';
 import type {
 	TrackerAdapterEvent,
+	TrackerAdapterIntakeContext,
 	TrackerAdapterIntakeRecord
 } from '../TrackerAdapterPollService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -68,4 +74,43 @@ export function applyTrackerIntakeEvent(
 		if (event.state) repository.saveState(link, event.state);
 	});
 	return true;
+}
+
+export function recordIssueAcceptance(
+	context: TrackerAdapterIntakeContext,
+	source: TrackerAdapterSource,
+	record: TrackerAdapterIntakeRecord
+): void {
+	const instructions = record.followUp?.instructions;
+	if (!instructions) return;
+	const original = context.repository.linkByKey(source.id, record.key);
+	for (const item of context.repository.candidates()) {
+		if (item.adapter_instructions?.includes(instructions)) continue;
+		if (!isIssueWork(item, context, source, { record, issueItem: original?.item_id })) continue;
+		context.store.appendLocal({
+			itemId: item.id,
+			actor: source.id,
+			fields: {
+				adapter_instructions: [item.adapter_instructions, instructions]
+					.filter(Boolean)
+					.join('\n\n'),
+				adapter_notice: record.externalId,
+				'note+': `${instructions}\nTester follow-up: ${record.url}`
+			}
+		});
+	}
+}
+
+function isIssueWork(
+	item: TrackerAdapterCandidate,
+	{ policy }: TrackerAdapterIntakeContext,
+	source: TrackerAdapterSource,
+	{ record, issueItem }: { record: TrackerAdapterIntakeRecord; issueItem?: string }
+): boolean {
+	if (item.id === issueItem || item.id === record.followUp?.coveredItem) return true;
+	return (
+		item.kind === 'task' &&
+		matchesGithubIssue(source, record, item, policy?.matchesItem) &&
+		[...item.title.matchAll(/#(\d+)/g)].every(([, key]) => key === record.key)
+	);
 }

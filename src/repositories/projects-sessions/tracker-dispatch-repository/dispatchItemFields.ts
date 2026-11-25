@@ -5,6 +5,8 @@ import type {
 	TrackerLaunchIntent,
 	TrackerRunReceipt
 } from '../../../services/agents-providers/TrackerDispatcherService.types';
+import { schedulingHold } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
+import type { TrackerItem } from '../TrackerItemReadRepository.types';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import type { TrackerDispatchRow } from '../TrackerDispatchRepository.types';
 
@@ -33,6 +35,7 @@ export function dispatchItem(
 		scheduleOff: flag(row.schedule_off),
 		deleted: Boolean(row.deleted),
 		awaitingAnswer: Boolean(row.needs_daniel && !row.resolved),
+		parkedUntil: Date.parse(row.parked_until ?? ''),
 		question: row.question,
 		answeredCurrentBlock: answeredBlock(row, clocks, runs),
 		blockedReason: row.blocked_reason,
@@ -51,10 +54,7 @@ function launchIntent(row: TrackerDispatchRow): TrackerLaunchIntent | null {
 	if (!row.auto) return null;
 	return {
 		token: row.auto,
-		source:
-			row.launch_source === 'due' || row.launch_source === 'recovery'
-				? row.launch_source
-				: 'manual',
+		source: row.dispatch_source,
 		target:
 			(row.launch_target ?? row.computer) === 'auto' ? null : (row.launch_target ?? row.computer),
 		...(row.launch_pick && { scheduledPick: JSON.parse(row.launch_pick) })
@@ -101,8 +101,38 @@ export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['i
 		if (item[key] !== undefined) fields[key] = item[key];
 	}
 	if (item.launch !== undefined) Object.assign(fields, launchJournalFields(item.launch));
+	if (item.launch?.source === 'manual')
+		fields['note+'] = `auto-launch requested on ${item.launch.target}`;
 	if (item.blockedReason !== undefined) fields.blocked_reason = item.blockedReason;
 	if (item.awaitingAnswer !== undefined) fields.needs_daniel = item.awaitingAnswer;
 	if (item.answeredCurrentBlock === false) fields.resolved = false;
 	return fields;
 }
+
+export function trackerStoredSchedulingHold(item: TrackerItem, now: number) {
+	return schedulingHold(
+		{
+			title: item.title ?? '',
+			kind: item.kind ?? 'task',
+			status: item.status as TrackerDispatchItem['status'],
+			agent: item.agent,
+			owner: item.owner,
+			deleted: item.deleted,
+			awaitingAnswer: item.needs_daniel && !item.resolved,
+			scheduleOff: item.schedule_off,
+			recurring: item.recurring,
+			parkedUntil: Date.parse(item.parked_until ?? '')
+		},
+		now
+	);
+}
+
+// Older idle work and automatic creation wrote "manual". An explicit CLI launch
+// journaled its launch note in the same operation that minted the token.
+export const dispatchLaunchSource = `CASE
+	WHEN i.launch_source IN ('due', 'recovery', 'automatic') THEN i.launch_source
+	WHEN EXISTS (
+		SELECT 1 FROM item_notes n WHERE n.item_id = i.id AND n.hlc = json_extract(i.clocks, '$.auto')
+		AND n.text LIKE 'auto-launch requested on %'
+	) THEN 'manual'
+	ELSE 'automatic' END`;

@@ -145,6 +145,7 @@ export function scanWebhookDue(
 	for (const item of source.items()) {
 		if (
 			!activeItem(item) ||
+			item.kind === 'reminder' ||
 			item.every ||
 			holdRegularReminder(item, now, options.reminderIntervalMinutes)
 		)

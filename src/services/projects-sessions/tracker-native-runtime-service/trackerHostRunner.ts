@@ -10,12 +10,13 @@ import {
 	hasManualTrackerPane,
 	trackerHostInventory
 } from './trackerHostInventory';
+import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import {
 	attemptKey,
 	canonicalNode,
-	trackerFlagBlocksRecovery
+	trackerReminderTitle
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type {
 	TrackerDispatchEvent,
@@ -26,26 +27,23 @@ import type { TrackerReservedStart } from '../TrackerDispatchSchedulerService.ty
 import type {
 	TrackerHostLaunchPort,
 	TrackerHostRoute,
-	TrackerHostTarget,
 	TrackerHostRunnerOptions,
 	TrackerHostSession
 } from './trackerHostLaunch.types';
 import { formatTrackerHostBrief } from './trackerHostBrief';
-import { trackerItemStatus, withTrackerRunUsage } from './trackerHostLaunchPort';
+import { startTrackerHost, trackerItemStatus, withTrackerRunUsage } from './trackerHostLaunchPort';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
 	driver: TrackerHostLaunchPort,
 	routeFor: TrackerHostRoute,
-	{ tmux, legacyRunDirectory, now = Date.now }: TrackerHostRunnerOptions = {}
+	options: TrackerHostRunnerOptions = {}
 ) {
+	const { tmux, legacyRunDirectory, now = Date.now, automaticEnabled } = options;
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
-	let sessions: TrackerHostSession[] = [];
-	let panes: WatchdogPane[] = [];
-	const legacyExit = legacyRunDirectory ? trackerLegacyExitReceipt(legacyRunDirectory) : undefined;
-	const legacySession = (run: TrackerRunReceipt) =>
-		legacyExit?.(run) ?? trackerLegacySession(run, sessions);
+	let [sessions, panes]: [TrackerHostSession[], WatchdogPane[]] = [[], []];
+	const legacySession = legacySessionReader(legacyRunDirectory, () => sessions);
 	return {
 		inventory: () => sessions,
 		runner: {
@@ -57,6 +55,11 @@ export function trackerHostRunner(
 			},
 			async start(reservation: TrackerReservedStart, signal: AbortSignal, instructions: string) {
 				const item = items.getStored(reservation.run.item_id);
+				if (automaticHostHold(item, reservation.run, { now, automaticEnabled }))
+					return {
+						type: 'startup-failed',
+						reason: 'automatic launch no longer permitted'
+					} as const;
 				const result = await launchApprovedItem(
 					{ driver, node, routeFor },
 					{ item, reservation, instructions },
@@ -75,6 +78,7 @@ export function trackerHostRunner(
 				const event = recordedHostEvent(run, { key, sessions, items, legacySession });
 				return withTrackerRunUsage(event, { driver, run, items, now: now() }, signal);
 			},
+			stop: driver.stop?.bind(driver),
 			confirmNeverStarted: driver.confirmNeverStarted?.bind(driver)
 		},
 		sessions: (itemId: string) => ({
@@ -82,6 +86,14 @@ export function trackerHostRunner(
 			activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
 		})
 	};
+}
+
+function legacySessionReader(
+	directory: string | undefined,
+	sessions: () => readonly TrackerHostSession[]
+) {
+	const exit = directory ? trackerLegacyExitReceipt(directory) : undefined;
+	return (run: TrackerRunReceipt) => exit?.(run) ?? trackerLegacySession(run, sessions());
 }
 
 function activeTrackerSessionKeys(
@@ -100,48 +112,6 @@ function activeTrackerSessionKeys(
 		.map(({ key }) => key);
 }
 
-async function startTrackerHost(
-	driver: TrackerHostLaunchPort,
-	input: {
-		node: string;
-		route: TrackerHostTarget;
-		reservation: TrackerReservedStart;
-		brief: string;
-	},
-	signal: AbortSignal
-): Promise<TrackerDispatchEvent | undefined> {
-	const {
-		node,
-		route,
-		reservation: { run, key, selection },
-		brief
-	} = input;
-	const result = await driver.start(
-		{
-			node,
-			itemId: run.item_id,
-			runId: run.id,
-			key,
-			selection,
-			brief,
-			...route,
-			backend: route.platform === 'macos' ? 'native' : 'docker',
-			queuedAt: run.queued_at
-		},
-		signal
-	);
-	if (result.status === 'rejected')
-		return { type: 'startup-failed', reason: 'Tracker host declined the reserved launch' };
-	if (
-		result.status === 'started' &&
-		result.session.key === key &&
-		result.session.itemId === run.item_id &&
-		!result.session.legacyRunId
-	)
-		return { type: 'session', session: result.session };
-	return undefined;
-}
-
 async function launchApprovedItem(
 	{
 		driver,
@@ -156,15 +126,7 @@ async function launchApprovedItem(
 	signal: AbortSignal
 ): Promise<TrackerDispatchEvent | undefined> {
 	const route = routeFor(item);
-	if (
-		!route ||
-		item.deleted ||
-		!['open', 'in_progress'].includes(item.status ?? '') ||
-		(item.needs_daniel &&
-			!item.resolved &&
-			(reservation.run.launch_source !== 'recovery' || trackerFlagBlocksRecovery(item.question))) ||
-		item.auto !== reservation.run.auto_token
-	)
+	if (!route || !hostItemMatchesRun(item, reservation.run))
 		return {
 			type: 'startup-failed',
 			reason: 'Tracker launch no longer has an approved execution directory'
@@ -182,6 +144,28 @@ async function launchApprovedItem(
 			)
 		},
 		signal
+	);
+}
+
+function automaticHostHold(
+	item: TrackerItem,
+	run: TrackerRunReceipt,
+	{ now, automaticEnabled }: { now: () => number; automaticEnabled?: () => boolean }
+) {
+	return (
+		(run.launch_source !== 'manual' || run.attempt > 1) &&
+		(automaticEnabled?.() === false || trackerStoredSchedulingHold(item, now()))
+	);
+}
+
+function hostItemMatchesRun(item: TrackerItem, run: TrackerRunReceipt) {
+	return (
+		!item.deleted &&
+		['open', 'in_progress'].includes(item.status ?? '') &&
+		!(item.needs_daniel && !item.resolved) &&
+		(item.kind ?? 'task') === 'task' &&
+		!trackerReminderTitle(item.title ?? '') &&
+		item.auto === run.auto_token
 	);
 }
 

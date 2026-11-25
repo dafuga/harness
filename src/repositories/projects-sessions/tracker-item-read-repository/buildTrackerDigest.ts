@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
 import type {
 	TrackerDigest,
 	TrackerDigestGroups,
@@ -47,7 +48,6 @@ export function buildTrackerDigest(
 		) as TrackerDigest['counts']
 	};
 }
-
 function followThrough(
 	groups: TrackerDigestGroups,
 	{
@@ -90,12 +90,12 @@ function digestActive(row: TrackerItemRow, now: number): boolean {
 		!(Date.parse(row.parked_until ?? '') > now)
 	);
 }
-
 function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
 	const needsDaniel = row.status !== 'ignored' && Boolean(row.needs_daniel) && !row.resolved;
 	return {
 		id: row.id,
 		kind: row.kind,
+		priority: trackerItemPriority(row.priority, 'normal'),
 		title: row.title,
 		status: row.status,
 		stage: trackerPlanningStage(row),

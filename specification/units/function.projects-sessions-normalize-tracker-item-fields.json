@@ -14,6 +14,7 @@
 			"src/utils/projects-sessions/normalizeTrackerDue.ts",
 			"src/utils/projects-sessions/normalizeTrackerItemFields.ts",
 			"src/utils/projects-sessions/normalizeTrackerItemFields.types.ts",
+			"src/utils/projects-sessions/trackerItemPriority.ts",
 			"src/utils/projects-sessions/trackerItemValueOr.ts"
 		],
 		"symbols": [
@@ -38,6 +39,8 @@
 			"TrackerItemValue",
 			"TrackerItemInput",
 			"TrackerItemFields",
+			"TrackerItemPriority",
+			"trackerItemPriority",
 			"trackerItemValueOr"
 		]
 	},
@@ -175,6 +178,18 @@
 				"type": "TrackerItemValue",
 				"required": true,
 				"description": "Requested auto-launch value to check for a launch request."
+			},
+			{
+				"name": "trackerItemPriority.value",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Stored or supplied priority string. Accepted values are urgent, normal and low."
+			},
+			{
+				"name": "trackerItemPriority.fallback",
+				"type": "TrackerItemPriority",
+				"required": false,
+				"description": "Priority returned for absent or unrecognized legacy data when the caller supplies a default."
 			},
 			{
 				"name": "trackerItemValueOr.value",
@@ -510,6 +525,31 @@
 					{
 						"name": "requestsTrackerLaunch",
 						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemPriority",
+				"inputs": [
+					{
+						"name": "trackerItemPriority.value",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Stored or supplied priority string. Accepted values are urgent, normal and low."
+					},
+					{
+						"name": "trackerItemPriority.fallback",
+						"type": "TrackerItemPriority",
+						"required": false,
+						"description": "Priority returned for absent or unrecognized legacy data when the caller supplies a default."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemPriority",
+						"type": "TrackerItemPriority"
 					}
 				],
 				"errors": [],

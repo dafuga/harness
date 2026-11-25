@@ -122,7 +122,7 @@ test('a current answer revives only its original live session and preserves the 
 	expect(item()).toMatchObject({ status: 'in_progress', blockedReason: null });
 });
 
-test('pending human review suppresses an ETA timeout until the hard cap, while a deleted item abandons', async () => {
+test('pending human review suppresses an ETA timeout until the hard cap, and blocks unattended retry', async () => {
 	const fixture = dispatcherFixture({
 		policy: { defaultEtaMinutes: 3, stallMinutes: 2, maxRunMinutes: 10 }
 	});
@@ -144,13 +144,7 @@ test('pending human review suppresses an ETA timeout until the hard cap, while a
 		outcome: 'timed_out',
 		failure_reason: 'ran past the 10 min cap'
 	});
-	changeItem({ deleted: true });
-	expect(
-		await service.record(sampleId, result.retry!, { type: 'monitor', session: 'unknown' })
-	).toMatchObject({
-		status: 'recorded',
-		run: { outcome: 'abandoned' }
-	});
+	expect(result.retry).toBeUndefined();
 });
 
 test('missing items preserve active sessions until recovery; closing the linked source abandons cleanly', async () => {

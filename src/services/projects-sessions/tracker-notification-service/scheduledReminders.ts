@@ -1,4 +1,6 @@
 // @harness-uid u_vqnqshfas2
+import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
+import { quietHourBoundary } from '../../../helpers/attention-timing/quietHourBoundary';
 import type {
 	TrackerDestination,
 	TrackerNotificationItem,
@@ -6,7 +8,14 @@ import type {
 	TrackerNotificationSource
 } from '../TrackerNotificationService.types';
 import { callbackRequest, webhookRequest } from './deliveryRequest';
-import { activeItem, eventId, isoTime, parkedUntil, readyRows } from './notificationRules';
+import {
+	activeItem,
+	askQuietHours,
+	eventId,
+	isoTime,
+	parkedUntil,
+	readyRows
+} from './notificationRules';
 import type { DeliveryAttempt, TrackerNotificationState } from './notificationState.types';
 
 function scheduledKey(item: TrackerNotificationItem): string {
@@ -34,7 +43,7 @@ export function scanScheduledReminders(
 	if (options.role !== 'hub' || !scheduledDestination(options)) return;
 	const { source } = options;
 	for (const item of source.scheduledItems?.(now) ?? source.items()) {
-		if (!activeItem(item)) continue;
+		if (!activeScheduledItem(item)) continue;
 		const at = readyTime(item, now);
 		if (at === undefined) continue;
 		const key = scheduledKey(item);
@@ -45,7 +54,7 @@ export function scanScheduledReminders(
 				kind: 'scheduled',
 				status: 'active',
 				createdAt: at,
-				nextAt: at,
+				nextAt: item.kind === 'reminder' ? quietHourBoundary(at, askQuietHours) : at,
 				pings: 0
 			});
 	}
@@ -67,16 +76,23 @@ export function nextScheduledReminder(
 	const { source } = options;
 	for (const row of readyRows(state.reminders.values(), now, isPending)) {
 		const item = source.item(row.itemId);
-		if (!activeItem(item) || !item.remind_at || row.key !== scheduledKey(item)) {
+		if (!matchesScheduledItem(item, row.key)) {
 			row.status = 'closed';
 			continue;
 		}
-		if (parkedUntil(item) > now) continue;
-		const request = scheduledRequest(item, eventId([row.key]), target.destination, {
-			source,
-			now,
-			webhook: target.webhook
-		});
+		if (parkedUntil(item) > now || (item.kind === 'reminder' && isQuietHour(now, askQuietHours)))
+			continue;
+		const request = scheduledRequest(
+			item,
+			eventId(row.pings ? [row.key, String(row.pings)] : [row.key]),
+			target.destination,
+			{
+				source,
+				now,
+				webhook: target.webhook,
+				reminderNumber: row.pings
+			}
+		);
 		return { kind: 'scheduled', keys: [row.key], request, startedAt: now };
 	}
 	return undefined;
@@ -90,7 +106,12 @@ function scheduledRequest(
 	item: TrackerNotificationItem,
 	id: string,
 	target: TrackerDestination,
-	{ source, now, webhook }: { source: TrackerNotificationSource; now: number; webhook: boolean }
+	{
+		source,
+		now,
+		webhook,
+		reminderNumber
+	}: { source: TrackerNotificationSource; now: number; webhook: boolean; reminderNumber: number }
 ) {
 	const { node } = source;
 	const reminder = {
@@ -103,14 +124,14 @@ function scheduledRequest(
 		agent: item.agent,
 		reason: 'remind_at',
 		remind_at: item.remind_at,
-		reminder_number: 0,
+		reminder_number: reminderNumber,
 		first_noticed_at: item.remind_at
 	};
 	if (!webhook)
 		return callbackRequest(id, target, {
 			type: 'attention',
-			new: [reminder],
-			reminders: [],
+			new: reminderNumber ? [] : [reminder],
+			reminders: reminderNumber ? [reminder] : [],
 			...(target.kind === 'http' && { digest: source.digest(now) }),
 			node,
 			sent_at: isoTime(now)
@@ -136,7 +157,29 @@ export function currentScheduledAttempt(
 ): boolean {
 	const row = state.reminders.get(attempt.keys[0]);
 	const item = row && source.item(row.itemId);
-	if (activeItem(item) && item.remind_at && row?.key === scheduledKey(item)) return true;
+	if (matchesScheduledItem(item, row?.key)) return true;
 	if (row) row.status = 'closed';
 	return false;
+}
+
+function activeScheduledItem(
+	item: TrackerNotificationItem | undefined
+): item is TrackerNotificationItem {
+	return activeItem(item) && (item.kind !== 'reminder' || item.status !== 'blocked');
+}
+
+function matchesScheduledItem(
+	item: TrackerNotificationItem | undefined,
+	key?: string
+): item is TrackerNotificationItem {
+	return activeScheduledItem(item) && Boolean(item.remind_at) && key === scheduledKey(item);
+}
+
+export function isScheduledReminderAttempt(
+	state: TrackerNotificationState,
+	attempt: DeliveryAttempt,
+	source: TrackerNotificationSource
+) {
+	const row = attempt.kind === 'scheduled' && state.reminders.get(attempt.keys[0]);
+	return row && source.item(row.itemId)?.kind === 'reminder';
 }

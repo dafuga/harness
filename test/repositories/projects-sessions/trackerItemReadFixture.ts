@@ -161,6 +161,7 @@ export function publicItem(
 		blocked_reason: null,
 		due: null,
 		remind_at: null,
+		priority: 'normal',
 		auto: null,
 		project: null,
 		repo: null,
