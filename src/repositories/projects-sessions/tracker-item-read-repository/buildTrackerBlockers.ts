@@ -43,7 +43,10 @@ export function groupTrackerBlockers(
 ): TrackerBlockerInbox {
 	const merged = new Map<string, TrackerBlocker>();
 	for (const blocker of entries) {
-		const key = `${blocker.type}|${blocker.agent ?? ''}|${normalize(blocker.action)}`;
+		const key =
+			blocker.kind === 'note'
+				? `note|${blocker.id}`
+				: `${blocker.type}|${blocker.agent ?? ''}|${normalize(blocker.action)}`;
 		const first = merged.get(key);
 		if (!first) merged.set(key, blocker);
 		else merged.set(key, mergeDuplicate(first, blocker));
@@ -72,16 +75,17 @@ function toBlocker(
 ): TrackerBlocker {
 	const blocked = row.status === 'blocked';
 	const asking = Boolean(row.needs_daniel) && !row.resolved;
-	const action = blockerAction(row, blocked);
-	const { type, waitsOn } = classifyTrackerBlocker(action, blocked ? 'block' : 'flag');
-	const at = blockerStart(row, blocked, nowMs);
+	const kind = blockerKind(blocked, asking);
+	const action = blockerAction(row, kind);
+	const { type, waitsOn } = classifyTrackerBlocker(action, kind === 'flag' ? 'flag' : 'block');
+	const at = blockerStart(row, kind, nowMs);
 	const age = Math.max(0, Math.floor((nowMs - at) / 60_000));
 	const dependencyStatus = waitsOn ? (statuses.get(waitsOn) ?? null) : null;
 	const route = trackerBlockerRoute(type);
 	return {
 		id: row.id,
 		title: row.title ?? '',
-		kind: blockerKind(blocked, asking),
+		kind,
 		type,
 		label: trackerBlockerLabels[type],
 		route,
@@ -93,7 +97,7 @@ function toBlocker(
 		since: new Date(at).toISOString(),
 		age_minutes: age,
 		escalated: asking,
-		needs_escalation: needsEscalation({ row, blocked, asking, type, at }),
+		needs_escalation: needsEscalation({ row, asking, type, at }),
 		stale: age >= trackerBlockerStaleMinutes,
 		chased_at: chasedAt(row),
 		waits_on: waitsOn,
@@ -103,35 +107,42 @@ function toBlocker(
 	};
 }
 
-function blockerAction(row: TrackerItemRow, blocked: boolean): string {
-	const candidates = [blocked ? row.blocked_reason : row.question, row.question, row.title];
+function blockerAction(row: TrackerItemRow, kind: TrackerBlocker['kind']): string {
+	if (kind === 'note') return (row.blocker_note ?? '').trim();
+	const candidates = [kind === 'flag' ? row.question : row.blocked_reason, row.question, row.title];
 	return (candidates.find((text) => text) ?? '').trim();
 }
 
 /** A Daniel-typed block not on Needs Daniel, unless someone already answered it since. */
 function needsEscalation(input: {
 	row: TrackerItemRow;
-	blocked: boolean;
 	asking: boolean;
 	type: TrackerBlocker['type'];
 	at: number;
 }): boolean {
-	const { row, blocked, asking, type, at } = input;
-	if (!blocked || asking || !escalatesToDaniel(type)) return false;
+	const { row, asking, type, at } = input;
+	if (asking || !escalatesToDaniel(type)) return false;
 	return !(Date.parse(row.answered_at ?? '') > at);
 }
 
 function blockerKind(blocked: boolean, asking: boolean): TrackerBlocker['kind'] {
-	if (!blocked) return 'flag';
+	if (!blocked) return asking ? 'flag' : 'note';
 	return asking ? 'block+flag' : 'block';
 }
 
-/** When the item was blocked or asked, from its field clock. */
-function blockerStart(row: TrackerItemRow, blocked: boolean, nowMs: number): number {
+/** When the blocker was reported, from its note or field clock. */
+function blockerStart(row: TrackerItemRow, kind: TrackerBlocker['kind'], nowMs: number): number {
 	const clocks = JSON.parse(row.clocks) as Record<string, string | undefined>;
-	const since = trackerClockMilliseconds((blocked ? clocks.status : clocks.needs_daniel) ?? '');
-	return since || Date.parse(row.updated_at ?? row.created_at ?? '') || nowMs;
+	const clock =
+		kind === 'note' ? (row.blocker_note_clock ?? clocks.notes) : clocks[blockerFields[kind]];
+	return (
+		trackerClockMilliseconds(clock ?? '') ||
+		Date.parse(row.updated_at ?? row.created_at ?? '') ||
+		nowMs
+	);
 }
+
+const blockerFields = { flag: 'needs_daniel', block: 'status', 'block+flag': 'status' } as const;
 
 function chasedAt(row: TrackerItemRow): string | null {
 	const at = trackerClockMilliseconds(row.chased_clock ?? '');

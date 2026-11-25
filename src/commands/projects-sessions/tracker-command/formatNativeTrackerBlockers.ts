@@ -23,6 +23,7 @@ export function formatNativeTrackerBlockers(data: TrackerBlockerInbox | NativeTr
 
 function formatBlocker(blocker: TrackerBlocker): string[] {
 	const flags = [
+		blocker.kind === 'note' && 'reported in notes',
 		blocker.needs_escalation && 'NOT ON NEEDS DANIEL',
 		blocker.escalated && 'on Needs Daniel',
 		blocker.duplicates.length && `+${blocker.duplicates.length} duplicate`

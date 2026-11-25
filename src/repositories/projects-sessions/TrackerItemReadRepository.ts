@@ -100,12 +100,12 @@ export class TrackerItemReadRepository {
 		);
 	}
 
-	/** Every blocked item and open Daniel ask, typed, routed, aged and deduplicated. */
+	/** Explicit blockers, open Daniel asks and note-only blockers, grouped by type. */
 	blockers(nowMs: number): TrackerBlockerInbox {
 		return groupTrackerBlockers(this.blockerEntries(nowMs), nowMs);
 	}
 
-	/** One typed entry per blocked item or Daniel ask, before deduplication. */
+	/** One typed entry per inbox item, before deduplication. */
 	blockerEntries(nowMs: number): TrackerBlocker[] {
 		return readTrackerBlockerEntries(this.database, nowMs);
 	}
