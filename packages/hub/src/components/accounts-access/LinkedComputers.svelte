@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_tctvnvpwgz -->
 <script lang="ts">
-	import Modal from '$shared/Modal.svelte';
+	import Modal from '../../../../reports/src/components/Modal.svelte';
 	import type { RemoteAccountComputer } from '../../../../remote/src/models/networking-security/RemoteControl.types';
 	import { BrowserComputerService } from '../../services/networking-security/BrowserComputerService';
 	import { browserContext } from '../../utils/development-tooling/browserContext';

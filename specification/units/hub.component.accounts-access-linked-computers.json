@@ -3,13 +3,14 @@
 	"id": "hub.component.accounts-access-linked-computers",
 	"uid": "u_tctvnvpwgz",
 	"kind": "component",
-	"title": "LinkedComputers",
-	"responsibility": "Owns the LinkedComputers Svelte component.",
-	"responsibilityOrigin": "derived",
+	"title": "Linked computers",
+	"responsibility": "Lists Macs linked to the signed-in Hub account and opens a read-only connection or unlink confirmation.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
@@ -27,12 +28,13 @@
 		"symbols": ["LinkedComputers"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "LinkedComputers",
-				"type": "markup"
+				"type": "markup",
+				"description": "Shows account-owned Macs with their online status. Selecting an online Mac lists its open projects in a dialog. Unlinking requires confirmation, and a lost session clears the connection and project list."
 			}
 		],
 		"errors": [],
@@ -53,6 +55,11 @@
 		},
 		{
 			"unit": "remote.model.remote-control-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},
