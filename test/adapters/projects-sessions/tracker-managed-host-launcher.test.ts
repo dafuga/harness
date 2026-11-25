@@ -9,6 +9,12 @@ import {
 	fixtureDockerImage as image,
 	managedFixtureBindings
 } from '../../support/trackerManagedProcessFixture';
+import { verifySecretSafety } from '../../support/trackerManagedLaunchAssertions';
+import {
+	advanceFixtureOrigin,
+	verifyManagedWorktreeRevisions,
+	verifyUnavailableManagedOrigin
+} from '../../support/trackerManagedGitFixture';
 import { verifyClaudeRefusals } from '../../support/trackerClaudeStartupFixture';
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
@@ -26,8 +32,9 @@ test('launches native and managed Docker workers through isolated tmux and reuse
 		withTempRepo(proveManagedWorker)
 	));
 
-async function proveManagedWorker({ root, git }: TemporaryRepo) {
-	git('commit', '--allow-empty', '-m', 'Fixture source');
+async function proveManagedWorker(repo: TemporaryRepo) {
+	const { root } = repo;
+	const revision = advanceFixtureOrigin(repo);
 	const paths = managedFixtureBindings(root);
 	const managed = loadManagedFixture(root, paths.config);
 	const { trackerManagedHostLauncher } =
@@ -69,12 +76,12 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 		{ key: native.key, state: 'exited', exitCode: 0 }
 	]);
 	await restarted.start(docker, signal);
+	verifyManagedWorktreeRevisions(repo, verifyWorkerInvocations(paths.profiles), revision);
+
+	await verifyUnavailableManagedOrigin(repo, restarted, native, signal);
 	verifyWorkerInvocations(paths.profiles);
-	expect(
-		await trackerManagedHostLauncher(managed, { client, platform: 'linux' }).start(native, signal)
-	).toEqual({
-		status: 'rejected'
-	});
+	const linux = trackerManagedHostLauncher(managed, { client, platform: 'linux' });
+	expect(await linux.start(native, signal)).toEqual({ status: 'rejected' });
 }
 
 function loadManagedFixture(
@@ -160,6 +167,7 @@ function verifyWorkerInvocations(profiles: ReturnType<typeof managedFixtureBindi
 	expect(Buffer.byteLength(docker[0].brief)).toBeLessThan(16_000);
 	expect(docker[0].cwd).toMatch(/\/effects\/[a-f0-9]{64}\/worktree$/);
 	verifyNativeInvocations(native[0], claude[0], docker[0].cwd);
+	return [docker[0].cwd, native[0].cwd, claude[0].cwd];
 }
 
 function verifyNativeInvocations(
@@ -201,19 +209,4 @@ function verifyNativeInvocations(
 	});
 	expect(codex.cwd).not.toBe(dockerWorktree);
 	expect(claude.cwd).not.toBe(codex.cwd);
-}
-
-function verifySecretSafety(profiles: { native: string; docker: string }, briefs: string[]) {
-	const skill = 'skills/secret-safe-computer-use/SKILL.md';
-	const install = spawnSync('/bin/bash', ['deploy/vault/install-secret-safe-skill.sh'], {
-		env: { PATH: process.env.PATH, HOME: profiles.native }
-	});
-	expect(install.status).toBe(0);
-	const codex = readFileSync(join(profiles.native, '.codex', skill), 'utf8');
-	expect(readFileSync(join(profiles.native, '.claude', skill), 'utf8')).toBe(codex);
-	const rule = codex.split('---\n')[2].trim();
-	for (const brief of briefs) {
-		expect(brief.startsWith(rule + '\n\n')).toBe(true);
-		expect(brief.split(rule)).toHaveLength(2);
-	}
 }

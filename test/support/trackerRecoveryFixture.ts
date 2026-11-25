@@ -18,6 +18,7 @@ import {
 	managedForegroundConfig,
 	managedTrackerItemRequest
 } from './trackerManagedProcessFixture';
+import { seedManagedFixtureOrigin } from './trackerManagedGitFixture';
 import {
 	seedTask,
 	verifyFailureBudget,
@@ -26,7 +27,6 @@ import {
 } from './trackerRecoveryAssertions';
 import { measureWorkload } from './measureWorkload';
 import { withTempRepo } from './temporary';
-
 export const tmuxExecutable = ['/opt/homebrew/bin/tmux', '/usr/local/bin/tmux'].find(existsSync);
 const id = 'recovr1234';
 const occupantId = 'occupy1234';
@@ -37,9 +37,9 @@ export function proveTrackerTmuxRecovery() {
 		'service.projects-sessions-tracker-native-runtime',
 		'managed-tmux-recovery',
 		() =>
-			withTempRepo(async ({ root, git }) => {
-				git('commit', '--allow-empty', '-m', 'Tracker fixture source');
-				await proveRecovery(realpathSync(root));
+			withTempRepo(async (repo) => {
+				seedManagedFixtureOrigin(repo);
+				await proveRecovery(realpathSync(repo.root));
 			}, 'hnt-recovery-')
 	);
 }

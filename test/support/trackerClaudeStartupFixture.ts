@@ -8,6 +8,7 @@ import type {
 	TrackerHostLaunchPort,
 	TrackerHostStartRequest
 } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
+import { seedManagedFixtureOrigin } from './trackerManagedGitFixture';
 import type { TemporaryRepo } from './temporary.types';
 import {
 	managedFixtureBindings,
@@ -34,10 +35,11 @@ export async function verifyClaudeRefusals(
 }
 
 export async function verifyClaudeStartupRejection(
-	{ root, git }: TemporaryRepo,
+	repo: TemporaryRepo,
 	mode: 'signed-out' | 'onboarding'
 ) {
-	git('commit', '--allow-empty', '-m', 'Fixture source');
+	const { root } = repo;
+	seedManagedFixtureOrigin(repo);
 	const { config, profiles } = managedFixtureBindings(root);
 	writeFileSync(join(profiles.accountHome, '.claude-session-fixture'), mode);
 	const database = new DatabaseSync(':memory:');
