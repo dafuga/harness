@@ -92,7 +92,7 @@ export async function launchTmux(
 	);
 }
 
-/** Resolve the configured ops directory or create a detached checkout for the attempt. */
+/** Use the configured ops directory or detach from the freshly fetched origin default. */
 export async function prepareTrackerWorkingDirectory(
 	directory: string,
 	input: TrackerHostStartRequest,
@@ -101,6 +101,8 @@ export async function prepareTrackerWorkingDirectory(
 	const source = realpathSync('workdir' in input ? input.workdir : input.repo);
 	if (!statSync(source).isDirectory()) return null;
 	if ('workdir' in input) return source;
+	const revision = await fetchOriginDefaultCommit(source, signal);
+	if (!revision) return null;
 	const worktree = join(directory, 'worktree');
 	const git = await runTrackerHostCommand(
 		'/usr/bin/git',
@@ -113,11 +115,54 @@ export async function prepareTrackerWorkingDirectory(
 			'add',
 			'--detach',
 			worktree,
-			'HEAD'
+			revision
 		],
-		signal
+		signal,
+		{
+			environment: {
+				PATH: '/usr/bin:/bin:/opt/homebrew/bin:/usr/local/bin',
+				GIT_TERMINAL_PROMPT: '0'
+			}
+		}
 	);
 	return git.code === 0 ? worktree : null;
+}
+
+async function fetchOriginDefaultCommit(
+	source: string,
+	signal: AbortSignal
+): Promise<string | null> {
+	const options = { environment: { GIT_TERMINAL_PROMPT: '0' } };
+	const advertised = await runTrackerHostCommand(
+		'/usr/bin/git',
+		['-C', source, 'ls-remote', '--exit-code', 'origin', 'HEAD'],
+		signal,
+		options
+	);
+	if (advertised.code !== 0) return null;
+	const revision = /^(?<commit>[a-f0-9]{40}|[a-f0-9]{64})\tHEAD$/m.exec(advertised.stdout)?.groups
+		?.commit;
+	if (!revision) return null;
+
+	// Pin this attempt without sharing FETCH_HEAD or moving any refs in the source repository.
+	const fetched = await runTrackerHostCommand(
+		'/usr/bin/git',
+		[
+			'-C',
+			source,
+			'fetch',
+			'--no-tags',
+			'--no-recurse-submodules',
+			'--no-auto-maintenance',
+			'--no-write-fetch-head',
+			'--refmap=',
+			'origin',
+			revision
+		],
+		signal,
+		options
+	);
+	return fetched.code === 0 ? revision : null;
 }
 
 export function trackerSocket(node: string): string {
