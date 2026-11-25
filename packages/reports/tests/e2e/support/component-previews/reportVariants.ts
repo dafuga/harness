@@ -36,6 +36,8 @@ import { videoCatalogProps } from './videoCatalogVariants';
 
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
+	if (id === 'reports.component.projects-sessions-tracker-planning-details' && variant === 'empty')
+		return { stage: 'idea' };
 	const video = videoCatalogProps(id, variant);
 	if (video) return video;
 	const shell = shellCatalogProps(id, props, variant);

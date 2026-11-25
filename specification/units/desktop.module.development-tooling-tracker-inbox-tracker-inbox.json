@@ -121,10 +121,6 @@
 		],
 		"outputs": [
 			{
-				"name": "trackerStageLabels",
-				"type": "Record<TrackerStage, string>"
-			},
-			{
 				"name": "inboxFilters",
 				"type": "readonly InboxFilter[]"
 			},
@@ -407,7 +403,7 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-planning",
-			"via": "import",
+			"via": "reexport",
 			"origin": "derived"
 		}
 	],

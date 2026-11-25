@@ -194,4 +194,8 @@ test('list JSON is accepted by the Project Overview loopback reader', async () =
 		question: 'Approve?',
 		notes_log: notes.map(({ at, text }) => ({ at, text }))
 	});
+	expect(data.items.find(({ id }) => id === 'abc100more')).toMatchObject({
+		stage: 'idea',
+		planning: { artifacts: {}, promotions: [] }
+	});
 });

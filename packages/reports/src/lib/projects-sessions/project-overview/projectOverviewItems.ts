@@ -1,4 +1,8 @@
 // @harness-uid u_6d3toxchme
+import {
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import type { OverviewCallout, OverviewItem } from './projectOverview.types';
 import type { IncludedTrackerItem } from './projectOverviewTracker.types';
 import { sanitizeText } from './projectOverviewPrivacy';
@@ -30,8 +34,16 @@ export function toOverviewItem(
 		updatedAt,
 		due: record.due ? isoTime(record.due) : null,
 		live,
-		stale: record.status === 'in_progress' && !live && !isWithin(updatedAt, DAY_MS, now)
+		stale: record.status === 'in_progress' && !live && !isWithin(updatedAt, DAY_MS, now),
+		...overviewPlanning(record)
 	};
+}
+
+function overviewPlanning(record: IncludedTrackerItem) {
+	const { data: stage } = trackerStageSchema.safeParse(record.stage);
+	if (!stage) return {};
+	const { data: planning } = trackerPlanningSchema.safeParse(record.planning);
+	return { stage, ...(planning && { planning }) };
 }
 
 /** @pure A callout pairs an item with its sanitized question or reason. */

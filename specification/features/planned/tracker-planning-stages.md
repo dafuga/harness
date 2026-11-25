@@ -4,7 +4,7 @@ status: planned
 
 # Tracker planning stages
 
-Tracker item `y3y8892zc6` · Harness CLI, Mac and iPhone
+Tracker items `y3y8892zc6` and `48x8hx18f2` · Harness CLI, Mac, iPhone and Hub
 
 | Stage          | CLI value | Artifacts to prepare                                                                                    |
 | -------------- | --------- | ------------------------------------------------------------------------------------------------------- |
@@ -22,6 +22,8 @@ Every item starts at Idea, including items created by older clients. Stage is in
 - `tracker list --stage STAGE` combines stage with existing filters and applies them before the limit. List, show, and digest show the stage in text and JSON. Show includes artifacts and promotion receipts in JSON.
 - The local API exposes the same behavior through `POST /items/ID/stage`, `POST /items/ID/artifact` and `GET /items?stage=STAGE`. Generic item update cannot bypass promotion.
 
+Managed Tracker briefs state the current stage. For new features they require an idea artifact before promotion to Detailed idea, main-page designs before promotion to Full design, and a design of every page and applicable state before promotion to Implementation. A feature without pages documents its intended behavior and states. The brief preserves the requested scope and review gates and asks the agent to attach PR and verification evidence during implementation. Harbor Tasks (`sczjph9ddv`) is the first feature using this workflow.
+
 ## Storage and sync
 
 Use the existing journal and schema replay. Each promotion target and each stage artifact has its own projected field so delayed writes and concurrent updates to different stages cannot lower the stage or remove another stage's artifacts. Repeated concurrent promotion to the same target resolves through Tracker's journal clock. Older peers retain the operation for replay after upgrade. Planning records stay within the existing phone replica's bounded pages and item visibility rules.
@@ -29,6 +31,12 @@ Use the existing journal and schema replay. Each promotion target and each stage
 ## Mac and iPhone
 
 Keep the existing Tracker item list and detail. Add the stage label to row metadata and show the current stage, each stage's saved artifacts, and the actor and time of promotions in the detail. Use the existing muted status treatment for empty artifacts. Labeled design links open in the system browser when selected. Use a descriptive label for image links. The phone replica retains the section alongside existing offline item data. The CLI is the promotion and editing surface.
+
+## Hub
+
+The owner-only Project Overview shows the stage in existing item rows and the planning record in the existing item dialog. It uses the same stage labels, artifacts, safe links and receipts as the Mac and iPhone. Older snapshots still support the item dialog. Deleted, ignored and sensitive items stay outside the hosted snapshot.
+
+Release the Hub reader before the Mac publisher so the Hub accepts the optional planning fields when updated Macs start sending them.
 
 ## Acceptance
 

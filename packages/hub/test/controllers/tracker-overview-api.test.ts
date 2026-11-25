@@ -75,13 +75,26 @@ test('the owner publishes with a bearer and reads back the same snapshot, never 
 		const before = await f.handle(overviewRequest('GET', { bearer }));
 		expect(before.status).toBe(503);
 		expect(await before.json()).toEqual({ status: 'unavailable' });
-		const put = await f.handle(overviewRequest('PUT', { bearer }, snapshot()));
+		const base = snapshot();
+		const [card] = base.projects;
+		const planned = {
+			...card.items[0],
+			stage: 'detail',
+			planning: {
+				artifacts: {
+					detail: { links: [{ label: 'Main page', url: 'https://example.test/main.png' }] }
+				},
+				promotions: [{ stage: 'detail', by: 'fixture-planner', at: card.updatedAt }]
+			}
+		};
+		const body = { ...base, projects: [{ ...card, items: [planned] }] };
+		const put = await f.handle(overviewRequest('PUT', { bearer }, body));
 		expect(put.status).toBe(204);
 		expect(await put.text()).toBe('');
 		const cookie = await f.browser();
 		const get = await f.handle(overviewRequest('GET', { cookie }));
 		expect(get.status).toBe(200);
-		expect(await get.json()).toEqual(snapshot());
+		expect(await get.json()).toEqual(body);
 		expect(get.headers.get('cache-control')).toBe('private, no-store');
 		expect(get.headers.get('access-control-allow-origin')).toBeNull();
 	}));

@@ -1,0 +1,60 @@
+{
+	"name": "tracker-planning-stage-follow-through",
+	"goal": "Prove feature briefs require sequential planning, and owner Hub item details preserve the same stages and artifacts as Mac and iPhone without leaking private Tracker records.",
+	"createdAt": "2026-11-25T20:54:13.980Z",
+	"updatedAt": "2026-11-25T21:12:05.619Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-25T20:56:30.165Z",
+			"evidence": "The Tracker CLI and signed journal already expose stages. A launched feature brief omits required promotion steps, and Hub strips planning fields before rendering item details. Keep Mac and iPhone behavior and the existing owner-only Hub scope."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-25T20:56:32.431Z",
+			"evidence": "Strengthen native brief and creation tests, the fixed Tracker read privacy case, Hub owner snapshot round trip, and the published item-detail browser case at all three viewports."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-25T20:58:08.900Z",
+			"evidence": "At f43e803c3f, the brief misses Current planning stage: idea, Hub PUT returns 400 instead of 204, and Reports discards stage/artifacts. New native item stage and digest cases already pass. The Hub viewport regression is running on harbor-mbp-2."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-25T21:05:16.078Z",
+			"evidence": "The owner overview validates and projects the Tracker planning record. The existing item dialog shares the Mac and iPhone planning section. Tracker briefs give the exact artifact and sequential promotion commands."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T21:12:05.619Z",
+			"evidence": "The frozen brief regression failed at ba8fe4313a and passed unchanged at b8fd5a0ae4. Hub API and Reports projection now pass, and the compiled Hub passed 30 browser/API cases on harbor-mbp-2. Final screenshot and native-renderer verification are open."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

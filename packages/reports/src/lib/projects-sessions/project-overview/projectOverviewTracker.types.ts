@@ -33,6 +33,8 @@ export type TrackerItemRecord = {
 	scheduleOff?: boolean;
 	answer?: string | null;
 	answeredAt?: string | null;
+	stage?: unknown;
+	planning?: unknown;
 };
 
 /** An item that may appear on a card: not deleted, sensitive or ignored, and named by its agent. */

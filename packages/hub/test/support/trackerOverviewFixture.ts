@@ -145,6 +145,27 @@ export function invalidSnapshots(): unknown[] {
 		{ ...base, projects: [{ ...card, accessToken: 'synthetic' }] },
 		{ ...base, projects: [{ ...card, state: 'unknown' }] },
 		{ ...base, projects: [{ ...card, items: [{ ...item, status: 'deleted' }] }] },
+		{ ...base, projects: [{ ...card, items: [{ ...item, stage: 'released' }] }] },
+		{
+			...base,
+			projects: [
+				{
+					...card,
+					items: [
+						{
+							...item,
+							stage: 'design',
+							planning: {
+								artifacts: {
+									design: { links: [{ label: 'Unsafe link', url: 'javascript:alert(1)' }] }
+								},
+								promotions: []
+							}
+						}
+					]
+				}
+			]
+		},
 		{ ...base, machines: [{ name: 'computer', status: 'ok', secret: 'synthetic' }] },
 		{ ...base, projects: [card, card], liveSessions: 2 },
 		{ status: 'maybe' },
