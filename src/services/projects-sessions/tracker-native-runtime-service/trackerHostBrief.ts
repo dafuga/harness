@@ -2,6 +2,7 @@
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 
 import { trackerAskOptionsRule } from './trackerAskOptionsRule';
+import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
 import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
 
 export function formatTrackerHostBrief(
@@ -15,6 +16,8 @@ export function formatTrackerHostBrief(
 		trackerSecretSafetyRule,
 		'',
 		trackerAskOptionsRule,
+		'',
+		trackerAutomationBrowserRule,
 		'',
 		`# ${item.title}`,
 		'',
