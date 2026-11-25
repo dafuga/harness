@@ -2,7 +2,7 @@
 import type { CurrentRefs, PinnedRevisions } from './EvidenceRefsAdapter.types';
 import { RevisionNotHeldError } from './EvidenceRefsAdapter.types';
 import { createHash } from 'node:crypto';
-import { commitPattern } from '../../../utils/ipc-payload/ipcFields';
+import { commitPattern } from '../../../utils/execution-runtimes/ipc-payload/ipcFields';
 import { gitRead } from '../../../utils/projects-sessions/gitRead';
 
 export const notesRef = 'refs/notes/harness';

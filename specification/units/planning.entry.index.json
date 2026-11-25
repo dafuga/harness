@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/planning/src/index.ts",
+			"packages/planning/src/lib/planning-collaboration/planning/UnknownPlanningOperationError.ts",
 			"packages/planning/src/lib/planning-collaboration/planning/index.ts",
 			"packages/planning/src/lib/planning-collaboration/planning/index.types.ts",
 			"packages/planning/src/lib/planning/index.ts"
 		],
 		"symbols": [
 			"default",
+			"UnknownPlanningOperationError",
 			"createPlanning",
 			"default",
 			"handlePlanningRequest",

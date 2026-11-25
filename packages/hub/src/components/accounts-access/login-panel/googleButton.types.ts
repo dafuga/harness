@@ -8,7 +8,4 @@ export interface GoogleIdentity {
 	}): void;
 	renderButton(element: HTMLElement, options: Record<string, string>): void;
 }
-/** Google sign-in's script failed to load, or loaded without its identity object. */
-export class GoogleSignInLoadError extends Error {
-	override name = 'GoogleSignInLoadError';
-}
+export { GoogleSignInLoadError } from './GoogleSignInLoadError';

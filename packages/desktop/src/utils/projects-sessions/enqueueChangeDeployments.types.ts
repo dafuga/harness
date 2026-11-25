@@ -1,4 +1,2 @@
 // @harness-uid u_idkkpeldgg
-export class DeploymentReviewBlockedError extends Error {
-	override name = 'DeploymentReviewBlockedError';
-}
+export { DeploymentReviewBlockedError } from './DeploymentReviewBlockedError';

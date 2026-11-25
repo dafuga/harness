@@ -7,4 +7,4 @@ export {
 	scanFailure,
 	scanNotice,
 	phoneName
-} from './scan-notice/scanNotice';
+} from './networking-security/scan-notice/scanNotice';

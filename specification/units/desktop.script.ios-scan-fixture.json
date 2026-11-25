@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/ScanFixtureMismatchError.ts",
 			"packages/desktop/scripts/ios-scan-fixture.ts",
 			"packages/desktop/scripts/ios-scan-fixture.types.ts"
 		],
-		"symbols": ["scanFixtureProduct", "holds", "buildScanFixture", "ScanFixtureMismatchError"]
+		"symbols": [
+			"ScanFixtureMismatchError",
+			"scanFixtureProduct",
+			"holds",
+			"buildScanFixture",
+			"ScanFixtureMismatchError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

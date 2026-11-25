@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerIdentityChangedError.ts",
 			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
 			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.types.ts"
 		],
 		"symbols": [
+			"PreviewWorkerIdentityChangedError",
 			"PreviewWorkerService",
 			"PreviewWorkerService.constructor",
 			"PreviewWorkerService.start",

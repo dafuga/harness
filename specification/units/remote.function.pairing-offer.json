@@ -9,6 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/networking-security/remote-host-service/InvalidPairingOfferError.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/pairingOffer.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/pairingOffer.types.ts",
 			"packages/remote/src/services/networking-security/device-pairing-service/pairingOffer.ts",
@@ -16,6 +17,7 @@
 			"packages/remote/src/utils/networking-security/pairingOffer.types.ts"
 		],
 		"symbols": [
+			"InvalidPairingOfferError",
 			"pairingOffer",
 			"InvalidPairingOfferError",
 			"readPairingOffer",

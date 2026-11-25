@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/reports-media/CaptureUnlistedError.ts",
 			"packages/desktop/src/utils/reports-media/recordedCapture.ts",
 			"packages/desktop/src/utils/reports-media/recordedCapture.types.ts"
 		],
 		"symbols": [
+			"CaptureUnlistedError",
 			"recordedCapture",
 			"CaptureBinding",
 			"ListedCapture",

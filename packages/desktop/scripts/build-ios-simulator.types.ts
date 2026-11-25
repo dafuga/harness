@@ -3,6 +3,4 @@
  * A normal simulator product that has a local-networking exception, allows web inspection, or
  * holds the synthetic scanner of a test copy.
  */
-export class NormalProductRejectedError extends Error {
-	override name = 'NormalProductRejectedError';
-}
+export { NormalProductRejectedError } from './NormalProductRejectedError';

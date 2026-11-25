@@ -15,7 +15,4 @@ export interface LoadedWorkspace {
 export interface ProjectSelection {
 	id: string | null;
 }
-
-export class WorkspaceProjectMismatchError extends Error {
-	override name = 'WorkspaceProjectMismatchError';
-}
+export { WorkspaceProjectMismatchError } from './WorkspaceProjectMismatchError';

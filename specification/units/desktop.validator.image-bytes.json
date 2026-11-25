@@ -10,9 +10,15 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/validators/development-tooling/ImageBytesValidator.ts",
-			"packages/desktop/src/validators/development-tooling/ImageBytesValidator.types.ts"
+			"packages/desktop/src/validators/development-tooling/ImageBytesValidator.types.ts",
+			"packages/desktop/src/validators/development-tooling/InvalidImageBytesError.ts"
 		],
-		"symbols": ["ImageBytesValidator", "ImageBytesValidator.validate", "InvalidImageBytesError"]
+		"symbols": [
+			"ImageBytesValidator",
+			"ImageBytesValidator.validate",
+			"InvalidImageBytesError",
+			"InvalidImageBytesError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

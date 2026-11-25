@@ -11,7 +11,8 @@
 		"source": [
 			"packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/InvalidHostedEvidenceAnswerError.ts"
 		],
 		"symbols": [
 			"HostedEvidenceAdapter",
@@ -21,6 +22,7 @@
 			"HostedEvidenceAdapter.evidence",
 			"HostedEvidenceAdapter.artifact",
 			"Query",
+			"InvalidHostedEvidenceAnswerError",
 			"InvalidHostedEvidenceAnswerError"
 		]
 	},

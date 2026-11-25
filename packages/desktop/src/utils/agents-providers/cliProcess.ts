@@ -9,7 +9,7 @@ import { StringDecoder } from 'node:string_decoder';
 import { resourceEnvironment } from '../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../models/agents-providers/AgentRunner.types';
 import { RunCancelled } from '../../models/agents-providers/AgentRunner.types';
-import { cliEnvironment } from '../cli-environment/cliEnvironment';
+import { cliEnvironment } from '../execution-runtimes/cli-environment/cliEnvironment';
 import { streamLines } from '../shared-primitives/streamLines';
 export function killOwnedProcess(pid: number | undefined): void {
 	if (!pid) return;

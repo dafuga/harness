@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
-			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.types.ts"
+			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.types.ts",
+			"packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerUnavailableError.ts"
 		],
 		"symbols": [
 			"reportServerEnvironment",
@@ -18,6 +19,7 @@
 			"ReportServerService.constructor",
 			"ReportServerService.serve",
 			"ReportServerService.stop",
+			"ReportServerUnavailableError",
 			"ReportServerUnavailableError"
 		]
 	},

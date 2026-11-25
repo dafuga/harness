@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/project-session-service/planning-facade-adapter/planningReads.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningReadError.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.types.ts",
 			"packages/desktop/src/utils/planningReads.ts",
@@ -21,6 +22,7 @@
 			"readPlanMessages",
 			"readPlanImage",
 			"readPlanHistory",
+			"PlanningReadError",
 			"planningReads",
 			"readPlanMessages",
 			"readPlanImage",

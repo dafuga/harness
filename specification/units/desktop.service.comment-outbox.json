@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/projects-sessions/CommentOutboxService.ts",
-			"packages/desktop/src/services/projects-sessions/CommentOutboxService.types.ts"
+			"packages/desktop/src/services/projects-sessions/CommentOutboxService.types.ts",
+			"packages/desktop/src/services/projects-sessions/CommentSaveError.ts"
 		],
 		"symbols": [
 			"CommentOutboxService",
@@ -18,6 +19,7 @@
 			"CommentOutboxService.save",
 			"CommentOutboxService.list",
 			"PendingComment",
+			"CommentSaveError",
 			"CommentSaveError"
 		]
 	},

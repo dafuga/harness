@@ -9,12 +9,21 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/components/networking-security/remote-offer-code/QrRefusedError.ts",
 			"packages/desktop/src/components/networking-security/remote-offer-code/qrSymbol.ts",
 			"packages/desktop/src/components/networking-security/remote-offer-code/qrSymbol.types.ts",
 			"packages/desktop/src/utils/networking-security/qrSymbol.ts",
 			"packages/desktop/src/utils/networking-security/qrSymbol.types.ts"
 		],
-		"symbols": ["qrSymbol", "QrRefusedError", "qrLimits", "qrSymbol", "QrSymbol", "QrSymbol"]
+		"symbols": [
+			"QrRefusedError",
+			"qrSymbol",
+			"QrRefusedError",
+			"qrLimits",
+			"qrSymbol",
+			"QrSymbol",
+			"QrSymbol"
+		]
 	},
 	"contract": {
 		"origin": "declared",

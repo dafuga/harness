@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/reports-media/ReportLockBusyError.ts",
 			"packages/reports/src/utils/reports-media/reportLock.ts",
 			"packages/reports/src/utils/reports-media/reportLock.types.ts"
 		],
-		"symbols": ["reportLock", "ReportLockBusyError"]
+		"symbols": ["ReportLockBusyError", "reportLock", "ReportLockBusyError"]
 	},
 	"contract": {
 		"origin": "declared",

@@ -6,7 +6,7 @@ import {
 	scanFailure,
 	scanFailures,
 	scanNotice
-} from '../../src/utils/scan-notice/scanNotice';
+} from '../../src/utils/networking-security/scan-notice/scanNotice';
 
 const unitId = 'desktop.function.scan-notice';
 

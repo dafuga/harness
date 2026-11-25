@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { RunCancelled } from '../../../models/agents-providers/AgentRunner.types';
 import { InvalidProjectRunRequestError } from './prepareProjectRun.types';
 import type { ProjectRunRequest } from '../../../models/development-tooling/DesktopBridge.types';
-import { creationProject } from '../../../utils/ipc-payload/ipcPayload';
+import { creationProject } from '../../../utils/execution-runtimes/ipc-payload/ipcPayload';
 import type { Preparation } from '../../../utils/agents-providers/prepareRun';
 
 /**

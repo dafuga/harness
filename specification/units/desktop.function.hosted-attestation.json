@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/hostedAttestation.ts",
+			"packages/desktop/src/utils/networking-security/UnsupportedHostedMediaDeclarationError.ts",
 			"packages/desktop/src/utils/networking-security/hostedAttestation.ts",
 			"packages/desktop/src/utils/networking-security/hostedAttestation.types.ts"
 		],
 		"symbols": [
 			"unshownHostedArtifact",
 			"hostedAttestation",
+			"UnsupportedHostedMediaDeclarationError",
 			"unshownHostedArtifact",
 			"hostedAttestation",
 			"UnsupportedHostedMediaDeclarationError"

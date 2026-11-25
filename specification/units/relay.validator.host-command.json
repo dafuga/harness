@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/relay/src/validators/development-tooling/HostCommandError.ts",
 			"packages/relay/src/validators/development-tooling/HostCommandValidator.ts",
 			"packages/relay/src/validators/development-tooling/HostCommandValidator.types.ts"
 		],
-		"symbols": ["HostCommandValidator", "HostCommandValidator.command", "Check", "HostCommandError"]
+		"symbols": [
+			"HostCommandError",
+			"HostCommandValidator",
+			"HostCommandValidator.command",
+			"Check",
+			"HostCommandError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

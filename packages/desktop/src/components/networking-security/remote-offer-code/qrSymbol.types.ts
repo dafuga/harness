@@ -3,6 +3,4 @@
  * Refused as a QR symbol: the text fails the character or length check, or the symbol is wider
  * than 77 modules.
  */
-export class QrRefusedError extends Error {
-	override name = 'QrRefusedError';
-}
+export { QrRefusedError } from './QrRefusedError';

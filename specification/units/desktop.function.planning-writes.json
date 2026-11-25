@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/project-session-service/planning-facade-adapter/planningWrites.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningWriteError.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.types.ts",
 			"packages/desktop/src/utils/planningWrites.ts",
@@ -21,6 +22,7 @@
 			"addPlanDesign",
 			"openPlanThread",
 			"approvePlanDesign",
+			"PlanningWriteError",
 			"planningWrites",
 			"ensurePlan",
 			"addPlanDesign",

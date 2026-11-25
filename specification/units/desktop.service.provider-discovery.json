@@ -11,7 +11,8 @@
 		"source": [
 			"packages/desktop/src/services/agents-providers/provider-discovery-service/MockupProviderUnavailableError.ts",
 			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.ts",
-			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.types.ts"
+			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderDiscoveryService.types.ts",
+			"packages/desktop/src/services/agents-providers/provider-discovery-service/ProviderUnavailableError.ts"
 		],
 		"symbols": [
 			"MockupProviderUnavailableError",
@@ -20,6 +21,7 @@
 			"ProviderDiscoveryService.list",
 			"ProviderDiscoveryService.mockupRunner",
 			"ProviderDiscoveryService.select",
+			"ProviderUnavailableError",
 			"ProviderUnavailableError"
 		]
 	},

@@ -12,7 +12,8 @@
 			"packages/desktop/src/adapters/EvidenceRefsAdapter.ts",
 			"packages/desktop/src/lib/desktop-bridge/EvidenceRefsAdapter.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/EvidenceRefsAdapter.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/RevisionNotHeldError.ts"
 		],
 		"symbols": [
 			"notesRef",
@@ -33,7 +34,8 @@
 			"CurrentRefs",
 			"RevisionNotHeldError",
 			"PinnedRevisions",
-			"CurrentRefs"
+			"CurrentRefs",
+			"RevisionNotHeldError"
 		]
 	},
 	"contract": {

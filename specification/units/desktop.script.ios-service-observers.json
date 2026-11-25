@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/ServiceObservationError.ts",
 			"packages/desktop/scripts/ios-service-observers.ts",
 			"packages/desktop/scripts/ios-service-observers.types.ts"
 		],
-		"symbols": ["observeIosServices", "SeenService", "WatchedService", "ServiceObservationError"]
+		"symbols": [
+			"ServiceObservationError",
+			"observeIosServices",
+			"SeenService",
+			"WatchedService",
+			"ServiceObservationError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

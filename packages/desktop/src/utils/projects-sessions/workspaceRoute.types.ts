@@ -15,8 +15,4 @@ export interface WorkspaceRoute {
 }
 
 export type WorkspaceTarget = Pick<WorkspaceRoute, 'category'> & Partial<WorkspaceRoute>;
-
-/** A workspace address that cannot be read: not a workspace address, a bad commit or category. */
-export class WorkspaceAddressError extends Error {
-	override name = 'WorkspaceAddressError';
-}
+export { WorkspaceAddressError } from './WorkspaceAddressError';

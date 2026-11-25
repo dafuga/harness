@@ -1,14 +1,8 @@
 // @harness-uid u_rp545ji5cr
 import type { startRelay } from '../../relay/test/support/relayFixture';
 import type { RemoteHostService } from '../src/services/networking-security/remote-host-service/RemoteHostService';
-
-export class FixtureRelayRegistrationError extends Error {
-	override name = 'FixtureRelayRegistrationError';
-}
-
-export class FixtureHostRelayConnectionError extends Error {
-	override name = 'FixtureHostRelayConnectionError';
-}
+export { FixtureRelayRegistrationError } from './FixtureRelayRegistrationError';
+export { FixtureHostRelayConnectionError } from './FixtureHostRelayConnectionError';
 
 export interface RemoteFixtureOptions {
 	/** Fixed ports for a simulator to be pointed at; any free ones when 0 or omitted. */

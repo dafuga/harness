@@ -13,8 +13,4 @@ export interface HeldDiscovery {
 export interface SnapshotPort {
 	snapshot(input: { projectId: string; branch: null; commit: null }): Promise<ProjectSnapshot>;
 }
-
-/** A discovery with no hosted credential at its start, or whose credential changed while it ran. */
-export class HostedAuthorityChangedError extends Error {
-	override name = 'HostedAuthorityChangedError';
-}
+export { HostedAuthorityChangedError } from './HostedAuthorityChangedError';
