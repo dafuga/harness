@@ -12,15 +12,30 @@
 			"src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.ts",
 			"src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.types.ts"
 		],
-		"symbols": ["readClaudeUsage", "Tmux"]
+		"symbols": ["readClaudeUsage", "openUsage", "Tmux"]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "openUsage.run",
+				"type": "Tmux",
+				"required": true
+			},
+			{
+				"name": "openUsage.directory",
+				"type": "string",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "readClaudeUsage",
 				"type": "Promise<string>"
+			},
+			{
+				"name": "openUsage",
+				"type": "Promise<boolean>"
 			}
 		],
 		"errors": [],
@@ -33,6 +48,29 @@
 					{
 						"name": "readClaudeUsage",
 						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openUsage",
+				"inputs": [
+					{
+						"name": "openUsage.run",
+						"type": "Tmux",
+						"required": true
+					},
+					{
+						"name": "openUsage.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openUsage",
+						"type": "Promise<boolean>"
 					}
 				],
 				"errors": [],

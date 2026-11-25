@@ -9,19 +9,10 @@ import { quotaProcessEnvironment } from '../quotaProcessEnvironment';
 import type { Tmux } from './readClaudeUsage.types';
 
 const exec = promisify(execFile);
-const composer = /^\s*❯\s*$/m;
 const enteredUsage = /^\s*❯\s*\/usage\s*$/m;
 const trustDialog = 'Quick safety check';
 const trustChoice = /^\s*❯\s+(?:\d+\.\s+)?Yes, I trust this folder\s*$/m;
-const args = [
-	'--setting-sources',
-	'',
-	'--strict-mcp-config',
-	'--mcp-config',
-	'{"mcpServers":{}}',
-	'--tools',
-	''
-];
+const usageCommand = `claude --setting-sources '' --strict-mcp-config --mcp-config '{"mcpServers":{}}' --tools ''`;
 
 /** Uses a private server and a dedicated folder. No terminal output or auth response is logged. */
 export async function readClaudeUsage(): Promise<string> {
@@ -29,10 +20,8 @@ export async function readClaudeUsage(): Promise<string> {
 	const env = {
 		...quotaProcessEnvironment(),
 		NO_COLOR: '1',
-		DISABLE_AUTOUPDATER: '1',
-		CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1'
+		DISABLE_AUTOUPDATER: '1'
 	};
-	if (!(await hasClaudeSubscription(env))) return '';
 	const directory = await claudeQuotaDirectory();
 	if (!directory) return '';
 	const scratch = await mkdtemp(join(tmpdir(), 'hq-'));
@@ -45,7 +34,7 @@ export async function readClaudeUsage(): Promise<string> {
 			})
 		).stdout;
 	try {
-		await run('new-session', '-d', '-x', '168', '-y', '55', '-c', directory, 'claude', ...args);
+		await run('new-session', '-d', '-x', '168', '-y', '55', '-c', directory, usageCommand);
 		return (await openUsage(run, directory)) ? await usagePanel(run) : '';
 	} finally {
 		await run('kill-server').catch(() => undefined);
@@ -62,23 +51,6 @@ async function claudeQuotaDirectory(): Promise<string | null> {
 	return await realpath(folder);
 }
 
-async function hasClaudeSubscription(
-	env: ReturnType<typeof quotaProcessEnvironment>
-): Promise<boolean> {
-	try {
-		const { stdout } = await exec('claude', ['auth', 'status', '--json'], {
-			env,
-			cwd: tmpdir(),
-			timeout: 3000,
-			maxBuffer: 4096
-		});
-		const status = JSON.parse(stdout);
-		return status?.loggedIn === true && status?.authMethod === 'claude.ai';
-	} catch {
-		return false;
-	}
-}
-
 export async function openUsage(run: Tmux, directory: string): Promise<boolean> {
 	let granted = false;
 	for (let attempt = 0; attempt < 18; attempt++) {
@@ -88,9 +60,9 @@ export async function openUsage(run: Tmux, directory: string): Promise<boolean> 
 			if (!granted) granted = await trustOwnFolder(run, screen, directory);
 			continue;
 		}
-		if (!composer.test(screen)) continue;
+		if (!screen.includes('Claude Code') || !screen.includes('❯')) continue;
 		await run('send-keys', '-l', '/usage');
-		await delay(250);
+		await delay(400);
 		const input = await run('capture-pane', '-p');
 		if (!enteredUsage.test(input) || !/show.*(?:usage|plan)|(?:usage|plan).*limits/i.test(input))
 			return false;
@@ -114,7 +86,10 @@ async function usagePanel(run: Tmux): Promise<string> {
 		await delay(250);
 		const screen = await run('capture-pane', '-p');
 		if (/could not load usage data|failed to load usage/i.test(screen)) return '';
-		if (/^\s*Current (?:session|week)/m.test(screen) && /^\s*[^a-z\d]*\d+% used/m.test(screen))
+		if (
+			/^\s*Current (?:session|week)/m.test(screen) &&
+			/^\s*[^a-z\d]*\d+(?:\.\d+)?% used/m.test(screen)
+		)
 			return screen;
 	}
 	return '';
