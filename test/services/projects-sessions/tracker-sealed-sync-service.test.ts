@@ -1,6 +1,8 @@
-import { mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { rmSync } from 'node:fs';
+
 import { join } from 'node:path';
+import { createTempDirectory } from '../../support/temporary';
+
 import { verifyTrackerSealedMigration } from '../../../src/services/projects-sessions/tracker-sealed-sync/verifyTrackerSealedMigration';
 
 import { DatabaseSync } from 'node:sqlite';
@@ -76,10 +78,10 @@ test('Tracker resumes a lost upload receipt and stops its cursor on an unauthent
 	await expect(service.push()).resolves.toBe(0);
 });
 
-test('backup count and hash proof allows new sealed state and detects a changed legacy row', ({
+test('backup count and hash proof allows new sealed state and detects a changed legacy row', async ({
 	onTestFinished
 }) => {
-	const directory = mkdtempSync(join(tmpdir(), 'tracker-sealed-proof-'));
+	const directory = await createTempDirectory('tracker-sealed-proof-');
 	onTestFinished(() => rmSync(directory, { recursive: true, force: true }));
 	const database = new DatabaseSync(':memory:');
 	onTestFinished(() => database.close());
