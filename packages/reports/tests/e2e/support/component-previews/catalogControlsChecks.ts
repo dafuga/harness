@@ -69,6 +69,7 @@ async function assertTrackerChoices(component: Locator, id: string) {
 	const recommended = component.getByRole('button', { name: /Keep existing names/ });
 	await expect(recommended).toBeEnabled();
 	await expect(recommended).toHaveAttribute('data-recommended', 'true');
+	await expect(recommended).toHaveCSS('text-align', 'left');
 	await expect(component.getByRole('button', { name: /Use new names/ })).toBeEnabled();
 }
 

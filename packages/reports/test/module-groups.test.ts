@@ -93,19 +93,43 @@ test('a helper row uses its callable folder instead of its owning module categor
 });
 
 const transforms = [
-	['reports.function.entity-contract', 'entityContract', 'humanize', ['HTTPStatus'], 'http status'],
-	['reports.function.entity-lens', 'entityLens', 'shortCommit', ['0123456789'], '0123456'],
-	['reports.function.activity-display', 'activityDisplay', 'plural', [2, 'item'], '2 items'],
-	['reports.function.evidence-media', 'evidenceMedia', 'formatDuration', [90.9], '1:30']
+	[
+		'reports.function.entity-contract',
+		async () => (await import('../src/utils/explorer-ui/entityContract')).humanize,
+		'humanize',
+		['HTTPStatus'],
+		'http status'
+	],
+	[
+		'reports.function.entity-lens',
+		async () => (await import('../src/utils/explorer-ui/entityLens')).shortCommit,
+		'shortCommit',
+		['0123456789'],
+		'0123456'
+	],
+	[
+		'reports.function.activity-display',
+		async () => (await import('../src/utils/projects-sessions/activityDisplay')).plural,
+		'plural',
+		[2, 'item'],
+		'2 items'
+	],
+	[
+		'reports.function.evidence-media',
+		async () => (await import('../src/utils/verification-evidence/evidenceMedia')).formatDuration,
+		'formatDuration',
+		[90.9],
+		'1:30'
+	]
 ] as const;
 test.each(
 	transforms.map(([unit, entry, name, args, output]) => ({ unit, entry, name, args, output }))
 )(
 	'Strings relocation preserves public entry $name',
 	async ({ unit, entry, name, args, output }) => {
-		const legacy = await import(`../src/utils/${entry}.ts`);
+		const legacy = await entry();
 		const canonical = await import(`../src/helpers/strings/${name}.ts`);
-		expect(legacy[name]).toBe(canonical[name]);
+		expect(legacy).toBe(canonical[name]);
 		await measureWorkload(
 			unit,
 			`strings-${name.replace(/[A-Z]/g, (letter) => '-' + letter.toLowerCase())}`,
