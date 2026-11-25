@@ -279,11 +279,13 @@ and production deploys after Daniel's go.
 
 The phone keeps account session objects and a bounded live frame tail in a
 separate account database through the native Tracker replica store. It
-authenticates each envelope before accepting it, and commits each object
-page with its opaque server cursor. It opens saved transcript text locally
+authenticates each envelope before accepting it, and advances its opaque server
+cursor in the same transaction as each accepted object. It opens saved transcript text locally
 before network catch-up. The bridge exposes session views, while credentials
 and scope keys stay in the native process. Sign-out closes the socket and
-purges the active account cache.
+purges the active account cache. Saved transcript segments and the live tail
+are displayed separately because the publisher protocol gives them independent
+positions.
 
 The current relay has no session transcript read. Its native round trip and
 saved read can be timed using the transcript fixture text in a project read,

@@ -57,7 +57,7 @@ final class FixtureSealedHub: HubAccountTransport {
     }
 
     private func objectAnswer(_ parts: [String], request: URLRequest) -> Result<HubAccountReply, HubAccountFailure> {
-        if parts.count == 6, let id = parts.last, let wire = objects[id] {
+        if parts.count == 7, let id = parts.last, let wire = objects[id] {
             return .success(HubAccountReply(status: 200, contentType: "text/plain", data: Data(wire.utf8)))
         }
         let query = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)?.queryItems
@@ -124,6 +124,9 @@ private func checkOfflineAndRevoked(_ scenario: TrackerSealedSyncFixture) async 
     let revoked = await waitForSealed { reopened.status == "approval-required" }
     check(revoked && scenario.authority.load("session-scope-keys") == nil && !scenario.socket.connected,
           "a signed device revocation removes cached scope keys and closes the account socket")
+    try await reopened.start()
+    check(reopened.status == "approval-required" && !scenario.socket.connected,
+        "polling a revoked session does not reconnect or hide the approval gate")
     let remaining = try reopened.summaries()["sessions"] as? [[String: Any]]
     check(remaining?.isEmpty == true, "revocation clears in-memory session access")
 }

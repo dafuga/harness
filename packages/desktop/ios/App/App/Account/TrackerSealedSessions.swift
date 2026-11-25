@@ -16,9 +16,9 @@ final class TrackerSealedSessions {
     private var pending = false
     private var floor = 0
     private var stopping = 0
+    private var refusedPin: SealedChainPin?
     private(set) var status = "connecting"
     var changed: () -> Void = {}
-
     init(account: HubAccountSession, cache: TrackerReplicaSealed = TrackerReplicaSealed(),
         keychain: SealedSecretStore = SealedKeychain(), live: TrackerSealedLiveTransport? = nil
     ) {
@@ -27,7 +27,6 @@ final class TrackerSealedSessions {
         self.keychain = keychain
         self.live = live ?? TrackerSealedLive()
     }
-
     private func authority(_ identity: TrackerSealedIdentity) -> TrackerSealedAuthority {
         TrackerSealedAuthority(identity: identity, keychain: keychain)
     }
@@ -39,10 +38,11 @@ final class TrackerSealedSessions {
         }
         if identity?.generation == current.generation, identity?.namespace == current.namespace, pulse != nil { return }
         stop()
+        if identity?.namespace != current.namespace { refusedPin = nil }
         identity = current
         cache.enter(current.namespace)
         let authority = authority(current)
-        guard let pin = try authority.pin() else {
+        guard let pin = try authority.pin(), pin != refusedPin else {
             status = "approval-required"
             return
         }
@@ -79,10 +79,10 @@ final class TrackerSealedSessions {
             keychain.remove("enroll-\(namespace)-session-scope-keys")
         }
         identity = nil
+        refusedPin = nil
         cache.purge()
         changed()
     }
-
     func scope(_ name: String) throws -> TrackerReplicaSessionKeys {
         guard let scope = scopes[name] else { throw HubAccountFailure.refused }
         return scope
@@ -100,7 +100,7 @@ final class TrackerSealedSessions {
             do {
                 try await refresh(authority(identity))
             } catch is TrackerSealedRevoked {
-                if !Task.isCancelled { revoked() }
+                if !Task.isCancelled { revoked(identity) }
             } catch let failure as HubAccountFailure where failure == .signedOut {
                 if !Task.isCancelled { account.endSealedIdentity(identity) }
             } catch {
@@ -115,7 +115,8 @@ final class TrackerSealedSessions {
         if pending { pending = false; schedule() }
     }
 
-    private func revoked() {
+    private func revoked(_ identity: TrackerSealedIdentity) {
+        refusedPin = try? authority(identity).pin()
         stop()
         cache.purge()
         status = "approval-required"
@@ -132,10 +133,12 @@ extension TrackerSealedSessions {
         let verified = try await authority.verifiedKeys(hub, device: device)
         try Task.checkCancellation()
         let names = verified.keys.sorted()
+        let newEpoch = names.contains { scopes[$0]?.current.epoch != verified[$0]?.current.epoch }
         let changedScopes = scopes.keys.sorted() != names
         scopes = verified
-        if changedScopes || !live.connected {
-            try live.start(hub, scopes: names, after: cache.ring()) { [weak self] in self?.receive($0) }
+        if changedScopes || newEpoch || !live.connected {
+            let after = newEpoch ? 0 : try cache.ring()
+            try live.start(hub, scopes: names, after: after) { [weak self] in self?.receive($0) }
         }
         for name in names {
             if let scope = scopes[name] { try await hub.catchUp(cache, scope: scope) }

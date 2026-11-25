@@ -26,7 +26,6 @@ final class HubAccountSession {
     /// Counts every change of account: an answer to a call made before one is never used.
     var generation = 0
     private var loaded = false
-
     init(origin: URL?, vault: HubAccountVault = HubAccountKeychain(), transport: HubAccountTransport = HubAccountHttp()) {
         self.origin = origin
         self.vault = vault

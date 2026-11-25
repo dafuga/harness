@@ -23,6 +23,7 @@ extension TrackerSealedHub {
             if more == .bool(false) { return }
             if previous == cursor { throw TrackerReplicaError.invalidPage }
         }
+        throw HubAccountFailure.tooLarge
     }
 
     func fetch(_ object: TrackerSealedObject, scope: TrackerReplicaSessionKeys) async throws -> TrackerReplicaSealedRecord? {

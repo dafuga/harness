@@ -60,16 +60,13 @@ export class CapacitorEnvironmentAdapter {
 			phone.connectAccountComputer = async (input) => note(await connect(input));
 		}
 		const tracker = phoneTrackerTools(plugin);
-		const sessions =
-			this.account && Capacitor.isPluginAvailable(sessionPluginName)
-				? registerPlugin<SessionNativePlugin>(sessionPluginName)
-				: undefined;
+
 		const local = {
 			kind: 'capacitor',
 			local: false,
 			phone,
 			...(tracker ? { tracker } : {}),
-			...(sessions ? { sessions } : {})
+			...this.sessionPort()
 		} as const;
 		if (!this.account) return { ...local, bridge: mac };
 		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();
@@ -78,6 +75,11 @@ export class CapacitorEnvironmentAdapter {
 			mac
 		}).connect();
 		return { ...local, bridge, account: true };
+	}
+
+	private sessionPort(): Pick<Environment, 'sessions'> {
+		if (!this.account || !Capacitor.isPluginAvailable(sessionPluginName)) return {};
+		return { sessions: registerPlugin<SessionNativePlugin>(sessionPluginName) };
 	}
 
 	private listen<K extends keyof RemoteNativeEvents>(
