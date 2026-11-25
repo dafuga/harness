@@ -198,7 +198,8 @@
 			"TrackerAdapterLeaseAdapter",
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
-			"TrackerSupervisorService"
+			"TrackerSupervisorService",
+			"SubscriptionQuotaService"
 		]
 	},
 	"contract": {
@@ -788,6 +789,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-worker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-subscription-quota",
 			"via": "reexport",
 			"origin": "derived"
 		},

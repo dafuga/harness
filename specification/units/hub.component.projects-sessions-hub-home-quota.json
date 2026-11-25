@@ -15,8 +15,7 @@
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -38,12 +37,6 @@
 				"type": "number",
 				"required": true,
 				"description": "Current time in milliseconds since the Unix epoch."
-			},
-			{
-				"name": "HubHomeQuota.connected",
-				"type": "boolean",
-				"required": true,
-				"description": "Whether the section can read its external data source."
 			},
 			{
 				"name": "HubHomeQuota.reload",
@@ -97,11 +90,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-strong",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop-subscription-quota",
+	"title": "Native Home subscription quota",
+	"kind": "ui",
+	"units": ["desktop.page.root", "desktop.component.projects-sessions-home-subscription-quota"],
+	"states": [
+		{ "id": "home", "title": "Home with a subscription quota control", "coverage": "required" },
+		{ "id": "quota", "title": "Quota dialog with two providers", "coverage": "required" },
+		{ "id": "mac-setup", "title": "Mac sign-in instructions", "coverage": "required" },
+		{ "id": "phone-home", "title": "iPhone Home linked to a Mac", "coverage": "required" },
+		{ "id": "phone-quota", "title": "iPhone quota for the linked Mac", "coverage": "required" }
+	],
+	"viewports": [
+		{ "id": "desktop", "width": 1440, "height": 900 },
+		{ "id": "tablet", "width": 820, "height": 1180 },
+		{ "id": "mobile", "width": 390, "height": 844 }
+	],
+	"builds": ["desktop-renderer"],
+	"tests": [
+		{
+			"id": "native-home-quota",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/home-subscription-quota.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 90000
+		}
+	],
+	"evidence": [
+		{
+			"id": "native-home-quota-screens",
+			"kind": "screenshot",
+			"states": ["home", "quota", "mac-setup"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true,
+			"build": "desktop-renderer",
+			"provenance": "actual-capture",
+			"capture": "viewport"
+		},
+		{
+			"id": "iphone-home-quota-screens",
+			"kind": "screenshot",
+			"states": ["phone-home", "phone-quota"],
+			"viewports": ["mobile"],
+			"required": true,
+			"build": "desktop-renderer",
+			"provenance": "actual-capture",
+			"capture": "viewport"
+		},
+		{
+			"id": "native-home-quota-workload",
+			"kind": "benchmark",
+			"states": ["home", "quota", "mac-setup"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
+		},
+		{
+			"id": "iphone-home-quota-workload",
+			"kind": "benchmark",
+			"states": ["phone-home", "phone-quota"],
+			"viewports": ["mobile"],
+			"required": true
+		}
+	]
+}

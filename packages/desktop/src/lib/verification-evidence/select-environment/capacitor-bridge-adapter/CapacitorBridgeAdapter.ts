@@ -83,6 +83,7 @@ export class CapacitorBridgeAdapter {
 			remoteArtifact(await this.request<RemoteBinary>('artifact', input), (input as Input).sha256);
 		return {
 			listProjects: when('listProjects', () => this.request('listProjects')),
+			homeSnapshot: ask('homeSnapshot', true),
 			selectProject: when('snapshot', select),
 			capabilities: ask('capabilities', true),
 			addComment: ask('addComment', true),
@@ -138,10 +139,7 @@ export class CapacitorBridgeAdapter {
 	}
 
 	private async send(method: RemoteMethod, input: object = {}): Promise<RemoteNativeAnswer> {
-		if (!this.granted.has(method))
-			throw Object.assign(new RemoteFailure('method-denied', notAttached), {
-				code: 'method-denied'
-			});
+		if (!this.granted.has(method)) throw new RemoteFailure('method-denied', notAttached);
 		const body: Input = { ...input };
 		if (!projectlessMethods.includes(method)) body.projectId ??= this.selected ?? undefined;
 		if (revisionMethods.includes(method)) body.revision = this.revision(body.projectId);

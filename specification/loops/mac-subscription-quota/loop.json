@@ -1,0 +1,45 @@
+{
+	"name": "mac-subscription-quota",
+	"goal": "Read real Claude and Codex subscription quota on each Mac without exposing credentials. Prove only normalized readings travel over the authenticated encrypted Home route and unknown or stale readings never drive provider selection.",
+	"createdAt": "2026-11-25T17:54:49.338Z",
+	"updatedAt": "2026-11-25T18:22:03.580Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T18:03:51.473Z",
+			"evidence": "Confirmed the existing encrypted homeSnapshot wire in main and documented a local-only collector, fixed native usage reads, strict display fields, independently fresh providers, and informational selection inputs."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-25T18:13:45.010Z",
+			"evidence": "Native local CLI adapters, bounded shared cache, encrypted device Home projection, Mac and linked iPhone renderer, and local provider quota JSON command implemented. Production deployment, shared account-key publication, and the separate provider-switch consumer remain pending."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-25T18:22:03.580Z",
+			"evidence": "Five unchanged parser/cache contracts passed after initial failing scaffold; the authorized device decrypted the quota while balance and reset canaries were absent from transport packets. Three native Home viewports and the iPhone attachment/revocation case passed in a compiled renderer at 2c9cfe8a00 on harbor-mbp-2, after their documented missing-control failures. Synthetic provider fixtures were used for screenshots."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

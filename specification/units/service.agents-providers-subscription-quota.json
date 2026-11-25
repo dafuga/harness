@@ -1,0 +1,125 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-subscription-quota",
+	"uid": "u_xzwv5okyoc",
+	"kind": "service",
+	"title": "SubscriptionQuotaService",
+	"responsibility": "Refreshes and caches the local user's normalized subscription quota",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/SubscriptionQuotaService.ts",
+			"src/services/agents-providers/SubscriptionQuotaService.types.ts"
+		],
+		"symbols": [
+			"SubscriptionQuotaService",
+			"SubscriptionQuotaService.constructor",
+			"SubscriptionQuotaService.read",
+			"SubscriptionLimit",
+			"SubscriptionReading",
+			"SubscriptionReader"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SubscriptionQuotaService.constructor.readers",
+				"type": "readonly SubscriptionReader[]",
+				"required": false
+			},
+			{
+				"name": "SubscriptionQuotaService.read.now",
+				"type": "number",
+				"required": false
+			},
+			{
+				"name": "SubscriptionQuotaService.read.waitMs",
+				"type": "number",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "SubscriptionQuotaService.read",
+				"type": "Promise<SubscriptionReading[]>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SubscriptionQuotaService.read",
+				"inputs": [
+					{
+						"name": "SubscriptionQuotaService.read.now",
+						"type": "number",
+						"required": false
+					},
+					{
+						"name": "SubscriptionQuotaService.read.waitMs",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "SubscriptionQuotaService.read",
+						"type": "Promise<SubscriptionReading[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SubscriptionQuotaService.constructor",
+				"inputs": [
+					{
+						"name": "SubscriptionQuotaService.constructor.readers",
+						"type": "readonly SubscriptionReader[]",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "SubscriptionQuotaService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-quota-claude",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-quota-codex",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/SubscriptionQuotaService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/SubscriptionQuotaService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -11,6 +11,7 @@
 		"level": "page",
 		"uses": [
 			"desktop.component.project-gate",
+			"desktop.component.projects-sessions-home-subscription-quota",
 			"desktop.component.remote-connection",
 			"desktop.component.workspace-shell",
 			"reports.component.shared-primitives-atoms-html-a",
@@ -56,6 +57,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.project-gate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.projects-sessions-home-subscription-quota",
 			"via": "import",
 			"origin": "derived"
 		},

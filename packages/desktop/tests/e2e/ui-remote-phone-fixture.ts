@@ -36,6 +36,7 @@ function installPhoneState(options: PhoneOptions) {
 		host: phone.state === 'unpaired' ? null : phone.host,
 		device: phone.deviceName ? { id: options.device.id, name: phone.deviceName } : null,
 		grant: paired() ? { projects: options.granted, agents: true } : null,
+		...options.capabilities,
 		reason: phone.state === 'offline' ? 'The computer is asleep or has no network.' : null,
 		lastOnlineAt: paired() ? options.seenAt : null
 	});
@@ -45,7 +46,6 @@ function installPhoneState(options: PhoneOptions) {
 			if (item.eventName === 'status') item.callback(status());
 		});
 	};
-	const request = async () => undefined;
 	const computers = {
 		computers: async () => {
 			const { id: hostId, name } = options.host;
@@ -73,7 +73,7 @@ function installPhoneState(options: PhoneOptions) {
 		listeners,
 		status,
 		set,
-		request,
+		request: async () => undefined,
 		computers
 	};
 }
@@ -98,6 +98,8 @@ function installPhoneRequests() {
 		host.__calls.push({ op: 'native.request', method: call.method });
 		if (state.phone.state !== 'online')
 			throw fail('offline', 'The computer is offline. Nothing was sent.');
+		if (call.method === 'homeSnapshot' && state.options.homeSnapshot)
+			return { value: state.options.homeSnapshot };
 		const operation = local.includes(call.method) ? undefined : state.computer[call.method];
 		if (!operation) throw fail('method-denied', `Operation not allowed: ${call.method}`);
 		host.__projects.selected = call.input.projectId ?? host.__projects.selected;
@@ -189,7 +191,7 @@ function installPhoneAccount() {
 }
 
 /** A phone in the given state; its computer granted it the two local projects, with agents. */
-export async function remotePhoneFixture(page: Page, state = 'unpaired') {
+export async function remotePhoneFixture(page: Page, state = 'unpaired', homeSnapshot?: object) {
 	const outbox = await projectFixture(page);
 	const options: PhoneOptions = {
 		state,
@@ -197,6 +199,8 @@ export async function remotePhoneFixture(page: Page, state = 'unpaired') {
 		host: { id: pairing.hostId, name: hostName },
 		device: { id: phone.deviceId, name: deviceName },
 		seenAt,
+		homeSnapshot,
+		capabilities: homeSnapshot ? { methods: ['listProjects', 'homeSnapshot'] } : undefined,
 		granted: [
 			{ id: alpha, name: 'Alpha' },
 			{ id: beta, name: 'Beta' }

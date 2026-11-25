@@ -2678,6 +2678,30 @@
 			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
 		},
 		{
+			"from": "packages/desktop/src/components/projects-sessions/HomeSubscriptionQuota.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Use the shared accessible dialog for the native Home quota details."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/HomeSubscriptionQuota.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeProviderPayload",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts",
+			"reason": "Use the Home freshness policy for native quota readings."
+		},
+		{
+			"from": "packages/desktop/src/components/projects-sessions/HomeSubscriptionQuota.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Read normalized quota from the shared Home display contract."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Expose the shared Home projection through the native bridge."
+		},
+		{
 			"from": "packages/hub/src/components/shared-primitives/HubFrame.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",

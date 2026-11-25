@@ -42,14 +42,6 @@
 	align-items: center;
 	color: var(--hx-color-text-supporting);
 }
-.hh-home .hh-q-add-title {
-	display: block;
-}
-.hh-home .hh-q-add {
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-}
 @media (max-width: 1000px) {
 	.hh-home .hh-q-panel-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -65,10 +57,6 @@
 	}
 	.hh-home .hh-q-agents {
 		grid-column: auto;
-	}
-	.hh-home .hh-q-add {
-		flex-direction: column;
-		align-items: flex-start;
 	}
 }
 

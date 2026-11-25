@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-quota-claude-adapter-read-claude-usage",
+	"uid": "u_ehveho7jdf",
+	"kind": "adapter",
+	"title": "readClaudeUsage",
+	"responsibility": "Owns the readClaudeUsage integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.ts",
+			"src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.types.ts"
+		],
+		"symbols": ["readClaudeUsage", "openUsage", "Tmux"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "openUsage.run",
+				"type": "Tmux",
+				"required": true
+			},
+			{
+				"name": "openUsage.directory",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "readClaudeUsage",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "openUsage",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readClaudeUsage",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "readClaudeUsage",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openUsage",
+				"inputs": [
+					{
+						"name": "openUsage.run",
+						"type": "Tmux",
+						"required": true
+					},
+					{
+						"name": "openUsage.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openUsage",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-quota-process-environment",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

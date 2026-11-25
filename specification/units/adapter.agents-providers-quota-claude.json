@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-quota-claude",
+	"uid": "u_attkdntuyv",
+	"kind": "adapter",
+	"title": "QuotaClaudeAdapter",
+	"responsibility": "Reads only quota rows from Claude Code's native usage view",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/QuotaClaudeAdapter.ts",
+			"src/adapters/agents-providers/QuotaClaudeAdapter.types.ts"
+		],
+		"symbols": [
+			"QuotaClaudeAdapter",
+			"QuotaClaudeAdapter.constructor",
+			"QuotaClaudeAdapter.read",
+			"QuotaClaudeAdapterConfig",
+			"QuotaClaudeAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "QuotaClaudeAdapter.constructor.config",
+				"type": "QuotaClaudeAdapterConfig",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "QuotaClaudeAdapter.read.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "QuotaClaudeAdapter.read",
+				"type": "Promise<SubscriptionReading | null>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "QuotaClaudeAdapter.read",
+				"inputs": [
+					{
+						"name": "QuotaClaudeAdapter.read.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QuotaClaudeAdapter.read",
+						"type": "Promise<SubscriptionReading | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "QuotaClaudeAdapter.constructor",
+				"inputs": [
+					{
+						"name": "QuotaClaudeAdapter.constructor.config",
+						"type": "QuotaClaudeAdapterConfig",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "QuotaClaudeAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-quota-claude-adapter-claude-reset-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-quota-claude-adapter-read-claude-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-subscription-quota",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/QuotaClaudeAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/QuotaClaudeAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

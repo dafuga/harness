@@ -144,6 +144,9 @@ export const desktopControls: Record<string, DesktopCase> = {
 		choose: noop
 	}),
 	'desktop.component.project-switcher': (d) => ({ workspace: d.workspace }),
+	'desktop.component.projects-sessions-home-subscription-quota': () => ({
+		read: async () => ({ providers: { quota: null } })
+	}),
 	'desktop.component.recorded-preview': (d) => ({
 		workspace: d.workspace,
 		entityId: d.visual.scope.location.entity,

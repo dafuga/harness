@@ -29,6 +29,7 @@ import type { EvidenceArtifactResult } from '../verification-evidence/DesktopEvi
 import type { ProjectTaskRequest } from '../projects-sessions/ProjectTask.types';
 import type { RunEvent } from './RunContext.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
+import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { TrackerInboxSource } from './TrackerInbox.types';
 import type { channels } from './DesktopBridgeValues';
 
@@ -145,6 +146,8 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	disconnectHosted?(): Promise<NativeHostedStatus>;
 	/** The local tracker's read-only overview; takes no input. Absent on hosts without a local tracker. */
 	projectOverview?(): Promise<OverviewSnapshot>;
+	/** This Mac's Home view over an authorized local or linked-device connection. */
+	homeSnapshot?(): Promise<OwnerHomeSnapshot>;
 	/** Direct inbox access on this Mac through the trusted local transport. */
 	trackerInbox?: TrackerInboxSource;
 	pendingComments?(input?: ProjectContext): Promise<HumanCommentResult[]>;

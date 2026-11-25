@@ -63,9 +63,40 @@ end-to-end encrypted device connection as Devices, with no click and no stored c
 Hub. The Mac answers the read-only `homeSnapshot` wire method. Each browser keeps one device
 key pair per computer, so a reload is the same device and adds no new one. Views from several
 computers are merged: work the Tracker syncs between them appears once. The headline counts
-running sessions. Quota stays Unknown until a computer reports it. `Connect a computer`
+running sessions. The Mac reads subscription quota from its installed Claude Code and
+Codex clients. Each provider's reading retains its observation timestamp. Quota stays
+Unknown until a computer reports it. `Connect a computer`
 appears only when the account has no linked computer. The owner snapshot below remains a
 fallback.
+
+The collector refreshes on demand at most every five minutes per Mac process. It reads
+Claude Code's native `/usage` panel in a private tmux session and Codex's native
+`account/rateLimits/read` method over stdio. Both use the existing local subscription
+login. A signed-out client or a provider that omits a window leaves that reading unknown.
+Only normalized percentages, UTC resets, plan labels, and Codex subscription credits
+cross the encrypted Home connection. The managed owner snapshot does not receive these
+collected readings. There is one displayed subscription per provider across the account's
+linked Macs, with the most recent observation taking precedence.
+
+Mac Home reads the same data locally and offers sign-in commands in its quota dialog.
+iPhone Home reads quota while its linked Mac is online. Hub and iPhone direct readers
+to the Mac app when quota is unavailable. Chief of Staff status and the preferred-provider
+setting can call `harness provider quota --json` in the signed-in Mac desktop session.
+Use `readAt` for freshness, `limits[].left` for percentage remaining, and `limits[].resetsAt`
+for the reported reset. Unknown providers are `null` and missing windows are omitted.
+Credits denote Codex subscription credits. Provider preferences and explicitly selected
+models remain the launch policy.
+
+### Account quota persistence
+
+Once a Mac has a verified account scope key, it can write its latest readings as one
+`quota.subscription` object. Derive its opaque object ID from the account index key,
+the record kind, and the enrolled device ID. Include the device ID and readings inside
+the encrypted payload. Readers open records with their granted account key, then select
+the freshest reading per provider. The sealed sync fixture exercises the quota round trip,
+access with an unrelated scope key, and the absence of quota values from server-visible data.
+The Mac publisher and the Hub and iPhone readers need their enrollment handoffs to activate
+this path.
 
 ### Owner-host data
 
@@ -76,11 +107,12 @@ configured overview publishing continues to work independently. The new Hub chat
 created by migration `0005-hub-home-chat.sql`. Messages expire after two minutes if no native
 publisher claims them. A claimed message with an ambiguous result is shown as unconfirmed.
 
-The owner desktop reads the Claude and Codex quota and Claude routine dates from a single
+The legacy owner publisher can read manually managed quota and Claude routine dates from a single
 owner-managed JSON file. Set `HARNESS_HUB_HOME_PROVIDER_FILE` to its absolute path on the
 same computer as the verified native connection. The file is read about every five minutes.
 Replace it atomically when updating it, and keep its permissions restricted to the owner.
-Only display metadata belongs in this file. A later collector can update the same format.
+Only display metadata belongs in this file. Live collector output stays on the encrypted
+device route.
 
 ```json
 {
