@@ -41,6 +41,8 @@ export function createClipInputContext(root: string): ClipInputContext {
 }
 
 export function readClipInput(context: ClipInputContext, path: string): ClipInputFile {
+	const cached = context.contents.get(path);
+	if (cached) return cached;
 	assertSafePath(path);
 	assertSnapshotPath(context, path);
 	const absolute = join(context.root, path);
@@ -51,17 +53,18 @@ export function readClipInput(context: ClipInputContext, path: string): ClipInpu
 		throw new ExpectedCliError(`Video input escapes source root: ${path}`);
 	const canonical = bound.split(sep).join('/');
 	assertSnapshotPath(context, canonical);
-	if (!statSync(resolved).isFile())
-		throw new ExpectedCliError(`Video input is not a file: ${path}`);
-	let input = context.contents.get(resolved);
+	let input = context.contents.get(canonical);
 	if (!input) {
+		if (!statSync(resolved).isFile())
+			throw new ExpectedCliError(`Video input is not a file: ${path}`);
 		const bytes = readFileSync(resolved);
 		input = {
 			sha256: clipDigest(bytes),
 			text: textualInput(canonical) ? bytes.toString('utf8') : ''
 		};
-		context.contents.set(resolved, input);
+		context.contents.set(canonical, input);
 	}
+	context.contents.set(path, input);
 	return input;
 }
 
