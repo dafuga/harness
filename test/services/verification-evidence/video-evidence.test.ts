@@ -29,7 +29,9 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 			await writeFile(join(root, 'src/first.ts'), "import './private.ts';");
 			await writeFile(join(root, 'src/private.ts'), 'export const answer = 1;');
 			const reads = vi.spyOn(files, 'readFileSync'),
+				stats = vi.spyOn(files, 'statSync'),
 				tools = vi.spyOn(processes, 'spawnSync');
+			stats.mockClear();
 			const first = service.plan(manifest);
 			expect(first.record).toHaveLength(4);
 			expect(first.reuse).toEqual([]);
@@ -37,6 +39,10 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 			const inputReads = reads.mock.calls.map(([path]) => String(path));
 			expect(inputReads.filter((path) => path.includes('specification/units/'))).toHaveLength(2);
 			expect(new Set(inputReads).size).toBe(inputReads.length);
+			const inputStats = stats.mock.calls.map(([path]) => String(path));
+			expect(inputStats.length, 'each input path is validated once per plan').toBe(
+				new Set(inputStats).size
+			);
 			const previous = first.record.map((slot) => ({ ...slot, testedRevision: 'a'.repeat(40) }));
 			await writeFile(join(root, 'src/unrelated.ts'), 'unrelated change');
 			const warm = service.plan(manifest, previous);
