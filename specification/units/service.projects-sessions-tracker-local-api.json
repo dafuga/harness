@@ -201,6 +201,12 @@
 				"required": true
 			},
 			{
+				"name": "itemMutationContext.explicitLaunch",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "writeTrackerPlanning.request",
 				"type": "Request",
 				"required": true
@@ -561,6 +567,12 @@
 						"name": "itemMutationContext.options",
 						"type": "TrackerLocalApiOptions",
 						"required": true
+					},
+					{
+						"name": "itemMutationContext.explicitLaunch",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
@@ -731,6 +743,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-dispatch",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-item-read",
 			"via": "import",
 			"origin": "derived"
@@ -742,6 +759,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-analytics-service-tracker-run-records",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
 			"via": "import",
 			"origin": "derived"
 		},

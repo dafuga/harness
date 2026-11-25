@@ -13,6 +13,12 @@
 			"name": "idleWorkMinutes",
 			"audience": "operator",
 			"purpose": "Set how long an unassigned Tracker task can remain idle during Lisbon daytime before the hub requests pickup. Defaults to 120 minutes."
+		},
+		{
+			"source": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
+			"name": "additionalAuthors",
+			"audience": "operator",
+			"purpose": "Add verified GitHub tester logins for urgent issues and comment follow-up."
 		}
 	],
 	"owns": {
@@ -105,6 +111,7 @@
 			"trackerMachineSample",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
+			"adapterFailover",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
 			"trackerContextHandoffs",
@@ -120,6 +127,7 @@
 			"adapterWrite",
 			"trackerHostCapacityHold",
 			"trackerHostAdmission",
+			"occupiedHostSlots",
 			"formatTrackerHostBrief",
 			"sendWatchdogAlerts",
 			"trackerHostEffectsSchema",
@@ -152,6 +160,7 @@
 			"configuredHostWatchdog",
 			"TrackerWatchdogAlerts",
 			"TrackerWatchdogAlert",
+			"urgentQueueAlertKind",
 			"recordStartupAlerts",
 			"recordWatchdogAlert",
 			"contextAlert",
@@ -311,6 +320,16 @@
 				"required": true
 			},
 			{
+				"name": "adapterFailover.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "adapterFailover.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
 				"name": "readTrackerDuePreview.runtime",
 				"type": "TrackerNativeRuntimeService",
 				"required": true
@@ -437,6 +456,16 @@
 				"required": true
 			},
 			{
+				"name": "occupiedHostSlots.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "occupiedHostSlots.sessions",
+				"type": "readonly TrackerHostSession[]",
+				"required": true
+			},
+			{
 				"name": "formatTrackerHostBrief.item",
 				"type": "TrackerItem",
 				"required": true
@@ -539,7 +568,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
 				"required": false,
 				"default": {}
 			},
@@ -557,6 +586,11 @@
 				"name": "configuredHostDispatch.now",
 				"type": "() => number",
 				"required": true
+			},
+			{
+				"name": "configuredHostDispatch.automaticEnabled",
+				"type": "() => boolean",
+				"required": false
 			},
 			{
 				"name": "trackerHostLaunchPort.config",
@@ -649,22 +683,10 @@
 				"required": true
 			},
 			{
-				"name": "trackerHostRunner.tmux",
-				"type": "TrackerTmuxAdapter",
+				"name": "trackerHostRunner.options",
+				"type": "TrackerHostRunnerOptions",
 				"required": false,
-				"description": "Optional adapter used to inspect existing tmux panes during inventory refresh."
-			},
-			{
-				"name": "trackerHostRunner.legacyRunDirectory",
-				"type": "string",
-				"required": false,
-				"description": "Optional directory from which to read legacy run exit receipts."
-			},
-			{
-				"name": "trackerHostRunner.now",
-				"type": "() => number",
-				"required": false,
-				"description": "Clock callback used for inventory timestamps, defaulting to Date.now."
+				"default": {}
 			},
 			{
 				"name": "trackerHostWatchdog.store",
@@ -678,7 +700,7 @@
 			},
 			{
 				"name": "trackerHostWatchdog.options",
-				"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork'>",
+				"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork' | 'automaticEnabled'>",
 				"required": true
 			},
 			{
@@ -689,6 +711,11 @@
 			{
 				"name": "configuredHostWatchdog.watchdog",
 				"type": "TrackerHostEffects['watchdog']",
+				"required": false
+			},
+			{
+				"name": "configuredHostWatchdog.automaticEnabled",
+				"type": "() => boolean",
 				"required": false
 			},
 			{
@@ -1192,6 +1219,12 @@
 				"name": "watchLaunchRequests.now",
 				"type": "number",
 				"required": true
+			},
+			{
+				"name": "watchLaunchRequests.canAutoLaunch",
+				"type": "boolean",
+				"required": false,
+				"default": true
 			},
 			{
 				"name": "sampleTrackerContexts.panes",
@@ -1742,6 +1775,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "adapterFailover",
+				"inputs": [
+					{
+						"name": "adapterFailover.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "adapterFailover.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adapterFailover",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "readTrackerDuePreview",
 				"inputs": [
 					{
@@ -1985,6 +2041,29 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "occupiedHostSlots",
+				"inputs": [
+					{
+						"name": "occupiedHostSlots.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "occupiedHostSlots.sessions",
+						"type": "readonly TrackerHostSession[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "occupiedHostSlots",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "formatTrackerHostBrief",
 				"inputs": [
 					{
@@ -2155,7 +2234,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
 						"required": false,
 						"default": {}
 					}
@@ -2186,6 +2265,11 @@
 						"name": "configuredHostDispatch.now",
 						"type": "() => number",
 						"required": true
+					},
+					{
+						"name": "configuredHostDispatch.automaticEnabled",
+						"type": "() => boolean",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -2361,22 +2445,10 @@
 						"required": true
 					},
 					{
-						"name": "trackerHostRunner.tmux",
-						"type": "TrackerTmuxAdapter",
+						"name": "trackerHostRunner.options",
+						"type": "TrackerHostRunnerOptions",
 						"required": false,
-						"description": "Optional adapter used to inspect existing tmux panes during inventory refresh."
-					},
-					{
-						"name": "trackerHostRunner.legacyRunDirectory",
-						"type": "string",
-						"required": false,
-						"description": "Optional directory from which to read legacy run exit receipts."
-					},
-					{
-						"name": "trackerHostRunner.now",
-						"type": "() => number",
-						"required": false,
-						"description": "Clock callback used for inventory timestamps, defaulting to Date.now."
+						"default": {}
 					}
 				],
 				"outputs": [
@@ -2403,7 +2475,7 @@
 					},
 					{
 						"name": "trackerHostWatchdog.options",
-						"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork'>",
+						"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork' | 'automaticEnabled'>",
 						"required": true
 					}
 				],
@@ -2427,6 +2499,11 @@
 					{
 						"name": "configuredHostWatchdog.watchdog",
 						"type": "TrackerHostEffects['watchdog']",
+						"required": false
+					},
+					{
+						"name": "configuredHostWatchdog.automaticEnabled",
+						"type": "() => boolean",
 						"required": false
 					}
 				],
@@ -3390,6 +3467,12 @@
 						"name": "watchLaunchRequests.now",
 						"type": "number",
 						"required": true
+					},
+					{
+						"name": "watchLaunchRequests.canAutoLaunch",
+						"type": "boolean",
+						"required": false,
+						"default": true
 					}
 				],
 				"outputs": [

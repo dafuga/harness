@@ -40,18 +40,24 @@ export async function verifyAdoption(
 		{ state: 'finished', model: 'gpt-6.1-terra', effort: 'high', tmux: 'man123-recovery' }
 	]);
 	expect((await runtime.watchdog!.inspect(manual, signal)).recovery).toMatchObject([
-		{ item_id: manual, host: runtime.store.node, kind: 'missing', recover: true }
+		{
+			item_id: manual,
+			host: runtime.store.node,
+			kind: 'missing',
+			recover: false,
+			reason: expect.stringContaining('automatic launch opted out')
+		}
 	]);
 }
 
-export const retainedTrackerTmuxFixture = `
+export const retainedTrackerTmuxFixture = (at: number) => `
 const fs = require('node:fs');
 const path = require('node:path');
 const [,,, socket, command, ...args] = process.argv;
 const closed = path.join(__dirname, 'closed');
 const busy = path.join(__dirname, 'busy');
 const attached = Number(fs.existsSync(path.join(__dirname, 'attached')));
-const raw = 'auto-old008-r8|1800000000|71|%9|200|1800000000|2|2|0|0|0|' + attached + '|1|1|codex';
+const raw = 'auto-old008-r8|${at / 1000}|71|%9|200|${at / 1000}|2|2|0|0|0|' + attached + '|1|1|codex';
 if (socket !== 'default') process.exit(2);
 if (command === 'list-panes' || command === 'display-message') {
 	if (!fs.existsSync(closed)) process.stdout.write(raw + '\\n');

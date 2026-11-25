@@ -12,7 +12,17 @@ export function itemFields(input: Record<string, string | boolean | undefined>) 
 		Object.entries(input).filter(
 			([key]) =>
 				!Object.hasOwn(nativeTrackerCommonOptions, key) &&
-				!['callback-url', 'callback-cmd', 'needs-daniel', 'next-step', 'note', 'tz'].includes(key)
+				![
+					'callback-url',
+					'callback-cmd',
+					'needs-daniel',
+					'next-step',
+					'note',
+					'tz',
+					'reminder',
+					'remind-at',
+					'at'
+				].includes(key)
 		)
 	);
 	return {
@@ -21,6 +31,7 @@ export function itemFields(input: Record<string, string | boolean | undefined>) 
 		callback_cmd: input['callback-cmd'],
 		needs_daniel: input['needs-daniel'],
 		next_step: input['next-step'],
+		remind_at: input['remind-at'] ?? input.at,
 		every_tz: tz,
 		repo: typeof repo === 'string' && repo ? resolve(repo) : repo
 	};
@@ -51,15 +62,16 @@ export const nativeTrackerCommandOptions = new Map<
 	string,
 	Record<string, typeof text | typeof flag>
 >([
-	['add', { ...itemOptions, later: flag }],
+	['add', { ...itemOptions, later: flag, reminder: flag, at: text }],
 	['plan', itemOptions],
 	['goal', itemOptions],
-	['update', { ...itemOptions, note: text }],
+	['update', { ...itemOptions, note: text, 'remind-at': text }],
 	['note', {}],
 	['progress', {}],
 	['flag', { question: text, force: flag }],
 	['chase', { note: text }],
-	['remind', { at: text }],
+	['remind', { at: text, reminder: flag }],
+	['priority', {}],
 	['park', { until: text }],
 	['move-on', {}],
 	['block', { 'needs-daniel': flag, force: flag }],
@@ -98,6 +110,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['adapter', { 'dry-run': flag, 'backfill-comments': flag }],
 	['backup', {}],
 	['start', {}],
+	['stop', {}],
 	['reopen', {}],
 	['unflag', {}],
 	['rm', {}],
@@ -130,7 +143,7 @@ export const nativeTrackerIdVerbs = new Set([
 	'unflag'
 ]);
 
-const inspectionRoutes = new Map([
+const inspectionRoutes = new Map<string, Record<string, string>>([
 	['autolaunch', { status: '/autolaunch', 'dry-run': '/autolaunch/dry-run' }],
 	['adapter', { list: '/adapters' }],
 	['backup', { list: '/backup/list' }]
@@ -165,52 +178,22 @@ function nativeTrackerReadInspection(
 	command: string,
 	words: string[]
 ): NativeTrackerRequest | undefined {
-	const routes: Record<string, string | undefined> | undefined = inspectionRoutes.get(command);
+	const routes = inspectionRoutes.get(command);
 	if (!routes) return undefined;
 	const sub = words[0] ?? (command === 'autolaunch' ? 'status' : '');
 	if (words.length > 1 || !Object.hasOwn(routes, sub))
 		throw new TypeError(`usage: tracker ${command} ${Object.keys(routes).join('|')}`);
-	return { method: 'GET', path: routes[sub]! };
+	return { method: 'GET', path: routes[sub] };
 }
 
-export function nativeTrackerTimedItemRequest(
-	command: string,
-	[id, ...words]: string[],
+export function launchAction(
+	path: string,
+	[target, ...rest]: string[],
 	values: Record<string, string | boolean | undefined>
-): NativeTrackerRequest | undefined {
-	if (command === 'remind') return reminderRequest(id, words, values.at);
-	const decision = decisionRequest(command, id, words, values.until);
-	if (decision) return decision;
-	if (command !== 'ignore' && command !== 'unignore') return undefined;
-	const reason = [values.reason, words.join(' ')].find(Boolean);
-	if (command === 'ignore' && !reason)
-		throw new TypeError('usage: tracker ignore <id> --reason "<why>" [--until DATE] [--by NAME]');
-	if (!id) throw new TypeError(`usage: tracker ${command} <id>`);
-	return {
-		method: 'POST',
-		path: `/items/${encodeURIComponent(id)}/${command}`,
-		body: command === 'ignore' ? { reason, until: values.until } : { note: values.note }
-	};
-}
-
-function decisionRequest(
-	command: string,
-	id: string | undefined,
-	words: string[],
-	until: string | boolean | undefined
-): NativeTrackerRequest | undefined {
-	const needsDate = command === 'park';
-	if (!needsDate && command !== 'move-on') return undefined;
-	if (!id || words.length || (needsDate && !until))
-		throw new TypeError(`usage: tracker ${command} <id>${needsDate ? ' --until <date>' : ''}`);
-	return { method: 'POST', path: `/items/${encodeURIComponent(id)}/${command}`, body: { until } };
-}
-
-function reminderRequest(
-	id: string | undefined,
-	words: string[],
-	at: string | boolean | undefined
 ): NativeTrackerRequest {
-	if (!id || !at || words.length) throw new TypeError('usage: tracker remind <id> --at <time>');
-	return { method: 'POST', path: `/items/${encodeURIComponent(id)}/remind`, body: { at } };
+	if (target !== 'on' && target !== 'off')
+		return { method: 'POST', path: path + '/launch?outcome=run', body: itemFields(values) };
+	if (rest.length !== 1) throw new TypeError(`usage: tracker launch ${target} <id>`);
+	const verb = target === 'off' ? 'unlaunch' : 'schedule-on';
+	return { method: 'POST', path: `/items/${encodeURIComponent(rest[0])}/${verb}` };
 }

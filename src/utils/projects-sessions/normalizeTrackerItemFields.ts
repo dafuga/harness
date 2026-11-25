@@ -6,6 +6,7 @@ import {
 	trackerTimeZone,
 	validateTrackerTimeZone
 } from './normalizeTrackerDue';
+import { trackerItemPriority } from './trackerItemPriority';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 import type {
@@ -15,7 +16,7 @@ import type {
 	TrackerItemValue
 } from './normalizeTrackerItemFields.types';
 
-const kinds = ['task', 'plan', 'goal', 'recurring'];
+const kinds = ['task', 'plan', 'goal', 'recurring', 'reminder'];
 const statuses = ['open', 'in_progress', 'blocked', 'done', 'ignored'];
 const recurringClearValues = new Set<TrackerItemValue>([null, '', 'none']);
 
@@ -66,6 +67,7 @@ const normalizeFlag = (value: TrackerItemValue): number =>
 
 const normalizers = {
 	kind: normalizeKind,
+	priority: (value: TrackerItemValue) => trackerItemPriority(value),
 	status: normalizeStatus,
 	title: normalizeTitle,
 	due: normalizeTrackerDue,

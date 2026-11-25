@@ -14,6 +14,7 @@ import {
 	trackerLocalStamp,
 	trackerTimeZone
 } from './normalizeTrackerDue';
+import { trackerReminderLaunchFields } from './trackerItemLaunchFields';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 import {
@@ -40,10 +41,14 @@ export const trackerItemTransitions: Record<
 	chase: (_, body) => ({ fields: { 'chase+': body.note ?? null } }),
 	park: trackerParkNextStep,
 	'move-on': trackerMoveOn,
+	priority: (_, body) => ({ fields: { priority: body.priority ?? null } }),
 	remind: (item, body, context) => {
 		if (item.status === 'done' || item.status === 'ignored')
 			throw trackerItemError('only active items can be reminded', 409);
-		return { fields: { remind_at: normalizeTrackerReminder(body.at, context.now) } };
+		const remind_at = normalizeTrackerReminder(body.at, context.now);
+		if (!body.reminder) return { fields: { remind_at } };
+		if (item.every) throw trackerItemError('a reminder uses a scheduled time');
+		return { fields: { remind_at, kind: 'reminder', ...trackerReminderLaunchFields } };
 	},
 	answer: (item, body, context) => {
 		if (!body.answer) throw trackerItemError('answer text required');
@@ -55,7 +60,6 @@ export const trackerItemTransitions: Record<
 	ignore: ignoreItem,
 	unignore: unignoreItem
 };
-
 function blockItem(
 	item: TrackerItemSnapshot,
 	body: TrackerItemInput,

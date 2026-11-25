@@ -125,8 +125,14 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 				...(ops ? { agent: 'cos', due: '2000-01-01', created_by: node } : { project: 'Harness' })
 			}
 		});
-		if (ops) expectApprovedOpsRoute(runtime, root);
-		else expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
+		if (ops) {
+			await runtime.scheduler!.tick(signal);
+			expect(database.prepare('SELECT state FROM runs').all()).toEqual([]);
+			expect(runtime.duePreview.preview?.(itemId)).toMatchObject({
+				reason: expect.stringContaining('Chief of Staff')
+			});
+		}
+		expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
 		await runtime.scheduler!.tick(signal);
 		if (ops) {
 			const invocation = JSON.parse(
@@ -151,13 +157,6 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 	} finally {
 		database.close();
 	}
-}
-
-function expectApprovedOpsRoute(runtime: TrackerNativeRuntimeService, root: string) {
-	runtime.store.appendLocal({ itemId, fields: { repo: join(root, 'unapproved') } });
-	expect(runtime.duePreview.preview?.(itemId)).not.toHaveProperty('target');
-	runtime.store.appendLocal({ itemId, fields: { repo: null } });
-	expect(runtime.duePreview.preview?.(itemId)).toMatchObject({ target: node });
 }
 
 function expectedTokenUsage(missing: boolean) {

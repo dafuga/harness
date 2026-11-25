@@ -18,9 +18,12 @@ export interface TrackerDispatchCandidate {
 	auto: string | null;
 	launch_source: string | null;
 	launch_target: string | null;
+	priority: string | null;
 }
 
-export type TrackerDispatchRow = TrackerItemRow & { clocks: string };
+export type TrackerDispatchRow = TrackerItemRow & {
+	dispatch_source: TrackerRunReceipt['launch_source'];
+};
 
 export type TrackerStoredDispatchRun = Omit<
 	TrackerRunReceipt,

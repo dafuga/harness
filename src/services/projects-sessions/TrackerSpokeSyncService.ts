@@ -77,8 +77,8 @@ export class TrackerSpokeSyncService {
 	}
 
 	/** A signed, parsed hub decision. Transport or response failures propagate to the owner. */
-	async permitDue(id: string, token: string): Promise<boolean> {
-		const response = await this.#post('/sync/permit-due', { id, token });
+	async permitDue(id: string, token: string, scope: 'due' | 'automatic' = 'due'): Promise<boolean> {
+		const response = await this.#post('/sync/permit-' + scope, { id, token });
 		return duePermit.parse(response).allowed;
 	}
 

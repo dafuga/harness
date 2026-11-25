@@ -61,6 +61,7 @@ export function flagged(
 		!!item.status &&
 		!item.deleted &&
 		item.status !== 'ignored' &&
+		item.kind !== 'reminder' &&
 		!!item.needs_daniel &&
 		!item.resolved
 	);
@@ -120,7 +121,13 @@ export function dueForDirectReminder(
 	options: TrackerNotificationOptions,
 	today: number
 ) {
-	if (!options.chiefOfStaff || options.scheduledOnly || !activeItem(item) || item.every)
+	if (
+		!options.chiefOfStaff ||
+		options.scheduledOnly ||
+		!activeItem(item) ||
+		item.every ||
+		item.kind === 'reminder'
+	)
 		return false;
 	const due = dueTime(item.due, options.source.tz);
 	return due !== null && localDay(due, options.source.tz) <= today;

@@ -86,8 +86,9 @@ export class TrackerHubSyncService {
 					db_id: store.dbId,
 					max: store.maxSeq()
 				});
+			case 'POST /sync/permit-automatic':
 			case 'POST /sync/permit-due':
-				return grantDuePermission(this.#options, body, peer);
+				return grantDuePermission(this.#options, body, peer, path.endsWith('automatic'));
 			case 'POST /sync/machine':
 				return recordFleetTelemetry(this.#options, body, peer);
 			default:

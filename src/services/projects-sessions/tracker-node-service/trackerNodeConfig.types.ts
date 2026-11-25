@@ -11,6 +11,7 @@ interface TrackerNodeConfigFields {
 	syncSecretFile: string;
 	backupDirectory?: string;
 	hostEffects?: TrackerHostEffectsMode;
+	autolaunch?: { enabled: boolean };
 	notifications?: {
 		targets: Record<string, { url: string; bearerFile?: string }>;
 		itemCallbacks?: string[];

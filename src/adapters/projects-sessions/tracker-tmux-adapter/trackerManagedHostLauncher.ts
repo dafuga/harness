@@ -16,6 +16,7 @@ import {
 	checkTrackerManagedReceipt,
 	confirmManagedClaudeStartup,
 	trackerManagedEvidence,
+	managedSessionName,
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
 import type {
@@ -27,13 +28,13 @@ import { trackerManagedCodexUsage } from './trackerManagedCodexUsage';
 import {
 	confirmManagedStartupAbsent,
 	probeManagedTmuxSession,
-	managedSessionName,
 	workerScript,
 	launchTmux,
 	managedBrief,
-	trackerSocket,
-	prepareTrackerWorkingDirectory
+	prepareTrackerWorkingDirectory,
+	trackerSocket
 } from './trackerManagedWorkerProcess';
+import { stopManagedRun } from './trackerTmuxClose';
 import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
 import {
 	privateTrackerDirectory,
@@ -60,6 +61,7 @@ export function trackerManagedHostLauncher(
 		),
 		inspect: ({ node, keys }, signal) =>
 			inspectManagedSessions({ directory, tmux, node, keys }, signal),
+		stop: (run, signal) => stopManagedRun({ directory, tmux }, run, signal),
 		confirmNeverStarted: (run, signal) =>
 			confirmManagedStartupAbsent({ directory, tmux }, run, signal),
 		start: (input, signal) =>
@@ -200,12 +202,7 @@ async function inspectManagedSession(
 	const record = checkTrackerManagedReceipt(path, node, key);
 	if (!record) return undefined;
 	const socket = trackerSocket(node);
-	const presence = await probeManagedTmuxSession(
-		{ tmux, socket },
-		record.tmux,
-		record.token,
-		signal
-	);
+	const presence = await probeManagedTmuxSession({ tmux, node }, record.tmux, record.token, signal);
 	const session = trackerManagedEvidence(path, record, presence);
 	return session && record.checkClaudeStartup
 		? confirmManagedClaudeStartup(

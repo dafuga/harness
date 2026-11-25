@@ -10,7 +10,13 @@ import type {
 	TrackerReceiptUsage,
 	TrackerRunReceipt
 } from '../TrackerDispatcherService.types';
-import { canonicalNode, inactive, matchesRequest, minute } from './launchEligibility';
+import {
+	automaticRequestHold,
+	canonicalNode,
+	inactive,
+	matchesRequest,
+	minute
+} from './launchEligibility';
 
 export function etaFor(
 	item: TrackerDispatchItem | null,
@@ -83,7 +89,6 @@ function modelFields(
 		reason: pick.reason
 	};
 }
-
 export function reviseRun(
 	run: TrackerRunReceipt,
 	patch: Partial<TrackerRunReceipt>
@@ -124,7 +129,6 @@ export function finishRun(
 		...(exitCode != null && { exit_code: exitCode })
 	});
 }
-
 function receiptUsage(usage: TrackerReceiptUsage = {}) {
 	const fields = [
 		'input_tokens',
@@ -156,11 +160,13 @@ export function failRun(
 	const finished = finishRun(run, { ...failure, now });
 	// Recovery owns its budget and backoff across separate launch tokens.
 	if (run.launch_source === 'recovery') return recordRun(finished);
-	if (!item || !matchesRequest(item, run, policy) || (inactive(item) && !failure.reopen)) {
+	if (!item || !matchesRequest(item, run, policy) || unavailableRetry(item, failure.reopen)) {
 		return recordRun(finished);
 	}
-	const choice = retryRung(item, run, policy, failure.startup);
 	const reopen = failure.reopen ? { status: 'open' as const } : undefined;
+	// A verification rejection may reopen completed work before applying the automatic gate.
+	if (automaticRequestHold({ ...item, ...reopen }, policy, now)) return recordRun(finished, reopen);
+	const choice = retryRung(item, run, policy, failure.startup);
 	if (!choice) return recordRun(finished, giveUp(snapshot, finished, reopen));
 	const pick = {
 		rung: choice,
@@ -177,6 +183,10 @@ export function failRun(
 		result: { status: 'recorded', run: finished, retry },
 		writes: { runs: [finished, retry], ...(reopen && { item: reopen }) }
 	};
+}
+
+function unavailableRetry(item: TrackerDispatchItem, reopen?: boolean) {
+	return inactive(item) && !reopen;
 }
 
 function retryRung(

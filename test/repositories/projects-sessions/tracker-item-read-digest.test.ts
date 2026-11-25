@@ -24,6 +24,7 @@ function summary(
 ): TrackerDigestItem {
 	return {
 		id,
+		priority: 'normal',
 		kind: 'task',
 		title,
 		status: 'open',
@@ -133,21 +134,21 @@ test('digestText renders legacy section order and omits blocked rows from other 
 		[
 			'Tracker digest - 2026-07-02 00:30 Europe/Lisbon',
 			'BLOCKED (1)',
-			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent; idea)',
+			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent; priority normal; idea)',
 			'NEEDS DANIEL (1)',
-			'  - [abc200] Done item - waiting 45h 30m (task; agent fixture-agent; idea)',
+			'  - [abc200] Done item - waiting 45h 30m (task; agent fixture-agent; priority normal; idea)',
 			'QUEUED (0)',
 			'  (none)',
 			'Chased (7d) (0)',
 			'  (none)',
 			'OVERDUE (1)',
-			'  - [abc400] Resolved item - due 2026-06-30 (task; agent fixture-agent; idea)',
+			'  - [abc400] Resolved item - due 2026-06-30 (task; agent fixture-agent; priority normal; idea)',
 			'DUE TODAY (3)',
-			'  - [abc100] Timestamp today - due 2026-07-01T23:15:00.000Z (task; owner operator, agent fixture-agent; idea)',
-			'  - [def100] Date today (plan; agent fixture-agent; idea)',
-			'  - [xyz100] Later today - due 2026-07-02T03:00:00.000Z (task; agent fixture-agent; idea)',
+			'  - [abc100] Timestamp today - due 2026-07-01T23:15:00.000Z (task; owner operator, agent fixture-agent; priority normal; idea)',
+			'  - [def100] Date today (plan; agent fixture-agent; priority normal; idea)',
+			'  - [xyz100] Later today - due 2026-07-02T03:00:00.000Z (task; agent fixture-agent; priority normal; idea)',
 			'RECURRING: MISSED OR FAILED (1)',
-			"  - [def200] Missed and failed - missed 2026-06-29 08:00; failed 2026-06-30 08:00: fixture failed; every '0 12 * * *' (recurring; agent fixture-agent; idea)"
+			"  - [def200] Missed and failed - missed 2026-06-29 08:00; failed 2026-06-30 08:00: fixture failed; every '0 12 * * *' (recurring; agent fixture-agent; priority normal; idea)"
 		].join('\n')
 	);
 });

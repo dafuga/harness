@@ -17,6 +17,7 @@ import {
 	sampleToken
 } from '../../support/trackerDispatcherFixture';
 import { withTempDir } from '../../support/temporary';
+import { provePriorityAndPacing } from '../../support/trackerDispatchQueueFixture';
 import { measureWorkload } from '../../support/measureWorkload';
 
 const now = () => 1780000000000;
@@ -48,6 +49,7 @@ test('adopts an uncertain start after restart without releasing the attempt twic
 				proveIndependentDispatch
 			);
 			await proveManagedAdoption(root);
+			await provePriorityAndPacing();
 		})
 	));
 
@@ -92,7 +94,8 @@ async function proveIndependentDispatch() {
 			(reason: unknown) => reason
 		);
 		expect.soft(error).toBeUndefined();
-		expect.soft(scheduler.runnerStatus().waiting_on).toBe('no approved repository');
+		expect.soft(scheduler.runnerStatus().waiting[refused]).toBe('no approved repository');
+		await scheduler.tick(signal);
 		expect.soft(repo.readSnapshot(refused).runs).toEqual([]);
 		expect.soft(repo.readSnapshot(failed).runs).toMatchObject([{ state: 'queued' }]);
 		expect.soft(repo.readSnapshot(runnable).runs).toMatchObject([{ state: 'running' }]);
@@ -161,7 +164,8 @@ function queueFixtureItem(store: TrackerPersistenceService, itemId = sampleId) {
 			kind: 'task',
 			status: 'open',
 			auto: itemId === sampleId ? sampleToken : itemId,
-			computer: 'mac'
+			computer: 'mac',
+			'note+': 'auto-launch requested on mac'
 		}
 	});
 }

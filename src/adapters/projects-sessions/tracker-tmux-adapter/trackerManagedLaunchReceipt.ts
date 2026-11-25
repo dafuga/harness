@@ -210,3 +210,7 @@ async function closeClaudeStartupPane(
 		signal
 	);
 }
+
+export function managedSessionName(itemId: string, runId: number): string {
+	return `auto-${itemId.slice(0, 6)}-r${runId}`;
+}

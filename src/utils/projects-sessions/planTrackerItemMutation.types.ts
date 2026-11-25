@@ -12,6 +12,7 @@ export interface TrackerItemSnapshot extends TrackerMatchRow {
 	readonly kind?: string | null;
 	readonly every?: string | null;
 	readonly every_tz?: string | null;
+	readonly remind_at?: string | null;
 	readonly occurrence?: string | null;
 	readonly ignored_prev_status?: string | null;
 	readonly project?: string | null;
@@ -38,6 +39,7 @@ export type TrackerItemAction =
 	| 'park'
 	| 'move-on'
 	| 'remind'
+	| 'priority'
 	| 'answer'
 	| 'unflag'
 	| 'resolve'

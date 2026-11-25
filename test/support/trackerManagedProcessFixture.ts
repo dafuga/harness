@@ -172,6 +172,7 @@ export function managedForegroundConfig(
 	writeFileSync(syncSecretFile, 'synthetic-host-worker-wire-key', { mode: 0o600 });
 	const config = {
 		version: 1,
+		autolaunch: { enabled: true },
 		node: 'daniel-primary-mbp',
 		role: 'hub',
 		apiPort: 49281,

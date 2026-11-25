@@ -5,22 +5,22 @@ import type {
 	TrackerDispatchPolicy,
 	TrackerDispatchSnapshot,
 	TrackerDueGrant,
-	TrackerLaunchIntent,
 	TrackerLaunchRung,
 	TrackerRunReceipt
 } from '../TrackerDispatcherService.types';
 import {
 	attemptKey,
-	canonicalNode,
+	automaticRequestHold,
 	dueItemHold,
 	hasOpenSession,
 	matchesRequest,
-	mayScheduleHere,
 	minute,
 	ownsLaunch,
+	schedulingHold,
 	skip,
 	startable
 } from './launchEligibility';
+import { dueGrantHold } from './dueGrantHold';
 import { etaFor, failRun, finishRun, queueRun, recordRun, reviseRun } from './runReceipt';
 
 // Give an interrupted host start time to publish its session evidence.
@@ -53,11 +53,16 @@ export function prepareRetry(
 	now: number
 ): TrackerDispatchDecision {
 	const { item } = snapshot;
-	if (run.state !== 'queued' || run.dispatch_at !== undefined || run.cli === 'none') {
+	if (!awaitingRetry(run)) {
 		return skip('ignored', 'attempt is no longer awaiting dispatch');
 	}
-	if (item?.launch?.token !== run.auto_token || expiredUnavailableRetry(item, run, now))
+	if (!item || item.launch?.token !== run.auto_token)
 		return retireUnstartedRun(snapshot, run, { policy, now });
+	const itemHold = schedulingHold(item, now);
+	if (itemHold)
+		return recordRun(finishRun(run, { outcome: 'abandoned', reason: itemHold, now }), {
+			launch: null
+		});
 	const hold = claimHold(snapshot, { item, grant, run }, policy, now);
 	if (hold) return skip('held', hold);
 	const rung = {
@@ -72,8 +77,10 @@ export function prepareRetry(
 	return reserveStart(item, { run, rung }, policy, now);
 }
 
-function expiredUnavailableRetry(item: TrackerDispatchItem, run: TrackerRunReceipt, now: number) {
-	return !startable(item) && now - run.queued_at >= launchStartupGrace;
+function awaitingRetry(
+	run: TrackerRunReceipt
+): run is TrackerRunReceipt & { cli: Exclude<TrackerRunReceipt['cli'], 'none'> } {
+	return run.state === 'queued' && run.dispatch_at === undefined && run.cli !== 'none';
 }
 
 export function retireUnstartedRun(
@@ -120,8 +127,8 @@ function claimHold(
 	now: number
 ): string | null {
 	const intent = item.launch!;
-	if (policy.enabled === false) return 'launcher disabled';
-	if (!startable(item)) return 'item is not startable';
+	const eligibility = claimItemHold(item, Boolean(run), policy, now);
+	if (eligibility) return eligibility;
 	if (!ownsLaunch(intent, policy)) return 'launch is assigned to a different computer';
 	if (hasOpenSession(snapshot, policy, now, run)) return 'item already has an open session';
 	if (intent.source !== 'due') return null;
@@ -134,50 +141,20 @@ function claimHold(
 	);
 }
 
-function dueGrantHold(
-	{ due, lastDueStartAt }: TrackerDispatchSnapshot,
-	{
-		item,
-		intent,
-		grant
-	}: { item: TrackerDispatchItem; intent: TrackerLaunchIntent; grant?: TrackerDueGrant },
-	policy: TrackerDispatchPolicy,
-	now: number
-): string | null {
-	if (!due || due.paused) return 'due scheduler unavailable or paused';
-	const canSchedule = mayScheduleHere(item, due, policy);
-	if (policy.hub)
-		return hubHold(item, { enabled: due.enabled, canSchedule, lastDueStartAt }, policy, now);
-	if (
-		grant?.token !== intent.token ||
-		canonicalNode(grant.node, policy) !== canonicalNode(policy.node, policy)
-	) {
-		return 'waiting for the hub to authorize due launch';
-	}
-	return acceptsGrant(grant, canSchedule, Boolean(item.adapterDueOwner))
-		? null
-		: 'waiting for the hub to authorize due launch';
-}
-
-function acceptsGrant(grant: TrackerDueGrant, canSchedule: boolean, isAdapterDue: boolean) {
-	if (grant.decision === 'unreachable') return canSchedule;
-	return grant.decision === 'granted' && (!isAdapterDue || canSchedule);
-}
-
-function hubHold(
+function claimItemHold(
 	item: TrackerDispatchItem,
-	{
-		enabled,
-		canSchedule,
-		lastDueStartAt
-	}: { enabled: boolean; canSchedule: boolean; lastDueStartAt?: number },
+	retry: boolean,
 	policy: TrackerDispatchPolicy,
 	now: number
 ) {
-	if (item.adapterDueOwner ? !canSchedule : !enabled) return 'due scheduler disabled for this item';
-	const interval = policy.dueIntervalMs ?? 15_000;
-	return lastDueStartAt !== undefined && now - lastDueStartAt < interval
-		? 'due launch interval has not elapsed'
+	if (policy.enabled === false) return 'launcher disabled';
+	if (item.launch!.source !== 'manual' || retry) {
+		const hold = automaticRequestHold(item, policy, now);
+		if (hold) return hold;
+	}
+	if (!startable(item)) return 'item is not startable';
+	return item.launch?.source === 'recovery' && item.status !== 'in_progress'
+		? 'item is no longer in progress'
 		: null;
 }
 

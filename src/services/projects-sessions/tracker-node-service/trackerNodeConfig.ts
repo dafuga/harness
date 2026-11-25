@@ -27,6 +27,7 @@ const configFields = {
 	syncSecretFile: absolutePath,
 	backupDirectory: absolutePath.optional(),
 	hostEffects: trackerHostEffectsSchema.optional(),
+	autolaunch: z.strictObject({ enabled: z.boolean() }).optional(),
 	notifications: z
 		.strictObject({
 			targets: z.record(

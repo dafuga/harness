@@ -10,6 +10,10 @@ const adapterPolicy = {
 		.strictObject({
 			target: z.string().regex(/^[a-z0-9][a-z0-9-]*\/[a-z0-9_.-]+$/),
 			author: z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}$/),
+			additionalAuthors: z
+				.array(z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}$/))
+				.max(10)
+				.optional(),
 			titlePrefix: z.string().trim().min(1).max(80),
 			issueInstructions: z.string().trim().min(1).max(6000),
 			instructions: z.string().trim().min(1).max(6000),

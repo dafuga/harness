@@ -19,7 +19,8 @@ import type {
 } from './TrackerDispatchRepository.types';
 import {
 	dispatchItem,
-	dispatchJournalFields
+	dispatchJournalFields,
+	dispatchLaunchSource
 } from './tracker-dispatch-repository/dispatchItemFields';
 import {
 	adoptLegacyDispatchRun,
@@ -30,6 +31,7 @@ import {
 	managedDispatchRuns,
 	persistDispatchRun
 } from './tracker-dispatch-repository/dispatchRunRows';
+import { trackerDispatchControl } from './tracker-dispatch-repository/dispatchLaunchControl';
 import { trackerRunSchema } from './tracker-dispatch-repository/trackerRunSchema';
 
 const dueStartKey = 'due_scheduler_last_grant';
@@ -38,12 +40,19 @@ const previousDueStartKey = 'harness_dispatch_last_due_start';
 /** Share legacy run rows and the item journal while serializing native launch decisions. */
 export class TrackerDispatchRepository implements TrackerDispatchStore {
 	private readonly node: string;
+	readonly launches;
 
 	constructor(
 		private readonly store: TrackerPersistenceService,
 		private readonly options: TrackerDispatchRepositoryOptions = {}
 	) {
 		this.node = canonicalNode(store.node, options.policy ?? {});
+		this.launches = trackerDispatchControl(
+			store,
+			this.node,
+			(id) => this.readSnapshot(id),
+			options.now ?? Date.now
+		);
 		store.database.exec(trackerRunSchema);
 	}
 
@@ -98,14 +107,17 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 	candidates(): TrackerDispatchCandidate[] {
 		return this.store.database
 			.prepare(
-				`SELECT id, auto, launch_source, nullif(coalesce(launch_target, computer), 'auto') AS launch_target
-			FROM items i WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1 OR i.launch_source = 'recovery')
-			AND status IN ('open','in_progress') AND every IS NULL
+				`SELECT id, auto, priority, ${dispatchLaunchSource} AS launch_source, nullif(coalesce(launch_target, computer), 'auto') AS launch_target
+			FROM items i WHERE deleted = 0 AND title IS NOT NULL AND (needs_daniel = 0 OR resolved = 1)
+			AND status IN ('open','in_progress') AND every IS NULL AND coalesce(kind, 'task') = 'task'
 			AND (i.auto IS NULL OR (
 				NOT EXISTS (SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
 				AND NOT EXISTS (SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
 			))
-			ORDER BY (due IS NULL), due, created_at, id`
+			ORDER BY (i.auto IS NULL OR launch_source <> 'manual'),
+				CASE i.priority WHEN 'urgent' THEN 0 WHEN 'low' THEN 2 ELSE 1 END,
+				(i.adapter_due_owner IS NULL),
+				(due IS NULL), due, created_at, id`
 			)
 			.all() as TrackerDispatchCandidate[];
 	}
@@ -116,9 +128,9 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 
 	readSnapshot(itemId: string): TrackerDispatchSnapshot {
 		const database = this.store.database;
-		const row = database.prepare('SELECT * FROM items WHERE id = ?').get(itemId) as
-			| TrackerDispatchRow
-			| undefined;
+		const row = database
+			.prepare(`SELECT i.*, ${dispatchLaunchSource} AS dispatch_source FROM items i WHERE i.id = ?`)
+			.get(itemId) as TrackerDispatchRow | undefined;
 		const runs = dispatchRunRows(database, this.node, itemId);
 		const { id } = database
 			.prepare(

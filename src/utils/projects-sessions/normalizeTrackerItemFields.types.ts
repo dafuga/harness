@@ -19,3 +19,5 @@ export type TrackerItemValue =
 
 export type TrackerItemInput = Readonly<Record<string, TrackerItemValue>>;
 export type TrackerItemFields = Record<string, string | number | null>;
+
+export type TrackerItemPriority = 'urgent' | 'normal' | 'low';

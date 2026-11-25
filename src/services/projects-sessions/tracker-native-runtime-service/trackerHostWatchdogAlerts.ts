@@ -5,6 +5,8 @@ import type { WatchdogScan } from '../WatchdogPaneService.types';
 import type { TrackerHandoffTarget } from './trackerWatchdogContext.types';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
 
+export const urgentQueueAlertKind = 'urgent-launch-queue-stuck';
+
 export function recordStartupAlerts(
 	store: TrackerPersistenceService,
 	snapshot: WatchdogScan,

@@ -46,7 +46,7 @@ function updateFields(
 			: trackerItemTransitions[action](item, body, context);
 	const fields = normalizeTrackerItemFields(change.fields, context);
 	if (action !== 'move-on') guardNextStep(fields, item);
-	if (endsReminder(fields)) fields.remind_at = null;
+	if (endsReminder(fields, (fields.kind ?? item.kind) === 'reminder')) fields.remind_at = null;
 	if (change.appendNote) fields['note+'] = String(change.appendNote);
 	if (Object.keys(fields).length === 0) throw trackerItemError('nothing to update');
 	return fields;
@@ -60,10 +60,9 @@ function guardNextStep(fields: TrackerItemFields, item?: TrackerItemSnapshot): v
 		throw trackerItemError('Daniel can close the next step with tracker move-on', 409);
 }
 
-function endsReminder(fields: TrackerItemFields): boolean {
+function endsReminder(fields: TrackerItemFields, reminder: boolean): boolean {
 	return (
-		fields.resolved === 1 ||
-		fields.needs_daniel === 0 ||
+		(!reminder && (fields.resolved === 1 || fields.needs_daniel === 0)) ||
 		fields.status === 'done' ||
 		fields.status === 'ignored' ||
 		fields.deleted === 1

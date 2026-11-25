@@ -47,15 +47,16 @@
 			"TrackerAdapterWriteError",
 			"TrackerAdapterPollResult",
 			"TrackerAdapterEvent",
+			"TrackerAdapterPriorityEvent",
 			"TrackerAdapterIntakeRecord",
 			"TrackerAdapterCommentEvent",
 			"TrackerAdapterIntakeContext",
 			"applyTrackerIntakeEvents",
 			"applyTrackerIntakeEvent",
+			"recordIssueAcceptance",
 			"planTrackerIntake",
 			"commitTrackerIntake",
 			"trackerEventFields",
-			"recordIssueAcceptance",
 			"readGithubIntakeRecord",
 			"githubCommentEvent",
 			"matchesGithubIssue",
@@ -64,6 +65,7 @@
 			"hasFollowUpRequest",
 			"readTrackerIssues",
 			"readTrackerComments",
+			"trackerTesterLogin",
 			"TrackerAdapterPollError",
 			"TrackerAdapterPollError.constructor",
 			"assertTrackerPollActive"
@@ -139,6 +141,21 @@
 				"required": true
 			},
 			{
+				"name": "recordIssueAcceptance.context",
+				"type": "TrackerAdapterIntakeContext",
+				"required": true
+			},
+			{
+				"name": "recordIssueAcceptance.source",
+				"type": "TrackerAdapterSource",
+				"required": true
+			},
+			{
+				"name": "recordIssueAcceptance.record",
+				"type": "TrackerAdapterIntakeRecord",
+				"required": true
+			},
+			{
 				"name": "planTrackerIntake.context",
 				"type": "TrackerAdapterIntakeContext",
 				"required": true
@@ -186,21 +203,6 @@
 			{
 				"name": "trackerEventFields.event",
 				"type": "Omit<TrackerAdapterEvent, 'id' | 'time'> & { id?: string }",
-				"required": true
-			},
-			{
-				"name": "recordIssueAcceptance.context",
-				"type": "TrackerAdapterIntakeContext",
-				"required": true
-			},
-			{
-				"name": "recordIssueAcceptance.source",
-				"type": "TrackerAdapterSource",
-				"required": true
-			},
-			{
-				"name": "recordIssueAcceptance.record",
-				"type": "TrackerAdapterIntakeRecord",
 				"required": true
 			},
 			{
@@ -329,6 +331,16 @@
 				"required": true
 			},
 			{
+				"name": "trackerTesterLogin.rule",
+				"type": "TrackerGithubFollowUpPolicy",
+				"required": true
+			},
+			{
+				"name": "trackerTesterLogin.actor",
+				"type": "string",
+				"required": false
+			},
+			{
 				"name": "TrackerAdapterPollError.constructor.message",
 				"type": "string",
 				"required": true
@@ -361,6 +373,10 @@
 				"type": "boolean"
 			},
 			{
+				"name": "recordIssueAcceptance",
+				"type": "void"
+			},
+			{
 				"name": "planTrackerIntake",
 				"type": "TrackerAdapterAction"
 			},
@@ -371,10 +387,6 @@
 			{
 				"name": "trackerEventFields",
 				"type": "Record<string, unknown>"
-			},
-			{
-				"name": "recordIssueAcceptance",
-				"type": "void"
 			},
 			{
 				"name": "readGithubIntakeRecord",
@@ -407,6 +419,10 @@
 			{
 				"name": "readTrackerComments",
 				"type": "unknown"
+			},
+			{
+				"name": "trackerTesterLogin",
+				"type": "boolean"
 			},
 			{
 				"name": "assertTrackerPollActive",
@@ -555,6 +571,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recordIssueAcceptance",
+				"inputs": [
+					{
+						"name": "recordIssueAcceptance.context",
+						"type": "TrackerAdapterIntakeContext",
+						"required": true
+					},
+					{
+						"name": "recordIssueAcceptance.source",
+						"type": "TrackerAdapterSource",
+						"required": true
+					},
+					{
+						"name": "recordIssueAcceptance.record",
+						"type": "TrackerAdapterIntakeRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordIssueAcceptance",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "planTrackerIntake",
 				"inputs": [
 					{
@@ -638,34 +682,6 @@
 					{
 						"name": "trackerEventFields",
 						"type": "Record<string, unknown>"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "recordIssueAcceptance",
-				"inputs": [
-					{
-						"name": "recordIssueAcceptance.context",
-						"type": "TrackerAdapterIntakeContext",
-						"required": true
-					},
-					{
-						"name": "recordIssueAcceptance.source",
-						"type": "TrackerAdapterSource",
-						"required": true
-					},
-					{
-						"name": "recordIssueAcceptance.record",
-						"type": "TrackerAdapterIntakeRecord",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "recordIssueAcceptance",
-						"type": "void"
 					}
 				],
 				"errors": [],
@@ -901,6 +917,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerTesterLogin",
+				"inputs": [
+					{
+						"name": "trackerTesterLogin.rule",
+						"type": "TrackerGithubFollowUpPolicy",
+						"required": true
+					},
+					{
+						"name": "trackerTesterLogin.actor",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTesterLogin",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "assertTrackerPollActive",
 				"inputs": [
 					{
@@ -969,6 +1008,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "helper.planning-collaboration-plan-github-issue-intake",
 			"via": "import",

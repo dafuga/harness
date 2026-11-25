@@ -1,4 +1,5 @@
 // @harness-uid u_gvqtr5mdwv
+import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import {
@@ -15,7 +16,7 @@ import { trackerItemError } from '../../../utils/projects-sessions/trackerItemEr
 import { trackerFleetMachineStore } from '../tracker-native-runtime-service/nativeTrackerLinks';
 import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
-import { readPrivateText, trackerSyncPort } from './trackerNodeConfig';
+import { readPrivateJson, readPrivateText, trackerSyncPort } from './trackerNodeConfig';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 import { trackerNodeNotifications } from './trackerNodeNotifications';
 import { trackerUpstreamLink } from './trackerUpstreamLink';
@@ -38,13 +39,34 @@ export function trackerNodeRuntime(
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
 		manualLaunch: true,
+		automaticEnabled: trackerAutomaticSetting(config),
 		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
 		validateModel(model) {
 			parseTrackerModelSpec(String(model), ladder);
 		},
-		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
+		planLaunch: (fields, current, source) => planNativeLaunch(fields, current, config.node, source)
+	};
+}
+
+function trackerAutomaticSetting(config: TrackerNodeConfig): () => boolean {
+	const native = config.autolaunch;
+	if (native) return () => native.enabled;
+	const path = join(homedir(), '.config/tracker/config.json');
+	let enabled = false;
+	let refreshAt = 0;
+	return () => {
+		const now = Date.now();
+		if (now < refreshAt) return enabled;
+		refreshAt = now + 1000;
+		try {
+			const legacy = readPrivateJson(path) as { autolaunch?: { enabled?: boolean } };
+			enabled = legacy.autolaunch?.enabled !== false;
+		} catch (error) {
+			enabled = error instanceof Error && 'code' in error && error.code === 'ENOENT';
+		}
+		return enabled;
 	};
 }
 
@@ -95,7 +117,8 @@ function spokeLinks(config: Extract<TrackerNodeConfig, { role: 'spoke' }>, secre
 function planNativeLaunch(
 	fields: TrackerItemInput,
 	current: TrackerItemSnapshot | undefined,
-	node: string
+	node: string,
+	source: 'manual' | 'automatic'
 ) {
 	const desired = String(fields.computer ?? current?.computer ?? 'auto');
 	const target = launchTarget(desired, node);
@@ -106,7 +129,7 @@ function planNativeLaunch(
 		...fields,
 		computer: target,
 		launch_target: target,
-		launch_source: 'manual',
+		launch_source: source,
 		launch_pick: null
 	};
 }

@@ -71,21 +71,25 @@ export async function verifyExpiredClaim(
 	itemId: string
 ) {
 	const tick = () => runtime.scheduler!.tick(new AbortController().signal);
-	for (const action of ['reopen', 'unlaunch', 'launch'])
-		expect((await managedTrackerItemRequest(runtime, itemId, action)).ok).toBe(true);
-	const token = database.prepare('SELECT auto FROM items WHERE id = ?').get(itemId)!.auto;
-	mkdirSync(
-		join(attempts, trackerManagedToken(runtime.store.node, JSON.stringify([itemId, token, 1]))),
-		{
-			mode: 0o700
-		}
-	);
-	await tick();
-	const runs = () =>
-		database.prepare('SELECT id,state,attempt,started_at FROM runs WHERE id >= 6').all();
-	expect(runs()).toEqual([{ id: 6, state: 'queued', attempt: 1, started_at: null }]);
-	const clock = vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 6 * 60_000);
+	const daytime = new Date();
+	daytime.setUTCHours(9, 0, 0, 0);
+	if (daytime.getTime() < Date.now()) daytime.setUTCDate(daytime.getUTCDate() + 1);
+	const clock = vi.spyOn(Date, 'now').mockReturnValue(daytime.getTime());
 	try {
+		for (const action of ['reopen', 'unlaunch', 'schedule-on', 'launch'])
+			expect((await managedTrackerItemRequest(runtime, itemId, action)).ok).toBe(true);
+		const token = database.prepare('SELECT auto FROM items WHERE id = ?').get(itemId)!.auto;
+		mkdirSync(
+			join(attempts, trackerManagedToken(runtime.store.node, JSON.stringify([itemId, token, 1]))),
+			{
+				mode: 0o700
+			}
+		);
+		await tick();
+		const runs = () =>
+			database.prepare('SELECT id,state,attempt,started_at FROM runs WHERE id >= 6').all();
+		expect(runs()).toEqual([{ id: 6, state: 'queued', attempt: 1, started_at: null }]);
+		clock.mockReturnValue(daytime.getTime() + 6 * 60_000);
 		await tick();
 		await tick();
 		expect(runs()).toEqual([

@@ -84,7 +84,7 @@ async function publishIssue(
 ) {
 	const candidate = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
 	const item = candidate && new TrackerItemReadRepository(store.database).getStored(candidate.id);
-	if (item?.launch_source === 'recovery' && issue.kind === 'launch-stuck') {
+	if (launch && item?.launch_source === 'recovery' && issue.kind === 'launch-stuck') {
 		flagRecoveryError(store, item, now, issue.reason);
 		return;
 	}

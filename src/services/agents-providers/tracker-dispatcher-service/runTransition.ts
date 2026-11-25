@@ -8,7 +8,13 @@ import type {
 	TrackerRunReceipt,
 	TrackerSessionEvidence
 } from '../TrackerDispatcherService.types';
-import { attemptKey, hasOpenSession, matchesRequest, skip } from './launchEligibility';
+import {
+	attemptKey,
+	automaticRequestHold,
+	hasOpenSession,
+	matchesRequest,
+	skip
+} from './launchEligibility';
 import { retireUnstartedRun } from './runClaim';
 import { completeRun, monitorRun } from './runMonitor';
 import { etaFor, failRun, recordRun, reviseRun } from './runReceipt';
@@ -163,6 +169,8 @@ function canResume(
 		run.outcome === 'blocked' &&
 		Boolean(run.host_session_id ?? run.session_id) &&
 		answeredBlock(item) &&
+		item &&
+		!automaticRequestHold({ ...item, status: 'in_progress' }, policy, now) &&
 		matchesRequest(item, run, policy) &&
 		!hasOpenSession(snapshot, policy, now, run) &&
 		!runs.some((later) => later.node === run.node && later.id > run.id && later.started_at !== null)

@@ -54,7 +54,7 @@ function line(item: TrackerDigestItem, detail: string): string {
 	const assignees = [item.owner && `owner ${item.owner}`, item.agent && `agent ${item.agent}`]
 		.filter(Boolean)
 		.join(', ');
-	const context = assignees ? `${item.kind}; ${assignees}` : item.kind;
+	const context = [item.kind, assignees, `priority ${item.priority}`].filter(Boolean).join('; ');
 	return `  - [${item.id.slice(0, 6)}] ${item.title}${detail ? ` - ${detail}` : ''} (${context}; ${item.stage})`;
 }
 

@@ -130,8 +130,28 @@ operator verifies the stopped database and chooses a rollback.
 - **Recovery and handoff.** Tracker alerts on missing sessions and uses its
   normal dispatch path to recover eligible items with briefs after a grace
   period. It rechecks the live pane inventory before requesting recovery.
-  A started task can still recover after an automatic-pickup opt-out.
-  An explicit Daniel blocker holds recovery.
+  Recovery and retry use the same gates as automatic pickup. Tracker holds
+  personal and Chief of Staff work, reminders, non-task items, opted-out,
+  blocked, inactive or parked items, and items waiting on Daniel. Titles
+  containing `PROD DEPLOY` require an explicit launch for every attempt.
+
+  The native `autolaunch.enabled` setting governs unattended launches.
+  When omitted, the node follows the legacy setting in
+  `~/.config/tracker/config.json` if present. Automatic launches hold from
+  22:00 to 08:00 Lisbon time. After the hold, the hub admits up to two
+  automatic launch reservations in any rolling minute across the fleet.
+  Connected spokes wait for a hub slot. Explicit launch requests get the
+  first available local slots and bypass the night hold and rate limit.
+  Each adapter can classify intake as urgent, normal or low. The configured
+  GitHub tester rule marks issues and comments by its allowed tester logins
+  urgent. Urgent items take the next free slot ahead of normal and low
+  automatic work. If a tester request's primary is full, the hub can
+  delegate the unclaimed request to an online Codex runner with the
+  approved checkout, a free slot and enough disk for the source policy.
+  Chief of Staff gets a queue alert after 15 minutes for urgent work and
+  after 30 minutes for other pending launch requests. Use
+  `tracker priority ITEM urgent|normal|low` to change an item's priority.
+  Lists and digests display the current priority.
 
   For other open or in-progress tasks, the hub watchdog checks for owner
   activity, pending launches and active runs or panes before requesting
@@ -142,7 +162,8 @@ operator verifies the stopped database and chooses a rollback.
   requests and their wait. If the task has no approved placement, the
   watchdog alerts Chief of Staff. Ordinary tasks added by Daniel or
   Chief of Staff queue by default. `tracker add ... --later` records a
-  persistent opt-out. `tracker launch on ITEM` re-enables automatic pickup. For active context above
+  persistent opt-out. `tracker launch on ITEM` re-enables automatic pickup.
+  For active context above
   150,000 tokens, Tracker requests a short handoff once an owned pane is
   idle. It closes that pane for a fresh launch only after it verifies the
   handoff note and original attempt. Busy, attached, and unowned panes
@@ -383,7 +404,27 @@ with the computer, closed session and provider resume command. Long-lived
 control sessions fall outside the auto-launch name filter. Pending flagged
 launches report `waiting on Daniel (flagged)` in autolaunch status.
 
-### Scheduled reminders
+### Stop a managed session
+
+Run `tracker stop <item>` or `tracker stop '#<local run number>'` on the
+computer that owns the run. Tracker clears the launch request and opts the
+item out before terminating the verified tmux session. The run remains in
+history and the task status stays available for follow-up. Use an explicit
+launch to start a new run or `tracker launch on ITEM` to allow unattended
+pickup again.
+
+### Reminder items
+
+Use `tracker add --reminder --at <ISO timestamp with a time zone> "Title"`
+to create an item that only delivers reminders. Use
+`tracker remind <id> --at <time> --reminder` to convert an existing item,
+or `tracker remind <id> --at <time>` to snooze a reminder. Reminder items
+never start or recover a session, including when an explicit launch is
+requested. The hub delivers to Chief of Staff at the scheduled time,
+defers overnight reminders to 08:00 Lisbon, and follows up after two
+hours, six hours, and at 08:00 daily until the item is done or snoozed.
+
+### Scheduled reminders on other items
 
 Use `tracker remind <id> --at <ISO timestamp with a time zone>` for an
 active item. Convert requests such as “remind me tomorrow at 14:30” to an

@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
 import type { SqliteStatement } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItem, TrackerItemRow } from '../TrackerItemReadRepository.types';
 import type { StoredTrackerCallback, StoredTrackerNote } from './serializeTrackerItem.types';
@@ -13,7 +14,7 @@ import { TrackerItemReadError } from './TrackerItemReadError';
 export function serializeTrackerItem(row: TrackerItemRow, notes: SqliteStatement): TrackerItem {
 	return {
 		id: row.id,
-		kind: row.kind,
+		...itemClassification(row),
 		title: row.title,
 		status: row.status,
 		stage: trackerPlanningStage(row),
@@ -126,4 +127,8 @@ function webhookLabel(url: string): string {
 	} catch {
 		return 'webhook';
 	}
+}
+
+function itemClassification({ kind, priority }: TrackerItemRow) {
+	return { kind, priority: trackerItemPriority(priority, 'normal') };
 }

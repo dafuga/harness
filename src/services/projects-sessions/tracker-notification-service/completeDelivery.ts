@@ -86,13 +86,21 @@ function completeReminders(
 		if (!row)
 			throw new TrackerNotificationStateError('Tracker reminder attempt is missing its queue row');
 		row.nextAt = row.kind === 'scheduled' ? at + retry : next;
-		if (row.kind === 'flag') scheduleNextAsk(row, result, { at, retry });
+		const repeating = repeatsReminder(row, options);
+		if (repeating) scheduleNextAsk(row, result, { at, retry });
 		if (result.status === 'sent') {
 			row.pings++;
 			row.lastPing = at;
-			if (row.kind !== 'flag') row.status = 'closed';
+			if (!repeating) row.status = 'closed';
 		}
 	}
+}
+
+function repeatsReminder(row: ReminderRow, { source }: TrackerNotificationOptions) {
+	return (
+		row.kind === 'flag' ||
+		(row.kind === 'scheduled' && source.item(row.itemId)?.kind === 'reminder')
+	);
 }
 
 function scheduleNextAsk(

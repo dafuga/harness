@@ -129,6 +129,12 @@
 				"required": true
 			},
 			{
+				"name": "grantDuePermission.automatic",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "recordFleetTelemetry.options",
 				"type": "TrackerHubOptions",
 				"required": true
@@ -366,6 +372,12 @@
 						"name": "grantDuePermission.peer",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "grantDuePermission.automatic",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [

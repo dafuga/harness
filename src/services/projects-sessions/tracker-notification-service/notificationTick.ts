@@ -17,6 +17,7 @@ import { completeDelivery } from './completeDelivery';
 import { currentDirectAttempt, nextDirectReminder, scanDirectReminders } from './directReminders';
 import {
 	currentScheduledAttempt,
+	isScheduledReminderAttempt,
 	nextScheduledReminder,
 	scanScheduledReminders
 } from './scheduledReminders';
@@ -140,7 +141,6 @@ function askIds(state: TrackerNotificationState, attempt: DeliveryAttempt): stri
 		});
 	return [];
 }
-
 function parkedRequest(
 	state: TrackerNotificationState,
 	attempt: DeliveryAttempt,
@@ -154,7 +154,6 @@ function parkedRequest(
 	const now = options.now();
 	return ids.some((id) => parkedUntil(source.item(id)) > now);
 }
-
 function replayState(options: TrackerNotificationOptions) {
 	return options.queue.update((state) => {
 		const issued = state.inFlight;
@@ -164,7 +163,8 @@ function replayState(options: TrackerNotificationOptions) {
 			delete state.inFlight;
 			return { paused };
 		}
-		const asking = askIds(state, issued).length > 0;
+		const asking =
+			askIds(state, issued).length > 0 || isScheduledReminderAttempt(state, issued, options.source);
 		return {
 			issued,
 			paused,

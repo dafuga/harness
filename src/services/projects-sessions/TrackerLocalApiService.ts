@@ -115,7 +115,7 @@ export class TrackerLocalApiService {
 		const input = await readItemBody(request);
 		request.signal.throwIfAborted();
 		const actor = readActor(request.headers);
-		const context = itemMutationContext(this.store, this.items, this.options);
+		const context = itemMutationContext(this.store, this.items, this.options, verb === 'launch');
 		const body = trackerMutationBody(input, action, actor, Boolean(context.planLaunch));
 		const plan = action
 			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)

@@ -16,8 +16,10 @@ import { attemptKey } from '../../../services/agents-providers/tracker-dispatche
 import {
 	checkTrackerManagedReceipt,
 	hasManagedStartupEvidence,
+	managedSessionName,
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
+import { managedTmuxEnvironment, missingTmuxSession } from './trackerTmuxClose';
 import { trackerManagedProviderEnvironment } from './trackerManagedProviderCommands';
 
 export const workerScript = `#!/bin/sh
@@ -137,10 +139,6 @@ export function managedBrief(input: TrackerHostStartRequest): string {
 	);
 }
 
-export function managedSessionName(itemId: string, runId: number): string {
-	return `auto-${itemId.slice(0, 6)}-r${runId}`;
-}
-
 export async function confirmManagedStartupAbsent(
 	{ directory, tmux }: { directory: string; tmux: string },
 	run: TrackerRunReceipt,
@@ -153,34 +151,18 @@ export async function confirmManagedStartupAbsent(
 	const record = checkTrackerManagedReceipt(path, node, key);
 	if (record && (record.itemId !== itemId || record.runId !== runId || record.tmux !== name))
 		return false;
-	const presence = await probeManagedTmuxSession(
-		{ tmux, socket: trackerSocket(node) },
-		name,
-		record?.token,
-		signal
-	);
+	const presence = await probeManagedTmuxSession({ tmux, node }, name, record?.token, signal);
 	return presence === 'absent' && !hasManagedStartupEvidence(path);
 }
 
 export async function probeManagedTmuxSession(
-	{ tmux, socket }: { tmux: string; socket: string },
+	{ tmux, node }: { tmux: string; node: string },
 	name: string,
 	token: string | undefined,
 	signal: AbortSignal
 ): Promise<TrackerManagedPresence> {
-	const result = await runTrackerHostCommand(
-		tmux,
-		['-L', socket, 'show-environment', '-t', `=${name}`, 'HARNESS_TRACKER_ATTEMPT'],
-		signal
-	);
+	const result = await managedTmuxEnvironment(tmux, node, name, signal);
 	if (token && result.code === 0 && result.stdout.trim() === `HARNESS_TRACKER_ATTEMPT=${token}`)
 		return 'live';
-	const error = result.stderr.trim();
-	return result.code === 1 &&
-		(error === `no such session: =${name}` ||
-			/^(?:no server running on |no sessions$|error connecting to .+ \(No such file or directory\)$)/.test(
-				error
-			))
-		? 'absent'
-		: 'unknown';
+	return result.code === 1 && missingTmuxSession(result.stderr, name) ? 'absent' : 'unknown';
 }

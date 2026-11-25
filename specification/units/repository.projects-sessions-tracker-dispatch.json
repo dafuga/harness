@@ -12,6 +12,7 @@
 			"src/repositories/projects-sessions/TrackerDispatchRepository.ts",
 			"src/repositories/projects-sessions/TrackerDispatchRepository.types.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields.ts",
+			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchRunRows.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema.ts"
 		],
@@ -34,6 +35,9 @@
 			"TrackerRunReservation",
 			"dispatchItem",
 			"dispatchJournalFields",
+			"trackerStoredSchedulingHold",
+			"dispatchLaunchSource",
+			"trackerDispatchControl",
 			"legacyUnstarted",
 			"assertLegacyDispatchRollbackSafe",
 			"dispatchRunRows",
@@ -101,6 +105,36 @@
 			{
 				"name": "dispatchJournalFields.item",
 				"type": "NonNullable<TrackerDispatchWrites['item']>",
+				"required": true
+			},
+			{
+				"name": "trackerStoredSchedulingHold.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerStoredSchedulingHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerDispatchControl.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerDispatchControl.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerDispatchControl.snapshot",
+				"type": "(id: string) => TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "trackerDispatchControl.now",
+				"type": "() => number",
 				"required": true
 			},
 			{
@@ -222,6 +256,18 @@
 			},
 			{
 				"name": "dispatchJournalFields",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerStoredSchedulingHold",
+				"type": "unknown"
+			},
+			{
+				"name": "dispatchLaunchSource",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerDispatchControl",
 				"type": "unknown"
 			},
 			{
@@ -449,6 +495,62 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerStoredSchedulingHold",
+				"inputs": [
+					{
+						"name": "trackerStoredSchedulingHold.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "trackerStoredSchedulingHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerStoredSchedulingHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerDispatchControl",
+				"inputs": [
+					{
+						"name": "trackerDispatchControl.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerDispatchControl.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerDispatchControl.snapshot",
+						"type": "(id: string) => TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "trackerDispatchControl.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDispatchControl",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "assertLegacyDispatchRollbackSafe",
 				"inputs": [
 					{
@@ -640,6 +742,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "import",

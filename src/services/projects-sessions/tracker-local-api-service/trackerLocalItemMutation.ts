@@ -1,5 +1,6 @@
 // @harness-uid u_g7kdpz7bel
 import { randomBytes, randomUUID } from 'node:crypto';
+import { dispatchLaunchSource } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type {
@@ -143,7 +144,8 @@ function parseItemBody(text: string): TrackerItemInput {
 export function itemMutationContext(
 	store: TrackerPersistenceService,
 	items: TrackerItemReadRepository,
-	options: TrackerLocalApiOptions
+	options: TrackerLocalApiOptions,
+	explicitLaunch = false
 ): TrackerItemMutationContext {
 	const { planLaunch, runs } = options;
 	return {
@@ -158,9 +160,20 @@ export function itemMutationContext(
 			((fields, current) =>
 				planLaunch(
 					fields,
-					current?.auto && runs?.launchConsumed(current.id, current.auto)
+					current?.auto &&
+						(runs?.launchConsumed(current.id, current.auto) ||
+							(explicitLaunch &&
+								!runs
+									?.list({ itemId: current.id })
+									.some(({ auto_token }) => auto_token === current.auto) &&
+								(
+									store.database
+										.prepare(`SELECT ${dispatchLaunchSource} AS source FROM items i WHERE i.id = ?`)
+										.get(current.id) as { source: string }
+								).source !== 'manual'))
 						? { ...current, auto: null }
-						: current
+						: current,
+					explicitLaunch ? 'manual' : 'automatic'
 				))
 	};
 }

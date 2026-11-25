@@ -105,3 +105,23 @@ function pendingResponse(reason: string, node: string, status: number) {
 		{ status }
 	);
 }
+
+export async function stopTrackerRun(request: Request, runtime: TrackerNativeRuntimeService) {
+	const target = new URL(request.url).searchParams.get('target');
+	if (!target) return Response.json({ error: 'usage: tracker stop <run|item>' }, { status: 400 });
+	if (!runtime.scheduler)
+		return Response.json({ error: 'Tracker launcher is unavailable' }, { status: 409 });
+	try {
+		return Response.json(await runtime.scheduler.stop(target, request.signal));
+	} catch (error) {
+		if (
+			error instanceof Error &&
+			'status' in error &&
+			typeof error.status === 'number' &&
+			error.status >= 400 &&
+			error.status < 500
+		)
+			return Response.json({ error: error.message }, { status: error.status });
+		throw error;
+	}
+}
