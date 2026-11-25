@@ -9,6 +9,9 @@ struct TrackerReplicaIntent: Codable {
     let revision: String?
     /// The item status the phone showed. Only lifecycle actions carry it; older payloads decode as nil.
     let expectedStatus: String?
+    /// The tapped option's 1-based number for an answer; absent for free text and older payloads.
+    var option: Int? = nil
+    var confirmed: Bool? = nil
 }
 
 struct TrackerReplicaActionRule {
@@ -40,6 +43,8 @@ struct TrackerReplicaConfirmation {
     let question: String?
     let intent: TrackerReplicaIntent
     let discard: Bool
+    /// The ask's confirm kind when an option answer needs the device owner's check.
+    var confirm: String? = nil
 }
 
 enum TrackerReplicaWriteError: String, Error {
@@ -52,7 +57,9 @@ extension TrackerReplicaStore {
     func prepareWrite(scope: String, action: String, input: [String: Any]) throws -> TrackerReplicaConfirmation {
         let needsReview = action == "flag" || action == "answer"
         guard let rule = TrackerReplicaActions.rules[action],
-            input.keys.allSatisfy({ $0 == "id" || $0 == "text" || (needsReview && $0 == "revision") }),
+            input.keys.allSatisfy({
+                $0 == "id" || $0 == "text" || (needsReview && $0 == "revision") || (action == "answer" && $0 == "option")
+            }),
             let id = input["id"] as? String, id.utf8.count >= 6, TrackerReplicaItem.short(id, 80),
             let text = input["text"] as? String, TrackerReplicaItem.short(text, 512),
             !rule.textRequired || !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, safeDraft(text)
@@ -64,15 +71,27 @@ extension TrackerReplicaStore {
         if needsReview, (input["revision"] as? String) != item.revision {
             throw TrackerReplicaWriteError.staleReview
         }
+        let choice = try chosenOption(input["option"], flag: item.flag)
         let intent = TrackerReplicaIntent(
             version: 1, intentId: UUID().uuidString.lowercased(), itemId: item.header.id,
-            action: action, text: text, revision: action == "note" ? nil : item.revision,
-            expectedStatus: rule.expectsStatus ? item.header.status : nil
+            action: action, text: choice?.option.label ?? text, revision: action == "note" ? nil : item.revision,
+            expectedStatus: rule.expectsStatus ? item.header.status : nil,
+            option: choice?.number, confirmed: choice == nil ? nil : true
         )
         return TrackerReplicaConfirmation(
             scope: scope, itemTitle: item.header.title,
-            question: rule.needsOpenFlag ? item.flag?.question : nil, intent: intent, discard: false
+            question: rule.needsOpenFlag ? item.flag?.question : nil, intent: intent, discard: false,
+            confirm: choice == nil ? nil : item.flag?.confirm
         )
+    }
+
+    /// A tapped option must be a whole number that names one of the options the open ask showed.
+    private func chosenOption(_ value: Any?, flag: TrackerReplicaItem.Flag?) throws -> (number: Int, option: TrackerReplicaItem.Flag.Option)? {
+        guard let value = value else { return nil }
+        guard let number = value as? NSNumber, CFGetTypeID(number) != CFBooleanGetTypeID(),
+            let options = flag?.options, (1...options.count).contains(number.intValue)
+        else { throw TrackerReplicaWriteError.invalidInput }
+        return (number.intValue, options[number.intValue - 1])
     }
 
     func prepareDiscard(scope: String, input: [String: Any]) throws -> TrackerReplicaConfirmation {

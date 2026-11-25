@@ -1,5 +1,6 @@
 import Capacitor
 import Foundation
+import LocalAuthentication
 import UIKit
 
 /// The one bridge between the page and this phone's connection to a computer. The page gets a
@@ -59,7 +60,8 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
             UIApplication.shared.applicationState == .active
         else { return call.resolve(session.trackerWriteReply(code: "unavailable")) }
         let intent = confirmation.intent
-        let message = [confirmation.itemTitle, confirmation.question, intent.text].compactMap { $0 }.joined(separator: "\n\n")
+        let choice = intent.option.map { "Option \($0): " + intent.text }
+        let message = [confirmation.itemTitle, confirmation.question, choice ?? intent.text].compactMap { $0 }.joined(separator: "\n\n")
         let title = confirmation.discard ? "Discard queued Tracker write" : "Queue Tracker " + intent.action
         let button = confirmation.discard ? "Discard" : "Queue " + intent.action
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -67,9 +69,23 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
             call.resolve(session.trackerWriteReply(code: "cancelled"))
         })
         alert.addAction(UIAlertAction(title: button, style: confirmation.discard ? .destructive : .default) { [session] _ in
-            session.confirmTrackerWrite(confirmation) { call.resolve($0) }
+            self.confirmedByOwner(confirmation) { allowed in
+                guard allowed else { return call.resolve(session.trackerWriteReply(code: "cancelled")) }
+                session.confirmTrackerWrite(confirmation) { call.resolve($0) }
+            }
         })
         presenter.present(alert, animated: true)
+    }
+
+    /// Deploy, money and secret asks need Face ID (or the passcode) on top of the confirm dialog.
+    private func confirmedByOwner(_ confirmation: TrackerReplicaConfirmation, done: @escaping (Bool) -> Void) {
+        guard let kind = confirmation.confirm, !confirmation.discard else { return done(true) }
+        let context = LAContext()
+        var error: NSError?
+        guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else { return done(false) }
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Confirm this \(kind) answer") { allowed, _ in
+            DispatchQueue.main.async { done(allowed) }
+        }
     }
 
     @objc func refreshTracker(_ call: CAPPluginCall) {
