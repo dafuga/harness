@@ -1,0 +1,231 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-scope-keys",
+	"uid": "u_dnehbxahjv",
+	"kind": "function",
+	"title": "Create and import scope keys",
+	"responsibility": "Create and rotate scope data and index keys, commit to them, import them as non-extractable keys, and derive opaque object ids.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedScopeKeys.ts"],
+		"symbols": [
+			"newScopeKeys",
+			"scopeCommitment",
+			"sealedScopeKeys",
+			"sealedObjectId",
+			"scopeName",
+			"sealedU32"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "newScopeKeys.rotating",
+				"type": "RawScopeKeys",
+				"required": false
+			},
+			{
+				"name": "scopeCommitment.raw",
+				"type": "RawScopeKeys",
+				"required": true
+			},
+			{
+				"name": "sealedScopeKeys.raw",
+				"type": "RawScopeKeys",
+				"required": true
+			},
+			{
+				"name": "sealedObjectId.keys",
+				"type": "ScopeKeys",
+				"required": true
+			},
+			{
+				"name": "sealedObjectId.kind",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sealedObjectId.localId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "scopeName.keys",
+				"type": "Pick<ScopeKeys, 'scopeId'>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "newScopeKeys",
+				"type": "RawScopeKeys"
+			},
+			{
+				"name": "scopeCommitment",
+				"type": "Promise<Uint8Array>"
+			},
+			{
+				"name": "sealedScopeKeys",
+				"type": "Promise<ScopeKeys>"
+			},
+			{
+				"name": "sealedObjectId",
+				"type": "Promise<Uint8Array>"
+			},
+			{
+				"name": "scopeName",
+				"type": "string"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "newScopeKeys",
+				"inputs": [
+					{
+						"name": "newScopeKeys.rotating",
+						"type": "RawScopeKeys",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "newScopeKeys",
+						"type": "RawScopeKeys"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopeCommitment",
+				"inputs": [
+					{
+						"name": "scopeCommitment.raw",
+						"type": "RawScopeKeys",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopeCommitment",
+						"type": "Promise<Uint8Array>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedScopeKeys",
+				"inputs": [
+					{
+						"name": "sealedScopeKeys.raw",
+						"type": "RawScopeKeys",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedScopeKeys",
+						"type": "Promise<ScopeKeys>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedObjectId",
+				"inputs": [
+					{
+						"name": "sealedObjectId.keys",
+						"type": "ScopeKeys",
+						"required": true
+					},
+					{
+						"name": "sealedObjectId.kind",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sealedObjectId.localId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedObjectId",
+						"type": "Promise<Uint8Array>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scopeName",
+				"inputs": [
+					{
+						"name": "scopeName.keys",
+						"type": "Pick<ScopeKeys, 'scopeId'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scopeName",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedScopeKeys.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedScopeKeys.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

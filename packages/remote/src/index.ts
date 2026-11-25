@@ -86,3 +86,13 @@ export {
 } from './services/networking-security/device-pairing-service/DevicePairingService';
 export * from './services/networking-security/DeviceConnectionService';
 export * from './services/networking-security/WireFramingService';
+export { sealedPadding } from './utils/networking-security/sealedPadding';
+export { sealedRecord } from './utils/networking-security/sealedRecord';
+export { sealedFrame } from './utils/networking-security/sealedFrame';
+export { sealedScopeKeys } from './utils/networking-security/sealedScopeKeys';
+export { sealedGrant } from './utils/networking-security/sealedGrant';
+export { sealedDevice } from './utils/networking-security/sealedDevice';
+export { sealedChainEntry } from './utils/networking-security/sealedChainEntry';
+export { sealedChain } from './utils/networking-security/sealedChain';
+export { sealedSas } from './utils/networking-security/sealedSas';
+export { sealedRecovery } from './utils/networking-security/sealedRecovery';
