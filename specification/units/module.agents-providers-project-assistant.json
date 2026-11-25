@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "module.agents-providers-project-assistant",
+	"uid": "u_kg5hqv2jkl",
+	"kind": "module",
+	"title": "projectAssistant",
+	"responsibility": "Owns the projectAssistant library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/lib/agents-providers/projectAssistant.ts"],
+		"symbols": [
+			"GitHubAppAdapter",
+			"TrackerCliAdapter",
+			"HealthProbeAdapter",
+			"ClaudeMessagesAdapter",
+			"ProjectAssistantService",
+			"assistantTools",
+			"ProjectAssistantConfigValidator",
+			"ProjectAssistantConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-claude-messages",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-health-probe",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-tracker-cli",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-assistant-tools",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-project-assistant-config",
+			"via": "reexport",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/lib/agents-providers/projectAssistant.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/lib/agents-providers/projectAssistant.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,227 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-tracker-cli",
+	"uid": "u_kg5hqe6qrs",
+	"kind": "adapter",
+	"title": "TrackerCliAdapter",
+	"responsibility": "Owns the TrackerCliAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/TrackerCliAdapter.ts",
+			"src/adapters/agents-providers/TrackerCliAdapter.types.ts"
+		],
+		"symbols": [
+			"TrackerCliAdapter",
+			"TrackerCliAdapter.constructor",
+			"TrackerCliAdapter.list",
+			"TrackerCliAdapter.show",
+			"TrackerCliAdapter.add",
+			"TrackerCliAdapter.launch",
+			"TrackerCliAdapterConfig",
+			"TrackerItemView",
+			"TrackerRunner",
+			"TrackerRunner",
+			"TrackerCliAdapterConfig",
+			"TrackerItemView"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerCliAdapter.constructor.config",
+				"type": "TrackerCliAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "TrackerCliAdapter.list.status",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "TrackerCliAdapter.show.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerCliAdapter.add.title",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerCliAdapter.add.note",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerCliAdapter.launch.id",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerCliAdapter.list",
+				"type": "Promise<TrackerItemView[]>"
+			},
+			{
+				"name": "TrackerCliAdapter.show",
+				"type": "Promise<TrackerItemView>"
+			},
+			{
+				"name": "TrackerCliAdapter.add",
+				"type": "Promise<{ id: string }>"
+			},
+			{
+				"name": "TrackerCliAdapter.launch",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerCliAdapter.list",
+				"inputs": [
+					{
+						"name": "TrackerCliAdapter.list.status",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerCliAdapter.list",
+						"type": "Promise<TrackerItemView[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerCliAdapter.show",
+				"inputs": [
+					{
+						"name": "TrackerCliAdapter.show.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerCliAdapter.show",
+						"type": "Promise<TrackerItemView>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerCliAdapter.add",
+				"inputs": [
+					{
+						"name": "TrackerCliAdapter.add.title",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerCliAdapter.add.note",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerCliAdapter.add",
+						"type": "Promise<{ id: string }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerCliAdapter.launch",
+				"inputs": [
+					{
+						"name": "TrackerCliAdapter.launch.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerCliAdapter.launch",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerCliAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerCliAdapter.constructor.config",
+						"type": "TrackerCliAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerCliAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/TrackerCliAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/TrackerCliAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

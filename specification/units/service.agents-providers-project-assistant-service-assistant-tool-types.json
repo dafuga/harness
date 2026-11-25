@@ -1,0 +1,46 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-assistant-tool-types",
+	"uid": "u_kg5hqt7efg",
+	"kind": "service",
+	"title": "assistantTool",
+	"responsibility": "Owns the assistantTool service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/project-assistant-service/assistantTool.types.ts"],
+		"symbols": ["ToolInput", "ToolShape", "ToolRound"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/assistantTool.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/assistantTool.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

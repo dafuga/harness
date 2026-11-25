@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-project-assistant-service-assistant-tools",
+	"uid": "u_kg5hqp3stu",
+	"kind": "service",
+	"title": "assistantTools",
+	"responsibility": "Owns the assistantTools service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/project-assistant-service/assistantTools.ts"],
+		"symbols": ["assistantTools"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assistantTools.github",
+				"type": "GitHubAppAdapter",
+				"required": true
+			},
+			{
+				"name": "assistantTools.tracker",
+				"type": "TrackerCliAdapter",
+				"required": true
+			},
+			{
+				"name": "assistantTools.health",
+				"type": "HealthProbeAdapter",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "assistantTools",
+				"type": "AssistantToolDefinition[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assistantTools",
+				"inputs": [
+					{
+						"name": "assistantTools.github",
+						"type": "GitHubAppAdapter",
+						"required": true
+					},
+					{
+						"name": "assistantTools.tracker",
+						"type": "TrackerCliAdapter",
+						"required": true
+					},
+					{
+						"name": "assistantTools.health",
+						"type": "HealthProbeAdapter",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assistantTools",
+						"type": "AssistantToolDefinition[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-health-probe",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-tracker-cli",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-github-tools",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-project-assistant-service-other-tools",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/project-assistant-service/assistantTools.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/project-assistant-service/assistantTools.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
