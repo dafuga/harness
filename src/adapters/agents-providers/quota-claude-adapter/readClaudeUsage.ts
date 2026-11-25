@@ -79,7 +79,7 @@ async function hasClaudeSubscription(
 	}
 }
 
-async function openUsage(run: Tmux, directory: string): Promise<boolean> {
+export async function openUsage(run: Tmux, directory: string): Promise<boolean> {
 	let granted = false;
 	for (let attempt = 0; attempt < 18; attempt++) {
 		await delay(300);

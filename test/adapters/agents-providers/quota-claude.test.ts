@@ -1,7 +1,23 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { QuotaClaudeAdapter } from '../../../src/adapters/agents-providers/QuotaClaudeAdapter';
+import { openUsage } from '../../../src/adapters/agents-providers/quota-claude-adapter/readClaudeUsage';
 
 const now = Date.parse('2026-11-25T23:20:00Z');
+
+test('opens the built-in usage command from an interactive composer with a suggestion', async () => {
+	let typed = false;
+	const run = vi.fn(async (command: string, ...args: string[]) => {
+		if (command === 'capture-pane')
+			return typed
+				? 'Claude Code\n❯ /usage\n/usage Show plan usage and activity stats'
+				: 'Claude Code\n❯ Try "explain a file"';
+		if (args[0] === '-l') typed = true;
+		return '';
+	});
+	expect(await openUsage(run, '/private/tmp/quota')).toBe(true);
+	expect(run).toHaveBeenCalledWith('send-keys', '-l', '/usage');
+	expect(run).toHaveBeenLastCalledWith('send-keys', 'Enter');
+}, 10000);
 
 test('reads Claude plan usage without capturing unrelated screen text', async () => {
 	const readUsage = async () =>
