@@ -86,19 +86,6 @@
 	align-items: center;
 	gap: var(--hx-space-8);
 }
-/* The code a phone scans: dark on a white plate in every theme, with its light margin. */
-.remote-offer {
-	display: grid;
-	gap: var(--hx-space-8);
-	justify-items: start;
-	width: 100%;
-	min-width: 0;
-}
-.remote-qr {
-	width: min(100%, 260px);
-	height: auto;
-	border-radius: var(--hx-radius-compact);
-}
 .remote-devices {
 	display: grid;
 	gap: var(--hx-space-8);

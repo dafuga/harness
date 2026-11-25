@@ -9,13 +9,13 @@ import type {
 } from '../../../remote/src/models/networking-security/RemoteControl.types';
 
 // prettier-ignore
-const base: RemoteHostStatus = { supported: true, enabled: false, state: 'disabled', reason: null, host: null, origin: null, pairing: null, requests: [], devices: [], projects: [] };
+const base: RemoteHostStatus = { supported: true, enabled: false, state: 'disabled', reason: null, host: null, origin: null, requests: [], devices: [], projects: [] };
 // prettier-ignore
 const online: RemoteHostStatus = { ...base, enabled: true, state: 'online', host: { id: 'host-1', name: 'Desk' } };
 // prettier-ignore
 const approval = { pairingId: 'pairing-1', deviceId: 'device-1', projectIds: ['project-1'], agents: false };
 // prettier-ignore
-const methods = ['status', 'enable', 'disable', 'createPairing', 'closePairing', 'approvePairing', 'denyPairing', 'revokeDevice'];
+const methods = ['status', 'enable', 'disable', 'approvePairing', 'denyPairing', 'revokeDevice'];
 
 /** Writes this state's trace: its case is named after the state, and its file after the state. */
 function record(state: string, symbol: string, output: unknown) {
@@ -68,15 +68,13 @@ test('Without a control port start returns unsubscribed and every action resolve
 	const results = [
 		await store.enable(),
 		await store.disable(),
-		await store.createPairing(),
-		await store.closePairing(),
 		await store.approve(approval),
 		await store.deny('pairing-1'),
 		await store.revoke('device-1')
 	];
 
 	expect(started).toBeUndefined();
-	expect(results).toEqual([false, false, false, false, false, false, false]);
+	expect(results).toEqual([false, false, false, false, false]);
 	expect(store.status).toBeNull();
 	expect(store.busy).toBe(false);
 	record('absent-port-resolves-every-action-false', 'createRemoteHostStore', {
@@ -131,24 +129,19 @@ test('Each action forwards its input and accepts the status it answers with', as
 	const store = createRemoteHostStore(workspaceWith(fake.port));
 	const results = [
 		await store.enable(),
-		await store.createPairing(),
 		await store.approve(approval),
 		await store.deny('pairing-1'),
 		await store.revoke('device-1'),
-		await store.closePairing(),
 		await store.disable()
 	];
 
-	expect(results).toEqual([true, true, true, true, true, true, true]);
+	expect(results).toEqual([true, true, true, true, true]);
 	expect(store.status).toEqual(online);
 	expect(fake.calls).toEqual([
 		'enable',
-		'createPairing',
-		'status',
 		'approvePairing',
 		'denyPairing',
 		'revokeDevice',
-		'closePairing',
 		'disable'
 	]);
 	record('actions-accept-the-answered-status', 'enable', {

@@ -34,6 +34,7 @@ export class MemoryRelay {
 		}
 	});
 	readonly fetch = this.desk.fetch;
+	readonly submit = (pairingId: string, body: object) => this.desk.submit(pairingId, body);
 	register = async (input: RemoteHostRegisterInput) => {
 		const generation = this.registered.push(input);
 		return { hostId: input.hostId, origin: this.origin, generation, registeredAt: stamp };

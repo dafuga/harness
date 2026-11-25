@@ -10,7 +10,7 @@ const off: RemoteHostStatus = {
 	reason: null,
 	host: null,
 	origin: 'https://relay.example.invalid',
-	pairing: null,
+
 	requests: [],
 	devices: [],
 	projects: [{ id: 'local-1', name: 'One' }]
@@ -23,7 +23,6 @@ function desktop() {
 		status: vi.fn(async () => off),
 		enable: vi.fn(async () => on),
 		disable: vi.fn(async () => off),
-		createPairing: vi.fn(async () => ({ pairingId: 'b2'.repeat(16) })),
 		approvePairing: vi.fn(async () => on),
 		denyPairing: vi.fn(async () => on),
 		revokeDevice: vi.fn(async () => on),
@@ -49,12 +48,9 @@ test('the status is asked once, then heard, until the store is disposed', async 
 	expect(release).toHaveBeenCalledOnce();
 });
 
-test('a pairing offer is read from the status again, and a grant is passed exactly as chosen', async () => {
+test('a grant is passed exactly as chosen', async () => {
 	const { store, port } = desktop();
 	await store.start();
-	port.status.mockResolvedValueOnce({ ...on, pairing: { code: 'KQ7M2XWP' } } as never);
-	expect(await store.createPairing()).toBe(true);
-	expect(store.status?.pairing?.code).toBe('KQ7M2XWP');
 	const grant = {
 		pairingId: 'b2'.repeat(16),
 		deviceId: 'd'.repeat(40),

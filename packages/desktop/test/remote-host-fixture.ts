@@ -3,7 +3,7 @@ import { expect } from '../../../test/verificationExpect';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { DeviceConnectionService, DevicePairingService } from '../../remote/src/index';
+import { DeviceConnectionService } from '../../remote/src/index';
 import type { DeviceCredentials, DeviceStatus } from '../../remote/src/index';
 import { RemoteHostStoreAdapter } from '../src/adapters/networking-security/RemoteHostStoreAdapter';
 import type { AgentTurn } from '../src/models/agents-providers/AgentRunner.types';
@@ -12,6 +12,7 @@ import { RemoteHostService } from '../src/services/networking-security/remote-ho
 import type { RemoteHostOptions } from '../src/services/networking-security/remote-host-service/RemoteHostService';
 import { remoteFixture } from './remote-fixture';
 import { MemoryRelay } from './remote-relay-fixture';
+import { accountPairing, memoryTarget } from './remote-account-pairing';
 
 const roots: string[] = [];
 afterEach(async () => {
@@ -45,20 +46,19 @@ export async function hostFixture(action: (turn: AgentTurn) => Promise<void> = a
 	const state = async (target = host) => (await target.status()).state;
 	const online = (target = host) =>
 		expect.poll(() => state(target), { timeout: 5000 }).toBe('online');
-	/** The phone asks with the code; the person approves; the phone exchanges once. */
+	/** A signed-in phone asks: its sealed request reaches the host through the relay. */
+	const ask = async (target = host, name = 'Fixture phone') =>
+		accountPairing(await memoryTarget(relay, target), name);
+	/** The signed-in phone asks; the person approves; the phone exchanges once. */
 	async function pair(grant = { projectIds: [f.project.id], agents: true }, target = host) {
-		const offer = await target.devices.createPairing(),
-			pairing = new DevicePairingService({ fetch: relay.fetch });
-		const pending = await pairing.request({
-			...offer,
-			deviceName: 'Fixture phone',
-			platform: 'test'
-		});
+		const { pairing, pending, pairingId } = await ask(target);
 		await expect.poll(async () => (await target.status()).requests.length).toBe(1);
-		const { pairingId } = offer,
-			{ deviceId } = pending;
+		const { deviceId } = pending;
 		await target.devices.approvePairing({ pairingId, deviceId, ...grant });
-		return { offer, credentials: await pairing.exchange(pending) };
+		return {
+			offer: { pairingId, hostId: pending.input.hostId },
+			credentials: await pairing.exchange(pending)
+		};
 	}
 	function phone(credentials: DeviceCredentials) {
 		const states: DeviceStatus[] = [];
@@ -71,5 +71,5 @@ export async function hostFixture(action: (turn: AgentTurn) => Promise<void> = a
 		connection.onStatus((status) => states.push(status));
 		return { connection, states, client: connection.wire };
 	}
-	return { ...f, relay, file, storeFor, options, host, state, online, pair, phone };
+	return { ...f, relay, file, storeFor, options, host, state, online, ask, pair, phone };
 }

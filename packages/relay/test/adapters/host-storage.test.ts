@@ -35,7 +35,11 @@ test('an object of a host that was never registered stores nothing, whatever is 
 	const unknown = await newHost();
 	const pairingId = randomId();
 	await relay.fetch(pairingPath(unknown, pairingId));
-	await relay.post(pairingPath(unknown, pairingId, 'request'), (await newRequest(pairingId)).body);
+	await relay.manage('pairing-request', {
+		...ownerOf(unknown),
+		pairingId,
+		request: (await newRequest(pairingId)).body
+	});
 	await relay.post(pairingPath(unknown, pairingId, 'exchange'), { verifier: randomCredential() });
 	await RelaySocket.refusal(connectUrl(relay, unknown.hostId), hostHeaders(unknown));
 	await relay.manage('summary', ownerOf(unknown));

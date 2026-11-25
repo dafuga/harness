@@ -31,7 +31,6 @@ export {
 	hostLine,
 	hostSummary
 } from '../../components/networking-security/remote-host-panel/remoteLabels';
-export { timeLeft } from '../../components/networking-security/remote-offer-code/remoteLabels';
 export {
 	grantSummary,
 	remoteLabels

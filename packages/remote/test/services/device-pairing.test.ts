@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import { DevicePairingService } from '../../src/services/networking-security/device-pairing-service/DevicePairingService';
 import { HostPairingService } from '../../src/services/host-pairing-service/HostPairingService';
 import { toBase64Url } from '../../src/utils/remoteBytes';
-import { remoteIdentity, remotePatterns } from '../../src/utils/remoteIdentity';
+import { randomId, remoteIdentity, remotePatterns } from '../../src/utils/remoteIdentity';
 import { remoteKeys } from '../../src/utils/remoteKeys';
 import { memoryRelay } from '../support/memoryRelay';
 
@@ -11,35 +11,38 @@ const grant = { projects: [{ id: 'local-' + 'a'.repeat(64), name: 'Harness' }], 
 async function setup() {
 	const keys = await remoteKeys(),
 		hostId = await remoteIdentity(keys.publicKey),
+		hostKey = toBase64Url(keys.publicKey),
 		host = new HostPairingService({ hostId, keys });
-	const relay = memoryRelay({ hostId, hostKey: toBase64Url(keys.publicKey), host }),
+	const relay = memoryRelay({ hostId, hostKey, host }),
 		device = new DevicePairingService({ fetch: relay.fetch }),
-		offer = host.open();
-	relay.open(offer);
+		pairingId = randomId(16);
 	const input = {
 		origin: 'https://relay.example',
 		hostId,
-		pairingId: offer.pairingId,
-		code: offer.code,
+		pairingId,
+		code: '',
 		deviceName: 'Fixture phone',
 		platform: 'test' as const
 	};
-	return { host, hostId, relay, device, offer, input };
+	/** The signed-in account submits the sealed request; the relay verified the session. */
+	const ask = (over: Partial<typeof input> = {}, key = hostKey) =>
+		device.requestAccount({ ...input, ...over }, key, (body) => relay.submit(pairingId, body));
+	return { host, hostId, relay, device, pairingId, input, ask };
 }
 
-test('a phone that knows the code is paired to the exact key the host approved', async () => {
+test('a signed-in phone is paired to the exact key the host approved', async () => {
 	const f = await setup(),
-		pending = await f.device.request(f.input);
+		pending = await f.ask();
 	expect(f.relay.received).toHaveLength(1);
 	expect(f.relay.received[0]).toMatchObject({
-		pairingId: f.offer.pairingId,
+		pairingId: f.pairingId,
 		deviceId: pending.deviceId,
 		deviceName: 'Fixture phone',
 		platform: 'test'
 	});
 	expect(await f.device.poll(pending)).toBe('requested');
-	const approved = await f.host.approve(f.offer.pairingId, approval);
-	f.relay.approve(f.offer.pairingId, approved);
+	const approved = await f.host.approve(f.pairingId, approval);
+	f.relay.approve(f.pairingId, approved);
 	expect(await f.device.poll(pending)).toBe('approved');
 	const credentials = await f.device.exchange(pending);
 	expect(credentials).toMatchObject({
@@ -54,51 +57,53 @@ test('a phone that knows the code is paired to the exact key the host approved',
 	expect(credentials.keys.publicKey).toBe(approved.deviceKey);
 	await expect(f.device.exchange(pending)).rejects.toThrow();
 });
-test('neither the code nor the device name reaches the relay in clear', async () => {
+test('the device name never reaches the relay in clear', async () => {
 	const f = await setup();
-	await f.device.request(f.input);
-	const seen = f.relay.calls.join('\n') + f.relay.bodies.join('\n');
-	expect(seen).not.toContain(f.offer.code);
-	expect(seen).not.toContain(f.offer.code.replace('-', ''));
-	expect(seen).not.toContain('Fixture phone');
-	expect(f.relay.bodies).toHaveLength(1);
+	let body = '';
+	const keys = await remoteKeys();
+	await f.device
+		.requestAccount(
+			{ ...f.input, hostId: await remoteIdentity(keys.publicKey) },
+			toBase64Url(keys.publicKey),
+			async (sent) => {
+				body = JSON.stringify(sent);
+			}
+		)
+		.catch(() => undefined);
+	expect(body).not.toContain('Fixture phone');
+	expect(body).not.toBe('');
 });
 test('a relay that serves another host key is detected before anything is sent', async () => {
 	const f = await setup();
-	f.relay.relay.hostKey = toBase64Url((await remoteKeys()).publicKey);
-	await expect(f.device.request(f.input)).rejects.toThrow();
-	expect(f.relay.calls.filter((call) => call.startsWith('POST'))).toEqual([]);
+	await expect(f.ask({}, toBase64Url((await remoteKeys()).publicKey))).rejects.toThrow();
 	expect(f.relay.received).toEqual([]);
 });
-test('a wrong code is refused by the host, not by the relay', async () => {
-	const f = await setup(),
-		pending = await f.device.request({ ...f.input, code: 'WRNG-CDE2' });
-	expect(f.relay.received).toEqual([null]);
-	expect(f.host.requests()).toEqual([]);
-	await expect(f.device.exchange(pending)).rejects.toThrow();
+test('an account request takes no code', async () => {
+	const f = await setup();
+	expect(() => f.ask({ code: 'WRNG-CDE2' })).toThrow('takes no code');
+	expect(f.relay.received).toEqual([]);
 });
 test('an approval for another device, or a tampered one, is refused', async () => {
 	const other = await setup(),
-		pendingOther = await other.device.request(other.input),
-		approvedOther = await other.host.approve(other.offer.pairingId, approval);
-	other.relay.approve(other.offer.pairingId, { ...approvedOther, deviceId: 'c'.repeat(40) });
+		pendingOther = await other.ask(),
+		approvedOther = await other.host.approve(other.pairingId, approval);
+	other.relay.approve(other.pairingId, { ...approvedOther, deviceId: 'c'.repeat(40) });
 	await expect(other.device.exchange(pendingOther)).rejects.toThrow();
 	const f = await setup(),
-		pending = await f.device.request(f.input),
-		approved = await f.host.approve(f.offer.pairingId, approval),
+		pending = await f.ask(),
+		approved = await f.host.approve(f.pairingId, approval),
 		sealed = (approved.sealed[0] === 'A' ? 'B' : 'A') + approved.sealed.slice(1);
-	f.relay.approve(f.offer.pairingId, { deviceId: approved.deviceId, sealed });
+	f.relay.approve(f.pairingId, { deviceId: approved.deviceId, sealed });
 	await expect(f.device.exchange(pending)).rejects.toThrow();
 });
-test('only an exact relay origin and well-formed identifiers are contacted', async () => {
+test('only an exact relay origin and well-formed identifiers are used', async () => {
 	const f = await setup();
 	const refused = [
-		{ ...f.input, origin: 'http://relay.example' },
-		{ ...f.input, origin: 'https://relay.example/path?token=x' },
-		{ ...f.input, hostId: '../' + f.hostId },
-		{ ...f.input, pairingId: 'nope' },
-		{ ...f.input, deviceName: '' }
+		{ origin: 'http://relay.example' },
+		{ origin: 'https://relay.example/path?token=x' },
+		{ hostId: '../' + f.hostId },
+		{ pairingId: 'nope' }
 	];
-	for (const input of refused) await expect(f.device.request(input)).rejects.toThrow();
-	expect(f.relay.calls).toEqual([]);
+	for (const over of refused) await expect(f.ask(over)).rejects.toThrow();
+	expect(f.relay.received).toEqual([]);
 });

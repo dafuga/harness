@@ -58,7 +58,6 @@ export function normalizeCode(value: string): string {
 	return value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 
-export { pairingCode } from '../../../../desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity';
 export { requestDigest } from '../../services/networking-security/wire-session-service/remoteIdentity';
 
 export type { CredentialBinding } from './remoteIdentity.types';

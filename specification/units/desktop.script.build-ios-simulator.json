@@ -31,11 +31,6 @@
 	},
 	"dependencies": [
 		{
-			"unit": "desktop.script.ios-acceptance-guards",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.script.ios-build-options",
 			"via": "import",
 			"origin": "derived"
@@ -47,11 +42,6 @@
 		},
 		{
 			"unit": "desktop.script.ios-products",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.script.ios-scan-fixture",
 			"via": "import",
 			"origin": "derived"
 		}

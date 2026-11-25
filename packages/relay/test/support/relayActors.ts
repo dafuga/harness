@@ -117,15 +117,6 @@ export function pairingPath(host: TestHost, pairingId: string, action = ''): str
 	return `/v1/hosts/${host.hostId}/pairings/${pairingId}${action ? `/${action}` : ''}`;
 }
 
-/** The host opens a pairing that lives for `ttlMs`. */
-export async function openPairing(socket: RelaySocket, ttlMs = 60_000): Promise<string> {
-	const pairingId = randomId();
-	const expiresAt = new Date(Date.now() + ttlMs).toISOString();
-	const ack = await command(socket, { type: 'pairing-open', pairingId, expiresAt });
-	expect(ack, 'pairing-open').toMatchObject({ ok: true });
-	return pairingId;
-}
-
 export async function newRequest(pairingId: string): Promise<TestRequest> {
 	const verifier = randomCredential();
 	const body = {
@@ -136,16 +127,25 @@ export async function newRequest(pairingId: string): Promise<TestRequest> {
 	return { pairingId, verifier, body };
 }
 
-/** A phone asks to be paired; the host socket reads the request it is forwarded. */
+/** The account side: the owner's verified request reaches the host through the binding. */
+export async function submitPairing(
+	relay: RelayFixture,
+	host: TestHost,
+	request: TestRequest
+): Promise<Response> {
+	const body = { ...ownerOf(host), pairingId: request.pairingId, request: request.body };
+	return relay.manage('pairing-request', body);
+}
+
+/** A signed-in phone asks to be paired; the host socket reads the request it is forwarded. */
 export async function requestPairing(
 	relay: RelayFixture,
 	host: TestHost,
-	socket: RelaySocket,
-	ttlMs?: number
+	socket: RelaySocket
 ): Promise<TestRequest> {
-	const request = await newRequest(await openPairing(socket, ttlMs));
-	const response = await relay.post(pairingPath(host, request.pairingId, 'request'), request.body);
-	expect(response.status, 'pairing request').toBe(202);
+	const request = await newRequest(randomId());
+	const response = await submitPairing(relay, host, request);
+	expect(response.status, 'pairing request').toBe(200);
 	await socket.until('pairing-request');
 	return request;
 }

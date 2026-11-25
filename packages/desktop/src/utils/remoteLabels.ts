@@ -3,7 +3,6 @@ export {
 	relayName,
 	hostLine,
 	hostSummary,
-	timeLeft,
 	grantSummary,
 	remoteLabels
 } from './networking-security/remoteLabels';

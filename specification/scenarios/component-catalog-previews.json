@@ -72,7 +72,6 @@
 		"desktop.component.remote-connection",
 		"desktop.component.remote-devices",
 		"desktop.component.remote-host-panel",
-		"desktop.component.remote-offer-code",
 		"desktop.component.remote-phone-panel",
 		"desktop.component.revision-picker",
 		"desktop.component.runtime-artifact",
@@ -1715,12 +1714,6 @@
 			"title": "Remote host panel",
 			"coverage": "required",
 			"units": ["desktop.component.remote-host-panel"]
-		},
-		{
-			"id": "desktop-component-remote-offer-code",
-			"title": "Remote offer code",
-			"coverage": "required",
-			"units": ["desktop.component.remote-offer-code"]
 		},
 		{
 			"id": "desktop-component-remote-phone-panel",
@@ -8815,7 +8808,6 @@
 				"desktop-component-remote-connection",
 				"desktop-component-remote-devices",
 				"desktop-component-remote-host-panel",
-				"desktop-component-remote-offer-code",
 				"desktop-component-remote-phone-panel",
 				"desktop-component-revision-picker",
 				"desktop-component-revision-picker-branch-open",

@@ -51,9 +51,6 @@ export interface EnvironmentHost {
 	Capacitor?: { isNativePlatform?: () => boolean };
 }
 
-/** All the page hands the scanner: the name of this phone. It never holds an offer. */
-export type ScanInput = Parameters<RemoteMobileControl['scan']>[0];
-
 /**
  * What the plugin reports: the published status, and beside it what the computer said when it
  * attached this phone: the methods it allowed, and whether its screen is locked. Each is absent
@@ -92,8 +89,6 @@ export interface RemoteNativePlugin {
 	computers?(): Promise<{ computers: RemoteAccountComputer[] }>;
 	connectAccountComputer?(input: RemoteAccountComputerInput): Promise<RemoteNativeStatus>;
 	status(): Promise<RemoteNativeStatus>;
-	/** Rejects with one of `remoteScanFailures` as its code when a scan ends without an offer. */
-	scan(input: ScanInput): Promise<RemoteNativeStatus>;
 	disconnect(): Promise<RemoteNativeStatus>;
 	request(call: { method: string; input: Record<string, unknown> }): Promise<RemoteNativeAnswer>;
 	trackerTool?(call: {
@@ -146,7 +141,6 @@ export {
 	type RemoteHostStatus,
 	type RemoteMobileControl,
 	type RemoteMobileStatus,
-	type RemotePairingOffer,
 	type RemotePairingRequest,
 	remoteContext
 } from './EnvironmentValues';

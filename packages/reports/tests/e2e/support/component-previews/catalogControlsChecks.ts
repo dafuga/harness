@@ -27,7 +27,7 @@ export async function assertCatalogControls({
 	await assertVideoCatalogState({ component, unit, variant });
 	await assertDesktopChoices(component, unit.id);
 	if (
-		['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
+		['remote-connection', 'remote-host-panel'].some(
 			(name) => unit.id === `desktop.component.${name}`
 		)
 	)

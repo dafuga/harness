@@ -4,10 +4,8 @@ import type { PairingAction, PublicRoute } from '../../models/networking-securit
 import { matchesPattern } from './matchesPattern';
 
 const hostPath = /^\/v1\/hosts\/([^/]+)\/(.+)$/;
-const pairingPath = /^pairings\/([^/]+)(|\/request|\/poll|\/exchange)$/;
+const pairingPath = /^pairings\/([^/]+)(\/poll|\/exchange)$/;
 const pairingCalls = new Map<string, { method: string; action: PairingAction }>([
-	['', { method: 'GET', action: 'info' }],
-	['/request', { method: 'POST', action: 'request' }],
 	['/poll', { method: 'POST', action: 'poll' }],
 	['/exchange', { method: 'POST', action: 'exchange' }]
 ]);

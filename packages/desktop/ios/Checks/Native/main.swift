@@ -36,10 +36,6 @@ func policyChecks() {
 
 print("Harness native checks (\(flavor))")
 policyChecks()
-offerChecks()
-scanChecks()
-scanLifecycleChecks()
-scanHandoffChecks()
 attachChecks()
 lockChecks()
 staleChecks()

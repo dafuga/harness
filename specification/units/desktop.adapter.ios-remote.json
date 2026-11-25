@@ -20,14 +20,12 @@
 			"packages/desktop/ios/App/App/Remote/RemoteLink.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteMedia.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteModels.swift",
-			"packages/desktop/ios/App/App/Remote/RemoteOffer.swift",
 			"packages/desktop/ios/App/App/Remote/RemotePairing.swift",
 			"packages/desktop/ios/App/App/Remote/RemotePairingMaterial.swift",
 			"packages/desktop/ios/App/App/Remote/RemotePolicy.swift",
 			"packages/desktop/ios/App/App/Remote/RemotePulse.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteRelayClient.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteRequests.swift",
-			"packages/desktop/ios/App/App/Remote/RemoteScan.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSecureState.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSession.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSessionAuthority.swift",
@@ -35,10 +33,7 @@
 			"packages/desktop/ios/App/App/Remote/RemoteSessionLink.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSessionPairing.swift",
 			"packages/desktop/ios/App/App/Remote/RemoteSessionReads.swift",
-			"packages/desktop/ios/App/App/Remote/RemoteSessionScan.swift",
-			"packages/desktop/ios/App/App/Remote/RemoteSocketDelegate.swift",
-			"packages/desktop/ios/App/App/Scanner/RemoteCameraScanner.swift",
-			"packages/desktop/ios/App/App/Scanner/RemoteScannerViewController.swift"
+			"packages/desktop/ios/App/App/Remote/RemoteSocketDelegate.swift"
 		],
 		"symbols": []
 	},
@@ -134,19 +129,13 @@
 			"unit": "remote.model.remote-control-types",
 			"via": "contract",
 			"origin": "declared",
-			"contract": "Remote approval and control messages; scan input and failure codes"
+			"contract": "Remote approval and control messages"
 		},
 		{
 			"unit": "remote.model.remote-local-types",
 			"via": "contract",
 			"origin": "declared",
 			"contract": "Local contract shared by adapters"
-		},
-		{
-			"unit": "remote.function.pairing-offer",
-			"via": "contract",
-			"origin": "declared",
-			"contract": "QR offer text grammar and refusals, held to the shared offer vectors"
 		},
 		{
 			"unit": "remote.script.secure-vectors",

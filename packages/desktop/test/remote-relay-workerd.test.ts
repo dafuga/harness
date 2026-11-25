@@ -3,7 +3,8 @@ import { expect } from '../../../test/verificationExpect';
 import { afterAll, beforeAll, test } from 'vitest';
 import { startRelay } from '../../relay/test/support/relayFixture';
 import type { RelayFixture } from '../../relay/test/support/relayFixture';
-import { DeviceConnectionService, DevicePairingService } from '../../remote/src/index';
+import { DeviceConnectionService } from '../../remote/src/index';
+import { accountPairing } from './remote-account-pairing';
 import type {
 	DeviceCredentials,
 	DeviceStatus,
@@ -50,13 +51,24 @@ function phoneOf(credentials: DeviceCredentials) {
 	return { connection, states, wire: connection.wire };
 }
 async function paired(f: Fixture, host: RemoteHostService) {
-	const offer = await host.devices.createPairing(),
-		pairing = new DevicePairingService(),
-		pending = await pairing.request({ ...offer, deviceName: 'Fixture phone', platform: 'test' });
+	const hostId = (await host.status()).host!.id,
+		key = (await (await relay.manage('pairing-key', { owner, hostId })).json()) as {
+			hostKey: string;
+		};
+	const { pairing, pending, pairingId } = await accountPairing({
+		origin: relay.origin,
+		hostId,
+		hostKey: key.hostKey,
+		submit: async (id, request) => {
+			const sent = await relay.manage('pairing-request', { owner, hostId, pairingId: id, request });
+			expect(sent.status).toBe(200);
+		}
+	});
+	const offer = { origin: relay.origin, hostId, pairingId };
 	await expect.poll(async () => (await host.status()).requests.length, settle).toBe(1);
 	await host.devices.approvePairing({
 		deviceId: pending.deviceId,
-		pairingId: offer.pairingId,
+		pairingId,
 		projectIds: [f.project.id],
 		agents: true
 	});
@@ -90,7 +102,7 @@ test('a phone pairs, reads, runs and is revoked through the relay, which never h
 		await expect.poll(() => events.length, settle).toBeGreaterThan(0);
 		expect(events.every((event) => event.runId === runId)).toBe(true);
 		const stored = JSON.stringify(await relay.rows(offer.hostId)),
-			secrets = [credentials.credential, offer.code.replace('-', ''), 'Fixture phone'];
+			secrets = [credentials.credential, 'Fixture phone'];
 		for (const secret of [...secrets, f.project.name, f.request.text, f.root])
 			expect(stored).not.toContain(secret);
 		expect(stored).toContain(credentials.deviceId);
