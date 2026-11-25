@@ -23,6 +23,8 @@ export class TrackerSealedSyncService {
 	private readonly url: URL;
 
 	constructor(private readonly options: TrackerSealedSyncOptions) {
+		if (options.origin.protocol !== 'https:' || options.origin.username || options.origin.password)
+			throw new TypeError('Tracker sealed sync requires a credential-free HTTPS origin');
 		const scope = base64url(options.currentKeys.scopeId);
 		this.url = new URL('/api/sync/v1/ops/' + scope, options.origin);
 	}
@@ -40,11 +42,12 @@ export class TrackerSealedSyncService {
 	}
 
 	/** Flush a bounded batch. A failed request leaves the same envelope ids ready to retry. */
-	async push(): Promise<number> {
+	async push(signal?: AbortSignal): Promise<number> {
 		const entries = batch(this.options.store.pending());
 		if (!entries.length) return 0;
 		const payload = await this.request(this.url, {
 			method: 'POST',
+			signal,
 			body: JSON.stringify(entries.map(({ envelope }) => envelope))
 		});
 		assertReceipt(payload, entries);
@@ -53,11 +56,11 @@ export class TrackerSealedSyncService {
 	}
 
 	/** Authenticate and decode the whole page before committing operations or the cursor. */
-	async pull(): Promise<boolean> {
+	async pull(signal?: AbortSignal): Promise<boolean> {
 		const after = this.options.store.cursor();
 		const url = new URL(this.url);
 		url.searchParams.set('after', String(after));
-		const page = (await this.request(url, {})) as SyncPage;
+		const page = (await this.request(url, { signal })) as SyncPage;
 		assertPage(page, after);
 		const operations = await Promise.all(page.ops.map((entry) => this.open(entry)));
 		this.options.store.apply(after, page.next, operations);
@@ -75,6 +78,8 @@ export class TrackerSealedSyncService {
 		)
 			throw new Error('Invalid sealed Tracker operation header');
 		const { value } = await openSealedRecord<TrackerOperation>(keys, envelope);
+		if (this.options.acceptOperation && !this.options.acceptOperation(value))
+			throw new Error('Sealed Tracker operation falls outside its authorized scope');
 		return value;
 	}
 

@@ -31,4 +31,16 @@ export interface TrackerSealedSyncOptions {
 	currentKeys: ScopeKeys;
 	keysAt(epoch: number): ScopeKeys | undefined;
 	store: TrackerSealedSyncStore;
+	/** Admission for a decrypted record before it can enter the local item projection. */
+	acceptOperation?(operation: TrackerOperation): boolean;
+}
+
+/** One enrolled scope, supplied by the native device enrollment boundary. */
+export interface TrackerSealedNodeOptions extends Omit<
+	TrackerSealedSyncOptions,
+	'store' | 'acceptOperation'
+> {
+	/** Stable account, journal, device, endpoint and scope identity. */
+	logId: string;
+	belongsToScope(operation: TrackerOperation): boolean;
 }

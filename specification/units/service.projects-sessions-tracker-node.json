@@ -73,6 +73,12 @@
 				"required": true
 			},
 			{
+				"name": "TrackerNodeService.start.enrolledScopes",
+				"type": "readonly TrackerSealedNodeOptions[]",
+				"required": false,
+				"default": []
+			},
+			{
 				"name": "trackerLaunchAwareItemResponse.request",
 				"type": "Request",
 				"required": true

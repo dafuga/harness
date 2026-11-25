@@ -9,6 +9,8 @@ import {
 	verifyTrackerDatabasePath,
 	verifyTrackerLegacyFence
 } from './tracker-node-service/trackerNodeConfig';
+import { trackerSealedTicks } from './tracker-sealed-sync/trackerSealedTick';
+import type { TrackerSealedNodeOptions } from './tracker-sealed-sync/TrackerSealedSyncService.types';
 import type { TrackerNodeConfig } from './tracker-node-service/trackerNodeConfig.types';
 import {
 	bindTrackerListener,
@@ -23,7 +25,10 @@ import { holdLegacySupervisorSocket } from './tracker-node-service/holdLegacySup
 
 /** Owns the foreground Tracker node, both listeners, and its journal lease. */
 export class TrackerNodeService {
-	async start(config: TrackerNodeConfig): Promise<TrackerNodeOwner> {
+	async start(
+		config: TrackerNodeConfig,
+		enrolledScopes: readonly TrackerSealedNodeOptions[] = []
+	): Promise<TrackerNodeOwner> {
 		const checkpoint = verifyTrackerLegacyFence(config);
 		verifyTrackerDatabasePath(config.database);
 		const options = trackerNodeRuntime(config);
@@ -36,6 +41,7 @@ export class TrackerNodeService {
 			owner.database = openSqlite(config.database);
 			owner.runtime = new TrackerNativeRuntimeService(owner.database, options);
 			owner.supervisor = new TrackerSupervisorService(owner.runtime, {
+				ticks: trackerSealedTicks(owner.database, config.node, enrolledScopes),
 				onError: (name) => console.error(`tracker: ${name} tick failed`)
 			});
 			owner.workers = owner.supervisor.run(owner.lifetime);

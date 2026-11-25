@@ -1,7 +1,11 @@
 import { TrackerSnapshotAdapter } from '../../../adapters/projects-sessions/TrackerSnapshotAdapter';
 import type { TrackerSnapshotSyncOptions } from '../../../adapters/projects-sessions/TrackerSnapshotAdapter.types';
 
-const sealedStateTables = new Set(['sealed_tracker_outbox', 'sealed_tracker_cursor']);
+const sealedStateTables = new Set([
+	'sealed_tracker_outbox',
+	'sealed_tracker_cursor',
+	'sealed_tracker_scan'
+]);
 
 /** Compare one host's quiesced backup before and after enabling the sealed log. */
 export function verifyTrackerSealedMigration(

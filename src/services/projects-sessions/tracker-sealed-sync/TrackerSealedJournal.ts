@@ -17,6 +17,9 @@ export class TrackerSealedJournal implements TrackerSealedSyncStore {
 				log TEXT NOT NULL, localSeq INTEGER NOT NULL, envelope TEXT,
 				PRIMARY KEY (log, localSeq)
 			);
+			CREATE TABLE IF NOT EXISTS sealed_tracker_scan (
+				log TEXT PRIMARY KEY, cursor INTEGER NOT NULL
+			);
 			CREATE TABLE IF NOT EXISTS sealed_tracker_cursor (
 				log TEXT PRIMARY KEY, cursor INTEGER NOT NULL
 			);
@@ -51,6 +54,21 @@ export class TrackerSealedJournal implements TrackerSealedSyncStore {
 			this.database.exec('ROLLBACK');
 			throw error;
 		}
+	}
+
+	scanCursor(): number {
+		const row = this.database
+			.prepare('SELECT cursor FROM sealed_tracker_scan WHERE log = ?')
+			.get(this.logId) as { cursor: number } | undefined;
+		return row?.cursor ?? 0;
+	}
+
+	advanceScan(cursor: number): void {
+		this.database
+			.prepare(
+				'INSERT INTO sealed_tracker_scan(log, cursor) VALUES (?, ?) ON CONFLICT(log) DO UPDATE SET cursor = max(cursor, excluded.cursor)'
+			)
+			.run(this.logId, cursor);
 	}
 
 	cursor(): number {
