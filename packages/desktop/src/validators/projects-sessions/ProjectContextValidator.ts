@@ -1,5 +1,9 @@
 // @harness-uid u_cx6ay75f2w
-import { ipcFields, textField, commitPattern } from '../../utils/execution-runtimes/ipc-payload/ipcFields';
+import {
+	ipcFields,
+	textField,
+	commitPattern
+} from '../../utils/execution-runtimes/ipc-payload/ipcFields';
 import { threadPayload } from '../../utils/execution-runtimes/ipc-payload/ipcPayload';
 import { ExplicitProjectRequiredError } from './ProjectContextValidator.types';
 const projectPattern = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$/;

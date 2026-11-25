@@ -4,7 +4,10 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { createRemotePhoneStore } from '../../src/lib/stores/networking-security/remotePhone.svelte';
 import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { RemoteMobileStatus } from '../../src/models/development-tooling/Environment.types';
-import { nameNotice, scanNotices } from '../../src/utils/networking-security/scan-notice/scanNotice';
+import {
+	nameNotice,
+	scanNotices
+} from '../../src/utils/networking-security/scan-notice/scanNotice';
 
 const grant = { projects: [{ id: 'local-1', name: 'One' }], agents: true };
 const unpaired = { host: null, device: null } satisfies Partial<RemoteMobileStatus>;
