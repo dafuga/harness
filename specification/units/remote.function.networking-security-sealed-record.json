@@ -1,0 +1,227 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-record",
+	"uid": "u_h2md5jbkhk",
+	"kind": "function",
+	"title": "Seal and open sync records",
+	"responsibility": "Seal JSON values as v1 records with per-object HKDF keys and AES-256-GCM over an authenticated header, read that header, and open records for matching scope keys.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedRecord.ts"],
+		"symbols": ["recordHeaderBytes", "sealedRecordHeader", "sealedRecord", "openSealedRecord"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "recordHeaderBytes.header",
+				"type": "SealedRecordHeader",
+				"required": true
+			},
+			{
+				"name": "sealedRecordHeader.envelope",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "sealedRecord.keys",
+				"type": "ScopeKeys",
+				"required": true
+			},
+			{
+				"name": "sealedRecord.header",
+				"type": "Omit<SealedRecordHeader, 'scopeId' | 'epoch'>",
+				"required": true
+			},
+			{
+				"name": "sealedRecord.value",
+				"type": "SealedJsonValue",
+				"required": true
+			},
+			{
+				"name": "openSealedRecord.keys",
+				"type": "ScopeKeys",
+				"required": true
+			},
+			{
+				"name": "openSealedRecord.envelope",
+				"type": "Uint8Array",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "recordHeaderBytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "sealedRecordHeader",
+				"type": "SealedRecordHeader"
+			},
+			{
+				"name": "sealedRecord",
+				"type": "Promise<Uint8Array>"
+			},
+			{
+				"name": "openSealedRecord",
+				"type": "Promise<{ header: SealedRecordHeader; value: T }>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "recordHeaderBytes",
+				"inputs": [
+					{
+						"name": "recordHeaderBytes.header",
+						"type": "SealedRecordHeader",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordHeaderBytes",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedRecordHeader",
+				"inputs": [
+					{
+						"name": "sealedRecordHeader.envelope",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedRecordHeader",
+						"type": "SealedRecordHeader"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedRecord",
+				"inputs": [
+					{
+						"name": "sealedRecord.keys",
+						"type": "ScopeKeys",
+						"required": true
+					},
+					{
+						"name": "sealedRecord.header",
+						"type": "Omit<SealedRecordHeader, 'scopeId' | 'epoch'>",
+						"required": true
+					},
+					{
+						"name": "sealedRecord.value",
+						"type": "SealedJsonValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedRecord",
+						"type": "Promise<Uint8Array>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openSealedRecord",
+				"inputs": [
+					{
+						"name": "openSealedRecord.keys",
+						"type": "ScopeKeys",
+						"required": true
+					},
+					{
+						"name": "openSealedRecord.envelope",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openSealedRecord",
+						"type": "Promise<{ header: SealedRecordHeader; value: T }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-padding",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-scope-keys",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedRecord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedRecord.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

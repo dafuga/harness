@@ -1,0 +1,180 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-sas",
+	"uid": "u_knfxwodeve",
+	"kind": "function",
+	"title": "Compute enrollment codes",
+	"responsibility": "Commit to a new device's keys and compute the 6-digit code both devices show during enrollment.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedSas.ts"],
+		"symbols": ["sealedEnrollCommit", "checkEnrollCommit", "sealedSas"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sealedEnrollCommit.keys",
+				"type": "SealedEnrollKeys",
+				"required": true
+			},
+			{
+				"name": "sealedEnrollCommit.nonce",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "checkEnrollCommit.keys",
+				"type": "SealedEnrollKeys",
+				"required": true
+			},
+			{
+				"name": "checkEnrollCommit.nonce",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "checkEnrollCommit.commitment",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sealedSas.input",
+				"type": "{ request: SealedEnrollKeys; requestNonce: Uint8Array; approverSigningPublic: Uint8Array; approverNonce: Uint8Array; }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedEnrollCommit",
+				"type": "Promise<string>"
+			},
+			{
+				"name": "checkEnrollCommit",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "sealedSas",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedEnrollCommit",
+				"inputs": [
+					{
+						"name": "sealedEnrollCommit.keys",
+						"type": "SealedEnrollKeys",
+						"required": true
+					},
+					{
+						"name": "sealedEnrollCommit.nonce",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedEnrollCommit",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkEnrollCommit",
+				"inputs": [
+					{
+						"name": "checkEnrollCommit.keys",
+						"type": "SealedEnrollKeys",
+						"required": true
+					},
+					{
+						"name": "checkEnrollCommit.nonce",
+						"type": "Uint8Array",
+						"required": true
+					},
+					{
+						"name": "checkEnrollCommit.commitment",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkEnrollCommit",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedSas",
+				"inputs": [
+					{
+						"name": "sealedSas.input",
+						"type": "{ request: SealedEnrollKeys; requestNonce: Uint8Array; approverSigningPublic: Uint8Array; approverNonce: Uint8Array; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedSas",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedSas.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedSas.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,140 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-padding",
+	"uid": "u_xjwbsgtokn",
+	"kind": "function",
+	"title": "Pad sealed plaintext",
+	"responsibility": "Pad plaintext to size buckets before sealing and strictly remove that padding after opening, so the server sees only bucketed sizes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedPadding.ts"],
+		"symbols": ["sealedBucket", "sealedPadding", "sealedUnpadding"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sealedBucket.length",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "sealedPadding.bytes",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "sealedUnpadding.padded",
+				"type": "Uint8Array",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedBucket",
+				"type": "number"
+			},
+			{
+				"name": "sealedPadding",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "sealedUnpadding",
+				"type": "Uint8Array"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedBucket",
+				"inputs": [
+					{
+						"name": "sealedBucket.length",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedBucket",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedPadding",
+				"inputs": [
+					{
+						"name": "sealedPadding.bytes",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedPadding",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedUnpadding",
+				"inputs": [
+					{
+						"name": "sealedUnpadding.padded",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedUnpadding",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedPadding.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedPadding.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

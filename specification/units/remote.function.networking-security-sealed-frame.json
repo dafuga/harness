@@ -1,0 +1,242 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-frame",
+	"uid": "u_yntfc4v6tj",
+	"kind": "function",
+	"title": "Seal session stream frames",
+	"responsibility": "Derive one key per session stream and seal or open output frames with counter nonces and an authenticated header.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedFrame.ts"],
+		"symbols": ["sealedFrameHeader", "sealedStreamKey", "sealedFrame", "openSealedFrame"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sealedFrameHeader.frame",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "sealedStreamKey.keys",
+				"type": "ScopeKeys",
+				"required": true
+			},
+			{
+				"name": "sealedStreamKey.streamId",
+				"type": "Uint8Array",
+				"required": true
+			},
+			{
+				"name": "sealedFrame.keys",
+				"type": "ScopeKeys",
+				"required": true
+			},
+			{
+				"name": "sealedFrame.streamKey",
+				"type": "CryptoKey",
+				"required": true
+			},
+			{
+				"name": "sealedFrame.frame",
+				"type": "{ streamId: Uint8Array; counter: bigint; data: Uint8Array }",
+				"required": true
+			},
+			{
+				"name": "openSealedFrame.keys",
+				"type": "ScopeKeys",
+				"required": true
+			},
+			{
+				"name": "openSealedFrame.streamKey",
+				"type": "CryptoKey",
+				"required": true
+			},
+			{
+				"name": "openSealedFrame.frame",
+				"type": "Uint8Array",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedFrameHeader",
+				"type": "SealedFrameHeader"
+			},
+			{
+				"name": "sealedStreamKey",
+				"type": "Promise<CryptoKey>"
+			},
+			{
+				"name": "sealedFrame",
+				"type": "Promise<Uint8Array>"
+			},
+			{
+				"name": "openSealedFrame",
+				"type": "Promise<{ header: SealedFrameHeader; data: Uint8Array }>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedFrameHeader",
+				"inputs": [
+					{
+						"name": "sealedFrameHeader.frame",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedFrameHeader",
+						"type": "SealedFrameHeader"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedStreamKey",
+				"inputs": [
+					{
+						"name": "sealedStreamKey.keys",
+						"type": "ScopeKeys",
+						"required": true
+					},
+					{
+						"name": "sealedStreamKey.streamId",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedStreamKey",
+						"type": "Promise<CryptoKey>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedFrame",
+				"inputs": [
+					{
+						"name": "sealedFrame.keys",
+						"type": "ScopeKeys",
+						"required": true
+					},
+					{
+						"name": "sealedFrame.streamKey",
+						"type": "CryptoKey",
+						"required": true
+					},
+					{
+						"name": "sealedFrame.frame",
+						"type": "{ streamId: Uint8Array; counter: bigint; data: Uint8Array }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedFrame",
+						"type": "Promise<Uint8Array>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "openSealedFrame",
+				"inputs": [
+					{
+						"name": "openSealedFrame.keys",
+						"type": "ScopeKeys",
+						"required": true
+					},
+					{
+						"name": "openSealedFrame.streamKey",
+						"type": "CryptoKey",
+						"required": true
+					},
+					{
+						"name": "openSealedFrame.frame",
+						"type": "Uint8Array",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openSealedFrame",
+						"type": "Promise<{ header: SealedFrameHeader; data: Uint8Array }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-scope-keys",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedFrame.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedFrame.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

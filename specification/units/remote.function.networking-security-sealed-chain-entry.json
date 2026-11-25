@@ -1,0 +1,220 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-chain-entry",
+	"uid": "u_fefwhwbqf5",
+	"kind": "function",
+	"title": "Sign device chain entries",
+	"responsibility": "Write canonical JSON, sign and verify device chain entries with ECDSA P-256, and hash them for the next entry.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedChainEntry.ts"],
+		"symbols": [
+			"sealedCanonical",
+			"chainEntryBytes",
+			"sealedChainEntry",
+			"verifyChainEntry",
+			"chainEntryHash"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sealedCanonical.value",
+				"type": "SealedJsonValue",
+				"required": true
+			},
+			{
+				"name": "chainEntryBytes.entry",
+				"type": "UnsignedChainEntry",
+				"required": true
+			},
+			{
+				"name": "sealedChainEntry.signer",
+				"type": "SealedDeviceKeys",
+				"required": true
+			},
+			{
+				"name": "sealedChainEntry.entry",
+				"type": "UnsignedChainEntry",
+				"required": true
+			},
+			{
+				"name": "verifyChainEntry.entry",
+				"type": "SealedChainEntry",
+				"required": true
+			},
+			{
+				"name": "verifyChainEntry.signingPublic",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "chainEntryHash.entry",
+				"type": "SealedChainEntry",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedCanonical",
+				"type": "string"
+			},
+			{
+				"name": "chainEntryBytes",
+				"type": "Uint8Array"
+			},
+			{
+				"name": "sealedChainEntry",
+				"type": "Promise<SealedChainEntry>"
+			},
+			{
+				"name": "verifyChainEntry",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "chainEntryHash",
+				"type": "Promise<string>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedCanonical",
+				"inputs": [
+					{
+						"name": "sealedCanonical.value",
+						"type": "SealedJsonValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedCanonical",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "chainEntryBytes",
+				"inputs": [
+					{
+						"name": "chainEntryBytes.entry",
+						"type": "UnsignedChainEntry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "chainEntryBytes",
+						"type": "Uint8Array"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedChainEntry",
+				"inputs": [
+					{
+						"name": "sealedChainEntry.signer",
+						"type": "SealedDeviceKeys",
+						"required": true
+					},
+					{
+						"name": "sealedChainEntry.entry",
+						"type": "UnsignedChainEntry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedChainEntry",
+						"type": "Promise<SealedChainEntry>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "verifyChainEntry",
+				"inputs": [
+					{
+						"name": "verifyChainEntry.entry",
+						"type": "SealedChainEntry",
+						"required": true
+					},
+					{
+						"name": "verifyChainEntry.signingPublic",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyChainEntry",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "chainEntryHash",
+				"inputs": [
+					{
+						"name": "chainEntryHash.entry",
+						"type": "SealedChainEntry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "chainEntryHash",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-device",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedChainEntry.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedChainEntry.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

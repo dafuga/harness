@@ -1,0 +1,64 @@
+{
+	"note": "Frozen. Written by scripts/sealed-vectors.ts; see that file for which library made each value.",
+	"scope": {
+		"scopeId": "EBESExQVFhcYGRobHB0eHw",
+		"epoch": 2,
+		"dataKey": "QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl8",
+		"indexKey": "gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp8",
+		"commitment": "u4WZUQXd2Dt8jnUV3SCP7SV0nOvF1RQXljeQIzS62hc"
+	},
+	"objectId": {
+		"kind": "item",
+		"localId": "fx4c15",
+		"id": "Wpx1p6XQ4LBYsuI5yPiXTkEcJHOUnThX9PB1uW-lKQM"
+	},
+	"record": {
+		"envelope": "ARAREhMUFRYXGBkaGxwdHh8AAAACWpx1p6XQ4LBYsuI5yPiXTkEcJHOUnThX9PB1uW-lKQMAAAAAAAAACcDBwsPExcbHyMnKy8zNzs_Q0dLT1NXW19jZ2tustbETYM8rqtOH7QFW3J5uVoVr8xUv-e1wVwVLbkzbj_610JH1PQMFrgOs6RwvPbg5MvGV3E5r86kL2wWBIl9ysFwmulyLlSrJvpw2BXggsgddj3sgScTIKAZ_EgqbdFcUTfF1DV3NGqPuQJ-KQ5zx7eb1AyGWBYg2gyc-nHf9XelZ409USp7JvKdLS-3_9KGzTy_5sn2asYEsZzox2s0dAVYjaxIMy3rqcKV9ioVtDdFIsZWtoXjQE2D4aivSm4OaP0lIIrMAFURABk_IfCtC2y9u5KMyUlMmjEaxo8JkwXgUbmPY7wxAFY_Fc9JcOefs72nXslOw0Rm509hsW8jvKGXAxvrd8doricTXg7rBkg",
+		"revision": "9",
+		"value": {
+			"kind": "item",
+			"title": "Sealed vector",
+			"status": "open"
+		}
+	},
+	"frame": {
+		"envelope": "AhAREhMUFRYXGBkaGxwdHh8AAAAC4OHi4-Tl5ufo6err7O3u7wAAAAAAAAADfKFQfSWUgBltIbH3UaABN6kscXVe36P59zcpe9SJTDVJPA",
+		"streamId": "4OHi4-Tl5ufo6err7O3u7w",
+		"counter": "3",
+		"text": "vector output line"
+	},
+	"enroll": {
+		"kemPublic": "BB8UAUa_sbJR-E9N2-DUzc_Xev2YSpUg41eUAh-DErue7JlaCLH6dwTfPcwLUKlmUmP7dxH5X5-KRJxQluR8iSs",
+		"signingPublic": "BAx_zDIcdxGSA9vnmGSQfk8KAZF3id6i1HMVMaUqIuK6wXZtIeRhfXL7vvh9bt8tj4C1JpVuPCwXAfFrfzEVAMY",
+		"approverSigningPublic": "BCYe-9NVDPBo7wE-1zZroy9db-VXtLKrzoreWMuhaKVeF4igsppWpqvsQITAyWvT3LymtQfzXb6p6YVwhHnYvck",
+		"requestNonce": "UFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm8",
+		"approverNonce": "cHFyc3R1dnd4eXp7fH1-f4CBgoOEhYaHiImKi4yNjo8",
+		"commit": "28eb63b0c37afb40e6e06e0e09b824a49b8142a803d08255e0c35d6a56a613da",
+		"sas": "659770"
+	},
+	"chainEntry": {
+		"entry": {
+			"at": 1,
+			"body": {
+				"device": "device-b",
+				"type": "revoke"
+			},
+			"by": "device-a",
+			"prev": "",
+			"seq": 0,
+			"sig": "VTmZMonIJxWa1h4rrea8yGwvYLIHXy6m05PCvKP9b1QkpyObpDG1atXBbTY2zkuIRe-mcBw9jtS-HSFZUkPvsg"
+		},
+		"signingPublic": "BCYe-9NVDPBo7wE-1zZroy9db-VXtLKrzoreWMuhaKVeF4igsppWpqvsQITAyWvT3LymtQfzXb6p6YVwhHnYvck",
+		"hash": "542987616d74acef7db1adcd1df340485c585715843cafc4afccff786cd7e301"
+	},
+	"grant": {
+		"account": "actor-vector",
+		"device": "device-kem",
+		"epoch": 2,
+		"scope": "EBESExQVFhcYGRobHB0eHw",
+		"recipientD": "ISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0-P0A",
+		"recipientPublic": "BB8UAUa_sbJR-E9N2-DUzc_Xev2YSpUg41eUAh-DErue7JlaCLH6dwTfPcwLUKlmUmP7dxH5X5-KRJxQluR8iSs",
+		"enc": "BOPow9GOC0U3TArezKfmM26kKaVT3ajHnImSxJMth0Z2i2OpuIiLWDARCoQY4L7rf9bGwpX5-mR3aFIDSrNXLCM",
+		"ct": "t2YlS6vb-mUQR1yBR82KRzlXVInMy61DuS0n40A6xQnThbxywz7MQ7Y1lvuddETBCMN8dMnk8kWTBU48DUeDy3hnlPgFEahLu6eUmH3MV8M"
+	}
+}

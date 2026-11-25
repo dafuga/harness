@@ -1,0 +1,130 @@
+{
+	"schemaVersion": 1,
+	"id": "remote.function.networking-security-sealed-device",
+	"uid": "u_pb736ppmc5",
+	"kind": "function",
+	"title": "Create sealed device keys",
+	"responsibility": "Create a device's P-256 key-agreement and signing pairs and its public chain view.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/remote/src/utils/networking-security/sealedDevice.ts"],
+		"symbols": ["sealedDevice", "sealedDevicePublic", "sealedKemCurve", "sealedSigningCurve"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sealedDevice.options",
+				"type": "{ extractable?: boolean }",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "sealedDevicePublic.keys",
+				"type": "SealedDeviceKeys",
+				"required": true
+			},
+			{
+				"name": "sealedDevicePublic.role",
+				"type": "SealedRole",
+				"required": true
+			},
+			{
+				"name": "sealedDevicePublic.scopes",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedDevice",
+				"type": "Promise<SealedDeviceKeys>"
+			},
+			{
+				"name": "sealedDevicePublic",
+				"type": "SealedDevicePublic"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sealedDevice",
+				"inputs": [
+					{
+						"name": "sealedDevice.options",
+						"type": "{ extractable?: boolean }",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedDevice",
+						"type": "Promise<SealedDeviceKeys>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sealedDevicePublic",
+				"inputs": [
+					{
+						"name": "sealedDevicePublic.keys",
+						"type": "SealedDeviceKeys",
+						"required": true
+					},
+					{
+						"name": "sealedDevicePublic.role",
+						"type": "SealedRole",
+						"required": true
+					},
+					{
+						"name": "sealedDevicePublic.scopes",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedDevicePublic",
+						"type": "SealedDevicePublic"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/remote/src/utils/networking-security/sealedDevice.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/remote/src/utils/networking-security/sealedDevice.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
