@@ -7,14 +7,15 @@ import {
 import { readTrackerSources } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker';
 import type { NativeHostedCredential } from '../remote-http-project-adapter/RemoteHttpProjectAdapter';
 import { HostedHttpAdapter } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
+import type { QuotaSource } from './codexQuotaSource.types';
 import { createHomeProviderReader } from './homeProviderReader';
 import { deliverHomeChat } from './homeTrackerChat';
 
 const homePath = '/api/hub-home';
 
 /** Uses the factory's already verified connection and the transported actor, without changing the desktop startup service. */
-export function createHubHomePublisher(file?: string) {
-	const providers = createHomeProviderReader(file);
+export function createHubHomePublisher(file?: string, sources?: QuotaSource[]) {
+	const providers = createHomeProviderReader(file, sources);
 	return async (credential: NativeHostedCredential, current: () => boolean) => {
 		if (!current()) return;
 		const now = Date.now();

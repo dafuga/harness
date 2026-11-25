@@ -1,5 +1,6 @@
 // @harness-uid u_p43nh5e4yc
 import { createHubHomePublisher } from './createHubHomePublisher';
+import { liveQuotaSources } from './liveQuotaSources';
 import type { TrackerOverviewFactoryInput } from './TrackerOverviewPublisher.types';
 import { TrackerOverviewPublisher } from './TrackerOverviewPublisher';
 import { readProjectOverview } from '$reports/lib/projects-sessions/project-overview/readProjectOverview';
@@ -20,7 +21,7 @@ export function createTrackerOverviewPublisher(
 		read: input.read ?? (() => readProjectOverview()),
 		publishHome:
 			input.env.HARNESS_HUB_HOME_PUBLISH === '1'
-				? createHubHomePublisher(input.env.HARNESS_HUB_HOME_PROVIDER_FILE)
+				? createHubHomePublisher(input.env.HARNESS_HUB_HOME_PROVIDER_FILE, liveQuotaSources())
 				: undefined
 	});
 }

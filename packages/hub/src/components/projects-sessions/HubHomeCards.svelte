@@ -193,12 +193,10 @@
 		{:else}
 			{@render empty(
 				view.quotaConnected
-					? 'No subscriptions connected. Connect Claude Code or Codex to see how much usage is left.'
+					? 'No subscriptions reported yet. Connect Claude Code or Codex in the Harness Mac app to see how much usage is left.'
 					: view.needsMac
 						? 'Quota readings appear when your Mac shares them.'
-						: 'Provider quota is unknown.',
-				view.needsMac ? undefined : 'Connect a subscription',
-				() => open('quota')
+						: 'Connect subscriptions in the Harness Mac app.'
 			)}
 		{/if}
 	</HubHomeCard>
