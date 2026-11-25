@@ -118,12 +118,24 @@ test('startup refuses an unfenced role or competing API, sync or journal owner a
 				id,
 				notes_log: [{ text: 'Native note visible after rollback' }]
 			});
+			await verifyNoteOnlyBlocker(hub, id);
 		} finally {
 			expect((await restarted.stop()).code).toBe(0);
 		}
 		expect(existsSync(join(root, 'legacy-used'))).toBe(false);
 	});
 }, 25_000);
+
+async function verifyNoteOnlyBlocker(hub: TrackerNodeFixture, id: string) {
+	await fixtureTrackerJson(hub, ['start', id]);
+	await fixtureTrackerJson(hub, ['note', id, 'BLOCKED: missing credential for sandbox']);
+	const text = await trackerProcess(hub, ['blockers']).exited;
+	expect(text.code).toBe(0);
+	expect(text.stdout).toContain('reported in notes');
+	const sync = await fixtureTrackerJson(hub, ['blockers', '--sync']);
+	expect(sync).toMatchObject({ escalated: [], rechecked: [] });
+	expect(sync.blockers.groups[0].items[0]).toMatchObject({ id, kind: 'note' });
+}
 
 async function verifyCompetingOwners(
 	root: string,
