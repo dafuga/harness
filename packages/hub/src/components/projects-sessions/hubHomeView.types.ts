@@ -27,6 +27,8 @@ export interface HomeView {
 	work: ReturnType<typeof soonestWork>;
 	owner: boolean;
 	needsMac: boolean;
+	/** Computers linked to this account, online or not. */
+	linkedComputers: number;
 	trackerConnected: boolean;
 	routinesConnected: boolean;
 	quotaConnected: boolean;

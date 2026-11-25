@@ -89,7 +89,12 @@ export async function hostedFixture(page: Page, options: Partial<HostedState> = 
 		state.google.push(route.request().url());
 		return route.fulfill({ status: 200, contentType: 'text/javascript', body: gis });
 	});
-	await page.route('**/api/**', (route) => answer(route, state));
+	await page.route('**/api/**', (route) =>
+		// The development server serves modules under `src/routes/api/` from the same glob.
+		new URL(route.request().url()).pathname.startsWith('/src/')
+			? route.fallback()
+			: answer(route, state)
+	);
 	return state;
 }
 

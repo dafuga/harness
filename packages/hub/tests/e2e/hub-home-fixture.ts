@@ -59,6 +59,9 @@ async function projectFixture(page: Page, projects: FixtureProject[], held?: Pro
 
 export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 	const state = await hostedFixture(page, { actor: { ...ada, name: 'Daniel' } });
+	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
+		route.fulfill({ json: { computers: [] } })
+	);
 	await page.route('**/downloads/Harness-mac-arm64.zip', (route) =>
 		route.fulfill({ status: 200, contentType: 'text/html', body: '' })
 	);

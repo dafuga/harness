@@ -8,6 +8,7 @@ import { NativeSessionAdapter } from '../../../../adapters/networking-security/N
 import { RelaySocketAdapter } from '../../../../adapters/networking-security/RelaySocketAdapter';
 import { RemoteHostStoreAdapter } from '../../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { RemoteRegistrationAdapter } from '../RemoteRegistrationAdapter';
+import { createHomeSnapshotReader } from '../tracker-overview-publisher/createHomeSnapshotReader';
 
 /** Owns the Mac's relay connection and power events for the lifetime of the main process. */
 export function desktopRemote(options: DesktopRemoteOptions) {
@@ -29,6 +30,7 @@ export function desktopRemote(options: DesktopRemoteOptions) {
 		open: (url, headers) => sockets.open(url, headers),
 		shared: {
 			...stores,
+			home: createHomeSnapshotReader(process.env.HARNESS_HUB_HOME_PROVIDER_FILE),
 			trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim(),
 			trackerWrite:
 				phoneWriteDevice && phoneWriteToken

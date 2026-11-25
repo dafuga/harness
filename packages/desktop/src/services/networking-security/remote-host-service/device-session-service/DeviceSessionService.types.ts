@@ -6,6 +6,8 @@ export interface DeviceSessionOptions extends Omit<ClientProjectsOptions, 'emit'
 	host: { id: string; name: string };
 	device: { id: string; name: string };
 	grant: () => RemoteGrant;
+	/** The Home view of this computer, offered to the devices of the signed-in account. */
+	home?: () => Promise<unknown>;
 	trackerPull?: (input: Record<string, unknown>) => Promise<unknown>;
 	trackerPush?: (input: Record<string, unknown>, signal: AbortSignal) => Promise<unknown>;
 	epoch?: string;

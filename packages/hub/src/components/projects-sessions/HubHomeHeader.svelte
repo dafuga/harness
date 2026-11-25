@@ -19,6 +19,7 @@
 	let { view }: { view: HomeView } = $props();
 	const { session } = browserContext();
 	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
+	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
 	const machines = $derived(view.overview?.status === 'ready' ? view.overview.machines : []);
 	let accountOpen = $state(false);
 </script>
@@ -52,10 +53,12 @@
 			>{view.agents === null
 				? 'Loading your home…'
 				: view.trackerConnected
-					? homeHeadline(view.agents)
+					? homeHeadline(view.agents, liveSessions)
 					: view.needsMac
 						? 'Connect your Mac'
-						: 'Your workspace'}</hx-h1
+						: view.linkedComputers
+							? 'Your Mac is offline'
+							: 'Your workspace'}</hx-h1
 		>
 		<hx-p class="po-totals" role="status"
 			>{view.agents === null
@@ -64,9 +67,11 @@
 					? 'Open Harness on your Mac and sign in with the same Google account.'
 					: view.trackerConnected
 						? summaryLine(view.work, view.schedule?.length ?? 0)
-						: view.owner
-							? 'Check Tracker on your Mac to resume sharing your work.'
-							: 'Your shared projects and activity appear here when available.'}</hx-p
+						: view.linkedComputers
+							? 'Open Harness on a linked Mac and its running sessions appear here.'
+							: view.owner
+								? 'Check Tracker on your Mac to resume sharing your work.'
+								: 'Your shared projects and activity appear here when available.'}</hx-p
 		>
 		{#if machines.length || warning}
 			<hx-ul class="po-machines" aria-label="Computers and quota">

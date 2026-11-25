@@ -7,6 +7,7 @@ import {
 	remoteLimits,
 	remotePatterns,
 	type RemoteGrant,
+	type RemoteKeyPair,
 	type RemoteSocket
 } from '../../../../remote/src/index';
 import type { BrowserApi } from '../../utils/browserApi';
@@ -43,11 +44,40 @@ function browserSocket(path: string): RemoteSocket {
 /** A browser connection to one Mac. The Hub cookie stays out of the wire client and URLs. */
 export class BrowserComputerService {
 	private connection: DeviceConnectionService | undefined;
+	private ready: Promise<DeviceConnectionService> | undefined;
 	private readonly cancel = new AbortController();
 
-	constructor(private readonly api: BrowserApi) {}
+	constructor(
+		private readonly api: BrowserApi,
+		private readonly keys?: (hostId: string) => Promise<RemoteKeyPair>
+	) {}
 
 	async connect(hostId: string, lost: () => void): Promise<RemoteGrant['projects']> {
+		const connection = await this.open(hostId, lost);
+		try {
+			const projects = await connection.wire.request<RemoteGrant['projects']>('listProjects');
+			return projects.map(({ id, name }) => ({ id, name }));
+		} catch (error) {
+			this.close();
+			throw error;
+		}
+	}
+
+	/**
+	 * The Home view this computer shares with the signed-in account. The connection stays open
+	 * for the next read, and nothing is stored on the way.
+	 */
+	async home(hostId: string, lost: () => void): Promise<unknown> {
+		try {
+			this.ready ??= this.open(hostId, lost);
+			return await (await this.ready).wire.request<unknown>('homeSnapshot');
+		} catch (error) {
+			this.close();
+			throw error;
+		}
+	}
+
+	private async open(hostId: string, lost: () => void): Promise<DeviceConnectionService> {
 		if (!remotePatterns.hostId.test(hostId))
 			throw new RemoteFailure('failed', 'Computer address is invalid.');
 		const host = `/api/remote/hosts/${hostId}`;
@@ -65,8 +95,7 @@ export class BrowserComputerService {
 		});
 		try {
 			await connection.connect();
-			const projects = await connection.wire.request<RemoteGrant['projects']>('listProjects');
-			return projects.map(({ id, name }) => ({ id, name }));
+			return connection;
 		} catch (error) {
 			this.close();
 			throw error;
@@ -78,6 +107,7 @@ export class BrowserComputerService {
 		this.connection?.close();
 		this.connection?.wire.close();
 		this.connection = undefined;
+		this.ready = undefined;
 	}
 
 	private async credentials(host: string, hostId: string) {
@@ -95,8 +125,13 @@ export class BrowserComputerService {
 			deviceName: client.name,
 			platform: 'web' as const
 		};
-		const pending = await pairing.requestAccount(input, info.hostKey, (body) =>
-			this.api.send('POST', path, { pairingId, ...body }).then(() => undefined)
+		const keys = await this.keys?.(hostId);
+		this.cancel.signal.throwIfAborted();
+		const pending = await pairing.requestAccount(
+			input,
+			info.hostKey,
+			(body) => this.api.send('POST', path, { pairingId, ...body }).then(() => undefined),
+			keys
 		);
 		const deadline = Date.now() + 20_000;
 		do {

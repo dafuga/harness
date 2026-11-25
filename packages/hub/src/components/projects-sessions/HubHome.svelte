@@ -15,6 +15,10 @@
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot, readHome } from './hubHomeClient';
+	import {
+		LinkedHomeService,
+		type LinkedHome
+	} from '../../services/networking-security/LinkedHomeService';
 	import { soonestWork, staleReading } from './hubHomePresentation';
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
 	import HubHomeHeader from './HubHomeHeader.svelte';
@@ -31,33 +35,40 @@
 	const projectFlights = new SvelteMap<string, Promise<ProjectSnapshot>>();
 	let projectError = $state(false);
 	let home = $state<ReadHomeResult | null>(null);
+	/** What the account's own linked computers report over their encrypted device connections. */
+	let live = $state<LinkedHome | null>(null);
+	let linkedHome: { actor: string; service: LinkedHomeService } | undefined;
 	let now = $state(Date.now());
 	let flight = 0;
 	let opener: HTMLElement | null = null;
-	const snapshot = $derived(homeSnapshot(home));
+	const snapshot = $derived(live?.snapshot ?? homeSnapshot(home));
+	/** Both reads answered, or one already supplied data: loading ends once Home has something to say. */
+	const settled = $derived(Boolean(snapshot) || (home !== null && live !== null));
 	const routinesConnected = $derived(
 		Array.isArray(snapshot?.providers.routines) &&
 			!staleReading(snapshot.providers.routinesReadAt, now)
 	);
 	const overview = $derived(
-		snapshot?.overview ?? (home ? { status: 'unavailable' as const } : null)
+		snapshot?.overview ?? (settled ? { status: 'unavailable' as const } : null)
 	);
+	const linkedComputers = $derived(live?.linked ?? 0);
 	const projectsFailed = $derived(projectError && !list?.length);
 	const view: HomeView = $derived({
 		overview,
-		agents: snapshot?.agents ?? (home ? [] : null),
-		plans: snapshot?.plans ?? (home ? [] : null),
+		agents: snapshot?.agents ?? (settled ? [] : null),
+		plans: snapshot?.plans ?? (settled ? [] : null),
 		schedule:
 			snapshot?.scheduled.filter((run) => routinesConnected || run.source === 'tracker') ??
-			(home ? [] : null),
-		quota: snapshot?.providers.quota ?? (home ? [] : null),
+			(settled ? [] : null),
+		quota: snapshot?.providers.quota ?? (settled ? [] : null),
 		projects: list,
 		projectsFailed,
 		trackerProjects: projectsFailed && overview?.status === 'ready' ? overview : null,
 		projectSnapshots,
 		work: soonestWork(overview),
 		owner: home?.granted ?? false,
-		needsMac: home?.granted === true && !snapshot,
+		needsMac: settled && !snapshot && !linkedComputers,
+		linkedComputers,
 		trackerConnected: overview?.status === 'ready',
 		routinesConnected,
 		quotaConnected: Array.isArray(snapshot?.providers.quota),
@@ -71,6 +82,15 @@
 		void readHome(api).then((result) => {
 			if (request === flight && actor === session.actor?.id) home = result;
 		});
+		if (actor) {
+			if (linkedHome?.actor !== actor) {
+				linkedHome?.service.close();
+				linkedHome = { actor, service: new LinkedHomeService(api, actor) };
+			}
+			void linkedHome.service.read().then((result) => {
+				if (request === flight && actor === session.actor?.id) live = result;
+			});
+		}
 		void projects.list().then(
 			(value) => {
 				if (request === flight && actor === session.actor?.id) {
@@ -95,6 +115,8 @@
 		});
 		return () => {
 			flight++;
+			linkedHome?.service.close();
+			linkedHome = undefined;
 			stop();
 		};
 	});

@@ -13,6 +13,7 @@
 			"BrowserComputerService",
 			"BrowserComputerService.constructor",
 			"BrowserComputerService.connect",
+			"BrowserComputerService.home",
 			"BrowserComputerService.close"
 		]
 	},
@@ -25,6 +26,11 @@
 				"required": true
 			},
 			{
+				"name": "BrowserComputerService.constructor.keys",
+				"type": "(hostId: string) => Promise<RemoteKeyPair>",
+				"required": false
+			},
+			{
 				"name": "BrowserComputerService.connect.hostId",
 				"type": "string",
 				"required": true
@@ -33,12 +39,26 @@
 				"name": "BrowserComputerService.connect.lost",
 				"type": "() => void",
 				"required": true
+			},
+			{
+				"name": "BrowserComputerService.home.hostId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "BrowserComputerService.home.lost",
+				"type": "() => void",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "BrowserComputerService.connect",
 				"type": "Promise<RemoteGrant['projects']>"
+			},
+			{
+				"name": "BrowserComputerService.home",
+				"type": "Promise<unknown>"
 			},
 			{
 				"name": "BrowserComputerService.close",
@@ -73,12 +93,30 @@
 						"type": "Promise<RemoteGrant['projects']>"
 					}
 				],
-				"errors": [
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserComputerService.home",
+				"inputs": [
 					{
-						"name": "RemoteFailure",
-						"type": "thrown"
+						"name": "BrowserComputerService.home.hostId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "BrowserComputerService.home.lost",
+						"type": "() => void",
+						"required": true
 					}
 				],
+				"outputs": [
+					{
+						"name": "BrowserComputerService.home",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
@@ -102,6 +140,11 @@
 						"name": "BrowserComputerService.constructor.api",
 						"type": "BrowserApi",
 						"required": true
+					},
+					{
+						"name": "BrowserComputerService.constructor.keys",
+						"type": "(hostId: string) => Promise<RemoteKeyPair>",
+						"required": false
 					}
 				],
 				"outputs": [

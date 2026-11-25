@@ -15,7 +15,7 @@ import type { HostPairingFrame } from '../../../desktop/src/services/networking-
 const project = { id: 'local-' + 'b'.repeat(64), name: 'Desk project' };
 
 /** A synthetic signed-in Hub and Mac, speaking the real encrypted wire protocol. */
-export async function linkedComputersFixture(page: Page) {
+export async function linkedComputersFixture(page: Page, home?: unknown) {
 	const keys = await remoteKeys();
 	const hostId = await remoteIdentity(keys.publicKey);
 	const host = { id: hostId, name: 'Desk Mac', platform: 'darwin' };
@@ -62,7 +62,7 @@ export async function linkedComputersFixture(page: Page) {
 			json: { deviceId: device?.deviceId, sealed: device?.sealed, credential: randomCredential() }
 		})
 	);
-	await connectFixture(page, { host, keys, grant, device: () => device! });
+	await connectFixture(page, { host, keys, grant, home, device: () => device! });
 }
 
 async function connectFixture(
@@ -71,10 +71,12 @@ async function connectFixture(
 		host: { id: string; name: string; platform: string };
 		keys: RemoteKeyPair;
 		grant: RemoteGrant;
+		/** What the Mac answers to `homeSnapshot`; without it the method is not offered. */
+		home?: unknown;
 		device: () => Awaited<ReturnType<HostPairingService['approve']>>;
 	}
 ) {
-	const { host, keys, grant, device } = input;
+	const { host, keys, grant, home, device } = input;
 	await page.routeWebSocket('**/api/remote/hosts/' + host.id + '/connect/*', (socket) => {
 		const approved = device();
 		const channel = new SecureChannelService({
@@ -87,9 +89,9 @@ async function connectFixture(
 		});
 		const wire = new WireSessionService({
 			role: 'device',
-			methods: () => ['listProjects'],
+			methods: () => (home === undefined ? ['listProjects'] : ['listProjects', 'homeSnapshot']),
 			describe: () => ({ host, device: { id: approved.deviceId, name: 'Web browser' }, grant }),
-			handle: async () => [project]
+			handle: async (request) => (request.method === 'homeSnapshot' ? home : [project])
 		});
 		const link = wire.connect(
 			(text) => void channel.seal(text, (frame) => socket.send(JSON.stringify(frame)))

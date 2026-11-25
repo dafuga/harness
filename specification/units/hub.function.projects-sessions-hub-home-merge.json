@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-merge",
+	"uid": "u_dinthu4j65",
+	"kind": "function",
+	"title": "hubHomeMerge",
+	"responsibility": "Combines the Home views of several linked computers into one, showing work the Tracker syncs between them once.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeMerge.ts"],
+		"symbols": ["mergeHomeSnapshots"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "mergeHomeSnapshots.snapshots",
+				"type": "OwnerHomeSnapshot[]",
+				"required": true,
+				"description": "The validated Home view each online linked computer returned, in any order."
+			}
+		],
+		"outputs": [
+			{
+				"name": "mergeHomeSnapshots",
+				"type": "OwnerHomeSnapshot | null",
+				"description": "One Home view, or null when no computer answered. A single answer is returned unchanged."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "mergeHomeSnapshots",
+				"inputs": [
+					{
+						"name": "mergeHomeSnapshots.snapshots",
+						"type": "OwnerHomeSnapshot[]",
+						"required": true,
+						"description": "The validated Home view each online linked computer returned, in any order."
+					}
+				],
+				"outputs": [
+					{
+						"name": "mergeHomeSnapshots",
+						"type": "OwnerHomeSnapshot | null",
+						"description": "One Home view, or null when no computer answered. A single answer is returned unchanged."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -136,6 +136,11 @@
 				"required": true
 			},
 			{
+				"name": "DevicePairingService.requestAccount.keys",
+				"type": "RemoteKeyPair",
+				"required": false
+			},
+			{
 				"name": "DevicePairingService.poll.pending",
 				"type": "PendingPairing",
 				"required": true,
@@ -338,6 +343,11 @@
 						"name": "DevicePairingService.requestAccount.submit",
 						"type": "(body: RelayPairingRequest) => Promise<void>",
 						"required": true
+					},
+					{
+						"name": "DevicePairingService.requestAccount.keys",
+						"type": "RemoteKeyPair",
+						"required": false
 					}
 				],
 				"outputs": [
