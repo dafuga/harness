@@ -53,12 +53,7 @@ export class CapacitorEnvironmentAdapter {
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
 		const mac = computer.connect();
-		if (this.account && plugin.computers && plugin.connectAccountComputer) {
-			const list = plugin.computers.bind(plugin);
-			const connect = plugin.connectAccountComputer.bind(plugin);
-			phone.computers = async () => (await list()).computers;
-			phone.connectAccountComputer = async (input) => note(await connect(input));
-		}
+		this.pairWithAccount(phone, note);
 		const tracker = phoneTrackerTools(plugin);
 
 		const local = {
@@ -75,6 +70,18 @@ export class CapacitorEnvironmentAdapter {
 			mac
 		}).connect();
 		return { ...local, bridge, account: true };
+	}
+
+	private pairWithAccount(
+		phone: RemoteMobileControl,
+		note: (value: RemoteNativeStatus) => RemoteNativeStatus
+	) {
+		const { plugin } = this;
+		if (!this.account || !plugin.computers || !plugin.connectAccountComputer) return;
+		const list = plugin.computers.bind(plugin);
+		const connect = plugin.connectAccountComputer.bind(plugin);
+		phone.computers = async () => (await list()).computers;
+		phone.connectAccountComputer = async (input) => note(await connect(input));
 	}
 
 	private sessionPort(): Pick<Environment, 'sessions'> {

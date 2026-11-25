@@ -49,6 +49,7 @@ func trackerSealedCacheChecks() {
         try checkCiphertext(fixture, root: root)
         if ProcessInfo.processInfo.environment["HARNESS_IOS_SESSION_TIMING"] == "1" {
             try measureSealedRead(fixture, cache: restarted)
+            try measureRecordOpen(fixture.scope)
         }
         restarted.enter("a-different-fixture-account")
         let switched = try restarted.transcript(fixture.run, index: 0, keys: fixture.keys)
@@ -123,8 +124,8 @@ private func measureSealedRead(_ fixture: TrackerSealedFixture, cache: TrackerRe
         measurements.append(Double(DispatchTime.now().uptimeNanoseconds - start) / 1_000_000)
     }
     printSessionTiming("Fixture sealed SQLite read", measurements)
-    let p95 = measurements.sorted()[113]
-    check(p95 <= 100, "fixture sealed SQLite text read stays within the 100 ms p95 budget")
+    let ordered = measurements.sorted()
+    check(ordered[59] <= 50 && ordered[113] <= 100, "fixture sealed SQLite text read stays within the p50 and p95 budgets")
     var info = mach_task_basic_info()
     var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size / MemoryLayout<integer_t>.size)
     let result = withUnsafeMutablePointer(to: &info) { pointer in
@@ -133,4 +134,20 @@ private func measureSealedRead(_ fixture: TrackerSealedFixture, cache: TrackerRe
         }
     }
     if result == KERN_SUCCESS { print("Native check process RSS after sealed read: \(info.resident_size) bytes") }
+}
+
+
+private func measureRecordOpen(_ scope: SealedScopeKeys) throws {
+    let data = Data(repeating: 65, count: 100 * 1024)
+    let id = try scope.objectId(kind: "measurement", localId: "synthetic-100-kib")
+    let envelope = try SealedRecord.seal(data, keys: scope, object: SealedObjectRef(objectId: id, revision: 1))
+    var durations: [Double] = []
+    for _ in 0..<120 {
+        let start = DispatchTime.now().uptimeNanoseconds
+        guard try SealedRecord.open(envelope, keys: scope).json == data else {
+            return check(false, "100 KiB fixture opens to its original bytes")
+        }
+        durations.append(Double(DispatchTime.now().uptimeNanoseconds - start) / 1_000_000)
+    }
+    printSessionTiming("Fixture CryptoKit 100 KiB record open", durations)
 }
