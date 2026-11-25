@@ -53,8 +53,9 @@ export async function prepareSignupForm(page: Page, signup: VaultSignup) {
 	const result = origin + form.result;
 	await page.goto(url);
 	await requireSignupForm(page, signup);
+	await page.locator(form.identity).fill(identity);
+	await requireSignupForm(page, signup);
 	return async (password: Buffer): Promise<void> => {
-		await page.locator(form.identity).fill(identity);
 		await requireSignupForm(page, signup);
 		await page.locator(form.password).fill(password.toString('ascii'));
 		if (form.confirmation) await page.locator(form.confirmation).fill(password.toString('ascii'));
