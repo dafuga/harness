@@ -86,7 +86,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['unblock', { note: text }],
 	['ignore', { reason: text, until: text }],
 	['unignore', { note: text }],
-	['answer', { done: flag, option: text, confirmed: flag }],
+	['answer', { done: flag, option: text, confirmed: flag, 'keep-blocked': flag }],
 	['resolve', { done: flag }],
 	['done', { note: text, failed: flag, occurrence: text, 'next-step': text, force: flag }],
 	['launch', launchOptions],

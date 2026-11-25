@@ -11,7 +11,8 @@
 		"source": [
 			"src/services/projects-sessions/WatchdogPaneService.ts",
 			"src/services/projects-sessions/WatchdogPaneService.types.ts",
-			"src/services/projects-sessions/watchdog-pane-service/codexStartupMenus.ts"
+			"src/services/projects-sessions/watchdog-pane-service/codexStartupMenus.ts",
+			"src/services/projects-sessions/watchdog-pane-service/paneBackgroundWork.ts"
 		],
 		"symbols": [
 			"trackerWatchdogSessionName",
@@ -31,7 +32,8 @@
 			"WatchdogItem",
 			"WatchdogRun",
 			"WatchdogScan",
-			"codexStartupMenus"
+			"codexStartupMenus",
+			"paneBackgroundWork"
 		]
 	},
 	"contract": {
@@ -95,6 +97,11 @@
 			{
 				"name": "WatchdogPaneService.matchesRun.run",
 				"type": "WatchdogRun",
+				"required": true
+			},
+			{
+				"name": "paneBackgroundWork.pane",
+				"type": "WatchdogPane",
 				"required": true
 			}
 		],
@@ -289,6 +296,24 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "paneBackgroundWork",
+				"inputs": [
+					{
+						"name": "paneBackgroundWork.pane",
+						"type": "WatchdogPane",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "paneBackgroundWork",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

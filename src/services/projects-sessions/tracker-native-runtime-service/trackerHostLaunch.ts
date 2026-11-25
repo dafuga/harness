@@ -58,7 +58,7 @@ export function trackerHostLaunch(
 		now: effects.now,
 		automaticEnabled: effects.automaticEnabled
 	});
-	const admit = trackerHostAdmission(store, { config, adapter, routeFor }, host.inventory);
+	const admit = trackerHostAdmission(store, { config, adapter, routeFor });
 	return {
 		runner: trackerCapacityRunner(host, store, config, repositories),
 		sessions: host.sessions,
@@ -97,10 +97,7 @@ function trackerCapacityRunner(
 	return {
 		...host.runner,
 		capacity: () => ({
-			freeSlots: Math.max(
-				0,
-				(config.maxConcurrent ?? 2) - occupiedHostSlots(store, host.inventory())
-			),
+			freeSlots: Math.max(0, (config.maxConcurrent ?? 2) - occupiedHostSlots(store)),
 			projects: adapterProjectCapacity(config, repositories)
 		})
 	};

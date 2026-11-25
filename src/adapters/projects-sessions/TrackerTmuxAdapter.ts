@@ -2,6 +2,7 @@
 import type { WatchdogPane } from '../../services/projects-sessions/WatchdogPaneService.types';
 import { TrackerHostProcessError } from './tracker-host-process-adapter/TrackerHostProcessError';
 import { WatchdogPaneService } from '../../services/projects-sessions/WatchdogPaneService';
+import { paneBackgroundWork } from '../../services/projects-sessions/watchdog-pane-service/paneBackgroundWork';
 import type {
 	TrackerTmuxAdapterConfig,
 	TrackerTmuxClose,
@@ -29,6 +30,14 @@ const noServer =
 	/^(?:no server running on |no sessions|error connecting to .+ \(No such file or directory\))/i;
 const unsafeInput = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u;
 const decisions = new WatchdogPaneService();
+
+function closableScreen(
+	{ cli, force, keepBackground }: TrackerTmuxClose,
+	pane: WatchdogPane
+): boolean {
+	if (keepBackground && (pane.screen === null || paneBackgroundWork(pane))) return false;
+	return force === true || decisions.idlePrompt(pane) === cli;
+}
 
 /** Observe the legacy sockets without opening a tmux server, and send only after a fresh identity check. */
 export class TrackerTmuxAdapter {
@@ -81,15 +90,15 @@ export class TrackerTmuxAdapter {
 		);
 	}
 
-	/** Close an unattended owned run only while the same single pane is idle. */
+	/** Close an unattended owned run only while the same single pane is idle or abandoned. */
 	async closeIdle(input: TrackerTmuxClose, signal: AbortSignal): Promise<boolean> {
-		const { cli, attempt, stillComplete } = input;
+		const { attempt, stillComplete } = input;
 		const names = closePaneNames(input);
 		if (!names) return false;
 		const candidate = closePaneCandidate(input, await this.layouts(signal, names));
 		if (!candidate) return false;
 		const observed = await this.capture(candidate, signal);
-		if (decisions.idlePrompt(observed.pane) !== cli || !stillComplete()) return false;
+		if (!closableScreen(input, observed.pane) || !stillComplete()) return false;
 		const { socket, id, raw } = observed;
 		const identity = `#{==:${trackerPaneFormat},${raw}}`;
 		const owner = `#{==:#{HARNESS_TRACKER_ATTEMPT},${attempt ?? ''}}`;

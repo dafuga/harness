@@ -1,6 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
+import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { z } from 'zod';
-import type { WatchdogCli } from '../WatchdogPaneService.types';
 import type { TrackerDispatchRunner } from '../TrackerDispatchSchedulerService.types';
 import type {
 	TrackerRunReceipt,
@@ -59,10 +59,18 @@ export interface TrackerHostRunnerOptions {
 export interface CompletedTrackerPaneRun {
 	id: number;
 	itemId: string;
-	cli: WatchdogCli;
-	auto: string | null;
+	cli: 'codex' | 'claude';
+	outcome: string | null;
+	auto: string;
 	attempt: number;
 	sessionId: string | null;
 	endedAt: number;
-	statusClock: string | null;
+	itemClosed: number;
+}
+
+export interface TrackerSessionSweep {
+	tmux: TrackerTmuxAdapter;
+	panes: readonly WatchdogPane[];
+	node: string;
+	now: number;
 }

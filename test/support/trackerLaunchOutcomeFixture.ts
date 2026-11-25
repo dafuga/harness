@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs';
 import type { DatabaseSync } from 'node:sqlite';
 import { expect } from 'vitest';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
@@ -185,14 +184,6 @@ export async function verifyIdleCapacityQueue(
 	);
 	expect(watchLaunchRequests(runtime.store, at + 1)).toBe(false);
 	verifyUrgentQueueAlert(runtime);
-}
-export async function expectPaneRetained(
-	runtime: TrackerNativeRuntimeService,
-	signal: AbortSignal,
-	closed: string
-) {
-	await runtime.scheduler!.tick(signal);
-	expect(existsSync(closed)).toBe(false);
 }
 function verifyUrgentQueueAlert(runtime: TrackerNativeRuntimeService) {
 	const id = 'urgent0001';

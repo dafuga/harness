@@ -2,21 +2,15 @@
 import type {
 	TrackerDispatchDecision,
 	TrackerDispatchEvent,
-	TrackerDispatchItem,
 	TrackerDispatchPolicy,
 	TrackerDispatchSnapshot,
 	TrackerRunReceipt,
 	TrackerSessionEvidence
 } from '../TrackerDispatcherService.types';
-import {
-	attemptKey,
-	automaticRequestHold,
-	hasOpenSession,
-	matchesRequest,
-	skip
-} from './launchEligibility';
+import { matchesRequest, skip } from './launchEligibility';
 import { retireUnstartedRun } from './runClaim';
 import { completeRun, monitorRun } from './runMonitor';
+import { matchesSession, recordFinalReport, reopenAnswered, resumeRun } from './runResume';
 import { etaFor, failRun, recordRun, reviseRun } from './runReceipt';
 
 export function transitionRun(
@@ -38,6 +32,10 @@ export function transitionRun(
 			return recordVerification(snapshot, run, event, clock);
 		case 'resume':
 			return resumeRun(snapshot, run, event.session, clock);
+		case 'answered-without-session':
+			return reopenAnswered(snapshot, run, clock);
+		case 'final-report':
+			return recordFinalReport(snapshot, run, event, clock.now);
 		case 'reject':
 			return rejectRun(snapshot, run, event.reason, clock);
 	}
@@ -65,15 +63,6 @@ function adoptSession(
 			started_at: session.startedAt,
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
 		})
-	);
-}
-
-function matchesSession(run: TrackerRunReceipt, session: TrackerSessionEvidence, now: number) {
-	return (
-		session.key === attemptKey(run) &&
-		Boolean(session.id) &&
-		session.startedAt >= run.queued_at &&
-		session.startedAt <= now
 	);
 }
 
@@ -126,63 +115,6 @@ function recordVerification(
 			usage: event.usage
 		},
 		{ policy, now }
-	);
-}
-
-function resumeRun(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	session: TrackerSessionEvidence,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item } = snapshot;
-	if (!canResume(snapshot, run, { policy, now }))
-		return skip('ignored', 'no current answer for this blocked attempt');
-	if (
-		!matchesSession(run, session, now) ||
-		session.state !== 'live' ||
-		session.id !== (run.host_session_id ?? run.session_id)
-	) {
-		return skip('ignored', 'the original session is no longer live');
-	}
-	return recordRun(
-		reviseRun(run, {
-			state: 'running',
-			outcome: null,
-			failure_reason: null,
-			ended_at: null,
-			resumed_at: Math.max(now, (run.resumed_at ?? 0) + 1),
-			eta_at: etaFor(item, policy, now)
-		}),
-		{ status: 'in_progress', blockedReason: null }
-	);
-}
-
-function canResume(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item, runs } = snapshot;
-	return (
-		run.state === 'finished' &&
-		run.outcome === 'blocked' &&
-		Boolean(run.host_session_id ?? run.session_id) &&
-		answeredBlock(item) &&
-		item &&
-		!automaticRequestHold({ ...item, status: 'in_progress' }, policy, now) &&
-		matchesRequest(item, run, policy) &&
-		!hasOpenSession(snapshot, policy, now, run) &&
-		!runs.some((later) => later.node === run.node && later.id > run.id && later.started_at !== null)
-	);
-}
-
-function answeredBlock(item: TrackerDispatchItem | null) {
-	return (
-		item?.answeredCurrentBlock === true &&
-		!item.awaitingAnswer &&
-		!item.deleted &&
-		(item.status === 'blocked' || item.status === 'in_progress')
 	);
 }
 
