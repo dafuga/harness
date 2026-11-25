@@ -6,7 +6,7 @@ import { blockSpans, type BlockSpan } from './block-spans/blockSpans';
 import { maskSource } from './maskSource';
 import { normalizeType, parseParameters } from './parseParameters';
 import { bodyEnd, matchingBrace, sourceNesting, type SourceNesting } from './sourceNesting';
-import { scanSymbolErrors } from './scanSymbolErrors';
+import { callsCliFail, scanSymbolErrors } from './scanSymbolErrors';
 
 const callable = /^[ \t]*export\s+(?:default\s+)?(?:async\s+)?function\s*\*?\s*([\w$]+)/gm;
 const variable = /^[ \t]*export\s+(?:const|let|var)\s+([\w$]+)\b/gm;
@@ -33,7 +33,7 @@ export function scanExports(code: string): ExportScan {
 	const symbols = located
 		.sort((left, right) => left.index - right.index)
 		.map(({ index: _index, ...symbol }) => symbol);
-	return { symbols: scanSymbolErrors(code, symbols), errors: thrownErrors(masked) };
+	return { symbols: scanSymbolErrors(code, symbols), errors: thrownErrors(masked, code) };
 }
 
 function matches(source: Source, pattern: RegExp): RegExpExecArray[] {
@@ -151,9 +151,9 @@ function listSymbols(match: RegExpExecArray): Located[] {
 		.map((name) => ({ index: match.index, name, kind, inputs: [] }) satisfies Located);
 }
 
-function thrownErrors(masked: string): string[] {
+function thrownErrors(masked: string, code: string): string[] {
 	const thrown = [...masked.matchAll(/\bthrow\s+new\s+([\w$.]+)/g)].map((match) => match[1]);
-	const failed = /\bfail\s*\(/.test(masked) ? ['ExpectedCliError'] : [];
+	const failed = callsCliFail(code) ? ['ExpectedCliError'] : [];
 	const http = [...masked.matchAll(/\berror\(\s*(\d{3})\b/g)].map(
 		(match) => `HttpError ${match[1]}`
 	);

@@ -20,7 +20,8 @@ describe('scanSymbolErrors', () => {
 			["error(404, 'Missing')", 'HttpError 404'],
 			["fail('Invalid request')", 'ExpectedCliError']
 		]) {
-			const [result] = scanSymbolErrors(`export function load() { ${call}; }`, [symbol('load')]);
+			const code = `import { fail } from '../../core/development-tooling/errors';\nexport function load() { ${call}; }`;
+			const [result] = scanSymbolErrors(code, [symbol('load')]);
 			expect(result).toMatchObject({ errors: [error], errorStatus: 'found' });
 		}
 	});

@@ -36,10 +36,6 @@
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
-				"type": "thrown"
-			},
-			{
 				"name": "SealedError",
 				"type": "thrown"
 			}
@@ -68,7 +64,7 @@
 				],
 				"errors": [
 					{
-						"name": "ExpectedCliError",
+						"name": "SealedError",
 						"type": "thrown"
 					}
 				],
