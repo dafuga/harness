@@ -11,13 +11,10 @@ import type {
 	RemoteMobileControl,
 	RemoteNativeEvents,
 	RemoteNativePlugin,
-	RemoteNativeStatus,
-	SessionNativePlugin
+	RemoteNativeStatus
 } from '../../../models/development-tooling/Environment.types';
 
 export const remotePluginName = 'HarnessRemote';
-
-const sessionPluginName = 'HarnessSession';
 
 export const accountPluginName = 'HarnessAccount';
 
@@ -53,15 +50,18 @@ export class CapacitorEnvironmentAdapter {
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
 		const mac = computer.connect();
-		this.pairWithAccount(phone, note);
+		if (this.account && plugin.computers && plugin.connectAccountComputer) {
+			const list = plugin.computers.bind(plugin);
+			const connect = plugin.connectAccountComputer.bind(plugin);
+			phone.computers = async () => (await list()).computers;
+			phone.connectAccountComputer = async (input) => note(await connect(input));
+		}
 		const tracker = phoneTrackerTools(plugin);
-
 		const local = {
 			kind: 'capacitor',
 			local: false,
 			phone,
-			...(tracker ? { tracker } : {}),
-			...this.sessionPort()
+			...(tracker ? { tracker } : {})
 		} as const;
 		if (!this.account) return { ...local, bridge: mac };
 		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();
@@ -70,23 +70,6 @@ export class CapacitorEnvironmentAdapter {
 			mac
 		}).connect();
 		return { ...local, bridge, account: true };
-	}
-
-	private pairWithAccount(
-		phone: RemoteMobileControl,
-		note: (value: RemoteNativeStatus) => RemoteNativeStatus
-	) {
-		const { plugin } = this;
-		if (!this.account || !plugin.computers || !plugin.connectAccountComputer) return;
-		const list = plugin.computers.bind(plugin);
-		const connect = plugin.connectAccountComputer.bind(plugin);
-		phone.computers = async () => (await list()).computers;
-		phone.connectAccountComputer = async (input) => note(await connect(input));
-	}
-
-	private sessionPort(): Pick<Environment, 'sessions'> {
-		if (!this.account || !Capacitor.isPluginAvailable(sessionPluginName)) return {};
-		return { sessions: registerPlugin<SessionNativePlugin>(sessionPluginName) };
 	}
 
 	private listen<K extends keyof RemoteNativeEvents>(
