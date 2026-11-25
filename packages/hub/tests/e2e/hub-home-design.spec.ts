@@ -4,23 +4,12 @@ import { hubHomeFixture } from './hub-home-fixture';
 /** Design details from specification/designs/hub-home that the screenshot matrix does not assert. */
 test.setTimeout(60000);
 
-async function home(
-	page: Page,
-	mode: 'default' | 'busy' | 'empty',
-	width = 1440,
-	withOptions = true
-) {
+async function home(page: Page, mode: 'default' | 'busy' | 'empty', width = 1440) {
 	await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
 	await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
-	const fixture = await hubHomeFixture(page, mode);
-	if (!withOptions)
-		for (const agent of fixture.snapshot.agents) {
-			delete agent.options;
-			delete agent.confirm;
-		}
+	await hubHomeFixture(page, mode);
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-	return fixture;
 }
 
 function card(page: Page, title: string) {
@@ -118,10 +107,7 @@ test('the phone chat step names the agent in the dialog header', async ({ page }
 });
 
 test('Daniel can add a session he created so it is listed under Agents', async ({ page }) => {
-	const fixture = await home(page, 'default');
-	const [chief] = fixture.snapshot.agents;
-	fixture.snapshot.agents.push({ ...chief, id: 'mine', name: 'mine', question: null });
-	await page.reload();
+	await home(page, 'default');
 	await expect(card(page, 'Agents').locator('.hh-agent-list')).not.toContainText('mine');
 	const dialog = await openDialog(page, 'Agents');
 	await dialog.getByLabel('Tracker agent of a session you created').fill('mine');

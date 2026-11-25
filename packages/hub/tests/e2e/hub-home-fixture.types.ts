@@ -1,5 +1,3 @@
-import type { HomeAgentState } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
-
 import type { hubHomeFixture } from './hub-home-fixture';
 
 export type CapturePosition = readonly [string, 'dark' | 'light', HomeFixtureState];
@@ -16,8 +14,6 @@ export type FixtureProject = {
 	hash: string;
 };
 export interface MockupHomeData {
-	machines: { name: string; status: 'ok' | 'busy' | 'overloaded' | 'offline' }[];
-	agents: { name: string; state: HomeAgentState; machine: string; model: string; task: string }[];
 	plans: {
 		title: string;
 		project: string;
@@ -36,7 +32,6 @@ export interface MockupHomeData {
 		paused?: boolean;
 	}[];
 	projects: FixtureProject[];
-	wip: { title: string; project: string; eta: string; tone?: string; status: string }[];
 	quota: {
 		provider: string;
 		plan: string;

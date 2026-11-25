@@ -59,7 +59,8 @@ async function linkedHome(page: Page, size: keyof typeof sizes) {
 		confirm: undefined,
 		messages: []
 	};
-	snapshot.agents.push(harbor);
+	snapshot.agents = snapshot.agents.map((agent) => (agent.id === harbor.id ? harbor : agent));
+	snapshot.openAsks = snapshot.openAsks?.filter((ask) => ask.agentId !== harbor.id);
 	const chats: { id: string }[] = [];
 	await linkedComputersFixture(
 		page,

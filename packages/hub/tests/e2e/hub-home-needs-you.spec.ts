@@ -80,7 +80,7 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 			.toMatchObject({
 				agentId: 'cos',
 				kind: 'message',
-				text: expect.stringMatching(/What are the risks\?.*[\s\S]*item-harbor[\s\S]*Ship harbor\?/)
+				text: expect.stringMatching(/What are the risks\?.*[\s\S]*harbor-ask[\s\S]*Ship harbor\?/)
 			});
 		await latest.getByRole('button', { name: /Other/ }).click();
 		await field.fill('Ship it Friday,\nafter the freeze.');
@@ -88,7 +88,7 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		await expect.poll(() => fixture.sent.length).toBe(2);
 		expect(fixture.sent[1]).toMatchObject({
 			agentId: 'harbor',
-			itemId: 'item-harbor',
+			itemId: 'harbor-ask',
 			kind: 'answer',
 			question: 'Ship harbor?',
 			text: 'Ship it Friday,\nafter the freeze.'
@@ -129,7 +129,7 @@ test('a choice tapped on a row answers that ask without opening the chat', async
 	release();
 	await expect.poll(() => fixture.sent.length).toBe(1);
 	expect(fixture.sent[0]).toMatchObject({
-		itemId: 'item-harbor',
+		itemId: 'harbor-ask',
 		kind: 'answer',
 		question: 'Ship harbor?',
 		text: 'Hold harbor',
@@ -146,7 +146,7 @@ test('a choice tapped on a row answers that ask without opening the chat', async
 	result = 'sent';
 	await hold.click();
 	await expect(harbor.getByRole('status')).toContainText('Answer sent');
-	const reflagged = fixture.snapshot.agents.find((agent) => agent.id === 'harbor')!;
+	const reflagged = fixture.snapshot.openAsks!.find((ask) => ask.agentId === 'harbor')!;
 	reflagged.since = new Date(Date.parse(reflagged.since) + 1000).toISOString();
 	await expect(hold).toBeEnabled();
 	await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -179,7 +179,7 @@ test('with nothing stored on the Hub, a row tap goes to the linked Mac over its 
 	await page.route('**/api/hub-home', (route) =>
 		route.fulfill({ json: { granted: false, snapshot: null } })
 	);
-	const asked = fixture.snapshot.agents.find((agent) => agent.options);
+	const asked = fixture.snapshot.openAsks?.find((ask) => ask.agentId === 'harbor');
 	if (!asked?.options) throw new Error('Expected a fixture ask with choices');
 	delete asked.confirm;
 	const chats: unknown[] = [];

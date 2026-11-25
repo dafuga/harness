@@ -108,7 +108,7 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 	);
 	await page.clock.setFixedTime(homeClock);
 	const data = mockup(mode);
-	const snapshot = homeData(data);
+	const snapshot = await homeData(data, mode);
 	await planArtifacts(page, snapshot.plans[0]);
 	if (mode === 'busy')
 		snapshot.providers.routinesReadAt = new Date(homeClock - 10_800_000).toISOString();
@@ -186,7 +186,7 @@ export async function unavailableHome(
 	if (fixture.snapshot.overview.status !== 'ready')
 		throw new Error('Expected a ready Tracker fixture');
 	const name = fixture.snapshot.overview.projects[0].agent;
-	await expect(dialog.getByRole('heading', { name, exact: true })).toBeVisible();
+	await expect(dialog.getByRole('link', { name: `Open ${name}`, exact: true })).toBeVisible();
 	await expect(dialog.getByRole('link', { name: 'Open Project Overview' })).toHaveAttribute(
 		'href',
 		'/tracker-overview'
@@ -224,26 +224,13 @@ export async function needsYouHome(
 		reducedMotion: 'reduce'
 	});
 	const fixture = await hubHomeFixture(page, 'default');
-	const [chief] = fixture.snapshot.agents;
-	if (change === 'two-asks')
-		fixture.snapshot.agents.push({
-			...chief,
-			id: 'harbor',
-			name: 'harbor',
-			itemId: 'item-harbor',
-			question: 'Ship harbor?',
-			confirm: undefined,
-			messages: [],
-			options: [
-				{ label: 'Ship harbor now', effect: 'Merges and releases.', recommended: true },
-				{ label: 'Hold harbor', effect: 'Waits a day.' }
-			]
-		});
-	else
+	if (change === 'no-choices') {
+		fixture.snapshot.openAsks = [];
 		for (const agent of fixture.snapshot.agents) {
 			delete agent.options;
 			delete agent.confirm;
 		}
+	}
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	await expect(page.getByRole('region', { name: 'Agents', exact: true })).toBeVisible();
