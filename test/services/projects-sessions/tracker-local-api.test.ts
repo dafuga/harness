@@ -14,9 +14,7 @@ let now: number;
 beforeEach(() => {
 	now = Date.UTC(2026, 10, 21, 12);
 	database = new DatabaseSync(':memory:');
-	store = new TrackerPersistenceService(database, 'fixture-mac', {
-		now: () => now
-	});
+	store = new TrackerPersistenceService(database, 'fixture-mac', { now: () => now });
 	const recurring = new TrackerRecurringRepository(store);
 	api = new TrackerLocalApiService(store, new TrackerItemReadRepository(database), {
 		now: () => now,
