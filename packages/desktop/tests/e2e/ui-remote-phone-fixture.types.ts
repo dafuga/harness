@@ -11,6 +11,7 @@ export interface PhoneOptions {
 	device: { id: string; name: string };
 	seenAt: string;
 	granted: { id: string; name: string }[];
+	homeSnapshot?: object;
 }
 
 export interface PhoneState {

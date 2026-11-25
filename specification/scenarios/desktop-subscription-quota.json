@@ -6,7 +6,9 @@
 	"units": ["desktop.page.root", "desktop.component.projects-sessions-home-subscription-quota"],
 	"states": [
 		{ "id": "home", "title": "Home with a subscription quota control", "coverage": "required" },
-		{ "id": "quota", "title": "Quota dialog with two providers", "coverage": "required" }
+		{ "id": "quota", "title": "Quota dialog with two providers", "coverage": "required" },
+		{ "id": "phone-home", "title": "iPhone Home linked to a Mac", "coverage": "required" },
+		{ "id": "phone-quota", "title": "iPhone quota for the linked Mac", "coverage": "required" }
 	],
 	"viewports": [
 		{ "id": "desktop", "width": 1440, "height": 900 },
@@ -34,6 +36,30 @@
 			"build": "desktop-renderer",
 			"provenance": "actual-capture",
 			"capture": "viewport"
+		},
+		{
+			"id": "iphone-home-quota-screens",
+			"kind": "screenshot",
+			"states": ["phone-home", "phone-quota"],
+			"viewports": ["mobile"],
+			"required": true,
+			"build": "desktop-renderer",
+			"provenance": "actual-capture",
+			"capture": "viewport"
+		},
+		{
+			"id": "native-home-quota-workload",
+			"kind": "benchmark",
+			"states": ["home", "quota"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true
+		},
+		{
+			"id": "iphone-home-quota-workload",
+			"kind": "benchmark",
+			"states": ["phone-home", "phone-quota"],
+			"viewports": ["mobile"],
+			"required": true
 		}
 	]
 }
