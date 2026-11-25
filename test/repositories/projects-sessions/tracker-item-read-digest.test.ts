@@ -77,10 +77,7 @@ test('digest returns counts, unanswered asks and the configured local day', () =
 		local_time: '2026-07-02 00:30 Europe/Lisbon',
 		today: '2026-07-02',
 		blocked: [blocked],
-		needs_daniel: [
-			blocked,
-			doneItem
-		],
+		needs_daniel: [blocked, doneItem],
 		overdue: [blocked, summary('abc400', 'Resolved item', { due: '2026-06-30' })],
 		due_today: [
 			summary('abc100more', 'Timestamp today', {
@@ -171,14 +168,21 @@ test('pings are separate from Daniel decisions, collapsed, and never hide an old
 			status: 'in_progress',
 			needs_daniel: 1,
 			question: `daniel-primary-mbp: Session auto-${id}-r1 is idle again after a watchdog check-in. Chief of Staff, please inspect the session.`,
-			clocks: JSON.stringify({ needs_daniel: `${String(NOW - hours * 3_600_000).padStart(15, '0')}-000000-n` })
+			clocks: JSON.stringify({
+				needs_daniel: `${String(NOW - hours * 3_600_000).padStart(15, '0')}-000000-n`
+			})
 		});
 	for (const [index, id] of ['pa0001', 'pa0002', 'pa0003', 'pa0004', 'pa0005', 'pa0006'].entries())
 		ping(id, index);
 	const digest = fixture.repository.digest(NOW);
-	expect(digest.pings.map(({ id }) => id)).toEqual(
-		['pa0006', 'pa0005', 'pa0004', 'pa0003', 'pa0002', 'pa0001']
-	);
+	expect(digest.pings.map(({ id }) => id)).toEqual([
+		'pa0006',
+		'pa0005',
+		'pa0004',
+		'pa0003',
+		'pa0002',
+		'pa0001'
+	]);
 	expect(digest.daniel_decisions.map(({ id }) => id)).toEqual(['abc100', 'abc200']);
 	expect(digest.counts).toMatchObject({ needs_daniel: 8, daniel_decisions: 2, pings: 6 });
 	const text = fixture.repository.digestText(NOW);
