@@ -139,10 +139,7 @@ export class CapacitorBridgeAdapter {
 	}
 
 	private async send(method: RemoteMethod, input: object = {}): Promise<RemoteNativeAnswer> {
-		if (!this.granted.has(method))
-			throw Object.assign(new RemoteFailure('method-denied', notAttached), {
-				code: 'method-denied'
-			});
+		if (!this.granted.has(method)) throw new RemoteFailure('method-denied', notAttached);
 		const body: Input = { ...input };
 		if (!projectlessMethods.includes(method)) body.projectId ??= this.selected ?? undefined;
 		if (revisionMethods.includes(method)) body.revision = this.revision(body.projectId);
