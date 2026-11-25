@@ -2,11 +2,9 @@
 	"name": "hub-home-live-release-proof",
 	"goal": "Require signed-in Hub Home release proof to match stable live Tracker runs on the target account’s linked Macs, including a nonzero run sample.",
 	"createdAt": "2026-11-25T19:48:30.477Z",
-	"updatedAt": "2026-11-25T19:54:37.643Z",
+	"updatedAt": "2026-11-25T19:57:01.480Z",
 	"template": "regression-prevention",
-	"templateLineage": [
-		"regression-prevention"
-	],
+	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T19:56:58.800Z",
+			"evidence": "The unchanged focused Hub check passed 7 cases in a clean snapshot at 8111dba321, paired to 24eaa5e82c."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T19:57:01.480Z",
+			"evidence": "The isolated pre-guard snapshot accepted zero working with two live runs and failed the same mismatch cases; the fix rejected zero, undercount and overcount. The real CLI also rejected a supplied zero-working summary against 17 live Tracker runs."
 		},
 		{
 			"id": "verify",
