@@ -22,8 +22,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/routes/+page.svelte"],
-		"symbols": ["+page"]
+		"source": [
+			"packages/hub/src/routes/+page.svelte"
+		],
+		"symbols": [
+			"+page"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -32,7 +36,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "Renders the sign-in page for visitors and Hub Home for a verified Google actor. An approved browser can also open cached sealed sessions on Home."
+				"description": "Renders Google sign-in or Home with default cards, busy previews, empty, loading and unavailable states. For an approved browser, sealed-cached shows a prior transcript while sync is unavailable and sealed-live shows the transcript alongside authenticated live output."
 			}
 		],
 		"errors": [
