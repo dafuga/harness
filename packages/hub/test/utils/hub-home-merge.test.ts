@@ -11,6 +11,8 @@ const agent = (id: string, state: HomeAgent['state'], since: string): HomeAgent 
 	id,
 	name: id,
 	state,
+	sessions: state === 'working' ? 1 : 0,
+	tasks: [],
 	itemId: null,
 	task: 'Synthetic task',
 	machine: null,
@@ -90,4 +92,20 @@ test('the headline reflects running sessions even before any agent card exists',
 	expect(homeHeadline([])).toBe('Nothing is running yet');
 	expect(homeHeadline([], 11)).toBe('11 sessions running');
 	expect(homeHeadline([agent('a', 'working', '2026-11-25T10:00:00Z')], 11)).toBe('1 agent working');
+});
+
+test('an agent with a flag and live runs still counts as working, and sessions are not summed across computers', () => {
+	const live = (sessions: number, titles: string[]): HomeAgent => ({
+		...agent('shared', 'needs-you', '2026-11-25T10:00:00Z'),
+		sessions,
+		tasks: titles.map((title) => ({ itemId: title, title, machine: null }))
+	});
+	const merged = mergeHomeSnapshots([
+		snapshot([live(3, ['a', 'b', 'c'])], null),
+		snapshot([live(2, ['c', 'd'])], null)
+	]);
+	expect(merged?.agents).toHaveLength(1);
+	expect(merged?.agents[0]).toMatchObject({ sessions: 3, state: 'needs-you' });
+	expect(merged?.agents[0].tasks.map((task) => task.title)).toEqual(['a', 'b', 'c', 'd']);
+	expect(homeHeadline(merged?.agents ?? [])).toBe('1 agent working, 1 needs you');
 });

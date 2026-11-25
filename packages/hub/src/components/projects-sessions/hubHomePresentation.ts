@@ -46,8 +46,21 @@ export function count(value: number, singular: string, plural: string = `${singu
 	return `${value} ${value === 1 ? singular : plural}`;
 }
 
+/** Working means a run is live now, even when the agent also has a question for you. */
+export function isWorking(agent: HomeAgent) {
+	return agent.sessions > 0;
+}
+
+/** The task line under an agent: its live sessions and the task being worked, else its latest task. */
+export function agentActivity(agent: HomeAgent) {
+	if (!isWorking(agent)) return agent.task;
+	const first = agent.tasks[0]?.title ?? agent.task;
+	const more = agent.sessions > 1 ? ` (+${agent.sessions - 1} more)` : '';
+	return `${count(agent.sessions, 'session')} running · ${first}${more}`;
+}
+
 export function homeHeadline(agents: HomeAgent[], liveSessions = 0) {
-	const working = agents.filter((agent) => agent.state === 'working').length;
+	const working = agents.filter(isWorking).length;
 	const needs = agents.filter((agent) => agent.state === 'needs-you').length;
 	if (!agents.length)
 		return liveSessions ? `${count(liveSessions, 'session')} running` : 'Nothing is running yet';

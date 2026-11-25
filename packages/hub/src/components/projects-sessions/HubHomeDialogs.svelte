@@ -12,7 +12,7 @@
 		HomeSection
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { sections, workSummary, count, quotaSummary } from './hubHomePresentation';
+	import { sections, workSummary, count, quotaSummary, isWorking } from './hubHomePresentation';
 	import { projectInventory } from './hubHomeProjects';
 	import type {
 		HomeView,
@@ -72,7 +72,7 @@
 			agents:
 				view.agents === null
 					? 'Loading agents…'
-					: `${view.agents.filter((agent) => agent.state === 'working').length} working · ${count(view.agents.length, 'agent')} on ${count(view.overview?.status === 'ready' ? view.overview.machines.length : 0, 'computer')}`,
+					: `${view.agents.filter(isWorking).length} working · ${count(view.agents.length, 'agent')} on ${count(view.overview?.status === 'ready' ? view.overview.machines.length : 0, 'computer')}`,
 			plans:
 				view.plans === null
 					? 'Loading plans…'
