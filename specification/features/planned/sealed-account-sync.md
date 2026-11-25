@@ -39,15 +39,15 @@ device a stale view until it meets a device with a newer head.
 
 ## Keys
 
-| Key                | Kind                                     | Lives                                                                         | Purpose                                   |
-| ------------------ | ---------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------- |
-| Device KEM key     | P-256 ECDH                               | Secure Enclave (iPhone, Mac), WebCrypto non-extractable, 0600 file on the box | Receives scope keys (HPKE)                |
-| Device signing key | P-256 ECDSA                              | Same place as the KEM key                                                     | Signs device-chain entries and key grants |
-| Scope data key     | 32 random bytes, one per scope and epoch | Wrapped per device on the server; unwrapped in memory or Keychain             | Seals records, blobs and stream frames    |
-| Scope index key    | 32 random bytes, one per scope           | Wrapped with every epoch                                                      | HMAC opaque ids, stable across rotations  |
-| Recovery secret    | 32 random bytes, shown once              | Credential Vault and Daniel's printed copy                                    | Opens the recovery device blob            |
+| Key                | Kind                                     | Lives                                                                         | Purpose                                  |
+| ------------------ | ---------------------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------- |
+| Device KEM key     | P-256 ECDH                               | Secure Enclave (iPhone, Mac), WebCrypto non-extractable, 0600 file on the box | Receives scope keys (HPKE)               |
+| Device signing key | P-256 ECDSA                              | Same place as the KEM key                                                     | Signs device-chain entries               |
+| Scope data key     | 32 random bytes, one per scope and epoch | Wrapped per device on the server; unwrapped in memory or Keychain             | Seals records, blobs and stream frames   |
+| Scope index key    | 32 random bytes, one per scope           | Wrapped with every epoch                                                      | HMAC opaque ids, stable across rotations |
+| Recovery secret    | 32 random bytes, shown once              | Credential Vault and Daniel's printed copy                                    | Opens the recovery device blob           |
 
-A scope is the account (`account`) or one project (`project:<random id>`).
+A scope is the account scope or one project scope; each has a random 16-byte id.
 Scoped bots such as Grok Bot hold only their project scopes.
 
 **Algorithms.** HPKE (RFC 9180) base mode, suite DHKEM(P-256, HKDF-SHA256),
@@ -62,34 +62,49 @@ The device list is an append-only chain of signed entries kept on the server
 and verified by every client. Clients wrap keys only for devices the chain
 enrolls, so the server cannot add a listening device.
 
-Each entry is canonical JSON `{seq, prev, type, at, by, body}` plus `sig`.
-`prev` is the SHA-256 of the previous entry's canonical bytes. `by` names
-an active admin device; `genesis` is self-signed by the first device.
+Each entry is canonical JSON (sorted keys, no spaces) `{seq, prev, at, by,
+body}` plus `sig`, signed over `harness/sealed/v1/chain` ‖ 0 ‖ those bytes.
+`prev` is the hex SHA-256 of the previous signed entry. `by` names an active
+device whose role may sign that type: admins sign everything, the recovery
+device signs only `enroll`, bots sign nothing. `genesis` is self-signed by
+the first device.
 
-| Type      | Body                                                                            |
-| --------- | ------------------------------------------------------------------------------- |
-| `genesis` | First device keys, recovery device keys, initial scopes and key commitments     |
-| `enroll`  | New device id, KEM and signing public keys, role (`admin` or `bot`), scopes     |
-| `revoke`  | Device id                                                                       |
-| `rotate`  | Scope id, new epoch, key commitment `HMAC(dataKey, "harness/sealed/v1/commit")` |
+| Type      | Body                                                                        |
+| --------- | --------------------------------------------------------------------------- |
+| `genesis` | First device keys, recovery device keys, initial scopes and key commitments |
+| `enroll`  | New device id, KEM and signing public keys, role (`admin` or `bot`), scopes |
+| `revoke`  | Device id; marks its scopes stale until rotated                             |
+| `scope`   | New project scope commitment at epoch 0 and the devices that get it         |
+| `rotate`  | Scope id, next epoch, key commitment                                        |
+
+A commitment is `SHA-256("harness/sealed/v1/commit" ‖ 0 ‖ scope id ‖ epoch ‖
+dataKey ‖ indexKey)`.
 
 Clients remember the highest verified `seq` and head hash and refuse a
 shorter or different chain. Writes always use the newest epoch in the
-verified chain. A key grant `{scope, epoch, device, enc, ct, by, sig}` is
-accepted only when its signer is an active admin and the unwrapped key
-matches the epoch's commitment, which stops a server-chosen key.
+verified chain. A key grant `{account, scope, epoch, device, enc, ct}` is
+accepted only when the chain gives that scope to this active device and the
+unwrapped keys match the epoch's commitment. The server knows every public
+key, so it could wrap keys of its own; the commitment stops that without a
+grant signature.
 
 ## Enrollment, revocation, recovery
 
 1. A new app signs in with Google (or the device code flow on the box),
-   creates its two key pairs and posts a pending request.
-2. An existing admin device (normally the iPhone) shows "New sign-in:
-   _name_", and claims it. Both screens show the same 6-digit code:
-   `SHA-256("harness/sealed/v1/sas" ‖ request keys ‖ approver signing key ‖ nonce)`.
-3. Daniel compares the code and approves with Face ID or Touch ID. The
-   approver appends `enroll` and signs a grant per scope for the new device.
-4. The new device pins the approver key, verifies the chain to genesis and
-   unwraps its grants.
+   creates its two key pairs and a secret 32-byte nonce, and posts its public
+   keys with a commitment `SHA-256(label ‖ keys ‖ nonce)`. The request holds
+   no name.
+2. An existing admin device (normally the iPhone) shows "New sign-in" and
+   claims it with its device id and its own random nonce.
+3. The new device reveals its nonce; the approver checks the commitment.
+   Both screens show the same 6-digit code, `SHA-256("harness/sealed/v1/sas"
+‖ 0 ‖ request keys ‖ approver signing key ‖ both nonces)` mod 10^6.
+   Committing first means a server in the middle cannot grind keys to match.
+4. Daniel compares the codes and approves with Face ID or Touch ID. The
+   approver appends `enroll` and wraps a grant per scope for the new device.
+5. The new device checks the approver in the chain, verifies the chain to
+   genesis, pins its head, unwraps its grants and writes its own sealed
+   device name.
 
 No QR code is needed; scanning one is an optional shortcut for the code. Sign-in alone shows "Approve this
 device on your iPhone or Mac". Revoking appends `revoke`, then `rotate` for
@@ -97,9 +112,10 @@ every scope that device held, with fresh grants for the remaining devices.
 Older epochs stay readable by remaining devices; re-sealing old data is
 optional later work.
 
-The genesis device also creates a recovery device. Its private keys are
-sealed under `HKDF(recoverySecret, "harness/sealed/v1/recovery")` and stored
-on the server. With every device lost, Daniel enters the recovery secret
+The genesis device also creates a recovery device that holds every scope.
+Its private keys are sealed with AES-256-GCM under `HKDF(recoverySecret,
+salt, "harness/sealed/v1/recovery")` and stored on the server as salt 16 ‖
+nonce 12 ‖ ciphertext. With every device lost, Daniel enters the recovery secret
 from the Credential Vault on a new device, which acts as the recovery device
 to enroll itself.
 
@@ -111,9 +127,11 @@ All headers are authenticated data. Integers are big-endian.
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Record       | `0x01` ‖ scope id 16 ‖ epoch u32 ‖ object id 32 ‖ revision u64 ‖ salt 16 ‖ nonce 12 ‖ AES-GCM ciphertext                                                                       |
 | Stream frame | `0x02` ‖ scope id 16 ‖ epoch u32 ‖ stream id 16 ‖ counter u64 ‖ AES-GCM ciphertext; nonce = 4 zero bytes ‖ counter; key = HKDF(dataKey, stream id, "harness/sealed/v1/stream") |
-| Grant        | HPKE `enc` 65 ‖ ciphertext of `dataKey ‖ indexKey`; info = `harness/sealed/v1/grant` ‖ account ‖ scope ‖ epoch ‖ device                                                        |
+| Grant        | HPKE `enc` 65 and ciphertext of `dataKey ‖ indexKey`; info = `harness/sealed/v1/grant` ‖ 0 ‖ canonical `{account, device, epoch, scope}`                                       |
 
-Plaintext is UTF-8 JSON with a `kind` field, padded before sealing: a 4-byte
+Record keys are `HKDF(dataKey, salt, "harness/sealed/v1/record")`; the
+whole prefix up to the ciphertext is authenticated data. Plaintext is UTF-8
+JSON with a `kind` field, padded before sealing: a 4-byte
 length, the bytes, then zeros up to the next bucket (256 B doubling to
 64 KiB, then 64 KiB steps). Object ids are `HMAC-SHA256(indexKey, kind ‖ 0 ‖
 local id)`, or random for op-log entries. Clients keep the highest revision
@@ -165,6 +183,28 @@ Measure open-session latency on the current paths (Hub Home, iPhone via the
 relay) before the switch and on the sealed paths after, with the same
 fixture sessions.
 
+## Core API
+
+`packages/remote/src/utils/networking-security/sealed*.ts`, types in
+`models/networking-security/Sealed.types.ts`. Children build on these and do
+not reimplement them; Swift matches them through the vectors.
+
+| Module             | Functions                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| `sealedScopeKeys`  | `newScopeKeys`, `scopeCommitment`, `sealedScopeKeys`, `sealedObjectId`, `scopeName`   |
+| `sealedRecord`     | `sealedRecord`, `openSealedRecord`, `sealedRecordHeader`                              |
+| `sealedFrame`      | `sealedStreamKey`, `sealedFrame`, `openSealedFrame`, `sealedFrameHeader`              |
+| `sealedDevice`     | `sealedDevice`, `sealedDevicePublic`                                                  |
+| `sealedGrant`      | `sealedGrant`, `openSealedGrant`                                                      |
+| `sealedChainEntry` | `sealedChainEntry`, `verifyChainEntry`, `chainEntryHash`, `sealedCanonical`           |
+| `sealedChain`      | `sealedChain(entries, { account, pin })` returns devices, scopes, epochs, stale flags |
+| `sealedSas`        | `sealedEnrollCommit`, `checkEnrollCommit`, `sealedSas`                                |
+| `sealedRecovery`   | `newRecoverySecret`, `sealedRecovery`, `openSealedRecovery`                           |
+| `sealedPadding`    | `sealedPadding`, `sealedUnpadding`, `sealedBucket`                                    |
+
+Test support for other packages: `test/support/plaintextCanary.ts`
+(`expectNoPlaintext`) and `test/support/sealedServer.ts` (a recording server).
+
 ## Proof
 
 - Known-answer vectors (`packages/remote/test/support/sealed-vectors.json`)
@@ -184,7 +224,7 @@ Wave 1 starts now; each child owns the listed paths only.
 
 | Child                                       | Item     | Owns                                                                                                         | Needs                                     |
 | ------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
-| 1. Sealed core (TypeScript)                 | `fx4c15` | `packages/remote/src/**/sealed/**`                                                                                         | none                                      |
+| 1. Sealed core (TypeScript)                 | `fx4c15` | `packages/remote/src/**/sealed*`                                                                             | none                                      |
 | 2. Swift sealed + Secure Enclave keys       | `pkkbnh` | `packages/desktop/ios/App/App/Sealed/**`, iOS vector checks                                                  | formats above, vectors from 1             |
 | 3. Sync server: D1, Hub API, account object | `egkyz7` | `packages/hub/db/migrations/0008-*`, `packages/hub/src/routes/api/sync/**`, `packages/relay/src/lib/sync/**` | API above; 1 in tests only                |
 | 4. Tracker in the Mac app bundle            | `jda9nt` | Desktop packaging, launch agent                                                                              | none                                      |
