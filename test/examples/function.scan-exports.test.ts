@@ -10,6 +10,7 @@ const exportedModule = [
 ].join('\n');
 
 const throwingModule = [
+	"import { fail } from '../core/development-tooling/errors';",
 	"export function read(): string { throw new TypeError('missing'); }",
 	"export function load(): void { fail('missing'); }",
 	"export function fetchUser(): void { error(404, 'gone'); }"
