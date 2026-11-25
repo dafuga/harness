@@ -67,6 +67,14 @@ running sessions. Quota stays Unknown until a computer reports it. `Connect a co
 appears only when the account has no linked computer. The owner snapshot below remains a
 fallback.
 
+### Release acceptance for live counts
+
+For each Hub Home release, compare the signed-in Agents card's working session total with
+live Tracker runs on the online linked Macs. Include any synced Mac whose runs the
+release is expected to show. The Agents card can group several runs under one working agent.
+Require a stable sample with at least one eligible running session and exact count parity.
+A zero working count during that sample fails the release check.
+
 ### Owner-host data
 
 The signed-in Projects card and dialog use the existing per-member project APIs. Tracker chat
