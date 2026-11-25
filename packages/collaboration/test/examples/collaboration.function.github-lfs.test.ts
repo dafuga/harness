@@ -5,7 +5,6 @@ import {
 	encode,
 	observe,
 	record,
-	run,
 	installationToken
 } from './collaboration.function.github-lfs.cases';
 export { sentOf, observe } from './collaboration.function.github-lfs.cases';

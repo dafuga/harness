@@ -7,7 +7,7 @@ import {
 	rootCommit,
 	call,
 	verify,
-	fakeGitHub,
+	type fakeGitHub,
 	repository,
 	recorded,
 	treeOf

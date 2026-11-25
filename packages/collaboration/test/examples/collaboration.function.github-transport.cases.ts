@@ -1,6 +1,7 @@
 import { test } from 'vitest';
 import type { GitHubOptions } from '../../src/models/planning-collaboration/Collaboration.types';
 import { githubTransport } from '../../src/utils/git-source-history/githubTransport';
+import type { GitHubTransport } from '../../src/utils/git-source-history/githubTransport.types';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
 import type { RequestCall } from './collaboration.function.github-transport.test.types';
@@ -67,6 +68,8 @@ export async function captureError(operation: () => unknown | Promise<unknown>) 
 	}
 }
 
+const update = { message: 'Update collaboration records' };
+
 test('Creates a scoped GitHub contents transport', async () => {
 	const reader = clientWithResponses('read', [
 		response({ sha: commit, name: 'records.json' }),
@@ -76,7 +79,6 @@ test('Creates a scoped GitHub contents transport', async () => {
 	const checked = await reader.client.check(true);
 	const invalidPath = await captureError(() => reader.client.request('contents/records.json'));
 	const writer = clientWithResponses('write', [response({ content: { sha: commit } })]);
-	const update = { message: 'Update collaboration records' };
 	const written = await writer.client.request('/contents/records.json', {
 		method: 'PUT',
 		body: update
@@ -106,6 +108,15 @@ test('Creates a scoped GitHub contents transport', async () => {
 		redirect: 'manual',
 		body: JSON.stringify({ message: 'Update collaboration records' })
 	});
+	recordScopedTransport(reader.calls, contents, written, invalidPath);
+});
+
+function recordScopedTransport(
+	readerCalls: RequestCall[],
+	contents: Awaited<ReturnType<GitHubTransport['request']>>,
+	written: Awaited<ReturnType<GitHubTransport['request']>>,
+	invalidPath: Awaited<ReturnType<typeof captureError>>
+) {
 	recordExampleCases(evidence('githubTransport', 'creates-a-scoped-github-contents-transport'), [
 		{
 			name: 'read and check the configured private repository',
@@ -118,7 +129,7 @@ test('Creates a scoped GitHub contents transport', async () => {
 			output: {
 				request: contents,
 				privateCheck: 'passed',
-				calls: requestSummary(reader.calls.slice(0, 2))
+				calls: requestSummary(readerCalls.slice(0, 2))
 			}
 		},
 		{
@@ -141,4 +152,4 @@ test('Creates a scoped GitHub contents transport', async () => {
 			error: invalidPath
 		}
 	]);
-});
+}
