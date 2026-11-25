@@ -34,6 +34,18 @@
 			"title": "Home explains missing Mac data and recovers Tracker projects",
 			"coverage": "required",
 			"units": ["hub.page.root"]
+		},
+		{
+			"id": "sealed-cached",
+			"title": "Previously viewed sealed transcript opens while sync is unavailable",
+			"coverage": "required",
+			"units": ["hub.page.root"]
+		},
+		{
+			"id": "sealed-live",
+			"title": "An opened session shows its synced transcript and authenticated live output",
+			"coverage": "required",
+			"units": ["hub.page.root"]
 		}
 	],
 	"viewports": [
@@ -63,7 +75,7 @@
 			"id": "hub-home",
 			"kind": "e2e",
 			"runner": "command",
-			"target": "bun x playwright test tests/e2e/hub-home.spec.ts --workers=1",
+			"target": "bun x playwright test tests/e2e/hub-home.spec.ts tests/e2e/hub-home-live.spec.ts --workers=1",
 			"cwd": "packages/hub"
 		}
 	],
@@ -71,7 +83,15 @@
 		{
 			"id": "home-screen",
 			"kind": "screenshot",
-			"states": ["default", "busy", "empty", "loading", "unavailable"],
+			"states": [
+				"default",
+				"busy",
+				"empty",
+				"loading",
+				"unavailable",
+				"sealed-cached",
+				"sealed-live"
+			],
 			"viewports": ["phone", "tablet", "laptop", "wide"],
 			"provenance": "actual-capture",
 			"capture": "full-page",

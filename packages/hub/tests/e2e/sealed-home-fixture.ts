@@ -1,4 +1,6 @@
 import type { Page } from '@playwright/test';
+import type { ScopeKeys } from '../../../remote/src/models/networking-security/Sealed.types';
+import type { SeedCache } from './sealed-home-fixture.types';
 import { ada } from './hosted-data';
 import { sealedChainEntry } from '../../../remote/src/utils/networking-security/sealedChainEntry';
 import {
@@ -33,24 +35,43 @@ export async function seedSealedHome(page: Page) {
 			scopes: [{ scope, epoch: 0, commitment: toBase64Url(keys.commitment) }]
 		}
 	});
-	const stream = toBase64Url(new Uint8Array(16).fill(5));
+	const streamId = new Uint8Array(16).fill(5);
+	const stream = toBase64Url(streamId);
+	const objects = await seedObjects(keys, stream);
+	await seedCache(page, {
+		account,
+		scope,
+		keys: { scopeId: [...keys.scopeId], commitment: [...keys.commitment] },
+		dataKey: [...dataKey],
+		indexKey: [...indexKey],
+		entry,
+		deviceId: device.deviceId,
+		objects
+	});
+	return { scope, keys, streamId, device, entry, objects };
+}
+
+async function seedObjects(keys: ScopeKeys, stream: string) {
 	const status = {
 		kind: 'session',
 		runId: 'fixture-run',
 		streamId: stream,
-		title: 'Synthetic Mac session',
+		details: { title: 'Synthetic Mac session' },
 		status: 'running'
 	};
 	const segment = {
 		kind: 'transcript',
 		runId: 'fixture-run',
-		streamId: stream,
-		start: 0,
-		chunks: ['Cached transcript canary']
+		index: 0,
+		data: toBase64Url(new TextEncoder().encode('Cached transcript canary'))
 	};
-	const objects = await Promise.all(
+	return Promise.all(
 		[status, segment].map(async (value) => {
-			const objectId = await sealedObjectId(keys, value.kind, value.runId);
+			const objectId = await sealedObjectId(
+				keys,
+				value.kind,
+				value.kind === 'session' ? value.runId : JSON.stringify([value.runId, 0])
+			);
 			return {
 				id: toBase64Url(objectId),
 				revision: 1,
@@ -58,6 +79,9 @@ export async function seedSealedHome(page: Page) {
 			};
 		})
 	);
+}
+
+async function seedCache(page: Page, input: SeedCache) {
 	// Chromium imports synthetic keys independently. No production data or credential is used.
 	await page.route('**/sealed-fixture-origin', (route) =>
 		route.fulfill({ body: '<!doctype html>', contentType: 'text/html' })
@@ -99,15 +123,35 @@ export async function seedSealedHome(page: Page) {
 			});
 			db.close();
 		},
-		{
-			account,
-			scope,
-			keys: { scopeId: [...keys.scopeId], commitment: [...keys.commitment] },
-			dataKey: [...dataKey],
-			indexKey: [...indexKey],
-			entry,
-			deviceId: device.deviceId,
-			objects
-		}
+		input
+	);
+}
+
+export async function inspectSealedHome(page: Page, scope: string, id: string) {
+	return page.evaluate(
+		async ({ account, scope, id }) => {
+			const result = <T>(request: IDBRequest<T>) =>
+				new Promise<T>((resolve, reject) => {
+					request.onerror = () => reject(request.error);
+					request.onsuccess = () => resolve(request.result);
+				});
+			const db = await result(indexedDB.open('harness-sealed-v1', 1));
+			try {
+				const store = db.transaction('sealed').objectStore('sealed');
+				const [cursor, row, keys] = await Promise.all([
+					result(store.get([account, 'cursor', scope])),
+					result(store.get([account, 'object', scope, id])),
+					result(store.get([account, 'key', scope, 0]))
+				]);
+				return {
+					cursor,
+					envelope: row.envelope,
+					extractable: [keys.dataKey.extractable, keys.indexKey.extractable]
+				};
+			} finally {
+				db.close();
+			}
+		},
+		{ account: ada.id, scope, id }
 	);
 }

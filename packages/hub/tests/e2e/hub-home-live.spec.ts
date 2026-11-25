@@ -2,7 +2,9 @@ import { expect, test } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 import { homeData, mockup } from './hub-home-fixture-data';
 import { linkedComputersFixture } from './linked-computers-fixture';
-import { seedSealedHome } from './sealed-home-fixture';
+import { seedSealedHome, inspectSealedHome } from './sealed-home-fixture';
+import { measureSealedHome, sealedHomeEvidence } from './sealed-home-evidence';
+import { sealedHomeDelta } from './sealed-home-wire';
 
 test.setTimeout(90000);
 
@@ -41,7 +43,7 @@ test('an approved browser opens its previously viewed session before Sealed Sync
 }) => {
 	await hubHomeFixture(page, 'default');
 	await seedSealedHome(page);
-	await page.route('**/api/sync/v1/**', (route) => route.abort());
+	await page.route('**/api/sync/v1/**', () => {});
 	await page.goto('/');
 	await expect(page.locator('.hh-agent-list li').first()).toBeVisible();
 	await page.evaluate(() => document.fonts.ready.then(() => {}));
@@ -52,8 +54,50 @@ test('an approved browser opens its previously viewed session before Sealed Sync
 		() => {}
 	);
 	await transcript.waitFor({ timeout: 1000 }).catch(() => {});
-	if (process.env.TAKE_SCREENSHOT)
-		await page.screenshot({ path: test.info().outputPath('sealed-home.png'), fullPage: true });
+	await sealedHomeEvidence(page, 'sealed-cached', (file) => test.info().outputPath(file));
 	await expect(session).toBeVisible({ timeout: 5000 });
 	await expect(transcript).toBeVisible();
+});
+
+test('a cached session accepts authenticated delta and live frames only', async ({ page }) => {
+	const home = await hubHomeFixture(page, 'default');
+	const fixture = await seedSealedHome(page);
+	const delta = await sealedHomeDelta(page, fixture);
+	await page.goto('/');
+	await page.getByRole('button', { name: 'Synthetic Mac session' }).click();
+	await expect(page.getByLabel('Transcript', { exact: true })).toHaveText(
+		'Cached transcript canary'
+	);
+	await expect(page.getByLabel('Live output', { exact: true })).toHaveText('Live frame canary');
+	await expect.poll(() => delta.cursors.length).toBeGreaterThan(0);
+	expect(delta.cursors).toEqual(delta.cursors.map(() => 2));
+	delta.release();
+	const transcript = 'Cached transcript canary · Durable delta canary';
+	await expect(page.getByLabel('Transcript', { exact: true })).toHaveText(transcript);
+	expect(await inspectSealedHome(page, fixture.scope, delta.id)).toEqual({
+		cursor: 3,
+		envelope: delta.envelope,
+		extractable: [false, false]
+	});
+	await page.evaluate(() => document.fonts.ready.then(() => {}));
+	await sealedHomeEvidence(page, 'sealed-live', (file) => test.info().outputPath(file));
+
+	await page.unroute('**/api/sync/v1/**');
+	await page.route('**/api/sync/v1/**', () => {});
+	await page.reload();
+	const button = page.getByRole('button', { name: 'Synthetic Mac session' });
+	await button.click();
+	await expect(page.getByLabel('Transcript', { exact: true })).toHaveText(transcript);
+	const measurement = await measureSealedHome(page, button, transcript);
+	await test.info().attach('cached-session-render', {
+		body: JSON.stringify(measurement),
+		contentType: 'application/json'
+	});
+	expect(measurement.p50).toBeLessThanOrEqual(50);
+	expect(measurement.p95).toBeLessThanOrEqual(100);
+
+	home.state.actor = { ...home.state.actor, id: 'google:other-fixture-account' };
+	await page.reload();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Connect your Mac');
+	await expect(page.getByRole('region', { name: 'Sessions', exact: true })).toHaveCount(0);
 });
