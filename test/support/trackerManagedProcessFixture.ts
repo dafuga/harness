@@ -13,7 +13,7 @@ export function managedFixtureBindings(root: string) {
 	const docker = join(root, 'docker-profile');
 	const accountHome = join(root, 'account-home');
 	for (const dir of [stateDirectory, native, docker, accountHome]) mkdirSync(dir, { mode: 0o700 });
-	writeFileSync(join(accountHome, '.claude-session-fixture'), '', { mode: 0o600 });
+	writeFileSync(join(accountHome, '.claude-session-fixture'), 'ready', { mode: 0o600 });
 	const tmux = fixtureProgram(root, 'tmux', tmuxProgram);
 	const harness = fixtureProgram(root, 'harness', providerProgram);
 	const codex = fixtureProgram(root, 'codex', providerProgram);
@@ -39,11 +39,27 @@ function fixtureProgram(root: string, name: string, program: string) {
 const tmuxProgram = `
 const { spawnSync } = require('node:child_process');
 const args = process.argv.slice(2);
+const fs = require('node:fs');
+const { join } = require('node:path');
+const target = args[args.indexOf('-t') + 1]?.replace(/^=/, '').replace(/:$/, '');
+const pane = (name) => join(__dirname, 'claude-pane-' + name);
+const mode = () => fs.readFileSync(join(__dirname, 'account-home', '.claude-session-fixture'), 'utf8');
+if (args.includes('capture-pane')) {
+	process.stdout.write(mode() === 'onboarding'
+		? 'Choose the text style that looks best with your terminal\\n'
+		: '────────────\\n❯ \\n────────────\\n  ? for shortcuts\\n');
+	process.exit(0);
+}
+if (args.includes('if-shell')) {
+	fs.rmSync(pane(target), { force: true });
+	process.exit(0);
+}
 if (args.includes('list-panes')) process.exit(0);
 if (args.includes('show-environment')) {
 	const { existsSync, readFileSync } = require('node:fs');
 	const mode = require('node:path').join(__dirname, 'tmux-presence');
-	const reply = existsSync(mode) ? readFileSync(mode, 'utf8') : '';
+	const reply = existsSync(mode) ? readFileSync(mode, 'utf8')
+		: existsSync(pane(target)) ? readFileSync(pane(target), 'utf8') : '';
 	if (reply.startsWith('HARNESS_TRACKER_ATTEMPT=')) {
 		process.stdout.write(reply);
 		process.exit(0);
@@ -54,6 +70,10 @@ if (args.includes('show-environment')) {
 if (!args.includes('new-session')) process.exit(2);
 const dir = args.indexOf('-c');
 const [command, ...workerArgs] = args.slice(dir + 2);
+if (workerArgs.includes(join(__dirname, 'claude'))) {
+	const session = args[args.indexOf('-s') + 1];
+	fs.writeFileSync(pane(session), args[args.indexOf('-e') + 1]);
+}
 const run = spawnSync(command, workerArgs, {
 	cwd: args[dir + 1], env: { ...process.env, FIXTURE_SECRET: 'synthetic' }, stdio: 'inherit'
 });
@@ -67,8 +87,17 @@ const { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } = r
 const { basename, join } = require('node:path');
 const argv = process.argv.slice(2);
 if (basename(process.argv[1]) === 'claude') {
-	if (!existsSync(join(process.env.HOME, '.claude-session-fixture'))) process.exit(41);
+	const mode = join(process.env.HOME, '.claude-session-fixture');
+	if (!existsSync(mode)) process.exit(41);
 	if (process.env.USER !== require('node:os').userInfo().username) process.exit(42);
+	const startup = readFileSync(mode, 'utf8');
+	if (argv[0] === 'auth' && argv[1] === 'status') {
+		if (startup === 'unverified') { process.stdout.write('synthetic private diagnostic'); process.exit(2); }
+		const loggedIn = startup !== 'signed-out';
+		process.stdout.write(JSON.stringify({ loggedIn, authMethod: loggedIn ? 'claude.ai' : 'none' }));
+		process.exit(loggedIn ? 0 : 1);
+	}
+	if (startup === 'onboarding') process.exit(0);
 }
 if (basename(process.argv[1]) === 'codex') {
 	const timestamp = new Date().toISOString();

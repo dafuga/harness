@@ -56,6 +56,16 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 				session: { key: input.key, state: 'exited', exitCode: 0 }
 			});
 		}
+		const state = join(paths.profiles.accountHome, '.claude-session-fixture');
+		for (const [mode, reason] of [
+			['signed-out', 'claude-sign-in'],
+			['onboarding', 'claude-onboarding'],
+			['unverified', 'claude-auth-unverified']
+		]) {
+			writeFileSync(state, mode);
+			const input = { ...claude, runId: 4, key: JSON.stringify([claude.itemId, mode, 1]) };
+			expect(await launcher.start(input, signal)).toEqual({ status: 'rejected', reason });
+		}
 	} finally {
 		vi.unstubAllEnvs();
 	}
