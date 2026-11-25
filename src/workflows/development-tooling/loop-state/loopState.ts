@@ -91,9 +91,14 @@ export function loopPaths(root: string, loop: string): LoopPaths {
 }
 
 export async function writeNewLoop(paths: LoopPaths, state: LoopState): Promise<void> {
-	await failIfLoopExists(paths.state);
 	await mkdir(paths.dir, { recursive: true });
-	await writeLoop(paths.state, state);
+	try {
+		await writeLoop(paths.state, state, 'wx');
+	} catch (error) {
+		if (error instanceof Error && 'code' in error && error.code === 'EEXIST')
+			fail('Loop already exists.');
+		throw error;
+	}
 }
 
 export async function readLoop(path: string): Promise<LoopState> {
@@ -131,8 +136,8 @@ function fieldPath(path: PropertyKey[]): string {
 		.join('');
 }
 
-export async function writeLoop(path: string, state: LoopState): Promise<void> {
-	await writeFile(path, `${JSON.stringify(state, null, '\t')}\n`);
+export async function writeLoop(path: string, state: LoopState, flag?: 'wx'): Promise<void> {
+	await writeFile(path, `${JSON.stringify(state, null, '\t')}\n`, { flag });
 }
 
 export async function appendTrace(path: string, event: Record<string, unknown>): Promise<void> {
@@ -151,16 +156,6 @@ export function validateRequiredText(value: string, label: string): string {
 
 export function timestamp(now: (() => string) | undefined): string {
 	return now ? now() : new Date().toISOString();
-}
-
-async function failIfLoopExists(path: string): Promise<void> {
-	try {
-		await readFile(path, 'utf8');
-		fail('Loop already exists.');
-	} catch (error) {
-		if (isMissingFile(error)) return;
-		throw error;
-	}
 }
 
 export function isMissingFile(error: unknown): boolean {
