@@ -31,12 +31,8 @@ import type {
 	TrackerHostSession
 } from './trackerHostLaunch.types';
 import { formatTrackerHostBrief } from './trackerHostBrief';
-import {
-	startTrackerHost,
-	trackerHostStartupEvent,
-	trackerItemStatus,
-	withTrackerRunUsage
-} from './trackerHostLaunchPort';
+import { recordedHostEvent } from './trackerHostRunEvents';
+import { startTrackerHost, withTrackerRunUsage } from './trackerHostLaunchPort';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -79,11 +75,10 @@ export function trackerHostRunner(
 				() => panes
 			),
 			async observe(run: TrackerRunReceipt, key: string, signal: AbortSignal) {
-				const event = recordedHostEvent(run, { key, sessions, items, legacySession });
+				const event = recordedHostEvent(run, { key, sessions, items, legacySession, store });
 				return withTrackerRunUsage(event, { driver, run, items, now: now() }, signal);
 			},
-			stop: driver.stop?.bind(driver),
-			confirmNeverStarted: driver.confirmNeverStarted?.bind(driver)
+			...optionalHostControls(driver)
 		},
 		sessions: (itemId: string) => ({
 			openSession: hasManualTrackerPane(panes, itemId),
@@ -173,44 +168,9 @@ function hostItemMatchesRun(item: TrackerItem, run: TrackerRunReceipt) {
 	);
 }
 
-function recordedHostEvent(
-	run: TrackerRunReceipt,
-	{
-		key,
-		sessions,
-		items,
-		legacySession
-	}: {
-		key: string;
-		sessions: readonly TrackerHostSession[];
-		items: TrackerItemReadRepository;
-		legacySession(run: TrackerRunReceipt): TrackerHostSession | undefined;
-	}
-): TrackerDispatchEvent | undefined {
-	const session = run.host_session_id
-		? legacySession(run)
-		: sessions.find(
-				(entry) => !entry.legacyRunId && entry.key === key && entry.itemId === run.item_id
-			);
-	if (run.state === 'queued') return trackerHostStartupEvent(session);
-	if (!session || session.id !== (run.host_session_id ?? run.session_id))
-		return missingSessionEvent(run, items);
-	if (run.outcome === 'blocked' && session.state === 'live') return { type: 'resume', session };
-	if (run.outcome === 'blocked') return { type: 'answered-without-session' };
+function optionalHostControls(driver: TrackerHostLaunchPort) {
 	return {
-		type: 'monitor',
-		session: session.state,
-		activityAt: session.activityAt,
-		exitCode: session.exitCode
+		stop: driver.stop?.bind(driver),
+		confirmNeverStarted: driver.confirmNeverStarted?.bind(driver)
 	};
-}
-
-function missingSessionEvent(
-	run: TrackerRunReceipt,
-	items: TrackerItemReadRepository
-): TrackerDispatchEvent | undefined {
-	if (run.outcome === 'blocked') return { type: 'answered-without-session' };
-	return trackerItemStatus(items, run.item_id) === 'done'
-		? { type: 'monitor', session: 'unknown' }
-		: undefined;
 }

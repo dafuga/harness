@@ -49,6 +49,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchPort.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchSchema.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunEvents.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunner.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog.types.ts",
@@ -121,6 +122,7 @@
 			"finishReportedRuns",
 			"TrackerReportSession",
 			"TrackerFinalReport",
+			"closedBlockedKey",
 			"closeFinishedTrackerSessions",
 			"trackerGithubCli",
 			"handLaunchSelection",
@@ -163,6 +165,7 @@
 			"hostSession",
 			"hostInventory",
 			"hostStart",
+			"recordedHostEvent",
 			"trackerHostRunner",
 			"trackerHostWatchdog",
 			"configuredHostWatchdog",
@@ -395,6 +398,11 @@
 			{
 				"name": "finishReportedRuns.signal",
 				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "closedBlockedKey.runId",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -703,6 +711,36 @@
 			{
 				"name": "trackerHostStartupEvent.session",
 				"type": "TrackerHostSession | undefined",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.key",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.sessions",
+				"type": "readonly TrackerHostSession[]",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.legacySession",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "recordedHostEvent.store",
+				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
@@ -1953,6 +1991,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "closedBlockedKey",
+				"inputs": [
+					{
+						"name": "closedBlockedKey.runId",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "closedBlockedKey",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "closeFinishedTrackerSessions",
 				"inputs": [
 					{
@@ -2524,6 +2580,49 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "recordedHostEvent",
+				"inputs": [
+					{
+						"name": "recordedHostEvent.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.key",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.sessions",
+						"type": "readonly TrackerHostSession[]",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.legacySession",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "recordedHostEvent.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordedHostEvent",
+						"type": "TrackerDispatchEvent | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "trackerHostRunner",

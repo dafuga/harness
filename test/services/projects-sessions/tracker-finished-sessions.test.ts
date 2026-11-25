@@ -75,6 +75,14 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		await hub.advance(5_000);
 		await hub.advance(35_000);
 		expect(hub.panes()).toEqual([]);
+		// A block from before this launcher has no closed-pane record and never reopens.
+		const closed = hub.runtime.store.getMeta('tracker_closed_blocked_run:1')!;
+		hub.database.exec("DELETE FROM meta WHERE k = 'tracker_closed_blocked_run:1'");
+		await hub.request('/items/blocked001/answer', { answer: 'An answer to older history' });
+		await hub.advance(minute);
+		expect(hub.item('blocked001').status).toBe('blocked');
+		hub.runtime.store.writeMeta({ 'tracker_closed_blocked_run:1': closed });
+		await hub.request('/items/blocked001/flag', { question: 'Choose the synthetic region' });
 		for (let poll = 0; poll < 15; poll++) await hub.advance(2 * minute);
 		await hub.request('/items/blocked001/answer', { answer: 'Correct, wait', keep_blocked: true });
 		for (let poll = 0; poll < 15; poll++) await hub.advance(2 * minute);
