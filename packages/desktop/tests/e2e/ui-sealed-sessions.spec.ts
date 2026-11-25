@@ -15,6 +15,7 @@ for (const { name, width, height } of viewports) {
 		await page.setViewportSize({ width, height });
 		await remotePhoneFixture(page, 'offline', true);
 		await page.goto('/');
+		await expect(page.getByRole('heading', { name: 'Harness', exact: true })).toBeVisible();
 		const entry = page.getByRole('link', { name: 'Sessions', exact: true });
 		await captured(page, info, 'sessions-home');
 		await expect(entry).toBeVisible();
