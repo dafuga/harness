@@ -1,5 +1,6 @@
 import { createInterface } from 'node:readline/promises';
 import { z } from 'zod';
+import type { TrackerFetch } from './verify-home-release.types';
 
 const trackerOrigin = 'http://127.0.0.1:7701';
 const runLimit = 10000;
@@ -22,7 +23,7 @@ const trackerItems = z.array(
 	})
 );
 
-async function readTracker(path: string, fetcher: typeof fetch): Promise<unknown> {
+async function readTracker(path: string, fetcher: TrackerFetch): Promise<unknown> {
 	try {
 		const response = await fetcher(trackerOrigin + path, {
 			cache: 'no-store',
@@ -37,16 +38,21 @@ async function readTracker(path: string, fetcher: typeof fetch): Promise<unknown
 	throw new Error(`Tracker read failed for ${path}.`);
 }
 
-async function sampleTracker(nodes: string[], fetcher: typeof fetch) {
+async function readTrackerSnapshot(fetcher: TrackerFetch) {
 	const [runs, items] = await Promise.all([
 		readTracker(`/runs?limit=${runLimit}`, fetcher).then((rows) => trackerRuns.safeParse(rows)),
 		readTracker('/items?status=all&limit=-1', fetcher).then((rows) => trackerItems.safeParse(rows))
 	]);
 	if (!runs.success || !items.success) throw new Error('Tracker returned invalid runs or items.');
 	if (runs.data.length >= runLimit) throw new Error('Tracker run sample may be truncated.');
+	return { runs: runs.data, items: items.data };
+}
+
+async function sampleTracker(nodes: string[], fetcher: TrackerFetch) {
+	const { runs, items } = await readTrackerSnapshot(fetcher);
 	const live = new Map(nodes.map((node) => [node, new Set<number>()]));
-	const byId = new Map(items.data.map((item) => [item.id, item]));
-	for (const run of runs.data) {
+	const byId = new Map(items.map((item) => [item.id, item]));
+	for (const run of runs) {
 		if (run.state !== 'running' || run.ended_at !== null) continue;
 		if (!run.node) throw new Error('A live Tracker run has no computer.');
 		const node = live.get(run.node);
@@ -74,7 +80,7 @@ function parseAgentsSummary(summary: string) {
 export async function verifyHubHomeRelease(
 	nodes: string[],
 	readSummary: () => Promise<string>,
-	fetcher = fetch
+	fetcher: TrackerFetch = fetch
 ) {
 	if (!nodes.length || nodes.some((node) => !/^[\w.-]+$/.test(node))) {
 		throw new Error('Supply the Tracker node name of each online Mac in scope.');
@@ -89,6 +95,12 @@ export async function verifyHubHomeRelease(
 	const tracker = after.byNode.map(({ node, ids }) => ({ node, sessions: ids.length }));
 	const total = tracker.reduce((sum, { sessions }) => sum + sessions, 0);
 	if (!total) throw new Error('No eligible live Tracker runs. Repeat when there is active work.');
+	if (home.working === 0) {
+		throw new Error(`Home reports 0 working while Tracker has ${total} live sessions.`);
+	}
+	if (home.sessions !== total) {
+		throw new Error(`Home reports ${home.sessions} session(s), Tracker has ${total}.`);
+	}
 	return { from: before.at, to: after.at, home, tracker, total };
 }
 

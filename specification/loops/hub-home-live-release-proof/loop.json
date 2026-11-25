@@ -2,7 +2,7 @@
 	"name": "hub-home-live-release-proof",
 	"goal": "Require signed-in Hub Home release proof to match stable live Tracker runs on the target account’s linked Macs, including a nonzero run sample.",
 	"createdAt": "2026-11-25T19:48:30.477Z",
-	"updatedAt": "2026-11-25T19:50:36.125Z",
+	"updatedAt": "2026-11-25T19:54:37.643Z",
 	"template": "regression-prevention",
 	"templateLineage": [
 		"regression-prevention"
@@ -27,17 +27,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T19:54:01.924Z",
+			"evidence": "24eaa5e82c clean snapshot: the 0, undercount and overcount fixtures all failed with “instead of rejecting”; 4 control cases passed."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T19:54:03.389Z",
+			"evidence": "Read local Tracker before and after the settled Agents summary. Require the same nonempty node/run cohort, an exact session total and at least one working agent."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T19:54:37.643Z",
+			"evidence": "The Hub release runbook now requires the scripted before/after Tracker comparator. The seven guard cases run in the Hub unit suite."
 		},
 		{
 			"id": "green",

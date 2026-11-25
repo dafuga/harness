@@ -54,3 +54,34 @@ Google sign-in in the Mac app registers it under its verified Hub account with `
 `bun run check:collaboration`, `bun run check:hub` and `bun run check:desktop` are included in the root check. Security tests use generated keys and synthetic provider/HTTP fixtures, without live credentials or invitations. Browser/native screenshots are external evidence and are not committed. Live provider registration and authorized hosted publication are separate acceptance layers.
 
 The browser suite (`bun run --cwd packages/hub test:e2e`) starts its own preview on `127.0.0.1:5795` and refuses a server that is already there; it never uses the development server on 5798. `HARNESS_HUB_TEST_PORT=<port>` names another free port from 1024 to 65535.
+
+### Verify Hub Home live counts
+
+Run this check after deploying a release that affects Home counts or the data feeding them,
+including Hub, Mac publisher, relay and Tracker changes. Open the release URL in the existing
+browser session for the intended account. Verify the deployed revision and identify its online
+linked Macs on `/devices`. Include a synced Mac when its runs are part of that account's Home
+feed. Use the exact Tracker node names and a Tracker host whose loopback service has current run
+and item data for every Mac in scope.
+
+From the repository root, pass the observed node names in place of the example names:
+
+```sh
+bun packages/hub/scripts/verify-home-release.ts primary-mac second-mac
+```
+
+When prompted, reload signed-in `/`, wait for the Agents card to settle, then enter its summary
+line (for example, `1 working (6 sessions) · 0 idle or offline`). The number in parentheses counts
+sessions, including sub-agent sessions. The first number counts the agents grouping those sessions.
+
+The command reads Tracker before and after the browser observation. It counts live runs on the
+specified Macs once per node and run ID, using the same item visibility rules as Home. It exits
+successfully only for a stable, nonempty run sample with matching session totals and at least one
+working agent. If the live run set changes, repeat the check. A missing session summary, an
+unavailable or empty Tracker sample, a zero working count or a count mismatch leaves the release
+check open.
+
+Record the deployed URL, revision, deployment ID, command result and the observed Agents summary
+in the release's Tracker note. Preserve any inspected image evidence privately. Use the real
+signed-in Home and live Tracker for this gate. Health probes, fixture runs and screenshots of
+injected data can support verification of other release requirements.
