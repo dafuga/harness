@@ -212,20 +212,6 @@
 				"examples": ["0123456789abcde"]
 			},
 			{
-				"name": "plural.count",
-				"type": "number",
-				"required": true,
-				"description": "The number printed before the word. Only the numeric value 1 keeps the word singular; every other number gets an appended s.",
-				"examples": [1, 2, 0]
-			},
-			{
-				"name": "plural.word",
-				"type": "string",
-				"required": true,
-				"description": "The singular word printed after the count. The helper appends s unless the count is exactly 1.",
-				"examples": ["phone", "project"]
-			},
-			{
 				"name": "keyLabel.deviceId",
 				"type": "string",
 				"required": true,
@@ -636,35 +622,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "plural",
-				"inputs": [
-					{
-						"name": "plural.count",
-						"type": "number",
-						"required": true,
-						"description": "The number printed before the word. Only the numeric value 1 keeps the word singular; every other number gets an appended s.",
-						"examples": [1, 2, 0]
-					},
-					{
-						"name": "plural.word",
-						"type": "string",
-						"required": true,
-						"description": "The singular word printed after the count. The helper appends s unless the count is exactly 1.",
-						"examples": ["phone", "project"]
-					}
-				],
-				"outputs": [
-					{
-						"name": "plural",
-						"type": "string",
-						"description": "The count followed by the supplied word, with s appended unless count is exactly 1.",
-						"examples": ["1 phone", "2 phones"]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "keyLabel",
 				"inputs": [
 					{
@@ -763,51 +720,6 @@
 				},
 				{
 					"unit": "desktop.component.remote-phone-panel"
-				}
-			]
-		},
-		{
-			"name": "plural",
-			"source": "packages/desktop/src/helpers/strings/plural.ts",
-			"inputs": [
-				{
-					"name": "plural.count",
-					"type": "number",
-					"required": true
-				},
-				{
-					"name": "plural.word",
-					"type": "string",
-					"required": true
-				}
-			],
-			"output": "unknown",
-			"pure": true,
-			"examples": [
-				{
-					"name": "Keep the singular word for one item",
-					"call": "plural(1, \"task\")",
-					"input": [1, "task"],
-					"output": "1 task"
-				},
-				{
-					"name": "Add s for other counts",
-					"call": "plural(2, \"task\")",
-					"input": [2, "task"],
-					"output": "2 tasks"
-				}
-			],
-			"consumers": [
-				{
-					"unit": "desktop.component.agents-providers-chat-agents"
-				},
-				{
-					"unit": "desktop.function.remote-labels",
-					"symbol": "grantSummary"
-				},
-				{
-					"unit": "desktop.function.remote-labels",
-					"symbol": "hostSummary"
 				}
 			]
 		}

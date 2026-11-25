@@ -2,6 +2,7 @@
 import { lstat, readdir, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import type { VerificationRecord } from '../../../core/verification-evidence/verificationTypes';
+import { errorMessage } from '../../../../packages/reports/src/helpers/strings/errorMessage';
 import { captureIndex } from '../../../core/verification-evidence/verifyTypes';
 import { VerificationRecordValidator } from '../../../validators/verification-evidence/VerificationRecordValidator';
 import { recordFiles } from '../../../utils/verification-evidence/evidenceManifest';
@@ -30,7 +31,9 @@ async function safeStore(context: CacheScanContext): Promise<boolean> {
 		const state = await lstatOrError(directory);
 		if (state === undefined) return false;
 		if (state instanceof Error) {
-			context.entries.push(protectedEntry(context, directory, `cannot inspect: ${message(state)}`));
+			context.entries.push(
+				protectedEntry(context, directory, `cannot inspect: ${errorMessage(state)}`)
+			);
 			return false;
 		}
 		if (state.isSymbolicLink() || !state.isDirectory()) {
@@ -49,7 +52,9 @@ async function scanCommit(context: CacheScanContext, commitName: string): Promis
 	const state = await lstatOrError(path);
 	if (state === undefined) return;
 	if (state instanceof Error) {
-		context.problems.push(`Could not inspect ${relative(context.root, path)}: ${message(state)}`);
+		context.problems.push(
+			`Could not inspect ${relative(context.root, path)}: ${errorMessage(state)}`
+		);
 		return;
 	}
 	if (state.isSymbolicLink() || !state.isDirectory()) {
@@ -119,7 +124,8 @@ async function readRecord(path: string): Promise<{ record?: VerificationRecord; 
 		return {
 			reason: 'no regular record.json; this may be an incomplete or in-use verification run'
 		};
-	if (state instanceof Error) return { reason: `cannot inspect record.json: ${message(state)}` };
+	if (state instanceof Error)
+		return { reason: `cannot inspect record.json: ${errorMessage(state)}` };
 	if (state.isSymbolicLink() || !state.isFile())
 		return { reason: 'record.json is not a regular file' };
 	const validation = await readFile(recordPath, 'utf8')
@@ -152,7 +158,7 @@ async function listNames(path: string): Promise<{ names?: string[]; problem?: st
 	try {
 		return { names: await readdir(path) };
 	} catch (error) {
-		return { problem: message(error) };
+		return { problem: errorMessage(error) };
 	}
 }
 
@@ -172,7 +178,7 @@ async function lstatOrError(path: string) {
 	try {
 		return await lstat(path);
 	} catch (error) {
-		return missing(error) ? undefined : new Error(message(error));
+		return missing(error) ? undefined : new Error(errorMessage(error));
 	}
 }
 
@@ -183,8 +189,4 @@ function errorCode(error: unknown): string | undefined {
 		typeof error.code === 'string'
 		? error.code
 		: undefined;
-}
-
-function message(error: unknown): string {
-	return error instanceof Error ? error.message : String(error);
 }
