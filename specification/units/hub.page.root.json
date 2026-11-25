@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.login-panel",
 			"hub.component.projects-sessions-hub-home",
+			"hub.module.sealed-client-sealed-home-sessions",
 			"reports.component.brand-mark",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
@@ -31,7 +32,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "Renders the public marketing home for a visitor and the six-section Hub home after a verified sign-in."
+				"description": "Renders the sign-in page for visitors and Hub Home for a verified Google actor. An approved browser can also open cached sealed sessions on Home."
 			}
 		],
 		"errors": [
@@ -59,6 +60,11 @@
 		{
 			"unit": "hub.function.browser-context",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-home-sessions",
+			"via": "dynamic-import",
 			"origin": "derived"
 		},
 		{

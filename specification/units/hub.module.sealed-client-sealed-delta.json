@@ -1,0 +1,284 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.sealed-client-sealed-delta",
+	"uid": "u_cx2e2nfvja",
+	"kind": "module",
+	"title": "sealedDelta",
+	"responsibility": "Verifies sealed device-chain extensions, opens missing grants and syncs scope object pages.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/lib/sealed-client/sealedDelta.ts",
+			"packages/hub/src/lib/sealed-client/sealedDelta.types.ts"
+		],
+		"symbols": [
+			"sealedReader",
+			"refreshSealedEnrollment",
+			"syncSealedObjects",
+			"ChainPage",
+			"ObjectChange",
+			"ObjectChanges",
+			"GrantList",
+			"RefreshedEnrollment"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "sealedReader.deviceId",
+				"type": "string",
+				"required": true,
+				"description": "Opaque public ID of the browser device enrolled in the account."
+			},
+			{
+				"name": "sealedReader.signal",
+				"type": "AbortSignal",
+				"required": true,
+				"description": "Cancels in-flight requests when signed-in Home unmounts."
+			},
+			{
+				"name": "refreshSealedEnrollment.read",
+				"type": "ReturnType<typeof sealedReader>",
+				"required": true,
+				"description": "Same-origin sealed API request function bound to the browser device."
+			},
+			{
+				"name": "refreshSealedEnrollment.cache",
+				"type": "SealedBrowserCache",
+				"required": true,
+				"description": "IndexedDB cache handle bound to the signed-in account."
+			},
+			{
+				"name": "refreshSealedEnrollment.enrollment",
+				"type": "SealedEnrollment",
+				"required": true,
+				"description": "This browser device and the signed chain entries used to verify its access."
+			},
+			{
+				"name": "refreshSealedEnrollment.pin",
+				"type": "SealedChainState",
+				"required": true,
+				"description": "Previously verified device chain head and sequence number."
+			},
+			{
+				"name": "syncSealedObjects.read",
+				"type": "ReturnType<typeof sealedReader>",
+				"required": true,
+				"description": "Same-origin sealed API request function bound to the browser device."
+			},
+			{
+				"name": "syncSealedObjects.cache",
+				"type": "SealedBrowserCache",
+				"required": true,
+				"description": "IndexedDB cache handle bound to the signed-in account."
+			},
+			{
+				"name": "syncSealedObjects.scope",
+				"type": "string",
+				"required": true,
+				"description": "Opaque base64url scope ID from the signed device chain."
+			},
+			{
+				"name": "syncSealedObjects.keys",
+				"type": "(epoch: number) => Promise<ScopeKeys | undefined>",
+				"required": true,
+				"description": "Non-extractable browser scope keys or the resolver for keys by envelope epoch."
+			}
+		],
+		"outputs": [
+			{
+				"name": "sealedReader",
+				"type": "unknown",
+				"description": "An abortable same-origin GET client that supplies the public sealed device ID."
+			},
+			{
+				"name": "refreshSealedEnrollment",
+				"type": "Promise<RefreshedEnrollment>",
+				"description": "Latest verified chain and enrollment plus whether new scope keys were persisted."
+			},
+			{
+				"name": "syncSealedObjects",
+				"type": "Promise<void>",
+				"description": "Resolves after committing the available object pages for the scope."
+			}
+		],
+		"errors": [
+			{
+				"name": "SealedError",
+				"type": "thrown",
+				"description": "The request failed, the chain failed authentication or did not advance, or an object did not match its listing and authenticated envelope."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "sealedReader",
+				"inputs": [
+					{
+						"name": "sealedReader.deviceId",
+						"type": "string",
+						"required": true,
+						"description": "Opaque public ID of the browser device enrolled in the account."
+					},
+					{
+						"name": "sealedReader.signal",
+						"type": "AbortSignal",
+						"required": true,
+						"description": "Cancels in-flight requests when signed-in Home unmounts."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sealedReader",
+						"type": "unknown",
+						"description": "An abortable same-origin GET client that supplies the public sealed device ID."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "refreshSealedEnrollment",
+				"inputs": [
+					{
+						"name": "refreshSealedEnrollment.read",
+						"type": "ReturnType<typeof sealedReader>",
+						"required": true,
+						"description": "Same-origin sealed API request function bound to the browser device."
+					},
+					{
+						"name": "refreshSealedEnrollment.cache",
+						"type": "SealedBrowserCache",
+						"required": true,
+						"description": "IndexedDB cache handle bound to the signed-in account."
+					},
+					{
+						"name": "refreshSealedEnrollment.enrollment",
+						"type": "SealedEnrollment",
+						"required": true,
+						"description": "This browser device and the signed chain entries used to verify its access."
+					},
+					{
+						"name": "refreshSealedEnrollment.pin",
+						"type": "SealedChainState",
+						"required": true,
+						"description": "Previously verified device chain head and sequence number."
+					}
+				],
+				"outputs": [
+					{
+						"name": "refreshSealedEnrollment",
+						"type": "Promise<RefreshedEnrollment>",
+						"description": "Latest verified chain and enrollment plus whether new scope keys were persisted."
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "syncSealedObjects",
+				"inputs": [
+					{
+						"name": "syncSealedObjects.read",
+						"type": "ReturnType<typeof sealedReader>",
+						"required": true,
+						"description": "Same-origin sealed API request function bound to the browser device."
+					},
+					{
+						"name": "syncSealedObjects.cache",
+						"type": "SealedBrowserCache",
+						"required": true,
+						"description": "IndexedDB cache handle bound to the signed-in account."
+					},
+					{
+						"name": "syncSealedObjects.scope",
+						"type": "string",
+						"required": true,
+						"description": "Opaque base64url scope ID from the signed device chain."
+					},
+					{
+						"name": "syncSealedObjects.keys",
+						"type": "(epoch: number) => Promise<ScopeKeys | undefined>",
+						"required": true,
+						"description": "Non-extractable browser scope keys or the resolver for keys by envelope epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncSealedObjects",
+						"type": "Promise<void>",
+						"description": "Resolves after committing the available object pages for the scope."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.module.sealed-client-sealed-browser-cache",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.sealed-client-sealed-enrollment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-chain",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-grant",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/sealed-client/sealedDelta.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/sealed-client/sealedDelta.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

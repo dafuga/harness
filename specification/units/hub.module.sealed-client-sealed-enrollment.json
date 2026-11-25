@@ -1,0 +1,205 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.sealed-client-sealed-enrollment",
+	"uid": "u_lq5fngugih",
+	"kind": "module",
+	"title": "sealedEnrollment",
+	"responsibility": "Checks a browser device against its approved chain pin and matches cached keys to signed commitments.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/lib/sealed-client/sealedEnrollment.ts"],
+		"symbols": ["verifiedEnrollment", "adoptSealedEnrollment", "committedKeys"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "verifiedEnrollment.account",
+				"type": "string",
+				"required": true,
+				"description": "Verified Google actor ID used to partition the browser cache."
+			},
+			{
+				"name": "verifiedEnrollment.enrollment",
+				"type": "SealedEnrollment",
+				"required": true,
+				"description": "This browser device and the signed chain entries used to verify its access."
+			},
+			{
+				"name": "adoptSealedEnrollment.account",
+				"type": "string",
+				"required": true,
+				"description": "Verified Google actor ID used to partition the browser cache."
+			},
+			{
+				"name": "adoptSealedEnrollment.enrollment",
+				"type": "SealedEnrollment",
+				"required": true,
+				"description": "This browser device and the signed chain entries used to verify its access."
+			},
+			{
+				"name": "adoptSealedEnrollment.approval",
+				"type": "SealedChainPin",
+				"required": true,
+				"description": "Chain head and sequence received through trusted device approval."
+			},
+			{
+				"name": "committedKeys.keys",
+				"type": "ScopeKeys | undefined",
+				"required": true,
+				"description": "Optional cached CryptoKey pair and commitment for one scope epoch."
+			},
+			{
+				"name": "committedKeys.commitment",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Signed base64url commitment to the scope key pair at the requested epoch."
+			}
+		],
+		"outputs": [
+			{
+				"name": "verifiedEnrollment",
+				"type": "unknown",
+				"description": "Verified signed device state corresponding to the browser’s stored chain."
+			},
+			{
+				"name": "adoptSealedEnrollment",
+				"type": "Promise<boolean>",
+				"description": "True when the approved, active browser device was saved. False when its identity or prior enrollment conflicts."
+			},
+			{
+				"name": "committedKeys",
+				"type": "keys is ScopeKeys",
+				"description": "True when the cached keys are non-extractable and match the chain commitment."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "verifiedEnrollment",
+				"inputs": [
+					{
+						"name": "verifiedEnrollment.account",
+						"type": "string",
+						"required": true,
+						"description": "Verified Google actor ID used to partition the browser cache."
+					},
+					{
+						"name": "verifiedEnrollment.enrollment",
+						"type": "SealedEnrollment",
+						"required": true,
+						"description": "This browser device and the signed chain entries used to verify its access."
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifiedEnrollment",
+						"type": "unknown",
+						"description": "Verified signed device state corresponding to the browser’s stored chain."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "adoptSealedEnrollment",
+				"inputs": [
+					{
+						"name": "adoptSealedEnrollment.account",
+						"type": "string",
+						"required": true,
+						"description": "Verified Google actor ID used to partition the browser cache."
+					},
+					{
+						"name": "adoptSealedEnrollment.enrollment",
+						"type": "SealedEnrollment",
+						"required": true,
+						"description": "This browser device and the signed chain entries used to verify its access."
+					},
+					{
+						"name": "adoptSealedEnrollment.approval",
+						"type": "SealedChainPin",
+						"required": true,
+						"description": "Chain head and sequence received through trusted device approval."
+					}
+				],
+				"outputs": [
+					{
+						"name": "adoptSealedEnrollment",
+						"type": "Promise<boolean>",
+						"description": "True when the approved, active browser device was saved. False when its identity or prior enrollment conflicts."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "committedKeys",
+				"inputs": [
+					{
+						"name": "committedKeys.keys",
+						"type": "ScopeKeys | undefined",
+						"required": true,
+						"description": "Optional cached CryptoKey pair and commitment for one scope epoch."
+					},
+					{
+						"name": "committedKeys.commitment",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Signed base64url commitment to the scope key pair at the requested epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "committedKeys",
+						"type": "keys is ScopeKeys",
+						"description": "True when the cached keys are non-extractable and match the chain commitment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.module.sealed-client-sealed-browser-cache",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.networking-security-sealed-chain",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.function.remote-bytes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/sealed-client/sealedEnrollment.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/sealed-client/sealedEnrollment.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -3,6 +3,7 @@
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -27,6 +28,7 @@
 	import '../../lib/styles/home-scheme.css';
 	import '../../lib/styles/hub-home/index.css';
 
+	let { children }: { children?: Snippet } = $props();
 	const { api, session, projects } = browserContext();
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
@@ -163,6 +165,7 @@
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} />
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
+			{@render children?.()}
 			<HubHomeCards {view} {open} />
 		</hx-main>
 		{#if selected}
