@@ -2,7 +2,7 @@
 import { buildHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { readTrackerSources } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker';
-import type { QuotaSource } from './codexQuotaSource';
+import type { QuotaSource } from './codexQuotaSource.types';
 import { createHomeProviderReader } from './homeProviderReader';
 
 /**

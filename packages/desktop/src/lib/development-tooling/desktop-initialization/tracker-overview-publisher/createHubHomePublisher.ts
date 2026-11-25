@@ -7,7 +7,7 @@ import {
 import { readTrackerSources } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker';
 import type { NativeHostedCredential } from '../remote-http-project-adapter/RemoteHttpProjectAdapter';
 import { HostedHttpAdapter } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
-import type { QuotaSource } from './codexQuotaSource';
+import type { QuotaSource } from './codexQuotaSource.types';
 import { createHomeProviderReader } from './homeProviderReader';
 import { deliverHomeChat } from './homeTrackerChat';
 

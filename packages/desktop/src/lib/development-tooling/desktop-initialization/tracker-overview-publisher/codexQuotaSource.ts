@@ -3,23 +3,8 @@ import type {
 	HomeLimit,
 	HomeSubscription
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type { CodexRateLimits, CodexWindow, QuotaSource } from './codexQuotaSource.types';
 import { codexRpc } from '../../../../utils/agents-providers/codex-rpc/codexRpc';
-
-interface CodexWindow {
-	usedPercent: number;
-	windowDurationMins?: number | null;
-	resetsAt?: number | null;
-}
-
-/** The part of `account/rateLimits/read` that Home shows. Fields the Codex CLI adds later are ignored. */
-export interface CodexRateLimits {
-	planType?: string | null;
-	primary?: CodexWindow | null;
-	secondary?: CodexWindow | null;
-	credits?: { hasCredits: boolean; unlimited: boolean; balance?: string | null } | null;
-}
-
-export type QuotaSource = (now: number) => Promise<HomeSubscription | null>;
 
 function windowLabel(minutes: number | null | undefined, fallback: string) {
 	if (minutes === 300) return '5-hour window';

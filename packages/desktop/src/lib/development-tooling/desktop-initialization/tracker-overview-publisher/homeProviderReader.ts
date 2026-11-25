@@ -5,7 +5,7 @@ import type {
 	HomeSubscription
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { homeProviders } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
-import type { QuotaSource } from './codexQuotaSource';
+import type { QuotaSource } from './codexQuotaSource.types';
 import { noProviders } from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
 
 const every = 5 * 60 * 1000;
