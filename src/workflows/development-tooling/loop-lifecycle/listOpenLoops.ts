@@ -2,6 +2,7 @@
 import { fail } from '../../../core/development-tooling/errors';
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { errorMessage } from '../../../../packages/reports/src/helpers/strings/errorMessage';
 import { isMissingFile, loopPaths, loopRoot, readLoop, timestamp } from '../loop-state/loopState';
 import { isOpenLoop, isStale, loopActivity } from './loopActivity';
 import type { ListLoopsInput, OpenLoop, OpenLoopList } from './listOpenLoops.types';
@@ -20,7 +21,7 @@ export async function listOpenLoops(input: ListLoopsInput = {}): Promise<OpenLoo
 			if (isOpenLoop(state) && isStale(activity, staleDays))
 				result.loops.push({ name: state.name, goal: state.goal, ...activity });
 		} catch (error) {
-			if (!isMissingFile(error)) result.unreadable.push({ name, error: describe(error) });
+			if (!isMissingFile(error)) result.unreadable.push({ name, error: errorMessage(error) });
 		}
 	}
 	result.loops.sort(byOldestActivity);
@@ -55,10 +56,6 @@ async function loopNames(root: string): Promise<string[]> {
 
 function byOldestActivity(a: OpenLoop, b: OpenLoop): number {
 	return (b.ageDays ?? Infinity) - (a.ageDays ?? Infinity) || a.name.localeCompare(b.name);
-}
-
-function describe(error: unknown): string {
-	return error instanceof Error ? error.message : String(error);
 }
 
 function validateStaleDays(value = 0): number {
