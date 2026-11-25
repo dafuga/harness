@@ -1,0 +1,205 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
+# Sealed account sync
+
+Tracker items, notes, runs and session output reach every signed-in Harness
+app (Mac, iPhone, web, the box) through Cloudflare. Cloudflare (Hub Pages,
+the relay Worker, D1, R2 and Durable Objects) stores and forwards only
+ciphertext. Each app keeps a local copy, so a session it has shown before
+opens instantly. Tracker item `fx4c15`; it serves `egkyz7` (account sync),
+`d7ddya` (Hub shows live sessions) and `pkkbnh` (one app).
+
+The existing Harness Remote channel (`packages/remote`, P-256 + HKDF-SHA256 +
+AES-256-GCM between a paired phone and a Mac) keeps carrying commands to a
+live Mac. This design adds stored, account-wide state that stays readable
+when the Mac is offline.
+
+## Threat model
+
+| Party                                           | Can                                                                             | Cannot                                                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Cloudflare, or anyone with Hub/D1/R2 access     | See account id, device ids and public keys, opaque ids, padded sizes, times, IP | Read titles, notes, statuses, projects, computer or device names, session output         |
+|                                                 | Withhold, delay or reorder data; serve an old chain head to a new device        | Forge or alter data, inject a key, enroll a device, roll a known device back unnoticed   |
+| Someone with Daniel's Google session only       | Download ciphertext; write garbage that clients reject                          | Decrypt anything: Google sign-in never unlocks keys                                      |
+| A revoked device                                | Keep what it already downloaded and decrypted                                   | Read anything written after the revocation rotates its scopes                            |
+| A stolen, unlocked enrolled device              | Read its scopes until revoked from another device                               | Act on scopes it was never granted (the box only holds its project scopes)               |
+| A malicious Harness build or compromised client | Everything that device can do                                                   | Out of scope: we trust the code that runs on enrolled devices (signed builds, no CDN JS) |
+
+Residual risks, accepted for v1: traffic analysis from sizes and timing;
+the web app trusts the Hub to serve honest JavaScript (mitigated by the
+Mac/iPhone apps, which do not load remote code, and by Subresource Integrity
+on the Hub's bundles); a server that forks the device chain can show a
+device a stale view until it meets a device with a newer head.
+
+## Keys
+
+| Key                | Kind                                     | Lives                                                                         | Purpose                                   |
+| ------------------ | ---------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------- |
+| Device KEM key     | P-256 ECDH                               | Secure Enclave (iPhone, Mac), WebCrypto non-extractable, 0600 file on the box | Receives scope keys (HPKE)                |
+| Device signing key | P-256 ECDSA                              | Same place as the KEM key                                                     | Signs device-chain entries and key grants |
+| Scope data key     | 32 random bytes, one per scope and epoch | Wrapped per device on the server; unwrapped in memory or Keychain             | Seals records, blobs and stream frames    |
+| Scope index key    | 32 random bytes, one per scope           | Wrapped with every epoch                                                      | HMAC opaque ids, stable across rotations  |
+| Recovery secret    | 32 random bytes, shown once              | Credential Vault and Daniel's printed copy                                    | Opens the recovery device blob            |
+
+A scope is the account (`account`) or one project (`project:<random id>`).
+Scoped bots such as Grok Bot hold only their project scopes.
+
+**Algorithms.** HPKE (RFC 9180) base mode, suite DHKEM(P-256, HKDF-SHA256),
+HKDF-SHA256, AES-256-GCM: CryptoKit `HPKE` with Secure Enclave keys on Apple
+devices and `@hpke/core` (exactly pinned) over WebCrypto elsewhere. Records:
+HKDF-SHA256 per-object key from a random 16-byte salt, AES-256-GCM with a
+random 12-byte nonce. Signatures: ECDSA P-256 SHA-256, raw `r||s`.
+
+## Device chain
+
+The device list is an append-only chain of signed entries kept on the server
+and verified by every client. Clients wrap keys only for devices the chain
+enrolls, so the server cannot add a listening device.
+
+Each entry is canonical JSON `{seq, prev, type, at, by, body}` plus `sig`.
+`prev` is the SHA-256 of the previous entry's canonical bytes. `by` names
+an active admin device; `genesis` is self-signed by the first device.
+
+| Type      | Body                                                                            |
+| --------- | ------------------------------------------------------------------------------- |
+| `genesis` | First device keys, recovery device keys, initial scopes and key commitments     |
+| `enroll`  | New device id, KEM and signing public keys, role (`admin` or `bot`), scopes     |
+| `revoke`  | Device id                                                                       |
+| `rotate`  | Scope id, new epoch, key commitment `HMAC(dataKey, "harness/sealed/v1/commit")` |
+
+Clients remember the highest verified `seq` and head hash and refuse a
+shorter or different chain. Writes always use the newest epoch in the
+verified chain. A key grant `{scope, epoch, device, enc, ct, by, sig}` is
+accepted only when its signer is an active admin and the unwrapped key
+matches the epoch's commitment, which stops a server-chosen key.
+
+## Enrollment, revocation, recovery
+
+1. A new app signs in with Google (or the device code flow on the box),
+   creates its two key pairs and posts a pending request.
+2. An existing admin device (normally the iPhone) shows "New sign-in:
+   _name_", and claims it. Both screens show the same 6-digit code:
+   `SHA-256("harness/sealed/v1/sas" ‖ request keys ‖ approver signing key ‖ nonce)`.
+3. Daniel compares the code and approves with Face ID or Touch ID. The
+   approver appends `enroll` and signs a grant per scope for the new device.
+4. The new device pins the approver key, verifies the chain to genesis and
+   unwraps its grants.
+
+No QR code is needed; scanning one is an optional shortcut for the code. Sign-in alone shows "Approve this
+device on your iPhone or Mac". Revoking appends `revoke`, then `rotate` for
+every scope that device held, with fresh grants for the remaining devices.
+Older epochs stay readable by remaining devices; re-sealing old data is
+optional later work.
+
+The genesis device also creates a recovery device. Its private keys are
+sealed under `HKDF(recoverySecret, "harness/sealed/v1/recovery")` and stored
+on the server. With every device lost, Daniel enters the recovery secret
+from the Credential Vault on a new device, which acts as the recovery device
+to enroll itself.
+
+## Sealed formats (v1)
+
+All headers are authenticated data. Integers are big-endian.
+
+| Object       | Layout                                                                                                                                                                         |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Record       | `0x01` ‖ scope id 16 ‖ epoch u32 ‖ object id 32 ‖ revision u64 ‖ salt 16 ‖ nonce 12 ‖ AES-GCM ciphertext                                                                       |
+| Stream frame | `0x02` ‖ scope id 16 ‖ epoch u32 ‖ stream id 16 ‖ counter u64 ‖ AES-GCM ciphertext; nonce = 4 zero bytes ‖ counter; key = HKDF(dataKey, stream id, "harness/sealed/v1/stream") |
+| Grant        | HPKE `enc` 65 ‖ ciphertext of `dataKey ‖ indexKey`; info = `harness/sealed/v1/grant` ‖ account ‖ scope ‖ epoch ‖ device                                                        |
+
+Plaintext is UTF-8 JSON with a `kind` field, padded before sealing: a 4-byte
+length, the bytes, then zeros up to the next bucket (256 B doubling to
+64 KiB, then 64 KiB steps). Object ids are `HMAC-SHA256(indexKey, kind ‖ 0 ‖
+local id)`, or random for op-log entries. Clients keep the highest revision
+seen per object and reject an older one.
+
+## Data on Cloudflare
+
+| Store                                 | Holds (all bytes sealed unless noted)                                                                                              |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| D1 `sealed_chain`                     | `account, seq, entry` (public keys and signatures in clear; names sealed in the account scope)                                     |
+| D1 `sealed_grants`                    | `account, scope, epoch, device, grant`                                                                                             |
+| D1 `sealed_ops`                       | `account, scope, seq (server-assigned), device, received_at, envelope`: the op log                                                 |
+| D1 `sealed_objects`                   | `account, scope, object id, revision, size, r2 key or inline envelope`: snapshots, session state                                   |
+| R2 `sealed/<account>/…`               | Large envelopes: transcript segments, compaction snapshots                                                                         |
+| DO `AccountSyncObject` (relay Worker) | One per account: WebSocket fan-out of `{scope, seq}` pokes and live stream frames; no storage of frames beyond a short replay ring |
+| Push                                  | Generic "Harness has updates"; the app fetches and decrypts                                                                        |
+
+API, under the Hub (`/api/sync/v1`, Google session plus device id):
+`GET chain?after`, `POST chain` (append, server checks `seq`/`prev` only),
+`GET grants?device`, `POST grants`, `POST ops/:scope` (batch), `GET
+ops/:scope?after&limit`, `PUT|GET objects/:scope/:id`, `GET live`
+(WebSocket to the account object), `POST enroll`, `GET enroll/:id`. The
+server never parses an envelope beyond its length and header ids.
+
+Tracker state is an encrypted op log per scope (per-field last-writer-wins
+with hybrid clocks, append-only notes, tombstones, as decided on `egkyz7`).
+Any device may upload a sealed compaction snapshot so new devices do not
+replay the whole log.
+
+## Client cache and speed
+
+Every client stores envelopes exactly as the server holds them, plus a
+cursor per scope, and decrypts on read: IndexedDB on the web (scope keys as
+non-extractable `CryptoKey` objects, so a reload needs no unwrap), system
+SQLite on iPhone and Mac (keys in the Keychain). Opening a session renders
+the cache first, then applies the delta and the live stream. Writes are
+applied locally at once (optimistic) and queued in an outbox.
+
+| Path                                    | Budget                               |
+| --------------------------------------- | ------------------------------------ |
+| Previously viewed session to first text | p50 ≤ 50 ms, p95 ≤ 100 ms            |
+| Never viewed session, good network      | p50 ≤ 600 ms                         |
+| Live output, Mac to viewer              | ≤ 250 ms over network latency        |
+| Foreground catch-up to fresh            | ≤ 300 ms, cached view shown first    |
+| Crypto per 100 KiB record (open)        | ≤ 2 ms web, ≤ 1 ms native            |
+| Grant unwrap                            | Once per scope and epoch per install |
+
+Measure open-session latency on the current paths (Hub Home, iPhone via the
+relay) before the switch and on the sealed paths after, with the same
+fixture sessions.
+
+## Proof
+
+- Known-answer vectors (`packages/remote/test/support/sealed-vectors.json`)
+  shared by the TypeScript and Swift implementations.
+- Tamper tests: any changed header or ciphertext byte, wrong scope, epoch,
+  object id or key fails to open; an unsigned, wrongly signed, forked or
+  rolled-back chain is refused; a grant whose key misses its commitment is
+  refused.
+- Zero-plaintext tests: a recording server captures every byte a client
+  sends (D1 rows, R2 objects, DO messages, request bodies, headers, URLs).
+  Canary strings and their base64, base64url and hex forms must not appear.
+  The sync server's Workerd test runs the same check on its stored rows.
+
+## Build plan
+
+Wave 1 starts now; each child owns the listed paths only.
+
+| Child                                       | Item     | Owns                                                                                                         | Needs                                     |
+| ------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
+| 1. Sealed core (TypeScript)                 | `fx4c15` | `packages/remote/src/**/sealed/**`                                                                                         | none                                      |
+| 2. Swift sealed + Secure Enclave keys       | `pkkbnh` | `packages/desktop/ios/App/App/Sealed/**`, iOS vector checks                                                  | formats above, vectors from 1             |
+| 3. Sync server: D1, Hub API, account object | `egkyz7` | `packages/hub/db/migrations/0008-*`, `packages/hub/src/routes/api/sync/**`, `packages/relay/src/lib/sync/**` | API above; 1 in tests only                |
+| 4. Tracker in the Mac app bundle            | `jda9nt` | Desktop packaging, launch agent                                                                              | none                                      |
+| 5. Preferred provider setting               | `mq3s9y` | Tracker config, launcher model choice, settings UI                                                           | none; becomes an `account` record after 6 |
+
+Wave 2, after 1 and 3 merge:
+
+| Child                                            | Item     | Owns                                                    |
+| ------------------------------------------------ | -------- | ------------------------------------------------------- |
+| 6. Tracker op-log sync client and migration      | `egkyz7` | `src/services/projects-sessions/tracker-sealed-sync/**` |
+| 7. Enrollment, revocation, recovery (Hub + apps) | `fx4c15` | Hub devices and enroll routes, iOS `Account/Enroll*`    |
+| 8. Session stream publisher on the Mac           | `d7ddya` | `packages/desktop/src/services/session-stream/**`       |
+
+Wave 3: 9. Hub sealed cache and live Home (`d7ddya`,
+`packages/hub/src/lib/sealed-client/**`); 10. iPhone sealed cache and live
+sessions (`pkkbnh`, `TrackerReplica*` sealed source); then latency
+measurements, the hub/spoke migration with backup and count/hash checks,
+and production deploys after Daniel's go.
