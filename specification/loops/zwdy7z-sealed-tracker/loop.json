@@ -2,7 +2,7 @@
 	"name": "zwdy7z-sealed-tracker",
 	"goal": "Prove sealed Tracker journal delivery and cursor replay, then verify a backed-up hub and spoke cutover by canonical count and hash.",
 	"createdAt": "2026-11-25T16:30:52.826Z",
-	"updatedAt": "2026-11-25T16:33:09.395Z",
+	"updatedAt": "2026-11-25T17:07:30.230Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -17,12 +17,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T17:07:28.120Z",
+			"evidence": "636982330b: opt-in supervisor, durable upload and cursors, scoped replay and backup row comparison; no live activation."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T17:07:30.230Z",
+			"evidence": "636982330b: disposable hub and spoke converge across paginated replay with matching scoped count/SHA-256, preserved note and tombstone, durable restart, and exclusion of an out-of-scope item."
 		},
 		{
 			"id": "verify",
