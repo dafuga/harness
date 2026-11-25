@@ -1,0 +1,55 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-qa-thread-types",
+	"uid": "u_kg5hqw3mno",
+	"kind": "function",
+	"title": "qaThread",
+	"responsibility": "Define the QA-thread gate, task, runbook step, outcome and port shapes shared by the eligibility and thread services.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/core/agents-providers/qaThread.types.ts"],
+		"symbols": [
+			"QaGitHubRow",
+			"QaThreadOutcome",
+			"QaLabelEvent",
+			"QaTask",
+			"QaEligibility",
+			"QaRunbookStep",
+			"QaThreadPorts",
+			"QaThreadPost"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/core/agents-providers/qaThread.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/core/agents-providers/qaThread.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

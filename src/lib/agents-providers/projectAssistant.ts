@@ -8,3 +8,9 @@ export { ProjectAssistantService } from '../../services/agents-providers/Project
 export { assistantTools } from '../../services/agents-providers/project-assistant-service/assistantTools';
 export { ProjectAssistantConfigValidator } from '../../validators/agents-providers/ProjectAssistantConfigValidator';
 export type { ProjectAssistantConfig } from '../../core/agents-providers/projectAssistant.types';
+export { QaEligibilityService } from '../../services/agents-providers/QaEligibilityService';
+export { QaThreadService } from '../../services/agents-providers/QaThreadService';
+export { QaLedgerRepository } from '../../repositories/agents-providers/QaLedgerRepository';
+export { RunbookCanvasService } from '../../services/agents-providers/RunbookCanvasService';
+export type { QaLabelEvent, QaThreadPorts } from '../../core/agents-providers/qaThread.types';
+export type { RunbookCanvasPorts } from '../../core/agents-providers/runbookCanvas.types';

@@ -1,0 +1,134 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-eligibility",
+	"uid": "u_kg5hqy5stu",
+	"kind": "service",
+	"title": "QaEligibilityService",
+	"responsibility": "Owns the QaEligibilityService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/QaEligibilityService.ts"],
+		"symbols": [
+			"QaEligibilityService",
+			"QaEligibilityService.constructor",
+			"QaEligibilityService.evaluate"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "QaEligibilityService.constructor.github",
+				"type": "GitHubAppAdapter",
+				"required": true
+			},
+			{
+				"name": "QaEligibilityService.constructor.label",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaEligibilityService.constructor.stagingBranch",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaEligibilityService.evaluate.issueNumber",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "QaEligibilityService.evaluate",
+				"type": "Promise<QaEligibility>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "QaEligibilityService.evaluate",
+				"inputs": [
+					{
+						"name": "QaEligibilityService.evaluate.issueNumber",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaEligibilityService.evaluate",
+						"type": "Promise<QaEligibility>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "QaEligibilityService.constructor",
+				"inputs": [
+					{
+						"name": "QaEligibilityService.constructor.github",
+						"type": "GitHubAppAdapter",
+						"required": true
+					},
+					{
+						"name": "QaEligibilityService.constructor.label",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "QaEligibilityService.constructor.stagingBranch",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaEligibilityService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-git-hub-app",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-thread-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/QaEligibilityService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/QaEligibilityService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

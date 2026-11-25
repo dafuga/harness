@@ -1,0 +1,145 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-thread",
+	"uid": "u_kg5hqa3yza",
+	"kind": "service",
+	"title": "QaThreadService",
+	"responsibility": "Owns the QaThreadService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/QaThreadService.ts"],
+		"symbols": ["QaThreadService", "QaThreadService.constructor", "QaThreadService.handleLabel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "QaThreadService.constructor.eligibility",
+				"type": "QaEligibilityService",
+				"required": true
+			},
+			{
+				"name": "QaThreadService.constructor.ledger",
+				"type": "QaLedgerRepository",
+				"required": true
+			},
+			{
+				"name": "QaThreadService.constructor.ports",
+				"type": "QaThreadPorts",
+				"required": true
+			},
+			{
+				"name": "QaThreadService.constructor.environment",
+				"type": "{ stagingUrl: string; stagingBranch: string }",
+				"required": true
+			},
+			{
+				"name": "QaThreadService.handleLabel.event",
+				"type": "QaLabelEvent",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "QaThreadService.handleLabel",
+				"type": "Promise<QaThreadOutcome>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "QaThreadService.handleLabel",
+				"inputs": [
+					{
+						"name": "QaThreadService.handleLabel.event",
+						"type": "QaLabelEvent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaThreadService.handleLabel",
+						"type": "Promise<QaThreadOutcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "QaThreadService.constructor",
+				"inputs": [
+					{
+						"name": "QaThreadService.constructor.eligibility",
+						"type": "QaEligibilityService",
+						"required": true
+					},
+					{
+						"name": "QaThreadService.constructor.ledger",
+						"type": "QaLedgerRepository",
+						"required": true
+					},
+					{
+						"name": "QaThreadService.constructor.ports",
+						"type": "QaThreadPorts",
+						"required": true
+					},
+					{
+						"name": "QaThreadService.constructor.environment",
+						"type": "{ stagingUrl: string; stagingBranch: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaThreadService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-thread-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-qa-ledger",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-eligibility",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-thread-service-qa-thread-text",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/QaThreadService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/QaThreadService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
