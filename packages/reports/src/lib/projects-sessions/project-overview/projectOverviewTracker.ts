@@ -122,7 +122,12 @@ function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecor
 function askFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 	const options = readHomeAskOptions(row.options as HomeAskInput);
 	const confirm = readHomeAskConfirm(row.confirm as HomeAskInput);
-	return { ...(options.length && { options }), ...(options.length && confirm && { confirm }) };
+	const askedAt = optionalTime(row.asked_at, 'item asked_at');
+	return {
+		...(options.length && { options }),
+		...(options.length && confirm && { confirm }),
+		...(askedAt && { askedAt })
+	};
 }
 
 function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {

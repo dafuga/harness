@@ -64,8 +64,7 @@ export async function queueIdleWork(
 				reason: `Idle task could not be placed: ${result.reason}. Chief of Staff, please assign a computer or resolve its launch route.`,
 				localOnly: true
 			},
-			now,
-			null
+			now
 		);
 	}
 	retainLaunchAlerts(store, idleWorkAlert, active);
@@ -138,8 +137,7 @@ export function watchLaunchRequests(
 						? `Launch on ${computer} has been queued for more than ${minutes} minutes without a started run.`
 						: `Launch request has had no run on ${computer} for at least 60 seconds.`
 			},
-			now,
-			null
+			now
 		);
 		added = true;
 	}

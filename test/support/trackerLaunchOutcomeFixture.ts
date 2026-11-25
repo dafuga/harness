@@ -50,8 +50,10 @@ export async function verifyIdleWatchdogAlert(
 	const item = await runtime.items.handle(
 		new Request('http://tracker-fixture.invalid/items/' + itemId)
 	);
+	// The ping is for Chief of Staff: it is on their channel and never asks Daniel.
 	expect(await item.json()).toMatchObject({
-		needs_daniel: true,
+		needs_daniel: false,
+		question: null,
 		notes_log: [
 			{ text: expect.stringContaining('watchdog nudge 1/1') },
 			{ text: expect.stringContaining('watchdog idle') }

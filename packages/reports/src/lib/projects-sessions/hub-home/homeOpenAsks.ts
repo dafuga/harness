@@ -13,7 +13,7 @@ const listed = 100;
 export function buildHomeOpenAsks(items: TrackerItemRecord[]): HomeOpenAsk[] {
 	return items
 		.filter((item) => trackerStructuredAsk(item))
-		.sort((a, b) => Date.parse(a.updated_at) - Date.parse(b.updated_at) || a.id.localeCompare(b.id))
+		.sort((a, b) => Date.parse(askedAt(a)) - Date.parse(askedAt(b)) || a.id.localeCompare(b.id))
 		.slice(0, listed)
 		.map((item) => {
 			const agent = homeText(item.agent, 200) ?? 'Tracker';
@@ -25,9 +25,38 @@ export function buildHomeOpenAsks(items: TrackerItemRecord[]): HomeOpenAsk[] {
 				question: homeText(item.question, 2000) ?? '',
 				options: item.options ?? [],
 				...(item.confirm && { confirm: item.confirm }),
-				since: new Date(item.updated_at).toISOString()
+				since: new Date(askedAt(item)).toISOString()
 			};
 		});
+}
+
+function askedAt(item: TrackerItemRecord): string {
+	return item.askedAt ?? item.updated_at;
+}
+
+/** A project whose ask has no agent card still needs a chat to answer it in. */
+export function askChatAgents(agents: HomeAgent[], asks: HomeOpenAsk[]): HomeAgent[] {
+	const known = new Set(agents.map((agent) => agent.id));
+	const missing = new Map(
+		asks.filter((ask) => !known.has(ask.agentId)).map((ask) => [ask.agentId, ask])
+	);
+	return [...missing.values()].map((ask) => ({
+		id: ask.agentId,
+		name: ask.agentName,
+		state: 'needs-you',
+		sessions: 0,
+		tasks: [],
+		subAgents: { sessions: 0, tasks: [] },
+		itemId: ask.itemId,
+		task: ask.title,
+		machine: null,
+		model: null,
+		since: ask.since,
+		question: ask.question,
+		options: ask.options,
+		...(ask.confirm && { confirm: ask.confirm }),
+		messages: []
+	}));
 }
 
 /** An older Mac sends no list, so only its agents' own questions that are structured count. */

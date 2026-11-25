@@ -132,12 +132,18 @@ async function readReply<T>(response: Response): Promise<T> {
 
 async function readRows(): Promise<InboxRow[]> {
 	const items = await readReply<TrackerItem[]>(await trackerRequest('/items?status=all&limit=-1'));
-	return items
-		.filter((item) => visible(item))
-		.map((item) => ({
-			header: projectHeader(item),
-			bucket: itemBucket(item.status ?? 'open', trackerStructuredAsk(item))
-		}));
+	return items.filter((item) => visible(item)).map(projectRow);
+}
+
+function projectRow(item: TrackerItem): InboxRow {
+	const open = trackerStructuredAsk(item);
+	return {
+		header: projectHeader(item),
+		bucket: itemBucket(item.status ?? 'open', open),
+		...(open && {
+			ask: { question: safe(item.question), since: item.asked_at ?? item.updated_at }
+		})
+	};
 }
 
 function visible(item: TrackerItem): boolean {

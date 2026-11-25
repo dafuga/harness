@@ -1,7 +1,7 @@
 // @harness-uid u_r7qgepnoax
 import type { NativeTrackerAskValues } from './nativeTrackerCli.types';
 import { trackerAskOptionFromWord } from '../../../utils/projects-sessions/trackerAskOptions';
-import { isTrackerPing } from '../../../utils/projects-sessions/isTrackerPing';
+import { isTrackerCosMessage } from '../../../utils/projects-sessions/isTrackerPing';
 
 /** The ask-choice words of one command line: `--option label=effect` (repeat), `--recommend N`. */
 export function nativeTrackerAskBody(values: NativeTrackerAskValues): Record<string, unknown> {
@@ -38,7 +38,7 @@ export function nativeTrackerFlagBody(
 ): Record<string, unknown> {
 	const question = text.length ? text : values.question;
 	const body = nativeTrackerAskBody(values);
-	if (!isTrackerPing(question)) requireStructuredAsk(values);
+	if (!isTrackerCosMessage(String(question ?? ''))) requireStructuredAsk(values);
 	return { question, force: values.force, ...body };
 }
 

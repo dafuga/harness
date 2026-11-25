@@ -97,6 +97,8 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		missed: string | null;
 		adapter_instructions?: string;
 		notes_log: TrackerItemNote[];
+		/** When the open ask with choices was raised. */
+		asked_at?: string;
 		options?: TrackerAskOption[];
 		confirm?: string;
 		answer_option?: number;

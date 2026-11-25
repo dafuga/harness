@@ -23,6 +23,7 @@ export type TrackerItemRecord = {
 	question?: string | null;
 	options?: { label: string; effect: string; recommended?: true }[];
 	confirm?: 'deploy' | 'money' | 'secret';
+	askedAt?: string | null;
 	notes_log?: TrackerNote[];
 	kind?: string | null;
 	parent?: string | null;

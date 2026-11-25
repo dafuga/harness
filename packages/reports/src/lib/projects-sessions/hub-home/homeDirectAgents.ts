@@ -1,6 +1,6 @@
 // @harness-uid u_qhdifpyhqs
 import type { HomeAgent, HomeAgentTask, HomeOpenAsk, OwnerHomeSnapshot } from './hubHome.types';
-import { agentOpenAsks, withListedAsk } from './homeOpenAsks';
+import { agentOpenAsks, askChatAgents, withListedAsk } from './homeOpenAsks';
 
 /**
  * The sessions Daniel creates and talks to himself, by Tracker agent value, with the name Home
@@ -88,5 +88,13 @@ export function listedHomeSnapshot(
 	added: readonly string[] = []
 ): OwnerHomeSnapshot & HomeLists & { openAsks: HomeOpenAsk[] } {
 	const complete = completeHomeSnapshot(snapshot);
-	return { ...complete, ...listHomeAgents(complete.agents, added) };
+	const agents = [...complete.agents, ...askChatAgents(complete.agents, complete.openAsks)];
+	return {
+		...complete,
+		...listHomeAgents(agents, added),
+		openAsks: complete.openAsks.map((ask) => ({
+			...ask,
+			agentName: directAgentNames[ask.agentId] ?? ask.agentName
+		}))
+	};
 }

@@ -8,6 +8,8 @@
 		trackerStageLabels
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
+	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
+
 	let {
 		rows,
 		selected,
@@ -33,13 +35,20 @@
 				aria-current={selected === row.header.id ? 'true' : undefined}
 				onclick={() => onselect(row.header.id)}
 			>
-				<hx-span class="tag tag-{row.bucket}">{bucketLabels[row.bucket]}</hx-span>
-				<hx-span class="title">{row.header.title}</hx-span>
-				<hx-span class="meta"
-					>{row.header.project} · {row.header.id} · {trackerStageLabels[
-						row.header.stage ?? 'idea'
-					]}</hx-span
-				>
+				{#if row.ask}
+					<hx-span class="title">{row.header.project}</hx-span>
+					<hx-span class="question">{row.ask.question}</hx-span>
+					{#if row.ask.since}<hx-span class="meta">waiting {waitAge(row.ask.since, Date.now())}</hx-span
+						>{/if}
+				{:else}
+					<hx-span class="tag tag-{row.bucket}">{bucketLabels[row.bucket]}</hx-span>
+					<hx-span class="title">{row.header.title}</hx-span>
+					<hx-span class="meta"
+						>{row.header.project} · {row.header.id} · {trackerStageLabels[
+							row.header.stage ?? 'idea'
+						]}</hx-span
+					>
+				{/if}
 			</hx-button>
 		</hx-li>
 	{:else}
@@ -69,6 +78,11 @@
 	}
 	:global(.rows [aria-current='true']) {
 		border-color: var(--hx-color-primary);
+	}
+	:global(.rows .question) {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	:global(.rows .title) {
 		font-weight: var(--hx-style-weight-semibold);

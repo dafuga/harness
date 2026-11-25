@@ -1,5 +1,5 @@
 // @harness-uid u_mdrydzunlb
-import { isTrackerPing } from './isTrackerPing';
+import { isTrackerCosMessage } from './isTrackerPing';
 import type { TrackerAskState } from './trackerStructuredAsk.types';
 
 /**
@@ -9,7 +9,7 @@ import type { TrackerAskState } from './trackerStructuredAsk.types';
  */
 export function trackerFlagKind(item: TrackerAskState): 'ask' | 'ping' | 'needs-options' | null {
 	if (!item.needs_daniel || item.resolved || item.status === 'ignored') return null;
-	if (isTrackerPing(item.question)) return 'ping';
+	if (isTrackerCosMessage(item.question)) return 'ping';
 	return item.question?.trim() && answerableChoices(item.options) ? 'ask' : 'needs-options';
 }
 

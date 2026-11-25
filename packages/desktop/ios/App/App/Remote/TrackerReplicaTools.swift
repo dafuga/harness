@@ -68,14 +68,30 @@ extension TrackerReplicaStore {
             """, [slot]).first?.first.flatMap { $0 }.flatMap(Int.init)
         let recent = try db.rows("SELECT value FROM items WHERE slot = ? ORDER BY updated DESC, id LIMIT 10", [slot])
         let needing = try db.rows("""
-            SELECT items.value FROM items
+            SELECT items.value,
+                (SELECT json_extract(flags.value, '$.question') FROM flags
+                 WHERE flags.slot = items.slot AND flags.item = items.id AND \(Self.structuredAsk)),
+                (SELECT json_extract(flags.value, '$.at') FROM flags
+                 WHERE flags.slot = items.slot AND flags.item = items.id AND \(Self.structuredAsk))
+            FROM items
             WHERE items.slot = ? AND EXISTS (
                 SELECT 1 FROM flags WHERE flags.slot = items.slot AND flags.item = items.id
                 AND \(Self.structuredAsk))
             ORDER BY items.updated DESC, items.id LIMIT 25
             """, [slot])
         return ["counts": counts, "unresolvedFlags": flags ?? 0, "recent": try headers(recent),
-                "needsYou": try headers(needing)]
+                "needsYou": try asks(needing)]
+    }
+
+    /// A Needs you entry is the item header plus the question to show on its compact row.
+    private func asks(_ rows: [[String?]]) throws -> [Any] {
+        try rows.map { row in
+            let header = try TrackerReplicaJSON.object(TrackerReplicaJSON.decode(TrackerItemHeader.self, row[0]))
+            guard var entry = header as? [String: Any] else { throw TrackerReplicaError.invalidInput }
+            if let question = row[1] { entry["question"] = question }
+            if let at = row[2] { entry["askedAt"] = at }
+            return entry
+        }
     }
 
     private func show(id: String, slot: String) throws -> [String: Any] {

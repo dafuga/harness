@@ -27,7 +27,8 @@ export function snapshotTracker(moment: SnapshotMoment) {
 				...fields,
 				needs_daniel: flagged ? 1 : 0,
 				resolved: fields.resolved ? 1 : 0,
-				sensitive: fields.sensitive ? 1 : 0,
+				// Real rows leave the column empty unless the item is sensitive.
+				sensitive: fields.sensitive ? 1 : null,
 				deleted: fields.deleted ? 1 : 0,
 				...(options && { options: JSON.stringify(options) }),
 				created_at: fields.updated_at

@@ -182,7 +182,7 @@
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} />
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} {send} {receipt} />
+			<HubHomeCards {view} {open} />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

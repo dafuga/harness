@@ -21,7 +21,7 @@
 		writeSentMessage
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import TrackerInboxRecord from './TrackerInboxRecord.svelte';
-	import TrackerInboxChoices from './TrackerInboxChoices.svelte';
+	import TrackerInboxAsk from './TrackerInboxAsk.svelte';
 
 	let {
 		source,
@@ -165,14 +165,14 @@
 
 		<TrackerInboxRecord {detail} {mode} />
 
-		{#if detail.flag?.state === 'open'}
-			<TrackerInboxChoices flag={detail.flag} {busy} onpick={pick} onother={other} />
+		{#if detail.flag}
+			<TrackerInboxAsk flag={detail.flag} {busy} onpick={pick} onother={other} />
 		{/if}
 
 		<hx-section class="actions" aria-label="Confirm a write">
 			<hx-div class="buttons">
 				<hx-button type="button" onclick={() => start('note')}>Add note</hx-button>
-				<hx-button type="button" onclick={() => start('flag')}>Flag for you</hx-button>
+				<hx-button type="button" onclick={() => start('flag')}>Flag for follow-up</hx-button>
 				<hx-button type="button" class="quiet" onclick={() => open(id)}>Review again</hx-button>
 			</hx-div>
 

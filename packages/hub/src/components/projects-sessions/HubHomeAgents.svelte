@@ -57,11 +57,18 @@
 			currentAgent(agents ?? []) ??
 			agents?.[0]
 	);
+	/** The chosen session's open asks. They are the latest messages of its chat. */
+	const chatAsks = $derived(openAsks.filter((ask) => ask.agentId === active?.id));
 
 	$effect(() => void (chatName = active?.name ?? ''));
 	function select(id: string) {
 		selected = id;
 		chatOpen = true;
+	}
+
+	/** Opening the chat lands on the question, wherever the thread starts. */
+	function revealAsk(element: HTMLElement) {
+		requestAnimationFrame(() => element.scrollIntoView({ block: 'nearest' }));
 	}
 
 	function submitted(message: HomeChatInput, result: HomeChatReceipt) {
@@ -153,7 +160,7 @@
 				>
 			</hx-header>
 			<hx-ol class="hh-thread" aria-label="Tracker conversation">
-				{#each active.messages as message (message.id)}
+				{#each active.messages.filter((message) => message.id !== 'question') as message (message.id)}
 					<hx-li class="hh-msg" data-from={message.from}>
 						<hx-p>{message.text}</hx-p><hx-span class="hh-msg-at">{runTime(message.at)}</hx-span>
 					</hx-li>
@@ -165,10 +172,12 @@
 						>
 					</hx-li>
 				{/each}
+				{#each chatAsks as ask (ask.itemId)}
+					<hx-li class="hh-msg hh-msg-ask" data-from="agent" {@attach revealAsk}>
+						<HubHomeAsk {ask} {send} {receipt} {submitted} />
+					</hx-li>
+				{/each}
 			</hx-ol>
-			{#each openAsks.filter((ask) => ask.agentId === active?.id) as ask (ask.itemId)}
-				<HubHomeAsk {ask} {send} {receipt} {submitted} />
-			{/each}
 			{#if active.itemId}
 				{#key active.id}<HubHomeComposer {agents} agentId={active.id} {send} {submitted} />{/key}
 			{:else}

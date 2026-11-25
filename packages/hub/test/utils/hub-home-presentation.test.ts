@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
 import {
 	initials,
-	quickReplies,
 	quotaReset,
 	quotaSummary,
 	runDay
