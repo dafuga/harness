@@ -6555,6 +6555,54 @@
 			"definition": "9818446ee17d960bc6e4a0bd9557ee64a4b5d2e424b1a9b6b0771d716ae8f91f",
 			"to": "packages/hub/src/lib/verification-evidence/server/auth/composeHubAuth.ts",
 			"ownerSource": "packages/hub/src/lib/verification-evidence/server/auth/auth.ts"
+		},
+		{
+			"unit": "desktop.function.qr-symbol",
+			"name": "qrSymbol",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "58126e02237d7de272b36560c9ccc83effe5ce1be4bb1869e174d3fa4d2b3bb4",
+			"retired": true
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "timeLeft",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "951d4e94908c1cf7dfea9b10d63f55ae2f98351d4f80fce4e442bad92a9141d5",
+			"retired": true
+		},
+		{
+			"unit": "desktop.function.scan-notice",
+			"name": "scanFailure",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "32249aa25dc97083116e9517b0561f83977557d529203697e45851bb98bbbe24",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.pairing-offer",
+			"name": "pairingOffer",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "a76c0923199af1b68df6b8f7865dd37ce8e610c5091702bc0227f4ab5bfc0446",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.pairing-offer",
+			"name": "readPairingOffer",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "443501ce8fdb41f613733e550773c46b52c647a174436c7ed01718f15b2d0eee",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.remote-identity",
+			"name": "pairingCode",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "a7092bdf2a687b5df2386a9cb98a5a78581a31e22681d67d21c824501310755a",
+			"retired": true
 		}
 	],
 	"retiredOwners": [
