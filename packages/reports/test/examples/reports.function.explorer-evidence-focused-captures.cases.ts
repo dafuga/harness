@@ -96,6 +96,17 @@ export function summary(found: ReturnType<typeof focusedCaptures>) {
 	});
 }
 
+const row = (viewport: string) => ({
+	loop: 'catalog-captures',
+	state: 'populated-list',
+	viewport,
+	standing: 'unvalidated',
+	usable: true,
+	current: true,
+	inheritedFrom: null,
+	record: 'd4e1a07c'
+});
+
 test('Same-commit focused captures are selected', () => {
 	const green = point({
 		commit: HEAD,
@@ -111,16 +122,6 @@ test('Same-commit focused captures are selected', () => {
 	const head = detail(HEAD, {
 		sourceTree: TREE,
 		regressions: [regression('catalog-captures', green)]
-	});
-	const row = (viewport: string) => ({
-		loop: 'catalog-captures',
-		state: 'populated-list',
-		viewport,
-		standing: 'unvalidated',
-		usable: true,
-		current: true,
-		inheritedFrom: null,
-		record: 'd4e1a07c'
 	});
 	const expected = [row('desktop'), row('mobile')];
 	expect(summary(focusedCaptures(head, UNIT))).toEqual(expected);

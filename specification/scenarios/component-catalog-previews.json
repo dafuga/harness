@@ -25,6 +25,7 @@
 		"desktop.component.design-panel",
 		"desktop.component.details-panel",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
@@ -115,6 +116,7 @@
 		"hub.component.projects-sessions-hub-home-agents",
 		"hub.component.projects-sessions-hub-home-card",
 		"hub.component.projects-sessions-hub-home-cards",
+		"hub.component.projects-sessions-hub-home-choices",
 		"hub.component.projects-sessions-hub-home-composer",
 		"hub.component.projects-sessions-hub-home-dialogs",
 		"hub.component.projects-sessions-hub-home-header",
@@ -821,6 +823,12 @@
 			"title": "Tracker decision inbox",
 			"coverage": "required",
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-choices",
+			"title": "TrackerInboxChoices",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices"]
 		},
 		{
 			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
@@ -2159,6 +2167,12 @@
 			"title": "HubHomeCards",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-cards"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-choices",
+			"title": "HubHomeChoices",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-choices"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-composer",
@@ -8686,6 +8700,7 @@
 				"desktop-component-design-panel-long",
 				"desktop-component-details-panel",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-choices",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-record",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
@@ -8889,6 +8904,7 @@
 				"hub-component-projects-sessions-hub-home-agents",
 				"hub-component-projects-sessions-hub-home-card",
 				"hub-component-projects-sessions-hub-home-cards",
+				"hub-component-projects-sessions-hub-home-choices",
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
 				"hub-component-projects-sessions-hub-home-header",

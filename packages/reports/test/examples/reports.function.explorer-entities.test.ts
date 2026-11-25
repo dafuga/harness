@@ -4,7 +4,7 @@ import {
 	explorerEntities,
 	explorerEntity
 } from '../../src/utils/explorer-ui/explorerEntities';
-import type { HarnessRevision, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
+import type { HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import { impacted, revision, sha, unit } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';

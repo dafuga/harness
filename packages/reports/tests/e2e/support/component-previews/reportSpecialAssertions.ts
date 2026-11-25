@@ -41,13 +41,13 @@ export async function assertSpecialReportState(component: Locator, id: string, v
 	return true;
 }
 
+const analyticsFilterValues: Record<string, string[]> = {
+	empty: ['', '', '', '', ''],
+	'all-filters': ['release-check', 'verify', 'GPT 6.1', '2026-10-20', '2026-10-26']
+};
+
 async function assertAnalyticsFilters(component: Locator, variant: string) {
-	const expected =
-		variant === 'empty'
-			? ['', '', '', '', '']
-			: variant === 'all-filters'
-				? ['release-check', 'verify', 'GPT 6.1', '2026-10-20', '2026-10-26']
-				: ['release-check', '', '', '2026-10-20', ''];
+	const expected = analyticsFilterValues[variant] ?? ['release-check', '', '', '2026-10-20', ''];
 	for (const [index, name] of ['loop', 'task', 'model', 'since', 'until'].entries())
 		await expect(component.locator(`input[name="${name}"]`)).toHaveValue(expected[index]);
 }

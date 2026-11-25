@@ -6,6 +6,7 @@
 	import HubHomeRow from '../../../../../hub/src/components/projects-sessions/HubHomeRow.svelte';
 	import { browserContext } from '../../../../../hub/src/utils/development-tooling/browserContext';
 	import { catalogHomeView } from './hubHomeCatalogData';
+	import { previewAnswerOptions } from './shared';
 	import '../../../../../hub/src/lib/styles/home-scheme.css';
 	import '../../../../../hub/src/lib/styles/hub-home/index.css';
 
@@ -34,6 +35,7 @@
 	const fixtureProps = $derived<Record<string, Record<string, unknown>>>({
 		'home-agents': { agents: view.agents, send, receipt },
 		'home-cards': { view, open: noop, send },
+		'home-choices': { agent: { options: previewAnswerOptions }, onpick: noop },
 		'home-composer': { agents: view.agents, send },
 		'home-dialogs': {
 			selected: 'plans',

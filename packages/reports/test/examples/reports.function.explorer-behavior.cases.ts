@@ -1,7 +1,7 @@
 import { test } from 'vitest';
 import { explorerBehavior } from '../../src/utils/explorer-ui/explorerBehavior';
 import type { ExplorerSide } from '../../src/models/explorer-ui/Explorer.types';
-import { capture, declared, record, result, sha } from '../explorerFixture';
+import { capture, declared, record, sha, type result } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
 import type { Shot, Behavior } from './reports.function.explorer-behavior.test.types';

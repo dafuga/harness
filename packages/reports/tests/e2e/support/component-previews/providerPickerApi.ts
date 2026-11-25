@@ -23,12 +23,16 @@ export async function pickerFixture(route: Route) {
 	if (name === 'list_observed_sessions')
 		return route.fulfill({
 			json: {
-				sessions:
-					variant === 'queue-error' ? null : variant === 'queue-empty' ? [] : [picker.request]
+				sessions: observedSessions(variant)
 			}
 		});
 	if (name === 'cancel_model_switch') return route.fulfill({ json: { ...picker, request: null } });
 	return route.fulfill({ json: pickerSnapshot(variant) });
+}
+
+function observedSessions(variant: string) {
+	if (variant === 'queue-error') return null;
+	return variant === 'queue-empty' ? [] : [picker.request];
 }
 
 function pickerSnapshot(variant: string) {

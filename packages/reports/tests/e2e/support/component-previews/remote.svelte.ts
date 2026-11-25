@@ -1,5 +1,5 @@
 import type { PreviewCases } from './shared';
-import { stamp, done } from './shared';
+import { stamp, done, previewAnswerOptions } from './shared';
 import { phoneTrackerInboxSource } from '../../../../../desktop/src/lib/development-tooling/tracker-inbox/phoneTrackerInboxSource';
 import { writeView } from '../../../../../desktop/src/lib/development-tooling/tracker-inbox/trackerInbox';
 import type { PhoneTrackerTools } from '../../../../../desktop/src/models/development-tooling/PhoneTracker.types';
@@ -154,6 +154,10 @@ function trackerInboxCases(): PreviewCases {
 	const unit = 'desktop.component.development-tooling-tracker-inbox-tracker-inbox';
 	return {
 		[unit]: { source },
+		[`${unit}-choices`]: {
+			flag: { ...trackerDetail.flag, options: previewAnswerOptions },
+			onpick: trackerNoop
+		},
 		[`${unit}-detail`]: { source, id: trackerItem.id, onchanged: trackerNoop },
 		[`${unit}-record`]: { detail: trackerDetail },
 		[`${unit}-rows`]: {

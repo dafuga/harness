@@ -14,10 +14,14 @@ function clipRevision(item: Evidence) {
 	const video = item.video;
 	return [
 		{ label: 'Clip', value: video?.clipId ?? absent },
-		{ label: 'Original revision', value: video?.reference?.revision ?? item.source ?? absent },
+		{ label: 'Original revision', value: originalRevision(item) },
 		{ label: 'Selected revision', value: video?.selectedRevision ?? absent },
 		{ label: 'Freshness', value: video?.freshness ?? absent }
 	];
+}
+
+function originalRevision(item: Evidence) {
+	return item.video?.reference?.revision ?? item.source ?? absent;
 }
 
 function clipProof(video: EvidenceVideo | undefined) {

@@ -3,7 +3,6 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { CapacitorProjectsService } from '../../src/lib/verification-evidence/select-environment/CapacitorProjectsService';
 import type {
-	CapacitorProjectsServiceConfig,
 	Input,
 	Operation
 } from '../../src/lib/verification-evidence/select-environment/CapacitorProjectsService.types';

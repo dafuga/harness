@@ -1,4 +1,4 @@
-import type { HarnessCapture, HarnessScenario } from '../src/models/explorer-ui/Harness.types';
+import type { HarnessCapture } from '../src/models/explorer-ui/Harness.types';
 import { explorerState, type Judged } from '../src/utils/explorer-ui/explorerState';
 import { capture, declared, record, result, sha } from './explorerFixture';
 import type { Video } from './explorerVideoCoverageFixture.types';

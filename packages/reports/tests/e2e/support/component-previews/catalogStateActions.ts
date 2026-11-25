@@ -14,7 +14,7 @@ import { prepareReportState } from './reportStateActions';
 import { prepareDesktopState } from './desktopStateActions';
 import { prepareDesktopGameState } from './desktopGameStateActions';
 
-import type { CatalogStateAction } from './catalogStateActions.types';
+import type { CatalogPreparation, CatalogStateAction } from './catalogStateActions.types';
 
 const actions: Record<string, CatalogStateAction> = {
 	'desktop.component.game-live-ai:': async (component) => {
@@ -109,23 +109,31 @@ export async function prepareCatalogState(component: Locator, id: string, varian
 	await prepareReportsCatalog(component, id, variant);
 }
 
-async function prepareReportsCatalog(component: Locator, id: string, variant: string) {
-	if (id === 'reports.component.entity-search' && variant)
-		return prepareEntitySearchState(component, variant);
-	if (id === 'reports.component.provider-picker')
-		return prepareProviderPickerState(component, variant);
-	if (id === 'reports.component.console-chat' && variant)
-		return prepareConsoleChatState(component, variant);
-	if (id === 'reports.component.provider-picker-cards' && variant)
-		return assertProviderPickerCardState(component, variant);
-	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
-	if (id === 'reports.component.audio-evidence') return prepareAudioEvidence(component, variant);
+const requiresVariant: Partial<Record<string, CatalogPreparation>> = {
+	'reports.component.entity-search': prepareEntitySearchState,
+	'reports.component.console-chat': prepareConsoleChatState,
+	'reports.component.provider-picker-cards': assertProviderPickerCardState
+};
 
-	if (id === 'reports.component.evidence-card') return prepareEvidenceCard(component, variant);
+const catalogPreparations: Partial<Record<string, CatalogPreparation>> = {
+	'reports.component.provider-picker': prepareProviderPickerState,
+	'reports.component.audio-evidence': prepareAudioEvidence,
+	'reports.component.evidence-card': prepareEvidenceCard
+};
+
+async function prepareReportsCatalog(component: Locator, id: string, variant: string) {
+	const preparation = catalogPreparations[id] ?? (variant ? requiresVariant[id] : undefined);
+	if (preparation) return preparation(component, variant);
+	if (id === 'reports.component.audio-comparison') await assertAudioComparison(component, variant);
 	const action = actions[`${id}:${variant}`];
 	if (action) await action(component);
 	if (id === 'reports.component.audio-comparison-viewer')
 		await assertAudioComparisonViewer(component, variant);
+}
+
+function unavailableCount(variant: string) {
+	if (variant === 'both-unavailable') return 2;
+	return variant.includes('unavailable') ? 1 : 0;
 }
 
 async function assertAudioComparison(component: Locator, variant: string) {
@@ -134,7 +142,7 @@ async function assertAudioComparison(component: Locator, variant: string) {
 	else await expect(opener).toBeEnabled();
 	const rows = component.locator('.audio-comparison-row');
 	await expect(rows).toHaveCount(2);
-	const missing = variant === 'both-unavailable' ? 2 : variant.includes('unavailable') ? 1 : 0;
+	const missing = unavailableCount(variant);
 	await expect(component.locator('.audio-comparison-missing')).toHaveCount(missing);
 	if (variant === 'no-duration') await expect(component.locator('.audio-duration')).toHaveCount(0);
 	if (variant === 'mixed') {
@@ -156,7 +164,7 @@ async function assertAudioComparisonViewer(component: Locator, variant: string) 
 	await expect(sides).toHaveCount(
 		['before', 'after', 'transcript-closed'].includes(variant) ? 1 : 2
 	);
-	const missing = variant === 'both-unavailable' ? 2 : variant.includes('unavailable') ? 1 : 0;
+	const missing = unavailableCount(variant);
 	await expect(component.locator('.audio-card.unavailable')).toHaveCount(missing);
 	if (variant === 'mixed') {
 		await expect(sides.nth(0).locator('.badge')).toHaveClass(/failed/);

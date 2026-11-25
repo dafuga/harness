@@ -15,6 +15,7 @@ const agent = (extra: Partial<HomeAgent> = {}): HomeAgent => ({
 	state: 'needs-you',
 	sessions: 0,
 	tasks: [],
+	subAgents: { sessions: 0, tasks: [] },
 	itemId: 'item1',
 	task: 'Synthetic task',
 	machine: null,

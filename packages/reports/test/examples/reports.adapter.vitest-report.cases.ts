@@ -21,6 +21,37 @@ export function createFixture(data: VitestData) {
 	return { directory, file, calls, store };
 }
 
+function expectedChecks(id: string) {
+	return [
+		{
+			id,
+			entry: {
+				kind: 'check',
+				data: {
+					id: 'vitest-1',
+					title: 'parses a report',
+					status: 'passed',
+					group: 'src/parser.test.ts',
+					durationMs: 8
+				}
+			}
+		},
+		{
+			id,
+			entry: {
+				kind: 'check',
+				data: {
+					id: 'vitest-2',
+					title: 'rejects invalid input',
+					status: 'failed',
+					group: 'src/parser.test.ts',
+					durationMs: 3
+				}
+			}
+		}
+	];
+}
+
 test('ingest records each Vitest assertion as a check', async () => {
 	const fixture = createFixture({
 		testResults: [
@@ -38,34 +69,7 @@ test('ingest records each Vitest assertion as a check', async () => {
 		const input = { id, file: fixture.file };
 		const output = await new VitestReportAdapter().ingest(fixture.store, id, fixture.file);
 		expect(output).toEqual({ checks: 2 });
-		expect(fixture.calls).toEqual([
-			{
-				id,
-				entry: {
-					kind: 'check',
-					data: {
-						id: 'vitest-1',
-						title: 'parses a report',
-						status: 'passed',
-						group: 'src/parser.test.ts',
-						durationMs: 8
-					}
-				}
-			},
-			{
-				id,
-				entry: {
-					kind: 'check',
-					data: {
-						id: 'vitest-2',
-						title: 'rejects invalid input',
-						status: 'failed',
-						group: 'src/parser.test.ts',
-						durationMs: 3
-					}
-				}
-			}
-		]);
+		expect(fixture.calls).toEqual(expectedChecks(id));
 		recordExampleCases(
 			{
 				unitId: 'reports.adapter.vitest-report',

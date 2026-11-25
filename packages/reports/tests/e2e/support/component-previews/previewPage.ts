@@ -56,6 +56,15 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 	await routeShellCatalog(page, id, variant);
 	// The real Hub layout creates its own API/session, answered by the existing isolated fixture.
 	if (id === 'hub.layout.root') await hostedFixture(page);
+	await freezeCalendar(page, id);
+	await page.goto(
+		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`,
+		{
+			waitUntil: previewWaitUntil(id, variant)
+		}
+	);
+}
+async function freezeCalendar(page: Page, id: string) {
 	// Freeze calendar labels alone: Playwright's clock also erases NavigationTiming entries.
 	await page.addInitScript(
 		(now) => {
@@ -74,13 +83,8 @@ export async function openPreview(page: Page, home: string, id: string, variant 
 			? NOW
 			: Date.parse('2026-10-20T10:00:05Z')
 	);
-	await page.goto(
-		`${previewOrigin}/?unit=${encodeURIComponent(id)}${variant ? `&variant=${encodeURIComponent(variant)}` : ''}`,
-		{
-			waitUntil: previewWaitUntil(id, variant)
-		}
-	);
 }
+
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();

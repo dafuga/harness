@@ -79,40 +79,42 @@ const measuredAfter = {
 	]
 };
 
+const expectedChanges = [
+	{
+		key: 'size:Source size:',
+		label: 'Source size',
+		before: '48.3 KB',
+		after: '52.1 KB',
+		change: '+3.8 KB'
+	},
+	{
+		key: 'size:Emitted size · process (native):process',
+		label: 'Emitted size · process (native)',
+		before: '2.4 MB',
+		after: '2.4 MB',
+		change: '−12 KB'
+	},
+	{ key: 'size:Complexity:', label: 'Complexity', before: '17', after: '19', change: '+2' },
+	{
+		key: 'performance:Latency',
+		label: 'Latency',
+		before: '184 ms',
+		after: '201 ms',
+		change: '+17 ms'
+	},
+	{
+		key: 'performance:Memory',
+		label: 'Memory',
+		before: '38.2 MB',
+		after: '40.9 MB',
+		change: '+2.7 MB'
+	}
+];
+
 test('Compares overview rows for equal profiles', () => {
 	const changed = metricChanges(measuredBefore, measuredAfter);
 	const unchanged = metricChanges(measuredBefore, measuredBefore);
-	expect(changed).toEqual([
-		{
-			key: 'size:Source size:',
-			label: 'Source size',
-			before: '48.3 KB',
-			after: '52.1 KB',
-			change: '+3.8 KB'
-		},
-		{
-			key: 'size:Emitted size · process (native):process',
-			label: 'Emitted size · process (native)',
-			before: '2.4 MB',
-			after: '2.4 MB',
-			change: '−12 KB'
-		},
-		{ key: 'size:Complexity:', label: 'Complexity', before: '17', after: '19', change: '+2' },
-		{
-			key: 'performance:Latency',
-			label: 'Latency',
-			before: '184 ms',
-			after: '201 ms',
-			change: '+17 ms'
-		},
-		{
-			key: 'performance:Memory',
-			label: 'Memory',
-			before: '38.2 MB',
-			after: '40.9 MB',
-			change: '+2.7 MB'
-		}
-	]);
+	expect(changed).toEqual(expectedChanges);
 	expect(unchanged.map((row) => row.change)).toEqual([
 		'No change',
 		'No change',

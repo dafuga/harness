@@ -1,5 +1,5 @@
 import { test } from 'vitest';
-import type { HarnessCapture, HarnessScenario } from '../../src/models/explorer-ui/Harness.types';
+import type { HarnessCapture } from '../../src/models/explorer-ui/Harness.types';
 import type { CoverageStanding } from '../../src/models/explorer-ui/ExplorerEvidence.types';
 import {
 	captureUnbound,

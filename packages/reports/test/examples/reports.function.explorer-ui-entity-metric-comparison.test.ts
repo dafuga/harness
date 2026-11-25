@@ -2,7 +2,6 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { entityMetricComparison } from '../../src/utils/explorer-ui/entityMetricComparison';
-import type { MetricHost } from '../../src/utils/explorer-ui/entityMetricComparison.types';
 import type {
 	Measure,
 	UnitEntry,

@@ -3,7 +3,6 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { invitationLink } from '../../src/components/projects-sessions/invitation-form/browserProjects';
 import { browserProjects } from '../../src/routes/browserProjects';
-import type { BrowserProjects } from '../../src/utils/projects-sessions/browserProjects';
 import type { Invite, Call, Api, InviteInput } from './hub.function.browser-projects.test.types';
 
 const PROJECT = '0d8f3c2e-7a61-4b5d-9c0e-2e4f6a8b1c3d';

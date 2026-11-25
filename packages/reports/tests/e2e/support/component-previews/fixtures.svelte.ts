@@ -71,13 +71,7 @@ export function previewFixture(id: string, variant = '') {
 	// A route module is opened at its own address; it renders what the history holds there.
 	// A Desktop page reads the orders project over the synthetic bridge installed for it.
 	const route = desktopRoute(id, desktop);
-	const props =
-		(id === 'desktop.layout.root' ? {} : undefined) ??
-		routeFixture(id) ??
-		route?.props ??
-		hubRoute(id, hub.addresses['hub.component.hosted-workspace'], hub.project.id) ??
-		cases[id] ??
-		nativeAtomFixture(id);
+	const props = defaultProps(id, route?.props, hub, cases);
 	if (!props) throw new Error(`No representative fixture for ${id}`);
 	const selectedProps = projectAgentProps(id, props, desktop, variant);
 	const rendered = variantProps(
@@ -98,6 +92,22 @@ export function previewFixture(id: string, variant = '') {
 		},
 		ready: desktopRuntimeReady(id, desktop, variant)
 	};
+}
+
+function defaultProps(
+	id: string,
+	desktop: NonNullable<ReturnType<typeof desktopRoute>>['props'] | undefined,
+	hub: ReturnType<typeof hubPreview>,
+	cases: PreviewCases
+) {
+	return (
+		(id === 'desktop.layout.root' ? {} : undefined) ??
+		routeFixture(id) ??
+		desktop ??
+		hubRoute(id, hub.addresses['hub.component.hosted-workspace'], hub.project.id) ??
+		cases[id] ??
+		nativeAtomFixture(id)
+	);
 }
 
 function reactiveProps(id: string, props: unknown, variant: string) {

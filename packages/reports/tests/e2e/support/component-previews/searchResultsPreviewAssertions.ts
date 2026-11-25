@@ -1,5 +1,7 @@
 import { expect, type Locator } from '@playwright/test';
 
+const selectedIndex: Record<string, number> = { 'none-selected': -1, 'second-selected': 1 };
+
 /** The list and status match the selected fixture, including touch-only guidance. */
 export async function assertSearchResultsState(
 	component: Locator,
@@ -29,7 +31,7 @@ export async function assertSearchResultsState(
 	await expect(options.first()).toContainText('Orders page');
 	if (variant === 'no-purpose')
 		await expect(component.locator('.entity-search-purpose')).toHaveCount(0);
-	const active = variant === 'none-selected' ? -1 : variant === 'second-selected' ? 1 : 0;
+	const active = selectedIndex[variant] ?? 0;
 	await expect(component.getByRole('option', { selected: true })).toHaveCount(active < 0 ? 0 : 1);
 	if (active >= 0) await expect(options.nth(active)).toHaveAttribute('aria-selected', 'true');
 }

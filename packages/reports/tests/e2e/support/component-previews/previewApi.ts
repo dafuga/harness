@@ -39,6 +39,10 @@ export async function servePreview(route: Route, home: string, markup = '') {
 	if (/^\/(?:harness\/)?media\//.test(url.pathname)) return previewMedia(route, url.pathname, home);
 	const fixture = requests.get(url.pathname);
 	if (fixture) return fixture(route);
+	return servePreviewHistory(route, url, markup);
+}
+
+function servePreviewHistory(route: Route, url: URL, markup: string) {
 	const shown = historyOf(route, url);
 	const given: Record<string, unknown> = {
 		'/harness/data/index.json': shown.index,
