@@ -3,6 +3,7 @@ import { expect } from '../../verificationExpect';
 import { TrackerDispatcherService } from '../../../src/services/agents-providers/TrackerDispatcherService';
 import {
 	dispatcherFixture,
+	primary,
 	liveEvidence,
 	recorded,
 	reserveFixture,
@@ -40,7 +41,43 @@ test('a restarted dispatcher adopts a proven reservation and fences an unrelated
 		status: 'ignored'
 	});
 	expect(runs()).toHaveLength(1);
+	await verifyMediaRecovery();
 });
+
+async function verifyMediaRecovery() {
+	const oldRung = { id: 'sol', cli: 'codex', model: 'gpt-6.2-sol', effort: 'high' } as const;
+	const { service, changeItem } = dispatcherFixture({
+		item: { title: 'Record a checkout QA walkthrough', status: 'in_progress' }
+	});
+	const request = {
+		source: 'recovery',
+		token: 'resume',
+		expectedAuto: null,
+		rung: oldRung
+	} as const;
+	expect.soft(await service.request(sampleId, request)).toMatchObject({
+		status: 'requested',
+		intent: { scheduledPick: { rung: { model: 'claude-sonnet-5-5' } } }
+	});
+	// A queued recovery may still contain the selection from before the policy changed.
+	changeItem({
+		launch: {
+			source: 'recovery',
+			target: primary,
+			token: 'resume',
+			scheduledPick: {
+				rung: oldRung,
+				kind: 'feature',
+				reason: 'resume on the same provider and model'
+			}
+		}
+	});
+	expect(await service.claim(sampleId, 'resume')).toMatchObject({
+		status: 'start',
+		selection: { provider: 'claude', model: 'claude-sonnet-5-5' },
+		run: { cli: 'claude', model: 'claude-sonnet-5-5' }
+	});
+}
 
 test('an observed exit can recover a session that started and finished before adoption', async () => {
 	const fixture = dispatcherFixture();
@@ -117,7 +154,30 @@ test('startup retries keep the rung and exhaust atomically when start keeps fail
 		blockedReason: expect.stringContaining('gave up after 2')
 	});
 	expect(runs()).toHaveLength(2);
+	await verifyQueuedMediaRetry(error);
 });
+
+async function verifyQueuedMediaRetry(error: { type: 'startup-failed'; reason: string }) {
+	const fixture = dispatcherFixture({
+		policy: {
+			pickModel: () => ({
+				rung: { id: 'sol', cli: 'codex', model: 'gpt-6.2-sol', effort: 'high' },
+				kind: 'feature',
+				reason: 'legacy selection'
+			})
+		}
+	});
+	const { service, changeItem, runs } = fixture;
+	const { run } = await reserveFixture(fixture);
+	const { retry } = recorded(await service.record(sampleId, run, error));
+	expect(retry).toMatchObject({ model: 'gpt-6.2-sol', state: 'queued' });
+	changeItem({ title: 'Capture a screen recording' });
+	const next = started(await service.prepare(sampleId, retry!));
+	expect
+		.soft(next.selection)
+		.toEqual({ provider: 'claude', model: 'claude-sonnet-5-5', intelligence: 'medium' });
+	expect(runs()[1]).toMatchObject({ cli: 'claude', model: 'claude-sonnet-5-5', effort: 'medium' });
+}
 
 test('invalid model selections persist an abandoned claim and a block without reserving a runner', async () => {
 	const { service, item, policy, runs } = dispatcherFixture({
