@@ -103,14 +103,24 @@ test('only a device grant approval may omit the sealed credential, and keys are 
 
 test('password generation requires one approved scope and executes once with a status-only result', async () => {
 	const run = vaultBroker();
-	const input = sessionRequest(run.seal.runnerKey(), { action: 'generate-password', mode: 'write' });
+	const input = sessionRequest(run.seal.runnerKey(), {
+		action: 'generate-password',
+		mode: 'write'
+	});
 	const execute = vi.fn(async () => undefined);
-	const broker = new VaultBrokerService(run.devices, run.audit, () => run.clock.now, (request) =>
-		request === input ? execute : undefined
+	const broker = new VaultBrokerService(
+		run.devices,
+		run.audit,
+		() => run.clock.now,
+		(request) => (request === input ? execute : undefined)
 	);
-	expect(() => broker.create({ ...input, environment: 'production' }, sessionUid)).toThrow('unavailable');
+	expect(() => broker.create({ ...input, environment: 'production' }, sessionUid)).toThrow(
+		'unavailable'
+	);
 	const ticket = broker.create(input, sessionUid);
-	await expect(broker.generatePassword(ticket, sessionUid)).rejects.toThrow('Approval is unavailable');
+	await expect(broker.generatePassword(ticket, sessionUid)).rejects.toThrow(
+		'Approval is unavailable'
+	);
 	const decision = approval(input, ticket, run, {
 		sealed: null,
 		otpIncluded: false,

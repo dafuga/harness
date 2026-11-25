@@ -34,6 +34,8 @@ const fields = z.strictObject({
 const terminal = new Set<VaultAuditEventName>([
 	'denial',
 	'delivery',
+	'password-complete',
+	'password-failed',
 	'expiry',
 	'revoke',
 	'lease-end'

@@ -62,6 +62,36 @@ export function signedFixtureRecipe(capture: boolean) {
 	return { recipe: vaultRecipe(input, review, reviewers), script };
 }
 
+export function signupFixtureRecipe() {
+	const script = Buffer.from(
+		JSON.stringify({
+			identity: '#identity',
+			password: '#password',
+			confirmation: '#confirm',
+			submit: '#signup',
+			post: '/signup',
+			result: '/registered',
+			verifiedIdentity: '#registered'
+		})
+	);
+	const input = syntheticRecipe({
+		redirects: [],
+		login: [],
+		otp: [],
+		actions: [{ id: 'generate-password', mode: 'write', start: '/signup' }],
+		methods: [
+			{
+				kind: 'browser',
+				actions: ['generate-password'],
+				reason: 'Synthetic signup has no API.',
+				scriptSha256: createHash('sha256').update(script).digest('hex')
+			}
+		]
+	});
+	const { review, reviewers } = reviewed(input, Date.now());
+	return { input, script, review, reviewers, recipe: vaultRecipe(input, review, reviewers) };
+}
+
 function captureRecipe(input: VaultRecipeInput, original: Buffer): Buffer {
 	const script = JSON.parse(original.toString());
 	script.steps.at(-1).next = '/capture';

@@ -7,5 +7,6 @@ export interface CredentialBrokerOptions {
 	/** JSON file `{ "devices": [{ "id", "role", "signingKey" }] }` of enrolled phones. */
 	trust: string;
 	origin: string;
+	passwordConfig?: string;
 	onTeardown?: (plan: VaultLeaseEnded) => void;
 }

@@ -46,7 +46,7 @@ enum VaultApprovalCrypto {
         if case .deny = intent {
             value["decision"] = "deny"
         } else {
-            let plain = try intent.plaintext(for: request.method)
+            let plain = try intent.plaintext(for: request)
             value["decision"] = "approve"
             value["method"] = request.method.rawValue
             value["mode"] = request.mode.rawValue
@@ -57,6 +57,10 @@ enum VaultApprovalCrypto {
             value["leaseMs"] = request.leaseMs
             value["otpIncluded"] = false
             value["expiresAt"] = expiresAt
+            if request.isPasswordGeneration {
+                value["project"] = request.project
+                value["environment"] = request.environment
+            }
             if let plain = plain {
                 value["sealed"] = try seal(plain, to: key, requestId: request.requestId)
             } else {

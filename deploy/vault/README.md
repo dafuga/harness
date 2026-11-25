@@ -22,6 +22,40 @@ sealed SMS or email code, verifies the account and action, and closes the login 
 The tests observe provider logout, the security log and its 15-minute recheck on a controlled clock,
 and recovery of a browser left by an interrupted supervisor.
 
+## Generated signup passwords
+
+The broker can execute a reviewed `generate-password` write action after one signed phone decision.
+The action is scoped to the Tracker item, session, project, environment, account, executor host and
+recipe digest. The executor verifies the signup form, generates a 36-character password with 192
+bits of randomness, and creates a Keychain entry before filling the reviewed fields over its private
+Chromium connection. It submits the form, verifies the account, logs out and destroys the browser.
+The broker reports status only. The flow leaves the clipboard untouched and issues no browser lease.
+
+The current executor accepts synthetic `.test` sites on an internal Docker network. Run the broker
+from the trusted executor account with browser debugging and recording disabled. Build the Keychain
+writer with `xcrun swiftc deploy/vault/store-password.swift -o <private-writer-path>` and give the
+broker an unlocked executor Keychain. Use `harness credential serve --password-config <file>` with
+the normal socket, trust, state and origin options. The settings file contains:
+
+- `keychain`, `keychainHelper`, `seccomp` and `reviewers`, as absolute paths.
+- `image`, a full local Vault image ID, and `dockerContext`, the executor's local Docker context.
+- `network`, with the full internal network `id` and an IPv4 `hosts` map for the `.test` origins.
+- `entries`, each with a `scope` object containing `project`, `environment` and `host`, and absolute
+  `recipe`, `review` and `script` paths.
+
+Each recipe declares a `generate-password` browser write action with an exact signup start path, one
+HTTPS origin, a logout path and the reviewed script SHA-256. The script names `identity`, `password`,
+`submit`, `verifiedIdentity` and an optional `confirmation` by element ID selector. It declares the
+exact same-origin `post` and `result` paths. The executor accepts standard HTML POST signup forms
+and checks the result identity against the signed recipe.
+
+Sessions request `harness credential request <recipe> generate-password` with their normal review and
+scope options. After the phone approves, `harness credential generate-password <id>` takes the
+receipt through `HARNESS_VAULT_RECEIPT`. Keep the request receipt in the session's private workflow.
+Use `harness credential status <id>` to read the final result if the execution call disconnects. A
+failure after storage may leave the password in Keychain for account recovery. The writer refuses
+to replace an existing entry. Check the scoped entry and provider state before requesting a retry.
+
 The Node-API peer lookup uses `getpeereid` on macOS and `SO_PEERCRED` on Linux. It requires a
 supported Node runtime with headers and compiler to build `peer.node`. Bun 1.2.18 does not expose
 the accepted socket descriptor. Missing peer credentials fail closed. The fixture runs as one host

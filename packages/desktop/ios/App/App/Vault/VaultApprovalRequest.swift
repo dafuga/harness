@@ -37,6 +37,8 @@ struct VaultApprovalRequest: Decodable {
     let reason: String
     let expiresAt: Int64
 
+    var isPasswordGeneration: Bool { action == "generate-password" }
+
     /// Validate the binding locally before displaying a request or sealing to its recipient.
     func recipient(now: Int64) throws -> Data {
         guard now < expiresAt else { throw VaultApprovalFailure.expired }
@@ -65,9 +67,15 @@ enum VaultApprovalIntent {
     case browser(password: String)
     case apiToken(String)
     case deviceGrant
+    case generatePassword
 
-    func plaintext(for method: VaultApprovalRequest.Method) throws -> [String: String]? {
-        switch (self, method) {
+    func plaintext(for request: VaultApprovalRequest) throws -> [String: String]? {
+        if request.isPasswordGeneration {
+            guard case .generatePassword = self, request.method == .browser, request.mode == .write
+            else { throw VaultApprovalFailure.credentialMethod }
+            return nil
+        }
+        switch (self, request.method) {
         case (.browser(let password), .browser) where !password.isEmpty: return ["password": password]
         case (.apiToken(let token), .apiToken) where !token.isEmpty: return ["token": token]
         case (.deviceGrant, .oauthDevice), (.deny, _): return nil

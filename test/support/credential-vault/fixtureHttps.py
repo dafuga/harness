@@ -2,6 +2,7 @@ from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
+import re
 import secrets
 import ssl
 import subprocess
@@ -24,6 +25,10 @@ ROSTER = ('<h1>Approved synthetic origin</h1><p id="identity">owner@example.test
 CAPTURE = ('<p id="identity">owner@example.test</p><p id="capability">capture-secret</p>'
            '<form method="post" action="/generate"><button name="confirm" value="yes" '
            'id="generate">Generate</button></form>')
+SIGNUP = ('<form method="post" action="/signup"><input id="identity" name="identity" type="email">'
+          '<input id="password" name="password" type="password" autocomplete="new-password">'
+          '<input id="confirm" name="confirm" type="password" autocomplete="new-password">'
+          '<button id="signup" type="submit">Create</button></form>')
 CHALLENGES = set()
 SESSIONS = set()
 EVENTS = []
@@ -45,6 +50,8 @@ class Fixture(BaseHTTPRequestHandler):
             self.html(CAPTURE)
         elif self.path == '/created' and self.cookie('session') in SESSIONS:
             self.html('<p id="generated">synthetic-capture-canary</p>')
+        elif self.path in ('/signup', '/registered'):
+            self.signup_page()
         elif self.path == '/logout':
             self.logout()
         elif self.path == '/security-log':
@@ -67,6 +74,9 @@ class Fixture(BaseHTTPRequestHandler):
             self.end_headers()
         elif self.path == '/login' and values.get('password') == [PASSWORD]:
             self.issue('/verify', 'challenge', CHALLENGES)
+        elif self.path == '/signup' and valid_signup(values):
+            event('signup')
+            self.issue('/registered', 'session', SESSIONS)
         elif self.path == '/verify' and self.cookie('challenge') in CHALLENGES:
             CHALLENGES.remove(self.cookie('challenge'))
             if values.get('otp') == [OTP]:
@@ -85,6 +95,14 @@ class Fixture(BaseHTTPRequestHandler):
         self.send_header('Location', path)
         self.send_header('Set-Cookie', f'{name}={value}; Path=/; Secure; HttpOnly; SameSite=Strict')
         self.end_headers()
+
+    def signup_page(self):
+        if self.path == '/signup':
+            self.html(SIGNUP)
+        elif self.cookie('session') in SESSIONS:
+            self.html('<p id="registered">owner@example.test</p>')
+        else:
+            self.reply(403, 'Denied')
 
     def logout(self):
         value = self.cookie('session')
@@ -111,6 +129,13 @@ class Fixture(BaseHTTPRequestHandler):
 
     def log_message(self, *_):
         pass
+
+
+def valid_signup(values):
+    passwords = values.get('password', [])
+    return (len(passwords) == 1 and values.get('identity') == ['owner@example.test'] and
+            values.get('confirm') == passwords and
+            re.fullmatch(r'Aa1![A-Za-z0-9_-]{32}', passwords[0]) is not None)
 
 
 subprocess.run(

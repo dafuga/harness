@@ -1,5 +1,6 @@
 // @harness-uid u_3tibsmkofv
 import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
+import { CredentialCommand } from '../commands/accounts-access/CredentialCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
 import { ContractsCommand } from '../commands/development-tooling/ContractsCommand';
 import { ProviderSignInCommand } from '../commands/agents-providers/ProviderSignInCommand';
@@ -68,6 +69,7 @@ export function buildProgram(): Command {
 	registerTaskCommand(program);
 	new TrackerCommand().register(program);
 	new DeployCommand().register(program);
+	new CredentialCommand().register(program);
 	new ModuleCommand().register(program);
 	new ApiCommand().register(program);
 	new PermissionsCommand().register(program);

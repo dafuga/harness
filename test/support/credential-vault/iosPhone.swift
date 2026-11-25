@@ -22,6 +22,7 @@ private struct Command: Decodable {
         case "password": intent = .browser(password: "synthetic-ios-password")
         case "token": intent = .apiToken("synthetic-ios-api-token")
         case "grant": intent = .deviceGrant
+        case "generate-password": intent = .generatePassword
         case "deny": intent = .deny
         default: throw VaultApprovalFailure.payload
         }

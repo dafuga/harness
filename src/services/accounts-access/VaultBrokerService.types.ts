@@ -7,6 +7,9 @@ import type {
 export type VaultRequestStatus =
 	| 'pending'
 	| 'approved'
+	| 'executing'
+	| 'completed'
+	| 'failed'
 	| 'denied'
 	| 'delivered'
 	| 'expired'
@@ -22,7 +25,12 @@ export interface VaultRequestEntry {
 	status: VaultRequestStatus;
 	expiresAt: number;
 	approval?: { proof: VaultProof; expiresAt: number };
+	generatePassword?: () => Promise<void>;
 }
+
+export type VaultPasswordPreparation = (
+	request: VaultSessionRequest
+) => VaultRequestEntry['generatePassword'];
 
 export interface VaultCreated {
 	requestId: string;
