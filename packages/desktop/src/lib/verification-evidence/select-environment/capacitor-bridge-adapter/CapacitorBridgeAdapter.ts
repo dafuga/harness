@@ -83,6 +83,7 @@ export class CapacitorBridgeAdapter {
 			remoteArtifact(await this.request<RemoteBinary>('artifact', input), (input as Input).sha256);
 		return {
 			listProjects: when('listProjects', () => this.request('listProjects')),
+			homeSnapshot: ask('homeSnapshot', true),
 			selectProject: when('snapshot', select),
 			capabilities: ask('capabilities', true),
 			addComment: ask('addComment', true),

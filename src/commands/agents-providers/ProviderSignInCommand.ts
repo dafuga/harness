@@ -4,6 +4,7 @@ import { homedir } from 'node:os';
 import { delimiter, join } from 'node:path';
 import type { Command } from 'commander';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
+import { SubscriptionQuotaService } from '../../services/agents-providers/SubscriptionQuotaService';
 import type {
 	ProviderSignInDeps,
 	ProviderSignInSpec,
@@ -44,6 +45,11 @@ export class ProviderSignInCommand {
 				);
 			});
 		group
+			.command('quota')
+			.description('Read the local Claude Code and Codex subscription quota.')
+			.option('--json')
+			.action(printSubscriptionQuota);
+		group
 			.command('sign-in <provider>')
 			.description('Open the official provider tool in the local terminal.')
 			.action(async (provider: string) => {
@@ -77,6 +83,24 @@ export class ProviderSignInCommand {
 		}
 		return SIGN_IN_SPECS[provider as SignInProviderId];
 	}
+}
+
+/** CoS and provider tools can use the JSON shape without interacting with a terminal pane. */
+async function printSubscriptionQuota(options: { json?: boolean }): Promise<void> {
+	const readings = await new SubscriptionQuotaService().read();
+	if (options.json) {
+		const quota = Object.fromEntries(
+			['claude', 'codex'].map((id) => [id, readings.find((row) => row.id === id) ?? null])
+		);
+		console.log(JSON.stringify(quota));
+		return;
+	}
+	const rows = readings.map((row) => {
+		const windows = row.limits.map((limit) => `${limit.label} ${limit.left}% left`);
+		if (row.credits !== null) windows.push(`Credits ${row.credits}`);
+		return `${row.provider}: ${windows.join(' · ')}`;
+	});
+	console.log(rows.join('\n') || 'Subscription quota is unknown.');
 }
 
 function installedProvider(command: string): string | null {

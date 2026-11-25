@@ -1,3 +1,3 @@
 export interface QuotaCodexAdapterConfig {
-	name?: string;
+	readRpc?: () => Promise<unknown>;
 }

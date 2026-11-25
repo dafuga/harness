@@ -15,7 +15,7 @@ test('reads Codex subscription windows by duration and publishes only display da
 			primary: limit(74, 10080),
 			secondary: limit(23, 300),
 			planType: 'pro',
-			credits: { balance: '124', hasCredits: true, unlimited: false }
+			credits: { balance: '124.1234567890', hasCredits: true, unlimited: false }
 		},
 		rateLimitsByLimitId: { other_model: { primary: limit(100, 300) } }
 	};
@@ -30,7 +30,7 @@ test('reads Codex subscription windows by duration and publishes only display da
 			{ id: '5h', label: '5-hour', left: 77, resetsAt: '2026-11-25T19:00:00.000Z' },
 			{ id: 'weekly', label: 'Weekly', left: 26, resetsAt: '2026-11-25T19:00:00.000Z' }
 		],
-		credits: '124',
+		credits: '124.1234567890',
 		history: [],
 		agents: []
 	});

@@ -1,5 +1,11 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { captured } from './remote-evidence';
+import { scenarioCapture } from './scenario-capture';
+import type { ScenarioManifest } from '../../../../src/core/unitTypes';
+import scenario from '../../../../specification/scenarios/desktop-subscription-quota.json' with { type: 'json' };
+
+const note =
+	'Compiled native Home inspected with synthetic subscription data and a renderer test bridge.';
 
 for (const [width, height] of [
 	[1440, 900],
@@ -56,5 +62,17 @@ for (const [width, height] of [
 		await expect(dialog.getByText('Weekly · 24% left')).toBeVisible();
 		await expect(dialog.getByText('Credits left: 124')).toBeVisible();
 		await captured(page, info, `${process.env.SCREENSHOT_LABEL}-quota-${width}`);
+		await scenarioCapture(page, scenario as ScenarioManifest, {
+			state: 'quota',
+			name: 'dialog',
+			note
+		});
+		await page.keyboard.press('Escape');
+		await expect(dialog).toBeHidden();
+		await scenarioCapture(page, scenario as ScenarioManifest, {
+			state: 'home',
+			name: 'home',
+			note
+		});
 	});
 }

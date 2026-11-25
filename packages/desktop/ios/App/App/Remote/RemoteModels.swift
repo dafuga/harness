@@ -60,7 +60,7 @@ enum RemoteMethods {
         "addComment", "createPlan", "openThread", "approve", "startRun", "cancelRun", "trackerReplicaPush"
     ]
     static func allowed(_ method: String) -> Bool {
-        reads.contains(method) || changes.contains(method)
+        method == "homeSnapshot" || reads.contains(method) || changes.contains(method)
     }
 }
 

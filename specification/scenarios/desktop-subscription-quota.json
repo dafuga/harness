@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop-subscription-quota",
+	"title": "Native Home subscription quota",
+	"kind": "ui",
+	"units": ["desktop.page.root", "desktop.component.projects-sessions-home-subscription-quota"],
+	"states": [
+		{ "id": "home", "title": "Home with a subscription quota control", "coverage": "required" },
+		{ "id": "quota", "title": "Quota dialog with two providers", "coverage": "required" }
+	],
+	"viewports": [
+		{ "id": "desktop", "width": 1440, "height": 900 },
+		{ "id": "tablet", "width": 820, "height": 1180 },
+		{ "id": "mobile", "width": 390, "height": 844 }
+	],
+	"builds": ["desktop-renderer"],
+	"tests": [
+		{
+			"id": "native-home-quota",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/home-subscription-quota.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 90000
+		}
+	],
+	"evidence": [
+		{
+			"id": "native-home-quota-screens",
+			"kind": "screenshot",
+			"states": ["home", "quota"],
+			"viewports": ["desktop", "tablet", "mobile"],
+			"required": true,
+			"build": "desktop-renderer",
+			"provenance": "actual-capture",
+			"capture": "viewport"
+		}
+	]
+}

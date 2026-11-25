@@ -15,7 +15,7 @@
 		"symbols": [
 			"QuotaClaudeAdapter",
 			"QuotaClaudeAdapter.constructor",
-			"QuotaClaudeAdapter.connect",
+			"QuotaClaudeAdapter.read",
 			"QuotaClaudeAdapterConfig",
 			"QuotaClaudeAdapterConfig"
 		]
@@ -28,28 +28,39 @@
 				"type": "QuotaClaudeAdapterConfig",
 				"required": false,
 				"default": {}
+			},
+			{
+				"name": "QuotaClaudeAdapter.read.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
-				"name": "QuotaClaudeAdapter.connect",
-				"type": "string"
+				"name": "QuotaClaudeAdapter.read",
+				"type": "Promise<SubscriptionReading | null>"
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
 			{
-				"name": "QuotaClaudeAdapter.connect",
-				"inputs": [],
+				"name": "QuotaClaudeAdapter.read",
+				"inputs": [
+					{
+						"name": "QuotaClaudeAdapter.read.now",
+						"type": "number",
+						"required": true
+					}
+				],
 				"outputs": [
 					{
-						"name": "QuotaClaudeAdapter.connect",
-						"type": "string"
+						"name": "QuotaClaudeAdapter.read",
+						"type": "Promise<SubscriptionReading | null>"
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -74,7 +85,23 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-quota-claude-adapter-claude-reset-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-quota-claude-adapter-read-claude-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-subscription-quota",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/agents-providers/QuotaClaudeAdapter.ts",

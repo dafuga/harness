@@ -110,7 +110,8 @@ export class CapacitorProjectsService {
 
 		return {
 			...Object.fromEntries(optional.map((key) => [key, descriptor(key)])),
-			projectOverview: { enumerable: true, get: () => this.config.cloud.projectOverview }
+			projectOverview: { enumerable: true, get: () => this.config.cloud.projectOverview },
+			homeSnapshot: { enumerable: true, get: () => this.config.mac.homeSnapshot }
 		};
 	}
 

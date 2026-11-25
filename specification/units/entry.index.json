@@ -198,7 +198,10 @@
 			"TrackerAdapterLeaseAdapter",
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
-			"TrackerSupervisorService"
+			"TrackerSupervisorService",
+			"QuotaCodexAdapter",
+			"QuotaClaudeAdapter",
+			"SubscriptionQuotaService"
 		]
 	},
 	"contract": {
@@ -223,6 +226,16 @@
 		},
 		{
 			"unit": "adapter.agents-providers-provider-session",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-quota-claude",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-quota-codex",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -788,6 +801,11 @@
 		},
 		{
 			"unit": "service.agents-providers-module-task-worker",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-subscription-quota",
 			"via": "reexport",
 			"origin": "derived"
 		},

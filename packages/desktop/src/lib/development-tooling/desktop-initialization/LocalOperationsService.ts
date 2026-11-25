@@ -17,6 +17,7 @@ import { binaryAnswer } from '../../../utils/reports-media/binaryAnswer';
 import { IpcRequestValidator } from '../../../validators/development-tooling/IpcRequestValidator';
 import { MacTrackerInboxService } from './MacTrackerInboxService';
 import { UnexpectedOverviewFieldsError } from './UnexpectedOverviewFieldsError';
+import { createHomeSnapshotReader } from './tracker-overview-publisher/createHomeSnapshotReader';
 const controls: Record<string, keyof LocalControl> = {
 	'remote.status': 'status',
 	'remote.enable': 'enable',
@@ -50,6 +51,7 @@ function overview(
 export class LocalOperationsService {
 	private readonly payloads = new IpcRequestValidator();
 	private readonly tracker = new MacTrackerInboxService();
+	private readonly home = createHomeSnapshotReader(process.env.HARNESS_HUB_HOME_PROVIDER_FILE);
 	constructor(private readonly options: LocalOperationsOptions) {}
 	methods(): RemoteMethod[] {
 		return [...remoteMethods];
@@ -58,6 +60,11 @@ export class LocalOperationsService {
 		const { method } = request,
 			input: Fields = { ...request.input };
 		delete input.epoch;
+		if (method === 'homeSnapshot') {
+			if (Object.keys(input).length)
+				throw new UnexpectedOverviewFieldsError('This operation takes no fields.');
+			return this.home();
+		}
 		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
 		if (method === 'trackerInboxRead') return this.tracker.read(input);
 		if (method === 'trackerInboxWrite') return this.tracker.write(input);

@@ -15,7 +15,7 @@
 		"symbols": [
 			"QuotaCodexAdapter",
 			"QuotaCodexAdapter.constructor",
-			"QuotaCodexAdapter.connect",
+			"QuotaCodexAdapter.read",
 			"QuotaCodexAdapterConfig",
 			"QuotaCodexAdapterConfig"
 		]
@@ -28,28 +28,39 @@
 				"type": "QuotaCodexAdapterConfig",
 				"required": false,
 				"default": {}
+			},
+			{
+				"name": "QuotaCodexAdapter.read.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
-				"name": "QuotaCodexAdapter.connect",
-				"type": "string"
+				"name": "QuotaCodexAdapter.read",
+				"type": "Promise<SubscriptionReading | null>"
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
 			{
-				"name": "QuotaCodexAdapter.connect",
-				"inputs": [],
+				"name": "QuotaCodexAdapter.read",
+				"inputs": [
+					{
+						"name": "QuotaCodexAdapter.read.now",
+						"type": "number",
+						"required": true
+					}
+				],
 				"outputs": [
 					{
-						"name": "QuotaCodexAdapter.connect",
-						"type": "string"
+						"name": "QuotaCodexAdapter.read",
+						"type": "Promise<SubscriptionReading | null>"
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -74,7 +85,18 @@
 			}
 		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-quota-codex-adapter-read-codex-rate-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-subscription-quota",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/adapters/agents-providers/QuotaCodexAdapter.ts",

@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.projects-sessions-home-subscription-quota",
+	"uid": "u_p2jtepvziq",
+	"kind": "component",
+	"title": "HomeSubscriptionQuota",
+	"responsibility": "Owns the HomeSubscriptionQuota Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/projects-sessions/HomeSubscriptionQuota.svelte"],
+		"symbols": ["HomeSubscriptionQuota"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HomeSubscriptionQuota.read",
+				"type": "() => Promise<OwnerHomeSnapshot>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HomeSubscriptionQuota",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/projects-sessions/HomeSubscriptionQuota.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/projects-sessions/HomeSubscriptionQuota.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

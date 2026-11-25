@@ -1,0 +1,63 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-quota-codex-adapter-read-codex-rate-limits",
+	"kind": "adapter",
+	"title": "readCodexRateLimits",
+	"responsibility": "Owns the readCodexRateLimits integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/agents-providers/quota-codex-adapter/readCodexRateLimits.ts"],
+		"symbols": ["readCodexRateLimits"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "readCodexRateLimits",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readCodexRateLimits",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "readCodexRateLimits",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-quota-process-environment",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/quota-codex-adapter/readCodexRateLimits.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/quota-codex-adapter/readCodexRateLimits.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

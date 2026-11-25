@@ -19,6 +19,7 @@
 	import { ProjectSyncService } from '../services/projects-sessions/ProjectSyncService';
 	import { isWorkspacePath } from '../utils/projects-sessions/workspaceRoute';
 	import ProjectGate from '../components/projects-sessions/ProjectGate.svelte';
+	import HomeSubscriptionQuota from '../components/projects-sessions/HomeSubscriptionQuota.svelte';
 	import RemoteConnection from '../components/networking-security/RemoteConnection.svelte';
 	import WorkspaceShell from '../components/projects-sessions/WorkspaceShell.svelte';
 	import '../lib/styles/workspace.css';
@@ -33,6 +34,11 @@
 	let available = $state(false);
 	let kind = $state<EnvironmentKind>('web');
 	const local = $derived(kind !== 'capacitor');
+	const homeSnapshot = $derived(
+		local || remote.phone.status?.state === 'online'
+			? account.environment?.bridge?.homeSnapshot
+			: undefined
+	);
 	/** The phone offers Project Overview after the Hub confirms this account may read it. */
 	let overview = $state(false);
 	onMount(() => {
@@ -105,6 +111,7 @@
 		choose={(projectId) => void workspace.switchProject(projectId)}
 		phone={local && available && workspace.remote.host ? phoneAccess : undefined}
 	>
+		{#if homeSnapshot}<HomeSubscriptionQuota read={homeSnapshot} />{/if}
 		{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
 			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
 		{/if}

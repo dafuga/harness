@@ -8,37 +8,104 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/agents-providers/SubscriptionQuotaService.ts"],
-		"symbols": ["SubscriptionQuotaService", "SubscriptionQuotaService.run"]
+		"source": [
+			"src/services/agents-providers/SubscriptionQuotaService.ts",
+			"src/services/agents-providers/SubscriptionQuotaService.types.ts"
+		],
+		"symbols": [
+			"SubscriptionQuotaService",
+			"SubscriptionQuotaService.constructor",
+			"SubscriptionQuotaService.read",
+			"SubscriptionLimit",
+			"SubscriptionReading",
+			"SubscriptionReader"
+		]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "SubscriptionQuotaService.constructor.readers",
+				"type": "readonly SubscriptionReader[]",
+				"required": false
+			},
+			{
+				"name": "SubscriptionQuotaService.read.now",
+				"type": "unknown",
+				"required": false
+			},
+			{
+				"name": "SubscriptionQuotaService.read.waitMs",
+				"type": "number",
+				"required": false
+			}
+		],
 		"outputs": [
 			{
-				"name": "SubscriptionQuotaService.run",
-				"type": "string"
+				"name": "SubscriptionQuotaService.read",
+				"type": "Promise<SubscriptionReading[]>"
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
 			{
-				"name": "SubscriptionQuotaService.run",
-				"inputs": [],
+				"name": "SubscriptionQuotaService.read",
+				"inputs": [
+					{
+						"name": "SubscriptionQuotaService.read.now",
+						"type": "unknown",
+						"required": false
+					},
+					{
+						"name": "SubscriptionQuotaService.read.waitMs",
+						"type": "number",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
-						"name": "SubscriptionQuotaService.run",
-						"type": "string"
+						"name": "SubscriptionQuotaService.read",
+						"type": "Promise<SubscriptionReading[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SubscriptionQuotaService.constructor",
+				"inputs": [
+					{
+						"name": "SubscriptionQuotaService.constructor.readers",
+						"type": "readonly SubscriptionReader[]",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "SubscriptionQuotaService.constructor",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
 				"errorStatus": "none-found"
 			}
-		],
-		"initialization": []
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-quota-claude",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-quota-codex",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/agents-providers/SubscriptionQuotaService.ts",

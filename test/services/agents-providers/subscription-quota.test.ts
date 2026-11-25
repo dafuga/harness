@@ -1,20 +1,23 @@
 import { expect, test, vi } from 'vitest';
 import { SubscriptionQuotaService } from '../../../src/services/agents-providers/SubscriptionQuotaService';
+import type { SubscriptionReading } from '../../../src/services/agents-providers/SubscriptionQuotaService.types';
 
 const now = Date.parse('2026-11-25T18:00:00Z');
 
 test('shares one refresh, preserves a fresh successful provider during failures and expires it', async () => {
-	const claude = vi.fn(async (at: number) => ({
-		id: 'claude',
-		provider: 'claude' as const,
-		plan: null,
-		account: null,
-		readAt: new Date(at).toISOString(),
-		limits: [{ id: 'weekly', label: 'Weekly', left: 4, resetsAt: null }],
-		credits: null,
-		history: [],
-		agents: []
-	}));
+	const claude = vi.fn(
+		async (at: number): Promise<SubscriptionReading> => ({
+			id: 'claude',
+			provider: 'claude' as const,
+			plan: null,
+			account: null,
+			readAt: new Date(at).toISOString(),
+			limits: [{ id: 'weekly', label: 'Weekly', left: 4, resetsAt: null }],
+			credits: null,
+			history: [],
+			agents: []
+		})
+	);
 	const codex = vi.fn(async () => {
 		throw new Error('raw failure is private');
 	});
