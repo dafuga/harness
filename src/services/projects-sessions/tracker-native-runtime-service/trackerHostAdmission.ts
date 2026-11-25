@@ -6,12 +6,7 @@ import type {
 	TrackerHostAdapterConfig,
 	TrackerHostLaunchConfig
 } from './nativeTrackerHostEffects.types';
-import type {
-	TrackerHostRoute,
-	TrackerHostSession,
-	TrackerHostTarget
-} from './trackerHostLaunch.types';
-import { finishedTrackerSession } from './trackerHostInventory';
+import type { TrackerHostRoute, TrackerHostTarget } from './trackerHostLaunch.types';
 
 export const trackerHostCapacityHold = 'Tracker host is at session capacity';
 
@@ -25,15 +20,14 @@ export function trackerHostAdmission(
 		config: TrackerHostLaunchConfig;
 		adapter?: TrackerHostAdapterConfig;
 		routeFor: TrackerHostRoute;
-	},
-	inventory: () => readonly TrackerHostSession[]
+	}
 ): TrackerDispatchPolicy['admit'] {
 	const cap = config.maxConcurrent ?? 2;
 	return (item, intent, rung) => {
 		const route = routeFor(item);
 		if (!route || !configuredLane(config, route.platform))
 			return 'no approved Tracker repository or platform for this node';
-		if (occupiedHostSlots(store, inventory()) >= cap) return trackerHostCapacityHold;
+		if (occupiedHostSlots(store) >= cap) return trackerHostCapacityHold;
 		if (rung && !['codex', 'claude'].includes(rung.cli)) return 'no supported Tracker provider';
 		if (adapter?.dueDisk && intent.source === 'due' && item.adapterDueOwner === store.node)
 			return adapterDueDiskHold({
@@ -45,39 +39,17 @@ export function trackerHostAdmission(
 	};
 }
 
-export function occupiedHostSlots(
-	store: TrackerPersistenceService,
-	sessions: readonly TrackerHostSession[]
-): number {
-	const reserved = store.database
+/** Only runs the launcher is truly running hold a slot; leftover tmux sessions never do. */
+export function occupiedHostSlots(store: TrackerPersistenceService): number {
+	const { count } = store.database
 		.prepare(
-			`SELECT r.id, r.item_id, r.auto_token, r.attempt FROM runs r
+			`SELECT count(*) AS count FROM runs r
 		LEFT JOIN meta m ON m.k = 'harness_dispatch_run:' || r.id
 		WHERE r.state IN ('running','verifying')
 		OR (r.state = 'queued' AND json_extract(m.v, '$.dispatch_at') IS NOT NULL)`
 		)
-		.all() as {
-		id: number;
-		item_id: string;
-		auto_token: string;
-		attempt: number;
-	}[];
-	const runIds = new Set(reserved.map(({ id }) => id));
-	const keys = new Set(
-		reserved.map(({ item_id, auto_token, attempt }) =>
-			JSON.stringify([item_id, auto_token, attempt])
-		)
-	);
-	const independent = sessions.filter((session) => {
-		const { state, key, legacyRunId } = session;
-		return (
-			state === 'live' &&
-			!keys.has(key) &&
-			(legacyRunId === undefined || !runIds.has(legacyRunId)) &&
-			!finishedTrackerSession(store, session)
-		);
-	});
-	return reserved.length + independent.length;
+		.get() as { count: number };
+	return count;
 }
 
 function trackerAdapterDiskHold(

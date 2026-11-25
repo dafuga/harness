@@ -4,6 +4,7 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import {
 	canonicalNode,
+	finalReportHold,
 	trackerFleetNodes
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type {
@@ -153,7 +154,7 @@ function missingIssue(
 	const latest = history.at(-1);
 	const aged = eligibleRecoveryAge(item, latest, now - scheduleAt(item.id));
 	const hasBrief = hasRecoveryBrief(item, latest);
-	const hold = trackerStoredSchedulingHold(item, now);
+	const hold = recoveryHold(item, latest, { changedAt: scheduleAt(item.id), now });
 	const recover = aged && hasBrief && !localActive && !hold;
 	return {
 		item_id: item.id,
@@ -164,6 +165,16 @@ function missingIssue(
 		identity: `${latest?.id ?? 'no-run'}:${scheduleAt(item.id)}`,
 		recover
 	};
+}
+
+function recoveryHold(
+	item: TrackerItem,
+	latest: TrackerListedRun | undefined,
+	{ changedAt, now }: { changedAt: number; now: number }
+) {
+	const stored = trackerStoredSchedulingHold(item, now);
+	if (stored || !latest) return stored;
+	return finalReportHold(latest, Math.max(changedAt, Date.parse(item.answered_at ?? '') || 0));
 }
 
 function eligibleRecoveryAge(item: TrackerItem, latest: TrackerListedRun | undefined, age: number) {

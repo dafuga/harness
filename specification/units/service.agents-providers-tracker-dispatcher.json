@@ -20,6 +20,7 @@
 			"src/services/agents-providers/tracker-dispatcher-service/runMonitor.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runReceipt.types.ts",
+			"src/services/agents-providers/tracker-dispatcher-service/runResume.ts",
 			"src/services/agents-providers/tracker-dispatcher-service/runTransition.ts"
 		],
 		"symbols": [
@@ -87,6 +88,8 @@
 			"automaticRequestHold",
 			"automaticQuietHour",
 			"schedulingHold",
+			"finalReportPrefix",
+			"finalReportHold",
 			"trackerReminderTitle",
 			"isDueNow",
 			"activeRun",
@@ -116,7 +119,12 @@
 			"TrackerReceiptUsage",
 			"TrackerRunReceipt",
 			"TrackerSessionEvidence",
+			"TrackerFinalReportEvent",
 			"TrackerDispatchEvent",
+			"matchesSession",
+			"resumeRun",
+			"reopenAnswered",
+			"recordFinalReport",
 			"transitionRun"
 		]
 	},
@@ -373,6 +381,16 @@
 			},
 			{
 				"name": "schedulingHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "finalReportHold.run",
+				"type": "{ outcome?: string | null; failure_reason?: string | null; ended_at?: number | null }",
+				"required": true
+			},
+			{
+				"name": "finalReportHold.changedAt",
 				"type": "number",
 				"required": true
 			},
@@ -748,6 +766,81 @@
 			},
 			{
 				"name": "failRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "matchesSession.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "matchesSession.session",
+				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
+				"name": "matchesSession.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "resumeRun.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "resumeRun.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "resumeRun.session",
+				"type": "TrackerSessionEvidence",
+				"required": true
+			},
+			{
+				"name": "resumeRun.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "resumeRun.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "reopenAnswered.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "reopenAnswered.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "reopenAnswered.clock",
+				"type": "{ policy: TrackerDispatchPolicy; now: number }",
+				"required": true
+			},
+			{
+				"name": "recordFinalReport.snapshot",
+				"type": "TrackerDispatchSnapshot",
+				"required": true
+			},
+			{
+				"name": "recordFinalReport.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordFinalReport.report",
+				"type": "TrackerFinalReportEvent",
+				"required": true
+			},
+			{
+				"name": "recordFinalReport.now",
 				"type": "number",
 				"required": true
 			},
@@ -1302,6 +1395,29 @@
 				"outputs": [
 					{
 						"name": "schedulingHold",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "finalReportHold",
+				"inputs": [
+					{
+						"name": "finalReportHold.run",
+						"type": "{ outcome?: string | null; failure_reason?: string | null; ended_at?: number | null }",
+						"required": true
+					},
+					{
+						"name": "finalReportHold.changedAt",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finalReportHold",
 						"type": "string | null"
 					}
 				],
@@ -1950,6 +2066,133 @@
 				"outputs": [
 					{
 						"name": "failRun",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "matchesSession",
+				"inputs": [
+					{
+						"name": "matchesSession.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "matchesSession.session",
+						"type": "TrackerSessionEvidence",
+						"required": true
+					},
+					{
+						"name": "matchesSession.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchesSession",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resumeRun",
+				"inputs": [
+					{
+						"name": "resumeRun.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "resumeRun.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "resumeRun.session",
+						"type": "TrackerSessionEvidence",
+						"required": true
+					},
+					{
+						"name": "resumeRun.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					},
+					{
+						"name": "resumeRun.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "resumeRun",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reopenAnswered",
+				"inputs": [
+					{
+						"name": "reopenAnswered.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "reopenAnswered.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "reopenAnswered.clock",
+						"type": "{ policy: TrackerDispatchPolicy; now: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reopenAnswered",
+						"type": "TrackerDispatchDecision"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordFinalReport",
+				"inputs": [
+					{
+						"name": "recordFinalReport.snapshot",
+						"type": "TrackerDispatchSnapshot",
+						"required": true
+					},
+					{
+						"name": "recordFinalReport.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordFinalReport.report",
+						"type": "TrackerFinalReportEvent",
+						"required": true
+					},
+					{
+						"name": "recordFinalReport.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordFinalReport",
 						"type": "TrackerDispatchDecision"
 					}
 				],

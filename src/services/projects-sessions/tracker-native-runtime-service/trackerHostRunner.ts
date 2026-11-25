@@ -50,7 +50,6 @@ export function trackerHostRunner(
 	let [sessions, panes]: [TrackerHostSession[], WatchdogPane[]] = [[], []];
 	const legacySession = legacySessionReader(legacyRunDirectory, () => sessions);
 	return {
-		inventory: () => sessions,
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
 				({ sessions, panes } = await trackerHostInventory(
@@ -195,14 +194,23 @@ function recordedHostEvent(
 			);
 	if (run.state === 'queued') return trackerHostStartupEvent(session);
 	if (!session || session.id !== (run.host_session_id ?? run.session_id))
-		return trackerItemStatus(items, run.item_id) === 'done'
-			? { type: 'monitor', session: 'unknown' }
-			: undefined;
+		return missingSessionEvent(run, items);
 	if (run.outcome === 'blocked' && session.state === 'live') return { type: 'resume', session };
+	if (run.outcome === 'blocked') return { type: 'answered-without-session' };
 	return {
 		type: 'monitor',
 		session: session.state,
 		activityAt: session.activityAt,
 		exitCode: session.exitCode
 	};
+}
+
+function missingSessionEvent(
+	run: TrackerRunReceipt,
+	items: TrackerItemReadRepository
+): TrackerDispatchEvent | undefined {
+	if (run.outcome === 'blocked') return { type: 'answered-without-session' };
+	return trackerItemStatus(items, run.item_id) === 'done'
+		? { type: 'monitor', session: 'unknown' }
+		: undefined;
 }

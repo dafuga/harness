@@ -27,5 +27,9 @@ export interface TrackerTmuxClose {
 	cli: WatchdogCli;
 	attempt?: string;
 	observed?: boolean;
+	/** Close even without an empty composer: the pane has been silent since its run ended. */
+	force?: boolean;
+	/** Leave a session whose provider still reports a background shell or monitor. */
+	keepBackground?: boolean;
 	stillComplete(): boolean;
 }

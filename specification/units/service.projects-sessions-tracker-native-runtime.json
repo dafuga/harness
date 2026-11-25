@@ -33,6 +33,9 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerGithubCli.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHandLaunchSelection.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapter.ts",
@@ -115,6 +118,10 @@
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
 			"trackerContextHandoffs",
+			"finishReportedRuns",
+			"TrackerReportSession",
+			"TrackerFinalReport",
+			"closeFinishedTrackerSessions",
 			"trackerGithubCli",
 			"handLaunchSelection",
 			"handLaunchNode",
@@ -146,6 +153,7 @@
 			"TrackerHostLaunchPort",
 			"TrackerHostRunnerOptions",
 			"CompletedTrackerPaneRun",
+			"TrackerSessionSweep",
 			"trackerHostLaunchPort",
 			"withTrackerRunUsage",
 			"trackerItemStatus",
@@ -365,6 +373,46 @@
 				"required": true
 			},
 			{
+				"name": "finishReportedRuns.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.dispatch",
+				"type": "TrackerDispatcherService",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.scan",
+				"type": "WatchdogScan",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.skip",
+				"type": "ReadonlySet<string>",
+				"required": true
+			},
+			{
+				"name": "finishReportedRuns.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "closeFinishedTrackerSessions.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "closeFinishedTrackerSessions.sweep",
+				"type": "TrackerSessionSweep",
+				"required": true
+			},
+			{
+				"name": "closeFinishedTrackerSessions.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
 				"name": "trackerGithubCli.binding",
 				"type": "{ executable: string; configDirectory: string; }",
 				"required": true
@@ -451,18 +499,8 @@
 				"required": true
 			},
 			{
-				"name": "trackerHostAdmission.inventory",
-				"type": "() => readonly TrackerHostSession[]",
-				"required": true
-			},
-			{
 				"name": "occupiedHostSlots.store",
 				"type": "TrackerPersistenceService",
-				"required": true
-			},
-			{
-				"name": "occupiedHostSlots.sessions",
-				"type": "readonly TrackerHostSession[]",
 				"required": true
 			},
 			{
@@ -700,7 +738,7 @@
 			},
 			{
 				"name": "trackerHostWatchdog.options",
-				"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork' | 'automaticEnabled'>",
+				"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled'>",
 				"required": true
 			},
 			{
@@ -802,6 +840,11 @@
 				"name": "applyIdleDecision.snapshot",
 				"type": "WatchdogScan",
 				"required": true
+			},
+			{
+				"name": "applyIdleDecision.settles",
+				"type": "boolean",
+				"required": false
 			},
 			{
 				"name": "applyIdleDecision.decision",
@@ -1872,6 +1915,72 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "finishReportedRuns",
+				"inputs": [
+					{
+						"name": "finishReportedRuns.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "finishReportedRuns.dispatch",
+						"type": "TrackerDispatcherService",
+						"required": true
+					},
+					{
+						"name": "finishReportedRuns.scan",
+						"type": "WatchdogScan",
+						"required": true
+					},
+					{
+						"name": "finishReportedRuns.skip",
+						"type": "ReadonlySet<string>",
+						"required": true
+					},
+					{
+						"name": "finishReportedRuns.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishReportedRuns",
+						"type": "Promise<Set<string>>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "closeFinishedTrackerSessions",
+				"inputs": [
+					{
+						"name": "closeFinishedTrackerSessions.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "closeFinishedTrackerSessions.sweep",
+						"type": "TrackerSessionSweep",
+						"required": true
+					},
+					{
+						"name": "closeFinishedTrackerSessions.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "closeFinishedTrackerSessions",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerGithubCli",
 				"inputs": [
 					{
@@ -2024,11 +2133,6 @@
 						"name": "trackerHostAdmission.routeFor",
 						"type": "TrackerHostRoute",
 						"required": true
-					},
-					{
-						"name": "trackerHostAdmission.inventory",
-						"type": "() => readonly TrackerHostSession[]",
-						"required": true
 					}
 				],
 				"outputs": [
@@ -2046,11 +2150,6 @@
 					{
 						"name": "occupiedHostSlots.store",
 						"type": "TrackerPersistenceService",
-						"required": true
-					},
-					{
-						"name": "occupiedHostSlots.sessions",
-						"type": "readonly TrackerHostSession[]",
 						"required": true
 					}
 				],
@@ -2475,7 +2574,7 @@
 					},
 					{
 						"name": "trackerHostWatchdog.options",
-						"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork' | 'automaticEnabled'>",
+						"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled'>",
 						"required": true
 					}
 				],
@@ -2655,6 +2754,11 @@
 						"name": "applyIdleDecision.snapshot",
 						"type": "WatchdogScan",
 						"required": true
+					},
+					{
+						"name": "applyIdleDecision.settles",
+						"type": "boolean",
+						"required": false
 					},
 					{
 						"name": "applyIdleDecision.decision",
