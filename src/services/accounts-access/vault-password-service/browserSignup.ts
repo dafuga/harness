@@ -31,15 +31,12 @@ export function reviewedSignup(recipe: VaultRecipe, script: Uint8Array): VaultSi
 	const action = recipe.actions.find(({ id }) => id === vaultPasswordAction);
 	const logout = recipe.teardown.logout;
 	if (
-		!action ||
-		action.mode !== 'write' ||
+		action?.mode !== 'write' ||
 		!path.safeParse(action.start).success ||
 		!logout ||
 		!path.safeParse(logout).success ||
 		recipe.origins.length !== 1 ||
-		recipe.redirects.length ||
-		recipe.otp.length ||
-		recipe.login.length
+		[recipe.redirects, recipe.otp, recipe.login].some(({ length }) => length > 0)
 	)
 		throw new ExpectedCliError(
 			'Signup requires one exact origin and a reviewed signup and logout route.'
@@ -78,24 +75,21 @@ async function requireSignupForm(page: Page, { origin, start, form }: VaultSignu
 	const valid = await page.locator(form.submit).evaluate(
 		(submit, { url, post, fields }) => {
 			if (
-				location.href !== url ||
+				submit.ownerDocument.URL !== url ||
 				!(submit instanceof HTMLButtonElement) ||
 				submit.type !== 'submit'
 			)
 				return false;
 			const signup = submit.form;
 			if (
-				!signup ||
-				signup.method !== 'post' ||
+				signup?.method !== 'post' ||
 				signup.action !== post ||
 				signup.target ||
-				submit.hasAttribute('formaction') ||
-				submit.hasAttribute('formmethod') ||
-				submit.hasAttribute('formtarget')
+				['formaction', 'formmethod', 'formtarget'].some((name) => submit.hasAttribute(name))
 			)
 				return false;
 			return fields.every(({ selector, types }) => {
-				const matches = document.querySelectorAll(selector);
+				const matches = submit.ownerDocument.querySelectorAll(selector);
 				const field = matches[0];
 				return (
 					matches.length === 1 &&

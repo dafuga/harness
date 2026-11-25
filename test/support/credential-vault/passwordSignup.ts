@@ -130,7 +130,7 @@ function signupBrokerFiles(run: ReturnType<typeof vaultBroker>, settings: object
 
 function requestSignup(
 	launch: string[],
-	env: NodeJS.ProcessEnv,
+	env: typeof process.env,
 	files: ReturnType<typeof signupBrokerFiles>
 ) {
 	const request = execFileSync(

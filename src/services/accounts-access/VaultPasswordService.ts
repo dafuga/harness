@@ -23,20 +23,24 @@ export class VaultPasswordService {
 	prepare(request: VaultSessionRequest): (() => Promise<void>) | undefined {
 		const { recipe: verified, scope } = this.config;
 		const { recipe, digest } = verified;
+		const expected = {
+			...scope,
+			action: vaultPasswordAction,
+			method: 'browser',
+			mode: 'write',
+			site: recipe.site,
+			account: recipe.account.alias,
+			leaseMs: recipe.timeouts.leaseMs
+		};
+		const sameScope = Object.entries(expected).every(
+			([field, value]) => request[field as keyof typeof expected] === value
+		);
 		if (
 			Date.now() - verified.review.reviewedAt > recipeReviewMaxAgeMs ||
-			request.action !== vaultPasswordAction ||
-			request.method !== 'browser' ||
-			request.mode !== 'write' ||
-			request.project !== scope.project ||
-			request.environment !== scope.environment ||
-			request.host !== scope.host ||
-			request.site !== recipe.site ||
-			request.account !== recipe.account.alias ||
+			!sameScope ||
 			request.recipe.site !== recipe.site ||
 			request.recipe.revision !== recipe.revision ||
 			request.recipe.digest !== digest ||
-			request.leaseMs !== recipe.timeouts.leaseMs ||
 			request.origins.length !== 1 ||
 			request.origins[0] !== recipe.origins[0]
 		)

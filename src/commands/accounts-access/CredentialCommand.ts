@@ -68,29 +68,33 @@ export class CredentialCommand {
 			.requiredOption('--reason <text>', 'Why the session needs this login.')
 			.option('--account <alias>', 'Expected recipe account alias.')
 			.option('--ready <kinds>', 'Comma-separated method kinds that can run now.')
-			.action(async (recipe: string, action: string, options: Options) => {
-				const runnerKey = options.runnerKey ?? this.generationRunnerKey(action);
-				const given = Object.fromEntries(fields.map((key) => [key, options[key] ?? ''])) as Record<
-					(typeof fields)[number],
-					string
-				>;
-				const ready = (options.ready ?? (action === vaultPasswordAction ? 'browser' : ''))
-					.split(',')
-					.filter(Boolean);
-				const files = this.recipes.files(recipe, options);
-				const socket = this.socket();
-				print(
-					await runCredentialRequest({
-						...files,
-						...given,
-						runnerKey,
-						action,
-						account: options.account,
-						ready,
-						socket
-					})
-				);
-			});
+			.action((recipe: string, action: string, options: Options) =>
+				this.submitRequest(recipe, action, options)
+			);
+	}
+
+	private async submitRequest(recipe: string, action: string, options: Options): Promise<void> {
+		const runnerKey = options.runnerKey ?? this.generationRunnerKey(action);
+		const given = Object.fromEntries(fields.map((key) => [key, options[key] ?? ''])) as Record<
+			(typeof fields)[number],
+			string
+		>;
+		const ready = (options.ready ?? (action === vaultPasswordAction ? 'browser' : ''))
+			.split(',')
+			.filter(Boolean);
+		const files = this.recipes.files(recipe, options);
+		const socket = this.socket();
+		print(
+			await runCredentialRequest({
+				...files,
+				...given,
+				runnerKey,
+				action,
+				account: options.account,
+				ready,
+				socket
+			})
+		);
 	}
 
 	private generationRunnerKey(action: string): string {

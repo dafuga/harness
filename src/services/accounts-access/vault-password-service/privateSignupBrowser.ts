@@ -1,5 +1,6 @@
 // @harness-uid u_mucsxl7k4y
 import { chromium, type ConnectOverCDPTransport } from 'playwright-core';
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import type { VaultBrowserDockerAdapter } from '../../../adapters/accounts-access/VaultBrowserDockerAdapter';
 import type { VaultFixtureNetwork } from '../../../adapters/accounts-access/VaultBrowserDockerAdapter.types';
 import { prepareSignupForm } from './browserSignup';
@@ -46,6 +47,6 @@ export async function openPrivateSignupBrowser(
 		};
 	} catch {
 		await close();
-		throw new Error('The private signup browser is unavailable.');
+		throw new ExpectedCliError('The private signup browser is unavailable.');
 	}
 }
