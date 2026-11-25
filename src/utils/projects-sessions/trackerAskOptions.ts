@@ -29,6 +29,8 @@ export function normalizeTrackerAskOptions(value: TrackerItemValue): string | nu
 	const options = list.map(oneOption);
 	const labels = new Set(options.map((option) => option.label.toLowerCase()));
 	if (labels.size !== options.length) throw trackerItemError('option labels must be distinct');
+	if ([...labels].some((label) => /^other\b/.test(label)))
+		throw trackerItemError('"Other" is always offered for a written answer; do not add it');
 	if (options.filter((option) => option.recommended).length > 1)
 		throw trackerItemError('mark at most one option as recommended');
 	return JSON.stringify(options);

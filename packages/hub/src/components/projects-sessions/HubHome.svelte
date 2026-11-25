@@ -61,6 +61,7 @@
 		overview,
 		agents: snapshot?.agents ?? (settled ? [] : null),
 		asks: snapshot?.asks ?? [],
+		openAsks: snapshot?.openAsks ?? [],
 		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
 		schedule:

@@ -68,10 +68,9 @@ export function agentActivity(agent: HomeAgent) {
 	return `${count(total, 'session')} running${subs} · ${first}${more}`;
 }
 
-export function homeHeadline(agents: HomeAgent[], liveSessions = 0) {
+export function homeHeadline(agents: HomeAgent[], liveSessions = 0, needs = 0) {
 	const working = agents.filter(isWorking).length;
-	const needs = agents.filter((agent) => agent.state === 'needs-you').length;
-	if (!agents.length)
+	if (!agents.length && !needs)
 		return liveSessions ? `${count(liveSessions, 'session')} running` : 'Nothing is running yet';
 	return `${count(working, 'agent')} working${needs ? `, ${needs} ${needs === 1 ? 'needs' : 'need'} you` : ''}`;
 }
@@ -222,12 +221,4 @@ export function quotaSummary(subscriptions: HomeSubscription[], now: number) {
 		.filter((subscription) => !staleReading(subscription.readAt, now))
 		.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)));
 	return `${count(subscriptions.length, 'subscription')} · ${low.length ? `${low.length} running low` : 'all OK'}`;
-}
-
-/** Two one-tap answers for a yes-or-no question; open questions get none. */
-export function quickReplies(question: string | null) {
-	const text = question?.trim() ?? '';
-	if (!text.endsWith('?') || /\bor\b/i.test(text)) return [];
-	if (/^(approve|merge|deploy|ship|release)\b/i.test(text)) return ['Approve', 'Not yet'];
-	return /^(should|can|may|shall|do|does|did|is|are|will|would)\b/i.test(text) ? ['Yes', 'No'] : [];
 }

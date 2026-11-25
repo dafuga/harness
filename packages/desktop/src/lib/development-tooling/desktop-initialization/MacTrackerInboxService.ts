@@ -5,6 +5,7 @@ import {
 	trackerPlanningSchema,
 	trackerStageSchema
 } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
+import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
 import { sanitizeTrackerText } from '../../../../../../src/utils/projects-sessions/sanitizeTrackerText';
 import type {
 	ConfirmedWrite,
@@ -135,7 +136,7 @@ async function readRows(): Promise<InboxRow[]> {
 		.filter((item) => visible(item))
 		.map((item) => ({
 			header: projectHeader(item),
-			bucket: itemBucket(item.status ?? 'open', Boolean(item.needs_daniel && !item.resolved))
+			bucket: itemBucket(item.status ?? 'open', trackerStructuredAsk(item))
 		}));
 }
 

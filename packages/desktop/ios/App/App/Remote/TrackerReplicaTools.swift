@@ -48,6 +48,15 @@ extension TrackerReplicaStore {
         }
     }
 
+    /// "Needs you" is only an open structured ask: 2 to 4 choices with exactly one recommended.
+    /// The Mac sends choices only on such asks; other open flags belong to Chief of Staff.
+    private static let structuredAsk = """
+        json_extract(flags.value, '$.state') = 'open'
+        AND json_array_length(flags.value, '$.options') BETWEEN 2 AND 4
+        AND (SELECT count(*) FROM json_each(flags.value, '$.options') AS choice
+             WHERE json_extract(choice.value, '$.recommended') = 1) = 1
+        """
+
     private func status(slot: String) throws -> [String: Any] {
         let db = try db()
         var counts = Dictionary(uniqueKeysWithValues: TrackerItemHeader.statuses.map { ($0, 0) })
@@ -55,14 +64,14 @@ extension TrackerReplicaStore {
             if let status = row[0], let count = row[1].flatMap(Int.init) { counts[status] = count }
         }
         let flags = try db.rows("""
-            SELECT count(*) FROM flags WHERE slot = ? AND json_extract(value, '$.state') = 'open'
+            SELECT count(*) FROM flags WHERE slot = ? AND \(Self.structuredAsk)
             """, [slot]).first?.first.flatMap { $0 }.flatMap(Int.init)
         let recent = try db.rows("SELECT value FROM items WHERE slot = ? ORDER BY updated DESC, id LIMIT 10", [slot])
         let needing = try db.rows("""
             SELECT items.value FROM items
             WHERE items.slot = ? AND EXISTS (
                 SELECT 1 FROM flags WHERE flags.slot = items.slot AND flags.item = items.id
-                AND json_extract(flags.value, '$.state') = 'open')
+                AND \(Self.structuredAsk))
             ORDER BY items.updated DESC, items.id LIMIT 25
             """, [slot])
         return ["counts": counts, "unresolvedFlags": flags ?? 0, "recent": try headers(recent),

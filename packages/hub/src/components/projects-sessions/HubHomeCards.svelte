@@ -42,8 +42,6 @@
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 	} = $props();
-	/** Every agent with an open ask: listed sessions that need you, and asks of agent-created ones. */
-	const asking = $derived([...(view.agents ?? []), ...view.asks].filter((agent) => agent.question));
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
 	const recipient = $derived(currentAgent([...(view.agents ?? []), ...view.asks]));
 	const working = $derived(view.agents?.filter(isWorking).length ?? 0);
@@ -54,9 +52,8 @@
 			.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)))
 	);
 	const level = $derived(warning ? warningFor(warning.limit.left) : null);
-	const attention = $derived(
-		(view.agents?.filter((agent) => agent.state === 'needs-you').length ?? 0) + view.asks.length
-	);
+	/** "Needs you" is the length of the very list the card shows. */
+	const attention = $derived(view.openAsks.length);
 	const sessions = $derived(
 		view.agents?.reduce((sum, agent) => sum + agentSessions(agent), 0) ?? 0
 	);
@@ -114,10 +111,7 @@
 					</HubHomeRow>
 				{/each}
 			</hx-ul>
-			{#each asking as agent (agent.id)}
-				<HubHomeAsk {agent} {send} {receipt} />
-			{/each}
-		{:else if view.trackerConnected}
+		{:else if view.openAsks.length}{:else if view.trackerConnected}
 			<EmptyState as="div" className="po-empty hh-empty"
 				><hx-p>No agents are connected. Start a session on any computer and it appears here.</hx-p>
 				{#if !view.linkedComputers}
@@ -129,6 +123,9 @@
 		{:else}
 			{@render empty('Agent activity appears when Tracker data is available.')}
 		{/if}
+		{#each view.openAsks as ask (ask.itemId)}
+			<HubHomeAsk {ask} {send} {receipt} />
+		{/each}
 		{#snippet badge()}
 			{#if attention}<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
 					><hx-span class="po-mark" aria-hidden="true"></hx-span>{attention}

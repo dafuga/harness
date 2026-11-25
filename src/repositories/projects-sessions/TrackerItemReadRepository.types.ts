@@ -144,10 +144,12 @@ export type TrackerRecurringProblem = TrackerDigestItem & {
 export type TrackerDigestGroups = {
 	blocked: TrackerDigestItem[];
 	needs_daniel: TrackerDigestItem[];
-	/** Open flags that are real questions for Daniel, oldest first, including finished and blocked items. */
+	/** Open structured asks, the only decisions shown to Daniel, oldest first, including finished and blocked items. */
 	daniel_decisions: TrackerDigestItem[];
 	/** Open flags raised by watchdog and idle-session alerts for Chief of Staff, oldest first. */
 	pings: TrackerDigestItem[];
+	/** Other open flags without answerable choices, for Chief of Staff to rewrite or clear, oldest first. */
+	needs_options: TrackerDigestItem[];
 	overdue: TrackerDigestItem[];
 	due_today: TrackerDigestItem[];
 	recurring_missed: TrackerRecurringProblem[];

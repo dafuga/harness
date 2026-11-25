@@ -1,5 +1,6 @@
 // @harness-uid u_qhdifpyhqs
-import type { HomeAgent, HomeAgentTask, OwnerHomeSnapshot } from './hubHome.types';
+import type { HomeAgent, HomeAgentTask, HomeOpenAsk, OwnerHomeSnapshot } from './hubHome.types';
+import { agentOpenAsks, withListedAsk } from './homeOpenAsks';
 
 /**
  * The sessions Daniel creates and talks to himself, by Tracker agent value, with the name Home
@@ -60,15 +61,24 @@ function withSubAgents(parent: HomeAgent, rest: HomeAgent[]): HomeAgent {
 }
 
 /** A computer's snapshot with the fields older Mac apps omit filled in. */
-export function completeHomeSnapshot(snapshot: OwnerHomeSnapshot): OwnerHomeSnapshot {
+export function completeHomeSnapshot(
+	snapshot: OwnerHomeSnapshot
+): OwnerHomeSnapshot & { openAsks: HomeOpenAsk[] } {
+	const openAsks = snapshot.openAsks ?? agentOpenAsks(snapshot.agents);
 	return {
 		...snapshot,
-		agents: snapshot.agents.map((agent) => ({
-			...agent,
-			sessions: agent.sessions ?? 0,
-			tasks: agent.tasks ?? [],
-			subAgents: agent.subAgents ?? noSubAgents()
-		}))
+		openAsks,
+		agents: snapshot.agents.map((agent) =>
+			withListedAsk(
+				{
+					...agent,
+					sessions: agent.sessions ?? 0,
+					tasks: agent.tasks ?? [],
+					subAgents: agent.subAgents ?? noSubAgents()
+				},
+				openAsks
+			)
+		)
 	};
 }
 
@@ -76,6 +86,7 @@ export function completeHomeSnapshot(snapshot: OwnerHomeSnapshot): OwnerHomeSnap
 export function listedHomeSnapshot(
 	snapshot: OwnerHomeSnapshot,
 	added: readonly string[] = []
-): OwnerHomeSnapshot & HomeLists {
-	return { ...snapshot, ...listHomeAgents(completeHomeSnapshot(snapshot).agents, added) };
+): OwnerHomeSnapshot & HomeLists & { openAsks: HomeOpenAsk[] } {
+	const complete = completeHomeSnapshot(snapshot);
+	return { ...complete, ...listHomeAgents(complete.agents, added) };
 }

@@ -42,7 +42,7 @@ export const bucketLabels: Record<InboxBucket, string> = {
 
 const MAX_TEXT_BYTES = 512;
 
-/** An open flag puts the item in Needs you. Otherwise the item status decides. */
+/** An open structured ask puts the item in Needs you. Otherwise the item status decides. */
 export function itemBucket(status: string, flagOpen: boolean): InboxBucket {
 	if (flagOpen) return 'needs-you';
 	if (status === 'blocked') return 'blocked';

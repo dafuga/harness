@@ -1,5 +1,6 @@
 // @harness-uid u_xba7ieg4je
 import { trackerStaleDecisionMinutes } from './splitTrackerAsks';
+import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import type {
 	TrackerDigest,
 	TrackerDigestItem,
@@ -17,6 +18,12 @@ export function formatTrackerDigest(digest: TrackerDigest): string {
 			digest.daniel_decisions,
 			decisionDetail,
 			'oldest first; 24h+ is STALE'
+		),
+		...section(
+			'NEEDS OPTIONS',
+			digest.needs_options,
+			decisionDetail,
+			'for Chief of Staff, not shown to Daniel'
 		),
 		...pingSection(digest.pings),
 		...section('QUEUED', digest.queued, (item) =>
@@ -108,11 +115,15 @@ function blockedDetail(item: TrackerDigestItem): string {
 	return [
 		item.blocked_reason && `blocked: ${item.blocked_reason}`,
 		item.needs_daniel &&
-			`NEEDS DANIEL · ${item.next_step ? askDetail(item) : waitText(item.waiting_minutes)}`,
+			`${flagLabel(item)} · ${item.next_step ? askDetail(item) : waitText(item.waiting_minutes)}`,
 		item.due && `due ${item.due}`
 	]
 		.filter(Boolean)
 		.join('; ');
+}
+
+function flagLabel(item: TrackerDigestItem): string {
+	return trackerStructuredAsk(item) ? 'NEEDS DANIEL' : 'FLAGGED FOR CHIEF OF STAFF';
 }
 
 function askDetail(item: TrackerDigestItem): string {
