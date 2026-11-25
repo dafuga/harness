@@ -210,26 +210,3 @@ async function closeClaudeStartupPane(
 		signal
 	);
 }
-
-export async function probeManagedTmuxSession(
-	{ tmux, socket }: { tmux: string; socket: string },
-	name: string,
-	token: string | undefined,
-	signal: AbortSignal
-): Promise<TrackerManagedPresence> {
-	const result = await runTrackerHostCommand(
-		tmux,
-		['-L', socket, 'show-environment', '-t', `=${name}`, 'HARNESS_TRACKER_ATTEMPT'],
-		signal
-	);
-	if (token && result.code === 0 && result.stdout.trim() === `HARNESS_TRACKER_ATTEMPT=${token}`)
-		return 'live';
-	const error = result.stderr.trim();
-	return result.code === 1 &&
-		(error === `no such session: =${name}` ||
-			/^(?:no server running on |no sessions$|error connecting to .+ \(No such file or directory\)$)/.test(
-				error
-			))
-		? 'absent'
-		: 'unknown';
-}

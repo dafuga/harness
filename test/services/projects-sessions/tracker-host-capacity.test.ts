@@ -12,11 +12,10 @@ import { TrackerNativeRuntimeService } from '../../../src/services/projects-sess
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
 import {
-	retainedTrackerTmuxFixture,
 	seedCompletedRetainedRun,
 	startLinkedItem
 } from '../../support/trackerManagedProcessFixture';
-
+import { retainedTrackerTmuxFixture } from '../../support/trackerObservedRunFixture';
 const node = 'daniel-primary-mbp';
 const now = 1_800_000_000_000;
 

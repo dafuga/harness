@@ -15,7 +15,6 @@ import type {
 import {
 	checkTrackerManagedReceipt,
 	confirmManagedClaudeStartup,
-	probeManagedTmuxSession,
 	trackerManagedEvidence,
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
@@ -27,6 +26,7 @@ import type {
 import { trackerManagedCodexUsage } from './trackerManagedCodexUsage';
 import {
 	confirmManagedStartupAbsent,
+	probeManagedTmuxSession,
 	managedSessionName,
 	workerScript,
 	launchTmux,

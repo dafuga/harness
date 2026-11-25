@@ -48,7 +48,6 @@
 			"trackerManagedEvidence",
 			"hasManagedStartupEvidence",
 			"confirmManagedClaudeStartup",
-			"probeManagedTmuxSession",
 			"validateManagedProfiles",
 			"privateTrackerDirectory",
 			"trackerManagedProviderCommand",
@@ -61,6 +60,7 @@
 			"managedBrief",
 			"managedSessionName",
 			"confirmManagedStartupAbsent",
+			"probeManagedTmuxSession",
 			"closePaneNames",
 			"closePaneCandidate",
 			"trackerPaneFormat",
@@ -229,31 +229,6 @@
 				"required": true
 			},
 			{
-				"name": "probeManagedTmuxSession.tmux",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "probeManagedTmuxSession.socket",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "probeManagedTmuxSession.name",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "probeManagedTmuxSession.token",
-				"type": "string | undefined",
-				"required": true
-			},
-			{
-				"name": "probeManagedTmuxSession.signal",
-				"type": "AbortSignal",
-				"required": true
-			},
-			{
 				"name": "validateManagedProfiles.profiles",
 				"type": "TrackerManagedProfiles",
 				"required": true
@@ -395,6 +370,31 @@
 			},
 			{
 				"name": "confirmManagedStartupAbsent.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.tmux",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.socket",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.name",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.token",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "probeManagedTmuxSession.signal",
 				"type": "AbortSignal",
 				"required": true
 			},
@@ -871,44 +871,6 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "probeManagedTmuxSession",
-				"inputs": [
-					{
-						"name": "probeManagedTmuxSession.tmux",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "probeManagedTmuxSession.socket",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "probeManagedTmuxSession.name",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "probeManagedTmuxSession.token",
-						"type": "string | undefined",
-						"required": true
-					},
-					{
-						"name": "probeManagedTmuxSession.signal",
-						"type": "AbortSignal",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "probeManagedTmuxSession",
-						"type": "Promise<TrackerManagedPresence>"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "validateManagedProfiles",
 				"inputs": [
 					{
@@ -1201,6 +1163,44 @@
 					{
 						"name": "confirmManagedStartupAbsent",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "probeManagedTmuxSession",
+				"inputs": [
+					{
+						"name": "probeManagedTmuxSession.tmux",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "probeManagedTmuxSession.socket",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "probeManagedTmuxSession.name",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "probeManagedTmuxSession.token",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "probeManagedTmuxSession.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "probeManagedTmuxSession",
+						"type": "Promise<TrackerManagedPresence>"
 					}
 				],
 				"errors": [],

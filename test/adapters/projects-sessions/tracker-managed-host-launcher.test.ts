@@ -18,11 +18,9 @@ vi.mock('node:os', async (importOriginal) => {
 	const os = await importOriginal<typeof Os>();
 	return { ...os, userInfo: () => ({ ...os.userInfo(), username: 'unknown' }) };
 });
-
 const node = 'daniel-primary-mbp';
 const signal = new AbortController().signal;
 const client = { node, role: 'hub' as const, apiPort: 49281, syncPort: 49282 };
-
 test('launches native and managed Docker workers through isolated tmux and reuses their durable attempt evidence', () =>
 	measureWorkload('adapter.projects-sessions-tracker-tmux', 'managed-worker-roundtrip', () =>
 		withTempRepo(proveManagedWorker)

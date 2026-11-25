@@ -119,26 +119,6 @@ appendFileSync(join(process.env.HOME, 'invoked.ndjson'), JSON.stringify({
 }) + '\\n');
 `;
 
-export const retainedTrackerTmuxFixture = `
-const fs = require('node:fs');
-const path = require('node:path');
-const [,,, socket, command, ...args] = process.argv;
-const closed = path.join(__dirname, 'closed');
-const busy = path.join(__dirname, 'busy');
-const attached = Number(fs.existsSync(path.join(__dirname, 'attached')));
-const raw = 'auto-old008-r8|1800000000|71|%9|200|1800000000|2|2|0|0|0|' + attached + '|1|1|codex';
-if (socket !== 'default') process.exit(2);
-if (command === 'list-panes' || command === 'display-message') {
-	if (!fs.existsSync(closed)) process.stdout.write(raw + '\\n');
-} else if (command === 'capture-pane') {
-	const idle = !fs.existsSync(busy) || fs.readFileSync(busy, 'utf8') === 'idle';
-	process.stdout.write(idle ? 'fixture\\n\\n› \\n\\n100% context left\\n' : 'Working');
-} else if (command === 'if-shell') {
-	fs.writeFileSync(closed, args.join(' '));
-	process.stdout.write('tracker-session-closed\\n');
-} else process.exit(2);
-`;
-
 export function seedRetainedRuns(db: DatabaseSync, now: number) {
 	for (let id = 1; id <= 8; id++) {
 		db.prepare(
