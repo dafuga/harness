@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-sealed-sync-replay-tracker-sealed-journal",
+	"uid": "u_gybvvknyur",
+	"kind": "service",
+	"title": "replayTrackerSealedJournal",
+	"responsibility": "Owns the replayTrackerSealedJournal service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-sealed-sync/replayTrackerSealedJournal.ts"],
+		"symbols": ["replayTrackerSealedJournal"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "replayTrackerSealedJournal.journal",
+				"type": "Pick<TrackerOperationRepository, 'opsSince'>",
+				"required": true
+			},
+			{
+				"name": "replayTrackerSealedJournal.sync",
+				"type": "Pick<TrackerSealedSyncService, 'stage' | 'push'>",
+				"required": true
+			},
+			{
+				"name": "replayTrackerSealedJournal.after",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "replayTrackerSealedJournal.belongsToScope",
+				"type": "(operation: TrackerOperation) => boolean",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "replayTrackerSealedJournal",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "replayTrackerSealedJournal",
+				"inputs": [
+					{
+						"name": "replayTrackerSealedJournal.journal",
+						"type": "Pick<TrackerOperationRepository, 'opsSince'>",
+						"required": true
+					},
+					{
+						"name": "replayTrackerSealedJournal.sync",
+						"type": "Pick<TrackerSealedSyncService, 'stage' | 'push'>",
+						"required": true
+					},
+					{
+						"name": "replayTrackerSealedJournal.after",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "replayTrackerSealedJournal.belongsToScope",
+						"type": "(operation: TrackerOperation) => boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "replayTrackerSealedJournal",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-sync",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-sealed-sync/replayTrackerSealedJournal.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-sealed-sync/replayTrackerSealedJournal.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

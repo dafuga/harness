@@ -5,7 +5,8 @@ export type TrackerSupervisorWorker =
 	| 'notifications'
 	| 'recurring'
 	| 'telemetry'
-	| 'watchdog';
+	| 'watchdog'
+	| 'sealedSync';
 
 export interface TrackerSupervisorOptions {
 	now?: () => number;

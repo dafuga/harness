@@ -1,0 +1,216 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-sync",
+	"uid": "u_grqcubeu7b",
+	"kind": "service",
+	"title": "TrackerSealedSyncService",
+	"responsibility": "Owns the TrackerSealedSyncService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-sealed-sync/TrackerSealedSyncService.ts",
+			"src/services/projects-sessions/tracker-sealed-sync/TrackerSealedSyncService.types.ts"
+		],
+		"symbols": [
+			"TrackerSealedSyncService",
+			"TrackerSealedSyncService.constructor",
+			"TrackerSealedSyncService.stage",
+			"TrackerSealedSyncService.push",
+			"TrackerSealedSyncService.pull",
+			"OutboxEntry",
+			"SyncPage",
+			"TrackerSealedSyncStore",
+			"TrackerSealedSyncOptions",
+			"TrackerSealedNodeOptions"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSealedSyncService.constructor.options",
+				"type": "TrackerSealedSyncOptions",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedSyncService.stage.localSeq",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedSyncService.stage.operation",
+				"type": "TrackerOperation",
+				"required": true
+			},
+			{
+				"name": "TrackerSealedSyncService.push.signal",
+				"type": "AbortSignal",
+				"required": false
+			},
+			{
+				"name": "TrackerSealedSyncService.pull.signal",
+				"type": "AbortSignal",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerSealedSyncService.stage",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "TrackerSealedSyncService.push",
+				"type": "Promise<number>"
+			},
+			{
+				"name": "TrackerSealedSyncService.pull",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": [
+			{
+				"name": "RangeError",
+				"type": "thrown"
+			},
+			{
+				"name": "TrackerNodeTransportError",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerSealedSyncService.stage",
+				"inputs": [
+					{
+						"name": "TrackerSealedSyncService.stage.localSeq",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "TrackerSealedSyncService.stage.operation",
+						"type": "TrackerOperation",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedSyncService.stage",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "RangeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSealedSyncService.push",
+				"inputs": [
+					{
+						"name": "TrackerSealedSyncService.push.signal",
+						"type": "AbortSignal",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedSyncService.push",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerSealedSyncService.pull",
+				"inputs": [
+					{
+						"name": "TrackerSealedSyncService.pull.signal",
+						"type": "AbortSignal",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedSyncService.pull",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerSealedSyncService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerSealedSyncService.constructor.options",
+						"type": "TrackerSealedSyncOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSealedSyncService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-sealed-record",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.networking-security-sealed-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-operation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-sealed-sync/TrackerSealedSyncService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-sealed-sync/TrackerSealedSyncService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

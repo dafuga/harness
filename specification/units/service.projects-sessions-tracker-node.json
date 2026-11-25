@@ -73,6 +73,12 @@
 				"required": true
 			},
 			{
+				"name": "TrackerNodeService.start.enrolledScopes",
+				"type": "readonly TrackerSealedNodeOptions[]",
+				"required": false,
+				"default": []
+			},
+			{
 				"name": "trackerLaunchAwareItemResponse.request",
 				"type": "Request",
 				"required": true
@@ -352,6 +358,12 @@
 						"name": "TrackerNodeService.start.config",
 						"type": "TrackerNodeConfig",
 						"required": true
+					},
+					{
+						"name": "TrackerNodeService.start.enrolledScopes",
+						"type": "readonly TrackerSealedNodeOptions[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [
@@ -898,6 +910,16 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-sealed-sync-tracker-sealed-tick",
 			"via": "import",
 			"origin": "derived"
 		},
