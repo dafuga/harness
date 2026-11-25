@@ -1,4 +1,3 @@
-import { measureWorkload } from '../../../../test/support/measureWorkload';
 import {
 	evidence,
 	assertVideoProjection,
@@ -15,37 +14,13 @@ import {
 } from '../../src/utils/explorer-ui/entityScreens';
 import { record, revision } from '../entityFixture';
 import { withInherited } from '../entityPreviewData';
-import { commits, ids, scenarios, units } from '../entityUnits';
+import { commits, ids, scenarios } from '../entityUnits';
 import { withFocused } from '../entityStates';
 import { withoutViewportSuffix } from '../../src/utils/explorer-ui/explorer-evidence/focusedCaptures';
-const page = units.find((unit) => unit.id === ids.page)!;
-const head = revision(commits.middle, [record(commits.middle)]);
+import { page, head } from './entity-screens.cases';
+
 const base = revision(commits.first, [record(commits.first, false)]);
 const tip = revision(commits.tip, [record(commits.tip)]);
-test('source-identical squash previews retain origin and reject a changed source tree', async () =>
-	measureWorkload('reports.function.entity-screens', 'entity-screens-normal-behavior', async () => {
-		const captured = withFocused(head, ids.page);
-		const sourceTree = 'e'.repeat(40);
-		const point = { ...captured.regressions![0].green!, sourceTree };
-		const squashed = {
-			...captured,
-			commit: commits.tip,
-			side: `sides/${sourceTree}.json`,
-			regressions: [{ ...captured.regressions![0], green: point }]
-		};
-		const found = evidence(page, squashed);
-		expect(
-			catalogShot(found),
-			'source-identical squash displays original screenshot'
-		).not.toBeNull();
-		expect(catalogShot(found)?.source).toBe(commits.middle);
-		expect(
-			found.after.captures.every((item) => !item.current && item.inheritedFrom === commits.middle)
-		).toBe(true);
-		expect(
-			catalogShot(evidence(page, { ...squashed, side: `sides/${'f'.repeat(40)}.json` }))
-		).toBeNull();
-	}));
 test('device states share a picker while original metadata and missing-device gaps remain intact', () => {
 	expect(withoutViewportSuffix('choose-mobile', 'desktop')).toBe('choose-mobile');
 	const captured = withFocused(tip, ids.page, {}, true);

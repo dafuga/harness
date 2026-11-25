@@ -21,6 +21,10 @@ export function entityCasesVariant(props: PreviewCases[string], variant: string)
 	if (variant === 'expanded') return props;
 	if (variant === 'empty') return { ...props, examples: [] };
 	if (variant === 'expected-error') return { ...props, examples: [badCall] };
+	return recordedCaseVariant(props, variant);
+}
+
+function recordedCaseVariant(props: PreviewCases[string], variant: string) {
 	const recorded = { ...props, examples: undefined, unit };
 	if (variant === 'recorded') return { ...recorded, document: calls };
 	if (variant === 'recorded-error')

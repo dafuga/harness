@@ -8,14 +8,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/components/development-tooling/deploymentActivityLabels.ts"],
+		"source": [
+			"packages/desktop/src/components/development-tooling/deploymentActivityLabels.ts",
+			"packages/desktop/src/components/development-tooling/deploymentActivityLabels.types.ts"
+		],
 		"symbols": [
 			"DeploymentLight",
 			"standingFailures",
 			"activitySummary",
 			"activityLight",
 			"phaseLabel",
-			"itemLight"
+			"itemLight",
+			"DeploymentLight"
 		]
 	},
 	"contract": {

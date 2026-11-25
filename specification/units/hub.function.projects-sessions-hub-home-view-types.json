@@ -9,7 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubHomeView.types.ts"],
-		"symbols": ["HomeView", "OpenHomeSection", "SendHomeChat", "ReadHomeProject", "ReadHomeResult"]
+		"symbols": [
+			"HomeView",
+			"OpenHomeSection",
+			"SendHomeChat",
+			"ReadHomeProject",
+			"HomeAgentsProps",
+			"ReadHomeResult"
+		]
 	},
 	"contract": {
 		"origin": "declared",

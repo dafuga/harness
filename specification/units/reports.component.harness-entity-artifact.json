@@ -28,12 +28,16 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/EntityArtifact.svelte"],
+		"source": [
+			"packages/reports/src/components/explorer-ui/EntityArtifact.svelte",
+			"packages/reports/src/components/explorer-ui/EntityArtifact.types.ts"
+		],
 		"symbols": [
 			"EntityArtifact",
 			"EntityArtifact.recorded",
 			"EntityArtifact.label",
-			"EntityArtifact.children"
+			"EntityArtifact.children",
+			"Fact"
 		]
 	},
 	"contract": {

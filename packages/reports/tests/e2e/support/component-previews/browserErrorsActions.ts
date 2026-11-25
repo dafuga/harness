@@ -26,6 +26,10 @@ export async function prepareBrowserErrors(component: Locator, variant: string) 
 		await expect(details.locator('li')).toHaveCount(0);
 		return;
 	}
+	await assertClassification(details, variant);
+}
+
+async function assertClassification(details: Locator, variant: string) {
 	const statuses: Record<string, string> = {
 		'expected-open': 'Expected',
 		unexpected: 'Unexpected',

@@ -1,18 +1,8 @@
 // @harness-uid u_6y7cr2odui
+import type { RetentionResult } from './reportCleanupLog.types';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { reportLifetimeMs } from '../../../../utils/reports-media/reportRetention';
-
-/** Summary of one retention run as ReportRetentionService builds it; serialized unchanged. */
-interface RetentionResult {
-	plannedReports: string[];
-	deletedReports: string[];
-	cloudObjects: number;
-	pages: number;
-	localFiles: number;
-	errors: string[];
-	dryRun: boolean;
-}
 
 export async function reportCleanupLog(root: string, result: RetentionResult) {
 	const path = join(root, 'retention-history.jsonl');

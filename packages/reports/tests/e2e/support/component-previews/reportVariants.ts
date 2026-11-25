@@ -1,7 +1,7 @@
 import { shellCatalogProps } from './shellCatalogProps';
 import { explorerKitVariant } from './explorerKitVariants';
 import { pluginVariant } from './pluginVariants';
-import type { PreviewCases } from './shared';
+import type { PreviewCases, PreviewProps } from './shared';
 import { chatVariantProps } from './chatVariants';
 import { image, text } from './shared';
 import { sourceVariant } from './reportSourceVariants';
@@ -34,60 +34,74 @@ import { providerPickerVariant } from './providerPickerVariants';
 import { browserErrorsVariant } from './browserErrorsVariants';
 import { videoCatalogProps } from './videoCatalogVariants';
 
+const primitiveVariants = new Map<
+	string,
+	(props: PreviewProps, variant: string) => PreviewProps | null
+>([
+	['reports.component.provider-picker-cards', providerPickerCardVariant],
+	['reports.component.provider-picker', providerPickerVariant],
+	['reports.component.select', selectVariant],
+	['reports.component.filter-dialog', filterDialogVariant],
+	['reports.component.modal', modalVariant],
+	['reports.component.contract-example', contractExampleVariant],
+	['reports.component.contract-table', contractTableVariant]
+]);
+
+const componentVariants = new Map<
+	string,
+	(props: PreviewProps, variant: string) => PreviewProps | null
+>([
+	['reports.component.entity-cases', entityCasesVariant],
+	['reports.component.entity-contract', entityContractVariant],
+	['reports.component.entity-examples', entityExamplesVariant],
+	['reports.component.entity-search', entitySearchVariant],
+	['reports.component.entity-search-results', searchResultsVariant],
+	['reports.component.usage-examples-usage-examples', usageExamplesVariant],
+	['reports.component.explorer-ui-explorer-module-card', moduleCardVariant],
+	['reports.component.audio-evidence', audioEvidenceVariant],
+	['reports.component.evidence-card', evidenceCardVariant],
+	['reports.component.evidence-grid', evidenceGridVariant],
+	['reports.component.evidence-provenance', evidenceProvenanceVariant],
+	['reports.component.evidence-viewer', evidenceViewerVariant],
+	['reports.component.recorded-value', recordedValueVariant],
+	['reports.component.image-zoom', imageZoomVariant],
+	['reports.component.browser-errors', browserErrorsVariant],
+	['reports.component.regression-proof', regressionProofVariant]
+]);
+
 /** Report component fixture variants stay isolated from the shared catalog router. */
 export function reportVariantProps(id: string, props: PreviewCases[string], variant: string) {
-	const video = videoCatalogProps(id, variant);
-	if (video) return video;
-	const shell = shellCatalogProps(id, props, variant);
-	if (shell) return shell;
-	const kit = explorerKitVariant(id, props, variant) ?? pluginVariant(id, props, variant);
-	if (kit) return kit;
-	const activity = activityReportVariant(id, props, variant);
-	if (activity) return activity;
-	if (id === 'reports.component.provider-picker-cards')
-		return providerPickerCardVariant(props, variant);
-	if (id === 'reports.component.provider-picker') return providerPickerVariant(props, variant);
-	if (id === 'reports.component.select') return selectVariant(props, variant);
-	if (id === 'reports.component.filter-dialog') return filterDialogVariant(props, variant);
-	if (id === 'reports.component.modal') return modalVariant(props, variant);
-	if (id === 'reports.component.contract-example') return contractExampleVariant(props, variant);
-	if (id === 'reports.component.contract-table') return contractTableVariant(props, variant);
+	const base = reportBaseVariant(id, props, variant);
+	if (base) return base;
+	const primitive = primitiveVariants.get(id);
+	if (primitive) return primitive(props, variant);
 	const explorer = explorerVariantProps(id, props, variant);
 	if (explorer) return explorer;
-	if (id === 'reports.component.entity-cases') return entityCasesVariant(props, variant);
-	if (id === 'reports.component.entity-contract') return entityContractVariant(props, variant);
-	if (id === 'reports.component.entity-examples') return entityExamplesVariant(props, variant);
-	if (id === 'reports.component.entity-search') return entitySearchVariant(props, variant);
-	if (id === 'reports.component.entity-search-results') return searchResultsVariant(props, variant);
-	if (id === 'reports.component.usage-examples-usage-examples')
-		return usageExamplesVariant(props, variant);
-	if (id === 'reports.component.explorer-ui-explorer-module-card')
-		return moduleCardVariant(props, variant);
+	const variantFor = componentVariants.get(id);
+	if (variantFor) return variantFor(props, variant);
+	if (id.startsWith('reports.component.source-')) return sourcePreview(id, props, variant);
+	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
+		return chatVariantProps(id, props, variant);
+
+	return audioVariant(id, props, variant);
+}
+
+function reportBaseVariant(id: string, props: PreviewProps, variant: string) {
+	return (
+		videoCatalogProps(id, variant) ??
+		shellCatalogProps(id, props, variant) ??
+		explorerKitVariant(id, props, variant) ??
+		pluginVariant(id, props, variant) ??
+		activityReportVariant(id, props, variant)
+	);
+}
+
+function sourcePreview(id: string, props: PreviewProps, variant: string) {
 	if (id === 'reports.component.source-viewer') {
 		const viewer = extendedSourceViewerVariant(props, variant);
 		if (viewer) return viewer;
 	}
-	if (id.startsWith('reports.component.source-')) return sourceVariant(props, id, variant);
-
-	if (id === 'reports.component.audio-evidence') return audioEvidenceVariant(props, variant);
-
-	if (id === 'reports.component.evidence-card') return evidenceCardVariant(props, variant);
-	if (id === 'reports.component.evidence-grid') return evidenceGridVariant(props, variant);
-	if (id === 'reports.component.evidence-provenance')
-		return evidenceProvenanceVariant(props, variant);
-	if (id === 'reports.component.evidence-viewer') return evidenceViewerVariant(props, variant);
-
-	if (id === 'reports.component.recorded-value') return recordedValueVariant(props, variant);
-
-	if (id === 'reports.component.image-zoom') return imageZoomVariant(props, variant);
-
-	if (id === 'reports.component.browser-errors') return browserErrorsVariant(props, variant);
-
-	if (id === 'reports.component.console-chat' || id === 'reports.component.floating-chat')
-		return chatVariantProps(id, props, variant);
-
-	if (id === 'reports.component.regression-proof') return regressionProofVariant(props, variant);
-	return audioVariant(id, props, variant);
+	return sourceVariant(props, id, variant);
 }
 
 function audioVariant(id: string, props: PreviewCases[string], variant: string) {

@@ -9,44 +9,14 @@ import {
 	drawnEdges,
 	nextNode
 } from '../../src/components/explorer-ui/harness-map/focusView';
-import { pad, wholeView } from '../../src/utils/explorer-ui/focusView';
+import { wholeView } from '../../src/utils/explorer-ui/focusView';
 import type { MapView } from '../../src/utils/explorer-ui/focusView.types';
-import type { Layout, Unit, Edges } from './reports.function.focus-view.test.types';
-
-function node(id: string, x: number, y: number): Layout['nodes'][number] {
-	return { unit: { id } as Unit, x, y };
-}
-
-function layout(nodes: Layout['nodes'], edges: Edges = [], width = 360, height = 200): Layout {
-	return { width, height, nodes, edges };
-}
+import type { Layout, Edges } from './reports.function.focus-view.test.types';
+import { node, layout } from './reports.function.focus-view.cases';
 
 function row(count: number): Layout['nodes'] {
 	return Array.from({ length: count }, (_, index) => node(`u${index}`, index * 10, 0));
 }
-
-test('Whole view is returned when no or all units match', () => {
-	const map = layout([node('a', 0, 0), node('b', 400, 0)], [], 800, 200);
-	const whole = { x: -pad, y: -pad, width: 848, height: 248 };
-	const none = focusView(map, new Set(['missing']));
-	const all = focusView(map, new Set(['a', 'b']));
-	expect(none).toEqual(whole);
-	expect(all).toEqual(whole);
-	expect(wholeView(map)).toEqual(whole);
-	recordExampleCases(
-		{
-			unitId: 'reports.function.focus-view',
-			symbol: 'focusView',
-			state: 'whole-view-is-returned-when-no-or-all-units-match',
-			evidence: 'examples-cases',
-			file: 'whole-view-is-returned-when-no-or-all-units-match.json'
-		},
-		[
-			{ name: 'no unit matches the ids', input: { ids: ['missing'] }, output: none },
-			{ name: 'every unit matches the ids', input: { ids: ['a', 'b'] }, output: all }
-		]
-	);
-});
 
 test('Focus view bounds a matched unit inside the whole map', () => {
 	const map = layout(

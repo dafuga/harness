@@ -5,7 +5,6 @@
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
-		HomeAgent,
 		HomeChatInput,
 		HomeChatReceipt
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -19,7 +18,7 @@
 		overviewTone,
 		quickReplies
 	} from './hubHomePresentation';
-	import type { SendHomeChat } from './hubHomeView.types';
+	import type { HomeAgentsProps } from './hubHomeView.types';
 	import HubHomeChoices from './HubHomeChoices.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -31,14 +30,7 @@
 		receipt,
 		chatOpen = $bindable(false),
 		chatName = $bindable('')
-	}: {
-		agents: HomeAgent[] | null;
-		agentId?: string;
-		send: SendHomeChat;
-		receipt: (id: string) => Promise<HomeChatReceipt>;
-		chatOpen?: boolean;
-		chatName?: string;
-	} = $props();
+	}: HomeAgentsProps = $props();
 	let selected = $state<string>();
 	let answer = $state('');
 	let answering = $state(false);

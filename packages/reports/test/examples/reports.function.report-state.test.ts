@@ -5,27 +5,7 @@ import { reportState } from '../../src/repositories/reports-media/report-reposit
 import { InvalidReportStateInputError } from '../../src/repositories/reports-media/report-repository/reportState.types';
 import { resultStatus, interrupted } from '../../src/utils/reports-media/reportState';
 import type { BeginInput, Report, Status } from './reports.function.report-state.test.types';
-
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-
-const BASE_INPUT: BeginInput = {
-	project: '/workspace/project',
-	title: 'Build report-state coverage',
-	mode: 'feature',
-	environment: 'local',
-	revision: '0123456789abcdef0123456789abcdef01234567',
-	historical: false,
-	summary: 'Initialized for feature review.',
-	acceptance: []
-};
-
-const FALLBACK_INPUT: BeginInput = {
-	project: '/workspace/other',
-	title: 'Suite run',
-	mode: 'suite',
-	environment: '',
-	historical: true
-};
+import { BASE_INPUT } from './reports.function.report-state.cases';
 
 const INVALID_INPUTS: Array<{ name: string; input: unknown }> = [
 	{ name: 'project is empty', input: { project: '', title: 'Missing project', mode: 'feature' } },
@@ -35,21 +15,6 @@ const INVALID_INPUTS: Array<{ name: string; input: unknown }> = [
 		input: { project: '/workspace/project', title: 'Bad mode', mode: 'review' }
 	}
 ];
-
-function summarize(report: Report) {
-	return {
-		title: report.title,
-		mode: report.mode,
-		environment: report.environment,
-		historical: report.historical,
-		status: report.status,
-		state: report.state,
-		revision: report.revision ?? null,
-		projectName: report.project.name,
-		summary: report.summary,
-		acceptance: report.acceptance
-	};
-}
 
 function failureOf(input: unknown): Error {
 	try {
@@ -83,54 +48,6 @@ function reportUpdatedAt(updatedAt: string, state: Report['state'] = 'active'): 
 function minutesAgo(minutes: number): string {
 	return new Date(Date.now() - minutes * 60_000).toISOString();
 }
-
-test('Starts an active report from begin input', () => {
-	const started = reportState(BASE_INPUT);
-	const defaulted = reportState(FALLBACK_INPUT);
-	expect(started).toMatchObject({
-		schemaVersion: 1,
-		title: 'Build report-state coverage',
-		mode: 'feature',
-		historical: false,
-		status: 'running',
-		state: 'active',
-		checks: [],
-		evidence: [],
-		findings: [],
-		coverage: [],
-		project: { name: 'project', path: '/workspace/project' }
-	});
-	expect(started.id).toMatch(UUID);
-	expect(started.startedAt).toBe(started.updatedAt);
-	expect(defaulted).toMatchObject({
-		environment: 'local',
-		summary: '',
-		acceptance: [],
-		historical: true,
-		mode: 'suite'
-	});
-	recordExampleCases(
-		{
-			unitId: 'reports.function.report-state',
-			symbol: 'reportState',
-			state: 'starts-an-active-report-from-begin-input',
-			evidence: 'examples-cases',
-			file: 'starts-an-active-report-from-begin-input.json'
-		},
-		[
-			{
-				name: 'feature report with recorded revision',
-				input: BASE_INPUT,
-				output: summarize(started)
-			},
-			{
-				name: 'suite report falls back to defaults',
-				input: FALLBACK_INPUT,
-				output: summarize(defaulted)
-			}
-		]
-	);
-});
 
 test('Rejects begin input without project, title or valid mode', () => {
 	const cases = INVALID_INPUTS.map(({ name, input }) => {

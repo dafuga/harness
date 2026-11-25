@@ -23,12 +23,12 @@ export async function measurePreviewBounds(target: Locator, options: PreviewBoun
 		}
 		for (const child of roots()) collect(child);
 		for (const dialog of node.querySelectorAll('dialog[open], [role="dialog"]')) collect(dialog);
-		const marker = settings.includeUsageTooltip && node.querySelector('button.verification');
-		if (marker) collect(marker);
-		const tooltip =
-			settings.includeUsageTooltip &&
-			node.querySelector('[role="tooltip"], .reason[role="status"]');
-		if (tooltip) collect(tooltip);
+		if (settings.includeUsageTooltip) {
+			for (const selector of ['button.verification', '[role="tooltip"], .reason[role="status"]']) {
+				const match = node.querySelector(selector);
+				if (match) collect(match);
+			}
+		}
 		if (!boxes.length) throw new Error('The component has no rendered capture bounds.');
 		const start = (value: number, scroll: number) =>
 			Math.max(0, Math.floor(value + scroll) - settings.edge);

@@ -2,16 +2,9 @@
 import { cacheKey, readCache, writeCache } from 'collaboration';
 import type { HubSourceContext } from './hubSource';
 import { hubHash } from './hubJson';
+import type { HubJsonValue } from './hubJson.types';
 
 /** Parsed cache entries are JSON; accept also receives freshly loaded values. */
-type HubJsonValue =
-	| null
-	| boolean
-	| number
-	| string
-	| HubJsonValue[]
-	| { [key: string]: HubJsonValue };
-
 /** The caller must resolve current GitHub refs and permissions before consulting this cache. */
 export async function hubProjectionCache<T>(
 	context: HubSourceContext,

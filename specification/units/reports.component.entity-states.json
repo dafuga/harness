@@ -32,8 +32,11 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/reports/src/components/explorer-ui/EntityStates.svelte"],
-		"symbols": ["EntityStates", "EntityStates.children"]
+		"source": [
+			"packages/reports/src/components/explorer-ui/EntityStates.svelte",
+			"packages/reports/src/components/explorer-ui/entityStateVideo.ts"
+		],
+		"symbols": ["EntityStates", "EntityStates.children", "latestVideoCoverage"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -454,7 +457,31 @@
 			}
 		],
 		"errorStatus": "declared",
-		"operations": [],
+		"operations": [
+			{
+				"name": "latestVideoCoverage",
+				"inputs": [
+					{
+						"name": "latestVideoCoverage.evidence",
+						"type": "ExplorerEvidence",
+						"required": true
+					},
+					{
+						"name": "latestVideoCoverage.scenarioId",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "latestVideoCoverage",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
 		"initialization": [],
 		"snippets": [
 			{

@@ -39,6 +39,15 @@ export type OpenHomeSection = (section: HomeSection, agentId?: string) => void;
 export type SendHomeChat = (message: HomeChatInput) => Promise<HomeChatReceipt>;
 export type ReadHomeProject = (projectId: string) => Promise<ProjectSnapshot>;
 
+export interface HomeAgentsProps {
+	agents: HomeAgent[] | null;
+	agentId?: string;
+	send: SendHomeChat;
+	receipt: (id: string) => Promise<HomeChatReceipt>;
+	chatOpen?: boolean;
+	chatName?: string;
+}
+
 export interface ReadHomeResult {
 	granted: boolean;
 	snapshot: OwnerHomeSnapshot | null;
