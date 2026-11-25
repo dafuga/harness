@@ -46,7 +46,7 @@ const pane = (name) => join(__dirname, 'claude-pane-' + name);
 if (args.includes('capture-pane')) {
 	process.stdout.write(fs.readFileSync(join(__dirname, 'account-home', '.claude-session-fixture'), 'utf8') === 'onboarding'
 		? 'Choose the text style that looks best with your terminal\\n'
-		: '────────────\\n❯ \\n────────────\\n  ? for shortcuts\\n');
+		: '────────────\\n❯\\u00A0\\n────────────\\n  ⏵⏵ bypass permissions on\\n');
 	process.exit(0);
 }
 if (args.includes('if-shell')) fs.rmSync(pane(target), { force: true });
