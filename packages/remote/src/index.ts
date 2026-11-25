@@ -30,7 +30,6 @@ export {
 	randomCredential,
 	normalizeCode
 } from './utils/networking-security/remoteIdentity';
-export { pairingCode } from '../../desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity';
 export { requestDigest } from './services/networking-security/wire-session-service/remoteIdentity';
 export * from './utils/networking-security/remoteKeys';
 export { type SessionKeyInput } from './utils/networking-security/sessionKeys';
@@ -41,17 +40,6 @@ export {
 	openPacket
 } from './services/networking-security/secure-channel-service/sealPacket';
 export * from './utils/networking-security/pairingEnvelope';
-export {
-	type PairingOffer,
-	type OfferEnvironment,
-	type OfferRefusal,
-	type OfferReading,
-	type OfferRead,
-	offerRules,
-	offerEnvironment
-} from './utils/networking-security/pairingOffer';
-export { pairingOffer } from '../../desktop/src/services/networking-security/remote-host-service/pairingOffer';
-export { readPairingOffer } from './services/networking-security/device-pairing-service/pairingOffer';
 export * from './utils/networking-security/relayOrigin';
 export { type WireDispatchContext } from './utils/networking-security/wireDispatch';
 export { wireDispatch } from './services/networking-security/wire-session-service/wireDispatch';
@@ -72,14 +60,12 @@ export {
 } from './services/networking-security/wire-session-service/WireSessionService';
 export {
 	type HostPairingOptions,
-	type HostPairingOffer,
 	type HostPairingFrame,
 	type HostPairingApproved,
 	HostPairingService
 } from '../../desktop/src/services/remote-host-service/host-pairing-service/HostPairingService';
 export {
 	type DevicePairingInput,
-	type ScanningDevice,
 	type PendingPairing,
 	type DeviceCredentials,
 	DevicePairingService

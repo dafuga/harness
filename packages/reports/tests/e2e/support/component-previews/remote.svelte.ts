@@ -29,14 +29,6 @@ const devices = [
 		online: true
 	}
 ];
-const offer = {
-	pairingId: 'preview-offer',
-	hostId: 'preview-computer',
-	origin: 'https://preview.invalid',
-	code: 'SYNTHETIC',
-	scan: 'harness://pairing/preview-only',
-	expiresAt: '2026-10-20T10:05:05Z'
-};
 export function remotePreview() {
 	const host = $state({
 		busy: false,
@@ -48,13 +40,10 @@ export function remotePreview() {
 			reason: null,
 			host: { id: 'preview-computer', name: 'Ada’s Mac' },
 			origin: 'https://preview.invalid',
-			pairing: offer,
 			requests: [],
 			devices,
 			projects
 		},
-		createPairing: done,
-		closePairing: done,
 		enable: done,
 		disable: done,
 		approve: done,
@@ -86,7 +75,6 @@ export function remotePreview() {
 		},
 		'desktop.component.remote-devices': { devices, projects, store: host },
 		'desktop.component.remote-host-panel': { store: host },
-		'desktop.component.remote-offer-code': { offer, store: host },
 		'desktop.component.remote-phone-panel': { store: phone }
 	};
 	return { host, phone, cases };

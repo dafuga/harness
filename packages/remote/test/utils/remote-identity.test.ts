@@ -9,7 +9,6 @@ import {
 	remoteIdentity,
 	remotePatterns
 } from '../../src/utils/remoteIdentity';
-import { pairingCode } from '../../../desktop/src/services/networking-security/remote-host-service/host-pairing-service/remoteIdentity';
 import { requestDigest } from '../../src/services/networking-security/wire-session-service/remoteIdentity';
 import { vectors } from '../support/vectors';
 
@@ -40,11 +39,7 @@ test('generated identifiers, credentials and codes have their declared shapes', 
 	expect(randomId()).toMatch(remotePatterns.pairingId);
 	expect(randomId()).not.toBe(randomId());
 	expect(randomCredential()).toMatch(remotePatterns.credential);
-	const code = pairingCode();
-	expect(code).toMatch(/^[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/);
-	expect(normalizeCode(code)).toMatch(remotePatterns.code);
 	expect(normalizeCode(' abcd-efgh ')).toBe('ABCDEFGH');
-	expect(pairingCode()).not.toBe(code);
 });
 test('a request digest ignores key order and separates method from input', async () => {
 	const digest = (method: 'startRun' | 'approve', input: Record<string, unknown>, id = 'x') =>

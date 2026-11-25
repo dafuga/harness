@@ -65,12 +65,7 @@ vi.mock('../../scripts/ios-acceptance-source', () => ({
 	treeDigest: (files: Map<string, string>) => `digest:${files.size}`
 }));
 
-vi.mock('../../scripts/ios-acceptance-guards', () => ({ scanMarker: 'synthetic-scanner' }));
 vi.mock('../../scripts/ios-build-options', () => ({ fixtureNeedsDebug: 'needs a Debug build' }));
-vi.mock('../../scripts/ios-scan-fixture', () => ({
-	holds: (product: string) => product.includes('scan-fixture'),
-	scanFixtureProduct: 'example/scan-fixture/App.app'
-}));
 vi.mock('../../scripts/ios-acceptance-run', () => ({
 	pause: () => Promise.resolve(),
 	shot: (_run: unknown, name: string) => {
@@ -122,7 +117,7 @@ function thrownBy(run: () => unknown): Error {
 	throw new Error('Expected a thrown error.');
 }
 
-test('builds the five products and proves the renderer they carry', () => {
+test('builds the four products and proves the renderer they carry', () => {
 	const root = setupRoot();
 	try {
 		const { ledger, record } = recordOf();
@@ -132,18 +127,8 @@ test('builds the five products and proves the renderer they carry', () => {
 		expect(ledger.checks.every(([ok]) => ok)).toBe(true);
 		expect(result.releaseCopy).toBe('/example/desktop/.cache/ios/acceptance/Release/App.app');
 		expect(result.renderer).toEqual({ built: 'digest:2', copied: 'digest:2', files: 2 });
-		expect(Object.keys(result.facts)).toEqual([
-			'debug',
-			'release',
-			'fixtureCopy',
-			'releaseCopy',
-			'scanFixtureCopy'
-		]);
+		expect(Object.keys(result.facts)).toEqual(['debug', 'release', 'fixtureCopy', 'releaseCopy']);
 		expect(result.facts.debug).toMatchObject({ localNetworking: false, inspectable: false });
-		expect(result.facts.scanFixtureCopy).toMatchObject({
-			localNetworking: true,
-			inspectable: true
-		});
 
 		const flags = Object.fromEntries(
 			Object.entries(result.facts).map(([key, fact]) => [
@@ -162,7 +147,7 @@ test('builds the five products and proves the renderer they carry', () => {
 			[
 				{
 					name: 'relay and inspection flags of the five products',
-					input: ['debug', 'release', 'fixtureCopy', 'releaseCopy', 'scanFixtureCopy'],
+					input: ['debug', 'release', 'fixtureCopy', 'releaseCopy'],
 					output: flags
 				},
 				{

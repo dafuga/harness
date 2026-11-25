@@ -2587,14 +2587,22 @@
 			"unit": "relay.service.host-command",
 			"from": "packages/relay/src/services/HostCommandService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
-			"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
+			"definition": "4e30a2821c2a8b54f89c97fdf94b82776cc7721c3608cfaf820660c284b0dd78",
 			"relocationDefinition": "f3976fc69c97ec44e8772db4c1ec91d10df896931b8e453967641bff17098e7b",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
-				"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "4e30a2821c2a8b54f89c97fdf94b82776cc7721c3608cfaf820660c284b0dd78",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
+					"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.select-environment",
@@ -2606,14 +2614,22 @@
 			"unit": "desktop.adapter.electron-environment",
 			"from": "packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-			"definition": "8d7d82daa9134114f57743b33f4405f0e7860762a6cc5a972d24eb778565a4e7",
+			"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
 			"relocationDefinition": "da0290089728366cb117aeb9d8c013df801f3ad2bdc391ed95872f71b3af03ce",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-				"definition": "8d7d82daa9134114f57743b33f4405f0e7860762a6cc5a972d24eb778565a4e7",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"definition": "8d7d82daa9134114f57743b33f4405f0e7860762a6cc5a972d24eb778565a4e7",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.service.installation-token",
@@ -3762,14 +3778,22 @@
 			"unit": "relay.controller.public-relay",
 			"from": "packages/relay/src/controllers/PublicRelayController.ts",
 			"to": "packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
-			"definition": "5e9d9987854743aa6412593a073c007ada35a1c9151f975599ddda0ed37354c8",
+			"definition": "49c87a2afdeb9334aa46ce10c87a613a6745c2caf66fe098af865f3c8ab43ea9",
 			"relocationDefinition": "312fda1bbc8e913bb9972dbb7598d7ab2ed09a616b07cf1d9a44ebb77697120a",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
-				"definition": "5e9d9987854743aa6412593a073c007ada35a1c9151f975599ddda0ed37354c8",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "49c87a2afdeb9334aa46ce10c87a613a6745c2caf66fe098af865f3c8ab43ea9",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/relay/src/lib/networking-security/relay/PublicRelayController.ts",
+					"definition": "5e9d9987854743aa6412593a073c007ada35a1c9151f975599ddda0ed37354c8",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "relay.middleware.connect-guard",
@@ -4221,13 +4245,13 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "ce6d36c3ba09207e29ea0c473ec1e6f253e2ea87063f2c1de0205fe6eedb7c6b",
+			"definition": "8a52d9f479af802a12f8fd155a2bf6575bbf9530a42b27e7f4b0e728f3ae948c",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "ce6d36c3ba09207e29ea0c473ec1e6f253e2ea87063f2c1de0205fe6eedb7c6b",
-				"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				"definition": "8a52d9f479af802a12f8fd155a2bf6575bbf9530a42b27e7f4b0e728f3ae948c",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -4253,6 +4277,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
 					"definition": "9e641f72cb9223152e16c2edaa1f9e93dcf97f813bb1ca55943a0216e8b748d8",
 					"reason": "Supplies the local Tracker tool port alongside the Capacitor account and paired-host bridge."
+				},
+				{
+					"commit": "5d5f8f59889a9ffdcab2724dec390638f70f8b04",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "ce6d36c3ba09207e29ea0c473ec1e6f253e2ea87063f2c1de0205fe6eedb7c6b",
+					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
 				}
 			]
 		},
@@ -4540,13 +4570,13 @@
 			"unit": "desktop.service.remote-pairing-control",
 			"from": "packages/desktop/src/services/RemotePairingControlService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-			"definition": "ccd542c5d7a8701b7e9800c6559c0df58bc333a297b5d4cc044748f45cf32819",
+			"definition": "4cba2dbc4acff7dd1411d766ce953308b0772484a431cac726c7ddf575e777c3",
 			"relocationDefinition": "387180118bceee12a21e4a25d91232047e1844acc24e79528c4902816fd1df06",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
-				"definition": "ccd542c5d7a8701b7e9800c6559c0df58bc333a297b5d4cc044748f45cf32819",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "4cba2dbc4acff7dd1411d766ce953308b0772484a431cac726c7ddf575e777c3",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -4566,6 +4596,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
 					"definition": "1fcf3e365bcd0aff9aac864c40e7b955d8c3433ccab7668a8f1bddae74b62b5f",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemotePairingControlService.ts",
+					"definition": "ccd542c5d7a8701b7e9800c6559c0df58bc333a297b5d4cc044748f45cf32819",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -4633,14 +4669,22 @@
 			"unit": "relay.controller.pairing",
 			"from": "packages/relay/src/controllers/PairingController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
-			"definition": "8273a8be374c129d3a6415998e305173b1ccbff6b26803837e83eb9559b4e4c0",
+			"definition": "53cf177720bfa9955358e9c28183095f09d13dd132d19e10c82d9b99321c926e",
 			"relocationDefinition": "b29d4ffd67bbd63067c9444a8c092596f5543dde219be6ba3d2109137756b6f3",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
-				"definition": "8273a8be374c129d3a6415998e305173b1ccbff6b26803837e83eb9559b4e4c0",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
-			}
+				"definition": "53cf177720bfa9955358e9c28183095f09d13dd132d19e10c82d9b99321c926e",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+			},
+			"previousReviews": [
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingController.ts",
+					"definition": "8273a8be374c129d3a6415998e305173b1ccbff6b26803837e83eb9559b4e4c0",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "service.history-status",
@@ -5442,13 +5486,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
+			"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
-				"reason": "Exposes the direct Mac inbox source through the isolated preload and local transport."
+				"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -5492,6 +5536,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
 					"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
+				},
+				{
+					"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
+					"reason": "Exposes the direct Mac inbox source through the isolated preload and local transport."
 				}
 			]
 		},
@@ -5614,13 +5664,13 @@
 			"unit": "remote.service.host-pairing",
 			"from": "packages/remote/src/services/host-pairing-service/HostPairingService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-			"definition": "8525549e0f84f7df0b8a8dabc2b83483dd4e0055bc75808915d2ebdbe0fab422",
+			"definition": "74ea9966a939dca22dcac76f0d33b02fe27275b79c638a44dceb71dd9af00712",
 			"relocationDefinition": "4a40e61e9dd41177d106b1e6d73e1040b90d29be5ecaba311a76a91c200e708e",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
-				"definition": "8525549e0f84f7df0b8a8dabc2b83483dd4e0055bc75808915d2ebdbe0fab422",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "74ea9966a939dca22dcac76f0d33b02fe27275b79c638a44dceb71dd9af00712",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -5640,6 +5690,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
 					"definition": "d53b256a7547dd55930612f628edc1c7596dfc2ba4092b93a0cac46399960016",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.ts",
+					"definition": "8525549e0f84f7df0b8a8dabc2b83483dd4e0055bc75808915d2ebdbe0fab422",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -6085,13 +6141,13 @@
 			"unit": "relay.service.pairing-offer",
 			"from": "packages/relay/src/services/PairingOfferService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
-			"definition": "4c9709b19997d87bf4bd552ff818566474bf455d1a8e271d15247230826d4cc6",
+			"definition": "2b203f9c78de7d2788ba5ef9a464bc5e256d9159381a9638951dcc8e00bda2cd",
 			"relocationDefinition": "445fee03b5c60d9fcaed7dd87b6aac01ff99f0c4d466b5c773277c30f850a2cf",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
-				"definition": "4c9709b19997d87bf4bd552ff818566474bf455d1a8e271d15247230826d4cc6",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "2b203f9c78de7d2788ba5ef9a464bc5e256d9159381a9638951dcc8e00bda2cd",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -6105,6 +6161,12 @@
 					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
 					"definition": "2b9b448ceb003dc7f79239c63844d95604204ce8034f3a6e7cd8996c7f59aead",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingOfferService.ts",
+					"definition": "4c9709b19997d87bf4bd552ff818566474bf455d1a8e271d15247230826d4cc6",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -6976,13 +7038,13 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
+			"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
-				"reason": "Dispatches the Mac inbox read and confirmed write over the authenticated local transport."
+				"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -7014,6 +7076,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
 					"reason": "Dispatches the zero-argument project overview operation."
+				},
+				{
+					"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
+					"reason": "Dispatches the Mac inbox read and confirmed write over the authenticated local transport."
 				}
 			]
 		},
@@ -7093,13 +7161,13 @@
 			"unit": "relay.service.pairing-access",
 			"from": "packages/relay/src/services/PairingAccessService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
-			"definition": "51d8f8a7aa532bb9b79bd66cd5926e815f9cb13e1f72d0aa5e964280a74296a6",
+			"definition": "eeb0c6a586994d2670daf891fb92220f8ca04c1e3a457b43cc3597eaba0bff6c",
 			"relocationDefinition": "b056388ba66ef3c9d73956b73ee81b46521c717be7bc3cb703029f503625153e",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
-				"definition": "51d8f8a7aa532bb9b79bd66cd5926e815f9cb13e1f72d0aa5e964280a74296a6",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "eeb0c6a586994d2670daf891fb92220f8ca04c1e3a457b43cc3597eaba0bff6c",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
 				{
@@ -7107,6 +7175,12 @@
 					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
 					"definition": "62fb3d875f784d58cefbbdc4b0ca0463940be2a5247839dadff1a2bf52c84e0a",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingAccessService.ts",
+					"definition": "51d8f8a7aa532bb9b79bd66cd5926e815f9cb13e1f72d0aa5e964280a74296a6",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -8872,6 +8946,7 @@
 		"reports.service.report-publish",
 		"reports.function.report-pages",
 		"reports.function.report-publication",
-		"reports.function.report-publication-verify"
+		"reports.function.report-publication-verify",
+		"remote.function.remote-identity"
 	]
 }

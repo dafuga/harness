@@ -38,7 +38,6 @@ export class PublicRelayController {
 
 	/** A body is read here, bounded, and sent on as the JSON object it was. */
 	private async pairing(request: Request, route: PairingRoute): Promise<Response> {
-		if (route.action === 'info') return this.forward(route, { method: 'GET' });
 		const body = await readJsonBody(request);
 		const failure = route.action === 'exchange' ? 'pairing-invalid' : 'invalid-input';
 		if (!body) return relayError(400, failure);

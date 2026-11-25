@@ -34,13 +34,4 @@ enum RemotePolicy {
         parts?.path = "/v1/hosts/\(hostId)/connect"
         return parts?.url
     }
-
-    /// The kinds of relay whose offers this build asks with: those on the internet, and, in a
-    /// Debug build that was started for a local fixture, the one on this machine.
-    static var environments: [String] {
-        #if DEBUG
-        if RemoteDebug.loopback { return ["production", "local"] }
-        #endif
-        return ["production"]
-    }
 }

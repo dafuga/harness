@@ -1,14 +1,12 @@
 // @harness-uid u_3kkfli5otz
 import type {
 	DevicePairingInput,
-	ScanningDevice,
 	PendingPairing,
 	DeviceCredentials
 } from './DevicePairingService.types';
 import { DevicePairingError } from './DevicePairingService.types';
 import type {
 	RelayPairingExchange,
-	RelayPairingInfo,
 	RelayPairingRequest,
 	RelayPairingPoll,
 	RelayPairingState
@@ -23,8 +21,6 @@ import {
 	pairingEnvelope,
 	sealPairing
 } from '../../../utils/networking-security/pairingEnvelope';
-import { readPairingOffer } from './pairingOffer';
-import type { OfferReading } from '../../../utils/networking-security/pairingOffer';
 import { relayOrigin } from '../../../utils/networking-security/relayOrigin';
 import {
 	fromBase64Url,
@@ -43,44 +39,9 @@ import {
 	sharedSecret
 } from '../../../utils/networking-security/remoteKeys';
 
-function checked(input: DevicePairingInput): string {
-	const origin = relayOrigin(input.origin),
-		name = input.deviceName.trim();
-	const valid =
-		origin !== null &&
-		remotePatterns.hostId.test(input.hostId) &&
-		remotePatterns.pairingId.test(input.pairingId) &&
-		remotePatterns.code.test(normalizeCode(input.code)) &&
-		name.length > 0 &&
-		name.length <= 80;
-	if (!valid || !origin) throw new DevicePairingError('Check the pairing details and try again.');
-	return origin;
-}
-
 /** The phone's side of pairing, as the native app implements it: reference and test client. */
 export class DevicePairingService {
 	constructor(private readonly options: { fetch?: typeof fetch } = {}) {}
-	/**
-	 * What the app does with a scanned code. Only a current offer for this build is asked with;
-	 * anything else fails by its name, such as `offer-expired`, before a relay hears of it.
-	 */
-	scanned(text: string, device: ScanningDevice, reading: OfferReading): Promise<PendingPairing> {
-		const read = readPairingOffer(text, reading);
-		if ('refused' in read) return Promise.reject(new DevicePairingError(`offer-${read.refused}`));
-		return this.request({ ...read.offer, ...device });
-	}
-	/** Pins the host key by its identifier, then asks with the code sealed to that key. */
-	async request(input: DevicePairingInput, keys?: RemoteKeyPair): Promise<PendingPairing> {
-		const origin = checked(input);
-		const info = (await this.call({ origin, input }, '')) as RelayPairingInfo;
-		return this.sealRequest(
-			input,
-			info.hostKey,
-			(body) => this.call({ origin, input }, 'request', body),
-			keys
-		);
-	}
-
 	/** The account port obtained the exact host key and submits under a verified Hub session. */
 	requestAccount(
 		input: DevicePairingInput,
@@ -169,7 +130,6 @@ export class DevicePairingService {
 
 export type {
 	DevicePairingInput,
-	ScanningDevice,
 	PendingPairing,
 	DeviceCredentials
 } from './DevicePairingService.types';

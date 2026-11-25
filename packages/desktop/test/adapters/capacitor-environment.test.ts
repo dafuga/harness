@@ -47,8 +47,7 @@ test('the phone control port is the native plugin, and nothing of the desktop is
 	expect(environment).toMatchObject({ kind: 'capacitor', local: false });
 	expect(environment.host).toBeUndefined();
 	expect(await environment.phone!.status()).toBe(unpaired);
-	expect((await environment.phone!.scan({ deviceName: 'Ada iPhone' })).state).toBe('pairing');
-	expect(plugin.scan).toHaveBeenCalledExactlyOnceWith({ deviceName: 'Ada iPhone' });
+	expect('scan' in environment.phone!).toBe(false);
 	expect('pair' in environment.phone!).toBe(false);
 	await environment.phone!.disconnect();
 	expect(plugin.disconnect).toHaveBeenCalledOnce();
@@ -80,11 +79,9 @@ test('each status decides at once what the bridge offers, before anyone acts on 
 	expect(bridge.listProjects).toBeUndefined();
 });
 
-test('what the scanner refuses reaches the page with its code, and no pairing link is listened for', async () => {
+test('the plugin offers no scan, and no pairing link is listened for', async () => {
 	const { plugin, environment } = native();
-	const refusal = Object.assign(new Error('Camera access is off.'), { code: 'camera-denied' });
-	plugin.scan.mockRejectedValueOnce(refusal);
-	await expect(environment.phone!.scan({ deviceName: 'Ada iPhone' })).rejects.toBe(refusal);
+	expect('scan' in environment.phone!).toBe(false);
 	expect('links' in environment).toBe(false);
 	expect(plugin.addListener).not.toHaveBeenCalledWith('pairingLink', expect.any(Function));
 });

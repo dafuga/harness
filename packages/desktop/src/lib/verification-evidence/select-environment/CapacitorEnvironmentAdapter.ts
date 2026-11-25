@@ -45,7 +45,6 @@ export class CapacitorEnvironmentAdapter {
 		};
 		const phone: RemoteMobileControl = {
 			status: async () => note(await plugin.status()),
-			scan: async (input) => note(await plugin.scan(input)),
 			disconnect: async () => note(await plugin.disconnect()),
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};

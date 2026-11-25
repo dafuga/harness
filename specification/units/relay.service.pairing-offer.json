@@ -16,7 +16,6 @@
 			"PairingOfferService",
 			"PairingOfferService.constructor",
 			"PairingOfferService.live",
-			"PairingOfferService.open",
 			"PairingOfferService.openAccount",
 			"PairingOfferService.approve",
 			"PairingOfferService.deny",
@@ -40,20 +39,6 @@
 				"required": true,
 				"description": "The pairing identifier used unchanged to read the pairing:<pairingId> record. This service does not validate its format; if the record has expired, live removes it and returns undefined.",
 				"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
-			},
-			{
-				"name": "PairingOfferService.open.pairingId",
-				"type": "string",
-				"required": true,
-				"description": "The identifier used as the key for the new pairing offer and to check for an existing live offer. It is passed to storage unchanged and is not format-checked here.",
-				"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
-			},
-			{
-				"name": "PairingOfferService.open.expiresAt",
-				"type": "string",
-				"required": true,
-				"description": "The requested expiry as a string accepted by Date.parse. open returns invalid-input unless it is in the future, then caps the stored expiry at five minutes from this call.",
-				"examples": ["2027-01-12T09:30:00.000Z"]
 			},
 			{
 				"name": "PairingOfferService.openAccount.pairingId",
@@ -181,41 +166,6 @@
 								"approval": "Qx7vL0aTnE9hWcR3pKbYuZ5sGd2MfJoI8eBlN4QrtV1"
 							}
 						]
-					}
-				],
-				"errors": [
-					{
-						"name": "HostStorageAdapter error",
-						"type": "propagated",
-						"description": "Errors from the storage adapter pass through uncaught: a SyntaxError when a stored pairing is not valid JSON, and any failure of the Durable Object storage or alarm calls. Expected refusals are returned as RelayErrorCode values, not thrown."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "PairingOfferService.open",
-				"inputs": [
-					{
-						"name": "PairingOfferService.open.pairingId",
-						"type": "string",
-						"required": true,
-						"description": "The identifier used as the key for the new pairing offer and to check for an existing live offer. It is passed to storage unchanged and is not format-checked here.",
-						"examples": ["7c1f04e9a2b35d86e0f4c7a19b2d3e58", "b0d6a3f51e8c94027a6db1c3f9e5d812"]
-					},
-					{
-						"name": "PairingOfferService.open.expiresAt",
-						"type": "string",
-						"required": true,
-						"description": "The requested expiry as a string accepted by Date.parse. open returns invalid-input unless it is in the future, then caps the stored expiry at five minutes from this call.",
-						"examples": ["2027-01-12T09:30:00.000Z"]
-					}
-				],
-				"outputs": [
-					{
-						"name": "PairingOfferService.open",
-						"type": "Promise<RelayErrorCode | undefined>",
-						"description": "Resolves with no value after saving an open offer and scheduling its alarm. It returns invalid-input for a non-future expiry, pairing-unavailable for an existing live offer, or rate-limited at the configured open-offer limit; expiry is capped at five minutes.",
-						"examples": ["invalid-input", "pairing-unavailable", "rate-limited"]
 					}
 				],
 				"errors": [

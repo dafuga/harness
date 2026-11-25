@@ -22,6 +22,8 @@ changes, and TestFlight uploads are outside this delivery.
 
 ## Authority and data
 
+In this document a "paired" phone or host means a device linked through the same Google account (`google-device-linking.md`); no QR code is involved.
+
 The native Tracker hub is authoritative. A paired host colocated with the hub
 serves `trackerReplicaPull` v1 over the existing Harness Remote authenticated,
 encrypted request channel. The host reads a narrow projection from the native

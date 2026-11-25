@@ -12,7 +12,6 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
     public let jsName = "HarnessRemote"
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "status", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "scan", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "computers", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "connectAccountComputer", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
@@ -97,23 +96,6 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
         session.status { call.resolve($0) }
     }
 
-    /// Opens the camera for the QR code a computer shows and asks with the offer it reads. The
-    /// page gives a name and nothing else: it hands over no offer and no address, and is handed
-    /// none. Nothing connects here; the phone waits for a person to approve it on the computer.
-    /// The session owns the scan: Disconnect ends it, and a camera that answers late asks nobody.
-    @objc func scan(_ call: CAPPluginCall) {
-        guard let name = RemoteScanFlow.name(call.getString("deviceName")) else {
-            return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code)
-        }
-        let scanner = RemoteCameraScanner(presenter: { [weak self] in self?.bridge?.viewController })
-        session.scan(scanner, deviceName: name) { result in
-            switch result {
-            case .success(let status): call.resolve(status)
-            case .failure(let failure): call.reject(failure.message, failure.code)
-            }
-        }
-    }
-
     @objc func disconnect(_ call: CAPPluginCall) {
         session.disconnect { call.resolve($0) }
     }
@@ -145,7 +127,7 @@ extension HarnessRemotePlugin {
     }
 
     @objc func connectAccountComputer(_ call: CAPPluginCall) {
-        guard let hostId = call.getString("hostId"), let name = RemoteScanFlow.name(call.getString("deviceName"))
+        guard let hostId = call.getString("hostId"), let name = RemotePairing.deviceName(call.getString("deviceName"))
         else { return call.reject(RemoteFailure.invalid.message, RemoteFailure.invalid.code) }
         HarnessAccountPlugin.sharedSession.computerPairing(hostId, name: name) { result in
             switch result {

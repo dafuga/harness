@@ -9,8 +9,6 @@ const control: (keyof RemoteDesktopControl)[] = [
 	'status',
 	'enable',
 	'disable',
-	'createPairing',
-	'closePairing',
 	'approvePairing',
 	'denyPairing',
 	'revokeDevice',

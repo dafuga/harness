@@ -12,7 +12,7 @@ import {
 	sharedSecret,
 	toBase64Url
 } from '../../remote/src/index';
-import type { HostPairingOffer, RemoteKeyPair } from '../../remote/src/index';
+import type { RemoteKeyPair } from '../../remote/src/index';
 import { RemotePairingControlService } from '../src/services/networking-security/remote-host-service/RemotePairingControlService';
 import type { RemoteHostAccess } from '../src/services/networking-security/remote-host-service/RemotePairingControlService';
 import type { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
@@ -20,7 +20,16 @@ import { deferred } from './remote-fixture';
 
 afterEach(() => vi.restoreAllMocks());
 
-async function frame(keys: RemoteKeyPair, offer: HostPairingOffer, name: string) {
+interface Asked {
+	pairingId: string;
+	expiresAt: string;
+}
+const asked = (): Asked => ({
+	pairingId: randomId(),
+	expiresAt: new Date(Date.now() + 300_000).toISOString()
+});
+
+async function frame(keys: RemoteKeyPair, offer: Asked, name: string) {
 	const device = await remoteKeys(),
 		ephemeral = await remoteKeys();
 	const hostId = await remoteIdentity(keys.publicKey),
@@ -33,7 +42,7 @@ async function frame(keys: RemoteKeyPair, offer: HostPairingOffer, name: string)
 		secret: await sharedSecret(ephemeral.privateKey, keys.publicKey)
 	});
 	const secret = {
-		code: offer.code.replace('-', ''),
+		code: '',
 		deviceKey: toBase64Url(device.publicKey),
 		deviceName: name,
 		platform: 'test',
@@ -43,7 +52,9 @@ async function frame(keys: RemoteKeyPair, offer: HostPairingOffer, name: string)
 		pairingId: offer.pairingId,
 		ephemeralKey: toBase64Url(ephemeral.publicKey),
 		challenge,
-		sealed: await sealPairing(envelope.request, 'request', secret)
+		sealed: await sealPairing(envelope.request, 'request', secret),
+		account: true as const,
+		expiresAt: offer.expiresAt
 	};
 }
 
@@ -52,7 +63,7 @@ async function concurrent() {
 	const keys = await remoteKeys(),
 		hostId = await remoteIdentity(keys.publicKey);
 	const pairing = new HostPairingService({ keys, hostId }),
-		offer = pairing.open();
+		offer = asked();
 	const a = await frame(keys, offer, 'Phone A'),
 		b = await frame(keys, offer, 'Phone B');
 	const gate = deferred(),
@@ -76,22 +87,15 @@ test('a concurrent valid request cannot replace the phone already displayed', as
 	expect(f.pairing.requests()).toMatchObject([{ deviceId: f.displayed.deviceId }]);
 	const keys = await remoteKeys();
 	const pairing = new HostPairingService({ keys, hostId: await remoteIdentity(keys.publicKey) });
-	const qr = pairing.open();
-	const expiresAt = qr.expiresAt;
-	const account = await frame(
-		keys,
-		{ pairingId: randomId(), expiresAt, code: '' },
-		'Account phone'
-	);
-	expect(await pairing.receive(account)).toBeNull();
-	expect(await pairing.receive({ ...account, account: true, expiresAt })).toMatchObject({
+	const account = await frame(keys, asked(), 'Account phone');
+	const unverified = { ...account, account: undefined } as never;
+	expect(await pairing.receive(unverified)).toBeNull();
+	expect(await pairing.receive(account)).toMatchObject({
 		pairingId: account.pairingId,
 		deviceName: 'Account phone'
 	});
-	expect(pairing.offer()).toEqual(qr);
 	expect(pairing.deny(account.pairingId)).toBe(true);
 	expect(pairing.requests()).toEqual([]);
-	expect(pairing.offer()).toEqual(qr);
 });
 
 test('approval after project discovery stays bound to the displayed phone', async () => {

@@ -94,11 +94,7 @@ test('frames reach the owner; malformed ones and pongs do not', async () => {
 test('a command gets a ref and settles with its ack', async () => {
 	const f = setup(),
 		socket = await f.online(),
-		open = {
-			type: 'pairing-open',
-			pairingId: 'b'.repeat(32),
-			expiresAt: '2026-10-12T10:05:00.000Z'
-		} as const;
+		open = { type: 'pairing-deny', pairingId: 'b'.repeat(32) } as const;
 	const accepted = f.link.command(open),
 		first = JSON.parse(socket.sent[0]) as { ref: string };
 	expect(JSON.parse(socket.sent[0])).toMatchObject(open);

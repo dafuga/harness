@@ -18,19 +18,6 @@ export class PairingOfferService {
 		return undefined;
 	}
 
-	/** Opens an offer that ends when the host says, and in five minutes at the latest. */
-	async open(pairingId: string, expiresAt: string): Promise<RelayErrorCode | undefined> {
-		const now = Date.now();
-		const end = Math.min(Date.parse(expiresAt), now + remoteLimits.pairingTtlMs);
-		if (!(end > now)) return 'invalid-input';
-		if (this.live(pairingId)) return 'pairing-unavailable';
-		const held = this.store.pairings().filter((pairing) => pairing.expiresAt > now);
-		if (held.length >= relayConfig.openPairings) return 'rate-limited';
-		this.store.savePairing({ pairingId, state: 'open', expiresAt: end, attempts: 0 });
-		await this.schedule();
-		return undefined;
-	}
-
 	/** An authenticated request is installed in one turn and cannot be replaced by a public request. */
 	async openAccount(
 		pairingId: string,

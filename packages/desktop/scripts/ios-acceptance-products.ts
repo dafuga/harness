@@ -1,7 +1,6 @@
 // @harness-uid u_bcyhhxpyew
 import { rmSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { scanMarker } from './ios-acceptance-guards';
 import type { AcceptanceRecord } from './ios-acceptance-record';
 import { pause, shot } from './ios-acceptance-run';
 import type { Acceptance } from './ios-acceptance-run';
@@ -26,7 +25,6 @@ import {
 	tool,
 	tried
 } from './ios-products';
-import { holds, scanFixtureProduct } from './ios-scan-fixture';
 
 const build = ['bun', 'scripts/build-ios-simulator.ts'];
 const releaseCopy = resolve(desktopRoot, '.cache/ios/acceptance/Release/App.app');
@@ -70,7 +68,6 @@ function built(record: AcceptanceRecord, read: SourceReading) {
 	steady(record, moved(read.renderer, sourceFiles(rendererSources)), 'source of the renderer');
 	tool([...build, '--fixture']);
 	tool([...build, '--release']);
-	tool([...build, '--scan-fixture']);
 	steady(record, moved(read.native, sourceFiles(nativeSources)), 'source of the native shell');
 	changedCopy(builtProduct('Release'), releaseCopy, { localNetworking: true, inspection: true });
 	record.check(
@@ -82,8 +79,7 @@ function built(record: AcceptanceRecord, read: SourceReading) {
 
 /**
  * TEST ONLY. Builds what the run tests and reads every product back: the two normal products
- * as they are, the two copies of them that a check may read, and the copy of an isolated source
- * whose scanner is the synthetic one.
+ * as they are, and the two copies of them that a check may read.
  */
 export function acceptanceProducts(record: AcceptanceRecord, read: SourceReading) {
 	record.begin('Products');
@@ -97,21 +93,16 @@ export function acceptanceProducts(record: AcceptanceRecord, read: SourceReading
 		debug: productFacts(normal[0]),
 		release: productFacts(normal[1]),
 		fixtureCopy: productFacts(fixtureProduct),
-		releaseCopy: productFacts(releaseCopy),
-		scanFixtureCopy: productFacts(scanFixtureProduct)
+		releaseCopy: productFacts(releaseCopy)
 	};
 	const real = [...normal, fixtureProduct, releaseCopy];
-	record.check(
-		holds(scanFixtureProduct, scanMarker) && !real.some((product) => holds(product, scanMarker)),
-		'only the scan fixture copy holds the synthetic scanner: no product of the real source does'
-	);
 	const plain = [facts.debug, facts.release].every(
 		(product) => !product.localNetworking && !product.inspectable
 	);
 	record.check(plain, 'the normal Debug and Release products allow no local relay, no inspection');
 	const signed = Object.values(facts).every((product) => product.signature.includes('no account'));
-	record.check(signed, 'all five are signed ad hoc and name no team and no account anywhere');
-	const renderer = rendererProof(record, [...real, scanFixtureProduct]);
+	record.check(signed, 'all four are signed ad hoc and name no team and no account anywhere');
+	const renderer = rendererProof(record, real);
 	return { facts, renderer, releaseCopy };
 }
 
@@ -126,7 +117,7 @@ export async function normalProduct(run: Acceptance): Promise<void> {
 	await shot(run, 'normal-start');
 }
 
-/** The real native renderer and scanner, with synthetic signed-in Hub replies only. */
+/** The real native renderer, with synthetic signed-in Hub replies only. */
 export async function signedInHome(run: Acceptance): Promise<void> {
 	const { page, record } = run;
 	record.begin('Signed-in iOS home without hosted collaboration');
@@ -152,25 +143,22 @@ window.dispatchEvent(new Event('focus'));
 `);
 	await page.until(
 		`
-return window.harnessDisabledCollaborationRead && named('Project Overview') && named('Sign out') && named('Scan QR code') ? 'ready' : '';
+return window.harnessDisabledCollaborationRead && named('Project Overview') && named('Sign out') ? 'ready' : '';
 `,
 		'ready'
 	);
 	await page.until('return document.fonts.status;', 'loaded');
 	await shot(run, 'signed-in-home');
 	const result = await page.evaluate(`
-const scan = named('Scan QR code').getBoundingClientRect();
 const signOut = named('Sign out').getBoundingClientRect();
 const label = document.createRange();
 label.selectNodeContents([...document.querySelector('.account-status').childNodes].find(node => node.textContent.trim() === 'Signed in with Google'));
 const status = label.getBoundingClientRect();
 return {
 	banner: document.body.innerText.includes('Shared comments are not configured'),
-	scanGap: signOut.top - scan.bottom,
 	accountGap: Math.max(signOut.left - status.right, signOut.top - status.bottom)
 };`);
-	const { banner, scanGap, accountGap } = JSON.parse(result);
+	const { banner, accountGap } = JSON.parse(result);
 	record.check(!banner, 'disabled collaboration does not raise a home banner');
-	record.check(scanGap >= 12, 'Sign out is separated from Scan QR code by at least 12 px');
 	record.check(accountGap >= 12, 'Sign out is separated from the account label by at least 12 px');
 }

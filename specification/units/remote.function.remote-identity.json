@@ -9,16 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/services/networking-security/remote-host-service/host-pairing-service/remoteIdentity.ts",
-			"packages/desktop/src/services/remote-host-service/host-pairing-service/remoteIdentity.ts",
 			"packages/remote/src/services/networking-security/wire-session-service/remoteIdentity.ts",
 			"packages/remote/src/utils/networking-security/remoteIdentity.ts",
 			"packages/remote/src/utils/networking-security/remoteIdentity.types.ts",
 			"packages/remote/src/utils/remoteIdentity.ts"
 		],
 		"symbols": [
-			"pairingCode",
-			"pairingCode",
 			"requestDigest",
 			"remotePatterns",
 			"remoteIdentity",
@@ -27,12 +23,10 @@
 			"randomId",
 			"randomCredential",
 			"normalizeCode",
-			"pairingCode",
 			"requestDigest",
 			"CredentialBinding",
 			"CredentialBinding",
 			"InvalidRemoteIdentityPublicKeyError",
-			"pairingCode",
 			"requestDigest",
 			"remotePatterns",
 			"remoteIdentity",
@@ -178,20 +172,6 @@
 		],
 		"errorStatus": "declared",
 		"operations": [
-			{
-				"name": "pairingCode",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "pairingCode",
-						"type": "string",
-						"description": "Returns eight random characters from the code alphabet, formatted as four characters, a hyphen, then four characters; the alphabet omits I, O, 0 and 1.",
-						"examples": ["ABCD-2345", "WXYZ-6789"]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
 			{
 				"name": "requestDigest",
 				"inputs": [

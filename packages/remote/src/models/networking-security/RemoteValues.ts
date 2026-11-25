@@ -76,8 +76,6 @@ export const controlMethods = [
 	'remote.status',
 	'remote.enable',
 	'remote.disable',
-	'remote.createPairing',
-	'remote.closePairing',
 	'remote.approvePairing',
 	'remote.denyPairing',
 	'remote.revokeDevice'
@@ -130,8 +128,6 @@ export const mutationMethods: readonly RemoteMethod[] = [
 	'disconnectHosted',
 	'remote.enable',
 	'remote.disable',
-	'remote.createPairing',
-	'remote.closePairing',
 	'remote.approvePairing',
 	'remote.denyPairing',
 	'remote.revokeDevice'

@@ -5,7 +5,7 @@ import {
 	connectHost,
 	newHost,
 	newRequest,
-	openPairing,
+	ownerOf,
 	pairingPath,
 	registerHost,
 	type TestHost
@@ -38,41 +38,27 @@ async function state(pairingId: string): Promise<unknown> {
 	return ((await response.json()) as { state?: unknown }).state;
 }
 
-test('a pairing body must be a JSON object that says it is JSON', async () => {
-	const pairingId = await openPairing(socket);
-	const request = await newRequest(pairingId);
-	const path = pairingPath(host, pairingId, 'request');
-	const body = JSON.stringify(request.body);
-	expect(await answer(await send(path, body, 'text/plain'))).toEqual(invalid);
-	expect(await answer(await send(path, body, 'application/x-www-form-urlencoded'))).toEqual(
-		invalid
-	);
-	for (const malformed of ['', '[]', 'null', '"text"', '{', `[${body}]`]) {
+test('a poll body must be a JSON object that says it is JSON', async () => {
+	const path = pairingPath(host, randomId(), 'poll');
+	expect(await answer(await send(path, '{}', 'text/plain'))).toEqual(invalid);
+	for (const malformed of ['', '[]', 'null', '"text"', '{']) {
 		expect(await answer(await send(path, malformed)), malformed).toEqual(invalid);
 	}
-	expect(await answer(await send(pairingPath(host, pairingId, 'poll'), '[]'))).toEqual(invalid);
-	expect(await state(pairingId)).toBe('open');
 	expect(await socket.drain()).toEqual([]);
 });
 
-test('a pairing body over 16 KiB is refused', async () => {
-	const pairingId = await openPairing(socket);
-	const request = await newRequest(pairingId);
-	const path = pairingPath(host, pairingId, 'request');
-	const body = JSON.stringify(request.body);
-	const fits = body + ' '.repeat(relayConfig.bodyBytes - body.length);
+test('a poll body over 16 KiB is refused', async () => {
+	const path = pairingPath(host, randomId(), 'poll');
+	const fits = '{}' + ' '.repeat(relayConfig.bodyBytes - 2);
 	expect(await answer(await send(path, `${fits} `))).toEqual(invalid);
-	expect(await answer(await send(path, body + ' '.repeat(4 * relayConfig.bodyBytes)))).toEqual(
+	expect(await answer(await send(path, '{}' + ' '.repeat(4 * relayConfig.bodyBytes)))).toEqual(
 		invalid
 	);
-	expect(await state(pairingId)).toBe('open');
-	expect((await send(path, fits)).status).toBe(202);
 });
 
-test('the fields of a pairing request are validated strictly', async () => {
-	const pairingId = await openPairing(socket);
+test('the fields of an account pairing request are validated strictly', async () => {
+	const pairingId = randomId();
 	const request = await newRequest(pairingId);
-	const path = pairingPath(host, pairingId, 'request');
 	const changes: Record<string, unknown>[] = [
 		{ challenge: undefined },
 		{ challenge: request.body.challenge.slice(2) },
@@ -82,16 +68,16 @@ test('the fields of a pairing request are validated strictly', async () => {
 		{ deviceId: 'd4'.repeat(20) }
 	];
 	for (const change of changes) {
-		const response = await relay.post(path, { ...request.body, ...change });
+		const body = { ...ownerOf(host), pairingId, request: { ...request.body, ...change } };
+		const response = await relay.manage('pairing-request', body);
 		expect(await answer(response), JSON.stringify(change)).toEqual(invalid);
 	}
-	expect(await state(pairingId)).toBe('open');
+	expect(await state(pairingId)).toBeUndefined();
 	expect(await socket.drain()).toEqual([]);
 });
 
 test('an exchange with a malformed body is invalid like any other failed exchange', async () => {
-	const pairingId = await openPairing(socket);
-	const path = pairingPath(host, pairingId, 'exchange');
+	const path = pairingPath(host, randomId(), 'exchange');
 	const failed = [400, { error: 'pairing-invalid' }];
 	expect(await answer(await send(path, '{"verifier":"x"}', 'text/plain'))).toEqual(failed);
 	expect(await answer(await send(path, '['))).toEqual(failed);
@@ -103,14 +89,16 @@ test('a pairing of an unknown host is not found and stores nothing', async () =>
 	const pairingId = randomId();
 	const request = await newRequest(pairingId);
 	const missing = [404, { error: 'not-found' }];
-	expect(await answer(await relay.fetch(pairingPath(unknown, pairingId)))).toEqual(missing);
 	expect(await answer(await relay.post(pairingPath(unknown, pairingId, 'poll'), {}))).toEqual(
 		missing
 	);
-	const asked = await relay.post(pairingPath(unknown, pairingId, 'request'), request.body);
+	const asked = await relay.manage('pairing-request', {
+		...ownerOf(unknown),
+		pairingId,
+		request: request.body
+	});
 	expect(await answer(asked)).toEqual(missing);
 	expect(await relay.rows(unknown.hostId)).toEqual([]);
-	expect(await answer(await relay.fetch(pairingPath(host, pairingId)))).toEqual(missing);
 });
 
 test('public pairing calls are limited per host and window', async () => {
@@ -119,12 +107,11 @@ test('public pairing calls are limited per host and window', async () => {
 	const path = pairingPath(busy, randomId());
 	const statuses = new Set<number>();
 	for (let call = 0; call < relayConfig.pairingCalls; call += 1) {
-		statuses.add((await relay.fetch(path)).status);
+		statuses.add((await relay.post(`${path}/poll`, {})).status);
 	}
 	expect([...statuses]).toEqual([404]);
 	const limited = [429, { error: 'rate-limited' }];
-	expect(await answer(await relay.fetch(path))).toEqual(limited);
 	expect(await answer(await relay.post(`${path}/poll`, {}))).toEqual(limited);
 	expect(await answer(await relay.post(`${path}/exchange`, { verifier: 'x' }))).toEqual(limited);
-	expect((await relay.fetch(pairingPath(calm, randomId()))).status).toBe(404);
+	expect((await relay.post(pairingPath(calm, randomId(), 'poll'), {})).status).toBe(404);
 });

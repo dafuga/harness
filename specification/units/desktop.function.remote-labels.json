@@ -10,7 +10,6 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
-			"packages/desktop/src/components/networking-security/remote-offer-code/remoteLabels.ts",
 			"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.ts",
 			"packages/desktop/src/components/networking-security/remote-phone-panel/remoteLabels.types.ts",
 			"packages/desktop/src/components/remote-host-panel/remoteLabels.ts",
@@ -23,7 +22,6 @@
 			"relayName",
 			"hostLine",
 			"hostSummary",
-			"timeLeft",
 			"grantSummary",
 			"remoteLabels",
 			"Words",
@@ -44,7 +42,6 @@
 			"relayName",
 			"hostLine",
 			"hostSummary",
-			"timeLeft",
 			"grantSummary",
 			"remoteLabels",
 			"plural",
@@ -52,7 +49,6 @@
 			"relayName",
 			"hostLine",
 			"hostSummary",
-			"timeLeft",
 			"grantSummary",
 			"remoteLabels",
 			"lockNote",
@@ -163,13 +159,6 @@
 						"projects": []
 					}
 				]
-			},
-			{
-				"name": "timeLeft.milliseconds",
-				"type": "number",
-				"required": true,
-				"description": "Milliseconds remaining for an offer. The value is rounded up to whole seconds and clamped at zero, with no upper limit.",
-				"examples": [61001, 0]
 			},
 			{
 				"name": "grantSummary.grant",
@@ -493,28 +482,6 @@
 						"type": "string",
 						"description": "Disabled access returns Mac unlinked. Enabled access reports the device count as phones, or no phone when the list is empty.",
 						"examples": ["Mac unlinked", "Phone access on · 1 phone"]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "timeLeft",
-				"inputs": [
-					{
-						"name": "timeLeft.milliseconds",
-						"type": "number",
-						"required": true,
-						"description": "Milliseconds remaining for an offer. The value is rounded up to whole seconds and clamped at zero, with no upper limit.",
-						"examples": [61001, 0]
-					}
-				],
-				"outputs": [
-					{
-						"name": "timeLeft",
-						"type": "string",
-						"description": "Remaining time formatted as unbounded whole minutes, a colon, and two-digit seconds after rounding milliseconds up and clamping at zero.",
-						"examples": ["1:02", "0:00"]
 					}
 				],
 				"errors": [],
