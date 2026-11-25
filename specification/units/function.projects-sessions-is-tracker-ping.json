@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-is-tracker-ping",
+	"uid": "u_awrhk4a6e3",
+	"kind": "function",
+	"title": "isTrackerPing",
+	"responsibility": "Tell an automated watchdog or idle-session flag question from a real question for Daniel.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/isTrackerPing.ts"],
+		"symbols": ["isTrackerPing"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "isTrackerPing.question",
+				"type": "string | null | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "isTrackerPing",
+				"type": "boolean"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "isTrackerPing",
+				"inputs": [
+					{
+						"name": "isTrackerPing.question",
+						"type": "string | null | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerPing",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/isTrackerPing.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/isTrackerPing.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

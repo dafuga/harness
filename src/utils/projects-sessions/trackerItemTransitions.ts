@@ -1,4 +1,5 @@
 // @harness-uid u_4pgfvaopdt
+import { isTrackerPing } from './isTrackerPing';
 import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemFields.types';
 import type {
 	TrackerItemAction,
@@ -132,8 +133,20 @@ function finishItem(
 		throw trackerItemError('recurring items cannot have a next step');
 	if (item.every) return finishOccurrence(item, body, context);
 	if (body.failed) throw trackerItemError('--failed is only for recurring items');
+	guardOpenDecision(item, body);
 	const decision = body.next_step === undefined ? {} : trackerNextStepFields(body.next_step);
 	return { fields: { status: 'done', ...decision }, appendNote: body.note };
+}
+
+/** A finished item must not bury a question Daniel has not answered; pings and an explicit next step for Daniel do not count. */
+function guardOpenDecision(item: TrackerItemSnapshot, body: TrackerItemInput): void {
+	const open = Boolean(item.needs_daniel) && !item.resolved;
+	const handsOff = body.next_step !== undefined || Boolean(item.next_step);
+	if (!open || handsOff || body.force || isTrackerPing(item.question)) return;
+	throw trackerItemError(
+		'item has an unanswered flag for Daniel: answer, resolve or unflag it first (or pass --force to finish it and keep the flag in the digest)',
+		409
+	);
 }
 
 function finishOccurrence(

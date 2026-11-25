@@ -170,3 +170,34 @@ test('ignore records the previous status and unignore restores it with a pending
 		'note+': 'unignored by operator: resumed; back to blocked'
 	});
 });
+
+test('done refuses an unanswered Daniel decision unless forced, but never a ping or an answered flag', () => {
+	const asked = {
+		...item,
+		status: 'in_progress',
+		needs_daniel: 1,
+		resolved: 0,
+		question: 'Approve?'
+	};
+	expect(() => plan({ action: 'done', item: asked, body: { note: 'x' } }, context)).toThrow(
+		/unanswered flag for Daniel/
+	);
+	expect(
+		plan({ action: 'done', item: asked, body: { force: true } }, context).fields
+	).toMatchObject({
+		status: 'done'
+	});
+	const ping = {
+		...asked,
+		question:
+			'host: Session auto-a-r1 is idle again after a watchdog check-in. Chief of Staff, please inspect the session.'
+	};
+	expect(plan({ action: 'done', item: ping, body: {} }, context).fields).toMatchObject({
+		status: 'done'
+	});
+	expect(
+		plan({ action: 'done', item: { ...asked, resolved: 1 }, body: {} }, context).fields
+	).toMatchObject({
+		status: 'done'
+	});
+});

@@ -144,6 +144,10 @@ export type TrackerRecurringProblem = TrackerDigestItem & {
 export type TrackerDigestGroups = {
 	blocked: TrackerDigestItem[];
 	needs_daniel: TrackerDigestItem[];
+	/** Open flags that are real questions for Daniel, oldest first, including finished and blocked items. */
+	daniel_decisions: TrackerDigestItem[];
+	/** Open flags raised by watchdog and idle-session alerts for Chief of Staff, oldest first. */
+	pings: TrackerDigestItem[];
 	overdue: TrackerDigestItem[];
 	due_today: TrackerDigestItem[];
 	recurring_missed: TrackerRecurringProblem[];
@@ -159,5 +163,8 @@ export type TrackerDigest = TrackerDigestGroups & {
 	generated_at: string;
 	local_time: string;
 	today: string;
-	counts: Record<keyof TrackerDigestGroups, number>;
+	counts: Record<keyof TrackerDigestGroups, number> & {
+		/** Daniel decisions that have waited at least a day. */
+		stale_decisions: number;
+	};
 };

@@ -70,8 +70,8 @@ export function trackerHostLaunch(
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
 			admit,
-			pickModel: pickHostModel,
-			retryModel: retryTrackerModel
+			pickModel: (item) => pickHostModel(item, effects.now?.()),
+			retryModel: (item, run) => retryTrackerModel(item, run, undefined, effects.now?.())
 		},
 		scheduleDue: config.due === true || adapter?.scheduleDue === true,
 		due: () => ({
@@ -180,9 +180,9 @@ function approvedOpsWorkdir(item: TrackerHostRouteItem, node: string, workdir?: 
 	return undefined;
 }
 
-function pickHostModel(item: TrackerDispatchItem) {
+function pickHostModel(item: TrackerDispatchItem, now?: number) {
 	try {
-		return pickTrackerModel(item);
+		return pickTrackerModel(item, { now });
 	} catch {
 		return { error: 'Tracker model cannot be selected for this task' };
 	}
