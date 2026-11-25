@@ -6519,6 +6519,42 @@
 			"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
 			"reason": "Wire the native device route and Google handoff through the existing Hub auth owner.",
 			"definition": "36972ee8755d60d147dcf4542771b97401e3f6f5f632444fd976804fee62fc7f"
+		},
+		{
+			"unit": "desktop.function.remote-host-identity",
+			"name": "registerRemoteHost",
+			"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+			"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation.",
+			"definition": "134719d5abdcb8e50c42cc1545b64a1c90f0624377d627b2cb7081e441f3a637",
+			"to": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
+			"ownerSource": "packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/RemoteHostSwitchService.ts"
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "hostLine",
+			"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+			"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation.",
+			"definition": "7cee46fd5bd01fcff42c4fe73cceaa47faea5e5d75d3321c79ce37af55864e1b",
+			"to": "packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
+			"ownerSource": "packages/desktop/src/components/networking-security/remote-host-panel/RemoteHostPanel.svelte"
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "hostSummary",
+			"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+			"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation.",
+			"definition": "6539a20bc02e4f4495bed9f49748d1053973f0c622aaf955ce21f5bce580f631",
+			"to": "packages/desktop/src/components/networking-security/remote-host-panel/remoteLabels.ts",
+			"ownerSource": "packages/desktop/src/components/networking-security/remote-host-panel/RemoteHostPanel.svelte"
+		},
+		{
+			"unit": "hub.function.compose-hub-auth",
+			"name": "composeHubAuth",
+			"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+			"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation.",
+			"definition": "9818446ee17d960bc6e4a0bd9557ee64a4b5d2e424b1a9b6b0771d716ae8f91f",
+			"to": "packages/hub/src/lib/verification-evidence/server/auth/composeHubAuth.ts",
+			"ownerSource": "packages/hub/src/lib/verification-evidence/server/auth/auth.ts"
 		}
 	],
 	"retiredOwners": [
