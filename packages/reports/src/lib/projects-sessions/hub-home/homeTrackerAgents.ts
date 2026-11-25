@@ -5,6 +5,7 @@ import type {
 	TrackerSources
 } from '../project-overview/projectOverviewTracker.types';
 import type { HomeAgent, HomeAgentTask, HomeMessage } from './hubHome.types';
+import { homeAskFields } from './homeAskOptions';
 import { homeText, openQuestion } from './homeTrackerText';
 
 const precedence: Record<HomeAgent['state'], number> = {
@@ -76,6 +77,7 @@ function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
 		model: homeText(item?.model, 200),
 		since: card.updatedAt,
 		question,
+		...homeAskFields(item, question),
 		messages: messages(item, question)
 	};
 }

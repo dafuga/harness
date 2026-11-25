@@ -1,0 +1,70 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-choices",
+	"uid": "u_jnjcxmplge",
+	"kind": "function",
+	"title": "hubHomeChoices",
+	"responsibility": "Owns the hubHomeChoices shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeChoices.ts"],
+		"symbols": ["HomeChoice", "orderedChoices"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "orderedChoices.agent",
+				"type": "Pick<HomeAgent, 'options'>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "orderedChoices",
+				"type": "HomeChoice[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "orderedChoices",
+				"inputs": [
+					{
+						"name": "orderedChoices.agent",
+						"type": "Pick<HomeAgent, 'options'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "orderedChoices",
+						"type": "HomeChoice[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeChoices.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeChoices.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

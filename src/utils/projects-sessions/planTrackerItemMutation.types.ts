@@ -15,6 +15,9 @@ export interface TrackerItemSnapshot extends TrackerMatchRow {
 	readonly remind_at?: string | null;
 	readonly occurrence?: string | null;
 	readonly ignored_prev_status?: string | null;
+	readonly options?: string | null;
+	readonly confirm?: string | null;
+	readonly answer_option?: string | null;
 	readonly project?: string | null;
 	readonly repo?: string | null;
 	readonly computer?: string | null;

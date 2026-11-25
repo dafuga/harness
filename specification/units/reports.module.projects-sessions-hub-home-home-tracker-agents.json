@@ -62,6 +62,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
 			"via": "import",
 			"origin": "derived"

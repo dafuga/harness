@@ -4,10 +4,20 @@ import { hubHomeFixture } from './hub-home-fixture';
 /** Design details from specification/designs/hub-home that the screenshot matrix does not assert. */
 test.setTimeout(60000);
 
-async function home(page: Page, mode: 'default' | 'busy' | 'empty', width = 1440) {
+async function home(
+	page: Page,
+	mode: 'default' | 'busy' | 'empty',
+	width = 1440,
+	withOptions = true
+) {
 	await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
 	await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
 	const fixture = await hubHomeFixture(page, mode);
+	if (!withOptions)
+		for (const agent of fixture.snapshot.agents) {
+			delete agent.options;
+			delete agent.confirm;
+		}
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	return fixture;
@@ -94,8 +104,10 @@ test('an almost-out limit gets one callout with what, how much and the reset', a
 	await expect(callouts).toContainText(/Resets/);
 });
 
-test('a yes-or-no question offers quick replies that answer on Tracker', async ({ page }) => {
-	const fixture = await home(page, 'default');
+test('a yes-or-no question without options offers quick replies that answer on Tracker', async ({
+	page
+}) => {
+	const fixture = await home(page, 'default', 1440, false);
 	const dialog = await openDialog(page, 'Agents');
 	const chat = dialog.getByRole('region', { name: 'Chat with Chief of Staff' });
 	await chat.getByRole('button', { name: 'Approve', exact: true }).click();

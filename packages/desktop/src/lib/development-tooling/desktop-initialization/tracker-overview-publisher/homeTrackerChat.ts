@@ -20,10 +20,8 @@ export async function deliverHomeChat(
 	if (!path) return { id, status: 'refused' };
 	const text = sanitizeText(input.text).trim();
 	if (!text || text.length > 2000) return { id, status: 'refused' };
-	const body =
-		input.kind === 'answer'
-			? { answer: text, by: 'Daniel via Hub' }
-			: { text: 'Hub message: ' + text };
+	if (input.option !== undefined && !validTap(input, agent, text)) return { id, status: 'refused' };
+	const body = chatBody(input, text);
 	try {
 		const response = await fetcher(trackerOrigin + path, {
 			method: 'POST',
@@ -38,6 +36,21 @@ export async function deliverHomeChat(
 	} catch {
 		return { id, status: 'unconfirmed' };
 	}
+}
+
+function chatBody(input: HomeChatInput, text: string) {
+	if (input.kind !== 'answer') return { text: 'Hub message: ' + text };
+	const by = 'Daniel via Hub';
+	return input.option === undefined
+		? { answer: text, by }
+		: { option: input.option, confirmed: input.confirmed === true, by };
+}
+
+/** A tap names one of the open ask's own options, and a deploy, money or secret ask is confirmed. */
+function validTap(input: HomeChatInput, agent: HomeAgent | undefined, text: string) {
+	const chosen = agent?.options?.[(input.option ?? 0) - 1];
+	if (!chosen || chosen.label !== text) return false;
+	return !agent?.confirm || input.confirmed === true;
 }
 
 function chatPath(input: HomeChatInput, agent: HomeAgent | undefined) {

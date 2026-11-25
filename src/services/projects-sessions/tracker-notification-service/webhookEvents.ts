@@ -60,6 +60,11 @@ export function itemEvent(
 		blocked_reason: item.status === 'blocked' ? item.blocked_reason : null,
 		question: item.question,
 		answer: item.answer,
+		...(item.answer_option && {
+			answer_option: Number(item.answer_option),
+			answered_by: item.answered_by,
+			answered_at: item.answered_at
+		}),
 		due: item.due,
 		changed_fields: extra.changedFields,
 		node: identity.node,

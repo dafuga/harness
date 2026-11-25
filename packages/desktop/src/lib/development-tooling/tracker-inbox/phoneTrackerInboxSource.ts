@@ -41,9 +41,9 @@ function overviewOf(data: unknown): InboxOverview | undefined {
 }
 
 function writeInput(write: ConfirmedWrite): Record<string, unknown> {
-	return write.action === 'note'
-		? { id: write.id, text: write.text }
-		: { id: write.id, text: write.text, revision: write.revision };
+	if (write.action === 'note') return { id: write.id, text: write.text };
+	const reviewed = { id: write.id, text: write.text, revision: write.revision };
+	return write.option === undefined ? reviewed : { ...reviewed, option: write.option };
 }
 
 /** Adapts the phone's Tracker tools to the inbox page. Writes reach the outbox only when called. */

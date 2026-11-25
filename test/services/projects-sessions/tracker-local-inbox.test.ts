@@ -70,3 +70,35 @@ test('commits inbox notes and reviewed decisions without accepting a replaced qu
 		notes_log: [{ text: 'Reviewed on Mac' }]
 	});
 });
+
+test('an option tap answers a multiple-choice ask, guards risky asks and records who and when', async () => {
+	const options = [
+		{ label: 'Deploy', effect: 'Ship to production' },
+		{ label: 'Hold', effect: 'Wait a day', recommended: true }
+	];
+	const { id } = await (
+		await request('/items', 'POST', { title: 'Release gate', agent: 'fixture-session' })
+	).json();
+	const flagged = await request(`/items/${id}/flag`, 'POST', {
+		question: 'Deploy now?',
+		options,
+		confirm: 'deploy'
+	});
+	expect(flagged.status).toBe(200);
+	const shown = await (await request(`/items/${id}`)).json();
+	expect(shown).toMatchObject({ options, confirm: 'deploy', needs_daniel: true });
+	const { revision } = await (await request(`/items/${id}/inbox`)).json();
+	const tap = (extra: object) =>
+		request(`/items/${id}/inbox`, 'POST', { action: 'answer', option: 1, revision, ...extra });
+	expect((await tap({})).status).toBe(409);
+	expect((await tap({ option: 9, confirmed: true })).status).toBe(400);
+	expect((await tap({ confirmed: true })).status).toBe(200);
+	const answered = await (await request(`/items/${id}`)).json();
+	expect(answered).toMatchObject({
+		answer: 'Deploy',
+		answer_option: 1,
+		answered_by: 'daniel',
+		answered_at: expect.any(String),
+		resolved: true
+	});
+});

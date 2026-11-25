@@ -24,6 +24,18 @@ const message = z.object({
 	from: z.enum(['agent', 'you'])
 });
 
+const askOption = z
+	.object({ label: text(80).refine((value) => value.trim().length > 0), effect: text(400) })
+	.extend({ recommended: z.literal(true).optional() });
+
+// Two to four choices with at most one recommended, or none at all. Older Macs send none.
+const options = z
+	.array(askOption)
+	.min(2)
+	.max(4)
+	.refine((list) => list.filter((entry) => entry.recommended).length <= 1)
+	.optional();
+
 const agent = z.object({
 	id,
 	name: short,
@@ -40,6 +52,8 @@ const agent = z.object({
 	model: short.nullable(),
 	since: time,
 	question: text(2000).nullable(),
+	options,
+	confirm: z.enum(['deploy', 'money', 'secret']).optional(),
 	messages: z.array(message).max(20)
 });
 
@@ -79,10 +93,14 @@ export const chatInput = z
 		itemId: id,
 		kind: z.enum(['note', 'answer']),
 		question: text(2000).nullable(),
-		text: text(2000).refine((value) => value.trim().length > 0)
+		text: text(2000).refine((value) => value.trim().length > 0),
+		option: z.number().int().min(1).max(4).optional(),
+		confirmed: z.literal(true).optional()
 	})
 	.strict()
-	.refine((value) => (value.kind === 'answer') === Boolean(value.question));
+	.refine((value) => (value.kind === 'answer') === Boolean(value.question))
+	.refine((value) => value.option === undefined || value.kind === 'answer')
+	.refine((value) => value.confirmed === undefined || value.option !== undefined);
 
 export const chatOutcome = z
 	.object({

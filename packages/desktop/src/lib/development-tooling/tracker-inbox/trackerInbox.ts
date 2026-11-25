@@ -7,6 +7,7 @@ import type {
 	InboxDetail,
 	InboxFilter,
 	InboxFlag,
+	InboxOption,
 	InboxRow,
 	InboxWrite,
 	InboxWriteView,
@@ -137,7 +138,13 @@ export function flagQuestion(flag: InboxFlag | null): string {
  * bytes. A flag or answer carries the revision that the user reviewed.
  */
 export function confirmedWrite(
-	draft: { action: WriteAction; id: string; text: string; revision: string | null },
+	draft: {
+		action: WriteAction;
+		id: string;
+		text: string;
+		revision: string | null;
+		option?: number;
+	},
 	confirmed: boolean
 ): ConfirmedWrite | null {
 	if (confirmed !== true) return null;
@@ -147,6 +154,39 @@ export function confirmedWrite(
 		action: draft.action,
 		id: draft.id,
 		text,
-		revision: draft.action === 'note' ? null : draft.revision
+		revision: draft.action === 'note' ? null : draft.revision,
+		...(draft.action === 'answer' && draft.option !== undefined && { option: draft.option })
 	};
+}
+
+/** The options as the buttons show them: recommended first, each with its original 1-based number. */
+export function orderedOptions(flag: InboxFlag | null): { number: number; option: InboxOption }[] {
+	const options = flag?.state === 'open' ? (flag.options ?? []) : [];
+	return options
+		.map((option, index) => ({ number: index + 1, option }))
+		.sort(
+			(a, b) =>
+				Number(Boolean(b.option.recommended)) - Number(Boolean(a.option.recommended)) ||
+				a.number - b.number
+		);
+}
+
+/** The answer write for a tapped option, or null when the review gate or the number refuses it. */
+export function optionWrite(
+	detail: InboxDetail,
+	reviewed: { revision: string | null } | null,
+	number: number
+): ConfirmedWrite | null {
+	const chosen = orderedOptions(detail.flag).find((entry) => entry.number === number);
+	if (!chosen || !writeGate('answer', detail, reviewed).allowed) return null;
+	return confirmedWrite(
+		{
+			action: 'answer',
+			id: detail.header.id,
+			text: chosen.option.label,
+			revision: reviewed?.revision ?? null,
+			option: number
+		},
+		true
+	);
 }

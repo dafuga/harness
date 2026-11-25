@@ -12,6 +12,7 @@
 			"src/commands/projects-sessions/TrackerCommand.ts",
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerInspection.ts",
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerItem.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerAskOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerPlanningRequest.ts",
@@ -29,7 +30,11 @@
 			"nativeItemPrefix",
 			"formatNativeTrackerRunRead",
 			"formatListedRun",
+			"nativeTrackerAskBody",
+			"nativeTrackerFlagBody",
+			"nativeTrackerAnswerBody",
 			"NativeTrackerRequest",
+			"NativeTrackerAskValues",
 			"NativeTrackerItem",
 			"NativeTrackerItemDetail",
 			"NativeTrackerAdapter",
@@ -117,8 +122,33 @@
 				"required": true
 			},
 			{
+				"name": "nativeTrackerAskBody.values",
+				"type": "NativeTrackerAskValues",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerFlagBody.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerFlagBody.values",
+				"type": "NativeTrackerAskValues",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerAnswerBody.answer",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerAnswerBody.values",
+				"type": "NativeTrackerAskValues",
+				"required": true
+			},
+			{
 				"name": "itemFields.input",
-				"type": "Record<string, string | boolean | undefined>",
+				"type": "Record<string, string | boolean | string[] | undefined>",
 				"required": true
 			},
 			{
@@ -229,6 +259,18 @@
 			{
 				"name": "formatListedRun",
 				"type": "string"
+			},
+			{
+				"name": "nativeTrackerAskBody",
+				"type": "Record<string, unknown>"
+			},
+			{
+				"name": "nativeTrackerFlagBody",
+				"type": "Record<string, unknown>"
+			},
+			{
+				"name": "nativeTrackerAnswerBody",
+				"type": "unknown"
 			},
 			{
 				"name": "nativeTrackerCommonOptions",
@@ -452,11 +494,80 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "nativeTrackerAskBody",
+				"inputs": [
+					{
+						"name": "nativeTrackerAskBody.values",
+						"type": "NativeTrackerAskValues",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerAskBody",
+						"type": "Record<string, unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerFlagBody",
+				"inputs": [
+					{
+						"name": "nativeTrackerFlagBody.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerFlagBody.values",
+						"type": "NativeTrackerAskValues",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerFlagBody",
+						"type": "Record<string, unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerAnswerBody",
+				"inputs": [
+					{
+						"name": "nativeTrackerAnswerBody.answer",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerAnswerBody.values",
+						"type": "NativeTrackerAskValues",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerAnswerBody",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "itemFields",
 				"inputs": [
 					{
 						"name": "itemFields.input",
-						"type": "Record<string, string | boolean | undefined>",
+						"type": "Record<string, string | boolean | string[] | undefined>",
 						"required": true
 					}
 				],
@@ -670,6 +781,11 @@
 		},
 		{
 			"unit": "function.agents-providers-tracker-run-report",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-ask-options",
 			"via": "import",
 			"origin": "derived"
 		},

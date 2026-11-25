@@ -17,6 +17,7 @@ import {
 import { trackerReminderLaunchFields } from './trackerItemLaunchFields';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
+import { trackerAskTransitions } from './trackerAskTransitions';
 import {
 	guardTrackerDuplicate,
 	trackerMoveOn,
@@ -50,10 +51,7 @@ export const trackerItemTransitions: Record<
 		if (item.every) throw trackerItemError('a reminder uses a scheduled time');
 		return { fields: { remind_at, kind: 'reminder', ...trackerReminderLaunchFields } };
 	},
-	answer: (item, body, context) => {
-		if (!body.answer) throw trackerItemError('answer text required');
-		return trackerResolveItem(item, body, context);
-	},
+	answer: trackerAskTransitions.answer,
 	unflag: () => ({ fields: { needs_daniel: 0 } }),
 	resolve: trackerResolveItem,
 	done: finishItem,
@@ -77,10 +75,8 @@ function blockItem(
 		force: body.force,
 		askingDaniel: true
 	});
-	return {
-		fields: { ...fields, needs_daniel: 1, resolved: 0, question: `Blocked: ${reason}` },
-		appendNote
-	};
+	const asked = { ...fields, needs_daniel: 1, resolved: 0, question: `Blocked: ${reason}` };
+	return { fields: { ...asked, ...trackerAskTransitions.cleared(item) }, appendNote };
 }
 
 function unblockItem(item: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemChange {
@@ -121,7 +117,8 @@ function flagItem(
 		fields: {
 			needs_daniel: 1,
 			resolved: 0,
-			...(body.question ? { question: body.question } : {})
+			...(body.question ? { question: body.question } : {}),
+			...trackerAskTransitions.choiceFields(item, body)
 		}
 	};
 }

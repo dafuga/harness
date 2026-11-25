@@ -143,3 +143,38 @@ test('an owner-disabled route is neutral and never stores or reads a projection'
 	expect(await response.json()).toEqual({ granted: false, snapshot: null });
 	expect(fixture.bucket.objects.size).toBe(0);
 });
+
+test('a tapped option must name a real option of the open ask, and a confirm ask must be confirmed', async () => {
+	const { db, close } = await sheets();
+	try {
+		const fixture = overviewFixture();
+		const serve = (request: Request) => serveHubHome(request, { ...fixture.homeDeps(), db });
+		const cookie = await fixture.browser();
+		const bearer = await fixture.native();
+		const options = [
+			{ label: 'Ship it', effect: 'Merges the change.', recommended: true },
+			{ label: 'Wait', effect: 'Holds until tomorrow.' }
+		];
+		const asked = { ...agent, options, confirm: 'deploy' };
+		const sent = await serve(homeRequest('PUT', { bearer }, '', { ...payload, agents: [asked] }));
+		expect(sent.status).toBe(200);
+		const tap = { ...message, text: 'Ship it', option: 1 };
+		const refuse = async (body: unknown) => {
+			const response = await serve(homeRequest('POST', { cookie }, '/chat', body));
+			expect(await response.json()).toEqual({ id, status: 'refused' });
+		};
+		await refuse(tap);
+		await refuse({ ...tap, confirmed: true, text: 'Something else' });
+		await refuse({ ...tap, confirmed: true, option: 3, text: 'Ship it' });
+		const confirmed = { ...tap, confirmed: true };
+		expect((await serve(homeRequest('POST', { cookie }, '/chat', confirmed))).status).toBe(202);
+		const claimed = await serve(
+			homeRequest('PUT', { bearer }, '', { ...payload, agents: [asked] })
+		);
+		expect(((await claimed.json()) as { messages: HomeChatInput[] }).messages).toEqual([confirmed]);
+		const invalid = { ...message, kind: 'note', question: null, option: 1 };
+		expect((await serve(homeRequest('POST', { cookie }, '/chat', invalid))).status).toBe(400);
+	} finally {
+		await close();
+	}
+});

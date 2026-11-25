@@ -8,6 +8,7 @@ import {
 import { sanitizeTrackerText } from '../../../../../../src/utils/projects-sessions/sanitizeTrackerText';
 import type {
 	ConfirmedWrite,
+	InboxConfirmKind,
 	InboxDetail,
 	InboxOverview,
 	InboxReply,
@@ -43,7 +44,9 @@ export class MacTrackerInboxService {
 	async write(input: Partial<ConfirmedWrite>): Promise<InboxReply<InboxWriteReceipt>> {
 		const write = parseWrite(input);
 		if (!write) return current({ code: 'invalidInput' });
-		const { id, ...body } = write;
+		const { id, ...fields } = write;
+		// The write exists only after the page's explicit confirm step, so it is a confirmed one.
+		const body = write.option === undefined ? fields : { ...fields, confirmed: true };
 		try {
 			const response = await trackerRequest(`/items/${id}/inbox`, {
 				method: 'POST',
@@ -97,16 +100,17 @@ export class MacTrackerInboxService {
 }
 
 function parseWrite(input: Partial<ConfirmedWrite>): ConfirmedWrite | null {
-	const { action, id, text, revision } = input;
+	const { action, id, text, revision, option } = input;
 	if (
 		(action !== 'note' && action !== 'flag' && action !== 'answer') ||
 		typeof id !== 'string' ||
 		!safeId.test(id) ||
 		typeof text !== 'string' ||
-		(revision !== null && typeof revision !== 'string')
+		(revision !== null && typeof revision !== 'string') ||
+		(option !== undefined && !(Number.isInteger(option) && option >= 1 && option <= 4))
 	)
 		return null;
-	return confirmedWrite({ action, id, text, revision }, true);
+	return confirmedWrite({ action, id, text, revision, option }, true);
 }
 
 function trackerRequest(path: string, init?: RequestInit): Promise<Response> {
@@ -164,7 +168,8 @@ function projectDetail({ item, revision, flaggedAt, runs }: TrackerInboxItemRepl
 				? {
 						state: item.resolved ? 'resolved' : 'open',
 						at: flaggedAt,
-						question: safe(item.question)
+						question: safe(item.question),
+						...askChoices(item)
 					}
 				: null,
 		notes: notes.map(({ at, node, text }, index) => ({
@@ -208,4 +213,18 @@ function current<T>(result: { value?: T; code?: string }): InboxReply<T> {
 
 function unavailable(): InboxReply<never> {
 	return { code: 'unavailable', freshness: 'unavailable', lastSyncedAt: null, partial: true };
+}
+
+/** A Mac item carries the ask's options the same way the phone replica does. */
+function askChoices(item: TrackerItem) {
+	const options = (item.options ?? []).map(({ label, effect, recommended }) => ({
+		label: safe(label),
+		effect: safe(effect),
+		...(recommended && { recommended: true as const })
+	}));
+	const confirm = ['deploy', 'money', 'secret'].find((kind) => kind === item.confirm);
+	return {
+		...(options.length >= 2 && { options }),
+		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind })
+	};
 }

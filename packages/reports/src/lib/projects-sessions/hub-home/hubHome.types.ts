@@ -19,6 +19,19 @@ export interface HomeAgentTask {
 	machine: string | null;
 }
 
+/** A raw JSON value as the Tracker sends it, before it is checked. */
+export type HomeAskInput = object | string | number | boolean | null | undefined;
+
+/** One tappable answer to an open ask; recommended is true on at most one. */
+export interface HomeAskOption {
+	label: string;
+	effect: string;
+	recommended?: true;
+}
+
+/** Asks that change something hard to undo need a confirm step before a tap sends. */
+export type HomeAskConfirm = 'deploy' | 'money' | 'secret';
+
 export interface HomeAgent {
 	id: string;
 	name: string;
@@ -33,6 +46,9 @@ export interface HomeAgent {
 	model: string | null;
 	since: string;
 	question: string | null;
+	/** Two to four choices for the open question; empty when the ask has none. */
+	options?: HomeAskOption[];
+	confirm?: HomeAskConfirm;
 	messages: HomeMessage[];
 }
 
@@ -100,6 +116,9 @@ export interface HomeChatInput {
 	kind: 'note' | 'answer';
 	question: string | null;
 	text: string;
+	/** A tapped option's 1-based number. The text then carries that option's label. */
+	option?: number;
+	confirmed?: boolean;
 }
 
 export type HomeChatStatus = 'queued' | 'sent' | 'refused' | 'unconfirmed';

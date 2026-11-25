@@ -13,6 +13,9 @@ export interface PhoneReplicaIntent {
 	text: string;
 	revision: string | null;
 	expectedStatus: string | null;
+	/** The tapped option's 1-based number, or null for a free-text write. */
+	option: number | null;
+	confirmed: boolean;
 }
 
 export type PhoneReplicaReceipt = { intentId: string } & (

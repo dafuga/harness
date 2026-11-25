@@ -28,6 +28,9 @@ export interface TrackerNotificationItem {
 	parked_until?: string | null;
 	question: string | null;
 	answer: string | null;
+	answered_by?: string | null;
+	answered_at?: string | null;
+	answer_option?: string | null;
 	blocked_reason: string | null;
 	clocks: Readonly<Record<string, string | undefined>>;
 	notes?: string | null;

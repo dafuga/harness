@@ -1,5 +1,6 @@
 // @harness-uid u_xba7ieg4je
 import type { TrackerItemPriority } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
+import type { TrackerAskOption } from '../../utils/projects-sessions/trackerAskOptions.types';
 import type { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
 
 import type {
@@ -96,6 +97,9 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		missed: string | null;
 		adapter_instructions?: string;
 		notes_log: TrackerItemNote[];
+		options?: TrackerAskOption[];
+		confirm?: string;
+		answer_option?: number;
 		needs_daniel: boolean;
 		resolved: boolean;
 		callback: { target: string; node?: unknown } | null;
@@ -120,6 +124,7 @@ export type TrackerDigestItem = Pick<
 	| 'updated_at'
 > &
 	TrackerChase &
+	Partial<Pick<TrackerItem, 'options' | 'confirm'>> &
 	TrackerNextStep & {
 		project?: string;
 		remind_at?: string;

@@ -12,6 +12,9 @@ export interface NativeTrackerRequest {
 	body?: Readonly<Record<string, unknown>>;
 }
 
+/** The parsed command-line words of one `tracker` command, as `parseArgs` returns them. */
+export type NativeTrackerAskValues = Record<string, string | string[] | boolean | undefined>;
+
 export interface NativeTrackerItem {
 	id: string;
 	kind: string;
@@ -44,6 +47,9 @@ export interface NativeTrackerItemDetail extends NativeTrackerItem {
 	planning?: TrackerPlanning;
 	parent?: string;
 	question?: string;
+	options?: { label: string; effect: string; recommended?: true }[];
+	confirm?: string | null;
+	answer_option?: number | null;
 	answer?: string;
 	answered_by?: string;
 	answered_at?: string;

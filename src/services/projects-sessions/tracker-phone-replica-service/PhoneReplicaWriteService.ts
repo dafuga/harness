@@ -28,7 +28,9 @@ const allowedFields = new Set([
 	'action',
 	'text',
 	'revision',
-	'expectedStatus'
+	'expectedStatus',
+	'option',
+	'confirmed'
 ]);
 
 function digest(value: string): Buffer {
@@ -91,7 +93,10 @@ export class PhoneReplicaWriteService {
 
 	private plan(intent: PhoneReplicaIntent, now: number) {
 		const { action, itemId, text } = intent;
-		const body = { [phoneReplicaActions[action].field]: text };
+		const body =
+			intent.option === null
+				? { [phoneReplicaActions[action].field]: text }
+				: { option: intent.option, confirmed: intent.confirmed, by: 'Daniel' };
 		const asksDaniel = action === 'flag' || action === 'block';
 		try {
 			return planTrackerItemMutation(
@@ -119,8 +124,23 @@ function parseIntent(fields: Record<string, unknown>): PhoneReplicaIntent {
 		action,
 		text: parseIntentText(action, text),
 		revision: parseRevision(action, revision),
-		expectedStatus: parseExpectedStatus(action, expectedStatus)
+		expectedStatus: parseExpectedStatus(action, expectedStatus),
+		...parseChoice(action, fields)
 	};
+}
+
+/** A tapped option is only for answers: its 1-based number and whether the confirm step was done. */
+function parseChoice(action: PhoneReplicaIntent['action'], fields: Record<string, unknown>) {
+	const { option = null, confirmed = false } = fields;
+	const valid =
+		typeof confirmed === 'boolean' &&
+		(option === null ||
+			(action === 'answer' &&
+				Number.isInteger(option) &&
+				Number(option) >= 1 &&
+				Number(option) <= 4));
+	if (!valid) throw trackerItemError('invalid phone option');
+	return { option: option as number | null, confirmed };
 }
 
 function checkIntentEnvelope(fields: Record<string, unknown>): void {

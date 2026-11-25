@@ -6,6 +6,7 @@ import {
 	trackerTimeZone,
 	validateTrackerTimeZone
 } from './normalizeTrackerDue';
+import { trackerAskNormalizers } from './trackerAskOptions';
 import { trackerItemPriority } from './trackerItemPriority';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
@@ -81,7 +82,8 @@ const normalizers = {
 	occurrence: normalizeInstant,
 	missed: normalizeInstant,
 	last_result: normalizeResult,
-	auto: normalizeLaunchToken
+	auto: normalizeLaunchToken,
+	...trackerAskNormalizers
 };
 
 export function normalizeTrackerItemFields(
@@ -103,10 +105,8 @@ function normalizeField(
 ): string | number | null {
 	if (textFields.has(key)) return normalizeText(value);
 	if (flagFields.has(key)) return normalizeFlag(value);
-	if (Object.hasOwn(normalizers, key)) {
-		return normalizers[key as keyof typeof normalizers](value, clock, input);
-	}
-	throw trackerItemError(`unknown field "${key}"`);
+	if (!Object.hasOwn(normalizers, key)) throw trackerItemError(`unknown field "${key}"`);
+	return normalizers[key as keyof typeof normalizers](value, clock, input);
 }
 
 function normalizeKind(value: TrackerItemValue): string {

@@ -15,6 +15,8 @@ export interface PhoneItemSource extends TrackerPlanningFields {
 	needs_daniel: number;
 	resolved: number;
 	question: string | null;
+	options: string | null;
+	confirm: string | null;
 	flag_clock: string | null;
 	attention_clock: string;
 }
@@ -47,7 +49,13 @@ export interface PhoneTrackerRow {
 	dueAt: string | null;
 	attentionRevision: string;
 	notes: { id: string; author: string; at: string; text: string }[];
-	flag: { state: 'open' | 'resolved'; at: string | null; question: string } | null;
+	flag: {
+		state: 'open' | 'resolved';
+		at: string | null;
+		question: string;
+		options?: { label: string; effect: string; recommended?: true }[];
+		confirm?: string;
+	} | null;
 	runs: {
 		id: string;
 		origin: string;

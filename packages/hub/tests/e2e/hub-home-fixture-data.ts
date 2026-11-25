@@ -143,6 +143,17 @@ function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {
 		model: agent.model,
 		question:
 			agent.state === 'needs-you' ? 'Approve the Nudge production window, Sat 09:00?' : null,
+		...(agent.state === 'needs-you' && {
+			options: [
+				{
+					label: 'Approve Saturday 09:00',
+					effect: 'Schedules the production deploy for Saturday at 09:00.',
+					recommended: true as const
+				},
+				{ label: 'Move to Monday', effect: 'Holds the deploy until Monday morning.' }
+			],
+			confirm: 'deploy' as const
+		}),
 		messages:
 			agent.state === 'needs-you'
 				? [

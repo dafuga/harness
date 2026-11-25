@@ -9,7 +9,7 @@ import type {
 } from '../TrackerItemReadRepository.types';
 import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
-import { trackerChaseFields, trackerAskAge } from './serializeTrackerItem';
+import { trackerChaseFields, trackerAskFields } from './serializeTrackerItem';
 import { trackerPlanningStage } from '../../../utils/projects-sessions/trackerPlanning';
 import type { StoredRecurringResult } from './buildTrackerDigest.types';
 
@@ -101,7 +101,6 @@ function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
 		stage: trackerPlanningStage(row),
 		blocked_reason: row.status === 'blocked' ? row.blocked_reason : null,
 		needs_daniel: needsDaniel,
-		...(needsDaniel && trackerAskAge(row, now)),
 		...(row.next_step && {
 			next_step: row.next_step,
 			...(row.project && { project: row.project })
@@ -114,6 +113,7 @@ function summarize(row: TrackerItemRow, now: number): TrackerDigestItem {
 		owner: row.owner,
 		agent: row.agent,
 		question: row.question,
+		...trackerAskFields(row, needsDaniel, now),
 		created_by: row.created_by,
 		updated_at: row.updated_at
 	};

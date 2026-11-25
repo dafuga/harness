@@ -20,7 +20,9 @@
 			"writeView",
 			"writeGate",
 			"flagQuestion",
-			"confirmedWrite"
+			"confirmedWrite",
+			"orderedOptions",
+			"optionWrite"
 		]
 	},
 	"contract": {
@@ -88,12 +90,32 @@
 			},
 			{
 				"name": "confirmedWrite.draft",
-				"type": "{ action: WriteAction; id: string; text: string; revision: string | null }",
+				"type": "{ action: WriteAction; id: string; text: string; revision: string | null; option?: number; }",
 				"required": true
 			},
 			{
 				"name": "confirmedWrite.confirmed",
 				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "orderedOptions.flag",
+				"type": "InboxFlag | null",
+				"required": true
+			},
+			{
+				"name": "optionWrite.detail",
+				"type": "InboxDetail",
+				"required": true
+			},
+			{
+				"name": "optionWrite.reviewed",
+				"type": "{ revision: string | null } | null",
+				"required": true
+			},
+			{
+				"name": "optionWrite.number",
+				"type": "number",
 				"required": true
 			}
 		],
@@ -140,6 +162,14 @@
 			},
 			{
 				"name": "confirmedWrite",
+				"type": "ConfirmedWrite | null"
+			},
+			{
+				"name": "orderedOptions",
+				"type": "{ number: number; option: InboxOption }[]"
+			},
+			{
+				"name": "optionWrite",
 				"type": "ConfirmedWrite | null"
 			}
 		],
@@ -302,7 +332,7 @@
 				"inputs": [
 					{
 						"name": "confirmedWrite.draft",
-						"type": "{ action: WriteAction; id: string; text: string; revision: string | null }",
+						"type": "{ action: WriteAction; id: string; text: string; revision: string | null; option?: number; }",
 						"required": true
 					},
 					{
@@ -314,6 +344,52 @@
 				"outputs": [
 					{
 						"name": "confirmedWrite",
+						"type": "ConfirmedWrite | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "orderedOptions",
+				"inputs": [
+					{
+						"name": "orderedOptions.flag",
+						"type": "InboxFlag | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "orderedOptions",
+						"type": "{ number: number; option: InboxOption }[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "optionWrite",
+				"inputs": [
+					{
+						"name": "optionWrite.detail",
+						"type": "InboxDetail",
+						"required": true
+					},
+					{
+						"name": "optionWrite.reviewed",
+						"type": "{ revision: string | null } | null",
+						"required": true
+					},
+					{
+						"name": "optionWrite.number",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "optionWrite",
 						"type": "ConfirmedWrite | null"
 					}
 				],

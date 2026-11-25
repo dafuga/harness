@@ -1,12 +1,15 @@
 // @harness-uid u_r7qgepnoax
 import { resolve } from 'node:path';
+import { nativeTrackerAskBody } from './nativeTrackerAskOptions';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
 const text = { type: 'string' } as const;
 const flag = { type: 'boolean' } as const;
+const words = { type: 'string', multiple: true } as const;
+const askOptions = { option: words, recommend: text, confirm: text } as const;
 export const nativeTrackerCommonOptions = { json: flag, quiet: { ...flag, short: 'q' }, by: text };
 
-export function itemFields(input: Record<string, string | boolean | undefined>) {
+export function itemFields(input: Record<string, string | boolean | string[] | undefined>) {
 	const { tz, repo } = input;
 	const fields = Object.fromEntries(
 		Object.entries(input).filter(
@@ -15,6 +18,9 @@ export function itemFields(input: Record<string, string | boolean | undefined>) 
 				![
 					'callback-url',
 					'callback-cmd',
+					'option',
+					'recommend',
+					'confirm',
 					'needs-daniel',
 					'next-step',
 					'note',
@@ -30,6 +36,7 @@ export function itemFields(input: Record<string, string | boolean | undefined>) 
 		callback_url: input['callback-url'],
 		callback_cmd: input['callback-cmd'],
 		needs_daniel: input['needs-daniel'],
+		...nativeTrackerAskBody(input),
 		next_step: input['next-step'],
 		remind_at: input['remind-at'] ?? input.at,
 		every_tz: tz,
@@ -53,6 +60,7 @@ const itemOptions = {
 	'callback-url': text,
 	'callback-cmd': text,
 	'needs-daniel': flag,
+	...askOptions,
 	auto: flag,
 	every: text,
 	tz: text,
@@ -60,7 +68,7 @@ const itemOptions = {
 };
 export const nativeTrackerCommandOptions = new Map<
 	string,
-	Record<string, typeof text | typeof flag>
+	Record<string, typeof text | typeof flag | typeof words>
 >([
 	['add', { ...itemOptions, later: flag, reminder: flag, at: text }],
 	['plan', itemOptions],
@@ -68,7 +76,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['update', { ...itemOptions, note: text, 'remind-at': text }],
 	['note', {}],
 	['progress', {}],
-	['flag', { question: text, force: flag }],
+	['flag', { question: text, force: flag, ...askOptions }],
 	['chase', { note: text }],
 	['remind', { at: text, reminder: flag }],
 	['priority', {}],
@@ -78,7 +86,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['unblock', { note: text }],
 	['ignore', { reason: text, until: text }],
 	['unignore', { note: text }],
-	['answer', { done: flag }],
+	['answer', { done: flag, option: text, confirmed: flag }],
 	['resolve', { done: flag }],
 	['done', { note: text, failed: flag, occurrence: text, 'next-step': text }],
 	['launch', launchOptions],
