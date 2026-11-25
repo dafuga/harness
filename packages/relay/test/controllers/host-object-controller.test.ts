@@ -3,7 +3,6 @@ import { randomId } from '../../../remote/src/index';
 import {
 	connectHost,
 	newHost,
-	openPairing,
 	ownerOf,
 	pairingPath,
 	registerHost,
@@ -71,12 +70,8 @@ test('a host object answers only for the host it is named after', async () => {
 	const host = await registerHost(relay);
 	const other = await registerHost(relay, host.ownerId);
 	const socket = await connectHost(relay, host);
-	const pairingId = await openPairing(socket);
-	const path = pairingPath(host, pairingId);
-	const direct = await relay.manage('', {}, { object: host.hostId, path, method: 'GET' });
+	const direct = await relay.manage('summary', ownerOf(host), { object: host.hostId });
 	expect(direct.status).toBe(200);
-	const crossed = await relay.manage('', {}, { object: other.hostId, path, method: 'GET' });
-	expect(await answer(crossed)).toEqual(missing);
 	const summary = await relay.manage('summary', ownerOf(host), { object: other.hostId });
 	expect(await answer(summary)).toEqual(missing);
 	const unregister = await relay.manage('unregister', ownerOf(host), { object: other.hostId });

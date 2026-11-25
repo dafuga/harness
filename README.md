@@ -97,6 +97,15 @@ work is finished and Daniel still needs to choose what happens next. The digest
 continues listing the decision. Daniel can defer it with `tracker park <id>
 --until <date>` or close it with `tracker move-on <id>`.
 
+The launcher frees slots on its own. Only active runs count against the cap.
+A finished run's `auto-*` session closes within a minute. It stays open while
+someone is attached, or while its item is open and the provider reports a live
+background shell or monitor. A session that waits 15 minutes at its prompt
+with a question, a `stopped:` note or a reply to the idle check-in has its run
+finished. Blocked items and final reports are not relaunched until their item
+changes. To answer a blocked item and keep it waiting, use
+`harness tracker answer ITEM "Wait for the review" --keep-blocked`.
+
 With no native configuration, Harness forwards the original options, output and
 exit codes through the retained Tracker client.
 

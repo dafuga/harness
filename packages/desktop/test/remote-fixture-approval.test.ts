@@ -3,23 +3,33 @@ import { afterAll, beforeAll, expect, test } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { DevicePairingService } from '../../remote/src/index';
-import type { RemotePairingOffer } from '../../remote/src/index';
+import { accountPairing } from './remote-account-pairing';
 import { startRemoteFixture } from '../scripts/remote-fixture-host';
 let fixture: Fixture, publicDirectory: string;
-const phone = { deviceName: 'Scanning stand-in', platform: 'test' as const };
+const phone = { deviceName: 'Account stand-in' };
 const control = async <T = View>(method: string, path: string, body?: object) => {
 	const sent = body ? { body: JSON.stringify(body) } : {};
 	return (await (await fetch(fixture.controlOrigin + path, { method, ...sent })).json()) as T;
 };
-/** A stand-in for the phone: it has scanned the offer the fixture just opened. */
-async function scanned() {
-	const offer = await control<RemotePairingOffer>('POST', '/pairing'),
-		pairing = new DevicePairingService(),
-		reading = { now: Date.now(), environments: ['local'] as const };
-	const pending = await pairing.scanned(offer.scan, phone, reading);
+/** A stand-in for a signed-in phone: its account request reached the fixture computer. */
+async function asked() {
+	const { pairing, pending } = await accountPairing(
+		{
+			origin: fixture.relayOrigin,
+			hostId: fixture.hostId,
+			hostKey: fixture.hostKey,
+			submit: async (pairingId, request) => {
+				const sent = await fetch(fixture.controlOrigin + '/account-request', {
+					method: 'POST',
+					body: JSON.stringify({ pairingId, request })
+				});
+				if (!sent.ok) throw new Error('The fixture refused the account request.');
+			}
+		},
+		phone.deviceName
+	);
 	await expect.poll(async () => (await control('GET', '/status')).requests.length).toBe(1);
-	return { offer, pairing, pending };
+	return { pairing, pending };
 }
 beforeAll(async () => {
 	publicDirectory = await mkdtemp(join(tmpdir(), 'harness-remote-fixture-asked-'));
@@ -31,10 +41,10 @@ afterAll(async () => {
 });
 
 test('a phone that scanned waits: it is a request, not a device, and nothing is exchanged', async () => {
-	const { pairing, pending } = await scanned();
+	const { pairing, pending } = await asked();
 	const waiting = await control('GET', '/status');
 	expect(waiting.requests).toMatchObject([
-		{ deviceId: pending.deviceId, deviceName: 'Scanning stand-in' }
+		{ deviceId: pending.deviceId, deviceName: 'Account stand-in' }
 	]);
 	expect(waiting.devices).toEqual([]);
 	expect(await pairing.poll(pending)).toBe('requested');
@@ -45,12 +55,12 @@ test('a phone that scanned waits: it is a request, not a device, and nothing is 
 }, 60000);
 
 test('only the approval that is asked for makes the phone a device, with the grant it was given', async () => {
-	const { pairing, pending } = await scanned();
+	const { pairing, pending } = await asked();
 	expect(await pairing.poll(pending)).toBe('requested');
 	const approved = await control('POST', '/approve', { agents: false });
 	expect(approved.requests).toEqual([]);
 	expect(approved.devices).toMatchObject([
-		{ deviceId: pending.deviceId, name: 'Scanning stand-in', agents: false }
+		{ deviceId: pending.deviceId, name: 'Account stand-in', agents: false }
 	]);
 	const credentials = await pairing.exchange(pending);
 	expect(credentials.grant).toEqual({ projects: [fixture.project], agents: false });

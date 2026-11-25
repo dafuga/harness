@@ -40,14 +40,10 @@ export class HostCommandService {
 
 	private async run(command: Acknowledged): Promise<RelayErrorCode | undefined> {
 		switch (command.type) {
-			case 'pairing-open':
-				return this.offers.open(command.pairingId, command.expiresAt);
 			case 'pairing-approve':
 				return this.offers.approve(command);
 			case 'pairing-deny':
 				return this.offers.deny(command.pairingId);
-			case 'pairing-close':
-				return this.offers.close(command.pairingId);
 			case 'device-revoke':
 				this.revocation.revoke(command.deviceId);
 				return undefined;

@@ -61,7 +61,7 @@ export function isWorking(agent: HomeAgent) {
 export function agentActivity(agent: HomeAgent) {
 	if (!isWorking(agent)) return agent.task;
 	const total = agentSessions(agent);
-	const first = agent.tasks[0]?.title ?? agent.subAgents.tasks[0]?.title ?? agent.task;
+	const first = agent.tasks[0]?.title ?? agent.task;
 	const more = total > 1 ? ` (+${total - 1} more)` : '';
 	const subs = agent.subAgents.sessions
 		? ` (${count(agent.subAgents.sessions, 'sub-agent session')})`

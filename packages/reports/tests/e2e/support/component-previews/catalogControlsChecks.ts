@@ -28,7 +28,7 @@ export async function assertCatalogControls({
 	await assertDesktopChoices(component, unit.id);
 	await assertTrackerChoices(component, unit.id);
 	if (
-		['remote-connection', 'remote-host-panel', 'remote-offer-code'].some(
+		['remote-connection', 'remote-host-panel'].some(
 			(name) => unit.id === `desktop.component.${name}`
 		)
 	)

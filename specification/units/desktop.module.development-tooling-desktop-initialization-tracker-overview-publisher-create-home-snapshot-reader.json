@@ -21,6 +21,11 @@
 				"type": "string",
 				"required": false,
 				"description": "Optional owner-managed provider quota file. Defaults to none, which leaves quota unknown."
+			},
+			{
+				"name": "createHomeSnapshotReader.sources",
+				"type": "QuotaSource[]",
+				"required": false
 			}
 		],
 		"outputs": [
@@ -41,6 +46,11 @@
 						"type": "string",
 						"required": false,
 						"description": "Optional owner-managed provider quota file. Defaults to none, which leaves quota unknown."
+					},
+					{
+						"name": "createHomeSnapshotReader.sources",
+						"type": "QuotaSource[]",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -57,6 +67,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-codex-quota-source",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-provider-reader",
 			"via": "import",

@@ -6,24 +6,19 @@
 	"title": "Build a bounded QR symbol",
 	"responsibility": "Encodes short printable ASCII text as QR modules and a drawing path.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Devices link only through Google sign-in to the same account: there is no QR code, offer or scan any more.",
+		"at": "2026-11-25T18:36:40.507Z"
+	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/networking-security/remote-offer-code/QrRefusedError.ts",
 			"packages/desktop/src/components/networking-security/remote-offer-code/qrSymbol.ts",
 			"packages/desktop/src/components/networking-security/remote-offer-code/qrSymbol.types.ts",
 			"packages/desktop/src/utils/networking-security/qrSymbol.ts",
 			"packages/desktop/src/utils/networking-security/qrSymbol.types.ts"
 		],
-		"symbols": [
-			"QrRefusedError",
-			"qrSymbol",
-			"QrRefusedError",
-			"qrLimits",
-			"qrSymbol",
-			"QrSymbol",
-			"QrSymbol"
-		]
+		"symbols": ["qrSymbol", "QrRefusedError", "qrLimits", "qrSymbol", "QrSymbol", "QrSymbol"]
 	},
 	"contract": {
 		"origin": "declared",

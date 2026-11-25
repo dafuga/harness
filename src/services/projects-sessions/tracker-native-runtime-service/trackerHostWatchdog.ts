@@ -28,9 +28,9 @@ const minute = 60_000;
 export function trackerHostWatchdog(
 	store: TrackerPersistenceService,
 	config: NonNullable<TrackerHostEffects['watchdog']>,
-	options: Pick<WatchdogSessionScan, 'now' | 'launch' | 'idleWork' | 'automaticEnabled'>
+	options: Pick<WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled'>
 ) {
-	const { now, launch, idleWork, automaticEnabled } = options;
+	const { now, launch, settle, idleWork, automaticEnabled } = options;
 	const driver = trackerWatchdogPort(config, store.node);
 	store.database.exec(trackerRunSchema);
 	const scanTranscripts = trackerTranscriptScan(store, config.transcriptRoots ?? [], now);
@@ -46,6 +46,7 @@ export function trackerHostWatchdog(
 			readItems,
 			now,
 			launch,
+			settle,
 			idleWork,
 			automaticEnabled,
 			roots: config.transcriptRoots
@@ -87,6 +88,7 @@ export function configuredHostWatchdog(
 	return trackerHostWatchdog(store, watchdog, {
 		now,
 		launch: trackerRecoveryLaunch(dispatch),
+		settle: dispatch,
 		automaticEnabled,
 		idleWork
 	});

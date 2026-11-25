@@ -197,8 +197,8 @@ export async function reconnection(run: Acceptance): Promise<void> {
 	await shot(run, 'revoked');
 	await restart(run);
 	const form = await seen(run, panelText, 'Connect to computer', 'started again, it is unpaired');
-	const scanning = form.includes('Scan QR code') && !form.includes('Pairing link');
-	record.check(scanning, 'and offers to scan again, with no field for a link or a code');
+	const noScan = !form.includes('Scan QR code') && !form.includes('Pairing link');
+	record.check(noScan, 'and offers no scan and no field for a link or a code');
 	record.check(
 		keychainGroups(run.udid).length === 0,
 		'nothing of the app is left in the Keychain of the simulator'

@@ -7,6 +7,8 @@ export type TrackerModelHistory = Partial<Record<string, { ok: number; fail: num
 export interface TrackerModelSelectionOptions {
 	cfg?: TrackerLadderConfig;
 	history?: TrackerModelHistory;
+	/** Epoch milliseconds that select the routing table; defaults to the current time. */
+	now?: number;
 }
 
 export interface TrackerModelSelection {

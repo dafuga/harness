@@ -19,20 +19,15 @@
 		"symbols": [
 			"HostPairingService",
 			"HostPairingService.constructor",
-			"HostPairingService.open",
-			"HostPairingService.offer",
 			"HostPairingService.requests",
 			"HostPairingService.receive",
 			"HostPairingService.approve",
 			"HostPairingService.deny",
-			"HostPairingService.closeOffer",
 			"HostPairingService.close",
 			"HostPairingOptions",
-			"HostPairingOffer",
 			"HostPairingFrame",
 			"HostPairingApproved",
 			"HostPairingOptions",
-			"HostPairingOffer",
 			"HostPairingFrame",
 			"HostPairingApproved",
 			"Requested",
@@ -42,7 +37,6 @@
 			"HostPairingService",
 			"HostPairingService",
 			"HostPairingOptions",
-			"HostPairingOffer",
 			"HostPairingFrame",
 			"HostPairingApproved"
 		]
@@ -233,52 +227,6 @@
 		"errorStatus": "declared",
 		"operations": [
 			{
-				"name": "HostPairingService.open",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HostPairingService.open",
-						"type": "HostPairingOffer",
-						"description": "The new offer: pairingId (32 lowercase hex characters) and code (XXXX-XXXX, typed on the phone) identify it, and expiresAt is the ISO 8601 time ttlMs after it was opened (remoteLimits.pairingTtlMs, 300000 ms, by default). Calling open again replaces the current offer, so the earlier one stops working.",
-						"examples": [
-							{
-								"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
-								"code": "K7QF-3MTN",
-								"expiresAt": "2026-11-15T12:05:00.000Z"
-							},
-							{
-								"pairingId": "c04a7e19d6f2835b1e0a94c7d3f6b218",
-								"code": "W3HN-29RP",
-								"expiresAt": "2026-11-15T09:25:00.000Z"
-							}
-						]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "HostPairingService.offer",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HostPairingService.offer",
-						"type": "HostPairingOffer | null",
-						"description": "The live offer's pairingId, code and expiresAt, or null when no offer is open or the open offer has expired; it carries no request data.",
-						"examples": [
-							{
-								"pairingId": "5e1c0b9a7f3d24e8a6b0c71d9f48e2a3",
-								"code": "K7QF-3MTN",
-								"expiresAt": "2026-11-15T12:05:00.000Z"
-							},
-							null
-						]
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "HostPairingService.requests",
 				"inputs": [],
 				"outputs": [
@@ -447,18 +395,6 @@
 				],
 				"errors": [],
 				"errorStatus": "declared"
-			},
-			{
-				"name": "HostPairingService.closeOffer",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HostPairingService.closeOffer",
-						"type": "void"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
 			},
 			{
 				"name": "HostPairingService.close",

@@ -106,7 +106,8 @@ grant signature.
    genesis, pins its head, unwraps its grants and writes its own sealed
    device name.
 
-No QR code is needed; scanning one is an optional shortcut for the code. Sign-in alone shows "Approve this
+No QR code exists in any flow, and a QR code is not an optional shortcut. Devices link only
+through Google sign-in (see `google-device-linking.md`). Sign-in alone shows "Approve this
 device on your iPhone or Mac". Revoking appends `revoke`, then `rotate` for
 every scope that device held, with fresh grants for the remaining devices.
 Older epochs stay readable by remaining devices; re-sealing old data is

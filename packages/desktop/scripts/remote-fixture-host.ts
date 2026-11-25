@@ -45,7 +45,7 @@ function processEncryption() {
 		}
 	};
 }
-/** A phone that proved the offer's code is approved for the synthetic project and nothing else. */
+/** A phone of the account that asked is approved for the synthetic project and nothing else. */
 function autoApprove(host: RemoteHostService, projectId: string, log: (line: string) => void) {
 	const seen = new Set<string>();
 	host.onStatus(({ requests }) => {
@@ -134,7 +134,7 @@ function decisions(
 		}
 	};
 }
-/** What the control answers: public facts and state. An offer is given once, to who asked for it. */
+/** What the control answers: public facts and state. No key or credential is ever given. */
 function fixtureActions(running: Running & FixtureTrackerPorts, options: RemoteFixtureOptions) {
 	const { host, screen, facts } = running,
 		save = (file: string, value: object) =>
@@ -143,9 +143,8 @@ function fixtureActions(running: Running & FixtureTrackerPorts, options: RemoteF
 				JSON.stringify({ notice, ...value }, null, '\t')
 			);
 	const view = async () => {
-		const { state: reached, pairing, requests, devices } = await host.status(),
-			offer = pairing && { ...pairing, code: undefined, scan: undefined };
-		return { ...facts, state: reached, locked: screen.locked ?? null, offer, requests, devices };
+		const { state: reached, requests, devices } = await host.status();
+		return { ...facts, state: reached, locked: screen.locked ?? null, requests, devices };
 	};
 	const screened = (locked: boolean) => {
 		screen.locked = locked;
@@ -155,11 +154,18 @@ function fixtureActions(running: Running & FixtureTrackerPorts, options: RemoteF
 	const actions: Record<string, FixtureAction> = {
 		...decisions(running, view),
 		'GET /status': view,
-		'POST /pairing': async () => {
-			const offer = await host.devices.createPairing();
-			options.log(`Pairing offer ${offer.pairingId} is open until ${offer.expiresAt}.`);
-			await save('offer.json', { ...offer, code: undefined, scan: undefined });
-			return offer;
+		/** What the Hub does for a signed-in phone: hands its sealed request to the host. */
+		'POST /account-request': async (body) => {
+			const { pairingId, request } = body as { pairingId?: string; request?: object };
+			const answer = await running.relay.manage('pairing-request', {
+				owner,
+				hostId: facts.hostId,
+				pairingId,
+				request
+			});
+			if (!answer.ok) throw new FixtureRelayRegistrationError('The relay refused the request.');
+			options.log(`Account request ${String(pairingId)} reached the fixture computer.`);
+			return answer.json();
 		},
 		'POST /suspend': () => (host.suspend(), view()),
 		'POST /tracker-finish': () => (running.tracker.finish(), view()),
@@ -188,8 +194,11 @@ export async function startRemoteFixture(options: RemoteFixtureOptions) {
 		built = await fixtureHost(relay, state, project.root);
 	if (options.approval !== 'asked') autoApprove(built.host, built.project.id, options.log);
 	const hostId = await online(built.host),
-		facts = { relayOrigin: relay.origin, hostId, project: built.project },
-		{ actions, save } = fixtureActions({ ...built, facts }, options),
+		key = (await (await relay.manage('pairing-key', { owner, hostId })).json()) as {
+			hostKey: string;
+		},
+		facts = { relayOrigin: relay.origin, hostId, hostKey: key.hostKey, project: built.project },
+		{ actions, save } = fixtureActions({ ...built, facts, relay }, options),
 		control = await remoteFixtureControl(options.controlPort ?? 0, actions);
 	await mkdir(options.publicDirectory, { recursive: true });
 	await save('fixture.json', { ...facts, controlOrigin: control.origin, pid: process.pid });

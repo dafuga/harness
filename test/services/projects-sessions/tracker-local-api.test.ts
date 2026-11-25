@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import { afterEach, beforeEach, expect, test } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRecurringRepository } from '../../../src/repositories/projects-sessions/TrackerRecurringRepository';
 import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
@@ -117,7 +117,11 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 		needs_daniel: true,
 		notes_log: [{ text: 'blocked: Waiting for fixture' }, { text: 'unblocked: Available' }]
 	});
-	expect(await (await mark('done')).json()).toMatchObject({ status: 'done', needs_daniel: true });
+	expect((await mark('done')).status).toBe(409);
+	expect(await (await mark('done', { force: true })).json()).toMatchObject({
+		status: 'done',
+		needs_daniel: true
+	});
 	expect(await (await mark('unflag')).json()).toMatchObject({ needs_daniel: false });
 	expect(await (await mark('reopen')).json()).toMatchObject({ status: 'open' });
 	await verifyProjectFollowUp();
@@ -208,12 +212,21 @@ test('reports persisted run history and selects a model through the native item 
 	]);
 	const report = await request('/models/report');
 	expect(await report.json()).toMatchObject({
-		ladder: expect.arrayContaining(['sol']),
+		ladder: ['haiku', 'sonnet', 'terra', 'sol', 'opus'],
 		rows: expect.arrayContaining([
 			expect.objectContaining({ rung: 'sol', kind: '*', runs: 2, done: 1, blocked: 1 })
 		])
 	});
-	const pick = await request(`/items/${id.slice(0, 6)}/pick`);
-	expect(await pick.json()).toMatchObject({ item_id: id, rung: 'sol', cli: 'codex', auto: false });
+	// Codex resets 27 Nov 2026 10:39 Lisbon: Claude only before, the Sol default after.
+	for (const [at, rung, cli] of [
+		['2026-11-27T10:38:59Z', 'sonnet', 'claude'],
+		['2026-11-27T10:39:00Z', 'sol', 'codex']
+	]) {
+		vi.useFakeTimers({ toFake: ['Date'] });
+		vi.setSystemTime(Date.parse(at));
+		const pick = await request(`/items/${id.slice(0, 6)}/pick`);
+		vi.useRealTimers();
+		expect(await pick.json()).toMatchObject({ item_id: id, rung, cli, auto: false });
+	}
 	expect(store.maxSeq()).toBe(1);
 });

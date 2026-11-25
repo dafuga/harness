@@ -10,12 +10,6 @@ export interface DevicePairingInput extends RemotePairInput {
 	platform?: PairingSecret['platform'];
 }
 
-/** How a device names itself when it scans: it gives no address and no code. */
-export interface ScanningDevice {
-	deviceName: string;
-	platform?: PairingSecret['platform'];
-}
-
 /** What a phone holds between its request and the exchange. Nothing here is sent anywhere. */
 export interface PendingPairing {
 	input: DevicePairingInput;

@@ -2,7 +2,7 @@
 import type { IosBuildPlan } from './ios-build-options.types';
 import { fileURLToPath } from 'node:url';
 
-const known = ['--sync', '--fixture', '--scan-fixture', '--release'];
+const known = ['--sync', '--fixture', '--release'];
 export const fixtureNeedsDebug =
 	'A fixture build is a Debug build: --fixture cannot be combined with --release. A Release product never accepts a local relay.';
 
@@ -14,11 +14,10 @@ export function iosBuildPlan(args: string[]): IosBuildPlan | { error: string } {
 	const unknown = args.find((item) => !known.includes(item));
 	if (unknown) return { error: `Unknown option ${unknown}. Known: ${known.join(', ')}.` };
 	const fixture = args.includes('--fixture');
-	const scanFixture = args.includes('--scan-fixture');
 	const release = args.includes('--release');
-	if ((fixture || scanFixture) && release) return { error: fixtureNeedsDebug };
+	if (fixture && release) return { error: fixtureNeedsDebug };
 	const configuration = release ? 'Release' : 'Debug';
-	return { configuration, fixture, scanFixture, sync: args.includes('--sync') };
+	return { configuration, fixture, sync: args.includes('--sync') };
 }
 
 /**

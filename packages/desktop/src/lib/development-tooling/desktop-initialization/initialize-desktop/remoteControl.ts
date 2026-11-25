@@ -9,8 +9,6 @@ export function remoteControl(remote: RemoteHostService): LocalControl {
 		status: () => remote.status(),
 		enable: () => remote.enable(),
 		disable: () => remote.disable(),
-		createPairing: () => devices.createPairing(),
-		closePairing: () => devices.closePairing(),
 		approvePairing: (input) => devices.approvePairing(input),
 		denyPairing: (input) => devices.denyPairing(input),
 		revokeDevice: (input) => devices.revokeDevice(input)

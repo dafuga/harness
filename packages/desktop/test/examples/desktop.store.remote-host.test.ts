@@ -1,19 +1,35 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
+import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { createRemoteHostStore } from '../../src/lib/stores/networking-security/remoteHost.svelte';
 import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte.types';
 import type {
 	RemoteDesktopControl,
 	RemoteHostStatus
 } from '../../../remote/src/models/networking-security/RemoteControl.types';
-import { record, workspaceWith, approval } from './desktop.store.remote-host.cases';
 
 // prettier-ignore
-const base: RemoteHostStatus = { supported: true, enabled: false, state: 'disabled', reason: null, host: null, origin: null, pairing: null, requests: [], devices: [], projects: [] };
+const base: RemoteHostStatus = { supported: true, enabled: false, state: 'disabled', reason: null, host: null, origin: null, requests: [], devices: [], projects: [] };
 // prettier-ignore
 const online: RemoteHostStatus = { ...base, enabled: true, state: 'online', host: { id: 'host-1', name: 'Desk' } };
 // prettier-ignore
-const methods = ['status', 'enable', 'disable', 'createPairing', 'closePairing', 'approvePairing', 'denyPairing', 'revokeDevice'];
+const approval = { pairingId: 'pairing-1', deviceId: 'device-1', projectIds: ['project-1'], agents: false };
+// prettier-ignore
+const methods = ['status', 'enable', 'disable', 'approvePairing', 'denyPairing', 'revokeDevice'];
+
+/** Writes this state's trace: its case is named after the state, and its file after the state. */
+function record(state: string, symbol: string, output: unknown) {
+	recordExampleCases(
+		{
+			unitId: 'desktop.store.remote-host',
+			symbol,
+			state,
+			evidence: 'examples-cases',
+			file: `${state}.json`
+		},
+		[{ name: state, input: null, output }]
+	);
+}
 
 /** A port that records each call, answers with one status and can announce a status. */
 function fakePort(answer: RemoteHostStatus, failing = '') {
@@ -43,6 +59,29 @@ function fakePort(answer: RemoteHostStatus, failing = '') {
 		released: () => released
 	};
 }
+
+const workspaceWith = (host: unknown) => ({ remote: { host } }) as unknown as Workspace;
+
+test('Without a control port start returns unsubscribed and every action resolves false', async () => {
+	const store = createRemoteHostStore(workspaceWith(undefined));
+	const started = await store.start();
+	const results = [
+		await store.enable(),
+		await store.disable(),
+		await store.approve(approval),
+		await store.deny('pairing-1'),
+		await store.revoke('device-1')
+	];
+
+	expect(started).toBeUndefined();
+	expect(results).toEqual([false, false, false, false, false]);
+	expect(store.status).toBeNull();
+	expect(store.busy).toBe(false);
+	record('absent-port-resolves-every-action-false', 'createRemoteHostStore', {
+		started: null,
+		results
+	});
+});
 
 test('A port set on the workspace after creation is read on the next access, and a falsy port is absent', async () => {
 	const fake = fakePort(online);
@@ -90,24 +129,19 @@ test('Each action forwards its input and accepts the status it answers with', as
 	const store = createRemoteHostStore(workspaceWith(fake.port));
 	const results = [
 		await store.enable(),
-		await store.createPairing(),
 		await store.approve(approval),
 		await store.deny('pairing-1'),
 		await store.revoke('device-1'),
-		await store.closePairing(),
 		await store.disable()
 	];
 
-	expect(results).toEqual([true, true, true, true, true, true, true]);
+	expect(results).toEqual([true, true, true, true, true]);
 	expect(store.status).toEqual(online);
 	expect(fake.calls).toEqual([
 		'enable',
-		'createPairing',
-		'status',
 		'approvePairing',
 		'denyPairing',
 		'revokeDevice',
-		'closePairing',
 		'disable'
 	]);
 	record('actions-accept-the-answered-status', 'enable', {

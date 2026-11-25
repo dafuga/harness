@@ -31,7 +31,6 @@ test('reports idle, signed-out and registration status with public', () => {
 			reason: status.reason,
 			host: status.host,
 			origin: status.origin,
-			pairing: status.pairing,
 			requests: status.requests,
 			devices: status.devices,
 			projects: status.projects

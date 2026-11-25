@@ -1,6 +1,8 @@
 // @harness-uid u_bl6xl2h4a3
 import { trackerStoredSchedulingHold } from '../../../repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
+import type { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
+import { finishReportedRuns } from './trackerFinalReports';
 import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogPaneService } from '../WatchdogPaneService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
@@ -64,7 +66,7 @@ async function scanHostSessions(
 	const canLaunch = options.automaticEnabled?.() !== false && !automaticQuietHour(now);
 	await inspectHostSessions(
 		hosts,
-		{ rows, snapshot, launch: canLaunch ? options.launch : undefined },
+		{ rows, snapshot, launch: canLaunch ? options.launch : undefined, settle: options.settle },
 		signal
 	);
 	if (canLaunch && options.idleWork)
@@ -76,8 +78,14 @@ async function inspectHostSessions(
 	{
 		rows,
 		snapshot,
-		launch
-	}: { rows: readonly TrackerItem[]; snapshot: WatchdogScan; launch?: TrackerWatchdogLaunch },
+		launch,
+		settle
+	}: {
+		rows: readonly TrackerItem[];
+		snapshot: WatchdogScan;
+		launch?: TrackerWatchdogLaunch;
+		settle?: TrackerDispatcherService;
+	},
 	signal: AbortSignal
 ) {
 	recordStartupAlerts(store, snapshot, new WatchdogStartupService());
@@ -99,10 +107,9 @@ async function inspectHostSessions(
 		},
 		signal
 	);
-	const handoffs = await trackerContextHandoffs(
-		store,
-		driver,
-		{ ...snapshot, canRelaunch: Boolean(launch) },
+	const handled = await settleSessions(
+		{ store, driver },
+		{ snapshot, canRelaunch: Boolean(launch), settle },
 		signal
 	);
 	const paneService = new WatchdogPaneService();
@@ -110,13 +117,40 @@ async function inspectHostSessions(
 		const pane = snapshot.panes.find(({ key }) => key === decision.paneKey);
 		if (
 			!pane ||
-			handoffs.has(pane.key) ||
+			handled.has(pane.key) ||
 			!idleWatchdogItem(activeWatchdogItem(items, decision.id), snapshot.now)
 		)
 			continue;
 		if (paneService.idlePrompt(pane) !== decision.cli) continue;
-		await applyIdleDecision({ store, driver, snapshot }, { decision, pane }, signal);
+		const host = { store, driver, snapshot, settles: Boolean(settle) };
+		await applyIdleDecision(host, { decision, pane }, signal);
 	}
+}
+
+/** Panes taken by a context handoff or a finished report get no idle check-in. */
+async function settleSessions(
+	{ store, driver }: Pick<WatchdogSessionHost, 'store' | 'driver'>,
+	{
+		snapshot,
+		canRelaunch,
+		settle
+	}: { snapshot: WatchdogScan; canRelaunch: boolean; settle?: TrackerDispatcherService },
+	signal: AbortSignal
+): Promise<Set<string>> {
+	const handoffs = await trackerContextHandoffs(
+		store,
+		driver,
+		{ ...snapshot, canRelaunch },
+		signal
+	);
+	if (!settle) return handoffs;
+	const reported = await finishReportedRuns(
+		store,
+		settle,
+		{ scan: snapshot, skip: handoffs },
+		signal
+	);
+	return new Set([...handoffs, ...reported]);
 }
 
 function idleWatchdogItem(item: TrackerItem | undefined, now: number): boolean {

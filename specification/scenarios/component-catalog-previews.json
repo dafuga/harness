@@ -73,7 +73,6 @@
 		"desktop.component.remote-connection",
 		"desktop.component.remote-devices",
 		"desktop.component.remote-host-panel",
-		"desktop.component.remote-offer-code",
 		"desktop.component.remote-phone-panel",
 		"desktop.component.revision-picker",
 		"desktop.component.runtime-artifact",
@@ -113,7 +112,9 @@
 		"hub.component.project-create",
 		"hub.component.project-list",
 		"hub.component.projects-sessions-hub-home",
+		"hub.component.projects-sessions-hub-home-add-session",
 		"hub.component.projects-sessions-hub-home-agents",
+		"hub.component.projects-sessions-hub-home-ask",
 		"hub.component.projects-sessions-hub-home-card",
 		"hub.component.projects-sessions-hub-home-cards",
 		"hub.component.projects-sessions-hub-home-choices",
@@ -826,7 +827,7 @@
 		},
 		{
 			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-choices",
-			"title": "TrackerInboxChoices",
+			"title": "Tracker ask choices",
 			"coverage": "required",
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices"]
 		},
@@ -1725,12 +1726,6 @@
 			"units": ["desktop.component.remote-host-panel"]
 		},
 		{
-			"id": "desktop-component-remote-offer-code",
-			"title": "Remote offer code",
-			"coverage": "required",
-			"units": ["desktop.component.remote-offer-code"]
-		},
-		{
 			"id": "desktop-component-remote-phone-panel",
 			"title": "Remote phone panel",
 			"coverage": "required",
@@ -2151,10 +2146,22 @@
 			"units": ["hub.component.projects-sessions-hub-home"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-add-session",
+			"title": "HubHomeAddSession",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-add-session"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-agents",
 			"title": "HubHomeAgents",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-agents"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-ask",
+			"title": "HubHomeAsk",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-ask"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-card",
@@ -8830,7 +8837,6 @@
 				"desktop-component-remote-connection",
 				"desktop-component-remote-devices",
 				"desktop-component-remote-host-panel",
-				"desktop-component-remote-offer-code",
 				"desktop-component-remote-phone-panel",
 				"desktop-component-revision-picker",
 				"desktop-component-revision-picker-branch-open",
@@ -8901,7 +8907,9 @@
 				"hub-component-project-create",
 				"hub-component-project-list",
 				"hub-component-projects-sessions-hub-home",
+				"hub-component-projects-sessions-hub-home-add-session",
 				"hub-component-projects-sessions-hub-home-agents",
+				"hub-component-projects-sessions-hub-home-ask",
 				"hub-component-projects-sessions-hub-home-card",
 				"hub-component-projects-sessions-hub-home-cards",
 				"hub-component-projects-sessions-hub-home-choices",

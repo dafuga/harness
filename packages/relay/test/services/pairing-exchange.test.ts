@@ -40,10 +40,8 @@ function exchange(request: TestRequest, verifier = request.verifier): Promise<Re
 }
 
 /** A request the host approved for a new device. */
-async function approved(
-	ttlMs?: number
-): Promise<TestRequest & { deviceId: string; sealed: string }> {
-	const request = await requestPairing(relay, host, socket, ttlMs);
+async function approved(): Promise<TestRequest & { deviceId: string; sealed: string }> {
+	const request = await requestPairing(relay, host, socket);
 	const approval = { deviceId: (await newIdentity()).id, sealed: sealedText() };
 	const ack = await command(socket, {
 		type: 'pairing-approve',
@@ -108,14 +106,6 @@ test('of several exchanges at once only one receives a credential', async () => 
 	const responses = await Promise.all(Array.from({ length: 6 }, () => exchange(pairing)));
 	const statuses = responses.map((response) => response.status).sort();
 	expect(statuses).toEqual([200, 400, 400, 400, 400, 400]);
-});
-
-test('an approval that expired cannot be exchanged', async () => {
-	const before = await deviceCount();
-	const pairing = await approved(900);
-	await new Promise((resolve) => setTimeout(resolve, 1100));
-	expect(await answer(await exchange(pairing))).toEqual(failed);
-	expect(await deviceCount()).toBe(before);
 });
 
 test('pairing a device again replaces its credential and ends its socket', async () => {

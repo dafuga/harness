@@ -186,7 +186,8 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 				note: values.note,
 				failed: values.failed,
 				occurrence: values.occurrence,
-				next_step: values['next-step']
+				next_step: values['next-step'],
+				force: values.force
 			};
 		case 'unblock':
 			return { note: values.note };

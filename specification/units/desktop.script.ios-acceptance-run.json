@@ -22,18 +22,14 @@
 			"footerText",
 			"pause",
 			"control",
-			"offered",
 			"restart",
-			"scanPressed",
 			"shot",
 			"openDesign",
 			"FixtureView",
-			"PairingOffer",
 			"Acceptance",
 			"FixtureControlOriginError",
 			"FixtureControlRefusedError",
 			"FixtureView",
-			"PairingOffer",
 			"Acceptance"
 		]
 	},
@@ -71,12 +67,6 @@
 				]
 			},
 			{
-				"name": "offered.run",
-				"type": "Acceptance",
-				"required": true,
-				"description": "The TEST ONLY Acceptance context used to request and hide a pairing offer. It must include a record with a hide method and a control origin accepted by control."
-			},
-			{
 				"name": "restart.run",
 				"type": "Acceptance",
 				"required": true,
@@ -89,31 +79,6 @@
 				"default": true,
 				"description": "Whether to include the loopback fixture argument in the simulator launch. It defaults to true; false omits that argument.",
 				"examples": [true, false]
-			},
-			{
-				"name": "restart.scans",
-				"type": "string[]",
-				"required": false,
-				"default": [],
-				"description": "Scan answers for this launch, joined with | and passed after scanArgument only when the array is nonempty. Only the TEST ONLY fixture copy understands these answers.",
-				"examples": [
-					[],
-					["fixture-scan-payload-001", "fixture-scan-payload-002"]
-				]
-			},
-			{
-				"name": "scanPressed.run",
-				"type": "Acceptance",
-				"required": true,
-				"description": "The TEST ONLY Acceptance context supplying the simulator page on which the scan-button script runs. The operation uses its page and does not otherwise use the run fields."
-			},
-			{
-				"name": "scanPressed.name",
-				"type": "string",
-				"required": false,
-				"default": "undefined (omitted)",
-				"description": "Optional phone name filled into the Name of this phone field before pressing the scan action. When omitted, no name-fill expression is included.",
-				"examples": ["Harness fixture iPhone"]
 			},
 			{
 				"name": "shot.run",
@@ -311,39 +276,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "offered",
-				"inputs": [
-					{
-						"name": "offered.run",
-						"type": "Acceptance",
-						"required": true,
-						"description": "The TEST ONLY Acceptance context used to request and hide a pairing offer. It must include a record with a hide method and a control origin accepted by control."
-					}
-				],
-				"outputs": [
-					{
-						"name": "offered",
-						"type": "Promise<PairingOffer>",
-						"description": "Resolves with the one-time offer returned by the fixture pairing endpoint. Before returning, it hides the offer code and QR scan text from run-record writes.",
-						"examples": [
-							{
-								"pairingId": "pairing-001",
-								"code": "482731",
-								"scan": "fixture-pairing-qr-payload-001"
-							}
-						]
-					}
-				],
-				"errors": [
-					{
-						"name": "control failure (ios-acceptance-run)",
-						"type": "thrown",
-						"description": "Propagates the Error from control when the fixture control origin is not local or the pairing endpoint responds with a non-OK status."
-					}
-				],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "restart",
 				"inputs": [
 					{
@@ -359,17 +291,6 @@
 						"default": true,
 						"description": "Whether to include the loopback fixture argument in the simulator launch. It defaults to true; false omits that argument.",
 						"examples": [true, false]
-					},
-					{
-						"name": "restart.scans",
-						"type": "string[]",
-						"required": false,
-						"default": [],
-						"description": "Scan answers for this launch, joined with | and passed after scanArgument only when the array is nonempty. Only the TEST ONLY fixture copy understands these answers.",
-						"examples": [
-							[],
-							["fixture-scan-payload-001", "fixture-scan-payload-002"]
-						]
 					}
 				],
 				"outputs": [
@@ -377,35 +298,6 @@
 						"name": "restart",
 						"type": "Promise<void>",
 						"description": "Resolves after run.page.reset() completes and launch is invoked with the selected fixture and scan arguments. It does not wait for the relaunched app to become ready."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
-				"name": "scanPressed",
-				"inputs": [
-					{
-						"name": "scanPressed.run",
-						"type": "Acceptance",
-						"required": true,
-						"description": "The TEST ONLY Acceptance context supplying the simulator page on which the scan-button script runs. The operation uses its page and does not otherwise use the run fields."
-					},
-					{
-						"name": "scanPressed.name",
-						"type": "string",
-						"required": false,
-						"default": "undefined (omitted)",
-						"description": "Optional phone name filled into the Name of this phone field before pressing the scan action. When omitted, no name-fill expression is included.",
-						"examples": ["Harness fixture iPhone"]
-					}
-				],
-				"outputs": [
-					{
-						"name": "scanPressed",
-						"type": "Promise<string>",
-						"description": "Resolves with the string returned by evaluating the scan action on the simulator page. It fills the optional phone name first, then tries Scan QR code or Scan again.",
-						"examples": ["true"]
 					}
 				],
 				"errors": [],

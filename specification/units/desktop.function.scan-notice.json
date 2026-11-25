@@ -6,11 +6,15 @@
 	"title": "Pairing scan messages",
 	"responsibility": "Map known scan failures to readable notices and validate a phone display name.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Devices link only through Google sign-in to the same account: there is no QR code, offer or scan any more.",
+		"at": "2026-11-25T18:37:22.083Z"
+	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/networking-security/scan-notice/scanNotice.ts",
-			"packages/desktop/src/utils/networking-security/scan-notice/scanNotice.types.ts",
+			"packages/desktop/src/utils/scan-notice/scanNotice.ts",
+			"packages/desktop/src/utils/scan-notice/scanNotice.types.ts",
 			"packages/desktop/src/utils/scanNotice.ts"
 		],
 		"symbols": [

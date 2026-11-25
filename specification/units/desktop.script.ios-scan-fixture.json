@@ -6,20 +6,17 @@
 	"title": "ios-scan-fixture",
 	"responsibility": "Owns the ios-scan-fixture build or maintenance script.",
 	"responsibilityOrigin": "derived",
-	"status": "active",
+	"status": "retired",
+	"retired": {
+		"reason": "Devices link only through Google sign-in to the same account: there is no QR code, offer or scan any more.",
+		"at": "2026-11-25T18:41:37.902Z"
+	},
 	"owns": {
 		"source": [
-			"packages/desktop/scripts/ScanFixtureMismatchError.ts",
 			"packages/desktop/scripts/ios-scan-fixture.ts",
 			"packages/desktop/scripts/ios-scan-fixture.types.ts"
 		],
-		"symbols": [
-			"ScanFixtureMismatchError",
-			"scanFixtureProduct",
-			"holds",
-			"buildScanFixture",
-			"ScanFixtureMismatchError"
-		]
+		"symbols": ["scanFixtureProduct", "holds", "buildScanFixture", "ScanFixtureMismatchError"]
 	},
 	"contract": {
 		"origin": "declared",

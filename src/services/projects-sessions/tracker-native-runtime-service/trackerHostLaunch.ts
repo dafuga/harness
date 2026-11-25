@@ -58,7 +58,7 @@ export function trackerHostLaunch(
 		now: effects.now,
 		automaticEnabled: effects.automaticEnabled
 	});
-	const admit = trackerHostAdmission(store, { config, adapter, routeFor }, host.inventory);
+	const admit = trackerHostAdmission(store, { config, adapter, routeFor });
 	return {
 		runner: trackerCapacityRunner(host, store, config, repositories),
 		sessions: host.sessions,
@@ -70,8 +70,8 @@ export function trackerHostLaunch(
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
 			admit,
-			pickModel: pickHostModel,
-			retryModel: retryTrackerModel
+			pickModel: (item) => pickHostModel(item, effects.now?.()),
+			retryModel: (item, run) => retryTrackerModel(item, run, undefined, effects.now?.())
 		},
 		scheduleDue: config.due === true || adapter?.scheduleDue === true,
 		due: () => ({
@@ -97,10 +97,7 @@ function trackerCapacityRunner(
 	return {
 		...host.runner,
 		capacity: () => ({
-			freeSlots: Math.max(
-				0,
-				(config.maxConcurrent ?? 2) - occupiedHostSlots(store, host.inventory())
-			),
+			freeSlots: Math.max(0, (config.maxConcurrent ?? 2) - occupiedHostSlots(store)),
 			projects: adapterProjectCapacity(config, repositories)
 		})
 	};
@@ -180,9 +177,9 @@ function approvedOpsWorkdir(item: TrackerHostRouteItem, node: string, workdir?: 
 	return undefined;
 }
 
-function pickHostModel(item: TrackerDispatchItem) {
+function pickHostModel(item: TrackerDispatchItem, now?: number) {
 	try {
-		return pickTrackerModel(item);
+		return pickTrackerModel(item, { now });
 	} catch {
 		return { error: 'Tracker model cannot be selected for this task' };
 	}

@@ -189,3 +189,15 @@
 	display: grid;
 	gap: var(--hx-space-8);
 }
+/* An open ask shown right on the Agents card: the question, its choices and a short reply. */
+.hh-home .hh-ask {
+	display: grid;
+	gap: var(--hx-space-8);
+	padding: var(--hx-space-10);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-compact);
+}
+.hh-home .hh-ask-question {
+	margin: 0;
+	overflow-wrap: anywhere;
+}

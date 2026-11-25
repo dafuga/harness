@@ -14,13 +14,6 @@ import {
 	noAuthority,
 	remoteAuthority
 } from '../../../utils/networking-security/remoteAuthority';
-import {
-	nameNotice,
-	phoneName,
-	scanFailure,
-	scanNotice
-} from '../../../utils/networking-security/scan-notice/scanNotice';
-import type { ScanFailure } from '../../../utils/networking-security/scan-notice/scanNotice';
 import { isWorkspacePath } from '../../../utils/projects-sessions/workspaceRoute';
 /** Paired, but the computer cannot be asked right now. */
 const away: State[] = ['offline', 'connecting'];
@@ -38,8 +31,6 @@ class RemotePhoneState {
 	status = $state<RemoteMobileStatus | null>(null);
 	error = $state('');
 	busy = $state(false);
-	/** How the last scan ended without an offer, while that is what the page says; or null. */
-	scanFailure = $state<ScanFailure | null>(null);
 	private kept = false;
 	private release: (() => void) | undefined;
 	private version = 0;
@@ -65,19 +56,6 @@ class RemotePhoneState {
 		this.release?.();
 		this.release = undefined;
 	}
-	/**
-	 * Opens the scanner of the phone under this name. The page hands over nothing else and is
-	 * handed no offer: the plugin reads the code, checks it and asks the computer by itself.
-	 */
-	async scan(name: string) {
-		const deviceName = phoneName(name);
-		this.scanFailure = null;
-		if (!deviceName) {
-			this.error = nameNotice;
-			return false;
-		}
-		return this.ask((port) => port.scan({ deviceName }));
-	}
 	connectAccountComputer(hostId: string, deviceName: string) {
 		const connect = this.port?.connectAccountComputer;
 		if (connect) return this.ask(() => connect({ hostId, deviceName }));
@@ -91,7 +69,6 @@ class RemotePhoneState {
 		if (!port || this.busy) return false;
 		this.busy = true;
 		this.error = '';
-		this.scanFailure = null;
 		const asked = this.version;
 		try {
 			const status = await call(port);
@@ -99,8 +76,7 @@ class RemotePhoneState {
 			if (asked === this.version) this.accept(status);
 			return true;
 		} catch (cause) {
-			this.scanFailure = scanFailure(cause);
-			this.error = scanNotice(cause);
+			this.error = String(cause);
 			return false;
 		} finally {
 			this.busy = false;

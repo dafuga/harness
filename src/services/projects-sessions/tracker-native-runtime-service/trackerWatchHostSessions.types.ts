@@ -16,6 +16,8 @@ export interface WatchdogSessionScan {
 	readItems: () => readonly TrackerItem[];
 	now: () => number;
 	launch?: TrackerWatchdogLaunch;
+	/** Records the end of runs that stopped without closing their item. */
+	settle?: TrackerDispatcherService;
 	automaticEnabled?(): boolean;
 	idleWork?: { dispatch: TrackerDispatcherService; minutes: number };
 	roots?: readonly string[];

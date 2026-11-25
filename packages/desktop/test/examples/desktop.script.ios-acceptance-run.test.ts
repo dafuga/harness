@@ -1,7 +1,7 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { openDesign, scanPressed } from '../../scripts/ios-acceptance-run';
+import { openDesign } from '../../scripts/ios-acceptance-run';
 import { control } from '../../scripts/ios-acceptance-run';
 import { FixtureControlOriginError } from '../../scripts/ios-acceptance-run.types';
 import type { Acceptance } from '../../scripts/ios-acceptance-run.types';
@@ -12,40 +12,6 @@ function acceptance(
 ): Acceptance {
 	return { page, project } as unknown as Acceptance;
 }
-
-test('presses scan with an optional phone name', async () => {
-	const scripts: string[] = [];
-	const run = acceptance({
-		evaluate: async (script: string) => {
-			scripts.push(script);
-			return scripts.length === 1 ? 'true' : 'false';
-		}
-	});
-	const named = await scanPressed(run, 'Harness fixture iPhone');
-	const unnamed = await scanPressed(run);
-
-	expect(named).toBe('true');
-	expect(unnamed).toBe('false');
-	expect(scripts[0]).toContain("fill('Name of this phone'");
-	expect(scripts[1]).toContain("press('Scan again')");
-	recordExampleCases(
-		{
-			unitId: 'desktop.script.ios-acceptance-run',
-			symbol: 'scanPressed',
-			state: 'presses-scan-with-an-optional-phone-name',
-			evidence: 'examples-cases',
-			file: 'presses-scan-with-an-optional-phone-name.json'
-		},
-		[
-			{
-				name: 'named device uses scan action',
-				input: { name: 'Harness fixture iPhone' },
-				output: named
-			},
-			{ name: 'unnamed device falls back to scan again', input: {}, output: unnamed }
-		]
-	);
-});
 
 test('opens the fixture project and waits for its design image', async () => {
 	const calls: string[] = [];

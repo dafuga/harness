@@ -135,7 +135,7 @@ async function assertNewExposureReopens(
 	const rotation = items.find(({ id }) => id !== itemId)!;
 	const target = 'http://fixture.invalid/items/' + rotation.id;
 	const completed = await runtime.items.handle(
-		new Request(target + '/done', { method: 'POST', body: '{}' })
+		new Request(target + '/done', { method: 'POST', body: '{"force":true}' })
 	);
 	expect(completed.ok).toBe(true);
 	await runtime.watchdog!.tick(signal);

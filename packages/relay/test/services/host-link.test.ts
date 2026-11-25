@@ -1,4 +1,5 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
+import { randomId } from '../../../remote/src/index';
 import {
 	connectDevice,
 	connectHost,
@@ -6,9 +7,8 @@ import {
 	hostHeaders,
 	newRequest,
 	openDevice,
-	openPairing,
+	submitPairing,
 	pairDevice,
-	pairingPath,
 	registerHost,
 	type TestDevice,
 	type TestHost
@@ -71,13 +71,19 @@ test('a returning host is told every connection that is still open', async () =>
 test('a returning host receives ready, then open connections, then waiting requests', async () => {
 	const { host, socket, device } = await paired();
 	const phone = await openDevice(relay, host, { device, socket });
-	const pairingId = await openPairing(socket);
+	const pairingId = randomId();
 	const request = await newRequest(pairingId);
-	await relay.post(pairingPath(host, pairingId, 'request'), request.body);
+	await submitPairing(relay, host, request);
 	const back = await RelaySocket.open(connectUrl(relay, host.hostId), hostHeaders(host));
 	const frames = (await back.drain()) as { type: string }[];
 	expect(frames.map((frame) => frame.type)).toEqual(['ready', 'device-open', 'pairing-request']);
-	expect(frames[2]).toEqual({ type: 'pairing-request', pairingId, ...request.body });
+	expect(frames[2]).toEqual({
+		type: 'pairing-request',
+		pairingId,
+		account: true,
+		expiresAt: expect.any(String),
+		...request.body
+	});
 	phone.socket.close();
 	back.close();
 });

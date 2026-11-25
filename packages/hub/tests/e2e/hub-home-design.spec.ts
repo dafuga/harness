@@ -42,7 +42,6 @@ test('empty cards explain themselves and offer one next step inside a quiet pane
 	await home(page, 'empty');
 	const steps = [
 		['Agents', 'link', 'Connect a computer'],
-		['Quota', 'button', 'Connect a subscription'],
 		['Projects', 'link', 'Add a project']
 	] as const;
 	for (const [title, role, name] of steps)
@@ -55,8 +54,9 @@ test('empty cards explain themselves and offer one next step inside a quiet pane
 	});
 	expect(edge.border).not.toBe(edge.text);
 	expect(parseFloat(edge.width)).toBeLessThanOrEqual(1);
-	await card(page, 'Quota').getByRole('button', { name: 'Connect a subscription' }).click();
-	await expect(page.getByRole('dialog', { name: 'Quota', exact: true })).toBeVisible();
+	const quota = card(page, 'Quota');
+	await expect(quota.getByText('Connect subscriptions in the Harness Mac app.')).toBeVisible();
+	await expect(quota.getByRole('button', { name: /connect/i })).toHaveCount(0);
 });
 
 test('avatars, quota warnings and dialog summaries follow the design', async ({ page }) => {
@@ -126,4 +126,62 @@ test('the phone chat step names the agent in the dialog header', async ({ page }
 	await expect(chat.locator('.po-totals')).toHaveText(/Chat/);
 	await chat.getByRole('button', { name: 'Back to agents' }).click();
 	await expect(page.getByRole('dialog', { name: 'Agents', exact: true })).toBeVisible();
+});
+
+test('an ask from an agent-created session shows its option buttons without listing the session', async ({
+	page
+}) => {
+	const fixture = await home(page, 'default');
+	const [chief] = fixture.snapshot.agents;
+	fixture.snapshot.agents.push({
+		...chief,
+		id: 'harbor',
+		name: 'harbor',
+		itemId: 'item-harbor',
+		question: 'Ship harbor?',
+		confirm: undefined,
+		options: [
+			{ label: 'Ship harbor now', effect: 'Merges and releases.', recommended: true },
+			{ label: 'Hold harbor', effect: 'Waits a day.' }
+		]
+	});
+	await page.reload();
+	const agents = card(page, 'Agents');
+	await expect(agents.locator('.hh-agent-list > *')).toHaveCount(1);
+	await expect(agents.locator('.hh-agent-list')).not.toContainText('harbor');
+	// The ask is right on the card: choices plus a short reply, no dialog needed.
+	const ask = agents.getByRole('region', { name: 'harbor needs you' });
+	await expect(ask.getByRole('button', { name: /Ship harbor now/ })).toBeVisible();
+	await expect(ask.getByLabel('Reply to harbor')).toBeVisible();
+	await ask.getByRole('button', { name: /Hold harbor/ }).click();
+	await expect.poll(() => fixture.sent.length).toBe(1);
+	await agents.screenshot({ path: process.env.ASK_SHOT ?? 'test-results/agents-ask-answered.png' });
+	expect(fixture.sent[0]).toMatchObject({ agentId: 'harbor', kind: 'answer', option: 2 });
+});
+
+test('Daniel can add a session he created so it is listed under Agents', async ({ page }) => {
+	const fixture = await home(page, 'default');
+	const [chief] = fixture.snapshot.agents;
+	fixture.snapshot.agents.push({ ...chief, id: 'mine', name: 'mine', question: null });
+	await page.reload();
+	await expect(card(page, 'Agents').locator('.hh-agent-list')).not.toContainText('mine');
+	const dialog = await openDialog(page, 'Agents');
+	await dialog.getByLabel('Tracker agent of a session you created').fill('mine');
+	await dialog.getByRole('button', { name: 'Add session' }).click();
+	await expect(dialog.getByRole('button', { name: /^mine/ })).toBeVisible();
+	await expect(dialog.getByRole('button', { name: 'Remove mine' })).toBeVisible();
+});
+
+test('a listed agent that needs you is answered from the Agents card with a reply or a choice', async ({
+	page
+}) => {
+	const fixture = await home(page, 'default');
+	const agents = card(page, 'Agents');
+	const ask = agents.getByRole('region', { name: 'Chief of Staff needs you' });
+	await expect(ask).toBeVisible();
+	await expect(agents.locator('.hh-agent-list')).not.toContainText('sub-agent task');
+	await ask.getByLabel('Reply to Chief of Staff').fill('Go ahead');
+	await ask.getByRole('button', { name: 'Send' }).click();
+	await expect.poll(() => fixture.sent.length).toBe(1);
+	expect(fixture.sent[0]).toMatchObject({ agentId: 'cos', kind: 'answer', text: 'Go ahead' });
 });

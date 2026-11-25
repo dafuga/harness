@@ -8,8 +8,8 @@ import type {
 
 /**
  * Phone access to this computer, as the desktop control port reports it: public metadata only.
- * The main process owns the relay socket, the keys and every credential; the page sees a code to
- * show for scanning, who asks, and who was approved for what.
+ * The main process owns the relay socket, the keys and every credential; the page sees who asks,
+ * and who was approved for what.
  */
 class RemoteHostState {
 	status = $state<RemoteHostStatus | null>(null);
@@ -39,17 +39,6 @@ class RemoteHostState {
 	}
 	disable() {
 		return this.ask((port) => port.disable());
-	}
-	/** The offer is part of the status; it is read again in case no event announced it. */
-	createPairing() {
-		return this.ask(async (port) => {
-			await port.createPairing();
-			return port.status();
-		});
-	}
-	/** Withdraws the code that is shown: it can no longer be scanned, nor its request approved. */
-	closePairing() {
-		return this.ask((port) => port.closePairing());
 	}
 	/** A grant is exactly what was chosen: these projects, and agents only when stated. */
 	approve(input: Approval) {

@@ -4,7 +4,7 @@
 	"uid": "u_6owiaffoxw",
 	"kind": "function",
 	"title": "classifyTrackerTask",
-	"responsibility": "Classify Tracker items and identify their model-selection risk and effort requirements.",
+	"responsibility": "Classify Tracker work, identify its automatic model route, eligibility and explicit hardness, and set initial Sol effort.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -13,6 +13,7 @@
 			"src/utils/agents-providers/classifyTrackerTask.types.ts"
 		],
 		"symbols": [
+			"trackerTaskRoute",
 			"classifyTrackerTask",
 			"sizeOf",
 			"projectOf",
@@ -20,14 +21,23 @@
 			"isHarnessModule",
 			"isVisualInspection",
 			"solEffort",
+			"isExplicitlyHard",
+			"isLightClaudeWork",
 			"TrackerModelItem",
 			"TrackerTaskKind",
-			"TrackerTaskSize"
+			"TrackerTaskSize",
+			"TrackerTaskRoute"
 		]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerTaskRoute.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item whose title and notes describe the requested activity."
+			},
 			{
 				"name": "classifyTrackerTask.item",
 				"type": "TrackerModelItem",
@@ -71,10 +81,34 @@
 				"description": "Classified work type used to select reasoning effort."
 			},
 			{
-				"name": "solEffort.size",
+				"name": "solEffort._size",
 				"type": "TrackerTaskSize",
 				"required": true,
-				"description": "Estimated work size used to select reasoning effort."
+				"description": "Estimated work size retained for existing callers. Initial effort depends on difficulty."
+			},
+			{
+				"name": "isExplicitlyHard.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item whose title or notes may carry an explicit hard marker."
+			},
+			{
+				"name": "isLightClaudeWork.item",
+				"type": "TrackerModelItem",
+				"required": true,
+				"description": "Tracker item whose title may describe a watch, reminder or check."
+			},
+			{
+				"name": "isLightClaudeWork.kind",
+				"type": "TrackerTaskKind",
+				"required": true,
+				"description": "Classified work type: docs, tests and small chores qualify."
+			},
+			{
+				"name": "isLightClaudeWork.size",
+				"type": "TrackerTaskSize",
+				"required": true,
+				"description": "Estimated work size; only small chores qualify as mechanical units."
 			}
 		],
 		"outputs": [
@@ -104,6 +138,16 @@
 				"description": "Whether this item qualifies as Harness module work."
 			},
 			{
+				"name": "isExplicitlyHard",
+				"type": "boolean",
+				"description": "True when the title or notes mark the work hard."
+			},
+			{
+				"name": "isLightClaudeWork",
+				"type": "boolean",
+				"description": "True for tests, docs, small mechanical chores and watch or check items."
+			},
+			{
 				"name": "isVisualInspection",
 				"type": "boolean",
 				"description": "Whether the title requests inspection of a visual artifact."
@@ -111,12 +155,37 @@
 			{
 				"name": "solEffort",
 				"type": "string",
-				"description": "Sol reasoning effort for the classified type and estimated size."
+				"description": "High reasoning effort for hard tasks and medium for other initial Sol runs."
+			},
+			{
+				"name": "trackerTaskRoute",
+				"type": "TrackerTaskRoute",
+				"description": "Live deployment, computer use, visual work or the default route, in priority order."
 			}
 		],
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerTaskRoute",
+				"inputs": [
+					{
+						"name": "trackerTaskRoute.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item whose title and notes describe the requested activity."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerTaskRoute",
+						"type": "TrackerTaskRoute",
+						"description": "Live deployment, computer use, visual work or the default route, in priority order."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "classifyTrackerTask",
 				"inputs": [
@@ -247,17 +316,69 @@
 						"description": "Classified work type used to select reasoning effort."
 					},
 					{
-						"name": "solEffort.size",
+						"name": "solEffort._size",
 						"type": "TrackerTaskSize",
 						"required": true,
-						"description": "Estimated work size used to select reasoning effort."
+						"description": "Estimated work size retained for existing callers. Initial effort depends on difficulty."
 					}
 				],
 				"outputs": [
 					{
 						"name": "solEffort",
 						"type": "string",
-						"description": "Sol reasoning effort for the classified type and estimated size."
+						"description": "High reasoning effort for hard tasks and medium for other initial Sol runs."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "isExplicitlyHard",
+				"inputs": [
+					{
+						"name": "isExplicitlyHard.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item whose title or notes may carry an explicit hard marker."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isExplicitlyHard",
+						"type": "boolean",
+						"description": "True when the title or notes mark the work hard."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isLightClaudeWork",
+				"inputs": [
+					{
+						"name": "isLightClaudeWork.item",
+						"type": "TrackerModelItem",
+						"required": true,
+						"description": "Tracker item whose title may describe a watch, reminder or check."
+					},
+					{
+						"name": "isLightClaudeWork.kind",
+						"type": "TrackerTaskKind",
+						"required": true,
+						"description": "Classified work type: docs, tests and small chores qualify."
+					},
+					{
+						"name": "isLightClaudeWork.size",
+						"type": "TrackerTaskSize",
+						"required": true,
+						"description": "Estimated work size; only small chores qualify as mechanical units."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isLightClaudeWork",
+						"type": "boolean",
+						"description": "True for tests, docs, small mechanical chores and watch or check items."
 					}
 				],
 				"errors": [],

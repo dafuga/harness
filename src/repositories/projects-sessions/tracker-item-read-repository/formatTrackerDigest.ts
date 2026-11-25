@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import { trackerStaleDecisionMinutes } from './splitTrackerAsks';
 import type {
 	TrackerDigest,
 	TrackerDigestItem,
@@ -12,10 +13,12 @@ export function formatTrackerDigest(digest: TrackerDigest): string {
 		`Tracker digest - ${digest.local_time}`,
 		...section('BLOCKED', digest.blocked, blockedDetail),
 		...section(
-			'NEEDS DANIEL',
-			digest.needs_daniel.filter((item) => !digest.blocked.some(({ id }) => id === item.id)),
-			askDetail
+			'DANIEL DECISIONS',
+			digest.daniel_decisions,
+			decisionDetail,
+			'oldest first; 24h+ is STALE'
 		),
+		...pingSection(digest.pings),
 		...section('QUEUED', digest.queued, (item) =>
 			[item.computer && `on ${item.computer}`, waitText(item.waiting_minutes)]
 				.filter(Boolean)
@@ -42,12 +45,55 @@ export function formatTrackerDigest(digest: TrackerDigest): string {
 function section<T extends TrackerDigestItem>(
 	title: string,
 	items: T[],
-	detail: (item: T) => string
+	detail: (item: T) => string,
+	note?: string
 ): string[] {
-	const heading = `${title} (${items.length})`;
+	const heading = `${title} (${items.length}${note ? `; ${note}` : ''})`;
 	return items.length
 		? [heading, ...items.map((item) => line(item, detail(item)))]
 		: [heading, '  (none)'];
+}
+
+const PING_LINES_SHOWN = 5;
+
+/** Automated pings stay out of the decisions: the noise collapses to a few lines. */
+function pingSection(pings: TrackerDigestItem[]): string[] {
+	const shown = pings.slice(0, PING_LINES_SHOWN);
+	const hidden = pings.length - shown.length;
+	return [
+		`CoS/WORKER PINGS (${pings.length})`,
+		...(pings.length ? shown.map((item) => line(item, ageText(item))) : ['  (none)']),
+		...(hidden ? [`  ... and ${hidden} more`] : [])
+	];
+}
+
+/** A decision keeps its age, flags a finished item, and shows the question that is still open. */
+function decisionDetail(item: TrackerDigestItem): string {
+	return [
+		ageText(item),
+		item.status === 'done' && 'ITEM DONE, FLAG STILL OPEN',
+		item.blocked_reason && `blocked: ${item.blocked_reason}`,
+		item.next_step
+			? [item.project && `Project: ${item.project}`, `Next step: ${item.next_step}`]
+					.filter(Boolean)
+					.join(' · ')
+			: item.question && `Q: ${item.question}`,
+		item.parked_until && `Parked until ${item.parked_until}`
+	]
+		.filter(Boolean)
+		.join('; ');
+}
+
+function ageText(item: TrackerDigestItem): string {
+	const minutes = item.waiting_minutes;
+	if (minutes === undefined) return '';
+	const hours = Math.floor(minutes / 60);
+	const age = hours >= 24 ? `${Math.floor(hours / 24)}d ${hours % 24}h` : shortAge(hours, minutes);
+	return `${minutes >= trackerStaleDecisionMinutes ? 'STALE ' : ''}${age} old`;
+}
+
+function shortAge(hours: number, minutes: number): string {
+	return hours ? `${hours}h` : `${minutes}m`;
 }
 
 function line(item: TrackerDigestItem, detail: string): string {

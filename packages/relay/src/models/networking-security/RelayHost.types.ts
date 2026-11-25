@@ -68,7 +68,7 @@ export type SocketAttachment =
 	| { role: 'device'; deviceId: string; connectionId: string; closed: boolean };
 export type DeviceAttachment = Extract<SocketAttachment, { role: 'device' }>;
 
-export type PairingAction = 'info' | 'request' | 'poll' | 'exchange';
+export type PairingAction = 'poll' | 'exchange';
 /** The whole public surface. `path` is rebuilt from validated parts, never copied from a request. */
 export type PublicRoute =
 	| { kind: 'health'; path: string }

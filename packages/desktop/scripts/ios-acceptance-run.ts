@@ -2,12 +2,11 @@
 import {
 	type FixtureView,
 	type Acceptance,
-	type PairingOffer,
 	FixtureControlOriginError,
 	FixtureControlRefusedError
 } from './ios-acceptance-run.types';
 import { resolve } from 'node:path';
-import { localOrigin, loopbackArgument, scanArgument } from './ios-acceptance-guards';
+import { localOrigin, loopbackArgument } from './ios-acceptance-guards';
 import { launch, screenshot } from './ios-acceptance-simulator';
 
 export const computerName = 'Harness fixture computer';
@@ -35,34 +34,10 @@ export async function control<T = FixtureView>(
 	return (await response.json()) as T;
 }
 
-/** A new one-time offer of the fixture; code and QR text are hidden from all the run writes. */
-export async function offered(run: Acceptance): Promise<PairingOffer> {
-	const offer = await control<PairingOffer>(run, '/pairing');
-	run.record.hide(offer.code);
-	run.record.hide(offer.scan);
-	return offer;
-}
-
-/**
- * Starts the app again and forgets the page of the one that ran. `scans` is what the scans of
- * this launch answer, in order; only the TEST ONLY scan fixture copy understands it.
- */
-export async function restart(
-	run: Acceptance,
-	fixture = true,
-	scans: string[] = []
-): Promise<void> {
+/** Starts the app again and forgets the page of the one that ran. */
+export async function restart(run: Acceptance, fixture = true): Promise<void> {
 	await run.page.reset();
-	const answers = scans.length ? [scanArgument, scans.join('|')] : [];
-	launch(run.udid, [...(fixture ? [loopbackArgument] : []), ...answers]);
-}
-
-/** Names the phone when asked to, and presses the scan button, whatever it is called now. */
-export function scanPressed(run: Acceptance, name?: string): Promise<string> {
-	const named = name ? `fill('Name of this phone', ${JSON.stringify(name)}) && ` : '';
-	return run.page.evaluate(
-		`return String(${named}(press('Scan QR code') || press('Scan again')));`
-	);
+	launch(run.udid, fixture ? [loopbackArgument] : []);
 }
 
 /** A screenshot of the simulator, once the page had time to paint what was just asked of it. */
@@ -94,4 +69,4 @@ return JSON.stringify({
 	return page.until(`${image} return image?.naturalWidth ? 'loaded' : '';`, 'loaded', 90);
 }
 
-export type { FixtureView, PairingOffer, Acceptance } from './ios-acceptance-run.types';
+export type { FixtureView, Acceptance } from './ios-acceptance-run.types';

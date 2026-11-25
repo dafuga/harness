@@ -5,13 +5,14 @@ import type {
 import { ZodError } from 'zod';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
 import { readOverviewText } from '../tracker-overview/trackerOverviewInput';
-import { chatId, chatInput, chatOutcome, parseHomePayload } from './homePayload';
-import { readHomeSnapshot, storeHome } from './homeStore';
+import { chatId, chatInput, chatOutcome, controlledChange, parseHomePayload } from './homePayload';
+import { changeControlled, readControlled, readHomeSnapshot, storeHome } from './homeStore';
 import { chatReceipt, claimChat, finishChat, queueChat } from './homeChatStore';
 import type { HomeDeps } from './homePolicy.types';
 
 const root = '/api/hub-home';
 const chat = root + '/chat';
+const agentsPath = root + '/agents';
 const headers = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' };
 
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers });
@@ -45,17 +46,22 @@ async function dispatchHome(
 	deps: HomeDeps,
 	owner: { actor: { id: string }; kind: string; resource: string }
 ) {
-	const read = url.pathname === root && request.method === 'GET';
 	const actor = owner.actor.id;
-	if (read && owner.kind === 'browser' && !url.search)
-		return json({
-			granted: true,
-			snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null
-		});
 	if (owner.kind === 'native' && owner.resource === 'projects')
 		return await nativeHome(request, url, deps, actor);
-	if (owner.kind === 'browser' && url.pathname === chat)
-		return await browserChat(request, url, deps, actor);
+	if (owner.kind === 'browser') return await browserHome(request, url, deps, actor);
+	return json({ error: 'not-found' }, 404);
+}
+
+async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: string) {
+	if (url.pathname === root && request.method === 'GET' && !url.search)
+		return json({
+			granted: true,
+			snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null,
+			controlled: deps.bucket ? await readControlled(deps.bucket, actor) : []
+		});
+	if (url.pathname === chat) return await browserChat(request, url, deps, actor);
+	if (url.pathname === agentsPath) return await browserAgents(request, url, deps, actor);
 	return json({ error: 'not-found' }, 404);
 }
 
@@ -92,6 +98,21 @@ async function browserChat(
 	}
 	if (request.method !== 'POST' || url.search) return json({ error: 'not-found' }, 404);
 	return await postChat(request, deps, actor);
+}
+
+/** Daniel adds or removes a session he controls himself; only those are listed under Agents. */
+async function browserAgents(
+	request: Request,
+	url: URL,
+	deps: HomeDeps,
+	actor: string
+): Promise<Response> {
+	const add = request.method === 'POST';
+	if (!deps.bucket) return json({ error: 'unavailable' }, 503);
+	if ((!add && request.method !== 'DELETE') || url.search) return json({ error: 'not-found' }, 404);
+	const change = controlledChange.parse(JSON.parse(await readOverviewText(request, 1024)));
+	const controlled = await changeControlled(deps.bucket, actor, { id: change.id, add });
+	return controlled ? json({ controlled }) : json({ error: 'too-many' }, 409);
 }
 
 async function postChat(request: Request, deps: HomeDeps, actor: string) {

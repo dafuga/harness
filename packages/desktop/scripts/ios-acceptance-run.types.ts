@@ -12,14 +12,6 @@ export interface FixtureView {
 	devices: { deviceId: string; name: string; online: boolean }[];
 }
 
-/** A one-time offer. Its code and its QR text are hidden by the record as soon as it arrives. */
-export interface PairingOffer {
-	pairingId: string;
-	code: string;
-	/** The text of the QR code: what a camera would read from the computer. */
-	scan: string;
-}
-
 /** TEST ONLY. Everything one phase of the native acceptance run works with. */
 export interface Acceptance {
 	record: AcceptanceRecord;

@@ -2,11 +2,6 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { createRemotePhoneStore } from '../../src/lib/stores/networking-security/remotePhone.svelte';
 import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { RemoteMobileStatus } from '../../src/models/development-tooling/Environment.types';
-import {
-	nameNotice,
-	scanFailures,
-	scanNotices
-} from '../../src/utils/networking-security/scan-notice/scanNotice';
 
 const grant = { projects: [{ id: 'local-1', name: 'One' }], agents: true };
 const at = (state: RemoteMobileStatus['state'], change: Partial<RemoteMobileStatus> = {}) =>
@@ -52,30 +47,10 @@ function phone(first: RemoteMobileStatus, shown = false) {
 }
 afterEach(() => vi.unstubAllGlobals());
 
-test('scanning asks the plugin with a name only, and what the scanner refuses is said in words', async () => {
-	const { store, port } = phone(at('unpaired', { host: null, device: null }));
+test('the phone store takes no link, no code and no scan', async () => {
+	const { store } = phone(at('unpaired', { host: null, device: null }));
 	await store.start();
-	expect(await store.scan('   ')).toBe(false);
-	expect(store.error).toBe(nameNotice);
-	expect(port.scan).not.toHaveBeenCalled();
-	for (const code of scanFailures) {
-		port.scan.mockRejectedValueOnce(Object.assign(new Error('native words'), { code }));
-		expect(await store.scan('Ada')).toBe(false);
-		expect([store.scanFailure, store.error]).toEqual([code, scanNotices[code]]);
-		expect(store.status?.state).toBe('unpaired');
-	}
-	expect(await store.scan(' Ada iPhone ')).toBe(true);
-	expect(port.scan).toHaveBeenLastCalledWith({ deviceName: 'Ada iPhone' });
-	expect([store.scanFailure, store.error]).toEqual([null, '']);
-	expect(store.status?.state).toBe('pending-approval');
-});
-
-test('a failure that is no scan failure is said as it is, and the phone store takes no link or code', async () => {
-	const { store, port } = phone(at('unpaired', { host: null, device: null }));
-	await store.start();
-	port.scan.mockRejectedValueOnce(new Error('The bridge is gone.'));
-	expect(await store.scan('Ada')).toBe(false);
-	expect([store.scanFailure, store.error]).toEqual([null, 'Error: The bridge is gone.']);
+	expect('scan' in store).toBe(false);
 	expect('pair' in store).toBe(false);
 	expect('offered' in store).toBe(false);
 });

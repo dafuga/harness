@@ -4,7 +4,7 @@
 	"uid": "u_gs5pnxnxt4",
 	"kind": "function",
 	"title": "pickTrackerModel",
-	"responsibility": "Select the earliest eligible Tracker model, honor valid pins, and escalate from measured outcomes.",
+	"responsibility": "Select a Tracker model by activity, Claude only until the Codex reset, honor eligible pins and escalate along the route.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -54,6 +54,12 @@
 				"type": "TrackerLadderConfig",
 				"required": false,
 				"description": "Optional configuration for the current model ladder and eligibility rules."
+			},
+			{
+				"name": "retryTrackerModel.now",
+				"type": "number",
+				"required": false,
+				"description": "Epoch milliseconds that choose the routing table; defaults to the current time."
 			}
 		],
 		"outputs": [
@@ -65,7 +71,7 @@
 			{
 				"name": "retryTrackerModel",
 				"type": "TrackerModelRung",
-				"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
+				"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
 			}
 		],
 		"errors": [],
@@ -118,13 +124,19 @@
 						"type": "TrackerLadderConfig",
 						"required": false,
 						"description": "Optional configuration for the current model ladder and eligibility rules."
+					},
+					{
+						"name": "retryTrackerModel.now",
+						"type": "number",
+						"required": false,
+						"description": "Epoch milliseconds that choose the routing table; defaults to the current time."
 					}
 				],
 				"outputs": [
 					{
 						"name": "retryTrackerModel",
 						"type": "TrackerModelRung",
-						"description": "Pinned retry model or escalated Sol reasoning effort for another attempt."
+						"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
 					}
 				],
 				"errors": [],

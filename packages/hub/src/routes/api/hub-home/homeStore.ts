@@ -5,7 +5,7 @@ import {
 	readOverview
 } from '../tracker-overview/trackerOverviewCache';
 import type { OverviewBucket } from '../tracker-overview/trackerOverviewCache.types';
-import { parseHomePayload } from './homePayload';
+import { controlledIds, parseHomePayload } from './homePayload';
 
 const prefix = 'hub-home/v1/';
 
@@ -51,4 +51,38 @@ export async function readHomeSnapshot(
 				providers: { routines: null, quota: null }
 			}
 		: null;
+}
+
+/** Tracker agent values Daniel added as sessions he controls himself, beyond the built-in ones. */
+const controlledPrefix = 'hub-home-agents/v1/';
+const maxControlled = 20;
+
+async function controlledKey(ownerId: string) {
+	return controlledPrefix + (await homeKey(ownerId)).split('/').at(-1);
+}
+
+export async function readControlled(bucket: OverviewBucket, ownerId: string): Promise<string[]> {
+	const stored = await bucket.get(await controlledKey(ownerId));
+	if (!stored) return [];
+	try {
+		return controlledIds.parse(JSON.parse(await stored.text()));
+	} catch {
+		return [];
+	}
+}
+
+/** Adds or removes one session id and returns the new list; an id already present stays once. */
+export async function changeControlled(
+	bucket: OverviewBucket,
+	ownerId: string,
+	change: { id: string; add: boolean }
+): Promise<string[] | null> {
+	const current = await readControlled(bucket, ownerId);
+	const rest = current.filter((id) => id !== change.id);
+	const next = change.add ? [...rest, change.id] : rest;
+	if (next.length > maxControlled) return null;
+	await bucket.put(await controlledKey(ownerId), JSON.stringify(next), {
+		httpMetadata: { contentType: 'application/json' }
+	});
+	return next;
 }

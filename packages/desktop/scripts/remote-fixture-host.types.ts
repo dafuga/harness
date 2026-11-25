@@ -23,5 +23,11 @@ export type Relay = Awaited<ReturnType<typeof startRelay>>;
 export interface Running {
 	host: RemoteHostService;
 	screen: { locked?: boolean };
-	facts: { relayOrigin: string; hostId: string; project: { id: string; name: string } };
+	relay: Relay;
+	facts: {
+		relayOrigin: string;
+		hostId: string;
+		hostKey: string;
+		project: { id: string; name: string };
+	};
 }

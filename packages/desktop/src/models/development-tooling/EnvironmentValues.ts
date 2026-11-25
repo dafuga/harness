@@ -12,7 +12,6 @@ export type {
 	RemoteHostStatus,
 	RemoteMobileControl,
 	RemoteMobileStatus,
-	RemotePairingOffer,
 	RemotePairingRequest
 } from '../../../../remote/src/models/networking-security/RemoteControl.types';
 

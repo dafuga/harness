@@ -19,17 +19,22 @@
 		quickReplies
 	} from './hubHomePresentation';
 	import type { HomeAgentsProps } from './hubHomeView.types';
+	import HubHomeAddSession from './HubHomeAddSession.svelte';
 	import HubHomeChoices from './HubHomeChoices.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	let {
-		agents,
+		agents: listed,
+		asks = [],
+		added = [],
+		changeSession,
 		agentId,
 		send,
 		receipt,
 		chatOpen = $bindable(false),
 		chatName = $bindable('')
 	}: HomeAgentsProps = $props();
+	const agents = $derived(listed === null ? null : [...listed, ...asks]);
 	let selected = $state<string>();
 	let answer = $state('');
 	let answering = $state(false);
@@ -105,6 +110,7 @@
 	<HubHomeSkeleton rows={6} />
 {:else if !agents.length || !active}
 	<EmptyState as="div" className="po-empty hh-empty">No agents are available.</EmptyState>
+	<HubHomeAddSession {added} change={changeSession} />
 {:else}
 	<hx-div class="hh-split hh-split-agents" class:hh-show-detail={chatOpen}>
 		<hx-div class="hh-split-list">
@@ -150,6 +156,7 @@
 					</hx-section>
 				{/if}
 			{/each}
+			<HubHomeAddSession {added} change={changeSession} />
 		</hx-div>
 		<hx-section class="hh-chat" aria-label={`Chat with ${active.name}`}>
 			<hx-header class="hh-chat-head">

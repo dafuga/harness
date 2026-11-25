@@ -120,6 +120,7 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 			itemId,
 			fields: {
 				title: 'Synthetic Codex work',
+				model: 'sol',
 				status: 'open',
 				kind: 'task',
 				...(ops ? { agent: 'cos', due: '2000-01-01', created_by: node } : { project: 'Harness' })

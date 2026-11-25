@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
 			"hub.component.projects-sessions-hub-home-card",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
@@ -55,6 +56,18 @@
 				"type": "OpenHomeSection",
 				"required": true,
 				"description": "Opens the relevant home section and accepts an agent identifier when applicable."
+			},
+			{
+				"name": "HubHomeCards.send",
+				"type": "SendHomeChat",
+				"required": true,
+				"description": "Submits an answer typed or chosen on an Agents card ask and returns its receipt."
+			},
+			{
+				"name": "HubHomeCards.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true,
+				"description": "Reads the delivery status of a submitted answer by its chat command identifier."
 			}
 		],
 		"outputs": [
@@ -160,6 +173,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-card",
 			"via": "import",

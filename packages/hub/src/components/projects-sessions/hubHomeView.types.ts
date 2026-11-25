@@ -17,6 +17,10 @@ import type { soonestWork } from './hubHomePresentation';
 export interface HomeView {
 	overview: OverviewSnapshot | null;
 	agents: HomeAgent[] | null;
+	/** Other projects' agents that need you now; they are not listed under Agents but their asks show. */
+	asks: HomeAgent[];
+	/** Tracker agent values Daniel added as sessions he created himself. */
+	controlled: string[];
 	plans: HomePlan[] | null;
 	schedule: HomeRun[] | null;
 	quota: HomeSubscription[] | null;
@@ -36,11 +40,17 @@ export interface HomeView {
 }
 
 export type OpenHomeSection = (section: HomeSection, agentId?: string) => void;
+/** Adds or removes a session Daniel created himself, so it is listed under Agents. */
+export type ChangeSession = (id: string, add: boolean) => Promise<void>;
 export type SendHomeChat = (message: HomeChatInput) => Promise<HomeChatReceipt>;
 export type ReadHomeProject = (projectId: string) => Promise<ProjectSnapshot>;
 
 export interface HomeAgentsProps {
 	agents: HomeAgent[] | null;
+	/** Other projects' agents that need you: not listed sessions, but their asks and options show. */
+	asks?: HomeAgent[];
+	added?: string[];
+	changeSession: ChangeSession;
 	agentId?: string;
 	send: SendHomeChat;
 	receipt: (id: string) => Promise<HomeChatReceipt>;
@@ -51,4 +61,5 @@ export interface HomeAgentsProps {
 export interface ReadHomeResult {
 	granted: boolean;
 	snapshot: OwnerHomeSnapshot | null;
+	controlled?: string[];
 }

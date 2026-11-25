@@ -4737,12 +4737,17 @@
 		{
 			"unit": "function.project",
 			"entry": "src/workflows/projects-sessions/generate-code/project.ts",
-			"exports": ["detectProjectKind"]
+			"exports": [
+				"detectProjectKind"
+			]
 		},
 		{
 			"unit": "function.exports",
 			"entry": "src/workflows/projects-sessions/generate-code/exports.ts",
-			"exports": ["applyExports", "appendMissingExports"]
+			"exports": [
+				"applyExports",
+				"appendMissingExports"
+			]
 		},
 		{
 			"unit": "function.validation",
@@ -4967,7 +4972,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5597,7 +5602,7 @@
 			"name": "activityDisplay",
 			"commit": "2b750c5dd0f1e8c0a6933ef4dc348ba9cfeca3fb",
 			"definition": "010445fa19c69439c1a3a1d485a73fc8296befffb736991eca733ab66115b1e2",
-			"reason": "Record main’s intentional removal of the repeated agent count from the displayed activity sentence."
+			"reason": "Record main\u2019s intentional removal of the repeated agent count from the displayed activity sentence."
 		},
 		{
 			"unit": "function.unit-identity",
@@ -6557,6 +6562,62 @@
 			"ownerSource": "packages/hub/src/lib/verification-evidence/server/auth/auth.ts"
 		},
 		{
+			"unit": "desktop.function.qr-symbol",
+			"name": "qrSymbol",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "58126e02237d7de272b36560c9ccc83effe5ce1be4bb1869e174d3fa4d2b3bb4",
+			"retired": true
+		},
+		{
+			"unit": "desktop.function.remote-labels",
+			"name": "timeLeft",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "951d4e94908c1cf7dfea9b10d63f55ae2f98351d4f80fce4e442bad92a9141d5",
+			"retired": true
+		},
+		{
+			"unit": "desktop.function.scan-notice",
+			"name": "scanFailure",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "32249aa25dc97083116e9517b0561f83977557d529203697e45851bb98bbbe24",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.pairing-offer",
+			"name": "pairingOffer",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "a76c0923199af1b68df6b8f7865dd37ce8e610c5091702bc0227f4ab5bfc0446",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.pairing-offer",
+			"name": "readPairingOffer",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "443501ce8fdb41f613733e550773c46b52c647a174436c7ed01718f15b2d0eee",
+			"retired": true
+		},
+		{
+			"unit": "remote.function.remote-identity",
+			"name": "pairingCode",
+			"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+			"reason": "Removed with the QR pairing offer and scan path (pbwpzd).",
+			"definition": "a7092bdf2a687b5df2386a9cb98a5a78581a31e22681d67d21c824501310755a",
+			"retired": true
+		},
+		{
+			"unit": "reports.function.activity-client",
+			"name": "activityClient",
+			"commit": "767cc7ce137ab34328e466fe2d46eb5474f47a5f",
+			"reason": "Retired in deferred plan wave 4: no live consumer.",
+			"definition": "e770b23a9d2553ee87a094b05ffedc900267ee8052ee4deab37b589953f749d6",
+			"retired": true
+		},
+		{
 			"unit": "desktop.function.artifact-media",
 			"name": "artifactMedia",
 			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
@@ -6611,15 +6672,6 @@
 			"ownerSource": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.ts"
 		},
 		{
-			"unit": "desktop.function.scan-notice",
-			"name": "scanFailure",
-			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
-			"reason": "Use the application audit category while retaining the exact definition and its owner-local placement.",
-			"definition": "32249aa25dc97083116e9517b0561f83977557d529203697e45851bb98bbbe24",
-			"to": "packages/desktop/src/utils/networking-security/scan-notice/scanNotice.ts",
-			"ownerSource": "packages/desktop/src/utils/networking-security/scan-notice/scanNotice.ts"
-		},
-		{
 			"unit": "desktop.function.scrub-environment",
 			"name": "scrubEnvironment",
 			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
@@ -6627,14 +6679,6 @@
 			"definition": "0db72e2a49862f3859a846b448bab964d5f991bf03d548b80704c4a95ed5aad0",
 			"to": "packages/desktop/src/utils/execution-runtimes/cli-environment/scrubEnvironment.ts",
 			"ownerSource": "packages/desktop/src/utils/execution-runtimes/cli-environment/cliEnvironment.ts"
-		},
-		{
-			"unit": "reports.function.activity-client",
-			"name": "activityClient",
-			"commit": "767cc7ce137ab34328e466fe2d46eb5474f47a5f",
-			"reason": "The Reports cleanup retired the refresh client after its last consumer was removed.",
-			"definition": "e770b23a9d2553ee87a094b05ffedc900267ee8052ee4deab37b589953f749d6",
-			"retired": true
 		}
 	],
 	"retiredOwners": [
