@@ -4,8 +4,8 @@
 	"uid": "u_xvchqaifoy",
 	"kind": "function",
 	"title": "trackerEgressPolicy",
-	"responsibility": "Owns the trackerEgressPolicy shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Build the opt-in default-deny egress allowlist for Tracker-launched sessions and render it as Codex and Claude launch arguments.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -24,60 +24,71 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerEgressPolicy.input",
 				"type": "TrackerEgressPolicyInput",
-				"required": true
+				"required": true,
+				"description": "Tracker callback hosts (DNS names or exact tailnet addresses) and optional project staging and preprod hosts."
 			},
 			{
 				"name": "codexEgressArguments.policy",
 				"type": "TrackerEgressPolicy",
-				"required": true
+				"required": true,
+				"description": "The validated allowlist to render as a Codex permission profile."
 			},
 			{
 				"name": "claudeEgressArguments.policy",
 				"type": "TrackerEgressPolicy",
-				"required": true
+				"required": true,
+				"description": "The validated allowlist to render as Claude sandbox settings."
 			},
 			{
 				"name": "trackerEgressArguments.provider",
 				"type": "TrackerEgressProvider",
-				"required": true
+				"required": true,
+				"description": "Which provider CLI the arguments are for."
 			},
 			{
 				"name": "trackerEgressArguments.policy",
 				"type": "TrackerEgressPolicy",
-				"required": true
+				"required": true,
+				"description": "The validated allowlist to render."
 			}
 		],
 		"outputs": [
 			{
 				"name": "TRACKER_EGRESS_BASELINE_HOSTS",
-				"type": "unknown"
+				"type": "readonly string[]",
+				"description": "Exact hosts every pilot session may reach: GitHub, npm, Cloudflare, Twilio, Stripe, Google, OpenAI and Anthropic."
 			},
 			{
 				"name": "trackerEgressPolicy",
-				"type": "TrackerEgressPolicy"
+				"type": "TrackerEgressPolicy",
+				"description": "The sorted, de-duplicated exact-host allowlist."
 			},
 			{
 				"name": "codexEgressArguments",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Codex flags: a proxy-gated workspace-write permission profile with approvals never asked."
 			},
 			{
 				"name": "claudeEgressArguments",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Claude flags: sandboxed Bash with an exact domain list, strict MCP config and web tools disallowed."
 			},
 			{
 				"name": "trackerEgressArguments",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "The provider-specific launch flags."
 			}
 		],
 		"errors": [
 			{
 				"name": "TypeError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "A host is a wildcard, URL, port, single label or disallowed address, or no Tracker host was given."
 			}
 		],
 		"errorStatus": "unknown",
@@ -88,13 +99,15 @@
 					{
 						"name": "trackerEgressPolicy.input",
 						"type": "TrackerEgressPolicyInput",
-						"required": true
+						"required": true,
+						"description": "Tracker callback hosts (DNS names or exact tailnet addresses) and optional project staging and preprod hosts."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerEgressPolicy",
-						"type": "TrackerEgressPolicy"
+						"type": "TrackerEgressPolicy",
+						"description": "The sorted, de-duplicated exact-host allowlist."
 					}
 				],
 				"errors": [
@@ -111,13 +124,15 @@
 					{
 						"name": "codexEgressArguments.policy",
 						"type": "TrackerEgressPolicy",
-						"required": true
+						"required": true,
+						"description": "The validated allowlist to render as a Codex permission profile."
 					}
 				],
 				"outputs": [
 					{
 						"name": "codexEgressArguments",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Codex flags: a proxy-gated workspace-write permission profile with approvals never asked."
 					}
 				],
 				"errors": [],
@@ -129,13 +144,15 @@
 					{
 						"name": "claudeEgressArguments.policy",
 						"type": "TrackerEgressPolicy",
-						"required": true
+						"required": true,
+						"description": "The validated allowlist to render as Claude sandbox settings."
 					}
 				],
 				"outputs": [
 					{
 						"name": "claudeEgressArguments",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Claude flags: sandboxed Bash with an exact domain list, strict MCP config and web tools disallowed."
 					}
 				],
 				"errors": [],
@@ -147,18 +164,21 @@
 					{
 						"name": "trackerEgressArguments.provider",
 						"type": "TrackerEgressProvider",
-						"required": true
+						"required": true,
+						"description": "Which provider CLI the arguments are for."
 					},
 					{
 						"name": "trackerEgressArguments.policy",
 						"type": "TrackerEgressPolicy",
-						"required": true
+						"required": true,
+						"description": "The validated allowlist to render."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerEgressArguments",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "The provider-specific launch flags."
 					}
 				],
 				"errors": [],
