@@ -57,16 +57,23 @@ async function sessionRecord(
 		)
 			return null;
 		const { value } = await openSealedRecord<SessionPayload>(epoch, bytes);
-		if (!value || typeof value !== 'object') return null;
-		const record = statusRecord(value) || segmentRecord(value) ? value : null;
-		if (!record) return null;
-		const id =
-			record.kind === 'session' ? record.runId : JSON.stringify([record.runId, record.index]);
-		if (toBase64Url(await sealedObjectId(epoch, record.kind, id)) !== object.id) return null;
-		return record;
+		return await namedRecord(value, epoch, object.id);
 	} catch {
 		return null;
 	}
+}
+
+async function namedRecord(
+	value: SessionPayload,
+	keys: ScopeKeys,
+	objectId: string
+): Promise<SessionRecord | null> {
+	if (!value || typeof value !== 'object') return null;
+	const record = statusRecord(value) || segmentRecord(value) ? value : null;
+	if (!record) return null;
+	const id =
+		record.kind === 'session' ? record.runId : JSON.stringify([record.runId, record.index]);
+	return toBase64Url(await sealedObjectId(keys, record.kind, id)) === objectId ? record : null;
 }
 
 function joinSegments(segments: TranscriptSegment[]): string {

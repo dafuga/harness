@@ -6,7 +6,7 @@ import {
 	sealedStreamKey
 } from '../../../../remote/src/utils/networking-security/sealedFrame';
 import { sealedUnpadding } from '../../../../remote/src/utils/networking-security/sealedPadding';
-import type { SealedLiveOptions, StreamTail } from './SealedLive.types';
+import type { SealedLiveNotice, SealedLiveOptions, StreamTail } from './SealedLive.types';
 
 /** Subscribes to account pokes and authenticates numbered frames before emitting their text. */
 export class SealedLive {
@@ -57,26 +57,25 @@ export class SealedLive {
 
 	private async receive(data: unknown): Promise<void> {
 		if (this.stopped) return;
-		if (typeof data === 'string') {
-			const message: { t?: string; kind?: string; ring?: number } = JSON.parse(data);
-			if (message.t === 'poke' && message.kind === 'objects') this.options.onObjects();
-			if (
-				message.t === 'subscribed' &&
-				Number.isSafeInteger(message.ring) &&
-				Number(message.ring) < this.ring
-			) {
-				this.ring = 0;
-				this.socket?.send(
-					JSON.stringify({ t: 'subscribe', scopes: this.options.scopes, after: 0 })
-				);
-			}
-			return;
-		}
+		if (typeof data === 'string') return this.receiveNotice(data);
 		if (!(data instanceof ArrayBuffer) || data.byteLength < 8 || data.byteLength > 262_152) return;
 		const ring = new DataView(data).getBigUint64(0);
 		if (ring > BigInt(Number.MAX_SAFE_INTEGER) || Number(ring) <= this.ring) return;
 		await this.openFrame(new Uint8Array(data, 8));
 		this.ring = Number(ring);
+	}
+
+	private receiveNotice(data: string): void {
+		const message: SealedLiveNotice = JSON.parse(data);
+		if (message.t === 'poke' && message.kind === 'objects') this.options.onObjects();
+		if (
+			message.t !== 'subscribed' ||
+			!Number.isSafeInteger(message.ring) ||
+			Number(message.ring) >= this.ring
+		)
+			return;
+		this.ring = 0;
+		this.socket?.send(JSON.stringify({ t: 'subscribe', scopes: this.options.scopes, after: 0 }));
 	}
 
 	private async openFrame(frame: Uint8Array): Promise<void> {
@@ -91,15 +90,25 @@ export class SealedLive {
 		if (known && header.counter <= known.counter) return;
 		const { data } = await openSealedFrame(keys, key, frame);
 		if (this.stopped) return;
-		const gap = known && header.counter !== known.counter + 1n;
-		const decoder = gap ? new TextDecoder() : (known?.decoder ?? new TextDecoder());
-		const text = (
-			(known?.text ?? '') +
-			(gap ? '\n…\n' : '') +
-			decoder.decode(sealedUnpadding(data), { stream: true })
-		).slice(-256_000);
+		const tail = appendTail(key, header.counter, data, known);
 		if (!known && this.tails.size >= 64) this.tails.delete(this.tails.keys().next().value!);
-		this.tails.set(stream, { key, counter: header.counter, decoder, text });
-		this.options.onOutput(stream, text);
+		this.tails.set(stream, tail);
+		this.options.onOutput(stream, tail.text);
 	}
+}
+
+function appendTail(
+	key: CryptoKey,
+	counter: bigint,
+	data: Uint8Array,
+	known?: StreamTail
+): StreamTail {
+	const gap = known && counter !== known.counter + 1n;
+	const decoder = gap ? new TextDecoder() : (known?.decoder ?? new TextDecoder());
+	const text = (
+		(known?.text ?? '') +
+		(gap ? '\n…\n' : '') +
+		decoder.decode(sealedUnpadding(data), { stream: true })
+	).slice(-256_000);
+	return { key, counter, decoder, text };
 }

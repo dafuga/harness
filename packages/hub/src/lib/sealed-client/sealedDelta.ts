@@ -2,7 +2,9 @@
 import { SealedError } from '../../../../remote/src/models/networking-security/SealedError';
 import type {
 	ScopeKeys,
-	SealedChainState
+	SealedChainState,
+	SealedDeviceKeys,
+	SealedGrant
 } from '../../../../remote/src/models/networking-security/Sealed.types';
 import {
 	fromBase64Url,
@@ -84,15 +86,25 @@ async function missingGrants(
 	);
 	if (!needed.some(Boolean)) return [];
 	const { grants }: GrantList = await (await read(`/grants?device=${enrollment.deviceId}`)).json();
+	return unwrapGrants(cache, enrollment.device, chain, grants);
+}
+
+async function unwrapGrants(
+	cache: SealedBrowserCache,
+	device: SealedDeviceKeys,
+	chain: SealedChainState,
+	grants: SealedGrant[]
+): Promise<StoredGrant[]> {
+	const scopes = chain.devices[device.deviceId].scopes;
 	const { openSealedGrant } =
 		await import('../../../../remote/src/utils/networking-security/sealedGrant');
 	const accepted: StoredGrant[] = [];
 	for (const grant of grants) {
 		const commitment = chain.scopes[grant.scope]?.commitments[grant.epoch];
-		if (!self.scopes.includes(grant.scope) || !commitment) continue;
+		if (!scopes.includes(grant.scope) || !commitment) continue;
 		if (committedKeys(await cache.keys(grant.scope, grant.epoch), commitment)) continue;
 		try {
-			const keys = await openSealedGrant(grant, enrollment.device, chain);
+			const keys = await openSealedGrant(grant, device, chain);
 			accepted.push({ scope: grant.scope, keys });
 		} catch {
 			// Untrusted or corrupted grants cannot replace verified local keys.

@@ -15,3 +15,9 @@ export interface StreamTail {
 	decoder: TextDecoder;
 	text: string;
 }
+
+export interface SealedLiveNotice {
+	t?: string;
+	kind?: string;
+	ring?: number;
+}
