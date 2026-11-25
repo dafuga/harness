@@ -1,0 +1,304 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.module.networking-security-sync-sync-enrollments",
+	"uid": "u_ex57mq5k4r",
+	"kind": "module",
+	"title": "SyncEnrollments",
+	"responsibility": "Owns the SyncEnrollments library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts",
+			"packages/relay/src/lib/networking-security/sync/SyncEnrollments.types.ts"
+		],
+		"symbols": [
+			"SyncEnrollments",
+			"SyncEnrollments.constructor",
+			"SyncEnrollments.open",
+			"SyncEnrollments.read",
+			"SyncEnrollments.pending",
+			"SyncEnrollments.append",
+			"SyncEnrollments.expire",
+			"SyncEnrollments.any",
+			"EnrollStep",
+			"EnrollmentView",
+			"EnrollRow"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SyncEnrollments.constructor.sql",
+				"type": "SqlStorage",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.open.by",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.open.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.open.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.read.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.read.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.pending.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.append.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.append.by",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.append.body",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.append.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "SyncEnrollments.expire.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "SyncEnrollments.open",
+				"type": "EnrollmentView | null"
+			},
+			{
+				"name": "SyncEnrollments.read",
+				"type": "EnrollmentView | null"
+			},
+			{
+				"name": "SyncEnrollments.pending",
+				"type": "EnrollmentView[]"
+			},
+			{
+				"name": "SyncEnrollments.append",
+				"type": "EnrollStep | null"
+			},
+			{
+				"name": "SyncEnrollments.expire",
+				"type": "void"
+			},
+			{
+				"name": "SyncEnrollments.any",
+				"type": "boolean"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SyncEnrollments.open",
+				"inputs": [
+					{
+						"name": "SyncEnrollments.open.by",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.open.body",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.open.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncEnrollments.open",
+						"type": "EnrollmentView | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncEnrollments.read",
+				"inputs": [
+					{
+						"name": "SyncEnrollments.read.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.read.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncEnrollments.read",
+						"type": "EnrollmentView | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncEnrollments.pending",
+				"inputs": [
+					{
+						"name": "SyncEnrollments.pending.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncEnrollments.pending",
+						"type": "EnrollmentView[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncEnrollments.append",
+				"inputs": [
+					{
+						"name": "SyncEnrollments.append.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.append.by",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.append.body",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SyncEnrollments.append.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncEnrollments.append",
+						"type": "EnrollStep | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncEnrollments.expire",
+				"inputs": [
+					{
+						"name": "SyncEnrollments.expire.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncEnrollments.expire",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncEnrollments.any",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SyncEnrollments.any",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SyncEnrollments.constructor",
+				"inputs": [
+					{
+						"name": "SyncEnrollments.constructor.sql",
+						"type": "SqlStorage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncEnrollments.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "relay.module.networking-security-sync-sync-wire",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/lib/networking-security/sync/SyncEnrollments.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

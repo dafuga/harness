@@ -22,4 +22,6 @@ export interface HubEnv {
 	CACHE?: R2Bucket;
 	/** The relay's host objects, reachable through this binding only. */
 	REMOTE_HOSTS?: DurableObjectNamespace;
+	/** The relay's account sync objects: live fan-out and sign-in mailboxes of the sealed account sync. */
+	ACCOUNT_SYNC?: DurableObjectNamespace;
 }

@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"id": "relay.module.networking-security-sync-sync-http",
+	"uid": "u_7knh6lpstr",
+	"kind": "module",
+	"title": "SyncHttp",
+	"responsibility": "Owns the SyncHttp library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/relay/src/lib/networking-security/sync/SyncHttp.ts",
+			"packages/relay/src/lib/networking-security/sync/SyncHttp.types.ts"
+		],
+		"symbols": ["SyncHttp", "SyncHttp.constructor", "SyncHttp.handle", "SyncHttpDeps"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SyncHttp.constructor.deps",
+				"type": "SyncHttpDeps",
+				"required": true
+			},
+			{
+				"name": "SyncHttp.handle.request",
+				"type": "Request",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "SyncHttp.handle",
+				"type": "Promise<Response>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SyncHttp.handle",
+				"inputs": [
+					{
+						"name": "SyncHttp.handle.request",
+						"type": "Request",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncHttp.handle",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SyncHttp.constructor",
+				"inputs": [
+					{
+						"name": "SyncHttp.constructor.deps",
+						"type": "SyncHttpDeps",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncHttp.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "relay.function.read-json-body",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-enrollments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-sockets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-sync-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/relay/src/lib/networking-security/sync/SyncHttp.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/relay/src/lib/networking-security/sync/SyncHttp.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

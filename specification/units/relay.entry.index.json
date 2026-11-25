@@ -10,6 +10,7 @@
 	"owns": {
 		"source": ["packages/relay/src/index.ts"],
 		"symbols": [
+			"AccountSyncObject",
 			"RemoteHostObject",
 			"RemoteHostObject.constructor",
 			"RemoteHostObject.fetch",
@@ -247,6 +248,11 @@
 		{
 			"unit": "relay.model.relay-host-types",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "relay.module.networking-security-sync-account-sync-object",
+			"via": "reexport",
 			"origin": "derived"
 		}
 	],

@@ -156,6 +156,37 @@ ops/:scope?after&limit`, `PUT|GET objects/:scope/:id`, `GET live`
 (WebSocket to the account object), `POST enroll`, `GET enroll/:id`. The
 server never parses an envelope beyond its length and header ids.
 
+### Sync server wire contract (as built, child 3)
+
+Every call needs the Google session (cookie, or `Authorization: Bearer` for native apps) and the
+app's own device id in `X-Harness-Device` (16 random bytes, base64url). The account is the
+session's actor and nothing in a request names another. Project-scoped sessions (`project:<id>`)
+do not reach `/api/sync` yet. Answers are `Cache-Control: private, no-store`; no CORS header.
+Scope ids, device ids and object ids are base64url (16, 16 and 32 bytes); envelopes are base64url text.
+
+| Call                          | Body and answer                                                                                                                                                                     |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET chain?after=N`           | `{entries, head, more}`, 200 entries a page, oldest first                                                                                                                           |
+| `POST chain`                  | One signed entry as JSON. 201 `{seq, hash}`; 409 `chain-conflict` unless `seq` is 0 on an empty chain or `prev` is the hash of the stored `seq - 1`                                 |
+| `POST grants`                 | A grant or an array of up to 32. First write per scope, epoch and device stays; `account` must be the session's. 201 `{stored}`                                                     |
+| `GET grants?device=ID`        | `{grants}` for that device                                                                                                                                                          |
+| `POST ops/:scope`             | JSON array of up to 64 record envelopes (base64url). Header scope must match; the header object id is the retry key. 201 `{ops: [{opId, seq}], head}`; seq is per scope from 1      |
+| `GET ops/:scope?after&limit`  | `{ops: [{seq, opId, device, receivedAt, envelope}], next, more}`, 200 entries or 2 MiB a page                                                                                       |
+| `PUT objects/:scope/:id`      | Body is the base64url record envelope; header scope, object id and revision are checked against the path. Up to 4 MiB; over 32 KiB it goes to R2. 409 `stale-revision` unless newer |
+| `GET objects/:scope/:id`      | The envelope as base64url text, revision in `X-Sealed-Revision`                                                                                                                     |
+| `GET objects/:scope?after=N`  | `{objects: [{id, revision, size, change}], next, more}`: what changed since the scope's change counter N                                                                            |
+| `POST enroll`                 | The new device's request as a JSON object (public keys and commitment, at most 4 KiB). 201 `{id, steps}`; 429 with 16 requests waiting                                              |
+| `GET enroll`, `GET enroll/ID` | Pending requests, or one request with its steps; requests expire after 10 minutes                                                                                                   |
+| `POST enroll/ID`              | Appends a step (claim, reveal, approval) as a JSON object. At most 8 steps. Steps are opaque to the server                                                                          |
+| `GET live` (WebSocket)        | Upgrade to the account's `AccountSyncObject`                                                                                                                                        |
+
+Revisions are limited to 2^53 - 1. Live socket: the client sends `{"t":"subscribe","scopes":[...],
+"after":ring}`; the server answers `{"t":"subscribed","ring":n}` and then sends text
+`{"t":"poke","scope","seq","kind":"ops"|"objects"}` and `{"t":"enroll","id","n"}`, and binary
+`u64 ring ‖ sealed frame`. A client sends a bare sealed stream frame (binary, at most 256 KiB); the
+object checks only the frame type, length and scope id, keeps it in a 64-frame, 2-minute ring and
+relays it to the other subscribers of that scope. Anything else closes the socket with 1008.
+
 Tracker state is an encrypted op log per scope (per-field last-writer-wins
 with hybrid clocks, append-only notes, tombstones, as decided on `egkyz7`).
 Any device may upload a sealed compaction snapshot so new devices do not
@@ -222,13 +253,13 @@ Test support for other packages: `test/support/plaintextCanary.ts`
 
 Wave 1 starts now; each child owns the listed paths only.
 
-| Child                                       | Item     | Owns                                                                                                         | Needs                                     |
-| ------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
-| 1. Sealed core (TypeScript)                 | `fx4c15` | `packages/remote/src/**/sealed*`                                                                             | none                                      |
-| 2. Swift sealed + Secure Enclave keys       | `pkkbnh` | `packages/desktop/ios/App/App/Sealed/**`, iOS vector checks                                                  | formats above, vectors from 1             |
-| 3. Sync server: D1, Hub API, account object | `egkyz7` | `packages/hub/db/migrations/0008-*`, `packages/hub/src/routes/api/sync/**`, `packages/relay/src/lib/sync/**` | API above; 1 in tests only                |
-| 4. Tracker in the Mac app bundle            | `jda9nt` | Desktop packaging, launch agent                                                                              | none                                      |
-| 5. Preferred provider setting               | `mq3s9y` | Tracker config, launcher model choice, settings UI                                                           | none; becomes an `account` record after 6 |
+| Child                                       | Item     | Owns                                                                                                                             | Needs                                     |
+| ------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| 1. Sealed core (TypeScript)                 | `fx4c15` | `packages/remote/src/**/sealed*`                                                                                                 | none                                      |
+| 2. Swift sealed + Secure Enclave keys       | `pkkbnh` | `packages/desktop/ios/App/App/Sealed/**`, iOS vector checks                                                                      | formats above, vectors from 1             |
+| 3. Sync server: D1, Hub API, account object | `egkyz7` | `packages/hub/db/migrations/0008-*`, `packages/hub/src/routes/api/sync/**`, `packages/relay/src/lib/networking-security/sync/**` | API above; 1 in tests only                |
+| 4. Tracker in the Mac app bundle            | `jda9nt` | Desktop packaging, launch agent                                                                                                  | none                                      |
+| 5. Preferred provider setting               | `mq3s9y` | Tracker config, launcher model choice, settings UI                                                                               | none; becomes an `account` record after 6 |
 
 Wave 2, after 1 and 3 merge:
 

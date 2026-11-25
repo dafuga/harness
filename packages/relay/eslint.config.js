@@ -18,6 +18,8 @@ const runtimeGlobals = Object.fromEntries(
 		'ReadableStream',
 		'Request',
 		'RequestInit',
+		'SqlStorage',
+		'SqlStorageValue',
 		'TextDecoder',
 		'TextEncoder',
 		'URL',
