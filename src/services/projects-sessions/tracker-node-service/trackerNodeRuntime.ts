@@ -46,7 +46,7 @@ export function trackerNodeRuntime(
 		validateModel(model) {
 			parseTrackerModelSpec(String(model), ladder);
 		},
-		planLaunch: (fields, current) => planNativeLaunch(fields, current, config.node)
+		planLaunch: (fields, current, source) => planNativeLaunch(fields, current, config.node, source)
 	};
 }
 
@@ -117,7 +117,8 @@ function spokeLinks(config: Extract<TrackerNodeConfig, { role: 'spoke' }>, secre
 function planNativeLaunch(
 	fields: TrackerItemInput,
 	current: TrackerItemSnapshot | undefined,
-	node: string
+	node: string,
+	source: 'manual' | 'automatic'
 ) {
 	const desired = String(fields.computer ?? current?.computer ?? 'auto');
 	const target = launchTarget(desired, node);
@@ -128,7 +129,7 @@ function planNativeLaunch(
 		...fields,
 		computer: target,
 		launch_target: target,
-		launch_source: 'manual',
+		launch_source: source,
 		launch_pick: null
 	};
 }

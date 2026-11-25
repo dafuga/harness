@@ -172,7 +172,8 @@ export function itemMutationContext(
 										.get(current.id) as { source: string }
 								).source !== 'manual'))
 						? { ...current, auto: null }
-						: current
+						: current,
+					explicitLaunch ? 'manual' : 'automatic'
 				))
 	};
 }
