@@ -2,11 +2,9 @@
 	"name": "hub-sealed-home",
 	"goal": "Prove ciphertext-only scoped storage, cached transcript before network, delta and live delivery with a verified browser enrollment, and browser latency budget",
 	"createdAt": "2026-11-25T17:36:38.295Z",
-	"updatedAt": "2026-11-25T17:37:28.867Z",
+	"updatedAt": "2026-11-25T17:58:22.285Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,7 +17,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-25T17:58:22.285Z",
+			"evidence": "425450816e implements account-partitioned ciphertext and cursor transactions, local keys checked against the signed chain, cache-first Home, and authenticated delta/live reception. Device approval, browser live upgrade and attached Mac publisher require the separately owned rollout work."
 		},
 		{
 			"id": "test",
