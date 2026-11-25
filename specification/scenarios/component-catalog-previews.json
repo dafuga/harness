@@ -66,6 +66,7 @@
 		"desktop.component.project-agent",
 		"desktop.component.project-gate",
 		"desktop.component.project-switcher",
+		"desktop.component.projects-sessions-home-subscription-quota",
 		"desktop.component.recorded-preview",
 		"desktop.component.reference-text",
 		"desktop.component.relationships-panel",
@@ -1653,6 +1654,12 @@
 			"title": "Project switcher: long",
 			"coverage": "required",
 			"units": ["desktop.component.project-switcher"]
+		},
+		{
+			"id": "desktop-component-projects-sessions-home-subscription-quota",
+			"title": "Home subscription quota",
+			"coverage": "required",
+			"units": ["desktop.component.projects-sessions-home-subscription-quota"]
 		},
 		{
 			"id": "desktop-component-recorded-preview",
@@ -8832,6 +8839,7 @@
 				"desktop-component-project-switcher-empty",
 				"desktop-component-project-switcher-busy",
 				"desktop-component-project-switcher-long",
+				"desktop-component-projects-sessions-home-subscription-quota",
 				"desktop-component-recorded-preview",
 				"desktop-component-reference-text",
 				"desktop-component-relationships-panel",

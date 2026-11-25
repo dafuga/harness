@@ -4260,13 +4260,13 @@
 			"unit": "desktop.service.capacitor-projects",
 			"from": "packages/desktop/src/services/CapacitorProjectsService.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-			"definition": "3a50b983cfb840d8f10425dd5014789e0ba50ca169c37c46978feec338bc8a04",
+			"definition": "c278fd136847a4641d5ef96e1ebc20e0549e79d644e9ef58b5541bcaa0b2d047",
 			"relocationDefinition": "fe30761246bf612fad1c8e18fa34c681a39a90ba14d7460dd78b469ebc5651f8",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "1ae98b5c0823c9810c461e7347e7a88d71b02f70",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
-				"definition": "3a50b983cfb840d8f10425dd5014789e0ba50ca169c37c46978feec338bc8a04",
-				"reason": "Combine account and paired-computer projects after the phone owner signs in."
+				"definition": "c278fd136847a4641d5ef96e1ebc20e0549e79d644e9ef58b5541bcaa0b2d047",
+				"reason": "Expose the linked Mac Home snapshot alongside the phone’s own hosted project services."
 			},
 			"previousReviews": [
 				{
@@ -4280,6 +4280,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
 					"definition": "d32f1355839ee8dd8af1ebc9e107dc17ced5aac289db63c84c25fb1286b22ef7",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+					"definition": "3a50b983cfb840d8f10425dd5014789e0ba50ca169c37c46978feec338bc8a04",
+					"reason": "Combine account and paired-computer projects after the phone owner signs in."
 				}
 			]
 		},
@@ -5396,13 +5402,13 @@
 			"unit": "desktop.adapter.capacitor-bridge",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+			"definition": "bd3a2cae64c690473f7b6a0654ff76e9bfd2da9760483b114d499b54a0f107be",
 			"relocationDefinition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2",
 			"review": {
-				"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
+				"commit": "1ae98b5c0823c9810c461e7347e7a88d71b02f70",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-				"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
+				"definition": "bd3a2cae64c690473f7b6a0654ff76e9bfd2da9760483b114d499b54a0f107be",
+				"reason": "Offer the linked Mac Home read through the existing native device transport and preserve the denial error."
 			},
 			"previousReviews": [
 				{
@@ -5410,6 +5416,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 					"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+					"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -5436,19 +5448,26 @@
 			"unit": "desktop.function.remote-grant",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/remoteGrant.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
-			"definition": "7eec8fc38dfd064b90c3fb18a1d46f9573811a6c0b3c1d87ee2b303c5d1f5694"
+			"definition": "6c9bac5bea4fb945ace9e9ef7e4b2cecf5a1bb191e8f0793fb2acfb5db60fa88",
+			"relocationDefinition": "7eec8fc38dfd064b90c3fb18a1d46f9573811a6c0b3c1d87ee2b303c5d1f5694",
+			"review": {
+				"commit": "1ae98b5c0823c9810c461e7347e7a88d71b02f70",
+				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/remoteGrant.ts",
+				"definition": "6c9bac5bea4fb945ace9e9ef7e4b2cecf5a1bb191e8f0793fb2acfb5db60fa88",
+				"reason": "Permit the Home read only when the linked Mac advertises that method at attachment."
+			}
 		},
 		{
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
+			"definition": "8123e4333887873f66f2fcfba51a8f8f0002ff52b6399da9f293e80d395ca571",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+				"commit": "1ae98b5c0823c9810c461e7347e7a88d71b02f70",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
-				"reason": "Exposes the direct Mac inbox source through the isolated preload and local transport."
+				"definition": "8123e4333887873f66f2fcfba51a8f8f0002ff52b6399da9f293e80d395ca571",
+				"reason": "Expose the fixed Home snapshot read on the desktop preload through the existing local socket."
 			},
 			"previousReviews": [
 				{
@@ -5492,6 +5511,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "eee7526226128adc019a907c59b48598174ff5c5d5c086289aa101f63bbe9c14",
 					"reason": "Exposes gameLevelGenerate through the existing isolated preload while preserving its location, registered identity and previous bridge methods."
+				},
+				{
+					"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
+					"reason": "Exposes the direct Mac inbox source through the isolated preload and local transport."
 				}
 			]
 		},
@@ -6976,13 +7001,13 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
+			"definition": "cabc7aa302ad3474ee744184eec1a58012cd653129aac375a49913872101f79e",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+				"commit": "1ae98b5c0823c9810c461e7347e7a88d71b02f70",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
-				"reason": "Dispatches the Mac inbox read and confirmed write over the authenticated local transport."
+				"definition": "cabc7aa302ad3474ee744184eec1a58012cd653129aac375a49913872101f79e",
+				"reason": "Route the local Home read through the shared snapshot reader and reject all input fields."
 			},
 			"previousReviews": [
 				{
@@ -7014,6 +7039,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "24abc5d2f2cb8a71536125e8a723d22be51876df584e9d9b8ff577877c4c59de",
 					"reason": "Dispatches the zero-argument project overview operation."
+				},
+				{
+					"commit": "806d10dc5fbb1143068319f929c9e15cd586e0d3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
+					"reason": "Dispatches the Mac inbox read and confirmed write over the authenticated local transport."
 				}
 			]
 		},
