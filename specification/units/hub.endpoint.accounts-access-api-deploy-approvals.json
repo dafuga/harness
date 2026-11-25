@@ -4,7 +4,7 @@
 	"uid": "u_32tlacz6al",
 	"kind": "endpoint",
 	"title": "/(accounts-access)/api/deploy-approvals",
-	"responsibility": "Serves authenticated native decisions and scoped runner registration and claims for exact deploy attempts.",
+	"responsibility": "Serves native owner release decisions and exact scoped runner admission and progress for scripted deployments.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {

@@ -4,15 +4,24 @@
 	"uid": "u_2gix6yvno4",
 	"kind": "service",
 	"title": "requestDeployApproval",
-	"responsibility": "Owns the requestDeployApproval service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Projects reviewed plans and provider progress into the deploy inbox without exposing provider credentials.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/services/execution-runtimes/scripted-deploy/requestDeployApproval.ts",
 			"src/services/execution-runtimes/scripted-deploy/requestDeployApproval.types.ts"
 		],
-		"symbols": ["requestDeployApproval", "ApprovalContext"]
+		"symbols": [
+			"requestDeployApproval",
+			"runControlClient",
+			"deployApprovalCard",
+			"controlScope",
+			"publishReadOnlyPlan",
+			"publishRunProgress",
+			"reportControlledRun",
+			"ApprovalContext"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -31,12 +40,96 @@
 				"name": "requestDeployApproval.config",
 				"type": "DeployProject",
 				"required": true
+			},
+			{
+				"name": "runControlClient.registry",
+				"type": "DeployRegistry",
+				"required": true
+			},
+			{
+				"name": "deployApprovalCard.context",
+				"type": "ApprovalContext",
+				"required": true
+			},
+			{
+				"name": "deployApprovalCard.script",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "controlScope.plan",
+				"type": "Plan",
+				"required": true
+			},
+			{
+				"name": "publishReadOnlyPlan.registry",
+				"type": "DeployRegistry",
+				"required": true
+			},
+			{
+				"name": "publishReadOnlyPlan.result",
+				"type": "Awaited<ReturnType<DeployPlanning['plan']>>",
+				"required": true
+			},
+			{
+				"name": "publishReadOnlyPlan.input",
+				"type": "{ smoke: string; rollbackFrom?: string }",
+				"required": true
+			},
+			{
+				"name": "publishRunProgress.registry",
+				"type": "DeployRegistry",
+				"required": true
+			},
+			{
+				"name": "publishRunProgress.record",
+				"type": "Journal",
+				"required": true
+			},
+			{
+				"name": "reportControlledRun.client",
+				"type": "DeployApprovalClient",
+				"required": true
+			},
+			{
+				"name": "reportControlledRun.scope",
+				"type": "ReturnType<typeof controlScope>",
+				"required": true
+			},
+			{
+				"name": "reportControlledRun.progress",
+				"type": "DeployProgress",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "requestDeployApproval",
 				"type": "Promise<ApprovalReceipt | undefined>"
+			},
+			{
+				"name": "runControlClient",
+				"type": "DeployApprovalClient"
+			},
+			{
+				"name": "deployApprovalCard",
+				"type": "unknown"
+			},
+			{
+				"name": "controlScope",
+				"type": "unknown"
+			},
+			{
+				"name": "publishReadOnlyPlan",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "publishRunProgress",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "reportControlledRun",
+				"type": "Promise<void>"
 			}
 		],
 		"errors": [
@@ -74,6 +167,149 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "runControlClient",
+				"inputs": [
+					{
+						"name": "runControlClient.registry",
+						"type": "DeployRegistry",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runControlClient",
+						"type": "DeployApprovalClient"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
+				"name": "deployApprovalCard",
+				"inputs": [
+					{
+						"name": "deployApprovalCard.context",
+						"type": "ApprovalContext",
+						"required": true
+					},
+					{
+						"name": "deployApprovalCard.script",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "deployApprovalCard",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "controlScope",
+				"inputs": [
+					{
+						"name": "controlScope.plan",
+						"type": "Plan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "controlScope",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "publishReadOnlyPlan",
+				"inputs": [
+					{
+						"name": "publishReadOnlyPlan.registry",
+						"type": "DeployRegistry",
+						"required": true
+					},
+					{
+						"name": "publishReadOnlyPlan.result",
+						"type": "Awaited<ReturnType<DeployPlanning['plan']>>",
+						"required": true
+					},
+					{
+						"name": "publishReadOnlyPlan.input",
+						"type": "{ smoke: string; rollbackFrom?: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "publishReadOnlyPlan",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "publishRunProgress",
+				"inputs": [
+					{
+						"name": "publishRunProgress.registry",
+						"type": "DeployRegistry",
+						"required": true
+					},
+					{
+						"name": "publishRunProgress.record",
+						"type": "Journal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "publishRunProgress",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reportControlledRun",
+				"inputs": [
+					{
+						"name": "reportControlledRun.client",
+						"type": "DeployApprovalClient",
+						"required": true
+					},
+					{
+						"name": "reportControlledRun.scope",
+						"type": "ReturnType<typeof controlScope>",
+						"required": true
+					},
+					{
+						"name": "reportControlledRun.progress",
+						"type": "DeployProgress",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportControlledRun",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -96,6 +332,11 @@
 		},
 		{
 			"unit": "service.execution-runtimes-scripted-deploy-deploy-approval-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-deploy-planning",
 			"via": "import",
 			"origin": "derived"
 		},

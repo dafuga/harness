@@ -14,7 +14,8 @@ export class DeployVerification {
 	constructor(
 		private readonly config: DeployProject,
 		private readonly store: DeployRunRepository,
-		private readonly broker: DeployBroker
+		private readonly broker: DeployBroker,
+		private readonly progress: (record: Journal) => Promise<void>
 	) {
 		this.docker = new DeployDockerAdapter({ project: config });
 	}
@@ -34,6 +35,7 @@ export class DeployVerification {
 		record.smoke = passed;
 		record.phase = 'verified';
 		this.store.save(record);
+		await this.progress(record);
 		await this.cleanup(record, route);
 		await this.broker.note(
 			plan.item,
@@ -49,6 +51,7 @@ export class DeployVerification {
 				(observed.artifact ?? 'unrecorded legacy') +
 				'.'
 		);
+		await this.progress(record);
 		return record;
 	}
 

@@ -15,8 +15,9 @@ const viewports = [
 	{ name: 'mobile', width: 390, height: 844 }
 ];
 
-async function fixture(page: Page, phone: boolean) {
-	const pending = approvalCardFixture(expiry);
+async function fixture(page: Page, phone: boolean, controlled = false) {
+	const original = approvalCardFixture(expiry);
+	const pending = controlled ? { ...original, control: { run: original.id } } : original;
 	const deny = {
 		...pending,
 		id: '35b52d67-7497-40f1-ad9a-c55e605fdb28',
@@ -28,6 +29,18 @@ async function fixture(page: Page, phone: boolean) {
 		receipt: null,
 		used: false
 	}));
+	if (controlled) {
+		cards.push({
+			...cards[0],
+			project: 'preview-fixture',
+			environment: 'staging',
+			id: 'e349a6ba-58a7-4737-af1f-77c08d12a293',
+			control: {
+				run: 'e349a6ba-58a7-4737-af1f-77c08d12a293',
+				preview: { blocked: true, fields: ['staging:migrations.0317'] }
+			}
+		});
+	}
 	const decisions: ApprovalDecision[] = [];
 	let online = true;
 	// Keep the expiry fixture stable without replacing the browser's navigation timings.
@@ -38,15 +51,7 @@ async function fixture(page: Page, phone: boolean) {
 		if (!online) throw new Error('Synthetic authority unavailable');
 		if (!input) return cards;
 		decisions.push(input);
-		const card = cards.find((item) => item.id === input.id && item.plan === input.plan);
-		if (!card || card.receipt) throw new Error('Synthetic decision refused');
-		card.receipt = {
-			...input,
-			actor: 'google-synthetic',
-			receipt: '46cac0e9-4c91-4f98-a056-2ce9fe192f4c',
-			decidedAt: clock
-		};
-		return card.receipt;
+		return applyFixtureDecision(cards, input, controlled);
 	});
 	if (phone) await remotePhoneFixture(page, 'unpaired');
 	else await installMacBridge(page);
@@ -58,6 +63,32 @@ async function fixture(page: Page, phone: boolean) {
 			online = false;
 		}
 	};
+}
+
+function applyFixtureDecision(cards: ApprovalCards, input: ApprovalDecision, controlled: boolean) {
+	const card = cards.find((item) => item.id === input.id && item.plan === input.plan);
+	if (controlled && input.decision === 'go' && card?.receipt?.decision === 'allow') {
+		Object.assign(card, {
+			goAt: clock,
+			progress: {
+				phase: 'complete',
+				operation: 'provider-operation-fixture',
+				version: 'routed-fixture',
+				checks: ['routed-smoke-fixture']
+			}
+		});
+		return { id: card.id, plan: card.plan, goAt: clock };
+	}
+	if (!card || card.receipt || input.decision === 'go')
+		throw new Error('Synthetic decision refused');
+	card.receipt = {
+		...input,
+		decision: input.decision,
+		actor: 'google-synthetic',
+		receipt: '46cac0e9-4c91-4f98-a056-2ce9fe192f4c',
+		decidedAt: clock
+	};
+	return card.receipt;
 }
 
 async function installMacBridge(page: Page) {
@@ -142,6 +173,41 @@ for (const { name, width, height } of viewports) {
 			await expect(page.getByRole('status')).toHaveText('Deploy approvals are unavailable.');
 			await expect(dialog).toHaveCount(0);
 			await approvalEvidence(page, info, 'unavailable');
+		});
+		test('start follows a distinct review and shows the exact provider receipt', async ({
+			page
+		}, info) => {
+			const { pending, decisions } = await fixture(page, name === 'mobile', true);
+			await page.goto('/deploy-approvals');
+			await expect(page.getByRole('heading', { name: 'Deploy approvals' })).toBeVisible();
+			await expect(page.getByRole('region', { name: 'Release decisions' })).not.toHaveAttribute(
+				'aria-busy',
+				'true'
+			);
+			await approvalEvidence(page, info, 'run-entry');
+			const row = page.getByRole('button', { name: 'Review fixture preprod deploy' });
+			await row.click();
+			const dialog = page.getByRole('dialog', { name: 'Review deploy approval' });
+			await expect(dialog.getByRole('button', { name: 'Start deploy' })).toHaveCount(0);
+			await dialog.getByRole('button', { name: 'Allow deploy' }).click();
+			await expect(dialog.getByRole('status')).toHaveText('Allowed');
+			await approvalEvidence(page, info, 'go');
+			await dialog.getByRole('button', { name: 'Start deploy' }).click({ timeout: 5000 });
+			await expect(dialog.getByRole('status')).toHaveText('Complete');
+			await expect(dialog.getByText('provider-operation-fixture', { exact: true })).toBeVisible();
+			await expect(dialog.getByText('routed-smoke-fixture', { exact: true })).toBeVisible();
+			expect(decisions).toEqual([
+				{ id: pending.id, plan: pending.plan, decision: 'allow' },
+				{ id: pending.id, plan: pending.plan, decision: 'go' }
+			]);
+			await dialog.getByText('routed-smoke-fixture', { exact: true }).scrollIntoViewIfNeeded();
+			await approvalEvidence(page, info, 'run-complete');
+			await dialog.getByRole('button', { name: 'Close' }).click();
+			await page.getByRole('button', { name: 'Review preview-fixture staging deploy' }).click();
+			await expect(dialog.getByRole('status')).toHaveText('Plan blocked by parity');
+			await expect(dialog.getByRole('button', { name: /Allow|Start/ })).toHaveCount(0);
+			await dialog.getByText('staging:migrations.0317', { exact: true }).scrollIntoViewIfNeeded();
+			await approvalEvidence(page, info, 'run-plan');
 		});
 	});
 }

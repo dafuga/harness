@@ -4,7 +4,7 @@
 	"uid": "u_hknoug3rur",
 	"kind": "service",
 	"title": "ScriptedDeployService",
-	"responsibility": "Prepares immutable release artifacts and executes one guarded deploy or rollback through the trusted broker.",
+	"responsibility": "Prepares immutable artifacts and routes guarded deploy, rollback, sign-off and recovery on the trusted host.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -14,6 +14,7 @@
 			"ScriptedDeployService.constructor",
 			"ScriptedDeployService.prepare",
 			"ScriptedDeployService.deploy",
+			"ScriptedDeployService.resume",
 			"ScriptedDeployService.signoff"
 		]
 	},
@@ -51,6 +52,17 @@
 				"description": "Typed request or persisted JSON payload for this operation."
 			},
 			{
+				"name": "ScriptedDeployService.deploy.controlled",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "ScriptedDeployService.resume.id",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "ScriptedDeployService.signoff.id",
 				"type": "string",
 				"required": true,
@@ -61,6 +73,12 @@
 				"type": "Proof",
 				"required": true,
 				"description": "Signed approval or sign-off envelope to verify."
+			},
+			{
+				"name": "ScriptedDeployService.signoff.controlled",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -117,6 +135,12 @@
 						"type": "DeployRequest",
 						"required": true,
 						"description": "Typed request or persisted JSON payload for this operation."
+					},
+					{
+						"name": "ScriptedDeployService.deploy.controlled",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
@@ -136,6 +160,24 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "ScriptedDeployService.resume",
+				"inputs": [
+					{
+						"name": "ScriptedDeployService.resume.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ScriptedDeployService.resume",
+						"type": "Promise<Journal>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "ScriptedDeployService.signoff",
 				"inputs": [
 					{
@@ -149,6 +191,12 @@
 						"type": "Proof",
 						"required": true,
 						"description": "Signed approval or sign-off envelope to verify."
+					},
+					{
+						"name": "ScriptedDeployService.signoff.controlled",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
@@ -210,27 +258,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.execution-runtimes-scripted-deploy-approval-inbox",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.execution-runtimes-scripted-deploy-broker",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.execution-runtimes-scripted-deploy-contracts",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.execution-runtimes-scripted-deploy-parity",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.execution-runtimes-scripted-deploy-proofs",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -260,7 +293,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.execution-runtimes-scripted-deploy-record-deploy-signoff",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.execution-runtimes-scripted-deploy-request-deploy-approval",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-scripted-deploy-run-deploy-plan",
 			"via": "import",
 			"origin": "derived"
 		},

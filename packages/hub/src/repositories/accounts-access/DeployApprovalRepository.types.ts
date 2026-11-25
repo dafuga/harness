@@ -1,10 +1,11 @@
 // @harness-uid u_lrganksse4
-import type { runnerInput } from '../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox';
-import type { z } from 'zod';
+import type { RunnerInput } from '../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox.types';
 
 export type RunnerScope = { owner: string; runnerHash: string; now: number };
 export type DecisionSession = { owner: string; sessionHash: string; now: number; grants: string };
-export type Collect = Extract<z.infer<typeof runnerInput>, { kind: 'collect' }>;
+export type Collect = Extract<RunnerInput, { kind: 'collect' }>;
+export type Admit = Extract<RunnerInput, { kind: 'admit' }>;
+export type Report = Extract<RunnerInput, { kind: 'report' }>;
 export type ApprovalRow = {
 	id: string;
 	plan: string;
@@ -14,4 +15,6 @@ export type ApprovalRow = {
 	decision: 'allow' | 'deny' | null;
 	decided_at: number | null;
 	used_at: number | null;
+	go_at: number | null;
+	progress: string | null;
 };

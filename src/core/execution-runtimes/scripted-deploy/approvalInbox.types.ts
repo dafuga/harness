@@ -4,10 +4,16 @@ import type {
 	approvalCard,
 	approvalCards,
 	approvalDecision,
-	approvalReceipt
+	approvalReceipt,
+	deployProgress,
+	goReceipt,
+	runnerInput
 } from './approvalInbox';
 
 export type ApprovalCard = z.infer<typeof approvalCard>;
 export type ApprovalCards = z.infer<typeof approvalCards>;
 export type ApprovalDecision = z.infer<typeof approvalDecision>;
 export type ApprovalReceipt = z.infer<typeof approvalReceipt>;
+export type GoReceipt = z.infer<typeof goReceipt>;
+export type DeployProgress = z.infer<typeof deployProgress>;
+export type RunnerInput = z.infer<typeof runnerInput>;

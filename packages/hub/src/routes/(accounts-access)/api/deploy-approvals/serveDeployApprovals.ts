@@ -6,7 +6,13 @@ import {
 	deployApprovalPath,
 	runnerInput
 } from '../../../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox';
-import { DeployApprovalRepository } from '../../../../repositories/accounts-access/DeployApprovalRepository';
+import type { ApprovalCard } from '../../../../../../../src/core/execution-runtimes/scripted-deploy/approvalInbox.types';
+import {
+	admitDeployRun,
+	DeployApprovalRepository,
+	reportDeployRun
+} from '../../../../repositories/accounts-access/DeployApprovalRepository';
+import type { RunnerScope } from '../../../../repositories/accounts-access/DeployApprovalRepository.types';
 import { safeEqual } from '../../../../utils/verification-evidence/authSecrets';
 import { readOverviewText } from '../../../api/tracker-overview/trackerOverviewInput';
 import { hubHttpFailure } from '../../../api/[...path]/hub-api-controller/hubHttp';
@@ -55,7 +61,7 @@ function approvalContext(request: Request, { owner, db, now }: DeployApprovalDep
 		url.search
 	)
 		return null;
-	return { owner, now, repository: new DeployApprovalRepository(db) };
+	return { owner, now, db, repository: new DeployApprovalRepository(db) };
 }
 
 async function serveOwner(
@@ -93,17 +99,60 @@ async function serveRunner(
 	const scope = input.kind === 'register' ? input.card : input;
 	const runnerHash = await authorizedRunner(auth, `${scope.project}:${scope.environment}`);
 	if (!runnerHash) return hidden();
-	if (input.kind === 'collect')
-		return json(await context.repository.collect(input, { ...context, runnerHash }));
-	const { card } = input;
+	const runner = { owner: context.owner, now: context.now, runnerHash };
+	if (input.kind === 'collect') return json(await context.repository.collect(input, runner));
+	if (input.kind === 'admit')
+		return (await admitDeployRun(context.db, input, runner))
+			? json({ status: 'admitted' })
+			: conflict();
+	if (input.kind === 'report')
+		return (await reportDeployRun(context.db, input, runner))
+			? json({ status: 'recorded' })
+			: conflict();
+	return registerRun(context, input.card, runner);
+}
+
+async function registerRun(
+	context: DeployApprovalContext,
+	card: ApprovalCard,
+	runner: RunnerScope
+) {
+	if (!validCardScope(card)) return conflict();
 	if (
 		card.expiresAt <= context.now ||
 		card.expiresAt > context.now + approvalWindowMs + approvalClockSkewMs
 	)
 		return conflict();
-	return (await context.repository.register(card, { ...context, runnerHash }))
+	return (await context.repository.register(card, runner))
 		? json({ status: 'pending' }, 201)
 		: conflict();
+}
+
+function validCardScope(card: ApprovalCard) {
+	const { control } = card;
+	if (!control)
+		return card.environment !== 'staging' && card.action !== 'signoff' && Boolean(card.artifact);
+	if (card.action === 'signoff') return validSignoffCard(card, control);
+	return validControlledRun(card, control);
+}
+
+function validSignoffCard(card: ApprovalCard, control: NonNullable<ApprovalCard['control']>) {
+	return Boolean(
+		card.artifact &&
+		control.review &&
+		!control.preview &&
+		!control.rollbackFrom &&
+		control.run !== card.id
+	);
+}
+
+function validControlledRun(card: ApprovalCard, control: NonNullable<ApprovalCard['control']>) {
+	return (
+		!control.review &&
+		control.run === card.id &&
+		Boolean(control.rollbackFrom) === (card.action === 'rollback') &&
+		(Boolean(card.artifact) || (card.action === 'rollback' && card.environment === 'staging'))
+	);
 }
 
 async function authorizedRunner(

@@ -42,6 +42,26 @@
 			"id": "unavailable",
 			"title": "Authority unavailable",
 			"coverage": "required"
+		},
+		{
+			"id": "run-entry",
+			"title": "Registered deploy run",
+			"coverage": "required"
+		},
+		{
+			"id": "go",
+			"title": "Allowed run awaiting Go",
+			"coverage": "required"
+		},
+		{
+			"id": "run-complete",
+			"title": "Verified provider and smoke receipts",
+			"coverage": "required"
+		},
+		{
+			"id": "run-plan",
+			"title": "Read-only plan with parity blockers",
+			"coverage": "required"
 		}
 	],
 	"viewports": [
@@ -82,7 +102,11 @@
 				"rollback-details",
 				"allowed",
 				"denied",
-				"unavailable"
+				"unavailable",
+				"run-entry",
+				"go",
+				"run-complete",
+				"run-plan"
 			],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"provenance": "actual-capture",
@@ -93,7 +117,7 @@
 		{
 			"id": "approval-renderer-workload",
 			"kind": "benchmark",
-			"states": ["pending"],
+			"states": ["pending", "go"],
 			"viewports": ["desktop", "tablet", "mobile"],
 			"required": true
 		}

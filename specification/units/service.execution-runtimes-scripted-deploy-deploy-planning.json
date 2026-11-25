@@ -19,6 +19,7 @@
 			"DeployPlanning.plan",
 			"DeployPlanning.inventory",
 			"DeployPlanning.predecessor",
+			"DeployPlanning.restoreTarget",
 			"verifyCurrentDeployPlan",
 			"DeployRequest"
 		]
@@ -67,6 +68,16 @@
 				"type": "Partial<Record<Environment, Observation>>",
 				"required": true,
 				"description": "Constructs a plan for one target from fresh provider inventory, and verifies that promotion or rollback refers to the exact live release."
+			},
+			{
+				"name": "DeployPlanning.restoreTarget.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "DeployPlanning.restoreTarget.current",
+				"type": "Observation",
+				"required": true
 			},
 			{
 				"name": "verifyCurrentDeployPlan.planning",
@@ -192,6 +203,34 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "DeployPlanning.restoreTarget",
+				"inputs": [
+					{
+						"name": "DeployPlanning.restoreTarget.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "DeployPlanning.restoreTarget.current",
+						"type": "Observation",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployPlanning.restoreTarget",
+						"type": "Observation"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "verifyCurrentDeployPlan",

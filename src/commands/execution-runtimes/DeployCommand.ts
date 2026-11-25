@@ -12,6 +12,11 @@ export class DeployCommand {
 			.option('--release <id>', 'Prepared immutable release ID.')
 			.option('--from <run>', 'Signed predecessor deployment run.')
 			.option('--plan', 'Inspect live parity without provider changes.')
+			.option(
+				'--publish-plan',
+				'Show a read-only plan for this release in the native deploy inbox.'
+			)
+			.option('--wait-for-go', 'Publish this exact run and wait for native owner approval and Go.')
 			.action((project: string, environment: string, options: DeployOptions) =>
 				deployOperation({ kind: 'deploy', project, environment }, options)
 			);

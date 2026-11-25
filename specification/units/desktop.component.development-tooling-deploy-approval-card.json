@@ -4,7 +4,7 @@
 	"uid": "u_xa7iq7huqp",
 	"kind": "component",
 	"title": "Deploy approval review",
-	"responsibility": "Shows the pinned artifact, deployment proof, rollback identity and decision receipt.",
+	"responsibility": "Shows the pinned plan and its receipts and offers a separate Go after an actionable request is allowed.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -25,43 +25,57 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DeployApprovalCard.card",
 				"type": "ApprovalCards[number]",
-				"required": true
+				"required": true,
+				"description": "Exact plan metadata, existing decision and available provider or reviewer receipts."
 			},
 			{
 				"name": "DeployApprovalCard.status",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Current status of the decision, preview or runner."
 			},
 			{
 				"name": "DeployApprovalCard.disabled",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Disables write controls while the online authority is loading or the request is unavailable."
+			},
+			{
+				"name": "DeployApprovalCard.canStart",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Allows the separate Go control on an allowed exact run. Defaults to false."
 			},
 			{
 				"name": "DeployApprovalCard.error",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Safe feedback from an uncertain or refused action."
 			},
 			{
 				"name": "DeployApprovalCard.decide",
 				"type": "(decision: ApprovalDecision['decision']) => void",
-				"required": true
+				"required": true,
+				"description": "Sends the requested allow, deny or Go intent to the owning page."
 			},
 			{
 				"name": "DeployApprovalCard.close",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Closes the review and returns focus to the parent view."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeployApprovalCard",
-				"type": "markup"
+				"type": "markup",
+				"description": "Responsive modal with scoped plan details, receipts and applicable controls."
 			}
 		],
 		"errors": [],

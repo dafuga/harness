@@ -4,8 +4,8 @@
 	"uid": "u_pkn44eqxgd",
 	"kind": "service",
 	"title": "DeployApprovalClient",
-	"responsibility": "Owns the DeployApprovalClient service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Publishes exact plans, collects typed owner decisions, and requests one-time admission and receipt reporting.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -16,8 +16,12 @@
 			"DeployApprovalClient",
 			"DeployApprovalClient.constructor",
 			"DeployApprovalClient.wait",
+			"DeployApprovalClient.publish",
+			"DeployApprovalClient.admit",
+			"DeployApprovalClient.report",
 			"InboxConfig",
-			"RunnerScope"
+			"RunnerScope",
+			"RunScope"
 		]
 	},
 	"contract": {
@@ -32,12 +36,44 @@
 				"name": "DeployApprovalClient.wait.card",
 				"type": "ApprovalCard",
 				"required": true
+			},
+			{
+				"name": "DeployApprovalClient.publish.card",
+				"type": "ApprovalCard",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalClient.admit.scope",
+				"type": "RunScope",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalClient.report.scope",
+				"type": "RunScope",
+				"required": true
+			},
+			{
+				"name": "DeployApprovalClient.report.progress",
+				"type": "DeployProgress",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "DeployApprovalClient.wait",
 				"type": "Promise<ApprovalReceipt>"
+			},
+			{
+				"name": "DeployApprovalClient.publish",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "DeployApprovalClient.admit",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "DeployApprovalClient.report",
+				"type": "Promise<void>"
 			}
 		],
 		"errors": [],
@@ -56,6 +92,65 @@
 					{
 						"name": "DeployApprovalClient.wait",
 						"type": "Promise<ApprovalReceipt>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployApprovalClient.publish",
+				"inputs": [
+					{
+						"name": "DeployApprovalClient.publish.card",
+						"type": "ApprovalCard",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalClient.publish",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployApprovalClient.admit",
+				"inputs": [
+					{
+						"name": "DeployApprovalClient.admit.scope",
+						"type": "RunScope",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalClient.admit",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "DeployApprovalClient.report",
+				"inputs": [
+					{
+						"name": "DeployApprovalClient.report.scope",
+						"type": "RunScope",
+						"required": true
+					},
+					{
+						"name": "DeployApprovalClient.report.progress",
+						"type": "DeployProgress",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DeployApprovalClient.report",
+						"type": "Promise<void>"
 					}
 				],
 				"errors": [],

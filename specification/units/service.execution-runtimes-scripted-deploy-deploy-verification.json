@@ -38,6 +38,11 @@
 				"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
 			},
 			{
+				"name": "DeployVerification.constructor.progress",
+				"type": "(record: Journal) => Promise<void>",
+				"required": true
+			},
+			{
 				"name": "DeployVerification.verify.record",
 				"type": "Journal",
 				"required": true,
@@ -157,6 +162,11 @@
 						"type": "DeployBroker",
 						"required": true,
 						"description": "Verifies the canonical route, runs task-scoped cleanup, and records the verified operation in Tracker."
+					},
+					{
+						"name": "DeployVerification.constructor.progress",
+						"type": "(record: Journal) => Promise<void>",
+						"required": true
 					}
 				],
 				"outputs": [

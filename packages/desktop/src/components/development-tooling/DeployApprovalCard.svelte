@@ -13,6 +13,7 @@
 		card,
 		status,
 		disabled,
+		canStart = false,
 		error,
 		decide,
 		close
@@ -20,26 +21,34 @@
 		card: ApprovalCards[number];
 		status: string;
 		disabled: boolean;
+		canStart?: boolean;
 		error: string;
 		decide: (decision: ApprovalDecision['decision']) => void;
 		close: () => void;
 	} = $props();
+	let actionLabel = $derived(card.action === 'signoff' ? 'sign-off' : card.action);
+	let progress = $derived(card.progress);
 	let fields = $derived([
 		['Project', card.project],
 		['Environment', card.environment],
-		['Action', card.action],
+		['Action', actionLabel],
 		['Target', card.target],
 		['Source revision', card.source],
 		['Artifact SHA-256', card.artifact ?? 'Legacy version without a recorded artifact'],
 		['Release ID', card.release],
 		['Plan SHA-256', card.plan],
+		['Run ID', card.control?.run],
+		['Release being rolled back', card.control?.rollbackFrom],
 		['Parity SHA-256', card.parity],
 		['Allowed differences', String(card.allowedDifferences)],
+		['Blocking parity differences', card.control?.preview?.fields.join(', ') || null],
 		['Smoke script', card.smoke],
 		['Manifest SHA-256', card.manifest],
 		['Predecessor run', card.predecessor?.id],
 		['Predecessor sign-off', card.predecessor?.signoff],
 		['Predecessor smoke', card.predecessor?.smoke.join(', ')],
+		['Reviewed smoke checks', card.control?.review?.checks.join(', ')],
+		['Reviewer receipt', card.control?.review?.reference],
 		['Rollback target', `${card.rollback.target} · ${card.rollback.version}`],
 		['Rollback source', card.rollback.source],
 		['Rollback artifact', card.rollback.artifact ?? 'Legacy version without a recorded artifact'],
@@ -47,7 +56,12 @@
 		['Decision', card.receipt ? (card.receipt.decision === 'allow' ? 'Allowed' : 'Denied') : null],
 		['Decision receipt', card.receipt?.receipt],
 		['Decided by', card.receipt?.actor],
-		['Decided at', card.receipt ? new Date(card.receipt.decidedAt).toISOString() : null]
+		['Decided at', card.receipt ? new Date(card.receipt.decidedAt).toISOString() : null],
+		['Go recorded at', card.goAt ? new Date(card.goAt).toISOString() : null],
+		['Provider operation', progress && 'operation' in progress ? progress.operation : null],
+		['Routed version', progress && 'version' in progress ? progress.version : null],
+		['Passed smoke checks', progress && 'checks' in progress ? progress.checks.join(', ') : null],
+		['Recorded sign-off', progress && 'reference' in progress ? progress.reference : null]
 	]);
 </script>
 
@@ -65,11 +79,16 @@
 		<hx-div class="decision-actions">
 			<hx-p role="status">{status}</hx-p>
 			{#if error}<hx-p role="alert">{error}</hx-p>{/if}
-			{#if !card.receipt && status !== 'Expired'}
+			{#if !card.receipt && !card.progress && !card.control?.preview && status !== 'Expired'}
 				<hx-button type="button" {disabled} onclick={() => decide('deny')}>Deny</hx-button>
 				<hx-button type="button" class="primary" {disabled} onclick={() => decide('allow')}
-					>Allow {card.action}</hx-button
+					>Allow {actionLabel}</hx-button
 				>
+			{/if}
+			{#if canStart}
+				<hx-button type="button" class="primary" {disabled} onclick={() => decide('go')}>
+					{card.action === 'signoff' ? 'Record sign-off' : `Start ${actionLabel}`}
+				</hx-button>
 			{/if}
 		</hx-div>
 	{/snippet}

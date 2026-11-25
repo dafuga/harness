@@ -40,6 +40,26 @@ The runner opens a five-minute request before holding the provider target claim.
 
 The synthetic integration uses a disposable Hub database, fixture-only grants and a scripted provider. A live target requires separate broker enrollment and release qualification.
 
+## Native run controls
+
+Use **Deploy approvals** in Harness on Mac or Harness Studio with the configured native owner session. A trusted host supplies the project, target, prepared release, and registered scripts. The app only acts on an exact run published by that host.
+
+```bash
+harness deploy fluora staging --release "$RELEASE_ID" --plan --publish-plan
+harness deploy fluora staging --release "$RELEASE_ID" --wait-for-go
+harness deploy signoff "$STAGING_RUN" --receipt "$SIGNED_REVIEW" --wait-for-go
+harness deploy rollback fluora staging --run "$STAGING_RUN" --plan --publish-plan
+harness deploy rollback fluora staging --run "$STAGING_RUN" --wait-for-go
+```
+
+`--publish-plan` adds a read-only preview with the exact target and any blocking parity fields. Executing calls for a fresh plan. On a runnable card, **Allow** records the decision and **Start deploy**, **Start rollback** or **Record sign-off** records the separate Go on the same plan. Go expires with the card. An enrolled staging target requires the native run path for deploy and rollback. A controlled deploy requires the same path to record its independently signed reviewer receipt.
+
+The inbox uses migration `0009-deploy-run-controls.sql` and accepts a distinct `project:staging` grant for each staging runner. Keep existing higher-environment and legacy Mac guards in place. After Go, the runner checks provider state, parity, predecessor, artifact and broker proof and claims admission once while both native sessions remain live. A controlled staging broker proof uses the staging signing authority and binds the same `decision:<receipt UUID>` reference. A sign-off records a verified reviewer proof against the current routed version and does not invoke a provider mutation.
+
+The app shows milestones from the runner journal, including the provider operation ID, routed version, smoke checks and sign-off reference. If the provider receipt is missing or status delivery was interrupted, run `harness deploy resume "$RUN_ID"` on the original trusted host to reconcile the existing operation and republish the journal. The runner cannot accept another provider write on an unresolved target claim.
+
+Qualify Fluora staging and its prior route first. Enroll Harness Hub and BuildFlexity as separate targets only after their release prerequisites, scoped broker actions, smoke and rollback have been reviewed. Each target and execution requires its own authorization.
+
 ## Fluora Next pilot
 
 The stage target is Pages project `fluora-next-stage` on its canonical `main` route, with D1 `fluora-stage` and staging R2. Production is a distinct Pages project, `fluora-next`, with its own D1 and R2. Fluora Next's current release manual declares no preprod. The pilot scripts can inspect prod but only mutate the dedicated stage Pages project. The old Fluora deployment branches and projects are separate.

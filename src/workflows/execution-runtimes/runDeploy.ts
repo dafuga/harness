@@ -1,6 +1,6 @@
 // @harness-uid u_vmj2plxn7l
 import { ExpectedCliError } from '../../core/development-tooling/errors';
-import type { DeployOptions, Operation } from './runDeploy.types';
+import type { DeployOptions, Operation, PlanPublication } from './runDeploy.types';
 import { signoffScope } from '../../core/execution-runtimes/scripted-deploy/proofs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -14,6 +14,7 @@ import {
 import { DeployRunRepository } from '../../repositories/execution-runtimes/DeployRunRepository';
 import type { DeployRequest } from '../../services/execution-runtimes/scripted-deploy/DeployPlanning';
 import { ScriptedDeployService } from '../../services/execution-runtimes/ScriptedDeployService';
+import { publishReadOnlyPlan } from '../../services/execution-runtimes/scripted-deploy/requestDeployApproval';
 import {
 	DeployManifestValidator,
 	privateFile,
@@ -37,6 +38,7 @@ export async function deployOperation(operation: Operation, options: DeployOptio
 }
 
 async function execute(operation: Operation, options: DeployOptions): Promise<unknown> {
+	validateOptions(operation.kind, options);
 	const registry = new DeployManifestValidator().read(
 		options.registry ?? join(homedir(), '.config/harness/deploy.json')
 	);
@@ -49,40 +51,74 @@ async function execute(operation: Operation, options: DeployOptions): Promise<un
 	const config = registry.projects[project];
 	if (!config) throw new ExpectedCliError('Project is absent from the trusted deploy registry.');
 	const service = new ScriptedDeployService(registry, project, config);
-	if (operation.kind === 'resume') return service.recovery.resume(operation.run);
+	const preview = { registry, smoke: config.scripts.smoke, publish: options.publishPlan };
+	if (operation.kind === 'resume') return service.resume(operation.run);
 	if (operation.kind === 'prepare') return service.prepare(sha.parse(options.ref));
-	if (operation.kind === 'signoff') return recordSignoff(service, operation.run, options.receipt);
+	if (operation.kind === 'signoff') return recordSignoff(service, operation.run, options);
 	const target = environment.parse(operation.environment);
 	if (operation.kind === 'rollback') {
 		const input = { environment: target, release: null, rollback: operation.run };
-		return options.plan ? publicPlan(service, input) : service.deploy(input);
+		return options.plan
+			? publicPlan(service, input, preview)
+			: service.deploy(input, options.waitForGo);
 	}
-	return routeDeploy({ service, target, store }, options);
+	return routeDeploy({ service, target, store, preview }, options);
+}
+
+function validateOptions(kind: Operation['kind'], options: DeployOptions): void {
+	if (options.waitForGo && (options.plan || !['deploy', 'rollback', 'signoff'].includes(kind)))
+		throw new ExpectedCliError(
+			'--wait-for-go applies only to deployment, rollback, or sign-off execution.'
+		);
+	if (
+		options.publishPlan &&
+		(!options.plan || !['deploy', 'rollback'].includes(kind) || options.ref)
+	)
+		throw new ExpectedCliError(
+			'--publish-plan requires --plan with an immutable --release or a rollback run.'
+		);
 }
 
 async function routeDeploy(
 	{
 		service,
 		target,
-		store
+		store,
+		preview
 	}: {
 		service: ScriptedDeployService;
 		target: 'staging' | 'preprod' | 'prod';
 		store: DeployRunRepository;
+		preview: PlanPublication;
 	},
 	options: DeployOptions
 ) {
-	if (options.ref && (options.release || target !== 'staging')) {
-		throw new ExpectedCliError('--ref is staging-only and cannot be combined with --release.');
-	}
-	if (!options.release && !options.ref)
-		throw new ExpectedCliError('Select --ref or --release for this deployment.');
+	validateReleaseSelection(options, target);
 	const source = options.ref ? sha.parse(options.ref) : undefined;
 	const release = options.release ? store.getRelease(options.release) : null;
 	if (options.plan)
-		return publicPlan(service, { environment: target, release, from: options.from, source });
+		return publicPlan(
+			service,
+			{ environment: target, release, from: options.from, source },
+			preview
+		);
 	const prepared = source ? await service.prepare(source) : release;
-	return service.deploy({ environment: target, release: prepared, from: options.from });
+	return service.deploy(
+		{ environment: target, release: prepared, from: options.from },
+		options.waitForGo
+	);
+}
+
+function validateReleaseSelection(
+	{ ref, release, waitForGo }: DeployOptions,
+	target: string
+): void {
+	if (ref && (release || target !== 'staging'))
+		throw new ExpectedCliError('--ref is staging-only and cannot be combined with --release.');
+	if (!release && !ref)
+		throw new ExpectedCliError('Select --ref or --release for this deployment.');
+	if (waitForGo && ref)
+		throw new ExpectedCliError('Prepare the artifact first and pass its immutable --release ID.');
 }
 
 function operationProject(operation: Operation, store: DeployRunRepository): string {
@@ -91,12 +127,26 @@ function operationProject(operation: Operation, store: DeployRunRepository): str
 		: store.get(operation.run).plan.project;
 }
 
-function recordSignoff(service: ScriptedDeployService, run: string, receipt: string | undefined) {
+function recordSignoff(
+	service: ScriptedDeployService,
+	run: string,
+	{ receipt, waitForGo }: DeployOptions
+) {
 	if (!receipt) throw new ExpectedCliError('A signed receipt file is required.');
-	return service.signoff(run, signedProof.parse(readJson(privateFile(receipt))));
+	return service.signoff(run, signedProof.parse(readJson(privateFile(receipt))), waitForGo);
 }
 
-async function publicPlan(service: ScriptedDeployService, input: DeployRequest) {
-	const { plan, parity, source } = await service.planning.plan(input);
+async function publicPlan(
+	service: ScriptedDeployService,
+	input: DeployRequest,
+	preview: PlanPublication
+) {
+	const result = await service.planning.plan(input);
+	if (preview.publish)
+		await publishReadOnlyPlan(preview.registry, result, {
+			smoke: preview.smoke,
+			rollbackFrom: input.rollback
+		});
+	const { plan, parity, source } = result;
 	return { plan, parity, source };
 }
