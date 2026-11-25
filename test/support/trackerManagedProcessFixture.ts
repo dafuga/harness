@@ -43,36 +43,27 @@ const fs = require('node:fs');
 const { join } = require('node:path');
 const target = args[args.indexOf('-t') + 1]?.replace(/^=/, '').replace(/:$/, '');
 const pane = (name) => join(__dirname, 'claude-pane-' + name);
-const mode = () => fs.readFileSync(join(__dirname, 'account-home', '.claude-session-fixture'), 'utf8');
 if (args.includes('capture-pane')) {
-	process.stdout.write(mode() === 'onboarding'
+	process.stdout.write(fs.readFileSync(join(__dirname, 'account-home', '.claude-session-fixture'), 'utf8') === 'onboarding'
 		? 'Choose the text style that looks best with your terminal\\n'
 		: '────────────\\n❯ \\n────────────\\n  ? for shortcuts\\n');
 	process.exit(0);
 }
-if (args.includes('if-shell')) {
-	fs.rmSync(pane(target), { force: true });
-	process.exit(0);
-}
-if (args.includes('list-panes')) process.exit(0);
+if (args.includes('if-shell')) fs.rmSync(pane(target), { force: true });
+if (args.includes('list-panes') || args.includes('if-shell')) process.exit(0);
 if (args.includes('show-environment')) {
-	const { existsSync, readFileSync } = require('node:fs');
-	const mode = require('node:path').join(__dirname, 'tmux-presence');
-	const reply = existsSync(mode) ? readFileSync(mode, 'utf8')
-		: existsSync(pane(target)) ? readFileSync(pane(target), 'utf8') : '';
-	if (reply.startsWith('HARNESS_TRACKER_ATTEMPT=')) {
-		process.stdout.write(reply);
-		process.exit(0);
-	}
-	process.stderr.write(reply || 'no such session: ' + args[args.indexOf('-t') + 1]);
-	process.exit(1);
+	const override = join(__dirname, 'tmux-presence');
+	const file = fs.existsSync(override) ? override : pane(target);
+	const reply = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+	const matches = reply.startsWith('HARNESS_TRACKER_ATTEMPT=');
+	(matches ? process.stdout : process.stderr).write(reply || 'no such session: =' + target);
+	process.exit(matches ? 0 : 1);
 }
 if (!args.includes('new-session')) process.exit(2);
 const dir = args.indexOf('-c');
 const [command, ...workerArgs] = args.slice(dir + 2);
 if (workerArgs.includes(join(__dirname, 'claude'))) {
-	const session = args[args.indexOf('-s') + 1];
-	fs.writeFileSync(pane(session), args[args.indexOf('-e') + 1]);
+	fs.writeFileSync(pane(args[args.indexOf('-s') + 1]), args[args.indexOf('-e') + 1]);
 }
 const run = spawnSync(command, workerArgs, {
 	cwd: args[dir + 1], env: { ...process.env, FIXTURE_SECRET: 'synthetic' }, stdio: 'inherit'

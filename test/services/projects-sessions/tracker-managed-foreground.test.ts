@@ -22,10 +22,11 @@ import {
 } from '../../support/trackerManagedProcessFixture';
 import {
 	verifyCancelledClaim,
-	verifyClaudeStartupRejection,
 	verifyExpiredClaim,
 	verifyLegacyQueuedClaim
 } from '../../support/trackerManagedLaunchAssertions';
+
+import { verifyClaudeStartupRejection } from '../../support/trackerClaudeStartupFixture';
 
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
