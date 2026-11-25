@@ -6,6 +6,7 @@ import {
 	controlledTrackerExecutable,
 	runTrackerHostCommand
 } from '../tracker-host-process-adapter/trackerHostCommand';
+import { trackerEgressArguments } from '../../../utils/projects-sessions/trackerEgressPolicy';
 import type {
 	ClaudeStartupFailure,
 	TrackerHostStartRequest
@@ -73,14 +74,16 @@ export function trackerManagedProviderCommand(
 	if (platform !== 'macos' || backend !== 'native' || host !== 'darwin' || !native)
 		return undefined;
 	const prompt = `Read your brief at ${briefPath} and do that work. Your tracker item is ${itemId}.`;
-	return nativeTrackerProviderCommand(native, selection, prompt);
+	return nativeTrackerProviderCommand(native, selection, prompt, itemId);
 }
 
 function nativeTrackerProviderCommand(
 	profile: NonNullable<TrackerManagedProfiles['native']>,
 	{ provider, model, intelligence }: TrackerHostStartRequest['selection'],
-	prompt: string
+	prompt: string,
+	itemId: string
 ): TrackerManagedCommand {
+	const egress = profile.egress?.items.includes(itemId) ? profile.egress.policy : undefined;
 	if (provider === 'claude')
 		return {
 			home: homedir(),
@@ -92,6 +95,7 @@ function nativeTrackerProviderCommand(
 			}).trim(),
 			argv: [
 				profile.claude,
+				...(egress ? trackerEgressArguments('claude', egress) : []),
 				'--dangerously-skip-permissions',
 				'--model',
 				model,
@@ -103,7 +107,9 @@ function nativeTrackerProviderCommand(
 		home: profile.profile,
 		argv: [
 			profile.codex,
-			'--dangerously-bypass-approvals-and-sandbox',
+			...(egress
+				? ['-a', 'never', ...trackerEgressArguments('codex', egress)]
+				: ['--dangerously-bypass-approvals-and-sandbox']),
 			'-m',
 			model,
 			...(intelligence ? ['-c', `model_reasoning_effort=${JSON.stringify(intelligence)}`] : []),

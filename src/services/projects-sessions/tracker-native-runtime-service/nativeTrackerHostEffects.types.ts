@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import type { TrackerEgressPolicy } from '../../../utils/projects-sessions/trackerEgressPolicy.types';
 import type { TrackerGithubFollowUpPolicy } from '../TrackerAdapterPollService.types';
 
 export type TrackerHostEffectsMode =
@@ -35,7 +36,13 @@ export interface TrackerManagedLaunchConfig {
 	stateDirectory: string;
 	trackerBinDirectory: string;
 	opsWorkdir?: string;
-	native?: { codex: string; claude: string; profile: string };
+	native?: {
+		codex: string;
+		claude: string;
+		profile: string;
+		/** Opt-in pilot: default-deny egress for the listed Tracker items only; others keep open access. */
+		egress?: { items: readonly string[]; policy: TrackerEgressPolicy };
+	};
 	docker?: { harness: string; image: string; profile: string };
 }
 

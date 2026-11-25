@@ -1632,6 +1632,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-egress-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-tracker-dispatcher",
 			"via": "import",
 			"origin": "derived"
