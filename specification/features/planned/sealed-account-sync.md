@@ -106,6 +106,15 @@ grant signature.
    genesis, pins its head, unwraps its grants and writes its own sealed
    device name.
 
+For an existing account, an approver checks the revealed commitment and its
+own active admin key against its pinned chain before approval. Approval signs
+only the reviewed request. The joining device verifies the signed enrollment
+entry came from the key used in its displayed code, that the entry names its
+own public keys, and that it can open the latest grant for every assigned
+scope before saving a pin. Revocation uses the current, committed scope keys
+to preserve each index key, rotate every stale scope, and grant each new
+epoch only to active recipients other than the revoked device.
+
 No QR code is needed; scanning one is an optional shortcut for the code. Sign-in alone shows "Approve this
 device on your iPhone or Mac". Revoking appends `revoke`, then `rotate` for
 every scope that device held, with fresh grants for the remaining devices.
