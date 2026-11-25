@@ -63,6 +63,9 @@ for (const [width, height] of [
 		await expect(dialog.getByText('Weekly · 24% left')).toBeVisible();
 		await expect(dialog.getByText('Credits left: 124')).toBeVisible();
 		await captured(page, info, `${process.env.SCREENSHOT_LABEL}-quota-${width}`);
+		await dialog.getByRole('button', { name: 'Connect a subscription', exact: true }).click();
+		await expect(dialog.getByText('claude auth login', { exact: true })).toBeVisible();
+		await expect(dialog.getByText('codex login', { exact: true })).toBeVisible();
 		await scenarioCapture(page, scenario as ScenarioManifest, {
 			state: 'quota',
 			name: 'dialog',
@@ -104,6 +107,7 @@ test('an iPhone only shows the quota offered by its currently linked Mac', async
 	await expect(dialog.getByText('Weekly · 24% left')).toBeVisible();
 	await expect(dialog.getByText('Credits left: 124')).toBeVisible();
 	await expect(dialog.getByText('Claude Code quota is unknown.')).toBeVisible();
+	await expect(dialog.getByRole('button', { name: 'Connect a subscription' })).toHaveCount(0);
 	await captured(page, info, `${process.env.SCREENSHOT_LABEL}-iphone-quota`);
 	await scenarioCapture(page, scenario as ScenarioManifest, {
 		state: 'phone-quota',
@@ -124,4 +128,5 @@ test('an iPhone only shows the quota offered by its currently linked Mac', async
 	await expect(page.getByRole('button', { name: 'Subscription quota', exact: true })).toHaveCount(
 		0
 	);
+	await expect(page.getByText('Connect subscriptions in the Harness Mac app.')).toBeVisible();
 });

@@ -42,7 +42,6 @@ test('empty cards explain themselves and offer one next step inside a quiet pane
 	await home(page, 'empty');
 	const steps = [
 		['Agents', 'link', 'Connect a computer'],
-		['Quota', 'button', 'Connect a subscription'],
 		['Projects', 'link', 'Add a project']
 	] as const;
 	for (const [title, role, name] of steps)
@@ -55,8 +54,12 @@ test('empty cards explain themselves and offer one next step inside a quiet pane
 	});
 	expect(edge.border).not.toBe(edge.text);
 	expect(parseFloat(edge.width)).toBeLessThanOrEqual(1);
-	await card(page, 'Quota').getByRole('button', { name: 'Connect a subscription' }).click();
-	await expect(page.getByRole('dialog', { name: 'Quota', exact: true })).toBeVisible();
+	const quotaCard = card(page, 'Quota');
+	await expect(quotaCard.getByText('Connect subscriptions in the Harness Mac app.')).toBeVisible();
+	await expect(quotaCard.getByRole('button', { name: 'Connect a subscription' })).toHaveCount(0);
+	const quota = await openDialog(page, 'Quota');
+	await expect(quota.getByText('Connect subscriptions in the Harness Mac app.')).toBeVisible();
+	await expect(quota.getByRole('button', { name: 'Connect a subscription' })).toHaveCount(0);
 });
 
 test('avatars, quota warnings and dialog summaries follow the design', async ({ page }) => {
@@ -76,7 +79,7 @@ test('avatars, quota warnings and dialog summaries follow the design', async ({ 
 	await expect(
 		quota.getByRole('region', { name: 'Codex' }).getByText('Low', { exact: true }).first()
 	).toBeVisible();
-	await expect(quota.getByText('Add a subscription', { exact: true })).toBeVisible();
+	await expect(quota.getByText('Add a subscription', { exact: true })).toHaveCount(0);
 	await expect(quota.getByText(/^Resets \d\d:\d\d · in \d+h \d+m$/).first()).toBeVisible();
 	await page.keyboard.press('Escape');
 	const summaries = [

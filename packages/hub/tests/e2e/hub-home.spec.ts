@@ -98,7 +98,7 @@ async function dialogs(page: Page, position: CapturePosition, fixture: HomeFixtu
 			await expect(dialog.getByText('Almost out', { exact: true }).first()).toBeVisible();
 		}
 		if (screen.id === 'quota' && position[2] === 'empty')
-			await expect(dialog.getByText('Provider quota is unknown.')).toBeVisible();
+			await expect(dialog.getByText('Connect subscriptions in the Harness Mac app.')).toBeVisible();
 		if (screen.id === 'scheduled' && position[2] === 'busy') {
 			const routine = fixture.snapshot.scheduled.find((run) => run.source === 'claude')!;
 			const tracker = fixture.snapshot.scheduled.find((run) => run.source === 'tracker')!;
