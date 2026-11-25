@@ -1,0 +1,45 @@
+{
+	"name": "security-review-r9dcbr",
+	"goal": "Find defensive code-review candidates from committed security bug classes, revalidate them under per-run caps, and prepare one red/green loop per confirmed finding.",
+	"createdAt": "2026-11-25T14:24:19.052Z",
+	"updatedAt": "2026-11-25T14:35:53.087Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T14:24:40.012Z",
+			"evidence": "Acceptance: committed pattern lists and attack-surface starter; read-only sibling matching; separate revalidation against the pinned source; confirmed-only handoff to one bug-fix loop per site; shared per-run wall deadline and pre-reserved reviewer cost; synthetic CLI proof without provider calls."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-25T14:35:50.746Z",
+			"evidence": "Security CLI reuses committed sibling-sweep candidates, supports a separately attested review, caps evaluator admission and execution, and creates one confirmed-only bug-fix loop per site."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-25T14:35:53.087Z",
+			"evidence": "11 focused unit tests and all 9 loop CLI E2Es passed on the first implementation snapshot. Exact-commit verification and additional repair/budget assertions are pending the final run."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

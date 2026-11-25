@@ -4,7 +4,7 @@
 	"uid": "u_wwerrde2nk",
 	"kind": "function",
 	"title": "bugClass",
-	"responsibility": "Classifies bugs, evaluates similar sites at a committed revision, and records reviewed sibling repair evidence.",
+	"responsibility": "Finds sibling bug sites in a committed revision, revalidates security candidates under explicit limits, and prepares confirmed repairs for regression proof.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -22,9 +22,19 @@
 			"src/utils/development-tooling/sibling-bug-sweep/sourceLayout.ts",
 			"src/utils/development-tooling/siblingBugSweep.ts",
 			"src/utils/development-tooling/siblingBugSweep.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/initSecurityReview.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/loopSiblingReport.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/prepareSecurityRepair.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/repairSibling.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/repairSibling.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/scanSecurityClass.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/scanSecurityClass.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewBudget.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewBudget.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewSchemas.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewSchemas.types.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewer.ts",
+			"src/workflows/development-tooling/sibling-bug-sweep/securityReviewer.types.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/siblingRepairProof.ts",
 			"src/workflows/development-tooling/sibling-bug-sweep/siblingRepairProof.types.ts"
 		],
@@ -47,6 +57,7 @@
 			"registeredBugClass",
 			"recordBugClass",
 			"reviewCandidates",
+			"redactSource",
 			"reviewKnownClasses",
 			"scanCandidates",
 			"SourceRange",
@@ -61,14 +72,39 @@
 			"BugSweepReport",
 			"SweepReviewInput",
 			"BugEvaluator",
+			"initSecurityReview",
 			"beginSiblingReport",
 			"requireSiblingReport",
 			"siblingReportComplete",
+			"prepareSecurityRepair",
 			"repairSiblings",
 			"RepairOptions",
 			"RepairDependencies",
 			"SiblingRepairResult",
 			"RepairContext",
+			"scanSecurityClass",
+			"SecurityScanInput",
+			"SecurityReviewBudget",
+			"SecurityReviewBudget.constructor",
+			"SecurityReviewBudget.checkTime",
+			"SecurityReviewBudget.timeExpired",
+			"SecurityReviewBudget.reserve",
+			"SecurityReviewBudget.summary",
+			"SecurityReviewLimits",
+			"maxSecurityCandidates",
+			"securityClassesPath",
+			"attackSurfacePath",
+			"securityClassesSchema",
+			"securityScanSchema",
+			"securityDecisionSchema",
+			"securityDecisionsSchema",
+			"securityReviewSchema",
+			"SecurityScanReport",
+			"SecurityReviewReport",
+			"SecurityDecision",
+			"revalidateSecurityScan",
+			"readSecurityJson",
+			"SecurityReviewer",
 			"enableRepairProof",
 			"recordFailingRepair",
 			"recordPassingRepair",
@@ -95,6 +131,13 @@
 				"type": "Map<string, SourceRange[]>",
 				"required": false,
 				"description": "Optional map of source paths with changed line ranges to consider."
+			},
+			{
+				"name": "committedSourcePaths.signal",
+				"type": "AbortSignal",
+				"required": false,
+				"default": null,
+				"description": "Optional cancellation signal for Git tree enumeration. When omitted, the normal Git command timeout applies."
 			},
 			{
 				"name": "patternHits.path",
@@ -175,6 +218,12 @@
 				"description": "Evaluator model and maximum candidate sites to review."
 			},
 			{
+				"name": "redactSource.source",
+				"type": "string",
+				"required": true,
+				"description": "Source excerpts or evidence text to check for recognized credential patterns."
+			},
+			{
 				"name": "reviewKnownClasses.input",
 				"type": "SweepReviewInput",
 				"required": true,
@@ -200,9 +249,9 @@
 			},
 			{
 				"name": "scanCandidates.options",
-				"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; }",
+				"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; signal?: AbortSignal; checkDeadline?: () => void; }",
 				"required": true,
-				"description": "Repository path, optional diff ranges and original site, and the semantic review limit."
+				"description": "Repository path, optional diff ranges and original site, review limit, and optional cancellation signal and deadline check."
 			},
 			{
 				"name": "sourceLayout.tree",
@@ -221,6 +270,12 @@
 				"type": "BugEvaluator",
 				"required": false,
 				"description": "Optional evaluator. Defaults to the authenticated Codex evaluator."
+			},
+			{
+				"name": "initSecurityReview.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository root where the attack-surface and security-class starter files belong."
 			},
 			{
 				"name": "beginSiblingReport.root",
@@ -271,6 +326,30 @@
 				"description": "Scan with evaluator errors, skipped files, and any requested repair results."
 			},
 			{
+				"name": "prepareSecurityRepair.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository whose current HEAD must match the review revision."
+			},
+			{
+				"name": "prepareSecurityRepair.reviewPath",
+				"type": "string",
+				"required": true,
+				"description": "Path to the saved security revalidation report."
+			},
+			{
+				"name": "prepareSecurityRepair.findingId",
+				"type": "string",
+				"required": true,
+				"description": "Stable candidate ID of the uniquely confirmed finding to repair."
+			},
+			{
+				"name": "prepareSecurityRepair.budget",
+				"type": "SecurityReviewBudget",
+				"required": true,
+				"description": "Deadline shared by report loading, commit verification, and repair preparation."
+			},
+			{
 				"name": "repairSiblings.report",
 				"type": "BugSweepReport",
 				"required": true,
@@ -293,6 +372,67 @@
 				"type": "(results: SiblingRepairResult[]) => Promise<void>",
 				"required": false,
 				"description": "Optional callback to persist accumulated outcomes after each repair."
+			},
+			{
+				"name": "scanSecurityClass.input",
+				"type": "SecurityScanInput",
+				"required": true,
+				"description": "Repository root, revision to pin, registered security class ID, and maximum reported candidates."
+			},
+			{
+				"name": "scanSecurityClass.budget",
+				"type": "SecurityReviewBudget",
+				"required": true,
+				"description": "Deadline shared by Git reads and candidate enumeration. Scanning makes no reviewer reservations."
+			},
+			{
+				"name": "SecurityReviewBudget.constructor.limits",
+				"type": "SecurityReviewLimits",
+				"required": true,
+				"description": "Positive duration in milliseconds and a nonnegative spending limit in whole millionths of a US dollar."
+			},
+			{
+				"name": "SecurityReviewBudget.reserve.maximumMicrousd",
+				"type": "number",
+				"required": true,
+				"description": "Verified positive maximum cost of one reviewer invocation in whole millionths of a US dollar."
+			},
+			{
+				"name": "revalidateSecurityScan.root",
+				"type": "string",
+				"required": true,
+				"description": "Repository containing the scanned commit and its committed security scope."
+			},
+			{
+				"name": "revalidateSecurityScan.scanFile",
+				"type": "string",
+				"required": true,
+				"description": "Path to the saved security scan report, checked against a repeat scan of its pinned commit."
+			},
+			{
+				"name": "revalidateSecurityScan.reviewer",
+				"type": "SecurityReviewer",
+				"required": true,
+				"description": "Manual decisions file or absolute executable path with a verified maximum cost per external invocation."
+			},
+			{
+				"name": "revalidateSecurityScan.budget",
+				"type": "SecurityReviewBudget",
+				"required": true,
+				"description": "Run deadline and spending limit shared by the repeat scan and independent revalidation."
+			},
+			{
+				"name": "readSecurityJson.path",
+				"type": "string",
+				"required": true,
+				"description": "Path to the UTF-8 JSON document to load and parse."
+			},
+			{
+				"name": "readSecurityJson.signal",
+				"type": "AbortSignal",
+				"required": false,
+				"default": null,
+				"description": "Optional cancellation signal for reading the file. Defaults to no cancellation signal."
 			},
 			{
 				"name": "enableRepairProof.root",
@@ -499,6 +639,13 @@
 						"type": "Map<string, SourceRange[]>",
 						"required": false,
 						"description": "Optional map of source paths with changed line ranges to consider."
+					},
+					{
+						"name": "committedSourcePaths.signal",
+						"type": "AbortSignal",
+						"required": false,
+						"default": null,
+						"description": "Optional cancellation signal for Git tree enumeration. When omitted, the normal Git command timeout applies."
 					}
 				],
 				"outputs": [
@@ -508,8 +655,14 @@
 						"description": "Resolves with matching tracked regular source paths and their blob sizes."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "GitCommandError",
+						"type": "thrown",
+						"description": "Rejects when Git exits unsuccessfully while enumerating the revision."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "patternHits",
@@ -672,6 +825,26 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "redactSource",
+				"inputs": [
+					{
+						"name": "redactSource.source",
+						"type": "string",
+						"required": true,
+						"description": "Source excerpts or evidence text to check for recognized credential patterns."
+					}
+				],
+				"outputs": [
+					{
+						"name": "redactSource",
+						"type": "string",
+						"description": "Returns the input with recognized credential patterns masked."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "reviewKnownClasses",
 				"inputs": [
 					{
@@ -714,9 +887,9 @@
 					},
 					{
 						"name": "scanCandidates.options",
-						"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; }",
+						"type": "{ root: string; ranges?: Map<string, SourceRange[]>; origin?: { path: string; line: number }; reviewLimit: number; signal?: AbortSignal; checkDeadline?: () => void; }",
 						"required": true,
-						"description": "Repository path, optional diff ranges and original site, and the semantic review limit."
+						"description": "Repository path, optional diff ranges and original site, review limit, and optional cancellation signal and deadline check."
 					}
 				],
 				"outputs": [
@@ -774,6 +947,32 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "initSecurityReview",
+				"inputs": [
+					{
+						"name": "initSecurityReview.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository root where the attack-surface and security-class starter files belong."
+					}
+				],
+				"outputs": [
+					{
+						"name": "initSecurityReview",
+						"type": "unknown",
+						"description": "Resolves with the starter paths and whether each file was created. Existing files are preserved."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects when the specification or security directory resolves outside its expected repository path."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "beginSiblingReport",
@@ -872,6 +1071,50 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "prepareSecurityRepair",
+				"inputs": [
+					{
+						"name": "prepareSecurityRepair.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository whose current HEAD must match the review revision."
+					},
+					{
+						"name": "prepareSecurityRepair.reviewPath",
+						"type": "string",
+						"required": true,
+						"description": "Path to the saved security revalidation report."
+					},
+					{
+						"name": "prepareSecurityRepair.findingId",
+						"type": "string",
+						"required": true,
+						"description": "Stable candidate ID of the uniquely confirmed finding to repair."
+					},
+					{
+						"name": "prepareSecurityRepair.budget",
+						"type": "SecurityReviewBudget",
+						"required": true,
+						"description": "Deadline shared by report loading, commit verification, and repair preparation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "prepareSecurityRepair",
+						"type": "unknown",
+						"description": "Resolves with the newly created dedicated bug-fix loop for the confirmed finding."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects unconfirmed, duplicate, stale, or mismatched findings, or a run whose deadline expired."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
 				"name": "repairSiblings",
 				"inputs": [
 					{
@@ -908,6 +1151,186 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "scanSecurityClass",
+				"inputs": [
+					{
+						"name": "scanSecurityClass.input",
+						"type": "SecurityScanInput",
+						"required": true,
+						"description": "Repository root, revision to pin, registered security class ID, and maximum reported candidates."
+					},
+					{
+						"name": "scanSecurityClass.budget",
+						"type": "SecurityReviewBudget",
+						"required": true,
+						"description": "Deadline shared by Git reads and candidate enumeration. Scanning makes no reviewer reservations."
+					}
+				],
+				"outputs": [
+					{
+						"name": "scanSecurityClass",
+						"type": "unknown",
+						"description": "Resolves with the pinned public report, bounded source contexts, committed class, and attack-surface description."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects an out-of-range candidate limit, missing committed scope or class, oversized scope, or an expired deadline."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "SecurityReviewBudget.checkTime",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.checkTime",
+						"type": "void",
+						"description": "Returns while the run still has time remaining."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Throws when the run deadline has passed."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "SecurityReviewBudget.timeExpired",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.timeExpired",
+						"type": "boolean",
+						"description": "Returns whether the abort signal fired or the monotonic deadline has passed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "SecurityReviewBudget.reserve",
+				"inputs": [
+					{
+						"name": "SecurityReviewBudget.reserve.maximumMicrousd",
+						"type": "number",
+						"required": true,
+						"description": "Verified positive maximum cost of one reviewer invocation in whole millionths of a US dollar."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.reserve",
+						"type": "boolean",
+						"description": "Returns true and retains the reservation if the run can afford it, or false with the balance unchanged."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Throws when the run deadline has passed or the stated maximum cost is not a positive safe integer."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "SecurityReviewBudget.summary",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.summary",
+						"type": "unknown",
+						"description": "Returns the original run limits and total reserved amount in millionths of a US dollar."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "revalidateSecurityScan",
+				"inputs": [
+					{
+						"name": "revalidateSecurityScan.root",
+						"type": "string",
+						"required": true,
+						"description": "Repository containing the scanned commit and its committed security scope."
+					},
+					{
+						"name": "revalidateSecurityScan.scanFile",
+						"type": "string",
+						"required": true,
+						"description": "Path to the saved security scan report, checked against a repeat scan of its pinned commit."
+					},
+					{
+						"name": "revalidateSecurityScan.reviewer",
+						"type": "SecurityReviewer",
+						"required": true,
+						"description": "Manual decisions file or absolute executable path with a verified maximum cost per external invocation."
+					},
+					{
+						"name": "revalidateSecurityScan.budget",
+						"type": "SecurityReviewBudget",
+						"required": true,
+						"description": "Run deadline and spending limit shared by the repeat scan and independent revalidation."
+					}
+				],
+				"outputs": [
+					{
+						"name": "revalidateSecurityScan",
+						"type": "Promise<SecurityReviewReport>",
+						"description": "Resolves with each pinned site and its independent verdict or unreviewed status, reserved spend, and any early stop reason."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects a scan that differs from its committed candidates, mismatched manual decisions, or a reviewer executable with a relative path."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "readSecurityJson",
+				"inputs": [
+					{
+						"name": "readSecurityJson.path",
+						"type": "string",
+						"required": true,
+						"description": "Path to the UTF-8 JSON document to load and parse."
+					},
+					{
+						"name": "readSecurityJson.signal",
+						"type": "AbortSignal",
+						"required": false,
+						"default": null,
+						"description": "Optional cancellation signal for reading the file. Defaults to no cancellation signal."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readSecurityJson",
+						"type": "Promise<unknown>",
+						"description": "Resolves with the decoded JSON value. The caller validates its schema."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Rejects decoded UTF-8 text above 8,000,000 bytes before parsing."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "enableRepairProof",
@@ -1012,7 +1435,34 @@
 				"errorStatus": "declared"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "SecurityReviewBudget.constructor",
+				"inputs": [
+					{
+						"name": "SecurityReviewBudget.constructor.limits",
+						"type": "SecurityReviewLimits",
+						"required": true,
+						"description": "Positive duration in milliseconds and a nonnegative spending limit in whole millionths of a US dollar."
+					}
+				],
+				"outputs": [
+					{
+						"name": "SecurityReviewBudget.constructor",
+						"type": "SecurityReviewBudget",
+						"description": "Starts a deadline and creates an empty per-run spending reservation balance."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "Throws when either run limit is outside its supported integer range."
+					}
+				],
+				"errorStatus": "declared"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -1042,6 +1492,11 @@
 		},
 		{
 			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-run-loop-evaluator-process",
 			"via": "import",
 			"origin": "derived"
 		},

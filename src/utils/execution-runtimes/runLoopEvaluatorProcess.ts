@@ -17,14 +17,18 @@ export function runLoopEvaluatorProcess(
 	options: BoundedCommandOptions,
 	label = 'Semantic evaluator'
 ): Promise<BoundedCommandResult> {
-	return resourceWork({ priority: 'agent-test', label }, (lease) =>
-		new BoundedCommandAdapter().run(argv[0], argv.slice(1), {
-			...options,
-			cwd: root,
-			env: { ...resourceEnvironment(lease.env), ...options.env },
-			onSpawn: (child) => {
-				if (child.pid) lease.track(child.pid);
-			}
-		})
+	return resourceWork(
+		{ priority: 'agent-test', label },
+		(lease) =>
+			new BoundedCommandAdapter().run(argv[0], argv.slice(1), {
+				...options,
+				cwd: root,
+				env: { ...resourceEnvironment(lease.env), ...options.env },
+				onSpawn: (child) => {
+					if (child.pid) lease.track(child.pid);
+				}
+			}),
+		process.env,
+		{ signal: options.signal }
 	);
 }

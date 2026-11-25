@@ -4,6 +4,7 @@ import { expect } from 'vitest';
 import { runHarness } from '../cli';
 import { withTempRepo } from '../temporary';
 import { fixtureEvaluator, fixtureSource } from './bugFixture';
+import { exerciseSecurityReviewCli } from './exerciseSecurityReviewCli';
 
 export async function exerciseSiblingCli() {
 	await withTempRepo(async (repo) => {
@@ -57,6 +58,7 @@ export async function exerciseSiblingCli() {
 			{ path: 'src/bulk-new.ts', verdict: 'confirmed' }
 		]);
 	});
+	await exerciseSecurityReviewCli();
 }
 
 export async function expectSiblingProof(root: string) {

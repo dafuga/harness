@@ -171,6 +171,11 @@
 				]
 			},
 			{
+				"name": "writeLoop.flag",
+				"type": "'wx'",
+				"required": false
+			},
+			{
 				"name": "appendTrace.path",
 				"type": "string",
 				"required": true,
@@ -596,6 +601,11 @@
 								]
 							}
 						]
+					},
+					{
+						"name": "writeLoop.flag",
+						"type": "'wx'",
+						"required": false
 					}
 				],
 				"outputs": [

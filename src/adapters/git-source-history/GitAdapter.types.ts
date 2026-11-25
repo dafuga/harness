@@ -4,6 +4,7 @@ export interface GitRunOptions {
 	env?: Record<string, string>;
 	timeoutMs?: number;
 	maxBuffer?: number;
+	signal?: AbortSignal;
 }
 
 export interface GitResult {

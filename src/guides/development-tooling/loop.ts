@@ -21,6 +21,7 @@ export const loopGuide: Guide = {
 		'Use loop siblings in a bug-fix loop after the green checkpoint. It records the root cause and evaluates similar sites on committed source.',
 		'Use loop siblings --report-only for a read-only sweep, or --repair with a trusted --test-command to dispatch confirmed sites in separate worktrees.',
 		'Commit useful files in specification/bug-classes so loop review-bugs can evaluate later commits against the base branch.',
+		'Use loop security init to seed a repository attack-surface description and security bug classes. Scan committed source, revalidate the leads under explicit run limits, then prepare a bug-fix loop for each confirmed finding.',
 		'Agents perform retries. Ordinary project evaluators run their declared checks; sibling repairs use the explicit repair option.',
 		'For affected UI flows, exercise the browser and capture fresh inspected screenshots.',
 		'Use loop record --phase capture for routine or historical screenshot and benchmark collection without a failing checkpoint. A completed failed command keeps its available observations as failed; an empty or unfinished execution is refused.',
@@ -40,6 +41,7 @@ export const loopGuide: Guide = {
 		'harness loop evaluate newsletter-signup',
 		'harness loop siblings --report "Heavy JSON parsing during touch interaction" --report-only',
 		'harness loop review-bugs origin/main',
+		'harness loop security scan sensitive-data-in-logs --max-duration-ms 60000',
 		'harness loop record newsletter-signup --phase capture --test tests/signup.spec.ts --command "bun run test:signup"'
 	]
 };

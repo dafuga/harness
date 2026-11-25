@@ -60,7 +60,7 @@ function evaluatorCandidate(candidate: CandidateContext) {
 	return { ...site, source: redactSource(source) };
 }
 
-function redactSource(source: string) {
+export function redactSource(source: string) {
 	return source
 		.replace(/-----BEGIN [^-]*PRIVATE KEY-----[\s\S]*/g, '[redacted key]')
 		.replace(

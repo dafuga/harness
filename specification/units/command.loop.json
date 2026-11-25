@@ -4,16 +4,27 @@
 	"uid": "u_bupajbnjit",
 	"kind": "command",
 	"title": "loop",
-	"responsibility": "Registers loop lifecycle, regression proof, sibling sweeps, changed-code review, and evaluator commands.",
+	"responsibility": "Registers loop lifecycle, regression proof, sibling sweeps, security review, changed-code review, and evaluator commands.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
 			"src/cli/program/loop.ts",
+			"src/cli/program/loopSecurity.ts",
+			"src/cli/program/loopSecurity.types.ts",
 			"src/cli/program/loopSiblings.ts",
 			"src/cli/program/loopSiblings.types.ts"
 		],
-		"symbols": ["registerLoopCommand", "registerLoopSiblingCommands", "SiblingFlags", "ReviewFlags"]
+		"symbols": [
+			"registerLoopCommand",
+			"registerLoopSecurityCommands",
+			"SecurityRunFlags",
+			"SecurityScanFlags",
+			"SecurityReviewFlags",
+			"registerLoopSiblingCommands",
+			"SiblingFlags",
+			"ReviewFlags"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -23,6 +34,12 @@
 				"type": "Command",
 				"required": true,
 				"description": "The Commander program that receives the `loop` command, which the function adds with `program.command('loop')`. The function keeps no reference to it, so it matters only while registration runs, and it must be a Commander `Command` because `.command()` is the only method the function calls on it."
+			},
+			{
+				"name": "registerLoopSecurityCommands.parent",
+				"type": "Command",
+				"required": true,
+				"description": "The Commander loop command that receives the security command group."
 			},
 			{
 				"name": "registerLoopSiblingCommands.parent",
@@ -35,11 +52,22 @@
 			{
 				"name": "registerLoopCommand",
 				"type": "void",
-				"description": "Registers the loop lifecycle commands and record, create, add, complete, status, search, next, evaluate, siblings, and review-bugs. Registration runs no subcommand."
+				"description": "Registers loop lifecycle, regression proof, evaluation, sibling sweeps, changed-code review, and security review without executing a subcommand."
 			}
 		],
-		"errors": [],
-		"errorStatus": "none-found",
+		"errors": [
+			{
+				"name": "Invalid review request",
+				"type": "thrown",
+				"description": "Rejects conflicting review options, malformed sibling origins, or repair requests that omit their required loop or test command."
+			},
+			{
+				"name": "InvalidArgumentError",
+				"type": "thrown",
+				"description": "Commander rejects invalid candidate counts, review durations, or USD amounts before running the subcommand."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "registerLoopCommand",
@@ -55,7 +83,27 @@
 					{
 						"name": "registerLoopCommand",
 						"type": "void",
-						"description": "Registers the loop lifecycle commands and record, create, add, complete, status, search, next, evaluate, siblings, and review-bugs. Registration runs no subcommand."
+						"description": "Registers loop lifecycle, regression proof, evaluation, sibling sweeps, changed-code review, and security review without executing a subcommand."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "registerLoopSecurityCommands",
+				"inputs": [
+					{
+						"name": "registerLoopSecurityCommands.parent",
+						"type": "Command",
+						"required": true,
+						"description": "The Commander loop command that receives the security command group."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerLoopSecurityCommands",
+						"type": "void",
+						"description": "Registers security init, scan, revalidate, and prepare-repair subcommands without executing them."
 					}
 				],
 				"errors": [],
@@ -79,7 +127,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
