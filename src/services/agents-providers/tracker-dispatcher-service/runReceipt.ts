@@ -125,7 +125,6 @@ export function finishRun(
 		outcome,
 		failure_reason: reason,
 		ended_at: now,
-		kill_at: undefined,
 		...(exitCode != null && { exit_code: exitCode })
 	});
 }

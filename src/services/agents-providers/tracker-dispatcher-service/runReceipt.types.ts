@@ -43,6 +43,7 @@ export interface TrackerRunReceipt extends TrackerReceiptUsage {
 	resumed_at?: number;
 	eta_at: number | null;
 	verificationFor?: string;
+	/** Retired legacy close timer: preserved from old rows, never set natively. */
 	kill_at?: number;
 	session_id?: string | null;
 	tmux?: string | null;

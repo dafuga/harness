@@ -17,6 +17,8 @@ import {
 	watchdogSnapshot
 } from './trackerHostWatchdogState';
 import { readTrackerSessionHealth, trackerRecoveryLaunch } from './trackerSessionHealthRuntime';
+import { readTrackerSlotState, slotAlertKinds } from './trackerSlotInvariants';
+import { withSlotSummary } from './trackerSlotAlerts';
 import { trackerTranscriptScan } from './trackerTranscriptScan';
 import { trackerWatchdogPort } from './trackerWatchdogPort';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
@@ -28,9 +30,12 @@ const minute = 60_000;
 export function trackerHostWatchdog(
 	store: TrackerPersistenceService,
 	config: NonNullable<TrackerHostEffects['watchdog']>,
-	options: Pick<WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled'>
+	options: Pick<
+		WatchdogSessionScan,
+		'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap'
+	>
 ) {
-	const { now, launch, settle, idleWork, automaticEnabled } = options;
+	const { now, automaticEnabled } = options;
 	const driver = trackerWatchdogPort(config, store.node);
 	store.database.exec(trackerRunSchema);
 	const scanTranscripts = trackerTranscriptScan(store, config.transcriptRoots ?? [], now);
@@ -42,20 +47,12 @@ export function trackerHostWatchdog(
 	const alerts = () => [...localAlerts(store, items), ...peerAlerts];
 	const pollSessions = watchHostSessions(
 		{ store, items, driver },
-		{
-			readItems,
-			now,
-			launch,
-			settle,
-			idleWork,
-			automaticEnabled,
-			roots: config.transcriptRoots
-		}
+		{ ...options, readItems, roots: config.transcriptRoots }
 	);
 	return {
 		alerts,
 		chiefOfStaff,
-		inspect: inspectHostWatchdog({ store, items, driver }, { readItems, now, automaticEnabled }),
+		inspect: inspectHostWatchdog({ store, items, driver }, { ...options, readItems }),
 		async tick(signal: AbortSignal) {
 			if (config.transcriptRoots?.length) await scanTranscripts(signal);
 			await pollSessions(signal);
@@ -78,10 +75,12 @@ export function trackerHostWatchdog(
 
 export function configuredHostWatchdog(
 	runtime: Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>,
-	watchdog?: TrackerHostEffects['watchdog'],
+	hostEffects?: Pick<TrackerHostEffects, 'watchdog' | 'launch'>,
 	automaticEnabled?: () => boolean
 ) {
+	const watchdog = hostEffects?.watchdog;
 	if (!watchdog) return undefined;
+	const { launch } = hostEffects;
 	const { store, now, dispatch, role } = runtime;
 	const idleWork =
 		role === 'hub' && dispatch ? { dispatch, minutes: watchdog.idleWorkMinutes ?? 120 } : undefined;
@@ -90,18 +89,21 @@ export function configuredHostWatchdog(
 		launch: trackerRecoveryLaunch(dispatch),
 		settle: dispatch,
 		automaticEnabled,
-		idleWork
+		idleWork,
+		slotCap: launch ? (launch.maxConcurrent ?? 2) : null
 	});
 }
 
 function localAlerts(store: TrackerPersistenceService, items: TrackerItemReadRepository) {
-	return Object.values(readWatchdogAlerts(store)).filter(({ item_id, kind }) => {
-		if (kind === 'orphan' || kind === 'finished') return true;
+	const open = Object.values(readWatchdogAlerts(store)).filter(({ item_id, kind }) => {
+		// A leaked pane or idle run matters whatever its item says.
+		if (kind === 'orphan' || kind === 'finished' || slotAlertKinds.has(kind)) return true;
 		const item = activeWatchdogItem(items, item_id);
 		if (kind === 'recovery-failed' || kind === 'handoff-failed')
 			return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
 		return Boolean(item);
 	});
+	return open.map((alert) => withSlotSummary(store, alert));
 }
 
 function inspectHostWatchdog(
@@ -117,8 +119,14 @@ function inspectHostWatchdog(
 	{
 		readItems,
 		now,
-		automaticEnabled
-	}: { readItems: () => readonly TrackerItem[]; now: () => number; automaticEnabled?(): boolean }
+		automaticEnabled,
+		slotCap = null
+	}: {
+		readItems: () => readonly TrackerItem[];
+		now: () => number;
+		automaticEnabled?(): boolean;
+		slotCap?: number | null;
+	}
 ) {
 	return async (id: string | null, signal: AbortSignal) => {
 		const panes = await driver.scan(signal);
@@ -127,9 +135,11 @@ function inspectHostWatchdog(
 		const snapshot = watchdogSnapshot(store, rows, panes, now());
 		const automaticHold = watchdogLaunchHold(snapshot.now, automaticEnabled);
 		const itemId = id ? items.resolve(id).id : undefined;
+		const slots = readTrackerSlotState(store, panes, { now: snapshot.now, cap: slotCap });
 		return {
 			computer: store.node,
 			available: true,
+			slots: { ...slots.report, violations: slots.violations },
 			sessions: new WatchdogIdleService().plan({ ...snapshot, itemId }).actions,
 			startup: new WatchdogStartupService().plan({ ...snapshot, itemId }).actions,
 			recovery: readTrackerSessionHealth(store, rows, panes, snapshot.now)

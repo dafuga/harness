@@ -49,7 +49,7 @@ function monitorDone(
 	snapshot: TrackerDispatchSnapshot,
 	run: TrackerRunReceipt,
 	event: Extract<TrackerDispatchEvent, { type: 'monitor' }>,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
+	{ now }: { policy: TrackerDispatchPolicy; now: number }
 ): TrackerDispatchDecision {
 	if (snapshot.item?.closedBySource) return abandon(run, 'linked source closed the item', now);
 	const verificationFor = snapshot.item?.completionVersion;
@@ -58,7 +58,7 @@ function monitorDone(
 	}
 	if (event.verify || run.state === 'verifying')
 		return recordRun(reviseRun(run, { state: 'verifying', verificationFor }));
-	return completeRun(snapshot, run, { policy, now, usage: event.usage });
+	return completeRun(snapshot, run, { now, usage: event.usage });
 }
 
 function monitorRunning(
@@ -148,17 +148,9 @@ function abandon(run: TrackerRunReceipt, reason: string, now: number) {
 export function completeRun(
 	snapshot: TrackerDispatchSnapshot,
 	run: TrackerRunReceipt,
-	{
-		policy,
-		now,
-		usage
-	}: { policy: TrackerDispatchPolicy; now: number; usage?: TrackerReceiptUsage }
+	{ now, usage }: { now: number; usage?: TrackerReceiptUsage }
 ): TrackerDispatchDecision {
-	const keep = run.launch_source === 'due' ? 0 : (policy.keepSessionMinutes ?? 30) * minute;
-	const finished = {
-		...finishRun(run, { outcome: 'done', reason: null, now, usage }),
-		kill_at: now + keep
-	};
+	const finished = finishRun(run, { outcome: 'done', reason: null, now, usage });
 	const redone = snapshot.runs
 		.filter((prior) => canCredit(prior, run))
 		.map((prior) => reviseRun(prior, { redone_by: run.rung }));

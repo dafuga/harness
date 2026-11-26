@@ -7,6 +7,7 @@ import type {
 	TrackerHostLaunchConfig
 } from './nativeTrackerHostEffects.types';
 import type { TrackerHostRoute, TrackerHostTarget } from './trackerHostLaunch.types';
+import type { TrackerOccupiedRun } from './trackerHostAdmission.types';
 
 export const trackerHostCapacityHold = 'Tracker host is at session capacity';
 
@@ -40,16 +41,29 @@ export function trackerHostAdmission(
 }
 
 /** Only runs the launcher is truly running hold a slot; leftover tmux sessions never do. */
+const slotRuns = `FROM runs r
+	LEFT JOIN meta m ON m.k = 'harness_dispatch_run:' || r.id
+	LEFT JOIN items i ON i.id = r.item_id
+	WHERE r.state IN ('running','verifying')
+	OR (r.state = 'queued' AND json_extract(m.v, '$.dispatch_at') IS NOT NULL)`;
+
 export function occupiedHostSlots(store: TrackerPersistenceService): number {
-	const { count } = store.database
-		.prepare(
-			`SELECT count(*) AS count FROM runs r
-		LEFT JOIN meta m ON m.k = 'harness_dispatch_run:' || r.id
-		WHERE r.state IN ('running','verifying')
-		OR (r.state = 'queued' AND json_extract(m.v, '$.dispatch_at') IS NOT NULL)`
-		)
-		.get() as { count: number };
+	const { count } = store.database.prepare(`SELECT count(*) AS count ${slotRuns}`).get() as {
+		count: number;
+	};
 	return count;
+}
+
+/** The runs behind that count, for the watchdog's slot report. */
+export function occupiedHostRuns(store: TrackerPersistenceService): TrackerOccupiedRun[] {
+	return store.database
+		.prepare(
+			`SELECT r.id, r.item_id AS itemId, r.state, r.cli, r.tmux, r.watch_pane AS watchPane,
+			r.started_at AS startedAt, r.resumed_at AS resumedAt, i.status, i.deleted,
+			(i.needs_daniel = 1 AND coalesce(i.resolved, 0) = 0) AS waiting
+			${slotRuns} ORDER BY r.id`
+		)
+		.all() as unknown as TrackerOccupiedRun[];
 }
 
 function trackerAdapterDiskHold(

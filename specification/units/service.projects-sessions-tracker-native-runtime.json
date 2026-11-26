@@ -42,6 +42,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapter.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdapterSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdmission.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostAdmission.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostBrief.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostCos.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostEffectsSchema.ts",
@@ -68,6 +69,10 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthRuntime.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionRecovery.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerSessionRecovery.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSlotAlerts.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSlotInvariants.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSlotInvariants.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSlotSummary.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptExposure.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerTranscriptPatterns.ts",
@@ -124,8 +129,10 @@
 			"finishReportedRuns",
 			"TrackerReportSession",
 			"TrackerFinalReport",
+			"runSessionName",
 			"closedBlockedKey",
 			"closeFinishedTrackerSessions",
+			"linkedWorkActive",
 			"trackerGithubCli",
 			"handLaunchSelection",
 			"handLaunchNode",
@@ -139,6 +146,8 @@
 			"trackerHostCapacityHold",
 			"trackerHostAdmission",
 			"occupiedHostSlots",
+			"occupiedHostRuns",
+			"TrackerOccupiedRun",
 			"formatTrackerHostBrief",
 			"sendWatchdogAlerts",
 			"trackerHostEffectsSchema",
@@ -212,6 +221,16 @@
 			"recoverTrackerSession",
 			"flagRecoveryError",
 			"TrackerRecoveryState",
+			"publishTrackerSlotAlerts",
+			"withSlotSummary",
+			"slotAlertKinds",
+			"readTrackerSlotState",
+			"TrackerSlotRun",
+			"TrackerSlotHolder",
+			"TrackerLeftoverPane",
+			"TrackerSlotReport",
+			"TrackerSlotState",
+			"trackerSlotSummary",
 			"recordTrackerTranscriptExposure",
 			"TrackerTranscriptExposure",
 			"trackerTranscriptMatches",
@@ -443,6 +462,26 @@
 				"required": true
 			},
 			{
+				"name": "linkedWorkActive.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "linkedWorkActive.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "linkedWorkActive.runId",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "linkedWorkActive.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "trackerGithubCli.binding",
 				"type": "{ executable: string; configDirectory: string; }",
 				"required": true
@@ -530,6 +569,11 @@
 			},
 			{
 				"name": "occupiedHostSlots.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "occupiedHostRuns.store",
 				"type": "TrackerPersistenceService",
 				"required": true
 			},
@@ -798,7 +842,7 @@
 			},
 			{
 				"name": "trackerHostWatchdog.options",
-				"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled'>",
+				"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' >",
 				"required": true
 			},
 			{
@@ -807,8 +851,8 @@
 				"required": true
 			},
 			{
-				"name": "configuredHostWatchdog.watchdog",
-				"type": "TrackerHostEffects['watchdog']",
+				"name": "configuredHostWatchdog.hostEffects",
+				"type": "Pick<TrackerHostEffects, 'watchdog' | 'launch'>",
 				"required": false
 			},
 			{
@@ -1220,6 +1264,56 @@
 			{
 				"name": "flagRecoveryError.detail",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "publishTrackerSlotAlerts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "publishTrackerSlotAlerts.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "publishTrackerSlotAlerts.slots",
+				"type": "{ now: number; cap: number | null }",
+				"required": true
+			},
+			{
+				"name": "withSlotSummary.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "withSlotSummary.alert",
+				"type": "TrackerWatchdogAlert",
+				"required": true
+			},
+			{
+				"name": "readTrackerSlotState.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "readTrackerSlotState.panes",
+				"type": "readonly WatchdogPane[]",
+				"required": true
+			},
+			{
+				"name": "readTrackerSlotState.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "readTrackerSlotState.cap",
+				"type": "number | null",
+				"required": true
+			},
+			{
+				"name": "trackerSlotSummary.report",
+				"type": "TrackerSlotReport",
 				"required": true
 			},
 			{
@@ -2092,6 +2186,39 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "linkedWorkActive",
+				"inputs": [
+					{
+						"name": "linkedWorkActive.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "linkedWorkActive.pane",
+						"type": "WatchdogPane",
+						"required": true
+					},
+					{
+						"name": "linkedWorkActive.runId",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "linkedWorkActive.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "linkedWorkActive",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerGithubCli",
 				"inputs": [
 					{
@@ -2268,6 +2395,24 @@
 					{
 						"name": "occupiedHostSlots",
 						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "occupiedHostRuns",
+				"inputs": [
+					{
+						"name": "occupiedHostRuns.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "occupiedHostRuns",
+						"type": "TrackerOccupiedRun[]"
 					}
 				],
 				"errors": [],
@@ -2728,7 +2873,7 @@
 					},
 					{
 						"name": "trackerHostWatchdog.options",
-						"type": "Pick<WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled'>",
+						"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' >",
 						"required": true
 					}
 				],
@@ -2750,8 +2895,8 @@
 						"required": true
 					},
 					{
-						"name": "configuredHostWatchdog.watchdog",
-						"type": "TrackerHostEffects['watchdog']",
+						"name": "configuredHostWatchdog.hostEffects",
+						"type": "Pick<TrackerHostEffects, 'watchdog' | 'launch'>",
 						"required": false
 					},
 					{
@@ -3539,6 +3684,108 @@
 					{
 						"name": "flagRecoveryError",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "publishTrackerSlotAlerts",
+				"inputs": [
+					{
+						"name": "publishTrackerSlotAlerts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "publishTrackerSlotAlerts.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					},
+					{
+						"name": "publishTrackerSlotAlerts.slots",
+						"type": "{ now: number; cap: number | null }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "publishTrackerSlotAlerts",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withSlotSummary",
+				"inputs": [
+					{
+						"name": "withSlotSummary.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "withSlotSummary.alert",
+						"type": "TrackerWatchdogAlert",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withSlotSummary",
+						"type": "TrackerWatchdogAlert"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerSlotState",
+				"inputs": [
+					{
+						"name": "readTrackerSlotState.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "readTrackerSlotState.panes",
+						"type": "readonly WatchdogPane[]",
+						"required": true
+					},
+					{
+						"name": "readTrackerSlotState.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "readTrackerSlotState.cap",
+						"type": "number | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerSlotState",
+						"type": "TrackerSlotState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerSlotSummary",
+				"inputs": [
+					{
+						"name": "trackerSlotSummary.report",
+						"type": "TrackerSlotReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSlotSummary",
+						"type": "string"
 					}
 				],
 				"errors": [],
