@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-sync-service-sync-qa-approvals",
+	"uid": "u_nz4ky5f5hn",
+	"kind": "service",
+	"title": "syncQaApprovals",
+	"responsibility": "Owns the syncQaApprovals service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/qa-sync-service/syncQaApprovals.ts"],
+		"symbols": ["syncQaApprovals"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "syncQaApprovals.run",
+				"type": "QaRun",
+				"required": true
+			},
+			{
+				"name": "syncQaApprovals.thread",
+				"type": "QaThreadState",
+				"required": true
+			},
+			{
+				"name": "syncQaApprovals.parent",
+				"type": "QaSlackMessage",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "syncQaApprovals",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "syncQaApprovals",
+				"inputs": [
+					{
+						"name": "syncQaApprovals.run",
+						"type": "QaRun",
+						"required": true
+					},
+					{
+						"name": "syncQaApprovals.thread",
+						"type": "QaThreadState",
+						"required": true
+					},
+					{
+						"name": "syncQaApprovals.parent",
+						"type": "QaSlackMessage",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncQaApprovals",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync-service-add-qa-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync-service-qa-run-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/qa-sync-service/syncQaApprovals.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/qa-sync-service/syncQaApprovals.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
