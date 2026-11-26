@@ -63,6 +63,7 @@
 		overview,
 		agents: snapshot?.agents ?? (settled ? [] : null),
 		asks: snapshot?.asks ?? [],
+		openAsks: snapshot?.openAsks ?? [],
 		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
 		schedule:
@@ -196,7 +197,7 @@
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} {send} {receipt} />
+			<HubHomeCards {view} {open} />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

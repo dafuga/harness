@@ -7,7 +7,8 @@
 	import type {
 		HomeAgent,
 		HomeChatInput,
-		HomeChatReceipt
+		HomeChatReceipt,
+		HomeOpenAsk
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import {
 		agentGroups,
@@ -16,18 +17,18 @@
 		currentAgent,
 		runTime,
 		initials,
-		overviewTone,
-		quickReplies
+		overviewTone
 	} from './hubHomePresentation';
 	import type { ChangeSession, SendHomeChat } from './hubHomeView.types';
 	import HubHomeAddSession from './HubHomeAddSession.svelte';
-	import HubHomeChoices from './HubHomeChoices.svelte';
+	import HubHomeAsk from './HubHomeAsk.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
 	let {
 		agents: listed,
 		asks = [],
+		openAsks = [],
 		added = [],
 		changeSession,
 		agentId,
@@ -39,6 +40,7 @@
 		agents: HomeAgent[] | null;
 		/** Other projects' agents that need you: not listed sessions, but their asks and options show. */
 		asks?: HomeAgent[];
+		openAsks?: HomeOpenAsk[];
 		added?: string[];
 		changeSession: ChangeSession;
 		agentId?: string;
@@ -49,22 +51,24 @@
 	} = $props();
 	const agents = $derived(listed === null ? null : [...listed, ...asks]);
 	let selected = $state<string>();
-	let answer = $state('');
-	let answering = $state(false);
-	let status = $state('');
 	let pending = $state<{ message: HomeChatInput; receipt: HomeChatReceipt }[]>([]);
 	const active = $derived(
 		agents?.find((agent) => agent.id === (selected ?? agentId)) ??
 			currentAgent(agents ?? []) ??
 			agents?.[0]
 	);
+	/** The chosen session's open asks. They are the latest messages of its chat. */
+	const chatAsks = $derived(openAsks.filter((ask) => ask.agentId === active?.id));
 
 	$effect(() => void (chatName = active?.name ?? ''));
 	function select(id: string) {
 		selected = id;
 		chatOpen = true;
-		answer = '';
-		status = '';
+	}
+
+	/** Opening the chat lands on the question, wherever the thread starts. */
+	function revealAsk(element: HTMLElement) {
+		requestAnimationFrame(() => element.scrollIntoView({ block: 'nearest' }));
 	}
 
 	function submitted(message: HomeChatInput, result: HomeChatReceipt) {
@@ -84,39 +88,6 @@
 		}, 2000);
 		return () => clearInterval(timer);
 	});
-
-	async function submitAnswer(event: SubmitEvent) {
-		event.preventDefault();
-		await answerWith(answer);
-	}
-
-	async function pickOption(number: number, confirmed: boolean) {
-		const option = active?.options?.[number - 1];
-		if (option) await answerWith(option.label, { number, confirmed });
-	}
-
-	async function answerWith(text: string, tap?: { number: number; confirmed: boolean }) {
-		if (!active?.itemId || !active.question || !text.trim() || answering) return;
-		const message: HomeChatInput = {
-			id: crypto.randomUUID(),
-			agentId: active.id,
-			itemId: active.itemId,
-			kind: 'answer',
-			question: active.question,
-			text: text.trim(),
-			...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
-		};
-		answering = true;
-		try {
-			const result = await send(message);
-			submitted(message, result);
-			if (result.status === 'queued' || result.status === 'sent') answer = '';
-		} catch {
-			status = 'Could not queue the answer. Check Tracker before retrying.';
-		} finally {
-			answering = false;
-		}
-	}
 </script>
 
 {#if agents === null}
@@ -189,7 +160,7 @@
 				>
 			</hx-header>
 			<hx-ol class="hh-thread" aria-label="Tracker conversation">
-				{#each active.messages as message (message.id)}
+				{#each active.messages.filter((message) => message.id !== 'question') as message (message.id)}
 					<hx-li class="hh-msg" data-from={message.from}>
 						<hx-p>{message.text}</hx-p><hx-span class="hh-msg-at">{runTime(message.at)}</hx-span>
 					</hx-li>
@@ -201,34 +172,12 @@
 						>
 					</hx-li>
 				{/each}
+				{#each chatAsks as ask (ask.itemId)}
+					<hx-li class="hh-msg hh-msg-ask" data-from="agent" {@attach revealAsk}>
+						<HubHomeAsk {ask} {send} {receipt} {submitted} />
+					</hx-li>
+				{/each}
 			</hx-ol>
-			{#if active.question}
-				<HubHomeChoices agent={active} busy={answering} onpick={pickOption} />
-				<hx-div class="hh-quick-replies" role="group" aria-label="Quick replies">
-					{#each active.options?.length ? [] : quickReplies(active.question) as reply, index (reply)}
-						<hx-button
-							type="button"
-							class={index ? 'po-action' : 'po-action hh-primary'}
-							disabled={answering}
-							onclick={() => answerWith(reply)}>{reply}</hx-button
-						>
-					{/each}
-				</hx-div>
-				<hx-form class="hh-quick" onsubmit={submitAnswer}>
-					<hx-input
-						aria-label="Answer to open question"
-						placeholder="Answer the open question…"
-						maxlength={2000}
-						bind:value={answer}
-					/>
-					<hx-button
-						type="submit"
-						class="po-action hh-primary"
-						disabled={answering || !answer.trim()}>Answer</hx-button
-					>
-				</hx-form>
-			{/if}
-			{#if status}<hx-p role="status">{status}</hx-p>{/if}
 			{#if active.itemId}
 				{#key active.id}<HubHomeComposer {agents} agentId={active.id} {send} {submitted} />{/key}
 			{:else}

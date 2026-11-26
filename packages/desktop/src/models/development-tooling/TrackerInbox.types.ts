@@ -62,6 +62,8 @@ export interface InboxRun {
 export interface InboxRow {
 	header: InboxHeader;
 	bucket: InboxBucket;
+	/** The open structured ask of a Needs you row: its question and when it was raised. */
+	ask?: { question: string; since: string | null };
 }
 
 export interface InboxDetail {

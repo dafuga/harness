@@ -94,6 +94,7 @@ async function recoverFromOutage(page: Page, tracker: Tracker) {
 	await tracker.cut();
 	await expect(indicator(page)).toHaveText('Reconnecting');
 	tracker.ask('fixtureaway', 'Asked while the link was down.');
+	await page.getByRole('button', { name: /All items/ }).click();
 	await expect(page.getByText('Asked while the link was down.')).toHaveCount(0);
 	await tracker.restore();
 	await expect(indicator(page)).toHaveText('Live', { timeout: 10_000 });

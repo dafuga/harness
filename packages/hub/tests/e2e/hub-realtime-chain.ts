@@ -65,6 +65,14 @@ async function startTracker() {
 			const reply = await api.handle(request);
 			if (!reply.ok) throw new Error(`Tracker refused ${path}: ${reply.status}`);
 		},
+		/** An agent's structured ask, as `tracker flag --option` makes it. */
+		ask(id: string, question: string) {
+			const options = [
+				{ label: 'Proceed', effect: 'The work continues', recommended: true },
+				{ label: 'Hold', effect: 'The work waits' }
+			];
+			return this.post(`/items/${id}/flag`, { question, options });
+		},
 		add: (id: string, title: string) =>
 			store.appendLocal({
 				itemId: id,

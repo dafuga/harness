@@ -69,7 +69,12 @@ export async function startMacTrackerFixture() {
 		/** A new item with an open question, written to the journal as one agent flag. */
 		ask(id: string, title: string) {
 			const question = `Proceed: ${title}`;
-			const fields = { title, project: 'Fixture', status: 'open', needs_daniel: true, question };
+			const options = [
+				{ label: 'Proceed', effect: 'The work continues', recommended: true },
+				{ label: 'Hold', effect: 'The work waits' }
+			];
+			const asked = { needs_daniel: true, question, options: JSON.stringify(options) };
+			const fields = { title, project: 'Fixture', status: 'open', ...asked };
 			store.appendLocal({ itemId: id, fields });
 		},
 		redirect: (app: ElectronApplication) =>

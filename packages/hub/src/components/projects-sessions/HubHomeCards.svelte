@@ -22,28 +22,15 @@
 		warningFor
 	} from './hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
-	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
+	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
-	import HubHomeAsk from './HubHomeAsk.svelte';
+	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 
-	let {
-		view,
-		open,
-		send,
-		receipt
-	}: {
-		view: HomeView;
-		open: OpenHomeSection;
-		send: SendHomeChat;
-		receipt: (id: string) => Promise<HomeChatReceipt>;
-	} = $props();
-	/** Every agent with an open ask: listed sessions that need you, and asks of agent-created ones. */
-	const asking = $derived([...(view.agents ?? []), ...view.asks].filter((agent) => agent.question));
+	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
 	const recipient = $derived(currentAgent([...(view.agents ?? []), ...view.asks]));
 	const working = $derived(view.agents?.filter(isWorking).length ?? 0);
@@ -54,9 +41,8 @@
 			.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)))
 	);
 	const level = $derived(warning ? warningFor(warning.limit.left) : null);
-	const attention = $derived(
-		(view.agents?.filter((agent) => agent.state === 'needs-you').length ?? 0) + view.asks.length
-	);
+	/** "Needs you" is the length of the very list Home shows. */
+	const attention = $derived(view.openAsks.length);
 	const sessions = $derived(
 		view.agents?.reduce((sum, agent) => sum + agentSessions(agent), 0) ?? 0
 	);
@@ -73,6 +59,7 @@
 	</EmptyState>
 {/snippet}
 
+<HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} />
 <hx-div class="hh-grid">
 	<HubHomeCard
 		section="agents"
@@ -114,9 +101,6 @@
 					</HubHomeRow>
 				{/each}
 			</hx-ul>
-			{#each asking as agent (agent.id)}
-				<HubHomeAsk {agent} {send} {receipt} />
-			{/each}
 		{:else if view.trackerConnected}
 			<EmptyState as="div" className="po-empty hh-empty"
 				><hx-p>No agents are connected. Start a session on any computer and it appears here.</hx-p>

@@ -71,7 +71,7 @@ test('a tracker change reaches an open Hub Home in under a second at p95', async
 		for (let index = 1; index <= samples; index++) {
 			const question = `Realtime question number ${index}?`;
 			const started = performance.now();
-			await chain.tracker.post('/items/fixturelive/flag', { question });
+			await chain.tracker.ask('fixturelive', question);
 			await shows(page, question);
 			latencies.push(performance.now() - started);
 		}
@@ -133,13 +133,13 @@ test('a cut socket shows reconnecting and catches up on what it missed', async (
 		chain.tracker.add('fixturelive', 'Fixture realtime item');
 		await page.goto('/');
 		await expect(indicator(page)).toHaveText('Live');
-		await chain.tracker.post('/items/fixturelive/flag', { question: 'Before the cut?' });
+		await chain.tracker.ask('fixturelive', 'Before the cut?');
 		await shows(page, 'Before the cut?');
 		link.cut = true;
 		await Promise.all(link.sockets.splice(0).map((socket) => socket.close()));
 		await expect(indicator(page)).toHaveText('Reconnecting');
 		const reads = link.reads;
-		await chain.tracker.post('/items/fixturelive/flag', { question: 'Asked while offline?' });
+		await chain.tracker.ask('fixturelive', 'Asked while offline?');
 		await page.waitForTimeout(1500);
 		await expect(page.getByText('Asked while offline?')).toHaveCount(0);
 		expect(link.reads).toBe(reads);
@@ -148,6 +148,12 @@ test('a cut socket shows reconnecting and catches up on what it missed', async (
 		await shows(page, 'Asked while offline?');
 		if (process.env.TAKE_SCREENSHOT)
 			await page.screenshot({ path: test.info().outputPath('hub-live.png') });
+		await page.setViewportSize({ width: 390, height: 800 });
+		expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+			390
+		);
+		if (process.env.TAKE_SCREENSHOT)
+			await page.screenshot({ path: test.info().outputPath('hub-live-phone.png') });
 	} finally {
 		await chain.stop();
 	}

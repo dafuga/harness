@@ -22,8 +22,8 @@
 				"required": true
 			},
 			{
-				"name": "deliverHomeChat.agents",
-				"type": "HomeAgent[]",
+				"name": "deliverHomeChat.home",
+				"type": "Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>",
 				"required": true
 			},
 			{
@@ -50,8 +50,8 @@
 						"required": true
 					},
 					{
-						"name": "deliverHomeChat.agents",
-						"type": "HomeAgent[]",
+						"name": "deliverHomeChat.home",
+						"type": "Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>",
 						"required": true
 					},
 					{

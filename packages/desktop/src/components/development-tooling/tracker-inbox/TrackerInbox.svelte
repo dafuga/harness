@@ -109,6 +109,12 @@
 
 	{#if loadFailure}
 		<hx-p class="meta" role="status">{loadFailure}</hx-p>
+	{:else if overview && selected}
+		<hx-button type="button" class="back" onclick={() => (selected = null)}>← All items</hx-button>
+		{#key selected}
+			<TrackerInboxDetail bind:this={detailView} {source} {mode} id={selected} onchanged={reload} />
+		{/key}
+		{#if !mac}<TrackerInboxWrites {source} {writes} onchanged={reload} />{/if}
 	{:else if overview}
 		<hx-nav class="filters" aria-label="Filter items">
 			{#each inboxFilters as name (name)}
@@ -153,6 +159,9 @@
 				onselect={choose}
 			/>
 		{:else}
+			{#if filter === 'needs-you' && listed.length}<hx-h2 class="needs-title"
+					>Blocked - needs you</hx-h2
+				>{/if}
 			<TrackerInboxRows
 				rows={listed}
 				{selected}
@@ -165,18 +174,6 @@
 					>Only the most recent Needs you items are on this phone. Search for others.</hx-p
 				>
 			{/if}
-		{/if}
-
-		{#if selected}
-			{#key selected}
-				<TrackerInboxDetail
-					bind:this={detailView}
-					{source}
-					{mode}
-					id={selected}
-					onchanged={reload}
-				/>
-			{/key}
 		{/if}
 
 		{#if !mac}<TrackerInboxWrites {source} {writes} onchanged={reload} />{/if}

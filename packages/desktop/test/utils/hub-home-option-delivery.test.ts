@@ -3,6 +3,7 @@ import type {
 	HomeAgent,
 	HomeChatInput
 } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+import { agentOpenAsks } from '../../../reports/src/lib/projects-sessions/hub-home/homeOpenAsks';
 import { deliverHomeChat } from '../../src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
 
 const options = [
@@ -15,6 +16,7 @@ const agent = (extra: Partial<HomeAgent> = {}): HomeAgent => ({
 	state: 'needs-you',
 	sessions: 0,
 	tasks: [],
+	subAgents: { sessions: 0, tasks: [] },
 	itemId: 'item1',
 	task: 'Synthetic task',
 	machine: null,
@@ -36,6 +38,12 @@ const tap = (extra: Partial<HomeChatInput> = {}): HomeChatInput => ({
 	...extra
 });
 
+/** The home a Mac publishes for one asking agent: the agent and its listed ask. */
+const homeOf = (extra: Partial<HomeAgent> = {}) => {
+	const agents = [agent(extra)];
+	return { agents, openAsks: agentOpenAsks(agents) };
+};
+
 function recorder(status = 200) {
 	const calls: { url: string; body: unknown }[] = [];
 	const fetcher = (async (url: string, init: RequestInit) => {
@@ -48,7 +56,7 @@ function recorder(status = 200) {
 describe('a Hub option tap reaches the tracker as one structured answer', () => {
 	test('records the option number, by Daniel via Hub', async () => {
 		const { calls, fetcher } = recorder();
-		const receipt = await deliverHomeChat(tap(), [agent()], fetcher);
+		const receipt = await deliverHomeChat(tap(), homeOf(), fetcher);
 		expect(receipt.status).toBe('sent');
 		expect(calls).toEqual([
 			{
@@ -61,13 +69,13 @@ describe('a Hub option tap reaches the tracker as one structured answer', () => 
 	test('refuses a tap that is not an option of the open ask', async () => {
 		const { calls, fetcher } = recorder();
 		for (const input of [tap({ option: 3 }), tap({ text: 'Other label' })])
-			expect((await deliverHomeChat(input, [agent()], fetcher)).status).toBe('refused');
+			expect((await deliverHomeChat(input, homeOf(), fetcher)).status).toBe('refused');
 		expect(calls).toEqual([]);
 	});
 
 	test('a deploy, money or secret ask needs the confirm step', async () => {
 		const { calls, fetcher } = recorder();
-		const risky = [agent({ confirm: 'deploy' })];
+		const risky = homeOf({ confirm: 'deploy' });
 		expect((await deliverHomeChat(tap(), risky, fetcher)).status).toBe('refused');
 		expect((await deliverHomeChat(tap({ confirmed: true }), risky, fetcher)).status).toBe('sent');
 		expect(calls.map((call) => call.body)).toEqual([
@@ -77,7 +85,7 @@ describe('a Hub option tap reaches the tracker as one structured answer', () => 
 
 	test('free-text answers still go as text', async () => {
 		const { calls, fetcher } = recorder();
-		await deliverHomeChat(tap({ option: undefined, text: 'Do it Friday' }), [agent()], fetcher);
+		await deliverHomeChat(tap({ option: undefined, text: 'Do it Friday' }), homeOf(), fetcher);
 		expect(calls[0].body).toEqual({ answer: 'Do it Friday', by: 'Daniel via Hub' });
 	});
 });

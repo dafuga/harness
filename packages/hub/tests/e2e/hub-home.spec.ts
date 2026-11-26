@@ -127,16 +127,6 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 		{ itemId: 'item-0', kind: 'note', text: 'Synthetic Tracker note' }
 	]);
 	await optionTap(chat, fixture);
-	await chat
-		.getByRole('textbox', { name: 'Answer to open question' })
-		.fill('Synthetic Tracker answer');
-	await chat.getByRole('button', { name: 'Answer', exact: true }).click();
-	expect(fixture.sent[2]).toMatchObject({
-		itemId: 'item-0',
-		kind: 'answer',
-		question: 'Approve the Nudge production window, Sat 09:00?',
-		text: 'Synthetic Tracker answer'
-	});
 	await dialog.getByRole('button', { name: 'Back to agents' }).click();
 	await expect(chat).toBeHidden();
 }
@@ -145,7 +135,9 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 async function optionTap(chat: Locator, fixture: HomeFixture) {
 	const choices = chat.getByRole('group', { name: 'Choose an answer' });
 	const buttons = choices.getByRole('button');
-	await expect(buttons).toHaveCount(2);
+	// The two choices, then Other.
+	await expect(buttons).toHaveCount(3);
+	await expect(buttons.last()).toContainText('Other');
 	await expect(buttons.first()).toContainText('Approve Saturday 09:00');
 	await expect(buttons.first()).toContainText('Recommended');
 	await buttons.first().click();

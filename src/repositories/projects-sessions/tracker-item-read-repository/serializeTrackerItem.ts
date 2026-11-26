@@ -110,9 +110,14 @@ function askFields(row: TrackerItemRow) {
 	const options = trackerAskOptions(row.options);
 	return {
 		...(options.length && { options }),
+		...(options.length && row.needs_daniel && !row.resolved && { asked_at: askedAt(row) }),
 		...(options.length && row.confirm && { confirm: row.confirm }),
 		...(row.answer_option && { answer_option: Number(row.answer_option) })
 	};
+}
+
+function askedAt(row: TrackerItemRow) {
+	return trackerAskAge(row, 0).asked_at;
 }
 
 function ignoredFields(row: TrackerItemRow) {

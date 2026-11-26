@@ -53,7 +53,7 @@
 			>{view.agents === null
 				? 'Loading your home…'
 				: view.trackerConnected
-					? homeHeadline(view.agents, liveSessions)
+					? homeHeadline(view.agents, liveSessions, view.openAsks.length)
 					: view.needsMac
 						? 'Connect your Mac'
 						: view.linkedComputers

@@ -14,6 +14,19 @@
 	font-size: var(--hx-type-size-xs);
 	margin: 0;
 }
+.inbox .needs-title {
+	margin: 0;
+	font-size: var(--hx-type-size-sm);
+}
+.inbox button.back {
+	justify-self: start;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	border-radius: var(--hx-radius-small);
+	padding: var(--hx-space-8) var(--hx-space-10);
+	font: inherit;
+}
 .filters {
 	display: flex;
 	flex-wrap: wrap;

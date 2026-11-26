@@ -54,6 +54,19 @@ export interface HomeAgent {
 	messages: HomeMessage[];
 }
 
+/** One open structured ask: a question Daniel answers by tapping a choice, or by writing another. */
+export interface HomeOpenAsk {
+	itemId: string;
+	/** The Tracker project that asked; the same value as that agent's id. */
+	agentId: string;
+	agentName: string;
+	title: string;
+	question: string;
+	options: HomeAskOption[];
+	confirm?: HomeAskConfirm;
+	since: string;
+}
+
 export interface HomePlan {
 	id: string;
 	title: string;
@@ -106,6 +119,8 @@ export interface HomeProviderReadings {
 export interface OwnerHomeSnapshot {
 	overview: OverviewSnapshot;
 	agents: HomeAgent[];
+	/** Every open structured ask, oldest first. Older Mac apps omit it. */
+	openAsks?: HomeOpenAsk[];
 	plans: HomePlan[];
 	scheduled: HomeRun[];
 	providers: HomeProviderReadings;

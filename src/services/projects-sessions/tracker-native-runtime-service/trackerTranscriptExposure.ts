@@ -52,13 +52,23 @@ export function recordTrackerTranscriptExposure(
 				reason: question,
 				identity: event + ':' + byte
 			},
-			now,
-			source.needs_daniel && !source.resolved ? null : question
+			now
 		);
+	flagExposedSource(store, source, question);
 	store.appendLocal(
 		{ itemId: rotationId, fields: { ...fields, needs_daniel: 1, question } },
 		persist
 	);
+}
+
+/** A leaked credential is a security alert, not a session ping, so the source stays flagged. */
+function flagExposedSource(
+	store: TrackerPersistenceService,
+	source: ReturnType<typeof storedItem>,
+	question: string
+) {
+	if (source && !(source.needs_daniel && !source.resolved))
+		store.appendLocal({ itemId: source.id, fields: { needs_daniel: 1, resolved: 0, question } });
 }
 
 function storedItem(items: TrackerItemReadRepository, id?: string) {

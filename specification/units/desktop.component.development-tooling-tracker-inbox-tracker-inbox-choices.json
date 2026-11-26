@@ -44,6 +44,11 @@
 				"name": "TrackerInboxChoices.onpick",
 				"type": "(number: number) => void",
 				"required": true
+			},
+			{
+				"name": "TrackerInboxChoices.onother",
+				"type": "(text: string) => void",
+				"required": true
 			}
 		],
 		"outputs": [
