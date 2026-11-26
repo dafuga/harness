@@ -1,10 +1,11 @@
 import { execFile } from 'node:child_process';
-import { chmod, mkdtemp, readFile, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { chmod, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import { expect, test } from 'vitest';
 import { rawConfig } from './services/agents-providers/qa-sync/qaSyncFixture';
+import { withTempDir } from './support/temporary';
+import type { Paths } from './qa-sync.e2e.test.types';
 
 /** Answers Slack and GitHub inside the CLI process and logs each request without headers. */
 const network = (log: string, now: number) => `
@@ -28,8 +29,10 @@ globalThis.fetch = async (input, init) => {
 };
 `;
 
-async function workspace() {
-	const root = await mkdtemp(join(tmpdir(), 'qa-sync-cli-'));
+const withWorkspace = (use: (path: Paths) => Promise<void>) =>
+	withTempDir('qa-sync-cli-', async (root) => use(await workspace(root)));
+
+async function workspace(root: string): Promise<Paths> {
 	const path = (name: string) => join(root, name);
 	await writeFile(path('config.json'), JSON.stringify(rawConfig));
 	await writeFile(path('network.mjs'), network(path('requests.log'), Date.now() / 1000));
@@ -41,7 +44,7 @@ async function workspace() {
 	return path;
 }
 
-function cli(path: (name: string) => string, ...extra: string[]) {
+function cli(path: Paths, ...extra: string[]) {
 	const args = ['--preload', path('network.mjs'), resolve('src/cli/index.ts'), 'qa-sync'];
 	args.push('--config', path('config.json'), '--state', path('state.json'));
 	args.push('--tracker', path('tracker'), '--json', ...extra);
@@ -53,8 +56,7 @@ function cli(path: (name: string) => string, ...extra: string[]) {
 	return promisify(execFile)('bun', args, { env });
 }
 
-test('harness qa-sync labels, notes and remembers its work', async () => {
-	const path = await workspace();
+const labelsAndRemembers = async (path: Paths) => {
 	const preview = await cli(path, '--dry-run', '--backfill-comments');
 	expect(JSON.parse(preview.stdout).actions).toHaveLength(3);
 	expect(await readFile(path('requests.log'), 'utf8')).not.toContain('POST');
@@ -72,13 +74,19 @@ test('harness qa-sync labels, notes and remembers its work', async () => {
 	expect(second.actions).toEqual([]);
 	const stored = await readFile(path('state.json'), 'utf8');
 	expect(stored + preview.stdout).not.toContain('test-value');
-}, 60_000);
+};
 
-test('harness qa-sync refuses a token file others can read', async () => {
-	const path = await workspace();
-	await writeFile(path('slack-token'), 'slack-test-value');
-	await chmod(path('slack-token'), 0o644);
-	await expect(cli(path, '--slack-token-file', path('slack-token'))).rejects.toMatchObject({
-		stderr: expect.stringContaining('readable by its owner only')
-	});
-});
+test(
+	'harness qa-sync labels, notes and remembers its work',
+	() => withWorkspace(labelsAndRemembers),
+	60_000
+);
+
+test('harness qa-sync refuses a token file others can read', () =>
+	withWorkspace(async (path) => {
+		await writeFile(path('slack-token'), 'slack-test-value');
+		await chmod(path('slack-token'), 0o644);
+		await expect(cli(path, '--slack-token-file', path('slack-token'))).rejects.toMatchObject({
+			stderr: expect.stringContaining('readable by its owner only')
+		});
+	}));

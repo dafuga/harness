@@ -24,6 +24,10 @@ describe('detectRetest', () => {
 
 	test.each([
 		'No need to retest this',
+		'Is this ready for testing?',
+		'Does it need a retest?',
+		"I'm ready to test",
+		'I will need to retest this later',
 		"It's not ready for testing yet",
 		'This doesn’t need testing',
 		'I retested and step 3 still fails',

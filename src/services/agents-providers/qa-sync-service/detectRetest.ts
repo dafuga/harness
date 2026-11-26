@@ -10,15 +10,16 @@ const retestRequests: readonly RegExp[] = [
 const negated =
 	/\b(?:no|not|never|without|don'?t|doesn'?t|isn'?t|aren'?t|won'?t|can'?t|cannot)\b[^,;]{0,30}?\b(?:re-?test|re-?check|test|testing|tested|ready|needs?|qa)/;
 
+/** Someone describing their own plans, not asking anyone. */
+const ownPlans = /\bi(?:'m| am|'ll| will| was| have|'ve)\b/;
+const politeRequest = /\b(?:please|pls|plz|(?:can|could|would) (?:you|someone))\b/;
+
 /**
  * @pure The environments a message asks to have retested, or none. Quoted and code text is
- * ignored, and a negated sentence never counts.
+ * ignored. Negated sentences, the sender's own plans and questions that ask nothing never count.
  */
 export function detectRetest(text: string, retest: QaSyncConfig['retest']): string[] {
-	const requests = sentences(text).filter(
-		(sentence) =>
-			!negated.test(sentence) && retestRequests.some((pattern) => pattern.test(sentence))
-	);
+	const requests = sentences(text).filter(isRequest);
 	if (!requests.length) return [];
 	const named = (scope: string) =>
 		Object.entries(retest.environments).flatMap(([name, words]) =>
@@ -28,6 +29,12 @@ export function detectRetest(text: string, retest: QaSyncConfig['retest']): stri
 	if (inRequest.length) return inRequest;
 	const anywhere = named(sentences(text).join(' '));
 	return anywhere.length === 1 ? anywhere : [retest.defaultEnvironment];
+}
+
+function isRequest(sentence: string): boolean {
+	if (negated.test(sentence) || ownPlans.test(sentence)) return false;
+	if (sentence.endsWith('?') && !politeRequest.test(sentence)) return false;
+	return retestRequests.some((pattern) => pattern.test(sentence));
 }
 
 function sentences(text: string): string[] {

@@ -27,7 +27,8 @@ configuration only.
   that asks for a retest adds `needs testing on {environment}`. Recognised forms
   are a reply starting with `retest`, "please retest", "can you test … again",
   "ready for retest/testing/QA" and "needs testing/a retest". Negated sentences,
-  quotes and code are ignored. The environment is the one named in the request,
+  the sender's own plans, questions without a polite request, quotes and code are
+  ignored. The environment is the one named in the request,
   else the only one named in the reply, else the default.
 - **Comments:** new human replies become one tracker note per thread per pass. It
   goes to the one open item of the project's agent whose title names that issue
