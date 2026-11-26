@@ -43,7 +43,7 @@ const launchPolicy = {
 		z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/),
 		z.strictObject({ repo: absolutePath, platform: z.enum(['linux', 'macos']) })
 	),
-	due: z.literal(true).optional()
+	due: z.boolean().optional()
 };
 const egressHost = z.string().trim().min(1).max(253);
 const egressPilot = z

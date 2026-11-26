@@ -4,6 +4,7 @@ import type {
 	HomeAgent,
 	HomeAgentState,
 	HomeLimit,
+	HomePastDue,
 	HomePlanState,
 	HomeSection,
 	HomeSubscription
@@ -175,6 +176,20 @@ const scheduleWeekday = new Intl.DateTimeFormat('en-GB', {
 	weekday: 'short',
 	timeZone: scheduleZone
 });
+
+const pastDueLabels = { running: 'Running', queued: 'Queued', blocked: 'Blocked' } as const;
+
+export function pastDueLabel(run: Pick<HomePastDue, 'state' | 'position'>) {
+	return run.position ? `Queued #${run.position}` : pastDueLabels[run.state];
+}
+
+export function pastDueSummary(runs: HomePastDue[]) {
+	return (Object.keys(pastDueLabels) as HomePastDue['state'][])
+		.map((state) => ({ state, total: runs.filter((run) => run.state === state).length }))
+		.filter(({ total }) => total)
+		.map(({ state, total }) => `${total} ${pastDueLabels[state].toLowerCase()}`)
+		.join(' · ');
+}
 
 export function initials(name: string) {
 	return name

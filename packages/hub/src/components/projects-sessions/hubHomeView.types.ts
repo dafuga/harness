@@ -7,6 +7,7 @@ import type {
 	HomeOpenAsk,
 	HomePlan,
 	HomeRun,
+	HomePastDue,
 	HomeSection,
 	HomeSubscription,
 	OwnerHomeSnapshot
@@ -25,7 +26,10 @@ export interface HomeView {
 	/** Tracker agent values Daniel added as sessions he created himself. */
 	controlled: string[];
 	plans: HomePlan[] | null;
+	/** Future runs only. */
 	schedule: HomeRun[] | null;
+	/** Work whose time has passed: running, queued in launch order, or blocked. */
+	pastDue: HomePastDue[];
 	quota: HomeSubscription[] | null;
 	projects: ProjectSummary[] | null;
 	projectsFailed: boolean;
@@ -37,7 +41,6 @@ export interface HomeView {
 	/** Computers linked to this account, online or not. */
 	linkedComputers: number;
 	trackerConnected: boolean;
-	routinesConnected: boolean;
 	quotaConnected: boolean;
 	now: number;
 }
