@@ -70,7 +70,7 @@ Start with:
    rows with the same title, meta line and trailing chip, and states use the same pills
    (diamond = needs you, dot = active, square = blocked, dashed = quiet). The home reads as part
    of the overview, not as a new visual system.
-2. **The headline answers "what needs me?"** For example: "3 agents working, 1 needs you". It is
+2. **The headline answers "what needs me?"** For example: "17 sessions running for 3 agents, 1 needs you". It is
    followed by a totals line and the computer pills from the overview.
 3. **Layout by width.**
    - Laptop: three columns. Agents (two wide, it holds the chat entry) and Quota on top; Plans,
