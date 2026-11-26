@@ -30,7 +30,7 @@ export function canvasArtifact(
 	if (source.viewer)
 		links.unshift({
 			label: prefix + 'open canvas',
-			url: viewerUrl(source.viewer, canvas.name, source.branch)
+			url: viewerUrl(source.viewer, canvas.name, source)
 		});
 	return {
 		...existing,
@@ -39,7 +39,8 @@ export function canvasArtifact(
 	};
 }
 
-/** `viewer` is a Hub project's address, `https://hub/projects/<id>`. */
-function viewerUrl(viewer: string, canvas: string, branch: string): string {
-	return `${viewer.replace(/\/+$/, '')}/designs/${canvas}?branch=${encodeURIComponent(branch)}`;
+/** `viewer` is a Hub project's address, `https://hub/projects/<id>`. A detached checkout has no branch. */
+function viewerUrl(viewer: string, canvas: string, { branch, commit }: Source): string {
+	const shown = branch === 'HEAD' ? `commit=${commit}` : `branch=${encodeURIComponent(branch)}`;
+	return `${viewer.replace(/\/+$/, '')}/designs/${canvas}?${shown}`;
 }
