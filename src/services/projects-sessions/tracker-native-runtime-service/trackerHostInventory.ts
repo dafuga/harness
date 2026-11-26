@@ -30,9 +30,10 @@ export async function trackerHostInventory(
 	},
 	signal: AbortSignal
 ) {
-	const [sessions, panes] = await Promise.all([
+	const [sessions, panes, windows] = await Promise.all([
 		driver.inspect({ node, keys }, signal),
-		tmux?.inventory(signal) ?? []
+		tmux?.inventory(signal) ?? [],
+		tmux?.windows(signal) ?? []
 	]);
 	const direct = panes.flatMap((pane) => {
 		const evidence = legacyTmuxSession(pane);
@@ -45,7 +46,7 @@ export async function trackerHostInventory(
 	});
 	await watchTrackerQuota(store, { tmux, runs, now }, signal);
 	if (tmux) await closeFinishedTrackerSessions(store, { tmux, panes, node, now }, signal);
-	return { sessions: [...sessions, ...direct], panes };
+	return { sessions: [...sessions, ...direct], panes, windows };
 }
 
 export function hasManualTrackerPane(panes: readonly WatchdogPane[], itemId: string) {

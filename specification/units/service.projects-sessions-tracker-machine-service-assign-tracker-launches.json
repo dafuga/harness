@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-machine-service-assign-tracker-launches",
+	"uid": "u_pv25xvpjzz",
+	"kind": "service",
+	"title": "assignTrackerLaunches",
+	"responsibility": "Owns the assignTrackerLaunches service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-machine-service/assignTrackerLaunches.ts"],
+		"symbols": ["assignTrackerLaunches"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assignTrackerLaunches.view",
+				"type": "TrackerFleetView",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "assignTrackerLaunches",
+				"type": "void"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assignTrackerLaunches",
+				"inputs": [
+					{
+						"name": "assignTrackerLaunches.view",
+						"type": "TrackerFleetView",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assignTrackerLaunches",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine-service-tracker-launch-placement",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-machine-service/assignTrackerLaunches.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-machine-service/assignTrackerLaunches.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

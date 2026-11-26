@@ -15,7 +15,12 @@ import type { HostPairingFrame } from '../../../desktop/src/services/networking-
 const project = { id: 'local-' + 'b'.repeat(64), name: 'Desk project' };
 
 /** A synthetic signed-in Hub and Mac, speaking the real encrypted wire protocol. */
-export async function linkedComputersFixture(page: Page, home?: unknown) {
+export async function linkedComputersFixture(
+	page: Page,
+	home?: unknown,
+	/** Collects what the Mac is asked to write; without it the Mac offers no `homeChat`. */
+	chats?: unknown[]
+) {
 	const keys = await remoteKeys();
 	const hostId = await remoteIdentity(keys.publicKey);
 	const host = { id: hostId, name: 'Desk Mac', platform: 'darwin' };
@@ -62,7 +67,7 @@ export async function linkedComputersFixture(page: Page, home?: unknown) {
 			json: { deviceId: device?.deviceId, sealed: device?.sealed, credential: randomCredential() }
 		})
 	);
-	await connectFixture(page, { host, keys, grant, home, device: () => device! });
+	await connectFixture(page, { host, keys, grant, home, chats, device: () => device! });
 }
 
 async function connectFixture(
@@ -73,10 +78,16 @@ async function connectFixture(
 		grant: RemoteGrant;
 		/** What the Mac answers to `homeSnapshot`; without it the method is not offered. */
 		home?: unknown;
+		chats?: unknown[];
 		device: () => Awaited<ReturnType<HostPairingService['approve']>>;
 	}
 ) {
-	const { host, keys, grant, home, device } = input;
+	const { host, keys, grant, home, chats, device } = input;
+	const offered = [
+		'listProjects' as const,
+		...(home === undefined ? [] : ['homeSnapshot' as const]),
+		...(chats ? ['homeChat' as const] : [])
+	];
 	await page.routeWebSocket('**/api/remote/hosts/' + host.id + '/connect/*', (socket) => {
 		const approved = device();
 		const channel = new SecureChannelService({
@@ -89,9 +100,15 @@ async function connectFixture(
 		});
 		const wire = new WireSessionService({
 			role: 'device',
-			methods: () => (home === undefined ? ['listProjects'] : ['listProjects', 'homeSnapshot']),
+			methods: () => offered,
 			describe: () => ({ host, device: { id: approved.deviceId, name: 'Web browser' }, grant }),
-			handle: async (request) => (request.method === 'homeSnapshot' ? home : [project])
+			handle: async (request) => {
+				if (request.method === 'homeChat') {
+					chats?.push(request.input);
+					return { id: (request.input as { id: string }).id, status: 'sent' };
+				}
+				return request.method === 'homeSnapshot' ? home : [project];
+			}
 		});
 		const link = wire.connect(
 			(text) => void channel.seal(text, (frame) => socket.send(JSON.stringify(frame)))

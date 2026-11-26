@@ -172,12 +172,12 @@ export function persistDispatchRun(
 		throw new DOMException('Cannot write an unowned Tracker attempt', 'InvalidStateError');
 	const previous = localRows(store.database, 'WHERE r.id = ?', run.id)[0];
 	if (previous) assertRunVersion(receipt(previous, node), run);
-	const fields = [...columns, 'tmux', 'source_repo']; // The last two stay outside signatures.
+	const fields = [...columns, 'tmux', 'source_repo', 'session_name']; // Last three: unsigned.
 	const command = previous
 		? `UPDATE runs SET ${fields.map((column) => `${column} = ?`).join(', ')} WHERE id = ?`
 		: `INSERT INTO runs (${fields.join(', ')}, id) VALUES (${fields.map(() => '?').join(', ')}, ?)`;
-	const { tmux = null, source_repo = null } = run;
-	store.database.prepare(command).run(...values(run), tmux, source_repo, run.id);
+	const { tmux = null, source_repo = null, session_name = null } = run;
+	store.database.prepare(command).run(...values(run), tmux, source_repo, session_name, run.id);
 	writeReservation(store, run);
 }
 

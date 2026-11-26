@@ -24,6 +24,13 @@ export interface TrackerManagedCommand {
 	image?: string;
 }
 
+export interface TrackerNativeLaunch {
+	prompt: string;
+	itemId: string;
+	claudeSession?: string;
+	sessionName?: string;
+}
+
 export type TrackerManagedProfiles = Pick<TrackerManagedLaunchConfig, 'native' | 'docker'>;
 
 export interface TrackerManagedTarget {
@@ -31,12 +38,15 @@ export interface TrackerManagedTarget {
 	trackerBin: string;
 	trackerExecutable: string;
 	worktree: string;
+	/** Human-readable tmux window name. */
+	windowName?: string;
 }
 
 export interface TrackerManagedExec {
 	script: string;
 	command: TrackerManagedCommand;
 	clientPath: string;
+	cpuBudget?: number;
 	guestAuthFile?: string;
 }
 

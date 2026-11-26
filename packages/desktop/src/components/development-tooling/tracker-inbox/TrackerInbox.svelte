@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_62ump5nnwq -->
 <script lang="ts">
+	import './trackerInboxChoices.css';
 	import { onMount } from 'svelte';
 	import type {
 		InboxFilter,
@@ -18,6 +19,7 @@
 		writeView
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 	import { followTrackerSource } from '../../../lib/development-tooling/tracker-inbox/followTrackerSource';
+	import { withRowChoices } from '../../../lib/development-tooling/tracker-inbox/withRowChoices';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import TrackerInboxDetail from './TrackerInboxDetail.svelte';
 	import TrackerInboxRows from './TrackerInboxRows.svelte';
@@ -28,6 +30,7 @@
 
 	let overview = $state.raw<InboxOverview | null>(null);
 	let loadFailure = $state('');
+	let notice = $state('');
 	let filter = $state<InboxFilter>('needs-you');
 	let query = $state('');
 	let found = $state.raw<InboxRow[] | null>(null);
@@ -50,7 +53,8 @@
 	export async function reload(): Promise<void> {
 		const [status, outbox] = await Promise.all([source.overview(), source.writes()]);
 		note(status);
-		overview = status.value ?? null;
+		const value = status.value;
+		overview = value ? { ...value, rows: await withRowChoices(source, value.rows) } : null;
 		loadFailure = status.value
 			? ''
 			: mac
@@ -68,11 +72,12 @@
 		}
 		const reply = await source.search(term.trim());
 		note(reply);
-		found = reply.value ?? [];
+		found = await withRowChoices(source, reply.value ?? []);
 	}
 
 	function choose(id: string) {
 		selected = id;
+		notice = '';
 	}
 
 	/** A change made anywhere: the list, an open search and the open item are read again. */
@@ -88,6 +93,10 @@
 
 {#snippet rows()}
 	<TrackerInboxRows
+		{source}
+		{mode}
+		onchanged={follow}
+		onnotice={(message) => (notice = message)}
 		rows={listed}
 		{selected}
 		label={filter === 'all' ? 'All items' : bucketLabels[filter]}
@@ -116,6 +125,8 @@
 			{/if}
 		</hx-p>
 	</hx-header>
+
+	{#if notice}<hx-p class="meta" role="status">{notice}</hx-p>{/if}
 
 	{#if loadFailure}
 		<hx-p class="meta" role="status">{loadFailure}</hx-p>
@@ -160,6 +171,10 @@
 		{#if found}
 			<hx-h2>Search results</hx-h2>
 			<TrackerInboxRows
+				{source}
+				{mode}
+				onchanged={follow}
+				onnotice={(message) => (notice = message)}
 				rows={found}
 				{selected}
 				label="Search results"

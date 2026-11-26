@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-tmux-adapter-tracker-claude-startup-phase",
+	"uid": "u_f5lwwptgm5",
+	"kind": "adapter",
+	"title": "trackerClaudeStartupPhase",
+	"responsibility": "Classifies a starting Claude pane as ready, refused or waiting, confirming owned-worktree trust when allowed.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerClaudeStartupPhase.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerClaudeStartupPhase.types.ts"
+		],
+		"symbols": ["managedClaudeStartupPhase", "TrackerClaudeStartupProbe"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "managedClaudeStartupPhase.probe",
+				"type": "TrackerClaudeStartupProbe",
+				"required": true
+			},
+			{
+				"name": "managedClaudeStartupPhase.receipt",
+				"type": "TrackerManagedReceipt",
+				"required": true
+			},
+			{
+				"name": "managedClaudeStartupPhase.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "managedClaudeStartupPhase",
+				"type": "Promise<'ready' | ClaudeStartupFailure | undefined>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "managedClaudeStartupPhase",
+				"inputs": [
+					{
+						"name": "managedClaudeStartupPhase.probe",
+						"type": "TrackerClaudeStartupProbe",
+						"required": true
+					},
+					{
+						"name": "managedClaudeStartupPhase.receipt",
+						"type": "TrackerManagedReceipt",
+						"required": true
+					},
+					{
+						"name": "managedClaudeStartupPhase.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "managedClaudeStartupPhase",
+						"type": "Promise<'ready' | ClaudeStartupFailure | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-claude-trust",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerClaudeStartupPhase.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerClaudeStartupPhase.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
