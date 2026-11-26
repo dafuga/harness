@@ -18,6 +18,7 @@ import type {
 	RemoteDesktopControl,
 	RemoteMethod
 } from '../../../../../remote/src/index';
+import { watchLocalTracker } from './watchLocalTracker';
 import { LocalTransportClientService } from './LocalTransportClientService';
 import type { LocalSocketPort } from './LocalTransportClientService';
 import { binaryArtifact } from '../../../utils/reports-media/binaryArtifact';
@@ -55,7 +56,8 @@ const trackerInbox: TrackerInboxSource = {
 		partial: false,
 		value: []
 	}),
-	discard: async () => unavailable
+	discard: async () => unavailable,
+	watch: (listener) => watchLocalTracker(transport, inboxRead, listener)
 };
 const bridge: DesktopBridge = {
 	gameCreate: call('gameCreate'),

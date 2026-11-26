@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.style.hub-home-needs-you",
+	"uid": "u_qcq6pvf6tg",
+	"kind": "style",
+	"title": "needs-you",
+	"responsibility": "Owns the needs-you stylesheet.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/lib/styles/hub-home/needs-you.css"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/styles/hub-home/needs-you.css",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/styles/hub-home/needs-you.css"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -76,7 +76,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-schedule",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -53,7 +53,15 @@ export class SyncSockets {
 
 	/** Tells every viewer that a device is asking to sign in. */
 	announce(message: { id: string; n: number }): void {
-		const text = JSON.stringify({ t: 'enroll', ...message });
+		this.everyone(JSON.stringify({ t: 'enroll', ...message }));
+	}
+
+	/** Tells every viewer to read a topic again. It carries no content. */
+	changed(topic: string): void {
+		this.everyone(JSON.stringify({ t: 'changed', topic }));
+	}
+
+	private everyone(text: string): void {
 		for (const socket of this.state.getWebSockets()) send(socket, text);
 	}
 

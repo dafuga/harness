@@ -1,4 +1,5 @@
 // @harness-uid u_xh7uht2d3a
+import type { TrackerChangeEvent } from '$reports/lib/projects-sessions/realtime/realtime.types';
 
 import type {
 	TrackerPlanning,
@@ -61,6 +62,8 @@ export interface InboxRun {
 export interface InboxRow {
 	header: InboxHeader;
 	bucket: InboxBucket;
+	/** The open structured ask of a Needs you row: its question and when it was raised. */
+	ask?: { question: string; since: string | null };
 }
 
 export interface InboxDetail {
@@ -143,4 +146,6 @@ export interface TrackerInboxSource {
 	write(write: ConfirmedWrite): Promise<InboxReply<InboxWriteReceipt>>;
 	writes(): Promise<InboxReply<InboxWrite[]>>;
 	discard(intentId: string): Promise<InboxReply<unknown>>;
+	/** Pushed tracker changes. Absent where a source cannot push; the screen then reads on demand. */
+	watch?(listener: (event: TrackerChangeEvent) => void): () => void;
 }

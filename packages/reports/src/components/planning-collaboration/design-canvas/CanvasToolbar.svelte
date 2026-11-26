@@ -46,8 +46,8 @@
 		align-items: center;
 		gap: 8px;
 		padding: 8px 16px;
-		background: var(--design-panel);
-		border-bottom: 1px solid var(--design-line);
+		background: var(--design-panel, var(--hx-color-surface));
+		border-bottom: 1px solid var(--design-line, var(--hx-color-border-strong));
 	}
 	.design-selected {
 		flex: 1;
@@ -66,7 +66,7 @@
 		min-height: 36px;
 		min-width: 36px;
 		padding: 0 12px;
-		border: 1px solid var(--design-line);
+		border: 1px solid var(--design-line, var(--hx-color-border-strong));
 		border-radius: 8px;
 		background: transparent;
 		color: inherit;

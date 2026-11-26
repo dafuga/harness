@@ -21,7 +21,14 @@ export const homeRunPayload = z.object({
 	machine: short.nullable(),
 	source: z.enum(['tracker', 'claude']),
 	recurring: z.boolean(),
-	paused: z.boolean()
+	paused: z.boolean(),
+	whenDue: z
+		.object({
+			state: z.enum(['running', 'queued', 'blocked']),
+			reason: short.nullable(),
+			urgency: z.number().int().min(0).max(2)
+		})
+		.optional()
 });
 
 const limit = z.object({ id, label: short, left: percent, resetsAt: time.nullable() });

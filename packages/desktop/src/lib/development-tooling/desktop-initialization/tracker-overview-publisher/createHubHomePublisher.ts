@@ -50,8 +50,8 @@ async function deliver(
 ) {
 	const sources = await readTrackerSources(fetch, true).catch(() => null);
 	if (!current()) return;
-	const agents = buildHomeSnapshot(sources, noProviders, Date.now()).agents;
-	const receipt = await deliverHomeChat(message, agents);
+	const home = buildHomeSnapshot(sources, noProviders, Date.now());
+	const receipt = await deliverHomeChat(message, home);
 	if (!current()) return;
 	await http.request(homePath + '/chat', credential, {
 		method: 'PUT',

@@ -119,9 +119,10 @@ async function verifyTrackerNotificationFlow(
 	id: string,
 	receipts: Awaited<ReturnType<typeof notificationSink>>['receipts']
 ) {
-	expect(await fixtureTrackerJson(spoke, ['flag', id, 'Is the fixture ready?'])).toMatchObject({
-		needs_daniel: true
-	});
+	const choices = ['--option', 'Ready=Continues.', '--option', 'Wait=Holds.', '--recommend', 'A'];
+	expect(
+		await fixtureTrackerJson(spoke, ['flag', id, 'Is the fixture ready?', ...choices])
+	).toMatchObject({ needs_daniel: true });
 	await expect
 		.poll(async () => (await trackerProcess(hub, ['digest']).exited).stdout)
 		.toContain('Is the fixture ready?');

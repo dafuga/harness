@@ -198,7 +198,13 @@ export const commandHelp = [
 		term: 'audit [options] [path]',
 		aliases: []
 	},
-	plainHelp('design', 'Author and render design canvases of HTML artboards.'),
+	{
+		name: 'design',
+		signature: 'design',
+		description: 'Author, list and render design canvases of HTML artboards in designs/.',
+		term: 'design [options]',
+		aliases: []
+	},
 	{
 		name: 'response-check',
 		signature: 'response-check',

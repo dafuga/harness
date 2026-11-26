@@ -54,16 +54,16 @@
 		margin: 0;
 		padding: 0;
 		border: 0;
-		background: var(--design-ground);
-		color: var(--design-ink);
+		background: var(--design-ground, var(--hx-color-background));
+		color: var(--design-ink, var(--hx-color-text));
 	}
 	header {
 		display: flex;
 		align-items: center;
 		gap: 12px;
 		padding: 8px 16px;
-		background: var(--design-panel);
-		border-bottom: 1px solid var(--design-line);
+		background: var(--design-panel, var(--hx-color-surface));
+		border-bottom: 1px solid var(--design-line, var(--hx-color-border-strong));
 	}
 	header span {
 		flex: 1;
@@ -72,7 +72,7 @@
 	button {
 		min-height: 36px;
 		padding: 0 12px;
-		border: 1px solid var(--design-line);
+		border: 1px solid var(--design-line, var(--hx-color-border-strong));
 		border-radius: 8px;
 		background: transparent;
 		color: inherit;

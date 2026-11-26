@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
+			"hub.component.projects-sessions-hub-home-not-started",
 			"hub.component.projects-sessions-hub-home-project-card",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
@@ -124,6 +125,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-not-started",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -2,4 +2,6 @@ import type { OverviewDeps } from '../tracker-overview/trackerOverviewPolicy.typ
 
 export interface HomeDeps extends OverviewDeps {
 	db?: D1Database;
+	/** The account objects that push change notices; without them apps only poll. */
+	accounts?: DurableObjectNamespace | null;
 }

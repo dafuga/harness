@@ -1,12 +1,12 @@
 import { execFile } from 'node:child_process';
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { chmodSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { promisify } from 'node:util';
 import { afterAll, expect, test } from 'vitest';
+import { createTempDirectory } from '../../support/temporary';
 
 const cli = resolve(import.meta.dirname, '../../../src/index.ts');
-const root = mkdtempSync(join(tmpdir(), 'design-cli-'));
+const root = await createTempDirectory('design-cli-');
 afterAll(() => rmSync(root, { recursive: true, force: true }));
 const run = promisify(execFile);
 const environment = { ...process.env };

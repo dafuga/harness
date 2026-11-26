@@ -75,7 +75,7 @@
 		margin: 0;
 		padding: 8%;
 		height: 100%;
-		background: var(--design-panel);
+		background: var(--design-panel, var(--hx-color-surface));
 	}
 	.design-hit {
 		position: absolute;
@@ -85,7 +85,7 @@
 		border: 0;
 		border-radius: 0;
 		background: transparent;
-		outline: solid var(--design-line);
+		outline: solid var(--design-line, var(--hx-color-border-strong));
 		cursor: pointer;
 	}
 	.design-hit[aria-pressed='true'],

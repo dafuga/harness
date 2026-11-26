@@ -1,5 +1,5 @@
 // @harness-uid u_4pgfvaopdt
-import { isTrackerPing } from './isTrackerPing';
+import { isTrackerPing, isTrackerCosMessage } from './isTrackerPing';
 import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemFields.types';
 import type {
 	TrackerItemAction,
@@ -59,25 +59,14 @@ export const trackerItemTransitions: Record<
 	ignore: ignoreItem,
 	unignore: unignoreItem
 };
-function blockItem(
-	item: TrackerItemSnapshot,
-	body: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemChange {
+/** A block records a dependency. Only `flag` asks Daniel, so blocking never does. */
+function blockItem(_: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemChange {
 	const reason = String(trackerItemValueOr(body.reason, '')).trim();
 	if (!reason) throw trackerItemError('block reason required');
-	const fields = { status: 'blocked', blocked_reason: reason };
-	const appendNote = `blocked: ${reason}`;
-	if (body.needs_daniel === false) return { fields, appendNote };
-	guardTrackerDuplicate(context, {
-		text: `${item.title} ${reason}`,
-		agent: item.agent,
-		excludeId: item.id,
-		force: body.force,
-		askingDaniel: true
-	});
-	const asked = { ...fields, needs_daniel: 1, resolved: 0, question: `Blocked: ${reason}` };
-	return { fields: { ...asked, ...trackerAskTransitions.cleared(item) }, appendNote };
+	return {
+		fields: { status: 'blocked', blocked_reason: reason },
+		appendNote: `blocked: ${reason}`
+	};
 }
 
 function unblockItem(item: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemChange {
@@ -107,6 +96,8 @@ function flagItem(
 	body: TrackerItemInput,
 	context: TrackerItemMutationContext
 ): TrackerItemChange {
+	if (body.question && isTrackerCosMessage(String(body.question)))
+		return { fields: {}, appendNote: `for Chief of Staff: ${body.question}` };
 	guardTrackerDuplicate(context, {
 		text: `${item.title} ${trackerItemValueOr(body.question, item.question) ?? ''}`,
 		agent: item.agent,
