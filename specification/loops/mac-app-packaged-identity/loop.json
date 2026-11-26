@@ -2,7 +2,7 @@
 	"name": "mac-app-packaged-identity",
 	"goal": "The packaged Harness.app reports isPackaged so the bundled Tracker self-install runs, and nothing in the bundle is group or world writable; a packaged-app test proves both",
 	"createdAt": "2026-11-26T13:25:57.824Z",
-	"updatedAt": "2026-11-26T13:32:34.669Z",
+	"updatedAt": "2026-11-26T16:02:22.027Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T16:02:22.027Z",
+			"evidence": "siblings-fb659528-d514-4752-bb17-77efc03c25eb.json"
 		},
 		{
 			"id": "verify",

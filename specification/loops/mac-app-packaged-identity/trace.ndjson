@@ -4,3 +4,4 @@
 {"event":"step.completed","timestamp":"2026-11-26T13:28:49.758Z","loop":"mac-app-packaged-identity","step":"red","evidence":"loop record --phase red failed at 5b324589fb with: expected { isPackaged: false } to deeply equal { isPackaged: true }; the bundle-mode test also failed"}
 {"event":"step.completed","timestamp":"2026-11-26T13:32:31.544Z","loop":"mac-app-packaged-identity","step":"implement","evidence":"package-mac-app.ts renames the executable to Harness, sets CFBundleExecutable, and runs chmod -R go-w; verifyRelease refuses another executable name or a writable entry"}
 {"event":"step.completed","timestamp":"2026-11-26T13:32:34.669Z","loop":"mac-app-packaged-identity","step":"green","evidence":"loop record --phase green passed on the fix commit with the unchanged test"}
+{"event":"step.completed","timestamp":"2026-11-26T16:02:22.027Z","loop":"mac-app-packaged-identity","step":"siblings","evidence":"siblings-fb659528-d514-4752-bb17-77efc03c25eb.json"}

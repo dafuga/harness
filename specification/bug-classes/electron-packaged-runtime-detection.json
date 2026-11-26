@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"revision": "949730a9ceef2cbf97f0994af3ebef769f91567c",
+	"bugClass": {
+		"id": "electron-packaged-runtime-detection",
+		"title": "Packaged Electron startup depends on executable naming",
+		"cause": "Packaged-only startup work is gated on Electron's `app.isPackaged`, but the packaging configuration preserves or changes the executable name in a way that makes the runtime report false. This skips packaged initialization and can leave shipped bundle files with unsafe permissions. A missing assembled-app launch check allows the mismatch through.",
+		"criteria": "Include a site when its Electron packaging or startup configuration makes packaged-runtime detection depend on executable identity or naming, causing `app.isPackaged` to be false in the assembled application and thereby skipping packaged-only setup. Also include sites where bundle assets are emitted or copied with world-writable permissions as a separate manifestation of the same packaging configuration failure. Either manifestation qualifies independently; prioritize runtime and packaging source, not tests, servers, or workers.",
+		"patterns": [
+			{
+				"kind": "call",
+				"value": "app.isPackaged",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "app.isPackaged",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "executableName",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "productName",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "chmod",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "0o777",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "777",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "setPermissions",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "asar",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "afterPack",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "electron-builder",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "packagerConfig",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "electron-packager",
+				"weight": 2
+			}
+		],
+		"contextTerms": [
+			"electron",
+			"packaged",
+			"executable",
+			"startup",
+			"bundle",
+			"permissions",
+			"asar",
+			"afterpack"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/desktop/",
+				"weight": 5
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -1
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			}
+		]
+	}
+}
