@@ -1,5 +1,5 @@
 // @harness-uid u_vvwiludcl4
-import type { Transport, Asked } from './HostedEvidenceService.types';
+import type { HostedEntityEvidenceQuery, Transport } from './HostedEvidenceService.types';
 import type { EvidenceArtifactQuery } from '../../../../models/verification-evidence/DesktopEvidence.types';
 import { HostedEvidenceValidator } from '../../../../validators/verification-evidence/HostedEvidenceValidator';
 import {
@@ -18,7 +18,7 @@ export class HostedEvidenceService {
 		this.reads = new HostedReadService(options);
 		this.artifacts = new RemoteArtifactCacheService(this.reads);
 	}
-	async evidence(input: Asked) {
+	async evidence(input: HostedEntityEvidenceQuery) {
 		input = { ...input };
 		const key = this.transport.path('evidence', input);
 		const validate = (value: unknown) => this.validator.evidence(value, input);

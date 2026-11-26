@@ -27,7 +27,6 @@
 			"callableContracts",
 			"returnField",
 			"CallableContract",
-			"Item",
 			"CallableContract",
 			"guess",
 			"typeLabel",
@@ -58,7 +57,7 @@
 			},
 			{
 				"name": "fieldOf.item",
-				"type": "Item",
+				"type": "HarnessContractItem",
 				"required": true,
 				"description": "The declared input, output or error entry to present; its readable name is the last dotted segment of its name, and its trimmed description, own default and non-empty examples carry over. Without examples, a type that is plain data gets one illustrative value instead.",
 				"examples": [
@@ -420,7 +419,7 @@
 			},
 			{
 				"name": "returnField.declared",
-				"type": "Item | undefined",
+				"type": "HarnessContractItem | undefined",
 				"required": true,
 				"description": "The authored output entry of the callable, or undefined when none is declared. Without one, or when its name equals the callable name, the field is named returnValue and its examples come from the declared entry if it has any, otherwise from its type.",
 				"examples": [
@@ -898,7 +897,7 @@
 				"inputs": [
 					{
 						"name": "fieldOf.item",
-						"type": "Item",
+						"type": "HarnessContractItem",
 						"required": true,
 						"description": "The declared input, output or error entry to present; its readable name is the last dotted segment of its name, and its trimmed description, own default and non-empty examples carry over. Without examples, a type that is plain data gets one illustrative value instead.",
 						"examples": [
@@ -1592,7 +1591,7 @@
 				"inputs": [
 					{
 						"name": "returnField.declared",
-						"type": "Item | undefined",
+						"type": "HarnessContractItem | undefined",
 						"required": true,
 						"description": "The authored output entry of the callable, or undefined when none is declared. Without one, or when its name equals the callable name, the field is named returnValue and its examples come from the declared entry if it has any, otherwise from its type.",
 						"examples": [

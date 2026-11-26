@@ -1,4 +1,5 @@
 // @harness-uid u_zhz7hjx43x
+import type { VerificationNote } from '../../../core/git-source-history/historyTypes.types';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { notesRef } from '../../../core/git-source-history/historyTypes';
 import { EvidenceBranchRepository } from '../../../repositories/verification-evidence/evidence-branch-repository/EvidenceBranchRepository';
@@ -8,10 +9,7 @@ import { VideoReferenceService } from '../VideoReferenceService';
 import { owningFrameCapture } from './flagSchema';
 import type { VerificationRecord } from '../../../core/verification-evidence/verificationTypes';
 import type { FrameClipReference } from '../FrameFlagService.types';
-import type {
-	PinnedHistory,
-	VerificationNote
-} from '../history-status-service/HistoryStatusService.types';
+import type { PinnedHistory } from '../history-status-service/HistoryStatusService.types';
 import type { ReadFrameCapture, SelectedFrameCapture } from './readFrameCapture.types';
 
 /** Archive clips prove only their selected objects; legacy inline clips retain whole-record proof. */

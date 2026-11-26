@@ -2,8 +2,8 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <!-- @harness-uid u_otqg2us4aa -->
 <script lang="ts">
+	import type { ExplorerScreen } from '../../models/explorer-ui/ExplorerScreen.types';
 	import ExplorerPermissionsScreen from '../networking-security/ExplorerPermissionsScreen.svelte';
-	import type { Screen } from './ExplorerContent.types';
 
 	import type { Component } from 'svelte';
 	import type { ExplorerCategory } from '../../models/explorer-ui/Explorer.types';
@@ -22,7 +22,7 @@
 	import ExplorerModulesScreen from '../module-system/ExplorerModulesScreen.svelte';
 	import ExplorerModuleResourcesScreen from '../module-system/ExplorerModuleResourcesScreen.svelte';
 	let host: ExplorerScreenProps = $props();
-	const overviews: Record<ExplorerCategory, Screen> = {
+	const overviews: Record<ExplorerCategory, ExplorerScreen> = {
 		pages: EntityVisualScreen,
 		apis: EntityBehaviorScreen,
 		layouts: EntityVisualScreen,
@@ -39,7 +39,7 @@
 		host.entities.find((item) => item.id === host.route.entity)?.category ?? host.route.category
 	);
 	/** The one screen an address is; this content holds none of its own. */
-	let Shown = $derived.by((): Screen => {
+	let Shown = $derived.by((): ExplorerScreen => {
 		const { category, entity, section } = host.route;
 		if (host.route.screen === 'styles') return ExplorerStylesScreen;
 		if (host.route.screen === 'translations') return ExplorerTranslationsScreen;

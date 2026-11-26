@@ -1,12 +1,12 @@
+import type { BoundedCommandResult } from '../../src/adapters/execution-runtimes/BoundedCommandAdapter.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir, withTempRepo } from '../support/temporary';
 import { GitAdapter } from '../../src/adapters/git-source-history/GitAdapter';
-import { GitCommandError } from '../../src/adapters/git-source-history/GitAdapter.types';
-import type {
-	GitRunOptions,
-	GitResult
+import {
+	GitCommandError,
+	type GitRunOptions
 } from '../../src/adapters/git-source-history/GitAdapter.types';
 import {
 	gitVerb,
@@ -87,7 +87,7 @@ test('Rejects a failing command with the Git error', async () => {
 test('Returns the nonzero exit in exec results', async () => {
 	await withTempRepo(async (repository) => {
 		const adapter = new GitAdapter(repository.root);
-		const result: GitResult = await adapter.exec(MISSING_REF);
+		const result: BoundedCommandResult = await adapter.exec(MISSING_REF);
 		expect(result.code).not.toBe(0);
 		expect(result.stdout.length).toBe(0);
 		expect(typeof result.stderr).toBe('string');

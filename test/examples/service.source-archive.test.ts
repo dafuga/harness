@@ -1,8 +1,9 @@
+import type { RevisionUnit } from '../../src/utils/verification-evidence/revision-registry/revisionRegistry.types';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'vitest';
 import { SourceArchiveService } from '../../src/cli/program/history-index-service/SourceArchiveService';
-import type { Unit } from '../../src/cli/program/history-index-service/SourceArchiveService.types';
+
 import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempRepo } from '../support/temporary';
 import { expect } from '../verificationExpect';
@@ -10,7 +11,7 @@ import { expect } from '../verificationExpect';
 const sourcePath = 'src/cli/program/history-index-service/SourceArchiveService.ts';
 const testPath = 'test/services/source-archive.test.ts';
 
-function exampleUnit(status = 'active'): Unit {
+function exampleUnit(status = 'active'): RevisionUnit {
 	return {
 		id: 'service.source-archive',
 		kind: 'service',
@@ -21,7 +22,7 @@ function exampleUnit(status = 'active'): Unit {
 		scenarios: ['source-archive-tests'],
 		owns: { source: [sourcePath], symbols: ['SourceArchiveService'] },
 		contract: { inputs: [], outputs: [], errors: [] }
-	} as unknown as Unit;
+	} as unknown as RevisionUnit;
 }
 
 function writeFixtureFile(root: string, path: string, content: string): void {

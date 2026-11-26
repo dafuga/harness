@@ -1,8 +1,9 @@
+import type { RevisionUnit } from '../../src/utils/verification-evidence/revision-registry/revisionRegistry.types';
 import { test } from 'vitest';
 import { expect } from '../verificationExpect';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { helperConsumers } from '../../src/services/explorer-ui/revision-detail-service/helperConsumers';
-import type { Unit } from '../../src/services/explorer-ui/revision-detail-service/helperConsumers.types';
+
 import { serviceClasses } from '../../src/services/explorer-ui/revision-detail-service/serviceClasses';
 import type {
 	Facts,
@@ -22,7 +23,7 @@ const serviceMeta = {
 	evidence: 'examples-cases'
 };
 
-function unitOf(id: string, source: string[] = []): Unit {
+function unitOf(id: string, source: string[] = []): RevisionUnit {
 	return {
 		id,
 		kind: 'function',
@@ -35,7 +36,7 @@ function unitOf(id: string, source: string[] = []): Unit {
 		helpers: [],
 		owns: { source, symbols: [] },
 		runtime: { kind: 'module', targets: [] }
-	} as unknown as Unit;
+	} as unknown as RevisionUnit;
 }
 
 function treeOf(list: () => Promise<unknown>): HelperTree {
@@ -47,7 +48,7 @@ function treeOf(list: () => Promise<unknown>): HelperTree {
 	};
 }
 
-function summary(units: Unit[]) {
+function summary(units: RevisionUnit[]) {
 	return units.map((unit) => {
 		const {
 			id,

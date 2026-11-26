@@ -1,10 +1,10 @@
+import type { HostedEntityEvidenceQuery } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { HostedEvidenceAdapter } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter';
-import type { Query } from '../../src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.types';
 
-const query: Query = {
+const query: HostedEntityEvidenceQuery = {
 	projectId: 'buildflexity-app',
 	entityId: 'reports.component.evidence-grid',
 	commit: '0123456789abcdef0123456789abcdef01234567',

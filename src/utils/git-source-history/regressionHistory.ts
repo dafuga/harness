@@ -1,5 +1,6 @@
 // @harness-uid u_q3g6hgpawh
-import type { Loader, RegressionNote, Loaded } from './regressionHistory.types';
+import type { RegressionNote } from '../../core/git-source-history/historyTypes.types';
+import type { Loader, Loaded } from './regressionHistory.types';
 import { createHash } from 'node:crypto';
 import { fail } from '../../core/development-tooling/errors';
 import {

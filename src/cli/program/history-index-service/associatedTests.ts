@@ -1,11 +1,11 @@
 // @harness-uid u_rnafd4d6rs
+import type { RevisionUnit } from '../../../utils/verification-evidence/revision-registry/revisionRegistry.types';
 import { posix } from 'node:path';
 import type { StoredSide } from '../../../utils/explorer-ui/sideImpact';
-import type { Unit } from './SourceArchiveService.types';
 
 /** Direct test imports and authored coverage at this revision; never infer through unrelated units. */
 export function associatedTests(
-	unit: Unit,
+	unit: RevisionUnit,
 	owned: string[],
 	side: StoredSide,
 	imports: Map<string, string[]>

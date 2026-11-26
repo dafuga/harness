@@ -43,3 +43,5 @@ export type TransportFailure =
 	| 'runtime-failed'
 	| 'runtime-timeout'
 	| 'invalid-response';
+
+export type RuntimeEnvironment = Record<string, string | undefined>;

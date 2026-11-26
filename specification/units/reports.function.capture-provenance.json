@@ -17,7 +17,6 @@
 			"scenarioOrigin",
 			"CaptureStanding",
 			"CaptureProvenance",
-			"Scenario",
 			"CaptureStanding",
 			"CaptureProvenance"
 		]
@@ -55,7 +54,7 @@
 			},
 			{
 				"name": "captureProvenance.scenario",
-				"type": "Scenario",
+				"type": "HarnessScenarioResult",
 				"required": true,
 				"description": "The scenario supplies inheritance and the tested revision; inherited scenarios also supply the originating record and commit. The tested revision is verification context, not the capture's source.",
 				"examples": [
@@ -99,7 +98,7 @@
 			},
 			{
 				"name": "scenarioOrigin.scenario",
-				"type": "Scenario",
+				"type": "HarnessScenarioResult",
 				"required": true,
 				"description": "The scenario supplies inheritance, tested revision, status, and capture revisions. Capture revisions affect the wording only for a failed, non-inherited scenario, where distinct revisions other than the tested revision are listed.",
 				"examples": [
@@ -191,7 +190,7 @@
 					},
 					{
 						"name": "captureProvenance.scenario",
-						"type": "Scenario",
+						"type": "HarnessScenarioResult",
 						"required": true,
 						"description": "The scenario supplies inheritance and the tested revision; inherited scenarios also supply the originating record and commit. The tested revision is verification context, not the capture's source.",
 						"examples": [
@@ -274,7 +273,7 @@
 				"inputs": [
 					{
 						"name": "scenarioOrigin.scenario",
-						"type": "Scenario",
+						"type": "HarnessScenarioResult",
 						"required": true,
 						"description": "The scenario supplies inheritance, tested revision, status, and capture revisions. Capture revisions affect the wording only for a failed, non-inherited scenario, where distinct revisions other than the tested revision are listed.",
 						"examples": [

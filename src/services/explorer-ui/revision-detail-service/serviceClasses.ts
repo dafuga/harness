@@ -1,5 +1,6 @@
 // @harness-uid u_44u5mzzjmu
-import type { Facts, Lookup, Definition, Unit, ProofContext } from './serviceClasses.types';
+import type { RevisionUnit } from '../../../utils/verification-evidence/revision-registry/revisionRegistry.types';
+import type { Facts, Lookup, Definition, ProofContext } from './serviceClasses.types';
 import type { HelperConsumer } from '../../../utils/explorer-ui/helperConsumers';
 import type { PublicServiceClass } from '../../../utils/explorer-ui/unitMetadata';
 
@@ -47,7 +48,7 @@ function forwarded(
 	return undefined;
 }
 
-function constructors(units: Unit[], facts: Facts, lookup: Lookup) {
+function constructors(units: RevisionUnit[], facts: Facts, lookup: Lookup) {
 	const found = new Map<string, Set<string>>();
 	for (const unit of units)
 		for (const path of unit.owns.source)
@@ -93,7 +94,7 @@ function merge(
 }
 
 /** Class eligibility is declaration-level proof; runtime exports remain available for ownership. */
-export function serviceClasses(units: Unit[], facts: Facts, lookup: Lookup): void {
+export function serviceClasses(units: RevisionUnit[], facts: Facts, lookup: Lookup): void {
 	const context = { facts, lookup, constructed: constructors(units, facts, lookup) };
 	for (const unit of units) {
 		const classes = new Map<string, PublicServiceClass>();

@@ -2368,13 +2368,13 @@
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
+			"definition": "32da3c225b2c24de54f8c178ea35af5ba12aabcbfd1672d46a0328ff2f5900e5",
 			"relocationDefinition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653",
 			"review": {
-				"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-				"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
-				"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
+				"definition": "32da3c225b2c24de54f8c178ea35af5ba12aabcbfd1672d46a0328ff2f5900e5",
+				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
 			},
 			"previousReviews": [
 				{
@@ -2388,6 +2388,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
 					"definition": "304ec40005d70807352f970b2f87fdc7357629b98cf212b75d3ae33cbac9dee3",
 					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-desktop.service.remote-device-sessions, written by haiku); behavior unchanged."
+				},
+				{
+					"commit": "b7d33b328520b2c67365945a171bd62958c75574",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
+					"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
 				}
 			]
 		},
@@ -2605,13 +2611,13 @@
 			"unit": "relay.service.host-command",
 			"from": "packages/relay/src/services/HostCommandService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
-			"definition": "4e30a2821c2a8b54f89c97fdf94b82776cc7721c3608cfaf820660c284b0dd78",
+			"definition": "dae993139db6510b4e91a1c3197c57045a04ab9a8a2c4b05eaefad22fa4d936a",
 			"relocationDefinition": "f3976fc69c97ec44e8772db4c1ec91d10df896931b8e453967641bff17098e7b",
 			"review": {
-				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
-				"definition": "4e30a2821c2a8b54f89c97fdf94b82776cc7721c3608cfaf820660c284b0dd78",
-				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				"definition": "dae993139db6510b4e91a1c3197c57045a04ab9a8a2c4b05eaefad22fa4d936a",
+				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
 			},
 			"previousReviews": [
 				{
@@ -2619,6 +2625,12 @@
 					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
 					"definition": "7886b9ebda454f4fe75ba68ddaa4dcabcf0a237acd74e5a57a007e3a2ea42128",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostCommandService.ts",
+					"definition": "4e30a2821c2a8b54f89c97fdf94b82776cc7721c3608cfaf820660c284b0dd78",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 				}
 			]
 		},
@@ -2911,13 +2923,13 @@
 			"unit": "service.kernel-benchmark",
 			"from": "src/services/kernel-benchmark-service/KernelBenchmarkService.ts",
 			"to": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-			"definition": "3fea65612225e8dbba3359c5f0638e73b047fa142b75aaaf73edfb21792436d6",
+			"definition": "fa3c4eff99cc702d64ddb916f74baa64a91a3962c4eef2e6f1a68cd57ca1435d",
 			"relocationDefinition": "31eb00cde9c6e7f351bd776bfd29d8e3db6c5e2952ac5c3d0320b7a7d7aaa28f",
 			"review": {
-				"commit": "a5832fa2f6ee605b13d105b70f5e5245ad2471b5",
+				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
 				"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
-				"definition": "3fea65612225e8dbba3359c5f0638e73b047fa142b75aaaf73edfb21792436d6",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.kernel-benchmark, written by haiku); messages and behavior unchanged."
+				"definition": "fa3c4eff99cc702d64ddb916f74baa64a91a3962c4eef2e6f1a68cd57ca1435d",
+				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
 			},
 			"previousReviews": [
 				{
@@ -2943,6 +2955,12 @@
 					"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
 					"definition": "0b7506528bdf23937d0b9a65fffd7ca72fa97f6d4274b3c75d85e15788b2faa5",
 					"reason": "Retain bounded process execution, bounded nested runtime lifetimes and asynchronous cold kernel samples."
+				},
+				{
+					"commit": "a5832fa2f6ee605b13d105b70f5e5245ad2471b5",
+					"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+					"definition": "3fea65612225e8dbba3359c5f0638e73b047fa142b75aaaf73edfb21792436d6",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-service.kernel-benchmark, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -3003,14 +3021,22 @@
 			"unit": "desktop.service.hosted-evidence",
 			"from": "packages/desktop/src/services/HostedEvidenceService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
-			"definition": "26c83a998335153a6811dc253db0648a712d26444acf2d5610b3b3d43ef689bf",
+			"definition": "8bd4a100b7da2ea584c90cde6af9d5a9f170eb8499bd126894b8dac15de0be5e",
 			"relocationDefinition": "3e00646f73cc3637b2bfe2472711b4aadc2854340bd792eee4568d195b083fec",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
-				"definition": "26c83a998335153a6811dc253db0648a712d26444acf2d5610b3b3d43ef689bf",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "8bd4a100b7da2ea584c90cde6af9d5a9f170eb8499bd126894b8dac15de0be5e",
+				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
+					"definition": "26c83a998335153a6811dc253db0648a712d26444acf2d5610b3b3d43ef689bf",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "desktop.service.relay-link",
@@ -4400,13 +4426,13 @@
 			"unit": "desktop.adapter.hosted-evidence",
 			"from": "packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"definition": "67ad5c6feb42d3b0475662a67904c8c4174cbb6c5e90e3f9c32dd43cdedc0ce2",
+			"definition": "0ff87f9ce481bb5d6e5509fb0bf0a0257bf59113c2e36b5e5689bf3b3de736fa",
 			"relocationDefinition": "fde061067f0730945bc7cc76edcb411ee62318daa9bd504164739b5c53e32039",
 			"review": {
-				"commit": "c6d8e7b38fab9a0e9a579917054309013a8ff606",
+				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-				"definition": "67ad5c6feb42d3b0475662a67904c8c4174cbb6c5e90e3f9c32dd43cdedc0ce2",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.hosted-evidence, written by luna); messages and behavior unchanged."
+				"definition": "0ff87f9ce481bb5d6e5509fb0bf0a0257bf59113c2e36b5e5689bf3b3de736fa",
+				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
 			},
 			"previousReviews": [
 				{
@@ -4414,6 +4440,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 					"definition": "d3d5a3e4682b4d5aa9bc11aebeb6b78b267ede76d6af855804a055c43b2ec5b7",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "c6d8e7b38fab9a0e9a579917054309013a8ff606",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
+					"definition": "67ad5c6feb42d3b0475662a67904c8c4174cbb6c5e90e3f9c32dd43cdedc0ce2",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.hosted-evidence, written by luna); messages and behavior unchanged."
 				}
 			]
 		},

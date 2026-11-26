@@ -1,18 +1,18 @@
 // @harness-uid u_rdiarfthls
-import type { DeviceSessionOptions } from './device-session-service/DeviceSessionService';
-import type { DeviceSessionService } from './device-session-service/DeviceSessionService';
-import type { RemoteKeyPair } from '../../../../../remote/src/index';
-import type { SecurePacket } from '../../../../../remote/src/index';
-import type { SecureChannelService } from '../../../../../remote/src/index';
-import type { WireLink } from '../../../../../remote/src/index';
+import type { RemoteDeviceAddress } from '../../../../../remote/src/models/networking-security/RemoteRelay.types';
+import type {
+	DeviceSessionOptions,
+	DeviceSessionService
+} from './device-session-service/DeviceSessionService';
+import type {
+	RemoteKeyPair,
+	SecurePacket,
+	SecureChannelService,
+	WireLink
+} from '../../../../../remote/src/index';
 import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 
 export type TrackerPhoneFetcher = (url: URL, init: RequestInit) => Promise<Response>;
-
-export interface DeviceAddress {
-	deviceId: string;
-	connectionId: string;
-}
 
 export interface RemoteDeviceSessionsOptions {
 	shared: Omit<
@@ -26,8 +26,8 @@ export interface RemoteDeviceSessionsOptions {
 	host: () => { id: string; name: string; keys: RemoteKeyPair; locked?: boolean };
 	/** The approved device as stored now, or null once it is revoked. */
 	device: (deviceId: string) => RemoteHostDevice | null;
-	send: (address: DeviceAddress, packet: SecurePacket) => void;
-	drop: (address: DeviceAddress, code: number) => void;
+	send: (address: RemoteDeviceAddress, packet: SecurePacket) => void;
+	drop: (address: RemoteDeviceAddress, code: number) => void;
 }
 
 export interface Entry {
