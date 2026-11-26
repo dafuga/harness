@@ -6,6 +6,7 @@ import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
+import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 
 const transcriptOnlyPort: TrackerWatchdogPort = {
 	scan: async () => null,
@@ -41,6 +42,24 @@ export function trackerWatchdogPort(
 	};
 }
 
+/** The pane input refuses long messages, so the slot lines take only the room that is left. */
+const cosMessageLimit = 5000;
+
+function cosMessage(summary: readonly string[], alerts: readonly TrackerWatchdogAlert[]) {
+	const message =
+		'Tracker watchdog alerts for Chief of Staff. Review these items. ' + summary.join(' | ');
+	const slots = new Map(
+		alerts.flatMap(({ host, slots }) => (slots ? [[host, plain(slots)] as const] : []))
+	);
+	if (!slots.size) return message;
+	const lines = [...slots].map(([host, line]) => `${host}: ${line}`);
+	return `${message} || Slots by computer: ${lines.join(' || ')}`.slice(0, cosMessageLimit);
+}
+
+function plain(text: string) {
+	return text.replace(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]+/gu, ' ');
+}
+
 function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatchdogPort {
 	const lisbon = new Intl.DateTimeFormat('en-GB', {
 		timeZone: 'Europe/Lisbon',
@@ -64,10 +83,9 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 			if (panes.length !== 1) return false;
 			const summary = alerts.map(
 				({ item_id, host, reason }) =>
-					`[${item_id.slice(0, 6)}] ${host}: ${reason.replace(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]+/gu, ' ').slice(0, 500)}`
+					`[${item_id.slice(0, 6)}] ${host}: ${plain(reason).slice(0, 500)}`
 			);
-			const message =
-				'Tracker watchdog alerts for Chief of Staff. Review these items. ' + summary.join(' | ');
+			const message = cosMessage(summary, alerts);
 			const sent = await tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
 			if (sent) nextCosTick = now + 30 * 60_000;
 			return sent;

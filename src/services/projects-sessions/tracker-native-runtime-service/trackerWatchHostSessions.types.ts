@@ -19,6 +19,8 @@ export interface WatchdogSessionScan {
 	/** Records the end of runs that stopped without closing their item. */
 	settle?: TrackerDispatcherService;
 	automaticEnabled?(): boolean;
+	/** This computer's launcher cap, or null when it launches nothing. */
+	slotCap?: number | null;
 	idleWork?: { dispatch: TrackerDispatcherService; minutes: number };
 	roots?: readonly string[];
 }
