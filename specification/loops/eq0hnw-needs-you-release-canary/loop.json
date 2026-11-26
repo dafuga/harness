@@ -2,7 +2,7 @@
 	"name": "eq0hnw-needs-you-release-canary",
 	"goal": "A Hub release cannot pass until a labelled test ask answered on prod Hub web, the Mac app and the iPhone is read back from the Tracker as answered by Daniel with the tapped option",
 	"createdAt": "2026-11-26T17:59:00.550Z",
-	"updatedAt": "2026-11-26T18:09:05.059Z",
+	"updatedAt": "2026-11-26T18:10:12.924Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -46,12 +46,16 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T18:10:09.037Z",
+			"evidence": "loop record --phase green passed at aed3b04d with the three test files unchanged from red d2eef874: 8/8. Completed at that commit; main was merged afterwards and the 8 tests are rerun at the merged head."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T18:10:12.924Z",
+			"evidence": "Release gate reintroduced as check-nothing stub: 8/8 fail (red d2eef874), restored: 8/8 pass (aed3b04d). Also real Hub builds in isolated copies, headless: main 15882a2 (today's rows without buttons) rowLabels=[] so the canary fails 'no option buttons'; PR398 c006e628: labels Canary A,B,C,Other, press sent kind=answer option=2 to the linked Mac, 0 queued on the Hub: passed. First run on main returned null (selector needed PR398 markup); fixed in e6619f56 before this proof. Screenshots of both inspected (fixture data)."
 		},
 		{
 			"id": "verify",
