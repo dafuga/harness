@@ -19,11 +19,7 @@ export async function trackerBackupFixture(start: string) {
 	const directory = join(external, 'native');
 	mkdirSync(external, { mode: 0o700 });
 	const path = join(root, 'tracker.db');
-	const database = new DatabaseSync(path);
-	onTestFinished(() => {
-		database.close();
-		rmSync(root, { recursive: true, force: true });
-	});
+	const database = openFixtureDatabase(root, path);
 	let clock = Date.parse(start);
 	const options = {
 		node,
@@ -58,12 +54,7 @@ export async function trackerBackupFixture(start: string) {
 				.prepare("SELECT * FROM items WHERE title = 'Tracker backups need attention'")
 				.all() as { status: string; needs_daniel: number; question: string; options: string }[],
 		tick: () => runWorkers(runtime),
-		async api(method: string, route: string) {
-			const supervisor = new TrackerSupervisorService(runtime, { now: runtime.now });
-			const headers = { 'x-harness-tracker-node': node, 'x-harness-tracker-role': 'hub' };
-			const request = new Request('http://127.0.0.1:7700/native/v1' + route, { method, headers });
-			return (await trackerNodeApi(request, runtime, supervisor, 'fixture')).json();
-		},
+		api: (method: string, route: string) => callApi(runtime, method, route),
 		cli: (...args: string[]) => runCli(root, path, args),
 		/** The shipped CLI runs on Bun, whose SQLite differs from this test runner's. */
 		bunCli(...args: string[]) {
@@ -73,6 +64,22 @@ export async function trackerBackupFixture(start: string) {
 			return { code: run.status, out: run.stdout.trim(), err: run.stderr.trim() };
 		}
 	};
+}
+
+async function callApi(runtime: TrackerNativeRuntimeService, method: string, route: string) {
+	const supervisor = new TrackerSupervisorService(runtime, { now: runtime.now });
+	const headers = { 'x-harness-tracker-node': node, 'x-harness-tracker-role': 'hub' };
+	const request = new Request('http://127.0.0.1:7700/native/v1' + route, { method, headers });
+	return (await trackerNodeApi(request, runtime, supervisor, 'fixture')).json();
+}
+
+function openFixtureDatabase(root: string, path: string): DatabaseSync {
+	const database = new DatabaseSync(path);
+	onTestFinished(() => {
+		database.close();
+		rmSync(root, { recursive: true, force: true });
+	});
+	return database;
 }
 
 function listFiles(directory: string): string[] {
