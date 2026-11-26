@@ -54,7 +54,8 @@
 				"name": "HubHomeComposer.label",
 				"type": "string",
 				"required": false,
-				"default": "Message"
+				"default": "Message",
+				"description": "The accessible name of the message field."
 			},
 			{
 				"name": "HubHomeComposer.send",

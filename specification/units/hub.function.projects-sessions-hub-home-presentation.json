@@ -246,12 +246,14 @@
 			{
 				"name": "messageStatusText.message",
 				"type": "Pick<HomeMessage, 'status' | 'reason'>",
-				"required": true
+				"required": true,
+				"description": "A thread entry's status and refusal reason."
 			},
 			{
 				"name": "messageStatusText.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The receiving session, as Daniel knows it."
 			},
 			{
 				"name": "runDay.at",
@@ -903,12 +905,14 @@
 					{
 						"name": "messageStatusText.message",
 						"type": "Pick<HomeMessage, 'status' | 'reason'>",
-						"required": true
+						"required": true,
+						"description": "A thread entry's status and refusal reason."
 					},
 					{
 						"name": "messageStatusText.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The receiving session, as Daniel knows it."
 					}
 				],
 				"outputs": [

@@ -4,8 +4,8 @@
 	"uid": "u_suxmf5vsuw",
 	"kind": "component",
 	"title": "HubHomeCosChat",
-	"responsibility": "Owns the HubHomeCosChat Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows Daniel's latest messages to Chief of Staff on Home with their receipts and replies, and sends a new one.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -24,29 +24,33 @@
 		"symbols": ["HubHomeCosChat"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeCosChat.agent",
 				"type": "HomeAgent",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Chief of Staff as the linked computers report it; absent before the Tracker reports it."
 			},
 			{
 				"name": "HubHomeCosChat.now",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The time Home was read, used for a stand-in Chief of Staff."
 			},
 			{
 				"name": "HubHomeCosChat.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Sends one Home message through a linked computer or the Hub queue."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeCosChat",
-				"type": "markup"
+				"type": "markup",
+				"description": "A \"Message Chief of Staff\" region with the latest four entries and one field."
 			}
 		],
 		"errors": [],
@@ -97,6 +101,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}
