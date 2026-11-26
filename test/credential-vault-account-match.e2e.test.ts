@@ -1,13 +1,13 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { createTempDirectory } from './support/temporary';
 import type { AccountMatchCase, SavedEntry } from './credential-vault-account-match.e2e.test.types';
 
 const darwin = process.platform === 'darwin';
-const workspace = mkdtempSync(join(tmpdir(), 'vault-account-match-'));
-const binary = join(workspace, 'match');
+let workspace = '';
+let binary = '';
 const entry = (service: string, username: string, domain?: string): SavedEntry => ({
 	service,
 	username,
@@ -20,8 +20,10 @@ function resolve(value: AccountMatchCase) {
 	return (JSON.parse(output) as unknown[])[0];
 }
 
-beforeAll(() => {
+beforeAll(async () => {
 	if (!darwin) return;
+	workspace = await createTempDirectory('vault-account-match-');
+	binary = join(workspace, 'match');
 	execFileSync('xcrun', [
 		'swiftc',
 		'packages/desktop/ios/App/App/Vault/Picker/VaultAccountMatch.swift',
@@ -31,7 +33,9 @@ beforeAll(() => {
 		binary
 	]);
 }, 60_000);
-afterAll(() => rmSync(workspace, { recursive: true, force: true }));
+afterAll(async () => {
+	if (workspace) await rm(workspace, { recursive: true, force: true });
+});
 
 describe.skipIf(!darwin)('Harness iOS vault logins offered for a site', () => {
 	test('a saved login under another name is offered when no account is named', () => {
