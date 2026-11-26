@@ -42,15 +42,19 @@ test('every session brief requires per-requirement, per-computer proof before tr
 });
 
 test('a truncated Docker brief keeps the done proof rule within its 15,900 byte budget', () => {
-	const long = { ...item, notes: 'é'.repeat(20000) };
 	// The dispatcher's real completion section is about this long.
 	const completion = `## Completion and worktree cleanup\n${'Run tracker done. '.repeat(30)}`;
-	const brief = managedBrief({
-		backend: 'docker',
-		itemId: item.id,
-		brief: formatTrackerHostBrief(long, completion)
-	} as Parameters<typeof managedBrief>[0]);
-	expect(brief).toContain(trackerDoneProofRule);
-	expect(brief).toContain('Read the full task with `tracker show abcdef1234567890`.');
-	expect(Buffer.byteLength(brief)).toBeLessThanOrEqual(15_900);
+	// Shifting the text a byte at a time makes the cut land inside a three-byte character.
+	for (const shift of ['', 'a', 'aa']) {
+		const long = { ...item, notes: shift + '€'.repeat(20000) };
+		const brief = managedBrief({
+			backend: 'docker',
+			itemId: item.id,
+			brief: formatTrackerHostBrief(long, completion)
+		} as Parameters<typeof managedBrief>[0]);
+		expect(brief).toContain(trackerDoneProofRule);
+		expect(brief).toContain('Read the full task with `tracker show abcdef1234567890`.');
+		expect(brief).not.toContain('�');
+		expect(Buffer.byteLength(brief)).toBeLessThanOrEqual(15_900);
+	}
 });
