@@ -30,9 +30,11 @@ import type {
 	TrackerHostRunnerOptions,
 	TrackerHostSession
 } from './trackerHostLaunch.types';
+import { trackerHostVerification } from './trackerHostVerification';
+import { trackerHostReport, withSourceRepo } from './trackerHostReport';
 import { formatTrackerHostBrief } from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
-import { startTrackerHost, withTrackerRunUsage } from './trackerHostLaunchPort';
+import { startTrackerHost } from './trackerHostLaunchPort';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -45,9 +47,12 @@ export function trackerHostRunner(
 	const node = canonicalNode(store.node, {});
 	let [sessions, panes]: [TrackerHostSession[], WatchdogPane[]] = [[], []];
 	const legacySession = legacySessionReader(legacyRunDirectory, () => sessions);
+	const verification = trackerHostVerification(driver, options.verifyCommand);
+	const report = trackerHostReport({ store, driver, routeFor, now }, verification);
 	return {
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
+				report.retain(runs);
 				({ sessions, panes } = await trackerHostInventory(
 					{ store, driver, tmux, node, keys: runs.map(attemptKey), now: now() },
 					signal
@@ -66,7 +71,7 @@ export function trackerHostRunner(
 					signal
 				);
 				if (result?.type === 'session') sessions.push({ ...result.session, itemId: item.id });
-				return result;
+				return withSourceRepo(result, routeFor(item));
 			},
 			legacySession,
 			confirmLegacyNeverStarted: legacyTrackerStartupProbe(
@@ -76,7 +81,7 @@ export function trackerHostRunner(
 			),
 			async observe(run: TrackerRunReceipt, key: string, signal: AbortSignal) {
 				const event = recordedHostEvent(run, { key, sessions, items, legacySession, store });
-				return withTrackerRunUsage(event, { driver, run, items, now: now() }, signal);
+				return report(event, run, signal);
 			},
 			...optionalHostControls(driver)
 		},

@@ -1,5 +1,4 @@
 // @harness-uid u_vqnqshfas2
-import type { QuietHours } from '../../helpers/attention-timing/attentionTiming.types';
 import type { TrackerNotificationState } from './tracker-notification-service/notificationState.types';
 
 export interface TrackerDestination {
@@ -123,10 +122,9 @@ export interface TrackerWebhookOptions {
 	batch?: boolean;
 	windowMinutes?: number;
 	urgent?: readonly string[];
-	quietHours?: boolean;
 	coalesceMinutes?: number;
 	reminderTimes?: readonly string[];
-	/** Rotated one per delivered digest, outside quiet hours. */
+	/** For Daniel: rotated one per delivered digest, only between 08:00 and 22:00 Lisbon. */
 	suggestions?: readonly string[];
 }
 
@@ -136,7 +134,6 @@ export interface TrackerNotificationOptions {
 	destinations: TrackerNotificationDestinations;
 	now: () => number;
 	role: 'hub' | 'spoke';
-	quietHours?: QuietHours | null;
 	chiefOfStaff?: TrackerDestination;
 	scheduledReminders?: TrackerDestination;
 	scheduledOnly?: boolean;

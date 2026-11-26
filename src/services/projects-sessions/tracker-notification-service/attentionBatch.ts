@@ -15,7 +15,14 @@ import type {
 	TrackerNotificationState
 } from './notificationState.types';
 import { webhookRequest } from './deliveryRequest';
-import { askQuietHours, eventId, flagged, isoTime, minute, parkedUntil } from './notificationRules';
+import {
+	danielQuietHours,
+	eventId,
+	flagged,
+	isoTime,
+	minute,
+	parkedUntil
+} from './notificationRules';
 
 function waitingToLaunch(
 	entry: AttentionRow,
@@ -77,7 +84,6 @@ function canSendAttention(
 ): boolean {
 	const { webhook } = options;
 	const { forceAttention: forced } = state;
-	const quietHold = webhook.quietHours !== false;
 	const at = nextAttentionBatchAt({
 		nowMs: now,
 		windowMs: (webhook.windowMinutes ?? 30) * minute,
@@ -87,11 +93,10 @@ function canSendAttention(
 		lastAttemptMs: state.lastAttentionAttempt ?? null,
 		urgentKinds: webhook.urgent ?? [],
 		windowAlignedKinds: ['launch_wait'],
-		quietHold,
-		quiet: options.quietHours
+		quietHold: false,
+		quiet: null
 	});
-	if (at === null || at > now) return false;
-	return !quietHold || Boolean(forced) || quietHourBoundary(now, options.quietHours) <= now;
+	return at !== null && at <= now;
 }
 
 function nextSuggestion(
@@ -99,7 +104,7 @@ function nextSuggestion(
 	{ suggestions }: TrackerWebhookOptions,
 	now: number
 ): string | undefined {
-	if (!suggestions?.length || quietHourBoundary(now, askQuietHours) > now) return undefined;
+	if (!suggestions?.length || quietHourBoundary(now, danielQuietHours) > now) return undefined;
 	return suggestions[(state.digestsSent ?? 0) % suggestions.length];
 }
 
@@ -163,10 +168,9 @@ export function nextAttention(
 		delete state.forceAttention;
 		return undefined;
 	}
-	const quiet = quietHourBoundary(now, askQuietHours) > now;
 	const sendable = pending.filter(({ line, itemId }) => {
 		if (line.event !== 'needs_daniel' && !line.needs_daniel) return true;
-		return !quiet && parkedUntil(source.item(itemId)) <= now;
+		return parkedUntil(source.item(itemId)) <= now;
 	});
 	const configured = { ...options, webhook };
 	if (!sendable.length || !canSendAttention(state, configured, sendable, now)) return undefined;

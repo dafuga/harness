@@ -82,8 +82,17 @@ const commandPrefixes = new Map([
 	['answer', 'resolved: '],
 	['resolve', 'resolved: '],
 	['update', 'updated '],
-	['unlaunch', 'auto-launch off: ']
+	['unlaunch', 'auto-launch off: '],
+	['reject', 'rejected: ']
 ]);
+
+export function nativeItemSuffix(command: string, item: NativeTrackerItem) {
+	const run = item.rejected_run;
+	if (command !== 'reject') return '';
+	return run
+		? `\n  run ${run.id} (${run.rung}) now counts as a failure`
+		: '\n  (no auto-run to charge it to)';
+}
 
 export function nativeItemPrefix(
 	command: string,

@@ -13,6 +13,7 @@ import { canonicalNode, skip } from './tracker-dispatcher-service/launchEligibil
 import { requestLaunch } from './tracker-dispatcher-service/launchIntent';
 import { claimLaunch, prepareRetry } from './tracker-dispatcher-service/runClaim';
 import { transitionRun } from './tracker-dispatcher-service/runTransition';
+import { creditHumanRedo, rejectCompletion } from './tracker-dispatcher-service/runReview';
 
 /** Plan launches and record observed runner activity through one atomic store boundary. */
 export class TrackerDispatcherService {
@@ -55,6 +56,18 @@ export class TrackerDispatcherService {
 			if (!run) return skip('ignored', 'attempt changed or is not owned by this computer');
 			return transitionRun(snapshot, run, event, { policy: this.policy, now: this.policy.now() });
 		});
+	}
+
+	reject(itemId: string, reason: string): Promise<TrackerDispatchResult> {
+		return this.store.update(itemId, (snapshot) =>
+			rejectCompletion(snapshot, reason, { policy: this.policy, now: this.policy.now() })
+		);
+	}
+
+	creditHumanRedo(itemId: string, runIds: readonly number[]): Promise<TrackerDispatchResult> {
+		return this.store.update(itemId, (snapshot) =>
+			creditHumanRedo(snapshot, runIds, { policy: this.policy, now: this.policy.now() })
+		);
 	}
 
 	private currentRun({ runs }: TrackerDispatchSnapshot, { id, revision }: TrackerAttemptVersion) {

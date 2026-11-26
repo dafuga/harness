@@ -7,9 +7,10 @@ import type {
 	TrackerRunReceipt,
 	TrackerSessionEvidence
 } from '../TrackerDispatcherService.types';
-import { matchesRequest, skip } from './launchEligibility';
+import { skip } from './launchEligibility';
 import { retireUnstartedRun } from './runClaim';
-import { completeRun, monitorRun } from './runMonitor';
+import { monitorRun } from './runMonitor';
+import { recordVerification, rejectRun } from './runReview';
 import { matchesSession, recordFinalReport, reopenAnswered, resumeRun } from './runResume';
 import { etaFor, failRun, recordRun, reviseRun } from './runReceipt';
 
@@ -61,6 +62,7 @@ function adoptSession(
 			session_id: session.id,
 			...(session.tmux && { tmux: session.tmux }),
 			started_at: session.startedAt,
+			...(session.sourceRepo && { source_repo: session.sourceRepo }),
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
 		})
 	);
@@ -83,65 +85,6 @@ function recordStartupFailure(
 			reason: event.reason,
 			exitCode: event.exitCode,
 			startup: true
-		},
-		clock
-	);
-}
-
-function recordVerification(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	event: Extract<TrackerDispatchEvent, { type: 'verified' }>,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item } = snapshot;
-	if (
-		run.state !== 'verifying' ||
-		item?.status !== 'done' ||
-		item.deleted ||
-		item.closedBySource ||
-		run.verificationFor !== item.completionVersion
-	) {
-		return skip('ignored', 'verification no longer applies to this attempt');
-	}
-	if (event.passed) return completeRun(snapshot, run, { now, usage: event.usage });
-	return failRun(
-		snapshot,
-		run,
-		{
-			outcome: 'failed',
-			reason: event.reason ?? 'verification failed',
-			reopen: true,
-			usage: event.usage
-		},
-		{ policy, now }
-	);
-}
-
-function rejectRun(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	reason: string,
-	clock: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item, runs } = snapshot;
-	const latest = !runs.some((later) => later.node === run.node && later.id > run.id);
-	if (
-		run.outcome !== 'done' ||
-		item?.status !== 'done' ||
-		item.deleted ||
-		!latest ||
-		!matchesRequest(item, run, clock.policy)
-	) {
-		return skip('conflict', 'attempt is no longer the current completed launch');
-	}
-	return failRun(
-		snapshot,
-		run,
-		{
-			outcome: 'rejected',
-			reason: reason.trim() || 'rejected by Daniel',
-			reopen: true
 		},
 		clock
 	);

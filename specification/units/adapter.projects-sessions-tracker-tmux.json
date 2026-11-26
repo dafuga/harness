@@ -4,7 +4,7 @@
 	"uid": "u_fyf7e7kyi5",
 	"kind": "adapter",
 	"title": "Tracker tmux",
-	"responsibility": "Launches managed Tracker sessions, reads retained panes, and guards terminal writes against pane, cursor, and provider changes.",
+	"responsibility": "Launches managed Tracker sessions, reads retained panes, guards terminal writes against pane, cursor, and provider changes, and runs verify commands in attempt worktrees.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,6 +16,7 @@
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedProviderCommands.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedVerification.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxClose.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts",
@@ -54,6 +55,7 @@
 			"trackerManagedProviderCommand",
 			"trackerManagedProviderEnvironment",
 			"trackerClaudeAuthProblem",
+			"trackerManagedVerification",
 			"workerScript",
 			"launchTmux",
 			"prepareTrackerWorkingDirectory",
@@ -294,6 +296,11 @@
 			{
 				"name": "trackerClaudeAuthProblem.signal",
 				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "trackerManagedVerification.directory",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -1075,6 +1082,24 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerManagedVerification",
+				"inputs": [
+					{
+						"name": "trackerManagedVerification.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerManagedVerification",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "launchTmux",

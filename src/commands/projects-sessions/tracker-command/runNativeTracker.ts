@@ -12,7 +12,8 @@ import {
 import {
 	formatNativeTrackerItem,
 	formatNativeTrackerRunRead,
-	nativeItemPrefix
+	nativeItemPrefix,
+	nativeItemSuffix
 } from './formatNativeTrackerItem';
 import {
 	formatNativeTrackerAdapterRun,
@@ -25,6 +26,7 @@ import type {
 	NativeTrackerRunRead
 } from './nativeTrackerCli.types';
 import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
+import { trackerRequestTimeout } from './trackerRequestTimeout';
 import { withTrackerAttachments } from './withTrackerAttachments';
 
 export function selectedTrackerConfig(): string | undefined {
@@ -103,18 +105,13 @@ async function sendNativeTracker(
 }
 
 function trackerActor(command: string, by: string | boolean | undefined, node: string): string {
-	const humanDecision = command === 'park' || command === 'move-on';
+	const humanDecision = ['park', 'move-on', 'reject'].includes(command);
 	const run = process.env.TRACKER_RUN_ID;
 	const runActor = run && /^[1-9][0-9]{0,15}$/.test(run) ? `tracker-run-${run}@${node}` : undefined;
 	if (humanDecision && runActor) return runActor;
 	const claimed = [by, process.env.TRACKER_AS].find(Boolean);
 	const fallback = command === 'add' ? runActor : undefined;
 	return String(claimed ?? fallback ?? `${userInfo().username}@${node}`);
-}
-
-function trackerRequestTimeout(path: string) {
-	if (path.startsWith('/adapters/run?') || path === '/backup/now') return 120_000;
-	return path.endsWith('/launch?outcome=run') ? 30_000 : 15_000;
 }
 
 function renderLaunch(
@@ -213,5 +210,10 @@ function renderNativeTrackerItemOrReport(command: string, data: unknown, first?:
 		formatNativeTrackerInspection(command, data as NativeTrackerInspection) ??
 		formatNativeTrackerRunRead(command, data as NativeTrackerRunRead);
 	const item = data as NativeTrackerItem;
-	console.log(rendered ?? nativeItemPrefix(command, first, item) + formatNativeTrackerItem(item));
+	console.log(
+		rendered ??
+			nativeItemPrefix(command, first, item) +
+				formatNativeTrackerItem(item) +
+				nativeItemSuffix(command, item)
+	);
 }

@@ -10,9 +10,9 @@ import {
 	nativeTrackerCommonOptions,
 	itemFields,
 	nativeTrackerIdVerbs,
-	launchAction,
-	nativeTrackerInspectionRequest
+	launchAction
 } from './nativeTrackerOptions';
+import { nativeTrackerInspectionRequest } from './nativeTrackerInspectionRequest';
 
 export const nativeTrackerCommands = [...nativeTrackerCommandOptions.keys()].join(', ');
 
@@ -174,6 +174,8 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		case 'note':
 		case 'progress':
 			return { text };
+		case 'reject':
+			return { reason: text };
 		case 'flag':
 			return nativeTrackerFlagBody(text, values as NativeTrackerAskValues);
 		case 'block':

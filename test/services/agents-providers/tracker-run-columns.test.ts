@@ -12,10 +12,6 @@ import { expect } from '../../verificationExpect';
  */
 const unread: Record<string, { as: 'record' | 'retired'; why: string }> = {
 	kill_at: { as: 'retired', why: 'finished panes close from run state (6g3n83)' },
-	source_repo: {
-		as: 'retired',
-		why: 'legacy verify lookup key; native verify is unwired (0tkm24)'
-	},
 	exit_code: { as: 'record', why: 'exit status kept for diagnosis' },
 	credits_balance: { as: 'record', why: 'provider balance seen at the end of the run' }
 };
