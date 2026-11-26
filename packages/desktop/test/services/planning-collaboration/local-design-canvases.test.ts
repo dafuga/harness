@@ -59,3 +59,12 @@ test('only this computer may ask, and only for a canvas name', () => {
 	});
 	for (const canvas of ['../x', 'A', '', 4]) expect(() => parse({ canvas })).toThrow();
 });
+
+test('a window request reaches the bridge through validation, with only the admitted fields', async () => {
+	const asked: unknown[] = [];
+	const bridge = { designCanvases: async (input: unknown) => (asked.push(input), 'answer') };
+	const service = new LocalOperationsService({ bridge, control: {} } as never);
+	const request = { method: 'designCanvases', input: { canvas: 'cards', root: '/etc', epoch: 3 } };
+	await expect(service.handle(request as never)).resolves.toBe('answer');
+	expect(asked).toEqual([{ canvas: 'cards' }]);
+});

@@ -1,6 +1,7 @@
 import { mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { expect, test } from '../../../../test/support/browserTest';
+import { projectFixture } from './ui-project-fixture';
 import { DesignCanvasService } from '../../../../src/services/planning-collaboration/design-canvas-service/DesignCanvasService';
 
 /** The canvas committed in this repository, read the way the Mac app's bridge reads it. */
@@ -47,4 +48,28 @@ test('the Mac app shows a local canvas under its own strict policy', async ({ pa
 	const full = page.getByRole('dialog', { name: 'Other modal on iPhone' });
 	await expect(full.frameLocator('iframe').getByRole('dialog')).toBeVisible();
 	await page.screenshot({ path: join(folder, 'mac-artboard-full.png') });
+});
+
+test('a local project offers Designs only when its bridge reads canvases', async ({ page }) => {
+	await projectFixture(page);
+	await page.goto('/');
+	await page.getByRole('button', { name: 'Open Alpha', exact: true }).click();
+	const categories = page.getByRole('navigation', { name: 'Catalog categories' });
+	await expect(categories.getByRole('link', { name: 'Pages' })).toBeVisible();
+	await expect(categories.getByRole('link', { name: 'Designs' })).toHaveCount(0);
+	await page.addInitScript(() => {
+		const host = window as unknown as { harness: Record<string, unknown> };
+		host.harness.designCanvases = async () => ({
+			commit: 'c'.repeat(40),
+			branch: 'main',
+			branches: ['main'],
+			canvases: [],
+			canvas: null
+		});
+	});
+	await page.reload();
+	await categories.getByRole('link', { name: 'Designs' }).click();
+	await expect(page.getByText('No canvas in this checkout.', { exact: false })).toBeVisible();
+	await page.getByRole('link', { name: '← Project' }).click();
+	await expect(categories.getByRole('link', { name: 'Pages' })).toBeVisible();
 });

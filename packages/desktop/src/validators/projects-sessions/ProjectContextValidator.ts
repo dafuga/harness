@@ -15,16 +15,11 @@ export class ProjectContextValidator {
 			return parsed;
 		}
 		if (channel === 'thread:comment') return this.comment(input);
-		if (channel === 'design:canvases') return this.canvas(input);
+		if (channel === 'design:canvases') return canvasRequest(this.context(input), input);
 		if (['thread:pending', 'project:capabilities', 'project:agents'].includes(channel))
 			return this.context(input ?? {});
 
 		return undefined;
-	}
-	canvas(input: unknown) {
-		const value = ipcFields(input);
-		const canvas = value.canvas === null ? null : textField(value.canvas, 64, canvasPattern);
-		return { ...this.context(value), canvas };
 	}
 	context(input: unknown): { projectId?: string } {
 		const value = ipcFields(input);
@@ -49,4 +44,10 @@ export class ProjectContextValidator {
 			text: textField(value.text, 20000)
 		};
 	}
+}
+
+/** A canvas read names one canvas folder, or null for the first. */
+function canvasRequest(context: { projectId?: string }, input: unknown) {
+	const { canvas } = ipcFields(input);
+	return { ...context, canvas: canvas === null ? null : textField(canvas, 64, canvasPattern) };
 }
