@@ -2,7 +2,7 @@
 	"name": "hub-web-push",
 	"goal": "A new real Daniel decision sends one Web Push summary to Daniel's browsers even with the Hub tab closed, repeats every 15 minutes while any stays open outside quiet hours (22:00-08:00 Lisbon by default, changeable), opens the needs-you list or that ask on click, and no tracker text is readable by the Hub",
 	"createdAt": "2026-11-26T19:35:44.299Z",
-	"updatedAt": "2026-11-26T19:35:44.299Z",
+	"updatedAt": "2026-11-26T20:45:58.609Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -10,22 +10,30 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T20:45:53.359Z",
+			"evidence": "specification/features/planned/hub-web-push.md states behaviour, sender, setup, rollback and proof."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T20:45:54.888Z",
+			"evidence": "Tracker hub sender + tracker web-push CLI, Hub /api/push + D1 0009, push-sw.js, Home notification row, settings, click routing."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T20:45:56.670Z",
+			"evidence": "Tracker 353/353; Hub unit 873/873; Hub browser 183 passed 2 skipped on merged 547dcf7164; push specs 14/14 after error-colour fix."
 		},
 		{
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T20:45:58.609Z",
+			"evidence": "tsc, root lint, prettier, hub audit, units check pass. Already failing on main: homePolicy lint, submitClaudeTrackerDraft audit, 9 contract gaps (#403), desktop designs tokens. Full bun run check not run."
 		}
 	],
 	"evaluators": [

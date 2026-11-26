@@ -18,7 +18,7 @@
 .hh-home .hh-notify-error {
 	flex-basis: 100%;
 	margin: 0;
-	color: var(--hx-color-danger);
+	color: var(--hx-color-error);
 	font-size: var(--hx-type-size-sm);
 }
 .hh-home .hh-notify-form {
@@ -62,7 +62,7 @@
 	font: inherit;
 }
 .hh-home .hh-notify-time input:disabled {
-	opacity: 0.5;
+	opacity: var(--hx-opacity-disabled);
 }
 .hh-home .hh-notify-buttons {
 	display: flex;

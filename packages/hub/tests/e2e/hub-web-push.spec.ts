@@ -125,6 +125,48 @@ test('an iPhone browser tab is told to add Harness to the Home Screen', async ({
 	await shot(page, 'notifications-iphone-phone');
 });
 
+for (const size of ['desktop', 'phone'] as const) {
+	test(`a failed turn-on says so in the error colour and can be retried (${size})`, async ({
+		page,
+		baseURL,
+		browserErrors
+	}) => {
+		await webPushFixture(page, { permission: 'default' });
+		// Registered last, so the save itself fails once.
+		await page.route(
+			/\/api\/push\/subscription$/,
+			(route) => route.fulfill({ status: 500, json: { error: 'unavailable' } }),
+			{ times: 1 }
+		);
+		browserErrors.expectError({
+			type: 'console',
+			message:
+				'Failed to load resource: the server responded with a status of 500 (Internal Server Error)',
+			source: `${baseURL}/api/push/subscription`,
+			reason: 'This case makes saving the subscription fail once.'
+		});
+		await open(page, size);
+		const button = row(page).getByRole('button', { name: 'Turn on notifications' });
+		await button.click();
+		const alert = row(page).getByRole('alert');
+		await expect(alert).toHaveText('Notifications could not be turned on. Try again.');
+		const colours = await alert.evaluate((element) => {
+			const probe = document.createElement('i');
+			probe.style.color = 'var(--hx-color-error)';
+			element.after(probe);
+			const wanted = getComputedStyle(probe).color;
+			probe.remove();
+			return { shown: getComputedStyle(element).color, wanted };
+		});
+		expect(colours.shown).toBe(colours.wanted);
+		await spaced(page);
+		await shot(page, `notifications-failed-${size}`);
+		await button.click();
+		await expect(row(page).getByRole('status')).toContainText('Notifications on');
+		await expect(alert).toHaveCount(0);
+	});
+}
+
 test('signing out unsubscribes this browser first', async ({ page }) => {
 	const { writes } = await webPushFixture(page, { permission: 'default' });
 	await open(page, 'desktop');
