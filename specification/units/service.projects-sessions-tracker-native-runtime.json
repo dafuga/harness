@@ -205,7 +205,8 @@
 			"hostInventory",
 			"hostStart",
 			"trackerHostReport",
-			"withSourceRepo",
+			"withLaunchOrigin",
+			"trackerRouteSessionName",
 			"recordedHostEvent",
 			"trackerHostRunner",
 			"trackerHostVerification",
@@ -923,7 +924,7 @@
 			},
 			{
 				"name": "startTrackerHost.input",
-				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; sessionName?: string; }",
 				"required": true
 			},
 			{
@@ -962,13 +963,28 @@
 				"required": true
 			},
 			{
-				"name": "withSourceRepo.event",
+				"name": "withLaunchOrigin.event",
 				"type": "TrackerDispatchEvent | undefined",
 				"required": true
 			},
 			{
-				"name": "withSourceRepo.route",
+				"name": "withLaunchOrigin.route",
 				"type": "TrackerHostTarget | false | undefined",
+				"required": true
+			},
+			{
+				"name": "withLaunchOrigin.item",
+				"type": "TrackerItem | false",
+				"required": true
+			},
+			{
+				"name": "trackerRouteSessionName.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerRouteSessionName.route",
+				"type": "TrackerHostTarget",
 				"required": true
 			},
 			{
@@ -3358,7 +3374,7 @@
 					},
 					{
 						"name": "startTrackerHost.input",
-						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; sessionName?: string; }",
 						"required": true
 					},
 					{
@@ -3392,7 +3408,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "trackerHostReport",
@@ -3433,27 +3449,55 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "withSourceRepo",
+				"name": "withLaunchOrigin",
 				"inputs": [
 					{
-						"name": "withSourceRepo.event",
+						"name": "withLaunchOrigin.event",
 						"type": "TrackerDispatchEvent | undefined",
 						"required": true
 					},
 					{
-						"name": "withSourceRepo.route",
+						"name": "withLaunchOrigin.route",
 						"type": "TrackerHostTarget | false | undefined",
+						"required": true
+					},
+					{
+						"name": "withLaunchOrigin.item",
+						"type": "TrackerItem | false",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "withSourceRepo",
+						"name": "withLaunchOrigin",
 						"type": "TrackerDispatchEvent | undefined"
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRouteSessionName",
+				"inputs": [
+					{
+						"name": "trackerRouteSessionName.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "trackerRouteSessionName.route",
+						"type": "TrackerHostTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRouteSessionName",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "recordedHostEvent",
@@ -5308,6 +5352,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-egress-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-session-names",
 			"via": "import",
 			"origin": "derived"
 		},
