@@ -47,6 +47,7 @@
 			"when",
 			"runDay",
 			"runTime",
+			"runMoment",
 			"when",
 			"quotaReset"
 		]
@@ -259,6 +260,12 @@
 				"type": "string",
 				"required": true,
 				"description": "ISO timestamp of a scheduled run."
+			},
+			{
+				"name": "runMoment.at",
+				"type": "string",
+				"required": true,
+				"description": "ISO time to write as a day, month and clock time in Europe/Lisbon."
 			},
 			{
 				"name": "when.time",
@@ -927,6 +934,25 @@
 						"name": "runTime",
 						"type": "unknown",
 						"description": "Scheduled time in Lisbon in 24-hour notation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runMoment",
+				"inputs": [
+					{
+						"name": "runMoment.at",
+						"type": "string",
+						"required": true,
+						"description": "ISO time to write as a day, month and clock time in Europe/Lisbon."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runMoment",
+						"type": "string"
 					}
 				],
 				"errors": [],
