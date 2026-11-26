@@ -11,6 +11,8 @@ import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextT
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
+import { runSessionName } from './trackerFinishedSessions';
+import { readTrackerSlotState } from './trackerSlotInvariants';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
 import { trackerSessionHealth } from './trackerSessionHealth';
@@ -33,6 +35,7 @@ export function readTrackerSessionHealth(
 	const clocks = store.database.prepare('SELECT clocks FROM items WHERE id = ?');
 	const links = store.database.prepare('SELECT v FROM meta WHERE k GLOB ?');
 	return trackerSessionHealth({
+		judgedByRun: runJudgedPanes(store, panes, now),
 		host: store.node,
 		now,
 		reportUnassigned: store.node === 'daniel-primary-mbp',
@@ -47,6 +50,23 @@ export function readTrackerSessionHealth(
 		linkedItems: (runId) =>
 			(links.all(`${trackerSessionItemPrefix}${runId}:*`) as { v: string }[]).map(({ v }) => v)
 	});
+}
+
+/**
+ * A launcher pane of a finished run gets the run's grace and keep-alive exceptions, and a pane
+ * already reported by a run rule is not reported again for its item.
+ */
+function runJudgedPanes(
+	store: TrackerPersistenceService,
+	panes: readonly WatchdogPane[],
+	now: number
+): ReadonlySet<string> {
+	const { report, violations } = readTrackerSlotState(store, panes, { now, cap: null });
+	const judged = new Set([
+		...report.leftover.map(({ session }) => session).filter((name) => runSessionName.test(name)),
+		...violations.map(({ session }) => session)
+	]);
+	return new Set(panes.filter(({ name }) => judged.has(name)).map(({ key }) => key));
 }
 
 export async function applyTrackerSessionHealth(

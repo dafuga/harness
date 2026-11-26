@@ -28,7 +28,8 @@ export function trackerSessionHealth(snapshot: TrackerSessionHealthSnapshot) {
 		const associated = paneItems(snapshot, pane);
 		for (const id of associated) liveItems.add(id);
 		const issue = unownedPane(host, pane, associated, byId);
-		if (issue) issues.push(issue);
+		if (issue && !(issue.kind === 'finished' && snapshot.judgedByRun?.has(pane.key)))
+			issues.push(issue);
 	}
 	for (const item of items.filter(healthItem)) {
 		const issue = itemHealth(snapshot, item, liveItems.has(item.id));

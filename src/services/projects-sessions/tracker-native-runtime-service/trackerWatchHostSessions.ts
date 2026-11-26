@@ -8,6 +8,7 @@ import { WatchdogPaneService } from '../WatchdogPaneService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
 import { automaticQuietHour } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import { publishTrackerSlotAlerts } from './trackerSlotAlerts';
 import { queueIdleWork } from './trackerWatchLaunchRequests';
 import { recordStartupAlerts } from './trackerHostWatchdogAlerts';
 import { applyIdleDecision } from './trackerHostWatchdogIdle';
@@ -69,6 +70,11 @@ async function scanHostSessions(
 		{ rows, snapshot, launch: canLaunch ? options.launch : undefined, settle: options.settle },
 		signal
 	);
+	// After settling, so a run the launcher just finished is never reported as idle.
+	publishTrackerSlotAlerts(hosts.store, snapshot.panes, {
+		now: snapshot.now,
+		cap: options.slotCap ?? null
+	});
 	if (canLaunch && options.idleWork)
 		await queueIdleWork(hosts.store, { rows, snapshot, ...options.idleWork }, signal);
 }
