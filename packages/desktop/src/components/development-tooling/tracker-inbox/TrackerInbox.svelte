@@ -177,14 +177,17 @@
 					: 'Nothing on this phone matches that search.'}
 				onselect={choose}
 			/>
-		{:else if filter === 'needs-you' && listed.length}
-			<hx-section class="needs" aria-labelledby="inbox-needs-title">
-				<hx-div class="needs-head">
-					<hx-h2 class="needs-title" id="inbox-needs-title">Blocked - needs you</hx-h2>
-					<hx-span class="needs-count"
-						>{listed.length} {listed.length === 1 ? 'needs' : 'need'} you</hx-span
-					>
-				</hx-div>
+		{:else if filter === 'needs-you'}
+			<!-- One rows instance for both states, so an answer's status survives its row leaving. -->
+			<hx-section class="needs" aria-labelledby={listed.length ? 'inbox-needs-title' : undefined}>
+				{#if listed.length}
+					<hx-div class="needs-head">
+						<hx-h2 class="needs-title" id="inbox-needs-title">Blocked - needs you</hx-h2>
+						<hx-span class="needs-count"
+							>{listed.length} {listed.length === 1 ? 'needs' : 'need'} you</hx-span
+						>
+					</hx-div>
+				{/if}
 				{@render rows()}
 				{#if overview.needsYouCapped}
 					<hx-p class="meta"
