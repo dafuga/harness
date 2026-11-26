@@ -2085,13 +2085,13 @@
 			"unit": "desktop.function.desktop-bridge",
 			"from": "packages/desktop/src/utils/desktopBridge.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-			"definition": "84e78ecc79be02be789388ac16a3cbbf9b89d2910638306b453970724dffe75d",
+			"definition": "70246ca346ca80c2d5107a1f0cad76945d020aa2f0c3d1fbfa61d549f38b30bf",
 			"relocationDefinition": "794c1bb220d50eaf6010b88d400f937c4e578f20d98a5bb9a6acbaf99358daab",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
-				"definition": "84e78ecc79be02be789388ac16a3cbbf9b89d2910638306b453970724dffe75d",
-				"reason": "Forward the requested Google or typed-code sign-in mode to the desktop main process."
+				"definition": "70246ca346ca80c2d5107a1f0cad76945d020aa2f0c3d1fbfa61d549f38b30bf",
+				"reason": "Adds the local read of the open checkout’s design canvases to the bridge factory."
 			},
 			"previousReviews": [
 				{
@@ -2135,6 +2135,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
 					"definition": "1dcf0d6c89c118095165b25db4565b9cd85d0b5ee6520335d4982aee2ff6fb76",
 					"reason": "Adds read-only agent registrations through the selected local project boundary without changing existing mutation permissions."
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+					"definition": "84e78ecc79be02be789388ac16a3cbbf9b89d2910638306b453970724dffe75d",
+					"reason": "Forward the requested Google or typed-code sign-in mode to the desktop main process."
 				}
 			]
 		},
@@ -5504,13 +5510,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
+			"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+				"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
-				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+				"reason": "Exposes the local design canvas read through the isolated preload bridge."
 			},
 			"previousReviews": [
 				{
@@ -5566,6 +5572,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
 					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
+				{
+					"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
+					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 				}
 			]
 		},

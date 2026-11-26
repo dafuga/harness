@@ -2,6 +2,7 @@
 import { AgentActivityService } from '../../../../../../src/services/agents-providers/agent-activity-service/AgentActivityService';
 import { ProjectWorkRepository } from '../../../../../../src/repositories/projects-sessions/ProjectWorkRepository';
 import { GameLevelService } from './GameLevelService';
+import { localDesignCanvases } from './localDesignCanvases';
 import type { BridgeContext } from './desktopBridge.types';
 import { DesktopSessionEndedError } from './DesktopSessionEndedError';
 import { DraftSourceNotRegisteredError } from './DraftSourceNotRegisteredError';
@@ -129,6 +130,7 @@ export function desktopBridge(context: BridgeContext): Omit<DesktopBridge, 'onRu
 		approve: (input) =>
 			exclusive(session, async () => (await writable(context)).planning.approve(input)),
 		agentActivity: () => agentActivity(session),
+		designCanvases: (input) => localDesignCanvases(session.requireProject().root, input.canvas),
 		providers: () => providers.list(),
 		startRun: (input) => runs.start(input),
 		cancelRun: async (input) => runs.cancel(input.runId)

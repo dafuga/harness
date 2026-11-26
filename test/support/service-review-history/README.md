@@ -22,6 +22,9 @@ factory and isolated preload.
 The design canvas review retains the committed Hub API controller and projection service that
 read a revision's canvases.
 
+The Mac design canvas review retains the committed bridge factory and isolated preload that read
+the checkout's canvases.
+
 ## Regenerating it
 
 Regenerate it when a review names another commit or path. Run this from a checkout whose Git
