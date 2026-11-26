@@ -37,7 +37,7 @@
 		"outputs": [
 			{
 				"name": "MacTrackerInboxService.read",
-				"type": "Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail>>"
+				"type": "Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail | TrackerAttachmentDocument>>"
 			},
 			{
 				"name": "MacTrackerInboxService.write",
@@ -64,7 +64,7 @@
 				"outputs": [
 					{
 						"name": "MacTrackerInboxService.read",
-						"type": "Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail>>"
+						"type": "Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail | TrackerAttachmentDocument>>"
 					}
 				],
 				"errors": [],
@@ -98,6 +98,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-tracker-inbox-projection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-read-local-attachment",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
 			"via": "import",
 			"origin": "derived"
@@ -108,7 +118,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.projects-sessions-tracker-planning",
+			"unit": "function.projects-sessions-tracker-attachment-types",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_v13wsp3cb1 -->
+<!-- @harness-uid u_5eegkvpd5c -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';

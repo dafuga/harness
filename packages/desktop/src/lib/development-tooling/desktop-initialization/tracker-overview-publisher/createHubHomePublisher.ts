@@ -49,7 +49,7 @@ export function createHubHomePublisher(file?: string, sources?: QuotaSource[]) {
 async function uploadHomeDocuments(
 	http: HostedHttpAdapter,
 	credential: NativeHostedCredential,
-	wanted: unknown,
+	wanted: HubHomeReply['wantDocs'],
 	current: () => boolean
 ) {
 	for (const entry of Array.isArray(wanted) ? wanted.slice(0, 4) : []) {

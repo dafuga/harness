@@ -1,0 +1,188 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-mac-tracker-inbox-projection",
+	"uid": "u_hmoukzuqbk",
+	"kind": "module",
+	"title": "macTrackerInboxProjection",
+	"responsibility": "Owns the macTrackerInboxProjection library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerInboxProjection.ts"
+		],
+		"symbols": ["safeItemId", "visible", "projectHeader", "projectDetail", "safe"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "visible.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "projectHeader.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "projectDetail.reply",
+				"type": "TrackerInboxItemReply",
+				"required": true
+			},
+			{
+				"name": "safe.text",
+				"type": "string | null",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "safeItemId",
+				"type": "unknown"
+			},
+			{
+				"name": "visible",
+				"type": "boolean"
+			},
+			{
+				"name": "projectHeader",
+				"type": "unknown"
+			},
+			{
+				"name": "projectDetail",
+				"type": "InboxDetail"
+			},
+			{
+				"name": "safe",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "visible",
+				"inputs": [
+					{
+						"name": "visible.item",
+						"type": "TrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "visible",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "projectHeader",
+				"inputs": [
+					{
+						"name": "projectHeader.item",
+						"type": "TrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectHeader",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "projectDetail",
+				"inputs": [
+					{
+						"name": "projectDetail.reply",
+						"type": "TrackerInboxItemReply",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectDetail",
+						"type": "InboxDetail"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "safe",
+				"inputs": [
+					{
+						"name": "safe.text",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "safe",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-tracker-inbox-service",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-run-read",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerInboxProjection.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerInboxProjection.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

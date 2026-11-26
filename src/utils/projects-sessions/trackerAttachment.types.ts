@@ -1,3 +1,4 @@
+// @harness-uid u_ua2v4kfzyz
 export type TrackerAttachmentKind = 'spec' | 'doc' | 'design';
 
 /** What every screen lists about an attachment. It travels with the ask and stays small. */
@@ -22,6 +23,9 @@ export interface TrackerAttachmentDocument {
 	markdown: string;
 	images?: Record<string, string>;
 }
+
+/** A listing as it arrives: the stored JSON text, or the list already read from a reply. */
+export type TrackerAttachmentListingSource = string | readonly object[] | object | null | undefined;
 
 /** What a caller sends with `flag`: the listing plus, for a document, its snapshot. */
 export type TrackerAttachmentInput = Omit<TrackerAttachment, 'id' | 'bytes'> &

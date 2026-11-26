@@ -1,3 +1,4 @@
+// @harness-uid u_juwbctzpfw
 import { createHash } from 'node:crypto';
 import { gunzipSync, gzipSync } from 'node:zlib';
 import { trackerAttachmentLimits as limits } from './trackerAttachmentLimits';
@@ -57,7 +58,7 @@ function linkOnly(listing: Omit<TrackerAttachment, 'id' | 'bytes'>): TrackerAtta
 
 /** The listed document with this id, or null when the item does not hold it intact. */
 export function readTrackerAttachment(
-	stored: { attachments?: unknown; attachment_docs?: string | null },
+	stored: { attachments?: string | null; attachment_docs?: string | null },
 	id: string
 ): ({ attachment: TrackerAttachment } & TrackerAttachmentDocument) | null {
 	const attachment = trackerAttachments(stored.attachments).find((entry) => entry.id === id);

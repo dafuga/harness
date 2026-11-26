@@ -1,3 +1,4 @@
+// @harness-uid u_z3r4obtmpw
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import type { TrackerAttachmentReader } from './githubAttachmentReader.types';

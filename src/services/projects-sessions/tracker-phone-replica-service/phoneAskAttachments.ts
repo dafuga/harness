@@ -1,3 +1,4 @@
+// @harness-uid u_ygcms2sqfs
 import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachments';
 import { readTrackerAttachment } from '../../../utils/projects-sessions/storedTrackerAttachments';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';

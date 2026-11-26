@@ -1,6 +1,7 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_sp3cd0cv1w -->
+<!-- @harness-uid u_mcvctd4jcs -->
 <script lang="ts">
 	import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 	import type { LoadSpecDocument } from './SpecDocumentView.types';

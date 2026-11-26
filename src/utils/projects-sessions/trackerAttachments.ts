@@ -1,6 +1,7 @@
+// @harness-uid u_oxbmf2avpy
 import { z } from 'zod';
 import { trackerAttachmentLimits } from './trackerAttachmentLimits';
-import type { TrackerAttachment } from './trackerAttachment.types';
+import type { TrackerAttachment, TrackerAttachmentListingSource } from './trackerAttachment.types';
 
 const line = (max: number) => z.string().trim().min(1).max(max);
 
@@ -32,7 +33,7 @@ export const trackerAttachmentSchema = trackerAttachmentListing.extend({
 });
 
 /** Read stored or received listings. Anything unreadable means there are none. */
-export function trackerAttachments(stored: unknown): TrackerAttachment[] {
+export function trackerAttachments(stored: TrackerAttachmentListingSource): TrackerAttachment[] {
 	const value = typeof stored === 'string' ? readJson(stored) : stored;
 	const parsed = z
 		.array(trackerAttachmentSchema)
@@ -42,7 +43,9 @@ export function trackerAttachments(stored: unknown): TrackerAttachment[] {
 }
 
 /** @pure The listing as an optional field, absent when there is none. */
-export function trackerAttachmentFields(stored: unknown): { attachments?: TrackerAttachment[] } {
+export function trackerAttachmentFields(stored: TrackerAttachmentListingSource): {
+	attachments?: TrackerAttachment[];
+} {
 	const attachments = trackerAttachments(stored);
 	return attachments.length ? { attachments } : {};
 }

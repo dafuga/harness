@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.explorer-ui-explorer-kit-view-spec-modal",
+	"uid": "u_fywzaaju5j",
+	"kind": "component",
+	"title": "ViewSpecModal",
+	"responsibility": "Owns the ViewSpecModal Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.explorer-ui-explorer-kit-spec-document-view",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-dialog",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/explorer-ui/explorer-kit/ViewSpecModal.svelte",
+			"packages/reports/src/components/explorer-ui/explorer-kit/viewSpecModal.css"
+		],
+		"symbols": ["ViewSpecModal"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ViewSpecModal.attachment",
+				"type": "TrackerAttachment",
+				"required": true
+			},
+			{
+				"name": "ViewSpecModal.question",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ViewSpecModal.load",
+				"type": "LoadSpecDocument",
+				"required": true
+			},
+			{
+				"name": "ViewSpecModal.answers",
+				"type": "Snippet<[close: () => void]>",
+				"required": true
+			},
+			{
+				"name": "ViewSpecModal.onclose",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ViewSpecModal",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-dialog",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-spec-view-spec-attachment-label",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/explorer-ui/explorer-kit/ViewSpecModal.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/explorer-ui/explorer-kit/ViewSpecModal.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

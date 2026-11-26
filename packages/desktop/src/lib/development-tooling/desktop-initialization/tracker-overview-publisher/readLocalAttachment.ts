@@ -1,11 +1,15 @@
+// @harness-uid u_ov2gw624xg
 import { trackerAttachmentDocumentSchema } from '../../../../../../../src/utils/projects-sessions/trackerAttachmentDocumentBytes';
 import type { TrackerAttachmentDocument } from '../../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+
+/** As another party named it, so both parts are checked before they reach an address. */
+type WantedAttachment = { itemId?: string; id?: string };
 
 const trackerOrigin = 'http://127.0.0.1:7701';
 
 /** One document from this computer's Tracker, in the exact shape its hash was taken over. */
 export async function readLocalAttachment(
-	wanted: { itemId?: unknown; id?: unknown },
+	wanted: WantedAttachment,
 	fetcher: typeof fetch = fetch
 ): Promise<TrackerAttachmentDocument | null> {
 	const { itemId, id } = wanted;

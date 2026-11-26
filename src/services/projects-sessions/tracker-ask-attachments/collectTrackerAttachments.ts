@@ -1,3 +1,4 @@
+// @harness-uid u_cm73d6d522
 import { readFile } from 'node:fs/promises';
 import { basename } from 'node:path';
 import { parseTrackerAttachmentWord } from '../../../utils/projects-sessions/parseTrackerAttachmentWord';

@@ -1,3 +1,4 @@
+// @harness-uid u_hmoukzuqbk
 import type { TrackerItem } from '../../../../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../../../../src/repositories/projects-sessions/TrackerRunReadRepository.types';
 import {
@@ -31,12 +32,8 @@ export function projectHeader(item: TrackerItem) {
 	};
 }
 
-export function projectDetail({
-	item,
-	revision,
-	flaggedAt,
-	runs
-}: TrackerInboxItemReply): InboxDetail {
+export function projectDetail(reply: TrackerInboxItemReply): InboxDetail {
+	const { item, revision, flaggedAt, runs } = reply;
 	const notes = item.notes_log ?? [];
 	const planning = trackerPlanningSchema.safeParse(item.planning);
 	return {

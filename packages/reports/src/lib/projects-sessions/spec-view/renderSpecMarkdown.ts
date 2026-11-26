@@ -1,3 +1,4 @@
+// @harness-uid u_jlzm6oqzdo
 import DOMPurify from 'dompurify';
 import { Marked } from 'marked';
 import type { TrackerAttachmentDocument } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';

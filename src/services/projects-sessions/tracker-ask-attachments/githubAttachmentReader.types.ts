@@ -1,3 +1,4 @@
+// @harness-uid u_z3r4obtmpw
 export interface TrackerAttachmentReader {
 	/** The head commit of a pull request. */
 	head(repo: string, pr: number): Promise<string>;

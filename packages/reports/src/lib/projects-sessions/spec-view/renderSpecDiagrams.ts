@@ -1,3 +1,4 @@
+// @harness-uid u_mp5eqtaxzh
 let drawn = 0;
 
 /**

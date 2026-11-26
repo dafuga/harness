@@ -1,3 +1,4 @@
+// @harness-uid u_vfo44tzfa2
 const markdownImage = /!\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+["'][^)]*)?\)/g;
 const htmlImage = /<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi;
 const imageType: Record<string, string> = {

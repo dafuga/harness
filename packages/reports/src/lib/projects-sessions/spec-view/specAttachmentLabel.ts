@@ -1,3 +1,4 @@
+// @harness-uid u_xzahugzgoj
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 
 /** The button's quiet second part: the file, and the pull request it came from. */

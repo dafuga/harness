@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-spec-document",
+	"uid": "u_s53zhfyepg",
+	"kind": "function",
+	"title": "hubSpecDocument",
+	"responsibility": "Owns the hubSpecDocument shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubSpecDocument.ts"],
+		"symbols": ["loadHubSpecDocument"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "loadHubSpecDocument.attachment",
+				"type": "TrackerAttachment",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "loadHubSpecDocument",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "loadHubSpecDocument",
+				"inputs": [
+					{
+						"name": "loadHubSpecDocument.attachment",
+						"type": "TrackerAttachment",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadHubSpecDocument",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.endpoint.api-hub-home-doc",
+			"via": "http",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubSpecDocument.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubSpecDocument.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
