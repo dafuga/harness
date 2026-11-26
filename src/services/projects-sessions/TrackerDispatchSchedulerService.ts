@@ -91,6 +91,7 @@ export class TrackerDispatchSchedulerService {
 			signal.throwIfAborted();
 			await reconcileLegacyRuns(this.repository, this.options.runner, signal);
 			const queued = await this.reconcile(signal);
+			await this.creditHumanRedos(signal);
 			const queue = new TrackerDispatchQueue(
 				this.repository,
 				this.dispatcher,
@@ -105,6 +106,13 @@ export class TrackerDispatchSchedulerService {
 		} catch (error) {
 			if (!signal.aborted) this.lastError = 'dispatch tick failed';
 			throw error;
+		}
+	}
+
+	private async creditHumanRedos(signal: AbortSignal) {
+		for (const [itemId, runIds] of this.repository.humanRedoCandidates()) {
+			signal.throwIfAborted();
+			await this.dispatcher.creditHumanRedo(itemId, runIds);
 		}
 	}
 

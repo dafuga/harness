@@ -64,8 +64,12 @@ export function trackerResourceHost(root: string, node: string, limits: object =
 export function onIdleHost(options: TrackerNativeRuntimeOptions): TrackerNativeRuntimeOptions {
 	return {
 		...options,
-		hostEffects: { ...options.hostEffects, hostResources: scenarioResources({ ...healthyHost }) }
+		hostEffects: { ...options.hostEffects, hostResources: idleHostResources() }
 	};
+}
+
+export function idleHostResources() {
+	return scenarioResources({ ...healthyHost });
 }
 
 export function idleNodeRuntime(config: Parameters<typeof trackerNodeRuntime>[0]) {

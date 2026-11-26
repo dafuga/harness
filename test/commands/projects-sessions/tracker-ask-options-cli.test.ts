@@ -37,3 +37,12 @@ test('flag and answer carry multiple-choice options', () => {
 			.request.body
 	).toMatchObject({ option: '2', confirmed: true, by: 'Daniel' });
 });
+
+test('reject sends its words as the reason and works without one', () => {
+	expect(nativeTrackerArgs(['reject', 'abc123', 'wrong', 'approach']).request).toEqual({
+		method: 'POST',
+		path: '/items/abc123/reject',
+		body: { reason: 'wrong approach' }
+	});
+	expect(nativeTrackerArgs(['reject', 'abc123']).request.body).toEqual({ reason: '' });
+});

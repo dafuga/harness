@@ -56,6 +56,8 @@ export interface TrackerManagedLaunchConfig {
 export interface TrackerHostRepository {
 	repo: string;
 	platform: 'linux' | 'macos';
+	/** Shell command that must pass after done. Managed macOS routes only. */
+	verify?: string;
 }
 
 export type TrackerHostAdapterBinding =

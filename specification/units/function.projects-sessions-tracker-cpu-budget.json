@@ -4,8 +4,8 @@
 	"uid": "u_gyjtguqwrp",
 	"kind": "function",
 	"title": "trackerCpuBudget",
-	"responsibility": "Owns the trackerCpuBudget shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines MB2's shared core budget for work outside Harbor: which work it covers, the session cap, the worker environment limits and the brief instruction.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerCpuBudget.ts"],
@@ -20,62 +20,74 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerBudgetNode.node",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Canonical name of the computer being checked."
 			},
 			{
 				"name": "trackerCpuBudget.node",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Canonical name of the computer that would run the work."
 			},
 			{
 				"name": "trackerCpuBudget.project",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "Project or agent of the work. Anything other than Harbor, including none, is budgeted on MB2."
 			},
 			{
 				"name": "trackerCpuBudgetEnvironment.cores",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Number of cores that cooperating build tools may use."
 			},
 			{
 				"name": "trackerCpuBudgetRule.cores",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Number of cores stated in the worker brief."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerHomeProject",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Lower-case name of the project exempt from the MB2 budget."
 			},
 			{
 				"name": "trackerBudgetCores",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Cores shared by all MB2 work outside Harbor, also the load ceiling for starting it."
 			},
 			{
 				"name": "trackerBudgetSessions",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Number of sessions outside Harbor that MB2 runs at once."
 			},
 			{
 				"name": "trackerBudgetNode",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the computer applies the budget."
 			},
 			{
 				"name": "trackerCpuBudget",
-				"type": "number | undefined"
+				"type": "number | undefined",
+				"description": "Core limit for the work, or undefined when no budget applies."
 			},
 			{
 				"name": "trackerCpuBudgetEnvironment",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "NAME=value assignments that cap build, make and runtime parallelism."
 			},
 			{
 				"name": "trackerCpuBudgetRule",
-				"type": "string"
+				"type": "string",
+				"description": "Brief paragraph telling the worker how to stay within the budget."
 			}
 		],
 		"errors": [],
@@ -87,13 +99,15 @@
 					{
 						"name": "trackerBudgetNode.node",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Canonical name of the computer being checked."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerBudgetNode",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the computer applies the budget."
 					}
 				],
 				"errors": [],
@@ -105,18 +119,21 @@
 					{
 						"name": "trackerCpuBudget.node",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Canonical name of the computer that would run the work."
 					},
 					{
 						"name": "trackerCpuBudget.project",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "Project or agent of the work. Anything other than Harbor, including none, is budgeted on MB2."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerCpuBudget",
-						"type": "number | undefined"
+						"type": "number | undefined",
+						"description": "Core limit for the work, or undefined when no budget applies."
 					}
 				],
 				"errors": [],
@@ -128,13 +145,15 @@
 					{
 						"name": "trackerCpuBudgetEnvironment.cores",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Number of cores that cooperating build tools may use."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerCpuBudgetEnvironment",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "NAME=value assignments that cap build, make and runtime parallelism."
 					}
 				],
 				"errors": [],
@@ -146,13 +165,15 @@
 					{
 						"name": "trackerCpuBudgetRule.cores",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Number of cores stated in the worker brief."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerCpuBudgetRule",
-						"type": "string"
+						"type": "string",
+						"description": "Brief paragraph telling the worker how to stay within the budget."
 					}
 				],
 				"errors": [],

@@ -4,35 +4,39 @@
 	"uid": "u_lct7zicebt",
 	"kind": "function",
 	"title": "trackerHostResourceHold",
-	"responsibility": "Owns the trackerHostResourceHold shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Decides whether a computer's RAM, disk, inode and load readings allow another Tracker session, and says why when they do not.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerHostResourceHold.ts"],
 		"symbols": ["trackerResourceHoldPrefix", "trackerHostResourceHold"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerHostResourceHold.resources",
 				"type": "TrackerHostResources",
-				"required": true
+				"required": true,
+				"description": "Readings for the computer that would run the session."
 			},
 			{
 				"name": "trackerHostResourceHold.request",
 				"type": "TrackerHostResourceRequest",
-				"required": true
+				"required": true,
+				"description": "Computer name, whether the work is CPU budgeted, filesystems to check (home first) and configured minimums."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerResourceHoldPrefix",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Start of every hold reason, used to treat a hold as a wait rather than a failed attempt."
 			},
 			{
 				"name": "trackerHostResourceHold",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Prefixed reason for the first failed guard, or null when the launch may proceed."
 			}
 		],
 		"errors": [],
@@ -44,18 +48,21 @@
 					{
 						"name": "trackerHostResourceHold.resources",
 						"type": "TrackerHostResources",
-						"required": true
+						"required": true,
+						"description": "Readings for the computer that would run the session."
 					},
 					{
 						"name": "trackerHostResourceHold.request",
 						"type": "TrackerHostResourceRequest",
-						"required": true
+						"required": true,
+						"description": "Computer name, whether the work is CPU budgeted, filesystems to check (home first) and configured minimums."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerHostResourceHold",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "Prefixed reason for the first failed guard, or null when the launch may proceed."
 					}
 				],
 				"errors": [],

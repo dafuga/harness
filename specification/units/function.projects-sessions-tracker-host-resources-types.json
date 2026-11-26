@@ -4,8 +4,8 @@
 	"uid": "u_wvk4tojpwk",
 	"kind": "function",
 	"title": "trackerHostResources",
-	"responsibility": "Owns the trackerHostResources shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Describes the live readings, configured minimums and request details used by the Tracker host launch guards.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerHostResources.types.ts"],
@@ -17,7 +17,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],

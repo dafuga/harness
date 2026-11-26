@@ -20,21 +20,21 @@ export const trackerNotificationVerificationScopes: Record<string, VerificationS
 				'tick on a spoke leaves queued webhook and reminder escalation work for the hub': 'outbox'
 			},
 			'test/services/projects-sessions/tracker-reminder-delivery.test.ts': {
-				'tick holds direct reminders through quiet hours, groups once, and repeats only active flags after retry':
+				'tick sends overnight direct reminders, groups once, and repeats only active flags after retry':
 					'reminders',
-				'tick delivers the current explicit reminder once at its timestamp across restarts and quiet hours':
+				'tick delivers the current explicit reminder once at its timestamp across restarts overnight':
 					'reminders',
 				'tick sends a scheduled reminder through a webhook when it is the only hub destination':
 					'reminders',
 				'tick coalesces legacy webhook escalations after a block and closes them on answer':
 					'reminders',
-				'tick drops a held flag after answer and schedules the surviving flag at the next configured slot':
+				'tick sends overnight asks at once and schedules only the surviving flag at the next configured slot':
 					'reminders'
 			},
 			'test/services/projects-sessions/tracker-attention-delivery.test.ts': {
-				'pause and resume release one relevant Chief of Staff batch, with recurring agent wake-ups outside quiet hours':
+				'pause and resume release one relevant Chief of Staff batch, with recurring agent wake-ups while paused':
 					'attention',
-				'tick keeps a delayed window out of quiet hours and retries the attention batch on the next window':
+				'tick sends an overnight ask to Chief of Staff and retries the batch on the next window':
 					'attention',
 				'enqueue keeps only the latest unsent launch-wait text and drops waits with superseded tokens':
 					'attention'

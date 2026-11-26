@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-native-runtime-service-tracker-done-proof-rule",
+	"uid": "u_rwxks6olfz",
+	"kind": "service",
+	"title": "trackerDoneProofRule",
+	"responsibility": "Owns the trackerDoneProofRule service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerDoneProofRule.ts"
+		],
+		"symbols": ["trackerDoneProofRule"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "trackerDoneProofRule",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-native-runtime-service/trackerDoneProofRule.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-native-runtime-service/trackerDoneProofRule.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

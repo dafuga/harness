@@ -4,7 +4,7 @@
 	"uid": "u_g7kdpz7bel",
 	"kind": "service",
 	"title": "TrackerLocalApiService",
-	"responsibility": "Serve the local Tracker item API, including stage promotion and artifact writes through the item journal.",
+	"responsibility": "Serve the local Tracker item API, including stage promotion artifact writes and result rejection through the item journal.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -17,7 +17,10 @@
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalPlanning.ts",
-			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts"
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalRejection.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerPhoneReplicaResponse.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerPhoneReplicaResponse.types.ts"
 		],
 		"symbols": [
 			"TrackerLocalApiService",
@@ -39,8 +42,11 @@
 			"readItemBody",
 			"itemMutationContext",
 			"writeTrackerPlanning",
+			"trackerRejectItem",
 			"isTrackerManualLaunch",
-			"planTrackerManualLaunch"
+			"planTrackerManualLaunch",
+			"phoneReplicaResponse",
+			"Respond"
 		]
 	},
 	"contract": {
@@ -239,6 +245,36 @@
 				"required": true
 			},
 			{
+				"name": "trackerRejectItem.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.reference",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.options",
+				"type": "TrackerLocalApiOptions",
+				"required": true
+			},
+			{
+				"name": "trackerRejectItem.actor",
+				"type": "string | null",
+				"required": true
+			},
+			{
 				"name": "isTrackerManualLaunch.verb",
 				"type": "string | undefined",
 				"required": true
@@ -261,6 +297,26 @@
 			{
 				"name": "planTrackerManualLaunch.context",
 				"type": "TrackerItemMutationContext",
+				"required": true
+			},
+			{
+				"name": "phoneReplicaResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "phoneReplicaResponse.url",
+				"type": "URL",
+				"required": true
+			},
+			{
+				"name": "phoneReplicaResponse.replica",
+				"type": "TrackerPhoneReplicaService",
+				"required": false
+			},
+			{
+				"name": "phoneReplicaResponse.respond",
+				"type": "Respond",
 				"required": true
 			}
 		],
@@ -318,11 +374,19 @@
 				"type": "Promise<TrackerItem>"
 			},
 			{
+				"name": "trackerRejectItem",
+				"type": "unknown"
+			},
+			{
 				"name": "isTrackerManualLaunch",
 				"type": "boolean"
 			},
 			{
 				"name": "planTrackerManualLaunch",
+				"type": "unknown"
+			},
+			{
+				"name": "phoneReplicaResponse",
 				"type": "unknown"
 			}
 		],
@@ -662,6 +726,49 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerRejectItem",
+				"inputs": [
+					{
+						"name": "trackerRejectItem.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.reference",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.options",
+						"type": "TrackerLocalApiOptions",
+						"required": true
+					},
+					{
+						"name": "trackerRejectItem.actor",
+						"type": "string | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRejectItem",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "isTrackerManualLaunch",
 				"inputs": [
 					{
@@ -706,6 +813,39 @@
 				"outputs": [
 					{
 						"name": "planTrackerManualLaunch",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "phoneReplicaResponse",
+				"inputs": [
+					{
+						"name": "phoneReplicaResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "phoneReplicaResponse.url",
+						"type": "URL",
+						"required": true
+					},
+					{
+						"name": "phoneReplicaResponse.replica",
+						"type": "TrackerPhoneReplicaService",
+						"required": false
+					},
+					{
+						"name": "phoneReplicaResponse.respond",
+						"type": "Respond",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "phoneReplicaResponse",
 						"type": "unknown"
 					}
 				],

@@ -138,10 +138,13 @@ export function managedBrief(input: TrackerHostStartRequest): string {
 	if (backend !== 'docker' || source.length <= 15_900) return brief;
 	const completion = brief.indexOf('## Completion and worktree cleanup');
 	const finalInstructions = completion < 0 ? '' : brief.slice(completion);
-	const header = source.subarray(0, 14_500).toString('utf8');
-	return (
-		header + '\n\nRead the full task with `tracker show ' + itemId + '`.\n\n' + finalInstructions
-	);
+	const pointer = '\n\nRead the full task with `tracker show ' + itemId + '`.\n\n';
+	// The orchestrator refuses briefs over 16,000 bytes, so the final instructions come first.
+	const room = 15_900 - Buffer.byteLength(pointer + finalInstructions);
+	// Streaming decode drops a character cut in half; a replacement character would exceed the budget.
+	const cut = source.subarray(0, Math.min(14_500, room));
+	const header = new TextDecoder().decode(cut, { stream: true });
+	return header + pointer + finalInstructions;
 }
 
 export async function confirmManagedStartupAbsent(

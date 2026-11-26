@@ -3,6 +3,7 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 
 import { trackerAskOptionsRule } from './trackerAskOptionsRule';
 import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
+import { trackerDoneProofRule } from './trackerDoneProofRule';
 import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
 import { trackerCpuBudgetRule } from '../../../utils/projects-sessions/trackerCpuBudget';
 
@@ -35,7 +36,9 @@ export function formatTrackerHostBrief(
 		'Keep working through verification. Pause only when the task is done or a true blocker prevents further work.',
 		'At 150,000 active context tokens, leave a short Tracker handoff with the exact worktree, branch, completed work, pending checks and next step.',
 		'',
-		completion
+		completion,
+		'',
+		trackerDoneProofRule
 	]
 		.filter((line) => line !== null && line !== undefined && line !== false)
 		.join('\n');

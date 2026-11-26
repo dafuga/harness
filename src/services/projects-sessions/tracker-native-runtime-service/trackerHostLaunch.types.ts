@@ -47,11 +47,25 @@ export interface TrackerHostLaunchPort {
 	): Promise<TrackerHostSession[]>;
 	start(input: TrackerHostStartRequest, signal: AbortSignal): Promise<TrackerHostStartReply>;
 	readUsage?(run: TrackerRunReceipt, signal: AbortSignal): Promise<TrackerReceiptUsage | undefined>;
+	/** Run a verify command in the attempt's own worktree. Rejects only when the signal aborts. */
+	verify?(
+		run: TrackerRunReceipt,
+		command: string,
+		signal: AbortSignal
+	): Promise<TrackerVerifyResult>;
 	stop?: TrackerDispatchRunner['stop'];
 	confirmNeverStarted?: TrackerDispatchRunner['confirmNeverStarted'];
 }
 
+export interface TrackerVerifyResult {
+	code: number;
+	output: string;
+}
+
+export type TrackerHostVerifyCommand = (run: TrackerRunReceipt) => string | undefined;
+
 export interface TrackerHostRunnerOptions {
+	verifyCommand?: TrackerHostVerifyCommand;
 	tmux?: TrackerTmuxAdapter;
 	legacyRunDirectory?: string;
 	now?: () => number;
