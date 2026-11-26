@@ -23,5 +23,6 @@ test('every session brief points browser work at the automation Chrome, not the 
 	const brief = formatTrackerHostBrief(item, 'Finish by running tracker done.');
 	expect(brief).toContain('http://127.0.0.1:9333');
 	expect(brief).toContain('Do not turn on or ask for remote debugging');
+	expect(brief).toContain('~/.local/bin/automation-signin request github');
 	expect(brief.indexOf('## Asking Daniel')).toBeLessThan(brief.indexOf('## Automation Chrome'));
 });
