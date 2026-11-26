@@ -6,6 +6,7 @@ import type { FileHandle } from 'node:fs/promises';
 import { join } from 'node:path';
 import { taskUsage } from '../../agents-providers/module-task-runner-adapter/taskUsage';
 import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
+import type { CodexCounters } from './trackerManagedCodexUsage.types';
 import { trackerManagedToken } from './trackerManagedLaunchReceipt';
 import type { TrackerHostLaunchPort } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import type { TrackerReceiptUsage } from '../../../services/agents-providers/TrackerDispatcherService.types';
@@ -125,15 +126,29 @@ async function codexRolloutLines(file: FileHandle, offset: number, length: numbe
 }
 
 function lastCodexUsage(lines: readonly string[]): TrackerReceiptUsage | undefined {
-	for (let i = lines.length - 1; i >= 0; i--) {
-		const line = lines[i];
-		if (!line.includes('"token_count"')) continue;
-		const row = parseCodexLine(line);
-		if (row?.type !== 'event_msg' || row.payload?.type !== 'token_count') continue;
-		const usage = codexTokenCounters(row.payload.info?.total_token_usage);
-		if (usage) return usage;
-	}
-	return undefined;
+	let found: CodexCounters = {};
+	for (let i = lines.length - 1; i >= 0 && !(found.usage && found.balance); i--)
+		found = earlierCounters(found, tokenCountPayload(lines[i]));
+	const { usage, balance } = found;
+	return balance ? { ...usage, credits_balance: balance } : usage;
+}
+
+/** Walking backwards, the first value seen of each is the latest one. */
+function earlierCounters(found: CodexCounters, payload: ReturnType<typeof tokenCountPayload>) {
+	return {
+		usage: found.usage ?? codexTokenCounters(payload?.info?.total_token_usage),
+		balance: found.balance ?? creditsBalance(payload?.rate_limits?.credits?.balance)
+	};
+}
+
+function tokenCountPayload(line: string) {
+	if (!line.includes('"token_count"')) return undefined;
+	const row = parseCodexLine(line);
+	return row?.type === 'event_msg' && row.payload?.type === 'token_count' ? row.payload : undefined;
+}
+
+function creditsBalance(value: unknown): string | undefined {
+	return typeof value === 'string' && /^\d{1,12}(?:\.\d{1,12})?$/.test(value) ? value : undefined;
 }
 
 function codexTokenCounters(usage: unknown): TrackerReceiptUsage | undefined {

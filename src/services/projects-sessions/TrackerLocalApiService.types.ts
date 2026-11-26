@@ -1,5 +1,6 @@
 // @harness-uid u_g7kdpz7bel
 import type { TrackerDispatchResult } from '../agents-providers/TrackerDispatcherService.types';
+import type { TrackerMachineService } from './TrackerMachineService';
 import type { TrackerBoxJobAdmin } from './tracker-recurring-service/trackerBoxJobAdmin.types';
 import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type { PhoneReplicaWriteGrant } from './tracker-phone-replica-service/PhoneReplicaWriteService.types';
@@ -21,6 +22,7 @@ export interface TrackerLocalApiOptions {
 	manualLaunch?: boolean;
 	timeZone?: string;
 	runs?: TrackerRunReadRepository;
+	machines?: TrackerMachineService;
 	schedulePreview?(item: TrackerItem): string | null;
 	/** Why a requested launch has no run yet. */
 	launchWait?(item: TrackerItem): { computer: string; reason: string };

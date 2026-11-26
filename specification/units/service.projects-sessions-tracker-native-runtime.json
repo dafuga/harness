@@ -29,10 +29,12 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerReminderHost.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
@@ -121,6 +123,7 @@
 			"configuredTrackerDestinations",
 			"configuredTrackerReminderHost",
 			"composeTrackerDispatch",
+			"PeerStarts",
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
 			"TrackerHostEffectsMode",
@@ -132,15 +135,16 @@
 			"TrackerHostAdapterConfig",
 			"TrackerWorkerClient",
 			"TrackerGuestAuthWriter",
+			"trackerMachineSample",
+			"trackerRunnerSample",
 			"composeTrackerLinks",
 			"trackerHubMachines",
 			"localRunnerStatus",
 			"machineReport",
-			"trackerRunnerSample",
-			"trackerMachineSample",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
 			"composeTrackerTelemetry",
+			"TrackerTelemetryParts",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
 			"adapterFailover",
@@ -204,7 +208,8 @@
 			"hostInventory",
 			"hostStart",
 			"trackerHostReport",
-			"withSourceRepo",
+			"withLaunchOrigin",
+			"trackerRouteSessionName",
 			"recordedHostEvent",
 			"trackerHostRunner",
 			"trackerHostVerification",
@@ -259,7 +264,10 @@
 			"observeTrackerQuota",
 			"automaticQueueHold",
 			"queuedRung",
-			"resetBudget",
+			"maxRecoveryAttempts",
+			"emptyRecoveryState",
+			"recoveryBudget",
+			"hostWait",
 			"recoveryRung",
 			"trackerSecretSafetyRule",
 			"sessionHealthInterval",
@@ -368,6 +376,11 @@
 				"required": true
 			},
 			{
+				"name": "composeTrackerDispatch.machines",
+				"type": "PeerStarts",
+				"required": false
+			},
+			{
 				"name": "liveTrackerDuePolicy.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -463,9 +476,9 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerTelemetry.scheduler",
-				"type": "TrackerDispatchSchedulerService",
-				"required": false
+				"name": "composeTrackerTelemetry.parts",
+				"type": "TrackerTelemetryParts",
+				"required": true
 			},
 			{
 				"name": "readTrackerDuePreview.runtime",
@@ -709,6 +722,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerHostAdmission.hostResources",
+				"type": "TrackerHostResources",
+				"required": false
+			},
+			{
 				"name": "trackerHostAdmission.now",
 				"type": "() => number",
 				"required": false
@@ -738,6 +756,11 @@
 				"type": "boolean",
 				"required": false,
 				"default": false
+			},
+			{
+				"name": "formatTrackerHostBrief.cpuBudget",
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "sendWatchdogAlerts.store",
@@ -831,7 +854,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; hostResources?: TrackerHostResources; }",
 				"required": false,
 				"default": {}
 			},
@@ -917,7 +940,7 @@
 			},
 			{
 				"name": "startTrackerHost.input",
-				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; cpuBudget?: number; sessionName?: string; }",
 				"required": true
 			},
 			{
@@ -956,13 +979,28 @@
 				"required": true
 			},
 			{
-				"name": "withSourceRepo.event",
+				"name": "withLaunchOrigin.event",
 				"type": "TrackerDispatchEvent | undefined",
 				"required": true
 			},
 			{
-				"name": "withSourceRepo.route",
+				"name": "withLaunchOrigin.route",
 				"type": "TrackerHostTarget | false | undefined",
+				"required": true
+			},
+			{
+				"name": "withLaunchOrigin.item",
+				"type": "TrackerItem | false",
+				"required": true
+			},
+			{
+				"name": "trackerRouteSessionName.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerRouteSessionName.route",
+				"type": "TrackerHostTarget",
 				"required": true
 			},
 			{
@@ -1514,18 +1552,28 @@
 				"required": true
 			},
 			{
-				"name": "resetBudget.state",
-				"type": "TrackerRecoveryState | null",
+				"name": "recoveryBudget.store",
+				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
-				"name": "resetBudget.run",
-				"type": "TrackerListedRun | undefined",
+				"name": "recoveryBudget.key",
+				"type": "string",
 				"required": true
 			},
 			{
-				"name": "resetBudget.item",
+				"name": "recoveryBudget.latest",
+				"type": "TrackerListedRun",
+				"required": false
+			},
+			{
+				"name": "recoveryBudget.item",
 				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "hostWait.reason",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -2285,6 +2333,11 @@
 						"name": "composeTrackerDispatch.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
+					},
+					{
+						"name": "composeTrackerDispatch.machines",
+						"type": "PeerStarts",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -2498,9 +2551,9 @@
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.scheduler",
-						"type": "TrackerDispatchSchedulerService",
-						"required": false
+						"name": "composeTrackerTelemetry.parts",
+						"type": "TrackerTelemetryParts",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -2965,6 +3018,11 @@
 						"required": true
 					},
 					{
+						"name": "trackerHostAdmission.hostResources",
+						"type": "TrackerHostResources",
+						"required": false
+					},
+					{
 						"name": "trackerHostAdmission.now",
 						"type": "() => number",
 						"required": false
@@ -2977,7 +3035,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "occupiedHostSlots",
@@ -3033,6 +3091,11 @@
 						"type": "boolean",
 						"required": false,
 						"default": false
+					},
+					{
+						"name": "formatTrackerHostBrief.cpuBudget",
+						"type": "number",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -3191,7 +3254,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; hostResources?: TrackerHostResources; }",
 						"required": false,
 						"default": {}
 					}
@@ -3347,7 +3410,7 @@
 					},
 					{
 						"name": "startTrackerHost.input",
-						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; cpuBudget?: number; sessionName?: string; }",
 						"required": true
 					},
 					{
@@ -3381,7 +3444,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "trackerHostReport",
@@ -3422,27 +3485,55 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "withSourceRepo",
+				"name": "withLaunchOrigin",
 				"inputs": [
 					{
-						"name": "withSourceRepo.event",
+						"name": "withLaunchOrigin.event",
 						"type": "TrackerDispatchEvent | undefined",
 						"required": true
 					},
 					{
-						"name": "withSourceRepo.route",
+						"name": "withLaunchOrigin.route",
 						"type": "TrackerHostTarget | false | undefined",
+						"required": true
+					},
+					{
+						"name": "withLaunchOrigin.item",
+						"type": "TrackerItem | false",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "withSourceRepo",
+						"name": "withLaunchOrigin",
 						"type": "TrackerDispatchEvent | undefined"
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRouteSessionName",
+				"inputs": [
+					{
+						"name": "trackerRouteSessionName.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "trackerRouteSessionName.route",
+						"type": "TrackerHostTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRouteSessionName",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "recordedHostEvent",
@@ -4531,27 +4622,50 @@
 				"errorStatus": "none-found"
 			},
 			{
-				"name": "resetBudget",
+				"name": "recoveryBudget",
 				"inputs": [
 					{
-						"name": "resetBudget.state",
-						"type": "TrackerRecoveryState | null",
+						"name": "recoveryBudget.store",
+						"type": "TrackerPersistenceService",
 						"required": true
 					},
 					{
-						"name": "resetBudget.run",
-						"type": "TrackerListedRun | undefined",
+						"name": "recoveryBudget.key",
+						"type": "string",
 						"required": true
 					},
 					{
-						"name": "resetBudget.item",
+						"name": "recoveryBudget.latest",
+						"type": "TrackerListedRun",
+						"required": false
+					},
+					{
+						"name": "recoveryBudget.item",
 						"type": "TrackerItem",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "resetBudget",
+						"name": "recoveryBudget",
+						"type": "TrackerRecoveryState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hostWait",
+				"inputs": [
+					{
+						"name": "hostWait.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostWait",
 						"type": "unknown"
 					}
 				],
@@ -5296,7 +5410,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-cpu-budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-egress-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-resource-hold",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-resources-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-session-names",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -5381,6 +5515,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-fleet",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-recurrence",
 			"via": "import",
 			"origin": "derived"
@@ -5397,6 +5541,26 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-done-proof-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-sample-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-telemetry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-resource-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-spoke-telemetry",
 			"via": "import",
 			"origin": "derived"
 		},

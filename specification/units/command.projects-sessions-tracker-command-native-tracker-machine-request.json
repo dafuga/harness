@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-command-native-tracker-machine-request",
+	"uid": "u_xfvq5etye2",
+	"kind": "command",
+	"title": "nativeTrackerMachineRequest",
+	"responsibility": "Owns the nativeTrackerMachineRequest command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-command/nativeTrackerMachineRequest.ts"],
+		"symbols": ["nativeTrackerMachineRequest"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "nativeTrackerMachineRequest.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerMachineRequest.[name, ...trailing]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerMachineRequest.values",
+				"type": "Record<string, string | boolean | undefined>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "nativeTrackerMachineRequest",
+				"type": "NativeTrackerRequest | undefined"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "nativeTrackerMachineRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerMachineRequest.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerMachineRequest.[name, ...trailing]",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerMachineRequest.values",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerMachineRequest",
+						"type": "NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-command/nativeTrackerMachineRequest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-command/nativeTrackerMachineRequest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

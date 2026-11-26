@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-machine-service-place-tracker-auto-launch",
+	"uid": "u_jey45slspx",
+	"kind": "service",
+	"title": "placeTrackerAutoLaunch",
+	"responsibility": "Owns the placeTrackerAutoLaunch service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-machine-service/placeTrackerAutoLaunch.ts",
+			"src/services/projects-sessions/tracker-machine-service/placeTrackerAutoLaunch.types.ts"
+		],
+		"symbols": ["placeTrackerAutoLaunch", "PlanLaunch"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "placeTrackerAutoLaunch.plan",
+				"type": "PlanLaunch",
+				"required": true
+			},
+			{
+				"name": "placeTrackerAutoLaunch.view",
+				"type": "TrackerFleetView",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "placeTrackerAutoLaunch",
+				"type": "PlanLaunch"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "placeTrackerAutoLaunch",
+				"inputs": [
+					{
+						"name": "placeTrackerAutoLaunch.plan",
+						"type": "PlanLaunch",
+						"required": true
+					},
+					{
+						"name": "placeTrackerAutoLaunch.view",
+						"type": "TrackerFleetView",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "placeTrackerAutoLaunch",
+						"type": "PlanLaunch"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine-service-tracker-launch-placement",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-machine-service/placeTrackerAutoLaunch.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-machine-service/placeTrackerAutoLaunch.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
