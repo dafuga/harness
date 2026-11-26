@@ -26,8 +26,10 @@ class HarnessVaultPlugin: CAPPlugin, CAPBridgedPlugin {
     static func present(on host: UIViewController) {
         UNUserNotificationCenter.current().delegate = VaultNotifications.shared
         let screen = UIHostingController(rootView: AnyView(EmptyView()))
-        screen.rootView = AnyView(VaultRootView(notifications: .shared) { [weak screen] in
-            screen?.dismiss(animated: true)
+        screen.rootView = AnyView(VaultSceneHost {
+            VaultRootView(notifications: .shared) { [weak screen] in
+                screen?.dismiss(animated: true)
+            }
         })
         screen.modalPresentationStyle = .fullScreen
         host.present(screen, animated: true)

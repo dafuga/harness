@@ -57,6 +57,7 @@
 		F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */; };
 		F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */; };
 		F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */; };
+		A5FB801B0000A5AC8F8D0052 /* VaultSceneHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA058DEFA3D11BAC330460D /* VaultSceneHost.swift */; };
 		8CAF8B8369D23DBD55A99A90 /* VaultRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DCF1A8C0A42C3F9E262111 /* VaultRelease.swift */; };
 		59D7C9A8656A1F9F7CEB1A2E /* VaultAddReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB6A988C335EF2AC8BA7766 /* VaultAddReviewView.swift */; };
 		7D69F8B28FA500F35581F59C /* RequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2380679DB06E1347994EA56 /* RequestsView.swift */; };
@@ -202,6 +203,7 @@
 		F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultApprovalCrypto.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultApprovalRequest.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultLegacyAdd.swift; sourceTree = "<group>"; };
+		AFA058DEFA3D11BAC330460D /* VaultSceneHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultSceneHost.swift"; sourceTree = "<group>"; };
 		51DCF1A8C0A42C3F9E262111 /* VaultRelease.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/VaultRelease.swift"; sourceTree = "<group>"; };
 		8FB6A988C335EF2AC8BA7766 /* VaultAddReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/VaultAddReviewView.swift"; sourceTree = "<group>"; };
 		A2380679DB06E1347994EA56 /* RequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/RequestsView.swift"; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */,
 				F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */,
 				F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */,
+				AFA058DEFA3D11BAC330460D /* VaultSceneHost.swift */,
 				51DCF1A8C0A42C3F9E262111 /* VaultRelease.swift */,
 				8FB6A988C335EF2AC8BA7766 /* VaultAddReviewView.swift */,
 				A2380679DB06E1347994EA56 /* RequestsView.swift */,
@@ -647,6 +650,7 @@
 				F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */,
 				F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */,
 				F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */,
+				A5FB801B0000A5AC8F8D0052 /* VaultSceneHost.swift in Sources */,
 				8CAF8B8369D23DBD55A99A90 /* VaultRelease.swift in Sources */,
 				59D7C9A8656A1F9F7CEB1A2E /* VaultAddReviewView.swift in Sources */,
 				7D69F8B28FA500F35581F59C /* RequestsView.swift in Sources */,
