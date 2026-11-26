@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-sync-service-detect-retest",
+	"uid": "u_ms65n355vn",
+	"kind": "service",
+	"title": "detectRetest",
+	"responsibility": "Owns the detectRetest service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/qa-sync-service/detectRetest.ts"],
+		"symbols": ["detectRetest"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "detectRetest.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "detectRetest.retest",
+				"type": "QaSyncConfig['retest']",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "detectRetest",
+				"type": "string[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "detectRetest",
+				"inputs": [
+					{
+						"name": "detectRetest.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "detectRetest.retest",
+						"type": "QaSyncConfig['retest']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "detectRetest",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/qa-sync-service/detectRetest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/qa-sync-service/detectRetest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
