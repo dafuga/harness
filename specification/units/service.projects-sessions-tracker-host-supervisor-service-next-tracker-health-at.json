@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-supervisor-service-next-tracker-health-at",
+	"uid": "u_yvymmfkndf",
+	"kind": "service",
+	"title": "nextTrackerHealthAt",
+	"responsibility": "Owns the nextTrackerHealthAt service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-host-supervisor-service/nextTrackerHealthAt.ts"
+		],
+		"symbols": ["nextTrackerHealthAt"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "nextTrackerHealthAt.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "nextTrackerHealthAt.first",
+				"type": "boolean",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "nextTrackerHealthAt",
+				"type": "number"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "nextTrackerHealthAt",
+				"inputs": [
+					{
+						"name": "nextTrackerHealthAt.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "nextTrackerHealthAt.first",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextTrackerHealthAt",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "helper.attention-timing-next-reminder-slot-at",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-tracker-health-times",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-host-supervisor-service/nextTrackerHealthAt.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-host-supervisor-service/nextTrackerHealthAt.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

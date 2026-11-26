@@ -1,0 +1,119 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-qa-sync",
+	"uid": "u_7fbfjj5ip5",
+	"kind": "workflow",
+	"title": "runQaSync",
+	"responsibility": "Owns the runQaSync command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/agents-providers/runQaSync.ts",
+			"src/workflows/agents-providers/runQaSync.types.ts"
+		],
+		"symbols": ["runQaSync", "QaSyncRunInput"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runQaSync.input",
+				"type": "QaSyncRunInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "runQaSync",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runQaSync",
+				"inputs": [
+					{
+						"name": "runQaSync.input",
+						"type": "QaSyncRunInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runQaSync",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-git-hub-issue-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-tracker-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-qa-sync-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-qa-sync-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-qa-sync-qa-sync-secret",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-qa-sync-render-qa-sync-report",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/runQaSync.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/runQaSync.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

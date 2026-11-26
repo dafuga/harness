@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { nativeTrackerAutolaunchRequest } from './nativeTrackerAutolaunchRequest';
 import { nativeTrackerJobRequest } from './nativeTrackerJobRequest';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
@@ -33,7 +34,8 @@ export function nativeTrackerInspectionRequest(
 	if (command === 'backup' && words.join() === 'now')
 		return { method: 'POST', path: '/backup/now' };
 	const adapter = command === 'adapter' ? nativeTrackerAdapterRequest(words, values) : undefined;
-	return adapter ?? nativeTrackerReadInspection(command, words);
+	const admin = command === 'autolaunch' ? nativeTrackerAutolaunchRequest(words) : undefined;
+	return admin ?? adapter ?? nativeTrackerReadInspection(command, words);
 }
 
 function nativeTrackerReadInspection(
