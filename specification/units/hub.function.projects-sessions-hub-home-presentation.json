@@ -28,6 +28,7 @@
 			"currentAgent",
 			"soonestWork",
 			"workSummary",
+			"creditsLabel",
 			"warningFor",
 			"lowestLimit",
 			"staleReading",
@@ -129,6 +130,11 @@
 				"type": "ReturnType<typeof soonestWork>",
 				"required": true,
 				"description": "In-progress and blocked work items enriched with project labels and due dates."
+			},
+			{
+				"name": "creditsLabel.balance",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "warningFor.left",
@@ -604,6 +610,24 @@
 						"name": "workSummary",
 						"type": "unknown",
 						"description": "Number of active tasks and unique projects."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "creditsLabel",
+				"inputs": [
+					{
+						"name": "creditsLabel.balance",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "creditsLabel",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
