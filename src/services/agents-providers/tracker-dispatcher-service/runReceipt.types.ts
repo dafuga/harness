@@ -46,6 +46,7 @@ export interface TrackerRunReceipt extends TrackerReceiptUsage {
 	/** Retired legacy close timer: preserved from old rows, never set natively. */
 	kill_at?: number;
 	session_id?: string | null;
+	session_name?: string | null;
 	tmux?: string | null;
 	/** The configured checkout the run was launched from; selects its verify command. */
 	source_repo?: string | null;
@@ -62,6 +63,7 @@ export interface TrackerSessionEvidence {
 	startedAt: number;
 	tmux?: string;
 	sourceRepo?: string;
+	sessionName?: string;
 }
 
 export interface TrackerFinalReportEvent {
@@ -80,8 +82,15 @@ export type TrackerDispatchEvent =
 			verify?: boolean;
 			idleReview?: boolean;
 			usage?: TrackerReceiptUsage;
+			diagnostic?: string;
 	  }
-	| { type: 'startup-failed'; reason: string; exitCode?: number | null }
+	| {
+			type: 'startup-failed';
+			reason: string;
+			exitCode?: number | null;
+			/** The start call threw, so the session may still appear. */
+			pending?: boolean;
+	  }
 	| { type: 'never-started' }
 	| {
 			type: 'verified';

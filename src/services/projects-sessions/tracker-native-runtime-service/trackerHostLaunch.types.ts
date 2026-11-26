@@ -36,6 +36,8 @@ export type TrackerHostStartRequest = TrackerHostTarget & {
 	brief: string;
 	backend: 'native' | 'docker';
 	queuedAt: number;
+	/** "Project: title" for the tmux window and Claude Remote Control. */
+	sessionName?: string;
 };
 
 export interface TrackerHostLaunchPort {

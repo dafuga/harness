@@ -63,6 +63,8 @@ function adoptSession(
 			...(session.tmux && { tmux: session.tmux }),
 			started_at: session.startedAt,
 			...(session.sourceRepo && { source_repo: session.sourceRepo }),
+			...(session.sessionName && { session_name: session.sessionName }),
+			failure_reason: null,
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
 		})
 	);
@@ -77,6 +79,7 @@ function recordStartupFailure(
 	if (run.dispatch_at === undefined || (run.state !== 'queued' && run.state !== 'running')) {
 		return skip('ignored', 'attempt is no longer starting');
 	}
+	if (event.pending) return recordPendingCause(run, event.reason);
 	return failRun(
 		snapshot,
 		run,
@@ -88,4 +91,10 @@ function recordStartupFailure(
 		},
 		clock
 	);
+}
+
+/** The session may still appear, so the cause waits on the reservation until it expires. */
+function recordPendingCause(run: TrackerRunReceipt, reason: string) {
+	if (run.state !== 'queued') return skip('ignored', 'attempt is no longer starting');
+	return recordRun(reviseRun(run, { failure_reason: reason }));
 }
