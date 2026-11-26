@@ -179,3 +179,25 @@
 	background: var(--hx-color-surface);
 	box-shadow: var(--home-shadow);
 }
+
+.hh-home .hh-live {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-6);
+	margin: 0 auto;
+	padding-block: var(--hx-space-4) 0;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+
+.hh-home .hh-live::before {
+	content: '';
+	width: var(--hx-space-8);
+	height: var(--hx-space-8);
+	border-radius: 50%;
+	background: var(--hx-color-warning);
+}
+
+.hh-home .hh-live[data-state='live']::before {
+	background: var(--hx-color-success);
+}

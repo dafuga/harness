@@ -20,6 +20,7 @@
 			"TrackerOverviewPublisher.start",
 			"TrackerOverviewPublisher.stop",
 			"TrackerOverviewPublisher.tick",
+			"TrackerOverviewPublisher.nudge",
 			"TrackerOverviewAuthority",
 			"TrackerOverviewTimers",
 			"TrackerOverviewPublisherOptions",
@@ -94,6 +95,18 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "TrackerOverviewPublisher.nudge",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerOverviewPublisher.nudge",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "createTrackerOverviewPublisher",
 				"inputs": [
 					{
@@ -141,6 +154,11 @@
 		},
 		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-create-hub-home-publisher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-live-quota-sources",
 			"via": "import",
 			"origin": "derived"
 		},

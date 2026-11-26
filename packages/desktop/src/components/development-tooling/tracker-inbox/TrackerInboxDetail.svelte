@@ -72,7 +72,7 @@
 		message = '';
 	}
 
-	async function refresh() {
+	export async function refresh() {
 		fresh(await source.detail(id));
 	}
 

@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
+			"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
+				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 			},
 			"previousReviews": [
 				{
@@ -1646,6 +1646,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 					"definition": "9cb27a1f849ef82ea7c420cc3b26ab94f203afb42d2bf97dd411ece1cd99b6e6",
 					"reason": "Give the privileged window an explicit owner for its navigation and Tracker artifact link handling."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -5498,13 +5504,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
+			"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
-				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
+				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 			},
 			"previousReviews": [
 				{
@@ -5554,6 +5560,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
 					"reason": "Exposes the direct Mac inbox source through the isolated preload and local transport."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 				}
 			]
 		},
@@ -6999,13 +7011,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+			"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
-				"reason": "Carry native browser callback and device metadata through desktop initialization."
+				"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
+				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 			},
 			"previousReviews": [
 				{
@@ -7043,6 +7055,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"reason": "Give local windows the same headless rendering workflow as remote clients.",
 					"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+					"reason": "Carry native browser callback and device metadata through desktop initialization."
 				}
 			]
 		},

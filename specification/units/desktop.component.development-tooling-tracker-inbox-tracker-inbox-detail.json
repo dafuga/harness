@@ -30,7 +30,7 @@
 			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxDetail.svelte",
 			"packages/desktop/src/components/development-tooling/tracker-inbox/trackerInboxDetail.css"
 		],
-		"symbols": ["TrackerInboxDetail"]
+		"symbols": ["TrackerInboxDetail", "refresh"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -70,7 +70,20 @@
 		],
 		"errors": [],
 		"errorStatus": "none-found",
-		"operations": [],
+		"operations": [
+			{
+				"name": "refresh",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "refresh",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [

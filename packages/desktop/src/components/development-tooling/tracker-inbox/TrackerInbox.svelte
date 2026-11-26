@@ -17,6 +17,8 @@
 		inboxFilters,
 		writeView
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import { followTrackerSource } from '../../../lib/development-tooling/tracker-inbox/followTrackerSource';
+	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import TrackerInboxDetail from './TrackerInboxDetail.svelte';
 	import TrackerInboxRows from './TrackerInboxRows.svelte';
 	import TrackerInboxWrites from './TrackerInboxWrites.svelte';
@@ -33,6 +35,8 @@
 	let writes = $state.raw<InboxWriteView[]>([]);
 	let freshness = $state<'current' | 'stale' | 'unavailable'>('unavailable');
 	let lastSyncedAt = $state<string | null>(null);
+	let link = $state<RealtimeState | null>(null);
+	let detailView = $state<ReturnType<typeof TrackerInboxDetail>>();
 
 	const counts = $derived(countBuckets(overview?.rows ?? []));
 	const listed = $derived(filterRows(overview?.rows ?? [], filter));
@@ -71,12 +75,25 @@
 		selected = id;
 	}
 
-	onMount(() => void reload());
+	/** A change made anywhere: the list, an open search and the open item are read again. */
+	async function follow() {
+		await Promise.all([reload(), found ? search(query) : undefined, detailView?.refresh()]);
+	}
+
+	onMount(() => {
+		void reload();
+		return followTrackerSource(source, { refresh: follow, state: (state) => (link = state) });
+	});
 </script>
 
 <hx-section class="inbox" aria-label="Tracker decisions">
 	<hx-header class="inbox-head">
 		<hx-h1>Needs you</hx-h1>
+		{#if link}
+			<hx-span class="live" role="status" aria-label="Updates" data-state={link}>
+				{link === 'live' ? 'Live' : 'Reconnecting'}
+			</hx-span>
+		{/if}
 		<hx-p class="meta">
 			{#if mac}
 				{overview ? 'Local Tracker' : 'Tracker on this Mac'}
@@ -95,7 +112,7 @@
 	{:else if overview && selected}
 		<hx-button type="button" class="back" onclick={() => (selected = null)}>← All items</hx-button>
 		{#key selected}
-			<TrackerInboxDetail {source} {mode} id={selected} onchanged={reload} />
+			<TrackerInboxDetail bind:this={detailView} {source} {mode} id={selected} onchanged={reload} />
 		{/key}
 		{#if !mac}<TrackerInboxWrites {source} {writes} onchanged={reload} />{/if}
 	{:else if overview}
@@ -168,62 +185,5 @@
 </hx-section>
 
 <style>
-	:global(.inbox) {
-		display: grid;
-		gap: var(--hx-space-12);
-		padding: var(--hx-space-16);
-		color: var(--hx-color-text);
-	}
-	:global(.inbox h1) {
-		margin: 0;
-		font-size: var(--hx-type-size-base);
-	}
-	:global(.inbox .meta) {
-		color: var(--hx-color-text-muted);
-		font-size: var(--hx-type-size-xs);
-		margin: 0;
-	}
-	:global(.inbox .needs-title) {
-		margin: 0;
-		font-size: var(--hx-type-size-sm);
-	}
-	:global(.inbox button.back) {
-		justify-self: start;
-		border: var(--hx-border-thin) solid var(--hx-color-border);
-		background: var(--hx-color-surface);
-		color: var(--hx-color-text);
-		border-radius: var(--hx-radius-small);
-		padding: var(--hx-space-8) var(--hx-space-10);
-		font: inherit;
-	}
-	:global(.filters) {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--hx-space-6);
-	}
-	:global(.inbox button.filter) {
-		border: var(--hx-border-thin) solid var(--hx-color-border);
-		background: var(--hx-color-surface);
-		color: var(--hx-color-text);
-		border-radius: var(--hx-radius-small);
-		padding: var(--hx-space-8) var(--hx-space-10);
-		font: inherit;
-	}
-	:global(.inbox button.filter[aria-pressed='true']) {
-		border-color: var(--hx-color-primary);
-	}
-	:global(.count) {
-		margin-left: var(--hx-space-6);
-		color: var(--hx-color-text-muted);
-	}
-	:global(.inbox input[type='search']) {
-		width: 100%;
-		box-sizing: border-box;
-		padding: var(--hx-space-8);
-		font: inherit;
-		background: var(--hx-color-surface);
-		color: var(--hx-color-text);
-		border: var(--hx-border-thin) solid var(--hx-color-border);
-		border-radius: var(--hx-radius-small);
-	}
+	@import './tracker-inbox.css';
 </style>

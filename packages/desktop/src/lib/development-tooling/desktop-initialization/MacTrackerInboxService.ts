@@ -27,6 +27,8 @@ export class MacTrackerInboxService {
 		input: TrackerInboxReadInput
 	): Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail>> {
 		switch (input.operation) {
+			case 'live':
+				return liveState();
 			case 'overview':
 				return this.overview();
 			case 'search':
@@ -97,6 +99,17 @@ export class MacTrackerInboxService {
 		} catch {
 			return unavailable();
 		}
+	}
+}
+
+/** Whether the local change feed answers, for a window that has not heard a push yet. */
+async function liveState(): Promise<InboxReply<never>> {
+	try {
+		const response = await trackerRequest('/changes');
+		await response.body?.cancel();
+		return response.ok ? current({}) : unavailable();
+	} catch {
+		return unavailable();
 	}
 }
 
