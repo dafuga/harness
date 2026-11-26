@@ -176,6 +176,7 @@ function renderNativeTracker(
 		case 'sync':
 			console.log('sync triggered');
 			return;
+
 		case 'digest':
 			console.log(String(data).trimEnd());
 			return;
@@ -193,6 +194,10 @@ function renderNativeTracker(
 }
 
 function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
+	if (command === 'reply') {
+		console.log(`reply sent to Daniel in the Hub (${(data as { id?: string }).id ?? 'message'})`);
+		return;
+	}
 	if (command === 'adapter' && first !== 'list') {
 		console.log(formatNativeTrackerAdapterReply(data as NativeTrackerAdapterReply));
 		return;

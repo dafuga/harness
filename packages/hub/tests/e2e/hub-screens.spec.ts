@@ -16,9 +16,16 @@ async function box(locator: Locator) {
 	return found;
 }
 
-/** Nothing on the overview asks for input until a dialog is opened, and nothing scrolls sideways. */
+/**
+ * Nothing on the overview asks for input until a dialog is opened, and nothing scrolls sideways.
+ * The one exception is Home's chat box to Chief of Staff (Daniel, 26 Nov): a single field.
+ */
 async function overview(page: Page) {
-	await expect(page.locator('form, input, select, textarea')).toHaveCount(0);
+	const chat = '[aria-label="Message Chief of Staff"]';
+	await expect(page.locator(`:is(form, input, select, textarea):not(${chat} *)`)).toHaveCount(0);
+	await expect(page.locator(`${chat} :is(input, select, textarea)`)).toHaveCount(
+		(await page.locator(chat).count()) ? 1 : 0
+	);
 	const overflow = await page.evaluate(
 		() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 	);
