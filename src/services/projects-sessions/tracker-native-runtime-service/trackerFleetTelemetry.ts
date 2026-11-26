@@ -43,7 +43,8 @@ export function hubTelemetryTick({
 	return async (signal: AbortSignal) => {
 		if (now() < next) return;
 		next = now() + interval;
-		const resources = await machines.sampleLocal();
+		// A failed reading must not stop the launcher report or the peers' overload checks.
+		const resources = await machines.sampleLocal().catch(() => undefined);
 		signal.throwIfAborted();
 		const runner = scheduler?.runnerStatus() ?? { enabled: false };
 		const active = runs.activeLocal().filter(({ state }) => state !== 'queued').length;
