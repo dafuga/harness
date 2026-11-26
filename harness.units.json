@@ -3060,6 +3060,42 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/homeOpenAsks",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeOpenAsks.ts",
 			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxAsk.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte",
+			"reason": "The spec view on asks is shared Reports code used through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxAsk.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/SpecDocumentView.types",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/SpecDocumentView.types.ts",
+			"reason": "The spec view on asks is shared Reports code used through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The spec view on asks is shared Reports code used through the build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte",
+			"reason": "The spec view on asks is shared Reports code used through the build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubSpecDocument.ts",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/SpecDocumentView.types",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/SpecDocumentView.types.ts",
+			"reason": "The spec view on asks is shared Reports code used through the build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/api/hub-home/homeDocumentStore.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The spec view on asks is shared Reports code used through the build alias."
 		}
 	]
 }

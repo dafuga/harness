@@ -45,6 +45,8 @@ struct TrackerReplicaItem: Codable {
         var options: [Option]? = nil
         /// deploy, money or secret: the answer needs the device owner's Face ID or passcode.
         var confirm: String? = nil
+        /// Specs and documents behind "View spec". Older Macs send none.
+        var attachments: [TrackerReplicaAttachment]? = nil
     }
 
     struct Run: Codable {
@@ -91,6 +93,7 @@ struct TrackerReplicaItem: Codable {
 
     private static func validFlag(_ flag: Flag) -> Bool {
         ["open", "resolved"].contains(flag.state) && short(flag.at ?? "", 40) && short(flag.question, 512)
+            && (flag.attachments.map { $0.count <= 4 && $0.allSatisfy(\.valid) } ?? true)
             && (flag.options.map { $0.count <= 4 && $0.allSatisfy { short($0.label, 80) && short($0.effect, 400) } } ?? true)
             && (flag.confirm.map { ["deploy", "money", "secret"].contains($0) } ?? true)
     }

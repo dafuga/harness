@@ -8,6 +8,7 @@ import type {
 	InboxRow,
 	InboxWriteReceipt
 } from '../../../models/development-tooling/TrackerInbox.types';
+import { withLocalDocuments } from './macTrackerInboxDocuments';
 import { confirmedWrite, matchesQuery } from '../tracker-inbox/trackerInbox';
 import type { TrackerInboxItemReply, TrackerInboxReadInput } from './MacTrackerInboxService.types';
 import { projectDetail, projectRow, safeId, visible } from './macTrackerInboxProjection';
@@ -92,7 +93,7 @@ export class MacTrackerInboxService {
 			}
 			const detail = await readReply<TrackerInboxItemReply>(response);
 			return detail.item.id === id && visible(detail.item)
-				? current({ value: projectDetail(detail) })
+				? current({ value: await withLocalDocuments(projectDetail(detail)) })
 				: current({ code: 'noLocalMatch' });
 		} catch {
 			return unavailable();

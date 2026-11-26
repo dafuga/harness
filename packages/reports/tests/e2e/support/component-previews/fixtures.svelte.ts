@@ -5,6 +5,7 @@ import { previewVariants } from './catalogVariants';
 import { reportVariantProps } from './reportVariants';
 import type { ExplorerScreenProps } from '../../../../src/models/explorer-ui/ExplorerScreen.types';
 import { explorerCases } from './explorer';
+import { specViewCases } from './specViewCases';
 import { legacyAddresses, legacyCases } from './legacy';
 import { reportCases } from './reports';
 import { activityCases } from './activity';
@@ -57,6 +58,7 @@ export function previewFixture(id: string, variant = '') {
 	};
 	const cases: PreviewCases = {
 		...explorerCases,
+		...specViewCases,
 		...presentationCases,
 		...legacy,
 		...reportCases,

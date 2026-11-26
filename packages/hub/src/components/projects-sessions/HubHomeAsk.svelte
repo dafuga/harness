@@ -10,6 +10,8 @@
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeChoices from './HubHomeChoices.svelte';
+	import ViewSpecButtons from '$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
+	import { hubSpecDocuments } from './hubSpecDocument';
 
 	let {
 		ask,
@@ -22,6 +24,7 @@
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 	} = $props();
+	const load = hubSpecDocuments();
 	let busy = $state(false);
 	let status = $state('');
 	/** The question this card already answered, so it hides until the Tracker shows a new one. */
@@ -65,18 +68,33 @@
 	}
 </script>
 
+{#snippet choices(done?: () => void)}
+	<HubHomeChoices
+		agent={ask}
+		{busy}
+		onpick={(number, confirmed) => {
+			const option = ask.options[number - 1];
+			done?.();
+			if (option) void answerWith(option.label, { number, confirmed });
+		}}
+		onother={(text) => {
+			done?.();
+			void answerWith(text);
+		}}
+	/>
+{/snippet}
+
 {#if open}
 	<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
 		<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
-		<HubHomeChoices
-			agent={ask}
-			{busy}
-			onpick={(number, confirmed) => {
-				const option = ask.options[number - 1];
-				if (option) void answerWith(option.label, { number, confirmed });
-			}}
-			onother={(text) => void answerWith(text)}
-		/>
+		{#if ask.attachments?.length}
+			<ViewSpecButtons attachments={ask.attachments} question={ask.question} {load}>
+				{#snippet answers(close: () => void)}
+					{@render choices(close)}
+				{/snippet}
+			</ViewSpecButtons>
+		{/if}
+		{@render choices()}
 	</hx-section>
 {:else if status}
 	<hx-p class="po-sessions" role="status">{ask.agentName}: {status}</hx-p>

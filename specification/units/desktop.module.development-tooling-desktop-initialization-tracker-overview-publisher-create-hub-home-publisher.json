@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHubHomePublisher.types.ts"
 		],
-		"symbols": ["createHubHomePublisher"]
+		"symbols": ["createHubHomePublisher", "HubHomeReply"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -85,6 +86,11 @@
 		},
 		{
 			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-home-tracker-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-read-local-attachment",
 			"via": "import",
 			"origin": "derived"
 		},

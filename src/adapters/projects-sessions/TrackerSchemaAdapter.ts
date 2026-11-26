@@ -33,6 +33,8 @@ export const trackerItemFields = [
 	'options',
 	'confirm',
 	'answer_option',
+	'attachments',
+	'attachment_docs',
 	'resolved',
 	'callback',
 	'deleted',

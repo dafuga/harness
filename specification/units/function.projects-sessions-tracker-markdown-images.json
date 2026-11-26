@@ -1,0 +1,117 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-markdown-images",
+	"uid": "u_vfo44tzfa2",
+	"kind": "function",
+	"title": "trackerMarkdownImages",
+	"responsibility": "Finds the images a markdown document names and resolves which of them are image files inside its repository.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/trackerMarkdownImages.ts"],
+		"symbols": ["trackerMarkdownImages", "trackerRepositoryImage"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerMarkdownImages.markdown",
+				"type": "string",
+				"required": true,
+				"description": "The document text; images inside fenced code are ignored."
+			},
+			{
+				"name": "trackerRepositoryImage.documentPath",
+				"type": "string",
+				"required": true,
+				"description": "The repository path of the document, against which relative sources resolve."
+			},
+			{
+				"name": "trackerRepositoryImage.source",
+				"type": "string",
+				"required": true,
+				"description": "The image source exactly as the document wrote it."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerMarkdownImages",
+				"type": "string[]",
+				"description": "Each named image source once, from markdown and img tags."
+			},
+			{
+				"name": "trackerRepositoryImage",
+				"type": "{ path: string; type: string } | null",
+				"description": "The repository path and media type, or null for a web address, a path outside the repository, a malformed escape or another file type."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "trackerMarkdownImages",
+				"inputs": [
+					{
+						"name": "trackerMarkdownImages.markdown",
+						"type": "string",
+						"required": true,
+						"description": "The document text; images inside fenced code are ignored."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMarkdownImages",
+						"type": "string[]",
+						"description": "Each named image source once, from markdown and img tags."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerRepositoryImage",
+				"inputs": [
+					{
+						"name": "trackerRepositoryImage.documentPath",
+						"type": "string",
+						"required": true,
+						"description": "The repository path of the document, against which relative sources resolve."
+					},
+					{
+						"name": "trackerRepositoryImage.source",
+						"type": "string",
+						"required": true,
+						"description": "The image source exactly as the document wrote it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRepositoryImage",
+						"type": "{ path: string; type: string } | null",
+						"description": "The repository path and media type, or null for a web address, a path outside the repository, a malformed escape or another file type."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerMarkdownImages.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerMarkdownImages.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

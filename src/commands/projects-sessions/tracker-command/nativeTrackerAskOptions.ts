@@ -2,6 +2,7 @@
 import type { NativeTrackerAskValues } from './nativeTrackerCli.types';
 import { trackerAskOptionFromWord } from '../../../utils/projects-sessions/trackerAskOptions';
 import { isTrackerCosMessage } from '../../../utils/projects-sessions/isTrackerPing';
+import { isTrackerSpecReview } from '../../../utils/projects-sessions/isTrackerSpecReview';
 
 /** The ask-choice words of one command line: `--option label=effect` (repeat), `--recommend N`. */
 export function nativeTrackerAskBody(values: NativeTrackerAskValues): Record<string, unknown> {
@@ -38,7 +39,10 @@ export function nativeTrackerFlagBody(
 ): Record<string, unknown> {
 	const question = text.length ? text : values.question;
 	const body = nativeTrackerAskBody(values);
-	if (!isTrackerCosMessage(String(question ?? ''))) requireStructuredAsk(values);
+	if (!isTrackerCosMessage(String(question ?? ''))) {
+		requireStructuredAsk(values);
+		requireSpec(String(question ?? ''), values);
+	}
 	return { question, force: values.force, ...body };
 }
 
@@ -48,6 +52,18 @@ function requireStructuredAsk(values: NativeTrackerAskValues): void {
 	throw new TypeError(
 		'tracker flag needs choices: --option "label=what happens" (2 to 4 times) and --recommend N. ' +
 			'"Other" is added for you. For a dependency or other blocker with no decision, use tracker block.'
+	);
+}
+
+/** A spec review is only answerable when the spec is attached for "View spec". */
+function requireSpec(question: string, values: NativeTrackerAskValues): void {
+	if (values.spec !== undefined || values.doc !== undefined) return;
+	if (values['not-spec-review']) return;
+	const labels = Array.isArray(values.option) ? values.option.map(String) : [];
+	if (!isTrackerSpecReview(question, labels)) return;
+	throw new TypeError(
+		'a spec review must attach the spec: --spec owner/repo#PR:path/to/spec.md (or --doc file.md). ' +
+			'If this is not a spec review, add --not-spec-review.'
 	);
 }
 

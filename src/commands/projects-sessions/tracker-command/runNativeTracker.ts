@@ -20,6 +20,7 @@ import type {
 	NativeTrackerRunRead
 } from './nativeTrackerCli.types';
 import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
+import { withTrackerAttachments } from './withTrackerAttachments';
 
 export function selectedTrackerConfig(): string | undefined {
 	if (process.env.HARNESS_TRACKER_CONFIG !== undefined) return process.env.HARNESS_TRACKER_CONFIG;
@@ -51,7 +52,7 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 	}
 	let input: ReturnType<typeof nativeTrackerArgs>;
 	try {
-		input = nativeTrackerArgs(args);
+		input = await withTrackerAttachments(nativeTrackerArgs(args));
 	} catch (error) {
 		console.error(`tracker: ${error instanceof Error ? error.message : 'invalid arguments'}`);
 		return 1;

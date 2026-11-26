@@ -98,6 +98,7 @@ function askChoices(item: TrackerItem) {
 	const confirm = ['deploy', 'money', 'secret'].find((kind) => kind === item.confirm);
 	return {
 		...(options.length >= 2 && { options }),
-		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind })
+		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind }),
+		...(options.length >= 2 && item.attachments && { attachments: item.attachments })
 	};
 }

@@ -41,6 +41,10 @@ extension TrackerReplicaStore {
                 id.utf8.count >= 6, TrackerReplicaItem.short(id, 80)
             else { throw TrackerReplicaError.invalidInput }
             return try show(id: trackerFold(id), slot: slot)
+        case "tracker_document":
+            // Not an assistant tool: only the item page reads documents, for "View spec".
+            let wanted = try TrackerReplicaAttachment.request(input)
+            return try document(id: wanted.id, attachment: wanted.attachment, slot: slot)
         case "tracker_search":
             return try search(input, slot: slot)
         default:
@@ -112,11 +116,18 @@ extension TrackerReplicaStore {
         let revision = try db.rows("SELECT value FROM attention WHERE slot = ? AND item = ?", [slot, item])
             .first?.first.flatMap { $0 }
         let planning = try children(TrackerReplicaPlanning.self, from: "planning", item: [slot, item])
+        // What the assistant reads about an item lists its documents without their text.
+        let listed = flags.first.map(TrackerReplicaAttachment.listing)
         return ["item": try TrackerReplicaJSON.object(header), "notes": try TrackerReplicaJSON.object(notes),
-                "flag": try flags.first.map(TrackerReplicaJSON.object) ?? NSNull(),
+                "flag": try listed.map(TrackerReplicaJSON.object) ?? NSNull(),
                 "runs": try TrackerReplicaJSON.object(runs),
                 "attentionRevision": revision ?? NSNull(),
                 "planning": try planning.first.map(TrackerReplicaJSON.object) ?? NSNull()]
+    }
+
+    private func document(id: String, attachment: String, slot: String) throws -> [String: Any] {
+        let flags = try children(TrackerReplicaItem.Flag.self, from: "flags", item: [slot, id])
+        return try TrackerReplicaAttachment.reply(attachment, of: flags.first)
     }
 
     private func search(_ input: [String: Any], slot: String) throws -> [String: Any] {

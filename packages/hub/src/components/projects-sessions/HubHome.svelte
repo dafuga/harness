@@ -17,6 +17,7 @@
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
+	import { provideHubSpecDocuments } from './hubSpecDocument';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 	import { soonestWork, staleReading } from './hubHomePresentation';
@@ -30,6 +31,7 @@
 	import '../../lib/styles/hub-home/index.css';
 
 	const { api, session, projects } = browserContext();
+	provideHubSpecDocuments(api);
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);

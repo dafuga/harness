@@ -2,6 +2,7 @@
 export type PhoneTrackerTool =
 	| 'tracker_status'
 	| 'tracker_show'
+	| 'tracker_document'
 	| 'tracker_search'
 	| 'tracker_note'
 	| 'tracker_flag'

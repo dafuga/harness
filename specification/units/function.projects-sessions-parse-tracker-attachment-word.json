@@ -1,0 +1,77 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-parse-tracker-attachment-word",
+	"uid": "u_2c64lq6rce",
+	"kind": "function",
+	"title": "parseTrackerAttachmentWord",
+	"responsibility": "Reads the command-line form owner/repo#PR:path[@commit] that names an attached GitHub file.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/parseTrackerAttachmentWord.ts",
+			"src/utils/projects-sessions/parseTrackerAttachmentWord.types.ts"
+		],
+		"symbols": ["parseTrackerAttachmentWord", "TrackerAttachmentSource"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "parseTrackerAttachmentWord.word",
+				"type": "string",
+				"required": true,
+				"description": "The text given to --spec or --doc; surrounding space is ignored."
+			}
+		],
+		"outputs": [
+			{
+				"name": "parseTrackerAttachmentWord",
+				"type": "TrackerAttachmentSource | null",
+				"description": "Repository, path and any pull request or commit; null when malformed, lacking both PR and commit, or leaving the repository."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "parseTrackerAttachmentWord",
+				"inputs": [
+					{
+						"name": "parseTrackerAttachmentWord.word",
+						"type": "string",
+						"required": true,
+						"description": "The text given to --spec or --doc; surrounding space is ignored."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseTrackerAttachmentWord",
+						"type": "TrackerAttachmentSource | null",
+						"description": "Repository, path and any pull request or commit; null when malformed, lacking both PR and commit, or leaving the repository."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/parseTrackerAttachmentWord.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/parseTrackerAttachmentWord.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
