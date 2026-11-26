@@ -41,6 +41,7 @@
 			"TrackerNodeOwnership",
 			"TrackerNodeStartupError",
 			"TrackerNodeTransportError",
+			"TrackerNodeTransportError.constructor",
 			"trackerLaunchAwareItemResponse",
 			"stopTrackerRun",
 			"holdLegacySupervisorSocket",
@@ -75,6 +76,16 @@
 				"name": "TrackerNodeService.start.config",
 				"type": "TrackerNodeConfig",
 				"required": true
+			},
+			{
+				"name": "TrackerNodeTransportError.constructor.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNodeTransportError.constructor.status",
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "trackerLaunchAwareItemResponse.request",
@@ -869,7 +880,31 @@
 				"errorStatus": "none-found"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "TrackerNodeTransportError.constructor",
+				"inputs": [
+					{
+						"name": "TrackerNodeTransportError.constructor.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerNodeTransportError.constructor.status",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNodeTransportError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

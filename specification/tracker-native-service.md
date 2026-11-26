@@ -39,7 +39,10 @@ illustrative paths and ports.
 
 A spoke omits `syncPort` and supplies `"upstream": {"url": "https://hub.example.com"}`.
 For direct Mac peer replication, a spoke may also configure `peer.upstream`
-and `peer.listenPort`. Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
+and `peer.listenPort`. The Macs also exchange run history over this link. Each
+link reports on its own, so a hub that is down does not hold back the peer.
+Fleet status still uses only the hub's machine samples.
+Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
 An optional `accessFile` beside an upstream URL supplies `clientId` and
 `clientSecret` for Cloudflare Access over HTTPS. The sync listener routes
 only signed Tracker sync requests. Each spoke sends its local run records to
@@ -165,7 +168,13 @@ operator verifies the stopped database and chooses a rollback.
   `~/.config/tracker/config.json` if present. Automatic launches hold from
   22:00 to 08:00 Lisbon time. After the hold, the hub admits up to two
   automatic launch reservations in any rolling minute across the fleet.
-  Connected spokes wait for a hub slot. Explicit launch requests get the
+  Connected spokes wait for a hub slot. If the hub is unreachable, a spoke
+  still starts the due tasks it owns, using the same two-per-minute limit on
+  its own slots. Unreachable means a timeout, a failed connection, or HTTP 502,
+  503, 504, 521–524 or 530. A denial, any other HTTP error or an unreadable
+  reply holds the launch. A due pause or local-due opt-out that the spoke has
+  already received still applies. Other automatic launches wait for the hub.
+  Explicit launch requests get the
   first available local slots and bypass the night hold and rate limit.
   Each adapter can classify intake as urgent, normal or low. The configured
   GitHub tester rule marks issues and comments by its allowed tester logins

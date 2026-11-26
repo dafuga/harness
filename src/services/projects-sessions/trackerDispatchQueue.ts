@@ -24,7 +24,8 @@ import type {
 } from './TrackerDispatchSchedulerService.types';
 
 export class TrackerDispatchQueue {
-	private automaticSlotHeld = false;
+	/** Refusals are kept apart: during a hub outage only due work can take a local fleet slot. */
+	private readonly refusedSlots = new Set<'due' | 'other'>();
 
 	constructor(
 		private readonly repository: TrackerDispatchRepository,
@@ -57,7 +58,7 @@ export class TrackerDispatchQueue {
 		if (auto) return this.claimIntent(id, { token: auto, source, target: launch_target }, signal);
 		if (
 			!this.options.scheduleDue ||
-			this.automaticSlotHeld ||
+			this.refusedSlots.has('due') ||
 			(this.options.permitAutomatic && automaticQuietHour(policyNow(this.options)))
 		)
 			return false;
@@ -98,15 +99,13 @@ export class TrackerDispatchQueue {
 			this.waits.set(id, { token: intent.token, reason: moved ?? hold });
 			return false;
 		}
-		if (!this.automaticSlotHeld)
-			this.automaticSlotHeld = !(await permitAutomatic(id, intent.token, signal));
-		signal.throwIfAborted();
-		if (this.automaticSlotHeld)
+		const refused = !(await takeFleetSlot(this.refusedSlots, { id, intent }, this.options, signal));
+		if (refused)
 			this.waits.set(id, {
 				token: intent.token,
 				reason: 'automatic launch waiting for a fleet slot'
 			});
-		return !this.automaticSlotHeld;
+		return !refused;
 	}
 
 	private delegate(item: TrackerDispatchItem, intent: TrackerLaunchIntent) {
@@ -139,6 +138,22 @@ export class TrackerDispatchQueue {
 		const observed = await this.dispatcher.record(run.item_id, run, event);
 		return event.type === 'session' && observed.status === 'recorded';
 	}
+}
+
+async function takeFleetSlot(
+	refusedSlots: Set<'due' | 'other'>,
+	{ id, intent }: { id: string; intent: TrackerLaunchIntent },
+	{ permitAutomatic }: TrackerDispatchSchedulerOptions,
+	signal: AbortSignal
+) {
+	const lane = intent.source === 'due' ? 'due' : 'other';
+	if (
+		!refusedSlots.has(lane) &&
+		!(await permitAutomatic?.(id, intent.token, signal, intent.source))
+	)
+		refusedSlots.add(lane);
+	signal.throwIfAborted();
+	return !refusedSlots.has(lane);
 }
 
 function automaticQueueHold(

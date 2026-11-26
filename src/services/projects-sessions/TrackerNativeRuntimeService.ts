@@ -30,9 +30,9 @@ import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeT
 import { trackerDueItemPreview } from './tracker-native-runtime-service/readTrackerDuePreview';
 import {
 	composeTrackerLinks,
-	composeTrackerTelemetry,
 	trackerSpokeStatus
 } from './tracker-native-runtime-service/nativeTrackerLinks';
+import { composeTrackerTelemetry } from './tracker-native-runtime-service/nativeTrackerTelemetry';
 import { configuredTrackerReminderHost } from './tracker-native-runtime-service/configuredTrackerReminderHost';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 
@@ -149,12 +149,12 @@ function composeItemApi(
 function composeResponder(
 	store: TrackerPersistenceService,
 	runs: TrackerRunReadRepository,
-	{ syncResponder, role }: TrackerNativeRuntimeOptions,
+	{ syncResponder }: TrackerNativeRuntimeOptions,
 	permits: Pick<ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue'>
 ) {
 	if (!syncResponder) return undefined;
-	const runStore = role === 'hub' ? () => runs : undefined;
-	return new TrackerHubSyncService({ runs: runStore, ...permits, ...syncResponder, store });
+	// A spoke's responder serves its Mac peer, which exchanges run history while the hub is down.
+	return new TrackerHubSyncService({ runs: () => runs, ...permits, ...syncResponder, store });
 }
 
 function validateLinks({
