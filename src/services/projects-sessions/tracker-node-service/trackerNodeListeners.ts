@@ -2,9 +2,9 @@
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { takeTrackerBackupNow } from '../tracker-backup-service/takeTrackerBackupNow';
-import { stopTrackerRun, trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
+import { trackerCommandOrItemResponse } from './trackerAutolaunchCommand';
+import { stopTrackerRun } from './confirmTrackerLaunch';
 import { extendTrackerSlowRequest } from './extendTrackerSlowRequest';
-import { readTrackerNodeInspection } from './readTrackerNodeInspection';
 import { serveTrackerChanges } from '../tracker-change-feed/serveTrackerChanges';
 
 const host = '127.0.0.1';
@@ -133,11 +133,8 @@ function trackerOperationalApi(
 		case 'POST /sync':
 			runtime.kickLinks();
 			return Response.json({ ok: true });
-		default: {
-			const inspection =
-				request.method === 'GET' ? readTrackerNodeInspection(path, runtime, supervisor) : undefined;
-			return inspection ?? trackerLaunchAwareItemResponse(request, runtime);
-		}
+		default:
+			return trackerCommandOrItemResponse(request, path, runtime, supervisor);
 	}
 }
 

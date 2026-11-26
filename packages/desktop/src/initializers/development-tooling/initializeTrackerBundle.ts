@@ -5,10 +5,13 @@ import { startBundledTracker } from '../../services/development-tooling/tracker-
 
 /**
  * Installs or updates the Tracker that ships in the packaged Mac app, in the background after
- * Electron is ready. A failure is logged and never stops the app.
+ * Electron is ready. A failure is logged and never stops the app. A launch with its own
+ * `--user-data-dir` (a test or a candidate run beside the installed app) leaves the Mac's
+ * Tracker alone.
  */
 export function initializeTrackerBundle(): void {
 	if (!app.isPackaged || process.platform !== 'darwin') return;
+	if (app.commandLine.hasSwitch('user-data-dir')) return;
 	void app
 		.whenReady()
 		.then(() => startBundledTracker(app.getAppPath(), homedir()))
