@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_62ump5nnwq -->
 <script lang="ts">
+	import './trackerInboxChoices.css';
 	import { onMount } from 'svelte';
 	import type {
 		InboxFilter,
@@ -18,6 +19,7 @@
 		writeView
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 	import { followTrackerSource } from '../../../lib/development-tooling/tracker-inbox/followTrackerSource';
+	import { withRowChoices } from '../../../lib/development-tooling/tracker-inbox/withRowChoices';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import TrackerInboxDetail from './TrackerInboxDetail.svelte';
 	import TrackerInboxRows from './TrackerInboxRows.svelte';
@@ -50,7 +52,8 @@
 	export async function reload(): Promise<void> {
 		const [status, outbox] = await Promise.all([source.overview(), source.writes()]);
 		note(status);
-		overview = status.value ?? null;
+		const value = status.value;
+		overview = value ? { ...value, rows: await withRowChoices(source, value.rows) } : null;
 		loadFailure = status.value
 			? ''
 			: mac
@@ -68,7 +71,7 @@
 		}
 		const reply = await source.search(term.trim());
 		note(reply);
-		found = reply.value ?? [];
+		found = await withRowChoices(source, reply.value ?? []);
 	}
 
 	function choose(id: string) {
@@ -150,6 +153,9 @@
 		{#if found}
 			<hx-h2>Search results</hx-h2>
 			<TrackerInboxRows
+				{source}
+				{mode}
+				onchanged={follow}
 				rows={found}
 				{selected}
 				label="Search results"
@@ -163,6 +169,9 @@
 					>Blocked - needs you</hx-h2
 				>{/if}
 			<TrackerInboxRows
+				{source}
+				{mode}
+				onchanged={follow}
 				rows={listed}
 				{selected}
 				label={filter === 'all' ? 'All items' : bucketLabels[filter]}

@@ -1,5 +1,9 @@
 import { z } from 'zod';
 import {
+	chatId,
+	homeChatInput
+} from '$reports/lib/projects-sessions/hub-home/homeChatInput';
+import {
 	homeProviders,
 	homeRunPayload
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
@@ -109,23 +113,7 @@ export function parseHomePayload(value: unknown) {
 	return { ...result, overview };
 }
 
-export const chatId = z.string().uuid();
-
-export const chatInput = z
-	.object({
-		id: chatId,
-		agentId: id,
-		itemId: id,
-		kind: z.enum(['note', 'answer']),
-		question: text(2000).nullable(),
-		text: text(2000).refine((value) => value.trim().length > 0),
-		option: z.number().int().min(1).max(4).optional(),
-		confirmed: z.literal(true).optional()
-	})
-	.strict()
-	.refine((value) => (value.kind === 'answer') === Boolean(value.question))
-	.refine((value) => value.option === undefined || value.kind === 'answer')
-	.refine((value) => value.confirmed === undefined || value.option !== undefined);
+export { chatId, homeChatInput as chatInput };
 
 export const chatOutcome = z
 	.object({

@@ -169,8 +169,12 @@
 		return request;
 	}
 
-	function send(message: HomeChatInput) {
-		return api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message);
+	/** A linked computer that showed the item takes the write itself; otherwise the Hub queues it. */
+	async function send(message: HomeChatInput) {
+		return (
+			(await reads.chat(message)) ??
+			api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message)
+		);
 	}
 
 	async function changeSession(id: string, add: boolean) {
@@ -199,7 +203,7 @@
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} />
+			<HubHomeCards {view} {open} {send} {receipt} />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

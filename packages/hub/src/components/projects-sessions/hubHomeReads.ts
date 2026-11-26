@@ -33,6 +33,10 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 			void stored();
 			void linked();
 		},
+		async chat(message) {
+			if (closed || !linkedHome || linkedHome.actor !== actor()) return null;
+			return linkedHome.service.chat(message);
+		},
 		close() {
 			closed = true;
 			linkedHome?.service.close();

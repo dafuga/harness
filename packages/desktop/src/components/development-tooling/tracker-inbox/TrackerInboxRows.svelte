@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_zj35fp7e6k -->
 <script lang="ts">
-	import type { InboxRow } from '../../../models/development-tooling/TrackerInbox.types';
+	import type { InboxRow, TrackerInboxSource } from '../../../models/development-tooling/TrackerInbox.types';
 	import {
 		bucketLabels,
 		trackerStageLabels
@@ -10,20 +10,31 @@
 
 	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
 
+	import TrackerInboxRowAsk from './TrackerInboxRowAsk.svelte';
+
 	let {
+		source,
+		mode,
+		onchanged,
 		rows,
 		selected,
 		empty,
 		label,
 		onselect
 	}: {
+		source: TrackerInboxSource;
+		mode: 'phone' | 'mac';
+		onchanged: () => Promise<void>;
 		rows: InboxRow[];
 		selected: string | null;
 		empty: string;
 		label: string;
 		onselect: (id: string) => void;
 	} = $props();
+	let sent = $state('');
 </script>
+
+{#if sent}<hx-p class="hint" role="status">{sent}</hx-p>{/if}
 
 <hx-ul class="rows" aria-label={label}>
 	{#each rows as row (row.header.id)}
@@ -51,6 +62,15 @@
 					>
 				{/if}
 			</hx-button>
+			{#if row.review}
+				<TrackerInboxRowAsk
+					{source}
+					{mode}
+					review={row.review}
+					{onchanged}
+					onsent={(message) => (sent = message)}
+				/>
+			{/if}
 		</hx-li>
 	{:else}
 		<hx-li><hx-p class="hint">{empty}</hx-p></hx-li>
@@ -80,10 +100,13 @@
 	:global(.rows [aria-current='true']) {
 		border-color: var(--hx-color-primary);
 	}
+	:global(.rows li) {
+		display: grid;
+		gap: var(--hx-space-4);
+		min-width: 0;
+	}
 	:global(.rows .question) {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		overflow-wrap: anywhere;
 	}
 	:global(.rows .title) {
 		font-weight: var(--hx-style-weight-semibold);

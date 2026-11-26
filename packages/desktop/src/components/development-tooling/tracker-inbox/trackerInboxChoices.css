@@ -1,0 +1,52 @@
+/* @harness-uid u_ch01c3s0ak */
+/* The answer choices, on a Needs you row and in the item detail. */
+.inbox .choices {
+	display: grid;
+	gap: var(--hx-space-8);
+}
+.inbox .choices .plain {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: var(--hx-space-6);
+}
+.inbox .choice {
+	display: grid;
+	gap: var(--hx-space-2);
+	width: 100%;
+	text-align: left;
+}
+.inbox .choice[data-recommended='true'] {
+	border-width: var(--hx-border-medium);
+}
+.inbox .choice .badge {
+	font-size: var(--hx-type-size-xs);
+	color: var(--hx-color-primary);
+}
+.inbox .choice .effect {
+	font-size: var(--hx-type-size-xs);
+	color: var(--hx-color-text-muted);
+}
+.inbox .choices p {
+	margin: var(--hx-space-4) 0;
+}
+.inbox .choices .buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-6);
+}
+.inbox .choices button {
+	font: inherit;
+	padding: var(--hx-space-6) var(--hx-space-10);
+	border-radius: var(--hx-radius-small);
+	border: var(--hx-border-thin) solid var(--hx-color-primary);
+	background: transparent;
+	color: var(--hx-color-text);
+}
+.inbox .choices button.quiet {
+	border-color: var(--hx-color-border);
+}
+.inbox .choices button:disabled {
+	opacity: var(--hx-opacity-disabled);
+}
