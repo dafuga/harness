@@ -2,7 +2,7 @@
 	"name": "tracker-release-copy-safety",
 	"goal": "A leftover rsync receiver from a failed or timed-out release copy can never change the live Tracker release, and every host is re-verified against SHA256SUMS after the soak",
 	"createdAt": "2026-11-26T21:43:43.915Z",
-	"updatedAt": "2026-11-26T21:44:21.764Z",
+	"updatedAt": "2026-11-26T21:47:56.028Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -39,17 +39,23 @@
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T21:45:26.760Z",
+			"evidence": "6a61c789e9: scripts/tracker-release-copy.sh and the 'Release copy and soak' section of specification/tracker-native-service.md. The test runs in test:unit."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T21:45:29.521Z",
+			"evidence": "loop record green passed at 6a61c789e9 with unchanged tests and command."
 		},
 		{
 			"id": "guard",
 			"title": "In an isolated fixture or temporary workspace, prove reintroducing the original failure makes the guard fail; restore and prove it passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T21:47:56.028Z",
+			"evidence": "Detached temporary worktree at the fix commit: original recipe -> 6/6 fail; only --partial restored -> the fresh-directory test fails; receiver sweep disabled -> 'nothing is published while a receiver cannot be stopped' fails; restored -> 6/6 pass. Worktree removed. No test isolates the host-local publish copy on its own."
 		},
 		{
 			"id": "verify",
