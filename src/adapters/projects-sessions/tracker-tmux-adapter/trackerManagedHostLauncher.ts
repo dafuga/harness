@@ -111,7 +111,13 @@ async function startManagedSession(
 		await launchTmux(
 			{ tmux, trackerBin, trackerExecutable, worktree: plan.worktree },
 			plan.receipt,
-			{ script, command, clientPath: plan.clientPath, guestAuthFile: plan.guestAuthFile },
+			{
+				script,
+				command,
+				clientPath: plan.clientPath,
+				guestAuthFile: plan.guestAuthFile,
+				cpuBudget: input.cpuBudget
+			},
 			signal
 		);
 	}

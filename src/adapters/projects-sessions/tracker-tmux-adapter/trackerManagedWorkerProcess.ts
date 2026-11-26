@@ -21,6 +21,7 @@ import {
 } from './trackerManagedLaunchReceipt';
 import { managedTmuxEnvironment, missingTmuxSession } from './trackerTmuxClose';
 import { trackerManagedProviderEnvironment } from './trackerManagedProviderCommands';
+import { trackerCpuBudgetEnvironment } from '../../../utils/projects-sessions/trackerCpuBudget';
 
 export const workerScript = `#!/bin/sh
 set -u
@@ -51,7 +52,7 @@ export async function launchTmux(
 	signal: AbortSignal
 ): Promise<void> {
 	const { node, itemId, runId, token } = receipt;
-	const { script, command, clientPath, guestAuthFile } = execution;
+	const { script, command, clientPath, guestAuthFile, cpuBudget } = execution;
 	const environment = [
 		...Object.entries(trackerManagedProviderEnvironment(trackerBin, command)).map(
 			([name, value]) => `${name}=${value}`
@@ -62,8 +63,11 @@ export async function launchTmux(
 		`TRACKER_ITEM_ID=${itemId}`,
 		`TRACKER_RUN_ID=${runId}`,
 		...(command.image ? [`HARNESS_TASK_DOCKER_IMAGE=${command.image}`] : []),
-		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : [])
+		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : []),
+		...(cpuBudget ? trackerCpuBudgetEnvironment(cpuBudget) : [])
 	];
+	// Outside the home project, lower priority lets Harbor win contention.
+	const priority = cpuBudget ? ['/usr/bin/nice', '-n', '10'] : [];
 	await runTrackerHostCommand(
 		tmux,
 		[
@@ -86,6 +90,7 @@ export async function launchTmux(
 			script,
 			dirname(script),
 			token,
+			...priority,
 			...command.argv
 		],
 		signal

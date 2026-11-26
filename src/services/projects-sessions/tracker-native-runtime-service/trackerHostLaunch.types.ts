@@ -36,6 +36,8 @@ export type TrackerHostStartRequest = TrackerHostTarget & {
 	brief: string;
 	backend: 'native' | 'docker';
 	queuedAt: number;
+	/** Cores the session must stay within; it also runs at lower priority. */
+	cpuBudget?: number;
 };
 
 export interface TrackerHostLaunchPort {

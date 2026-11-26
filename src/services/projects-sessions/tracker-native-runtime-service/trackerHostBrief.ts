@@ -4,11 +4,12 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 import { trackerAskOptionsRule } from './trackerAskOptionsRule';
 import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
 import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
+import { trackerCpuBudgetRule } from '../../../utils/projects-sessions/trackerCpuBudget';
 
 export function formatTrackerHostBrief(
 	item: TrackerItem,
 	completion: string,
-	recovery = false
+	{ recovery = false, cpuBudget }: { recovery?: boolean; cpuBudget?: number } = {}
 ): string {
 	const id = item.id.slice(0, 6);
 	const notes = item.notes_log.slice(-10).map(({ at, text }) => `- ${at} ${text.slice(0, 1200)}`);
@@ -23,6 +24,7 @@ export function formatTrackerHostBrief(
 		'',
 		`Tracker item ${id} (full ID ${item.id}).`,
 		'',
+		cpuBudget && trackerCpuBudgetRule(cpuBudget),
 		item.sensitive &&
 			'Keep credentials out of output and obtain approval before any irreversible action.',
 		item.adapter_instructions && `## Source instructions\n\n${item.adapter_instructions}`,

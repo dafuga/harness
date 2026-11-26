@@ -1,18 +1,24 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerEgressPolicy } from '../../../utils/projects-sessions/trackerEgressPolicy.types';
 import type { TrackerGithubFollowUpPolicy } from '../TrackerAdapterPollService.types';
+import type {
+	TrackerHostResourceLimits,
+	TrackerHostResources
+} from '../../../utils/projects-sessions/trackerHostResources.types';
 
 export type TrackerHostEffectsMode =
 	| { mode: 'held' }
 	| ({ mode: 'active'; checkpoint: string } & Omit<
 			TrackerHostEffects,
-			'adapter' | 'workerClient'
+			'adapter' | 'workerClient' | 'hostResources'
 	  > & {
 				adapter?: TrackerHostAdapterConfig;
 			});
 
 export interface TrackerHostEffects {
 	workerClient?: TrackerWorkerClient;
+	/** Replaces the live readings of this computer used by launch guards. */
+	hostResources?: TrackerHostResources;
 	launch?: TrackerHostLaunchConfig;
 	watchdog?:
 		| (({ driver: string } | { tmux: string }) & {
@@ -24,7 +30,7 @@ export interface TrackerHostEffects {
 	adapter?: TrackerHostAdapterConfig & { leaseFile: string };
 }
 
-export type TrackerHostLaunchConfig = {
+export type TrackerHostLaunchConfig = TrackerHostResourceLimits & {
 	maxConcurrent?: number;
 	legacyRunDirectory?: string;
 	repositories: Record<string, TrackerHostRepository>;

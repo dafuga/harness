@@ -26,6 +26,8 @@ import type {
 	TrackerHostTarget
 } from './trackerHostLaunch.types';
 import { trackerHostRunner } from './trackerHostRunner';
+import { TrackerHostResourceAdapter } from '../../../adapters/projects-sessions/TrackerHostResourceAdapter';
+import type { TrackerHostResources } from '../../../utils/projects-sessions/trackerHostResources.types';
 
 const macNodes = new Set(['daniel-primary-mbp', 'harbor-mbp-2']);
 
@@ -40,6 +42,7 @@ export function trackerHostLaunch(
 		workerClient?: TrackerWorkerClient;
 		transcriptRoots?: readonly string[];
 		now?: () => number;
+		hostResources?: TrackerHostResources;
 	} = {}
 ): NonNullable<TrackerNativeRuntimeOptions['dispatch']> {
 	const { adapter } = effects;
@@ -58,7 +61,12 @@ export function trackerHostLaunch(
 		now: effects.now,
 		automaticEnabled: effects.automaticEnabled
 	});
-	const admit = trackerHostAdmission(store, { config, adapter, routeFor });
+	const admit = trackerHostAdmission(store, {
+		config,
+		adapter,
+		routeFor,
+		resources: effects.hostResources ?? localResources(config)
+	});
 	return {
 		runner: trackerCapacityRunner(host, store, config, repositories),
 		sessions: host.sessions,
@@ -81,6 +89,11 @@ export function trackerHostLaunch(
 			adapterDue: adapter?.scheduleDue === true
 		})
 	};
+}
+
+/** A driver owns its own host; the managed launcher runs sessions on this computer. */
+function localResources(config: TrackerHostLaunchConfig) {
+	return 'managed' in config ? new TrackerHostResourceAdapter() : undefined;
 }
 
 function trackerLaunchTmux(config: TrackerHostLaunchConfig, node: string, configured?: string) {
@@ -196,6 +209,7 @@ export function configuredHostDispatch(
 	return launch
 		? trackerHostLaunch(store, launch, {
 				workerClient,
+				hostResources: effects?.hostResources,
 				automaticEnabled,
 				transcriptRoots: watchdog?.transcriptRoots,
 				recoverDroppedSessions: watchdog && ('tmux' in watchdog || 'driver' in watchdog),

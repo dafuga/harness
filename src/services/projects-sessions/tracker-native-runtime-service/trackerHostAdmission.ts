@@ -8,6 +8,8 @@ import type {
 } from './nativeTrackerHostEffects.types';
 import type { TrackerHostRoute, TrackerHostTarget } from './trackerHostLaunch.types';
 import type { TrackerOccupiedRun } from './trackerHostAdmission.types';
+import type { TrackerHostResources } from '../../../utils/projects-sessions/trackerHostResources.types';
+import { trackerHostResourceAdmission } from './trackerHostResourceAdmission';
 
 export const trackerHostCapacityHold = 'Tracker host is at session capacity';
 
@@ -16,20 +18,28 @@ export function trackerHostAdmission(
 	{
 		config,
 		adapter,
-		routeFor
+		routeFor,
+		resources
 	}: {
 		config: TrackerHostLaunchConfig;
 		adapter?: TrackerHostAdapterConfig;
 		routeFor: TrackerHostRoute;
+		resources?: TrackerHostResources;
 	}
 ): TrackerDispatchPolicy['admit'] {
 	const cap = config.maxConcurrent ?? 2;
+	const hostHold = trackerHostResourceAdmission(store, config, {
+		resources,
+		occupied: () => occupiedHostRuns(store)
+	});
 	return (item, intent, rung) => {
 		const route = routeFor(item);
 		if (!route || !configuredLane(config, route.platform))
 			return 'no approved Tracker repository or platform for this node';
 		if (occupiedHostSlots(store) >= cap) return trackerHostCapacityHold;
 		if (rung && !['codex', 'claude'].includes(rung.cli)) return 'no supported Tracker provider';
+		const shortage = hostHold(item, route);
+		if (shortage) return shortage;
 		if (adapter?.dueDisk && intent.source === 'due' && item.adapterDueOwner === store.node)
 			return adapterDueDiskHold({
 				config,

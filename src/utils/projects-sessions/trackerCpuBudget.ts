@@ -1,0 +1,30 @@
+const budgetNode = 'harbor-mbp-2';
+export const trackerHomeProject = 'harbor';
+/** On MB2 all work outside Harbor shares this many cores, in one session at a time. */
+export const trackerBudgetCores = 4;
+export const trackerBudgetSessions = 1;
+
+export function trackerBudgetNode(node: string): boolean {
+	return node === budgetNode;
+}
+
+export function trackerBudgetedWork(node: string, project: string | null | undefined): boolean {
+	return trackerBudgetNode(node) && project?.trim().toLowerCase() !== trackerHomeProject;
+}
+
+export function trackerCpuBudgetEnvironment(cores: number): string[] {
+	return [
+		'TRACKER_CPU_BUDGET',
+		'CMAKE_BUILD_PARALLEL_LEVEL',
+		'CARGO_BUILD_JOBS',
+		'OMP_NUM_THREADS',
+		'RAYON_NUM_THREADS',
+		'GOMAXPROCS'
+	]
+		.map((name) => `${name}=${cores}`)
+		.concat(`MAKEFLAGS=-j${cores}`);
+}
+
+export function trackerCpuBudgetRule(cores: number): string {
+	return `**CPU budget:** on this computer all non-Harbor work shares ${cores} cores (Daniel's rule). Run tests and builds with at most ${cores} workers (for example \`--maxWorkers=${cores}\`, \`--workers=${cores}\`, \`-j${cores}\`), one test suite at a time, and no parallel browser runs.`;
+}

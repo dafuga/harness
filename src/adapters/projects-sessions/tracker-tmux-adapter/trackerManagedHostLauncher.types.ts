@@ -37,6 +37,7 @@ export interface TrackerManagedExec {
 	script: string;
 	command: TrackerManagedCommand;
 	clientPath: string;
+	cpuBudget?: number;
 	guestAuthFile?: string;
 }
 

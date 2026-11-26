@@ -11,6 +11,7 @@ import type {
 } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerHostCapacityHold } from './trackerHostAdmission';
+import { trackerResourceHoldPrefix } from '../../../utils/projects-sessions/trackerHostResourceHold';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { recoveryPollInterval, sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerWatchdogLaunch } from './trackerSessionHealth.types';
@@ -56,7 +57,7 @@ function recoveryBudget(
 	if (!stored || (exhausted && cleared) || resetBudget(stored, latest, item)) return emptyState;
 	return {
 		...stored,
-		failures: stored.failures.filter((reason) => reason !== trackerHostCapacityHold)
+		failures: stored.failures.filter((reason) => !hostWait(reason))
 	};
 }
 
@@ -90,9 +91,11 @@ function rejectRecoverySubmission(
 	}
 	const reason =
 		result && 'reason' in result ? result.reason : 'Tracker could not submit the launch request.';
-	if (reason === trackerHostCapacityHold) {
+	if (hostWait(reason)) {
 		saveRecovery(store, key, state);
-		return 'Tracker is waiting for a free host session slot.';
+		return reason === trackerHostCapacityHold
+			? 'Tracker is waiting for a free host session slot.'
+			: `Tracker is waiting for host resources. ${reason}.`;
 	}
 	if (
 		/^(?:no approved Tracker repository or platform|no supported Tracker provider|Tracker model cannot be selected|launcher disabled)/.test(
@@ -101,6 +104,11 @@ function rejectRecoverySubmission(
 	)
 		return flagRecovery(store, { item, key, state }, now, reason);
 	return recordFailure(store, { item, key, state: { ...state, requestedAt: now } }, now, reason);
+}
+
+/** A busy or short computer delays recovery without spending a relaunch attempt. */
+function hostWait(reason: string) {
+	return reason === trackerHostCapacityHold || reason.startsWith(trackerResourceHoldPrefix);
 }
 
 function recoveryRequestChanged(result?: TrackerDispatchResult) {
