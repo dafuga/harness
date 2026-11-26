@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-health-service-tracker-health-host-checks",
+	"uid": "u_og7grs5lnd",
+	"kind": "service",
+	"title": "trackerHealthHostChecks",
+	"responsibility": "Owns the trackerHealthHostChecks service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-health-service/trackerHealthHostChecks.ts"],
+		"symbols": ["trackerHealthHostChecks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerHealthHostChecks.host",
+				"type": "TrackerHealthHost",
+				"required": true
+			},
+			{
+				"name": "trackerHealthHostChecks.node",
+				"type": "{ configPath: string; config: TrackerNodeConfig }",
+				"required": true
+			},
+			{
+				"name": "trackerHealthHostChecks.api",
+				"type": "TrackerHealthApiResult",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerHealthHostChecks",
+				"type": "TrackerHealthCheck[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerHealthHostChecks",
+				"inputs": [
+					{
+						"name": "trackerHealthHostChecks.host",
+						"type": "TrackerHealthHost",
+						"required": true
+					},
+					{
+						"name": "trackerHealthHostChecks.node",
+						"type": "{ configPath: string; config: TrackerNodeConfig }",
+						"required": true
+					},
+					{
+						"name": "trackerHealthHostChecks.api",
+						"type": "TrackerHealthApiResult",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHealthHostChecks",
+						"type": "TrackerHealthCheck[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-health",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-health-service/trackerHealthHostChecks.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-health-service/trackerHealthHostChecks.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

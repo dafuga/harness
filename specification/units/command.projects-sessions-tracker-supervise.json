@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-supervise",
+	"uid": "u_vgqa27fzcq",
+	"kind": "command",
+	"title": "TrackerSuperviseCommand",
+	"responsibility": "Owns the TrackerSuperviseCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/TrackerSuperviseCommand.ts"],
+		"symbols": ["TrackerSuperviseCommand", "TrackerSuperviseCommand.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerSuperviseCommand.run.args",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerSuperviseCommand.run",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerSuperviseCommand.run",
+				"inputs": [
+					{
+						"name": "TrackerSuperviseCommand.run.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerSuperviseCommand.run",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker-command-harness-self",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-tracker-supervisor-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/TrackerSuperviseCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/TrackerSuperviseCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -73,6 +73,8 @@
 			"trackerTmuxPane",
 			"matchesTrackerTmuxPane",
 			"trackerTmuxKeys",
+			"trackerWorkerClientRefusal",
+			"isTrackerWorkerClient",
 			"trackerWorkerClient",
 			"trackerGuestAuthFile",
 			"sendTrackerTmuxNudge",
@@ -508,6 +510,11 @@
 				"type": "string",
 				"required": false,
 				"description": "Control-character-free message already checked by the caller."
+			},
+			{
+				"name": "isTrackerWorkerClient.database",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "trackerWorkerClient.directory",
@@ -1487,6 +1494,24 @@
 						"name": "trackerTmuxKeys",
 						"type": "string",
 						"description": "Build the tmux command body with text escaped for literal input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerWorkerClient",
+				"inputs": [
+					{
+						"name": "isTrackerWorkerClient.database",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerWorkerClient",
+						"type": "boolean"
 					}
 				],
 				"errors": [],

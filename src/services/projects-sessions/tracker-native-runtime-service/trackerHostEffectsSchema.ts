@@ -50,7 +50,8 @@ const launchPolicy = {
 			verify: z.string().trim().min(1).max(2000).optional()
 		})
 	),
-	due: z.boolean().optional()
+	due: z.boolean().optional(),
+	codexPausedUntil: z.iso.datetime({ offset: true }).optional()
 };
 const egressHost = z.string().trim().min(1).max(253);
 const egressPilot = z

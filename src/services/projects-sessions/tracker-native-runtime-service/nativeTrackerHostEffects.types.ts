@@ -34,6 +34,8 @@ export type TrackerHostLaunchConfig = TrackerHostResourceLimits & {
 	maxConcurrent?: number;
 	legacyRunDirectory?: string;
 	repositories: Record<string, TrackerHostRepository>;
+	/** No Codex starts before this ISO time. */
+	codexPausedUntil?: string;
 	/** Due tasks launch at their time unless this is false. */
 	due?: boolean;
 } & ({ driver: string } | { managed: TrackerManagedLaunchConfig });

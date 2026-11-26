@@ -5,8 +5,11 @@ import { existsSync } from 'node:fs';
 import { constants, homedir } from 'node:os';
 import { isAbsolute, join } from 'node:path';
 import { TrackerCutoverCommand } from './TrackerCutoverCommand';
+import { TrackerHealthCommand } from './TrackerHealthCommand';
 import { TrackerRehearsalCommand } from './TrackerRehearsalCommand';
 import { TrackerServeCommand } from './TrackerServeCommand';
+import { TrackerServiceCommand } from './TrackerServiceCommand';
+import { TrackerSuperviseCommand } from './TrackerSuperviseCommand';
 import { runNativeTracker, selectedTrackerConfig } from './tracker-command/runNativeTracker';
 
 export class TrackerCommand {
@@ -24,6 +27,9 @@ export class TrackerCommand {
 		if (args[0] === 'verify-cutover') return new TrackerCutoverCommand().run(args.slice(1));
 		if (args[0] === 'serve') return new TrackerServeCommand().run(args.slice(1));
 		if (args[0] === 'rehearse') return new TrackerRehearsalCommand().run(args.slice(1));
+		if (args[0] === 'health') return new TrackerHealthCommand().run(args.slice(1));
+		if (args[0] === 'supervise') return new TrackerSuperviseCommand().run(args.slice(1));
+		if (args[0] === 'service') return new TrackerServiceCommand().run(args.slice(1));
 		const native = selectedTrackerConfig();
 		if (native !== undefined) return runNativeTracker(args, native);
 		return runLegacyTracker(args);

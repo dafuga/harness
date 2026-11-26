@@ -2,6 +2,7 @@
 import { statfsSync } from 'node:fs';
 import type { TrackerDispatchPolicy } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { trackerProviderHold } from './trackerProviderHolds';
 import type {
 	TrackerHostAdapterConfig,
 	TrackerHostLaunchConfig
@@ -19,17 +20,19 @@ export function trackerHostAdmission(
 		config,
 		adapter,
 		routeFor,
-		resources
+		hostResources,
+		now = Date.now
 	}: {
 		config: TrackerHostLaunchConfig;
 		adapter?: TrackerHostAdapterConfig;
 		routeFor: TrackerHostRoute;
-		resources?: TrackerHostResources;
+		hostResources?: TrackerHostResources;
+		now?: () => number;
 	}
 ): TrackerDispatchPolicy['admit'] {
 	const cap = config.maxConcurrent ?? 2;
 	const hostHold = trackerHostResourceAdmission(store, config, {
-		resources,
+		resources: hostResources,
 		occupied: () => occupiedHostRuns(store)
 	});
 	return (item, intent, rung) => {
@@ -37,18 +40,18 @@ export function trackerHostAdmission(
 		if (!route || !configuredLane(config, route.platform))
 			return 'no approved Tracker repository or platform for this node';
 		if (occupiedHostSlots(store) >= cap) return trackerHostCapacityHold;
-		if (unsupportedProvider(rung)) return 'no supported Tracker provider';
+		const unavailable = rung && providerAdmissionHold(store, rung.cli, now());
+		if (unavailable) return unavailable;
 		const shortage = hostHold(item, route);
 		if (shortage) return shortage;
-		const dueDisk = intent.source === 'due' && item.adapterDueOwner === store.node;
-		return dueDisk && adapter?.dueDisk
-			? adapterDueDiskHold({ config, route, dueDisk: adapter.dueDisk })
-			: null;
+		const adapterDue = intent.source === 'due' && item.adapterDueOwner === store.node;
+		return adapterDue ? adapterDueDiskHold({ config, route, dueDisk: adapter?.dueDisk }) : null;
 	};
 }
 
-function unsupportedProvider(rung: Parameters<TrackerDispatchPolicy['admit']>[2]) {
-	return Boolean(rung && !['codex', 'claude'].includes(rung.cli));
+function providerAdmissionHold(store: TrackerPersistenceService, cli: string, now: number) {
+	if (cli !== 'codex' && cli !== 'claude') return 'no supported Tracker provider';
+	return trackerProviderHold(store, cli, now);
 }
 
 /** Only runs the launcher is truly running hold a slot; leftover tmux sessions never do. */
@@ -109,8 +112,9 @@ function adapterDueDiskHold({
 }: {
 	config: TrackerHostLaunchConfig;
 	route: TrackerHostTarget;
-	dueDisk: NonNullable<TrackerHostAdapterConfig['dueDisk']>;
+	dueDisk: TrackerHostAdapterConfig['dueDisk'];
 }) {
+	if (!dueDisk) return null;
 	const repoHold = trackerAdapterDiskHold('workdir' in route ? route.workdir : route.repo, dueDisk);
 	if (repoHold || 'driver' in config) return repoHold;
 	return trackerAdapterDiskHold(config.managed.stateDirectory, dueDisk);
