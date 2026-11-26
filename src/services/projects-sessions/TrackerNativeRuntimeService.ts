@@ -21,6 +21,7 @@ import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
+import { composeTrackerRecurrence } from './tracker-native-runtime-service/composeTrackerRecurrence';
 import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
 import {
 	configuredHostWatchdog,
@@ -28,7 +29,7 @@ import {
 } from './tracker-native-runtime-service/trackerHostWatchdog';
 import { configuredHostDispatch } from './tracker-native-runtime-service/trackerHostLaunch';
 import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeTrackerDispatch';
-import { trackerDueItemPreview } from './tracker-native-runtime-service/readTrackerDuePreview';
+import { trackerItemViews } from './tracker-native-runtime-service/trackerLaunchWait';
 import {
 	composeTrackerLinks,
 	composeTrackerTelemetry,
@@ -69,7 +70,7 @@ export class TrackerNativeRuntimeService {
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
 		const runs = new TrackerRunReadRepository(database, node);
 		this.notifications = composeNotifications(store, options);
-		const recurring = composeRecurrence(store, options, this.notifications);
+		const recurring = composeTrackerRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
@@ -83,7 +84,7 @@ export class TrackerNativeRuntimeService {
 			duePreview: this.duePreview
 		} = composed);
 		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
-		this.items = composeItemApi(this, runs, options, recurring?.repo);
+		this.items = composeItemApi(this, runs, options, recurring);
 		this.backups = composeTrackerBackups(this, options);
 		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
 			store,
@@ -129,7 +130,7 @@ function composeItemApi(
 		manualLaunch,
 		phoneWrite
 	}: TrackerNativeRuntimeOptions,
-	recurring?: TrackerRecurringRepository
+	recurring?: ReturnType<typeof composeTrackerRecurrence>
 ) {
 	const { store } = runtime;
 	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
@@ -141,10 +142,14 @@ function composeItemApi(
 		validateModel,
 		planLaunch,
 		manualLaunch,
-		schedulePreview: (item) => trackerDueItemPreview(runtime, item),
+		...trackerItemViews(runtime),
 		reject: runtime.dispatch && ((id, reason) => runtime.dispatch!.reject(id, reason)),
 		runs,
-		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }
+		jobs: recurring?.jobs,
+		recurring: {
+			role,
+			history: recurring && ((id, limit) => recurring.repo.history(id, limit))
+		}
 	});
 }
 
@@ -170,21 +175,6 @@ function validateLinks({
 		throw new TypeError('Tracker recurrence needs a hub with a configured notification outbox');
 	const kinds = new Set(links.map((link) => link.link ?? 'hub'));
 	if (kinds.size !== links.length) throw new TypeError('Duplicate Tracker spoke link');
-}
-
-function composeRecurrence(
-	store: TrackerPersistenceService,
-	options: TrackerNativeRuntimeOptions,
-	notifications?: TrackerNotificationService
-) {
-	if (!options.recurring || !notifications) return undefined;
-	const repo = new TrackerRecurringRepository(store);
-	const worker = new TrackerRecurringService(repo, {
-		now: options.now ?? Date.now,
-		enqueue: (entry) => notifications.enqueue(entry),
-		jobs: options.recurring.jobs
-	});
-	return { repo, worker };
 }
 
 function composeNotifications(
