@@ -5,6 +5,7 @@
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type { HomeSubscription } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import {
+		creditsLabel,
 		providerNames,
 		relativeWhen,
 		quotaReset,
@@ -40,7 +41,7 @@
 		!worst
 			? { tone: 'done', label: 'OK' }
 			: warningFor(worst.left) === 'critical'
-				? { tone: 'blocked', label: 'Almost out' }
+				? { tone: 'blocked', label: warningLabel(worst) }
 				: { tone: 'needs-you', label: 'Low' }
 	);
 </script>
@@ -73,8 +74,8 @@
 		{#if detailed && worst && warningFor(worst.left) === 'critical'}
 			<hx-div class="po-callout hh-q-callout" data-kind="blocked" data-level="critical">
 				<hx-div class="po-callout-head"
-					><hx-span class="po-callout-label">Almost out</hx-span><hx-span class="po-callout-meta"
-						>{quotaReset(worst.resetsAt, now)}</hx-span
+					><hx-span class="po-callout-label">{warningLabel(worst)}</hx-span><hx-span
+						class="po-callout-meta">{quotaReset(worst.resetsAt, now)}</hx-span
 					></hx-div
 				>
 				<hx-p class="po-callout-text">{worst.label}: {worst.left}% left.</hx-p>
@@ -116,7 +117,7 @@
 				{/each}
 				{#if subscription.credits}<hx-div class="hh-q-line hh-q-credits"
 						><hx-span class="hh-q-label">Credits</hx-span><hx-span class="hh-q-value"
-							><hx-strong>{subscription.credits}</hx-strong></hx-span
+							><hx-strong>{creditsLabel(subscription.credits)}</hx-strong></hx-span
 						></hx-div
 					>{/if}
 			</hx-div>
