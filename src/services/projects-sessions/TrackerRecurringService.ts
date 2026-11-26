@@ -1,6 +1,9 @@
 // @harness-uid u_adwgoryfne
 import type { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
-import type { TrackerRecurringWork } from '../../repositories/projects-sessions/TrackerRecurringRepository.types';
+import type {
+	TrackerClaimedJob,
+	TrackerRecurringWork
+} from '../../repositories/projects-sessions/TrackerRecurringRepository.types';
 import { trackerIsoTime } from '../../utils/projects-sessions/normalizeTrackerDue';
 import type { TrackerRecurringOptions } from './TrackerRecurringService.types';
 import { planRecurringOccurrence } from './tracker-recurring-service/planRecurringOccurrence';
@@ -17,6 +20,11 @@ export class TrackerRecurringService {
 
 	status() {
 		return { enabled: Boolean(this.options.jobs), ...this.repository.jobStatus() };
+	}
+
+	/** Wait for started jobs to store their receipts before the journal owner leaves. */
+	async drain(): Promise<void> {
+		await this.options.jobs?.drain?.();
 	}
 
 	async tick(signal: AbortSignal): Promise<void> {
@@ -57,14 +65,22 @@ export class TrackerRecurringService {
 			this.repository.settle(work);
 			return;
 		}
+		await this.processJob(work, signal);
+	}
+
+	/** Start a queued job once the runner has room; look up the receipt of a claimed one. */
+	private async jobReceipt(work: TrackerClaimedJob, signal: AbortSignal) {
 		const { jobs } = this.options;
-		if (!jobs) return;
+		if (!jobs || (work.phase === 'queued' && jobs.busy?.())) return undefined;
 		const { job, wake } = work;
-		const request = { ...job, key: wake.key, occurrence: trackerIsoTime(wake.at) };
-		const receipt =
-			work.phase === 'queued'
-				? this.repository.claim(work) && (await jobs.start(request, signal))
-				: await jobs.observe(request, signal);
+		const cmd = this.repository.boxJobs.read(job.item_id)?.cmd ?? '';
+		const request = { ...job, cmd, key: wake.key, occurrence: trackerIsoTime(wake.at) };
+		if (work.phase === 'claimed') return jobs.observe(request, signal);
+		return this.repository.claim(work) ? jobs.start(request, signal) : undefined;
+	}
+
+	private async processJob(work: TrackerClaimedJob, signal: AbortSignal) {
+		const receipt = await this.jobReceipt(work, signal);
 		if (!receipt) return;
 		const outcome = recurringJobOutcome(work, receipt, this.options.now());
 		const pendingWake = this.repository.settle({ ...work, phase: 'claimed' }, outcome);

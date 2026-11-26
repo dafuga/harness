@@ -46,6 +46,7 @@
 			"stopTrackerRun",
 			"holdLegacySupervisorSocket",
 			"readTrackerBackupList",
+			"readTrackerBackupFiles",
 			"readTrackerNodeInspection",
 			"trackerCommandOrItemResponse",
 			"trackerDigestSession",
@@ -107,6 +108,16 @@
 				"name": "readTrackerBackupList.dir",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "readTrackerBackupList.backups",
+				"type": "{ status: object; externalDirectory?: string }",
+				"required": false
+			},
+			{
+				"name": "readTrackerBackupFiles.dir",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "readTrackerNodeInspection.path",
@@ -301,6 +312,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "readTrackerBackupFiles",
+				"type": "unknown"
+			},
+			{
 				"name": "readTrackerNodeInspection",
 				"type": "Response | undefined"
 			},
@@ -483,11 +498,34 @@
 						"name": "readTrackerBackupList.dir",
 						"type": "string",
 						"required": false
+					},
+					{
+						"name": "readTrackerBackupList.backups",
+						"type": "{ status: object; externalDirectory?: string }",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "readTrackerBackupList",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerBackupFiles",
+				"inputs": [
+					{
+						"name": "readTrackerBackupFiles.dir",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerBackupFiles",
 						"type": "unknown"
 					}
 				],
@@ -942,6 +980,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.projects-sessions-tracker-job-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.projects-sessions-tracker-tmux",
 			"via": "import",
 			"origin": "derived"
@@ -997,12 +1040,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-backup-service-take-tracker-backup-now",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-change-feed-serve-tracker-changes",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node-service-extend-tracker-slow-request",
 			"via": "import",
 			"origin": "derived"
 		},

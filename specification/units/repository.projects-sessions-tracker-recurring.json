@@ -35,6 +35,8 @@
 			"TrackerClaimedJob",
 			"TrackerCurrentOccurrence",
 			"TrackerRecurringSettlement",
+			"TrackerBoxJob",
+			"TrackerListedBoxJob",
 			"trackerRecurringSchema",
 			"readRecurringResult",
 			"syncRecurringResult",
@@ -471,6 +473,11 @@
 		},
 		{
 			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-recurring-repository-box-jobs",
 			"via": "import",
 			"origin": "derived"
 		},
