@@ -3,6 +3,7 @@ import type { MachineStatus, OverviewItem } from './projectOverview.types';
 
 /** Item statuses the tracker reports, including ignored records that never affect a card. */
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import type { TrackerStage } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 
 export type TrackerItemStatus = 'open' | 'in_progress' | 'blocked' | 'done' | 'ignored';
 
@@ -41,6 +42,8 @@ export type TrackerItemRecord = {
 	owner?: string | null;
 	answer?: string | null;
 	answeredAt?: string | null;
+	/** The planning stage Tracker records: idea, detail, design or build. */
+	stage?: TrackerStage | null;
 };
 
 /** An item that may appear on a card: not deleted, sensitive or ignored, and named by its agent. */
@@ -49,6 +52,13 @@ export type IncludedTrackerItem = TrackerItemRecord & {
 	status: OverviewItem['status'];
 };
 
+export type TrackerRunDetailValue = string | number | boolean | object | null | undefined;
+
+/** The run fields Home reads, as the Tracker sends them, before they are checked. */
+export type TrackerRunDetailInput = Partial<
+	Record<'queued_at' | 'started_at' | 'outcome' | 'model' | 'effort', TrackerRunDetailValue>
+>;
+
 /** A run from GET /runs. The item's agent, not the run's project, names the card. */
 export type TrackerRunRecord = {
 	id: number;
@@ -56,6 +66,11 @@ export type TrackerRunRecord = {
 	item_id: string;
 	state: string;
 	ended_at: number | null;
+	queued_at?: number | null;
+	started_at?: number | null;
+	outcome?: string | null;
+	model?: string | null;
+	effort?: string | null;
 };
 
 /** A computer from /machines or /status.machines. Session and process counts are omitted. */

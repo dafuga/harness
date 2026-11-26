@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-tmux-adapter-tracker-startup-cause",
+	"uid": "u_t26aucznfe",
+	"kind": "adapter",
+	"title": "trackerStartupCause",
+	"responsibility": "Reduces launch failure output to one bounded line with credentials redacted.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/projects-sessions/tracker-tmux-adapter/trackerStartupCause.ts"],
+		"symbols": ["trackerStartupCause"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerStartupCause.text",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerStartupCause",
+				"type": "string | undefined"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerStartupCause",
+				"inputs": [
+					{
+						"name": "trackerStartupCause.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerStartupCause",
+						"type": "string | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-redact-secrets",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerStartupCause.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerStartupCause.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

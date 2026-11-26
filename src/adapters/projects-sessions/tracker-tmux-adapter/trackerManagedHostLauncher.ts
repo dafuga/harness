@@ -1,11 +1,8 @@
 // @harness-uid u_fyf7e7kyi5
-import { existsSync, mkdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { controlledTrackerExecutable } from '../tracker-host-process-adapter/trackerHostCommand';
-import type {
-	TrackerManagedLaunchConfig,
-	TrackerWorkerClient
-} from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
+import type { TrackerManagedLaunchConfig } from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type {
 	TrackerHostLaunchPort,
 	TrackerHostStartReply,
@@ -16,27 +13,23 @@ import {
 	checkTrackerManagedReceipt,
 	confirmManagedClaudeStartup,
 	trackerManagedEvidence,
-	managedSessionName,
 	trackerManagedToken
 } from './trackerManagedLaunchReceipt';
 import type {
 	TrackerManagedLauncherOptions,
-	TrackerManagedStartBindings,
-	TrackerManagedReceipt
+	TrackerManagedStartBindings
 } from './trackerManagedHostLauncher.types';
-import { trackerManagedCodexUsage } from './trackerManagedCodexUsage';
+import { prepareManagedLaunch, reserveLaunchDirectory } from './trackerManagedPreparation';
+import { trackerManagedUsage } from './trackerManagedUsage';
+import { trackerStartupCause } from './trackerStartupCause';
 import { trackerManagedVerification } from './trackerManagedVerification';
 import {
 	confirmManagedStartupAbsent,
 	probeManagedTmuxSession,
-	workerScript,
 	launchTmux,
-	managedBrief,
-	prepareTrackerWorkingDirectory,
 	trackerSocket
 } from './trackerManagedWorkerProcess';
 import { stopManagedRun } from './trackerTmuxClose';
-import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
 import {
 	privateTrackerDirectory,
 	trackerClaudeAuthProblem,
@@ -55,7 +48,7 @@ export function trackerManagedHostLauncher(
 	const trackerExecutable = controlledTrackerExecutable(join(trackerBin, 'harness'));
 	const profiles = validateManagedProfiles(config);
 	return {
-		readUsage: trackerManagedCodexUsage(
+		readUsage: trackerManagedUsage(
 			directory,
 			platform === 'darwin' ? profiles.native?.profile : undefined,
 			transcriptRoots
@@ -94,14 +87,11 @@ async function startManagedSession(
 	const briefPath = join(runDirectory, 'brief.md');
 	const command = trackerManagedProviderCommand(profiles, input, briefPath, platform);
 	if (!command || !validStartInput(input)) return { status: 'rejected' };
-	if (
-		input.backend === 'native' &&
-		input.selection.provider === 'claude' &&
-		!existsSync(runDirectory)
-	) {
+	if (needsClaudeAuth(input, runDirectory)) {
 		const reason = await trackerClaudeAuthProblem(trackerBin, command, signal);
 		if (reason) return { status: 'rejected', reason };
 	}
+	let refusal: string | undefined;
 	if (reserveLaunchDirectory(runDirectory)) {
 		const plan = await prepareManagedLaunch(
 			{ directory: runDirectory, script, briefPath },
@@ -109,9 +99,10 @@ async function startManagedSession(
 			client,
 			signal
 		);
-		if (!plan) return { status: 'rejected' };
-		await launchTmux(
-			{ tmux, trackerBin, trackerExecutable, worktree: plan.worktree },
+		if ('failure' in plan) return { status: 'rejected', detail: trackerStartupCause(plan.failure) };
+		const target = { tmux, trackerBin, trackerExecutable, worktree: plan.worktree };
+		refusal = await launchTmux(
+			{ ...target, windowName: input.sessionName },
 			plan.receipt,
 			{ ...plan, script, command, cpuBudget: input.cpuBudget },
 			signal
@@ -121,62 +112,29 @@ async function startManagedSession(
 		{ directory, tmux, node: input.node, key: input.key },
 		signal
 	);
+	// tmux can fail after the worker ran, so its refusal only counts without a session.
+	if (!session && refusal) throw new Error(refusal);
 	return managedStartReply(session);
 }
 
 function managedStartReply(session: TrackerHostSession | undefined): TrackerHostStartReply {
-	if (session?.startupFailure) return { status: 'rejected', reason: session.startupFailure };
+	if (session?.startupFailure)
+		return {
+			status: 'rejected',
+			reason: session.startupFailure,
+			...(session.diagnostic && { detail: session.diagnostic })
+		};
 	return session ? { status: 'started', session } : { status: 'pending' };
+}
+
+function needsClaudeAuth({ backend, selection }: TrackerHostStartRequest, runDirectory: string) {
+	return backend === 'native' && selection.provider === 'claude' && !existsSync(runDirectory);
 }
 
 function validStartInput(input: TrackerHostStartRequest): boolean {
 	return (
 		/^[a-z0-9]{6,10}$/.test(input.itemId) && Number.isSafeInteger(input.runId) && input.runId > 0
 	);
-}
-
-function reserveLaunchDirectory(path: string): boolean {
-	try {
-		mkdirSync(path, { mode: 0o700 });
-		return true;
-	} catch (error) {
-		if (error instanceof Error && 'code' in error && error.code === 'EEXIST') return false;
-		throw error;
-	}
-}
-
-async function prepareManagedLaunch(
-	{ directory, script, briefPath }: { directory: string; script: string; briefPath: string },
-	input: TrackerHostStartRequest,
-	client: TrackerWorkerClient,
-	signal: AbortSignal
-) {
-	const worktree = await prepareTrackerWorkingDirectory(directory, input, signal);
-	if (!worktree) return null;
-	const receipt: TrackerManagedReceipt = {
-		node: input.node,
-		key: input.key,
-		itemId: input.itemId,
-		runId: input.runId,
-		token: trackerManagedToken(input.node, input.key),
-		tmux: managedSessionName(input.itemId, input.runId),
-		issuedAt: Date.now(),
-		...(input.backend === 'native' &&
-			input.selection.provider === 'claude' && { checkClaudeStartup: true })
-	};
-	writeFileSync(briefPath, managedBrief(input), { mode: 0o600, flag: 'wx' });
-	writeFileSync(script, workerScript, { mode: 0o600, flag: 'wx' });
-	writeFileSync(join(directory, 'receipt.json'), JSON.stringify(receipt), {
-		mode: 0o600,
-		flag: 'wx'
-	});
-	return {
-		receipt,
-		worktree,
-		clientPath: trackerWorkerClient(directory, client),
-		guestAuthFile:
-			input.backend === 'docker' ? trackerGuestAuthFile(directory, receipt, client) : undefined
-	};
 }
 
 async function inspectManagedSessions(

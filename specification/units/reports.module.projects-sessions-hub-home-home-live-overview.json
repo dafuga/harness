@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-live-overview",
+	"uid": "u_dpe5j4r3is",
+	"kind": "module",
+	"title": "homeLive",
+	"responsibility": "Builds the overview of every Tracker project, session and run that a computer sends only over its encrypted device connection.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"packages/reports/src/lib/projects-sessions/hub-home/homeLiveOverview.ts"
+		],
+		"symbols": [
+			"HomeWorkState",
+			"HomeWorkRow",
+			"HomeWorkProject",
+			"HomeLiveOverview",
+			"ItemWork",
+			"homeLiveLimits",
+			"buildHomeLiveOverview"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "buildHomeLiveOverview.sources",
+				"type": "TrackerSources",
+				"required": true
+			},
+			{
+				"name": "buildHomeLiveOverview.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "homeLiveLimits",
+				"type": "unknown"
+			},
+			{
+				"name": "buildHomeLiveOverview",
+				"type": "HomeLiveOverview"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "buildHomeLiveOverview",
+				"inputs": [
+					{
+						"name": "buildHomeLiveOverview.sources",
+						"type": "TrackerSources",
+						"required": true
+					},
+					{
+						"name": "buildHomeLiveOverview.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildHomeLiveOverview",
+						"type": "HomeLiveOverview"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-items",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

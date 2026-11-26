@@ -140,6 +140,10 @@ export const commandLoaders = {
 		const m = await import('../commands/planning-collaboration/DesignCommand');
 		new m.DesignCommand().register(program);
 	},
+	'qa-sync': async (program: Command) => {
+		const m = await import('../commands/agents-providers/QaSyncCommand');
+		new m.QaSyncCommand().register(program);
+	},
 	'response-check': async (program: Command) => {
 		const m = await import('./program/ResponseCheckCommand');
 		m.registerResponseCheckCommand(program);

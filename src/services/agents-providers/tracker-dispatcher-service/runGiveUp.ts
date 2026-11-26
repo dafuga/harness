@@ -29,11 +29,14 @@ export function giveUp(
 		.filter((attempt) => attempt.auto_token === run.auto_token && attempt.id !== run.id)
 		.map(({ rung, outcome }) => `${rung}: ${outcome}`);
 	history.push(`${run.rung}: ${run.outcome}`);
+	const reason = `auto-launch gave up after ${run.attempt} attempt(s) (${history.join(', ')}); last: ${run.failure_reason}`;
 	return {
 		...reopen,
 		status: 'blocked',
 		awaitingAnswer: true,
 		answeredCurrentBlock: false,
-		blockedReason: `auto-launch gave up after ${run.attempt} attempt(s) (${history.join(', ')}); last: ${run.failure_reason}`
+		blockedReason: reason,
+		question: `Blocked: ${reason}`,
+		appendNote: [reopen?.appendNote, `blocked: ${reason}`].filter(Boolean).join('\n')
 	};
 }
