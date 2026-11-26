@@ -171,12 +171,13 @@ operator verifies the stopped database and chooses a rollback.
   automatic launch reservations in any rolling minute across the fleet.
   Connected spokes wait for a hub slot. If the hub is unreachable, a spoke
   still starts the due tasks it owns, using the same two-per-minute limit on
-  its own slots. Unreachable means a timeout, a failed DNS lookup or connection, or HTTP
-  502, 503, 504, 521–524 or 530. A denial, any other HTTP error, a redirect, a
-  certificate error or an unreadable reply holds the launch. A due pause or local-due opt-out that the spoke has
-  already received still applies. Other automatic launches wait for the hub.
-  Explicit launch requests get the
-  first available local slots and bypass the night hold and rate limit.
+  its own slots. Unreachable means a timeout, a failed DNS lookup or
+  connection, or HTTP 502, 503, 504, 521–524 or 530. A denial, any other HTTP
+  error, a redirect, a certificate error or an unreadable reply holds the
+  launch. A due pause or local-due opt-out that the spoke has already received
+  still applies. Other automatic launches wait for the hub. Explicit launch
+  requests get the first available local slots and bypass the night hold and
+  rate limit.
   Each adapter can classify intake as urgent, normal or low. The configured
   GitHub tester rule marks issues and comments by its allowed tester logins
   urgent. Urgent items take the next free slot ahead of normal and low
