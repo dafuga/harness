@@ -568,6 +568,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerHostAdmission.resources",
+				"type": "TrackerHostResources",
+				"required": false
+			},
+			{
 				"name": "occupiedHostSlots.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -592,6 +597,11 @@
 				"type": "boolean",
 				"required": false,
 				"default": false
+			},
+			{
+				"name": "formatTrackerHostBrief.cpuBudget",
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "sendWatchdogAlerts.store",
@@ -680,7 +690,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; hostResources?: TrackerHostResources; }",
 				"required": false,
 				"default": {}
 			},
@@ -766,7 +776,7 @@
 			},
 			{
 				"name": "startTrackerHost.input",
-				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; cpuBudget?: number; }",
 				"required": true
 			},
 			{
@@ -2371,6 +2381,11 @@
 						"name": "trackerHostAdmission.routeFor",
 						"type": "TrackerHostRoute",
 						"required": true
+					},
+					{
+						"name": "trackerHostAdmission.resources",
+						"type": "TrackerHostResources",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -2380,7 +2395,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "occupiedHostSlots",
@@ -2436,6 +2451,11 @@
 						"type": "boolean",
 						"required": false,
 						"default": false
+					},
+					{
+						"name": "formatTrackerHostBrief.cpuBudget",
+						"type": "number",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -2589,7 +2609,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; hostResources?: TrackerHostResources; }",
 						"required": false,
 						"default": {}
 					}
@@ -2745,7 +2765,7 @@
 					},
 					{
 						"name": "startTrackerHost.input",
-						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; }",
+						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; cpuBudget?: number; }",
 						"required": true
 					},
 					{
@@ -4137,7 +4157,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-cpu-budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-egress-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-resource-hold",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-resources-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -4218,6 +4253,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-automation-browser-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-resource-admission",
 			"via": "import",
 			"origin": "derived"
 		},

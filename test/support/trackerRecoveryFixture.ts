@@ -1,5 +1,4 @@
 import { execFileSync } from 'node:child_process';
-import { onIdleHost } from './trackerHostResourceFixture';
 import {
 	existsSync,
 	readFileSync,
@@ -13,7 +12,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { expect, vi } from 'vitest';
 import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
-import { trackerNodeRuntime } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
+import { idleNodeRuntime } from './trackerHostResourceFixture';
 import {
 	managedFixtureBindings,
 	managedForegroundConfig,
@@ -56,7 +55,7 @@ async function proveRecovery(root: string) {
 	let offset = Date.parse('2026-11-25T09:00:00Z') - Date.now();
 	const realNow = Date.now;
 	const clock = vi.spyOn(Date, 'now').mockImplementation(() => realNow() + offset);
-	const options = onIdleHost(trackerNodeRuntime(managedForegroundConfig(root, config, 'macos')));
+	const options = idleNodeRuntime(managedForegroundConfig(root, config, 'macos'));
 	const makeRuntime = () =>
 		new TrackerNativeRuntimeService(database, {
 			...options,

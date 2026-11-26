@@ -1,3 +1,4 @@
+// @harness-uid u_wvk4tojpwk
 export interface TrackerHostVolume {
 	freeGB: number;
 	/** Absent when the filesystem has no fixed inode count. */

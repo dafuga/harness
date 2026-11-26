@@ -1,3 +1,4 @@
+// @harness-uid u_gyjtguqwrp
 const budgetNode = 'harbor-mbp-2';
 export const trackerHomeProject = 'harbor';
 /** On MB2 all work outside Harbor shares this many cores, in one session at a time. */
@@ -8,8 +9,14 @@ export function trackerBudgetNode(node: string): boolean {
 	return node === budgetNode;
 }
 
-export function trackerBudgetedWork(node: string, project: string | null | undefined): boolean {
-	return trackerBudgetNode(node) && project?.trim().toLowerCase() !== trackerHomeProject;
+/** The cores this work must share on this computer, or undefined when it has no budget. */
+export function trackerCpuBudget(
+	node: string,
+	project: string | null | undefined
+): number | undefined {
+	return trackerBudgetNode(node) && project?.trim().toLowerCase() !== trackerHomeProject
+		? trackerBudgetCores
+		: undefined;
 }
 
 export function trackerCpuBudgetEnvironment(cores: number): string[] {

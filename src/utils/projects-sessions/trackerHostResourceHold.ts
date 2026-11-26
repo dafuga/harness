@@ -1,3 +1,4 @@
+// @harness-uid u_lct7zicebt
 import type {
 	TrackerHostResourceRequest,
 	TrackerHostResources,
@@ -93,9 +94,16 @@ function volumeHold(
 	const minimum = home && fleet ? Math.max(configured, fleetDiskFloorGB) : configured;
 	if (!(freeGB >= minimum))
 		return `only ${freeGB.toFixed(1)} GB disk free on ${path} (need at least ${minimum} GB)`;
+	return lowInodes({ freeInodes, inodeFreePercent }, node)
+		? `only ${freeInodes ?? 'unknown'} inodes free on ${path}`
+		: null;
+}
+
+/** Filesystems without a fixed inode count report neither reading. */
+function lowInodes(
+	{ freeInodes = Infinity, inodeFreePercent = 100 }: Omit<TrackerHostVolume, 'freeGB'>,
+	node: string
+) {
 	const thresholds = node === sharedNode ? busyShared : overloaded;
-	const low =
-		(freeInodes !== undefined && freeInodes < thresholds.inodes) ||
-		(inodeFreePercent !== undefined && inodeFreePercent < thresholds.inodePercent);
-	return low ? `only ${freeInodes ?? 'unknown'} inodes free on ${path}` : null;
+	return freeInodes < thresholds.inodes || inodeFreePercent < thresholds.inodePercent;
 }

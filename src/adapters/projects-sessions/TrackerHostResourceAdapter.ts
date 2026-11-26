@@ -1,3 +1,4 @@
+// @harness-uid u_q3q7iyuldw
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, statfsSync } from 'node:fs';
 import { availableParallelism, freemem, loadavg, totalmem } from 'node:os';
@@ -14,7 +15,7 @@ const memoryAge = 5000;
 export class TrackerHostResourceAdapter implements TrackerHostResources {
 	private reading?: { at: number; value: ReturnType<TrackerHostResources['memory']> };
 
-	constructor(private readonly platform: NodeJS.Platform = process.platform) {}
+	constructor(private readonly platform: typeof process.platform = process.platform) {}
 
 	cores(): number {
 		return availableParallelism();

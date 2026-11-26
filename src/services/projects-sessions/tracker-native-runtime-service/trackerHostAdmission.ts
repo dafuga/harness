@@ -37,17 +37,18 @@ export function trackerHostAdmission(
 		if (!route || !configuredLane(config, route.platform))
 			return 'no approved Tracker repository or platform for this node';
 		if (occupiedHostSlots(store) >= cap) return trackerHostCapacityHold;
-		if (rung && !['codex', 'claude'].includes(rung.cli)) return 'no supported Tracker provider';
+		if (unsupportedProvider(rung)) return 'no supported Tracker provider';
 		const shortage = hostHold(item, route);
 		if (shortage) return shortage;
-		if (adapter?.dueDisk && intent.source === 'due' && item.adapterDueOwner === store.node)
-			return adapterDueDiskHold({
-				config,
-				route,
-				dueDisk: adapter.dueDisk
-			});
-		return null;
+		const dueDisk = intent.source === 'due' && item.adapterDueOwner === store.node;
+		return dueDisk && adapter?.dueDisk
+			? adapterDueDiskHold({ config, route, dueDisk: adapter.dueDisk })
+			: null;
 	};
+}
+
+function unsupportedProvider(rung: Parameters<TrackerDispatchPolicy['admit']>[2]) {
+	return Boolean(rung && !['codex', 'claude'].includes(rung.cli));
 }
 
 /** Only runs the launcher is truly running hold a slot; leftover tmux sessions never do. */

@@ -33,10 +33,7 @@ import type {
 import { formatTrackerHostBrief } from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
 import { startTrackerHost, withTrackerRunUsage } from './trackerHostLaunchPort';
-import {
-	trackerBudgetCores,
-	trackerBudgetedWork
-} from '../../../utils/projects-sessions/trackerCpuBudget';
+import { trackerCpuBudget } from '../../../utils/projects-sessions/trackerCpuBudget';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -134,9 +131,7 @@ async function launchApprovedItem(
 			type: 'startup-failed',
 			reason: 'Tracker launch no longer has an approved execution directory'
 		};
-	const cpuBudget = trackerBudgetedWork(node, item.project ?? item.agent)
-		? trackerBudgetCores
-		: undefined;
+	const cpuBudget = trackerCpuBudget(node, item.project ?? item.agent);
 	return startTrackerHost(
 		driver,
 		{

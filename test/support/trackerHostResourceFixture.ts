@@ -68,6 +68,10 @@ export function onIdleHost(options: TrackerNativeRuntimeOptions): TrackerNativeR
 	};
 }
 
+export function idleNodeRuntime(config: Parameters<typeof trackerNodeRuntime>[0]) {
+	return onIdleHost(trackerNodeRuntime(config));
+}
+
 function scenarioResources(host: TrackerResourceScenario) {
 	return {
 		cores: () => host.cores,

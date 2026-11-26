@@ -1,10 +1,11 @@
+// @harness-uid u_2jymbzvxjz
 import { homedir } from 'node:os';
 import {
-	trackerBudgetCores,
-	trackerBudgetedWork,
 	trackerBudgetSessions,
+	trackerCpuBudget,
 	trackerHomeProject
 } from '../../../utils/projects-sessions/trackerCpuBudget';
+import { TrackerHostResourceAdapter } from '../../../adapters/projects-sessions/TrackerHostResourceAdapter';
 import {
 	trackerHostResourceHold,
 	trackerResourceHoldPrefix
@@ -23,12 +24,15 @@ export function trackerHostResourceAdmission(
 	store: TrackerPersistenceService,
 	config: TrackerHostLaunchConfig,
 	{
-		resources,
+		resources: provided,
 		occupied
 	}: { resources?: TrackerHostResources; occupied: () => TrackerOccupiedRun[] }
 ) {
+	// A driver owns its own host; the managed launcher runs sessions on this computer.
+	const resources =
+		provided ?? ('managed' in config ? new TrackerHostResourceAdapter() : undefined);
 	return (item: TrackerDispatchItem, route: TrackerHostTarget): string | null => {
-		const budgeted = trackerBudgetedWork(store.node, item.project ?? item.agent);
+		const budgeted = Boolean(trackerCpuBudget(store.node, item.project ?? item.agent));
 		if (budgeted && budgetedRuns(store, occupied()) >= trackerBudgetSessions) return budgetHold;
 		if (!resources) return null;
 		return trackerHostResourceHold(resources, {

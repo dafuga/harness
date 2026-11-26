@@ -26,7 +26,6 @@ import type {
 	TrackerHostTarget
 } from './trackerHostLaunch.types';
 import { trackerHostRunner } from './trackerHostRunner';
-import { TrackerHostResourceAdapter } from '../../../adapters/projects-sessions/TrackerHostResourceAdapter';
 import type { TrackerHostResources } from '../../../utils/projects-sessions/trackerHostResources.types';
 
 const macNodes = new Set(['daniel-primary-mbp', 'harbor-mbp-2']);
@@ -61,12 +60,8 @@ export function trackerHostLaunch(
 		now: effects.now,
 		automaticEnabled: effects.automaticEnabled
 	});
-	const admit = trackerHostAdmission(store, {
-		config,
-		adapter,
-		routeFor,
-		resources: effects.hostResources ?? localResources(config)
-	});
+	const resources = effects.hostResources;
+	const admit = trackerHostAdmission(store, { config, adapter, routeFor, resources });
 	return {
 		runner: trackerCapacityRunner(host, store, config, repositories),
 		sessions: host.sessions,
@@ -81,19 +76,16 @@ export function trackerHostLaunch(
 			pickModel: (item) => pickHostModel(item, effects.now?.()),
 			retryModel: (item, run) => retryTrackerModel(item, run, undefined, effects.now?.())
 		},
-		scheduleDue: config.due !== false || adapter?.scheduleDue === true,
-		due: () => ({
-			enabled: config.due !== false,
-			paused: false,
-			localDue: true,
-			adapterDue: adapter?.scheduleDue === true
-		})
+		...hostDueSchedule(config, adapter)
 	};
 }
 
-/** A driver owns its own host; the managed launcher runs sessions on this computer. */
-function localResources(config: TrackerHostLaunchConfig) {
-	return 'managed' in config ? new TrackerHostResourceAdapter() : undefined;
+function hostDueSchedule(config: TrackerHostLaunchConfig, adapter?: TrackerHostAdapterConfig) {
+	const [enabled, adapterDue] = [config.due !== false, adapter?.scheduleDue === true];
+	return {
+		scheduleDue: enabled || adapterDue,
+		due: () => ({ enabled, paused: false, localDue: true, adapterDue })
+	};
 }
 
 function trackerLaunchTmux(config: TrackerHostLaunchConfig, node: string, configured?: string) {

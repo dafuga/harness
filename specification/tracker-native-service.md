@@ -384,8 +384,7 @@ or recovery attempt. An external driver owns its own host and is not sampled.
   under 15%, or under 100,000 or 3% free inodes.
 
 On MB2, Harbor is the home project and its requests are considered first. All
-other work gets one session at a time, only while the one-minute load is under
-4. Its worker runs under `nice -n 10` with a four-core budget in
+other work gets one session at a time, only while the one-minute load is under 4. Its worker runs under `nice -n 10` with a four-core budget in
 `TRACKER_CPU_BUDGET` and the CMake, Cargo, Make, OpenMP, Rayon and Go
 parallelism variables, and its brief states the budget. These cap
 cooperating build tools; they do not enforce a hard CPU limit.
