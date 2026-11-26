@@ -14,11 +14,14 @@ export async function applyIdleDecision(
 	{
 		store,
 		driver,
-		snapshot
+		snapshot,
+		settles
 	}: {
 		store: TrackerPersistenceService;
 		driver: TrackerWatchdogPort;
 		snapshot: WatchdogScan;
+		/** The launcher finishes its own quiet runs, so nobody has to inspect them. */
+		settles?: boolean;
 	},
 	{ decision, pane }: { decision: IdleDecision; pane: WatchdogPane },
 	signal: AbortSignal
@@ -27,6 +30,7 @@ export async function applyIdleDecision(
 	const key = paneNudgeKey(pane);
 	const previous = Number(store.getMeta(key) ?? 0);
 	if (previous && snapshot.now - previous < sessionHealthInterval) return;
+	if (settles && leftToLauncher(decision, pane, previous)) return;
 	const alert = { itemId: decision.id, kind: 'idle', identity: pane.key, session: pane.name };
 	if (decision.action === 'alert' || previous) {
 		const reason =
@@ -56,4 +60,10 @@ export async function applyIdleDecision(
 		const reason = `Could not verify submission of the watchdog check-in in ${pane.name}.`;
 		recordWatchdogAlert(store, { ...alert, reason }, snapshot.now);
 	}
+}
+
+/** A launcher run that stays quiet after its check-in is finished by the final-report rule. */
+function leftToLauncher(decision: IdleDecision, pane: WatchdogPane, previous: number): boolean {
+	const launched = pane.runnerSocket && decision.runId !== null && !decision.reason;
+	return launched && Boolean(previous || decision.action === 'alert');
 }

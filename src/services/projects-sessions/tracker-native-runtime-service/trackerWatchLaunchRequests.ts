@@ -10,7 +10,10 @@ import type { TrackerDispatcherService } from '../../agents-providers/TrackerDis
 import { watchdogManualPrefix } from '../WatchdogPaneService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
-import { canonicalNode } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import {
+	canonicalNode,
+	finalReportHold
+} from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { recordWatchdogAlert, urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
@@ -73,6 +76,8 @@ export async function queueIdleWork(
 function existingWork(item: TrackerItem, runs: TrackerRunReadRepository) {
 	const history = runs.list({ itemId: item.id });
 	if (item.auto && !history.some((run) => run.auto_token === item.auto)) return true;
+	const latest = history.at(-1);
+	if (latest && finalReportHold(latest, Date.parse(item.answered_at ?? '') || 0)) return true;
 	// The dropped-session policy already owns recovery after a started attempt.
 	return item.status === 'in_progress' && history.some((run) => run.started_at != null);
 }

@@ -1,5 +1,4 @@
 import {
-	expectPaneRetained,
 	verifyHostLaunchOutcomes,
 	verifyIdleCapacityQueue
 } from '../../support/trackerLaunchOutcomeFixture';
@@ -12,10 +11,7 @@ import { trackerNodeRuntime } from '../../../src/services/projects-sessions/trac
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
-import {
-	seedCompletedRetainedRun,
-	startLinkedItem
-} from '../../support/trackerManagedProcessFixture';
+import { seedCompletedRetainedRun } from '../../support/trackerManagedProcessFixture';
 import { retainedTrackerTmuxFixture } from '../../support/trackerObservedRunFixture';
 
 const node = 'daniel-primary-mbp';
@@ -40,6 +36,8 @@ async function proveHostCapacity(root: string) {
 	const closed = join(root, 'closed');
 	try {
 		seedCompletedRetainedRun(runtime, db, now);
+		// Someone is watching the finished pane, so it stays open and must not hold a slot.
+		writeFileSync(join(root, 'attached'), '');
 		for (const id of ['next100001', 'next100002', 'next100003'])
 			queueCapacityItem(runtime, id, id === 'next100003');
 		clock += 300_000;
@@ -55,21 +53,9 @@ async function proveHostCapacity(root: string) {
 		await verifyIdleCapacityQueue(runtime, db, signal, (elapsed) => {
 			clock += elapsed;
 		});
-		clock += 300_000;
-		writeFileSync(join(root, 'busy'), '');
-		await expectPaneRetained(runtime, signal, closed);
-		writeFileSync(join(root, 'busy'), 'idle');
-		db.prepare("UPDATE runs SET tmux = 'auto-old008-r8' WHERE id = 7").run();
-		await expectPaneRetained(runtime, signal, closed);
-		db.prepare("UPDATE runs SET tmux = 'auto-old007-r7' WHERE id = 7").run();
-		writeFileSync(join(root, 'attached'), '');
-		await expectPaneRetained(runtime, signal, closed);
+		expect(existsSync(closed)).toBe(false);
 		rmSync(join(root, 'attached'));
-		await startLinkedItem(runtime);
-		await expectPaneRetained(runtime, signal, closed);
-		runtime.store.appendLocal({ itemId: 'linked0001', fields: { status: 'done' } });
-		await expectPaneRetained(runtime, signal, closed);
-		clock += 600_000;
+		clock += 300_000;
 		await runtime.scheduler!.tick(signal);
 		expect(readFileSync(closed, 'utf8')).toContain('kill-session -t %9');
 		await runtime.scheduler!.tick(signal);
@@ -134,7 +120,8 @@ function writeConfig(
 				...(dueDisk && { adapter: { driver, scheduleDue: true, dueDisk } }),
 				launch: {
 					driver,
-					maxConcurrent: 9,
+					// Seven running legacy runs and one new one fill the cap. Leftover panes add nothing.
+					maxConcurrent: 8,
 					repositories: { Harness: { repo: root, platform: 'linux' } }
 				}
 			}

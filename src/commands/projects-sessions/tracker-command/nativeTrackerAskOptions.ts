@@ -58,6 +58,7 @@ export function nativeTrackerAnswerBody(answer: string, values: NativeTrackerAsk
 		option: values.option,
 		confirmed: values.confirmed,
 		done: values.done,
+		keep_blocked: values['keep-blocked'],
 		by: values.by
 	};
 }

@@ -182,6 +182,8 @@ export function trackerResolveItem(
 			answered_at: trackerIsoTime(context.now),
 			answered_by: trackerItemValueOr(body.by, 'daniel'),
 			...(body.answer ? { answer: body.answer } : {}),
+			// Re-stamping the block after the answer records "keep waiting": nothing relaunches.
+			...(body.keep_blocked && item.status === 'blocked' ? { status: 'blocked' } : {}),
 			...(body.done ? { status: 'done' } : {})
 		}
 	};
