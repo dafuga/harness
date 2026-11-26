@@ -2,6 +2,7 @@
 import { statfsSync } from 'node:fs';
 import type { TrackerDispatchPolicy } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { trackerProviderHold } from './trackerProviderHolds';
 import type {
 	TrackerHostAdapterConfig,
 	TrackerHostLaunchConfig
@@ -16,11 +17,13 @@ export function trackerHostAdmission(
 	{
 		config,
 		adapter,
-		routeFor
+		routeFor,
+		now = Date.now
 	}: {
 		config: TrackerHostLaunchConfig;
 		adapter?: TrackerHostAdapterConfig;
 		routeFor: TrackerHostRoute;
+		now?: () => number;
 	}
 ): TrackerDispatchPolicy['admit'] {
 	const cap = config.maxConcurrent ?? 2;
@@ -29,7 +32,8 @@ export function trackerHostAdmission(
 		if (!route || !configuredLane(config, route.platform))
 			return 'no approved Tracker repository or platform for this node';
 		if (occupiedHostSlots(store) >= cap) return trackerHostCapacityHold;
-		if (rung && !['codex', 'claude'].includes(rung.cli)) return 'no supported Tracker provider';
+		const unavailable = rung && providerAdmissionHold(store, rung.cli, now());
+		if (unavailable) return unavailable;
 		if (adapter?.dueDisk && intent.source === 'due' && item.adapterDueOwner === store.node)
 			return adapterDueDiskHold({
 				config,
@@ -38,6 +42,11 @@ export function trackerHostAdmission(
 			});
 		return null;
 	};
+}
+
+function providerAdmissionHold(store: TrackerPersistenceService, cli: string, now: number) {
+	if (cli !== 'codex' && cli !== 'claude') return 'no supported Tracker provider';
+	return trackerProviderHold(store, cli, now);
 }
 
 /** Only runs the launcher is truly running hold a slot; leftover tmux sessions never do. */
