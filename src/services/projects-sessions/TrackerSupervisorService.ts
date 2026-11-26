@@ -77,6 +77,7 @@ export class TrackerSupervisorService {
 		const ticks = {
 			...(telemetry && { telemetry }),
 			...(backups.service && { backup: () => backups.service!.tick() }),
+			...webPushWorker(this.runtime),
 			...(watchdog && { watchdog: watchdog.tick }),
 			...(scheduler && { dispatch: (signal: AbortSignal) => scheduler.tick(signal) }),
 			...(recurring && { recurring: (signal: AbortSignal) => recurring.tick(signal) }),
@@ -95,6 +96,11 @@ export class TrackerSupervisorService {
 			(signal: AbortSignal) => Promise<void>
 		][];
 	}
+}
+
+/** On the hub: tells Daniel's browsers about open decisions. */
+function webPushWorker({ webPush }: TrackerNativeRuntimeService) {
+	return webPush && { web_push: () => webPush.tick() };
 }
 
 /** On the hub: sends Chief of Staff's Hub messages through its notification channel. */

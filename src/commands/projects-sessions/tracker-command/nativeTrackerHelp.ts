@@ -13,7 +13,8 @@ export function printNativeTrackerHelp(): number {
 			'Local: instructions [--check] [file...]\n' +
 			'Subcommands: autolaunch [status|dry-run|pause|resume|clear-quota <codex|claude>], ' +
 			`${nativeTrackerAdapterUsage}, ` +
-			'backup now|list|verify <file>|restore <file> --to <new path> [--without-local-state]\n' +
+			'backup now|list|verify <file>|restore <file> --to <new path> [--without-local-state], ' +
+			'web-push setup --origin https://<hub> [--rotate]|status\n' +
 			'Host commands: health [--alert], supervise, service print|install|uninstall\n' +
 			nativeTrackerJobHelp
 	);

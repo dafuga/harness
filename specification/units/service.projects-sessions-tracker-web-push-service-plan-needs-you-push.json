@@ -1,0 +1,379 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-web-push-service-plan-needs-you-push",
+	"uid": "u_dqkisr3cq5",
+	"kind": "service",
+	"title": "planNeedsYouPush",
+	"responsibility": "Decides when a notification is due: new, every 15 minutes, outside quiet hours, with back-off.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-web-push-service/planNeedsYouPush.ts"],
+		"symbols": [
+			"pushRepeatMs",
+			"pushSpacingMs",
+			"emptyPushState",
+			"pushAskKey",
+			"planNeedsYouPush",
+			"quietPushHold",
+			"unheardPush",
+			"deliveredPush",
+			"failedPush"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "pushAskKey.ask",
+				"type": "PushAsk",
+				"required": true,
+				"description": "One open ask."
+			},
+			{
+				"name": "planNeedsYouPush.keys",
+				"type": "string[]",
+				"required": true,
+				"description": "Keys of the open asks."
+			},
+			{
+				"name": "planNeedsYouPush.previous",
+				"type": "PushState",
+				"required": true,
+				"description": "The stored send state."
+			},
+			{
+				"name": "planNeedsYouPush.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in epoch milliseconds."
+			},
+			{
+				"name": "quietPushHold.state",
+				"type": "PushState",
+				"required": true,
+				"description": "The current send state."
+			},
+			{
+				"name": "quietPushHold.quiet",
+				"type": "PushQuietHours",
+				"required": true,
+				"description": "Daniel's quiet hours."
+			},
+			{
+				"name": "quietPushHold.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in epoch milliseconds."
+			},
+			{
+				"name": "unheardPush.state",
+				"type": "PushState",
+				"required": true,
+				"description": "The current send state."
+			},
+			{
+				"name": "unheardPush.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in epoch milliseconds."
+			},
+			{
+				"name": "deliveredPush.keys",
+				"type": "string[]",
+				"required": true,
+				"description": "Keys of the open asks."
+			},
+			{
+				"name": "deliveredPush.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in epoch milliseconds."
+			},
+			{
+				"name": "failedPush.state",
+				"type": "PushState",
+				"required": true,
+				"description": "The current send state."
+			},
+			{
+				"name": "failedPush.error",
+				"type": "string",
+				"required": true,
+				"description": "A short reason without secrets."
+			},
+			{
+				"name": "failedPush.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in epoch milliseconds."
+			}
+		],
+		"outputs": [
+			{
+				"name": "pushRepeatMs",
+				"type": "unknown",
+				"description": "Fifteen minutes."
+			},
+			{
+				"name": "pushSpacingMs",
+				"type": "unknown",
+				"description": "One minute between sends."
+			},
+			{
+				"name": "emptyPushState",
+				"type": "PushState",
+				"description": "Nothing announced."
+			},
+			{
+				"name": "pushAskKey",
+				"type": "string",
+				"description": "Item id and a hash of its question."
+			},
+			{
+				"name": "planNeedsYouPush",
+				"type": "PushPlan",
+				"description": "Pruned state and whether to send."
+			},
+			{
+				"name": "quietPushHold",
+				"type": "PushState | null",
+				"description": "A held state during quiet hours, else null."
+			},
+			{
+				"name": "unheardPush",
+				"type": "PushState",
+				"description": "A one-minute hold with no browser."
+			},
+			{
+				"name": "deliveredPush",
+				"type": "PushState",
+				"description": "State after a delivery."
+			},
+			{
+				"name": "failedPush",
+				"type": "PushState",
+				"description": "State backing off from 1 to 15 minutes."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "emptyPushState",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "emptyPushState",
+						"type": "PushState",
+						"description": "Nothing announced."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pushAskKey",
+				"inputs": [
+					{
+						"name": "pushAskKey.ask",
+						"type": "PushAsk",
+						"required": true,
+						"description": "One open ask."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pushAskKey",
+						"type": "string",
+						"description": "Item id and a hash of its question."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "planNeedsYouPush",
+				"inputs": [
+					{
+						"name": "planNeedsYouPush.keys",
+						"type": "string[]",
+						"required": true,
+						"description": "Keys of the open asks."
+					},
+					{
+						"name": "planNeedsYouPush.previous",
+						"type": "PushState",
+						"required": true,
+						"description": "The stored send state."
+					},
+					{
+						"name": "planNeedsYouPush.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "planNeedsYouPush",
+						"type": "PushPlan",
+						"description": "Pruned state and whether to send."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "quietPushHold",
+				"inputs": [
+					{
+						"name": "quietPushHold.state",
+						"type": "PushState",
+						"required": true,
+						"description": "The current send state."
+					},
+					{
+						"name": "quietPushHold.quiet",
+						"type": "PushQuietHours",
+						"required": true,
+						"description": "Daniel's quiet hours."
+					},
+					{
+						"name": "quietPushHold.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "quietPushHold",
+						"type": "PushState | null",
+						"description": "A held state during quiet hours, else null."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unheardPush",
+				"inputs": [
+					{
+						"name": "unheardPush.state",
+						"type": "PushState",
+						"required": true,
+						"description": "The current send state."
+					},
+					{
+						"name": "unheardPush.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "unheardPush",
+						"type": "PushState",
+						"description": "A one-minute hold with no browser."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "deliveredPush",
+				"inputs": [
+					{
+						"name": "deliveredPush.keys",
+						"type": "string[]",
+						"required": true,
+						"description": "Keys of the open asks."
+					},
+					{
+						"name": "deliveredPush.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deliveredPush",
+						"type": "PushState",
+						"description": "State after a delivery."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "failedPush",
+				"inputs": [
+					{
+						"name": "failedPush.state",
+						"type": "PushState",
+						"required": true,
+						"description": "The current send state."
+					},
+					{
+						"name": "failedPush.error",
+						"type": "string",
+						"required": true,
+						"description": "A short reason without secrets."
+					},
+					{
+						"name": "failedPush.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "failedPush",
+						"type": "PushState",
+						"description": "State backing off from 1 to 15 minutes."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-web-push-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "helper.attention-timing-quiet-hour-boundary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-web-push-service/planNeedsYouPush.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-web-push-service/planNeedsYouPush.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,133 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-notification-text",
+	"uid": "u_vg7qhfaumu",
+	"kind": "function",
+	"title": "hubHomeNotificationText",
+	"responsibility": "Words the notification row and the last-delivery line.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeNotificationText.ts"],
+		"symbols": ["deviceHints", "onSummary", "lastDelivery"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "onSummary.quiet",
+				"type": "PushQuietHours",
+				"required": true,
+				"description": "The saved quiet hours."
+			},
+			{
+				"name": "lastDelivery.deliveredAt",
+				"type": "number | null",
+				"required": true,
+				"description": "Epoch milliseconds of the last delivery, or null."
+			},
+			{
+				"name": "lastDelivery.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in epoch milliseconds."
+			}
+		],
+		"outputs": [
+			{
+				"name": "deviceHints",
+				"type": "Record<Exclude<HubPushDevice, 'on'>, string>",
+				"description": "One sentence for each state in which notifications are not on."
+			},
+			{
+				"name": "onSummary",
+				"type": "string",
+				"description": "The line shown while notifications are on."
+			},
+			{
+				"name": "lastDelivery",
+				"type": "string",
+				"description": "When this browser last received a decision notification, in Lisbon time, or that none has."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "onSummary",
+				"inputs": [
+					{
+						"name": "onSummary.quiet",
+						"type": "PushQuietHours",
+						"required": true,
+						"description": "The saved quiet hours."
+					}
+				],
+				"outputs": [
+					{
+						"name": "onSummary",
+						"type": "string",
+						"description": "The line shown while notifications are on."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "lastDelivery",
+				"inputs": [
+					{
+						"name": "lastDelivery.deliveredAt",
+						"type": "number | null",
+						"required": true,
+						"description": "Epoch milliseconds of the last delivery, or null."
+					},
+					{
+						"name": "lastDelivery.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in epoch milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "lastDelivery",
+						"type": "string",
+						"description": "When this browser last received a decision notification, in Lisbon time, or that none has."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.networking-security-hub-push",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeNotificationText.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeNotificationText.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

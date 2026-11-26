@@ -129,6 +129,8 @@
 		"hub.component.projects-sessions-hub-home-live-project",
 		"hub.component.projects-sessions-hub-home-needs-you",
 		"hub.component.projects-sessions-hub-home-not-started",
+		"hub.component.projects-sessions-hub-home-notification-settings",
+		"hub.component.projects-sessions-hub-home-notifications",
 		"hub.component.projects-sessions-hub-home-plans",
 		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
@@ -2265,6 +2267,18 @@
 			"title": "HubHomeNotStarted",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-not-started"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-notification-settings",
+			"title": "HubHomeNotificationSettings",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-notification-settings"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-notifications",
+			"title": "HubHomeNotifications",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-notifications"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-plans",
@@ -9057,6 +9071,8 @@
 				"hub-component-projects-sessions-hub-home-live-project",
 				"hub-component-projects-sessions-hub-home-needs-you",
 				"hub-component-projects-sessions-hub-home-not-started",
+				"hub-component-projects-sessions-hub-home-notification-settings",
+				"hub-component-projects-sessions-hub-home-notifications",
 				"hub-component-projects-sessions-hub-home-plans",
 				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",
