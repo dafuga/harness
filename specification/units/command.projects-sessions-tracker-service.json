@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-service",
+	"uid": "u_zjnefnyg53",
+	"kind": "command",
+	"title": "TrackerServiceCommand",
+	"responsibility": "Owns the TrackerServiceCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/TrackerServiceCommand.ts"],
+		"symbols": ["TrackerServiceCommand", "TrackerServiceCommand.run"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerServiceCommand.run.args",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerServiceCommand.run",
+				"type": "number"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerServiceCommand.run",
+				"inputs": [
+					{
+						"name": "TrackerServiceCommand.run.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerServiceCommand.run",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-command-harness-self",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-install",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/TrackerServiceCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/TrackerServiceCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

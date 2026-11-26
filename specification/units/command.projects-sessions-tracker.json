@@ -1006,12 +1006,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.projects-sessions-tracker-health",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.projects-sessions-tracker-rehearsal",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "command.projects-sessions-tracker-serve",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-service",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-supervise",
 			"via": "import",
 			"origin": "derived"
 		},
