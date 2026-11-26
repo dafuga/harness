@@ -25,6 +25,7 @@ import type {
 	TrackerHostRouteItem,
 	TrackerHostTarget
 } from './trackerHostLaunch.types';
+import { configuredTrackerProviderHold } from './trackerProviderHolds';
 import { trackerHostRunner } from './trackerHostRunner';
 
 const macNodes = new Set(['daniel-primary-mbp', 'harbor-mbp-2']);
@@ -60,7 +61,6 @@ export function trackerHostLaunch(
 		now: effects.now,
 		automaticEnabled: effects.automaticEnabled
 	});
-	const admit = trackerHostAdmission(store, { config, adapter, routeFor });
 	return {
 		runner: trackerCapacityRunner(host, store, config, repositories),
 		sessions: host.sessions,
@@ -71,7 +71,8 @@ export function trackerHostLaunch(
 			chooseHost: chooseTrackerHost(routeFor, node),
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
-			admit,
+			admit: trackerHostAdmission(store, { config, adapter, routeFor, now: effects.now }),
+			providerHold: configuredTrackerProviderHold(store, config.codexPausedUntil, effects.now),
 			pickModel: (item) => pickHostModel(item, effects.now?.()),
 			retryModel: (item, run) => retryTrackerModel(item, run, undefined, effects.now?.())
 		},

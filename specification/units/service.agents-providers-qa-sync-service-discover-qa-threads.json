@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-sync-service-discover-qa-threads",
+	"uid": "u_fwtzg2uaq6",
+	"kind": "service",
+	"title": "discoverQaThreads",
+	"responsibility": "Owns the discoverQaThreads service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/qa-sync-service/discoverQaThreads.ts",
+			"src/services/agents-providers/qa-sync-service/discoverQaThreads.types.ts"
+		],
+		"symbols": ["discoverQaThreads", "QaCandidate"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "discoverQaThreads.run",
+				"type": "QaRun",
+				"required": true
+			},
+			{
+				"name": "discoverQaThreads.state",
+				"type": "QaSyncState",
+				"required": true
+			},
+			{
+				"name": "discoverQaThreads.oldest",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "discoverQaThreads",
+				"type": "Promise<QaCandidate[]>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "discoverQaThreads",
+				"inputs": [
+					{
+						"name": "discoverQaThreads.run",
+						"type": "QaRun",
+						"required": true
+					},
+					{
+						"name": "discoverQaThreads.state",
+						"type": "QaSyncState",
+						"required": true
+					},
+					{
+						"name": "discoverQaThreads.oldest",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "discoverQaThreads",
+						"type": "Promise<QaCandidate[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync-service-match-qa-thread",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync-service-qa-run-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/qa-sync-service/discoverQaThreads.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/qa-sync-service/discoverQaThreads.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

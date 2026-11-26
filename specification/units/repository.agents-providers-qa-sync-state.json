@@ -1,0 +1,173 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.agents-providers-qa-sync-state",
+	"uid": "u_gqup2qrdk5",
+	"kind": "repository",
+	"title": "QaSyncStateRepository",
+	"responsibility": "Owns the QaSyncStateRepository persistence boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/agents-providers/QaSyncStateRepository.ts"],
+		"symbols": [
+			"QaSyncStateRepository",
+			"QaSyncStateRepository.constructor",
+			"QaSyncStateRepository.load",
+			"QaSyncStateRepository.save",
+			"QaSyncStateRepository.exclusive"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "QaSyncStateRepository.constructor.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaSyncStateRepository.save.state",
+				"type": "QaSyncState",
+				"required": true
+			},
+			{
+				"name": "QaSyncStateRepository.exclusive.run",
+				"type": "() => Promise<T>",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "QaSyncStateRepository.load",
+				"type": "Promise<QaSyncState | undefined>"
+			},
+			{
+				"name": "QaSyncStateRepository.save",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "QaSyncStateRepository.exclusive",
+				"type": "Promise<T>"
+			}
+		],
+		"errors": [
+			{
+				"name": "QaSyncError",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "QaSyncStateRepository.load",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "QaSyncStateRepository.load",
+						"type": "Promise<QaSyncState | undefined>"
+					}
+				],
+				"errors": [
+					{
+						"name": "QaSyncError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "QaSyncStateRepository.save",
+				"inputs": [
+					{
+						"name": "QaSyncStateRepository.save.state",
+						"type": "QaSyncState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaSyncStateRepository.save",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "QaSyncStateRepository.exclusive",
+				"inputs": [
+					{
+						"name": "QaSyncStateRepository.exclusive.run",
+						"type": "() => Promise<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaSyncStateRepository.exclusive",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "QaSyncStateRepository.constructor",
+				"inputs": [
+					{
+						"name": "QaSyncStateRepository.constructor.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaSyncStateRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/agents-providers/QaSyncStateRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/agents-providers/QaSyncStateRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -17,6 +17,7 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAdapterRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAdapterRequest.types.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAskOptions.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerAutolaunchRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerHelp.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerInspectionRequest.ts",
@@ -56,6 +57,7 @@
 			"nativeTrackerFlagBody",
 			"nativeTrackerAnswerBody",
 			"nativeTrackerBlockBody",
+			"nativeTrackerAutolaunchRequest",
 			"NativeTrackerRefusal",
 			"NativeTrackerListener",
 			"NativeTrackerRequest",
@@ -234,6 +236,11 @@
 			{
 				"name": "nativeTrackerBlockBody.values",
 				"type": "NativeTrackerAskValues",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerAutolaunchRequest.[mode, ...rest]",
+				"type": "string[]",
 				"required": true
 			},
 			{
@@ -467,6 +474,10 @@
 			{
 				"name": "nativeTrackerBlockBody",
 				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerAutolaunchRequest",
+				"type": "| NativeTrackerRequest | undefined"
 			},
 			{
 				"name": "wantsNativeTrackerHelp",
@@ -941,6 +952,29 @@
 				"errorStatus": "found"
 			},
 			{
+				"name": "nativeTrackerAutolaunchRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerAutolaunchRequest.[mode, ...rest]",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerAutolaunchRequest",
+						"type": "| NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
+			},
+			{
 				"name": "wantsNativeTrackerHelp",
 				"inputs": [
 					{
@@ -1367,12 +1401,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.projects-sessions-tracker-health",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.projects-sessions-tracker-rehearsal",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "command.projects-sessions-tracker-serve",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-service",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-supervise",
 			"via": "import",
 			"origin": "derived"
 		},

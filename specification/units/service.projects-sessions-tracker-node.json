@@ -26,6 +26,7 @@
 			"src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerNodeInspection.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerAdapterRoutes.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerAutolaunchCommand.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerDigestSession.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types.ts",
@@ -42,6 +43,7 @@
 			"TrackerNodeOwnership",
 			"TrackerNodeStartupError",
 			"TrackerNodeTransportError",
+			"TrackerNodeTransportError.constructor",
 			"trackerLaunchAwareItemResponse",
 			"stopTrackerRun",
 			"holdLegacySupervisorSocket",
@@ -50,6 +52,7 @@
 			"readTrackerNodeInspection",
 			"trackerSlowAdapterPath",
 			"trackerAdapterRoute",
+			"trackerCommandOrItemResponse",
 			"trackerDigestSession",
 			"loadTrackerNodeConfig",
 			"trackerSyncPort",
@@ -79,6 +82,16 @@
 				"name": "TrackerNodeService.start.config",
 				"type": "TrackerNodeConfig",
 				"required": true
+			},
+			{
+				"name": "TrackerNodeTransportError.constructor.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNodeTransportError.constructor.status",
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "trackerLaunchAwareItemResponse.request",
@@ -143,6 +156,26 @@
 			{
 				"name": "trackerAdapterRoute.runtime",
 				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.supervisor",
+				"type": "TrackerSupervisorService",
 				"required": true
 			},
 			{
@@ -317,6 +350,10 @@
 			{
 				"name": "trackerAdapterRoute",
 				"type": "Promise<Response> | undefined"
+			},
+			{
+				"name": "trackerCommandOrItemResponse",
+				"type": "unknown"
 			},
 			{
 				"name": "trackerDigestSession",
@@ -573,6 +610,39 @@
 					{
 						"name": "trackerAdapterRoute",
 						"type": "Promise<Response> | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCommandOrItemResponse",
+				"inputs": [
+					{
+						"name": "trackerCommandOrItemResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.supervisor",
+						"type": "TrackerSupervisorService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCommandOrItemResponse",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -951,7 +1021,31 @@
 				"errorStatus": "none-found"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "TrackerNodeTransportError.constructor",
+				"inputs": [
+					{
+						"name": "TrackerNodeTransportError.constructor.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerNodeTransportError.constructor.status",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNodeTransportError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{

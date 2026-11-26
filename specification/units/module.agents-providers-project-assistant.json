@@ -24,7 +24,16 @@
 			"RunbookCanvasService",
 			"QaLabelEvent",
 			"QaThreadPorts",
-			"RunbookCanvasPorts"
+			"RunbookCanvasPorts",
+			"QaSyncService",
+			"QaSyncConfigValidator",
+			"QaSyncStateRepository",
+			"SlackHistoryAdapter",
+			"GitHubIssueLabelAdapter",
+			"TrackerNoteAdapter",
+			"QaSyncConfig",
+			"QaSyncReport",
+			"QaSyncPorts"
 		]
 	},
 	"contract": {
@@ -48,7 +57,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.agents-providers-git-hub-issue-label",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.agents-providers-health-probe",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-history",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -58,7 +77,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.agents-providers-tracker-note",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.agents-providers-project-assistant-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-types",
 			"via": "reexport",
 			"origin": "derived"
 		},
@@ -78,6 +107,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.agents-providers-qa-sync-state",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-project-assistant",
 			"via": "reexport",
 			"origin": "derived"
@@ -93,6 +127,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.agents-providers-qa-sync",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-qa-sync-service-qa-run-types",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.agents-providers-qa-thread",
 			"via": "reexport",
 			"origin": "derived"
@@ -104,6 +148,11 @@
 		},
 		{
 			"unit": "validator.agents-providers-project-assistant-config",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-qa-sync-config",
 			"via": "reexport",
 			"origin": "derived"
 		}
