@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -63,7 +64,14 @@ export async function trackerBackupFixture(start: string) {
 			const request = new Request('http://127.0.0.1:7700/native/v1' + route, { method, headers });
 			return (await trackerNodeApi(request, runtime, supervisor, 'fixture')).json();
 		},
-		cli: (...args: string[]) => runCli(root, path, args)
+		cli: (...args: string[]) => runCli(root, path, args),
+		/** The shipped CLI runs on Bun, whose SQLite differs from this test runner's. */
+		bunCli(...args: string[]) {
+			const env = { ...process.env, HARNESS_TRACKER_CONFIG: writeNodeConfig(root, path) };
+			const command = ['src/index.ts', 'tracker', ...args];
+			const run = spawnSync('bun', command, { env, encoding: 'utf8' });
+			return { code: run.status, out: run.stdout.trim(), err: run.stderr.trim() };
+		}
 	};
 }
 
@@ -85,7 +93,7 @@ async function runWorkers(runtime: TrackerNativeRuntimeService) {
 	await running;
 }
 
-async function runCli(root: string, database: string, args: string[]) {
+function writeNodeConfig(root: string, database: string): string {
 	const config = join(root, 'node.json');
 	writeFileSync(
 		config,
@@ -102,7 +110,11 @@ async function runCli(root: string, database: string, args: string[]) {
 		}),
 		{ mode: 0o600 }
 	);
-	vi.stubEnv('HARNESS_TRACKER_CONFIG', config);
+	return config;
+}
+
+async function runCli(root: string, database: string, args: string[]) {
+	vi.stubEnv('HARNESS_TRACKER_CONFIG', writeNodeConfig(root, database));
 	const log = vi.spyOn(console, 'log').mockImplementation(() => {});
 	const error = vi.spyOn(console, 'error').mockImplementation(() => {});
 	try {

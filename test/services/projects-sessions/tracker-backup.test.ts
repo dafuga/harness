@@ -9,7 +9,7 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
-import { gunzipSync } from 'node:zlib';
+import { gunzipSync, gzipSync } from 'node:zlib';
 import { expect, test } from 'vitest';
 import { trackerBackupFixture } from '../../support/trackerBackupFixture';
 
@@ -125,4 +125,19 @@ test('restore prepares a verified database that keeps local run state and gets a
 	writeFileSync(join(hub.directory, 'broken.db.gz'), 'garbage');
 	expect(await hub.cli('backup', 'verify', 'broken.db.gz')).toMatchObject({ code: 1 });
 	expect(readdirSync(hub.root).filter((name) => name.includes('.tmp'))).toEqual([]);
+});
+
+test('verify and restore read a WAL-mode copy that arrives without its sidecar files', async () => {
+	const hub = await trackerBackupFixture('2026-11-27T04:00:00Z');
+	// The hourly job uses SQLite's .backup, which keeps the source's WAL journal mode.
+	const copy = join(hub.root, 'hourly.db');
+	hub.database.exec('PRAGMA journal_mode = WAL');
+	hub.database.exec('PRAGMA wal_checkpoint(TRUNCATE)');
+	const hourly = 'tracker-20261127T0300Z.db.gz';
+	writeFileSync(copy, readFileSync(join(hub.root, 'tracker.db')));
+	writeFileSync(join(hub.external, hourly), gzipSync(readFileSync(copy)));
+	const file = join(hub.external, hourly);
+	expect(hub.bunCli('backup', 'verify', file)).toMatchObject({ code: 0, err: '' });
+	const to = join(hub.root, 'restored.db');
+	expect(hub.bunCli('backup', 'restore', file, '--to', to)).toMatchObject({ code: 0, err: '' });
 });
