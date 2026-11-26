@@ -22,6 +22,7 @@ import {
 	nativeJsonCommands
 } from './formatNativeTrackerInspection';
 import type {
+	NativeTrackerAlertReceipt,
 	NativeTrackerInspection,
 	NativeTrackerItem,
 	NativeTrackerRequest,
@@ -29,9 +30,11 @@ import type {
 } from './nativeTrackerCli.types';
 import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
 import { formatNativeTrackerJob } from './formatNativeTrackerJob';
+import { formatNativeTrackerAlert } from './formatNativeTrackerAlert';
 import type { NativeTrackerJobResponse } from './formatNativeTrackerJob.types';
 import { nativeTrackerJobHelp } from './nativeTrackerJobRequest';
-import { trackerRequestTimeout } from './trackerRequestTimeout';
+import { fetchNativeTracker } from './fetchNativeTracker';
+import { keepRefusedTrackerFlag } from './keepRefusedTrackerFlag';
 import { withTrackerAttachments } from './withTrackerAttachments';
 
 export function selectedTrackerConfig(): string | undefined {
@@ -65,46 +68,46 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 		return 2;
 	}
 	if (isLocalBackupCommand(args)) return runLocalTrackerBackup(args.slice(1), config);
+	const keep = async (refused: string) => {
+		if (args[0] !== 'flag') return;
+		const actor = trackerActor('flag', undefined, config.node);
+		await keepRefusedTrackerFlag(args, refused, { config, actor });
+	};
 	let input: ReturnType<typeof nativeTrackerArgs>;
 	try {
 		input = await withTrackerAttachments(nativeTrackerArgs(args));
 	} catch (error) {
-		console.error(`tracker: ${error instanceof Error ? error.message : 'invalid arguments'}`);
+		const reason = error instanceof Error ? error.message : 'invalid arguments';
+		console.error(`tracker: ${reason}`);
+		await keep(reason);
 		return 1;
 	}
 	try {
-		return await sendNativeTracker(input, config);
+		return await sendNativeTracker(input, config, keep);
 	} catch {
 		console.error('tracker: native service unavailable. Check the configured supervisor.');
+		await keep('native service unavailable');
 		return 3;
 	}
 }
 
 async function sendNativeTracker(
 	input: ReturnType<typeof nativeTrackerArgs>,
-	config: TrackerNodeConfig
+	config: TrackerNodeConfig,
+	keep: (refused: string) => Promise<void>
 ) {
 	const { command, values, request, words } = input;
 	const actor = trackerActor(command, values.by, config.node);
 	const body = trackerRequestBody(command, request, actor);
-	const response = await fetch(`http://127.0.0.1:${config.apiPort}/native/v1${request.path}`, {
-		method: request.method,
-		body: JSON.stringify(body),
-		headers: {
-			'content-type': 'application/json',
-			'x-tracker-as': actor.replace(/[^\x20-\x7e]/g, '?').slice(0, 80),
-			'x-harness-tracker-node': config.node,
-			'x-harness-tracker-role': config.role
-		},
-		redirect: 'error',
-		// Bun's own five minute limit would cut off a long job test; the signal bounds the wait.
-		...({ timeout: false } as object),
-		signal: AbortSignal.timeout(trackerRequestTimeout(request.path))
-	});
+	const response = await fetchNativeTracker(config, { ...request, body }, actor);
 	const data = response.headers.get('content-type')?.startsWith('application/json')
 		? await response.json()
 		: await response.text();
-	if (!response.ok) return printResponseError(response.status, data);
+	if (!response.ok) {
+		const code = printResponseError(response.status, data);
+		await keep((data as { error?: string })?.error ?? `HTTP ${response.status}`);
+		return code;
+	}
 	if (request.path.endsWith('/launch?outcome=run')) return renderLaunch(data, Boolean(values.json));
 	if (request.path === '/backup/now') return renderTrackerBackup(data, Boolean(values.json));
 	if (command === 'check') return renderCheck(data, Boolean(values.json));
@@ -168,6 +171,9 @@ function renderNativeTracker(
 		return;
 	}
 	switch (command) {
+		case 'alert':
+			console.log(formatNativeTrackerAlert(data as NativeTrackerAlertReceipt));
+			return;
 		case 'job':
 			console.log(formatNativeTrackerJob(options.first, data as NativeTrackerJobResponse));
 			return;

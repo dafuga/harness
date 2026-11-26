@@ -18,6 +18,10 @@ import {
 } from './tracker-local-api-service/trackerLocalResponse';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
 import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
+import {
+	isTrackerAlert,
+	trackerAlertResponse
+} from './tracker-local-api-service/trackerLocalAlert';
 import { phoneReplicaResponse } from './tracker-local-api-service/trackerPhoneReplicaResponse';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
@@ -151,6 +155,7 @@ function trackerSpecialResponse(
 	dependencies: Parameters<typeof trackerItemSpecialResponse>[2]
 ) {
 	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
+	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
 	return trackerItemSpecialResponse(request, parts, dependencies);
 }
 

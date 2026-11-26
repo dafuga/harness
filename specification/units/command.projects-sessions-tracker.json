@@ -10,8 +10,11 @@
 	"owns": {
 		"source": [
 			"src/commands/projects-sessions/TrackerCommand.ts",
+			"src/commands/projects-sessions/tracker-command/fetchNativeTracker.ts",
+			"src/commands/projects-sessions/tracker-command/formatNativeTrackerAlert.ts",
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerInspection.ts",
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerItem.ts",
+			"src/commands/projects-sessions/tracker-command/keepRefusedTrackerFlag.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAskOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerInspectionRequest.ts",
@@ -27,6 +30,8 @@
 			"TrackerCommand",
 			"TrackerCommand.register",
 			"TrackerCommand.run",
+			"fetchNativeTracker",
+			"formatNativeTrackerAlert",
 			"nativeJsonCommands",
 			"formatNativeTrackerInspection",
 			"formatNativeTrackerAdapterRun",
@@ -36,6 +41,7 @@
 			"nativeItemPrefix",
 			"formatNativeTrackerRunRead",
 			"formatListedRun",
+			"keepRefusedTrackerFlag",
 			"nativeTrackerAskBody",
 			"nativeTrackerFlagBody",
 			"nativeTrackerAnswerBody",
@@ -43,6 +49,7 @@
 			"NativeTrackerAskValues",
 			"NativeTrackerItem",
 			"NativeTrackerItemDetail",
+			"NativeTrackerAlertReceipt",
 			"NativeTrackerAdapter",
 			"NativeTrackerBackupList",
 			"NativeTrackerInspection",
@@ -79,6 +86,26 @@
 			{
 				"name": "TrackerCommand.run.args",
 				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "fetchNativeTracker.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "fetchNativeTracker.request",
+				"type": "NativeTrackerRequest",
+				"required": true
+			},
+			{
+				"name": "fetchNativeTracker.actor",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatNativeTrackerAlert.receipt",
+				"type": "NativeTrackerAlertReceipt",
 				"required": true
 			},
 			{
@@ -149,6 +176,26 @@
 			{
 				"name": "formatListedRun.run",
 				"type": "NativeTrackerListedRun",
+				"required": true
+			},
+			{
+				"name": "keepRefusedTrackerFlag.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "keepRefusedTrackerFlag.refused",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "keepRefusedTrackerFlag.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "keepRefusedTrackerFlag.actor",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -297,6 +344,14 @@
 				"type": "number | Promise<number>"
 			},
 			{
+				"name": "fetchNativeTracker",
+				"type": "unknown"
+			},
+			{
+				"name": "formatNativeTrackerAlert",
+				"type": "string"
+			},
+			{
 				"name": "nativeJsonCommands",
 				"type": "unknown"
 			},
@@ -331,6 +386,10 @@
 			{
 				"name": "formatListedRun",
 				"type": "string"
+			},
+			{
+				"name": "keepRefusedTrackerFlag",
+				"type": "Promise<void>"
 			},
 			{
 				"name": "nativeTrackerAskBody",
@@ -448,6 +507,52 @@
 					{
 						"name": "TrackerCommand.run",
 						"type": "number | Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fetchNativeTracker",
+				"inputs": [
+					{
+						"name": "fetchNativeTracker.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					},
+					{
+						"name": "fetchNativeTracker.request",
+						"type": "NativeTrackerRequest",
+						"required": true
+					},
+					{
+						"name": "fetchNativeTracker.actor",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "fetchNativeTracker",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatNativeTrackerAlert",
+				"inputs": [
+					{
+						"name": "formatNativeTrackerAlert.receipt",
+						"type": "NativeTrackerAlertReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatNativeTrackerAlert",
+						"type": "string"
 					}
 				],
 				"errors": [],
@@ -622,6 +727,39 @@
 					{
 						"name": "formatListedRun",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "keepRefusedTrackerFlag",
+				"inputs": [
+					{
+						"name": "keepRefusedTrackerFlag.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "keepRefusedTrackerFlag.refused",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "keepRefusedTrackerFlag.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					},
+					{
+						"name": "keepRefusedTrackerFlag.actor",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "keepRefusedTrackerFlag",
+						"type": "Promise<void>"
 					}
 				],
 				"errors": [],
