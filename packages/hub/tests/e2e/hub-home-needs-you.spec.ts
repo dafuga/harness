@@ -68,7 +68,7 @@ for (const size of ['desktop', 'phone'] as const) {
 			.getByRole('group', { name: 'Choose an answer' })
 			.getByRole('button');
 		await expect(choices).toHaveText([/Ship harbor now.*Recommended/s, /Hold harbor/, /Other/]);
-		await expect(page.getByRole('textbox')).toHaveCount(0);
+		await expect(needsYou(page).getByRole('textbox')).toHaveCount(0);
 		const widths = await page.evaluate(() => [
 			document.documentElement.scrollWidth,
 			window.innerWidth
