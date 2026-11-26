@@ -17,7 +17,8 @@ import {
 } from './formatNativeTrackerItem';
 import {
 	formatNativeTrackerAdapterReply,
-	formatNativeTrackerInspection
+	formatNativeTrackerInspection,
+	nativeJsonCommands
 } from './formatNativeTrackerInspection';
 import type {
 	NativeTrackerAdapterReply,
@@ -33,6 +34,8 @@ import { printNativeTrackerError } from './printNativeTrackerError';
 import { formatNativeTrackerCheck } from './formatNativeTrackerMatches';
 import { formatNativeTrackerHistory } from './formatNativeTrackerHistory';
 import { runTrackerInstructions } from './runTrackerInstructions';
+import { formatNativeTrackerJob } from './formatNativeTrackerJob';
+import type { NativeTrackerJobResponse } from './formatNativeTrackerJob.types';
 import type { TrackerItemMatches } from '../../../utils/projects-sessions/checkTrackerItem.types';
 import type { TrackerOccurrenceRow } from '../../../repositories/projects-sessions/TrackerRecurringRepository.types';
 import { trackerRequestTimeout } from './trackerRequestTimeout';
@@ -95,6 +98,8 @@ async function sendNativeTracker(
 			'x-harness-tracker-role': config.role
 		},
 		redirect: 'error',
+		// Bun's own five minute limit would cut off a long job test; the signal bounds the wait.
+		...({ timeout: false } as object),
 		signal: AbortSignal.timeout(trackerRequestTimeout(request.path))
 	});
 	const data = response.headers.get('content-type')?.startsWith('application/json')
@@ -150,8 +155,6 @@ function renderCheck(matches: TrackerItemMatches, json: boolean) {
 	return matches.open.length ? 5 : 0;
 }
 
-const nativeJsonCommands = new Set(['status', 'autolaunch', 'watchdog', 'needs-attention']);
-
 function renderNativeTracker(
 	command: string,
 	data: unknown,
@@ -162,6 +165,9 @@ function renderNativeTracker(
 		return;
 	}
 	switch (command) {
+		case 'job':
+			console.log(formatNativeTrackerJob(options.first, data as NativeTrackerJobResponse));
+			return;
 		case 'ensure': {
 			const { pid, node } = data as { pid: number; node: string };
 			if (!options.quiet) console.log(`tracker running (pid ${pid}, node ${node})`);

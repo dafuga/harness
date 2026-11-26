@@ -965,6 +965,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.projects-sessions-tracker-job-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.projects-sessions-tracker-tmux",
 			"via": "import",
 			"origin": "derived"
@@ -1046,6 +1051,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node-service-extend-tracker-slow-request",
 			"via": "import",
 			"origin": "derived"
 		},

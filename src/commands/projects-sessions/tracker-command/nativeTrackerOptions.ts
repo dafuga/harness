@@ -128,6 +128,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['autolaunch', {}],
 	['adapter', nativeTrackerAdapterOptions],
 	['backup', { to: text }],
+	['job', { cmd: text, 'wake-on': text, timeout: text }],
 	['start', {}],
 	['stop', {}],
 	['reopen', {}],
