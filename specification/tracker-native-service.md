@@ -234,9 +234,35 @@ operator verifies the stopped database and chooses a rollback.
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an
   explicit, private account directory and the existing `tracked` label.
-- **Other effects.** Fleet telemetry, job execution, and external backup
-  scheduling remain out of the foreground configuration. Recurrence is
-  enabled by a configured hub webhook.
+- **Box jobs.** A recurring item on the hub can run a shell command at each
+  occurrence in place of waking a bot. Use
+  `tracker job set ITEM --cmd 'C' [--wake-on finding|fail|always] [--timeout S]`
+  and `tracker job list`, `rm ITEM` or `test ITEM`. Exit 0 records the
+  occurrence as done. Exit 10 also records it as done and wakes the owner
+  with the output as `finding`. Any other exit or a timeout records it as
+  failed. `wake-on` defaults to `finding`; `fail` adds failures and `always`
+  wakes after every run. `test` runs the command now and records nothing.
+
+  Commands run at low priority under `/bin/sh` on the hub's own computer,
+  two scheduled jobs at a time, in `jobs/state/ITEM` beside the journal. They
+  receive `TRACKER_ITEM_ID`, `TRACKER_OCCURRENCE`, `TRACKER_STATE_DIR` and a
+  limited environment (such as `HOME` and the service's `PATH`) without the
+  service's other variables. Each command's process group is killed on exit,
+  timeout and shutdown. Output keeps the first 8 KB, with obvious secrets
+  redacted. An item with a job still waiting or running skips the next
+  occurrence, which later shows as missed. A job interrupted by shutdown or
+  a crash records a failure and is never rerun; after a crash its processes
+  may still be running. The latest receipt for each item is in
+  `jobs/receipts`.
+
+  Job definitions live in the local, unsynced `box_jobs` table. Only the
+  hub's loopback API can set them. A hub migration must carry those rows to
+  the new journal or set them again, and the commands' scripts and paths must
+  exist on the new hub's computer.
+
+- **Other effects.** Fleet telemetry and external backup scheduling remain
+  out of the foreground configuration. Recurrence and box jobs are enabled
+  by a configured hub webhook.
 
 ## Host-effect configuration
 
@@ -528,22 +554,91 @@ and the verified legacy run directory and tmux inventory contain no startup evid
 Consumed tokens remain recorded for deduplication and are excluded from the pending
 dispatch scan.
 
+### Launch holds
+
+`tracker autolaunch pause` and `resume` run on the hub (a spoke returns 409). The
+choice persists, and the hub sends it with every journal pull. A spoke keeps the
+last value it received while the hub is unreachable. The pause stops due launches
+only. A hub with `launch.due: false` does not pause its spokes.
+
+On each scheduler tick the launcher reads the panes of its own runs. A usage-limit
+or empty-credit notice behind the CLI's own glyph holds all new starts of that
+provider on that computer, including manual launches, retries and relaunches. A
+warning that work continues on credits does not. The hold records one watchdog
+alert with a note on the item, and watchdog relaunch attempts are not used up
+while it lasts. It stays until `tracker autolaunch clear-quota <codex|claude>`
+runs on that computer, even after the provider's limit resets. Notices already
+seen cannot restore a cleared hold. Detection needs a tmux executable. Placement
+on another computer does not read these holds.
+
+`hostEffects.launch.codexPausedUntil` (ISO time) holds Codex starts until then.
+Change it in the configuration and restart the node.
+
+### Remaining commands
+
 - [x] Wire `reject` and post-done verification (see Completion review).
-- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`.
-      Verify host admission, launcher limits,
+- [x] Wire `autolaunch pause/resume/clear-quota`, quota holds and the Codex pause.
+- [ ] Verify host admission, launcher limits, `ready/skipped`,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
-- [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
-[--alert]` with the native host-process integration.
+- [ ] Reconcile `machines`, `place`, and `watchdog dry-run/alerts` with the
+      native host-process integration.
+- [x] Wire `health [--alert]`, log rotation and host supervision (see Health,
+      logs and host supervision).
 - [x] Wire `adapter run` and comment preview and backfill through runner ownership.
 - [ ] Wire `adapter add/pause/resume/remove` and issue backfill.
 - [ ] Bind external backup receipts for last result and next run. Qualify
       `backup now` and `restore --yes` with the backup owner and an isolated
       restore rehearsal.
 - [ ] Qualify `agent register/list/rm`, `webhook status/pause/resume/test`,
-      `cos-test`, `job set/list/rm/test`, and local `instructions [--check]`.
+      `cos-test`, and local `instructions [--check]`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
       recurring `history`, `check` match details, `rm`, and empty `list`.
+
+## Health, logs and host supervision
+
+`harness tracker health [--alert] [--json] [--config PATH] [--log FILE]...`
+runs in its own process, so it also reports a stopped service. It exits 0 when
+healthy, 1 when a check fails and 2 when it cannot run. It checks the local API;
+on a hub the sync listener, webhook delivery and, once native backups report
+`enabled`, backup freshness; on a spoke the hub link. Every node checks for a
+second long-lived service on the same config, free database disk and load, and
+Linux also checks available memory. Quiet peers, a paused webhook, disabled
+backups and a host that cannot list processes are information only.
+
+With `--alert`, a newly failing check flags one `Tracker health on <node>` item
+and repeats daily while it fails. Backup failures are reported here but asked
+only by the backup service. Once every other check recovers, the item is noted
+and closed, even while the backup alert stays open. An ignored item is never
+raised again. An alerting run waits 20 seconds and asks
+the API again before calling it down. When the Tracker cannot record the alert,
+or the webhook check fails, it also posts to the URL in `health-fallback.url`
+with the bearer key in `health-fallback.key`. Both are private files beside the
+native config; the URL is HTTPS or literal IPv4 loopback. The fallback waits out
+22:00-08:00 Lisbon unless the Tracker could not take the alert because its API
+is down. Alert state is kept in `<database>.health.json`. Without `--alert`
+nothing is written or sent.
+
+Each `--log` file, and the supervisor log, rotates above 5 MB by copying to
+`<log>.1` and truncating, because the writer keeps the file open for appending.
+
+`harness tracker service print|install|uninstall [--config PATH]
+[--executable PATH]` sets up the current host. `print` changes nothing. A
+launched session's `HARNESS_TRACKER_CONFIG` is a client stub, so `health` and
+`service` refuse it; pass the node's own config with `--config`.
+
+- **Linux with systemd:** user units run `serve` with `Restart=always` and run
+  the health check 5 minutes after the timer starts and every 4 hours Lisbon
+  time. The journal owns log rotation.
+- **Linux without systemd:** a marked `~/.bashrc` line starts `tracker
+supervise`, and install starts it at once. The supervisor holds one lock per
+  database, restarts `serve` with backoff, rotates `<database>.log` and runs the
+  same health schedule. After a container restart it starts with the first new
+  shell.
+- **macOS:** the existing `local.harness.tracker` agent keeps supervising the
+  service. Install adds `local.harness.tracker-health`, which runs every 4 hours
+  in the Mac's time zone, runs whichever executable the service agent names and
+  rotates that agent's log files. The executable must include `tracker health`.
 
 ## Completion review
 

@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-command-format-native-tracker-job",
+	"uid": "u_nawtixuqir",
+	"kind": "command",
+	"title": "formatNativeTrackerJob",
+	"responsibility": "Owns the formatNativeTrackerJob command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/projects-sessions/tracker-command/formatNativeTrackerJob.ts",
+			"src/commands/projects-sessions/tracker-command/formatNativeTrackerJob.types.ts"
+		],
+		"symbols": ["formatNativeTrackerJob", "NativeTrackerJobTest", "NativeTrackerJobResponse"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "formatNativeTrackerJob.mode",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "formatNativeTrackerJob.data",
+				"type": "NativeTrackerJobResponse",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "formatNativeTrackerJob",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "formatNativeTrackerJob",
+				"inputs": [
+					{
+						"name": "formatNativeTrackerJob.mode",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "formatNativeTrackerJob.data",
+						"type": "NativeTrackerJobResponse",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatNativeTrackerJob",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-recurring",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-command/formatNativeTrackerJob.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-command/formatNativeTrackerJob.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

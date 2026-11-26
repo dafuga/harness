@@ -2,8 +2,9 @@
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { takeTrackerBackupNow } from '../tracker-backup-service/takeTrackerBackupNow';
-import { stopTrackerRun, trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
-import { readTrackerNodeInspection } from './readTrackerNodeInspection';
+import { trackerCommandOrItemResponse } from './trackerAutolaunchCommand';
+import { stopTrackerRun } from './confirmTrackerLaunch';
+import { extendTrackerSlowRequest } from './extendTrackerSlowRequest';
 import { serveTrackerChanges } from '../tracker-change-feed/serveTrackerChanges';
 
 const host = '127.0.0.1';
@@ -26,8 +27,7 @@ export function bindTrackerListener(
 			if (!allowedLocalRequest(request, origin, type))
 				return Response.json({ error: 'loopback request required' }, { status: 403 });
 			if (signal.aborted) return unavailable();
-			if (type === 'api' && /\/adapters\/run$/.test(new URL(request.url).pathname))
-				server.timeout(request, 120);
+			if (type === 'api') extendTrackerSlowRequest(request, server);
 			const lifetime = AbortSignal.any([signal, request.signal]);
 			const work = Promise.resolve()
 				.then(() => handle(new Request(request, { signal: lifetime })))
@@ -133,11 +133,8 @@ function trackerOperationalApi(
 		case 'POST /sync':
 			runtime.kickLinks();
 			return Response.json({ ok: true });
-		default: {
-			const inspection =
-				request.method === 'GET' ? readTrackerNodeInspection(path, runtime, supervisor) : undefined;
-			return inspection ?? trackerLaunchAwareItemResponse(request, runtime);
-		}
+		default:
+			return trackerCommandOrItemResponse(request, path, runtime, supervisor);
 	}
 }
 
@@ -155,7 +152,7 @@ function trackerNodeStatus(
 				? 'configured'
 				: 'external scheduler required',
 			provider_runner: runtime.scheduler ? 'configured' : 'disabled',
-			job_runner: 'disabled',
+			job_runner: runtime.recurring?.status().enabled ? 'configured' : 'disabled',
 			adapter_runner: runtime.adapter ? 'configured' : 'disabled',
 			host_effects_held: runtime.hostEffectsHeld,
 			notification_tick: Boolean(runtime.notifications),
