@@ -11,16 +11,25 @@ import {
 	nativeItemSuffix
 } from './formatNativeTrackerItem';
 import {
-	formatNativeTrackerAdapterRun,
+	formatNativeTrackerAdapterReply,
 	formatNativeTrackerInspection
 } from './formatNativeTrackerInspection';
 import type {
+	NativeTrackerAdapterReply,
 	NativeTrackerInspection,
 	NativeTrackerItem,
 	NativeTrackerRequest,
 	NativeTrackerRunRead
 } from './nativeTrackerCli.types';
 import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
+import { nativeTrackerAdapterUsage } from './nativeTrackerAdapterRequest';
+import { printNativeTrackerAddHint } from './printNativeTrackerAddHint';
+import { printNativeTrackerError } from './printNativeTrackerError';
+import { formatNativeTrackerCheck } from './formatNativeTrackerMatches';
+import { formatNativeTrackerHistory } from './formatNativeTrackerHistory';
+import { runTrackerInstructions } from './runTrackerInstructions';
+import type { TrackerItemMatches } from '../../../utils/projects-sessions/checkTrackerItem.types';
+import type { TrackerOccurrenceRow } from '../../../repositories/projects-sessions/TrackerRecurringRepository.types';
 import { withTrackerAttachments } from './withTrackerAttachments';
 
 export function selectedTrackerConfig(): string | undefined {
@@ -36,14 +45,23 @@ export function selectedTrackerConfig(): string | undefined {
 	}
 }
 
+function wantsHelp(args: string[]): boolean {
+	return (args[0] ?? 'help') === 'help' || args.includes('--help') || args.includes('-h');
+}
+
+function printNativeTrackerHelp(): number {
+	console.log(
+		`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
+			'Local: instructions [--check] [file...]\n' +
+			`Subcommands: autolaunch [status|dry-run], ${nativeTrackerAdapterUsage}, backup list`
+	);
+	return 0;
+}
+
 export async function runNativeTracker(args: string[], path: string): Promise<number> {
-	if (!args.length || args[0] === 'help' || args.includes('--help') || args.includes('-h')) {
-		console.log(
-			`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
-				'Subcommands: autolaunch [status|dry-run], adapter list|run <source> [--backfill-comments] [--dry-run], backup list'
-		);
-		return 0;
-	}
+	const help = wantsHelp(args);
+	if (!help && args[0] === 'instructions') return runTrackerInstructions(args.slice(1));
+	if (help) return printNativeTrackerHelp();
 	let config: TrackerNodeConfig;
 	try {
 		config = loadTrackerNodeConfig(path);
@@ -88,11 +106,14 @@ async function sendNativeTracker(
 	const data = response.headers.get('content-type')?.startsWith('application/json')
 		? await response.json()
 		: await response.text();
-	if (!response.ok) return printResponseError(response.status, data);
+	if (!response.ok) return printNativeTrackerError(response.status, data);
 	if (request.path.endsWith('/launch?outcome=run')) return renderLaunch(data, Boolean(values.json));
 	if (command === 'check') return renderCheck(data, Boolean(values.json));
 	if (values.json) console.log(JSON.stringify(data, null, 2));
-	else renderNativeTracker(command, data, { quiet: Boolean(values.quiet), first: words[0] });
+	else {
+		renderNativeTracker(command, data, { quiet: Boolean(values.quiet), first: words[0] });
+		if (!values.quiet) await printNativeTrackerAddHint(command, data as NativeTrackerItem, config);
+	}
 	return 0;
 }
 
@@ -108,6 +129,7 @@ function trackerActor(command: string, by: string | boolean | undefined, node: s
 
 function trackerRequestTimeout(path: string) {
 	if (path.startsWith('/adapters/run?')) return 120_000;
+	if (path.startsWith('/adapters/add?')) return 120_000;
 	return path.endsWith('/launch?outcome=run') ? 30_000 : 15_000;
 }
 
@@ -133,37 +155,13 @@ function trackerRequestBody(command: string, { body }: NativeTrackerRequest, act
 	return command === 'ignore' || command === 'unignore' ? { ...body, by: actor } : body;
 }
 
-function printResponseError(status: number, data: { error?: string; code?: string }) {
-	if (status === 404 && !data?.error) {
-		console.error('tracker: the configured listener does not serve native Tracker commands');
-		return 3;
-	}
-	console.error(`tracker: ${data?.error ?? `HTTP ${status}`}`);
-	if (data?.code === 'ignored_duplicate') return 4;
-	if (data?.code === 'open_duplicate') return 5;
-	return 1;
+function renderCheck(matches: TrackerItemMatches, json: boolean) {
+	console.log(json ? JSON.stringify(matches, null, 2) : formatNativeTrackerCheck(matches));
+	if (matches.ignored.length) return 4;
+	return matches.open.length ? 5 : 0;
 }
 
-function renderCheck(
-	data: { ignored: NativeTrackerItem[]; open: NativeTrackerItem[] },
-	json: boolean
-) {
-	const { ignored, open } = data;
-	if (json) console.log(JSON.stringify(data, null, 2));
-	else if (ignored.length || open.length)
-		console.log([...ignored, ...open].map(formatNativeTrackerItem).join('\n'));
-	else console.log('no similar items (not ignored, not already open)');
-	if (ignored.length) return 4;
-	return open.length ? 5 : 0;
-}
-
-const nativeJsonCommands = new Set([
-	'status',
-	'autolaunch',
-	'history',
-	'watchdog',
-	'needs-attention'
-]);
+const nativeJsonCommands = new Set(['status', 'autolaunch', 'watchdog', 'needs-attention']);
 
 function renderNativeTracker(
 	command: string,
@@ -191,16 +189,17 @@ function renderNativeTracker(
 				(data as NativeTrackerItem[]).map(formatNativeTrackerItem).join('\n') || '(none)'
 			);
 			return;
+		case 'history':
+			console.log(formatNativeTrackerHistory(data as TrackerOccurrenceRow[]));
+			return;
 		default:
 			renderNativeTrackerItemOrReport(command, data, options.first);
 	}
 }
 
 function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
-	if (command === 'adapter' && first === 'run') {
-		console.log(
-			formatNativeTrackerAdapterRun(data as Parameters<typeof formatNativeTrackerAdapterRun>[0])
-		);
+	if (command === 'adapter' && first !== 'list') {
+		console.log(formatNativeTrackerAdapterReply(data as NativeTrackerAdapterReply));
 		return;
 	}
 	const rendered =

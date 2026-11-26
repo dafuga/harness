@@ -2,6 +2,7 @@
 import { resolve } from 'node:path';
 import { nativeTrackerAskBody } from './nativeTrackerAskOptions';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
+import { nativeTrackerAdapterOptions } from './nativeTrackerAdapterRequest';
 
 const text = { type: 'string' } as const;
 const flag = { type: 'boolean' } as const;
@@ -93,7 +94,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['priority', {}],
 	['park', { until: text }],
 	['move-on', {}],
-	['block', { force: flag }],
+	['block', { force: flag, 'needs-daniel': flag }],
 	['unblock', { note: text }],
 	['ignore', { reason: text, until: text }],
 	['unignore', { note: text }],
@@ -126,7 +127,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['models', {}],
 	['pick', {}],
 	['autolaunch', {}],
-	['adapter', { 'dry-run': flag, 'backfill-comments': flag }],
+	['adapter', nativeTrackerAdapterOptions],
 	['backup', {}],
 	['start', {}],
 	['stop', {}],

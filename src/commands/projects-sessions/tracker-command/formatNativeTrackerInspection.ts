@@ -3,6 +3,8 @@ import type { TrackerAdapterPollResult } from '../../../services/projects-sessio
 import { formatListedRun, formatNativeTrackerItem } from './formatNativeTrackerItem';
 import type {
 	NativeTrackerAdapter,
+	NativeTrackerAdapterChange,
+	NativeTrackerAdapterReply,
 	NativeTrackerBackupList,
 	NativeTrackerInspection,
 	NativeTrackerItemDetail
@@ -115,7 +117,20 @@ function formatBackupList({ status, files }: NativeTrackerBackupList): string {
 	return [status.note, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
 }
 
-export function formatNativeTrackerAdapterRun(
+export function formatNativeTrackerAdapterReply(reply: NativeTrackerAdapterReply): string {
+	return 'actions' in reply
+		? formatNativeTrackerAdapterRun(reply)
+		: formatNativeTrackerAdapterChange(reply);
+}
+
+function formatNativeTrackerAdapterChange(change: NativeTrackerAdapterChange): string {
+	if (change.removed) return `Removed ${change.id}`;
+	if (change.enabled_at !== undefined)
+		return `Enabled ${change.id} at ${new Date(change.enabled_at).toISOString()}`;
+	return `${change.id} is ${change.paused ? 'paused' : 'enabled'}`;
+}
+
+function formatNativeTrackerAdapterRun(
 	result: Extract<TrackerAdapterPollResult, { status: 'polled' }>
 ): string {
 	const lines = result.actions.map(({ action, title, url, item_id, auto_launch }) => {
