@@ -85,7 +85,9 @@ test('a paragraph-long title keeps its row short on a phone', async ({ page }) =
 	// A phone has no tooltip: a tap shows the whole title and the exact times in Lisbon.
 	await title.click();
 	expect(await height(title)).toBeGreaterThan(oneLine * 3);
-	const row = overview(page).locator('.hh-live-row').filter({ has: title });
+	const row = overview(page)
+		.locator('.hh-live-row')
+		.filter({ has: page.getByTitle(item.title) });
 	await expect(
 		row.getByText(
 			/^Started \d{1,2} \w{3,4} \d\d:\d\d · updated \d{1,2} \w{3,4} \d\d:\d\d, Lisbon time$/
