@@ -1,10 +1,10 @@
+import type { Platform } from './hub.entry.app-d.test.types';
 import { test } from 'vitest';
 import type {} from '../../src/app';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 
 test('Describes optional hub platform bindings', () => {
-	type Platform = App.Platform;
 	const platform: Platform = {
 		env: {
 			HARNESS_GOOGLE_CLIENT_ID: 'example-client',

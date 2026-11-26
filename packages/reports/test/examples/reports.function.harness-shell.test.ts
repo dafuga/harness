@@ -6,8 +6,7 @@ import type { HarnessNavbarInput } from '../../src/utils/explorer-ui/harnessShel
 import type { ExplorerLocation, ExplorerScope } from '../../src/models/explorer-ui/Explorer.types';
 import type { HarnessRevisionSummary } from '../../src/models/explorer-ui/Harness.types';
 import type { ModuleEntry } from '../../../../src/services/module-system/moduleDefinition.types';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.harness-shell.test.types';
 const unitId = 'reports.function.harness-shell';
 const record = (symbol: string, state: string, cases: Cases) =>
 	recordExampleCases(

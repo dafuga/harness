@@ -11,7 +11,8 @@
 		"source": [
 			"packages/desktop/src/services/project-session-service/git-source-adapter/GitSourceAdapter.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.types.ts"
+			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.types.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceError.ts"
 		],
 		"symbols": [
 			"GitSourceAdapter",
@@ -27,6 +28,7 @@
 			"GitSourceAdapter.documentation",
 			"GitSourceAdapter.size",
 			"GitSourceAdapter.contractHash",
+			"GitSourceError",
 			"GitSourceError"
 		]
 	},

@@ -4,11 +4,10 @@ import { TrackerItemReadRepository } from '../../../../src/repositories/projects
 import { TrackerRunReadRepository } from '../../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../../src/services/projects-sessions/TrackerLocalApiService';
 import { TrackerPersistenceService } from '../../../../src/services/projects-sessions/TrackerPersistenceService';
+import type { SnapshotMoment } from './needsYouSnapshotTracker.types';
+export type { SnapshotMoment } from './needsYouSnapshotTracker.types';
 
 export const recordedAt = Date.UTC(2026, 10, 25, 23, 30);
-
-/** The flags as they were before Chief of Staff's cleanup, or as recorded after it. */
-export type SnapshotMoment = 'before-cleanup' | 'recorded';
 
 /** The recorded real Tracker rows loaded into a real Tracker store behind its real local API. */
 export function snapshotTracker(moment: SnapshotMoment) {

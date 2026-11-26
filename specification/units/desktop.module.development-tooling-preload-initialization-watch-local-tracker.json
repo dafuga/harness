@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/preload-initialization/watchLocalTracker.ts"
+			"packages/desktop/src/lib/development-tooling/preload-initialization/watchLocalTracker.ts",
+			"packages/desktop/src/lib/development-tooling/preload-initialization/watchLocalTracker.types.ts"
 		],
-		"symbols": ["LocalTrackerRead", "watchLocalTracker"]
+		"symbols": ["LocalTrackerRead", "watchLocalTracker", "LocalTrackerRead"]
 	},
 	"contract": {
 		"origin": "derived",

@@ -4,16 +4,15 @@ import {
 	explorerEntities,
 	explorerEntity
 } from '../../src/utils/explorer-ui/explorerEntities';
-import type { HarnessRevision, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
+import type { HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import { impacted, revision, sha, unit } from '../explorerFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
 
-const unitId = 'reports.function.explorer-entities';
-type Helper = NonNullable<HarnessUnit['helpers']>[number];
-type Impact = NonNullable<HarnessRevision['sourceImpact']>;
-type Cases = Parameters<typeof recordExampleCases>[1];
+import { pending, projected } from './reports.function.explorer-entities.projection';
+import type { Helper, Impact, Cases, Row } from './reports.function.explorer-entities.test.types';
 
+const unitId = 'reports.function.explorer-entities';
 /** Records one named symbol's cases as a trace of their inputs and results. */
 function trace(symbol: string, state: string, cases: Cases): boolean {
 	const file = `${state}.json`;
@@ -39,26 +38,6 @@ const rendered = (slug: string, title: string) =>
 const layout = (slug: string, title: string, path: string) =>
 	unit(`reports.layout.${slug}`, 'layout', { title, owns: source(path) });
 
-/** The fields that decide an entity's projection, with its verdict in full. */
-const projected = (entity: ReturnType<typeof explorerEntity>) =>
-	entity && {
-		id: entity.id,
-		category: entity.category,
-		role: entity.role,
-		name: entity.name,
-		change: entity.change,
-		appRoute: entity.appRoute,
-		lastAt: entity.lastAt ?? null,
-		verdict: entity.verdict
-	};
-type Row = NonNullable<ReturnType<typeof projected>>;
-
-/** The verdict of a unit at a revision that holds no verification record. */
-const pending = {
-	passed: false,
-	label: 'Evidence missing',
-	reasons: ['No verification record is attached to this commit.']
-};
 /** The verdict of a unit the commit removed, shown as its first parent last held it. */
 const removedVerdict = {
 	passed: false,

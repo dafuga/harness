@@ -10,21 +10,35 @@ import { captureReviewFlag } from '../../support/videoCaptureFlags';
 import { assertRealVideoCapture } from '../../support/videoCaptureReal';
 import { measureWorkload } from '../../support/measureWorkload';
 import { assertDurableVideoReceipt } from '../../support/videoCaptureReceipt';
+import * as captureScript from '../../../src/services/verification-evidence/video-capture-service/captureScript';
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+	vi.restoreAllMocks();
+	vi.unstubAllEnvs();
+});
+
+function withSimulatedCapture<T>(run: Parameters<typeof withTempRepo<T>>[0]): Promise<T> {
+	// These cases inject a fake recorder and browser. The real gate has its own case.
+	vi.spyOn(captureScript, 'recordingAllowed').mockImplementation(() => {});
+	return withTempRepo(run);
+}
 
 test('VideoCaptureService runs', () => {
 	expect(new VideoCaptureService().run()).toBe('video-capture');
 });
 
-test('capture orchestration archives actual native assertion events and observed checkpoints', async () => {
-	expect(typeof new VideoCaptureService().record).toBe('function');
-	await measureWorkload(
-		'service.verification-evidence-video-capture',
-		'native-archive-capture',
-		() => withTempRepo(assertRealVideoCapture)
-	);
-}, 30_000);
+test.skipIf(process.platform !== 'darwin' || Boolean(process.env.CI))(
+	'capture orchestration archives actual native assertion events and observed checkpoints',
+	async () => {
+		expect(typeof new VideoCaptureService().record).toBe('function');
+		await measureWorkload(
+			'service.verification-evidence-video-capture',
+			'native-archive-capture',
+			() => withTempRepo(assertRealVideoCapture)
+		);
+	},
+	30_000
+);
 
 test('capture orchestration retains original clips without creating warm browser work', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
@@ -32,7 +46,7 @@ test('capture orchestration retains original clips without creating warm browser
 		measureWorkload(
 			'service.verification-evidence-video-capture',
 			'cold-warm-input-lifecycle',
-			() => withTempRepo(assertCaptureLifecycle)
+			() => withSimulatedCapture(assertCaptureLifecycle)
 		)
 	).resolves.toEqual({ registered: ['component.player'], aliases: 2 });
 }, 30_000);
@@ -41,6 +55,7 @@ test('capture orchestration refuses unbound recording before scripts or browser 
 	expect(typeof new VideoCaptureService().record).toBe('function');
 	await withTempRepo(async (repo) => {
 		const f = await videoCaptureFixture(repo);
+		vi.stubEnv('CI', undefined);
 		for (const patch of [
 			{ recordingAuthorization: undefined },
 			{ env: {} },
@@ -49,6 +64,8 @@ test('capture orchestration refuses unbound recording before scripts or browser 
 			await expect(f.service.record({ ...f.options(), ...patch })).rejects.toThrow(
 				/not authorized/
 			);
+		vi.stubEnv('CI', '1');
+		await expect(f.service.record(f.options())).rejects.toThrow(/not authorized/);
 		expect(f.native.browserFactory).not.toHaveBeenCalled();
 		expect(f.native.loadScript).not.toHaveBeenCalled();
 	});
@@ -56,7 +73,7 @@ test('capture orchestration refuses unbound recording before scripts or browser 
 
 test('pending frame feedback forces an explicit owning acknowledgement before browser work', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await withTempRepo(async (repo) => {
+	await withSimulatedCapture(async (repo) => {
 		const f = await videoCaptureFixture(repo),
 			cold = await f.service.record(f.options());
 		f.publish(cold);
@@ -90,7 +107,7 @@ test('pending frame feedback forces an explicit owning acknowledgement before br
 
 test('capture orchestration observes configured boundary signatures and preserves failed raw data', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await withTempRepo(async (repo) => {
+	await withSimulatedCapture(async (repo) => {
 		const f = await videoCaptureFixture(repo),
 			options = f.options();
 		const declaration = globalThis.structuredClone(captureDeclaration);
@@ -127,7 +144,7 @@ test('capture orchestration observes configured boundary signatures and preserve
 
 test('capture orchestration cleans owned raw only after an attached matching receipt', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await expect(withTempRepo(assertDurableVideoReceipt)).resolves.toEqual({
+	await expect(withSimulatedCapture(assertDurableVideoReceipt)).resolves.toEqual({
 		addressedFlags: [expect.stringMatching(/^[a-f0-9-]{36}$/)],
 		record: expect.stringMatching(/^[a-f0-9]{64}$/)
 	});
@@ -135,7 +152,7 @@ test('capture orchestration cleans owned raw only after an attached matching rec
 
 test('capture orchestration re-records a corrupt sibling and bypasses old native cache for uncertain inputs', async () => {
 	expect(typeof new VideoCaptureService().record).toBe('function');
-	await withTempRepo(async (repo) => {
+	await withSimulatedCapture(async (repo) => {
 		const f = await videoCaptureFixture(repo),
 			cold = await f.service.record(f.options());
 		f.publish(cold);

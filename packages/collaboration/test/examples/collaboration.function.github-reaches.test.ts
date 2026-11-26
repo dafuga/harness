@@ -3,13 +3,10 @@ import { githubReaches } from '../../src/utils/git-source-history/create-git-hub
 import type { GitHubTransport } from '../../src/utils/git-source-history/githubTransport.types';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type TransportCall = { method: 'check' } | { method: 'request'; path: string; statuses: number[] };
-type ReachabilityExample = {
-	name: string;
-	input: { tip: string; commit: string };
-	comparison?: { status: number; data: unknown | null };
-};
+import type {
+	TransportCall,
+	ReachabilityExample
+} from './collaboration.function.github-reaches.test.types';
 
 function recordingTransport(response: { status: number; data: unknown | null }) {
 	const calls: TransportCall[] = [];

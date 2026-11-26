@@ -1,4 +1,3 @@
-import { createServer } from 'node:http';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { once } from 'node:events';
@@ -19,6 +18,14 @@ import {
 	seedHostedPage,
 	startHubSpy
 } from './support/trackerOverviewPublisherFixture';
+import {
+	post,
+	serve,
+	redirectTracker,
+	stage,
+	writeOther,
+	confirm
+} from './support/macTrackerInboxActions';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const title = 'Fixture Mac decision';
@@ -30,58 +37,6 @@ const options = [
 ];
 
 test.setTimeout(120_000);
-
-function post(api: TrackerLocalApiService, path: string, body: object) {
-	return api.handle(
-		new Request(`http://127.0.0.1${path}`, { method: 'POST', body: JSON.stringify(body) })
-	);
-}
-
-function serve(api: TrackerLocalApiService) {
-	return createServer(async (request, response) => {
-		try {
-			const chunks: Buffer[] = [];
-			for await (const chunk of request) chunks.push(chunk);
-			const message = new Request(`http://127.0.0.1${request.url}`, {
-				method: request.method,
-				body: chunks.length ? Buffer.concat(chunks) : undefined
-			});
-			const reply = await api.handle(message);
-			response.writeHead(reply.status, Object.fromEntries(reply.headers));
-			response.end(await reply.text());
-		} catch {
-			response.writeHead(500).end();
-		}
-	});
-}
-
-async function redirectTracker(app: ElectronApplication, port: number) {
-	await app.evaluate((_electron, port) => {
-		const original = globalThis.fetch;
-		globalThis.fetch = ((input, init) => {
-			if (!String(input).startsWith('http://127.0.0.1:7701/')) return original(input, init);
-			const url = new URL(String(input));
-			url.port = String(port);
-			return original(url, init);
-		}) as typeof fetch;
-	}, port);
-}
-
-async function stage(page: Page, action: string, text: string) {
-	await page.getByRole('button', { name: action, exact: true }).click();
-	await page.getByRole('textbox').fill(text);
-	await page.getByRole('button', { name: 'Review before sending' }).click();
-	await expect(page.getByRole('group', { name: 'Confirm this write' })).toBeVisible();
-}
-
-async function writeOther(page: Page, text: string) {
-	await page.getByRole('button', { name: /^Other/ }).click();
-	const field = page.getByRole('textbox', { name: 'Your answer' });
-	await expect(field).toBeFocused();
-	await field.fill(text);
-}
-
-const confirm = (page: Page) => page.getByRole('button', { name: 'Confirm and send' }).click();
 
 for (const viewport of scenario.viewports)
 	test.describe(viewport.id, () => {

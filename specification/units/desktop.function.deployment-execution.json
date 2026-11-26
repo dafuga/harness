@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/projects-sessions/DeploymentExecutionError.ts",
 			"packages/desktop/src/utils/projects-sessions/deploymentExecution.ts",
 			"packages/desktop/src/utils/projects-sessions/deploymentExecution.types.ts"
 		],
-		"symbols": ["deploymentExecution", "Runtime", "Captured", "DeploymentExecutionError"]
+		"symbols": [
+			"DeploymentExecutionError",
+			"deploymentExecution",
+			"Runtime",
+			"Captured",
+			"DeploymentExecutionError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -652,6 +652,11 @@
 			"unit": "desktop.model.environment-types",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.activity-display",
+			"via": "reexport",
+			"origin": "derived"
 		}
 	],
 	"helperContracts": [

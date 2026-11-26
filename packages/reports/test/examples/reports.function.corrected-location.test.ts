@@ -6,8 +6,7 @@ import {
 	compactHelperLocation,
 	correctedLocation
 } from '../../src/utils/development-tooling/correctedLocation';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.corrected-location.test.types';
 const unitId = 'reports.function.corrected-location';
 const record = (symbol: string, state: string, cases: Cases) =>
 	recordExampleCases(

@@ -2,6 +2,8 @@
 import type { MachineStatus, OverviewItem } from './projectOverview.types';
 
 /** Item statuses the tracker reports, including ignored records that never affect a card. */
+import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+
 export type TrackerItemStatus = 'open' | 'in_progress' | 'blocked' | 'done' | 'ignored';
 
 /** A tracker note; only its time and text are read. */
@@ -24,6 +26,7 @@ export type TrackerItemRecord = {
 	options?: { label: string; effect: string; recommended?: true }[];
 	confirm?: 'deploy' | 'money' | 'secret';
 	askedAt?: string | null;
+	attachments?: TrackerAttachment[];
 	notes_log?: TrackerNote[];
 	kind?: string | null;
 	parent?: string | null;

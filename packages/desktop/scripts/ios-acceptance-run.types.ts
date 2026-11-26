@@ -1,14 +1,8 @@
 // @harness-uid u_fppws53qsn
 import type { AcceptanceRecord } from './ios-acceptance-record';
 import type { SimulatorPage } from './ios-acceptance-page';
-
-export class FixtureControlOriginError extends Error {
-	override name = 'FixtureControlOriginError';
-}
-
-export class FixtureControlRefusedError extends Error {
-	override name = 'FixtureControlRefusedError';
-}
+export { FixtureControlOriginError } from './FixtureControlOriginError';
+export { FixtureControlRefusedError } from './FixtureControlRefusedError';
 
 /** What the control of the TEST ONLY fixture answers about its computer. */
 export interface FixtureView {

@@ -17,21 +17,8 @@ import { startSync } from '../../test/support/syncFixture';
 
 const owner = 'google:fixture-owner';
 
-/** A real Tracker journal and local API with its change feed, on a spare loopback port. */
-async function startTracker() {
-	const database = new DatabaseSync(':memory:');
-	const store = new TrackerPersistenceService(database, 'fixture-mac');
-	database.exec(trackerRunSchema);
-	const items = new TrackerItemReadRepository(database);
-	const api = new TrackerLocalApiService(store, items, {
-		runs: new TrackerRunReadRepository(database, store.node)
-	});
-	const handle = (request: Request) => {
-		const path = new URL(request.url).pathname;
-		if (path === '/changes') return serveTrackerChanges(request, store);
-		if (path === '/machines') return Response.json([]);
-		return api.handle(request);
-	};
+/** Serves the handler on a spare loopback port and points the tracker address at it. */
+async function serveOnTrackerAddress(handle: (request: Request) => Response | Promise<Response>) {
 	const server = createServer(async (incoming, outgoing) => {
 		const abort = new AbortController();
 		outgoing.on('close', () => abort.abort());
@@ -55,6 +42,30 @@ async function startTracker() {
 		const text = String(input);
 		return original(text.replace('http://127.0.0.1:7701/', `http://127.0.0.1:${port}/`), init);
 	}) as typeof fetch;
+	return {
+		server,
+		restore: () => {
+			globalThis.fetch = original;
+		}
+	};
+}
+
+/** A real Tracker journal and local API with its change feed, on a spare loopback port. */
+async function startTracker() {
+	const database = new DatabaseSync(':memory:');
+	const store = new TrackerPersistenceService(database, 'fixture-mac');
+	database.exec(trackerRunSchema);
+	const items = new TrackerItemReadRepository(database);
+	const api = new TrackerLocalApiService(store, items, {
+		runs: new TrackerRunReadRepository(database, store.node)
+	});
+	const handle = (request: Request) => {
+		const path = new URL(request.url).pathname;
+		if (path === '/changes') return serveTrackerChanges(request, store);
+		if (path === '/machines') return Response.json([]);
+		return api.handle(request);
+	};
+	const { server, restore } = await serveOnTrackerAddress(handle);
 	return {
 		/** A write as the tracker CLI makes it. */
 		async post(path: string, body: object) {
@@ -80,7 +91,7 @@ async function startTracker() {
 			}),
 		answer: (id: string) => items.get(id).answer,
 		stop() {
-			globalThis.fetch = original;
+			restore();
 			server.closeAllConnections();
 			server.close();
 		}

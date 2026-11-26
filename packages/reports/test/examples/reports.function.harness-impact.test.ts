@@ -5,123 +5,24 @@ import {
 	harnessImpact,
 	comparedSides
 } from '../../src/components/explorer-ui/harness-compare/harnessImpact';
-import type { Groups } from '../../src/components/explorer-ui/harness-compare/harnessImpact.types';
-import type { HarnessImpact, ComparedSides } from '../../src/utils/explorer-ui/harnessImpact';
-
-type Revision = NonNullable<Parameters<typeof harnessImpact>[1]>;
-type Unit = Revision['registry']['units'][number];
-type SourceImpact = NonNullable<Revision['sourceImpact']>;
-type Client = Parameters<typeof comparedSides>[0];
-
-const NO_GROUPS: Groups = { direct: [], indirect: [], added: [], removed: [] };
-
-function meta(symbol: string, title: string) {
-	const state = title
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '')
-		.slice(0, 60);
-	return {
-		unitId: 'reports.function.harness-impact',
-		symbol,
-		state,
-		evidence: 'examples-cases',
-		file: `${state}.json`
-	};
-}
+import type { ComparedSides } from '../../src/utils/explorer-ui/harnessImpact';
+import type { Unit, Client } from './reports.function.harness-impact.test.types';
+import {
+	revision,
+	sourceOf,
+	summary,
+	meta,
+	registry
+} from './reports.function.harness-impact.cases';
 
 function unit(id: string, version: string, dependsOn: string[] = [], status = 'active'): Unit {
 	const dependencies = dependsOn.map((target) => ({ unit: target }));
 	return { id, version, status, dependencies } as unknown as Unit;
 }
 
-function registry(
-	units: Unit[],
-	scenarios: Array<{ id: string; units: string[] }> = []
-): Revision['registry'] {
-	return {
-		available: true,
-		units,
-		scenarios,
-		graph: { edges: [] }
-	} as unknown as Revision['registry'];
-}
-
-function revision(commit: string, fields: Partial<Revision> = {}): Revision {
-	const empty = registry([]);
-	return { commit, registry: empty, comparison: null, sourceImpact: null, ...fields } as Revision;
-}
-
-function sourceOf(
-	base: string,
-	units: Partial<Groups>,
-	changed: string[] = [],
-	scenarios: string[] = []
-): SourceImpact {
-	const files = changed.map((path) => ({ path }));
-	return {
-		base,
-		expanded: false,
-		changed: files,
-		units: { ...NO_GROUPS, ...units },
-		scenarios,
-		uncertain: []
-	} as unknown as SourceImpact;
-}
-
 function fakeClient(side: (path: string) => Promise<unknown>): Client {
 	return { side } as unknown as Client;
 }
-
-function summary(impact: HarnessImpact) {
-	return {
-		source: impact.source,
-		expanded: impact.expanded,
-		files: impact.files,
-		record: impact.record,
-		direct: impact.direct,
-		indirect: impact.indirect,
-		added: impact.added,
-		removed: impact.removed,
-		scenarios: impact.scenarios,
-		uncertain: impact.uncertain,
-		marks: Object.fromEntries(impact.marks)
-	};
-}
-
-test('Recorded comparison applies only to the base it names', () => {
-	const head = revision('head-b', {
-		comparison: {
-			base: 'base-a',
-			record: 'record-1',
-			units: { direct: ['x'], indirect: ['y'], added: [], removed: [] },
-			scenarios: ['s2', 's1', 's2'],
-			uncertain: []
-		},
-		sourceImpact: sourceOf('base-a', { direct: ['z'] })
-	});
-	const matched = summary(harnessImpact(revision('base-a'), head));
-	const other = summary(harnessImpact(revision('base-x'), head));
-	expect(matched).toMatchObject({
-		source: 'recorded',
-		record: 'record-1',
-		direct: ['x'],
-		indirect: ['y'],
-		scenarios: ['s1', 's2']
-	});
-	expect(other.source).toBe('computed');
-	recordExampleCases(
-		meta('harnessImpact', 'Recorded comparison applies only to the base it names'),
-		[
-			{
-				name: 'base is the one the record compared',
-				input: { base: 'base-a', head: 'head-b' },
-				output: matched
-			},
-			{ name: 'base is another revision', input: { base: 'base-x', head: 'head-b' }, output: other }
-		]
-	);
-});
 
 test('Source impact sorts added units out of direct', () => {
 	const head = revision('head-b', {

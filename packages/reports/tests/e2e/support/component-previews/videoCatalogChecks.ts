@@ -8,35 +8,8 @@ export async function assertVideoCatalogState({
 	unit,
 	variant
 }: Pick<CatalogCheckContext, 'component' | 'unit' | 'variant'>) {
-	if (unit.id === 'reports.component.verification-evidence-video-evidence') {
-		if (['failed', 'empty'].includes(variant)) {
-			await expect(component.locator('video')).toHaveCount(0);
-			await expect(
-				component.getByText(
-					variant === 'failed' ? 'The recording failed.' : 'No video was recorded.',
-					{ exact: true }
-				)
-			).toBeVisible();
-			return;
-		}
-		await expect(component.locator('video')).toBeVisible();
-		if (variant === 'error')
-			await expect(component.getByRole('alert')).toHaveText(
-				'Frame feedback returned no flags list.'
-			);
-		else await expect(component.getByRole('alert')).toHaveCount(0);
-		const flags = videoFixtureFlags(variant);
-		await expect(component.locator('.frame-flags li')).toHaveCount(flags.length);
-		await expect(component.locator('.flag-track button')).toHaveCount(flags.length);
-		for (const flag of flags)
-			await expect(
-				component.getByRole('button', {
-					name: `${flag.status[0].toUpperCase() + flag.status.slice(1)} · ${flag.atSeconds.toFixed(2)}s`,
-					exact: true
-				})
-			).toBeVisible();
-		return;
-	}
+	if (unit.id === 'reports.component.verification-evidence-video-evidence')
+		return assertVideoEvidenceState(component, variant);
 	if (unit.id !== 'reports.component.verification-evidence-video-graph-navigation') return;
 	const props = videoCatalogProps(unit.id, variant) as unknown as VideoGraphNavigationProps;
 	const paths = component.getByRole('combobox', { name: 'Video path' });
@@ -48,6 +21,43 @@ export async function assertVideoCatalogState({
 		await paths.selectOption('');
 		await expect(paths).toHaveValue('');
 	} else await expect(paths).toHaveCount(0);
+	await assertGraphCoverage(component, props);
+}
+
+async function assertVideoEvidenceState(
+	component: CatalogCheckContext['component'],
+	variant: string
+) {
+	if (['failed', 'empty'].includes(variant)) {
+		await expect(component.locator('video')).toHaveCount(0);
+		await expect(
+			component.getByText(
+				variant === 'failed' ? 'The recording failed.' : 'No video was recorded.',
+				{ exact: true }
+			)
+		).toBeVisible();
+		return;
+	}
+	await expect(component.locator('video')).toBeVisible();
+	if (variant === 'error')
+		await expect(component.getByRole('alert')).toHaveText('Frame feedback returned no flags list.');
+	else await expect(component.getByRole('alert')).toHaveCount(0);
+	const flags = videoFixtureFlags(variant);
+	await expect(component.locator('.frame-flags li')).toHaveCount(flags.length);
+	await expect(component.locator('.flag-track button')).toHaveCount(flags.length);
+	for (const flag of flags)
+		await expect(
+			component.getByRole('button', {
+				name: `${flag.status[0].toUpperCase() + flag.status.slice(1)} · ${flag.atSeconds.toFixed(2)}s`,
+				exact: true
+			})
+		).toBeVisible();
+}
+
+async function assertGraphCoverage(
+	component: CatalogCheckContext['component'],
+	props: VideoGraphNavigationProps
+) {
 	if (!props.coverage?.length)
 		await expect(component.getByText('No verified graph coverage is attached.')).toBeVisible();
 	for (const graph of props.coverage ?? []) {

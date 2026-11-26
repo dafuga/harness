@@ -3,8 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { harnessPage, homePath } from '../../src/utils/explorer-ui/harness-page/harnessPage';
 import { history, sha, summary } from '../explorerFixture';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.harness-page.test.types';
 const unitId = 'reports.function.harness-page';
 const record = (symbol: string, state: string, cases: Cases) =>
 	recordExampleCases(

@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/NormalProductRejectedError.ts",
 			"packages/desktop/scripts/build-ios-simulator.ts",
 			"packages/desktop/scripts/build-ios-simulator.types.ts"
 		],
-		"symbols": ["NormalProductRejectedError"]
+		"symbols": ["NormalProductRejectedError", "NormalProductRejectedError"]
 	},
 	"contract": {
 		"origin": "declared",

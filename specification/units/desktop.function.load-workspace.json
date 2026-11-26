@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/utils/loadWorkspace.ts",
+			"packages/desktop/src/utils/projects-sessions/load-workspace/WorkspaceProjectMismatchError.ts",
 			"packages/desktop/src/utils/projects-sessions/load-workspace/loadWorkspace.ts",
 			"packages/desktop/src/utils/projects-sessions/load-workspace/loadWorkspace.types.ts"
 		],
@@ -17,6 +18,7 @@
 			"LoadedWorkspace",
 			"ProjectSelection",
 			"loadWorkspace",
+			"WorkspaceProjectMismatchError",
 			"loadWorkspace",
 			"LoadedWorkspace",
 			"ProjectSelection",

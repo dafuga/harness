@@ -56,13 +56,11 @@ test('rejects unsupported media while preserving digest failures', async () => {
 			evidence: 'examples-cases',
 			file: 'rejects-unsupported-media-while-preserving-digest-failures.json'
 		},
-		results.map(({ name, input, error }) => ({
-			name,
-			input,
-			error: {
-				name: error instanceof Error ? error.name : 'Error',
-				message: error instanceof Error ? error.message : String(error)
-			}
-		}))
+		results.map(({ name, input, error }) => ({ name, input, error: describeFailure(error) }))
 	);
 });
+
+function describeFailure(error: unknown) {
+	if (error instanceof Error) return { name: error.name, message: error.message };
+	return { name: 'Error', message: String(error) };
+}

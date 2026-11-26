@@ -7,7 +7,7 @@ import {
 } from '../../../../src/utils/reports-media/record-capture/recordCapture';
 import { explorerEvidence } from '../../../reports/src/utils/explorer-ui/explorerEvidence';
 import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';
-import { recordedProjection } from '../../src/utils/recorded-answer/recordedProjection';
+import { recordedProjection } from '../../src/utils/verification-evidence/recorded-answer/recordedProjection';
 import { feed, head, held, home, parent, sampleDetail, sampleScope } from '../recorded-sample';
 const tree = 'e'.repeat(40);
 const origin = 'f'.repeat(40);

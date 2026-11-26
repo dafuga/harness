@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/CloudCleanupError.ts",
 			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.ts",
 			"packages/reports/src/services/reports-media/report-command-service/report-retention-service/R2ReportRetentionAdapter.types.ts"
 		],
 		"symbols": [
+			"CloudCleanupError",
 			"R2ReportRetentionAdapter",
 			"R2ReportRetentionAdapter.fromEnvironment",
 			"R2ReportRetentionAdapter.purge",

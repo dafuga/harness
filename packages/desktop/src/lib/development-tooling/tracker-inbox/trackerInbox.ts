@@ -5,6 +5,7 @@ import type {
 	ConfirmedWrite,
 	InboxBucket,
 	InboxDetail,
+	InboxReview,
 	InboxFilter,
 	InboxFlag,
 	InboxOption,
@@ -172,6 +173,17 @@ export function orderedOptions(flag: InboxFlag | null): { number: number; option
 }
 
 /** The answer write for a tapped option, or null when the review gate or the number refuses it. */
+/** A written answer against the reviewed revision, or nothing when the item no longer admits it. */
+export function writtenAnswer(
+	detail: InboxDetail,
+	reviewed: InboxReview,
+	answer: string
+): ConfirmedWrite | null {
+	if (!writeGate('answer', detail, reviewed).allowed) return null;
+	const { revision } = reviewed;
+	return confirmedWrite({ action: 'answer', id: detail.header.id, text: answer, revision }, true);
+}
+
 export function optionWrite(
 	detail: InboxDetail,
 	reviewed: { revision: string | null } | null,

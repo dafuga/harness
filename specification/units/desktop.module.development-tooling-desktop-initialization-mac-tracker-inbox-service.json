@@ -10,14 +10,18 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/MacTrackerInboxService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/MacTrackerInboxService.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/MacTrackerInboxService.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerInboxRequest.ts"
 		],
 		"symbols": [
 			"MacTrackerInboxService",
 			"MacTrackerInboxService.read",
 			"MacTrackerInboxService.write",
 			"TrackerInboxItemReply",
-			"TrackerInboxReadInput"
+			"TrackerInboxReadInput",
+			"trackerRequest",
+			"readReply",
+			"writeError"
 		]
 	},
 	"contract": {
@@ -32,6 +36,26 @@
 				"name": "MacTrackerInboxService.write.input",
 				"type": "Partial<ConfirmedWrite>",
 				"required": true
+			},
+			{
+				"name": "trackerRequest.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerRequest.init",
+				"type": "RequestInit",
+				"required": false
+			},
+			{
+				"name": "readReply.response",
+				"type": "Response",
+				"required": true
+			},
+			{
+				"name": "writeError.response",
+				"type": "Response",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -42,6 +66,18 @@
 			{
 				"name": "MacTrackerInboxService.write",
 				"type": "Promise<InboxReply<InboxWriteReceipt>>"
+			},
+			{
+				"name": "trackerRequest",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "readReply",
+				"type": "Promise<T>"
+			},
+			{
+				"name": "writeError",
+				"type": "Promise<string>"
 			}
 		],
 		"errors": [
@@ -87,6 +123,70 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRequest",
+				"inputs": [
+					{
+						"name": "trackerRequest.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerRequest.init",
+						"type": "RequestInit",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRequest",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readReply",
+				"inputs": [
+					{
+						"name": "readReply.response",
+						"type": "Response",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readReply",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeError",
+				"inputs": [
+					{
+						"name": "writeError.response",
+						"type": "Response",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeError",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -98,22 +198,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-tracker-inbox-documents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-tracker-inbox-projection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-tracker-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.projects-sessions-sanitize-tracker-text",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.projects-sessions-tracker-planning",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "function.projects-sessions-tracker-structured-ask",
 			"via": "import",
 			"origin": "derived"
 		},

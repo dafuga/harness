@@ -765,6 +765,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "command.projects-sessions-tracker-command-with-tracker-attachments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.projects-sessions-tracker-cutover",
 			"via": "import",
 			"origin": "derived"
@@ -786,6 +791,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-is-tracker-ping",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-is-tracker-spec-review",
 			"via": "import",
 			"origin": "derived"
 		},

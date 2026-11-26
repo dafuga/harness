@@ -56,7 +56,8 @@
 				"name": "HubHomeAgents.openAsks",
 				"type": "HomeOpenAsk[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Open structured asks to show on their agents. Defaults to an empty list."
 			},
 			{
 				"name": "HubHomeAgents.added",

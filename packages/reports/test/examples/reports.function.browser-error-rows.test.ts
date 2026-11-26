@@ -3,8 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { browserErrorRows } from '../../src/components/shared-primitives/browser-errors/browserErrorRows';
 import type { BrowserDiagnostic } from '../../../../src/core/development-tooling/browserDiagnostics';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.browser-error-rows.test.types';
 const unitId = 'reports.function.browser-error-rows';
 const record = (state: string, cases: Cases) =>
 	recordExampleCases(

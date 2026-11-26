@@ -1,4 +1,6 @@
 // @harness-uid u_ymhr4iqr7u
+import type { TrackerAttachmentListingSource } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import { trackerAttachments } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import {
 	trackerPlanningSchema,
 	trackerStageSchema
@@ -67,8 +69,14 @@ function parseFlag(value: unknown): InboxFlag | null {
 		at: nullableText(value.at),
 		question,
 		...(options.length >= 2 && { options }),
-		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind })
+		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind }),
+		...attachmentsOf(value.attachments as TrackerAttachmentListingSource)
 	};
+}
+
+function attachmentsOf(value: TrackerAttachmentListingSource): Pick<InboxFlag, 'attachments'> {
+	const attachments = trackerAttachments(value);
+	return attachments.length ? { attachments } : {};
 }
 
 function parseOptions(value: unknown): InboxOption[] {

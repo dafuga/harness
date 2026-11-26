@@ -3,14 +3,13 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { buildObservation, finishObservation } from '../../scripts/ios-build-observation';
 import type { BuildObservation } from '../../scripts/ios-build-observation.types';
+import type { Case } from './desktop.script.ios-build-observation.test.types';
 
 const UNIT = 'desktop.script.ios-build-observation';
 const OBSERVATION_FAILED =
 	'Build process observation failed; shared or unknown processes were not signalled.';
 const SETTLEMENT_FAILED =
 	'Build process settlement failed; shared or unknown processes were not signalled.';
-
-type Case = { name: string; input: unknown } & ({ output: unknown } | { error: unknown });
 
 function record(state: string, symbol: string, cases: Case[]): void {
 	recordExampleCases(

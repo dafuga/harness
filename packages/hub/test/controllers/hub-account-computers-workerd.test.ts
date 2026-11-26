@@ -108,6 +108,46 @@ function accepted(reply: Response): RemoteSocket {
 	};
 }
 
+async function verifyBrowserPairing(desk: Awaited<ReturnType<typeof mac>>) {
+	const deskLink = await link(desk.hostId, browser, 'web');
+	expect(deskLink.credentials.grant).toEqual({
+		projects: [{ id: desk.project.id, name: desk.project.name }],
+		comments: false,
+		agents: false
+	});
+	const path = `/hosts/${desk.hostId}/connect/${deskLink.credentials.deviceId}`;
+	expect((await fixture.hub(other, 'GET', path)).status).toBe(403);
+	expect((await fixture.hub('session-browser-second', 'GET', path)).status).toBe(403);
+	const ws = accepted(await fixture.hub(browser, 'GET', path));
+	const connection = new DeviceConnectionService({
+		credentials: deskLink.credentials,
+		client: { kind: 'web', name: 'Fixture browser' },
+		open: () => ws
+	});
+	const states: string[] = [];
+	connection.onStatus((state) => states.push(state));
+	try {
+		const attached = await connection.connect();
+		expect(attached.methods).not.toContain('startRun');
+		expect(attached.methods).not.toContain('addComment');
+		expect(await connection.wire.request('listProjects')).toMatchObject([{ id: desk.project.id }]);
+		await expect(connection.wire.request('startRun')).rejects.toThrow();
+		expect(
+			(
+				await fixture.hub(browser, 'POST', deskLink.exchange + '/exchange', {
+					verifier: 'a'.repeat(43)
+				})
+			).status
+		).toBe(403);
+		await desk.host.devices.revokeDevice({ deviceId: deskLink.credentials.deviceId });
+		await expect.poll(() => states.at(-1)).toBe('revoked');
+		expect((await fixture.hub(browser, 'GET', path)).status).toBe(403);
+	} finally {
+		connection.close();
+		connection.wire.close();
+	}
+}
+
 test('verified account links two Macs and securely opens browser and phone projects without approval', async () => {
 	const desk = await mac('Desk Mac');
 	const studio = await mac('Studio Mac');
@@ -124,45 +164,7 @@ test('verified account links two Macs and securely opens browser and phone proje
 		});
 		expect((await fixture.hub(other, 'GET', `/hosts/${desk.hostId}/pairing`)).status).toBe(403);
 
-		const deskLink = await link(desk.hostId, browser, 'web');
-		expect(deskLink.credentials.grant).toEqual({
-			projects: [{ id: desk.project.id, name: desk.project.name }],
-			comments: false,
-			agents: false
-		});
-		const path = `/hosts/${desk.hostId}/connect/${deskLink.credentials.deviceId}`;
-		expect((await fixture.hub(other, 'GET', path)).status).toBe(403);
-		expect((await fixture.hub('session-browser-second', 'GET', path)).status).toBe(403);
-		const ws = accepted(await fixture.hub(browser, 'GET', path));
-		const connection = new DeviceConnectionService({
-			credentials: deskLink.credentials,
-			client: { kind: 'web', name: 'Fixture browser' },
-			open: () => ws
-		});
-		const states: string[] = [];
-		connection.onStatus((state) => states.push(state));
-		try {
-			const attached = await connection.connect();
-			expect(attached.methods).not.toContain('startRun');
-			expect(attached.methods).not.toContain('addComment');
-			expect(await connection.wire.request('listProjects')).toMatchObject([
-				{ id: desk.project.id }
-			]);
-			await expect(connection.wire.request('startRun')).rejects.toThrow();
-			expect(
-				(
-					await fixture.hub(browser, 'POST', deskLink.exchange + '/exchange', {
-						verifier: 'a'.repeat(43)
-					})
-				).status
-			).toBe(403);
-			await desk.host.devices.revokeDevice({ deviceId: deskLink.credentials.deviceId });
-			await expect.poll(() => states.at(-1)).toBe('revoked');
-			expect((await fixture.hub(browser, 'GET', path)).status).toBe(403);
-		} finally {
-			connection.close();
-			connection.wire.close();
-		}
+		await verifyBrowserPairing(desk);
 
 		const phone = await link(studio.hostId, native, 'ios');
 		const iPhone = new DeviceConnectionService({

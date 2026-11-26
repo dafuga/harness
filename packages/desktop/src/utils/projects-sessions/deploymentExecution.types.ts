@@ -11,8 +11,4 @@ export interface Runtime extends DeploymentOptions {
 }
 
 export type Captured = { target: CloudflareTarget; destination: DeploymentReceipt | null };
-
-/** A deployment execution stopped by its plan blockers, or by a failed health check before its receipt was saved. */
-export class DeploymentExecutionError extends Error {
-	override name = 'DeploymentExecutionError';
-}
+export { DeploymentExecutionError } from './DeploymentExecutionError';

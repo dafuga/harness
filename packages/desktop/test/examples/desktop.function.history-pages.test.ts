@@ -2,8 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { historyPages } from '../../src/components/git-source-history/history-panel/historyPages';
-
-type HistoryEvent = Parameters<typeof historyPages>[number][number];
+import type { HistoryEvent } from './desktop.function.history-pages.test.types';
 
 const UNIT = 'desktop.function.history-pages';
 const DETAIL = 'Committed change. Measurements and verification are recorded separately.';

@@ -6,8 +6,7 @@ import {
 	withoutCheckpoint,
 	isRevisionConflict
 } from '../../src/components/game-authoring/game-workspace/checkpointEdits';
-
-type Checkpoint = Parameters<typeof replaceCheckpoint>[0][number];
+import type { Checkpoint } from './desktop.function.game-authoring-game-workspace-checkpoint-edits.test.types';
 
 const KEY: Checkpoint = {
 	id: 'key',

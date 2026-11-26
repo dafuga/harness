@@ -12,62 +12,73 @@
 		"symbols": ["sealedGrantInfo", "sealedGrant", "openSealedGrant"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sealedGrantInfo.grant",
 				"type": "Pick<SealedGrant, 'account' | 'scope' | 'epoch' | 'device'>",
-				"required": true
+				"required": true,
+				"description": "Grant metadata to bind to encryption and decryption."
 			},
 			{
 				"name": "sealedGrant.account",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Account identifier to bind to the grant."
 			},
 			{
 				"name": "sealedGrant.raw",
 				"type": "RawScopeKeys",
-				"required": true
+				"required": true,
+				"description": "Scope identifier, epoch, and raw key bytes to wrap."
 			},
 			{
 				"name": "sealedGrant.device",
 				"type": "Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>",
-				"required": true
+				"required": true,
+				"description": "Recipient device identifier and public key-agreement key."
 			},
 			{
 				"name": "openSealedGrant.grant",
 				"type": "SealedGrant",
-				"required": true
+				"required": true,
+				"description": "Encrypted grant to validate and unwrap."
 			},
 			{
 				"name": "openSealedGrant.self",
 				"type": "SealedDeviceKeys",
-				"required": true
+				"required": true,
+				"description": "Receiving device identity and private key-agreement key."
 			},
 			{
 				"name": "openSealedGrant.chain",
 				"type": "SealedChainState",
-				"required": true
+				"required": true,
+				"description": "Verified chain state supplying the account, scope grant, and key commitment."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sealedGrantInfo",
-				"type": "Uint8Array"
+				"type": "Uint8Array",
+				"description": "Bytes that bind the grant metadata to the encrypted keys."
 			},
 			{
 				"name": "sealedGrant",
-				"type": "Promise<SealedGrant>"
+				"type": "Promise<SealedGrant>",
+				"description": "Wrapped scope keys and the metadata required to identify their recipient and epoch."
 			},
 			{
 				"name": "openSealedGrant",
-				"type": "Promise<ScopeKeys>"
+				"type": "Promise<ScopeKeys>",
+				"description": "Imported scope keys whose commitment matches the verified chain."
 			}
 		],
 		"errors": [
 			{
 				"name": "SealedError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The recipient, scope, epoch, authentication, key size, or commitment fails validation."
 			}
 		],
 		"errorStatus": "unknown",
@@ -78,13 +89,15 @@
 					{
 						"name": "sealedGrantInfo.grant",
 						"type": "Pick<SealedGrant, 'account' | 'scope' | 'epoch' | 'device'>",
-						"required": true
+						"required": true,
+						"description": "Grant metadata to bind to encryption and decryption."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedGrantInfo",
-						"type": "Uint8Array"
+						"type": "Uint8Array",
+						"description": "Bytes that bind the grant metadata to the encrypted keys."
 					}
 				],
 				"errors": [],
@@ -96,23 +109,27 @@
 					{
 						"name": "sealedGrant.account",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Account identifier to bind to the grant."
 					},
 					{
 						"name": "sealedGrant.raw",
 						"type": "RawScopeKeys",
-						"required": true
+						"required": true,
+						"description": "Scope identifier, epoch, and raw key bytes to wrap."
 					},
 					{
 						"name": "sealedGrant.device",
 						"type": "Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>",
-						"required": true
+						"required": true,
+						"description": "Recipient device identifier and public key-agreement key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedGrant",
-						"type": "Promise<SealedGrant>"
+						"type": "Promise<SealedGrant>",
+						"description": "Wrapped scope keys and the metadata required to identify their recipient and epoch."
 					}
 				],
 				"errors": [],
@@ -124,23 +141,27 @@
 					{
 						"name": "openSealedGrant.grant",
 						"type": "SealedGrant",
-						"required": true
+						"required": true,
+						"description": "Encrypted grant to validate and unwrap."
 					},
 					{
 						"name": "openSealedGrant.self",
 						"type": "SealedDeviceKeys",
-						"required": true
+						"required": true,
+						"description": "Receiving device identity and private key-agreement key."
 					},
 					{
 						"name": "openSealedGrant.chain",
 						"type": "SealedChainState",
-						"required": true
+						"required": true,
+						"description": "Verified chain state supplying the account, scope grant, and key commitment."
 					}
 				],
 				"outputs": [
 					{
 						"name": "openSealedGrant",
-						"type": "Promise<ScopeKeys>"
+						"type": "Promise<ScopeKeys>",
+						"description": "Imported scope keys whose commitment matches the verified chain."
 					}
 				],
 				"errors": [

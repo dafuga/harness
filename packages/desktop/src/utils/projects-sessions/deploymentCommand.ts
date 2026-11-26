@@ -1,5 +1,5 @@
 // @harness-uid u_el27gksita
-import { cliEnvironment } from '../cli-environment/cliEnvironment';
+import { cliEnvironment } from '../execution-runtimes/cli-environment/cliEnvironment';
 import { killOwnedProcess } from '../agents-providers/cliProcess';
 import { spawn } from 'node:child_process';
 import type { DeployCommand } from '../../models/development-tooling/Deployment.types';

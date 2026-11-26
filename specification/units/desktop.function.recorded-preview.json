@@ -9,11 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/components/shared-primitives/recorded-preview/RecordedPreviewError.ts",
 			"packages/desktop/src/components/shared-primitives/recorded-preview/recordedPreview.ts",
 			"packages/desktop/src/components/shared-primitives/recorded-preview/recordedPreview.types.ts",
 			"packages/desktop/src/utils/shared-primitives/recordedPreview.ts"
 		],
 		"symbols": [
+			"RecordedPreviewError",
 			"recordedPreview",
 			"PreviewPick",
 			"RecordedPreviewError",

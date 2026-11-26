@@ -11,8 +11,7 @@ import { historyDetail } from '../../src/components/explorer-ui/entity-history/e
 import { index, record, revision } from '../entityFixture';
 import { answers, view } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.entity-history.test.types';
 const unitId = 'reports.function.entity-history';
 const traced = (symbol: string, state: string, cases: Cases) => {
 	const file = `${state}.json`;

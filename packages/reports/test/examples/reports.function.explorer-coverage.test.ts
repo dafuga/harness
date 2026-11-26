@@ -13,9 +13,7 @@ import {
 	sha,
 	unit
 } from '../explorerFixture';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
-type Comparison = NonNullable<HarnessRevision['comparison']>;
+import type { Cases, Comparison } from './reports.function.explorer-coverage.test.types';
 const unitId = 'page.titles';
 const subject = 'reports.function.explorer-coverage';
 const page = unit(unitId, 'page');

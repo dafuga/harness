@@ -94,9 +94,16 @@ export function chosenTrackerAskOption(
 	return { index, option: options[index] };
 }
 
+/** Attachment fields are only ever set by the flag step, already validated and packed. */
+function storedText(value: TrackerItemValue): string | null {
+	return value === null ? null : String(value);
+}
+
 /** How the ask's fields are checked on the way into an item. */
 export const trackerAskNormalizers = {
 	options: normalizeTrackerAskOptions,
 	confirm: normalizeTrackerAskConfirm,
-	answer_option: (value: TrackerItemValue) => (value === null ? null : String(value))
+	answer_option: (value: TrackerItemValue) => (value === null ? null : String(value)),
+	attachments: storedText,
+	attachment_docs: storedText
 };

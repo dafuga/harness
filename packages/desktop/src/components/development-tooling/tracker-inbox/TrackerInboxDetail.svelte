@@ -14,14 +14,17 @@
 	import {
 		confirmedWrite,
 		optionWrite,
-		writeGate
+		writeGate,
+		writtenAnswer
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 	import {
+		loadFailureMessage,
 		writeFailureMessage,
 		writeSentMessage
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import TrackerInboxRecord from './TrackerInboxRecord.svelte';
 	import TrackerInboxAsk from './TrackerInboxAsk.svelte';
+	import { inboxDocuments } from '../../../lib/development-tooling/tracker-inbox/inboxDocuments';
 
 	let {
 		source,
@@ -44,7 +47,7 @@
 	let text = $state('');
 	let message = $state('');
 	let busy = $state(false);
-
+	const load = $derived(inboxDocuments(source, id));
 	const gate = $derived(
 		action && detail
 			? writeGate(action, detail, reviewed ? { revision: reviewed.revision } : null)
@@ -53,13 +56,7 @@
 
 	function fresh(reply: InboxReply<InboxDetail>) {
 		detail = reply.value ?? null;
-		loadMessage = reply.value
-			? ''
-			: mode === 'mac'
-				? reply.code === 'noLocalMatch'
-					? 'This Tracker item is unavailable.'
-					: 'Tracker could not be reached on this Mac.'
-				: 'This item is not on the phone copy.';
+		loadMessage = reply.value ? '' : loadFailureMessage(reply.code, mode);
 	}
 
 	/** Opening an item is the review. A refresh after a write does not count as one. */
@@ -116,14 +113,7 @@
 
 	/** A written answer from the Other modal is sent against the reviewed revision. */
 	async function other(answer: string) {
-		const write =
-			detail && reviewed && writeGate('answer', detail, reviewed).allowed
-				? confirmedWrite(
-						{ action: 'answer', id: detail.header.id, text: answer, revision: reviewed.revision },
-						true
-					)
-				: null;
-		await deliver(write);
+		await deliver(detail && reviewed ? writtenAnswer(detail, reviewed, answer) : null);
 	}
 
 	/** A tapped option is the answer. Any confirm step has already happened in the choices. */
@@ -166,7 +156,7 @@
 		<TrackerInboxRecord {detail} {mode} />
 
 		{#if detail.flag}
-			<TrackerInboxAsk flag={detail.flag} {busy} onpick={pick} onother={other} />
+			<TrackerInboxAsk flag={detail.flag} {busy} {load} onpick={pick} onother={other} />
 		{/if}
 
 		<hx-section class="actions" aria-label="Confirm a write">

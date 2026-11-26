@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-tracker-inbox-inbox-documents",
+	"uid": "u_74hbk4btwd",
+	"kind": "module",
+	"title": "inboxDocuments",
+	"responsibility": "Owns the inboxDocuments library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/development-tooling/tracker-inbox/inboxDocuments.ts"],
+		"symbols": ["inboxDocuments"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "inboxDocuments.source",
+				"type": "TrackerInboxSource",
+				"required": true
+			},
+			{
+				"name": "inboxDocuments.itemId",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "inboxDocuments",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "inboxDocuments",
+				"inputs": [
+					{
+						"name": "inboxDocuments.source",
+						"type": "TrackerInboxSource",
+						"required": true
+					},
+					{
+						"name": "inboxDocuments.itemId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inboxDocuments",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/inboxDocuments.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/inboxDocuments.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

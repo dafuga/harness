@@ -3,11 +3,7 @@ import { test } from 'vitest';
 import { load } from '../../src/routes/reports/[id]/+page.server';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-/** The part of a thrown SvelteKit redirect that the route answers with. */
-type Redirected = { status: number; location: string };
-/** The part of a thrown error that the route can answer with. */
-type Failed = { name: string; message: string };
+import type { Redirected, Failed } from './reports.page.reports-id.test.types';
 
 /**
  * The real load of /reports/[id], called the way SvelteKit calls a page load: with its params.

@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices",
+			"reports.component.explorer-ui-explorer-kit-view-spec-buttons",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-h4",
@@ -27,7 +28,12 @@
 			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxAsk.svelte",
 			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRecord.svelte"
 		],
-		"symbols": ["TrackerInboxAsk", "TrackerInboxRecord", "TrackerInboxRecord.designLinks"]
+		"symbols": [
+			"TrackerInboxAsk",
+			"TrackerInboxAsk.answers",
+			"TrackerInboxRecord",
+			"TrackerInboxRecord.designLinks"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -58,6 +64,24 @@
 		"operations": [],
 		"initialization": [],
 		"snippets": [
+			{
+				"name": "TrackerInboxAsk.answers",
+				"inputs": [
+					{
+						"name": "TrackerInboxAsk.answers.close",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerInboxAsk.answers",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "TrackerInboxRecord.designLinks",
 				"inputs": [
@@ -96,6 +120,16 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-view-spec-buttons",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,7 +1,6 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-import { authRedirect } from '../../src/lib/verification-evidence/server/auth/github-connection-controller/authHttp';
 import {
 	sameOrigin,
 	bearerToken
@@ -15,15 +14,10 @@ import {
 	authPath
 } from '../../src/utils/verification-evidence/authHttp';
 import type { AuthHttpOptions } from '../../src/utils/verification-evidence/authHttp.types';
+import { meta, SESSION_COOKIE } from './hub.function.auth-http.cases';
 
-const UNIT = 'hub.function.auth-http';
 const API = 'https://hub.example.test';
-const SESSION_COOKIE = 'session=abc123; Path=/; HttpOnly; Secure; SameSite=Lax';
 const BEARER = 'Bearer abcdefghijklmnopqrstuvwxyz123456';
-
-function meta(symbol: string, state: string) {
-	return { unitId: UNIT, symbol, state, evidence: 'examples-cases', file: `${state}.json` };
-}
 
 function jsonRequest(body: string, type = 'application/json'): Request {
 	return new Request(`${API}/api/auth/session`, {
@@ -52,34 +46,6 @@ async function errorCode(promise: Promise<unknown>): Promise<string | null> {
 		return (error as { code?: string }).code ?? null;
 	}
 }
-
-test('Redirect responses are uncached 303 responses with cookies', () => {
-	const location = '/api/auth/callback?code=sample';
-	const response = authRedirect(location, [SESSION_COOKIE]);
-	const summary = {
-		status: response.status,
-		location: response.headers.get('location'),
-		referrerPolicy: response.headers.get('referrer-policy'),
-		cacheControl: response.headers.get('cache-control'),
-		nosniff: response.headers.get('x-content-type-options'),
-		setCookie: response.headers.getSetCookie()
-	};
-	expect(summary.status).toBe(303);
-	expect(summary.location).toBe(location);
-	expect(summary.referrerPolicy).toBe('no-referrer');
-	expect(summary.cacheControl).toBe('no-store');
-	expect(summary.setCookie).toEqual([SESSION_COOKIE]);
-	recordExampleCases(
-		meta('authRedirect', 'redirect-responses-are-uncached-303-responses-with-cookies'),
-		[
-			{
-				name: 'callback location with one session cookie',
-				input: { location, cookies: [SESSION_COOKIE] },
-				output: summary
-			}
-		]
-	);
-});
 
 test('Same-origin and bearer checks read request headers', () => {
 	const origin = 'https://app.example.test';

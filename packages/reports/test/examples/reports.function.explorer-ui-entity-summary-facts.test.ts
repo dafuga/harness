@@ -6,10 +6,11 @@ import {
 	entitySummaryFacts
 } from '../../src/components/explorer-ui/entitySummaryFacts';
 import type { SummaryFact } from '../../src/components/explorer-ui/entitySummaryFacts.types';
-
-type Measure = Parameters<typeof entitySummaryFacts>[0];
-type Row = Measure['performance'][number];
-type Size = Measure['size'][number];
+import type {
+	Row,
+	Size,
+	Measure
+} from './reports.function.explorer-ui-entity-summary-facts.test.types';
 
 const navigation: Row = {
 	workload: 'Open entity panel',

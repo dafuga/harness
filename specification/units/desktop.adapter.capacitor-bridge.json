@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.types.ts"
+			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.types.ts",
+			"packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/RequestRefusedError.ts"
 		],
 		"symbols": [
 			"CapacitorBridgeAdapter",
@@ -21,6 +22,7 @@
 			"CapacitorBridgeAdapterConfig",
 			"Input",
 			"Operation",
+			"RequestRefusedError",
 			"RequestRefusedError"
 		]
 	},

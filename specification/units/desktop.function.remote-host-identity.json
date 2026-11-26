@@ -9,6 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/HubNoRelayError.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
 			"packages/desktop/src/services/networking-security/remote-host-service/remote-host-switch-service/remoteHostIdentity.types.ts",
 			"packages/desktop/src/services/remote-host-service/remote-host-switch-service/remoteHostIdentity.ts",
@@ -16,6 +17,7 @@
 			"packages/desktop/src/utils/networking-security/remoteHostIdentity.ts"
 		],
 		"symbols": [
+			"HubNoRelayError",
 			"remoteHostIdentity",
 			"registerRemoteHost",
 			"HubNoRelayError",

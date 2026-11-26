@@ -19,6 +19,26 @@ const videoUnit = 'service.verification-evidence-video-evidence';
 afterEach(() => vi.restoreAllMocks());
 vi.mock('node:fs', { spy: true });
 vi.mock('node:child_process', { spy: true });
+
+function assertFirstPlan(service: VideoEvidenceService) {
+	const reads = vi.spyOn(files, 'readFileSync'),
+		stats = vi.spyOn(files, 'statSync'),
+		tools = vi.spyOn(processes, 'spawnSync');
+	stats.mockClear();
+	const first = service.plan(manifest);
+	expect(first.record).toHaveLength(4);
+	expect(first.reuse).toEqual([]);
+	expect(tools.mock.calls.filter(([command]) => command === 'ffmpeg')).toHaveLength(1);
+	const inputReads = reads.mock.calls.map(([path]) => String(path));
+	expect(inputReads.filter((path) => path.includes('specification/units/'))).toHaveLength(2);
+	expect(new Set(inputReads).size).toBe(inputReads.length);
+	const inputStats = stats.mock.calls.map(([path]) => String(path));
+	expect(inputStats.length, 'each input path is validated once per plan').toBe(
+		new Set(inputStats).size
+	);
+	return first;
+}
+
 test('VideoEvidenceService runs', () =>
 	assertVideoCheckpoints(manifest, new VideoEvidenceService().run()));
 test('clip planning reuses unchanged inputs and invalidates only actual consumers', async () => {
@@ -28,15 +48,7 @@ test('clip planning reuses unchanged inputs and invalidates only actual consumer
 			const service = new VideoEvidenceService(root);
 			await writeFile(join(root, 'src/first.ts'), "import './private.ts';");
 			await writeFile(join(root, 'src/private.ts'), 'export const answer = 1;');
-			const reads = vi.spyOn(files, 'readFileSync'),
-				tools = vi.spyOn(processes, 'spawnSync');
-			const first = service.plan(manifest);
-			expect(first.record).toHaveLength(4);
-			expect(first.reuse).toEqual([]);
-			expect(tools.mock.calls.filter(([command]) => command === 'ffmpeg')).toHaveLength(1);
-			const inputReads = reads.mock.calls.map(([path]) => String(path));
-			expect(inputReads.filter((path) => path.includes('specification/units/'))).toHaveLength(2);
-			expect(new Set(inputReads).size).toBe(inputReads.length);
+			const first = assertFirstPlan(service);
 			const previous = first.record.map((slot) => ({ ...slot, testedRevision: 'a'.repeat(40) }));
 			await writeFile(join(root, 'src/unrelated.ts'), 'unrelated change');
 			const warm = service.plan(manifest, previous);

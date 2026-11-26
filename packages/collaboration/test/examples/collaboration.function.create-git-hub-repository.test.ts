@@ -6,6 +6,7 @@ import type {
 } from '../../src/models/planning-collaboration/Collaboration.types';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
+import type { FakeResponseInput } from './collaboration.function.create-git-hub-repository.test.types';
 
 const state = 'reads-records-and-compare-and-swaps-a-private-branch';
 const absent = '0'.repeat(40);
@@ -23,15 +24,6 @@ function jsonResponse(value: unknown) {
 		headers: { 'content-type': 'application/json' }
 	});
 }
-
-type FakeResponseInput = {
-	method: string;
-	endpoint: string;
-	body: BodyInit | null | undefined;
-	repositoryId: number;
-	ref: string;
-	branch: { sha: string | null };
-};
 
 function fakeGitHubResponse({
 	method,

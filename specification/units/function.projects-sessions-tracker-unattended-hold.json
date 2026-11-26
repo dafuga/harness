@@ -4,54 +4,62 @@
 	"uid": "u_44hv53nfiu",
 	"kind": "function",
 	"title": "trackerUnattendedHold",
-	"responsibility": "Owns the trackerUnattendedHold shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Say why the launcher must not start a Tracker item by itself, with the same rules for the launcher and Hub Home.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerUnattendedHold.ts"],
 		"symbols": ["trackerNonWorkAgent", "trackerReminderTitle", "trackerUnattendedHold"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerNonWorkAgent.agent",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "The agent value of an item, or nothing."
 			},
 			{
 				"name": "trackerReminderTitle.title",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The item title."
 			},
 			{
 				"name": "trackerUnattendedHold.title",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The item title, checked for deploy, reminder and decision wording."
 			},
 			{
 				"name": "trackerUnattendedHold.owner",
 				"type": "string | null",
-				"required": false
+				"required": false,
+				"description": "The item owner; Daniel as owner holds the launch. May be omitted or null."
 			},
 			{
 				"name": "trackerUnattendedHold.agent",
 				"type": "string | null",
-				"required": false
+				"required": false,
+				"description": "The agent value; personal and Chief of Staff agents are held. May be omitted or null."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerNonWorkAgent",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True for personal, family, brainstorming and Chief of Staff agents."
 			},
 			{
 				"name": "trackerReminderTitle",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the title reads as a reminder or watch item."
 			},
 			{
 				"name": "trackerUnattendedHold",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "The reason the launcher holds the item, or null when it may start."
 			}
 		],
 		"errors": [],
@@ -63,13 +71,15 @@
 					{
 						"name": "trackerNonWorkAgent.agent",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "The agent value of an item, or nothing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerNonWorkAgent",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True for personal, family, brainstorming and Chief of Staff agents."
 					}
 				],
 				"errors": [],
@@ -81,13 +91,15 @@
 					{
 						"name": "trackerReminderTitle.title",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The item title."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerReminderTitle",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the title reads as a reminder or watch item."
 					}
 				],
 				"errors": [],
@@ -99,23 +111,27 @@
 					{
 						"name": "trackerUnattendedHold.title",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The item title, checked for deploy, reminder and decision wording."
 					},
 					{
 						"name": "trackerUnattendedHold.owner",
 						"type": "string | null",
-						"required": false
+						"required": false,
+						"description": "The item owner; Daniel as owner holds the launch. May be omitted or null."
 					},
 					{
 						"name": "trackerUnattendedHold.agent",
 						"type": "string | null",
-						"required": false
+						"required": false,
+						"description": "The agent value; personal and Chief of Staff agents are held. May be omitted or null."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerUnattendedHold",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "The reason the launcher holds the item, or null when it may start."
 					}
 				],
 				"errors": [],

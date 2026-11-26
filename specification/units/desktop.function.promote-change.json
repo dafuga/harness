@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/projects-sessions/PromotionError.ts",
 			"packages/desktop/src/utils/projects-sessions/promoteChange.ts",
 			"packages/desktop/src/utils/projects-sessions/promoteChange.types.ts"
 		],
-		"symbols": ["prepareChangeEnvironment", "promoteChange", "PromotionContext", "PromotionError"]
+		"symbols": [
+			"PromotionError",
+			"prepareChangeEnvironment",
+			"promoteChange",
+			"PromotionContext",
+			"PromotionError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

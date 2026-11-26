@@ -124,6 +124,8 @@
 		"hub.component.projects-sessions-hub-home-composer",
 		"hub.component.projects-sessions-hub-home-dialogs",
 		"hub.component.projects-sessions-hub-home-header",
+		"hub.component.projects-sessions-hub-home-needs-you",
+		"hub.component.projects-sessions-hub-home-not-started",
 		"hub.component.projects-sessions-hub-home-plans",
 		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
@@ -176,6 +178,9 @@
 		"reports.component.explorer-ui-explorer-kit-empty-state",
 		"reports.component.explorer-ui-explorer-kit-notice",
 		"reports.component.explorer-ui-explorer-kit-pill",
+		"reports.component.explorer-ui-explorer-kit-spec-document-view",
+		"reports.component.explorer-ui-explorer-kit-view-spec-buttons",
+		"reports.component.explorer-ui-explorer-kit-view-spec-modal",
 		"reports.component.explorer-ui-explorer-module-card",
 		"reports.component.explorer-ui-explorer-platform-details",
 		"reports.component.explorer-ui-explorer-platforms",
@@ -2228,6 +2233,18 @@
 			"units": ["hub.component.projects-sessions-hub-home-header"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-needs-you",
+			"title": "HubHomeNeedsYou",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-needs-you"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-not-started",
+			"title": "HubHomeNotStarted",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-not-started"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-plans",
 			"title": "HubHomePlans",
 			"coverage": "required",
@@ -4068,6 +4085,24 @@
 			"title": "pill: attributes",
 			"coverage": "required",
 			"units": ["reports.component.explorer-ui-explorer-kit-pill"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-spec-document-view",
+			"title": "Spec document view",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-spec-document-view"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-view-spec-buttons",
+			"title": "View spec buttons",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-view-spec-buttons"]
+		},
+		{
+			"id": "reports-component-explorer-ui-explorer-kit-view-spec-modal",
+			"title": "View spec modal",
+			"coverage": "required",
+			"units": ["reports.component.explorer-ui-explorer-kit-view-spec-modal"]
 		},
 		{
 			"id": "reports-component-explorer-ui-explorer-module-card",
@@ -8989,6 +9024,8 @@
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
 				"hub-component-projects-sessions-hub-home-header",
+				"hub-component-projects-sessions-hub-home-needs-you",
+				"hub-component-projects-sessions-hub-home-not-started",
 				"hub-component-projects-sessions-hub-home-plans",
 				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",
@@ -9296,6 +9333,9 @@
 				"reports-component-explorer-ui-explorer-kit-pill-compact",
 				"reports-component-explorer-ui-explorer-kit-pill-chip",
 				"reports-component-explorer-ui-explorer-kit-pill-attributes",
+				"reports-component-explorer-ui-explorer-kit-spec-document-view",
+				"reports-component-explorer-ui-explorer-kit-view-spec-buttons",
+				"reports-component-explorer-ui-explorer-kit-view-spec-modal",
 				"reports-component-explorer-ui-explorer-module-card",
 				"reports-component-explorer-ui-explorer-module-card-missing",
 				"reports-component-explorer-ui-explorer-module-card-image-error",

@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/lib/development-tooling/initialize-preview/previewHealth.ts",
+			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/WorkerNotReadyError.ts",
 			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/previewHealth.ts",
 			"packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/previewHealth.types.ts",
 			"packages/reports/src/lib/initialize-preview/previewHealth.ts",
@@ -20,6 +21,7 @@
 		"symbols": [
 			"closePreviewSessions",
 			"previewHealth",
+			"WorkerNotReadyError",
 			"readPreviewHealth",
 			"WorkerNotReadyError",
 			"closePreviewSessions",

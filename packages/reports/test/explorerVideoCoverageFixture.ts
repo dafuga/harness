@@ -1,8 +1,7 @@
-import type { HarnessCapture, HarnessScenario } from '../src/models/explorer-ui/Harness.types';
+import type { HarnessCapture } from '../src/models/explorer-ui/Harness.types';
 import { explorerState, type Judged } from '../src/utils/explorer-ui/explorerState';
 import { capture, declared, record, result, sha } from './explorerFixture';
-
-type Video = NonNullable<HarnessScenario['video']>;
+import type { Video } from './explorerVideoCoverageFixture.types';
 
 const unit = 'page.functions';
 const digest = (letter: string) => letter.repeat(64);

@@ -16,6 +16,7 @@
 			"InboxHeader",
 			"InboxOption",
 			"InboxConfirmKind",
+			"InboxAttachment",
 			"InboxFlag",
 			"InboxNote",
 			"InboxRun",
@@ -44,6 +45,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",

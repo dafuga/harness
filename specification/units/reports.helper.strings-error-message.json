@@ -36,7 +36,7 @@
 		"errors": [
 			{
 				"name": "Message access or conversion error",
-				"type": "thrown",
+				"type": "propagated",
 				"description": "An arbitrary value thrown while reading Error.message or converting a non-Error cause with String(cause). The helper does not catch or change it."
 			}
 		],
@@ -64,7 +64,7 @@
 				"errors": [
 					{
 						"name": "Message access or conversion error",
-						"type": "thrown",
+						"type": "propagated",
 						"description": "An arbitrary value thrown while reading Error.message or converting a non-Error cause with String(cause). The helper does not catch or change it."
 					}
 				],

@@ -9,12 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/lib/development-tooling/server-hooks/ChatSessionError.ts",
 			"packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
 			"packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.types.ts",
 			"packages/reports/src/lib/server-hooks/ConsoleAgentService.ts",
 			"packages/reports/src/services/ConsoleAgentService.ts"
 		],
 		"symbols": [
+			"ChatSessionError",
 			"ConsoleAgentService",
 			"ConsoleAgentService.open",
 			"ConsoleAgentService.close",

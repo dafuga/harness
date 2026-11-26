@@ -6,9 +6,7 @@ import { answers, view } from '../entityPlaces';
 import { commits, ids } from '../entityUnits';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Changed = Parameters<typeof view>[1];
-type Case = Parameters<typeof recordExampleCases>[1][number];
+import type { Changed, Case } from './reports.function.entity-behavior.test.types';
 
 const unitId = 'reports.function.entity-behavior';
 const shown = (mode: 'current' | 'commit', changed: Changed = {}) =>

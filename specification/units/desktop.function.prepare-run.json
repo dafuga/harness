@@ -9,6 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/agents-providers/desktop-run-service/ThreadNotInEntityError.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.ts",
 			"packages/desktop/src/services/agents-providers/desktop-run-service/prepareRun.types.ts",
 			"packages/desktop/src/utils/agents-providers/CodexImageGenerationCapabilityError.ts",
@@ -17,6 +18,7 @@
 			"packages/desktop/src/utils/agents-providers/prepareRun.types.ts"
 		],
 		"symbols": [
+			"ThreadNotInEntityError",
 			"prepareRun",
 			"ThreadNotInEntityError",
 			"CodexImageGenerationCapabilityError",

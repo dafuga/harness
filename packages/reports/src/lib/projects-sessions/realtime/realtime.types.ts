@@ -31,3 +31,15 @@ export interface DoorbellOptions {
 	retryMs?: number;
 	maxRetryMs?: number;
 }
+
+/** The mutable state of one followed doorbell across its reconnects. */
+export interface DoorbellSession {
+	options: DoorbellOptions;
+	socket: DoorbellSocket | null;
+	timer?: ReturnType<typeof setTimeout>;
+	beat?: ReturnType<typeof setInterval>;
+	failures: number;
+	heard: boolean;
+	attempt: number;
+	stopped: boolean;
+}

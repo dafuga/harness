@@ -11,6 +11,7 @@ import {
 	seedHostedPage,
 	startHubSpy
 } from './support/trackerOverviewPublisherFixture';
+import type { Tracker } from './mac-tracker-realtime.spec.types';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const samples = 30;
@@ -29,8 +30,6 @@ function percentile(values: number[], share: number) {
 	const sorted = [...values].sort((a, b) => a - b);
 	return sorted[Math.ceil(sorted.length * share) - 1];
 }
-
-type Tracker = Awaited<ReturnType<typeof startMacTrackerFixture>>;
 
 test('the Mac inbox shows tracker changes as they happen and recovers from an outage', async ({
 	browserErrors

@@ -15,27 +15,31 @@
 		"symbols": ["trackerFlagKind", "trackerStructuredAsk", "TrackerAskState"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerFlagKind.item",
 				"type": "TrackerAskState",
-				"required": true
+				"required": true,
+				"description": "The flag fields of a Tracker item: needs Daniel, resolved, status, question and options."
 			},
 			{
 				"name": "trackerStructuredAsk.item",
 				"type": "TrackerAskState",
-				"required": true
+				"required": true,
+				"description": "The flag fields of a Tracker item: needs Daniel, resolved, status, question and options."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerFlagKind",
-				"type": "'ask' | 'ping' | 'needs-options' | null"
+				"type": "'ask' | 'ping' | 'needs-options' | null",
+				"description": "ask, ping or needs-options for an open flag; null when no flag is open."
 			},
 			{
 				"name": "trackerStructuredAsk",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True only when the open flag is a structured ask with two to four choices and one recommendation."
 			}
 		],
 		"errors": [],
@@ -47,13 +51,15 @@
 					{
 						"name": "trackerFlagKind.item",
 						"type": "TrackerAskState",
-						"required": true
+						"required": true,
+						"description": "The flag fields of a Tracker item: needs Daniel, resolved, status, question and options."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerFlagKind",
-						"type": "'ask' | 'ping' | 'needs-options' | null"
+						"type": "'ask' | 'ping' | 'needs-options' | null",
+						"description": "ask, ping or needs-options for an open flag; null when no flag is open."
 					}
 				],
 				"errors": [],
@@ -65,13 +71,15 @@
 					{
 						"name": "trackerStructuredAsk.item",
 						"type": "TrackerAskState",
-						"required": true
+						"required": true,
+						"description": "The flag fields of a Tracker item: needs Daniel, resolved, status, question and options."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerStructuredAsk",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True only when the open flag is a structured ask with two to four choices and one recommendation."
 					}
 				],
 				"errors": [],

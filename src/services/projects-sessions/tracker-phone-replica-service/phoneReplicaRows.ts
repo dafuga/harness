@@ -1,4 +1,5 @@
 // @harness-uid u_st4dufvqxm
+import { phoneAskAttachments } from './phoneAskAttachments';
 import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { createHash } from 'node:crypto';
@@ -51,7 +52,8 @@ export function attentionRevision(item: PhoneItemSource): string {
 				item.question,
 				item.needs_daniel,
 				item.resolved,
-				...(item.options ? [item.options] : [])
+				...(item.options ? [item.options] : []),
+				...(item.attachments ? [item.attachments] : [])
 			])
 		)
 		.digest('hex');
@@ -84,7 +86,8 @@ function projectItem(
 						state: item.resolved ? 'resolved' : 'open',
 						at: clockTime(item.flag_clock),
 						question: excerpt(item.question, 512),
-						...phoneAskChoices(item)
+						...phoneAskChoices(item),
+						...(trackerStructuredAsk(item) && phoneAskAttachments(item))
 					}
 				: null,
 		runs: runs.map((run) => ({
@@ -141,6 +144,9 @@ const itemSql = `
 		${[...trackerPlanningArtifactFields, ...trackerPlanningPromotionFields].join(', ')},
 		CASE WHEN length(question) <= 16384 THEN question END AS question,
 		CASE WHEN length(options) <= 4096 THEN options END AS options, confirm,
+		CASE WHEN length(attachments) <= 8192 THEN attachments END AS attachments,
+		CASE WHEN needs_daniel = 1 AND resolved = 0 AND length(attachment_docs) <= 524288
+			THEN attachment_docs END AS attachment_docs,
 		coalesce(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel')) AS flag_clock,
 		json_array(json_extract(clocks, '$.question'), json_extract(clocks, '$.needs_daniel'),
 			json_extract(clocks, '$.resolved'), json_extract(clocks, '$.answered_at'),

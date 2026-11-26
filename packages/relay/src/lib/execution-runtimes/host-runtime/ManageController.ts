@@ -47,6 +47,14 @@ export class ManageController {
 		const body = await readJsonBody(request, false);
 		if (operation === 'register') return this.register(body);
 		if (operation.startsWith('directory-')) return this.directory(operation, body);
+		return this.hosted(operation, body);
+	}
+
+	/** An operation on the registered host, for the owner who keeps it. */
+	private async hosted(
+		operation: string,
+		body: Record<string, unknown> | undefined
+	): Promise<Response> {
 		const call =
 			operation === 'revoke-device' ? this.validator.device(body) : this.validator.owner(body);
 		if (!call) return relayError(400, 'invalid-input');

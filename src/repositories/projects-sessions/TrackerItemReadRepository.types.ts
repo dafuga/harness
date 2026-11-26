@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import type { TrackerAttachment } from '../../utils/projects-sessions/trackerAttachment.types';
 import type { TrackerItemPriority } from '../../utils/projects-sessions/normalizeTrackerItemFields.types';
 import type { TrackerAskOption } from '../../utils/projects-sessions/trackerAskOptions.types';
 import type { trackerItemFields } from '../../adapters/projects-sessions/TrackerSchemaAdapter';
@@ -101,6 +102,8 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		asked_at?: string;
 		options?: TrackerAskOption[];
 		confirm?: string;
+		/** Documents of the ask; their text is read one at a time. */
+		attachments?: TrackerAttachment[];
 		answer_option?: number;
 		needs_daniel: boolean;
 		resolved: boolean;

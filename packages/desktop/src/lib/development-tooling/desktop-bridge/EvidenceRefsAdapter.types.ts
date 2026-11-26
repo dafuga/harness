@@ -1,7 +1,5 @@
 // @harness-uid u_tsnp64xshg
-export class RevisionNotHeldError extends Error {
-	override name = 'RevisionNotHeldError';
-}
+export { RevisionNotHeldError } from './RevisionNotHeldError';
 
 /** The notes commit and the evidence commit of one read; null where there is no such ref. */
 export interface PinnedRevisions {

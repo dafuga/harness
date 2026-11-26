@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 import { explorerEntityCategories as explorerCategories } from '../../../../src/utils/explorerRoute';
+import { declarationRole } from '../../../../src/services/explorer-ui/revision-detail-service/declarationRole';
 import { explorerCategory, explorerRole } from '../../src/utils/explorer-ui/explorerCategory';
 import { ownRegistry, sourceDeclaredModels } from '../ownRegistry';
 
@@ -51,11 +52,24 @@ test("the policy holds for Harness's own registry", () => {
 
 test("Harness's own model modules are listed by the declarations their source owns", () => {
 	const declared = sourceDeclaredModels(ownRegistry().filter((item) => item.status === 'active'));
+	const catalogModels = declared.filter((item) =>
+		item.modelDefinitions?.some((definition) => {
+			const role = declarationRole(
+				definition.kind,
+				Boolean(definition.table || definition.tableGap)
+			);
+			return role === 'type' || role === 'persisted-model';
+		})
+	);
+	const runtimeOnly = declared.filter(
+		(item) => item.modelDefinitions?.length && !catalogModels.includes(item)
+	);
 	const projected = (category: string | null) =>
-		declared
-			.filter((item) => item.modelDefinitions?.length && explorerCategory(item) === category)
-			.map((item) => item.id);
+		catalogModels.filter((item) => explorerCategory(item) === category).map((item) => item.id);
 	expect(projected(null), 'owned shared declarations are listed as models or types').toEqual([]);
+	expect(runtimeOnly.map(explorerCategory), 'runtime-only support stays outside Models').toEqual(
+		runtimeOnly.map(() => null)
+	);
 	expect(projected('models').length, 'stored classes are models').toBeGreaterThan(0);
 	expect(projected('types').length, 'shared declarations are types').toBeGreaterThan(0);
 });

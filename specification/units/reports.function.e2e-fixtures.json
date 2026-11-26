@@ -9,12 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/development-tooling/e2e-fixtures/E2eRootNotSetError.ts",
 			"packages/reports/src/utils/development-tooling/e2e-fixtures/e2eFixtures.ts",
 			"packages/reports/src/utils/development-tooling/e2e-fixtures/e2eFixtures.types.ts",
 			"packages/reports/src/utils/e2e-fixtures/e2eFixtures.ts",
 			"packages/reports/src/utils/e2eFixtures.ts"
 		],
 		"symbols": [
+			"E2eRootNotSetError",
 			"e2eFixtures",
 			"freePorts",
 			"openE2eRun",

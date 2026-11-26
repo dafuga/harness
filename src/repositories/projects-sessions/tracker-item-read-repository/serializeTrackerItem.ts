@@ -1,4 +1,5 @@
 // @harness-uid u_xba7ieg4je
+import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachments';
 import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
 import type { SqliteStatement } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItem, TrackerItemRow } from '../TrackerItemReadRepository.types';
@@ -101,7 +102,8 @@ export function trackerAskFields(row: TrackerItemRow, open: boolean, now: number
 	return {
 		...trackerAskAge(row, now),
 		...(row.options && { options: trackerAskOptions(row.options) }),
-		...(row.confirm && { confirm: row.confirm })
+		...(row.confirm && { confirm: row.confirm }),
+		...attachmentListing(row)
 	};
 }
 
@@ -112,8 +114,15 @@ function askFields(row: TrackerItemRow) {
 		...(options.length && { options }),
 		...(options.length && row.needs_daniel && !row.resolved && { asked_at: askedAt(row) }),
 		...(options.length && row.confirm && { confirm: row.confirm }),
-		...(row.answer_option && { answer_option: Number(row.answer_option) })
+		...(row.answer_option && { answer_option: Number(row.answer_option) }),
+		...attachmentListing(row)
 	};
+}
+
+/** Only the small listing is read out; documents are fetched one at a time. */
+function attachmentListing(row: TrackerItemRow) {
+	const attachments = trackerAttachments(row.attachments);
+	return attachments.length ? { attachments } : {};
 }
 
 function askedAt(row: TrackerItemRow) {

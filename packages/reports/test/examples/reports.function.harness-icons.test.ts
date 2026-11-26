@@ -2,8 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { categoryIcon, harnessIcons, solidIcons } from '../../src/utils/explorer-ui/harnessIcons';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.harness-icons.test.types';
 const unitId = 'reports.function.harness-icons';
 const record = (symbol: string, state: string, cases: Cases) =>
 	recordExampleCases(

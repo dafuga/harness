@@ -39,8 +39,11 @@ function neverLaunches(item: TrackerItemRecord): string | null {
 	return hold && (holdText[hold] ?? hold);
 }
 
+/** Urgent runs sort first and low ones last; every other priority sits between them. */
+const urgencies: Record<string, number | undefined> = { urgent: 0, low: 2 };
+
 function whenDue(item: TrackerItemRecord, live: boolean): HomeWhenDue {
-	const urgency = item.priority === 'urgent' ? 0 : item.priority === 'low' ? 2 : 1;
+	const urgency = urgencies[item.priority ?? ''] ?? 1;
 	if (live) return { state: 'running', reason: null, urgency };
 	const reason = blocker(item);
 	return { state: reason ? 'blocked' : 'queued', reason, urgency };

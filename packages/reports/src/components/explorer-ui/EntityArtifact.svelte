@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <!-- @harness-uid u_3xamx7ze5t -->
 <script lang="ts">
+	import type { Fact } from './EntityArtifact.types';
 	import Notice from './explorer-kit/Notice.svelte';
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import type { BehaviorCell } from '../../utils/explorer-ui/entityBehavior';
@@ -38,8 +39,6 @@
 	let run = $derived(cell.read?.verified ? cell.read.behavior : null);
 	/** Whether the recorded text was asked for: it is drawn only then, and never twice at once. */
 	let asked = $state(false);
-	/** One fact a recorded result states: its name, and its value when the result holds one. */
-	type Fact = [string, string | null];
 	const facts = (run: ExplorerArtifactBehavior): Fact[] => {
 		const all: Fact[] = [
 			['Scenario', run.scenario],

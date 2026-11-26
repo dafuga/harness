@@ -8,9 +8,7 @@ import { record, revision } from '../entityFixture';
 import { commits, ids, units } from '../entityUnits';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Relations = ReturnType<typeof explorerRelations>;
-type Unit = (typeof units)[number];
+import type { Unit, Relations } from './reports.function.explorer-relations.test.types';
 
 const head = revision(commits.middle, [record(commits.middle)]);
 const card = units.find((unit) => unit.id === ids.card)!;

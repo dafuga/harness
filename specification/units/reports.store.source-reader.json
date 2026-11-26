@@ -9,11 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/lib/explorer-ui/stores/ArchivedSourceReadError.ts",
 			"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.ts",
 			"packages/reports/src/lib/explorer-ui/stores/sourceReader.svelte.types.ts",
 			"packages/reports/src/lib/stores/sourceReader.svelte.ts"
 		],
 		"symbols": [
+			"ArchivedSourceReadError",
 			"createSourceReaderStore",
 			"implementationFiles",
 			"testFiles",

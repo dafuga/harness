@@ -45,6 +45,8 @@ struct TrackerReplicaItem: Codable {
         var options: [Option]? = nil
         /// deploy, money or secret: the answer needs the device owner's Face ID or passcode.
         var confirm: String? = nil
+        /// Specs and documents behind "View spec". Older Macs send none.
+        var attachments: [TrackerReplicaAttachment]? = nil
     }
 
     struct Run: Codable {
@@ -91,6 +93,7 @@ struct TrackerReplicaItem: Codable {
 
     private static func validFlag(_ flag: Flag) -> Bool {
         ["open", "resolved"].contains(flag.state) && short(flag.at ?? "", 40) && short(flag.question, 512)
+            && (flag.attachments.map { $0.count <= 4 && $0.allSatisfy(\.valid) } ?? true)
             && (flag.options.map { $0.count <= 4 && $0.allSatisfy { short($0.label, 80) && short($0.effect, 400) } } ?? true)
             && (flag.confirm.map { ["deploy", "money", "secret"].contains($0) } ?? true)
     }
@@ -104,35 +107,6 @@ struct TrackerReplicaItem: Codable {
     static func short(_ value: String, _ max: Int) -> Bool {
         value.utf8.count <= max && !value.utf8.contains(0)
     }
-}
-
-struct TrackerReplicaPlanning: Codable {
-    struct Artifact: Codable {
-        struct Link: Codable {
-            let label: String
-            let url: String
-            let kind: String?
-        }
-
-        struct Page: Codable {
-            let name: String
-            let states: [String: String]?
-            let links: [Link]?
-        }
-
-        let summary: String?
-        let pages: [Page]?
-        let links: [Link]?
-    }
-
-    struct Promotion: Codable {
-        let stage: String
-        let by: String
-        let at: String
-    }
-
-    let artifacts: [String: Artifact]
-    let promotions: [Promotion]
 }
 
 struct TrackerReplicaPage: Decodable {

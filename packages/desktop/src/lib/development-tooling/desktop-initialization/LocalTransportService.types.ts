@@ -1,7 +1,5 @@
 // @harness-uid u_gnxqoqxlzz
-export class LocalTransportNotListeningError extends Error {
-	override name = 'LocalTransportNotListeningError';
-}
+export { LocalTransportNotListeningError } from './LocalTransportNotListeningError';
 
 /** One accepted socket, as the client it belongs to sees it. Text frames only. */
 export interface LocalSocket {

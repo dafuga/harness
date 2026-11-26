@@ -3,8 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { entityLabels, entityLens, shortCommit } from '../../src/utils/explorer-ui/entityLens';
 import type { ExplorerLocation } from '../../src/models/explorer-ui/Explorer.types';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.entity-lens.test.types';
 const unitId = 'reports.function.entity-lens';
 const record = (symbol: string, state: string, cases: Cases) =>
 	recordExampleCases(

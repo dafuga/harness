@@ -9,6 +9,7 @@ import type {
 import { HostedSessionRequiredError } from '../../src/adapters/networking-security/hosted-http-adapter/HostedSessionRequiredError';
 import { InvalidHostedOriginError } from '../../src/adapters/networking-security/hosted-http-adapter/InvalidHostedOriginError';
 import { UntrustedHostedRequestPathError } from '../../src/adapters/networking-security/hosted-http-adapter/UntrustedHostedRequestPathError';
+import type { Call } from './desktop.adapter.hosted-http.test.types';
 
 const origin = 'https://hosted.example.com';
 const credential: NativeHostedCredential = {
@@ -16,8 +17,6 @@ const credential: NativeHostedCredential = {
 	principalId: 'principal-1',
 	token: 'example-token'
 };
-
-type Call = { url: string; method: string; authorization: string | null };
 
 const meta = (state: string, symbol: string) => ({
 	unitId: 'desktop.adapter.hosted-http',

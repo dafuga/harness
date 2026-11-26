@@ -7,8 +7,7 @@ import {
 	normalizeCode
 } from '../../src/lib/verification-evidence/server/auth/native-handoff-service/authSecrets';
 import { randomToken, sha256Url } from '../../src/utils/verification-evidence/authSecrets';
-
-type RecordMeta = Parameters<typeof recordExampleCases>[0];
+import type { RecordMeta } from './hub.function.auth-secrets.test.types';
 
 const SECRET = 'q8Xr2TzV0mLbN4wJkP7YdHcF1sGaE9uR3iKxOyBtZ6M';
 const OTHER_SECRET = 'a7c3e9f1b5d2a8c4e6f0b3d7a1c5e9f2b6d0a4c8e2f6b1d5a9c3e7f0b4d8a2c6';

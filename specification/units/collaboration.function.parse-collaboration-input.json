@@ -10,6 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/collaboration/src/utils/parseCollaborationInput.ts",
+			"packages/collaboration/src/utils/planning-collaboration/CollaborationInputError.ts",
 			"packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.ts",
 			"packages/collaboration/src/utils/planning-collaboration/parseCollaborationInput.types.ts"
 		],
@@ -29,6 +30,7 @@
 			"parseCollaborationInput",
 			"digest",
 			"safePath",
+			"CollaborationInputError",
 			"id",
 			"sha",
 			"hash",

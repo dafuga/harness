@@ -7,20 +7,13 @@ import { parseHomePayload } from '../../routes/api/hub-home/homePayload';
 import type { BrowserApi } from '../../utils/browserApi';
 import { browserDeviceKeys } from '../../utils/networking-security/browserDeviceKeys';
 import { BrowserComputerService } from './BrowserComputerService';
+import type { Connect, LinkedHome } from './LinkedHomeService.types';
+
+export type { LinkedHome } from './LinkedHomeService.types';
 
 const hosts = '/api/remote/hosts';
 const readMs = 15_000;
 const parallel = 6;
-
-export interface LinkedHome {
-	/** Computers linked to the signed-in account, online or not. */
-	linked: number;
-	/** How many of them answered this read. */
-	answered: number;
-	snapshot: OwnerHomeSnapshot | null;
-}
-
-type Connect = (hostId: string) => BrowserComputerService;
 
 function within<T>(work: Promise<T>, ms: number): Promise<T> {
 	return new Promise((resolve, reject) => {

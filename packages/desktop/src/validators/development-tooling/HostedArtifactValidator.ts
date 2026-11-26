@@ -1,7 +1,7 @@
 // @harness-uid u_lyv6pkc24d
 import { createHash } from 'node:crypto';
 import { artifactLimit } from '../../utils/reports-media/artifactMedia';
-import { artifactMedia } from '../../utils/artifact-answer/artifactMedia';
+import { artifactMedia } from '../../utils/verification-evidence/artifact-answer/artifactMedia';
 import type { EvidenceArtifactResult } from '../../models/verification-evidence/DesktopEvidence.types';
 import {
 	hostedAttestation,
