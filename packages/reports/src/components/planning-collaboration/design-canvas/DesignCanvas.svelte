@@ -60,6 +60,7 @@
 		onopen={() => (opened = selected)}
 	/>
 	<!-- The stage takes keys and gestures; every artboard on it is also a button. -->
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<hx-div
 		class="design-stage"
 		role="application"
