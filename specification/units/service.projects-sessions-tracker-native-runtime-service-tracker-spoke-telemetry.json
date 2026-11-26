@@ -9,42 +9,51 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"src/services/projects-sessions/tracker-native-runtime-service/trackerSpokeTelemetry.ts",
-			"src/services/projects-sessions/tracker-native-runtime-service/trackerSpokeTelemetry.types.ts"
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerSpokeTelemetry.ts"
 		],
-		"symbols": ["spokeTelemetry", "SpokeLink", "Active", "SpokeTelemetry"]
+		"symbols": ["spokeReport"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "spokeTelemetry.context",
-				"type": "SpokeTelemetry",
+				"name": "spokeReport.machines",
+				"type": "TrackerMachineService",
+				"required": true
+			},
+			{
+				"name": "spokeReport.report",
+				"type": "ReturnType<typeof machineReport>",
 				"required": true
 			}
 		],
 		"outputs": [
 			{
-				"name": "spokeTelemetry",
-				"type": "unknown"
+				"name": "spokeReport",
+				"type": "Promise<TrackerWireValue>"
 			}
 		],
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
 			{
-				"name": "spokeTelemetry",
+				"name": "spokeReport",
 				"inputs": [
 					{
-						"name": "spokeTelemetry.context",
-						"type": "SpokeTelemetry",
+						"name": "spokeReport.machines",
+						"type": "TrackerMachineService",
+						"required": true
+					},
+					{
+						"name": "spokeReport.report",
+						"type": "ReturnType<typeof machineReport>",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "spokeTelemetry",
-						"type": "unknown"
+						"name": "spokeReport",
+						"type": "Promise<TrackerWireValue>"
 					}
 				],
 				"errors": [],
@@ -54,16 +63,6 @@
 		"initialization": []
 	},
 	"dependencies": [
-		{
-			"unit": "repository.projects-sessions-tracker-run-read",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "service.projects-sessions-tracker-hub-sync",
 			"via": "import",
@@ -76,11 +75,6 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "service.projects-sessions-tracker-spoke-sync",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -1,0 +1,59 @@
+{
+	"name": "tracker-offline-bun-codes",
+	"goal": "A spoke on the shipped Bun runtime treats refused, unresolved and unroutable hubs as an outage",
+	"createdAt": "2026-11-26T12:38:11.561Z",
+	"updatedAt": "2026-11-26T13:03:33.978Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-26T13:03:28.661Z",
+			"evidence": "On the shipped Bun 1.2.18 binary a refused or unresolved hub throws code ConnectionRefused (no route: FailedToOpenSocket). Expected: the due owner starts. Observed: held. Reproduced with BUN_BE_BUN=1 on release 44dd318dc4 running test/support/trackerHubOutageProbe.ts at a88a90293d source: refused=false, unresolved=false."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-26T13:03:33.978Z",
+			"evidence": "tracker-offline-due.test.ts served real outages but vitest runs on Node, whose fetch codes differ from Bun's, and it had no DNS case. It now also runs the real transport and permit code under the bun on PATH (CI pins 1.2.18), with DNS and refusal cases."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

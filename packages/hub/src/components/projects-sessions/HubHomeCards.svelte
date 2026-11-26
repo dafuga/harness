@@ -41,8 +41,6 @@
 			.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)))
 	);
 	const level = $derived(warning ? warningFor(warning.limit.left) : null);
-	/** "Needs you" is the length of the very list Home shows. */
-	const attention = $derived(view.openAsks.length);
 	const sessions = $derived(
 		view.agents?.reduce((sum, agent) => sum + agentSessions(agent), 0) ?? 0
 	);
@@ -113,12 +111,6 @@
 		{:else}
 			{@render empty('Agent activity appears when Tracker data is available.')}
 		{/if}
-		{#snippet badge()}
-			{#if attention}<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
-					><hx-span class="po-mark" aria-hidden="true"></hx-span>{attention}
-					{attention === 1 ? 'needs' : 'need'} you</Pill
-				>{/if}
-		{/snippet}
 		{#snippet footer()}{#if recipient}<hx-button
 					type="button"
 					class="po-action hh-message"

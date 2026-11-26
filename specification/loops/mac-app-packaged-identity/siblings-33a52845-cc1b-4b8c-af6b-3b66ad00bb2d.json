@@ -1,0 +1,1791 @@
+{
+	"schemaVersion": 1,
+	"revision": "0133c5ad4a927536e7ac45a5db3617c1a5fe16eb",
+	"bugClass": {
+		"id": "packaged-app-runtime-mismatch",
+		"title": "Packaged app identity and bundle permissions are incorrect",
+		"cause": "The packager does not align the executable identity and bundle file permissions with runtime assumptions. Packaged-only startup logic can be skipped when the app reports itself as unpackaged, and shipped files can retain world-writable permissions. No assembled-app launch catches these packaging failures.",
+		"criteria": "Classify another site when its packaging configuration or build output can preserve an unexpected executable/app identity that makes packaged-runtime checks false, independently of whether startup code gated on that check is skipped; or when packaged files are emitted with world-writable permissions. These are independent qualifying paths. Relevant evidence includes packaged-only startup gates and the actual packaged artifact configuration or permissions.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "app.isPackaged",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "chmod 777",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "worldWritable",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "executableName",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "productName",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "setExecutableName",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "chmod",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "isPackaged",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "make",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "build",
+				"weight": 1
+			}
+		],
+		"contextTerms": ["electron", "packaged", "executable", "bundle", "startup", "permissions"],
+		"pathHints": [
+			{
+				"contains": "packages/desktop/",
+				"weight": 5
+			},
+			{
+				"contains": "electron-builder",
+				"weight": 4
+			},
+			{
+				"contains": "electron-forge",
+				"weight": 4
+			},
+			{
+				"contains": "packager",
+				"weight": 3
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "server/",
+				"weight": -2
+			},
+			{
+				"contains": "worker/",
+				"weight": -2
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 9083,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "8c613192eb27e1c5ff26",
+			"path": "src/adapters/agents-providers/managed-provider-docker-adapter/reconcileDockerWorkspace.ts",
+			"line": 114,
+			"lastLine": 114,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 109–115 copy a workspace file and apply its source mode (`source.mode & 0o777`); no packaged-app context or mode bound is shown. The excerpt does not establish either a packaging identity mismatch or world-writable packaged output."
+		},
+		{
+			"id": "24a1d82426b8e4c93c9b",
+			"path": "src/cli/program/benchmark-service/benchmarkWorkspace.ts",
+			"line": 102,
+			"lastLine": 102,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 98–102 copy a benchmark workspace file and apply its source mode (`lstat(...).mode & 0o777`). The excerpt gives no packaged-app context or bound on the source mode, so it does not establish world-writable packaged output or an identity mismatch."
+		},
+		{
+			"id": "8b3a609af9ce9f4160c5",
+			"path": "packages/desktop/scripts/build-ios-simulator.ts",
+			"line": 79,
+			"lastLine": 79,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 67–79 show an iOS simulator build plan and await build(plan), but provide no executable identity, packaged artifact permission, or verification details. The excerpt is insufficient to establish a qualifying packaging defect."
+		},
+		{
+			"id": "fdd7aa7773f0d6807bd3",
+			"path": "packages/desktop/scripts/build-main.ts",
+			"line": 97,
+			"lastLine": 97,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "At packages/desktop/scripts/build-main.ts:97, Bun builds and syntax-checks main and preload outputs. The excerpt shows no executable identity or packaged artifact configuration, permissions, or assembled-app launch, so it does not establish a qualifying packaging mechanism."
+		},
+		{
+			"id": "d7a1a2908dc7542ef197",
+			"path": "packages/desktop/test/package-mac-app-probe.build.ts",
+			"line": 6,
+			"lastLine": 6,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "At packages/desktop/test/package-mac-app-probe.build.ts:6, a test probe bundles a main-process entry into `main.cjs`; the visible excerpt provides no app identity, packaged permissions, or assembled-app launch evidence."
+		},
+		{
+			"id": "f0842d40fa1ed51306f5",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 104,
+			"lastLine": 107,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "executableName",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "93808edb085d43d77baa",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 48,
+			"lastLine": 54,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "executableName",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "463080d80f8bb088c455",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "productName",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5f12aa32717b21414bb4",
+			"path": "test/examples/function.process-probes.test.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "56ec88dc739fbb43af79",
+			"path": "test/support/benchmarkExecutable.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "778ef232ab0ecdc24315",
+			"path": "test/support/sharedHooks.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b66439cf71309099ca92",
+			"path": "packages/game/test/repositories/game-document.test.ts",
+			"line": 69,
+			"lastLine": 69,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5e2c22f38785bb639249",
+			"path": "test/cli/record-command-analytics.test.ts",
+			"line": 99,
+			"lastLine": 99,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b6d1be4f2bfee666ab9e",
+			"path": "test/codex-gateway.e2e.test.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "267ee3326b9928343c15",
+			"path": "test/examples/function.index-files.test.ts",
+			"line": 87,
+			"lastLine": 87,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "474680bd2e95053560ae",
+			"path": "test/examples/function.isolated-child.test.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "05bcbd1c168fad84df22",
+			"path": "test/examples/function.platform-services.fixtures.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "84bf9675d75b640bff47",
+			"path": "test/examples/service.build-identity.test.ts",
+			"line": 164,
+			"lastLine": 171,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "414aec731d50cebb41dc",
+			"path": "test/history-legacy.e2e.test.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eb96cea352b7e09341a6",
+			"path": "test/hooks-commit-msg.e2e.test.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0d29896204a64c29c99a",
+			"path": "test/hooks.e2e.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5f33f225fa1bf8a7fb71",
+			"path": "test/repositories/agents-providers/platform-audit-log.test.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "50fcc22c66e1e74efc2c",
+			"path": "test/services/agents-providers/module-task-preflight.test.ts",
+			"line": 91,
+			"lastLine": 99,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "92435604bfa8027f0ecf",
+			"path": "test/support/moduleTaskFixture.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d3b060579f57957a141b",
+			"path": "packages/game/test/repositories/game-document.test.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7f53b6deebd70d5c3593",
+			"path": "test/history-legacy.e2e.test.ts",
+			"line": 158,
+			"lastLine": 158,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9ed0585eea8b15ba784f",
+			"path": "test/history-legacy.e2e.test.ts",
+			"line": 167,
+			"lastLine": 167,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dab2b0e31bb65de3d4a3",
+			"path": "test/hooks-commit-msg.e2e.test.ts",
+			"line": 98,
+			"lastLine": 98,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "55a9132cdf0cdff652ab",
+			"path": "test/support/moduleTaskFixture.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7178bf50c4fc46b727bf",
+			"path": "packages/hub/test/controllers/email-proof-controller.test.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "make",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "020f899811a2c7244643",
+			"path": "packages/hub/test/controllers/hub-auth-controller.test.ts",
+			"line": 109,
+			"lastLine": 109,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "make",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1d8e98e02b567bd9ae3b",
+			"path": "scripts/build-api.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "81ec86e0db8f1f9ec6c7",
+			"path": "scripts/build-picker.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9eb8e972d3bd30655f9d",
+			"path": "scripts/package-website.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5b1a458c13791ed192bf",
+			"path": "test/examples/entry.picker.test.ts",
+			"line": 31,
+			"lastLine": 37,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "make",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "42ccfb94708ab849cd40",
+			"path": "scripts/build-api.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "caa83eac0116ad38dd86",
+			"path": "test/examples/entry.picker.test.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "make",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "68f2a8883d8269964c19",
+			"path": "packages/reports/src/lib/development-tooling/preview-node/previewNode.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "323c1bcc11e214411be9",
+			"path": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
+			"line": 65,
+			"lastLine": 65,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "01ebadac8853fee98ed7",
+			"path": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
+			"line": 83,
+			"lastLine": 83,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b8fc1bafcdb520ed0bca",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4f26ebc687be1c6e6705",
+			"path": "src/cli/program/buildHistory.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d4cdfaa929ae7f97490a",
+			"path": "src/cli/program/history-index-service/HistoryIndexService.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ea5fdee6f899bf53392e",
+			"path": "src/workflows/development-tooling/guide-units/unitShots.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ad48c617eb2206af053",
+			"path": "src/workflows/development-tooling/load-units/loadUnits.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9ecb923aa59b40cd4f2",
+			"path": "packages/hub/test/support/hubRelayFixture.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "82186125f49742b8e69c",
+			"path": "packages/hub/test/support/syncFixture.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "09be1e5cb1c63484937c",
+			"path": "packages/relay/test/support/relayFixture.ts",
+			"line": 79,
+			"lastLine": 79,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "aa1356cc594914e9e06a",
+			"path": "test/history-activity.e2e.test.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "091f0beb33178b7794a3",
+			"path": "test/shared-case-impact.test.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "65b5fec4a7f801904f6c",
+			"path": "packages/reports/test/entityPreviewSetup.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "08e2df383306db366b01",
+			"path": "packages/reports/test/utils/frozen-build.test.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9b355e5515b955408158",
+			"path": "packages/reports/test/utils/frozen-build.test.ts",
+			"line": 48,
+			"lastLine": 48,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f34b91016402d30a89fe",
+			"path": "test/examples/service.history-index.test.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f8ad194e3b6da6e70fcd",
+			"path": "test/examples/service.history-index.test.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9ec13e67cc697ec2496f",
+			"path": "test/examples/service.source-graph.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "64f8c18365ee09628f1e",
+			"path": "test/examples/service.source-graph.test.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a4d9ecb08e45b27f21de",
+			"path": "test/examples/service.source-graph.test.ts",
+			"line": 80,
+			"lastLine": 80,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8e8cf33fcc5929a0933c",
+			"path": "test/examples/service.source-graph.test.ts",
+			"line": 138,
+			"lastLine": 138,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c6a9078e20d5ca15f2b3",
+			"path": "test/history-activity.e2e.test.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "017278d0c21e50c1921c",
+			"path": "test/history-branches.e2e.test.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6bf244ab8547578073d7",
+			"path": "test/history-branches.e2e.test.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "419e1e3bfd827b526324",
+			"path": "test/history-branches.e2e.test.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cb2368c17b36195a0c77",
+			"path": "test/history-emitted.e2e.test.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ae55c1ce98d3b904b117",
+			"path": "test/history-index.e2e.test.ts",
+			"line": 34,
+			"lastLine": 36,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5eb542751f0adb58637f",
+			"path": "test/history-index.e2e.test.ts",
+			"line": 93,
+			"lastLine": 93,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a57627a9128209f6d28d",
+			"path": "test/history-index.e2e.test.ts",
+			"line": 151,
+			"lastLine": 151,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ade53424b09fd4c1099b",
+			"path": "test/history-index.e2e.test.ts",
+			"line": 175,
+			"lastLine": 175,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6a76880d8924723e310b",
+			"path": "test/history-index.e2e.test.ts",
+			"line": 198,
+			"lastLine": 198,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f1bf152f49e0c0d541ad",
+			"path": "test/history-index.e2e.test.ts",
+			"line": 207,
+			"lastLine": 207,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "495e6fc95308ca6dd75d",
+			"path": "test/history-source.test.ts",
+			"line": 101,
+			"lastLine": 101,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8d9195c80c021923b94d",
+			"path": "test/services/build-identity.test.ts",
+			"line": 22,
+			"lastLine": 30,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bd6b6fd51666dbab4780",
+			"path": "test/services/build-identity.test.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "42848998372e67b6f8e0",
+			"path": "test/services/platform-catalog.test.ts",
+			"line": 102,
+			"lastLine": 102,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8e8e1c882487c3725daf",
+			"path": "test/services/unit-index/ownership.ts",
+			"line": 95,
+			"lastLine": 95,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ee78441ceccd0851eb9b",
+			"path": "test/shared-alias-index.test.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9eb9e29f1294c3a7a887",
+			"path": "test/shared-search-impact.test.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "996748817a3646cba345",
+			"path": "test/shared-select-impact.test.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eb8d7848669bed7eb61c",
+			"path": "test/shared-workspace-impact.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b9f47924927dfa7e71ac",
+			"path": "test/utils/explorer-ui/project-dependencies.test.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "708e758800207e3c926b",
+			"path": "src/cli/program/hook-install-service/HookInstallService.ts",
+			"line": 76,
+			"lastLine": 76,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 1,
+			"evidence": "At src/cli/program/hook-install-service/HookInstallService.ts:76, installation chmods user-installed Git hooks to 0o755. This is not packaged-app output, executable identity, or world-writable permissions; the mode is executable but not world-writable."
+		},
+		{
+			"id": "afb62027fdb75d48acf7",
+			"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/macSafeStorage.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 24,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "app.isPackaged",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 11–14 use app.isPackaged for the Mac migration gate but also accept an existing migration helper as a fallback. This excerpt shows a compensating runtime path, not a packaging identity or permissions defect."
+		},
+		{
+			"id": "4cd009d102decb8072c9",
+			"path": "packages/desktop/src/initializers/development-tooling/initializeTrackerBundle.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "app.isPackaged",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 9–15 gate the bundled Tracker initializer on app.isPackaged and macOS, then skip custom user-data-dir launches. This shows the startup condition but no evidence that the packaged executable identity makes the condition false."
+		},
+		{
+			"id": "bbecc7a9d79db3fda804",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "executableName",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 12–14 define executableName as Harness and explain this avoids Electron reporting isPackaged=false. This is a visible identity correction, not evidence of the bug class."
+		},
+		{
+			"id": "4d5c2aeac43cd630e391",
+			"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+			"line": 179,
+			"lastLine": 179,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "app.isPackaged",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 179–182 make accountRequired true when app.isPackaged or backend shared auth is present. This is a runtime feature gate, with no evidence about packaging identity or emitted permissions."
+		},
+		{
+			"id": "74cea414a23186b4468d",
+			"path": "packages/desktop/test/package-mac-app-probe.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "app.isPackaged",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The test probe at lines 15–18 reads `app.isPackaged` into its report after app startup. This is diagnostic test code; it does not show a packaging configuration or artifact with an unexpected identity or world-writable permissions."
+		},
+		{
+			"id": "7f76bdaa59095544e686",
+			"path": "packages/desktop/src/services/development-tooling/tracker-bundle/stageTrackerRelease.ts",
+			"line": 43,
+			"lastLine": 44,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 37–44 explicitly chmod the staged executable and shim to 0o700 and metadata files to 0o600, with a staging directory created as 0o700. The shown packaging path restricts permissions rather than emitting world-writable files."
+		},
+		{
+			"id": "538450fac6c02ca1ae71",
+			"path": "packages/desktop/scripts/package-mac.ts",
+			"line": 85,
+			"lastLine": 85,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "productName",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 73–86 verify the artifact identity and require productName Harness and a valid revision during release packaging. This is a visible release guard; no world-writable permissions are shown."
+		},
+		{
+			"id": "c4b57fb59e92648c46df",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-execution.test.ts",
+			"line": 94,
+			"lastLine": 94,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 87–96 set mode `0o755` on a temporary fake Git executable used by a unit test. This does not concern packaged app files or their permissions."
+		},
+		{
+			"id": "c71f6e2ff23311624921",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-proof.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 48–55 set mode `0o755` on a temporary fake Git executable in a deployment-proof test. The excerpt shows neither packaged artifact permissions nor executable/app identity configuration."
+		},
+		{
+			"id": "fc3170fc4f2c359fc868",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-worktree.test.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 38–45 set mode `0o755` on a temporary fake Git executable for a test fixture. This is not evidence of world-writable packaged files or an unexpected packaged app identity."
+		},
+		{
+			"id": "9ee0f388374d6677c16d",
+			"path": "packages/desktop/test/services/game-project.test.ts",
+			"line": 109,
+			"lastLine": 111,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 106–111 change permissions on a temporary test project directory to trigger and recover from `EACCES`. This test setup is unrelated to packaged app identity or shipped file permissions."
+		},
+		{
+			"id": "4bec9cb2bd9eae9c24e6",
+			"path": "packages/desktop/tests/e2e/ui-evidence-fixture.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "make",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 14–23 instrument URL.createObjectURL and URL.revokeObjectURL in an E2E fixture. This is unrelated to packaged executable identity or bundle permissions."
+		},
+		{
+			"id": "0bcd7afe8b785d01bf2c",
+			"path": "packages/game/src/repositories/game-authoring/GameDocumentRepository.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 57–60 write a temporary game file with mode `0o600`, then apply the existing game file’s mode before replacement. The shown permissions concern game data, not packaged app files, and do not establish world-writable output."
+		},
+		{
+			"id": "1d7230393a317ece939f",
+			"path": "src/services/git-source-history/CatalogIndexService.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At src/services/git-source-history/CatalogIndexService.ts:25, the generated SQLite catalog is explicitly chmodded to 0o600 before rename. This is a restrictive file permission and provides no packaging or executable-identity mechanism."
+		},
+		{
+			"id": "c6673f640e871203e92f",
+			"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts",
+			"line": 102,
+			"lastLine": 102,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At packages/desktop/src/lib/development-tooling/desktop-bridge/PinnedHistoryAdapter.ts:102, `details.build` creates revision detail during history reading. This is unrelated to app packaging, executable identity, and bundle permissions."
+		},
+		{
+			"id": "cb70ad50da97495526a3",
+			"path": "packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "build",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts:25, the `build` callback constructs a user-initiated run request before starting it. This is runtime request flow, not package configuration or packaged file permissions."
+		},
+		{
+			"id": "f1b18eb6c237ad20f683",
+			"path": "test/benchmark-trials.test.ts",
+			"line": 169,
+			"lastLine": 169,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At test/benchmark-trials.test.ts:169, the test changes a fixture source file to mode 0o755 so an evaluator can execute it. This is a test fixture permission change, not a packaged app artifact or world-writable mode."
+		},
+		{
+			"id": "d387d4973480f9fd397d",
+			"path": "test/examples/function.process-descendants.test.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At test/examples/function.process-descendants.test.ts:22, a test helper makes a fake `ps` executable mode 0o700 for a process-table example. This is test setup, not packaging, executable identity, or world-writable bundle permissions."
+		}
+	],
+	"errors": [
+		"The semantic evaluator did not return a valid verdict for batch 4.",
+		"The semantic evaluator did not return a valid verdict for batch 5.",
+		"The semantic evaluator did not return a valid verdict for batch 6."
+	],
+	"classPath": "specification/bug-classes/packaged-app-runtime-mismatch.json"
+}

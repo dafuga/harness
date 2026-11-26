@@ -6,7 +6,7 @@ import type { TrackerFleetView } from '../tracker-machine-service/trackerLaunchP
 import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
 import type { TrackerMachineService } from '../TrackerMachineService';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
-import { composeTrackerTelemetry } from './nativeTrackerLinks';
+import { composeTrackerTelemetry } from './nativeTrackerTelemetry';
 import { recordingFleetStore } from './trackerFleetTelemetry';
 
 /** Wire fleet telemetry, placement of `auto` launches and the hub's assignment of the rest. */
@@ -22,7 +22,11 @@ export function composeTrackerFleet(
 	const { machines, scheduler, now } = runtime;
 	const received = options.syncResponder?.machines;
 	const fleet = received && recordingFleetStore(received, machines);
-	const telemetry = composeTrackerTelemetry(runs, options, { machines, fleet, scheduler });
+	const telemetry = composeTrackerTelemetry(machines.store, runs, options, {
+		machines,
+		fleet,
+		scheduler
+	});
 	const view: TrackerFleetView = { machines, now, samples: () => telemetry.samples?.() ?? [] };
 	return {
 		samples: telemetry.samples,

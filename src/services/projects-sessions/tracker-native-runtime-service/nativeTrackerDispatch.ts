@@ -1,13 +1,14 @@
 import type { PeerStarts } from './nativeTrackerDispatch.types';
 // @harness-uid u_bl6xl2h4a3
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
-import { adapterFailover } from './nativeTrackerLinks';
+import { adapterFailover } from './trackerAdapterFailover';
 import { TrackerDispatchRepository } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
 import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import {
 	automaticEnabled,
 	automaticQuietHour,
-	canonicalNode
+	canonicalNode,
+	mayScheduleHere
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { previewDueLaunch } from '../../agents-providers/tracker-dispatcher-service/launchIntent';
 import { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
@@ -21,9 +22,9 @@ import type {
 	TrackerNativeRuntimeOptions
 } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
 import { liveTrackerDuePolicy } from './nativeTrackerDuePolicy';
 import { grantsDelegation } from './trackerDueDelegation';
+import { spokeAutomaticPermit, spokeGrant } from './trackerHubPermits';
 
 export function composeTrackerDispatch(
 	store: TrackerPersistenceService,
@@ -82,7 +83,12 @@ function nativeDispatch(
 		now
 	});
 	const dispatch = new TrackerDispatcherService(repository, policy);
-	const grant = configuredGrant ?? spokeGrant(store, options);
+	const grant =
+		configuredGrant ??
+		spokeGrant(store, options, (itemId) => {
+			const { item, due: current } = repository.readSnapshot(itemId);
+			return Boolean(item && current && mayScheduleHere(item, current, policy));
+		});
 	const permits = dispatchPermits(repository, { store, options, policy, machines });
 	return {
 		dispatch,
@@ -123,7 +129,7 @@ function dispatchPermits(
 		);
 	};
 	if (options.role === 'spoke')
-		return { automatic: spokeAutomaticPermit(store, options) ?? localPermit };
+		return { automatic: spokeAutomaticPermit(store, options, localPermit) ?? localPermit };
 	return {
 		automatic: localPermit,
 		hubAutomatic: localPermit,
@@ -154,41 +160,5 @@ function configuredDuePreview(
 		due,
 		preview: (id) =>
 			previewDueLaunch({ ...repository.readSnapshot(id), due: due() }, policy, policy.now())
-	};
-}
-
-function spokeGrant(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
-	const hub = options.links?.find(({ link }) => (link ?? 'hub') === 'hub');
-	if (!hub) return undefined;
-	return async (itemId: string, token: string, signal: AbortSignal) => {
-		const lifetime = AbortSignal.any([signal, AbortSignal.timeout(2000)]);
-		const client = new TrackerSpokeSyncService({
-			...hub,
-			store,
-			transport: (request) => hub.transport(request, lifetime)
-		});
-		const allowed = await client.permitDue(itemId, token).catch(() => false);
-		return {
-			token,
-			node: store.node,
-			decision: allowed ? ('granted' as const) : ('denied' as const)
-		};
-	};
-}
-
-function spokeAutomaticPermit(
-	store: TrackerPersistenceService,
-	options: TrackerNativeRuntimeOptions
-) {
-	const hub = options.links?.find(({ link }) => (link ?? 'hub') === 'hub');
-	if (!hub) return undefined;
-	return async (id: string, token: string, signal: AbortSignal) => {
-		const lifetime = AbortSignal.any([signal, AbortSignal.timeout(2000)]);
-		const client = new TrackerSpokeSyncService({
-			...hub,
-			store,
-			transport: (request) => hub.transport(request, lifetime)
-		});
-		return client.permitDue(id, token, 'automatic').catch(() => false);
 	};
 }
