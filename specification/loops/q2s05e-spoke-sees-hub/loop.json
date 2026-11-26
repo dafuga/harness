@@ -2,7 +2,7 @@
 	"name": "q2s05e-spoke-sees-hub",
 	"goal": "A Tracker spoke reports the hub's real launch wait reason and runner state (q2s05ejftz). Coverage gap: tracker-due-launch spoke+hub test never read the spoke's launch wait or computers list after a machine exchange.",
 	"createdAt": "2026-11-26T17:37:21.973Z",
-	"updatedAt": "2026-11-26T17:37:21.973Z",
+	"updatedAt": "2026-11-26T17:45:50.798Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -13,27 +13,37 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T17:45:36.949Z",
+			"evidence": "MB2 on release 7b36a973a2 showed 'waiting for daniel-primary-mbp to sync' while the primary polled. Expected: queued/held reason from the hub's own report. Cause: hub machine list returned by /sync/machine only held spoke samples."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T17:45:38.303Z",
+			"evidence": "tracker-due-launch spoke+hub test never exchanged machine telemetry, then read the spoke's launch_status or autolaunch computers; extended it with both."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T17:45:45.765Z",
+			"evidence": "At a7c4970c72 the extended test failed: launch_status reason 'waiting for daniel-primary-mbp to sync', expected 'queued on daniel-primary-mbp'."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T17:45:47.339Z",
+			"evidence": "Hub sync response now appends the hub's own current runner report (trackerHubMachines); commit 866eac28a2."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T17:45:50.798Z",
+			"evidence": "Same unchanged test passed at 866eac28a2 (harness loop record --phase green)."
 		},
 		{
 			"id": "siblings",
