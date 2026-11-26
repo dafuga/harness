@@ -124,6 +124,17 @@ replacing a live client with the shim, retain a link to its versioned executable
 reach the same service. The retained executable must point to the client
 release. Keep the previous CLI target available for rollback.
 
+A live native hub takes a verified `VACUUM INTO` snapshot daily from 03:30 Europe/Lisbon (or as soon
+as it is back that day) into `~/backups/tracker/native`, keeping 14 daily and 8 weekly copies. A
+failed backup, or none for 36 hours, raises one "Tracker backups need attention" ask. `tracker status`
+and `tracker backup list` report the result (the list also shows hourly copies kept in
+`~/backups/tracker`), and `tracker backup now` takes one. These copies stay on the hub's disk.
+
+`tracker backup verify <file>` and `tracker backup restore <file> --to <new path>` run without the
+service. Restore never changes the live database: it writes a checked copy that keeps this computer's
+current run and delivery records and has a new database identity, so spokes send their journals again,
+then prints the steps to swap it in. Add `--without-local-state` if the live database is unreadable.
+
 Compare quiesced SQLite backup copies before changing a Tracker service.
 `--node` is the spoke's configured name. Add `--hub-relay-ops` when the spoke
 relays other nodes' operations to the hub and `--peer-relay-ops` when it uses a

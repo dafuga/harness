@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import type { TrackerBackupOptions } from './TrackerBackupService.types';
 import type {
 	TrackerDispatchPolicy,
 	TrackerDuePolicy
@@ -44,6 +45,8 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 	node: string;
 	role: 'hub' | 'spoke';
 	backupDirectory?: string;
+	/** Set on a hub that takes its own daily backups. */
+	backup?: TrackerBackupOptions;
 	storage?: Omit<TrackerSchemaAdapterConfig, 'now'>;
 	notification?: TrackerNativeNotificationOptions;
 	adapter?: TrackerAdapterPollDependencies;

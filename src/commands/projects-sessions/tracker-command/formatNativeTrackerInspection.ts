@@ -122,7 +122,11 @@ function formatBackupList({ status, files }: NativeTrackerBackupList): string {
 		({ kind, name, size, mtime }) =>
 			`  ${kind.padEnd(13)} ${name.padEnd(36)} ${String(size).padStart(9)}  ${mtime}`
 	);
-	return [status.note, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
+	const head = status.enabled
+		? `backups: ${status.schedule}\n  last ok ${status.last_ok ?? 'never'}${status.stale ? ' (STALE)' : ''}` +
+			(status.last_error ? `\n  last error ${status.last_error}` : '')
+		: status.note;
+	return [head, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
 }
 
 export function formatNativeTrackerAdapterRun(
