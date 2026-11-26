@@ -190,7 +190,8 @@ export async function verifyParkedReminderRetry(
 ) {
 	const snooze = (at: number) => new Date(at).toISOString();
 	f.at(wake);
-	await expect(f.restart().tick()).rejects.toThrow('synthetic lost acknowledgement');
+	await f.restart().tick();
+	expect(f.queue.read().inFlight).toBeUndefined();
 	expect(f.calls).toHaveLength(1);
 	const parkedUntil = wake + 10 * minute;
 	f.rows.set('delayed', { ...f.rows.get('delayed')!, parked_until: snooze(parkedUntil) });

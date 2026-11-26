@@ -82,7 +82,8 @@ test('pause and resume release one relevant Chief of Staff batch, with recurring
 	expect(wire(f.calls[0]).recurring_due).toMatchObject([{ item_id: 'd', occurrence: 'current' }]);
 
 	f.rows.set('c', { ...f.rows.get('c')!, resolved: 1 });
-	await expect(f.restart().resume()).rejects.toThrow('synthetic acknowledgement lost');
+	await f.restart().resume();
+	expect(f.queue.read().lastAttentionError).toBe('Error');
 	expect(f.calls.map((call) => call.destination)).toEqual([worker, chief]);
 	const id = eventId(`done|a|${clock(night)}`, `blocked|b|${clock(night)}`);
 	expect(wire(f.calls[1])).toMatchObject({
