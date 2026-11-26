@@ -1,7 +1,4 @@
 // @harness-uid u_7okxhscew6
-/** Environment variables, as `process.env` exposes them. */
-export type Environment = Record<string, string | undefined>;
-
 export interface KernelBuild {
 	contract: string;
 	rustc: string;

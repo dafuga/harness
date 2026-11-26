@@ -1,8 +1,6 @@
 // @harness-uid u_bnkwt2w55f
 import type { HarnessRecord } from '../../models/explorer-ui/Harness.types';
 
-export type Measurement = HarnessRecord['measurements'][number];
-
 export type Finding = HarnessRecord['budgets']['findings'][number];
 
 export interface FrozenLine {

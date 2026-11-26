@@ -16,7 +16,7 @@
 		"symbols": [
 			"ServiceObservationError",
 			"observeIosServices",
-			"SeenService",
+			"IosServiceProcess",
 			"WatchedService",
 			"ServiceObservationError"
 		]
@@ -26,7 +26,7 @@
 		"inputs": [
 			{
 				"name": "observeIosServices.rows",
-				"type": "Map<number, SeenService> | null",
+				"type": "Map<number, IosServiceProcess> | null",
 				"required": true,
 				"description": "A map keyed by process ID whose values record each service's start time and executable path before the build. A null baseline is rejected, and only rows whose executable matches a discovered platform service are watched."
 			},
@@ -59,7 +59,7 @@
 				"inputs": [
 					{
 						"name": "observeIosServices.rows",
-						"type": "Map<number, SeenService> | null",
+						"type": "Map<number, IosServiceProcess> | null",
 						"required": true,
 						"description": "A map keyed by process ID whose values record each service's start time and executable path before the build. A null baseline is rejected, and only rows whose executable matches a discovered platform service are watched."
 					},

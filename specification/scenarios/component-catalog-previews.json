@@ -92,6 +92,7 @@
 		"desktop.component.workspace-link",
 		"desktop.component.workspace-shell",
 		"desktop.layout.root",
+		"desktop.page.designs",
 		"desktop.page.game",
 		"desktop.page.harness-path",
 		"desktop.page.projects",
@@ -2035,6 +2036,12 @@
 			"title": "Desktop layout with child content",
 			"coverage": "required",
 			"units": ["desktop.layout.root"]
+		},
+		{
+			"id": "desktop-page-designs",
+			"title": "/designs",
+			"coverage": "required",
+			"units": ["desktop.page.designs"]
 		},
 		{
 			"id": "desktop-page-game",
@@ -8964,6 +8971,7 @@
 				"desktop-component-workspace-link",
 				"desktop-component-workspace-shell",
 				"desktop-layout-root",
+				"desktop-page-designs",
 				"desktop-page-game",
 				"desktop-page-harness-path",
 				"desktop-page-projects",

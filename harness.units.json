@@ -68,6 +68,36 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-bridge/localDesignCanvases.ts",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The Mac bridge answers with the shared canvas types."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The desktop bridge contract answers with the shared canvas types."
+		},
+		{
+			"from": "packages/desktop/src/routes/designs/+page.svelte",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The Mac designs page reads the shared canvas types."
+		},
+		{
+			"from": "packages/desktop/src/routes/designs/+page.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "The Mac designs page shows the checkout commit with the shared short form."
+		},
+		{
+			"from": "packages/desktop/src/routes/designs/+page.svelte",
+			"specifier": "$shared/planning-collaboration/design-canvas/DesignCanvas.svelte",
+			"to": "packages/reports/src/components/planning-collaboration/design-canvas/DesignCanvas.svelte",
+			"reason": "The Mac designs page shows the shared canvas viewer."
+		},
+		{
 			"from": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
 			"specifier": "$reports/helpers/strings/shortCommit",
 			"to": "packages/reports/src/helpers/strings/shortCommit.ts",

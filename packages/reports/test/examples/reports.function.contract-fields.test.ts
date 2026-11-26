@@ -1,3 +1,4 @@
+import type { HarnessContractItem } from '../../src/models/explorer-ui/Harness.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
@@ -7,7 +8,7 @@ import {
 	fieldOf,
 	typeLabel
 } from '../../src/components/explorer-ui/entity-contract/contractFields';
-import type { Item } from '../../src/components/explorer-ui/entity-contract/contractFields.types';
+
 import { unit as fixtureUnit } from '../explorerFixture';
 import { modelDefinition } from '../entityClassFixtures';
 import type { Cases } from './reports.function.contract-fields.test.types';
@@ -17,7 +18,7 @@ const record = (symbol: string, state: string, cases: Cases) =>
 		{ unitId, symbol, state, evidence: 'examples-cases', file: `${state}.json` },
 		cases
 	);
-const item = (fields: Record<string, unknown>) => fields as unknown as Item;
+const item = (fields: Record<string, unknown>) => fields as unknown as HarnessContractItem;
 const orders = () => fixtureUnit('reports.component.orders', 'component');
 
 /** What a field of one type presents: its source and the exact text of each example. */

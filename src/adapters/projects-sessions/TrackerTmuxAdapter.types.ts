@@ -20,6 +20,8 @@ export interface TrackerTmuxNudge {
 	pane: Pick<WatchdogPane, 'key' | 'name' | 'activity' | 'createdAt' | 'x' | 'y'>;
 	cli: WatchdogCli;
 	message: string;
+	/** Which sessions may match; defaults to Chief of Staff or Tracker worker names. */
+	names?: RegExp;
 }
 
 export interface TrackerTmuxClose {

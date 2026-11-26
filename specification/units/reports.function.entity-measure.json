@@ -16,7 +16,6 @@
 		],
 		"symbols": [
 			"entityMeasure",
-			"Measurement",
 			"Budget",
 			"notMeasured",
 			"tolerancePolicy",
@@ -145,7 +144,7 @@
 			},
 			{
 				"name": "entityMeasure.observations",
-				"type": "Measurement[]",
+				"type": "HarnessMeasurement[]",
 				"required": false,
 				"default": [],
 				"description": "Additional measurements appended after unit source measurements and record measurements, then filtered to this unit and its owned callables. Defaults to [].",
@@ -355,7 +354,7 @@
 					},
 					{
 						"name": "entityMeasure.observations",
-						"type": "Measurement[]",
+						"type": "HarnessMeasurement[]",
 						"required": false,
 						"default": [],
 						"description": "Additional measurements appended after unit source measurements and record measurements, then filtered to this unit and its owned callables. Defaults to [].",

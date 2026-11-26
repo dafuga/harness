@@ -116,16 +116,23 @@ function scheduleNextAsk(
 	}
 }
 
+/** A busy target never saw the digest, so its window reopens after a short wait. */
+const busyRetry = 2 * 60_000;
+
 function completeAttention(
 	state: TrackerNotificationState,
 	attempt: DeliveryAttempt,
 	result: TrackerDeliveryResult,
-	now: number
+	options: TrackerNotificationOptions
 ): void {
+	const now = options.now();
 	if (result.status === 'rejected') {
 		state.lastAttentionError = result.error.slice(0, 200);
+		const window = intervalMs(options.webhook?.windowMinutes, 30);
+		if (result.busy) state.lastAttentionAttempt = Math.max(0, now - window + busyRetry);
 		return;
 	}
+	state.digestsSent = (state.digestsSent ?? 0) + 1;
 	for (const key of attempt.keys) {
 		const row = state.attention.get(key);
 		if (!row)
@@ -156,7 +163,7 @@ export function completeDelivery(
 			completeOutbox(state, attempt, result, options);
 			break;
 		case 'attention':
-			completeAttention(state, attempt, result, options.now());
+			completeAttention(state, attempt, result, options);
 			break;
 	}
 	delete state.inFlight;

@@ -1,8 +1,7 @@
 // @harness-uid u_idcdl5fjlo
-import type { TrackedProcess } from '../../../src/utils/processDescendants';
-import type { processDescendants } from '../../../src/utils/processDescendants';
+import type { TrackedProcess, processDescendants } from '../../../src/utils/processDescendants';
 
-export interface SeenService {
+export interface IosServiceProcess {
 	started: string;
 	executable: string;
 }

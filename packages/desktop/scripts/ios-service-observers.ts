@@ -1,7 +1,7 @@
 // @harness-uid u_idcdl5fjlo
 import {
+	type IosServiceProcess,
 	ServiceObservationError,
-	type SeenService,
 	type WatchedService
 } from './ios-service-observers.types';
 import { buildObservation, type BuildObservation } from './ios-build-observation';
@@ -17,7 +17,7 @@ const same = (one: TrackedProcess, other: TrackedProcess) =>
 
 /** Observation only: these existing services are never owned or signalled by this build. */
 export async function observeIosServices(
-	rows: Map<number, SeenService> | null,
+	rows: Map<number, IosServiceProcess> | null,
 	group: number
 ): Promise<BuildObservation> {
 	if (!rows)

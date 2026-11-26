@@ -1,7 +1,7 @@
 // @harness-uid u_t7hihkx2oh
 import type { RuntimeOptions } from '../../core/execution-runtimes/runtimeTypes';
-import type { Environment } from '../../utils/execution-runtimes/kernelArtifacts';
+import type { RuntimeEnvironment } from '../../core/execution-runtimes/runtimeTypes.types';
 
 export interface RuntimeServiceOptions extends RuntimeOptions {
-	env?: Environment;
+	env?: RuntimeEnvironment;
 }

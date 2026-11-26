@@ -98,6 +98,7 @@ const bridge: DesktopBridge = {
 	approve: call('approve'),
 	providers: call('providers'),
 	agentActivity: call('agentActivity'),
+	designCanvases: call('designCanvases'),
 	startRun: call('startRun'),
 	cancelRun: call('cancelRun'),
 	onRunEvent: (listener) => transport.on('run', (value) => listener(value as RunEvent))

@@ -4,23 +4,25 @@ import type {
 	TrackerDigest,
 	TrackerDigestGroups,
 	TrackerDigestItem,
-	TrackerItemRow
+	TrackerItemRow,
+	TrackerRecurringProblem
 } from '../TrackerItemReadRepository.types';
 import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import { trackerChaseFields, trackerAskFields } from './serializeTrackerItem';
 import { trackerPlanningStage } from '../../../utils/projects-sessions/trackerPlanning';
-import { splitTrackerAsks, isStaleDecision } from './splitTrackerAsks';
-import { trackerDigestStamp, trackerRecurringProblem } from './trackerRecurringProblem';
+import { splitTrackerAsks, listTrackerUnblocks, isStaleDecision } from './splitTrackerAsks';
+import { stampTrackerTime } from './stampTrackerTime';
+import type { StoredRecurringResult, TrackerDigestSources } from './buildTrackerDigest.types';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
 export function buildTrackerDigest(
 	rows: TrackerItemRow[],
 	nowMs: number,
 	timeZone: string,
-	runs: TrackerRunReadRepository
+	{ runs, projects }: TrackerDigestSources
 ): TrackerDigest {
-	const localTime = trackerDigestStamp(nowMs, timeZone);
+	const localTime = stampTrackerTime(nowMs, timeZone);
 	const [today] = localTime.split(' ');
 	const groups: TrackerDigestGroups = {
 		blocked: [],
@@ -42,16 +44,21 @@ export function buildTrackerDigest(
 	splitTrackerAsks(groups);
 	groups.chased_7d.sort((a, b) => (b.chased_at ?? '').localeCompare(a.chased_at ?? ''));
 	groups.queued.sort((a, b) => a.requested_at.localeCompare(b.requested_at));
+	const toUnblock = listTrackerUnblocks(groups);
 	return {
 		generated_at: new Date(nowMs).toISOString(),
 		local_time: `${localTime} ${timeZone}`,
 		today,
 		...groups,
+		projects,
+		to_unblock: toUnblock,
 		counts: {
 			...(Object.fromEntries(
 				Object.entries(groups).map(([key, items]) => [key, items.length])
 			) as Record<keyof TrackerDigestGroups, number>),
-			stale_decisions: groups.daniel_decisions.filter(isStaleDecision).length
+			stale_decisions: groups.daniel_decisions.filter(isStaleDecision).length,
+			projects: projects.length,
+			to_unblock: toUnblock.length
 		}
 	};
 }
@@ -80,13 +87,13 @@ function groupActive(
 ) {
 	if (row.status === 'blocked') groups.blocked.push(item);
 	if (row.every) {
-		const problem = trackerRecurringProblem(row, row.every, item, timeZone);
+		const problem = recurringProblem(row, row.every, item, timeZone);
 		if (problem) groups.recurring_missed.push(problem);
 	} else if (row.due) {
 		const day =
 			row.due.length === 10
 				? row.due
-				: trackerDigestStamp(Date.parse(row.due), timeZone).split(' ')[0];
+				: stampTrackerTime(Date.parse(row.due), timeZone).split(' ')[0];
 		if (day < today) groups.overdue.push(item);
 		if (day === today) groups.due_today.push(item);
 	}
@@ -155,4 +162,53 @@ function launchRequestedAt(row: TrackerItemRow, now: number) {
 
 function elapsedMinutes(now: number, at: number) {
 	return Math.max(0, Math.floor((now - at) / 60_000));
+}
+
+function recurringProblem(
+	row: TrackerItemRow,
+	every: string,
+	item: TrackerDigestItem,
+	timeZone: string
+): TrackerRecurringProblem | null {
+	const result = recurringResult(row.last_result);
+	const missed = unresolvedMiss(row.missed, result);
+	const failed = currentFailure(row.occurrence, result);
+	if (!missed && !failed) return null;
+	const occurrenceZone = row.every_tz === '' ? null : row.every_tz;
+	const displayZone = occurrenceZone ?? timeZone;
+	return {
+		...item,
+		every,
+		every_tz: occurrenceZone ?? 'Europe/Lisbon',
+		missed,
+		missed_local: missed ? stampTrackerTime(Date.parse(missed), displayZone) : null,
+		failed,
+		failed_local: failed ? stampTrackerTime(Date.parse(failed.occurrence), displayZone) : null
+	};
+}
+
+function unresolvedMiss(
+	missed: string | null,
+	result: StoredRecurringResult | null
+): string | null {
+	if (!missed) return null;
+	if (result?.status === 'done' && result.occurrence && result.occurrence > missed) return null;
+	return missed;
+}
+
+function currentFailure(
+	occurrence: string | null,
+	result: StoredRecurringResult | null
+): TrackerRecurringProblem['failed'] {
+	if (result?.status !== 'failed' || result.occurrence !== occurrence) return null;
+	const note = result.note === '' ? null : (result.note ?? null);
+	return { occurrence: result.occurrence, note };
+}
+
+function recurringResult(raw: string | null): StoredRecurringResult | null {
+	try {
+		return raw ? JSON.parse(raw) : null;
+	} catch {
+		return null;
+	}
 }

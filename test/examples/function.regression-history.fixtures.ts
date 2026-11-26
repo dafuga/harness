@@ -1,6 +1,7 @@
+import type { RegressionNote } from '../../src/core/git-source-history/historyTypes.types';
 import { recordExampleCases } from '../support/recordExampleCases';
 import { regressionHash } from '../../src/utils/git-source-history/regressionHistory';
-import type { RegressionNote } from '../../src/utils/git-source-history/regressionHistory.types';
+
 import type { RegressionRecord } from '../../src/core/verification-evidence/regressionTypes.types';
 
 export const redRecord = {

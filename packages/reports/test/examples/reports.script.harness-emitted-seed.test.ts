@@ -1,3 +1,4 @@
+import type { VerificationSeed } from '../../scripts/harness-emitted-seed.types';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync, mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -5,7 +6,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { seedEmitted } from '../../scripts/harness-emitted-seed';
-import type { EmittedSeed } from '../../scripts/harness-emitted-seed.types';
+
 import type { VerifyRepo } from '../../../../test/support/verifyRepo';
 
 function project(root: string): VerifyRepo {
@@ -50,8 +51,12 @@ test('Records the emitted unit through each build stage', async () => {
 	const root = mkdtempSync(join(tmpdir(), 'emitted-seed-'));
 	try {
 		const repo = project(root);
-		const verified: EmittedSeed['verified'] = (current) => current.verify();
-		const explain: EmittedSeed['explain'] = async () => ({ exitCode: 0, stdout: '', stderr: '' });
+		const verified: VerificationSeed['verified'] = (current) => current.verify();
+		const explain: VerificationSeed['explain'] = async () => ({
+			exitCode: 0,
+			stdout: '',
+			stderr: ''
+		});
 		const output = await seedEmitted(repo, { verified, explain });
 		expect(Object.keys(output)).toEqual(['emitting', 'packed', 'swapped', 'repacked', 'vanished']);
 		expect(Object.values(output)).toHaveLength(5);

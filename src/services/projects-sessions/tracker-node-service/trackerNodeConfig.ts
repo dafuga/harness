@@ -32,14 +32,19 @@ const configFields = {
 		.strictObject({
 			targets: z.record(
 				id,
-				z.strictObject({
-					url: z.string(),
-					bearerFile: absolutePath.optional()
-				})
+				z.union([
+					z.strictObject({ url: z.string(), bearerFile: absolutePath.optional() }),
+					z.strictObject({
+						cli: z.enum(['claude', 'codex']),
+						session: id.regex(/^[^.]+$/),
+						tmux: absolutePath
+					})
+				])
 			),
 			itemCallbacks: z.array(id).optional(),
 			chiefOfStaff: id.optional(),
-			webhook: id.optional()
+			webhook: id.optional(),
+			suggestions: z.array(z.string().min(1).max(120)).max(30).optional()
 		})
 		.optional()
 };

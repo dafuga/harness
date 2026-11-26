@@ -12,7 +12,7 @@
 			"packages/reports/scripts/harness-shells-seed.ts",
 			"packages/reports/scripts/harness-shells-seed.types.ts"
 		],
-		"symbols": ["shellsBranch", "shellUnit", "seedShells", "ShellsSeed", "ShellsSeed"]
+		"symbols": ["shellsBranch", "shellUnit", "seedShells", "VerificationSeed"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -25,13 +25,13 @@
 			},
 			{
 				"name": "seedShells.verified",
-				"type": "ShellsSeed['verified']",
+				"type": "VerificationSeed['verified']",
 				"required": true,
 				"description": "A callback run after each commit stage to verify repository state. The first resolved outcome supplies the record id used to establish the initial budget."
 			},
 			{
 				"name": "seedShells.explain",
-				"type": "ShellsSeed['explain']",
+				"type": "VerificationSeed['explain']",
 				"required": true,
 				"description": "A callback invoked after indexing the frame and after declaring it a layout to explain each behavior. Its resolved value is ignored."
 			},
@@ -84,13 +84,13 @@
 					},
 					{
 						"name": "seedShells.verified",
-						"type": "ShellsSeed['verified']",
+						"type": "VerificationSeed['verified']",
 						"required": true,
 						"description": "A callback run after each commit stage to verify repository state. The first resolved outcome supplies the record id used to establish the initial budget."
 					},
 					{
 						"name": "seedShells.explain",
-						"type": "ShellsSeed['explain']",
+						"type": "VerificationSeed['explain']",
 						"required": true,
 						"description": "A callback invoked after indexing the frame and after declaring it a layout to explain each behavior. Its resolved value is ignored."
 					},
@@ -123,7 +123,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "reports.script.harness-emitted-seed",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/scripts/harness-shells-seed.ts",

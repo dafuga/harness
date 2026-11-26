@@ -22,6 +22,9 @@ factory and isolated preload.
 The design canvas review retains the committed Hub API controller and projection service that
 read a revision's canvases.
 
+The Mac design canvas review retains the committed bridge factory and isolated preload that read
+the checkout's canvases.
+
 ## Regenerating it
 
 Regenerate it when a review names another commit or path. Run this from a checkout whose Git
@@ -98,3 +101,5 @@ The shared verification baseline lint repair retains the reviews of the desktop 
 project run service and relay host services at the commit that extracted their helpers.
 
 Realtime tracker pushes retain implementation commit `68fcb43a67` for the desktop initializer, preload and local client.
+
+Shared type consolidation retains implementation commit `6c9252a51` for the five moved services whose type references now name the one shared owner.

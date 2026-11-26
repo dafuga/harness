@@ -6,7 +6,10 @@
 		nativeAccountContext,
 		remoteContext
 	} from '../../../../../desktop/src/models/development-tooling/Environment.types';
-	import type { NativeAccountContext } from '../../../../../desktop/src/models/development-tooling/Environment.types';
+	import type {
+		EnvironmentHost,
+		NativeAccountContext
+	} from '../../../../../desktop/src/models/development-tooling/Environment.types';
 	import { exampleDocument } from '../../../../../game/src/index';
 	import ChoiceRow from '../../../../../desktop/src/components/shared-primitives/ChoiceRow.svelte';
 	import { previewUnits, previewComponent } from './units';
@@ -83,6 +86,17 @@
 	if (id === 'desktop.page.tracker')
 		setContext<NativeAccountContext>(nativeAccountContext, {
 			environment: { kind: 'capacitor', bridge: undefined, local: false, tracker: previewTracker },
+			signedIn: true,
+			signOut: () => {}
+		});
+	// The Designs page reads through the environment its layout provides; here, the route's bridge.
+	if (id === 'desktop.page.designs')
+		setContext<NativeAccountContext>(nativeAccountContext, {
+			environment: {
+				kind: 'electron',
+				bridge: (window as Window & EnvironmentHost).harness,
+				local: true
+			},
 			signedIn: true,
 			signOut: () => {}
 		});

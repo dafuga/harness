@@ -23,9 +23,8 @@
 			"GitAdapter.exec",
 			"GitAdapter.isRepository",
 			"GitRunOptions",
-			"GitResult",
+			"BoundedCommandResult",
 			"GitRunOptions",
-			"GitResult",
 			"GitCommandError",
 			"GitCommandError",
 			"gitVerb",
@@ -207,7 +206,7 @@
 			},
 			{
 				"name": "GitAdapter.exec",
-				"type": "Promise<GitResult>",
+				"type": "Promise<BoundedCommandResult>",
 				"description": "The bounded process result containing the exit code, stdout Buffer, and stderr text. A nonzero Git exit remains in the result rather than becoming a Git command error."
 			},
 			{
@@ -433,7 +432,7 @@
 				"outputs": [
 					{
 						"name": "GitAdapter.exec",
-						"type": "Promise<GitResult>",
+						"type": "Promise<BoundedCommandResult>",
 						"description": "The bounded process result containing the exit code, stdout Buffer, and stderr text. A nonzero Git exit remains in the result rather than becoming a Git command error."
 					}
 				],

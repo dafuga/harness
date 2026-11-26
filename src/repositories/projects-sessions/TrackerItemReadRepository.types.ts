@@ -163,12 +163,27 @@ export type TrackerDigestGroups = {
 	})[];
 };
 
+type TrackerStatusCounts = { in_progress: number; blocked: number; open: number };
+
+export type TrackerProjectStatus = TrackerStatusCounts & {
+	project: string;
+	/** Phase 4 module workers already included in this project's counts. */
+	phase4_workers: TrackerStatusCounts & { total: number };
+	eta?: { id: string; due: string; overdue: boolean };
+	latest_note?: { id: string; at: string; text: string };
+};
+
 export type TrackerDigest = TrackerDigestGroups & {
+	projects: TrackerProjectStatus[];
+	/** Every action only Daniel can take: open decisions, then unflagged blockers waiting on Daniel. */
+	to_unblock: TrackerDigestItem[];
 	generated_at: string;
 	local_time: string;
 	today: string;
 	counts: Record<keyof TrackerDigestGroups, number> & {
 		/** Daniel decisions that have waited at least a day. */
 		stale_decisions: number;
+		projects: number;
+		to_unblock: number;
 	};
 };

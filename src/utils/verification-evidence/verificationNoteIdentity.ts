@@ -1,11 +1,12 @@
 // @harness-uid u_emck5mljof
-import type { Note } from './verificationNoteIdentity.types';
+
+import type { VerificationNote } from '../../core/git-source-history/historyTypes.types';
 import type { VerificationRecord } from '../../core/verification-evidence/verificationTypes';
 
 /** Notes index sealed records; none of their identity fields may contradict the original. */
 export function verificationNoteIdentity(
 	record: VerificationRecord,
-	note: Note,
+	note: VerificationNote,
 	tree: string | null | undefined
 ): string[] {
 	const checked: Array<[boolean, string]> = [

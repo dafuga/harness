@@ -1,3 +1,4 @@
+import type { RuntimeEnvironment } from '../../src/core/execution-runtimes/runtimeTypes.types';
 import { test } from 'vitest';
 import { writeFile } from 'node:fs/promises';
 import { expect } from '../verificationExpect';
@@ -5,7 +6,6 @@ import { recordExampleCases } from '../support/recordExampleCases';
 import { withTempDir } from '../support/temporary';
 import { kernelArtifacts } from '../../src/utils/execution-runtimes/kernelArtifacts';
 import type {
-	Environment,
 	KernelArtifacts,
 	KernelBuild
 } from '../../src/utils/execution-runtimes/kernelArtifacts.types';
@@ -36,7 +36,7 @@ const BUILD_RECORD: KernelBuild = {
 
 const PLACEHOLDER_ENV = { HARNESS_KERNEL_DIR: '<kernel-dir>' };
 
-function override(directory: string): Environment {
+function override(directory: string): RuntimeEnvironment {
 	return { HARNESS_KERNEL_DIR: directory };
 }
 

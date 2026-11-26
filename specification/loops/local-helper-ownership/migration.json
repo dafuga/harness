@@ -6613,6 +6613,71 @@
 			"retired": true
 		},
 		{
+			"unit": "function.helper-consumers",
+			"name": "helperConsumers",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "098f562e795d081a0f6baa9a0c3af21c1fadee408ddd9efe701b41e20e03daaa"
+		},
+		{
+			"unit": "function.record-capture",
+			"name": "evidenceRequested",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "af4352cbff2f16cf3e0b2340779c409a5b69b52ac3484a44b9ff84dff486dca7"
+		},
+		{
+			"unit": "function.unit-metadata",
+			"name": "unitMetadata",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "be78e5d3af9bf380137e841ae7410f375d0783feb0829b3d343d4b8aa5fccc4f"
+		},
+		{
+			"unit": "hub.function.browser-evidence-reads",
+			"name": "browserEvidenceReads",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "d9f38a9b838b734c5659eb04e24a3a3dcd886c610db78112d90a7928778d1cda"
+		},
+		{
+			"unit": "reports.function.contract-fields",
+			"name": "contractFields",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "a9e81cd0600f376ca8207a76d866a8e02081b2109f6c67eb208a8fbe99103b44"
+		},
+		{
+			"unit": "reports.function.e2e-fixtures",
+			"name": "e2eFixtures",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "c9af5236655848bc157c8c6dd1c9d5015c1d96ed746a97d5506ce9c8ba60e9df"
+		},
+		{
+			"unit": "reports.function.entity-measure",
+			"name": "entityMeasure",
+			"to": "packages/reports/src/components/explorer-ui/entity-sections/entityMeasure.ts",
+			"ownerSource": "packages/reports/src/components/explorer-ui/entity-sections/entityShown.ts",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "7e3930162f6e15b01de04ff4ae3aafc2cae566fa9c4e67952fa635b337f83a06"
+		},
+		{
+			"unit": "reports.function.trackpad-zoom",
+			"name": "imageAnchor",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "19ee7ec1cbcec229281046327dc254613ae9c8f17cbe0fe116c792b1d79708a3"
+		},
+		{
+			"unit": "reports.function.trackpad-zoom",
+			"name": "keepPointerInPlace",
+			"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+			"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change.",
+			"definition": "87f64a711d685ad18f57b0b4257f9a911f7e9e937db15666cee26b9663402bbb"
+		},
+		{
 			"unit": "desktop.function.artifact-media",
 			"name": "artifactMedia",
 			"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
