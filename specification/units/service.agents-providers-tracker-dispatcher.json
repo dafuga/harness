@@ -640,11 +640,6 @@
 				"required": true
 			},
 			{
-				"name": "completeRun.policy",
-				"type": "TrackerDispatchPolicy",
-				"required": true
-			},
-			{
 				"name": "completeRun.now",
 				"type": "number",
 				"required": true
@@ -1834,11 +1829,6 @@
 					{
 						"name": "completeRun.run",
 						"type": "TrackerRunReceipt",
-						"required": true
-					},
-					{
-						"name": "completeRun.policy",
-						"type": "TrackerDispatchPolicy",
 						"required": true
 					},
 					{
