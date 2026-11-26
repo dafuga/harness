@@ -33,6 +33,7 @@ import type {
 import { formatTrackerHostBrief } from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
 import { startTrackerHost, withTrackerRunUsage } from './trackerHostLaunchPort';
+import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -78,6 +79,8 @@ export function trackerHostRunner(
 				const event = recordedHostEvent(run, { key, sessions, items, legacySession, store });
 				return withTrackerRunUsage(event, { driver, run, items, now: now() }, signal);
 			},
+			overdue: (run: TrackerRunReceipt, reason: string) =>
+				recordOverdueAlert(store, run, { reason, at: now() }),
 			...optionalHostControls(driver)
 		},
 		sessions: (itemId: string) => ({
@@ -85,6 +88,25 @@ export function trackerHostRunner(
 			activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
 		})
 	};
+}
+
+function recordOverdueAlert(
+	store: TrackerPersistenceService,
+	run: TrackerRunReceipt,
+	{ reason, at }: { reason: string; at: number }
+) {
+	const stop = `tracker stop ${run.item_id.slice(0, 6)}`;
+	recordWatchdogAlert(
+		store,
+		{
+			itemId: run.item_id,
+			kind: 'overdue',
+			reason: `Run #${run.id} ${reason}. No retry is queued. Check the session, or end it with \`${stop}\`.`,
+			identity: attemptKey(run),
+			session: run.tmux
+		},
+		at
+	);
 }
 
 function legacySessionReader(

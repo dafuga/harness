@@ -7,7 +7,13 @@ import { trackerHostInventory } from '../../../src/services/projects-sessions/tr
 import type { TrackerHostLaunchPort } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import type { WatchdogPane } from '../../../src/services/projects-sessions/WatchdogPaneService.types';
-import { fixturePolicy, primary } from '../../support/trackerDispatcherFixture';
+import {
+	dispatcherFixture,
+	fixturePolicy,
+	primary,
+	runFixture,
+	sampleId
+} from '../../support/trackerDispatcherFixture';
 
 const signal = new AbortController().signal;
 const noon = Date.parse('2026-11-25T12:00:00Z');
@@ -169,4 +175,24 @@ test('unlaunch cancels a queued run that has not started in the same write', asy
 	} finally {
 		database.close();
 	}
+});
+
+test('pending human review suppresses an ETA stall until the hard cap', async () => {
+	const fixture = dispatcherFixture({
+		policy: { defaultEtaMinutes: 3, stallMinutes: 2, maxRunMinutes: 10 }
+	});
+	const { run } = await runFixture(fixture);
+	const { service, advance, changeItem } = fixture;
+	const monitor = { type: 'monitor', session: 'live', idleReview: true } as const;
+	changeItem({ awaitingAnswer: true });
+	advance(5 * 60_000);
+	expect(await service.record(sampleId, run, monitor)).toEqual({
+		status: 'held',
+		reason: 'run still active'
+	});
+	advance(6 * 60_000);
+	expect(await service.record(sampleId, run, monitor)).toEqual({
+		status: 'held',
+		reason: 'ran past the 10 min cap; its session is still alive'
+	});
 });

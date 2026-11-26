@@ -3,10 +3,13 @@ import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import { watchdogManualPrefix } from '../WatchdogPaneService';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
+import { paneBackgroundWork } from '../watchdog-pane-service/paneBackgroundWork';
 import { closeFinishedTrackerSessions } from './trackerFinishedSessions';
 import type { TrackerHostLaunchPort, TrackerHostSession } from './trackerHostLaunch.types';
 
 const runSessionName = /^auto-([a-z0-9]{6,10})-r([1-9][0-9]*)$/;
+/** Only a quiet pane is captured to look for work that prints nothing. */
+const quietPane = 5 * 60_000;
 
 export async function trackerHostInventory(
 	{
@@ -40,7 +43,31 @@ export async function trackerHostInventory(
 			: [];
 	});
 	if (tmux) await closeFinishedTrackerSessions(store, { tmux, panes, node, now }, signal);
-	return { sessions: [...sessions, ...direct], panes };
+	const active = tmux ? await withPaneActivity(sessions, { tmux, panes, now }, signal) : sessions;
+	return { sessions: [...active, ...direct], panes };
+}
+
+/** The launcher's receipt has no activity time; its own pane does. */
+async function withPaneActivity(
+	sessions: readonly TrackerHostSession[],
+	{ tmux, panes, now }: { tmux: TrackerTmuxAdapter; panes: readonly WatchdogPane[]; now: number },
+	signal: AbortSignal
+): Promise<TrackerHostSession[]> {
+	const observed = [];
+	for (const session of sessions) {
+		const pane = panes.find(
+			({ name, live, runnerSocket }) => live && runnerSocket && name === session.tmux
+		);
+		if (!pane || session.state !== 'live') {
+			observed.push(session);
+			continue;
+		}
+		const working =
+			now - pane.activity >= quietPane && paneBackgroundWork(await tmux.captured(pane, signal));
+		const activityAt = Math.max(session.activityAt ?? 0, working ? now : pane.activity);
+		observed.push({ ...session, activityAt });
+	}
+	return observed;
 }
 
 export function hasManualTrackerPane(panes: readonly WatchdogPane[], itemId: string) {

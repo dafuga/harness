@@ -27,6 +27,7 @@
 			"TrackerTmuxAdapter.constructor",
 			"TrackerTmuxAdapter.scan",
 			"TrackerTmuxAdapter.inventory",
+			"TrackerTmuxAdapter.captured",
 			"TrackerTmuxAdapter.nudge",
 			"TrackerTmuxAdapter.closeIdle",
 			"TrackerTmuxAdapterConfig",
@@ -63,6 +64,7 @@
 			"probeManagedTmuxSession",
 			"closePaneNames",
 			"closePaneCandidate",
+			"killUnchangedPane",
 			"stopManagedRun",
 			"managedTmuxEnvironment",
 			"missingTmuxSession",
@@ -103,6 +105,16 @@
 				"type": "AbortSignal",
 				"required": true,
 				"description": "Lifetime for the socket inventory calls."
+			},
+			{
+				"name": "TrackerTmuxAdapter.captured.pane",
+				"type": "WatchdogPane",
+				"required": true
+			},
+			{
+				"name": "TrackerTmuxAdapter.captured.signal",
+				"type": "AbortSignal",
+				"required": true
 			},
 			{
 				"name": "TrackerTmuxAdapter.nudge.input",
@@ -417,6 +429,21 @@
 				"required": true
 			},
 			{
+				"name": "killUnchangedPane.observed",
+				"type": "TrackerTmuxPane",
+				"required": true
+			},
+			{
+				"name": "killUnchangedPane.attempt",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "killUnchangedPane.command",
+				"type": "(args: string[]) => ReturnType<typeof runTrackerHostCommand>",
+				"required": true
+			},
+			{
 				"name": "stopManagedRun.directory",
 				"type": "string",
 				"required": true
@@ -667,6 +694,29 @@
 						"name": "TrackerTmuxAdapter.inventory",
 						"type": "Promise<WatchdogPane[]>",
 						"description": "Read pane identity and timing without reading terminal output."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerTmuxAdapter.captured",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.captured.pane",
+						"type": "WatchdogPane",
+						"required": true
+					},
+					{
+						"name": "TrackerTmuxAdapter.captured.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.captured",
+						"type": "Promise<WatchdogPane>"
 					}
 				],
 				"errors": [],
@@ -1295,6 +1345,34 @@
 					{
 						"name": "closePaneCandidate",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "killUnchangedPane",
+				"inputs": [
+					{
+						"name": "killUnchangedPane.observed",
+						"type": "TrackerTmuxPane",
+						"required": true
+					},
+					{
+						"name": "killUnchangedPane.attempt",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "killUnchangedPane.command",
+						"type": "(args: string[]) => ReturnType<typeof runTrackerHostCommand>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "killUnchangedPane",
+						"type": "Promise<boolean>"
 					}
 				],
 				"errors": [],

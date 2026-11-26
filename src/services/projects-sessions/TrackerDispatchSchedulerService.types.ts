@@ -31,6 +31,8 @@ export interface TrackerDispatchRunner {
 		key: string,
 		signal: AbortSignal
 	): Promise<TrackerDispatchEvent | undefined>;
+	/** Tell an operator about a live run past its ETA or cap. Called on every tick it stays so. */
+	overdue?(run: TrackerRunReceipt, reason: string): void;
 	/** Confirm that the exact reservation has neither a host session nor any startup receipt. */
 	confirmNeverStarted?(run: TrackerRunReceipt, signal: AbortSignal): Promise<boolean>;
 }

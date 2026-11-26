@@ -152,26 +152,6 @@ test('a stalled or over-cap run with a live session stays running and queues no 
 	).toMatchObject({ attempt: 2, escalated_from: run.id });
 });
 
-test('pending human review suppresses an ETA stall until the hard cap', async () => {
-	const fixture = dispatcherFixture({
-		policy: { defaultEtaMinutes: 3, stallMinutes: 2, maxRunMinutes: 10 }
-	});
-	const { run } = await runFixture(fixture);
-	const { service, advance, changeItem } = fixture;
-	const monitor = { type: 'monitor', session: 'live', idleReview: true } as const;
-	changeItem({ awaitingAnswer: true });
-	advance(5 * 60_000);
-	expect(await service.record(sampleId, run, monitor)).toEqual({
-		status: 'held',
-		reason: 'run still active'
-	});
-	advance(6 * 60_000);
-	expect(await service.record(sampleId, run, monitor)).toEqual({
-		status: 'held',
-		reason: 'ran past the 10 min cap; its session is still alive'
-	});
-});
-
 test('missing items preserve active sessions until recovery; closing the linked source abandons cleanly', async () => {
 	const fixture = dispatcherFixture();
 	const { run } = await runFixture(fixture);
