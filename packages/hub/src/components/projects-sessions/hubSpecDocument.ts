@@ -1,9 +1,18 @@
 // @harness-uid u_s53zhfyepg
-import type { TrackerAttachment } from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
-import type { LoadSpecDocument } from '$reports/components/explorer-ui/explorer-kit/SpecDocumentView.types';
+import { getContext, setContext } from 'svelte';
+import type { TrackerAttachmentDocument } from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import type { LoadSpecDocument } from '../../../../reports/src/components/explorer-ui/explorer-kit/SpecDocumentView.types';
+import type { BrowserApi } from '../../utils/browserApi';
 
-/** The signed-in owner's Hub holds the documents of the open asks. */
-export const loadHubSpecDocument: LoadSpecDocument = async (attachment: TrackerAttachment) => {
-	const response = await fetch(`/api/hub-home/doc?id=${attachment.id}`, { cache: 'no-store' });
-	return response.ok ? await response.json() : null;
-};
+const loader = Symbol('hub-spec-document');
+
+/** Home offers the signed-in owner's documents to the ask cards below it. */
+export function provideHubSpecDocuments(api: BrowserApi): void {
+	setContext<LoadSpecDocument>(loader, (attachment) =>
+		api.get<TrackerAttachmentDocument>('/api/hub-home/doc', { id: attachment.id })
+	);
+}
+
+export function hubSpecDocuments(): LoadSpecDocument {
+	return getContext<LoadSpecDocument>(loader);
+}

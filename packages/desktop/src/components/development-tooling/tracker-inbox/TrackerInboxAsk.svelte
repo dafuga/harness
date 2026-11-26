@@ -4,8 +4,8 @@
 <script lang="ts">
 	import type { InboxFlag } from '../../../models/development-tooling/TrackerInbox.types';
 	import { flagQuestion } from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
-	import ViewSpecButtons from '$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
-	import type { LoadSpecDocument } from '$reports/components/explorer-ui/explorer-kit/SpecDocumentView.types';
+	import ViewSpecButtons from '../../../../../reports/src/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
+	import type { LoadSpecDocument } from '../../../../../reports/src/components/explorer-ui/explorer-kit/SpecDocumentView.types';
 	import TrackerInboxChoices from './TrackerInboxChoices.svelte';
 
 	let {

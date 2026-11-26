@@ -15,6 +15,7 @@
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot, readHome } from './hubHomeClient';
+	import { provideHubSpecDocuments } from './hubSpecDocument';
 	import {
 		LinkedHomeService,
 		type LinkedHome
@@ -29,6 +30,7 @@
 	import '../../lib/styles/hub-home/index.css';
 
 	const { api, session, projects } = browserContext();
+	provideHubSpecDocuments(api);
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);

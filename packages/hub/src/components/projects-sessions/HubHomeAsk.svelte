@@ -10,8 +10,8 @@
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeChoices from './HubHomeChoices.svelte';
-	import ViewSpecButtons from '$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
-	import { loadHubSpecDocument } from './hubSpecDocument';
+	import ViewSpecButtons from '../../../../reports/src/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
+	import { hubSpecDocuments } from './hubSpecDocument';
 
 	let {
 		ask,
@@ -24,6 +24,7 @@
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 	} = $props();
+	const load = hubSpecDocuments();
 	let busy = $state(false);
 	let status = $state('');
 	/** The question this card already answered, so it hides until the Tracker shows a new one. */
@@ -87,11 +88,7 @@
 	<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
 		<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
 		{#if ask.attachments?.length}
-			<ViewSpecButtons
-				attachments={ask.attachments}
-				question={ask.question}
-				load={loadHubSpecDocument}
-			>
+			<ViewSpecButtons attachments={ask.attachments} question={ask.question} {load}>
 				{#snippet answers(close: () => void)}
 					{@render choices(close)}
 				{/snippet}

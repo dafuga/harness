@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-choices",
+			"reports.component.explorer-ui-explorer-kit-view-spec-buttons",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-strong"
@@ -110,6 +111,11 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-spec-document",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-view-spec-buttons",
 			"via": "import",
 			"origin": "derived"
 		},

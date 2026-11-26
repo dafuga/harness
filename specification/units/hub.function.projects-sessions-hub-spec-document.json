@@ -9,39 +9,55 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubSpecDocument.ts"],
-		"symbols": ["loadHubSpecDocument"]
+		"symbols": ["provideHubSpecDocuments", "hubSpecDocuments"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "loadHubSpecDocument.attachment",
-				"type": "TrackerAttachment",
+				"name": "provideHubSpecDocuments.api",
+				"type": "BrowserApi",
 				"required": true
 			}
 		],
 		"outputs": [
 			{
-				"name": "loadHubSpecDocument",
-				"type": "unknown"
+				"name": "provideHubSpecDocuments",
+				"type": "void"
+			},
+			{
+				"name": "hubSpecDocuments",
+				"type": "LoadSpecDocument"
 			}
 		],
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
 			{
-				"name": "loadHubSpecDocument",
+				"name": "provideHubSpecDocuments",
 				"inputs": [
 					{
-						"name": "loadHubSpecDocument.attachment",
-						"type": "TrackerAttachment",
+						"name": "provideHubSpecDocuments.api",
+						"type": "BrowserApi",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "loadHubSpecDocument",
-						"type": "unknown"
+						"name": "provideHubSpecDocuments",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubSpecDocuments",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "hubSpecDocuments",
+						"type": "LoadSpecDocument"
 					}
 				],
 				"errors": [],
@@ -57,8 +73,13 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.endpoint.api-hub-home-doc",
-			"via": "http",
+			"unit": "hub.function.browser-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
+			"via": "import",
 			"origin": "derived"
 		}
 	],
