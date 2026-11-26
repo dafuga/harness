@@ -20,6 +20,7 @@ import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
+import { composeTrackerRecurrence } from './tracker-native-runtime-service/composeTrackerRecurrence';
 import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
 import {
 	configuredHostWatchdog,
@@ -30,9 +31,10 @@ import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeT
 import { trackerDueItemPreview } from './tracker-native-runtime-service/readTrackerDuePreview';
 import {
 	composeTrackerLinks,
-	composeTrackerTelemetry,
 	trackerSpokeStatus
 } from './tracker-native-runtime-service/nativeTrackerLinks';
+import { TrackerMachineService } from './TrackerMachineService';
+import { composeTrackerFleet } from './tracker-native-runtime-service/composeTrackerFleet';
 import { configuredTrackerReminderHost } from './tracker-native-runtime-service/configuredTrackerReminderHost';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 
@@ -54,6 +56,7 @@ export class TrackerNativeRuntimeService {
 	readonly recurring?: TrackerRecurringService;
 	readonly telemetry?: (signal: AbortSignal) => Promise<void>;
 	readonly fleetSamples?: () => readonly unknown[];
+	readonly machines: TrackerMachineService;
 	readonly now: () => number;
 	private readonly links: TrackerSpokeLoopService[];
 
@@ -68,29 +71,26 @@ export class TrackerNativeRuntimeService {
 		this.now = now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
 		const runs = new TrackerRunReadRepository(database, node);
+		this.machines = composeMachines(store, options, this.now);
 		this.notifications = composeNotifications(store, options);
-		const recurring = composeRecurrence(store, options, this.notifications);
+		const recurring = composeTrackerRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch =
 			options.dispatch ??
 			configuredHostDispatch(store, hostEffects, this.now, options.automaticEnabled);
-		const composed = composeTrackerDispatch(store, { ...options, dispatch });
+		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this.machines);
 		({
 			dispatch: this.dispatch,
 			scheduler: this.scheduler,
 			duePreview: this.duePreview
 		} = composed);
 		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
-		this.items = composeItemApi(this, runs, options, recurring?.repo);
-		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
-			store,
-			runs,
-			{ ...options, dispatch },
-			this.scheduler
-		));
-		this.sync = composeResponder(store, runs, options, composed);
+		const fleet = composeTrackerFleet(runs, { ...options, dispatch }, this);
+		({ tick: this.telemetry, samples: this.fleetSamples } = fleet);
+		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring?.repo);
+		this.sync = composeResponder(store, runs, fleet.syncOptions, composed);
 	}
 
 	spokeStatus() {
@@ -113,6 +113,14 @@ export class TrackerNativeRuntimeService {
 			await Promise.allSettled(links);
 		}
 	}
+}
+
+function composeMachines(
+	store: TrackerPersistenceService,
+	{ machineSampler }: TrackerNativeRuntimeOptions,
+	now: () => number
+) {
+	return new TrackerMachineService(store, { now, sampler: machineSampler });
 }
 
 function composeItemApi(
@@ -143,6 +151,7 @@ function composeItemApi(
 		schedulePreview: (item) => trackerDueItemPreview(runtime, item),
 		reject: runtime.dispatch && ((id, reason) => runtime.dispatch!.reject(id, reason)),
 		runs,
+		machines: runtime.machines,
 		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }
 	});
 }
@@ -169,21 +178,6 @@ function validateLinks({
 		throw new TypeError('Tracker recurrence needs a hub with a configured notification outbox');
 	const kinds = new Set(links.map((link) => link.link ?? 'hub'));
 	if (kinds.size !== links.length) throw new TypeError('Duplicate Tracker spoke link');
-}
-
-function composeRecurrence(
-	store: TrackerPersistenceService,
-	options: TrackerNativeRuntimeOptions,
-	notifications?: TrackerNotificationService
-) {
-	if (!options.recurring || !notifications) return undefined;
-	const repo = new TrackerRecurringRepository(store);
-	const worker = new TrackerRecurringService(repo, {
-		now: options.now ?? Date.now,
-		enqueue: (entry) => notifications.enqueue(entry),
-		jobs: options.recurring.jobs
-	});
-	return { repo, worker };
 }
 
 function composeNotifications(

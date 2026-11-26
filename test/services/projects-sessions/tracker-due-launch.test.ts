@@ -10,6 +10,7 @@ import { trackerHostLaunch } from '../../../src/services/projects-sessions/track
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { fixturePolicy, primary, secondary } from '../../support/trackerDispatcherFixture';
 import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
+import { resourceSample } from '../../support/trackerMachineFixture';
 
 const signal = new AbortController().signal;
 const noon = Date.parse('2026-11-25T12:00:00Z');
@@ -71,7 +72,11 @@ test('a past-due task launches within one scheduler tick on the default launch c
 	}
 });
 
-test('the hub authorizes an ordinary past-due task for the computer that owns it', async () => {
+test.each([
+	{ name: 'a calm computer', reading: [1, 1, 1], ageMs: 0, starts: ['mbtwo00001'] },
+	{ name: 'an overloaded computer', reading: [30, 30, 30], ageMs: 0, starts: [] },
+	{ name: 'a computer with a stale sample', reading: [1, 1, 1], ageMs: 180_000, starts: [] }
+])('the hub grants a past-due task to $name only', async ({ reading, ageMs, starts }) => {
 	const hubDb = new DatabaseSync(':memory:');
 	const peerDb = new DatabaseSync(':memory:');
 	const hubStart = starter();
@@ -105,6 +110,9 @@ test('the hub authorizes an ordinary past-due task for the computer that owns it
 	});
 	try {
 		hub.store.appendLocal(task('mbtwo00001', '2026-11-24T09:00:00.000Z', secondary));
+		hub.machines.ingest([
+			{ node: secondary, resources: resourceSample(noon - ageMs, { load: reading }) }
+		]);
 		const link = new TrackerSpokeSyncService({ ...links[0], store: peer.store });
 		await link.pull();
 		// The spoke's link loop pushes its launch request; the hub can then authorize it.
@@ -113,7 +121,7 @@ test('the hub authorizes an ordinary past-due task for the computer that owns it
 		await peer.scheduler!.tick(signal);
 		await hub.scheduler!.tick(signal);
 		expect(hubStart).not.toHaveBeenCalled();
-		expect(peerStart.mock.calls.map(([{ run }]) => run.item_id)).toEqual(['mbtwo00001']);
+		expect(peerStart.mock.calls.map(([{ run }]) => run.item_id)).toEqual(starts);
 	} finally {
 		hubDb.close();
 		peerDb.close();

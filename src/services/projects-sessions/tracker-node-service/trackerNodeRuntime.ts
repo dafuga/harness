@@ -1,6 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { TrackerMachineSamplerAdapter } from '../../../adapters/projects-sessions/TrackerMachineSamplerAdapter';
 import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import {
 	canonicalNode,
@@ -40,6 +41,7 @@ export function trackerNodeRuntime(
 		hostEffectsHeld,
 		manualLaunch: true,
 		automaticEnabled: trackerAutomaticSetting(config),
+		machineSampler: new TrackerMachineSamplerAdapter(config.node, configuredTmux(config)),
 		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
@@ -48,6 +50,14 @@ export function trackerNodeRuntime(
 		},
 		planLaunch: (fields, current, source) => planNativeLaunch(fields, current, config.node, source)
 	};
+}
+
+/** The sampler labels agent sessions with their tmux names when it knows the executable. */
+function configuredTmux(config: TrackerNodeConfig): string | undefined {
+	const effects = config.hostEffects;
+	if (effects?.mode !== 'active' || !effects.launch || !('managed' in effects.launch))
+		return undefined;
+	return effects.launch.managed.tmux;
 }
 
 function trackerAutomaticSetting(config: TrackerNodeConfig): () => boolean {

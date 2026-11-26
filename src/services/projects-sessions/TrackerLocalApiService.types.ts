@@ -1,5 +1,6 @@
 // @harness-uid u_g7kdpz7bel
 import type { TrackerDispatchResult } from '../agents-providers/TrackerDispatcherService.types';
+import type { TrackerMachineService } from './TrackerMachineService';
 import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type { PhoneReplicaWriteGrant } from './tracker-phone-replica-service/PhoneReplicaWriteService.types';
 import type { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -20,6 +21,7 @@ export interface TrackerLocalApiOptions {
 	manualLaunch?: boolean;
 	timeZone?: string;
 	runs?: TrackerRunReadRepository;
+	machines?: TrackerMachineService;
 	schedulePreview?(item: TrackerItem): string | null;
 	recurring?: {
 		role: 'hub' | 'spoke';

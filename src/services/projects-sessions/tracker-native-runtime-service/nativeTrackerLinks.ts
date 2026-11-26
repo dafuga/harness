@@ -3,15 +3,20 @@ import type {
 	TrackerDispatchItem,
 	TrackerLaunchIntent
 } from '../../agents-providers/TrackerDispatcherService.types';
-import { z } from 'zod';
+import type { z } from 'zod';
 import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
 import type { TrackerHubMachineStore } from '../TrackerHubSyncService.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerSpokeLoopService } from '../TrackerSpokeLoopService';
-import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
 import { observeTrackerDuePolicy } from './nativeTrackerDuePolicy';
+import { trackerMachineSample, type trackerRunnerSample } from './trackerFleetSampleSchema';
+import type { TrackerMachineService } from '../TrackerMachineService';
+import { hubTelemetryTick } from './trackerFleetTelemetry';
+import { spokeTelemetry } from './trackerSpokeTelemetry';
+
+export { trackerMachineSample, trackerRunnerSample } from './trackerFleetSampleSchema';
 
 export function composeTrackerLinks(
 	store: TrackerPersistenceService,
@@ -32,97 +37,25 @@ export function composeTrackerLinks(
 }
 
 export function composeTrackerTelemetry(
-	store: TrackerPersistenceService,
 	runs: TrackerRunReadRepository,
 	options: TrackerNativeRuntimeOptions,
-	scheduler?: TrackerDispatchSchedulerService
+	{
+		machines,
+		fleet,
+		scheduler
+	}: {
+		machines: TrackerMachineService;
+		fleet?: TrackerHubMachineStore;
+		scheduler?: TrackerDispatchSchedulerService;
+	}
 ) {
-	const telemetry = options.dispatch?.telemetry;
-	const link = options.links?.find((entry) => (entry.link ?? 'hub') === 'hub');
-	const machines = options.syncResponder?.machines;
-	if (machines) return { tick: undefined, samples: () => machines.latestSamples() };
-	if (!link) return { tick: undefined, samples: undefined };
-	const now = options.now ?? Date.now;
-	let nextPoll = -Infinity;
-	let previousLaunchState = '';
-	let samples: readonly unknown[] = [];
-	const tick = async (signal: AbortSignal) => {
-		const active = runs.activeLocal();
-		const runner = scheduler?.runnerStatus() ?? { enabled: false };
-		const launchState = launchSampleRevision(runner, active, runs.latestLocalRunId());
-		if (now() < nextPoll && launchState === previousLaunchState) return;
-		nextPoll = now() + 60_000;
-		const client = new TrackerSpokeSyncService({
-			...link,
-			store,
-			transport: (request) => link.transport(request, signal)
-		});
-		const sample = telemetry?.sample() ?? {
-			at: new Date(now()).toISOString(),
-			runner: {
-				...runner,
-				active: active.filter(({ state }) => state !== 'queued').length
-			}
+	if (fleet)
+		return {
+			tick: hubTelemetryTick({ fleet, machines, runs, scheduler, options }),
+			samples: () => fleet.latestSamples()
 		};
-		const received = await client.exchangeMachine(sample, runs.exportLocal());
-		signal.throwIfAborted();
-		if (received.run_history) runs.importHubHistory(received.run_history);
-		previousLaunchState = launchState;
-		samples = received.machines;
-		telemetry?.onMachines?.(samples);
-	};
-	return { tick, samples: () => samples };
+	return spokeTelemetry({ machines, runs, scheduler, options });
 }
-
-function launchSampleRevision(
-	runner: {
-		enabled: boolean;
-		last_error?: string | null;
-		capacity?: unknown;
-		automatic_enabled?: boolean;
-		waiting?: unknown;
-		waiting_tokens?: unknown;
-	},
-	active: ReturnType<TrackerRunReadRepository['activeLocal']>,
-	latestId: number | undefined
-) {
-	return JSON.stringify([
-		runner.enabled,
-		runner.last_error,
-		runner.capacity,
-		runner.automatic_enabled,
-		runner.waiting,
-		runner.waiting_tokens,
-		latestId,
-		active.map(({ id, state }) => [id, state])
-	]);
-}
-
-export const trackerRunnerSample = z.object({
-	enabled: z.boolean().nullish(),
-	last_tick_at: z.string().nullish(),
-	last_error: z.string().nullish(),
-	waiting_on: z.string().nullish(),
-	active: z.int().nonnegative().nullish(),
-	automatic_enabled: z.boolean().optional(),
-	capacity: z
-		.object({
-			freeSlots: z.int().min(0).max(500),
-			projects: z.record(
-				z.string(),
-				z.object({ freeGB: z.number().nonnegative(), freePct: z.number().min(0).max(100) })
-			)
-		})
-		.nullish(),
-	waiting: z.record(z.string(), z.string()).optional(),
-	waiting_tokens: z.record(z.string(), z.string()).optional()
-});
-
-export const trackerMachineSample = z.object({
-	node: z.string().min(1).max(128),
-	at: z.iso.datetime(),
-	runner: trackerRunnerSample
-});
 
 export function trackerFleetMachineStore(): TrackerHubMachineStore {
 	const samples = new Map<string, z.infer<typeof trackerMachineSample>>();

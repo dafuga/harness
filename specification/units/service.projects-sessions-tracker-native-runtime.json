@@ -28,6 +28,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerReminderHost.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
@@ -109,6 +110,7 @@
 			"configuredTrackerDestinations",
 			"configuredTrackerReminderHost",
 			"composeTrackerDispatch",
+			"PeerStarts",
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
 			"TrackerHostEffectsMode",
@@ -120,10 +122,10 @@
 			"TrackerHostAdapterConfig",
 			"TrackerWorkerClient",
 			"TrackerGuestAuthWriter",
+			"trackerMachineSample",
+			"trackerRunnerSample",
 			"composeTrackerLinks",
 			"composeTrackerTelemetry",
-			"trackerRunnerSample",
-			"trackerMachineSample",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
 			"adapterFailover",
@@ -308,6 +310,11 @@
 				"required": true
 			},
 			{
+				"name": "composeTrackerDispatch.machines",
+				"type": "PeerStarts",
+				"required": false
+			},
+			{
 				"name": "liveTrackerDuePolicy.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -343,11 +350,6 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerTelemetry.store",
-				"type": "TrackerPersistenceService",
-				"required": true
-			},
-			{
 				"name": "composeTrackerTelemetry.runs",
 				"type": "TrackerRunReadRepository",
 				"required": true
@@ -356,6 +358,16 @@
 				"name": "composeTrackerTelemetry.options",
 				"type": "TrackerNativeRuntimeOptions",
 				"required": true
+			},
+			{
+				"name": "composeTrackerTelemetry.machines",
+				"type": "TrackerMachineService",
+				"required": true
+			},
+			{
+				"name": "composeTrackerTelemetry.fleet",
+				"type": "TrackerHubMachineStore",
+				"required": false
 			},
 			{
 				"name": "composeTrackerTelemetry.scheduler",
@@ -1884,6 +1896,11 @@
 						"name": "composeTrackerDispatch.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
+					},
+					{
+						"name": "composeTrackerDispatch.machines",
+						"type": "PeerStarts",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -1973,11 +1990,6 @@
 				"name": "composeTrackerTelemetry",
 				"inputs": [
 					{
-						"name": "composeTrackerTelemetry.store",
-						"type": "TrackerPersistenceService",
-						"required": true
-					},
-					{
 						"name": "composeTrackerTelemetry.runs",
 						"type": "TrackerRunReadRepository",
 						"required": true
@@ -1986,6 +1998,16 @@
 						"name": "composeTrackerTelemetry.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.machines",
+						"type": "TrackerMachineService",
+						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.fleet",
+						"type": "TrackerHubMachineStore",
+						"required": false
 					},
 					{
 						"name": "composeTrackerTelemetry.scheduler",
@@ -4357,6 +4379,21 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-fleet",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-recurrence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-ask-options-rule",
 			"via": "import",
 			"origin": "derived"
@@ -4368,6 +4405,21 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-done-proof-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-sample-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-telemetry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-spoke-telemetry",
 			"via": "import",
 			"origin": "derived"
 		},

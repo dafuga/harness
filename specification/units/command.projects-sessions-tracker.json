@@ -804,6 +804,16 @@
 	},
 	"dependencies": [
 		{
+			"unit": "command.projects-sessions-tracker-command-format-native-tracker-machines",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-command-native-tracker-machine-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.projects-sessions-tracker-command-with-tracker-attachments",
 			"via": "import",
 			"origin": "derived"
@@ -840,6 +850,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-types",
 			"via": "import",
 			"origin": "derived"
 		},

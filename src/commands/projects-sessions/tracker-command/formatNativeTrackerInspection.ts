@@ -1,5 +1,11 @@
 // @harness-uid u_r7qgepnoax
 import type { TrackerAdapterPollResult } from '../../../services/projects-sessions/TrackerAdapterPollService.types';
+import type { TrackerPlacement } from '../../../utils/projects-sessions/trackerMachine.types';
+import {
+	formatNativeTrackerMachines,
+	formatNativeTrackerPlacement
+} from './formatNativeTrackerMachines';
+import type { NativeTrackerMachines } from './formatNativeTrackerMachines.types';
 import { formatListedRun, formatNativeTrackerItem } from './formatNativeTrackerItem';
 import type {
 	NativeTrackerAdapter,
@@ -10,6 +16,10 @@ import type {
 
 export function formatNativeTrackerInspection(command: string, data: NativeTrackerInspection) {
 	switch (command) {
+		case 'machines':
+			return formatNativeTrackerMachines(data as unknown as NativeTrackerMachines);
+		case 'place':
+			return formatNativeTrackerPlacement(data as unknown as TrackerPlacement);
 		case 'show':
 			return formatItemDetail(data as NativeTrackerItemDetail);
 		case 'adapter':

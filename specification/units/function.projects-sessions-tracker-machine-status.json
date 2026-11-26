@@ -1,0 +1,136 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-machine-status",
+	"uid": "u_gkkvalncwm",
+	"kind": "function",
+	"title": "trackerMachineStatus",
+	"responsibility": "Owns the trackerMachineStatus shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/trackerMachineStatus.ts"],
+		"symbols": [
+			"trackerSampleOfflineMs",
+			"trackerBusyLoadPerCore",
+			"trackerMachineRole",
+			"trackerMachineStatus"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerMachineRole.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerMachineStatus.latest",
+				"type": "TrackerResourceSample | null",
+				"required": true
+			},
+			{
+				"name": "trackerMachineStatus.recent",
+				"type": "readonly TrackerResourceSample[]",
+				"required": true
+			},
+			{
+				"name": "trackerMachineStatus.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerSampleOfflineMs",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerBusyLoadPerCore",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerMachineRole",
+				"type": "TrackerMachineRole"
+			},
+			{
+				"name": "trackerMachineStatus",
+				"type": "Pick<TrackerMachineRow, 'status' | 'reasons' | 'age_s'>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerMachineRole",
+				"inputs": [
+					{
+						"name": "trackerMachineRole.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMachineRole",
+						"type": "TrackerMachineRole"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMachineStatus",
+				"inputs": [
+					{
+						"name": "trackerMachineStatus.latest",
+						"type": "TrackerResourceSample | null",
+						"required": true
+					},
+					{
+						"name": "trackerMachineStatus.recent",
+						"type": "readonly TrackerResourceSample[]",
+						"required": true
+					},
+					{
+						"name": "trackerMachineStatus.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMachineStatus",
+						"type": "Pick<TrackerMachineRow, 'status' | 'reasons' | 'age_s'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-machine-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerMachineStatus.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerMachineStatus.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

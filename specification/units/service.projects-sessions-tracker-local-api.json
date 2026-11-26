@@ -967,6 +967,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-local-api-service-read-tracker-machine-endpoint",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"

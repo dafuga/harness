@@ -234,7 +234,9 @@ operator verifies the stopped database and chooses a rollback.
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an
   explicit, private account directory and the existing `tracked` label.
-- **Other effects.** Fleet telemetry, job execution, and external backup
+- **Fleet telemetry.** Each node samples itself; see
+  [Computers and placement](#computers-and-placement).
+- **Other effects.** Job execution and external backup
   scheduling remain out of the foreground configuration. Recurrence is
   enabled by a configured hub webhook.
 
@@ -521,8 +523,9 @@ dispatch scan.
       Verify host admission, launcher limits, `ready/skipped`,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
-- [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
-[--alert]` with the native host-process integration.
+- [x] Wire `machines`, `place`, resource history and overload alerts (see
+      Computers and placement).
+- [ ] Reconcile `health [--alert]` with the native host-process integration.
 - [x] Wire `adapter run` and comment preview and backfill through runner ownership.
 - [ ] Wire `adapter add/pause/resume/remove` and issue backfill.
 - [ ] Bind external backup receipts for last result and next run. Qualify
@@ -532,6 +535,44 @@ dispatch scan.
       `cos-test`, `job set/list/rm/test`, and local `instructions [--check]`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
       recurring `history`, `check` match details, `rm`, and empty `list`.
+
+## Computers and placement
+
+Each node samples its CPU load, memory, swap, disks and agent sessions once a
+minute. Command lines are read only to classify test runners and Playwright
+browsers and never leave the sampler. A spoke adds its sample to the signed
+machine exchange. The hub keeps 30 minutes of per-minute samples and seven
+days of five-minute history in the retained `machines*` tables, and returns
+every computer's latest report to each spoke. Samples stay out of the journal.
+Sampling is read-only, so it also runs while host effects are held.
+
+- `tracker machines [name] [--hours N]` shows each computer as `ok`, `busy`,
+  `overloaded` or `offline` (no sample for five minutes), with its reasons. A
+  name also shows its heaviest sessions and history. A spoke has only the
+  history it received while running.
+- `tracker place [--kind codex|claude|browser-tests|build|general]
+[--needs-ram GB]` ranks computers by headroom and role and names the best
+  one that fits.
+- A computer is overloaded when its 5-minute load exceeds 1.5 per core,
+  available memory is under 10%, macOS reports critical pressure, swap grew
+  more than 512 MB in 10 minutes, or a disk has under 20 GB free. Busy uses 1.0
+  per core, 15%, pressure warnings, 256 MB and 30 GB. Unlike the retained
+  Tracker, a low free percentage alone does not count.
+- When `hostEffects.watchdog.chiefOfStaff` is set on the hub, a computer
+  overloaded for 10 minutes gets one `Computer overloaded: <node>` item and an
+  `overload` watchdog alert with its heaviest sessions and a suggested move.
+  It never asks Daniel. After 10 calm minutes the item closes and the alert
+  clears. An ignored item is not raised again.
+- `--computer auto` picks, among computers whose launcher is polling, maps the
+  task's project and has a free slot, the best one that fits. Heavy work
+  prefers the primary Mac and light work the shared box. A task that names a
+  checkout, or has no known fit, stays on this computer. A request without
+  `--computer` also stays on this computer, and so do due tasks.
+- The hub assigns a queued launch that names no computer to such a peer, with
+  a note, and keeps it otherwise.
+- The hub grants a due start to a peer that reports resources only while its
+  sample is at most 135 seconds old and it is not overloaded. A peer that has
+  never reported resources runs an earlier release and keeps its grant.
 
 ## Completion review
 

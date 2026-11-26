@@ -10,6 +10,7 @@ import type { TrackerNotificationSourceOptions } from '../../repositories/projec
 import type { TrackerAdapterPollDependencies } from './TrackerAdapterPollService.types';
 import type { TrackerHubOptions, TrackerWireValue } from './TrackerHubSyncService.types';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
+import type { TrackerMachineSampler } from './TrackerMachineService.types';
 import type { TrackerNotificationOptions } from './TrackerNotificationService.types';
 import type { TrackerRecurringJobRunner } from './TrackerRecurringService.types';
 import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
@@ -50,6 +51,8 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 	hostEffectsHeld?: boolean;
 	recurring?: { jobs?: TrackerRecurringJobRunner };
 	automaticEnabled?(): boolean;
+	/** Reads this computer's resources. Without it the node reports none. */
+	machineSampler?: TrackerMachineSampler;
 	dispatch?: Omit<TrackerDispatchSchedulerOptions, 'policy'> &
 		Pick<TrackerDispatchRepositoryOptions, 'due' | 'sessions'> & {
 			policy: Omit<TrackerDispatchPolicy, 'node' | 'now' | 'hub'>;

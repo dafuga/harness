@@ -10,6 +10,7 @@ import {
 	recordTrackerSessionItem,
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
 import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
@@ -87,6 +88,8 @@ export class TrackerLocalApiService {
 				return trackerResponse(200, digest);
 			}
 		}
+		const machine = readTrackerMachineEndpoint(parts, query, this.options.machines);
+		if (machine) return trackerResponse(machine.status, machine.body);
 		const run = readTrackerRunEndpoint(parts, query, { ...this.options, items: this.items });
 		return run === undefined ? undefined : trackerResponse(200, run);
 	}
