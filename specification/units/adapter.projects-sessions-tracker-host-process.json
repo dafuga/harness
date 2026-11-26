@@ -140,7 +140,8 @@
 					{
 						"name": "TrackerHostProcessAdapter.request",
 						"type": "Promise<unknown>",
-						"description": "Run the selected operation and return its versioned JSON response for validation by the caller."
+						"description": "Run the selected operation and return its versioned JSON response for validation by the caller.",
+						"unknownReason": "Parsed JSON from the external Tracker executable; callers validate the answer for their operation."
 					}
 				],
 				"errors": [],

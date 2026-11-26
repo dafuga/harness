@@ -229,7 +229,8 @@
 								"replay": {},
 								"sequence": 0
 							}
-						]
+						],
+						"unknownReason": "Dispatcher: the result shape depends on the agent method name."
 					}
 				],
 				"errors": [
@@ -262,7 +263,8 @@
 						"name": "consoleAgent",
 						"type": "Promise<unknown>",
 						"description": "Resolves to the connect token and initial snapshot, null after disconnect, or the selected session operation result. Tokens are kept in the in-memory session map.",
-						"examples": [null]
+						"examples": [null],
+						"unknownReason": "Dispatcher: the result shape depends on input.method."
 					}
 				],
 				"errors": [

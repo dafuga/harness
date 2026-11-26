@@ -2,11 +2,14 @@
 import { artifactMediaTypes } from '../../../utils/verification-evidence/remoteArtifact';
 import { BrowserArtifactError } from './browserArtifact.types';
 import { hostedArtifact } from './hostedArtifact';
-import type { EvidenceArtifactResult } from '../../../models/verification-evidence/DesktopEvidence.types';
+import type {
+	AttestedMedia,
+	EvidenceArtifactResult
+} from '../../../models/verification-evidence/DesktopEvidence.types';
 
 /** Browsers accept only the exact attested media names and the bytes bound to the capture. */
 export async function browserArtifact(
-	media: { bytes: Uint8Array; mediaType: string },
+	media: AttestedMedia,
 	sha256: string
 ): Promise<EvidenceArtifactResult> {
 	const refused = 'The service sent a file of a kind this page does not show.';

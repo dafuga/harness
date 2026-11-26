@@ -9,6 +9,7 @@ import type {
 import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
 import type { Actor } from 'collaboration';
 import type { ThreadMessage } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
+import type { RevisionQuery } from '../../../../../../desktop/src/models/development-tooling/DesktopBridge.types';
 import { hubSource, hubRead } from '../../../../utils/development-tooling/hubSource';
 import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 import {
@@ -57,11 +58,7 @@ export class HubProjectionService {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSource({ ...this.context, actor, project, ref });
 	}
-	async snapshot(
-		actor: Actor,
-		projectId: string,
-		query: { branch: string | null; commit: string | null }
-	): Promise<ProjectSnapshot> {
+	async snapshot(actor: Actor, projectId: string, query: RevisionQuery): Promise<ProjectSnapshot> {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSnapshot({ ...this.context, actor, project }, query);
 	}

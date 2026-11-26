@@ -306,7 +306,8 @@
 							{
 								"message": "pairing response"
 							}
-						]
+						],
+						"unknownReason": "Decrypted JSON whose shape depends on the pairing kind; callers validate it."
 					}
 				],
 				"errors": [

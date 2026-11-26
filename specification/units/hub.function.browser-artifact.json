@@ -26,7 +26,7 @@
 		"inputs": [
 			{
 				"name": "browserArtifact.media",
-				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"type": "AttestedMedia",
 				"required": true,
 				"description": "The evidence bytes and their exact media type, passed together to the hosted artifact reader. The media type must appear in artifactMediaTypes.",
 				"examples": [
@@ -136,7 +136,7 @@
 				"inputs": [
 					{
 						"name": "browserArtifact.media",
-						"type": "{ bytes: Uint8Array; mediaType: string }",
+						"type": "AttestedMedia",
 						"required": true,
 						"description": "The evidence bytes and their exact media type, passed together to the hosted artifact reader. The media type must appear in artifactMediaTypes.",
 						"examples": [

@@ -9,6 +9,7 @@ import type {
 	CommitInfo,
 	Revision
 } from '../../../../models/development-tooling/Desktop.types';
+import type { RevisionQuery } from '../../../../models/development-tooling/DesktopBridge.types';
 import { gitFiles } from './gitRead';
 import { GitSourceError } from './GitSourceAdapter.types';
 import { gitRead, gitRevision, gitText } from '../../../../utils/projects-sessions/gitRead';
@@ -35,7 +36,7 @@ export class GitSourceAdapter {
 				return { name, tip, current: name === current };
 			});
 	}
-	async revision(query: { branch: string | null; commit: string | null }): Promise<Revision> {
+	async revision(query: RevisionQuery): Promise<Revision> {
 		const branches = await this.branches(),
 			branch =
 				branches.find((b) => b.name === query.branch) ||
