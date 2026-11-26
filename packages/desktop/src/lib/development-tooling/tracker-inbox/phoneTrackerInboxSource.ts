@@ -1,5 +1,5 @@
 // @harness-uid u_gvp72ccrq5
-import { trackerAttachmentDocumentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachmentDocument';
+import { trackerAttachmentDocumentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachmentDocumentBytes';
 import type {
 	PhoneTrackerResult,
 	PhoneTrackerTool,

@@ -1,5 +1,5 @@
 // @harness-uid u_nves237tvx
-import { trackerAttachments } from '../../../../../../src/utils/projects-sessions/trackerAttachmentMeta';
+import { trackerAttachmentFields } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptions';
 import type { HomeAskInput } from '../hub-home/hubHome.types';
 import type { MachineStatus } from './projectOverview.types';
@@ -128,13 +128,8 @@ function askFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 		...(options.length && { options }),
 		...(options.length && confirm && { confirm }),
 		...(askedAt && { askedAt }),
-		...attachmentFields(row.attachments)
+		...trackerAttachmentFields(row.attachments)
 	};
-}
-
-function attachmentFields(value: unknown): Partial<TrackerItemRecord> {
-	const attachments = trackerAttachments(value);
-	return attachments.length ? { attachments } : {};
 }
 
 function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {

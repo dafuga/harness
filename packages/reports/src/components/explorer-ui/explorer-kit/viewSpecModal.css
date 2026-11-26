@@ -89,7 +89,7 @@
 	}
 	.spec-dialog .spec-answers {
 		flex: none;
-		max-height: 44dvh;
+		max-height: 42dvh;
 		gap: var(--hx-space-8);
 		padding: var(--hx-space-12) var(--hx-space-16)
 			calc(var(--hx-space-12) + env(safe-area-inset-bottom));

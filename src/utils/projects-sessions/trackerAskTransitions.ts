@@ -2,7 +2,7 @@
 // @harness-uid u_ask0tr4ns1
 import { chosenTrackerAskOption } from './trackerAskOptions';
 import { trackerItemError } from './trackerItemError';
-import { storedTrackerAttachments } from './trackerAttachmentStore';
+import { storedTrackerAttachments } from './storedTrackerAttachments';
 import { trackerResolveItem } from './trackerItemInput';
 import type {
 	TrackerItemChange,
@@ -29,7 +29,7 @@ function trackerAskChoiceFields(
 function attachmentFields(item: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemInput {
 	if (body.attachments === undefined && !item.attachments) return {};
 	// Stored verbatim: the item write has already validated and packed them.
-	return storedTrackerAttachments(body.attachments) as TrackerItemInput;
+	return storedTrackerAttachments(body.attachments);
 }
 
 /** Clear the old ask's choices, but only when it had some, so plain items write nothing extra. */

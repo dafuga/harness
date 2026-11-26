@@ -1,5 +1,5 @@
-import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachmentMeta';
-import { readTrackerAttachment } from '../../../utils/projects-sessions/trackerAttachmentStore';
+import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachments';
+import { readTrackerAttachment } from '../../../utils/projects-sessions/storedTrackerAttachments';
 import { sanitizeTrackerText } from '../../../utils/projects-sessions/sanitizeTrackerText';
 import type { PhoneAttachment } from './phoneAskAttachments.types';
 

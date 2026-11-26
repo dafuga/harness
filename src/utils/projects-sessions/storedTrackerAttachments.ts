@@ -1,11 +1,11 @@
 import { createHash } from 'node:crypto';
 import { gunzipSync, gzipSync } from 'node:zlib';
 import { trackerAttachmentLimits as limits } from './trackerAttachmentLimits';
-import { trackerAttachmentListing, trackerAttachments } from './trackerAttachmentMeta';
+import { trackerAttachmentListing, trackerAttachments } from './trackerAttachments';
 import {
 	trackerAttachmentDocumentBytes,
 	trackerAttachmentDocumentSchema
-} from './trackerAttachmentDocument';
+} from './trackerAttachmentDocumentBytes';
 import { trackerItemError } from './trackerItemError';
 import type { TrackerItemValue } from './normalizeTrackerItemFields.types';
 import type { TrackerAttachment, TrackerAttachmentDocument } from './trackerAttachment.types';

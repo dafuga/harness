@@ -1,15 +1,9 @@
 // @harness-uid u_dpbqtddngd
 import type { TrackerItem } from '../../../../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
-import type { TrackerListedRun } from '../../../../../../src/repositories/projects-sessions/TrackerRunReadRepository.types';
-import {
-	trackerPlanningSchema,
-	trackerStageSchema
-} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
 import { sanitizeTrackerText } from '../../../../../../src/utils/projects-sessions/sanitizeTrackerText';
 import type {
 	ConfirmedWrite,
-	InboxConfirmKind,
 	InboxDetail,
 	InboxOverview,
 	InboxReply,
@@ -18,11 +12,17 @@ import type {
 } from '../../../models/development-tooling/TrackerInbox.types';
 import type { TrackerAttachmentDocument } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import { readLocalAttachment } from './tracker-overview-publisher/readLocalAttachment';
+import {
+	projectDetail,
+	projectHeader,
+	safe,
+	safeItemId,
+	visible
+} from './macTrackerInboxProjection';
 import { confirmedWrite, itemBucket, matchesQuery } from '../tracker-inbox/trackerInbox';
 import type { TrackerInboxItemReply, TrackerInboxReadInput } from './MacTrackerInboxService.types';
 
 const trackerOrigin = 'http://127.0.0.1:7701';
-const safeId = /^[a-z0-9_-]{1,80}$/;
 
 export class MacTrackerInboxService {
 	async read(
@@ -36,7 +36,7 @@ export class MacTrackerInboxService {
 					? this.search(input.query)
 					: current({ code: 'invalidInput' });
 			case 'detail':
-				return typeof input.id === 'string' && safeId.test(input.id)
+				return typeof input.id === 'string' && safeItemId.test(input.id)
 					? this.detail(input.id)
 					: current({ code: 'invalidInput' });
 			case 'document':
@@ -121,7 +121,7 @@ function parseWrite(input: Partial<ConfirmedWrite>): ConfirmedWrite | null {
 	if (
 		(action !== 'note' && action !== 'flag' && action !== 'answer') ||
 		typeof id !== 'string' ||
-		!safeId.test(id) ||
+		!safeItemId.test(id) ||
 		typeof text !== 'string' ||
 		(revision !== null && typeof revision !== 'string') ||
 		(option !== undefined && !(Number.isInteger(option) && option >= 1 && option <= 4))
@@ -162,65 +162,6 @@ function projectRow(item: TrackerItem): InboxRow {
 	};
 }
 
-function visible(item: TrackerItem): boolean {
-	return Boolean(safeId.test(item.id) && item.title && !item.deleted && !item.sensitive);
-}
-
-function projectHeader(item: TrackerItem) {
-	const stage = trackerStageSchema.safeParse(item.stage);
-	return {
-		id: item.id,
-		title: safe(item.title),
-		project: safe(item.project || item.agent),
-		status: item.status ?? 'open',
-		...(stage.success && { stage: stage.data }),
-		updatedAt: item.updated_at,
-		dueAt: item.due
-	};
-}
-
-function projectDetail({ item, revision, flaggedAt, runs }: TrackerInboxItemReply): InboxDetail {
-	const notes = item.notes_log ?? [];
-	const planning = trackerPlanningSchema.safeParse(item.planning);
-	return {
-		header: projectHeader(item),
-		...(planning.success && { planning: planning.data }),
-		revision,
-		flag:
-			item.needs_daniel || item.resolved
-				? {
-						state: item.resolved ? 'resolved' : 'open',
-						at: flaggedAt,
-						question: safe(item.question),
-						...askChoices(item)
-					}
-				: null,
-		notes: notes.map(({ at, node, text }, index) => ({
-			id: String(index),
-			author: safe(node),
-			at,
-			text: safe(text)
-		})),
-		runs: (runs ?? []).map(projectRun)
-	};
-}
-
-function projectRun(run: TrackerListedRun) {
-	return {
-		id: String(run.id),
-		origin: safe(run.node),
-		state: run.state,
-		outcome: run.outcome ?? null,
-		queuedAt: run.queued_at,
-		startedAt: run.started_at ?? null,
-		endedAt: run.ended_at ?? null
-	};
-}
-
-function safe(text: string | null): string {
-	return sanitizeTrackerText(text ?? '');
-}
-
 async function writeError(response: Response): Promise<string> {
 	const { code } = (await response.json()) as { code?: string };
 	if (code === 'staleReview') return code;
@@ -236,19 +177,4 @@ function current<T>(result: { value?: T; code?: string }): InboxReply<T> {
 
 function unavailable(): InboxReply<never> {
 	return { code: 'unavailable', freshness: 'unavailable', lastSyncedAt: null, partial: true };
-}
-
-/** A Mac item carries the ask's options the same way the phone replica does. */
-function askChoices(item: TrackerItem) {
-	const options = (item.options ?? []).map(({ label, effect, recommended }) => ({
-		label: safe(label),
-		effect: safe(effect),
-		...(recommended && { recommended: true as const })
-	}));
-	const confirm = ['deploy', 'money', 'secret'].find((kind) => kind === item.confirm);
-	return {
-		...(options.length >= 2 && { options }),
-		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind }),
-		...(options.length >= 2 && item.attachments && { attachments: item.attachments })
-	};
 }

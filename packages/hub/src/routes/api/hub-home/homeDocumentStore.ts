@@ -1,5 +1,5 @@
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-import { trackerAttachmentDocumentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachmentDocument';
+import { trackerAttachmentDocumentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachmentDocumentBytes';
 import type { OverviewBucket } from '../tracker-overview/trackerOverviewCache.types';
 import { homeKey } from './homeStore';
 import type { HomeWantedDocument } from './homeDocumentStore.types';

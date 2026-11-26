@@ -27,8 +27,6 @@ const textFields = new Set([
 	'notes',
 	'parent',
 	'question',
-	'attachments',
-	'attachment_docs',
 	'next_step',
 	'answer',
 	'answered_at',

@@ -20,9 +20,7 @@ export async function uploadHomeDocument(request: Request, deps: HomeDeps, actor
 		{ id: input.id, document: input.document },
 		snapshot
 	);
-	return kept
-		? { status: 200, body: { ok: true } }
-		: { status: 409, body: { error: 'refused' } };
+	return kept ? { status: 200, body: { ok: true } } : { status: 409, body: { error: 'refused' } };
 }
 
 /** The signed-in owner reads one document of an open ask. */
@@ -30,7 +28,5 @@ export async function browseHomeDocument(url: URL, deps: HomeDeps, actor: string
 	if (!deps.bucket) return { status: 503, body: { error: 'unavailable' } };
 	const id = documentId.parse(url.searchParams.get('id'));
 	const document = await readHomeDocument(deps.bucket, actor, id);
-	return document
-		? { status: 200, body: document }
-		: { status: 404, body: { error: 'not-found' } };
+	return document ? { status: 200, body: document } : { status: 404, body: { error: 'not-found' } };
 }

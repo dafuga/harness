@@ -1,4 +1,3 @@
-import { createServer } from 'node:http';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { once } from 'node:events';
@@ -8,6 +7,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { _electron, expect, test } from '../../../../test/support/browserTest';
 import type { ElectronApplication, Page } from '../../../../test/support/browserTest';
 import scenario from '../../../../specification/scenarios/mac-tracker-inbox.json' with { type: 'json' };
+import { redirectTracker, serve } from './support/macTrackerServer';
 import { captureMacInbox, verifyMacWireframeOpen } from './support/macTrackerInboxEvidence';
 import { TrackerItemReadRepository } from '../../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../../src/repositories/projects-sessions/TrackerRunReadRepository';
@@ -35,36 +35,6 @@ function post(api: TrackerLocalApiService, path: string, body: object) {
 	return api.handle(
 		new Request(`http://127.0.0.1${path}`, { method: 'POST', body: JSON.stringify(body) })
 	);
-}
-
-function serve(api: TrackerLocalApiService) {
-	return createServer(async (request, response) => {
-		try {
-			const chunks: Buffer[] = [];
-			for await (const chunk of request) chunks.push(chunk);
-			const message = new Request(`http://127.0.0.1${request.url}`, {
-				method: request.method,
-				body: chunks.length ? Buffer.concat(chunks) : undefined
-			});
-			const reply = await api.handle(message);
-			response.writeHead(reply.status, Object.fromEntries(reply.headers));
-			response.end(await reply.text());
-		} catch {
-			response.writeHead(500).end();
-		}
-	});
-}
-
-async function redirectTracker(app: ElectronApplication, port: number) {
-	await app.evaluate((_electron, port) => {
-		const original = globalThis.fetch;
-		globalThis.fetch = ((input, init) => {
-			if (!String(input).startsWith('http://127.0.0.1:7701/')) return original(input, init);
-			const url = new URL(String(input));
-			url.port = String(port);
-			return original(url, init);
-		}) as typeof fetch;
-	}, port);
 }
 
 async function stage(page: Page, action: string, text: string) {

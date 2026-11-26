@@ -11,6 +11,12 @@ export async function renderSpecDiagrams(root: HTMLElement): Promise<void> {
 	mermaid.initialize({
 		startOnLoad: false,
 		securityLevel: 'strict',
+		// Natural size keeps labels readable; a wide diagram scrolls inside its own frame.
+		flowchart: { useMaxWidth: false },
+		sequence: { useMaxWidth: false },
+		state: { useMaxWidth: false },
+		er: { useMaxWidth: false },
+		gantt: { useMaxWidth: false },
 		theme: darkPage(root) ? 'dark' : 'neutral'
 	});
 	// Mermaid keeps shared state while it draws, so diagrams are drawn one at a time.
@@ -45,7 +51,9 @@ function removeRemoteImages(figure: HTMLElement) {
 }
 
 function darkPage(root: HTMLElement) {
-	const color = getComputedStyle(root).color.match(/\d+(\.\d+)?/g)?.map(Number) ?? [0, 0, 0];
+	const color = getComputedStyle(root)
+		.color.match(/\d+(\.\d+)?/g)
+		?.map(Number) ?? [0, 0, 0];
 	// Light text means a dark page, whichever way the theme was chosen.
 	return (color[0] + color[1] + color[2]) / 3 > 128;
 }

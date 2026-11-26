@@ -6,7 +6,7 @@ import {
 import { controlledIdPattern } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 import { trackerAttachmentLimits } from '../../../../../../src/utils/projects-sessions/trackerAttachmentLimits';
-import { trackerAttachmentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachmentMeta';
+import { trackerAttachmentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
 
 const text = (max: number) =>

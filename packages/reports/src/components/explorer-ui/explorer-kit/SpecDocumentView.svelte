@@ -39,14 +39,25 @@
 	:global(.spec-markdown) {
 		max-width: 760px;
 		margin: 0 auto;
+		font-size: 15px;
 		line-height: 1.55;
 		overflow-wrap: anywhere;
+	}
+	/* The host app styles bare paragraphs as cards; a document reads as plain text. */
+	:global(.spec-dialog .spec-markdown :is(p, li, blockquote p)) {
+		margin: 0.6em 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: none;
+		font-size: inherit;
+		line-height: inherit;
 	}
 	:global(.spec-markdown :is(h1, h2, h3, h4)) {
 		margin: 1.2em 0 0.4em;
 		line-height: 1.3;
 	}
-	:global(.spec-markdown h1) {
+	:global(.spec-dialog .spec-markdown h1) {
 		font-size: 1.5em;
 		margin-top: 0;
 	}
@@ -106,11 +117,10 @@
 	:global(.spec-markdown .spec-diagram) {
 		margin: 0.8em 0;
 		overflow-x: auto;
-		text-align: center;
 	}
 	:global(.spec-markdown .spec-diagram svg) {
-		height: auto;
-		/* Wide diagrams scroll sideways rather than shrink past reading size. */
-		min-width: min(100%, 560px);
+		display: block;
+		max-width: none;
+		margin: 0 auto;
 	}
 </style>

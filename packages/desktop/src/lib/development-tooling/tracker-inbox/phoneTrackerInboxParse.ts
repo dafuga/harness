@@ -1,5 +1,5 @@
 // @harness-uid u_ymhr4iqr7u
-import { trackerAttachments } from '../../../../../../src/utils/projects-sessions/trackerAttachmentMeta';
+import { trackerAttachments } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import {
 	trackerPlanningSchema,
 	trackerStageSchema

@@ -1,5 +1,5 @@
 // @harness-uid u_xba7ieg4je
-import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachmentMeta';
+import { trackerAttachments } from '../../../utils/projects-sessions/trackerAttachments';
 import { trackerItemPriority } from '../../../utils/projects-sessions/trackerItemPriority';
 import type { SqliteStatement } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerItem, TrackerItemRow } from '../TrackerItemReadRepository.types';

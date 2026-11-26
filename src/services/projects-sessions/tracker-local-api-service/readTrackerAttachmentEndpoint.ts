@@ -1,5 +1,5 @@
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
-import { readTrackerAttachment } from '../../../utils/projects-sessions/trackerAttachmentStore';
+import { readTrackerAttachment } from '../../../utils/projects-sessions/storedTrackerAttachments';
 
 /** `GET /items/:id/attachments/:attachmentId`: one document of an item's current ask. */
 export function readTrackerAttachmentEndpoint(

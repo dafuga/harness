@@ -22,6 +22,7 @@
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import TrackerInboxRecord from './TrackerInboxRecord.svelte';
 	import TrackerInboxAsk from './TrackerInboxAsk.svelte';
+	import { inboxDocuments } from '../../../lib/development-tooling/tracker-inbox/inboxDocuments';
 
 	let {
 		source,
@@ -171,7 +172,7 @@
 				{busy}
 				onpick={pick}
 				onother={other}
-				load={async ({ id: attachment }) => (await source.document(id, attachment)).value ?? null}
+				load={inboxDocuments(source, id)}
 			/>
 		{/if}
 

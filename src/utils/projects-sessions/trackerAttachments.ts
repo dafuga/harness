@@ -41,6 +41,12 @@ export function trackerAttachments(stored: unknown): TrackerAttachment[] {
 	return parsed.success ? parsed.data : [];
 }
 
+/** @pure The listing as an optional field, absent when there is none. */
+export function trackerAttachmentFields(stored: unknown): { attachments?: TrackerAttachment[] } {
+	const attachments = trackerAttachments(stored);
+	return attachments.length ? { attachments } : {};
+}
+
 function readJson(text: string): unknown {
 	try {
 		return JSON.parse(text);

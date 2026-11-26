@@ -1,4 +1,4 @@
-import { trackerAttachmentDocumentSchema } from '../../../../../../../src/utils/projects-sessions/trackerAttachmentDocument';
+import { trackerAttachmentDocumentSchema } from '../../../../../../../src/utils/projects-sessions/trackerAttachmentDocumentBytes';
 import type { TrackerAttachmentDocument } from '../../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 
 const trackerOrigin = 'http://127.0.0.1:7701';
