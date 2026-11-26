@@ -24,6 +24,10 @@ const desktopRoot = resolve(import.meta.dirname, '../..');
 const title = 'Fixture Mac decision';
 const firstQuestion = 'Proceed with the fixture review?';
 const nextQuestion = 'Proceed with the revised fixture review?';
+const options = [
+	{ label: 'Proceed', effect: 'Continues the fixture review.', recommended: true },
+	{ label: 'Hold', effect: 'Waits for another look.' }
+];
 
 test.setTimeout(120_000);
 
@@ -70,6 +74,13 @@ async function stage(page: Page, action: string, text: string) {
 	await expect(page.getByRole('group', { name: 'Confirm this write' })).toBeVisible();
 }
 
+async function writeOther(page: Page, text: string) {
+	await page.getByRole('button', { name: /^Other/ }).click();
+	const field = page.getByRole('textbox', { name: 'Your answer' });
+	await expect(field).toBeFocused();
+	await field.fill(text);
+}
+
 const confirm = (page: Page) => page.getByRole('button', { name: 'Confirm and send' }).click();
 
 for (const viewport of scenario.viewports)
@@ -111,7 +122,7 @@ for (const viewport of scenario.viewports)
 						})
 					).status
 				).toBe(200);
-				await post(api, `/items/${id}/flag`, { question: firstQuestion });
+				await post(api, `/items/${id}/flag`, { question: firstQuestion, options });
 				await post(api, `/items/${id}/note`, { text: 'Synthetic initial note' });
 				const listening = once(server, 'listening');
 				server.listen(0, '127.0.0.1');
@@ -157,11 +168,20 @@ async function exerciseInbox(
 			.getByRole('heading', { name: 'Needs you', exact: true })
 			.or(page.getByRole('status').filter({ hasText: 'paired iPhone' }))
 	).toBeVisible();
-	if (hasLink) await expect(page.getByRole('button', { name: new RegExp(title) })).toBeVisible();
+	// The overview shows one compact row per ask, with no answer controls.
+	const row = page
+		.getByRole('list', { name: 'Needs you' })
+		.getByRole('button', { name: /Fixture.*waiting/s });
+	if (hasLink) await expect(row).toContainText(firstQuestion);
+	await expect(page.getByRole('heading', { name: 'Blocked - needs you' })).toBeVisible();
+	await expect(page.locator('button.choice')).toHaveCount(0);
 	await captureMacInbox(page, 'list');
 	expect(hasLink).toBe(true);
-	await page.getByRole('button', { name: new RegExp(title) }).click();
-	await expect(page.getByText(firstQuestion, { exact: true })).toBeVisible();
+	await row.click();
+	const asked = page.locator('.flag[data-flag-state="open"]');
+	await expect(asked.getByText(firstQuestion, { exact: true })).toBeVisible();
+	await expect(asked.getByRole('button', { name: /Proceed.*Recommended/s })).toBeVisible();
+	await expect(page.getByRole('textbox')).toHaveCount(0);
 	await expect(page.getByText('Synthetic initial note', { exact: true })).toBeVisible();
 	await expect(page.getByText('finished', { exact: true })).toBeVisible();
 	await captureMacInbox(page, 'detail');
@@ -185,23 +205,23 @@ async function answerAndFlag(
 	items: TrackerItemReadRepository,
 	id: string
 ) {
-	await stage(page, 'Answer flag', 'Stale fixture answer');
+	await writeOther(page, 'Stale fixture answer');
 	await captureMacInbox(page, 'confirm-answer');
-	await post(api, `/items/${id}/flag`, { question: nextQuestion });
-	await confirm(page);
+	await post(api, `/items/${id}/flag`, { question: nextQuestion, options });
+	await page.getByRole('button', { name: 'Send answer' }).click();
 	await expect(page.getByText(nextQuestion, { exact: true })).toBeVisible();
 	await expect(page.getByText(/changed since you reviewed/i).first()).toBeVisible();
 	expect(items.get(id).answer).toBeNull();
 	await page.getByRole('button', { name: 'Review again' }).click();
 	await expect(page.getByRole('button', { name: 'Review before sending' })).toHaveCount(0);
-	await stage(page, 'Answer flag', 'Mac confirmed answer');
-	await expect(page.getByRole('group', { name: 'Confirm this write' })).toContainText(nextQuestion);
-	await confirm(page);
+	await writeOther(page, 'Mac confirmed answer');
+	await expect(page.getByRole('dialog', { name: 'Other answer' })).toContainText(nextQuestion);
+	await page.getByRole('button', { name: 'Send answer' }).click();
 	await expect(page.getByText('Answer saved to Tracker.')).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Flag answered' })).toBeVisible();
 	expect(items.get(id).answer).toBe('Mac confirmed answer');
 	await page.getByRole('button', { name: 'Review again' }).click();
-	await stage(page, 'Flag for you', 'Follow up on the fixture?');
+	await stage(page, 'Flag for follow-up', 'Follow up on the fixture?');
 	await captureMacInbox(page, 'confirm-flag');
 	await confirm(page);
 	await expect(page.getByText('Flag saved to Tracker.')).toBeVisible();

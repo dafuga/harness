@@ -38,7 +38,8 @@
 				{#if row.ask}
 					<hx-span class="title">{row.header.project}</hx-span>
 					<hx-span class="question">{row.ask.question}</hx-span>
-					{#if row.ask.since}<hx-span class="meta">waiting {waitAge(row.ask.since, Date.now())}</hx-span
+					{#if row.ask.since}<hx-span class="meta"
+							>waiting {waitAge(row.ask.since, Date.now())}</hx-span
 						>{/if}
 				{:else}
 					<hx-span class="tag tag-{row.bucket}">{bucketLabels[row.bucket]}</hx-span>

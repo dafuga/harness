@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import recorded from '../../../../test/fixtures/tracker-needs-you/snapshot.json' with { type: 'json' };
+import recorded from './needsYouSnapshot.json' with { type: 'json' };
 import { TrackerItemReadRepository } from '../../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../../src/services/projects-sessions/TrackerLocalApiService';
