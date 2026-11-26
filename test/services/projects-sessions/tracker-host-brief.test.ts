@@ -32,7 +32,7 @@ test('every session brief points browser work at the automation Chrome, not the 
 test('every session brief requires per-requirement, per-computer proof before tracker done', () => {
 	const completion = '## Completion and worktree cleanup\nRun tracker done.';
 	for (const recovery of [false, true]) {
-		const brief = formatTrackerHostBrief(item, completion, recovery);
+		const brief = formatTrackerHostBrief(item, completion, { recovery });
 		expect(brief).toContain('reread every note with `tracker show <id> --json`');
 		expect(brief).toContain('including appended ones) to evidence for each named computer');
 		expect(brief).toContain('wait out any grace period');

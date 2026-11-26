@@ -9,6 +9,7 @@ import { RelaySocketAdapter } from '../../../../adapters/networking-security/Rel
 import { RemoteHostStoreAdapter } from '../../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { RemoteRegistrationAdapter } from '../RemoteRegistrationAdapter';
 import { liveQuotaSources } from '../tracker-overview-publisher/liveQuotaSources';
+import { createHomeChatWriter } from '../tracker-overview-publisher/createHomeChatWriter';
 import { createHomeSnapshotReader } from '../tracker-overview-publisher/createHomeSnapshotReader';
 
 /** Owns the Mac's relay connection and power events for the lifetime of the main process. */
@@ -35,6 +36,7 @@ export function desktopRemote(options: DesktopRemoteOptions) {
 				process.env.HARNESS_HUB_HOME_PROVIDER_FILE,
 				liveQuotaSources()
 			),
+			homeChat: createHomeChatWriter(),
 			trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim(),
 			trackerWrite:
 				phoneWriteDevice && phoneWriteToken

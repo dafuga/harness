@@ -33,3 +33,26 @@ test('a revoked device is not answered with the Home view', async () => {
 	await phone.client.request('homeSnapshot').catch(() => undefined);
 	expect(home).not.toHaveBeenCalled();
 }, 30000);
+
+test('an account device answers an open ask through this computer, once per request', async () => {
+	const home = vi.fn(async () => snapshot);
+	const homeChat = vi.fn(async (input: unknown) => ({
+		id: (input as { id: string }).id,
+		status: 'sent' as const
+	}));
+	const s = await setup(false, false, home, homeChat);
+	const phone = s.phone();
+	expect((await phone.attach()).methods).toContain('homeChat');
+	const message = { id: '1', itemId: 'item', kind: 'answer', option: 1 };
+	expect(await phone.client.request('homeChat', message)).toEqual({ id: '1', status: 'sent' });
+	expect(homeChat).toHaveBeenCalledExactlyOnceWith(message);
+}, 30000);
+
+test('a computer without the Home writer offers no homeChat', async () => {
+	const s = await setup(false, false, async () => snapshot);
+	const phone = s.phone();
+	expect((await phone.attach()).methods).not.toContain('homeChat');
+	await expect(phone.client.request('homeChat', {})).rejects.toMatchObject({
+		code: 'method-denied'
+	});
+}, 30000);
