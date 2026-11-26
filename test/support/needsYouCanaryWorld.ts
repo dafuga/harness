@@ -59,7 +59,9 @@ export function canaryTracker() {
 		({ ...row, needs_daniel: Boolean(row.needs_daniel) }) as unknown as CanaryItem;
 	/** What a surface's tap sends: an answer by Daniel to the ask carrying `marker`. */
 	function tap(marker: string, label: string, by?: string) {
-		const row = [...rows.values()].find((entry) => String(entry.question).includes(marker));
+		const row = [...rows.values()].find(
+			(entry) => entry.needs_daniel && !entry.resolved && String(entry.question).includes(marker)
+		);
 		if (!row) return false;
 		const options = trackerAskOptions(row.options as string);
 		const option = options.findIndex((entry) => entry.label === label) + 1;
