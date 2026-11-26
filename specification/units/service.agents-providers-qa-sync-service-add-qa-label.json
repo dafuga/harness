@@ -1,0 +1,86 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-sync-service-add-qa-label",
+	"uid": "u_27pktpjq3f",
+	"kind": "service",
+	"title": "addQaLabel",
+	"responsibility": "Owns the addQaLabel service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/qa-sync-service/addQaLabel.ts"],
+		"symbols": ["addQaLabel"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "addQaLabel.run",
+				"type": "QaRun",
+				"required": true
+			},
+			{
+				"name": "addQaLabel.request",
+				"type": "QaLabelRequest",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "addQaLabel",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "addQaLabel",
+				"inputs": [
+					{
+						"name": "addQaLabel.run",
+						"type": "QaRun",
+						"required": true
+					},
+					{
+						"name": "addQaLabel.request",
+						"type": "QaLabelRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "addQaLabel",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.agents-providers-qa-sync-service-qa-run-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/qa-sync-service/addQaLabel.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/qa-sync-service/addQaLabel.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

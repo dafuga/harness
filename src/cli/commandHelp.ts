@@ -205,6 +205,7 @@ export const commandHelp = [
 		term: 'design [options]',
 		aliases: []
 	},
+	plainHelp('qa-sync', 'Sync Slack QA threads to issues.', 'qa-sync [options]'),
 	{
 		name: 'response-check',
 		signature: 'response-check',
@@ -213,7 +214,6 @@ export const commandHelp = [
 		aliases: []
 	}
 ];
-
-function plainHelp(name: string, description: string) {
-	return { name, signature: name, description, term: name, aliases: [] };
+function plainHelp(name: string, description: string, term = name) {
+	return { name, signature: name, description, term, aliases: [] };
 }

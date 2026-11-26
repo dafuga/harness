@@ -33,7 +33,6 @@
 			"HubHomeCards.empty",
 			"HubHomeCards.lead",
 			"HubHomeCards.trailing",
-			"HubHomeCards.badge",
 			"HubHomeCards.footer",
 			"HubHomeCards.badge"
 		]
@@ -116,18 +115,6 @@
 				"outputs": [
 					{
 						"name": "HubHomeCards.trailing",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "HubHomeCards.badge",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HubHomeCards.badge",
 						"type": "markup"
 					}
 				],

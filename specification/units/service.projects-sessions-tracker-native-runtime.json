@@ -33,6 +33,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerDueDelegation.ts",
@@ -130,13 +131,14 @@
 			"TrackerGuestAuthWriter",
 			"composeTrackerLinks",
 			"composeTrackerTelemetry",
+			"trackerHubMachines",
 			"trackerRunnerSample",
 			"trackerMachineSample",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
-			"adapterFailover",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
+			"adapterFailover",
 			"duePauseKey",
 			"trackerAutolaunchAdmin",
 			"trackerHubDuePolicy",
@@ -332,8 +334,8 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerResponder.permits",
-				"type": "Pick<ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue'>",
+				"name": "composeTrackerResponder.composed",
+				"type": "Pick< ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue' | 'scheduler' >",
 				"required": true
 			},
 			{
@@ -413,18 +415,28 @@
 				"required": false
 			},
 			{
-				"name": "trackerSpokeStatus.links",
-				"type": "readonly TrackerSpokeLoopService[]",
+				"name": "trackerHubMachines.machines",
+				"type": "TrackerHubMachineStore",
 				"required": true
 			},
 			{
-				"name": "adapterFailover.options",
+				"name": "trackerHubMachines.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.options",
 				"type": "TrackerNativeRuntimeOptions",
 				"required": true
 			},
 			{
-				"name": "adapterFailover.now",
-				"type": "() => number",
+				"name": "trackerHubMachines.scheduler",
+				"type": "TrackerDispatchSchedulerService",
+				"required": false
+			},
+			{
+				"name": "trackerSpokeStatus.links",
+				"type": "readonly TrackerSpokeLoopService[]",
 				"required": true
 			},
 			{
@@ -440,6 +452,16 @@
 			{
 				"name": "trackerDueItemPreview.item",
 				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "adapterFailover.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "adapterFailover.now",
+				"type": "() => number",
 				"required": true
 			},
 			{
@@ -2156,8 +2178,8 @@
 						"required": true
 					},
 					{
-						"name": "composeTrackerResponder.permits",
-						"type": "Pick<ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue'>",
+						"name": "composeTrackerResponder.composed",
+						"type": "Pick< ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue' | 'scheduler' >",
 						"required": true
 					}
 				],
@@ -2339,6 +2361,39 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerHubMachines",
+				"inputs": [
+					{
+						"name": "trackerHubMachines.machines",
+						"type": "TrackerHubMachineStore",
+						"required": true
+					},
+					{
+						"name": "trackerHubMachines.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
+					},
+					{
+						"name": "trackerHubMachines.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "trackerHubMachines.scheduler",
+						"type": "TrackerDispatchSchedulerService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubMachines",
+						"type": "TrackerHubMachineStore"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "trackerFleetMachineStore",
 				"inputs": [],
 				"outputs": [
@@ -2367,29 +2422,6 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
-			},
-			{
-				"name": "adapterFailover",
-				"inputs": [
-					{
-						"name": "adapterFailover.options",
-						"type": "TrackerNativeRuntimeOptions",
-						"required": true
-					},
-					{
-						"name": "adapterFailover.now",
-						"type": "() => number",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "adapterFailover",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
 			},
 			{
 				"name": "readTrackerDuePreview",
@@ -2431,6 +2463,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "adapterFailover",
+				"inputs": [
+					{
+						"name": "adapterFailover.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "adapterFailover.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adapterFailover",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "trackerAutolaunchAdmin",

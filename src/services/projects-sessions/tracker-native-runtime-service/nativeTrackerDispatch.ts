@@ -1,6 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
-import { adapterFailover } from './nativeTrackerLinks';
+import { adapterFailover } from './trackerAdapterFailover';
 import { TrackerDispatchRepository } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
 import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import {

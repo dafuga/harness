@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"revision": "0133c5ad4a927536e7ac45a5db3617c1a5fe16eb",
+	"bugClass": {
+		"id": "packaged-app-runtime-mismatch",
+		"title": "Packaged app identity and bundle permissions are incorrect",
+		"cause": "The packager does not align the executable identity and bundle file permissions with runtime assumptions. Packaged-only startup logic can be skipped when the app reports itself as unpackaged, and shipped files can retain world-writable permissions. No assembled-app launch catches these packaging failures.",
+		"criteria": "Classify another site when its packaging configuration or build output can preserve an unexpected executable/app identity that makes packaged-runtime checks false, independently of whether startup code gated on that check is skipped; or when packaged files are emitted with world-writable permissions. These are independent qualifying paths. Relevant evidence includes packaged-only startup gates and the actual packaged artifact configuration or permissions.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "app.isPackaged",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "chmod 777",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "worldWritable",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "executableName",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "productName",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "setExecutableName",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "chmod",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "isPackaged",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "make",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "build",
+				"weight": 1
+			}
+		],
+		"contextTerms": ["electron", "packaged", "executable", "bundle", "startup", "permissions"],
+		"pathHints": [
+			{
+				"contains": "packages/desktop/",
+				"weight": 5
+			},
+			{
+				"contains": "electron-builder",
+				"weight": 4
+			},
+			{
+				"contains": "electron-forge",
+				"weight": 4
+			},
+			{
+				"contains": "packager",
+				"weight": 3
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "server/",
+				"weight": -2
+			},
+			{
+				"contains": "worker/",
+				"weight": -2
+			}
+		]
+	}
+}
