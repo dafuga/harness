@@ -2,7 +2,7 @@
 	"name": "tracker-release-copy-safety",
 	"goal": "A leftover rsync receiver from a failed or timed-out release copy can never change the live Tracker release, and every host is re-verified against SHA256SUMS after the soak",
 	"createdAt": "2026-11-26T21:43:43.915Z",
-	"updatedAt": "2026-11-26T21:43:46.409Z",
+	"updatedAt": "2026-11-26T21:44:21.764Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T21:44:20.809Z",
+			"evidence": "loop record red at 5f0519928f: 6/6 failed on the unchanged recipe; headline 'expected 50000 to be 200017' (the live harness was replaced by the orphan partial after publish)."
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T21:44:21.764Z",
+			"evidence": "Fresh staging dir per attempt without --partial; SIGKILL and confirm release receivers gone before each attempt, after failed or interrupted ones and before publish (fail closed); publish a host-local copy in a directory rsync never wrote to; soak re-verifies SHA256SUMS, signature and no receivers on this computer and every host."
 		},
 		{
 			"id": "implement",

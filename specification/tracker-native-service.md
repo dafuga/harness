@@ -741,6 +741,43 @@ supervise`, and install starts it at once. The supervisor holds one lock per
   with no active attempt and no later successful one on any computer, the
   owning computer records `redone_by` as `human`.
 
+## Release copy and soak
+
+Stage the release locally under
+`~/.local/state/tracker/harness-releases/<id>/` with its `SHA256SUMS`. Copy it
+to every other computer with the checked-in script, from the release revision.
+Do not copy a previous session's staging script or run `rsync` into the
+releases folder by hand.
+
+```sh
+scripts/tracker-release-copy.sh copy ~/.local/state/tracker/harness-releases/<id> <ssh-host>
+# after activation on every computer; waits 15 minutes, so run it in the background
+scripts/tracker-release-copy.sh soak <id> <ssh-host>...
+```
+
+A failed or timed-out copy can leave an `rsync --server` receiver running on
+the other computer. It keeps a handle on its destination directory, even after
+that directory is renamed. With `--partial` it can later rename a partial file
+over the real one: this truncated a live `harness` binary 11 minutes after a
+release which had passed its checksums. `copy` therefore:
+
+- gives every attempt a fresh directory and never uses `--partial`, so a retry
+  sends the whole release again;
+- kills the release's receivers and confirms none remain before each attempt,
+  after a failed or interrupted one, and before publishing. If it cannot
+  confirm this, it publishes nothing;
+- publishes a local copy, made on that computer, in a directory `rsync` never
+  wrote to, after checking `SHA256SUMS` and the signature.
+
+`soak` checks `SHA256SUMS`, its match with this computer's copy, the signature
+and the absence of receivers on this computer and every named host. A release
+is not done until it exits 0. Treat any `FAILED` line as a broken release: do
+not restart that computer's Tracker until its files verify again.
+
+If the connection is lost altogether, `copy` warns that it could not stop the
+receiver. Run `copy` again once the host is reachable; it stops leftovers first.
+`HARNESS_RELEASE_BWLIMIT` sets the transfer cap in KB/s (default 2000).
+
 ## Rollback evidence
 
 Identify the candidate by its Git SHA and launcher SHA-256. Identify the
