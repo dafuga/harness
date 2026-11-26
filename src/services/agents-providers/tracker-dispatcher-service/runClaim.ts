@@ -101,7 +101,9 @@ export function retireUnstartedRun(
 		now - (run.dispatch_at ?? run.queued_at) < launchStartupGrace
 	)
 		return skip('ignored', 'launch reservation is owned elsewhere or still within startup grace');
-	const failure = { outcome: 'abandoned', reason: 'launch expired before startup', now } as const;
+	const cause = run.failure_reason ? `: ${run.failure_reason}` : '';
+	const reason = `launch expired before startup${cause}`;
+	const failure = { outcome: 'abandoned', reason, now } as const;
 	if (run.dispatch_at !== undefined && startable(item))
 		return failRun(snapshot, run, { ...failure, startup: true }, clock);
 	return recordRun(finishRun(run, failure), { launch: null });

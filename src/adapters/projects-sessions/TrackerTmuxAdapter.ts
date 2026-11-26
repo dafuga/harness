@@ -20,6 +20,7 @@ import {
 	trackerTmuxPane
 } from './tracker-tmux-adapter/trackerTmuxPane';
 
+import { trackerTmuxWindows } from './tracker-tmux-adapter/trackerTmuxWindows';
 import { closePaneCandidate, closePaneNames } from './tracker-tmux-adapter/trackerTmuxClose';
 import {
 	sendTrackerTmuxNudge,
@@ -61,6 +62,11 @@ export class TrackerTmuxAdapter {
 
 	async inventory(signal: AbortSignal): Promise<WatchdogPane[]> {
 		return (await this.layouts(signal, trackerSessionName)).map(({ pane }) => pane);
+	}
+
+	/** Every session and window name, to recognise hand-launched sessions for an item. */
+	windows(signal: AbortSignal) {
+		return trackerTmuxWindows(this.sockets, (socket, args) => this.command(socket, args, signal));
 	}
 
 	async nudge(input: TrackerTmuxNudge, signal: AbortSignal): Promise<boolean> {

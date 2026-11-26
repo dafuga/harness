@@ -25,6 +25,8 @@ export function transitionRun(
 			return adoptSession(run, event.session, clock, snapshot);
 		case 'monitor':
 			return monitorRun(snapshot, run, event, clock);
+		case 'start-error':
+			return recordStartError(run, event.reason);
 		case 'startup-failed':
 			return recordStartupFailure(snapshot, run, event, clock);
 		case 'never-started':
@@ -63,9 +65,18 @@ function adoptSession(
 			...(session.tmux && { tmux: session.tmux }),
 			started_at: session.startedAt,
 			...(session.sourceRepo && { source_repo: session.sourceRepo }),
+			...(session.sessionName && { session_name: session.sessionName }),
+			failure_reason: null,
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
 		})
 	);
+}
+
+/** The session may still appear, so the cause waits on the reservation until it expires. */
+function recordStartError(run: TrackerRunReceipt, reason: string) {
+	if (run.state !== 'queued' || run.dispatch_at === undefined)
+		return skip('ignored', 'attempt is no longer starting');
+	return recordRun(reviseRun(run, { failure_reason: reason }));
 }
 
 function recordStartupFailure(

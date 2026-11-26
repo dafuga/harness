@@ -24,7 +24,8 @@ import type {
 	TrackerManagedStartBindings,
 	TrackerManagedReceipt
 } from './trackerManagedHostLauncher.types';
-import { trackerManagedCodexUsage } from './trackerManagedCodexUsage';
+import { trackerManagedUsage } from './trackerManagedUsage';
+import { trackerStartupCause } from './trackerStartupCause';
 import { trackerManagedVerification } from './trackerManagedVerification';
 import {
 	confirmManagedStartupAbsent,
@@ -55,7 +56,7 @@ export function trackerManagedHostLauncher(
 	const trackerExecutable = controlledTrackerExecutable(join(trackerBin, 'harness'));
 	const profiles = validateManagedProfiles(config);
 	return {
-		readUsage: trackerManagedCodexUsage(
+		readUsage: trackerManagedUsage(
 			directory,
 			platform === 'darwin' ? profiles.native?.profile : undefined,
 			transcriptRoots
@@ -102,6 +103,7 @@ async function startManagedSession(
 		const reason = await trackerClaudeAuthProblem(trackerBin, command, signal);
 		if (reason) return { status: 'rejected', reason };
 	}
+	let refusal: string | undefined;
 	if (reserveLaunchDirectory(runDirectory)) {
 		const plan = await prepareManagedLaunch(
 			{ directory: runDirectory, script, briefPath },
@@ -109,9 +111,15 @@ async function startManagedSession(
 			client,
 			signal
 		);
-		if (!plan) return { status: 'rejected' };
-		await launchTmux(
-			{ tmux, trackerBin, trackerExecutable, worktree: plan.worktree },
+		if ('failure' in plan) return { status: 'rejected', detail: trackerStartupCause(plan.failure) };
+		refusal = await launchTmux(
+			{
+				tmux,
+				trackerBin,
+				trackerExecutable,
+				worktree: plan.worktree,
+				windowName: input.sessionName
+			},
 			plan.receipt,
 			{ script, command, clientPath: plan.clientPath, guestAuthFile: plan.guestAuthFile },
 			signal
@@ -121,11 +129,18 @@ async function startManagedSession(
 		{ directory, tmux, node: input.node, key: input.key },
 		signal
 	);
+	// tmux can fail after the worker ran, so its refusal only counts without a session.
+	if (!session && refusal) throw new Error(refusal);
 	return managedStartReply(session);
 }
 
 function managedStartReply(session: TrackerHostSession | undefined): TrackerHostStartReply {
-	if (session?.startupFailure) return { status: 'rejected', reason: session.startupFailure };
+	if (session?.startupFailure)
+		return {
+			status: 'rejected',
+			reason: session.startupFailure,
+			...(session.diagnostic && { detail: session.diagnostic })
+		};
 	return session ? { status: 'started', session } : { status: 'pending' };
 }
 
@@ -152,7 +167,7 @@ async function prepareManagedLaunch(
 	signal: AbortSignal
 ) {
 	const worktree = await prepareTrackerWorkingDirectory(directory, input, signal);
-	if (!worktree) return null;
+	if (typeof worktree !== 'string') return worktree;
 	const receipt: TrackerManagedReceipt = {
 		node: input.node,
 		key: input.key,

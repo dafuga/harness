@@ -96,6 +96,7 @@ export type NativeTrackerInspection =
 
 export interface NativeTrackerListedRun extends TrackerListedRun {
 	session_name?: string | null;
+	session_id?: string | null;
 	tmux?: string | null;
 	failure_reason?: string | null;
 }

@@ -30,8 +30,10 @@ import type {
 	TrackerHostRunnerOptions,
 	TrackerHostSession
 } from './trackerHostLaunch.types';
+import { trackerHandSession } from '../../../utils/projects-sessions/trackerSessionNames';
+import type { TrackerTmuxWindow } from '../../../utils/projects-sessions/trackerSessionNames.types';
 import { trackerHostVerification } from './trackerHostVerification';
-import { trackerHostReport, withSourceRepo } from './trackerHostReport';
+import { trackerHostReport, trackerRouteSessionName, withLaunchOrigin } from './trackerHostReport';
 import { formatTrackerHostBrief } from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
 import { startTrackerHost } from './trackerHostLaunchPort';
@@ -46,6 +48,7 @@ export function trackerHostRunner(
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
 	let [sessions, panes]: [TrackerHostSession[], WatchdogPane[]] = [[], []];
+	let windows: readonly TrackerTmuxWindow[] = [];
 	const legacySession = legacySessionReader(legacyRunDirectory, () => sessions);
 	const verification = trackerHostVerification(driver, options.verifyCommand);
 	const report = trackerHostReport({ store, driver, routeFor, now }, verification);
@@ -53,7 +56,7 @@ export function trackerHostRunner(
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
 				report.retain(runs);
-				({ sessions, panes } = await trackerHostInventory(
+				({ sessions, panes, windows } = await trackerHostInventory(
 					{ store, driver, tmux, node, keys: runs.map(attemptKey), now: now() },
 					signal
 				));
@@ -71,7 +74,7 @@ export function trackerHostRunner(
 					signal
 				);
 				if (result?.type === 'session') sessions.push({ ...result.session, itemId: item.id });
-				return withSourceRepo(result, routeFor(item));
+				return withLaunchOrigin(result, routeFor(item), item);
 			},
 			legacySession,
 			confirmLegacyNeverStarted: legacyTrackerStartupProbe(
@@ -86,7 +89,9 @@ export function trackerHostRunner(
 			...optionalHostControls(driver)
 		},
 		sessions: (itemId: string) => ({
-			openSession: hasManualTrackerPane(panes, itemId),
+			openSession:
+				hasManualTrackerPane(panes, itemId) ||
+				(windows.length > 0 && trackerHandSession(windows, items.getStored(itemId))),
 			activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
 		})
 	};
@@ -141,6 +146,7 @@ async function launchApprovedItem(
 			node,
 			route,
 			reservation,
+			sessionName: trackerRouteSessionName(item, route),
 			brief: formatTrackerHostBrief(
 				item,
 				instructions,

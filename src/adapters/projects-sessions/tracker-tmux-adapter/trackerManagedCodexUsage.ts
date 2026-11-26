@@ -125,15 +125,21 @@ async function codexRolloutLines(file: FileHandle, offset: number, length: numbe
 }
 
 function lastCodexUsage(lines: readonly string[]): TrackerReceiptUsage | undefined {
-	for (let i = lines.length - 1; i >= 0; i--) {
+	let usage: TrackerReceiptUsage | undefined;
+	let balance: string | undefined;
+	for (let i = lines.length - 1; i >= 0 && !(usage && balance); i--) {
 		const line = lines[i];
 		if (!line.includes('"token_count"')) continue;
 		const row = parseCodexLine(line);
 		if (row?.type !== 'event_msg' || row.payload?.type !== 'token_count') continue;
-		const usage = codexTokenCounters(row.payload.info?.total_token_usage);
-		if (usage) return usage;
+		usage ??= codexTokenCounters(row.payload.info?.total_token_usage);
+		balance ??= creditsBalance(row.payload.rate_limits?.credits?.balance);
 	}
-	return undefined;
+	return balance ? { ...usage, credits_balance: balance } : usage;
+}
+
+function creditsBalance(value: unknown): string | undefined {
+	return typeof value === 'string' && /^\d{1,12}(?:\.\d{1,12})?$/.test(value) ? value : undefined;
 }
 
 function codexTokenCounters(usage: unknown): TrackerReceiptUsage | undefined {

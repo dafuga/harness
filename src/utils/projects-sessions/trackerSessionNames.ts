@@ -1,0 +1,54 @@
+import type { TrackerNamedItem, TrackerTmuxWindow } from './trackerSessionNames.types';
+
+/** Panes the launcher owns. Their evidence comes from run receipts, not from their names. */
+const managedSession = /^auto-[a-z0-9]{6,10}-r[0-9]+$/;
+/** Shell, process and Chief of Staff names that say nothing about which item a pane serves. */
+const genericNames = new Set([
+	'',
+	'zsh',
+	'bash',
+	'sh',
+	'fish',
+	'node',
+	'tmux',
+	'claude',
+	'codex',
+	'cos'
+]);
+
+/**
+ * "Project: title", used for the tmux window, Claude Remote Control and `runs.session_name`.
+ * tmux expands `#` sequences in window names, including `#(command)`, so they are removed.
+ */
+export function trackerSessionLabel(
+	{ title, project, agent }: Omit<TrackerNamedItem, 'id' | 'owner'>,
+	fallback = 'Tracker'
+): string {
+	const name = project || agent || fallback;
+	return `${name.charAt(0).toUpperCase()}${name.slice(1)}: ${title ?? ''}`
+		.replace(/#[({[]?/g, '')
+		.replace(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/gu, ' ')
+		.slice(0, 80);
+}
+
+/** Whether a hand-launched tmux session or window is named for this item. */
+export function trackerHandSession(
+	windows: readonly TrackerTmuxWindow[],
+	item: TrackerNamedItem
+): boolean {
+	const label = trackerSessionLabel(item, '');
+	const wanted = new Set(
+		[item.id, item.id.slice(0, 6), item.owner ?? '', label]
+			.map(comparable)
+			.filter((name) => !genericNames.has(name))
+	);
+	return windows.some(
+		({ session, window }) =>
+			!managedSession.test(session) &&
+			[session, window].some((name) => wanted.has(comparable(name)))
+	);
+}
+
+function comparable(name: string): string {
+	return name.trim().toLowerCase().replace(/\s+/g, ' ');
+}

@@ -119,6 +119,9 @@ export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['i
 	if (item.blockedReason !== undefined) fields.blocked_reason = item.blockedReason;
 	if (item.awaitingAnswer !== undefined) fields.needs_daniel = item.awaitingAnswer;
 	if (item.answeredCurrentBlock === false) fields.resolved = false;
+	// A new question replaces the earlier ask, so its choices must not stay attached.
+	if (item.question)
+		Object.assign(fields, { question: item.question, options: null, confirm: null });
 	return fields;
 }
 
