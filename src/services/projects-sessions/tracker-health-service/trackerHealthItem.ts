@@ -19,7 +19,10 @@ export async function raiseTrackerHealthItem(
 	report: TrackerHealthReport,
 	state: TrackerHealthState
 ): Promise<void> {
-	const failures = report.failing.map(({ name, detail }) => `${name}: ${detail}`).join(' | ');
+	const failures = report.failing
+		.filter(({ name }) => name !== 'backup')
+		.map(({ name, detail }) => `${name}: ${detail}`)
+		.join(' | ');
 	const question = `Tracker health on ${config.node} is failing: ${failures}`.slice(0, 1500);
 	const ask = { question, options, force: true };
 	const { item_id: id } = state;

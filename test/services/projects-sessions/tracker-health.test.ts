@@ -77,6 +77,16 @@ inTemp('an ignored health item is never raised again', async (root) => {
 	expect(writes()).toHaveLength(1);
 });
 
+inTemp(
+	'a backup failure is reported without a second ask beside the backup alert',
+	async (root) => {
+		const status = { ...healthyHubStatus(), backup: { enabled: true, last_error: 'synthetic' } };
+		const { service, writes } = await fixture(root, status);
+		expect((await service.run({ alert: true })).failing).toMatchObject([{ name: 'backup' }]);
+		expect(writes()).toEqual([]);
+	}
+);
+
 inTemp('a run without --alert records and sends nothing', async (root) => {
 	const status = healthyHubStatus();
 	status.webhook.stuck = 1;

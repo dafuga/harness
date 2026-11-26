@@ -1,0 +1,245 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-backup-service-tracker-backup-files",
+	"uid": "u_7pqvmowcxi",
+	"kind": "service",
+	"title": "trackerBackupFiles",
+	"responsibility": "Owns the trackerBackupFiles service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-backup-service/trackerBackupFiles.ts"],
+		"symbols": [
+			"assertTrackerBackupIntegrity",
+			"snapshotTrackerDatabase",
+			"gzipTrackerBackup",
+			"expandTrackerBackup",
+			"copyTrackerBackup"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "assertTrackerBackupIntegrity.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "snapshotTrackerDatabase.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "snapshotTrackerDatabase.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gzipTrackerBackup.from",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "gzipTrackerBackup.to",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "expandTrackerBackup.from",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "expandTrackerBackup.to",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "copyTrackerBackup.from",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "copyTrackerBackup.to",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "assertTrackerBackupIntegrity",
+				"type": "void"
+			},
+			{
+				"name": "snapshotTrackerDatabase",
+				"type": "void"
+			},
+			{
+				"name": "gzipTrackerBackup",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "expandTrackerBackup",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "copyTrackerBackup",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "assertTrackerBackupIntegrity",
+				"inputs": [
+					{
+						"name": "assertTrackerBackupIntegrity.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertTrackerBackupIntegrity",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "snapshotTrackerDatabase",
+				"inputs": [
+					{
+						"name": "snapshotTrackerDatabase.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "snapshotTrackerDatabase.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "snapshotTrackerDatabase",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "gzipTrackerBackup",
+				"inputs": [
+					{
+						"name": "gzipTrackerBackup.from",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "gzipTrackerBackup.to",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "gzipTrackerBackup",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "expandTrackerBackup",
+				"inputs": [
+					{
+						"name": "expandTrackerBackup.from",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "expandTrackerBackup.to",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "expandTrackerBackup",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "copyTrackerBackup",
+				"inputs": [
+					{
+						"name": "copyTrackerBackup.from",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "copyTrackerBackup.to",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "copyTrackerBackup",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.open-sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-backup-service/trackerBackupFiles.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-backup-service/trackerBackupFiles.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

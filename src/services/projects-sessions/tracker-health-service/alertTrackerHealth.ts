@@ -27,7 +27,9 @@ async function recordOnTracker(
 	report: TrackerHealthReport,
 	state: TrackerHealthState
 ): Promise<boolean> {
-	const due = trackerHealthDue(report.failing, state, 'last_alert', target.now);
+	// The backup service raises its own ask, so this one never repeats it.
+	const asked = report.failing.filter(({ name }) => name !== 'backup');
+	const due = trackerHealthDue(asked, state, 'last_alert', target.now);
 	try {
 		if (due.length) {
 			await raiseTrackerHealthItem(target.config, report, state);

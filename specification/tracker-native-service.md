@@ -547,7 +547,8 @@ Linux also checks available memory. Quiet peers, a paused webhook and disabled
 backups are information only.
 
 With `--alert`, a newly failing check flags one `Tracker health on <node>` item
-and repeats daily while it fails. A full recovery notes and closes it, and an
+and repeats daily while it fails. Backup failures are reported here but asked
+only by the backup service. A full recovery notes and closes it, and an
 ignored item is never raised again. An alerting run waits 20 seconds and asks
 the API again before calling it down. When the Tracker cannot record the alert,
 or the webhook check fails, it also posts to the URL in `health-fallback.url`
