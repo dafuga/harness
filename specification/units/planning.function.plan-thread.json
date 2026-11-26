@@ -425,7 +425,7 @@
 				"outputs": [
 					{
 						"name": "planThread",
-						"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<PlanThread>>",
+						"type": "Promise<Committed<PlanThread>>",
 						"description": "Resolved commit metadata (commit, parent, branch and paths, which are the thread.json and messages.ndjson files) with value, the new PlanThread: its pin is one more than the thread count of the current plan, and messages holds the first message only when one was given. Image anchors are checked at the viewed revision and again at the current plan.",
 						"examples": [
 							{
@@ -601,7 +601,7 @@
 				"outputs": [
 					{
 						"name": "append",
-						"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').Committed<ThreadMessage>>",
+						"type": "Promise<Committed<ThreadMessage>>",
 						"description": "Resolved commit metadata (commit, parent, branch and paths, which hold only the thread's messages.ndjson) with value, the appended ThreadMessage: sequence is the thread's message count plus one, and previous is the SHA-256 of the prior line, or of thread.json for the first message. An absent agent defaults to null, absent references to [], and a change without changedPaths or error gets [] and null.",
 						"examples": [
 							{
@@ -779,6 +779,11 @@
 		},
 		{
 			"unit": "planning.model.planning-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "planning.model.planning-view-types",
 			"via": "import",
 			"origin": "derived"
 		}

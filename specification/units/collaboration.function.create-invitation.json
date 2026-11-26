@@ -258,7 +258,7 @@
 				"outputs": [
 					{
 						"name": "acceptInvitation",
-						"type": "Promise<import(\"../../../models/planning-collaboration/Collaboration.types\").ProjectSummary>",
+						"type": "Promise<ProjectSummary>",
 						"description": "Resolves to the project summary with the actor's role after acceptance. It creates a member only when none exists, retains an existing member's role, and marks the invitation accepted.",
 						"examples": [
 							{

@@ -1224,7 +1224,7 @@
 				"outputs": [
 					{
 						"name": "GitSourceAdapter.documentation",
-						"type": "Promise<import(\"../../../../../../../src/utils/unit-documentation/unitDocumentation\").UnitDocumentation | undefined>",
+						"type": "Promise<UnitDocumentation | undefined>",
 						"description": "Returns undefined when the unit has no documentation field; otherwise returns the result of readUnitDocumentation using Git text from the resolved commit. The documentation result shape is determined by that reader."
 					}
 				],

@@ -9,6 +9,7 @@ import { DeploymentSnapshotVerificationError } from './verifyDeploymentSnapshot.
 import { deploymentProof } from '../projects-sessions/deploymentProof';
 import { deploymentState } from '../projects-sessions/deploymentState';
 import { gitRead, gitRevision } from '../projects-sessions/gitRead';
+import type { CloudflareTarget } from '../../models/development-tooling/Deployment.types';
 
 async function configuration(root: string, reviewed: ReviewedDeployment, plugin: DeploymentPlugin) {
 	const config = await plugin.discover(root);
@@ -23,7 +24,7 @@ async function configuration(root: string, reviewed: ReviewedDeployment, plugin:
 export async function captureDeploymentTarget(
 	reviewed: ReviewedDeployment,
 	plugin: DeploymentPlugin
-) {
+): Promise<{ target: CloudflareTarget; destination: DeploymentReceipt | null }> {
 	const config = await configuration(reviewed.root, reviewed, plugin);
 	const environments = deploymentEnvironments.filter((item) => config.targets[item]);
 	const previous = environments[environments.indexOf(reviewed.plan.environment) - 1];
