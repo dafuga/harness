@@ -18,11 +18,11 @@ export function composeTrackerResponder(
 ) {
 	const { syncResponder, role, now = Date.now } = options;
 	if (!syncResponder) return undefined;
-	const runStore = role === 'hub' ? () => runs : undefined;
 	const duePolicy = role === 'hub' ? trackerHubDuePolicy(store, now) : undefined;
 	const { scheduler, ...permits } = composed;
 	return new TrackerHubSyncService({
-		runs: runStore,
+		// A spoke's responder serves its Mac peer, which exchanges run history while the hub is down.
+		runs: () => runs,
 		duePolicy,
 		...permits,
 		...syncResponder,

@@ -1,0 +1,3 @@
+{"event":"loop.created","timestamp":"2026-11-26T17:49:16.367Z","name":"cj5n05-spoke-health-fallback","goal":"A spoke that cannot reach the hub sends its health alert on the backup channel","template":"bug-fix","templateLineage":["bug-fix"]}
+{"event":"step.completed","timestamp":"2026-11-26T18:08:49.478Z","loop":"cj5n05-spoke-health-fallback","step":"spec","evidence":"A spoke with the hub down fails only hub_link; its local API queues the health ask, so no fallback is posted. Expected: the fallback is posted after quiet hours."}
+{"event":"step.completed","timestamp":"2026-11-26T18:08:51.573Z","loop":"cj5n05-spoke-health-fallback","step":"coverage","evidence":"tracker-health-fallback.test.ts only ran hub nodes; added the unlinked-spoke fixture and scenario there."}

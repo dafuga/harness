@@ -39,7 +39,7 @@ export function trackerUpstreamLink(
 			});
 			if (!response.ok) {
 				await response.body?.cancel();
-				throw new TrackerNodeTransportError('Tracker signed sync request failed');
+				throw new TrackerNodeTransportError('Tracker signed sync request failed', response.status);
 			}
 			return response.json();
 		}
