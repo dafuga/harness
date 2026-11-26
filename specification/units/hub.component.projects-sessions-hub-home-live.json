@@ -28,24 +28,27 @@
 		"symbols": ["HubHomeLive"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeLive.reading",
 				"type": "LinkedHome | null",
-				"required": true
+				"required": true,
+				"description": "What the linked computers last answered; null while the first answer is awaited."
 			},
 			{
 				"name": "HubHomeLive.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The current time in milliseconds, used for run ages."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeLive",
-				"type": "markup"
+				"type": "markup",
+				"description": "The Live overview section: every reported project, or a notice saying why nothing current can be shown."
 			}
 		],
 		"errors": [],

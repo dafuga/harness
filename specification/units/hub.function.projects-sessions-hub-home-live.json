@@ -24,103 +24,124 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "stageLabel.stage",
 				"type": "HomeWorkRow['stage']",
-				"required": true
+				"required": true,
+				"description": "The planning stage Tracker records, or null when it reports none."
 			},
 			{
 				"name": "workStateLabel.row",
 				"type": "HomeWorkRow",
-				"required": true
+				"required": true,
+				"description": "The row whose run state and latest recorded outcome are worded."
 			},
 			{
 				"name": "span.from",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The earlier moment, as an ISO time."
 			},
 			{
 				"name": "span.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The current time in milliseconds."
 			},
 			{
 				"name": "workAge.row",
 				"type": "HomeWorkRow",
-				"required": true
+				"required": true,
+				"description": "The row whose run age and last change are worded."
 			},
 			{
 				"name": "workAge.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The current time in milliseconds."
 			},
 			{
 				"name": "workFacts.row",
 				"type": "HomeWorkRow",
-				"required": true
+				"required": true,
+				"description": "The row whose owner, computer and model are listed."
 			},
 			{
 				"name": "liveSummary.overview",
 				"type": "HomeLiveOverview",
-				"required": true
+				"required": true,
+				"description": "The overview being totalled."
 			},
 			{
 				"name": "projectSummary.project",
 				"type": "HomeWorkProject",
-				"required": true
+				"required": true,
+				"description": "The project whose running and status counts are worded."
 			},
 			{
 				"name": "liveNotice.reading",
 				"type": "LinkedHome | null",
-				"required": true
+				"required": true,
+				"description": "What the linked computers last answered, or null before the first answer."
 			}
 		],
 		"outputs": [
 			{
 				"name": "stageLabels",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The words for each of the four planning stages."
 			},
 			{
 				"name": "workStateLabels",
-				"type": "Record<HomeWorkState, string>"
+				"type": "Record<HomeWorkState, string>",
+				"description": "The words for each run state."
 			},
 			{
 				"name": "statusWords",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The words for each Tracker task status."
 			},
 			{
 				"name": "stageLabel",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The stage in words, or that the stage was not reported."
 			},
 			{
 				"name": "workStateLabel",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The run state in words, with the recorded outcome when there is one."
 			},
 			{
 				"name": "span",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The elapsed time in its largest whole unit."
 			},
 			{
 				"name": "workAge",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "How long the run has been going or waiting, and how long ago the task changed."
 			},
 			{
 				"name": "workFacts",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Owner, computer and model, each saying so when Tracker does not know it."
 			},
 			{
 				"name": "liveSummary",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The totals of live runs, the computers they run on and the projects listed."
 			},
 			{
 				"name": "projectSummary",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "The non-zero counts of a project in one line."
 			},
 			{
 				"name": "liveNotice",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Why no overview can be shown, or null when there is one to show."
 			}
 		],
 		"errors": [],
@@ -132,13 +153,15 @@
 					{
 						"name": "stageLabel.stage",
 						"type": "HomeWorkRow['stage']",
-						"required": true
+						"required": true,
+						"description": "The planning stage Tracker records, or null when it reports none."
 					}
 				],
 				"outputs": [
 					{
 						"name": "stageLabel",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The stage in words, or that the stage was not reported."
 					}
 				],
 				"errors": [],
@@ -150,13 +173,15 @@
 					{
 						"name": "workStateLabel.row",
 						"type": "HomeWorkRow",
-						"required": true
+						"required": true,
+						"description": "The row whose run state and latest recorded outcome are worded."
 					}
 				],
 				"outputs": [
 					{
 						"name": "workStateLabel",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The run state in words, with the recorded outcome when there is one."
 					}
 				],
 				"errors": [],
@@ -168,18 +193,21 @@
 					{
 						"name": "span.from",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The earlier moment, as an ISO time."
 					},
 					{
 						"name": "span.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The current time in milliseconds."
 					}
 				],
 				"outputs": [
 					{
 						"name": "span",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The elapsed time in its largest whole unit."
 					}
 				],
 				"errors": [],
@@ -191,18 +219,21 @@
 					{
 						"name": "workAge.row",
 						"type": "HomeWorkRow",
-						"required": true
+						"required": true,
+						"description": "The row whose run age and last change are worded."
 					},
 					{
 						"name": "workAge.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "The current time in milliseconds."
 					}
 				],
 				"outputs": [
 					{
 						"name": "workAge",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "How long the run has been going or waiting, and how long ago the task changed."
 					}
 				],
 				"errors": [],
@@ -214,13 +245,15 @@
 					{
 						"name": "workFacts.row",
 						"type": "HomeWorkRow",
-						"required": true
+						"required": true,
+						"description": "The row whose owner, computer and model are listed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "workFacts",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Owner, computer and model, each saying so when Tracker does not know it."
 					}
 				],
 				"errors": [],
@@ -232,13 +265,15 @@
 					{
 						"name": "liveSummary.overview",
 						"type": "HomeLiveOverview",
-						"required": true
+						"required": true,
+						"description": "The overview being totalled."
 					}
 				],
 				"outputs": [
 					{
 						"name": "liveSummary",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The totals of live runs, the computers they run on and the projects listed."
 					}
 				],
 				"errors": [],
@@ -250,13 +285,15 @@
 					{
 						"name": "projectSummary.project",
 						"type": "HomeWorkProject",
-						"required": true
+						"required": true,
+						"description": "The project whose running and status counts are worded."
 					}
 				],
 				"outputs": [
 					{
 						"name": "projectSummary",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "The non-zero counts of a project in one line."
 					}
 				],
 				"errors": [],
@@ -268,13 +305,15 @@
 					{
 						"name": "liveNotice.reading",
 						"type": "LinkedHome | null",
-						"required": true
+						"required": true,
+						"description": "What the linked computers last answered, or null before the first answer."
 					}
 				],
 				"outputs": [
 					{
 						"name": "liveNotice",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "Why no overview can be shown, or null when there is one to show."
 					}
 				],
 				"errors": [],

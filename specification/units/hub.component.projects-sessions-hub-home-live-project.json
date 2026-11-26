@@ -24,24 +24,27 @@
 		"symbols": ["HubHomeLiveProject"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "HubHomeLiveProject.project",
 				"type": "HomeWorkProject",
-				"required": true
+				"required": true,
+				"description": "One project with its task counts and its rows, already in the order to show them."
 			},
 			{
 				"name": "HubHomeLiveProject.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The current time in milliseconds, used for run ages."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeLiveProject",
-				"type": "markup"
+				"type": "markup",
+				"description": "A foldable project group, open while it has a live run, with the resting rows past the first few behind a button."
 			}
 		],
 		"errors": [],
