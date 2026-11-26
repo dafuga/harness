@@ -25,6 +25,7 @@
 			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerNodeInspection.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerDigestSession.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeListeners.ts",
@@ -45,12 +46,15 @@
 			"holdLegacySupervisorSocket",
 			"readTrackerBackupList",
 			"readTrackerNodeInspection",
+			"trackerDigestSession",
 			"loadTrackerNodeConfig",
 			"trackerSyncPort",
 			"verifyTrackerLegacyFence",
 			"verifyTrackerDatabasePath",
 			"readPrivateText",
 			"readPrivateJson",
+			"TrackerNodeSessionTarget",
+			"TrackerNodeTarget",
 			"TrackerUpstream",
 			"TrackerNodeConfig",
 			"bindTrackerListener",
@@ -115,6 +119,26 @@
 			{
 				"name": "readTrackerNodeInspection.supervisor",
 				"type": "TrackerSupervisorService",
+				"required": true
+			},
+			{
+				"name": "trackerDigestSession.cli",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "trackerDigestSession.session",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "trackerDigestSession.tmux",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "trackerDigestSession.node",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -267,6 +291,10 @@
 			{
 				"name": "readTrackerNodeInspection",
 				"type": "Response | undefined"
+			},
+			{
+				"name": "trackerDigestSession",
+				"type": "unknown"
 			},
 			{
 				"name": "loadTrackerNodeConfig",
@@ -477,6 +505,39 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerDigestSession",
+				"inputs": [
+					{
+						"name": "trackerDigestSession.cli",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "trackerDigestSession.session",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "trackerDigestSession.tmux",
+						"type": "unknown",
+						"required": true
+					},
+					{
+						"name": "trackerDigestSession.node",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDigestSession",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "loadTrackerNodeConfig",
@@ -842,6 +903,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.projects-sessions-tracker-tmux",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.agents-providers-parse-tracker-model-spec",
 			"via": "import",
 			"origin": "derived"
@@ -913,6 +979,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-supervisor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-watchdog-pane",
 			"via": "import",
 			"origin": "derived"
 		}
