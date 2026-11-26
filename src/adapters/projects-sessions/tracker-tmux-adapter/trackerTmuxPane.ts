@@ -106,9 +106,19 @@ export function matchesTrackerTmuxPane(
 	);
 }
 
+const sentReceipt = 'display-message -p tracker-watchdog-sent';
+
 export function trackerTmuxKeys(paneId: string, message?: string): string {
-	const enter = `send-keys -t ${paneId} Enter ; display-message -p tracker-watchdog-sent`;
+	const enter = `send-keys -t ${paneId} Enter ; ${sentReceipt}`;
 	if (message === undefined) return enter;
-	const literal = "'" + message.replaceAll("'", "'\\''") + "'";
-	return `send-keys -t ${paneId} -l ${literal} ; ${enter}`;
+	return `${typedText(paneId, message)} ; ${enter}`;
+}
+
+/** Type a message and leave it unsent. */
+export function trackerTmuxText(paneId: string, message: string): string {
+	return `${typedText(paneId, message)} ; ${sentReceipt}`;
+}
+
+function typedText(paneId: string, message: string): string {
+	return `send-keys -t ${paneId} -l '${message.replaceAll("'", "'\\''")}'`;
 }
