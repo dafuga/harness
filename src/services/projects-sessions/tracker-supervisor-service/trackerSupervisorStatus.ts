@@ -1,5 +1,5 @@
 // @harness-uid u_46eur7qage
-import { z } from 'zod';
+import type { z } from 'zod';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import {
 	canonicalNode,
@@ -7,6 +7,11 @@ import {
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import { trackerRunnerSample } from '../tracker-native-runtime-service/nativeTrackerLinks';
+import {
+	machineOffline,
+	trackerMachineSamples,
+	trackerRequestWaits
+} from '../tracker-native-runtime-service/trackerLaunchWait';
 import type { TrackerSupervisorViews } from '../TrackerSupervisorService.types';
 
 export function trackerSupervisorStatus(
@@ -79,7 +84,7 @@ function trackerJobsStatus({ store, recurring }: TrackerNativeRuntimeService) {
 function trackerAutolaunchStatus(runtime: TrackerNativeRuntimeService) {
 	const runs = activeRunCounts(runtime.store.database);
 	const now = runtime.now();
-	const samples = machineSamplesByNode(runtime.fleetSamples?.() ?? []);
+	const samples = trackerMachineSamples(runtime);
 	const status = runtime.scheduler?.status();
 	return {
 		enabled: status?.enabled ?? false,
@@ -91,6 +96,7 @@ function trackerAutolaunchStatus(runtime: TrackerNativeRuntimeService) {
 			return reason ? { ...item, reason } : item;
 		}),
 		active_runs: runs.active,
+		...trackerRequestWaits(runtime),
 		computers: trackerFleetHealth(runtime, runs.started, { now, samples })
 	};
 }
@@ -109,11 +115,10 @@ function activeRunCounts(database: SqliteDatabase) {
 	};
 }
 
-const machineSample = z.object({ node: z.string().min(1), at: z.string(), runner: z.unknown() });
 function trackerFleetHealth(
 	runtime: TrackerNativeRuntimeService,
 	startedRuns: number,
-	{ now, samples }: { now: number; samples: ReturnType<typeof machineSamplesByNode> }
+	{ now, samples }: { now: number; samples: ReturnType<typeof trackerMachineSamples> }
 ) {
 	const { store, scheduler, fleetSamples } = runtime;
 	const localRunner: z.infer<typeof trackerRunnerSample> = scheduler?.runnerStatus() ?? {
@@ -133,10 +138,6 @@ function trackerFleetHealth(
 	});
 }
 
-function machineOffline(sampledAt: string | undefined, now: number) {
-	return !sampledAt || now - Date.parse(sampledAt) > 300_000;
-}
-
 function fleetRunnerDetails(
 	{
 		last_tick_at = null,
@@ -146,15 +147,6 @@ function fleetRunnerDetails(
 	active: number | null | undefined
 ) {
 	return { last_tick_at, last_error, waiting_on, active_runs: active ?? null };
-}
-
-function machineSamplesByNode(values: readonly unknown[]) {
-	const samples = new Map<string, z.infer<typeof machineSample>>();
-	for (const value of values) {
-		const sample = machineSample.safeParse(value).data;
-		if (sample && Number.isFinite(Date.parse(sample.at))) samples.set(sample.node, sample);
-	}
-	return samples;
 }
 
 function fleetRunnerState(runner: z.infer<typeof trackerRunnerSample> | undefined, now: number) {

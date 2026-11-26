@@ -19,7 +19,7 @@ import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
 
 export function readTrackerItemDetail(item: TrackerItem, options: TrackerLocalApiOptions) {
 	const runs = options.runs?.list({ itemId: item.id }) ?? [];
-	const launch = itemLaunchStatus(item, runs);
+	const launch = itemLaunchStatus(item, runs, options);
 	return {
 		...item,
 		...(item.auto || runs.length ? { runs, launch_status: launch } : {}),
@@ -37,12 +37,16 @@ function readSchedulePreview(
 	return options.schedulePreview?.(item) ?? item.schedule_status;
 }
 
-function itemLaunchStatus(item: TrackerItem, runs: TrackerListedRun[]) {
+function itemLaunchStatus(
+	item: TrackerItem,
+	runs: TrackerListedRun[],
+	{ launchWait }: TrackerLocalApiOptions
+) {
 	if (!item.auto) return null;
 	const matching = runs.filter((run) => run.auto_token === item.auto).reverse();
 	const current =
 		matching.find((run) => run.state === 'queued') ?? matching.find((run) => run.started_at);
-	if (!current) return null;
+	if (!current) return launchWait?.(item) ?? null;
 	const computer = item.launch_target ?? current.node ?? item.computer;
 	return { computer, reason: current.outcome ?? current.state, attempt: current.attempt };
 }

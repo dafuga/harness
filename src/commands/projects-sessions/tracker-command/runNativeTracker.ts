@@ -17,7 +17,9 @@ import {
 } from './formatNativeTrackerItem';
 import {
 	formatNativeTrackerAdapterRun,
-	formatNativeTrackerInspection
+	formatNativeTrackerInspection,
+	printResponseError,
+	nativeJsonCommands
 } from './formatNativeTrackerInspection';
 import type {
 	NativeTrackerInspection,
@@ -26,6 +28,9 @@ import type {
 	NativeTrackerRunRead
 } from './nativeTrackerCli.types';
 import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
+import { formatNativeTrackerJob } from './formatNativeTrackerJob';
+import type { NativeTrackerJobResponse } from './formatNativeTrackerJob.types';
+import { nativeTrackerJobHelp } from './nativeTrackerJobRequest';
 import { trackerRequestTimeout } from './trackerRequestTimeout';
 import { withTrackerAttachments } from './withTrackerAttachments';
 
@@ -46,7 +51,9 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 	if (!args.length || args[0] === 'help' || args.includes('--help') || args.includes('-h')) {
 		console.log(
 			`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
-				'Subcommands: autolaunch [status|dry-run], adapter list|run <source> [--backfill-comments] [--dry-run], backup now|list|verify <file>|restore <file> --to <new path> [--without-local-state]'
+				'Subcommands: autolaunch [status|dry-run], adapter list|run <source> [--backfill-comments] [--dry-run], backup now|list|verify <file>|restore <file> --to <new path> [--without-local-state]' +
+				'\n' +
+				nativeTrackerJobHelp
 		);
 		return 0;
 	}
@@ -90,6 +97,8 @@ async function sendNativeTracker(
 			'x-harness-tracker-role': config.role
 		},
 		redirect: 'error',
+		// Bun's own five minute limit would cut off a long job test; the signal bounds the wait.
+		...({ timeout: false } as object),
 		signal: AbortSignal.timeout(trackerRequestTimeout(request.path))
 	});
 	const data = response.headers.get('content-type')?.startsWith('application/json')
@@ -136,17 +145,6 @@ function trackerRequestBody(command: string, { body }: NativeTrackerRequest, act
 	return command === 'ignore' || command === 'unignore' ? { ...body, by: actor } : body;
 }
 
-function printResponseError(status: number, data: { error?: string; code?: string }) {
-	if (status === 404 && !data?.error) {
-		console.error('tracker: the configured listener does not serve native Tracker commands');
-		return 3;
-	}
-	console.error(`tracker: ${data?.error ?? `HTTP ${status}`}`);
-	if (data?.code === 'ignored_duplicate') return 4;
-	if (data?.code === 'open_duplicate') return 5;
-	return 1;
-}
-
 function renderCheck(
 	data: { ignored: NativeTrackerItem[]; open: NativeTrackerItem[] },
 	json: boolean
@@ -160,14 +158,6 @@ function renderCheck(
 	return open.length ? 5 : 0;
 }
 
-const nativeJsonCommands = new Set([
-	'status',
-	'autolaunch',
-	'history',
-	'watchdog',
-	'needs-attention'
-]);
-
 function renderNativeTracker(
 	command: string,
 	data: unknown,
@@ -178,6 +168,9 @@ function renderNativeTracker(
 		return;
 	}
 	switch (command) {
+		case 'job':
+			console.log(formatNativeTrackerJob(options.first, data as NativeTrackerJobResponse));
+			return;
 		case 'ensure': {
 			const { pid, node } = data as { pid: number; node: string };
 			if (!options.quiet) console.log(`tracker running (pid ${pid}, node ${node})`);
