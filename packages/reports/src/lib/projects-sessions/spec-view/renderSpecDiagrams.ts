@@ -1,4 +1,6 @@
 // @harness-uid u_mp5eqtaxzh
+import type { Mermaid } from 'mermaid';
+
 let drawn = 0;
 
 /**
@@ -27,7 +29,7 @@ export async function renderSpecDiagrams(root: HTMLElement): Promise<void> {
 	}
 }
 
-async function drawDiagram(mermaid: typeof import('mermaid').default, block: Element) {
+async function drawDiagram(mermaid: Mermaid, block: Element) {
 	const source = block.textContent ?? '';
 	const id = `spec-diagram-${++drawn}`;
 	try {
