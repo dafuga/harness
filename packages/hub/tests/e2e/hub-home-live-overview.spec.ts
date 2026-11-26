@@ -79,6 +79,10 @@ test('a paragraph-long title keeps its row short on a phone', async ({ page }) =
 	const other = tracker.runs.filter((entry) => entry.ended_at === null)[1];
 	const short = tracker.items.find((entry) => entry.id === other.item_id)!;
 	const oneLine = await height(overview(page).getByTitle(short.title, { exact: true }));
+	// The title reads as body text, not as the bold label of a disclosure.
+	const weight = (target: typeof title) =>
+		target.evaluate((node) => getComputedStyle(node).fontWeight);
+	expect(await weight(title)).toBe(await weight(overview(page).getByRole('status')));
 	// Two lines at the most, however long the title is.
 	expect(await height(title)).toBeLessThanOrEqual(oneLine * 2 + 1);
 

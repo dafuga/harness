@@ -7,6 +7,7 @@ import type {
 } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 import { count } from './hubHomePresentation';
+import { runMoment } from './hubHomeTime';
 
 export const stageLabels = {
 	idea: 'Idea',
@@ -67,6 +68,14 @@ export function workAge(row: HomeWorkRow, now: number) {
 	if (state === 'running') return `running ${span(startedAt, now)} · ${updated}`;
 	const since = state === 'queued' ? 'queued' : 'started';
 	return `${since} ${span(startedAt, now)} ago · ${updated}`;
+}
+
+/** @pure The exact start or queue time and last Tracker change, in Lisbon time. */
+export function workTimes(row: HomeWorkRow): string {
+	const { state, startedAt, updatedAt } = row;
+	const updated = `updated ${runMoment(updatedAt)}, Lisbon time`;
+	if (!startedAt) return `Updated ${runMoment(updatedAt)}, Lisbon time`;
+	return `${state === 'queued' ? 'Queued' : 'Started'} ${runMoment(startedAt)} · ${updated}`;
 }
 
 /** @pure Who, where and with what, saying so when Tracker does not know. */
