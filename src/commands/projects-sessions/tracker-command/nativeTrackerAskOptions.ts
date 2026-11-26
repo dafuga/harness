@@ -78,3 +78,12 @@ export function nativeTrackerAnswerBody(answer: string, values: NativeTrackerAsk
 		by: values.by
 	};
 }
+
+/** A block never asks Daniel, so the legacy `--no-needs-daniel` is already the behaviour. */
+export function nativeTrackerBlockBody(reason: string, values: NativeTrackerAskValues) {
+	if (values['needs-daniel'] === true)
+		throw new TypeError(
+			'tracker block never asks Daniel; use tracker flag <id> "<question>" with --option and --recommend'
+		);
+	return { reason, force: values.force };
+}
