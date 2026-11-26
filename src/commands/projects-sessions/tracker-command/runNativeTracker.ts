@@ -7,7 +7,8 @@ import type { TrackerNodeConfig } from '../../../services/projects-sessions/trac
 import {
 	formatNativeTrackerItem,
 	formatNativeTrackerRunRead,
-	nativeItemPrefix
+	nativeItemPrefix,
+	nativeItemSuffix
 } from './formatNativeTrackerItem';
 import {
 	formatNativeTrackerAdapterRun,
@@ -96,7 +97,7 @@ async function sendNativeTracker(
 }
 
 function trackerActor(command: string, by: string | boolean | undefined, node: string): string {
-	const humanDecision = command === 'park' || command === 'move-on';
+	const humanDecision = ['park', 'move-on', 'reject'].includes(command);
 	const run = process.env.TRACKER_RUN_ID;
 	const runActor = run && /^[1-9][0-9]{0,15}$/.test(run) ? `tracker-run-${run}@${node}` : undefined;
 	if (humanDecision && runActor) return runActor;
@@ -206,5 +207,10 @@ function renderNativeTrackerItemOrReport(command: string, data: unknown, first?:
 		formatNativeTrackerInspection(command, data as NativeTrackerInspection) ??
 		formatNativeTrackerRunRead(command, data as NativeTrackerRunRead);
 	const item = data as NativeTrackerItem;
-	console.log(rendered ?? nativeItemPrefix(command, first, item) + formatNativeTrackerItem(item));
+	console.log(
+		rendered ??
+			nativeItemPrefix(command, first, item) +
+				formatNativeTrackerItem(item) +
+				nativeItemSuffix(command, item)
+	);
 }

@@ -2,6 +2,7 @@
 import { isAbsolute } from 'node:path';
 import { z } from 'zod';
 import { trackerEgressPolicy } from '../../../utils/projects-sessions/trackerEgressPolicy';
+import { hostVerify, noVerify } from './trackerHostVerifyPolicy';
 
 const absolutePath = z.string().refine(isAbsolute);
 const driver = absolutePath;
@@ -41,7 +42,11 @@ const launchPolicy = {
 	legacyRunDirectory: absolutePath.optional(),
 	repositories: z.record(
 		z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/),
-		z.strictObject({ repo: absolutePath, platform: z.enum(['linux', 'macos']) })
+		z.strictObject({
+			repo: absolutePath,
+			platform: z.enum(['linux', 'macos']),
+			verify: z.string().trim().min(1).max(2000).optional()
+		})
 	),
 	due: z.boolean().optional()
 };
@@ -97,8 +102,8 @@ export const trackerHostEffectsSchema = z.discriminatedUnion('mode', [
 		checkpoint,
 		launch: z
 			.union([
-				z.strictObject({ driver, ...launchPolicy }),
-				z.strictObject({ managed: managedLauncher, ...launchPolicy })
+				z.strictObject({ driver, ...launchPolicy }).refine(...noVerify),
+				z.strictObject({ managed: managedLauncher, ...launchPolicy }).refine(...hostVerify)
 			])
 			.optional(),
 		watchdog: z

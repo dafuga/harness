@@ -55,6 +55,8 @@ export function trackerHostLaunch(
 	const host = trackerHostRunner(store, driver, routeFor, {
 		tmux,
 		legacyRunDirectory: config.legacyRunDirectory,
+		verifyCommand: (run) =>
+			[...repositories.values()].find(({ repo }) => repo === run.source_repo)?.verify,
 		now: effects.now,
 		automaticEnabled: effects.automaticEnabled
 	});

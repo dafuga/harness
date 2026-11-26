@@ -515,8 +515,9 @@ and the verified legacy run directory and tmux inventory contain no startup evid
 Consumed tokens remain recorded for deduplication and are excluded from the pending
 dispatch scan.
 
-- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
-      and `reject`. Verify host admission, launcher limits, `ready/skipped`,
+- [x] Wire `reject` and post-done verification (see Completion review).
+- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`.
+      Verify host admission, launcher limits, `ready/skipped`,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
 - [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
@@ -530,6 +531,30 @@ dispatch scan.
       `cos-test`, `job set/list/rm/test`, and local `instructions [--check]`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
       recurring `history`, `check` match details, `rm`, and empty `list`.
+
+## Completion review
+
+- **Verify.** A managed macOS route may set `verify` to a shell command, for
+  example `"verify": "~/.bun/bin/bun run test"`. After `tracker done`, the run
+  waits in `verifying` while the command runs in that run's worktree under
+  `/bin/bash -lc`, with a clean environment and a 30 minute limit. Its process
+  group is killed on exit, timeout and shutdown. Exit 0 records `done`. Any
+  other exit reopens the item with the last output lines as a note, records
+  `failed` and retries within the normal limit. Output matching a known
+  credential format is withheld from the note. A restart runs an interrupted
+  verify again; reopening the item stops it. Runs record their checkout in
+  `source_repo`, which selects the command, so routes sharing a checkout must
+  agree. Linux (Docker) routes and external launch drivers refuse `verify`:
+  their worktrees must not run on the host. Done notifications and callbacks
+  are still sent when the session reports done, before verification.
+- **Reject.** `tracker reject ITEM [reason...]` reopens a completed item. When
+  this computer's latest attempt produced the completion, that run becomes
+  `rejected` and retries within the normal limit. Otherwise the item is only
+  reopened. It refuses an item that is not done, a run that is still finishing
+  or verifying, a run owned by another computer, and launched runs.
+- **Human redo.** When a done item has failed, rejected or timed-out attempts
+  with no active attempt and no later successful one on any computer, the
+  owning computer records `redone_by` as `human`.
 
 ## Rollback evidence
 

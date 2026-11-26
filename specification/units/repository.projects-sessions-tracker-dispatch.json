@@ -11,6 +11,7 @@
 		"source": [
 			"src/repositories/projects-sessions/TrackerDispatchRepository.ts",
 			"src/repositories/projects-sessions/TrackerDispatchRepository.types.ts",
+			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchHumanRedo.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchItemFields.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
 			"src/repositories/projects-sessions/tracker-dispatch-repository/dispatchRunRows.ts",
@@ -26,6 +27,7 @@
 			"TrackerDispatchRepository.retireLegacy",
 			"TrackerDispatchRepository.assertLegacyRollbackSafe",
 			"TrackerDispatchRepository.candidates",
+			"TrackerDispatchRepository.humanRedoCandidates",
 			"TrackerDispatchRepository.stuckRequests",
 			"TrackerDispatchRepository.readSnapshot",
 			"TrackerDispatchRepositoryOptions",
@@ -33,7 +35,9 @@
 			"TrackerDispatchRow",
 			"TrackerStoredDispatchRun",
 			"TrackerRunReservation",
+			"humanRedoCandidates",
 			"dispatchItem",
+			"trackerCompletionVersion",
 			"dispatchJournalFields",
 			"trackerStoredSchedulingHold",
 			"dispatchLaunchSource",
@@ -93,6 +97,11 @@
 				"required": true
 			},
 			{
+				"name": "humanRedoCandidates.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
 				"name": "dispatchItem.row",
 				"type": "TrackerDispatchRow",
 				"required": true
@@ -100,6 +109,16 @@
 			{
 				"name": "dispatchItem.runs",
 				"type": "readonly TrackerRunReceipt[]",
+				"required": true
+			},
+			{
+				"name": "trackerCompletionVersion.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "trackerCompletionVersion.id",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -243,6 +262,10 @@
 				"type": "TrackerDispatchCandidate[]"
 			},
 			{
+				"name": "TrackerDispatchRepository.humanRedoCandidates",
+				"type": "unknown"
+			},
+			{
 				"name": "TrackerDispatchRepository.stuckRequests",
 				"type": "unknown"
 			},
@@ -251,8 +274,16 @@
 				"type": "TrackerDispatchSnapshot"
 			},
 			{
+				"name": "humanRedoCandidates",
+				"type": "unknown"
+			},
+			{
 				"name": "dispatchItem",
 				"type": "TrackerDispatchItem"
+			},
+			{
+				"name": "trackerCompletionVersion",
+				"type": "string | undefined"
 			},
 			{
 				"name": "dispatchJournalFields",
@@ -424,6 +455,18 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "TrackerDispatchRepository.humanRedoCandidates",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerDispatchRepository.humanRedoCandidates",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerDispatchRepository.stuckRequests",
 				"inputs": [],
 				"outputs": [
@@ -454,6 +497,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "humanRedoCandidates",
+				"inputs": [
+					{
+						"name": "humanRedoCandidates.database",
+						"type": "SqliteDatabase",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "humanRedoCandidates",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "dispatchItem",
 				"inputs": [
 					{
@@ -471,6 +532,29 @@
 					{
 						"name": "dispatchItem",
 						"type": "TrackerDispatchItem"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCompletionVersion",
+				"inputs": [
+					{
+						"name": "trackerCompletionVersion.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "trackerCompletionVersion.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCompletionVersion",
+						"type": "string | undefined"
 					}
 				],
 				"errors": [],

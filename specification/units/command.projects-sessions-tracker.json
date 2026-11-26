@@ -14,6 +14,7 @@
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerItem.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAskOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerInspectionRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerPlanningRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerRequest.ts",
@@ -27,6 +28,7 @@
 			"formatNativeTrackerInspection",
 			"formatNativeTrackerAdapterRun",
 			"formatNativeTrackerItem",
+			"nativeItemSuffix",
 			"nativeItemPrefix",
 			"formatNativeTrackerRunRead",
 			"formatListedRun",
@@ -44,11 +46,11 @@
 			"NativeTrackerRunReport",
 			"NativeTrackerPick",
 			"NativeTrackerRunRead",
+			"nativeTrackerInspectionRequest",
 			"nativeTrackerCommonOptions",
 			"itemFields",
 			"nativeTrackerCommandOptions",
 			"nativeTrackerIdVerbs",
-			"nativeTrackerInspectionRequest",
 			"launchAction",
 			"nativeTrackerPlanningRequest",
 			"nativeTrackerCommands",
@@ -88,6 +90,16 @@
 			},
 			{
 				"name": "formatNativeTrackerItem.item",
+				"type": "NativeTrackerItem",
+				"required": true
+			},
+			{
+				"name": "nativeItemSuffix.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeItemSuffix.item",
 				"type": "NativeTrackerItem",
 				"required": true
 			},
@@ -147,11 +159,6 @@
 				"required": true
 			},
 			{
-				"name": "itemFields.input",
-				"type": "Record<string, string | boolean | string[] | undefined>",
-				"required": true
-			},
-			{
 				"name": "nativeTrackerInspectionRequest.command",
 				"type": "string",
 				"required": true
@@ -164,6 +171,11 @@
 			{
 				"name": "nativeTrackerInspectionRequest.values",
 				"type": "Record<string, string | boolean | undefined>",
+				"required": true
+			},
+			{
+				"name": "itemFields.input",
+				"type": "Record<string, string | boolean | string[] | undefined>",
 				"required": true
 			},
 			{
@@ -249,6 +261,10 @@
 				"type": "string"
 			},
 			{
+				"name": "nativeItemSuffix",
+				"type": "unknown"
+			},
+			{
 				"name": "nativeItemPrefix",
 				"type": "unknown"
 			},
@@ -273,6 +289,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "nativeTrackerInspectionRequest",
+				"type": "NativeTrackerRequest | undefined"
+			},
+			{
 				"name": "nativeTrackerCommonOptions",
 				"type": "unknown"
 			},
@@ -287,10 +307,6 @@
 			{
 				"name": "nativeTrackerIdVerbs",
 				"type": "unknown"
-			},
-			{
-				"name": "nativeTrackerInspectionRequest",
-				"type": "NativeTrackerRequest | undefined"
 			},
 			{
 				"name": "launchAction",
@@ -423,6 +439,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeItemSuffix",
+				"inputs": [
+					{
+						"name": "nativeItemSuffix.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeItemSuffix.item",
+						"type": "NativeTrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeItemSuffix",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "nativeItemPrefix",
@@ -563,24 +602,6 @@
 				"errorStatus": "none-found"
 			},
 			{
-				"name": "itemFields",
-				"inputs": [
-					{
-						"name": "itemFields.input",
-						"type": "Record<string, string | boolean | string[] | undefined>",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "itemFields",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "nativeTrackerInspectionRequest",
 				"inputs": [
 					{
@@ -603,6 +624,24 @@
 					{
 						"name": "nativeTrackerInspectionRequest",
 						"type": "NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "itemFields",
+				"inputs": [
+					{
+						"name": "itemFields.input",
+						"type": "Record<string, string | boolean | string[] | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "itemFields",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
