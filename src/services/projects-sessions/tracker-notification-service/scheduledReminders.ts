@@ -1,6 +1,4 @@
 // @harness-uid u_vqnqshfas2
-import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
-import { quietHourBoundary } from '../../../helpers/attention-timing/quietHourBoundary';
 import type {
 	TrackerDestination,
 	TrackerNotificationItem,
@@ -8,14 +6,7 @@ import type {
 	TrackerNotificationSource
 } from '../TrackerNotificationService.types';
 import { callbackRequest, webhookRequest } from './deliveryRequest';
-import {
-	activeItem,
-	askQuietHours,
-	eventId,
-	isoTime,
-	parkedUntil,
-	readyRows
-} from './notificationRules';
+import { activeItem, eventId, isoTime, parkedUntil, readyRows } from './notificationRules';
 import type { DeliveryAttempt, TrackerNotificationState } from './notificationState.types';
 
 function scheduledKey(item: TrackerNotificationItem): string {
@@ -54,7 +45,7 @@ export function scanScheduledReminders(
 				kind: 'scheduled',
 				status: 'active',
 				createdAt: at,
-				nextAt: item.kind === 'reminder' ? quietHourBoundary(at, askQuietHours) : at,
+				nextAt: at,
 				pings: 0
 			});
 	}
@@ -80,8 +71,7 @@ export function nextScheduledReminder(
 			row.status = 'closed';
 			continue;
 		}
-		if (parkedUntil(item) > now || (item.kind === 'reminder' && isQuietHour(now, askQuietHours)))
-			continue;
+		if (parkedUntil(item) > now) continue;
 		const request = scheduledRequest(
 			item,
 			eventId(row.pings ? [row.key, String(row.pings)] : [row.key]),

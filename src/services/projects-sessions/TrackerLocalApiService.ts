@@ -12,6 +12,8 @@ import {
 } from './tracker-local-api-service/trackerLocalItemMutation';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
+import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
+import { phoneReplicaResponse } from './tracker-local-api-service/trackerPhoneReplicaResponse';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
@@ -20,7 +22,6 @@ import {
 	readTrackerRunEndpoint
 } from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
-import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import {
 	isTrackerManualLaunch,
 	planTrackerManualLaunch
@@ -38,7 +39,10 @@ export class TrackerLocalApiService {
 		try {
 			const url = new URL(request.url);
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
-			const phone = phoneReplicaResponse(request, url, this.options.phoneReplica);
+			const phone = phoneReplicaResponse(request, url, {
+				replica: this.options.phoneReplica,
+				respond: trackerResponse
+			});
 			if (phone) return await phone;
 			const special = trackerItemSpecialResponse(request, parts, {
 				store: this.store,
@@ -145,11 +149,15 @@ function trackerItemSpecialResponse(
 		options: TrackerLocalApiOptions;
 	}
 ): Promise<Response> | undefined {
-	if (!/^items\/[^/]+\/(?:inbox|stage|artifact)$/.test(parts.join('/'))) return undefined;
+	if (!/^items\/[^/]+\/(?:inbox|stage|artifact|reject)$/.test(parts.join('/'))) return undefined;
 	const [, id, verb] = parts;
 	const actor = readActor(request.headers);
 	if (verb === 'inbox')
 		return trackerInboxItem(request, id, { ...dependencies, actor }).then((item) =>
+			trackerResponse(200, item)
+		);
+	if (request.method === 'POST' && verb === 'reject')
+		return trackerRejectItem(request, id, { ...dependencies, actor }).then((item) =>
 			trackerResponse(200, item)
 		);
 	if (request.method !== 'POST' || (verb !== 'stage' && verb !== 'artifact')) return undefined;
@@ -163,26 +171,6 @@ function trackerItemSpecialResponse(
 	).then((item) => trackerResponse(200, item));
 }
 
-function phoneReplicaResponse(request: Request, url: URL, replica?: TrackerPhoneReplicaService) {
-	if (!replica) return undefined;
-	if (request.method === 'GET' && url.pathname === '/phone-replica/v1')
-		return replica.pull(url.searchParams);
-	if (request.method === 'POST' && url.pathname === '/phone-replica/v1/write')
-		return phoneWrite(request, replica);
-	return undefined;
-}
-
-async function phoneWrite(
-	request: Request,
-	replica: TrackerPhoneReplicaService
-): Promise<Response> {
-	const { writer } = replica;
-	const scope = writer?.scope(request.headers);
-	if (!writer || !scope) return trackerResponse(403, { status: 'denied' });
-	const body = await readItemBody(request, 4096);
-	request.signal.throwIfAborted();
-	return trackerResponse(200, writer.push(scope, body));
-}
 function readActor(headers: Headers): string | null {
 	const actor = headers
 		.get('x-tracker-as')

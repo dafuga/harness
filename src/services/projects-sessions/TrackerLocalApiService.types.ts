@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import type { TrackerDispatchResult } from '../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type { PhoneReplicaWriteGrant } from './tracker-phone-replica-service/PhoneReplicaWriteService.types';
 import type { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -11,6 +12,8 @@ import type {
 } from '../../utils/projects-sessions/planTrackerItemMutation.types';
 
 export interface TrackerLocalApiOptions {
+	/** Record a rejected completion through the launcher that owns its run. */
+	reject?(itemId: string, reason: string): Promise<TrackerDispatchResult>;
 	now?: () => number;
 	phoneReplica?: TrackerPhoneReplicaService;
 	phoneWrite?: PhoneReplicaWriteGrant;

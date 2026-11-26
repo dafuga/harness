@@ -120,9 +120,10 @@ operator verifies the stopped database and chooses a rollback.
   delivery receipts before enabling sending. Shell command targets and
   legacy custom webhook headers require separate integration.
 - **30-minute digest.** The hub's `webhook` target gets updates and new
-  needs-Daniel asks as one batch, at most once every 30 minutes. Asks hold
-  from 22:00 to 08:00 Lisbon time. Ask escalations and explicit reminders
-  keep their own timing. A target is a webhook, such as the Grok Bot Chief
+  needs-Daniel asks as one batch, at most once every 30 minutes. Quiet
+  hours apply only to what is meant for Daniel. Chief of Staff and agents
+  get asks, done and blocked lines, due events and reminders at any hour;
+  Chief of Staff holds asks for Daniel until 08:00 Lisbon. A target is a webhook, such as the Grok Bot Chief
   of Staff, or a local tmux session running Claude Code or Codex:
 
   ```json
@@ -140,7 +141,7 @@ operator verifies the stopped database and chooses a rollback.
   To switch, change `webhook` to another target ID and restart the service.
   Queued lines go to the new target. Session targets are digest only. Tracker
   types into one only while its composer is idle; a busy session is retried
-  after two minutes. Outside quiet hours each digest adds the next entry of
+  after two minutes. From 08:00 to 22:00 Lisbon each digest adds the next entry of
   `suggestions`; an empty list turns them off. Setting `webhook` also starts
   the hub's recurring scheduler.
 
@@ -205,9 +206,9 @@ operator verifies the stopped database and chooses a rollback.
   tick can still read `tracker list --flagged --json` for decisions.
 
   Tracker sends the first ask, follows up two and six hours after the first
-  delivery, then repeats at 08:00 Lisbon each morning. Quiet hours run from
-  22:00 through 08:00. A quiet-hour follow-up waits for morning. If both
-  follow-up times have passed, the next repeat waits for the following morning.
+  delivery, then repeats at 08:00 Lisbon each morning. These reach Chief of
+  Staff at any hour. If both follow-up times have passed, the next repeat
+  waits for the next 08:00.
   Each ping includes how long the ask has waited. The digest shows every
   open ask, including deferred and completed-item asks. Record Daniel's
   answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an
@@ -446,7 +447,7 @@ to create an item that only delivers reminders. Use
 or `tracker remind <id> --at <time>` to snooze a reminder. Reminder items
 never start or recover a session, including when an explicit launch is
 requested. The hub delivers to Chief of Staff at the scheduled time,
-defers overnight reminders to 08:00 Lisbon, and follows up after two
+including overnight, and follows up after two
 hours, six hours, and at 08:00 daily until the item is done or snoozed.
 
 ### Scheduled reminders on other items
@@ -515,8 +516,9 @@ and the verified legacy run directory and tmux inventory contain no startup evid
 Consumed tokens remain recorded for deduplication and are excluded from the pending
 dispatch scan.
 
-- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`
-      and `reject`. Verify host admission, launcher limits, `ready/skipped`,
+- [x] Wire `reject` and post-done verification (see Completion review).
+- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`.
+      Verify host admission, launcher limits, `ready/skipped`,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
 - [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
@@ -530,6 +532,30 @@ dispatch scan.
       `cos-test`, `job set/list/rm/test`, and local `instructions [--check]`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
       recurring `history`, `check` match details, `rm`, and empty `list`.
+
+## Completion review
+
+- **Verify.** A managed macOS route may set `verify` to a shell command, for
+  example `"verify": "~/.bun/bin/bun run test"`. After `tracker done`, the run
+  waits in `verifying` while the command runs in that run's worktree under
+  `/bin/bash -lc`, with a clean environment and a 30 minute limit. Its process
+  group is killed on exit, timeout and shutdown. Exit 0 records `done`. Any
+  other exit reopens the item with the last output lines as a note, records
+  `failed` and retries within the normal limit. Output matching a known
+  credential format is withheld from the note. A restart runs an interrupted
+  verify again; reopening the item stops it. Runs record their checkout in
+  `source_repo`, which selects the command, so routes sharing a checkout must
+  agree. Linux (Docker) routes and external launch drivers refuse `verify`:
+  their worktrees must not run on the host. Done notifications and callbacks
+  are still sent when the session reports done, before verification.
+- **Reject.** `tracker reject ITEM [reason...]` reopens a completed item. When
+  this computer's latest attempt produced the completion, that run becomes
+  `rejected` and retries within the normal limit. Otherwise the item is only
+  reopened. It refuses an item that is not done, a run that is still finishing
+  or verifying, a run owned by another computer, and launched runs.
+- **Human redo.** When a done item has failed, rejected or timed-out attempts
+  with no active attempt and no later successful one on any computer, the
+  owning computer records `redone_by` as `human`.
 
 ## Rollback evidence
 

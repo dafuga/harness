@@ -1,7 +1,6 @@
 // @harness-uid u_vqnqshfas2
 import { createHash } from 'node:crypto';
 import { nextReminderSlotAt } from '../../../helpers/attention-timing/nextReminderSlotAt';
-import { quietHourBoundary } from '../../../helpers/attention-timing/quietHourBoundary';
 import { wallClockToEpochMs } from '../../../helpers/attention-timing/wallClockToEpochMs';
 import { zonedWallClock } from '../../../helpers/attention-timing/zonedWallClock';
 import type {
@@ -11,12 +10,12 @@ import type {
 
 export const minute = 60_000;
 const lisbon = 'Europe/Lisbon';
-export const askQuietHours = { start: '22:00', end: '08:00', tz: lisbon };
+/** Quiet hours cover only what is meant for Daniel. Chief of Staff and agents receive at any hour. */
+export const danielQuietHours = { start: '22:00', end: '08:00', tz: lisbon };
 
 export function nextAskAt(numberSent: number, first: number, now: number): number {
 	const delay = [120, 360][numberSent - 1];
-	if (delay !== undefined && first + delay * minute > now)
-		return quietHourBoundary(first + delay * minute, askQuietHours);
+	if (delay !== undefined && first + delay * minute > now) return first + delay * minute;
 	return nextReminderSlotAt(now, ['08:00'], lisbon);
 }
 

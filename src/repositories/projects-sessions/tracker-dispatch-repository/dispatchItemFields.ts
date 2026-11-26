@@ -1,4 +1,5 @@
 // @harness-uid u_ksy76trvsj
+import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerDispatchItem,
 	TrackerDispatchWrites,
@@ -44,6 +45,17 @@ export function dispatchItem(
 		updatedAt: row.updated_at ? Date.parse(row.updated_at) : undefined,
 		launch: launchIntent(row)
 	};
+}
+
+/** The journal clock of the current completion, while the item is done and its source is open. */
+export function trackerCompletionVersion(database: SqliteDatabase, id: string): string | undefined {
+	const row = database
+		.prepare(
+			`SELECT clocks FROM items WHERE id = ? AND status = 'done' AND deleted = 0
+			AND coalesce(adapter_closed, 0) <> 1`
+		)
+		.get(id) as { clocks: string } | undefined;
+	return row && (JSON.parse(row.clocks) as Record<string, string>).status;
 }
 
 function flag(value: string | null): boolean {
@@ -103,6 +115,7 @@ export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['i
 	if (item.launch !== undefined) Object.assign(fields, launchJournalFields(item.launch));
 	if (item.launch?.source === 'manual')
 		fields['note+'] = `auto-launch requested on ${item.launch.target}`;
+	if (item.appendNote) fields['note+'] = item.appendNote;
 	if (item.blockedReason !== undefined) fields.blocked_reason = item.blockedReason;
 	if (item.awaitingAnswer !== undefined) fields.needs_daniel = item.awaitingAnswer;
 	if (item.answeredCurrentBlock === false) fields.resolved = false;
