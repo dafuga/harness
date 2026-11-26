@@ -12,6 +12,7 @@ import type {
 	HomeSubscription,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 import type { soonestWork } from './hubHomePresentation';
@@ -40,6 +41,8 @@ export interface HomeView {
 	needsMac: boolean;
 	/** Computers linked to this account, online or not. */
 	linkedComputers: number;
+	/** The last answer of the linked computers; null until the first one arrives. */
+	computers: LinkedHome | null;
 	trackerConnected: boolean;
 	quotaConnected: boolean;
 	now: number;

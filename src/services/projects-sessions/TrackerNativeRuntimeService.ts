@@ -34,9 +34,9 @@ import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeT
 import { trackerItemViews } from './tracker-native-runtime-service/trackerLaunchWait';
 import {
 	composeTrackerLinks,
-	composeTrackerTelemetry,
 	trackerSpokeStatus
 } from './tracker-native-runtime-service/nativeTrackerLinks';
+import { composeTrackerTelemetry } from './tracker-native-runtime-service/nativeTrackerTelemetry';
 import { configuredTrackerReminderHost } from './tracker-native-runtime-service/configuredTrackerReminderHost';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 

@@ -77,7 +77,8 @@ export class TrackerRunReadRepository {
 		);
 	}
 
-	importHubHistory(rows: readonly TrackerWireValue[]): void {
+	/** Import a hub or Mac peer reply, which names the node that owns each run. */
+	importLinkHistory(rows: readonly TrackerWireValue[]): void {
 		new SqliteAdapter(this.database, []).transaction(() =>
 			importTrackerRunHistory(this.database, rows, ({ node }) =>
 				typeof node === 'string' && node !== this.node ? node : undefined

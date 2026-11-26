@@ -4528,10 +4528,10 @@
 			"definition": "4558e1455cff66946adad049fb222a550f0c6630e6d370ab91c224529e4edbb2",
 			"relocationDefinition": "b7d6fcb27f7bddb260c21675238683b8dd638ab0e3360df590dd1a39a8c7a51f",
 			"review": {
-				"commit": "be31af838e2edfc9be1b20a72648b5260db69c3e",
+				"commit": "d5357e3db97f2f17b744bba4de9e351da2d8cac0",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
 				"definition": "4558e1455cff66946adad049fb222a550f0c6630e6d370ab91c224529e4edbb2",
-				"reason": "Answers the homeChat device method, so Hub Home's answers and messages reach this computer's Tracker over the encrypted device channel with the Home upload off."
+				"reason": "Adds the homeChat device method: a signed-in account device answers an open Tracker ask or notes a listed item over the encrypted device channel, because the Hub queue needs the Home upload that is off."
 			},
 			"previousReviews": [
 				{
@@ -5458,10 +5458,10 @@
 			"definition": "7c6005e51c451ca772f1b253d9b31556843d5fe412b6ae8d9bd0a4ab90af6d30",
 			"relocationDefinition": "6af0c5d46f2451c29e1730ba56ac45579308fe38681e82c0a939181c136a54db",
 			"review": {
-				"commit": "be31af838e2edfc9be1b20a72648b5260db69c3e",
+				"commit": "d5357e3db97f2f17b744bba4de9e351da2d8cac0",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
 				"definition": "7c6005e51c451ca772f1b253d9b31556843d5fe412b6ae8d9bd0a4ab90af6d30",
-				"reason": "Answers the homeChat device method, so Hub Home's answers and messages reach this computer's Tracker over the encrypted device channel with the Home upload off."
+				"reason": "Adds the homeChat device method: a signed-in account device answers an open Tracker ask or notes a listed item over the encrypted device channel, because the Hub queue needs the Home upload that is off."
 			},
 			"previousReviews": [
 				{

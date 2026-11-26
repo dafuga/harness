@@ -104,4 +104,5 @@ Realtime tracker pushes retain implementation commit `68fcb43a67` for the deskto
 
 Shared type consolidation retains implementation commit `6c9252a51` for the five moved services whose type references now name the one shared owner.
 
-Hub row answers and messages retain implementation commit `be31af838e` for the homeChat device method in the desktop device session and operations services.
+Home row answers retain the commit that adds the `homeChat` device method to the desktop device session
+and operations services; the earlier `homeSnapshot` reviews remain present.

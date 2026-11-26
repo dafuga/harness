@@ -13,12 +13,22 @@
 
 	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
 
-	import TrackerInboxRowAsk from './TrackerInboxRowAsk.svelte';
+	import {
+		optionWrite,
+		writtenAnswer
+	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import { sendRowAnswer } from '../../../lib/development-tooling/tracker-inbox/sendRowAnswer';
+	import type {
+		ConfirmedWrite,
+		InboxDetail
+	} from '../../../models/development-tooling/TrackerInbox.types';
+	import TrackerInboxChoices from './TrackerInboxChoices.svelte';
 
 	let {
 		source,
 		mode,
 		onchanged,
+		onnotice,
 		rows,
 		selected,
 		empty,
@@ -28,16 +38,36 @@
 		source: TrackerInboxSource;
 		mode: 'phone' | 'mac';
 		onchanged: () => Promise<void>;
+		/** Told what a row's answer did. The list shows it: an answered row leaves the list. */
+		onnotice: (message: string) => void;
 		rows: InboxRow[];
 		selected: string | null;
 		empty: string;
 		label: string;
 		onselect: (id: string) => void;
 	} = $props();
-	let sent = $state('');
-</script>
+	let busy = $state(false);
+	/** The revisions answered here, so a queued answer cannot be tapped twice. */
+	let answered = $state<string[]>([]);
+	const key = (review: InboxDetail) => `${review.header.id} ${review.revision}`;
+	const reviewed = (review: InboxDetail) => ({
+		itemId: review.header.id,
+		revision: review.revision
+	});
 
-{#if sent}<hx-p class="hint" role="status">{sent}</hx-p>{/if}
+	async function deliver(review: InboxDetail, write: ConfirmedWrite | null) {
+		if (busy) return;
+		busy = true;
+		try {
+			const result = await sendRowAnswer(source, write, mode);
+			onnotice(result.message);
+			if (result.sent) answered = [...answered, key(review)];
+			await onchanged();
+		} finally {
+			busy = false;
+		}
+	}
+</script>
 
 <hx-ul class="rows" aria-label={label}>
 	{#each rows as row (row.header.id)}
@@ -65,13 +95,13 @@
 					>
 				{/if}
 			</hx-button>
-			{#if row.review}
-				<TrackerInboxRowAsk
-					{source}
-					{mode}
-					review={row.review}
-					{onchanged}
-					onsent={(message) => (sent = message)}
+			{#if row.review?.flag && !answered.includes(key(row.review))}
+				{@const review = row.review}
+				<TrackerInboxChoices
+					flag={row.review.flag}
+					{busy}
+					onpick={(number) => void deliver(review, optionWrite(review, reviewed(review), number))}
+					onother={(text) => void deliver(review, writtenAnswer(review, reviewed(review), text))}
 				/>
 			{/if}
 		</hx-li>
@@ -86,7 +116,7 @@
 		margin: 0;
 		padding: 0;
 		display: grid;
-		gap: var(--hx-space-6);
+		gap: var(--hx-space-16);
 	}
 	:global(.rows button.row) {
 		display: grid;
@@ -105,7 +135,7 @@
 	}
 	:global(.rows li) {
 		display: grid;
-		gap: var(--hx-space-4);
+		gap: var(--hx-space-8);
 		min-width: 0;
 	}
 	:global(.rows .question) {

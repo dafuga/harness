@@ -25,7 +25,7 @@
 			"TrackerRunReadRepository.exportLocal",
 			"TrackerRunReadRepository.historyRowsFor",
 			"TrackerRunReadRepository.importRemote",
-			"TrackerRunReadRepository.importHubHistory",
+			"TrackerRunReadRepository.importLinkHistory",
 			"TrackerRunFilters",
 			"TrackerListedRun",
 			"TrackerRunTable",
@@ -79,7 +79,7 @@
 				"required": true
 			},
 			{
-				"name": "TrackerRunReadRepository.importHubHistory.rows",
+				"name": "TrackerRunReadRepository.importLinkHistory.rows",
 				"type": "readonly TrackerWireValue[]",
 				"required": true
 			},
@@ -157,7 +157,7 @@
 				"type": "void"
 			},
 			{
-				"name": "TrackerRunReadRepository.importHubHistory",
+				"name": "TrackerRunReadRepository.importLinkHistory",
 				"type": "void"
 			},
 			{
@@ -320,17 +320,17 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "TrackerRunReadRepository.importHubHistory",
+				"name": "TrackerRunReadRepository.importLinkHistory",
 				"inputs": [
 					{
-						"name": "TrackerRunReadRepository.importHubHistory.rows",
+						"name": "TrackerRunReadRepository.importLinkHistory.rows",
 						"type": "readonly TrackerWireValue[]",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "TrackerRunReadRepository.importHubHistory",
+						"name": "TrackerRunReadRepository.importLinkHistory",
 						"type": "void"
 					}
 				],

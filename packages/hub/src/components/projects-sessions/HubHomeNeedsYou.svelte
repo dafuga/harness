@@ -3,9 +3,11 @@
 <!-- @harness-uid u_kncvbfcpto -->
 <script lang="ts">
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
-	import type { HomeOpenAsk } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	import type {
+		HomeChatReceipt,
+		HomeOpenAsk
+	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
-	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { OpenHomeSection, SendHomeChat } from './hubHomeView.types';
 	import HubHomeAsk from './HubHomeAsk.svelte';
 

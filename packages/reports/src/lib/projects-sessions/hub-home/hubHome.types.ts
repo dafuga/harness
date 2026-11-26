@@ -1,5 +1,6 @@
 // @harness-uid u_kda7xezayo
 import type { OverviewSnapshot } from '../project-overview/projectOverview.types';
+import type { HomeLiveOverview } from './homeLive.types';
 
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import type { HubMessageStatus } from '../../../../../../src/utils/projects-sessions/hubSessionMessages.types';
@@ -156,6 +157,11 @@ export interface OwnerHomeSnapshot {
 	scheduled: HomeRun[];
 	overdue?: HomeRun[];
 	providers: HomeProviderReadings;
+	/**
+	 * Every project, session and run. Only a linked computer's answer over the encrypted
+	 * connection carries it: it is never uploaded or stored. Older Mac apps omit it.
+	 */
+	liveOverview?: HomeLiveOverview;
 }
 
 export interface HomeChatInput {

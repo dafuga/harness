@@ -15,10 +15,11 @@ export interface HubHomeReadOptions {
 	linked: (result: LinkedHome) => void;
 }
 
-/** `read` fetches both sources again; `close` ends the reads and the linked connections. */
+/** `read` fetches both sources again, `computers` only the linked ones; `close` ends both. */
 export interface HubHomeReads {
 	read: () => void;
 	/** A linked computer that showed the item takes the write itself; otherwise the Hub queues it. */
 	send: (message: HomeChatInput) => Promise<HomeChatReceipt>;
+	computers: () => void;
 	close: () => void;
 }

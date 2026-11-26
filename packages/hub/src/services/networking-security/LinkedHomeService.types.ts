@@ -8,6 +8,8 @@ export interface LinkedHome {
 	/** How many of them answered this read. */
 	answered: number;
 	snapshot: OwnerHomeSnapshot | null;
+	/** The list of linked computers itself could not be read, so zero linked means unknown. */
+	unlisted?: true;
 }
 
 export type Connect = (hostId: string) => BrowserComputerService;

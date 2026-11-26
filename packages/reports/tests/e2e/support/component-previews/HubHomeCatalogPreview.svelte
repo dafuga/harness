@@ -5,7 +5,7 @@
 	import type { SendHomeChat } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
 	import HubHomeRow from '../../../../../hub/src/components/projects-sessions/HubHomeRow.svelte';
 	import { browserContext } from '../../../../../hub/src/utils/development-tooling/browserContext';
-	import { catalogHomeView } from './hubHomeCatalogData';
+	import { catalogHomeView, catalogWorkProject } from './hubHomeCatalogData';
 	import { previewAnswerOptions } from './shared';
 	import '../../../../../hub/src/lib/styles/home-scheme.css';
 	import '../../../../../hub/src/lib/styles/hub-home/index.css';
@@ -53,6 +53,8 @@
 			close: noop
 		},
 		'home-header': { view },
+		'home-live': { reading: view.computers, now: view.now },
+		'home-live-project': { project: catalogWorkProject, now: view.now },
 		'home-needs-you': {
 			asks: [
 				{

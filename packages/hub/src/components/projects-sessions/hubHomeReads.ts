@@ -60,6 +60,9 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 			if (message.kind === 'message' && ['sent', 'queued'].includes(receipt.status)) follow();
 			return receipt;
 		},
+		computers() {
+			void linked();
+		},
 		close() {
 			closed = true;
 			clearInterval(follower);

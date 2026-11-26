@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-start-error",
+	"uid": "u_44qijhmp62",
+	"kind": "service",
+	"title": "trackerStartError",
+	"responsibility": "Keeps a redacted cause on a queued reservation when its start call throws.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/trackerStartError.ts"],
+		"symbols": ["trackerStartError", "awaitStartEvidence"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerStartError.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "awaitStartEvidence.waits",
+				"type": "Map<string, { token: string; reason: string }>",
+				"required": true
+			},
+			{
+				"name": "awaitStartEvidence.dispatcher",
+				"type": "TrackerDispatcherService",
+				"required": true
+			},
+			{
+				"name": "awaitStartEvidence.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "awaitStartEvidence.thrown",
+				"type": "Extract<TrackerDispatchEvent, { type: 'startup-failed' }> | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerStartError",
+				"type": "unknown"
+			},
+			{
+				"name": "awaitStartEvidence",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerStartError",
+				"inputs": [
+					{
+						"name": "trackerStartError.message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerStartError",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "awaitStartEvidence",
+				"inputs": [
+					{
+						"name": "awaitStartEvidence.waits",
+						"type": "Map<string, { token: string; reason: string }>",
+						"required": true
+					},
+					{
+						"name": "awaitStartEvidence.dispatcher",
+						"type": "TrackerDispatcherService",
+						"required": true
+					},
+					{
+						"name": "awaitStartEvidence.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "awaitStartEvidence.thrown",
+						"type": "Extract<TrackerDispatchEvent, { type: 'startup-failed' }> | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "awaitStartEvidence",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-redact-secrets",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/trackerStartError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/trackerStartError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

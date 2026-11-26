@@ -30,6 +30,7 @@
 
 	let overview = $state.raw<InboxOverview | null>(null);
 	let loadFailure = $state('');
+	let notice = $state('');
 	let filter = $state<InboxFilter>('needs-you');
 	let query = $state('');
 	let found = $state.raw<InboxRow[] | null>(null);
@@ -76,6 +77,7 @@
 
 	function choose(id: string) {
 		selected = id;
+		notice = '';
 	}
 
 	/** A change made anywhere: the list, an open search and the open item are read again. */
@@ -94,6 +96,7 @@
 		{source}
 		{mode}
 		onchanged={follow}
+		onnotice={(message) => (notice = message)}
 		rows={listed}
 		{selected}
 		label={filter === 'all' ? 'All items' : bucketLabels[filter]}
@@ -122,6 +125,8 @@
 			{/if}
 		</hx-p>
 	</hx-header>
+
+	{#if notice}<hx-p class="meta" role="status">{notice}</hx-p>{/if}
 
 	{#if loadFailure}
 		<hx-p class="meta" role="status">{loadFailure}</hx-p>
@@ -169,6 +174,7 @@
 				{source}
 				{mode}
 				onchanged={follow}
+				onnotice={(message) => (notice = message)}
 				rows={found}
 				{selected}
 				label="Search results"

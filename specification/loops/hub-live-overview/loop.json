@@ -1,0 +1,46 @@
+{
+	"name": "hub-live-overview",
+	"goal": "Hub Home shows every Tracker project, session and live run with its true Tracker stage, owner, computer, model and age, read only from linked computers over the encrypted connection (nothing plaintext stored on the Hub), on desktop and phone, with honest empty and offline states",
+	"createdAt": "2026-11-26T16:31:05.670Z",
+	"updatedAt": "2026-11-26T16:51:07.661Z",
+	"agentModel": "claude-sonnet-5-5",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-26T16:51:04.303Z",
+			"evidence": "specification/features/planned/hub-home-live-overview.md: source (E2E linked-Mac homeSnapshot only), rows, freshness, empty states, release order. Finding: homeSnapshot already reached prod-shaped Hub but carried no stage, no per-run computer/model/age and only in-progress items per project card."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-26T16:51:06.000Z",
+			"evidence": "Commit ec46daac0a: buildHomeLiveOverview, createHomeSnapshotReader attaches it, parseLinkedHome reads it on the linked path only, HubHomeLive/HubHomeLiveProject."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-26T16:51:07.661Z",
+			"evidence": "red at 1dcd6c624d (expected 17 live rows, got 0), green at ec46daac0a with unchanged tests. Hub unit 45 Home tests pass; Hub browser hub-home-live-overview.spec 7 pass (desktop 1440, phone 390, 20s update with change notices live, unlinked/offline/old Mac); all Hub Home + hosted-home browser specs 70 passed before the clamp test was fixed; clamp guard fails at 204px when the clamp is removed."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
