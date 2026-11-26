@@ -601,7 +601,9 @@ Each `--log` file, and the supervisor log, rotates above 5 MB by copying to
 `<log>.1` and truncating, because the writer keeps the file open for appending.
 
 `harness tracker service print|install|uninstall [--config PATH]
-[--executable PATH]` sets up the current host. `print` changes nothing.
+[--executable PATH]` sets up the current host. `print` changes nothing. A
+launched session's `HARNESS_TRACKER_CONFIG` is a client stub, so `health` and
+`service` refuse it; pass the node's own config with `--config`.
 
 - **Linux with systemd:** user units run `serve` with `Restart=always` and run
   the health check 5 minutes after the timer starts and every 4 hours Lisbon

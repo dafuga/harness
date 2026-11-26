@@ -52,6 +52,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.projects-sessions-tracker-tmux",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.projects-sessions-tracker",
 			"via": "import",
 			"origin": "derived"
