@@ -456,6 +456,18 @@ with the computer, closed session and provider resume command. Long-lived
 control sessions fall outside the auto-launch name filter. Pending flagged
 launches report `waiting on Daniel (flagged)` in autolaunch status.
 
+### Launch events and waiting requests
+
+The transaction that changes a run also records its launch event: launched, done,
+blocked, failed, escalated, gave up or launch failed. Ten minutes after the oldest
+unsent event, the node settles them as one `autolaunch` summary. Only a hub with a
+webhook queues it. As in the legacy sender, Chief of Staff batch mode drops the
+summary (`webhook.batch: false` delivers it) and sends only its item batch.
+
+A due request adds a note naming its computer and model. Before a request has a
+run, `show` reports `launch_status` with its computer and wait reason. Autolaunch
+status lists unstarted requests as `ready` or `skipped`.
+
 ### Stop a managed session
 
 Run `tracker stop <item>` or `tracker stop '#<local run number>'` on the
@@ -544,7 +556,7 @@ dispatch scan.
 
 - [x] Wire `reject` and post-done verification (see Completion review).
 - [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`.
-      Verify host admission, launcher limits, `ready/skipped`,
+      Verify host admission, launcher limits,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
 - [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health

@@ -107,14 +107,21 @@ function launchJournalFields(intent: TrackerLaunchIntent | null) {
 	};
 }
 
+function launchRequestNote({ source, target, scheduledPick }: TrackerLaunchIntent) {
+	if (source === 'manual') return `auto-launch requested on ${target}`;
+	if (source !== 'due' || !scheduledPick) return undefined;
+	const pick = [scheduledPick.rung.model, scheduledPick.rung.effort].filter(Boolean).join(':');
+	return `due scheduler requested launch on ${target} (${pick})`;
+}
+
 export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['item']>) {
 	const fields: Record<string, unknown> = {};
 	for (const key of ['computer', 'project', 'repo', 'model', 'sensitive', 'status'] as const) {
 		if (item[key] !== undefined) fields[key] = item[key];
 	}
 	if (item.launch !== undefined) Object.assign(fields, launchJournalFields(item.launch));
-	if (item.launch?.source === 'manual')
-		fields['note+'] = `auto-launch requested on ${item.launch.target}`;
+	const requested = item.launch && launchRequestNote(item.launch);
+	if (requested) fields['note+'] = requested;
 	if (item.appendNote) fields['note+'] = item.appendNote;
 	if (item.blockedReason !== undefined) fields.blocked_reason = item.blockedReason;
 	if (item.awaitingAnswer !== undefined) fields.needs_daniel = item.awaitingAnswer;
