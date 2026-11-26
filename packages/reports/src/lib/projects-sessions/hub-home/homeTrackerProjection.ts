@@ -10,6 +10,7 @@ import { buildHomeAgents } from './homeTrackerAgents';
 import { listHomeSchedule } from './homeSchedule';
 import { buildHomeOpenAsks } from './homeOpenAsks';
 import { homeProviderReadingIsStale } from './homeProviderPayload';
+import { cosChatTitle } from './homeTrackerThread';
 
 export const noProviders: HomeProviderReadings = { routines: null, quota: null };
 
@@ -18,29 +19,34 @@ function compareRecent(left: TrackerItemRecord, right: TrackerItemRecord) {
 }
 
 function listPlans(items: TrackerItemRecord[]): HomePlan[] {
-	return items
-		.filter((item) => item.kind === 'plan')
-		.sort(compareRecent)
-		.slice(0, 65)
-		.map((plan) => {
-			const steps = items
-				.filter((item) => item.parent === plan.id)
-				.map((item) => ({
-					id: item.id,
-					title: homeText(item.title, 500) ?? 'Untitled step',
-					done: item.status === 'done'
-				}));
-			return {
-				id: plan.id,
-				title: homeText(plan.title, 500) ?? 'Untitled plan',
-				project: homeText(plan.agent, 200),
-				state: planState(plan),
-				updatedAt: new Date(plan.updated_at).toISOString(),
-				total: steps.length,
-				done: steps.filter((step) => step.done).length,
-				steps: steps.sort((left, right) => Number(left.done) - Number(right.done)).slice(0, 12)
-			};
-		});
+	return (
+		items
+			// Chief of Staff's Hub chat is a conversation, shown in its own box, not a plan.
+			.filter(
+				(item) => item.kind === 'plan' && !(item.agent === 'cos' && item.title === cosChatTitle)
+			)
+			.sort(compareRecent)
+			.slice(0, 65)
+			.map((plan) => {
+				const steps = items
+					.filter((item) => item.parent === plan.id)
+					.map((item) => ({
+						id: item.id,
+						title: homeText(item.title, 500) ?? 'Untitled step',
+						done: item.status === 'done'
+					}));
+				return {
+					id: plan.id,
+					title: homeText(plan.title, 500) ?? 'Untitled plan',
+					project: homeText(plan.agent, 200),
+					state: planState(plan),
+					updatedAt: new Date(plan.updated_at).toISOString(),
+					total: steps.length,
+					done: steps.filter((step) => step.done).length,
+					steps: steps.sort((left, right) => Number(left.done) - Number(right.done)).slice(0, 12)
+				};
+			})
+	);
 }
 
 function planState(item: TrackerItemRecord): HomePlan['state'] {

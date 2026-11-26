@@ -22,8 +22,17 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeComposer.svelte"],
-		"symbols": ["HubHomeComposer"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeComposer.svelte",
+			"packages/hub/src/components/projects-sessions/hubHomeMessages.ts"
+		],
+		"symbols": [
+			"HubHomeComposer",
+			"composedMessage",
+			"composerFeedback",
+			"isPending",
+			"receiptText"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,6 +49,12 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Optional identifier of the initially selected agent."
+			},
+			{
+				"name": "HubHomeComposer.label",
+				"type": "string",
+				"required": false,
+				"default": "Message"
 			},
 			{
 				"name": "HubHomeComposer.send",
@@ -64,7 +79,100 @@
 		],
 		"errors": [],
 		"errorStatus": "none-found",
-		"operations": [],
+		"operations": [
+			{
+				"name": "composedMessage",
+				"inputs": [
+					{
+						"name": "composedMessage.agent",
+						"type": "HomeAgent",
+						"required": true
+					},
+					{
+						"name": "composedMessage.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composedMessage",
+						"type": "HomeChatInput | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "composerFeedback",
+				"inputs": [
+					{
+						"name": "composerFeedback.message",
+						"type": "HomeChatInput",
+						"required": true
+					},
+					{
+						"name": "composerFeedback.receipt",
+						"type": "HomeChatReceipt",
+						"required": true
+					},
+					{
+						"name": "composerFeedback.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composerFeedback",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "isPending",
+				"inputs": [
+					{
+						"name": "isPending.entry",
+						"type": "{ message: HomeChatInput; receipt: HomeChatReceipt }",
+						"required": true
+					},
+					{
+						"name": "isPending.agent",
+						"type": "HomeAgent",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isPending",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "receiptText",
+				"inputs": [
+					{
+						"name": "receiptText.receipt",
+						"type": "HomeChatReceipt",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "receiptText",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [

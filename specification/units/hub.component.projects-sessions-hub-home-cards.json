@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
+			"hub.component.projects-sessions-hub-home-cos-chat",
 			"hub.component.projects-sessions-hub-home-needs-you",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
@@ -173,6 +174,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-cos-chat",
 			"via": "import",
 			"origin": "derived"
 		},

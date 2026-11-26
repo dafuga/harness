@@ -124,6 +124,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['runs', { item: text, limit: text }],
 	['models', {}],
 	['pick', {}],
+	['reply', {}],
 	['autolaunch', {}],
 	['adapter', { 'dry-run': flag, 'backfill-comments': flag }],
 	['backup', { to: text }],

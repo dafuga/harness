@@ -1,5 +1,9 @@
 import { z } from 'zod';
-import { chatId, homeChatInput } from '$reports/lib/projects-sessions/hub-home/homeChatInput';
+import {
+	chatId,
+	homeChatInput,
+	homeRunId
+} from '$reports/lib/projects-sessions/hub-home/homeChatInput';
 import {
 	homeProviders,
 	homeRunPayload
@@ -26,7 +30,12 @@ const message = z.object({
 	id,
 	text: text(2000),
 	at: time,
-	from: z.enum(['agent', 'you'])
+	from: z.enum(['agent', 'you']),
+	// Hub messages and replies; older Macs send plain notes without them.
+	messageId: id.optional(),
+	status: z.enum(['stored', 'delivered', 'acknowledged', 'refused']).optional(),
+	reason: text(300).optional(),
+	replyTo: id.optional()
 });
 
 const askOption = z
@@ -52,6 +61,7 @@ const agent = z.object({
 		.object({ sessions: unsigned.default(0), tasks: z.array(task).max(5).default([]) })
 		.default({ sessions: 0, tasks: [] }),
 	itemId: id.nullable(),
+	runId: homeRunId.nullable().optional(),
 	task: title,
 	machine: short.nullable(),
 	model: short.nullable(),

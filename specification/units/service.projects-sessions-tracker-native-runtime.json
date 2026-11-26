@@ -66,6 +66,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogIdle.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchEventBatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchWait.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
@@ -226,6 +227,7 @@
 			"paneNudgeKey",
 			"handoffRunOwnership",
 			"activeWatchdogItem",
+			"trackerHubMessageDelivery",
 			"batchTrackerLaunchEvents",
 			"trackerItemViews",
 			"trackerLaunchWait",
@@ -1194,6 +1196,11 @@
 			{
 				"name": "activeWatchdogItem.id",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHubMessageDelivery.input",
+				"type": "HubMessageDelivery",
 				"required": true
 			},
 			{
@@ -3801,6 +3808,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerHubMessageDelivery",
+				"inputs": [
+					{
+						"name": "trackerHubMessageDelivery.input",
+						"type": "HubMessageDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubMessageDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "batchTrackerLaunchEvents",
 				"inputs": [
 					{
@@ -5061,6 +5086,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-hub-session-messages",
 			"via": "import",
 			"origin": "derived"
 		},

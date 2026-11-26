@@ -45,6 +45,7 @@
 			"runDay",
 			"runTime",
 			"when",
+			"messageStatusText",
 			"runDay",
 			"runTime",
 			"when",
@@ -241,6 +242,16 @@
 				"type": "number",
 				"required": true,
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
+			},
+			{
+				"name": "messageStatusText.message",
+				"type": "Pick<HomeMessage, 'status' | 'reason'>",
+				"required": true
+			},
+			{
+				"name": "messageStatusText.name",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "runDay.at",
@@ -885,6 +896,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "messageStatusText",
+				"inputs": [
+					{
+						"name": "messageStatusText.message",
+						"type": "Pick<HomeMessage, 'status' | 'reason'>",
+						"required": true
+					},
+					{
+						"name": "messageStatusText.name",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "messageStatusText",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "runDay",

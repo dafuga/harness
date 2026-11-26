@@ -1,0 +1,435 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-hub-session-messages",
+	"uid": "u_hsyfpu5tqc",
+	"kind": "function",
+	"title": "hubSessionMessages",
+	"responsibility": "Owns the hubSessionMessages shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/hubSessionMessages.ts",
+			"src/utils/projects-sessions/hubSessionMessages.types.ts"
+		],
+		"symbols": [
+			"hubMessageIdPattern",
+			"hubMessageLine",
+			"hubMessageId",
+			"hubMessageItem",
+			"hubMessageTargetLabel",
+			"formatHubMessageNote",
+			"formatHubDeliveredNote",
+			"formatHubRefusedNote",
+			"formatHubReplyNote",
+			"hubPaneMessage",
+			"parseHubMessageNote",
+			"hubSessionMessages",
+			"HubMessageTarget",
+			"HubMessageEvent",
+			"HubMessageStatus",
+			"HubThreadNote",
+			"HubThreadMessage"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "hubMessageLine.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "hubMessageId.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "hubMessageId.uuid",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "hubMessageItem.messageId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "hubMessageTargetLabel.target",
+				"type": "HubMessageTarget",
+				"required": true
+			},
+			{
+				"name": "formatHubMessageNote.messageId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatHubMessageNote.target",
+				"type": "HubMessageTarget",
+				"required": true
+			},
+			{
+				"name": "formatHubMessageNote.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatHubDeliveredNote.messageId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatHubDeliveredNote.session",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatHubRefusedNote.messageId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatHubRefusedNote.reason",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatHubReplyNote.messageId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatHubReplyNote.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "hubPaneMessage.messageId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "hubPaneMessage.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "parseHubMessageNote.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "hubSessionMessages.notes",
+				"type": "readonly HubThreadNote[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubMessageIdPattern",
+				"type": "unknown"
+			},
+			{
+				"name": "hubMessageLine",
+				"type": "string"
+			},
+			{
+				"name": "hubMessageId",
+				"type": "string | null"
+			},
+			{
+				"name": "hubMessageItem",
+				"type": "string | null"
+			},
+			{
+				"name": "hubMessageTargetLabel",
+				"type": "string"
+			},
+			{
+				"name": "formatHubMessageNote",
+				"type": "unknown"
+			},
+			{
+				"name": "formatHubDeliveredNote",
+				"type": "unknown"
+			},
+			{
+				"name": "formatHubRefusedNote",
+				"type": "unknown"
+			},
+			{
+				"name": "formatHubReplyNote",
+				"type": "unknown"
+			},
+			{
+				"name": "hubPaneMessage",
+				"type": "string"
+			},
+			{
+				"name": "parseHubMessageNote",
+				"type": "HubMessageEvent | null"
+			},
+			{
+				"name": "hubSessionMessages",
+				"type": "HubThreadMessage[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "hubMessageLine",
+				"inputs": [
+					{
+						"name": "hubMessageLine.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubMessageLine",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubMessageId",
+				"inputs": [
+					{
+						"name": "hubMessageId.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "hubMessageId.uuid",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubMessageId",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubMessageItem",
+				"inputs": [
+					{
+						"name": "hubMessageItem.messageId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubMessageItem",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubMessageTargetLabel",
+				"inputs": [
+					{
+						"name": "hubMessageTargetLabel.target",
+						"type": "HubMessageTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubMessageTargetLabel",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "formatHubMessageNote",
+				"inputs": [
+					{
+						"name": "formatHubMessageNote.messageId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "formatHubMessageNote.target",
+						"type": "HubMessageTarget",
+						"required": true
+					},
+					{
+						"name": "formatHubMessageNote.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatHubMessageNote",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatHubDeliveredNote",
+				"inputs": [
+					{
+						"name": "formatHubDeliveredNote.messageId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "formatHubDeliveredNote.session",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatHubDeliveredNote",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "formatHubRefusedNote",
+				"inputs": [
+					{
+						"name": "formatHubRefusedNote.messageId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "formatHubRefusedNote.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatHubRefusedNote",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "formatHubReplyNote",
+				"inputs": [
+					{
+						"name": "formatHubReplyNote.messageId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "formatHubReplyNote.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatHubReplyNote",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubPaneMessage",
+				"inputs": [
+					{
+						"name": "hubPaneMessage.messageId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "hubPaneMessage.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubPaneMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "parseHubMessageNote",
+				"inputs": [
+					{
+						"name": "parseHubMessageNote.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseHubMessageNote",
+						"type": "HubMessageEvent | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hubSessionMessages",
+				"inputs": [
+					{
+						"name": "hubSessionMessages.notes",
+						"type": "readonly HubThreadNote[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubSessionMessages",
+						"type": "HubThreadMessage[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/hubSessionMessages.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/hubSessionMessages.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
