@@ -57,6 +57,24 @@ test('a flag the service refuses is kept too', () =>
 		expect(inbox()[0].reason).toContain('zzzzzz');
 	}));
 
+test('the duplicate-ask guard cannot lose a monitor message', () =>
+	withTrackerCliChannel(async ({ run, store, inbox }) => {
+		store.appendLocal({
+			itemId: 'monitor002',
+			fields: { title: 'Sample monitor target', status: 'open', kind: 'task' }
+		});
+		const ask = [outage, ...choices, '--recommend', '1'];
+		expect((await run('flag', 'monitor002', ...ask)).code).toBe(0);
+		const duplicate = await run('flag', channelItem, ...ask);
+		expect(duplicate.out).toContain('similar item already open');
+		expect(duplicate.code).not.toBe(0);
+		expect((await run('alert', channelItem, 'Sample channel still failing')).code).toBe(0);
+		expect(inbox().map(({ item_id, kind }) => `${item_id}:${kind}`)).toEqual([
+			`${channelItem}:flag-refused`,
+			`${channelItem}:alert`
+		]);
+	}));
+
 test('a flag that cannot be kept says nobody has seen it', () =>
 	withTrackerCliChannel(async ({ run, offline }) => {
 		offline();
