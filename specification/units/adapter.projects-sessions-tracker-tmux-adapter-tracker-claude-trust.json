@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-tmux-adapter-tracker-claude-trust",
+	"uid": "u_lkvgwgi2xf",
+	"kind": "adapter",
+	"title": "trackerClaudeTrust",
+	"responsibility": "Recognizes the Claude folder-trust dialog and answers it once for an unattended, launcher-owned checkout of an owned repository.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerClaudeTrust.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerClaudeTrust.types.ts"
+		],
+		"symbols": ["claudeTrustDialog", "confirmOwnedWorktreeTrust", "TrackerClaudeTrustPane"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "claudeTrustDialog.screen",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "confirmOwnedWorktreeTrust.pane",
+				"type": "TrackerClaudeTrustPane",
+				"required": true
+			},
+			{
+				"name": "confirmOwnedWorktreeTrust.screen",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "confirmOwnedWorktreeTrust.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "claudeTrustDialog",
+				"type": "boolean"
+			},
+			{
+				"name": "confirmOwnedWorktreeTrust",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "claudeTrustDialog",
+				"inputs": [
+					{
+						"name": "claudeTrustDialog.screen",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "claudeTrustDialog",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "confirmOwnedWorktreeTrust",
+				"inputs": [
+					{
+						"name": "confirmOwnedWorktreeTrust.pane",
+						"type": "TrackerClaudeTrustPane",
+						"required": true
+					},
+					{
+						"name": "confirmOwnedWorktreeTrust.screen",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "confirmOwnedWorktreeTrust.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "confirmOwnedWorktreeTrust",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerClaudeTrust.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerClaudeTrust.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

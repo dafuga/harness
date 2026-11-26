@@ -1,0 +1,137 @@
+{
+	"schemaVersion": 1,
+	"revision": "024e14e22d127f7491bb5ebf49d7f201f74243de",
+	"bugClass": {
+		"id": "remote-local-store-mismatch",
+		"title": "Browser actions target a disabled local store",
+		"cause": "A feature reads from or writes to a local snapshot or Hub-backed API even though production state is served through a linked remote connection and the local snapshot endpoint is disabled. The UI can display remote data while actions against the local store fail or appear missing.",
+		"criteria": "Match when a browser-facing read or write depends on a local snapshot or Hub API that is disabled or unavailable in production, while the feature's data is sourced through a separate remote connection. Either an action is routed to the local store instead of the remote service, or a read checks the local store instead of the remote source; either path can independently cause the failure.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "/api/hub-home",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "fetch(",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "PUT",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "$lib/server",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "+server.ts",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "fetch",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "put",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "get",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "handleFetch",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "load",
+				"weight": 1
+			},
+			{
+				"kind": "construct",
+				"value": "URL",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "on:click",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "onclick",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "onMount",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "{#each",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"hub",
+			"home",
+			"chat",
+			"snapshot",
+			"remote",
+			"linked",
+			"connection",
+			"api",
+			"put",
+			"get"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/hub/",
+				"weight": 5
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 3
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 2
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "src/workers/",
+				"weight": -2
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -1
+			}
+		]
+	}
+}

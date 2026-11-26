@@ -107,6 +107,11 @@ function launchJournalFields(intent: TrackerLaunchIntent | null) {
 	};
 }
 
+/** A new question replaces the earlier ask, so its choices must not stay attached. */
+function replacedAsk(question: string | null | undefined): Record<string, unknown> {
+	return question ? { question, options: null, confirm: null } : {};
+}
+
 function launchRequestNote({ source, target, scheduledPick }: TrackerLaunchIntent) {
 	if (source === 'manual') return `auto-launch requested on ${target}`;
 	if (source !== 'due' || !scheduledPick) return undefined;
@@ -115,7 +120,7 @@ function launchRequestNote({ source, target, scheduledPick }: TrackerLaunchInten
 }
 
 export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['item']>) {
-	const fields: Record<string, unknown> = {};
+	const fields = replacedAsk(item.question);
 	for (const key of ['computer', 'project', 'repo', 'model', 'sensitive', 'status'] as const) {
 		if (item[key] !== undefined) fields[key] = item[key];
 	}

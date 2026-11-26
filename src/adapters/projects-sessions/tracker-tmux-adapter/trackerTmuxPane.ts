@@ -106,19 +106,11 @@ export function matchesTrackerTmuxPane(
 	);
 }
 
-const sentReceipt = 'display-message -p tracker-watchdog-sent';
-
-export function trackerTmuxKeys(paneId: string, message?: string): string {
-	const enter = `send-keys -t ${paneId} Enter ; ${sentReceipt}`;
-	if (message === undefined) return enter;
-	return `${typedText(paneId, message)} ; ${enter}`;
-}
-
-/** Type a message and leave it unsent. */
-export function trackerTmuxText(paneId: string, message: string): string {
-	return `${typedText(paneId, message)} ; ${sentReceipt}`;
-}
-
-function typedText(paneId: string, message: string): string {
-	return `send-keys -t ${paneId} -l '${message.replaceAll("'", "'\\''")}'`;
+/** Keys for one pane: text and Enter, Enter alone, or text that a later Enter submits. */
+export function trackerTmuxKeys(paneId: string, message?: string, enter = true): string {
+	const keys = [];
+	if (message !== undefined)
+		keys.push(`send-keys -t ${paneId} -l '${message.replaceAll("'", "'\\''")}'`);
+	if (enter) keys.push(`send-keys -t ${paneId} Enter`);
+	return [...keys, 'display-message -p tracker-watchdog-sent'].join(' ; ');
 }

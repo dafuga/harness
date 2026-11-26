@@ -18,6 +18,8 @@
 			"TrackerNote",
 			"TrackerItemRecord",
 			"IncludedTrackerItem",
+			"TrackerRunDetailValue",
+			"TrackerRunDetailInput",
 			"TrackerRunRecord",
 			"TrackerMachineRecord",
 			"TrackerSources"
@@ -102,12 +104,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-run-detail",
 			"via": "import",
 			"origin": "derived"
 		},

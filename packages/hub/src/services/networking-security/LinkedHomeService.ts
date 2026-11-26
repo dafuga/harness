@@ -1,9 +1,15 @@
 // @harness-uid u_ppvcb4vola
 import type { RemoteAccountComputer } from '../../../../remote/src/models/networking-security/RemoteControl.types';
-import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type {
+	HomeChatInput,
+	HomeChatReceipt,
+	OwnerHomeSnapshot
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import { RemoteFailure } from '../../../../remote/src/index';
+import { homeChatReceipt, showsHomeChatTarget } from './linkedHomeChat';
 import { completeHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { mergeHomeSnapshots } from '../../components/projects-sessions/hubHomeMerge';
-import { parseHomePayload } from '../../routes/api/hub-home/homePayload';
+import { parseLinkedHome } from '../../routes/api/hub-home/homeLivePayload';
 import type { BrowserApi } from '../../utils/browserApi';
 import { browserDeviceKeys } from '../../utils/networking-security/browserDeviceKeys';
 import { BrowserComputerService } from './BrowserComputerService';
@@ -13,6 +19,7 @@ export type { LinkedHome } from './LinkedHomeService.types';
 
 const hosts = '/api/remote/hosts';
 const readMs = 15_000;
+const writeMs = 20_000;
 const parallel = 6;
 
 function within<T>(work: Promise<T>, ms: number): Promise<T> {
@@ -29,6 +36,7 @@ function within<T>(work: Promise<T>, ms: number): Promise<T> {
  */
 export class LinkedHomeService {
 	private readonly open = new Map<string, BrowserComputerService>();
+	private readonly shown = new Map<string, OwnerHomeSnapshot>();
 	private closed = false;
 
 	constructor(
@@ -39,15 +47,41 @@ export class LinkedHomeService {
 	) {}
 
 	async read(): Promise<LinkedHome> {
-		const computers = await this.computers();
+		const listed = await this.computers();
+		const computers = listed ?? [];
 		const online = computers.filter((computer) => computer.online).slice(0, parallel);
 		const results = await Promise.all(online.map((computer) => this.ask(computer.hostId)));
+		this.shown.clear();
+		for (const [index, snapshot] of results.entries())
+			if (snapshot) this.shown.set(online[index].hostId, completeHomeSnapshot(snapshot));
 		const snapshots = results.filter((entry): entry is OwnerHomeSnapshot => entry !== null);
 		return {
 			linked: computers.length,
 			answered: snapshots.length,
-			snapshot: mergeHomeSnapshots(snapshots.map(completeHomeSnapshot))
+			snapshot: mergeHomeSnapshots(snapshots.map(completeHomeSnapshot)),
+			...(!listed && { unlisted: true as const })
 		};
+	}
+
+	/**
+	 * Hands an answer or note to a computer that showed the item, over its end-to-end encrypted
+	 * connection; the Hub never reads or stores it. Null when none offers that, so nothing was
+	 * sent. Once a computer may have received it, no other path is tried.
+	 */
+	async chat(message: HomeChatInput): Promise<HomeChatReceipt | null> {
+		for (const [hostId, snapshot] of this.shown) {
+			const link = this.open.get(hostId);
+			if (!link || !showsHomeChatTarget(snapshot, message)) continue;
+			try {
+				const reply = await within(link.chat(message), writeMs);
+				return homeChatReceipt(message.id, reply as Partial<HomeChatReceipt> | null);
+			} catch (cause) {
+				if (cause instanceof RemoteFailure && cause.code === 'method-denied') continue;
+				this.drop(hostId, link);
+				return { id: message.id, status: 'unconfirmed' };
+			}
+		}
+		return null;
 	}
 
 	close(): void {
@@ -56,14 +90,15 @@ export class LinkedHomeService {
 		this.open.clear();
 	}
 
-	private async computers(): Promise<RemoteAccountComputer[]> {
+	private async computers(): Promise<RemoteAccountComputer[] | null> {
 		try {
 			const reply = await this.api.get<{ computers: RemoteAccountComputer[] }>(hosts, {
 				linked: '1'
 			});
 			return reply.computers;
-		} catch {
-			return [];
+		} catch (error) {
+			// Remote access being off is a real "none linked"; any other failure leaves it unknown.
+			return (error as { code?: string }).code === 'remote-disabled' ? [] : null;
 		}
 	}
 
@@ -76,7 +111,7 @@ export class LinkedHomeService {
 				link.home(hostId, () => this.drop(hostId, link)),
 				readMs
 			);
-			return this.closed ? null : (parseHomePayload(value) as OwnerHomeSnapshot);
+			return this.closed ? null : (parseLinkedHome(value) as OwnerHomeSnapshot);
 		} catch {
 			this.drop(hostId, link);
 			return null;

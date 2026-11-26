@@ -1,6 +1,7 @@
 // @harness-uid u_4rnjtzp6cn
 import { trackerHostCapacityHold } from './tracker-native-runtime-service/trackerHostAdmission';
 import { randomUUID } from 'node:crypto';
+import { awaitStartEvidence, trackerStartError } from './trackerStartError';
 import {
 	automaticQueueHold,
 	queuedRung
@@ -27,7 +28,8 @@ import type {
 } from './TrackerDispatchSchedulerService.types';
 
 export class TrackerDispatchQueue {
-	private automaticSlotHeld = false;
+	/** Refusals are kept apart: during a hub outage only due work can take a local fleet slot. */
+	private readonly refusedSlots = new Set<'due' | 'other'>();
 
 	constructor(
 		private readonly repository: TrackerDispatchRepository,
@@ -60,7 +62,7 @@ export class TrackerDispatchQueue {
 		if (auto) return this.claimIntent(id, { token: auto, source, target: launch_target }, signal);
 		if (
 			!this.options.scheduleDue ||
-			this.automaticSlotHeld ||
+			this.refusedSlots.has('due') ||
 			(this.options.permitAutomatic && automaticQuietHour(policyNow(this.options)))
 		)
 			return false;
@@ -106,15 +108,13 @@ export class TrackerDispatchQueue {
 			this.waits.set(id, { token: intent.token, reason: moved ?? hold });
 			return false;
 		}
-		if (!this.automaticSlotHeld)
-			this.automaticSlotHeld = !(await permitAutomatic(id, intent.token, signal));
-		signal.throwIfAborted();
-		if (this.automaticSlotHeld)
+		const refused = !(await takeFleetSlot(this.refusedSlots, { id, intent }, this.options, signal));
+		if (refused)
 			this.waits.set(id, {
 				token: intent.token,
 				reason: 'automatic launch waiting for a fleet slot'
 			});
-		return !this.automaticSlotHeld;
+		return !refused;
 	}
 
 	private async release(
@@ -127,16 +127,27 @@ export class TrackerDispatchQueue {
 		if (result.status !== 'start') return false;
 		const { run } = result;
 		const event = await startReservedRun(this.options.runner, result, signal);
-		if (!event) {
-			this.waits.set(run.item_id, {
-				token: run.auto_token,
-				reason: 'waiting for host startup evidence'
-			});
-			return false;
-		}
+		if (!event || (event.type === 'startup-failed' && event.pending))
+			return awaitStartEvidence({ waits: this.waits, dispatcher: this.dispatcher }, run, event);
 		const observed = await this.dispatcher.record(run.item_id, run, event);
 		return event.type === 'session' && observed.status === 'recorded';
 	}
+}
+
+async function takeFleetSlot(
+	refusedSlots: Set<'due' | 'other'>,
+	{ id, intent }: { id: string; intent: TrackerLaunchIntent },
+	{ permitAutomatic }: TrackerDispatchSchedulerOptions,
+	signal: AbortSignal
+) {
+	const lane = intent.source === 'due' ? 'due' : 'other';
+	if (
+		!refusedSlots.has(lane) &&
+		!(await permitAutomatic?.(id, intent.token, signal, intent.source))
+	)
+		refusedSlots.add(lane);
+	signal.throwIfAborted();
+	return !refusedSlots.has(lane);
 }
 
 function delegateAdapterIntake(
@@ -178,9 +189,9 @@ async function startReservedRun(
 			signal,
 			launchCompletionInstructions(reservation.run.item_id)
 		);
-	} catch {
+	} catch (error) {
 		// The host might have started the session before losing its reply.
-		return undefined;
+		return trackerStartError(error instanceof Error ? error.message : String(error));
 	} finally {
 		signal.throwIfAborted();
 	}
