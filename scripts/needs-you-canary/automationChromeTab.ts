@@ -33,7 +33,7 @@ function hubPage(
 	closeTab: () => Promise<void>
 ): CanaryWeb {
 	async function evaluate<Value>(expression: string): Promise<Value> {
-		const guarded = `location.origin === ${JSON.stringify(hub)} ? (${expression}) : Promise.reject(new CanaryBrowserError('not on the Hub'))`;
+		const guarded = `location.origin === ${JSON.stringify(hub)} ? (${expression}) : Promise.reject('not on the Hub')`;
 		const reply = await connection.send('Runtime.evaluate', {
 			expression: guarded,
 			awaitPromise: true,
