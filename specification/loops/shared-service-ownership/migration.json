@@ -4341,21 +4341,15 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "b875a061e78098507a4f353dff822619b649dfe54c8c457a5d798ff302ab6588",
+			"definition": "8a52d9f479af802a12f8fd155a2bf6575bbf9530a42b27e7f4b0e728f3ae948c",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "76b0190cbe0141a6896374a33b72ecd4463449df",
+				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "b875a061e78098507a4f353dff822619b649dfe54c8c457a5d798ff302ab6588",
-				"reason": "Offers the native Vault to the phone page only where the shell ships its HarnessVault plugin."
+				"definition": "8a52d9f479af802a12f8fd155a2bf6575bbf9530a42b27e7f4b0e728f3ae948c",
+				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 			},
 			"previousReviews": [
-				{
-					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
-					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-					"definition": "8a52d9f479af802a12f8fd155a2bf6575bbf9530a42b27e7f4b0e728f3ae948c",
-					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
-				},
 				{
 					"commit": "caea83354142413dd97edae29bdd055924c9847b",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
