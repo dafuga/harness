@@ -82,4 +82,5 @@ export interface WatchdogScan {
 	runs: readonly WatchdogRun[];
 	panes: readonly WatchdogPane[];
 	itemId?: string;
+	quotaHolds?: readonly WatchdogCli[];
 }
