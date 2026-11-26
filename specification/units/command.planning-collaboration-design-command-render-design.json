@@ -1,0 +1,149 @@
+{
+	"schemaVersion": 1,
+	"id": "command.planning-collaboration-design-command-render-design",
+	"uid": "u_6xtgyda5qj",
+	"kind": "command",
+	"title": "renderDesign",
+	"responsibility": "Selects a canvas’s artboards and themes and renders them to the output folder.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/planning-collaboration/design-command/renderDesign.ts"],
+		"symbols": ["renderDesign"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "renderDesign.service",
+				"type": "DesignCanvasService",
+				"required": true,
+				"description": "Canvas service for the selected project root."
+			},
+			{
+				"name": "renderDesign.canvas",
+				"type": "string",
+				"required": true,
+				"description": "Canvas name, or the canvas data to show or record."
+			},
+			{
+				"name": "renderDesign.out",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Output folder, relative to the project root."
+			},
+			{
+				"name": "renderDesign.theme",
+				"type": "string | undefined",
+				"required": true,
+				"description": "light, dark or both for rendering; light or dark for a viewer."
+			},
+			{
+				"name": "renderDesign.artboard",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Only render the artboard with this name."
+			}
+		],
+		"outputs": [
+			{
+				"name": "renderDesign",
+				"type": "Promise<string[]>",
+				"description": "Paths of the PNG files written."
+			}
+		],
+		"errors": [
+			{
+				"name": "DesignCanvasError",
+				"type": "thrown",
+				"description": "A canvas, artboard, option or prerequisite is not usable; the message says why."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "renderDesign",
+				"inputs": [
+					{
+						"name": "renderDesign.service",
+						"type": "DesignCanvasService",
+						"required": true,
+						"description": "Canvas service for the selected project root."
+					},
+					{
+						"name": "renderDesign.canvas",
+						"type": "string",
+						"required": true,
+						"description": "Canvas name, or the canvas data to show or record."
+					},
+					{
+						"name": "renderDesign.out",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Output folder, relative to the project root."
+					},
+					{
+						"name": "renderDesign.theme",
+						"type": "string | undefined",
+						"required": true,
+						"description": "light, dark or both for rendering; light or dark for a viewer."
+					},
+					{
+						"name": "renderDesign.artboard",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Only render the artboard with this name."
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderDesign",
+						"type": "Promise<string[]>",
+						"description": "Paths of the PNG files written."
+					}
+				],
+				"errors": [
+					{
+						"name": "DesignCanvasError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-design-canvas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-render-canvas",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/planning-collaboration/design-command/renderDesign.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/planning-collaboration/design-command/renderDesign.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

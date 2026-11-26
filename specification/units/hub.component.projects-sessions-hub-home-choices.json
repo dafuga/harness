@@ -4,12 +4,13 @@
 	"uid": "u_qoahc5zxzf",
 	"kind": "component",
 	"title": "HubHomeChoices",
-	"responsibility": "Owns the HubHomeChoices Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Offers an open Hub ask as option buttons with a confirm step for deploy, money and secret asks, plus a written Other answer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -22,34 +23,39 @@
 		"symbols": ["HubHomeChoices"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeChoices.agent",
 				"type": "Pick<HomeAgent, 'options' | 'confirm' | 'question'>",
-				"required": true
+				"required": true,
+				"description": "The question, choices and confirm kind of the open ask."
 			},
 			{
 				"name": "HubHomeChoices.busy",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Disables the choices while an answer is being sent. Defaults to false."
 			},
 			{
 				"name": "HubHomeChoices.onpick",
 				"type": "(number: number, confirmed: boolean) => void",
-				"required": true
+				"required": true,
+				"description": "Receives the 1-based option number and whether the confirm step was completed."
 			},
 			{
 				"name": "HubHomeChoices.onother",
 				"type": "(text: string) => void",
-				"required": true
+				"required": true,
+				"description": "Receives the answer written in the Other modal."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeChoices",
-				"type": "markup"
+				"type": "markup",
+				"description": "Choice buttons, the optional confirm step and the Other modal."
 			}
 		],
 		"errors": [],
@@ -60,6 +66,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.function.projects-sessions-hub-home-choices",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -68,6 +68,54 @@
 	],
 	"references": [
 		{
+			"from": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "The hosted designs header shows the viewed commit with the shared short form."
+		},
+		{
+			"from": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The hosted designs header lists a revision's branches and canvases through the shared canvas types."
+		},
+		{
+			"from": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The hosted designs view reads the canvas answer through the shared canvas types."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-api-controller/hubDesignCanvasRead.ts",
+			"specifier": "$reports/utils/planning-collaboration/canvasManifest",
+			"to": "packages/reports/src/utils/planning-collaboration/canvasManifest.ts",
+			"reason": "The canvas endpoint admits only canvas names the shared format allows."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesignCanvases.ts",
+			"specifier": "$reports/utils/planning-collaboration/canvasManifest",
+			"to": "packages/reports/src/utils/planning-collaboration/canvasManifest.ts",
+			"reason": "The Hub reads committed canvas manifests with the same rules as the CLI."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesignCanvases.ts",
+			"specifier": "$reports/utils/planning-collaboration/canvasBoards",
+			"to": "packages/reports/src/utils/planning-collaboration/canvasBoards.ts",
+			"reason": "The Hub places artboards with the same layout as the CLI."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubDesignCanvases.ts",
+			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
+			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
+			"reason": "The Hub answers with the shared canvas types."
+		},
+		{
+			"from": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte",
+			"specifier": "$shared/planning-collaboration/design-canvas/DesignCanvas.svelte",
+			"to": "packages/reports/src/components/planning-collaboration/design-canvas/DesignCanvas.svelte",
+			"reason": "Hosted designs show the shared canvas viewer."
+		},
+		{
 			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
 			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
 			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
@@ -2928,6 +2976,60 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeSchedule",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeSchedule.ts",
+			"reason": "Hub Home splits the schedule with the Reports board rule."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxChoices.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRows.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/waitAge",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/waitAge.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.types.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/waitAge",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/waitAge.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNotStarted.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeOpenAsks",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeOpenAsks.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
 		}
 	]
 }

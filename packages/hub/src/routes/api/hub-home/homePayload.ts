@@ -94,6 +94,7 @@ const snapshot = z.object({
 	openAsks: z.array(openAsk).max(100).optional(),
 	plans: z.array(plan).max(100),
 	scheduled: z.array(homeRunPayload).max(200),
+	overdue: z.array(homeRunPayload).max(200).optional(),
 	providers: homeProviders
 });
 

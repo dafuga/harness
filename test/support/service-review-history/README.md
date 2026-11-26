@@ -19,6 +19,9 @@ planning writes and immutable formatter ignores.
 The level planning review retains implementation commit `f6a7a2129` for the desktop bridge
 factory and isolated preload.
 
+The design canvas review retains the committed Hub API controller and projection service that
+read a revision's canvases.
+
 ## Regenerating it
 
 Regenerate it when a review names another commit or path. Run this from a checkout whose Git

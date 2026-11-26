@@ -33,6 +33,8 @@
 			"staleReading",
 			"missingQuotaProviders",
 			"warningLabel",
+			"pastDueLabel",
+			"pastDueSummary",
 			"initials",
 			"overviewTone",
 			"summaryLine",
@@ -105,7 +107,8 @@
 				"name": "homeHeadline.needs",
 				"type": "number",
 				"required": false,
-				"default": 0
+				"default": 0,
+				"description": "How many open asks need the owner. Defaults to zero."
 			},
 			{
 				"name": "currentAgent.agents",
@@ -166,6 +169,18 @@
 				"type": "HomeLimit",
 				"required": true,
 				"description": "Provider allowance window to label."
+			},
+			{
+				"name": "pastDueLabel.run",
+				"type": "Pick<HomePastDue, 'state' | 'position'>",
+				"required": true,
+				"description": "The state and optional queue position of one past-due run."
+			},
+			{
+				"name": "pastDueSummary.runs",
+				"type": "HomePastDue[]",
+				"required": true,
+				"description": "The past-due runs to total by state."
 			},
 			{
 				"name": "initials.name",
@@ -503,7 +518,8 @@
 						"name": "homeHeadline.needs",
 						"type": "number",
 						"required": false,
-						"default": 0
+						"default": 0,
+						"description": "How many open asks need the owner. Defaults to zero."
 					}
 				],
 				"outputs": [
@@ -683,6 +699,44 @@
 						"name": "warningLabel",
 						"type": "unknown",
 						"description": "Short label for the severity of a quota warning."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pastDueLabel",
+				"inputs": [
+					{
+						"name": "pastDueLabel.run",
+						"type": "Pick<HomePastDue, 'state' | 'position'>",
+						"required": true,
+						"description": "The state and optional queue position of one past-due run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pastDueLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pastDueSummary",
+				"inputs": [
+					{
+						"name": "pastDueSummary.runs",
+						"type": "HomePastDue[]",
+						"required": true,
+						"description": "The past-due runs to total by state."
+					}
+				],
+				"outputs": [
+					{
+						"name": "pastDueSummary",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

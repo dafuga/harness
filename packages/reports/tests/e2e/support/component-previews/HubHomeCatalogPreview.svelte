@@ -48,6 +48,37 @@
 			close: noop
 		},
 		'home-header': { view },
+		'home-needs-you': {
+			asks: [
+				{
+					itemId: 'example1',
+					agentId: 'cos',
+					agentName: 'Chief of Staff',
+					title: 'Prepare the export cutover',
+					question: 'Which column names should the export keep?',
+					options: previewAnswerOptions,
+					since: new Date(view.now - 3_600_000).toISOString()
+				}
+			],
+			now: view.now,
+			open: noop
+		},
+		'home-not-started': {
+			pastDue: [
+				{
+					id: 'example2',
+					title: 'Check export compatibility',
+					at: new Date(view.now - 7_200_000).toISOString(),
+					agent: 'Atlas',
+					machine: null,
+					source: 'tracker',
+					recurring: false,
+					state: 'blocked',
+					reason: 'Waiting on your answer'
+				}
+			],
+			work: []
+		},
 		'home-plans': { plans: view.plans, agents: view.agents, discuss: noop },
 		'home-project-card': { view, open: noop },
 		'home-projects': { projects: list, snapshots, readProject },

@@ -96,7 +96,7 @@ async function dialogs(page: Page, position: CapturePosition, fixture: HomeFixtu
 		if (screen.id === 'scheduled' && position[2] === 'busy') {
 			const routine = fixture.snapshot.scheduled.find((run) => run.source === 'claude')!;
 			const tracker = fixture.snapshot.scheduled.find((run) => run.source === 'tracker')!;
-			await expect(dialog.getByText('Claude routine dates are unknown.')).toBeVisible();
+			await expect(dialog.getByText(/routine dates are unknown/)).toHaveCount(0);
 			await expect(dialog.getByText(routine.title, { exact: true })).toHaveCount(0);
 			await expect(dialog.getByText(tracker.title, { exact: true })).toBeVisible();
 		}

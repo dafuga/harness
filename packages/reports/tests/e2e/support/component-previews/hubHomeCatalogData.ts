@@ -115,7 +115,7 @@ export const catalogHomeView: HomeView = {
 	needsMac: false,
 	linkedComputers: 1,
 	trackerConnected: true,
-	routinesConnected: true,
+	pastDue: [],
 	quotaConnected: true,
 	now: NOW
 };

@@ -136,6 +136,10 @@ export const commandLoaders = {
 		const m = await import('./program/audit');
 		m.registerAuditCommand(program);
 	},
+	design: async (program: Command) => {
+		const m = await import('../commands/planning-collaboration/DesignCommand');
+		new m.DesignCommand().register(program);
+	},
 	'response-check': async (program: Command) => {
 		const m = await import('./program/ResponseCheckCommand');
 		m.registerResponseCheckCommand(program);

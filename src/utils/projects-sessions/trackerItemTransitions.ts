@@ -58,25 +58,14 @@ export const trackerItemTransitions: Record<
 	ignore: ignoreItem,
 	unignore: unignoreItem
 };
-function blockItem(
-	item: TrackerItemSnapshot,
-	body: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemChange {
+/** A block records a dependency. Only `flag` asks Daniel, so blocking never does. */
+function blockItem(_: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemChange {
 	const reason = String(trackerItemValueOr(body.reason, '')).trim();
 	if (!reason) throw trackerItemError('block reason required');
-	const fields = { status: 'blocked', blocked_reason: reason };
-	const appendNote = `blocked: ${reason}`;
-	if (body.needs_daniel === false) return { fields, appendNote };
-	guardTrackerDuplicate(context, {
-		text: `${item.title} ${reason}`,
-		agent: item.agent,
-		excludeId: item.id,
-		force: body.force,
-		askingDaniel: true
-	});
-	const asked = { ...fields, needs_daniel: 1, resolved: 0, question: `Blocked: ${reason}` };
-	return { fields: { ...asked, ...trackerAskTransitions.cleared(item) }, appendNote };
+	return {
+		fields: { status: 'blocked', blocked_reason: reason },
+		appendNote: `blocked: ${reason}`
+	};
 }
 
 function unblockItem(item: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemChange {

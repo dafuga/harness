@@ -3,6 +3,7 @@
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import { homeBoard } from './hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -54,6 +55,7 @@
 		Array.isArray(snapshot?.providers.routines) &&
 			!staleReading(snapshot.providers.routinesReadAt, now)
 	);
+	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
 	const overview = $derived(
 		snapshot?.overview ?? (settled ? { status: 'unavailable' as const } : null)
 	);
@@ -66,9 +68,8 @@
 		openAsks: snapshot?.openAsks ?? [],
 		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
-		schedule:
-			snapshot?.scheduled.filter((run) => routinesConnected || run.source === 'tracker') ??
-			(settled ? [] : null),
+		schedule: board?.upcoming ?? (settled ? [] : null),
+		pastDue: board?.pastDue ?? [],
 		quota: snapshot?.providers.quota ?? (settled ? [] : null),
 		projects: list,
 		projectsFailed,
@@ -79,7 +80,6 @@
 		needsMac: settled && !snapshot && !linkedComputers,
 		linkedComputers,
 		trackerConnected: overview?.status === 'ready',
-		routinesConnected,
 		quotaConnected: Array.isArray(snapshot?.providers.quota),
 		now
 	});

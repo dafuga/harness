@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.planning-collaboration-design-canvas-artboard-frame",
+	"uid": "u_osnyutv5hi",
+	"kind": "component",
+	"title": "ArtboardFrame",
+	"responsibility": "Places one titled artboard on the canvas and makes it selectable and openable.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.planning-collaboration-design-canvas-sandboxed-artboard",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-figcaption",
+			"reports.component.shared-primitives-atoms-html-figure",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/planning-collaboration/design-canvas/ArtboardFrame.svelte"
+		],
+		"symbols": ["ArtboardFrame"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "ArtboardFrame.board",
+				"type": "CanvasBoard",
+				"required": true,
+				"description": "The placed artboard, or the artboard name being changed."
+			},
+			{
+				"name": "ArtboardFrame.theme",
+				"type": "ArtboardTheme",
+				"required": true,
+				"description": "light, dark or both for rendering; light or dark for a viewer."
+			},
+			{
+				"name": "ArtboardFrame.scale",
+				"type": "number",
+				"required": true,
+				"description": "Current canvas zoom."
+			},
+			{
+				"name": "ArtboardFrame.selected",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether this artboard, or which artboard title, is selected."
+			},
+			{
+				"name": "ArtboardFrame.onselect",
+				"type": "() => void",
+				"required": true,
+				"description": "Selects this artboard."
+			},
+			{
+				"name": "ArtboardFrame.onopen",
+				"type": "() => void",
+				"required": true,
+				"description": "Opens the artboard on its own."
+			}
+		],
+		"outputs": [
+			{
+				"name": "ArtboardFrame",
+				"type": "markup",
+				"description": "Renders: Places one titled artboard on the canvas and makes it selectable and openable."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.planning-collaboration-design-canvas-sandboxed-artboard",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figcaption",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-figure",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/planning-collaboration/design-canvas/ArtboardFrame.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/planning-collaboration/design-canvas/ArtboardFrame.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.planning-collaboration-artboard-size",
+	"uid": "u_33kv3kmh5y",
+	"kind": "function",
+	"title": "artboardSize",
+	"responsibility": "Defines the artboard size presets and reads a declared fixed size.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/planning-collaboration/artboardSize.ts"],
+		"symbols": ["artboardPresets", "parseArtboardSize", "artboardSize"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "parseArtboardSize.text",
+				"type": "string",
+				"required": true,
+				"description": "Source text to parse, or file content to write."
+			},
+			{
+				"name": "artboardSize.html",
+				"type": "string",
+				"required": true,
+				"description": "Artboard HTML; a starter page is used when saving without it."
+			}
+		],
+		"outputs": [
+			{
+				"name": "artboardPresets",
+				"type": "Readonly<Record<string, ArtboardSize>>",
+				"description": "Named artboard sizes."
+			},
+			{
+				"name": "parseArtboardSize",
+				"type": "ArtboardSize | null",
+				"description": "Result: Defines the artboard size presets and reads a declared fixed size."
+			},
+			{
+				"name": "artboardSize",
+				"type": "ArtboardSize | null",
+				"description": "Result: Defines the artboard size presets and reads a declared fixed size."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "parseArtboardSize",
+				"inputs": [
+					{
+						"name": "parseArtboardSize.text",
+						"type": "string",
+						"required": true,
+						"description": "Source text to parse, or file content to write."
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseArtboardSize",
+						"type": "ArtboardSize | null",
+						"description": "Result: Defines the artboard size presets and reads a declared fixed size."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "artboardSize",
+				"inputs": [
+					{
+						"name": "artboardSize.html",
+						"type": "string",
+						"required": true,
+						"description": "Artboard HTML; a starter page is used when saving without it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artboardSize",
+						"type": "ArtboardSize | null",
+						"description": "Result: Defines the artboard size presets and reads a declared fixed size."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/planning-collaboration/artboardSize.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/planning-collaboration/artboardSize.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

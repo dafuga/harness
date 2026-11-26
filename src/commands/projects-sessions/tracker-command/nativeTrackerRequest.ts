@@ -197,7 +197,7 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 }
 
 function blockBody(reason: string, values: Record<string, unknown>) {
-	return { reason, needs_daniel: values['needs-daniel'] === true, force: values.force };
+	return { reason, force: values.force };
 }
 
 function requiredText(words: string[], command: string): string {

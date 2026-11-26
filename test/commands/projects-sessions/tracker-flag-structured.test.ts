@@ -23,7 +23,8 @@ test('a message for Chief of Staff needs no choices', () => {
 	expect(request.body).toMatchObject({ question: 'CoS: please publish the canvas.' });
 });
 
-test('tracker block records a blocker without asking Daniel unless told to', () => {
+test('tracker block never asks Daniel', () => {
 	const { request } = nativeTrackerArgs(['block', 'abc123', 'waiting on d3jma2']);
-	expect(request.body).toMatchObject({ reason: 'waiting on d3jma2', needs_daniel: false });
+	expect(request.body).toEqual({ reason: 'waiting on d3jma2', force: undefined });
+	expect(() => nativeTrackerArgs(['block', 'abc123', 'waiting', '--needs-daniel'])).toThrow();
 });

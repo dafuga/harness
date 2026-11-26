@@ -6,6 +6,7 @@ import type {
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { agentOpenAsks } from '$reports/lib/projects-sessions/hub-home/homeOpenAsks';
+import { splitHomeSchedule } from '$reports/lib/projects-sessions/hub-home/homeSchedule';
 
 const precedence: Record<HomeAgent['state'], number> = {
 	'needs-you': 0,
@@ -122,6 +123,11 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 			(plan) => plan.id,
 			(a, b) => Date.parse(a.updatedAt) > Date.parse(b.updatedAt)
 		),
+		overdue: newest(
+			snapshots.flatMap((entry) => entry.overdue ?? []),
+			(run) => run.id,
+			() => false
+		),
 		scheduled: newest(
 			snapshots.flatMap((entry) => entry.scheduled),
 			(run) => `${run.source}|${run.id}`,
@@ -132,4 +138,12 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 			...mergeRoutines(providers)
 		}
 	};
+}
+
+/** Upcoming and past-due runs; routine runs count only while the routine source is connected. */
+export function homeBoard(snapshot: OwnerHomeSnapshot, routinesConnected: boolean, now: number) {
+	const scheduled = snapshot.scheduled.filter(
+		(run) => routinesConnected || run.source === 'tracker'
+	);
+	return splitHomeSchedule({ ...snapshot, scheduled }, now);
 }

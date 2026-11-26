@@ -2395,13 +2395,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
+			"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
+				"reason": "Adds the authenticated read of a revision’s design canvases behind the project boundary."
 			},
 			"previousReviews": [
 				{
@@ -2427,6 +2427,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 					"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
 					"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -2792,13 +2798,13 @@
 			"unit": "hub.service.hub-projection",
 			"from": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+			"definition": "4616832b0b2db4403c5992af0dec0b06903052248b44d2473ff9e54e87fcaa3a",
 			"relocationDefinition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4",
 			"review": {
-				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+				"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-				"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
-				"reason": "Reads every declared unit kind from the authorized project and selected source commit."
+				"definition": "4616832b0b2db4403c5992af0dec0b06903052248b44d2473ff9e54e87fcaa3a",
+				"reason": "Reads committed design canvases after the membership check; thread messages moved to a module function."
 			},
 			"previousReviews": [
 				{
@@ -2806,6 +2812,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
 					"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+					"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+					"reason": "Reads every declared unit kind from the authorized project and selected source commit."
 				}
 			]
 		},

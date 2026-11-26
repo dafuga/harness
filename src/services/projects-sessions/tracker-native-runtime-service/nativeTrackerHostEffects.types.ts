@@ -28,7 +28,8 @@ export type TrackerHostLaunchConfig = {
 	maxConcurrent?: number;
 	legacyRunDirectory?: string;
 	repositories: Record<string, TrackerHostRepository>;
-	due?: true;
+	/** Due tasks launch at their time unless this is false. */
+	due?: boolean;
 } & ({ driver: string } | { managed: TrackerManagedLaunchConfig });
 
 export interface TrackerManagedLaunchConfig {
