@@ -130,7 +130,8 @@ function commentCompatibilityFixture() {
 					id: 151,
 					body: 'Please restore retry',
 					issue_url: 'https://api.github.com/repos/fixture/repo/issues/17',
-					created_at: '2026-11-19T00:00:00Z',
+					// Inside the seven-day backfill window on whatever day the test runs.
+					created_at: new Date(Date.now() - 86_400_000).toISOString(),
 					user: { type: 'User', login: 'fixture-tester' }
 				};
 			}
