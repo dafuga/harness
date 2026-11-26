@@ -9,6 +9,13 @@
 	border-radius: var(--hx-radius-large);
 	background: var(--hx-color-surface);
 }
+.hh-home .hh-needs-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--hx-space-8);
+}
 .hh-home .hh-needs-title {
 	margin: 0;
 	font-size: var(--hx-type-size-base);

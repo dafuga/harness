@@ -39,7 +39,10 @@ illustrative paths and ports.
 
 A spoke omits `syncPort` and supplies `"upstream": {"url": "https://hub.example.com"}`.
 For direct Mac peer replication, a spoke may also configure `peer.upstream`
-and `peer.listenPort`. Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
+and `peer.listenPort`. The Macs also exchange run history over this link. Each
+link reports on its own, so a hub that is down does not hold back the peer.
+Fleet status still uses only the hub's machine samples.
+Sync endpoints use HTTPS or literal IPv4 loopback HTTP.
 An optional `accessFile` beside an upstream URL supplies `clientId` and
 `clientSecret` for Cloudflare Access over HTTPS. The sync listener routes
 only signed Tracker sync requests. Each spoke sends its local run records to
@@ -166,8 +169,15 @@ operator verifies the stopped database and chooses a rollback.
   `~/.config/tracker/config.json` if present. Automatic launches hold from
   22:00 to 08:00 Lisbon time. After the hold, the hub admits up to two
   automatic launch reservations in any rolling minute across the fleet.
-  Connected spokes wait for a hub slot. Explicit launch requests get the
-  first available local slots and bypass the night hold and rate limit.
+  Connected spokes wait for a hub slot. If the hub is unreachable, a spoke
+  still starts the due tasks it owns, using the same two-per-minute limit on
+  its own slots. Unreachable means a timeout, a failed DNS lookup or
+  connection, or HTTP 502, 503, 504, 521–524 or 530. A denial, any other HTTP
+  error, a redirect, a certificate error or an unreadable reply holds the
+  launch. A due pause or local-due opt-out that the spoke has already received
+  still applies. Other automatic launches wait for the hub. Explicit launch
+  requests get the first available local slots and bypass the night hold and
+  rate limit.
   Each adapter can classify intake as urgent, normal or low. The configured
   GitHub tester rule marks issues and comments by its allowed tester logins
   urgent. Urgent items take the next free slot ahead of normal and low
@@ -554,13 +564,37 @@ and the verified legacy run directory and tmux inventory contain no startup evid
 Consumed tokens remain recorded for deduplication and are excluded from the pending
 dispatch scan.
 
+### Launch holds
+
+`tracker autolaunch pause` and `resume` run on the hub (a spoke returns 409). The
+choice persists, and the hub sends it with every journal pull. A spoke keeps the
+last value it received while the hub is unreachable. The pause stops due launches
+only. A hub with `launch.due: false` does not pause its spokes.
+
+On each scheduler tick the launcher reads the panes of its own runs. A usage-limit
+or empty-credit notice behind the CLI's own glyph holds all new starts of that
+provider on that computer, including manual launches, retries and relaunches. A
+warning that work continues on credits does not. The hold records one watchdog
+alert with a note on the item, and watchdog relaunch attempts are not used up
+while it lasts. It stays until `tracker autolaunch clear-quota <codex|claude>`
+runs on that computer, even after the provider's limit resets. Notices already
+seen cannot restore a cleared hold. Detection needs a tmux executable. Placement
+on another computer does not read these holds.
+
+`hostEffects.launch.codexPausedUntil` (ISO time) holds Codex starts until then.
+Change it in the configuration and restart the node.
+
+### Remaining commands
+
 - [x] Wire `reject` and post-done verification (see Completion review).
-- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`.
-      Verify host admission, launcher limits,
+- [x] Wire `autolaunch pause/resume/clear-quota`, quota holds and the Codex pause.
+- [ ] Verify host admission, launcher limits, `ready/skipped`,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
-- [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
-[--alert]` with the native host-process integration.
+- [ ] Reconcile `machines`, `place`, and `watchdog dry-run/alerts` with the
+      native host-process integration.
+- [x] Wire `health [--alert]`, log rotation and host supervision (see Health,
+      logs and host supervision).
 - [x] Wire `adapter run` and comment preview and backfill through runner ownership.
 - [ ] Wire `adapter add/pause/resume/remove` and issue backfill.
 - [ ] Bind external backup receipts for last result and next run. Qualify
@@ -570,6 +604,51 @@ dispatch scan.
       `cos-test`, and local `instructions [--check]`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
       recurring `history`, `check` match details, `rm`, and empty `list`.
+
+## Health, logs and host supervision
+
+`harness tracker health [--alert] [--json] [--config PATH] [--log FILE]...`
+runs in its own process, so it also reports a stopped service. It exits 0 when
+healthy, 1 when a check fails and 2 when it cannot run. It checks the local API;
+on a hub the sync listener, webhook delivery and, once native backups report
+`enabled`, backup freshness; on a spoke the hub link. Every node checks for a
+second long-lived service on the same config, free database disk and load, and
+Linux also checks available memory. Quiet peers, a paused webhook, disabled
+backups and a host that cannot list processes are information only.
+
+With `--alert`, a newly failing check flags one `Tracker health on <node>` item
+and repeats daily while it fails. Backup failures are reported here but asked
+only by the backup service. Once every other check recovers, the item is noted
+and closed, even while the backup alert stays open. An ignored item is never
+raised again. An alerting run waits 20 seconds and asks
+the API again before calling it down. When the Tracker cannot record the alert,
+or the webhook check or a spoke's hub link check fails, it also posts to the URL
+in `health-fallback.url` with the bearer key in `health-fallback.key`. Both are
+private files beside the native config; the URL is HTTPS or literal IPv4 loopback. The fallback waits out
+22:00-08:00 Lisbon unless the Tracker could not take the alert because its API
+is down. Alert state is kept in `<database>.health.json`. Without `--alert`
+nothing is written or sent.
+
+Each `--log` file, and the supervisor log, rotates above 5 MB by copying to
+`<log>.1` and truncating, because the writer keeps the file open for appending.
+
+`harness tracker service print|install|uninstall [--config PATH]
+[--executable PATH]` sets up the current host. `print` changes nothing. A
+launched session's `HARNESS_TRACKER_CONFIG` is a client stub, so `health` and
+`service` refuse it; pass the node's own config with `--config`.
+
+- **Linux with systemd:** user units run `serve` with `Restart=always` and run
+  the health check 5 minutes after the timer starts and every 4 hours Lisbon
+  time. The journal owns log rotation.
+- **Linux without systemd:** a marked `~/.bashrc` line starts `tracker
+supervise`, and install starts it at once. The supervisor holds one lock per
+  database, restarts `serve` with backoff, rotates `<database>.log` and runs the
+  same health schedule. After a container restart it starts with the first new
+  shell.
+- **macOS:** the existing `local.harness.tracker` agent keeps supervising the
+  service. Install adds `local.harness.tracker-health`, which runs every 4 hours
+  in the Mac's time zone, runs whichever executable the service agent names and
+  rotates that agent's log files. The executable must include `tracker health`.
 
 ## Completion review
 

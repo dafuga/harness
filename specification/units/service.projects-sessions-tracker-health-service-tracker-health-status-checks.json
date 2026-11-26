@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-health-service-tracker-health-status-checks",
+	"uid": "u_hijofchjn5",
+	"kind": "service",
+	"title": "trackerHealthStatusChecks",
+	"responsibility": "Owns the trackerHealthStatusChecks service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-health-service/trackerHealthStatusChecks.ts"
+		],
+		"symbols": ["trackerHealthStatusChecks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerHealthStatusChecks.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "trackerHealthStatusChecks.status",
+				"type": "TrackerHealthStatus",
+				"required": true
+			},
+			{
+				"name": "trackerHealthStatusChecks.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerHealthStatusChecks.state",
+				"type": "TrackerHealthState",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerHealthStatusChecks",
+				"type": "Promise<TrackerHealthCheck[]>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerHealthStatusChecks",
+				"inputs": [
+					{
+						"name": "trackerHealthStatusChecks.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					},
+					{
+						"name": "trackerHealthStatusChecks.status",
+						"type": "TrackerHealthStatus",
+						"required": true
+					},
+					{
+						"name": "trackerHealthStatusChecks.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerHealthStatusChecks.state",
+						"type": "TrackerHealthState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHealthStatusChecks",
+						"type": "Promise<TrackerHealthCheck[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-health",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-backup-checks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-webhook-checks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-health-service/trackerHealthStatusChecks.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-health-service/trackerHealthStatusChecks.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

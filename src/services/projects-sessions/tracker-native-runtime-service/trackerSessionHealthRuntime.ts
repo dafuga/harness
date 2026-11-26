@@ -13,6 +13,7 @@ import type { WatchdogPane } from '../WatchdogPaneService.types';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
 import { runSessionName } from './trackerFinishedSessions';
 import { readTrackerSlotState } from './trackerSlotInvariants';
+import { trackerProviderHold } from './trackerProviderHolds';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
 import { trackerSessionHealth } from './trackerSessionHealth';
@@ -104,7 +105,8 @@ async function publishIssue(
 ) {
 	const candidate = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
 	const item = candidate && new TrackerItemReadRepository(store.database).getStored(candidate.id);
-	if (launch && item?.launch_source === 'recovery' && issue.kind === 'launch-stuck') {
+	const stuck = launch && item?.launch_source === 'recovery' && issue.kind === 'launch-stuck';
+	if (stuck && !recoveryProviderHold(store, item.id, now)) {
 		flagRecoveryError(store, item, now, issue.reason);
 		return;
 	}
@@ -113,6 +115,15 @@ async function publishIssue(
 			? await recoverTrackerSession(store, { item, launch, now })
 			: null;
 	publishHealthNote(store, issue, { item, recovery, now });
+}
+
+/** A relaunch waiting for its provider is held, not stuck. */
+function recoveryProviderHold(store: TrackerPersistenceService, itemId: string, now: number) {
+	const latest = new TrackerRunReadRepository(store.database, store.node)
+		.list({ itemId })
+		.filter(({ node }) => node === store.node)
+		.at(-1);
+	return latest ? trackerProviderHold(store, latest.cli, now) : null;
 }
 
 function publishHealthNote(
