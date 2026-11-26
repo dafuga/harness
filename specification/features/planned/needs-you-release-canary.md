@@ -1,0 +1,24 @@
+# Needs-you release canary
+
+26 Nov 2026 (eq0hnw, retro ecw4cy). Three Hub releases were marked done although nobody had seen
+signed-in production Hub, and web answers did not reach the Tracker. A Hub release now has one
+scripted check to run after it is deployed:
+
+    bun scripts/needs-you-canary.ts --release <release item id> [--tap web,mac,iphone]
+
+- For each surface (Hub web, Mac app, iPhone) it raises its own test ask, labelled as a release
+  canary, on a new item that never launches a session. The ask names one randomly chosen option.
+- Hub web is answered by the script in its own tab of the automation Chrome, on production, by
+  pressing that option on the "Blocked - needs you" row. A row without option buttons fails.
+- A surface named in `--tap` is answered by Daniel by hand. This is the only way for the Mac app
+  and the iPhone. The Tracker does not record which device answered, so the report says that the
+  surface rests on the instruction.
+- A surface passes only when the Tracker then reads back `answered_by` daniel, `answer_option` and
+  `answer` equal to the named option, on an ask that was unanswered when the surface was reached.
+- Every test item is closed afterwards, passed or not. A cleanup that fails is not a pass.
+- The result is noted on the release item. Unless all three surfaces pass, the release item is
+  flagged with an exact ask for Daniel and blocked. A later pass removes only the canary's own
+  flag and block.
+- The script reads one yes or no from the Hub (whether the browser is signed in). It never reads or
+  prints cookies, storage, headers or the account, and takes no screenshot of the live Hub. It
+  opens and closes only its own tab and does not sign in.
