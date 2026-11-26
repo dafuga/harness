@@ -38,13 +38,20 @@ function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolea
 	const notification = runtime.notifications?.status();
 	return {
 		chief_of_staff: notification?.chiefOfStaff ?? 'not configured',
-		backup: { enabled: false, note: 'backups run on the hub (set backup.enabled to change)' },
+		backup: runtime.backups?.service.status() ?? trackerBackupsOff(hub),
 		machines: [],
 		webhook: notification?.webhook ?? defaultWebhookStatus(hub),
 		jobs: trackerJobsStatus(runtime),
 		adapters: runtime.adapter?.status() ?? { runner: null, active: false },
 		autolaunch: trackerAutolaunchStatus(runtime),
 		quiet_hours: notification?.quietHours ?? null
+	};
+}
+
+function trackerBackupsOff(hub: boolean) {
+	return {
+		enabled: false,
+		note: hub ? 'native backups are not enabled on this hub' : 'only the hub takes backups'
 	};
 }
 

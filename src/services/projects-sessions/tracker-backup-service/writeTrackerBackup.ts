@@ -1,0 +1,56 @@
+import { randomBytes } from 'node:crypto';
+import { chmodSync, mkdirSync, renameSync, rmSync, statSync, unlinkSync } from 'node:fs';
+import { join } from 'node:path';
+import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
+import { readTrackerBackupFiles } from '../tracker-node-service/readTrackerBackupList';
+import {
+	assertTrackerBackupIntegrity,
+	copyTrackerBackup,
+	gzipTrackerBackup,
+	snapshotTrackerDatabase
+} from './trackerBackupFiles';
+
+const retention = { daily: 14, weekly: 8 };
+
+/** Write one verified daily snapshot, keep Sunday's as weekly, then rotate this folder only. */
+export async function writeTrackerBackup(
+	database: SqliteDatabase,
+	directory: string,
+	date: string
+) {
+	mkdirSync(directory, { recursive: true, mode: 0o700 });
+	chmodSync(directory, 0o700);
+	const temporary = join(directory, `.tmp-${randomBytes(4).toString('hex')}.db`);
+	const compressed = `${temporary}.gz`;
+	try {
+		snapshotTrackerDatabase(database, temporary);
+		verifySnapshot(temporary, directory, date);
+		await gzipTrackerBackup(temporary, compressed);
+		const file = `tracker-${date}.db.gz`;
+		const path = join(directory, file);
+		renameSync(compressed, path);
+		if (new Date(`${date}T00:00:00Z`).getUTCDay() === 0)
+			copyTrackerBackup(path, join(directory, `tracker-weekly-${date}.db.gz`));
+		rotateTrackerBackups(directory);
+		return { file, size: statSync(path).size };
+	} finally {
+		for (const path of [temporary, compressed]) rmSync(path, { force: true });
+	}
+}
+
+/** A snapshot that fails the check is kept for inspection, and nothing is rotated. */
+function verifySnapshot(snapshot: string, directory: string, date: string): void {
+	try {
+		assertTrackerBackupIntegrity(snapshot);
+	} catch (error) {
+		renameSync(snapshot, join(directory, `tracker-${date}-${Date.now()}.db.bad`));
+		throw error;
+	}
+}
+
+function rotateTrackerBackups(directory: string): void {
+	const files = readTrackerBackupFiles(directory);
+	for (const [kind, keep] of Object.entries(retention))
+		for (const { name } of files.filter((file) => file.kind === kind).slice(keep))
+			unlinkSync(join(directory, name));
+}

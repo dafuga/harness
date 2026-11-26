@@ -68,9 +68,11 @@ export class TrackerSupervisorService {
 	}
 
 	private workers() {
-		const { scheduler, notifications, recurring, adapter, telemetry, watchdog } = this.runtime;
+		const { scheduler, notifications, recurring, adapter, telemetry, watchdog, backups } =
+			this.runtime;
 		const ticks = {
 			...(telemetry && { telemetry }),
+			...(backups && { backup: () => backups.service.tick() }),
 			...(watchdog && { watchdog: watchdog.tick }),
 			...(scheduler && { dispatch: (signal: AbortSignal) => scheduler.tick(signal) }),
 			...(recurring && { recurring: (signal: AbortSignal) => recurring.tick(signal) }),
