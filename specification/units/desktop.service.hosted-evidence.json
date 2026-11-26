@@ -17,7 +17,7 @@
 			"HostedEvidenceService.constructor",
 			"HostedEvidenceService.evidence",
 			"HostedEvidenceService.artifact",
-			"Asked",
+			"HostedEntityEvidenceQuery",
 			"Transport"
 		]
 	},
@@ -38,7 +38,7 @@
 			},
 			{
 				"name": "HostedEvidenceService.evidence.input",
-				"type": "Asked",
+				"type": "HostedEntityEvidenceQuery",
 				"required": true,
 				"description": "Asked combines projectId, entityId, commit, branch, and mode, where mode is current or commit. The service copies it and uses it for the evidence path, read key, transport request, and answer binding.",
 				"examples": [
@@ -176,7 +176,7 @@
 				"inputs": [
 					{
 						"name": "HostedEvidenceService.evidence.input",
-						"type": "Asked",
+						"type": "HostedEntityEvidenceQuery",
 						"required": true,
 						"description": "Asked combines projectId, entityId, commit, branch, and mode, where mode is current or commit. The service copies it and uses it for the evidence path, read key, transport request, and answer binding.",
 						"examples": [

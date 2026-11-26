@@ -12,7 +12,7 @@
 			"src/utils/verification-evidence/verificationNoteIdentity.ts",
 			"src/utils/verification-evidence/verificationNoteIdentity.types.ts"
 		],
-		"symbols": ["verificationNoteIdentity", "Note"]
+		"symbols": ["verificationNoteIdentity"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -104,7 +104,7 @@
 			},
 			{
 				"name": "verificationNoteIdentity.note",
-				"type": "Note",
+				"type": "VerificationNote",
 				"required": true,
 				"description": "The kind: verification history-note entry that indexes the record. The function checks its record id, source commit/tree/base, status, profile id and finish time; it does not inspect the evidence pointer.",
 				"examples": [
@@ -241,7 +241,7 @@
 					},
 					{
 						"name": "verificationNoteIdentity.note",
-						"type": "Note",
+						"type": "VerificationNote",
 						"required": true,
 						"description": "The kind: verification history-note entry that indexes the record. The function checks its record id, source commit/tree/base, status, profile id and finish time; it does not inspect the evidence pointer.",
 						"examples": [

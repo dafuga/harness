@@ -1,6 +1,6 @@
 // @harness-uid u_nsxu3st5to
-import type { Environment, E2eFixtures } from './e2eFixtures.types';
-import { E2eRootNotSetError } from './e2eFixtures.types';
+import type { RuntimeEnvironment } from '../../../../../../src/core/execution-runtimes/runtimeTypes.types';
+import { type E2eFixtures, E2eRootNotSetError } from './e2eFixtures.types';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -31,7 +31,7 @@ const missing =
  * a process outside any run is told so. HARNESS_CONSOLE_E2E_HOME and HARNESS_ANALYTICS_HOME
  * still place those two elsewhere when a caller names them.
  */
-export function e2eFixtures(env: Environment = process.env): E2eFixtures {
+export function e2eFixtures(env: RuntimeEnvironment = process.env): E2eFixtures {
 	const root = env.HARNESS_E2E_ROOT;
 	if (!root) throw new E2eRootNotSetError(missing);
 	return {
@@ -62,7 +62,7 @@ export function freePorts(count: number): number[] {
  * its own and free ports, and both are written to the environment so that its servers, seeds
  * and specs see the same ones. A process that already belongs to a run changes nothing.
  */
-export function openE2eRun(env: Environment = process.env): E2eFixtures {
+export function openE2eRun(env: RuntimeEnvironment = process.env): E2eFixtures {
 	if (!env.HARNESS_E2E_ROOT) {
 		env.HARNESS_E2E_ROOT = mkdtempSync(join(tmpdir(), 'harness-reports-e2e-'));
 		// Only the process that made the directory removes it.
@@ -75,12 +75,12 @@ export function openE2eRun(env: Environment = process.env): E2eFixtures {
 }
 
 /** True when the caller named the directory of the run, so servers it started may be adopted. */
-export function namedE2eRun(env: Environment = process.env): boolean {
+export function namedE2eRun(env: RuntimeEnvironment = process.env): boolean {
 	return Boolean(env.HARNESS_E2E_ROOT) && !env.HARNESS_E2E_OWNER;
 }
 
 /** Removes the directory of a run. A run that was given its directory leaves it alone. */
-export function closeE2eRun(env: Environment = process.env): void {
+export function closeE2eRun(env: RuntimeEnvironment = process.env): void {
 	if (env.HARNESS_E2E_OWNER !== String(process.pid) || !env.HARNESS_E2E_ROOT) return;
 	rmSync(env.HARNESS_E2E_ROOT, { recursive: true, force: true });
 	rmSync(join(frozenBuilds, basename(env.HARNESS_E2E_ROOT)), { recursive: true, force: true });

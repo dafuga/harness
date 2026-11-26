@@ -1,12 +1,18 @@
 // @harness-uid u_qspboqkqoj
-import type { Measurement, Budget } from './entityMeasure.types';
 import type {
-	MeasureRow,
-	PerformanceRow,
-	EntityMeasure
+	HarnessMeasurement,
+	HarnessRecord,
+	HarnessUnit
+} from '../../../models/explorer-ui/Harness.types';
+import type { Budget } from './entityMeasure.types';
+import {
+	type MeasureRow,
+	type PerformanceRow,
+	type EntityMeasure,
+	notMeasured,
+	byteSize,
+	tolerancePolicy
 } from '../../../utils/explorer-ui/entityMeasure';
-import { notMeasured, byteSize, tolerancePolicy } from '../../../utils/explorer-ui/entityMeasure';
-import type { HarnessRecord, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import { humanize } from '../../../helpers/strings/humanize';
 import { reasonText } from '../../../utils/explorer-ui/explorerState';
 import { harnessEmitted } from '../../../utils/explorer-ui/harnessEmitted';
@@ -15,11 +21,11 @@ import { harnessEmitted } from '../../../utils/explorer-ui/harnessEmitted';
 const told = (note: string | undefined) => (note === undefined ? undefined : reasonText(note));
 
 /** A figure of the unit itself names no workload and no machine. */
-function own(measured: Measurement[], metric: string): Measurement | undefined {
+function own(measured: HarnessMeasurement[], metric: string): HarnessMeasurement | undefined {
 	return measured.find((item) => item.metric === metric && !item.workload && !item.profile);
 }
 
-function ownRow(measured: Measurement[], metric: string, label: string): MeasureRow {
+function ownRow(measured: HarnessMeasurement[], metric: string, label: string): MeasureRow {
 	const found = own(measured, metric);
 	const unitOfMeasure = metric === 'source-bytes' ? 'bytes' : undefined;
 	if (!found) return { label, value: notMeasured, rawValue: null, unitOfMeasure };
@@ -67,14 +73,14 @@ function emittedRows(unit: HarnessUnit, record: HarnessRecord | null): MeasureRo
 	});
 }
 
-function observedValue(found: Measurement | undefined): string {
+function observedValue(found: HarnessMeasurement | undefined): string {
 	if (!found || found.value === null) return notMeasured;
 	if (found.unitOfMeasure === 'bytes') return byteSize(found.value);
 	return `${Number(found.value.toPrecision(4))} ${found.unitOfMeasure}`;
 }
 
 function rawMeasurement(
-	found: Measurement | undefined
+	found: HarnessMeasurement | undefined
 ): Pick<PerformanceRow, 'rawValue' | 'unitOfMeasure'> {
 	return { rawValue: found?.value ?? null, unitOfMeasure: found?.unitOfMeasure };
 }
@@ -88,7 +94,7 @@ function metricLabel(metric: string): string {
 }
 
 function timing(
-	found: Measurement | undefined,
+	found: HarnessMeasurement | undefined,
 	budget: Omit<Budget, 'tolerance'> & { tolerance?: number }
 ): PerformanceRow {
 	const tolerance = budget.tolerance;
@@ -106,7 +112,7 @@ function timing(
 }
 
 /** The timings of one declared budget: one row for each profile it was taken under. */
-function budgetRows(measured: Measurement[], budget: Budget): PerformanceRow[] {
+function budgetRows(measured: HarnessMeasurement[], budget: Budget): PerformanceRow[] {
 	const taken = measured.filter(
 		(item) =>
 			item.metric === budget.metric &&
@@ -124,7 +130,7 @@ function budgetRows(measured: Measurement[], budget: Budget): PerformanceRow[] {
 export function entityMeasure(
 	unit: HarnessUnit,
 	record: HarnessRecord | null,
-	observations: Measurement[] = []
+	observations: HarnessMeasurement[] = []
 ): EntityMeasure {
 	const measured = [
 		...(unit.sourceMeasurements ?? []),

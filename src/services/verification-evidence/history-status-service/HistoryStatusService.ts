@@ -1,7 +1,7 @@
 // @harness-uid u_hs46i3q25s
+import type { VerificationNote } from '../../../core/git-source-history/historyTypes.types';
 import type {
 	PinnedHistory,
-	VerificationNote,
 	CommitStatus,
 	RecordStatus,
 	RecordDependency

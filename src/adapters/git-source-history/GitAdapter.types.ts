@@ -6,10 +6,4 @@ export interface GitRunOptions {
 	maxBuffer?: number;
 }
 
-export interface GitResult {
-	code: number;
-	stdout: Buffer;
-	stderr: string;
-}
-
 export { GitCommandError } from './GitCommandError';

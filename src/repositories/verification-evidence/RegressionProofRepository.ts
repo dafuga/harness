@@ -1,6 +1,7 @@
 // @harness-uid u_4de62mowqb
+import type { RegressionNote } from '../../core/git-source-history/historyTypes.types';
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
-import type { RegressionNote } from './RegressionProofRepository.types';
+
 import { EvidenceTreeAdapter } from '../../adapters/verification-evidence/EvidenceTreeAdapter';
 import { evidenceRef } from '../../core/git-source-history/historyTypes';
 import { fail } from '../../core/development-tooling/errors';
@@ -139,4 +140,4 @@ function regressionNote(
 	};
 }
 
-export type { RegressionNote } from './RegressionProofRepository.types';
+export type { RegressionNote } from '../../core/git-source-history/historyTypes.types';

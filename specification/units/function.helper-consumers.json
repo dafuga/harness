@@ -17,10 +17,8 @@
 		],
 		"symbols": [
 			"helperConsumers",
-			"Unit",
 			"Context",
 			"serviceClasses",
-			"Unit",
 			"Facts",
 			"Definition",
 			"Lookup",
@@ -41,7 +39,7 @@
 			},
 			{
 				"name": "helperConsumers.units",
-				"type": "Unit[]",
+				"type": "RevisionUnit[]",
 				"required": true,
 				"description": "Registered units to scan: only units with status 'active' contribute owned source, helpers and service exports, so inactive units never count as consumers, and a unit's own references to its service exports are skipped. Each consumer is distinct per unit and caller symbol, but units in the component or service categories and references to service exports count as the unit alone, while other references without a named caller are ignored.",
 				"examples": [
@@ -116,12 +114,12 @@
 									},
 									{
 										"name": "helperConsumers.units",
-										"type": "Unit[]",
+										"type": "RevisionUnit[]",
 										"required": true
 									},
 									{
 										"name": "serviceClasses.units",
-										"type": "Unit[]",
+										"type": "RevisionUnit[]",
 										"required": true
 									},
 									{
@@ -174,7 +172,7 @@
 			},
 			{
 				"name": "serviceClasses.units",
-				"type": "Unit[]",
+				"type": "RevisionUnit[]",
 				"required": true,
 				"description": "Units to annotate in place: each unit's serviceClasses is replaced, becoming empty when it has no serviceExports, with each service export that resolves (directly or through forwards) to a non-abstract class declared in that unit's own owned source, and each class lists its inherited methods, consumer units and constructedBy units. Exports of the same class are merged, and helperConsumers passes only active units.",
 				"examples": [
@@ -249,12 +247,12 @@
 									},
 									{
 										"name": "helperConsumers.units",
-										"type": "Unit[]",
+										"type": "RevisionUnit[]",
 										"required": true
 									},
 									{
 										"name": "serviceClasses.units",
-										"type": "Unit[]",
+										"type": "RevisionUnit[]",
 										"required": true
 									},
 									{
@@ -350,7 +348,7 @@
 					},
 					{
 						"name": "helperConsumers.units",
-						"type": "Unit[]",
+						"type": "RevisionUnit[]",
 						"required": true,
 						"description": "Registered units to scan: only units with status 'active' contribute owned source, helpers and service exports, so inactive units never count as consumers, and a unit's own references to its service exports are skipped. Each consumer is distinct per unit and caller symbol, but units in the component or service categories and references to service exports count as the unit alone, while other references without a named caller are ignored.",
 						"examples": [
@@ -425,12 +423,12 @@
 											},
 											{
 												"name": "helperConsumers.units",
-												"type": "Unit[]",
+												"type": "RevisionUnit[]",
 												"required": true
 											},
 											{
 												"name": "serviceClasses.units",
-												"type": "Unit[]",
+												"type": "RevisionUnit[]",
 												"required": true
 											},
 											{
@@ -508,7 +506,7 @@
 				"inputs": [
 					{
 						"name": "serviceClasses.units",
-						"type": "Unit[]",
+						"type": "RevisionUnit[]",
 						"required": true,
 						"description": "Units to annotate in place: each unit's serviceClasses is replaced, becoming empty when it has no serviceExports, with each service export that resolves (directly or through forwards) to a non-abstract class declared in that unit's own owned source, and each class lists its inherited methods, consumer units and constructedBy units. Exports of the same class are merged, and helperConsumers passes only active units.",
 						"examples": [
@@ -583,12 +581,12 @@
 											},
 											{
 												"name": "helperConsumers.units",
-												"type": "Unit[]",
+												"type": "RevisionUnit[]",
 												"required": true
 											},
 											{
 												"name": "serviceClasses.units",
-												"type": "Unit[]",
+												"type": "RevisionUnit[]",
 												"required": true
 											},
 											{

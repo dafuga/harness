@@ -21,7 +21,6 @@
 			"namedE2eRun",
 			"closeE2eRun",
 			"E2eFixtures",
-			"Environment",
 			"E2eFixtures",
 			"E2eRootNotSetError",
 			"e2eFixtures",
@@ -42,7 +41,7 @@
 		"inputs": [
 			{
 				"name": "e2eFixtures.env",
-				"type": "Environment",
+				"type": "RuntimeEnvironment",
 				"required": false,
 				"description": "Environment record used to resolve a run’s fixture paths; a truthy HARNESS_E2E_ROOT is required, and console and analytics overrides apply when present. Defaults to process.env.",
 				"examples": [
@@ -65,7 +64,7 @@
 			},
 			{
 				"name": "openE2eRun.env",
-				"type": "Environment",
+				"type": "RuntimeEnvironment",
 				"required": false,
 				"description": "Mutable environment record used to name or create a run and record its ports. Defaults to process.env; a supplied HARNESS_E2E_ROOT is retained, and existing named ports are left intact.",
 				"examples": [
@@ -78,7 +77,7 @@
 			},
 			{
 				"name": "namedE2eRun.env",
-				"type": "Environment",
+				"type": "RuntimeEnvironment",
 				"required": false,
 				"description": "Environment record inspected for a truthy HARNESS_E2E_ROOT and a missing HARNESS_E2E_OWNER. Defaults to process.env.",
 				"examples": [
@@ -90,7 +89,7 @@
 			},
 			{
 				"name": "closeE2eRun.env",
-				"type": "Environment",
+				"type": "RuntimeEnvironment",
 				"required": false,
 				"description": "Environment record whose run directories are removed only when HARNESS_E2E_OWNER equals this process’s PID and HARNESS_E2E_ROOT is set. Defaults to process.env.",
 				"examples": [
@@ -154,7 +153,7 @@
 				"inputs": [
 					{
 						"name": "e2eFixtures.env",
-						"type": "Environment",
+						"type": "RuntimeEnvironment",
 						"required": false,
 						"description": "Environment record used to resolve a run’s fixture paths; a truthy HARNESS_E2E_ROOT is required, and console and analytics overrides apply when present. Defaults to process.env.",
 						"examples": [
@@ -222,7 +221,7 @@
 				"inputs": [
 					{
 						"name": "openE2eRun.env",
-						"type": "Environment",
+						"type": "RuntimeEnvironment",
 						"required": false,
 						"description": "Mutable environment record used to name or create a run and record its ports. Defaults to process.env; a supplied HARNESS_E2E_ROOT is retained, and existing named ports are left intact.",
 						"examples": [
@@ -260,7 +259,7 @@
 				"inputs": [
 					{
 						"name": "namedE2eRun.env",
-						"type": "Environment",
+						"type": "RuntimeEnvironment",
 						"required": false,
 						"description": "Environment record inspected for a truthy HARNESS_E2E_ROOT and a missing HARNESS_E2E_OWNER. Defaults to process.env.",
 						"examples": [
@@ -287,7 +286,7 @@
 				"inputs": [
 					{
 						"name": "closeE2eRun.env",
-						"type": "Environment",
+						"type": "RuntimeEnvironment",
 						"required": false,
 						"description": "Environment record whose run directories are removed only when HARNESS_E2E_OWNER equals this process’s PID and HARNESS_E2E_ROOT is set. Defaults to process.env.",
 						"examples": [
@@ -318,7 +317,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.runtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "packages/reports/src/utils/e2eFixtures.ts",

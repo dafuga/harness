@@ -1,7 +1,5 @@
 // @harness-uid u_qspboqkqoj
-import type { HarnessRecord } from '../../../models/explorer-ui/Harness.types';
-import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 
-export type Measurement = HarnessRecord['measurements'][number];
+import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 
 export type Budget = HarnessUnit['budgets']['performance'][number];

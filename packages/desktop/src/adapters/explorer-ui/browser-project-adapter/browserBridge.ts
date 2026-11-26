@@ -1,5 +1,5 @@
 // @harness-uid u_4fbefo5t7a
-import type { Listener, Guard, Reads, Denied } from './browserBridge.types';
+import type { ProjectReadGuard, Listener, Reads, Denied } from './browserBridge.types';
 import { HostedAgentUnavailableError } from './HostedAgentUnavailableError';
 import { ProjectIdRequiredError } from './ProjectIdRequiredError';
 import { AgentHttpAdapter } from '../../agents-providers/AgentHttpAdapter';
@@ -50,7 +50,7 @@ function hosted(snapshot: ProjectSnapshot): ProjectSnapshot {
  * A refused read ends what may be shown: the session for 401, that one project for 403. The
  * page hears it before the read rejects, as it does from the desktop bridge.
  */
-function guarded(listeners: Set<Listener>): Guard {
+function guarded(listeners: Set<Listener>): ProjectReadGuard {
 	return async (context, read) => {
 		try {
 			return await read(base(context));
@@ -66,7 +66,7 @@ function guarded(listeners: Set<Listener>): Guard {
 
 function reads(
 	api: BrowserApi,
-	guard: Guard,
+	guard: ProjectReadGuard,
 	report: (snapshot: ProjectSnapshot, query: Parameters<DesktopBridge['snapshot']>[0]) => void
 ): Reads {
 	/** The branch last shown per project: the server reads an entity's history along it. */
@@ -177,7 +177,7 @@ export function browserBridge(api: BrowserApi): DesktopBridge {
 
 async function messages(
 	api: BrowserApi,
-	guard: Guard,
+	guard: ProjectReadGuard,
 	input: Parameters<DesktopBridge['messages']>[0]
 ) {
 	const { entityId, commit, threadId, ...context } = input;

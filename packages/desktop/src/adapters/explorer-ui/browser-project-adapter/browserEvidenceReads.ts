@@ -1,5 +1,6 @@
 // @harness-uid u_uo6mdaup3p
-import type { Guard } from './browserEvidenceReads.types';
+
+import type { ProjectReadGuard } from './browserBridge.types';
 import { evidencePayload } from '../../../utils/verification-evidence/evidencePayload';
 import { browserArtifact } from './browserArtifact';
 import type { EntityEvidenceResult } from '../../../models/verification-evidence/DesktopEvidence.types';
@@ -9,7 +10,7 @@ import type { BrowserApi } from '../../../models/development-tooling/BrowserApi.
 /** Browser evidence uses the same permission guard as every other project read. */
 export function browserEvidenceReads(
 	api: BrowserApi,
-	guard: Guard
+	guard: ProjectReadGuard
 ): Pick<DesktopBridge, 'evidence' | 'artifact'> {
 	return {
 		evidence: (input) =>

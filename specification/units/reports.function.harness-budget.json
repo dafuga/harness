@@ -12,22 +12,14 @@
 			"packages/reports/src/utils/explorer-ui/harnessBudget.ts",
 			"packages/reports/src/utils/explorer-ui/harnessBudget.types.ts"
 		],
-		"symbols": [
-			"harnessBudget",
-			"FrozenLine",
-			"Reviewed",
-			"Measurement",
-			"Finding",
-			"FrozenLine",
-			"Reviewed"
-		]
+		"symbols": ["harnessBudget", "FrozenLine", "Reviewed", "Finding", "FrozenLine", "Reviewed"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
 				"name": "harnessBudget.found",
-				"type": "Measurement | undefined",
+				"type": "HarnessMeasurement | undefined",
 				"required": true,
 				"description": "The measurement for this unit and metric, or undefined when this revision has no measurement. A null value is shown as unavailable; a present value is rendered with its unit of measure, and partial records can add a note.",
 				"examples": [
@@ -126,7 +118,7 @@
 				"inputs": [
 					{
 						"name": "harnessBudget.found",
-						"type": "Measurement | undefined",
+						"type": "HarnessMeasurement | undefined",
 						"required": true,
 						"description": "The measurement for this unit and metric, or undefined when this revision has no measurement. A null value is shown as unavailable; a present value is rendered with its unit of measure, and partial records can add a note.",
 						"examples": [
