@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "script.tracker-release-copy",
+	"uid": "u_dq4n62kuop",
+	"kind": "script",
+	"title": "tracker-release-copy",
+	"responsibility": "Owns the tracker-release-copy build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/tracker-release-copy.sh"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/tracker-release-copy.sh",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/tracker-release-copy.sh"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
