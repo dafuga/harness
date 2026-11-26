@@ -1,5 +1,5 @@
 // @harness-uid u_evpsejqo7k
-import type { HomeChatReceipt } from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { coalesced } from '$reports/lib/projects-sessions/realtime/coalesced';
 import { LinkedHomeService } from '../../services/networking-security/LinkedHomeService';
 import { readHome } from './hubHomeClient';

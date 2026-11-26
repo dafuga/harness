@@ -2,9 +2,9 @@
 import {
 	buildHomeSnapshot,
 	noProviders
-} from '../../../../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
-import { homeChatInput } from '../../../../../../reports/src/lib/projects-sessions/hub-home/homeChatInput';
-import { readTrackerSources } from '../../../../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
+} from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
+import { homeChatInput } from '$reports/lib/projects-sessions/hub-home/homeChatInput';
+import { readTrackerSources } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker';
 import { RemoteFailure } from '../../../../../../remote/src/index';
 import { deliverHomeChat } from './homeTrackerChat';
 

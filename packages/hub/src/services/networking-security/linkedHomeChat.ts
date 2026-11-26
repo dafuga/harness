@@ -3,7 +3,7 @@ import type {
 	HomeChatInput,
 	HomeChatReceipt,
 	OwnerHomeSnapshot
-} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 
 /** Whether this computer reported the open ask being answered, or the agent's item being noted. */
 export function showsHomeChatTarget(snapshot: OwnerHomeSnapshot, message: HomeChatInput) {

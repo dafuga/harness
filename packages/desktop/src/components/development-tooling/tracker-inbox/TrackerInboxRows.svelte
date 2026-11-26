@@ -28,6 +28,7 @@
 		source,
 		mode,
 		onchanged,
+		onnotice,
 		rows,
 		selected,
 		empty,
@@ -37,13 +38,14 @@
 		source: TrackerInboxSource;
 		mode: 'phone' | 'mac';
 		onchanged: () => Promise<void>;
+		/** Told what a row's answer did. The list shows it: an answered row leaves the list. */
+		onnotice: (message: string) => void;
 		rows: InboxRow[];
 		selected: string | null;
 		empty: string;
 		label: string;
 		onselect: (id: string) => void;
 	} = $props();
-	let notice = $state('');
 	let busy = $state(false);
 	/** The revisions answered here, so a queued answer cannot be tapped twice. */
 	let answered = $state<string[]>([]);
@@ -53,13 +55,12 @@
 		revision: review.revision
 	});
 
-	/** The list says what happened: an answered row leaves it on the next read. */
 	async function deliver(review: InboxDetail, write: ConfirmedWrite | null) {
 		if (busy) return;
 		busy = true;
 		try {
 			const result = await sendRowAnswer(source, write, mode);
-			notice = result.message;
+			onnotice(result.message);
 			if (result.sent) answered = [...answered, key(review)];
 			await onchanged();
 		} finally {
@@ -67,8 +68,6 @@
 		}
 	}
 </script>
-
-{#if notice}<hx-p class="hint" role="status">{notice}</hx-p>{/if}
 
 <hx-ul class="rows" aria-label={label}>
 	{#each rows as row (row.header.id)}
@@ -96,10 +95,10 @@
 					>
 				{/if}
 			</hx-button>
-			{@const review = row.review}
-			{#if review?.flag && !answered.includes(key(review))}
+			{#if row.review?.flag && !answered.includes(key(row.review))}
+				{@const review = row.review}
 				<TrackerInboxChoices
-					flag={review.flag}
+					flag={row.review.flag}
 					{busy}
 					onpick={(number) => void deliver(review, optionWrite(review, reviewed(review), number))}
 					onother={(text) => void deliver(review, writtenAnswer(review, reviewed(review), text))}
@@ -117,7 +116,7 @@
 		margin: 0;
 		padding: 0;
 		display: grid;
-		gap: var(--hx-space-6);
+		gap: var(--hx-space-16);
 	}
 	:global(.rows button.row) {
 		display: grid;
@@ -136,7 +135,7 @@
 	}
 	:global(.rows li) {
 		display: grid;
-		gap: var(--hx-space-4);
+		gap: var(--hx-space-8);
 		min-width: 0;
 	}
 	:global(.rows .question) {

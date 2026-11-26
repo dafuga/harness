@@ -1,8 +1,5 @@
 import { z } from 'zod';
-import {
-	chatId,
-	homeChatInput
-} from '../../../../../reports/src/lib/projects-sessions/hub-home/homeChatInput';
+import { chatId, homeChatInput } from '$reports/lib/projects-sessions/hub-home/homeChatInput';
 import {
 	homeProviders,
 	homeRunPayload

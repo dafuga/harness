@@ -43,6 +43,11 @@
 				"required": true
 			},
 			{
+				"name": "TrackerInboxRows.onnotice",
+				"type": "(message: string) => void",
+				"required": true
+			},
+			{
 				"name": "TrackerInboxRows.rows",
 				"type": "InboxRow[]",
 				"required": true,

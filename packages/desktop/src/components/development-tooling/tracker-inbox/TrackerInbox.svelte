@@ -30,6 +30,7 @@
 
 	let overview = $state.raw<InboxOverview | null>(null);
 	let loadFailure = $state('');
+	let notice = $state('');
 	let filter = $state<InboxFilter>('needs-you');
 	let query = $state('');
 	let found = $state.raw<InboxRow[] | null>(null);
@@ -76,6 +77,7 @@
 
 	function choose(id: string) {
 		selected = id;
+		notice = '';
 	}
 
 	/** A change made anywhere: the list, an open search and the open item are read again. */
@@ -88,6 +90,20 @@
 		return followTrackerSource(source, { refresh: follow, state: (state) => (link = state) });
 	});
 </script>
+
+{#snippet rows()}
+	<TrackerInboxRows
+		{source}
+		{mode}
+		onchanged={follow}
+		onnotice={(message) => (notice = message)}
+		rows={listed}
+		{selected}
+		label={filter === 'all' ? 'All items' : bucketLabels[filter]}
+		empty="Nothing here right now."
+		onselect={choose}
+	/>
+{/snippet}
 
 <hx-section class="inbox" aria-label="Tracker decisions">
 	<hx-header class="inbox-head">
@@ -109,6 +125,8 @@
 			{/if}
 		</hx-p>
 	</hx-header>
+
+	{#if notice}<hx-p class="meta" role="status">{notice}</hx-p>{/if}
 
 	{#if loadFailure}
 		<hx-p class="meta" role="status">{loadFailure}</hx-p>
@@ -156,6 +174,7 @@
 				{source}
 				{mode}
 				onchanged={follow}
+				onnotice={(message) => (notice = message)}
 				rows={found}
 				{selected}
 				label="Search results"
@@ -164,25 +183,23 @@
 					: 'Nothing on this phone matches that search.'}
 				onselect={choose}
 			/>
+		{:else if filter === 'needs-you' && listed.length}
+			<hx-section class="needs" aria-labelledby="inbox-needs-title">
+				<hx-div class="needs-head">
+					<hx-h2 class="needs-title" id="inbox-needs-title">Blocked - needs you</hx-h2>
+					<hx-span class="needs-count"
+						>{listed.length} {listed.length === 1 ? 'needs' : 'need'} you</hx-span
+					>
+				</hx-div>
+				{@render rows()}
+				{#if overview.needsYouCapped}
+					<hx-p class="meta"
+						>Only the most recent Needs you items are on this phone. Search for others.</hx-p
+					>
+				{/if}
+			</hx-section>
 		{:else}
-			{#if filter === 'needs-you' && listed.length}<hx-h2 class="needs-title"
-					>Blocked - needs you</hx-h2
-				>{/if}
-			<TrackerInboxRows
-				{source}
-				{mode}
-				onchanged={follow}
-				rows={listed}
-				{selected}
-				label={filter === 'all' ? 'All items' : bucketLabels[filter]}
-				empty="Nothing here right now."
-				onselect={choose}
-			/>
-			{#if overview.needsYouCapped && filter === 'needs-you'}
-				<hx-p class="meta"
-					>Only the most recent Needs you items are on this phone. Search for others.</hx-p
-				>
-			{/if}
+			{@render rows()}
 		{/if}
 
 		{#if !mac}<TrackerInboxWrites {source} {writes} onchanged={reload} />{/if}
