@@ -31,7 +31,7 @@ import type {
 import { nativeTrackerArgs } from './nativeTrackerRequest';
 import { printNativeTrackerHelp, wantsNativeTrackerHelp } from './nativeTrackerHelp';
 import { printNativeTrackerAddHint } from './printNativeTrackerAddHint';
-import { printNativeTrackerError } from './printNativeTrackerError';
+import { refuseNativeTrackerRequest } from './printNativeTrackerError';
 import { formatNativeTrackerCheck } from './formatNativeTrackerMatches';
 import { formatNativeTrackerHistory } from './formatNativeTrackerHistory';
 import { runTrackerInstructions } from './runTrackerInstructions';
@@ -103,7 +103,8 @@ async function sendNativeTracker(
 	const data = response.headers.get('content-type')?.startsWith('application/json')
 		? await response.json()
 		: await response.text();
-	if (!response.ok) return refuse(response.status, data as NativeTrackerRefusal, keep);
+	if (!response.ok)
+		return refuseNativeTrackerRequest(response.status, data as NativeTrackerRefusal, keep);
 	if (request.path.endsWith('/launch?outcome=run')) return renderLaunch(data, Boolean(values.json));
 	if (request.path === '/backup/now') return renderTrackerBackup(data, Boolean(values.json));
 	if (command === 'check') return renderCheck(data, Boolean(values.json));
@@ -113,16 +114,6 @@ async function sendNativeTracker(
 		if (!values.quiet) await printNativeTrackerAddHint(command, data as NativeTrackerItem, config);
 	}
 	return 0;
-}
-
-async function refuse(
-	status: number,
-	data: NativeTrackerRefusal,
-	keep: (refused: string) => Promise<void>
-) {
-	const code = printNativeTrackerError(status, data);
-	await keep(data?.error ?? `HTTP ${status}`);
-	return code;
 }
 
 function trackerActor(command: string, by: string | boolean | undefined, node: string): string {
@@ -184,6 +175,7 @@ function renderNativeTracker(
 		case 'sync':
 			console.log('sync triggered');
 			return;
+
 		case 'digest':
 			console.log(String(data).trimEnd());
 			return;
@@ -201,6 +193,10 @@ function renderNativeTracker(
 }
 
 function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
+	if (command === 'reply') {
+		console.log(`reply sent to Daniel in the Hub (${(data as { id?: string }).id ?? 'message'})`);
+		return;
+	}
 	if (command === 'adapter' && first !== 'list') {
 		console.log(formatNativeTrackerAdapterReply(data as NativeTrackerAdapterReply));
 		return;

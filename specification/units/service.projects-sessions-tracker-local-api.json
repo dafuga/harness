@@ -18,6 +18,9 @@
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalJobResponse.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalPlanning.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalRejection.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts",
@@ -46,6 +49,11 @@
 			"recordTrackerSessionItem",
 			"readItemBody",
 			"itemMutationContext",
+			"trackerJobResponse",
+			"cosChatTitle",
+			"trackerMessageEndpoint",
+			"MessageDependencies",
+			"RequestTarget",
 			"writeTrackerPlanning",
 			"trackerRejectItem",
 			"isTrackerManualLaunch",
@@ -260,6 +268,41 @@
 				"default": false
 			},
 			{
+				"name": "trackerJobResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.options",
+				"type": "TrackerLocalApiOptions",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.dependencies",
+				"type": "MessageDependencies",
+				"required": true
+			},
+			{
 				"name": "writeTrackerPlanning.request",
 				"type": "Request",
 				"required": true
@@ -406,6 +449,18 @@
 			{
 				"name": "itemMutationContext",
 				"type": "TrackerItemMutationContext"
+			},
+			{
+				"name": "trackerJobResponse",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "cosChatTitle",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerMessageEndpoint",
+				"type": "Promise<{ status: number; body: object } | undefined>"
 			},
 			{
 				"name": "writeTrackerPlanning",
@@ -787,6 +842,67 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerJobResponse",
+				"inputs": [
+					{
+						"name": "trackerJobResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.options",
+						"type": "TrackerLocalApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerJobResponse",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMessageEndpoint",
+				"inputs": [
+					{
+						"name": "trackerMessageEndpoint.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerMessageEndpoint.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerMessageEndpoint.dependencies",
+						"type": "MessageDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMessageEndpoint",
+						"type": "Promise<{ status: number; body: object } | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "writeTrackerPlanning",
 				"inputs": [
 					{
@@ -997,6 +1113,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-hub-session-messages",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -7,6 +7,9 @@ import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
+import { WatchdogPaneService } from '../WatchdogPaneService';
+
+const panes = new WatchdogPaneService();
 
 const transcriptOnlyPort: TrackerWatchdogPort = {
 	scan: async () => null,
@@ -73,6 +76,7 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		scan: (signal) => tmux.scan(signal),
 		inventory: (signal) => tmux.inventory(signal),
 		nudge: (input, signal) => tmux.nudge(input, signal),
+		deliver: (input, signal) => deliverToSession(tmux, input, signal),
 		async send(alerts, signal) {
 			const now = Date.now();
 			const hour = Number(lisbon.format(now));
@@ -91,4 +95,19 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 			return sent;
 		}
 	};
+}
+
+/** Only one pane of exactly that name, and only while its prompt is empty and waiting. */
+async function deliverToSession(
+	tmux: TrackerTmuxAdapter,
+	{ session, message }: { session: string; message: string },
+	signal: AbortSignal
+): Promise<'delivered' | 'busy' | 'missing'> {
+	if (!/^[A-Za-z0-9._-]{1,100}$/.test(session)) return 'missing';
+	const names = new RegExp(`^${session.replace(/[.]/g, '\\.')}$`);
+	const found = await tmux.scan(signal, names);
+	if (found.length !== 1) return 'missing';
+	const cli = panes.idlePrompt(found[0]);
+	if (!cli) return 'busy';
+	return (await tmux.nudge({ pane: found[0], cli, message, names }, signal)) ? 'delivered' : 'busy';
 }

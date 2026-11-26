@@ -27,6 +27,7 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerPlanningRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerRequest.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerRunRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerTimedItemRequest.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerAddHint.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerError.ts",
@@ -91,9 +92,11 @@
 			"nativeTrackerPlanningRequest",
 			"nativeTrackerCommands",
 			"nativeTrackerArgs",
+			"nativeTrackerRunRequest",
+			"nativeTrackerQuery",
 			"nativeTrackerTimedItemRequest",
 			"printNativeTrackerAddHint",
-			"printNativeTrackerError",
+			"refuseNativeTrackerRequest",
 			"isLocalBackupCommand",
 			"runLocalTrackerBackup",
 			"renderTrackerBackup",
@@ -351,6 +354,26 @@
 				"required": true
 			},
 			{
+				"name": "nativeTrackerRunRequest.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerRunRequest.words",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerRunRequest.values",
+				"type": "Record<string, string | boolean | undefined>",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerQuery.fields",
+				"type": "Record<string, string | boolean | undefined>",
+				"required": true
+			},
+			{
 				"name": "nativeTrackerTimedItemRequest.command",
 				"type": "string",
 				"required": true
@@ -381,13 +404,18 @@
 				"required": true
 			},
 			{
-				"name": "printNativeTrackerError.status",
+				"name": "refuseNativeTrackerRequest.status",
 				"type": "number",
 				"required": true
 			},
 			{
-				"name": "printNativeTrackerError.data",
+				"name": "refuseNativeTrackerRequest.data",
 				"type": "NativeTrackerRefusal",
+				"required": true
+			},
+			{
+				"name": "refuseNativeTrackerRequest.keep",
+				"type": "(refused: string) => Promise<void>",
 				"required": true
 			},
 			{
@@ -583,6 +611,14 @@
 				"type": "unknown"
 			},
 			{
+				"name": "nativeTrackerRunRequest",
+				"type": "NativeTrackerRequest | undefined"
+			},
+			{
+				"name": "nativeTrackerQuery",
+				"type": "string"
+			},
+			{
 				"name": "nativeTrackerTimedItemRequest",
 				"type": "NativeTrackerRequest | undefined"
 			},
@@ -591,8 +627,8 @@
 				"type": "Promise<void>"
 			},
 			{
-				"name": "printNativeTrackerError",
-				"type": "number"
+				"name": "refuseNativeTrackerRequest",
+				"type": "Promise<number>"
 			},
 			{
 				"name": "isLocalBackupCommand",
@@ -1278,6 +1314,57 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "nativeTrackerRunRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerRunRequest.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerRunRequest.words",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerRunRequest.values",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerRunRequest",
+						"type": "NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerQuery",
+				"inputs": [
+					{
+						"name": "nativeTrackerQuery.fields",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerQuery",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "nativeTrackerTimedItemRequest",
 				"inputs": [
 					{
@@ -1334,23 +1421,28 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "printNativeTrackerError",
+				"name": "refuseNativeTrackerRequest",
 				"inputs": [
 					{
-						"name": "printNativeTrackerError.status",
+						"name": "refuseNativeTrackerRequest.status",
 						"type": "number",
 						"required": true
 					},
 					{
-						"name": "printNativeTrackerError.data",
+						"name": "refuseNativeTrackerRequest.data",
 						"type": "NativeTrackerRefusal",
+						"required": true
+					},
+					{
+						"name": "refuseNativeTrackerRequest.keep",
+						"type": "(refused: string) => Promise<void>",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "printNativeTrackerError",
-						"type": "number"
+						"name": "refuseNativeTrackerRequest",
+						"type": "Promise<number>"
 					}
 				],
 				"errors": [],

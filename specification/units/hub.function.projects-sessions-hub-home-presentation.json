@@ -47,6 +47,7 @@
 			"runDay",
 			"runTime",
 			"when",
+			"messageStatusText",
 			"runDay",
 			"runTime",
 			"runMoment",
@@ -257,6 +258,18 @@
 				"type": "number",
 				"required": true,
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
+			},
+			{
+				"name": "messageStatusText.message",
+				"type": "Pick<HomeMessage, 'status' | 'reason'>",
+				"required": true,
+				"description": "A thread entry's status and refusal reason."
+			},
+			{
+				"name": "messageStatusText.name",
+				"type": "string",
+				"required": true,
+				"description": "The receiving session, as Daniel knows it."
 			},
 			{
 				"name": "runDay.at",
@@ -957,6 +970,31 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "messageStatusText",
+				"inputs": [
+					{
+						"name": "messageStatusText.message",
+						"type": "Pick<HomeMessage, 'status' | 'reason'>",
+						"required": true,
+						"description": "A thread entry's status and refusal reason."
+					},
+					{
+						"name": "messageStatusText.name",
+						"type": "string",
+						"required": true,
+						"description": "The receiving session, as Daniel knows it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "messageStatusText",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "runDay",
