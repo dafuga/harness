@@ -72,6 +72,7 @@ export class TrackerSupervisorService {
 	private workers() {
 		const { scheduler, notifications, recurring, adapter, telemetry, watchdog, backups } =
 			this.runtime;
+		const { chiefMessages } = this.runtime;
 		const ticks = {
 			...(telemetry && { telemetry }),
 			...(backups.service && { backup: () => backups.service!.tick() }),
@@ -85,6 +86,7 @@ export class TrackerSupervisorService {
 				}
 			}),
 			...(adapter && { adapter: (signal: AbortSignal) => adapter.tick(signal) }),
+			...(chiefMessages && { messages: chiefMessages }),
 			...this.options.ticks
 		};
 		return Object.entries(ticks) as [

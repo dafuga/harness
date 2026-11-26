@@ -11,7 +11,8 @@ export type * from './hubSessionMessages.types';
 export const hubMessageIdPattern = /^([0-9a-z]{10})-([0-9a-f]{8})$/;
 const id = '([0-9a-z]{10}-[0-9a-f]{8})';
 const sent = new RegExp(`^Hub message ${id} to (Chief of Staff|run ([^\\s#]+)#(\\d+)): `);
-const delivered = new RegExp(`^Hub message ${id} delivered to (\\S+)$`);
+const delivered = new RegExp(`^Hub message ${id} delivered to (\\S+)(?: as (\\S+))?$`);
+const waiting = new RegExp(`^Hub message ${id} waiting: `);
 const refused = new RegExp(`^Hub message ${id} not delivered: `);
 const reply = new RegExp(`^Reply to Hub message ${id}: `);
 const unsafe = /[\p{Cc}\p{Cf}\p{Cs}\p{Zl}\p{Zp}]+/gu;
@@ -39,8 +40,14 @@ export function formatHubMessageNote(messageId: string, target: HubMessageTarget
 	return `Hub message ${messageId} to ${hubMessageTargetLabel(target)}: ${hubMessageLine(text)}`;
 }
 
-export function formatHubDeliveredNote(messageId: string, session: string) {
-	return `Hub message ${messageId} delivered to ${session}`;
+/** `attempt` is the delivery's idempotency id when it went through a notification channel. */
+export function formatHubDeliveredNote(messageId: string, session: string, attempt?: string) {
+	return `Hub message ${messageId} delivered to ${session}${attempt ? ` as ${attempt}` : ''}`;
+}
+
+/** Still stored, with the reason it could not be delivered yet; delivery keeps retrying. */
+export function formatHubWaitingNote(messageId: string, reason: string) {
+	return `Hub message ${messageId} waiting: ${hubMessageLine(reason)}`;
 }
 
 export function formatHubRefusedNote(messageId: string, reason: string) {
@@ -73,7 +80,15 @@ export function parseHubMessageNote(text: string): HubMessageEvent | null {
 		return { type: 'message', id: messageId, target, text: text.slice(head.length) };
 	}
 	const done = delivered.exec(text);
-	if (done) return { type: 'delivered', id: done[1], session: done[2] };
+	if (done)
+		return {
+			type: 'delivered',
+			id: done[1],
+			session: done[2],
+			...(done[3] && { attempt: done[3] })
+		};
+	const wait = waiting.exec(text);
+	if (wait) return { type: 'waiting', id: wait[1], reason: text.slice(wait[0].length) };
 	const refusal = refused.exec(text);
 	if (refusal) return { type: 'refused', id: refusal[1], reason: text.slice(refusal[0].length) };
 	const answer = reply.exec(text);
@@ -110,6 +125,10 @@ function applyEvent(message: HubThreadMessage, event: HubMessageEvent, at: strin
 		message.status = 'delivered';
 		message.session = event.session;
 		message.deliveredAt = at;
+		delete message.reason;
+		if (event.attempt) message.attempt = event.attempt;
+	} else if (event.type === 'waiting' && message.status === 'stored') {
+		message.reason = event.reason;
 	} else if (event.type === 'refused' && message.status === 'stored') {
 		message.status = 'refused';
 		message.reason = event.reason;

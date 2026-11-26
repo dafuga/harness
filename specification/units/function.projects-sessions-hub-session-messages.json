@@ -20,6 +20,7 @@
 			"hubMessageTargetLabel",
 			"formatHubMessageNote",
 			"formatHubDeliveredNote",
+			"formatHubWaitingNote",
 			"formatHubRefusedNote",
 			"formatHubReplyNote",
 			"hubPaneMessage",
@@ -94,6 +95,21 @@
 				"type": "string",
 				"required": true,
 				"description": "The tmux session the message was typed into."
+			},
+			{
+				"name": "formatHubDeliveredNote.attempt",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "formatHubWaitingNote.messageId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "formatHubWaitingNote.reason",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "formatHubRefusedNote.messageId",
@@ -341,6 +357,11 @@
 						"type": "string",
 						"required": true,
 						"description": "The tmux session the message was typed into."
+					},
+					{
+						"name": "formatHubDeliveredNote.attempt",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -352,6 +373,29 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "formatHubWaitingNote",
+				"inputs": [
+					{
+						"name": "formatHubWaitingNote.messageId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "formatHubWaitingNote.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "formatHubWaitingNote",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "formatHubRefusedNote",

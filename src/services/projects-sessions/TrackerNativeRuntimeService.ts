@@ -39,6 +39,7 @@ import {
 import { composeTrackerTelemetry } from './tracker-native-runtime-service/nativeTrackerTelemetry';
 import { configuredTrackerReminderHost } from './tracker-native-runtime-service/configuredTrackerReminderHost';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
+import { trackerHubChiefDelivery } from './tracker-native-runtime-service/trackerHubChiefMessages';
 
 /** Composes the Tracker node's API, delivery and link workers over one SQLite journal. */
 export class TrackerNativeRuntimeService {
@@ -57,6 +58,8 @@ export class TrackerNativeRuntimeService {
 	readonly sync?: TrackerHubSyncService;
 	readonly recurring?: TrackerRecurringService;
 	readonly telemetry?: (signal: AbortSignal) => Promise<void>;
+	/** On the hub: sends Chief of Staff's Hub messages through its notification channel. */
+	readonly chiefMessages?: () => Promise<void>;
 	readonly fleetSamples?: () => readonly unknown[];
 	readonly now: () => number;
 	private readonly links: TrackerSpokeLoopService[];
@@ -74,6 +77,13 @@ export class TrackerNativeRuntimeService {
 		this.notifications = composeNotifications(store, options);
 		const recurring = composeTrackerRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
+		const notifications = this.notifications;
+		if (role === 'hub')
+			this.chiefMessages = trackerHubChiefDelivery({
+				store,
+				now,
+				channel: () => notifications?.chiefChannel()
+			});
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch =

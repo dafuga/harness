@@ -201,7 +201,8 @@ export function messageStatusText(
 	message: Pick<HomeMessage, 'status' | 'reason'>,
 	name: string
 ): string | null {
-	if (message.status === 'stored') return 'Stored in Tracker';
+	if (message.status === 'stored')
+		return message.reason ? `Not delivered yet: ${message.reason}` : 'Stored in Tracker';
 	if (message.status === 'delivered') return `Delivered to ${name}`;
 	if (message.status === 'acknowledged') return 'Replied';
 	if (message.status === 'refused')

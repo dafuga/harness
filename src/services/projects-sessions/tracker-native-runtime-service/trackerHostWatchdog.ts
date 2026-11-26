@@ -50,7 +50,7 @@ export function trackerHostWatchdog(
 		{ store, items, driver },
 		{ ...options, readItems, roots: config.transcriptRoots }
 	);
-	const deliverMessages = trackerHubMessageDelivery({ store, driver, chiefOfStaff, now });
+	const deliverMessages = trackerHubMessageDelivery({ store, driver, now });
 	return {
 		alerts,
 		chiefOfStaff,
