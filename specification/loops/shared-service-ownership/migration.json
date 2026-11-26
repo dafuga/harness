@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
+			"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
+				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 			},
 			"previousReviews": [
 				{
@@ -1646,6 +1646,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 					"definition": "9cb27a1f849ef82ea7c420cc3b26ab94f203afb42d2bf97dd411ece1cd99b6e6",
 					"reason": "Give the privileged window an explicit owner for its navigation and Tracker artifact link handling."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -2383,13 +2389,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
+			"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
+				"reason": "Adds the authenticated read of a revision’s design canvases behind the project boundary."
 			},
 			"previousReviews": [
 				{
@@ -2415,6 +2421,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 					"definition": "6011bc706ade4bbeeefe206020dfd50dbf411de5acdce7aa51f14b43bce23111",
 					"reason": "Exposes immutable project registry reads behind the existing authenticated project boundary."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -2774,13 +2786,13 @@
 			"unit": "hub.service.hub-projection",
 			"from": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+			"definition": "4616832b0b2db4403c5992af0dec0b06903052248b44d2473ff9e54e87fcaa3a",
 			"relocationDefinition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4",
 			"review": {
-				"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+				"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-				"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
-				"reason": "Reads every declared unit kind from the authorized project and selected source commit."
+				"definition": "4616832b0b2db4403c5992af0dec0b06903052248b44d2473ff9e54e87fcaa3a",
+				"reason": "Reads committed design canvases after the membership check; thread messages moved to a module function."
 			},
 			"previousReviews": [
 				{
@@ -2788,6 +2800,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
 					"definition": "c009664809133b58455ea2c96288b8da196751d6fbf522f29e28291f1cac6824",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "599c4bf932455dc09e122d4942609bb5a160b78d",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+					"definition": "7d50b2ad0caa2745053f292d394d6ce4f6830c031ab3c867acb904ba8ec7cd70",
+					"reason": "Reads every declared unit kind from the authorized project and selected source commit."
 				}
 			]
 		},
@@ -5486,13 +5504,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
+			"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
-				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
+				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 			},
 			"previousReviews": [
 				{
@@ -5542,6 +5560,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "4e266fae4801302d332ef70b02859478d7e9be6adafcb09e731056d0f54c237c",
 					"reason": "Exposes the direct Mac inbox source through the isolated preload and local transport."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "ae79a481e190d61e11dffd390c8b4ff9b0e22e7a33b49de285bb30274e7d0f5c",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 				}
 			]
 		},
@@ -6987,13 +7011,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+			"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
-				"reason": "Carry native browser callback and device metadata through desktop initialization."
+				"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
+				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 			},
 			"previousReviews": [
 				{
@@ -7031,6 +7055,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"reason": "Give local windows the same headless rendering workflow as remote clients.",
 					"definition": "fc4ac939b6401690b8183751141ab5a92f1b3b260a9096025bea4fa1a83e96b0"
+				},
+				{
+					"commit": "58700be9439c1dacbd9b5e76bd95ed21f313d7a9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
+					"reason": "Carry native browser callback and device metadata through desktop initialization."
 				}
 			]
 		},

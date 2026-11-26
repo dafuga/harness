@@ -59,6 +59,22 @@ const agent = z.object({
 	messages: z.array(message).max(20)
 });
 
+// A listed ask is always answerable by tap: 2 to 4 choices, exactly one recommended.
+const openAsk = z.object({
+	itemId: id,
+	agentId: id,
+	agentName: short,
+	title,
+	question: text(2000),
+	options: z
+		.array(askOption)
+		.min(2)
+		.max(4)
+		.refine((list) => list.filter((entry) => entry.recommended).length === 1),
+	confirm: z.enum(['deploy', 'money', 'secret']).optional(),
+	since: time
+});
+
 const plan = z
 	.object({
 		id,
@@ -75,8 +91,10 @@ const plan = z
 const snapshot = z.object({
 	overview: z.unknown(),
 	agents: z.array(agent).max(100),
+	openAsks: z.array(openAsk).max(100).optional(),
 	plans: z.array(plan).max(100),
 	scheduled: z.array(homeRunPayload).max(200),
+	overdue: z.array(homeRunPayload).max(200).optional(),
 	providers: homeProviders
 });
 

@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "command.planning-collaboration-design-command-list-designs",
+	"uid": "u_zy3vg5aj7v",
+	"kind": "command",
+	"title": "listDesigns",
+	"responsibility": "Formats the canvases, or one canvas’s artboards and their problems, for harness design list.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/planning-collaboration/design-command/listDesigns.ts"],
+		"symbols": ["listDesigns"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "listDesigns.service",
+				"type": "DesignCanvasService",
+				"required": true,
+				"description": "Canvas service for the selected project root."
+			},
+			{
+				"name": "listDesigns.canvas",
+				"type": "string",
+				"required": false,
+				"description": "Canvas name, or the canvas data to show or record."
+			},
+			{
+				"name": "listDesigns.json",
+				"type": "boolean",
+				"required": false,
+				"description": "Print JSON instead of text."
+			}
+		],
+		"outputs": [
+			{
+				"name": "listDesigns",
+				"type": "string",
+				"description": "Lines or JSON describing canvases or artboards."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "listDesigns",
+				"inputs": [
+					{
+						"name": "listDesigns.service",
+						"type": "DesignCanvasService",
+						"required": true,
+						"description": "Canvas service for the selected project root."
+					},
+					{
+						"name": "listDesigns.canvas",
+						"type": "string",
+						"required": false,
+						"description": "Canvas name, or the canvas data to show or record."
+					},
+					{
+						"name": "listDesigns.json",
+						"type": "boolean",
+						"required": false,
+						"description": "Print JSON instead of text."
+					}
+				],
+				"outputs": [
+					{
+						"name": "listDesigns",
+						"type": "string",
+						"description": "Lines or JSON describing canvases or artboards."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-artboard-violations",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-design-canvas",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/planning-collaboration/design-command/listDesigns.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/planning-collaboration/design-command/listDesigns.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

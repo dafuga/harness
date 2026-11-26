@@ -54,6 +54,19 @@ export interface HomeAgent {
 	messages: HomeMessage[];
 }
 
+/** One open structured ask: a question Daniel answers by tapping a choice, or by writing another. */
+export interface HomeOpenAsk {
+	itemId: string;
+	/** The Tracker project that asked; the same value as that agent's id. */
+	agentId: string;
+	agentName: string;
+	title: string;
+	question: string;
+	options: HomeAskOption[];
+	confirm?: HomeAskConfirm;
+	since: string;
+}
+
 export interface HomePlan {
 	id: string;
 	title: string;
@@ -74,7 +87,23 @@ export interface HomeRun {
 	source: 'tracker' | 'claude';
 	recurring: boolean;
 	paused: boolean;
+	/** What this Tracker run is once its time passes. Older computers do not report it. */
+	whenDue?: HomeWhenDue;
 }
+
+export interface HomeWhenDue {
+	state: 'running' | 'queued' | 'blocked';
+	reason: string | null;
+	/** Launch order class: 0 urgent, 1 normal, 2 low. */
+	urgency: number;
+}
+
+/** A run whose time has passed. Queued runs carry their launch position. */
+export type HomePastDue = HomeRun & {
+	state: HomeWhenDue['state'];
+	reason: string | null;
+	position?: number;
+};
 
 export interface HomeLimit {
 	id: string;
@@ -106,8 +135,11 @@ export interface HomeProviderReadings {
 export interface OwnerHomeSnapshot {
 	overview: OverviewSnapshot;
 	agents: HomeAgent[];
+	/** Every open structured ask, oldest first. Older Mac apps omit it. */
+	openAsks?: HomeOpenAsk[];
 	plans: HomePlan[];
 	scheduled: HomeRun[];
+	overdue?: HomeRun[];
 	providers: HomeProviderReadings;
 }
 

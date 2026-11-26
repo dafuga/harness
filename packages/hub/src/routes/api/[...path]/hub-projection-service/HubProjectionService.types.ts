@@ -8,3 +8,5 @@ export interface Dependencies {
 	source: SourceHistoryAdapter;
 	cache: CollaborationCache;
 }
+
+export type MessageQuery = { entityId: string; commit: string; threadId: string };

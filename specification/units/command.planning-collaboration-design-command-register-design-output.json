@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "command.planning-collaboration-design-command-register-design-output",
+	"uid": "u_ca6ytzpzbs",
+	"kind": "command",
+	"title": "registerDesignOutput",
+	"responsibility": "Registers harness design list, render and attach for reading, proving and sharing canvases.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/planning-collaboration/design-command/registerDesignOutput.ts"],
+		"symbols": ["registerDesignOutput"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "registerDesignOutput.design",
+				"type": "Command",
+				"required": true,
+				"description": "The harness design command that receives subcommands."
+			}
+		],
+		"outputs": [
+			{
+				"name": "registerDesignOutput",
+				"type": "void",
+				"description": "Result: Registers harness design list, render and attach for reading, proving and sharing canvases."
+			}
+		],
+		"errors": [
+			{
+				"name": "InvalidArgumentError",
+				"type": "thrown",
+				"description": "The theme option is not light, dark or both."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "registerDesignOutput",
+				"inputs": [
+					{
+						"name": "registerDesignOutput.design",
+						"type": "Command",
+						"required": true,
+						"description": "The harness design command that receives subcommands."
+					}
+				],
+				"outputs": [
+					{
+						"name": "registerDesignOutput",
+						"type": "void",
+						"description": "Result: Registers harness design list, render and attach for reading, proving and sharing canvases."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.planning-collaboration-design-command-list-designs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.planning-collaboration-design-command-render-design",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-attach-canvas",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-design-canvas",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/planning-collaboration/design-command/registerDesignOutput.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/planning-collaboration/design-command/registerDesignOutput.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

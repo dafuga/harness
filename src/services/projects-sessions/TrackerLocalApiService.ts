@@ -10,6 +10,7 @@ import {
 	recordTrackerSessionItem,
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
@@ -126,6 +127,8 @@ export class TrackerLocalApiService {
 				: undefined;
 		if (plan.fields)
 			this.store.appendLocal({ itemId: plan.itemId, fields: plan.fields, actor }, persist);
+		const flag = { itemId: plan.itemId, action, question: body.question };
+		recordCosFlag(this.store, flag, context.now);
 		return trackerResponse(action === 'add' ? 201 : 200, this.items.getStored(plan.itemId));
 	}
 }

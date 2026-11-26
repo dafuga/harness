@@ -1,0 +1,122 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-codex-quota-source",
+	"uid": "u_4h6kq2xv7d",
+	"kind": "module",
+	"title": "codexQuotaSource",
+	"responsibility": "Owns the codexQuotaSource library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/codexQuotaSource.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/codexQuotaSource.types.ts"
+		],
+		"symbols": [
+			"codexSubscription",
+			"createCodexQuotaSource",
+			"CodexWindow",
+			"CodexRateLimits",
+			"QuotaSource"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "codexSubscription.limits",
+				"type": "CodexRateLimits",
+				"required": true
+			},
+			{
+				"name": "codexSubscription.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "createCodexQuotaSource.open",
+				"type": "typeof codexRpc",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "codexSubscription",
+				"type": "HomeSubscription | null"
+			},
+			{
+				"name": "createCodexQuotaSource",
+				"type": "QuotaSource"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "codexSubscription",
+				"inputs": [
+					{
+						"name": "codexSubscription.limits",
+						"type": "CodexRateLimits",
+						"required": true
+					},
+					{
+						"name": "codexSubscription.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "codexSubscription",
+						"type": "HomeSubscription | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createCodexQuotaSource",
+				"inputs": [
+					{
+						"name": "createCodexQuotaSource.open",
+						"type": "typeof codexRpc",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "createCodexQuotaSource",
+						"type": "QuotaSource"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.codex-rpc",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/codexQuotaSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/codexQuotaSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

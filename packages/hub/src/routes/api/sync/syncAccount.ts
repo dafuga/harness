@@ -33,3 +33,18 @@ export async function pokeScope(
 		// The write is stored; only the live notice is lost.
 	}
 }
+
+/** Tells every open app of the account that a topic changed. The notice carries no content. */
+export async function ringAccount(
+	accounts: DurableObjectNamespace | null | undefined,
+	account: string,
+	topic: 'home' | 'chat'
+): Promise<void> {
+	if (!accounts) return;
+	try {
+		const stub = accountObject({ accounts } as SyncDeps, account);
+		await stub?.fetch(origin + '/changed', { method: 'POST', body: JSON.stringify({ topic }) });
+	} catch {
+		// The write is stored; apps without the notice read it on their next poll.
+	}
+}

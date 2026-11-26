@@ -5,6 +5,7 @@
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
 	import {
+		pastDueLabel,
 		planLabels,
 		relativeWhen,
 		runDay,
@@ -14,6 +15,7 @@
 	} from './hubHomePresentation';
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
 	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -124,9 +126,6 @@
 			'Schedule a task'
 		)}
 	{/if}
-	{#if view.schedule !== null && !view.routinesConnected && !view.needsMac}
-		<hx-p class="po-sessions">Claude routine dates are unknown.</hx-p>
-	{/if}
 </HubHomeCard>
 
 <HubHomeProjectCard {view} open={() => open('projects')} />
@@ -152,9 +151,10 @@
 		<hx-ul class="po-items">
 			{#each view.work.slice(0, 8) as item, index (item.id)}
 				{@const eta = workEta(item.due, view.now)}
+				{@const passed = view.pastDue.find((run) => run.id === item.id)}
 				<HubHomeRow
 					title={item.title}
-					meta={`${item.project} · ${statusLabel(item.status)}`}
+					meta={`${item.project} · ${passed ? pastDueLabel(passed) : statusLabel(item.status)}`}
 					extra={index >= 2}
 					wide={index >= 4}
 				>
@@ -163,9 +163,10 @@
 				</HubHomeRow>
 			{/each}
 		</hx-ul>
-	{:else}
+	{:else if !view.pastDue.length}
 		{@render empty(
 			'No work in progress. Tasks agents pick up appear here, soonest to finish first.'
 		)}
 	{/if}
+	<HubHomeNotStarted pastDue={view.pastDue} work={view.work} limit={4} />
 </HubHomeCard>

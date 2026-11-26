@@ -51,7 +51,8 @@ function recoveryBudget(
 ): TrackerRecoveryState {
 	const stored = JSON.parse(store.getMeta(key) ?? 'null') as TrackerRecoveryState | null;
 	const exhausted = stored?.failures.length === maxAttempts;
-	const cleared = !item.needs_daniel || item.resolved;
+	// Unblocking the held item is how Chief of Staff allows another attempt.
+	const cleared = item.status !== 'blocked';
 	if (!stored || (exhausted && cleared) || resetBudget(stored, latest, item)) return emptyState;
 	return {
 		...stored,
@@ -200,7 +201,7 @@ function flagRecovery(
 			persist: () => saveRecovery(store, key, { ...state, token: null })
 		},
 		now,
-		`${reason} On ${store.node}, Chief of Staff should inspect the launcher and resolve the item flag when retry is safe.`
+		`${reason} On ${store.node}, Chief of Staff should inspect the launcher and unblock the item when retry is safe.`
 	);
 	return null;
 }

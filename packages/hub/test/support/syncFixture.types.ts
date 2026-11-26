@@ -6,6 +6,12 @@ export interface CallExtra {
 	headers?: Record<string, string>;
 }
 
+/** Another Hub worker entry, and the migrations it needs beside the sealed sync one. */
+export interface SyncStart {
+	entry?: string;
+	migrations?: string[];
+}
+
 export interface SyncFixture {
 	origin: string;
 	db: D1Database;

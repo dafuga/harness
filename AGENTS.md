@@ -125,6 +125,8 @@ visible marker; a later passing DOM assertion cannot validate pixels recorded ea
 
 Read `harness info ui-design` before designing or changing a screen.
 
+Plans for new or changed screens show them first on a design canvas: author artboards in `designs/<canvas>/` with `harness design` (see `harness info design`), check them with `harness design render`, and land them in a pull request.
+
 - One main piece per screen. A screen has one main UI piece (a list, a board, a form or a canvas). Everything else is a primary action above it or quiet status below it. Two main pieces need two screens, tabs or a dialog.
 - Forms never sit inline on an overview. Create, edit, connect and settings forms open from a button in a dialog (the shared Modal) or on their own page. Mark overview screens with <!-- @harness-view overview -->; harness audit reports overview-inline-form for a form control or form component outside a dialog there. A search field inside a role="search" landmark only narrows the main piece and is allowed.
 - Primary actions are buttons in one short row above the main piece. A screen has at most one filled primary button (harness audit reports overview-single-primary); the rest are secondary buttons. Labels are short verbs in sentence case, such as New project.

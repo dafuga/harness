@@ -8,6 +8,7 @@ import { readOverviewText } from '../tracker-overview/trackerOverviewInput';
 import { chatId, chatInput, chatOutcome, controlledChange, parseHomePayload } from './homePayload';
 import { changeControlled, readControlled, readHomeSnapshot, storeHome } from './homeStore';
 import { chatReceipt, claimChat, finishChat, queueChat } from './homeChatStore';
+import { ringAccount } from '../sync/syncAccount';
 import type { HomeDeps } from './homePolicy.types';
 
 const root = '/api/hub-home';
@@ -58,7 +59,8 @@ async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: st
 		return json({
 			granted: true,
 			snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null,
-			controlled: deps.bucket ? await readControlled(deps.bucket, actor) : []
+			controlled: deps.bucket ? await readControlled(deps.bucket, actor) : [],
+			...(deps.accounts && { live: true })
 		});
 	if (url.pathname === chat) return await browserChat(request, url, deps, actor);
 	if (url.pathname === agentsPath) return await browserAgents(request, url, deps, actor);
@@ -78,6 +80,7 @@ async function nativeHome(
 	);
 	if (url.pathname === root) {
 		await storeHome(deps.bucket, actor, parseHomePayload(body), deps.now);
+		await ringAccount(deps.accounts, actor, 'home');
 		return json({ messages: await claimChat(deps.db, actor, deps.now) });
 	}
 	if (url.pathname !== chat) return json({ error: 'not-found' }, 404);
@@ -112,7 +115,9 @@ async function browserAgents(
 	if ((!add && request.method !== 'DELETE') || url.search) return json({ error: 'not-found' }, 404);
 	const change = controlledChange.parse(JSON.parse(await readOverviewText(request, 1024)));
 	const controlled = await changeControlled(deps.bucket, actor, { id: change.id, add });
-	return controlled ? json({ controlled }) : json({ error: 'too-many' }, 409);
+	if (!controlled) return json({ error: 'too-many' }, 409);
+	await ringAccount(deps.accounts, actor, 'home');
+	return json({ controlled });
 }
 
 async function postChat(request: Request, deps: HomeDeps, actor: string) {
@@ -122,6 +127,7 @@ async function postChat(request: Request, deps: HomeDeps, actor: string) {
 	const agent = snapshot?.agents.find((entry) => entry.id === message.agentId);
 	if (!matchesCurrentItem(message, agent)) return json({ id: message.id, status: 'refused' });
 	const receipt = await queueChat(deps.db, actor, message, deps.now);
+	if (receipt?.status === 'queued') await ringAccount(deps.accounts, actor, 'chat');
 	return json(
 		receipt ?? { id: message.id, status: 'refused' },
 		receipt?.status === 'queued' ? 202 : 200

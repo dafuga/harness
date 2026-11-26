@@ -9,6 +9,7 @@ import { hubBody, hubHttp } from '../../../../utils/networking-security/hub-http
 import { hubHttpFailure, hubQuery } from './hubHttp';
 import { hubFail } from '../../../../utils/development-tooling/hubJson';
 import { hubEvidenceRead } from './hubEvidenceRead';
+import { hubDesignCanvasRead } from './hubDesignCanvasRead';
 
 export class HubApiController {
 	constructor(private runtime: HubApiRuntime) {}
@@ -71,6 +72,7 @@ async function readProject(c: Context, operation: string): Promise<Response> {
 		const project = await api.getProject(actor, projectId);
 		return hubHttp({ ...project, executionAvailable: await executable(c, project) });
 	}
+	if (operation === 'designs') return hubDesignCanvasRead(c);
 	if (operation === 'members') return hubHttp(await api.listMembers(actor, projectId));
 	if (operation === 'registry') {
 		const commit = new URL(request.url).searchParams.get('commit');

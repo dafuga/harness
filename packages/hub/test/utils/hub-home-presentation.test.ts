@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
 import {
 	initials,
-	quickReplies,
 	quotaReset,
 	quotaSummary,
 	runDay
@@ -58,14 +57,4 @@ test('the quota dialog summary counts subscriptions and readable low limits', ()
 	expect(quotaSummary([subscription([64])], now)).toBe('1 subscription · all OK');
 	expect(quotaSummary([subscription([5], stale)], now)).toBe('1 subscription · all OK');
 	expect(quotaSummary([], now)).toBe('No subscriptions yet');
-});
-
-test('quick replies are offered only for yes-or-no questions', () => {
-	expect(quickReplies('Approve the Nudge production window, Sat 09:00?')).toEqual([
-		'Approve',
-		'Not yet'
-	]);
-	expect(quickReplies('Should I merge the release PR?')).toEqual(['Yes', 'No']);
-	expect(quickReplies('Which provider should Hub read quota from?')).toEqual([]);
-	expect(quickReplies(null)).toEqual([]);
 });

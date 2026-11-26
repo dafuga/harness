@@ -19,6 +19,9 @@ planning writes and immutable formatter ignores.
 The level planning review retains implementation commit `f6a7a2129` for the desktop bridge
 factory and isolated preload.
 
+The design canvas review retains the committed Hub API controller and projection service that
+read a revision's canvases.
+
 ## Regenerating it
 
 Regenerate it when a review names another commit or path. Run this from a checkout whose Git
@@ -90,3 +93,5 @@ Google sign-in retains implementation commit `58700be943` for the native account
 Hub handoff and device storage changes, and the iOS account adapter.
 
 Hub Home live sessions retains implementation commit `32f91c2f7` for the read-only homeSnapshot device method in the desktop device session and operations services.
+
+Realtime tracker pushes retain implementation commit `68fcb43a67` for the desktop initializer, preload and local client.

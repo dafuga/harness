@@ -4,8 +4,10 @@ import type {
 	HomeAgent,
 	HomeChatInput,
 	HomeChatReceipt,
+	HomeOpenAsk,
 	HomePlan,
 	HomeRun,
+	HomePastDue,
 	HomeSection,
 	HomeSubscription,
 	OwnerHomeSnapshot
@@ -19,10 +21,15 @@ export interface HomeView {
 	agents: HomeAgent[] | null;
 	/** Other projects' agents that need you now; they are not listed under Agents but their asks show. */
 	asks: HomeAgent[];
+	/** The open structured asks: what "needs you" counts and what the Agents card lists. */
+	openAsks: HomeOpenAsk[];
 	/** Tracker agent values Daniel added as sessions he created himself. */
 	controlled: string[];
 	plans: HomePlan[] | null;
+	/** Future runs only. */
 	schedule: HomeRun[] | null;
+	/** Work whose time has passed: running, queued in launch order, or blocked. */
+	pastDue: HomePastDue[];
 	quota: HomeSubscription[] | null;
 	projects: ProjectSummary[] | null;
 	projectsFailed: boolean;
@@ -34,7 +41,6 @@ export interface HomeView {
 	/** Computers linked to this account, online or not. */
 	linkedComputers: number;
 	trackerConnected: boolean;
-	routinesConnected: boolean;
 	quotaConnected: boolean;
 	now: number;
 }
@@ -49,4 +55,6 @@ export interface ReadHomeResult {
 	granted: boolean;
 	snapshot: OwnerHomeSnapshot | null;
 	controlled?: string[];
+	/** The Hub pushes change notices to this account. */
+	live?: boolean;
 }

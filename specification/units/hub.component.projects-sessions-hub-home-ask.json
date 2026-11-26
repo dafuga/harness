@@ -11,9 +11,6 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-choices",
-			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-input",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-strong"
@@ -27,10 +24,9 @@
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "HubHomeAsk.agent",
-				"type": "HomeAgent",
-				"required": true,
-				"description": "The agent whose open question is shown, with its options, confirm kind and current Tracker item."
+				"name": "HubHomeAsk.ask",
+				"type": "HomeOpenAsk",
+				"required": true
 			},
 			{
 				"name": "HubHomeAsk.send",
@@ -43,6 +39,12 @@
 				"type": "(id: string) => Promise<HomeChatReceipt>",
 				"required": true,
 				"description": "Reads the delivery status of a submitted answer by its chat command identifier."
+			},
+			{
+				"name": "HubHomeAsk.submitted",
+				"type": "(message: HomeChatInput, receipt: HomeChatReceipt) => void",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [
@@ -65,21 +67,6 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-button",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-input",
 			"via": "import",
 			"origin": "derived"
 		},

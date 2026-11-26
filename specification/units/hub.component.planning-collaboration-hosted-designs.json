@@ -1,0 +1,117 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.planning-collaboration-hosted-designs",
+	"uid": "u_tred5euwjc",
+	"kind": "component",
+	"title": "HostedDesigns",
+	"responsibility": "Reads a hosted revision’s canvases and shows the selected one in the shared viewer.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.planning-collaboration-designs-header",
+			"reports.component.planning-collaboration-design-canvas-design-canvas",
+			"reports.component.shared-primitives-atoms-html-code",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/planning-collaboration/HostedDesigns.svelte"],
+		"symbols": ["HostedDesigns"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HostedDesigns.projectId",
+				"type": "string",
+				"required": true,
+				"description": "Hub project identifier."
+			},
+			{
+				"name": "HostedDesigns.canvas",
+				"type": "string | null",
+				"required": true,
+				"description": "Canvas name, or the canvas data to show or record."
+			},
+			{
+				"name": "HostedDesigns.branch",
+				"type": "string | null",
+				"required": true,
+				"description": "Branch to view; the default branch when null."
+			},
+			{
+				"name": "HostedDesigns.commit",
+				"type": "string | null",
+				"required": true,
+				"description": "Exact commit to view, or null for the branch tip."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HostedDesigns",
+				"type": "markup",
+				"description": "Renders: Reads a hosted revision’s canvases and shows the selected one in the shared viewer."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.planning-collaboration-designs-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.planning-collaboration-design-canvas-design-canvas",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

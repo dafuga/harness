@@ -1,5 +1,6 @@
 import { comparePanesPreview } from './comparePanesPreview';
 import type { PreviewCases } from './shared';
+import { designCanvasCases } from './designCanvasPreviews';
 const prefix = 'reports.component.shared-primitives-';
 export const presentationVariants: Record<string, string[]> = {
 	[`${prefix}compare-panes`]: ['single', 'missing-parent', 'missing-selected', 'details'],
@@ -35,6 +36,7 @@ export const presentationVariants: Record<string, string[]> = {
 	]
 };
 export const presentationCases: PreviewCases = {
+	...designCanvasCases,
 	[`${prefix}compare-panes`]: comparePanesPreview(),
 	[`${prefix}data-table`]: {},
 	[`${prefix}code-line`]: {},

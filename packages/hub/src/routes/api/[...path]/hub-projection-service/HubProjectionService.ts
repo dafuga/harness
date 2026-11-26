@@ -1,5 +1,6 @@
 // @harness-uid u_gkqforuxtp
-import type { Dependencies } from './HubProjectionService.types';
+import type { Dependencies, MessageQuery } from './HubProjectionService.types';
+import type { DesignCanvasQuery } from './hubDesignCanvases.types';
 import { HubEvidenceService } from './hub-evidence-service/HubEvidenceService';
 import type {
 	EntityEvidenceQuery,
@@ -22,6 +23,7 @@ import { hubThreads } from '../../../../utils/networking-security/hubThreads';
 import { hubPlans } from '../../../../utils/networking-security/hubPlans';
 import { hubDesignImage } from './hubDesigns';
 import { hubSnapshot } from './hubSnapshot';
+import { hubDesignCanvases } from './hubDesignCanvases';
 import { hubEntity } from './hubEntity';
 import { hubProjectionCache } from '../../../../utils/development-tooling/hubProjectionCache';
 import { RemoteProjectResponseValidator } from '../../../../../../desktop/src/validators/RemoteProjectResponseValidator';
@@ -48,6 +50,10 @@ export class HubProjectionService {
 	) {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSnapshot({ ...this.context, actor, project }, query);
+	}
+	async designs(actor: Actor, projectId: string, query: DesignCanvasQuery) {
+		const project = await this.context.api.getProject(actor, projectId);
+		return hubDesignCanvases({ ...this.context, actor, project }, query);
 	}
 	async registry(actor: Actor, projectId: string, commit: string) {
 		return readRegistry(await this.load(actor, projectId, commit));
@@ -130,21 +136,20 @@ export class HubProjectionService {
 		);
 		return hubDesignImage(context, plan, query);
 	}
-	async messages(
-		actor: Actor,
-		projectId: string,
-		query: { entityId: string; commit: string; threadId: string }
-	): Promise<ThreadMessage[]> {
-		const thread = (
-			await this.context.api.listThreads(actor, {
-				projectId,
-				entityId: query.entityId,
-				commit: query.commit
-			})
-		).find((t) => t.id === query.threadId);
-		if (!thread) return hubFail('not-found');
-		return hubMessages(thread);
+	messages(actor: Actor, projectId: string, query: MessageQuery): Promise<ThreadMessage[]> {
+		return readMessages(this.context.api, { actor, projectId, query });
 	}
+}
+
+async function readMessages(
+	api: Dependencies['api'],
+	{ actor, projectId, query }: { actor: Actor; projectId: string; query: MessageQuery }
+): Promise<ThreadMessage[]> {
+	const { entityId, commit, threadId } = query;
+	const threads = await api.listThreads(actor, { projectId, entityId, commit });
+	const thread = threads.find((t) => t.id === threadId);
+	if (!thread) return hubFail('not-found');
+	return hubMessages(thread);
 }
 
 async function readRegistry(context: HubSourceContext) {

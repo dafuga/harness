@@ -9,11 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/isTrackerPing.ts"],
-		"symbols": ["isTrackerPing"]
+		"symbols": ["isTrackerCosMessage", "isTrackerPing"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "isTrackerCosMessage.message",
+				"type": "string | null | undefined",
+				"required": true
+			},
 			{
 				"name": "isTrackerPing.question",
 				"type": "string | null | undefined",
@@ -22,6 +27,10 @@
 		],
 		"outputs": [
 			{
+				"name": "isTrackerCosMessage",
+				"type": "boolean"
+			},
+			{
 				"name": "isTrackerPing",
 				"type": "boolean"
 			}
@@ -29,6 +38,24 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "isTrackerCosMessage",
+				"inputs": [
+					{
+						"name": "isTrackerCosMessage.message",
+						"type": "string | null | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerCosMessage",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "isTrackerPing",
 				"inputs": [

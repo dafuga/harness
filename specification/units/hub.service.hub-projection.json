@@ -18,13 +18,15 @@
 			"HubProjectionService.evidence",
 			"HubProjectionService.artifact",
 			"HubProjectionService.snapshot",
+			"HubProjectionService.designs",
 			"HubProjectionService.registry",
 			"HubProjectionService.entity",
 			"HubProjectionService.history",
 			"HubProjectionService.source",
 			"HubProjectionService.image",
 			"HubProjectionService.messages",
-			"Dependencies"
+			"Dependencies",
+			"MessageQuery"
 		]
 	},
 	"contract": {
@@ -147,6 +149,21 @@
 						"commit": "0123456789abcdef0123456789abcdef01234567"
 					}
 				]
+			},
+			{
+				"name": "HubProjectionService.designs.actor",
+				"type": "Actor",
+				"required": true
+			},
+			{
+				"name": "HubProjectionService.designs.projectId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "HubProjectionService.designs.query",
+				"type": "DesignCanvasQuery",
+				"required": true
 			},
 			{
 				"name": "HubProjectionService.registry.actor",
@@ -337,7 +354,7 @@
 			},
 			{
 				"name": "HubProjectionService.messages.query",
-				"type": "{ entityId: string; commit: string; threadId: string }",
+				"type": "MessageQuery",
 				"required": true,
 				"description": "Selects messages from a collaboration thread for one entity and source commit. The thread must be present in the collaboration API response for that project, entity, and commit.",
 				"examples": [
@@ -1075,6 +1092,34 @@
 				"errorStatus": "declared"
 			},
 			{
+				"name": "HubProjectionService.designs",
+				"inputs": [
+					{
+						"name": "HubProjectionService.designs.actor",
+						"type": "Actor",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.designs.projectId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubProjectionService.designs.query",
+						"type": "DesignCanvasQuery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubProjectionService.designs",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "HubProjectionService.registry",
 				"inputs": [
 					{
@@ -1487,7 +1532,7 @@
 					},
 					{
 						"name": "HubProjectionService.messages.query",
-						"type": "{ entityId: string; commit: string; threadId: string }",
+						"type": "MessageQuery",
 						"required": true,
 						"description": "Selects messages from a collaboration thread for one entity and source commit. The thread must be present in the collaboration API response for that project, entity, and commit.",
 						"examples": [

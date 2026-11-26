@@ -22,6 +22,7 @@ import {
 	WEEK_MS
 } from './projectOverviewItems';
 import { isIncludedItem, sanitizeText } from './projectOverviewPrivacy';
+import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
 
 const STATE_RANK: Record<ProjectState, number> = {
 	'needs-you': 0,
@@ -135,9 +136,9 @@ function pickState(
 	return 'quiet';
 }
 
-/** @pure Flagged for Daniel and not resolved. */
+/** @pure An open structured ask. A flag without choices, such as a dependency block, is not Daniel's. */
 function needsAnswer(row: IncludedTrackerItem): boolean {
-	return row.needs_daniel === true && row.resolved !== true;
+	return trackerStructuredAsk(row);
 }
 
 function attentionCallout(

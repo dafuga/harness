@@ -23,6 +23,7 @@ export type TrackerItemRecord = {
 	question?: string | null;
 	options?: { label: string; effect: string; recommended?: true }[];
 	confirm?: 'deploy' | 'money' | 'secret';
+	askedAt?: string | null;
 	notes_log?: TrackerNote[];
 	kind?: string | null;
 	parent?: string | null;
@@ -31,6 +32,10 @@ export type TrackerItemRecord = {
 	occurrence?: string | null;
 	recurring?: boolean;
 	scheduleOff?: boolean;
+	priority?: string | null;
+	/** A launch has been requested and not cancelled. */
+	launchRequested?: boolean;
+	owner?: string | null;
 	answer?: string | null;
 	answeredAt?: string | null;
 };
