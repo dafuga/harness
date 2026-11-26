@@ -52,8 +52,7 @@ function spoke(hubUrl: string, cachedPolicy?: object) {
 			runner: { start, observe: async () => undefined }
 		}
 	});
-	if (cachedPolicy)
-		runtime.store.writeMeta({ due_scheduler_policy: JSON.stringify(cachedPolicy) });
+	if (cachedPolicy) runtime.store.writeMeta({ due_scheduler_policy: JSON.stringify(cachedPolicy) });
 	const add = (id: string, fields: object = {}) =>
 		runtime.store.appendLocal({
 			itemId: id,
