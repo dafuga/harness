@@ -4,7 +4,7 @@ import type { BrowserApi } from '../../utils/browserApi';
 import type {
 	HomeChatInput,
 	HomeChatReceipt
-} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+} from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import type { ReadHomeResult } from './hubHomeView.types';
 
 /** Whose Home is read, and where each answer goes. */

@@ -13,7 +13,16 @@
 
 	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
 
-	import TrackerInboxRowAsk from './TrackerInboxRowAsk.svelte';
+	import {
+		optionWrite,
+		writtenAnswer
+	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import { sendRowAnswer } from '../../../lib/development-tooling/tracker-inbox/sendRowAnswer';
+	import type {
+		ConfirmedWrite,
+		InboxDetail
+	} from '../../../models/development-tooling/TrackerInbox.types';
+	import TrackerInboxChoices from './TrackerInboxChoices.svelte';
 
 	let {
 		source,
@@ -34,10 +43,32 @@
 		label: string;
 		onselect: (id: string) => void;
 	} = $props();
-	let sent = $state('');
+	let notice = $state('');
+	let busy = $state(false);
+	/** The revisions answered here, so a queued answer cannot be tapped twice. */
+	let answered = $state<string[]>([]);
+	const key = (review: InboxDetail) => `${review.header.id} ${review.revision}`;
+	const reviewed = (review: InboxDetail) => ({
+		itemId: review.header.id,
+		revision: review.revision
+	});
+
+	/** The list says what happened: an answered row leaves it on the next read. */
+	async function deliver(review: InboxDetail, write: ConfirmedWrite | null) {
+		if (busy) return;
+		busy = true;
+		try {
+			const result = await sendRowAnswer(source, write, mode);
+			notice = result.message;
+			if (result.sent) answered = [...answered, key(review)];
+			await onchanged();
+		} finally {
+			busy = false;
+		}
+	}
 </script>
 
-{#if sent}<hx-p class="hint" role="status">{sent}</hx-p>{/if}
+{#if notice}<hx-p class="hint" role="status">{notice}</hx-p>{/if}
 
 <hx-ul class="rows" aria-label={label}>
 	{#each rows as row (row.header.id)}
@@ -65,13 +96,13 @@
 					>
 				{/if}
 			</hx-button>
-			{#if row.review}
-				<TrackerInboxRowAsk
-					{source}
-					{mode}
-					review={row.review}
-					{onchanged}
-					onsent={(message) => (sent = message)}
+			{@const review = row.review}
+			{#if review?.flag && !answered.includes(key(review))}
+				<TrackerInboxChoices
+					flag={review.flag}
+					{busy}
+					onpick={(number) => void deliver(review, optionWrite(review, reviewed(review), number))}
+					onother={(text) => void deliver(review, writtenAnswer(review, reviewed(review), text))}
 				/>
 			{/if}
 		</hx-li>

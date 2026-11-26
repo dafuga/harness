@@ -1,3 +1,11 @@
+---
+status: implemented
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
 # Needs-you rows answer in place
 
 Daniel, 26 Nov 2026. Replaces the 25 Nov layout rule that kept answer controls off the overview.
