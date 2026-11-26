@@ -44,7 +44,7 @@ test('every session brief requires per-requirement, per-computer proof before tr
 
 test('every session brief rejects substitutes for live proof and partial releases', () => {
 	for (const recovery of [false, true]) {
-		const brief = formatTrackerHostBrief(item, 'Finish by running tracker done.', recovery);
+		const brief = formatTrackerHostBrief(item, 'Finish by running tracker done.', { recovery });
 		expect(brief).toContain('A mocked route, a direct call that skips a hop');
 		expect(brief).toContain('a setting the installed app lacks is not proof of a live path');
 		expect(brief).toContain('name any such substitute');
