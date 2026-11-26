@@ -63,7 +63,7 @@ function open(sealed: SealedApproval): unknown {
 	const cipher = createDecipheriv('chacha20-poly1305', key, Buffer.alloc(12), {
 		authTagLength: 16
 	});
-	cipher.setAAD(Buffer.from(requestId, 'ascii'));
+	cipher.setAAD(Buffer.from(requestId, 'ascii'), { plaintextLength: bytes.length - 16 });
 	cipher.setAuthTag(bytes.subarray(-16));
 	return JSON.parse(
 		Buffer.concat([cipher.update(bytes.subarray(0, -16)), cipher.final()]).toString()
