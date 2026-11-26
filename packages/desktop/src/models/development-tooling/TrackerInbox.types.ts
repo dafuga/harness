@@ -6,6 +6,11 @@ import type {
 } from '../../../../../src/utils/projects-sessions/trackerPlanning.types';
 
 /** The buckets an item can sit in. Needs you comes first: an open flag always wins. */
+import type {
+	TrackerAttachment,
+	TrackerAttachmentDocument
+} from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
+
 export type InboxBucket = 'needs-you' | 'blocked' | 'active' | 'quiet' | 'done';
 export type InboxFilter = 'all' | InboxBucket;
 
@@ -38,6 +43,8 @@ export interface InboxFlag {
 	options?: InboxOption[];
 	/** Deploy, money and secret asks need an extra confirm step (Face ID on the phone). */
 	confirm?: InboxConfirmKind;
+	/** Specs and documents behind "View spec". */
+	attachments?: TrackerAttachment[];
 }
 
 export interface InboxNote {
@@ -142,6 +149,8 @@ export interface TrackerInboxSource {
 	overview(): Promise<InboxReply<InboxOverview>>;
 	search(query: string): Promise<InboxReply<InboxRow[]>>;
 	detail(id: string): Promise<InboxReply<InboxDetail>>;
+	/** One document of the item's open ask. */
+	document(itemId: string, attachmentId: string): Promise<InboxReply<TrackerAttachmentDocument>>;
 	write(write: ConfirmedWrite): Promise<InboxReply<InboxWriteReceipt>>;
 	writes(): Promise<InboxReply<InboxWrite[]>>;
 	discard(intentId: string): Promise<InboxReply<unknown>>;

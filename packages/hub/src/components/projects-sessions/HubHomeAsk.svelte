@@ -10,6 +10,8 @@
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeChoices from './HubHomeChoices.svelte';
+	import ViewSpecButtons from '$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
+	import { loadHubSpecDocument } from './hubSpecDocument';
 
 	let {
 		ask,
@@ -65,18 +67,37 @@
 	}
 </script>
 
+{#snippet choices(done?: () => void)}
+	<HubHomeChoices
+		agent={ask}
+		{busy}
+		onpick={(number, confirmed) => {
+			const option = ask.options[number - 1];
+			done?.();
+			if (option) void answerWith(option.label, { number, confirmed });
+		}}
+		onother={(text) => {
+			done?.();
+			void answerWith(text);
+		}}
+	/>
+{/snippet}
+
 {#if open}
 	<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
 		<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
-		<HubHomeChoices
-			agent={ask}
-			{busy}
-			onpick={(number, confirmed) => {
-				const option = ask.options[number - 1];
-				if (option) void answerWith(option.label, { number, confirmed });
-			}}
-			onother={(text) => void answerWith(text)}
-		/>
+		{#if ask.attachments?.length}
+			<ViewSpecButtons
+				attachments={ask.attachments}
+				question={ask.question}
+				load={loadHubSpecDocument}
+			>
+				{#snippet answers(close: () => void)}
+					{@render choices(close)}
+				{/snippet}
+			</ViewSpecButtons>
+		{/if}
+		{@render choices()}
 	</hx-section>
 {:else if status}
 	<hx-p class="po-sessions" role="status">{ask.agentName}: {status}</hx-p>

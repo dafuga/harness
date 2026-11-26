@@ -1,0 +1,99 @@
+.spec-dialog[open] {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	width: min(1180px, 96vw);
+	max-width: none;
+	height: 90dvh;
+	max-height: none;
+	margin: auto;
+	padding: 0;
+	overflow: hidden;
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	text-align: left;
+}
+.spec-dialog::backdrop {
+	background: rgb(0 0 0 / 55%);
+}
+.spec-dialog .spec-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--hx-space-12);
+	padding: var(--hx-space-12) var(--hx-space-16);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+.spec-dialog .spec-titles {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+.spec-dialog .spec-titles h2 {
+	margin: 0;
+	font-size: var(--hx-type-size-base);
+}
+.spec-dialog button.spec-close {
+	min-height: var(--hx-space-40);
+	padding: var(--hx-space-8) var(--hx-space-16);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	font: inherit;
+	cursor: pointer;
+}
+.spec-dialog .spec-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 360px;
+	grid-template-rows: minmax(0, 1fr);
+	flex: 1;
+	min-height: 0;
+}
+.spec-dialog .spec-doc {
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: var(--hx-space-16) var(--hx-space-24);
+}
+.spec-dialog .spec-answers {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-12);
+	overflow-y: auto;
+	padding: var(--hx-space-16);
+	border-left: var(--hx-border-thin) solid var(--hx-color-border);
+	background: var(--hx-color-background);
+}
+.spec-dialog .spec-question {
+	margin: 0;
+	font-weight: 600;
+	overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+	.spec-dialog[open] {
+		width: 100vw;
+		height: 100dvh;
+		border: 0;
+		border-radius: 0;
+		padding-top: env(safe-area-inset-top);
+	}
+	.spec-dialog .spec-layout {
+		display: flex;
+		flex-direction: column;
+	}
+	.spec-dialog .spec-doc {
+		flex: 1;
+		min-height: 0;
+		padding: var(--hx-space-12) var(--hx-space-16);
+	}
+	.spec-dialog .spec-answers {
+		flex: none;
+		max-height: 44dvh;
+		gap: var(--hx-space-8);
+		padding: var(--hx-space-12) var(--hx-space-16)
+			calc(var(--hx-space-12) + env(safe-area-inset-bottom));
+		border-left: 0;
+		border-top: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	}
+}

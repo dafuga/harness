@@ -2,6 +2,7 @@
 // @harness-uid u_ask0tr4ns1
 import { chosenTrackerAskOption } from './trackerAskOptions';
 import { trackerItemError } from './trackerItemError';
+import { storedTrackerAttachments } from './trackerAttachmentStore';
 import { trackerResolveItem } from './trackerItemInput';
 import type {
 	TrackerItemChange,
@@ -16,16 +17,26 @@ function trackerAskChoiceFields(
 	body: TrackerItemInput
 ): TrackerItemInput {
 	if (body.options !== undefined) {
-		return { options: body.options, confirm: body.confirm ?? null, ...clearedChoice(item) };
+		const attached = attachmentFields(item, body);
+		const choices = { options: body.options, confirm: body.confirm ?? null };
+		return { ...choices, ...attached, ...clearedChoice(item) };
 	}
-	if (body.question) return clearedAsk(item);
+	if (body.question) return { ...clearedAsk(item), ...attachmentFields(item, body) };
 	return {};
+}
+
+/** A new ask keeps only the documents sent with it. */
+function attachmentFields(item: TrackerItemSnapshot, body: TrackerItemInput): TrackerItemInput {
+	if (body.attachments === undefined && !item.attachments) return {};
+	// Stored verbatim: the item write has already validated and packed them.
+	return storedTrackerAttachments(body.attachments) as TrackerItemInput;
 }
 
 /** Clear the old ask's choices, but only when it had some, so plain items write nothing extra. */
 function clearedAsk(item: TrackerItemSnapshot): TrackerItemInput {
 	return {
 		...(item.options || item.confirm ? { options: null, confirm: null } : {}),
+		...(item.attachments ? { attachments: null, attachment_docs: null } : {}),
 		...clearedChoice(item)
 	};
 }

@@ -5,6 +5,8 @@ import {
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { controlledIdPattern } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import { trackerAttachmentLimits } from '../../../../../../src/utils/projects-sessions/trackerAttachmentLimits';
+import { trackerAttachmentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachmentMeta';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
 
 const text = (max: number) =>
@@ -72,6 +74,8 @@ const openAsk = z.object({
 		.max(4)
 		.refine((list) => list.filter((entry) => entry.recommended).length === 1),
 	confirm: z.enum(['deploy', 'money', 'secret']).optional(),
+	// Only the listing is part of the snapshot; documents are stored apart. Older Macs send none.
+	attachments: z.array(trackerAttachmentSchema).max(trackerAttachmentLimits.count).optional(),
 	since: time
 });
 

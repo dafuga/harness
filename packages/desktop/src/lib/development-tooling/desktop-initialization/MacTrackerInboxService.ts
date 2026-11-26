@@ -16,6 +16,8 @@ import type {
 	InboxRow,
 	InboxWriteReceipt
 } from '../../../models/development-tooling/TrackerInbox.types';
+import type { TrackerAttachmentDocument } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import { readLocalAttachment } from './tracker-overview-publisher/readLocalAttachment';
 import { confirmedWrite, itemBucket, matchesQuery } from '../tracker-inbox/trackerInbox';
 import type { TrackerInboxItemReply, TrackerInboxReadInput } from './MacTrackerInboxService.types';
 
@@ -25,7 +27,7 @@ const safeId = /^[a-z0-9_-]{1,80}$/;
 export class MacTrackerInboxService {
 	async read(
 		input: TrackerInboxReadInput
-	): Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail>> {
+	): Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail | TrackerAttachmentDocument>> {
 		switch (input.operation) {
 			case 'overview':
 				return this.overview();
@@ -37,6 +39,8 @@ export class MacTrackerInboxService {
 				return typeof input.id === 'string' && safeId.test(input.id)
 					? this.detail(input.id)
 					: current({ code: 'invalidInput' });
+			case 'document':
+				return this.document(input);
 			default:
 				return current({ code: 'invalidInput' });
 		}
@@ -59,6 +63,18 @@ export class MacTrackerInboxService {
 			return result.status === 'accepted'
 				? current({ value: { status: 'accepted' } })
 				: unavailable();
+		} catch {
+			return unavailable();
+		}
+	}
+
+	private async document({
+		id,
+		attachment
+	}: TrackerInboxReadInput): Promise<InboxReply<TrackerAttachmentDocument>> {
+		try {
+			const value = await readLocalAttachment({ itemId: id, id: attachment });
+			return value ? current({ value }) : current({ code: 'noLocalMatch' });
 		} catch {
 			return unavailable();
 		}
@@ -232,6 +248,7 @@ function askChoices(item: TrackerItem) {
 	const confirm = ['deploy', 'money', 'secret'].find((kind) => kind === item.confirm);
 	return {
 		...(options.length >= 2 && { options }),
-		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind })
+		...(options.length >= 2 && confirm && { confirm: confirm as InboxConfirmKind }),
+		...(options.length >= 2 && item.attachments && { attachments: item.attachments })
 	};
 }

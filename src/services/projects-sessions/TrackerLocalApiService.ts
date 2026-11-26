@@ -10,6 +10,7 @@ import {
 	recordTrackerSessionItem,
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
@@ -90,6 +91,8 @@ export class TrackerLocalApiService {
 			return trackerResponse(200, this.items.list(query, this.options.now?.()));
 		if (parts.length === 2)
 			return trackerResponse(200, readTrackerItemDetail(this.items.get(parts[1]), this.options));
+		const attached = readTrackerAttachmentEndpoint(this.items, parts);
+		if (attached) return trackerResponse(attached.status, attached.body);
 		if (parts.length === 3 && parts[2] === 'history' && this.options.recurring)
 			return this.readHistory(parts[1], query.limit);
 		return undefined;

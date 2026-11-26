@@ -4,6 +4,8 @@ import type {
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { ZodError } from 'zod';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
+import { browseHomeDocument, uploadHomeDocument } from './homeDocumentPolicy';
+import { reconcileHomeDocuments } from './homeDocumentStore';
 import { readOverviewText } from '../tracker-overview/trackerOverviewInput';
 import { chatId, chatInput, chatOutcome, controlledChange, parseHomePayload } from './homePayload';
 import { changeControlled, readControlled, readHomeSnapshot, storeHome } from './homeStore';
@@ -13,6 +15,7 @@ import type { HomeDeps } from './homePolicy.types';
 const root = '/api/hub-home';
 const chat = root + '/chat';
 const agentsPath = root + '/agents';
+const documentPath = root + '/doc';
 const headers = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' };
 
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers });
@@ -61,6 +64,10 @@ async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: st
 			controlled: deps.bucket ? await readControlled(deps.bucket, actor) : []
 		});
 	if (url.pathname === chat) return await browserChat(request, url, deps, actor);
+	if (url.pathname === documentPath && request.method === 'GET') {
+		const found = await browseHomeDocument(url, deps, actor);
+		return json(found.body, found.status);
+	}
 	if (url.pathname === agentsPath) return await browserAgents(request, url, deps, actor);
 	return json({ error: 'not-found' }, 404);
 }
@@ -73,12 +80,21 @@ async function nativeHome(
 ): Promise<Response> {
 	if (url.search || request.method !== 'PUT') return json({ error: 'not-found' }, 404);
 	if (!deps.db || !deps.bucket) return json({ error: 'unavailable' }, 503);
+	if (url.pathname === documentPath) {
+		const stored = await uploadHomeDocument(request, deps, actor);
+		return json(stored.body, stored.status);
+	}
 	const body: unknown = JSON.parse(
 		await readOverviewText(request, url.pathname === root ? 1024 * 1024 : 8192)
 	);
 	if (url.pathname === root) {
-		await storeHome(deps.bucket, actor, parseHomePayload(body), deps.now);
-		return json({ messages: await claimChat(deps.db, actor, deps.now) });
+		const snapshot = parseHomePayload(body);
+		await storeHome(deps.bucket, actor, snapshot, deps.now);
+		const wantDocs = await reconcileHomeDocuments(deps.bucket, actor, snapshot);
+		return json({
+			messages: await claimChat(deps.db, actor, deps.now),
+			...(wantDocs.length && { wantDocs })
+		});
 	}
 	if (url.pathname !== chat) return json({ error: 'not-found' }, 404);
 	await finishChat(deps.db, actor, chatOutcome.parse(body));

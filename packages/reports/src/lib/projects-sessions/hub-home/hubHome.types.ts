@@ -1,6 +1,8 @@
 // @harness-uid u_kda7xezayo
 import type { OverviewSnapshot } from '../project-overview/projectOverview.types';
 
+import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+
 export type HomeAgentState = 'needs-you' | 'working' | 'idle' | 'offline';
 export type HomePlanState = 'draft' | 'in-review' | 'approved' | 'in-progress' | 'done';
 export type HomeSection = 'agents' | 'quota' | 'plans' | 'scheduled' | 'projects' | 'wip';
@@ -64,6 +66,8 @@ export interface HomeOpenAsk {
 	question: string;
 	options: HomeAskOption[];
 	confirm?: HomeAskConfirm;
+	/** Specs and documents behind "View spec". */
+	attachments?: TrackerAttachment[];
 	since: string;
 }
 

@@ -10,6 +10,8 @@ import { HostedHttpAdapter } from '../../../../adapters/networking-security/host
 import type { QuotaSource } from './codexQuotaSource.types';
 import { createHomeProviderReader } from './homeProviderReader';
 import { deliverHomeChat } from './homeTrackerChat';
+import { readLocalAttachment } from './readLocalAttachment';
+import type { HubHomeReply } from './createHubHomePublisher.types';
 
 const homePath = '/api/hub-home';
 
@@ -33,13 +35,34 @@ export function createHubHomePublisher(file?: string, sources?: QuotaSource[]) {
 			method: 'PUT',
 			body: JSON.stringify(snapshot)
 		});
-		const result = (await response.json()) as { messages?: HomeChatInput[] };
+		const result = (await response.json()) as HubHomeReply;
+		await uploadHomeDocuments(http, credential, result.wantDocs, current);
 		const messages = Array.isArray(result.messages) ? result.messages.slice(0, 10) : [];
 		for (const message of messages) {
 			if (!current()) return;
 			await deliver(http, credential, message, current);
 		}
 	};
+}
+
+/** Hub names the ask documents it does not hold. A failed upload is asked for again later. */
+async function uploadHomeDocuments(
+	http: HostedHttpAdapter,
+	credential: NativeHostedCredential,
+	wanted: unknown,
+	current: () => boolean
+) {
+	for (const entry of Array.isArray(wanted) ? wanted.slice(0, 4) : []) {
+		const document = await readLocalAttachment(entry).catch(() => null);
+		if (!current()) return;
+		if (!document) continue;
+		await http
+			.request(homePath + '/doc', credential, {
+				method: 'PUT',
+				body: JSON.stringify({ id: entry.id, document })
+			})
+			.catch(() => null);
+	}
 }
 
 async function deliver(

@@ -1,4 +1,5 @@
 // @harness-uid u_gvp72ccrq5
+import { trackerAttachmentDocumentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachmentDocument';
 import type {
 	PhoneTrackerResult,
 	PhoneTrackerTool,
@@ -54,6 +55,11 @@ function overviewOf(data: unknown): InboxOverview | undefined {
 	return { rows, unresolvedFlags: unresolved, needsYouCapped: needing.length >= NEEDS_YOU_CAP };
 }
 
+function documentOf(data: unknown) {
+	const parsed = trackerAttachmentDocumentSchema.safeParse(isRecord(data) ? data.document : null);
+	return parsed.success ? parsed.data : undefined;
+}
+
 function writeInput(write: ConfirmedWrite): Record<string, unknown> {
 	if (write.action === 'note') return { id: write.id, text: write.text };
 	const reviewed = { id: write.id, text: write.text, revision: write.revision };
@@ -83,6 +89,8 @@ export function phoneTrackerInboxSource(tools: PhoneTrackerTools): TrackerInboxS
 		return value === undefined ? { ...base, code: 'invalidReply' } : { ...base, value };
 	};
 	return {
+		document: (itemId, attachment) =>
+			ask('tracker_document', { id: itemId, attachment }, documentOf),
 		overview: () => ask('tracker_status', {}, overviewOf),
 		search: (query) =>
 			ask('tracker_search', { query, limit: NEEDS_YOU_CAP }, (data) =>

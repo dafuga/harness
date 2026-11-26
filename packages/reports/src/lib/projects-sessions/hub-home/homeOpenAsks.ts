@@ -25,6 +25,7 @@ export function buildHomeOpenAsks(items: TrackerItemRecord[]): HomeOpenAsk[] {
 				question: homeText(item.question, 2000) ?? '',
 				options: item.options ?? [],
 				...(item.confirm && { confirm: item.confirm }),
+				...(item.attachments && { attachments: item.attachments }),
 				since: new Date(askedAt(item)).toISOString()
 			};
 		});

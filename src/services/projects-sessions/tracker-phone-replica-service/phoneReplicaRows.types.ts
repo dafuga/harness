@@ -17,6 +17,8 @@ export interface PhoneItemSource extends TrackerPlanningFields {
 	question: string | null;
 	options: string | null;
 	confirm: string | null;
+	attachments?: string | null;
+	attachment_docs?: string | null;
 	flag_clock: string | null;
 	attention_clock: string;
 }

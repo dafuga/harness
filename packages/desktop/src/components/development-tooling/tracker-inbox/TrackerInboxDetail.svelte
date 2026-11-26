@@ -166,7 +166,13 @@
 		<TrackerInboxRecord {detail} {mode} />
 
 		{#if detail.flag}
-			<TrackerInboxAsk flag={detail.flag} {busy} onpick={pick} onother={other} />
+			<TrackerInboxAsk
+				flag={detail.flag}
+				{busy}
+				onpick={pick}
+				onother={other}
+				load={async ({ id: attachment }) => (await source.document(id, attachment)).value ?? null}
+			/>
 		{/if}
 
 		<hx-section class="actions" aria-label="Confirm a write">

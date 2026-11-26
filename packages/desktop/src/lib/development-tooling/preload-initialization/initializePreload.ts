@@ -47,6 +47,7 @@ const trackerInbox: TrackerInboxSource = {
 	overview: () => inboxRead({ operation: 'overview' }),
 	search: (query) => inboxRead({ operation: 'search', query }),
 	detail: (id) => inboxRead({ operation: 'detail', id }),
+	document: (id, attachment) => inboxRead({ operation: 'document', id, attachment }),
 	write: (write) =>
 		call<InboxReply<InboxWriteReceipt>>('trackerInboxWrite')(write).catch(() => unavailable),
 	writes: async () => ({
