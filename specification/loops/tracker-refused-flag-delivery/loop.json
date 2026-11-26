@@ -1,0 +1,59 @@
+{
+	"name": "tracker-refused-flag-delivery",
+	"goal": "A tighter tracker flag contract never silently drops a machine alert: monitors have 'tracker alert', every refused flag is kept for Chief of Staff, and unattended callers are contract-tested",
+	"createdAt": "2026-11-26T14:50:37.229Z",
+	"updatedAt": "2026-11-26T14:51:55.432Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-26T14:51:53.162Z",
+			"evidence": "Brief ksyxq7: since the structured-flag rule the CLI refuses a legacy 'tracker flag <id> <msg>' before it reaches the service; monitors that discard stderr lose every alert. Reproduced by running the strengthened CLI tests on 7b36a973a2. Expected: a supported alert verb, every refused flag kept on its item or the CoS inbox, unattended caller shapes contract-tested."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-26T14:51:55.432Z",
+			"evidence": "tracker-flag-structured.test.ts only asserted that nativeTrackerArgs throws; it never ran the CLI against the item API, never asserted what happens to the refused message, and held no unattended caller argument shapes. Gap closed with a shared real-CLI channel fixture and a caller inventory fixture."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
