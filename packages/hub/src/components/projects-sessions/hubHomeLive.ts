@@ -38,8 +38,9 @@ export const statusWords = {
 	done: 'Done'
 } as const;
 
+/** @pure A planning stage worth showing; the default 'idea' says nothing about the work. */
 export function stageLabel(stage: HomeWorkRow['stage']) {
-	return stage ? stageLabels[stage] : 'Stage not reported';
+	return stage && stage !== 'idea' ? `Stage: ${stageLabels[stage]}` : null;
 }
 
 /** @pure The run state in words, with the recorded outcome of the latest run when it has one. */

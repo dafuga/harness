@@ -51,9 +51,11 @@
 					<Pill tone={`hh-tone po-state po-${tones[row.state]}`} state={tones[row.state]}
 						><hx-span class="po-mark" aria-hidden="true"></hx-span>{workStateLabel(row)}</Pill
 					>
-					<hx-span class="hh-live-stage">Stage: {stageLabel(row.stage)}</hx-span>
+					{#if stageLabel(row.stage)}<hx-span class="hh-live-stage">{stageLabel(row.stage)}</hx-span
+						>{/if}
 					<hx-span class="hh-live-status">{statusWords[row.status]}</hx-span>
 				</hx-span>
+				{#if row.now}<hx-span class="hh-live-now" title={row.now}>{row.now}</hx-span>{/if}
 				<hx-span class="hh-live-facts">
 					{#each workFacts(row) as fact, name (name)}<hx-span>{fact}</hx-span>{/each}
 					<hx-span>{workAge(row, now)}</hx-span>

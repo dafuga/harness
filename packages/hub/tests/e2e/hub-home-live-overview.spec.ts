@@ -1,15 +1,36 @@
+import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
 import { recordedTracker } from '../../test/support/recordedTracker';
-import {
-	expectEvenHeaderSpacing,
-	expectNoSidewaysScroll,
-	liveRows,
-	macAnswer,
-	overview,
-	productionHome
-} from './hub-home-live-overview-fixture';
+import { liveRows, macAnswer, overview, productionHome } from './hub-home-live-fixture';
 
 test.setTimeout(90000);
+
+async function expectNoSidewaysScroll(page: Page, width: number) {
+	const wide = await page.evaluate(() => {
+		const rows = [...document.querySelectorAll('.hh-live-overview *')];
+		return {
+			page: document.documentElement.scrollWidth,
+			right: Math.max(...rows.map((node) => node.getBoundingClientRect().right))
+		};
+	});
+	expect(wide.page).toBeLessThanOrEqual(width);
+	expect(wide.right).toBeLessThanOrEqual(width);
+}
+
+/** Stacked on a phone, the heading, the summary and the source line are evenly spaced. */
+async function expectEvenHeaderSpacing(page: Page) {
+	const [heading, summary, source] = await Promise.all(
+		[
+			overview(page).getByRole('heading', { name: 'Live overview' }),
+			overview(page).getByRole('status'),
+			overview(page).getByText(/^From \d+ of /)
+		].map(async (line) => (await line.boundingBox())!)
+	);
+	const above = summary.y - (heading.y + heading.height);
+	const below = source.y - (summary.y + summary.height);
+	expect(Math.abs(below - above)).toBeLessThanOrEqual(2);
+	expect(below).toBeLessThanOrEqual(8);
+}
 
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
@@ -38,7 +59,6 @@ for (const [device, width, height] of [
 			await expect(row).toBeVisible();
 			for (const fact of [
 				'Running',
-				'Stage: Idea',
 				item.owner ?? 'No owner',
 				run.node,
 				run.effort ? `${run.model}:${run.effort}` : run.model,
