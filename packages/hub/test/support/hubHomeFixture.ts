@@ -57,7 +57,7 @@ export function homeRequest(
 	});
 }
 
-export async function sheets() {
+export async function sheets(sql: string = migration) {
 	const worker = new Miniflare({
 		cf: false,
 		workers: [
@@ -80,10 +80,11 @@ export async function sheets() {
 		]
 	});
 	const db = (await worker.getD1Database('DB', 'hub-home-test')) as unknown as D1Database;
-	for (const sql of migration
+	for (const statement of sql
+		.replace(/^--.*$/gm, '')
 		.split(';')
-		.map((statement) => statement.trim())
+		.map((part) => part.trim())
 		.filter(Boolean))
-		await db.prepare(sql).run();
+		await db.prepare(statement).run();
 	return { db, close: () => worker.dispose() };
 }

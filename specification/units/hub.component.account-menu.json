@@ -56,6 +56,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.module.networking-security-hub-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"

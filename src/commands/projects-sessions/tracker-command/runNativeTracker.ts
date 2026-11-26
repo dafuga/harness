@@ -4,11 +4,8 @@ import { homedir, userInfo } from 'node:os';
 import { join } from 'node:path';
 import { loadTrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
-import {
-	isLocalBackupCommand,
-	renderTrackerBackup,
-	runLocalTrackerBackup
-} from './runLocalTrackerBackup';
+import { renderTrackerBackup } from './runLocalTrackerBackup';
+import { runLocalTrackerCommand } from './runLocalTrackerCommand';
 import {
 	formatNativeTrackerItem,
 	formatNativeTrackerRunRead,
@@ -67,7 +64,8 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 		console.error('tracker: invalid or unreadable native configuration');
 		return 2;
 	}
-	if (isLocalBackupCommand(args)) return runLocalTrackerBackup(args.slice(1), config);
+	const local = runLocalTrackerCommand(args, config);
+	if (local !== undefined) return local;
 	const keep = async (refused: string) => {
 		if (args[0] !== 'flag') return;
 		const actor = trackerActor('flag', undefined, config.node);

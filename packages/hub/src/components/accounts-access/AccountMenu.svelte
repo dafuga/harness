@@ -3,9 +3,17 @@
 <!-- @harness-uid u_3u5oqikjhu -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { forgetHubPush } from '../../lib/networking-security/hubPush';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	let { projectId }: { projectId?: string } = $props();
-	const { session } = browserContext();
+	const { api, session } = browserContext();
+
+	function signOut() {
+		// Notifications never hold up signing out.
+		void forgetHubPush(api)
+			.catch(() => {})
+			.then(() => session.signOut());
+	}
 </script>
 
 <!-- Leaving the workspace is a document navigation: its history entries are its own. -->
@@ -19,6 +27,5 @@
 		><hx-a
 			href={resolve('/projects/[projectId]/designs/[[canvas]]', { projectId })}
 			data-sveltekit-reload>Designs</hx-a
-		>{/if}<hx-button type="button" disabled={session.busy} onclick={() => void session.signOut()}
-		>Sign out</hx-button
+		>{/if}<hx-button type="button" disabled={session.busy} onclick={signOut}>Sign out</hx-button
 	>{/if}
