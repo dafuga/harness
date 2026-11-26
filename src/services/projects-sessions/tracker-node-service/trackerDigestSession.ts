@@ -12,10 +12,8 @@ const messageLimit = 5000;
 const panes = new WatchdogPaneService();
 
 /** Type one digest into a Claude Code or Codex tmux session, only while its composer is idle. */
-export function trackerDigestSession(
-	{ cli, session, tmux: executable }: TrackerNodeSessionTarget,
-	node: string
-) {
+export function trackerDigestSession(target: TrackerNodeSessionTarget, node: string) {
+	const { cli, session, tmux: executable } = target;
 	return async (request: TrackerDeliveryRequest): Promise<TrackerDeliveryResult> => {
 		const tmux = new TrackerTmuxAdapter({ executable, node });
 		const signal = AbortSignal.timeout(20_000);

@@ -122,18 +122,8 @@
 				"required": true
 			},
 			{
-				"name": "trackerDigestSession.cli",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "trackerDigestSession.session",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "trackerDigestSession.tmux",
-				"type": "unknown",
+				"name": "trackerDigestSession.target",
+				"type": "TrackerNodeSessionTarget",
 				"required": true
 			},
 			{
@@ -510,18 +500,8 @@
 				"name": "trackerDigestSession",
 				"inputs": [
 					{
-						"name": "trackerDigestSession.cli",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "trackerDigestSession.session",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "trackerDigestSession.tmux",
-						"type": "unknown",
+						"name": "trackerDigestSession.target",
+						"type": "TrackerNodeSessionTarget",
 						"required": true
 					},
 					{
