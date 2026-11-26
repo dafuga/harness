@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-backup-service-compose-tracker-backups",
+	"uid": "u_qfjuozdzjy",
+	"kind": "service",
+	"title": "composeTrackerBackups",
+	"responsibility": "Owns the composeTrackerBackups service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-backup-service/composeTrackerBackups.ts",
+			"src/services/projects-sessions/tracker-backup-service/composeTrackerBackups.types.ts"
+		],
+		"symbols": ["composeTrackerBackups", "TrackerBackupRuntime", "TrackerBackups"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "composeTrackerBackups.runtime",
+				"type": "TrackerBackupRuntime",
+				"required": true
+			},
+			{
+				"name": "composeTrackerBackups.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "composeTrackerBackups",
+				"type": "TrackerBackups"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "composeTrackerBackups",
+				"inputs": [
+					{
+						"name": "composeTrackerBackups.runtime",
+						"type": "TrackerBackupRuntime",
+						"required": true
+					},
+					{
+						"name": "composeTrackerBackups.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeTrackerBackups",
+						"type": "TrackerBackups"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-backup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-backup-service/composeTrackerBackups.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-backup-service/composeTrackerBackups.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

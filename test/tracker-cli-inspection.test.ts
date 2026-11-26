@@ -179,7 +179,7 @@ test('native adapter run previews seven-day corrections through the compatibilit
 	});
 });
 
-test('native backup list shows local backup files and rejects writes before fetching', async () => {
+test('native backup list shows local files; a node without backups refuses to take one', async () => {
 	const { directory, route, run } = await compatibilityFixture(false);
 	writeFileSync(join(directory, 'tracker-2026-11-20.db.gz'), 'fixture');
 	writeFileSync(join(directory, 'unrelated'), 'ignored');
@@ -203,7 +203,11 @@ test('native backup list shows local backup files and rejects writes before fetc
 	});
 	expect(await run('backup', 'now')).toMatchObject({
 		code: 1,
+		err: 'tracker: native backups are not enabled on this node'
+	});
+	expect(await run('backup', 'prune')).toMatchObject({
+		code: 1,
 		err: 'tracker: usage: tracker backup list'
 	});
-	expect(route).toHaveBeenCalledTimes(2);
+	expect(route).toHaveBeenCalledTimes(3);
 });

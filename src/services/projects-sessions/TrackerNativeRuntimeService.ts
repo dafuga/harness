@@ -8,6 +8,7 @@ import { TrackerNotificationQueueRepository } from '../../repositories/projects-
 import { TrackerNotificationSourceRepository } from '../../repositories/projects-sessions/TrackerNotificationSourceRepository';
 import { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
+import { composeTrackerBackups } from './tracker-backup-service/composeTrackerBackups';
 import type { TrackerAdapterPollService } from './TrackerAdapterPollService';
 import { TrackerHubSyncService } from './TrackerHubSyncService';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
@@ -43,7 +44,7 @@ export class TrackerNativeRuntimeService {
 	readonly dispatch?: TrackerDispatcherService;
 	readonly scheduler?: TrackerDispatchSchedulerService;
 	readonly duePreview: TrackerDuePreviewPolicy;
-	readonly backupDirectory?: string;
+	readonly backups: ReturnType<typeof composeTrackerBackups>;
 	readonly ladderConfig?: TrackerLadderConfig;
 	readonly store: TrackerPersistenceService;
 	readonly items: TrackerLocalApiService;
@@ -64,7 +65,6 @@ export class TrackerNativeRuntimeService {
 		const store = new TrackerPersistenceService(database, node, { ...storage, now });
 		this.store = store;
 		this.role = role;
-		this.backupDirectory = options.backupDirectory;
 		this.ladderConfig = options.ladderConfig;
 		this.now = now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
@@ -85,6 +85,7 @@ export class TrackerNativeRuntimeService {
 		} = composed);
 		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
 		this.items = composeItemApi(this, runs, options, recurring);
+		this.backups = composeTrackerBackups(this, options);
 		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
 			store,
 			runs,

@@ -121,7 +121,11 @@ function formatBackupList({ status, files }: NativeTrackerBackupList): string {
 		({ kind, name, size, mtime }) =>
 			`  ${kind.padEnd(13)} ${name.padEnd(36)} ${String(size).padStart(9)}  ${mtime}`
 	);
-	return [status.note, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
+	const head = status.enabled
+		? `backups: ${status.schedule}\n  last ok ${status.last_ok ?? 'never'}${status.stale ? ' (STALE)' : ''}` +
+			(status.last_error ? `\n  last error ${status.last_error}` : '')
+		: status.note;
+	return [head, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
 }
 
 export function formatNativeTrackerAdapterRun(
@@ -137,4 +141,16 @@ export function formatNativeTrackerAdapterRun(
 		return `${verb} ${title} (${url})${link}${due}`;
 	});
 	return lines.join('\n') || 'No items to create or link.';
+}
+
+/** Report a refused request; duplicate refusals keep their own exit codes. */
+export function printResponseError(status: number, data: { error?: string; code?: string }) {
+	if (status === 404 && !data?.error) {
+		console.error('tracker: the configured listener does not serve native Tracker commands');
+		return 3;
+	}
+	console.error(`tracker: ${data?.error ?? `HTTP ${status}`}`);
+	if (data?.code === 'ignored_duplicate') return 4;
+	if (data?.code === 'open_duplicate') return 5;
+	return 1;
 }

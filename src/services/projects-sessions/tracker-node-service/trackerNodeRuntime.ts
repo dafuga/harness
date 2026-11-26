@@ -36,6 +36,7 @@ export function trackerNodeRuntime(
 		role: config.role,
 		phoneWrite: configuredPhoneWrite(),
 		backupDirectory: config.backupDirectory,
+		backup: configuredTrackerBackups(config),
 		notification,
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
@@ -54,6 +55,17 @@ export function trackerNodeRuntime(
 /** Box job state and receipts live beside the journal that owns the job definitions. */
 function boxJobs({ database }: TrackerNodeConfig) {
 	return { jobs: new TrackerJobProcessAdapter(join(dirname(database), 'jobs')) };
+}
+
+/** A live hub backs itself up. Held and effect-free rehearsal nodes never write backups. */
+function configuredTrackerBackups(config: TrackerNodeConfig) {
+	if (config.role !== 'hub' || config.hostEffects?.mode !== 'active') return undefined;
+	const shared = join(homedir(), 'backups', 'tracker');
+	return {
+		directory: config.backupDirectory ?? join(shared, 'native'),
+		externalDirectory: config.backupDirectory ? undefined : shared,
+		stateFile: join(dirname(config.database), 'tracker-backup.json')
+	};
 }
 
 function trackerAutomaticSetting(config: TrackerNodeConfig): () => boolean {

@@ -85,7 +85,15 @@ export interface NativeTrackerAdapter {
 }
 
 export interface NativeTrackerBackupList {
-	status: { note: string };
+	status:
+		| { enabled: false; note: string }
+		| {
+				enabled: true;
+				schedule: string;
+				last_ok: string | null;
+				last_error: string | null;
+				stale: boolean;
+		  };
 	files: { kind: string; name: string; size: number; mtime: string }[];
 }
 
