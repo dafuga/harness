@@ -46,6 +46,7 @@
 			"stopTrackerRun",
 			"holdLegacySupervisorSocket",
 			"readTrackerBackupList",
+			"readTrackerBackupFiles",
 			"readTrackerNodeInspection",
 			"trackerSlowAdapterPath",
 			"trackerAdapterRoute",
@@ -108,6 +109,16 @@
 				"name": "readTrackerBackupList.dir",
 				"type": "string",
 				"required": false
+			},
+			{
+				"name": "readTrackerBackupList.backups",
+				"type": "{ status: object; externalDirectory?: string }",
+				"required": false
+			},
+			{
+				"name": "readTrackerBackupFiles.dir",
+				"type": "string",
+				"required": true
 			},
 			{
 				"name": "readTrackerNodeInspection.path",
@@ -289,6 +300,10 @@
 			},
 			{
 				"name": "readTrackerBackupList",
+				"type": "unknown"
+			},
+			{
+				"name": "readTrackerBackupFiles",
 				"type": "unknown"
 			},
 			{
@@ -478,11 +493,34 @@
 						"name": "readTrackerBackupList.dir",
 						"type": "string",
 						"required": false
+					},
+					{
+						"name": "readTrackerBackupList.backups",
+						"type": "{ status: object; externalDirectory?: string }",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "readTrackerBackupList",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerBackupFiles",
+				"inputs": [
+					{
+						"name": "readTrackerBackupFiles.dir",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerBackupFiles",
 						"type": "unknown"
 					}
 				],
@@ -988,6 +1026,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-take-tracker-backup-now",
 			"via": "import",
 			"origin": "derived"
 		},

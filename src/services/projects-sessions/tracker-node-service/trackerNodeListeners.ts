@@ -1,6 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
+import { takeTrackerBackupNow } from '../tracker-backup-service/takeTrackerBackupNow';
 import { stopTrackerRun, trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
 import { readTrackerNodeInspection } from './readTrackerNodeInspection';
 import { trackerAdapterRoute, trackerSlowAdapterPath } from './trackerAdapterRoutes';
@@ -107,6 +108,8 @@ function trackerCompatibleApi(
 			return trackerNodeStatus(runtime, supervisor, checkpoint);
 		case 'GET /changes':
 			return serveTrackerChanges(request, runtime.store);
+		case 'POST /backup/now':
+			return takeTrackerBackupNow(runtime.backups);
 		default:
 			return (
 				trackerAdapterRoute(request, runtime) ??

@@ -18,6 +18,7 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAdapterRequest.types.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAskOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerHelp.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerInspectionRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerPlanningRequest.ts",
@@ -25,10 +26,12 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerTimedItemRequest.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerAddHint.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerError.ts",
+			"src/commands/projects-sessions/tracker-command/runLocalTrackerBackup.ts",
 			"src/commands/projects-sessions/tracker-command/runNativeTracker.ts",
 			"src/commands/projects-sessions/tracker-command/runTrackerInstructions.ts",
 			"src/commands/projects-sessions/tracker-command/runTrackerInstructions.types.ts",
-			"src/commands/projects-sessions/tracker-command/trackerInstructionsBlock.ts"
+			"src/commands/projects-sessions/tracker-command/trackerInstructionsBlock.ts",
+			"src/commands/projects-sessions/tracker-command/trackerRequestTimeout.ts"
 		],
 		"symbols": [
 			"TrackerCommand",
@@ -67,6 +70,8 @@
 			"NativeTrackerRunReport",
 			"NativeTrackerPick",
 			"NativeTrackerRunRead",
+			"wantsNativeTrackerHelp",
+			"printNativeTrackerHelp",
 			"nativeTrackerInspectionRequest",
 			"nativeTrackerCommonOptions",
 			"itemFields",
@@ -79,13 +84,17 @@
 			"nativeTrackerTimedItemRequest",
 			"printNativeTrackerAddHint",
 			"printNativeTrackerError",
+			"isLocalBackupCommand",
+			"runLocalTrackerBackup",
+			"renderTrackerBackup",
 			"selectedTrackerConfig",
 			"runNativeTracker",
 			"runTrackerInstructions",
 			"TrackerInstructionsRepair",
 			"TrackerInstructionsResult",
 			"trackerInstructionsBlock",
-			"repairTrackerInstructions"
+			"repairTrackerInstructions",
+			"trackerRequestTimeout"
 		]
 	},
 	"contract": {
@@ -227,6 +236,11 @@
 				"required": true
 			},
 			{
+				"name": "wantsNativeTrackerHelp.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
 				"name": "nativeTrackerInspectionRequest.command",
 				"type": "string",
 				"required": true
@@ -322,6 +336,31 @@
 				"required": true
 			},
 			{
+				"name": "isLocalBackupCommand.[command, mode]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "runLocalTrackerBackup.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "runLocalTrackerBackup.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			},
+			{
+				"name": "renderTrackerBackup.result",
+				"type": "TrackerBackupResult",
+				"required": true
+			},
+			{
+				"name": "renderTrackerBackup.json",
+				"type": "boolean",
+				"required": true
+			},
+			{
 				"name": "runNativeTracker.args",
 				"type": "string[]",
 				"required": true
@@ -338,6 +377,11 @@
 			},
 			{
 				"name": "repairTrackerInstructions.source",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerRequestTimeout.path",
 				"type": "string",
 				"required": true
 			}
@@ -420,6 +464,14 @@
 				"type": "unknown"
 			},
 			{
+				"name": "wantsNativeTrackerHelp",
+				"type": "boolean"
+			},
+			{
+				"name": "printNativeTrackerHelp",
+				"type": "number"
+			},
+			{
 				"name": "nativeTrackerInspectionRequest",
 				"type": "NativeTrackerRequest | undefined"
 			},
@@ -468,6 +520,18 @@
 				"type": "number"
 			},
 			{
+				"name": "isLocalBackupCommand",
+				"type": "boolean"
+			},
+			{
+				"name": "runLocalTrackerBackup",
+				"type": "Promise<number>"
+			},
+			{
+				"name": "renderTrackerBackup",
+				"type": "number"
+			},
+			{
 				"name": "selectedTrackerConfig",
 				"type": "string | undefined"
 			},
@@ -486,6 +550,10 @@
 			{
 				"name": "repairTrackerInstructions",
 				"type": "TrackerInstructionsRepair"
+			},
+			{
+				"name": "trackerRequestTimeout",
+				"type": "unknown"
 			}
 		],
 		"errors": [
@@ -868,6 +936,36 @@
 				"errorStatus": "found"
 			},
 			{
+				"name": "wantsNativeTrackerHelp",
+				"inputs": [
+					{
+						"name": "wantsNativeTrackerHelp.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "wantsNativeTrackerHelp",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "printNativeTrackerHelp",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "printNativeTrackerHelp",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "nativeTrackerInspectionRequest",
 				"inputs": [
 					{
@@ -1082,6 +1180,75 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "isLocalBackupCommand",
+				"inputs": [
+					{
+						"name": "isLocalBackupCommand.[command, mode]",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isLocalBackupCommand",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "runLocalTrackerBackup",
+				"inputs": [
+					{
+						"name": "runLocalTrackerBackup.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "runLocalTrackerBackup.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runLocalTrackerBackup",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "renderTrackerBackup",
+				"inputs": [
+					{
+						"name": "renderTrackerBackup.result",
+						"type": "TrackerBackupResult",
+						"required": true
+					},
+					{
+						"name": "renderTrackerBackup.json",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderTrackerBackup",
+						"type": "number"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "selectedTrackerConfig",
 				"inputs": [],
 				"outputs": [
@@ -1147,6 +1314,24 @@
 					{
 						"name": "repairTrackerInstructions",
 						"type": "TrackerInstructionsRepair"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRequestTimeout",
+				"inputs": [
+					{
+						"name": "trackerRequestTimeout.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRequestTimeout",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -1223,6 +1408,16 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-restore-tracker-backup",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -9,7 +9,6 @@ const flag = { type: 'boolean' } as const;
 const words = { type: 'string', multiple: true } as const;
 const askOptions = { option: words, recommend: text, confirm: text } as const;
 export const nativeTrackerCommonOptions = { json: flag, quiet: { ...flag, short: 'q' }, by: text };
-
 export function itemFields(input: Record<string, string | boolean | string[] | undefined>) {
 	const { tz, repo } = input;
 	const fields = Object.fromEntries(
@@ -128,7 +127,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['pick', {}],
 	['autolaunch', {}],
 	['adapter', nativeTrackerAdapterOptions],
-	['backup', {}],
+	['backup', { to: text }],
 	['start', {}],
 	['stop', {}],
 	['reopen', {}],

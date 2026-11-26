@@ -5,6 +5,11 @@ import { join } from 'node:path';
 import { loadTrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
 import {
+	isLocalBackupCommand,
+	renderTrackerBackup,
+	runLocalTrackerBackup
+} from './runLocalTrackerBackup';
+import {
 	formatNativeTrackerItem,
 	formatNativeTrackerRunRead,
 	nativeItemPrefix,
@@ -21,8 +26,8 @@ import type {
 	NativeTrackerRequest,
 	NativeTrackerRunRead
 } from './nativeTrackerCli.types';
-import { nativeTrackerArgs, nativeTrackerCommands } from './nativeTrackerRequest';
-import { nativeTrackerAdapterUsage } from './nativeTrackerAdapterRequest';
+import { nativeTrackerArgs } from './nativeTrackerRequest';
+import { printNativeTrackerHelp, wantsNativeTrackerHelp } from './nativeTrackerHelp';
 import { printNativeTrackerAddHint } from './printNativeTrackerAddHint';
 import { printNativeTrackerError } from './printNativeTrackerError';
 import { formatNativeTrackerCheck } from './formatNativeTrackerMatches';
@@ -30,6 +35,7 @@ import { formatNativeTrackerHistory } from './formatNativeTrackerHistory';
 import { runTrackerInstructions } from './runTrackerInstructions';
 import type { TrackerItemMatches } from '../../../utils/projects-sessions/checkTrackerItem.types';
 import type { TrackerOccurrenceRow } from '../../../repositories/projects-sessions/TrackerRecurringRepository.types';
+import { trackerRequestTimeout } from './trackerRequestTimeout';
 import { withTrackerAttachments } from './withTrackerAttachments';
 
 export function selectedTrackerConfig(): string | undefined {
@@ -45,21 +51,8 @@ export function selectedTrackerConfig(): string | undefined {
 	}
 }
 
-function wantsHelp(args: string[]): boolean {
-	return (args[0] ?? 'help') === 'help' || args.includes('--help') || args.includes('-h');
-}
-
-function printNativeTrackerHelp(): number {
-	console.log(
-		`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
-			'Local: instructions [--check] [file...]\n' +
-			`Subcommands: autolaunch [status|dry-run], ${nativeTrackerAdapterUsage}, backup list`
-	);
-	return 0;
-}
-
 export async function runNativeTracker(args: string[], path: string): Promise<number> {
-	const help = wantsHelp(args);
+	const help = wantsNativeTrackerHelp(args);
 	if (!help && args[0] === 'instructions') return runTrackerInstructions(args.slice(1));
 	if (help) return printNativeTrackerHelp();
 	let config: TrackerNodeConfig;
@@ -69,6 +62,7 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 		console.error('tracker: invalid or unreadable native configuration');
 		return 2;
 	}
+	if (isLocalBackupCommand(args)) return runLocalTrackerBackup(args.slice(1), config);
 	let input: ReturnType<typeof nativeTrackerArgs>;
 	try {
 		input = await withTrackerAttachments(nativeTrackerArgs(args));
@@ -108,6 +102,7 @@ async function sendNativeTracker(
 		: await response.text();
 	if (!response.ok) return printNativeTrackerError(response.status, data);
 	if (request.path.endsWith('/launch?outcome=run')) return renderLaunch(data, Boolean(values.json));
+	if (request.path === '/backup/now') return renderTrackerBackup(data, Boolean(values.json));
 	if (command === 'check') return renderCheck(data, Boolean(values.json));
 	if (values.json) console.log(JSON.stringify(data, null, 2));
 	else {
@@ -125,12 +120,6 @@ function trackerActor(command: string, by: string | boolean | undefined, node: s
 	const claimed = [by, process.env.TRACKER_AS].find(Boolean);
 	const fallback = command === 'add' ? runActor : undefined;
 	return String(claimed ?? fallback ?? `${userInfo().username}@${node}`);
-}
-
-function trackerRequestTimeout(path: string) {
-	if (path.startsWith('/adapters/run?')) return 120_000;
-	if (path.startsWith('/adapters/add?')) return 120_000;
-	return path.endsWith('/launch?outcome=run') ? 30_000 : 15_000;
 }
 
 function renderLaunch(

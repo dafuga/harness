@@ -1,6 +1,7 @@
 // @harness-uid u_46eur7qage
 export type TrackerSupervisorWorker =
 	| 'adapter'
+	| 'backup'
 	| 'dispatch'
 	| 'notifications'
 	| 'recurring'

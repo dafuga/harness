@@ -13,6 +13,8 @@ export function nativeTrackerInspectionRequest(
 	words: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
+	if (command === 'backup' && words.join() === 'now')
+		return { method: 'POST', path: '/backup/now' };
 	const adapter = command === 'adapter' ? nativeTrackerAdapterRequest(words, values) : undefined;
 	return adapter ?? nativeTrackerReadInspection(command, words);
 }
