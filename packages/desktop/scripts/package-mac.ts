@@ -1,20 +1,23 @@
 // @harness-uid u_m3rqfrppy7
 import { lstatSync, readFileSync } from 'node:fs';
-import { cp, mkdir, mkdtemp, rename, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, rename, rm } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
-import { createRequire } from 'node:module';
+import { join, resolve } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { buildDesktopMain, releaseDefine } from './build-main';
-import { macIcon } from './mac-icon/mac-icon';
+import {
+	assembleMacApp,
+	bundleId,
+	migrationBinary,
+	restrictBundleModes,
+	verifyMacAppLayout
+} from './package-mac-app';
 import { MacPackageError } from './package-mac.types';
 import { isRevision, releaseRevision } from './release-revision';
-import { stageTrackerBundle, trackerSigning, verifyTrackerBundle } from './package-mac-tracker';
-const bundleId = 'dev.harness.desktop';
+import { trackerSigning, verifyTrackerBundle } from './package-mac-tracker';
 const teamId = 'PAC8VHDW3G';
 const codesign = '/usr/bin/codesign';
 const requirement = `identifier "${bundleId}" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] and certificate leaf[field.1.2.840.113635.100.6.1.13] and certificate leaf[subject.OU] = ${teamId}`;
-const migrationBinary = 'Contents/Helpers/HarnessKeychainMigration';
 
 function releaseSigner() {
 	const identity = process.env.HARNESS_MAC_SIGN_IDENTITY;
@@ -72,6 +75,7 @@ function verifyRelease(app: string): void {
 	verifyIdentity(app);
 	verifyIdentity(join(app, migrationBinary));
 	verifyTrackerBundle(app, verifyIdentity);
+	verifyMacAppLayout(app);
 	execFileSync(codesign, ['--verify', '--deep', '--strict', '-R', `=${requirement}`, app], {
 		stdio: 'inherit'
 	});
@@ -82,53 +86,6 @@ function verifyRelease(app: string): void {
 		throw new MacPackageError('Artifact must use the signed Harness Safe Storage namespace.');
 	if (!isRevision(manifest.revision))
 		throw new MacPackageError('Artifact must embed the full git commit it was built from.');
-}
-
-async function populateApp(output: string, bundles: string, revision: string): Promise<void> {
-	const { default: electron } = await import('electron');
-	const original = resolve(dirname(electron as unknown as string), '../..');
-	execFileSync('/usr/bin/ditto', [original, output]);
-	const project = resolve(output, 'Contents/Resources/app');
-	await mkdir(resolve(project, 'dist'), { recursive: true });
-	await cp('build', resolve(project, 'build'), { recursive: true });
-	await cp(join(bundles, 'main.cjs'), resolve(project, 'dist/main.cjs'));
-	await cp(join(bundles, 'preload.cjs'), resolve(project, 'dist/preload.cjs'));
-	const playwright = dirname(
-		createRequire(import.meta.url).resolve('playwright-core/package.json')
-	);
-	await cp(playwright, resolve(project, 'node_modules/playwright-core'), { recursive: true });
-	await writeFile(
-		resolve(project, 'package.json'),
-		JSON.stringify({
-			name: 'harness-desktop',
-			productName: 'Harness',
-			version: '0.1.0',
-			revision,
-			main: 'dist/main.cjs'
-		})
-	);
-	const plist = resolve(output, 'Contents/Info.plist');
-	execFileSync('/usr/libexec/PlistBuddy', ['-c', 'Set :CFBundleDisplayName Harness', plist]);
-	execFileSync('/usr/libexec/PlistBuddy', ['-c', 'Set :CFBundleName Harness', plist]);
-	execFileSync('/usr/libexec/PlistBuddy', ['-c', `Set :CFBundleIdentifier ${bundleId}`, plist]);
-	await macIcon(output);
-	const helper = join(output, migrationBinary);
-	await mkdir(dirname(helper), { recursive: true });
-	execFileSync('/usr/bin/xcrun', [
-		'clang',
-		'-mmacosx-version-min=13.0',
-		'-Wall',
-		'-Wextra',
-		'-Wno-deprecated-declarations',
-		'-framework',
-		'Security',
-		'-framework',
-		'CoreFoundation',
-		join(import.meta.dir, 'mac-safe-storage-migration.c'),
-		'-o',
-		helper
-	]);
-	await stageTrackerBundle(output);
 }
 
 async function packageRelease(): Promise<void> {
@@ -143,7 +100,7 @@ async function packageRelease(): Promise<void> {
 	try {
 		const bundles = join(staging, 'bundles');
 		await buildDesktopMain(define, bundles);
-		await populateApp(candidate, bundles, revision);
+		await assembleMacApp(candidate, { bundles, renderer: resolve('build'), revision });
 		const { sign } = await import('@electron/osx-sign');
 		await sign({
 			app: candidate,
@@ -157,6 +114,8 @@ async function packageRelease(): Promise<void> {
 					? { additionalArguments: ['--identifier', bundleId] }
 					: (trackerSigning(candidate, file, bundleId) ?? {})
 		});
+		// Signing adds files under the caller's umask; modes are not part of the signature.
+		restrictBundleModes(candidate);
 		verifyRelease(candidate);
 		await rm(output, { recursive: true, force: true });
 		await rename(candidate, output);

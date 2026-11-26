@@ -13,8 +13,12 @@ import type {
 } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import type {
 	TrackerManagedCommand,
-	TrackerManagedProfiles
+	TrackerManagedProfiles,
+	TrackerNativeLaunch
 } from './trackerManagedHostLauncher.types';
+import { claudeSessionArguments } from './trackerClaudeSessionArguments';
+import { trackerManagedToken } from './trackerManagedLaunchReceipt';
+import { trackerClaudeSessionId } from '../../../utils/projects-sessions/trackerClaudeSessionId';
 
 export function validateManagedProfiles(profiles: TrackerManagedProfiles): TrackerManagedProfiles {
 	const { native, docker } = profiles;
@@ -50,7 +54,7 @@ export function trackerManagedProviderCommand(
 	host: typeof process.platform
 ): TrackerManagedCommand | undefined {
 	const { native, docker } = profiles;
-	const { platform, backend, itemId, selection } = input;
+	const { platform, backend, itemId, selection, sessionName } = input;
 	if (platform === 'linux' && backend === 'docker' && docker)
 		return {
 			home: docker.profile,
@@ -74,15 +78,21 @@ export function trackerManagedProviderCommand(
 	if (platform !== 'macos' || backend !== 'native' || host !== 'darwin' || !native)
 		return undefined;
 	const prompt = `Read your brief at ${briefPath} and do that work. Your tracker item is ${itemId}.`;
-	return nativeTrackerProviderCommand(native, selection, prompt, itemId);
+	const claudeSession = trackerClaudeSessionId(trackerManagedToken(input.node, input.key));
+	return nativeTrackerProviderCommand(native, selection, {
+		prompt,
+		itemId,
+		claudeSession,
+		sessionName
+	});
 }
 
 function nativeTrackerProviderCommand(
 	profile: NonNullable<TrackerManagedProfiles['native']>,
 	{ provider, model, intelligence }: TrackerHostStartRequest['selection'],
-	prompt: string,
-	itemId: string
+	launch: TrackerNativeLaunch
 ): TrackerManagedCommand {
+	const { prompt, itemId } = launch;
 	const egress = profile.egress?.items.includes(itemId) ? profile.egress.policy : undefined;
 	if (provider === 'claude')
 		return {
@@ -95,8 +105,7 @@ function nativeTrackerProviderCommand(
 			}).trim(),
 			argv: [
 				profile.claude,
-				...(egress ? trackerEgressArguments('claude', egress) : []),
-				'--dangerously-skip-permissions',
+				...claudeSessionArguments(model, launch, egress),
 				'--model',
 				model,
 				...(intelligence ? ['--effort', intelligence] : []),

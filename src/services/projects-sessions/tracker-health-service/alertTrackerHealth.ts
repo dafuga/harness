@@ -17,7 +17,9 @@ export async function alertTrackerHealth(
 		else state.checks[name] = { ...state.checks[name], ok: false };
 	const apiUp = report.checks.some(({ name, ok }) => name === 'api' && ok);
 	const tracked = apiUp && (await recordOnTracker(target, report, state));
-	const pathBroken = !tracked || report.failing.some(({ name }) => name === 'webhook');
+	// A spoke without its hub, or a hub without its webhook, only queues what it records.
+	const pathBroken =
+		!tracked || report.failing.some(({ name }) => name === 'webhook' || name === 'hub_link');
 	if (pathBroken) await sendTrackerHealthFallback(target, report, state, apiUp);
 }
 
