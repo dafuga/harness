@@ -19,6 +19,11 @@ export class TrackerRecurringService {
 		return { enabled: Boolean(this.options.jobs), ...this.repository.jobStatus() };
 	}
 
+	/** Wait for started jobs to store their receipts before the journal owner leaves. */
+	async drain(): Promise<void> {
+		await this.options.jobs?.drain?.();
+	}
+
 	async tick(signal: AbortSignal): Promise<void> {
 		if (signal.aborted || this.ticking) return;
 		this.ticking = true;
@@ -58,9 +63,10 @@ export class TrackerRecurringService {
 			return;
 		}
 		const { jobs } = this.options;
-		if (!jobs) return;
+		if (!jobs || (work.phase === 'queued' && jobs.busy?.())) return;
 		const { job, wake } = work;
-		const request = { ...job, key: wake.key, occurrence: trackerIsoTime(wake.at) };
+		const cmd = this.repository.boxJobs.read(job.item_id)?.cmd ?? '';
+		const request = { ...job, cmd, key: wake.key, occurrence: trackerIsoTime(wake.at) };
 		const receipt =
 			work.phase === 'queued'
 				? this.repository.claim(work) && (await jobs.start(request, signal))

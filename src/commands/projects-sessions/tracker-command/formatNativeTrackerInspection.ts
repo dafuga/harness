@@ -8,6 +8,15 @@ import type {
 	NativeTrackerItemDetail
 } from './nativeTrackerCli.types';
 
+/** Commands whose reply prints as JSON even without --json. */
+export const nativeJsonCommands = new Set([
+	'status',
+	'autolaunch',
+	'history',
+	'watchdog',
+	'needs-attention'
+]);
+
 export function formatNativeTrackerInspection(command: string, data: NativeTrackerInspection) {
 	switch (command) {
 		case 'show':

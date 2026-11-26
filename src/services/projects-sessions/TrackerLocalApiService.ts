@@ -11,6 +11,7 @@ import {
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
+import { trackerJobEndpoint } from './tracker-local-api-service/trackerLocalJobs';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
 import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
 import { phoneReplicaResponse } from './tracker-local-api-service/trackerPhoneReplicaResponse';
@@ -149,6 +150,7 @@ function trackerItemSpecialResponse(
 		options: TrackerLocalApiOptions;
 	}
 ): Promise<Response> | undefined {
+	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
 	if (!/^items\/[^/]+\/(?:inbox|stage|artifact|reject)$/.test(parts.join('/'))) return undefined;
 	const [, id, verb] = parts;
 	const actor = readActor(request.headers);
@@ -169,6 +171,17 @@ function trackerItemSpecialResponse(
 			now: dependencies.options.now?.() ?? Date.now()
 		}
 	).then((item) => trackerResponse(200, item));
+}
+
+async function trackerJobResponse(
+	request: Request,
+	parts: string[],
+	{ items, options }: { items: TrackerItemReadRepository; options: TrackerLocalApiOptions }
+): Promise<Response> {
+	const result = await trackerJobEndpoint(request, parts, { items, jobs: options.jobs });
+	return result === undefined
+		? trackerResponse(404, { error: `no route ${request.method} /${parts.join('/')}` })
+		: trackerResponse(200, result);
 }
 
 function readActor(headers: Headers): string | null {

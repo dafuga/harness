@@ -25,6 +25,7 @@
 			"TrackerCommand",
 			"TrackerCommand.register",
 			"TrackerCommand.run",
+			"nativeJsonCommands",
 			"formatNativeTrackerInspection",
 			"formatNativeTrackerAdapterRun",
 			"formatNativeTrackerItem",
@@ -247,6 +248,10 @@
 			{
 				"name": "TrackerCommand.run",
 				"type": "number | Promise<number>"
+			},
+			{
+				"name": "nativeJsonCommands",
+				"type": "unknown"
 			},
 			{
 				"name": "formatNativeTrackerInspection",
@@ -803,6 +808,21 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker-command-format-native-tracker-job",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-command-native-tracker-job-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-command-tracker-request-timeout",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "command.projects-sessions-tracker-command-with-tracker-attachments",
 			"via": "import",

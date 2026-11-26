@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-command-native-tracker-job-request",
+	"uid": "u_6dl2gp42h5",
+	"kind": "command",
+	"title": "nativeTrackerJobRequest",
+	"responsibility": "Owns the nativeTrackerJobRequest command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-command/nativeTrackerJobRequest.ts"],
+		"symbols": ["nativeTrackerJobHelp", "nativeTrackerJobRequest"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "nativeTrackerJobRequest.[mode, id, ...rest]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerJobRequest.values",
+				"type": "NativeTrackerAskValues",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "nativeTrackerJobHelp",
+				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerJobRequest",
+				"type": "NativeTrackerRequest"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "nativeTrackerJobRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerJobRequest.[mode, id, ...rest]",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerJobRequest.values",
+						"type": "NativeTrackerAskValues",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerJobRequest",
+						"type": "NativeTrackerRequest"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-command/nativeTrackerJobRequest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-command/nativeTrackerJobRequest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

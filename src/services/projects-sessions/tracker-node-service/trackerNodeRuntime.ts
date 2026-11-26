@@ -1,6 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { TrackerJobProcessAdapter } from '../../../adapters/projects-sessions/TrackerJobProcessAdapter';
 import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import {
 	canonicalNode,
@@ -42,12 +43,17 @@ export function trackerNodeRuntime(
 		automaticEnabled: trackerAutomaticSetting(config),
 		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
-		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
+		...(config.role === 'hub' && notification?.webhook && { recurring: boxJobs(config) }),
 		validateModel(model) {
 			parseTrackerModelSpec(String(model), ladder);
 		},
 		planLaunch: (fields, current, source) => planNativeLaunch(fields, current, config.node, source)
 	};
+}
+
+/** Box job state and receipts live beside the journal that owns the job definitions. */
+function boxJobs({ database }: TrackerNodeConfig) {
+	return { jobs: new TrackerJobProcessAdapter(join(dirname(database), 'jobs')) };
 }
 
 function trackerAutomaticSetting(config: TrackerNodeConfig): () => boolean {

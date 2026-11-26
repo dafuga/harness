@@ -48,6 +48,7 @@ export class TrackerSupervisorService {
 		} finally {
 			controller.abort();
 			await Promise.allSettled(workers);
+			await this.runtime.recurring?.drain();
 			this.running = false;
 		}
 	}

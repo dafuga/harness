@@ -11,7 +11,7 @@ import type { TrackerAdapterPollDependencies } from './TrackerAdapterPollService
 import type { TrackerHubOptions, TrackerWireValue } from './TrackerHubSyncService.types';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import type { TrackerNotificationOptions } from './TrackerNotificationService.types';
-import type { TrackerRecurringJobRunner } from './TrackerRecurringService.types';
+import type { TrackerBoxJobRunner } from './TrackerRecurringService.types';
 import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
 import type { TrackerHostEffects } from './tracker-native-runtime-service/nativeTrackerHostEffects.types';
 import type { previewDueLaunch } from '../agents-providers/tracker-dispatcher-service/launchIntent';
@@ -38,7 +38,7 @@ export interface TrackerNativeNotificationOptions extends Omit<
 
 export interface TrackerNativeRuntimeOptions extends Omit<
 	TrackerLocalApiOptions,
-	'runs' | 'recurring' | 'schedulePreview' | 'reject'
+	'runs' | 'recurring' | 'jobs' | 'schedulePreview' | 'reject'
 > {
 	node: string;
 	role: 'hub' | 'spoke';
@@ -48,7 +48,7 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 	adapter?: TrackerAdapterPollDependencies;
 	hostEffects?: TrackerHostEffects;
 	hostEffectsHeld?: boolean;
-	recurring?: { jobs?: TrackerRecurringJobRunner };
+	recurring?: { jobs?: TrackerBoxJobRunner };
 	automaticEnabled?(): boolean;
 	dispatch?: Omit<TrackerDispatchSchedulerOptions, 'policy'> &
 		Pick<TrackerDispatchRepositoryOptions, 'due' | 'sessions'> & {
