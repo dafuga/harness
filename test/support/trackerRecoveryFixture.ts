@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { onIdleHost } from './trackerHostResourceFixture';
 import {
 	existsSync,
 	readFileSync,
@@ -55,7 +56,7 @@ async function proveRecovery(root: string) {
 	let offset = Date.parse('2026-11-25T09:00:00Z') - Date.now();
 	const realNow = Date.now;
 	const clock = vi.spyOn(Date, 'now').mockImplementation(() => realNow() + offset);
-	const options = trackerNodeRuntime(managedForegroundConfig(root, config, 'macos'));
+	const options = onIdleHost(trackerNodeRuntime(managedForegroundConfig(root, config, 'macos')));
 	const makeRuntime = () =>
 		new TrackerNativeRuntimeService(database, {
 			...options,

@@ -4,6 +4,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { loadTrackerNodeConfig } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import { trackerNodeRuntime } from '../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
+import type { TrackerNativeRuntimeOptions } from '../../src/services/projects-sessions/TrackerNativeRuntimeService.types';
 import type { TrackerResourceScenario } from './trackerHostResourceFixture.types';
 
 const now = Date.parse('2026-11-25T12:00:00Z');
@@ -56,6 +57,14 @@ export function trackerResourceHost(root: string, node: string, limits: object =
 				.all()
 				.map((row) => row.item_id),
 		started: () => JSON.parse(readFileSync(join(root, 'started'), 'utf8'))
+	};
+}
+
+/** Keep managed-launcher behavior tests independent of how busy the test computer is. */
+export function onIdleHost(options: TrackerNativeRuntimeOptions): TrackerNativeRuntimeOptions {
+	return {
+		...options,
+		hostEffects: { ...options.hostEffects, hostResources: scenarioResources({ ...healthyHost }) }
 	};
 }
 

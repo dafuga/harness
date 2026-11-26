@@ -1,6 +1,14 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 import { expect, test } from 'vitest';
+import { trackerNodeRuntime } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeRuntime';
+import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
+import {
+	managedFixtureBindings,
+	managedForegroundConfig,
+	managedTrackerItemRequest
+} from '../../support/trackerManagedProcessFixture';
 import { launchTmux } from '../../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess';
 import { measureWorkload } from '../../support/measureWorkload';
 import { withTempDir } from '../../support/temporary';
@@ -49,6 +57,33 @@ test.each(shortages)(
 			})
 		)
 );
+
+test('reads this computer when the managed launcher runs sessions on it', () =>
+	measureWorkload(unit, 'managed-host-sampling', () =>
+		withTempDir('hnt-real-', async (root) => {
+			const { config } = managedFixtureBindings(root);
+			const loaded = managedForegroundConfig(root, config, 'macos');
+			const effects = loaded.hostEffects;
+			if (effects?.mode !== 'active' || !effects.launch) throw new TypeError('No launch fixture');
+			effects.launch.minAvailableMemMB = Number.MAX_SAFE_INTEGER;
+			const database = new DatabaseSync(':memory:');
+			try {
+				const runtime = new TrackerNativeRuntimeService(database, trackerNodeRuntime(loaded));
+				runtime.store.appendLocal({
+					itemId: 'real000001',
+					fields: { title: 'Synthetic work', status: 'open', kind: 'task', project: 'Harness' }
+				});
+				expect((await managedTrackerItemRequest(runtime, 'real000001', 'launch')).ok).toBe(true);
+				await runtime.scheduler!.tick(new AbortController().signal);
+				expect(database.prepare('SELECT state FROM runs').all()).toEqual([]);
+				expect(runtime.scheduler!.runnerStatus().waiting_on).toMatch(
+					/^Tracker host resource hold: /
+				);
+			} finally {
+				database.close();
+			}
+		})
+	));
 
 test('applies configured RAM and disk minimums', () =>
 	measureWorkload(unit, 'host-resource-limits', () =>
