@@ -104,7 +104,7 @@ async function startManagedSession(
 		refusal = await launchTmux(
 			{ ...target, windowName: input.sessionName },
 			plan.receipt,
-			{ script, command, clientPath: plan.clientPath, guestAuthFile: plan.guestAuthFile },
+			{ ...plan, script, command, cpuBudget: input.cpuBudget },
 			signal
 		);
 	}
