@@ -14,7 +14,10 @@ final class MemoryVault: VaultStorage {
     }
 
     func labels() throws -> [EntryLabel] {
-        records.map { EntryLabel(id: $0.id, service: $0.service, twoFactorEveryTime: $0.twoFactorEveryTime) }
+        records.map {
+            EntryLabel(id: $0.id, service: $0.service, twoFactorEveryTime: $0.twoFactorEveryTime,
+                       username: $0.username, domain: $0.domain)
+        }
     }
 
     func read(_ id: UUID, context: LAContext) throws -> VaultEntry {

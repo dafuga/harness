@@ -7,6 +7,7 @@ public struct SecretEnvelope: Codable, Equatable, Sendable {
     public let ciphertext: String
 
     public static func seal(password: String?, otp: String?, to request: BrokerRequest) throws -> Self {
+        // A bound request carries its website inside the envelope, where the relay cannot change it.
         try seal(
             password: password, otp: otp, to: request,
             using: .init(sender: .init(), salt: BrokerProtocol.random32Bytes())
@@ -30,7 +31,9 @@ public struct SecretEnvelope: Codable, Equatable, Sendable {
         )
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
-        var plaintext = try encoder.encode(Secret(password: password, otp: otp))
+        var plaintext = try encoder.encode(
+            Secret(password: password, otp: otp, websiteDomain: request.websiteDomain)
+        )
         defer { plaintext.resetBytes(in: plaintext.startIndex..<plaintext.endIndex) }
         guard plaintext.count <= 8_192 else { throw BrokerError.invalidCredential }
         let sealed = try ChaChaPoly.seal(
@@ -52,13 +55,15 @@ public struct SecretEnvelope: Codable, Equatable, Sendable {
     private struct Secret: Encodable {
         let password: String?
         let otp: String?
+        let websiteDomain: String?
 
-        private enum CodingKeys: CodingKey { case password, otp }
+        private enum CodingKeys: CodingKey { case password, otp, websiteDomain }
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(password, forKey: .password)
             try container.encode(otp, forKey: .otp)
+            try container.encodeIfPresent(websiteDomain, forKey: .websiteDomain)
         }
     }
 }

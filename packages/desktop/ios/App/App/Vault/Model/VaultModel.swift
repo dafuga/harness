@@ -53,13 +53,22 @@ final class VaultModel {
         }
     }
 
-    func entry(for request: BrokerRequest) -> EntryLabel? {
-        entries.first { $0.service == request.service }
+    func accounts(for request: BrokerRequest) -> VaultAccountMatch {
+        .resolve(service: request.service, site: request.site ?? request.websiteDomain,
+                 account: request.account, entries: entries.map(\.candidate))
     }
 
-    func requiresServiceOTP(for request: BrokerRequest) -> Bool {
-        request.approvalOnly != true
-            && (request.requireServiceOtp == true || entry(for: request)?.twoFactorEveryTime == true)
+    /// Only a login still offered for this request can be released.
+    func entry(_ id: UUID?, for request: BrokerRequest) -> EntryLabel? {
+        guard let id, accounts(for: request).offered.contains(where: { $0.id == id }) else { return nil }
+        return entries.first { $0.id == id }
+    }
+
+    /// A deferred sign-in sends only the password; its code is asked for by a later request.
+    func requiresServiceOTP(for request: BrokerRequest, entry id: UUID? = nil) -> Bool {
+        if request.codeOnly == true { return true }
+        return request.approvalOnly != true && request.deferredOtp != true
+            && (request.requireServiceOtp == true || entry(id, for: request)?.twoFactorEveryTime == true)
     }
 
     func isCurrent(_ connection: BrokerConnection) -> Bool {

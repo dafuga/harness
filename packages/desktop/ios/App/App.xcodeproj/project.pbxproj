@@ -72,6 +72,8 @@
 		62F00708D8F3BB47BCD91322 /* EnrollmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4FDD33D8EFC8B9F5C6FF6F /* EnrollmentView.swift */; };
 		75C09D8A31320CCA835F8059 /* BrokerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D9979FBDE2AD820E0A064 /* BrokerSettingsView.swift */; };
 		CE39D31F353D373A2C7BA71B /* BackupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627F2767079D03DE83561FC3 /* BackupViews.swift */; };
+		848B2C97FB6AF0DECE35C003 /* VaultAccountPickerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B97F309DE832C95ACF58FF3 /* VaultAccountPickerSection.swift */; };
+		558684CE3C3BC1A5D9C489B2 /* VaultAccountMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ACBAF322B367D4B422B113 /* VaultAccountMatch.swift */; };
 		DEC9D03CE1DB2E9E237C8F90 /* VaultStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D913EE4E26B652F0508DD4 /* VaultStore.swift */; };
 		0D8B0CE9CBCBBB2AA663F602 /* VaultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33352D89B4A0FB179B0713D5 /* VaultModel.swift */; };
 		9D815DCB54BF9E596A0C15CA /* VaultModel+VaultAddReceipts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3926F7883D3AF05CD1C694AB /* VaultModel+VaultAddReceipts.swift */; };
@@ -118,47 +120,6 @@
 		58CB8ACFF10F6D5D894D9B0C /* VaultRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F0B585F421F65C9D6991BB /* VaultRootView.swift */; };
 		36EE847FEE1ADE8A3F208776 /* VaultRootView+Polling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7984B4C12E44C7C480EA18 /* VaultRootView+Polling.swift */; };
 		9FF963980023EA454609C6C8 /* VaultRootView+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8482947C19BA61FD05DC76A /* VaultRootView+Notifications.swift */; };
-		8967C6C1CBACC046B4475BD4 /* VaultNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004403A2033D6384649EC795 /* VaultNotifications.swift */; };
-		5ADD3F65ED7DBA62BF925FB0 /* VaultNotifications+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBA1883DD131ABF26F6758A /* VaultNotifications+Delegate.swift */; };
-		82675572387352E52232633C /* HarnessVaultPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF07ACDEA7C879B4EE35892 /* HarnessVaultPlugin.swift */; };
-		59D7C9A8656A1F9F7CEB1A2E /* VaultAddReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB6A988C335EF2AC8BA7766 /* VaultAddReviewView.swift */; };
-		7D69F8B28FA500F35581F59C /* RequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2380679DB06E1347994EA56 /* RequestsView.swift */; };
-		2E665F7BF4F7D9663983A74B /* RequestReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F9F0139B78D3567D3ED92E /* RequestReviewView.swift */; };
-		1EC5FDE9EB0AF9721ED60A06 /* ProtectedField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C7ED13F3B248A6004739E3 /* ProtectedField.swift */; };
-		7AEF89F843A6D6F5EBCD1E06 /* PairingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF82108365BD2B19C57B045 /* PairingView.swift */; };
-		30FAFC280AE2BA72CFA25678 /* PairingQRScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F547D1DEDF97AAEF9B76677 /* PairingQRScanner.swift */; };
-		80B25D42621513B418A56F7E /* ImportReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44334539826D68A64D27F73D /* ImportReviewView.swift */; };
-		C8FCAC1AB0A46BF4EAC67591 /* EntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5991AF9CBD65C6CEE8F20856 /* EntriesView.swift */; };
-		62F00708D8F3BB47BCD91322 /* EnrollmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4FDD33D8EFC8B9F5C6FF6F /* EnrollmentView.swift */; };
-		75C09D8A31320CCA835F8059 /* BrokerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D9979FBDE2AD820E0A064 /* BrokerSettingsView.swift */; };
-		CE39D31F353D373A2C7BA71B /* BackupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627F2767079D03DE83561FC3 /* BackupViews.swift */; };
-		DEC9D03CE1DB2E9E237C8F90 /* VaultStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D913EE4E26B652F0508DD4 /* VaultStore.swift */; };
-		0D8B0CE9CBCBBB2AA663F602 /* VaultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33352D89B4A0FB179B0713D5 /* VaultModel.swift */; };
-		CE944E1E6595754394034989 /* VaultModel+VaultAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6326FA7F43D88B9F1F729046 /* VaultModel+VaultAdd.swift */; };
-		021A1A4ED49FD66D09F0C9DB /* VaultModel+Queues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BDAC0B988621D34EEA529E /* VaultModel+Queues.swift */; };
-		819956ABD4F0848F2EDE4C1F /* VaultModel+Pairing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D361F644978211DAC03207A0 /* VaultModel+Pairing.swift */; };
-		F2AC249D6DABDCC0ED87C7A5 /* VaultModel+Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C93CBC0593DCD17D48550F /* VaultModel+Messages.swift */; };
-		E5657064D68B7964F64BC127 /* VaultModel+Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA89BA9E0F6582CF3DFF9761 /* VaultModel+Import.swift */; };
-		17ADBCCA86BF15C0E1C4E35B /* VaultModel+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEF8E130FF6CC572E08B828 /* VaultModel+Fixture.swift */; };
-		A2798D60CC1CD4570BA39F2B /* VaultModel+Connections.swift in Sources */ = {isa = PBXBuildFile; fileRef = E293D3591EBC7CB970A4E9AA /* VaultModel+Connections.swift */; };
-		557A15B9E0B20CE6B8E296D3 /* VaultModel+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228594C599FBFB0DD27601E7 /* VaultModel+Backup.swift */; };
-		44AA60F212EFCABBA860BAF4 /* RequestPolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91593203E8243D3BFE8DA59C /* RequestPolling.swift */; };
-		86EACA4F7779E1104DE0DBE7 /* PasswordImportFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFE7FACFAF57EF1A3364D98 /* PasswordImportFixture.swift */; };
-		861BFC2C45C243EB46DF7B85 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05F2C3022FD4504C2051FA /* Keychain.swift */; };
-		059D329A010363FECB54EE94 /* DeviceKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DFF7F6AA5795864873973 /* DeviceKeys.swift */; };
-		183BF64961D397E7C12711C6 /* BrokerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50329F0A34DE65D7005A08E7 /* BrokerConfiguration.swift */; };
-		BE99A0BF5A497CFCC1308312 /* VaultCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7D7BF73E04B9A138E07257 /* VaultCore.swift */; };
-		39661FE87D32224B4E4981B8 /* VaultContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66844AAABF669645262F27C1 /* VaultContents.swift */; };
-		E1042603258901B9D7A1F4E6 /* VaultCiphertext.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF146AA50F2E3E94331454B2 /* VaultCiphertext.swift */; };
-		E91E2FBBABF21A7BF3553F7D /* VaultBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6EB4F809637BD02B4A98A5 /* VaultBackup.swift */; };
-		D8BB9CAA05785C1CAAC9F765 /* VaultAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9654CF16BDC42C8A006B3B7F /* VaultAdd.swift */; };
-		317ED4B8A498BA1FF532FAB5 /* SecretEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC32D40C6267E4AF1B25D927 /* SecretEnvelope.swift */; };
-		7ABC67357CCE00F53832AE56 /* PasswordImportDelivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1548DC7A9846E4782C083751 /* PasswordImportDelivery.swift */; };
-		905AE7B9EA62158FC6D050AB /* PasswordImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5243D2CFE2AC856AA3DCAA4 /* PasswordImport.swift */; };
-		CAEF55465B3D9B6A51723035 /* PairingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5022B8E7BDE96E0340D29A04 /* PairingProtocol.swift */; };
-		E6676C5E1D18010C7A92FB59 /* BrokerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD05A5C82E3CFE07AE1E8E2A /* BrokerProtocol.swift */; };
-		866DAD28018699199E068CBE /* BrokerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEDB1E98EDBC48F6BDEE68A /* BrokerClient.swift */; };
-		58CB8ACFF10F6D5D894D9B0C /* VaultRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F0B585F421F65C9D6991BB /* VaultRootView.swift */; };
 		8967C6C1CBACC046B4475BD4 /* VaultNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004403A2033D6384649EC795 /* VaultNotifications.swift */; };
 		5ADD3F65ED7DBA62BF925FB0 /* VaultNotifications+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBA1883DD131ABF26F6758A /* VaultNotifications+Delegate.swift */; };
 		82675572387352E52232633C /* HarnessVaultPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF07ACDEA7C879B4EE35892 /* HarnessVaultPlugin.swift */; };
@@ -255,6 +216,8 @@
 		ED4FDD33D8EFC8B9F5C6FF6F /* EnrollmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/EnrollmentView.swift"; sourceTree = "<group>"; };
 		216D9979FBDE2AD820E0A064 /* BrokerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/BrokerSettingsView.swift"; sourceTree = "<group>"; };
 		627F2767079D03DE83561FC3 /* BackupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/BackupViews.swift"; sourceTree = "<group>"; };
+		8B97F309DE832C95ACF58FF3 /* VaultAccountPickerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Picker/VaultAccountPickerSection.swift"; sourceTree = "<group>"; };
+		72ACBAF322B367D4B422B113 /* VaultAccountMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Picker/VaultAccountMatch.swift"; sourceTree = "<group>"; };
 		D8D913EE4E26B652F0508DD4 /* VaultStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultStore.swift"; sourceTree = "<group>"; };
 		33352D89B4A0FB179B0713D5 /* VaultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel.swift"; sourceTree = "<group>"; };
 		3926F7883D3AF05CD1C694AB /* VaultModel+VaultAddReceipts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+VaultAddReceipts.swift"; sourceTree = "<group>"; };
@@ -301,47 +264,6 @@
 		C6F0B585F421F65C9D6991BB /* VaultRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultRootView.swift"; sourceTree = "<group>"; };
 		1C7984B4C12E44C7C480EA18 /* VaultRootView+Polling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultRootView+Polling.swift"; sourceTree = "<group>"; };
 		F8482947C19BA61FD05DC76A /* VaultRootView+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultRootView+Notifications.swift"; sourceTree = "<group>"; };
-		004403A2033D6384649EC795 /* VaultNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultNotifications.swift"; sourceTree = "<group>"; };
-		DFBA1883DD131ABF26F6758A /* VaultNotifications+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultNotifications+Delegate.swift"; sourceTree = "<group>"; };
-		5DF07ACDEA7C879B4EE35892 /* HarnessVaultPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/HarnessVaultPlugin.swift"; sourceTree = "<group>"; };
-		8FB6A988C335EF2AC8BA7766 /* VaultAddReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/VaultAddReviewView.swift"; sourceTree = "<group>"; };
-		A2380679DB06E1347994EA56 /* RequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/RequestsView.swift"; sourceTree = "<group>"; };
-		E4F9F0139B78D3567D3ED92E /* RequestReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/RequestReviewView.swift"; sourceTree = "<group>"; };
-		73C7ED13F3B248A6004739E3 /* ProtectedField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/ProtectedField.swift"; sourceTree = "<group>"; };
-		1EF82108365BD2B19C57B045 /* PairingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/PairingView.swift"; sourceTree = "<group>"; };
-		3F547D1DEDF97AAEF9B76677 /* PairingQRScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/PairingQRScanner.swift"; sourceTree = "<group>"; };
-		44334539826D68A64D27F73D /* ImportReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/ImportReviewView.swift"; sourceTree = "<group>"; };
-		5991AF9CBD65C6CEE8F20856 /* EntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/EntriesView.swift"; sourceTree = "<group>"; };
-		ED4FDD33D8EFC8B9F5C6FF6F /* EnrollmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/EnrollmentView.swift"; sourceTree = "<group>"; };
-		216D9979FBDE2AD820E0A064 /* BrokerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/BrokerSettingsView.swift"; sourceTree = "<group>"; };
-		627F2767079D03DE83561FC3 /* BackupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Screens/BackupViews.swift"; sourceTree = "<group>"; };
-		D8D913EE4E26B652F0508DD4 /* VaultStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultStore.swift"; sourceTree = "<group>"; };
-		33352D89B4A0FB179B0713D5 /* VaultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel.swift"; sourceTree = "<group>"; };
-		6326FA7F43D88B9F1F729046 /* VaultModel+VaultAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+VaultAdd.swift"; sourceTree = "<group>"; };
-		20BDAC0B988621D34EEA529E /* VaultModel+Queues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+Queues.swift"; sourceTree = "<group>"; };
-		D361F644978211DAC03207A0 /* VaultModel+Pairing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+Pairing.swift"; sourceTree = "<group>"; };
-		42C93CBC0593DCD17D48550F /* VaultModel+Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+Messages.swift"; sourceTree = "<group>"; };
-		AA89BA9E0F6582CF3DFF9761 /* VaultModel+Import.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+Import.swift"; sourceTree = "<group>"; };
-		4AEF8E130FF6CC572E08B828 /* VaultModel+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+Fixture.swift"; sourceTree = "<group>"; };
-		E293D3591EBC7CB970A4E9AA /* VaultModel+Connections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+Connections.swift"; sourceTree = "<group>"; };
-		228594C599FBFB0DD27601E7 /* VaultModel+Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/VaultModel+Backup.swift"; sourceTree = "<group>"; };
-		91593203E8243D3BFE8DA59C /* RequestPolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/RequestPolling.swift"; sourceTree = "<group>"; };
-		7BFE7FACFAF57EF1A3364D98 /* PasswordImportFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/PasswordImportFixture.swift"; sourceTree = "<group>"; };
-		8A05F2C3022FD4504C2051FA /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/Keychain.swift"; sourceTree = "<group>"; };
-		C55DFF7F6AA5795864873973 /* DeviceKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/DeviceKeys.swift"; sourceTree = "<group>"; };
-		50329F0A34DE65D7005A08E7 /* BrokerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Model/BrokerConfiguration.swift"; sourceTree = "<group>"; };
-		DF7D7BF73E04B9A138E07257 /* VaultCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/VaultCore.swift"; sourceTree = "<group>"; };
-		66844AAABF669645262F27C1 /* VaultContents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/VaultContents.swift"; sourceTree = "<group>"; };
-		DF146AA50F2E3E94331454B2 /* VaultCiphertext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/VaultCiphertext.swift"; sourceTree = "<group>"; };
-		0C6EB4F809637BD02B4A98A5 /* VaultBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/VaultBackup.swift"; sourceTree = "<group>"; };
-		9654CF16BDC42C8A006B3B7F /* VaultAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/VaultAdd.swift"; sourceTree = "<group>"; };
-		FC32D40C6267E4AF1B25D927 /* SecretEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/SecretEnvelope.swift"; sourceTree = "<group>"; };
-		1548DC7A9846E4782C083751 /* PasswordImportDelivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/PasswordImportDelivery.swift"; sourceTree = "<group>"; };
-		B5243D2CFE2AC856AA3DCAA4 /* PasswordImport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/PasswordImport.swift"; sourceTree = "<group>"; };
-		5022B8E7BDE96E0340D29A04 /* PairingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/PairingProtocol.swift"; sourceTree = "<group>"; };
-		AD05A5C82E3CFE07AE1E8E2A /* BrokerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/BrokerProtocol.swift"; sourceTree = "<group>"; };
-		8BEDB1E98EDBC48F6BDEE68A /* BrokerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/Core/BrokerClient.swift"; sourceTree = "<group>"; };
-		C6F0B585F421F65C9D6991BB /* VaultRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultRootView.swift"; sourceTree = "<group>"; };
 		004403A2033D6384649EC795 /* VaultNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultNotifications.swift"; sourceTree = "<group>"; };
 		DFBA1883DD131ABF26F6758A /* VaultNotifications+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/VaultNotifications+Delegate.swift"; sourceTree = "<group>"; };
 		5DF07ACDEA7C879B4EE35892 /* HarnessVaultPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault/App/HarnessVaultPlugin.swift"; sourceTree = "<group>"; };
@@ -482,6 +404,8 @@
 				ED4FDD33D8EFC8B9F5C6FF6F /* EnrollmentView.swift */,
 				216D9979FBDE2AD820E0A064 /* BrokerSettingsView.swift */,
 				627F2767079D03DE83561FC3 /* BackupViews.swift */,
+				8B97F309DE832C95ACF58FF3 /* VaultAccountPickerSection.swift */,
+				72ACBAF322B367D4B422B113 /* VaultAccountMatch.swift */,
 				D8D913EE4E26B652F0508DD4 /* VaultStore.swift */,
 				33352D89B4A0FB179B0713D5 /* VaultModel.swift */,
 				3926F7883D3AF05CD1C694AB /* VaultModel+VaultAddReceipts.swift */,
@@ -528,47 +452,6 @@
 				C6F0B585F421F65C9D6991BB /* VaultRootView.swift */,
 				1C7984B4C12E44C7C480EA18 /* VaultRootView+Polling.swift */,
 				F8482947C19BA61FD05DC76A /* VaultRootView+Notifications.swift */,
-				004403A2033D6384649EC795 /* VaultNotifications.swift */,
-				DFBA1883DD131ABF26F6758A /* VaultNotifications+Delegate.swift */,
-				5DF07ACDEA7C879B4EE35892 /* HarnessVaultPlugin.swift */,
-				8FB6A988C335EF2AC8BA7766 /* VaultAddReviewView.swift */,
-				A2380679DB06E1347994EA56 /* RequestsView.swift */,
-				E4F9F0139B78D3567D3ED92E /* RequestReviewView.swift */,
-				73C7ED13F3B248A6004739E3 /* ProtectedField.swift */,
-				1EF82108365BD2B19C57B045 /* PairingView.swift */,
-				3F547D1DEDF97AAEF9B76677 /* PairingQRScanner.swift */,
-				44334539826D68A64D27F73D /* ImportReviewView.swift */,
-				5991AF9CBD65C6CEE8F20856 /* EntriesView.swift */,
-				ED4FDD33D8EFC8B9F5C6FF6F /* EnrollmentView.swift */,
-				216D9979FBDE2AD820E0A064 /* BrokerSettingsView.swift */,
-				627F2767079D03DE83561FC3 /* BackupViews.swift */,
-				D8D913EE4E26B652F0508DD4 /* VaultStore.swift */,
-				33352D89B4A0FB179B0713D5 /* VaultModel.swift */,
-				6326FA7F43D88B9F1F729046 /* VaultModel+VaultAdd.swift */,
-				20BDAC0B988621D34EEA529E /* VaultModel+Queues.swift */,
-				D361F644978211DAC03207A0 /* VaultModel+Pairing.swift */,
-				42C93CBC0593DCD17D48550F /* VaultModel+Messages.swift */,
-				AA89BA9E0F6582CF3DFF9761 /* VaultModel+Import.swift */,
-				4AEF8E130FF6CC572E08B828 /* VaultModel+Fixture.swift */,
-				E293D3591EBC7CB970A4E9AA /* VaultModel+Connections.swift */,
-				228594C599FBFB0DD27601E7 /* VaultModel+Backup.swift */,
-				91593203E8243D3BFE8DA59C /* RequestPolling.swift */,
-				7BFE7FACFAF57EF1A3364D98 /* PasswordImportFixture.swift */,
-				8A05F2C3022FD4504C2051FA /* Keychain.swift */,
-				C55DFF7F6AA5795864873973 /* DeviceKeys.swift */,
-				50329F0A34DE65D7005A08E7 /* BrokerConfiguration.swift */,
-				DF7D7BF73E04B9A138E07257 /* VaultCore.swift */,
-				66844AAABF669645262F27C1 /* VaultContents.swift */,
-				DF146AA50F2E3E94331454B2 /* VaultCiphertext.swift */,
-				0C6EB4F809637BD02B4A98A5 /* VaultBackup.swift */,
-				9654CF16BDC42C8A006B3B7F /* VaultAdd.swift */,
-				FC32D40C6267E4AF1B25D927 /* SecretEnvelope.swift */,
-				1548DC7A9846E4782C083751 /* PasswordImportDelivery.swift */,
-				B5243D2CFE2AC856AA3DCAA4 /* PasswordImport.swift */,
-				5022B8E7BDE96E0340D29A04 /* PairingProtocol.swift */,
-				AD05A5C82E3CFE07AE1E8E2A /* BrokerProtocol.swift */,
-				8BEDB1E98EDBC48F6BDEE68A /* BrokerClient.swift */,
-				C6F0B585F421F65C9D6991BB /* VaultRootView.swift */,
 				004403A2033D6384649EC795 /* VaultNotifications.swift */,
 				DFBA1883DD131ABF26F6758A /* VaultNotifications+Delegate.swift */,
 				5DF07ACDEA7C879B4EE35892 /* HarnessVaultPlugin.swift */,
@@ -776,6 +659,8 @@
 				62F00708D8F3BB47BCD91322 /* EnrollmentView.swift in Sources */,
 				75C09D8A31320CCA835F8059 /* BrokerSettingsView.swift in Sources */,
 				CE39D31F353D373A2C7BA71B /* BackupViews.swift in Sources */,
+				848B2C97FB6AF0DECE35C003 /* VaultAccountPickerSection.swift in Sources */,
+				558684CE3C3BC1A5D9C489B2 /* VaultAccountMatch.swift in Sources */,
 				DEC9D03CE1DB2E9E237C8F90 /* VaultStore.swift in Sources */,
 				0D8B0CE9CBCBBB2AA663F602 /* VaultModel.swift in Sources */,
 				9D815DCB54BF9E596A0C15CA /* VaultModel+VaultAddReceipts.swift in Sources */,
@@ -822,47 +707,6 @@
 				58CB8ACFF10F6D5D894D9B0C /* VaultRootView.swift in Sources */,
 				36EE847FEE1ADE8A3F208776 /* VaultRootView+Polling.swift in Sources */,
 				9FF963980023EA454609C6C8 /* VaultRootView+Notifications.swift in Sources */,
-				8967C6C1CBACC046B4475BD4 /* VaultNotifications.swift in Sources */,
-				5ADD3F65ED7DBA62BF925FB0 /* VaultNotifications+Delegate.swift in Sources */,
-				82675572387352E52232633C /* HarnessVaultPlugin.swift in Sources */,
-				59D7C9A8656A1F9F7CEB1A2E /* VaultAddReviewView.swift in Sources */,
-				7D69F8B28FA500F35581F59C /* RequestsView.swift in Sources */,
-				2E665F7BF4F7D9663983A74B /* RequestReviewView.swift in Sources */,
-				1EC5FDE9EB0AF9721ED60A06 /* ProtectedField.swift in Sources */,
-				7AEF89F843A6D6F5EBCD1E06 /* PairingView.swift in Sources */,
-				30FAFC280AE2BA72CFA25678 /* PairingQRScanner.swift in Sources */,
-				80B25D42621513B418A56F7E /* ImportReviewView.swift in Sources */,
-				C8FCAC1AB0A46BF4EAC67591 /* EntriesView.swift in Sources */,
-				62F00708D8F3BB47BCD91322 /* EnrollmentView.swift in Sources */,
-				75C09D8A31320CCA835F8059 /* BrokerSettingsView.swift in Sources */,
-				CE39D31F353D373A2C7BA71B /* BackupViews.swift in Sources */,
-				DEC9D03CE1DB2E9E237C8F90 /* VaultStore.swift in Sources */,
-				0D8B0CE9CBCBBB2AA663F602 /* VaultModel.swift in Sources */,
-				CE944E1E6595754394034989 /* VaultModel+VaultAdd.swift in Sources */,
-				021A1A4ED49FD66D09F0C9DB /* VaultModel+Queues.swift in Sources */,
-				819956ABD4F0848F2EDE4C1F /* VaultModel+Pairing.swift in Sources */,
-				F2AC249D6DABDCC0ED87C7A5 /* VaultModel+Messages.swift in Sources */,
-				E5657064D68B7964F64BC127 /* VaultModel+Import.swift in Sources */,
-				17ADBCCA86BF15C0E1C4E35B /* VaultModel+Fixture.swift in Sources */,
-				A2798D60CC1CD4570BA39F2B /* VaultModel+Connections.swift in Sources */,
-				557A15B9E0B20CE6B8E296D3 /* VaultModel+Backup.swift in Sources */,
-				44AA60F212EFCABBA860BAF4 /* RequestPolling.swift in Sources */,
-				86EACA4F7779E1104DE0DBE7 /* PasswordImportFixture.swift in Sources */,
-				861BFC2C45C243EB46DF7B85 /* Keychain.swift in Sources */,
-				059D329A010363FECB54EE94 /* DeviceKeys.swift in Sources */,
-				183BF64961D397E7C12711C6 /* BrokerConfiguration.swift in Sources */,
-				BE99A0BF5A497CFCC1308312 /* VaultCore.swift in Sources */,
-				39661FE87D32224B4E4981B8 /* VaultContents.swift in Sources */,
-				E1042603258901B9D7A1F4E6 /* VaultCiphertext.swift in Sources */,
-				E91E2FBBABF21A7BF3553F7D /* VaultBackup.swift in Sources */,
-				D8BB9CAA05785C1CAAC9F765 /* VaultAdd.swift in Sources */,
-				317ED4B8A498BA1FF532FAB5 /* SecretEnvelope.swift in Sources */,
-				7ABC67357CCE00F53832AE56 /* PasswordImportDelivery.swift in Sources */,
-				905AE7B9EA62158FC6D050AB /* PasswordImport.swift in Sources */,
-				CAEF55465B3D9B6A51723035 /* PairingProtocol.swift in Sources */,
-				E6676C5E1D18010C7A92FB59 /* BrokerProtocol.swift in Sources */,
-				866DAD28018699199E068CBE /* BrokerClient.swift in Sources */,
-				58CB8ACFF10F6D5D894D9B0C /* VaultRootView.swift in Sources */,
 				8967C6C1CBACC046B4475BD4 /* VaultNotifications.swift in Sources */,
 				5ADD3F65ED7DBA62BF925FB0 /* VaultNotifications+Delegate.swift in Sources */,
 				82675572387352E52232633C /* HarnessVaultPlugin.swift in Sources */,

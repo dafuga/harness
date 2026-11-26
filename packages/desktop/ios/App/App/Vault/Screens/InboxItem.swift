@@ -30,7 +30,7 @@ struct InboxItem: Identifiable {
 
     var title: String {
         switch kind {
-        case .release(let request): request.approvalOnly == true ? request.reason : request.service
+        case .release(let request): request.approvalOnly == true || request.codeOnly == true ? request.reason : request.service
         case .vaultAdd(let request): "Add \(request.siteName) login"
         case .passwordImport: "Password import request"
         }

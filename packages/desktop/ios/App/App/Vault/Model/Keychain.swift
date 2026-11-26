@@ -10,7 +10,6 @@ enum DeviceVaultError: Error {
     case missingEntry
     case duplicateBroker
     case duplicateBrokerDevice
-    case serviceCodeRequired
     case duplicateService
 }
 

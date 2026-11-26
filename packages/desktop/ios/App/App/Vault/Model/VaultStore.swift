@@ -6,6 +6,13 @@ struct EntryLabel: Identifiable, Equatable {
     let id: UUID
     let service: String
     let twoFactorEveryTime: Bool
+    var username = ""
+    var domain: String? = nil
+
+    var candidate: VaultAccountCandidate {
+        VaultAccountCandidate(id: id, service: service, domain: domain,
+                              username: username, twoFactorEveryTime: twoFactorEveryTime)
+    }
 }
 
 @MainActor
@@ -30,7 +37,8 @@ struct VaultStore: VaultStorage {
 
     func labels() throws -> [EntryLabel] {
         try storedVault().entries.map {
-            EntryLabel(id: $0.id, service: $0.service, twoFactorEveryTime: $0.twoFactorEveryTime)
+            EntryLabel(id: $0.id, service: $0.service, twoFactorEveryTime: $0.twoFactorEveryTime,
+                       username: $0.username ?? "", domain: $0.domain)
         }
     }
 

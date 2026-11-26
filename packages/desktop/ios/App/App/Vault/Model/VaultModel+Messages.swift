@@ -15,15 +15,19 @@ extension VaultModel {
         case DeviceVaultError.authentication, is LAError:
             return "Biometric authentication didn’t complete. Try again."
         case DeviceVaultError.missingEntry:
-            return "Add a vault entry with the exact requested service name."
+            return "That vault entry is no longer saved."
+        case VaultReleaseError.loginRequired:
+            return "Choose a saved login for this request."
         case DeviceVaultError.duplicateBroker:
             return "Use a different HTTPS origin for each machine."
         case DeviceVaultError.duplicateBrokerDevice:
             return "Use a different device ID for each machine."
-        case DeviceVaultError.serviceCodeRequired:
+        case VaultReleaseError.codeRequired:
             return "Enter a fresh verification code for this request."
         case DeviceVaultError.duplicateService:
             return "A vault entry already uses this service name."
+        case VaultReleaseError.websiteMismatch:
+            return "This password is only released to its own website. Set the saved login’s website to the one requested."
         case DeviceVaultError.missingKey:
             return "This device’s key is unavailable. Check enrollment or recover on a trusted second device."
         case DeviceVaultError.keychain:

@@ -9,6 +9,21 @@ extension BrokerClient {
         let sealed: SecretEnvelope?
         let otpIncluded: Bool?
         let approvalOnly: Bool?
+        var codeOnly: Bool? = nil
+        var environment: Environment? = nil
+
+        struct Environment: Encodable, Sendable {
+            let selectionId: String
+            let origin: String
+        }
+
+        /// An approval of an offer with a selection ID must name that offer and its broker.
+        public func selecting(_ request: BrokerRequest, origin: String) -> Self {
+            guard decision == "approve", approvalOnly != true, let id = request.selectionId else { return self }
+            var chosen = self
+            chosen.environment = Environment(selectionId: id, origin: origin)
+            return chosen
+        }
 
         public init(denying request: BrokerRequest) {
             requestId = request.id
@@ -28,6 +43,7 @@ extension BrokerClient {
             self.sealed = sealed
             self.otpIncluded = otpIncluded ? true : nil
             approvalOnly = nil
+            codeOnly = request.codeOnly == true ? true : nil
         }
 
         public init(approvingOnly request: BrokerRequest, expiresAt: Int64) {

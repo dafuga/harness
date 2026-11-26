@@ -146,6 +146,14 @@ public struct BrokerRequest: Codable, Identifiable, Equatable, Sendable {
     public let approvalOnly: Bool?
     public let site: String?
     public let account: String?
+    /// The password may only be released for this saved website.
+    public let websiteDomain: String?
+    /// The sign-in may ask for its verification code later, as a separate code-only request.
+    public let deferredOtp: Bool?
+    /// That later request: it takes a fresh code and never a password.
+    public let codeOnly: Bool?
+    /// The approval must name this offer and the broker it was made to.
+    public let selectionId: String?
 
     public var id: String { requestId }
 

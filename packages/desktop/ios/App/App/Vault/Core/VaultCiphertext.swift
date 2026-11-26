@@ -33,6 +33,9 @@ public struct VaultCiphertext: Codable, Equatable, Identifiable, Sendable {
     let sender: Data
     let box: Data
     private let approvalRequired: Bool?
+    /// Readable without Face ID so logins can be offered by site. Checked against the sealed entry.
+    public private(set) var username: String? = nil
+    public private(set) var domain: String? = nil
 
     public var twoFactorEveryTime: Bool { approvalRequired ?? false }
 
@@ -53,8 +56,11 @@ public struct VaultCiphertext: Codable, Equatable, Identifiable, Sendable {
         let sealed = try DeviceBox.seal(
             plaintext, to: recipient, aad: aad(id: entry.id, service: entry.service)
         )
-        return Self(id: entry.id, service: entry.service, sealed: sealed,
-                    approvalRequired: entry.twoFactorEveryTime ? true : nil)
+        var record = Self(id: entry.id, service: entry.service, sealed: sealed,
+                          approvalRequired: entry.twoFactorEveryTime ? true : nil)
+        record.username = entry.username
+        record.domain = entry.domain
+        return record
     }
 
     public func open(agreement: (P256.KeyAgreement.PublicKey) throws -> SharedSecret) throws -> VaultEntry {
@@ -62,7 +68,8 @@ public struct VaultCiphertext: Codable, Equatable, Identifiable, Sendable {
         defer { plaintext.resetBytes(in: plaintext.startIndex..<plaintext.endIndex) }
         let entry = try JSONDecoder().decode(VaultEntry.self, from: plaintext)
         try entry.validate()
-        guard entry.id == id, entry.service == service, entry.twoFactorEveryTime == twoFactorEveryTime else {
+        guard entry.id == id, entry.service == service, entry.twoFactorEveryTime == twoFactorEveryTime,
+              username.map({ $0 == entry.username }) ?? true, domain.map({ $0 == entry.domain }) ?? true else {
             throw VaultError.invalidCiphertext
         }
         return entry

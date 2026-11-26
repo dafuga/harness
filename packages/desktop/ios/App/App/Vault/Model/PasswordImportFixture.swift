@@ -11,6 +11,19 @@ struct PasswordImportFixture {
     let review: ReviewedPasswordImport
     let delivery: PasswordImportDelivery
 
+    private static func sealedBody(
+        sender: P256.KeyAgreement.PublicKey, salt: Data, ciphertext: Data
+    ) -> [String: Any] {
+        [
+            "importId": id,
+            "sealed": [
+                "senderPublicKey": BrokerProtocol.base64url(sender.x963Representation),
+                "salt": BrokerProtocol.base64url(salt),
+                "ciphertext": BrokerProtocol.base64url(ciphertext),
+            ],
+        ]
+    }
+
     private static let manifest = Data("""
     {"source":"grok-box","count":2,"services":[
     {"service":"demo-import","domain":"registry.example"},
@@ -51,14 +64,7 @@ struct PasswordImportFixture {
         let decoder = JSONDecoder()
         review = try decoder.decode(PasswordImportSummary.self, from: JSONSerialization.data(withJSONObject: summaryJSON))
             .review(for: Self.deviceID)
-        let body: [String: Any] = [
-            "importId": Self.id,
-            "sealed": [
-                "senderPublicKey": BrokerProtocol.base64url(shared.publicKey.x963Representation),
-                "salt": BrokerProtocol.base64url(salt),
-                "ciphertext": BrokerProtocol.base64url(ciphertext),
-            ],
-        ]
+        let body = Self.sealedBody(sender: shared.publicKey, salt: salt, ciphertext: ciphertext)
         delivery = try decoder.decode(PasswordImportDelivery.self, from: JSONSerialization.data(withJSONObject: body))
     }
 }
