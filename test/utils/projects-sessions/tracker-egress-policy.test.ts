@@ -62,6 +62,10 @@ test('renders Claude settings with an exact domain list, no unsandboxed commands
 	expect(args[args.indexOf('--disallowedTools') + 1]).toBe('WebFetch,WebSearch');
 });
 
+const modelLimit = { availableModels: ['opus', 'sonnet', 'haiku'] };
+const claudeSettings = (command?: { argv: string[] }) =>
+	JSON.parse(command!.argv[command!.argv.indexOf('--settings') + 1]);
+
 const base = { codex: '/bin/codex', claude: '/bin/claude', profile: '/profile' };
 const request = (provider: 'codex' | 'claude') =>
 	({
@@ -85,7 +89,7 @@ test('native launches without a policy keep the November 23 open-access commands
 		'darwin'
 	);
 	expect(codex?.argv).toContain('--dangerously-bypass-approvals-and-sandbox');
-	expect(claude?.argv).not.toContain('--settings');
+	expect(claudeSettings(claude)).toEqual(modelLimit);
 });
 
 test('native launches with a policy drop the Codex sandbox bypass and add the allowlist', () => {
@@ -96,7 +100,13 @@ test('native launches with a policy drop the Codex sandbox bypass and add the al
 		expect.arrayContaining(['-a', 'never', ...codexEgressArguments(policy)])
 	);
 	const claude = trackerManagedProviderCommand({ native }, request('claude'), '/b.md', 'darwin');
-	expect(claude?.argv).toEqual(expect.arrayContaining(claudeEgressArguments(policy)));
+	const egress = claudeEgressArguments(policy);
+	const allowlist = JSON.parse(egress[egress.indexOf('--settings') + 1]);
+	expect(claudeSettings(claude)).toEqual({ ...allowlist, ...modelLimit });
+	expect(claude?.argv).toEqual(
+		expect.arrayContaining(egress.filter((arg) => !arg.startsWith('{')))
+	);
+	expect(claude?.argv).not.toContain('--remote-control');
 });
 
 test('native launches for items outside the pilot keep open access even when a policy exists', () => {
@@ -104,7 +114,7 @@ test('native launches for items outside the pilot keep open access even when a p
 	const codex = trackerManagedProviderCommand({ native }, request('codex'), '/b.md', 'darwin');
 	expect(codex?.argv).toContain('--dangerously-bypass-approvals-and-sandbox');
 	const claude = trackerManagedProviderCommand({ native }, request('claude'), '/b.md', 'darwin');
-	expect(claude?.argv).not.toContain('--settings');
+	expect(claudeSettings(claude)).toEqual(modelLimit);
 });
 
 const active = (egress: unknown) => ({
