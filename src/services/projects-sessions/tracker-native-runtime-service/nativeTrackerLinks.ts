@@ -1,5 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
-import { z } from 'zod';
+import type { z } from 'zod';
 import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
 import type { TrackerHubMachineStore } from '../TrackerHubSyncService.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -7,6 +7,9 @@ import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerSpokeLoopService } from '../TrackerSpokeLoopService';
 import { observeTrackerDuePolicy } from './nativeTrackerDuePolicy';
+import { trackerMachineSample } from './trackerFleetSampleSchema';
+
+export { trackerMachineSample, trackerRunnerSample } from './trackerFleetSampleSchema';
 
 export function composeTrackerLinks(
 	store: TrackerPersistenceService,
@@ -40,12 +43,18 @@ export function trackerHubMachines(
 			const sample =
 				dispatch?.telemetry?.sample() ??
 				machineReport(localRunnerStatus(scheduler), runs.activeLocal(), now());
-			const spokes = machines
-				.latestSamples()
-				.filter((value) => trackerMachineSample.safeParse(value).data?.node !== node);
-			return [...spokes, Object.assign({}, sample, { node })];
+			const stored = machines.latestSamples();
+			const spokes = stored.filter((value) => nodeOf(value) !== node);
+			// The hub's resource reading is taken once a minute and kept with its recorded report.
+			const own = stored.find((value) => nodeOf(value) === node);
+			const resources = trackerMachineSample.safeParse(own).data?.resources;
+			return [...spokes, Object.assign({}, sample, resources && { resources }, { node })];
 		}
 	};
+}
+
+function nodeOf(value: unknown): string | undefined {
+	return trackerMachineSample.safeParse(value).data?.node;
 }
 
 export function localRunnerStatus(scheduler?: TrackerDispatchSchedulerService) {
@@ -62,32 +71,6 @@ export function machineReport(
 		runner: { ...runner, active: active.filter(({ state }) => state !== 'queued').length }
 	};
 }
-
-export const trackerRunnerSample = z.object({
-	enabled: z.boolean().nullish(),
-	last_tick_at: z.string().nullish(),
-	last_error: z.string().nullish(),
-	waiting_on: z.string().nullish(),
-	active: z.int().nonnegative().nullish(),
-	automatic_enabled: z.boolean().optional(),
-	capacity: z
-		.object({
-			freeSlots: z.int().min(0).max(500),
-			projects: z.record(
-				z.string(),
-				z.object({ freeGB: z.number().nonnegative(), freePct: z.number().min(0).max(100) })
-			)
-		})
-		.nullish(),
-	waiting: z.record(z.string(), z.string()).optional(),
-	waiting_tokens: z.record(z.string(), z.string()).optional()
-});
-
-export const trackerMachineSample = z.object({
-	node: z.string().min(1).max(128),
-	at: z.iso.datetime(),
-	runner: trackerRunnerSample
-});
 
 export function trackerFleetMachineStore(): TrackerHubMachineStore {
 	const samples = new Map<string, z.infer<typeof trackerMachineSample>>();

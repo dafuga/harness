@@ -37,7 +37,8 @@ import {
 	composeTrackerLinks,
 	trackerSpokeStatus
 } from './tracker-native-runtime-service/nativeTrackerLinks';
-import { composeTrackerTelemetry } from './tracker-native-runtime-service/nativeTrackerTelemetry';
+import { TrackerMachineService } from './TrackerMachineService';
+import { composeTrackerFleet } from './tracker-native-runtime-service/composeTrackerFleet';
 import { configuredTrackerReminderHost } from './tracker-native-runtime-service/configuredTrackerReminderHost';
 import { configuredTrackerDestinations } from './tracker-native-runtime-service/configuredTrackerDestinations';
 
@@ -60,6 +61,7 @@ export class TrackerNativeRuntimeService {
 	readonly recurring?: TrackerRecurringService;
 	readonly telemetry?: (signal: AbortSignal) => Promise<void>;
 	readonly fleetSamples?: () => readonly unknown[];
+	readonly machines: TrackerMachineService;
 	readonly now: () => number;
 	private readonly links: TrackerSpokeLoopService[];
 
@@ -73,6 +75,7 @@ export class TrackerNativeRuntimeService {
 		this.now = now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
 		const runs = new TrackerRunReadRepository(database, node);
+		this.machines = composeMachines(store, options, this.now);
 		[this.notifications, this.webPush] = composeOutbound(store, options);
 		const recurring = composeTrackerRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
@@ -81,22 +84,18 @@ export class TrackerNativeRuntimeService {
 		const dispatch =
 			options.dispatch ??
 			configuredHostDispatch(store, hostEffects, this.now, options.automaticEnabled);
-		const composed = composeTrackerDispatch(store, { ...options, dispatch });
+		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this.machines);
 		({
 			dispatch: this.dispatch,
 			scheduler: this.scheduler,
 			duePreview: this.duePreview
 		} = composed);
 		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
-		this.items = composeItemApi(this, runs, options, recurring);
+		const fleet = composeTrackerFleet(runs, { ...options, dispatch }, this);
+		({ tick: this.telemetry, samples: this.fleetSamples } = fleet);
+		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring);
 		this.backups = composeTrackerBackups(this, options);
-		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
-			store,
-			runs,
-			{ ...options, dispatch },
-			this.scheduler
-		));
-		this.sync = composeTrackerResponder(store, runs, options, composed);
+		this.sync = composeTrackerResponder(store, runs, fleet.syncOptions, composed);
 	}
 
 	get admin() {
@@ -123,6 +122,14 @@ export class TrackerNativeRuntimeService {
 			await Promise.allSettled(links);
 		}
 	}
+}
+
+function composeMachines(
+	store: TrackerPersistenceService,
+	{ machineSampler }: TrackerNativeRuntimeOptions,
+	now: () => number
+) {
+	return new TrackerMachineService(store, { now, sampler: machineSampler });
 }
 
 function composeItemApi(
@@ -153,6 +160,7 @@ function composeItemApi(
 		...trackerItemViews(runtime),
 		reject: runtime.dispatch && ((id, reason) => runtime.dispatch!.reject(id, reason)),
 		runs,
+		machines: runtime.machines,
 		jobs: recurring?.jobs,
 		recurring: {
 			role,
