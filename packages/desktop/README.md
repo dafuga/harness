@@ -46,6 +46,8 @@ HARNESS_RELEASE_HUB_ORIGIN=https://dafuga-harness.pages.dev \
 bun run package:mac --verify dist/mac/Harness.app
 ```
 
+The packager names the app's executable `Contents/MacOS/Harness`: Electron reports `app.isPackaged=false` for an executable named `electron`, which skips the packaged-only startup work such as the Tracker install below. It also removes group and other write access from every file in the bundle. `--verify` refuses an app with another executable name or with a group- or world-writable file, so bundles packaged before this rule do not pass it. Scripts that find the running app by process path must use `Harness.app/Contents/MacOS/Harness`. `test/package-mac-app.test.ts` assembles the app with the packager and launches it with a probe main process and no visible window.
+
 The packager requires the public release Hub origin and compiles it directly into the signed main bundle. The fingerprint selects the certificate in the dedicated build keychain. For an existing approved build keychain, set `HARNESS_MAC_SIGN_KEYCHAIN` to its path after verifying that its specific private key permits unattended `codesign`. Bun can load those settings from the ignored `.env.local` file in this package. Packaging publishes the bundle to `dist/mac/Harness.app` after verification. For local development, use `bun run desktop`.
 
 Before replacing `/Applications/Harness.app`, run `bun run package:mac --verify <candidate.app>` and keep the previous bundle for rollback. Quit Harness normally so it can finish active work before the replacement. Run the same verification against `/Applications/Harness.app` after installation. Public distribution additionally requires notarization.

@@ -5,7 +5,13 @@ import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { buildDesktopMain, releaseDefine } from './build-main';
-import { assembleMacApp, bundleId, migrationBinary } from './package-mac-app';
+import {
+	assembleMacApp,
+	bundleId,
+	migrationBinary,
+	restrictBundleModes,
+	verifyMacAppLayout
+} from './package-mac-app';
 import { MacPackageError } from './package-mac.types';
 import { isRevision, releaseRevision } from './release-revision';
 import { trackerSigning, verifyTrackerBundle } from './package-mac-tracker';
@@ -69,6 +75,7 @@ function verifyRelease(app: string): void {
 	verifyIdentity(app);
 	verifyIdentity(join(app, migrationBinary));
 	verifyTrackerBundle(app, verifyIdentity);
+	verifyMacAppLayout(app);
 	execFileSync(codesign, ['--verify', '--deep', '--strict', '-R', `=${requirement}`, app], {
 		stdio: 'inherit'
 	});
@@ -107,6 +114,8 @@ async function packageRelease(): Promise<void> {
 					? { additionalArguments: ['--identifier', bundleId] }
 					: (trackerSigning(candidate, file, bundleId) ?? {})
 		});
+		// Signing adds files under the caller's umask; modes are not part of the signature.
+		restrictBundleModes(candidate);
 		verifyRelease(candidate);
 		await rm(output, { recursive: true, force: true });
 		await rename(candidate, output);

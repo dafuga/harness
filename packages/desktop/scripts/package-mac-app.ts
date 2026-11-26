@@ -1,11 +1,16 @@
+// @harness-uid u_gxxwi43nxg
 import { execFileSync } from 'node:child_process';
-import { cp, mkdir, writeFile } from 'node:fs/promises';
+import { lstatSync } from 'node:fs';
+import { cp, mkdir, rename, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
 import { macIcon } from './mac-icon/mac-icon';
+import { MacPackageError } from './package-mac.types';
 import { stageTrackerBundle } from './package-mac-tracker';
 
 export const bundleId = 'dev.harness.desktop';
+/** Electron reports `isPackaged=false` for an executable named `electron`, so it is renamed. */
+const executableName = 'Harness';
 export const migrationBinary = 'Contents/Helpers/HarnessKeychainMigration';
 
 export interface MacAppSources {
@@ -38,12 +43,15 @@ async function copyProject(output: string, sources: MacAppSources): Promise<void
 	);
 }
 
-function brandPlist(output: string): void {
+async function brandApp(output: string): Promise<void> {
+	const executables = resolve(output, 'Contents/MacOS');
+	await rename(join(executables, 'Electron'), join(executables, executableName));
 	const plist = resolve(output, 'Contents/Info.plist');
 	for (const command of [
 		'Set :CFBundleDisplayName Harness',
 		'Set :CFBundleName Harness',
-		`Set :CFBundleIdentifier ${bundleId}`
+		`Set :CFBundleIdentifier ${bundleId}`,
+		`Set :CFBundleExecutable ${executableName}`
 	])
 		execFileSync('/usr/libexec/PlistBuddy', ['-c', command, plist]);
 }
@@ -71,10 +79,38 @@ export async function assembleMacApp(output: string, sources: MacAppSources): Pr
 	const original = resolve(dirname(electron as unknown as string), '../..');
 	execFileSync('/usr/bin/ditto', [original, output]);
 	await copyProject(output, sources);
-	brandPlist(output);
+	await brandApp(output);
 	await macIcon(output);
 	const helper = join(output, migrationBinary);
 	await mkdir(dirname(helper), { recursive: true });
 	compileMigrationHelper(helper);
 	await stageTrackerBundle(output);
+	restrictBundleModes(output);
+}
+
+/** Removes group and other write access from the whole bundle. Links are not followed. */
+export function restrictBundleModes(app: string): void {
+	execFileSync('/bin/chmod', ['-R', 'go-w', app]);
+}
+
+/** Refuses a bundle that Electron would run as unpackaged, or that other users may change. */
+export function verifyMacAppLayout(app: string): void {
+	const plist = join(app, 'Contents/Info.plist');
+	const executable = execFileSync(
+		'/usr/libexec/PlistBuddy',
+		['-c', 'Print :CFBundleExecutable', plist],
+		{ encoding: 'utf8' }
+	).trim();
+	if (executable !== executableName)
+		throw new MacPackageError(`Artifact's executable must be named ${executableName}.`);
+	if (!lstatSync(join(app, 'Contents/MacOS', executable), { throwIfNoEntry: false })?.isFile())
+		throw new MacPackageError(`Artifact is missing its ${executableName} executable.`);
+	const writable = execFileSync('/usr/bin/find', [app, '!', '-type', 'l', '-perm', '+022'], {
+		encoding: 'utf8',
+		maxBuffer: 16 * 1024 * 1024
+	});
+	if (writable)
+		throw new MacPackageError(
+			`Artifact must not be writable by group or others: ${writable.split('\n')[0]}`
+		);
 }
