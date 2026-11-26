@@ -1,0 +1,7658 @@
+{
+	"schemaVersion": 1,
+	"revision": "66e2f045f0a8f65501d686edcbfed178a2781729",
+	"bugClass": {
+		"id": "unbound-session-message-delivery",
+		"title": "Messages reported without run-bound delivery or replies",
+		"cause": "A message is treated as delivered when it is merely persisted as a note, with no dispatch to the live session pane; replies are inferred from recent notes without correlating them to the originating run. A related failure occurs when text is typed into a pane without first binding that pane to the exact target run.",
+		"criteria": "Classify a site when either (1) it reports delivery or receipt based on storing or reading a note/message without dispatching to the intended live session, or (2) it types into a pane without pinning the exact target run. Also classify when replies are selected from recent notes without a run- or request-keyed correlation channel. These mechanisms may occur independently.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "tracker.note",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "Hub message:",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "activeRunId",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "sessionId",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "paneId",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "replyTo",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "correlationId",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "runId",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "latestNote",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "sendKeys(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "typeText(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "dispatchEvent(",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "message.status = \"sent\"",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "status: \"delivered\"",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "tracker.note",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "sendKeys",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "typeText",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "getActiveSession",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "getLatestNote",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "querySelector",
+				"weight": 2
+			},
+			{
+				"kind": "construct",
+				"value": "MessageChannel",
+				"weight": 3
+			},
+			{
+				"kind": "construct",
+				"value": "BroadcastChannel",
+				"weight": 2
+			}
+		],
+		"contextTerms": ["hub", "message", "tracker", "pane", "run", "reply", "note", "session"],
+		"pathHints": [
+			{
+				"contains": "packages/hub/",
+				"weight": 5
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/collaboration/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "specification/",
+				"weight": -3
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 9177,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "95b56253ade584024c04",
+			"path": "src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.ts",
+			"line": 56,
+			"lastLine": 61,
+			"score": 29,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "replyTo",
+					"weight": 5
+				}
+			],
+			"verdict": "confirmed",
+			"impact": 4,
+			"evidence": "At lines 44–60, the handler constructs a stored receipt, writes the message with `note(...)`, and returns status `stored` without visible dispatch to a live session. `replyTo` at lines 63–72 likewise writes a note and reports `acknowledged`; it verifies the message exists in the item thread but does not correlate the reply to a run or request. Trigger: valid message/reply for a known item; run messages are refused only when `endedRun(...)` detects an ended run."
+		},
+		{
+			"id": "32b3e9d0a9599aec82c0",
+			"path": "packages/hub/src/components/projects-sessions/hubHomeMessages.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "confirmed",
+			"impact": 4,
+			"evidence": "For a session with an itemId, composedMessage marks text as a live-run message whenever runId exists (lines 14–18), while composerFeedback says it is stored in Tracker and goes to the next empty prompt (lines 21–30). This establishes a persisted message reported as sent without dispatch in this site; the exact target run is carried in the input, but the excerpt does not establish actual pane binding."
+		},
+		{
+			"id": "0ae0cf5dd87dd1d5a231",
+			"path": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte",
+			"line": 36,
+			"lastLine": 36,
+			"score": 25,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "replyTo",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "The component filters thread entries by messageId/replyTo and shows locally sent entries until their IDs appear in the thread (lines 24–36); this excerpt does not show how messages are dispatched or how replies are correlated, so the class mechanism is not established."
+		},
+		{
+			"id": "6e92e01389dd8ceef505",
+			"path": "src/utils/projects-sessions/hubSessionMessages.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "Lines 59–71 parse Tracker notes into message, delivered, refused, and reply events, with replies keyed by messageId. The excerpt does not show whether notes alone trigger delivery or how reply events are correlated and displayed."
+		},
+		{
+			"id": "424cd9f8eb3374b894b6",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxPane.ts",
+			"line": 109,
+			"lastLine": 113,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "paneId",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "At lines 109–113, `trackerTmuxKeys` targets a supplied `paneId` and emits `send-keys` for text followed by Enter. The excerpt does not show how that pane ID is selected or whether it is bound to the exact target run, so the required missing guard is not established."
+		},
+		{
+			"id": "c7a23be22c17074e30dc",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerThread.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "Hub message:",
+					"weight": 2
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "At line 14, the excerpt defines a Hub chat Tracker item and thread limit, and comments that the oldest matching item wins across computers. The displayed lines do not show message dispatch, delivery status, reply selection, or the live-run guard; additional implementation would be needed to establish the class."
+		},
+		{
+			"id": "291b999318632f0e0327",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
+			"line": 179,
+			"lastLine": 185,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "Lines 179–185 require a `runId`, an idle unattached pane, and a matching ownership check before forming a handoff attempt. The excerpt does not show how `driver.nudge` selects or binds the pane, so it cannot establish the delivery mechanism."
+		},
+		{
+			"id": "da2f62149589d894171b",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogIdle.ts",
+			"line": 67,
+			"lastLine": 67,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 1,
+			"evidence": "The excerpt says a watchdog nudge was “sent” and records it as a local note (lines 55–59), but does not show whether delivery was verified or how the pane was targeted. `leftToLauncher` only shows a runId-based condition (lines 67–69); no run-bound dispatch or reply selection mechanism is visible."
+		},
+		{
+			"id": "d96bfd835cf1e8e5e0f4",
+			"path": "src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "replyTo",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "216887bef748fc408ce5",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
+			"line": 79,
+			"lastLine": 79,
+			"score": 22,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ee2ea2be233875467057",
+			"path": "packages/hub/tests/e2e/hub-home-messages.spec.ts",
+			"line": 92,
+			"lastLine": 92,
+			"score": 22,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3007556f51f239909b1d",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "203c8d37c744d53d1e89",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.ts",
+			"line": 79,
+			"lastLine": 80,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9a1ea1f6a64a387e4e47",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.ts",
+			"line": 136,
+			"lastLine": 139,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6a83382e11bac9870096",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+			"line": 108,
+			"lastLine": 108,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2d1c0b7241a7913ffdb3",
+			"path": "packages/hub/src/routes/api/hub-home/homePayload.ts",
+			"line": 64,
+			"lastLine": 64,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d7ce7959a0f6c90e59a3",
+			"path": "packages/hub/tests/e2e/hub-home-messages.spec.ts",
+			"line": 142,
+			"lastLine": 142,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f683f2e4717dc15062a0",
+			"path": "packages/desktop/src/adapters/agents-providers/AgentHttpAdapter.ts",
+			"line": 64,
+			"lastLine": 71,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4b7d8ba86c57011acf15",
+			"path": "packages/desktop/src/adapters/agents-providers/AgentHttpAdapter.ts",
+			"line": 76,
+			"lastLine": 83,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "feaae9a72dd205b10b6c",
+			"path": "packages/desktop/src/adapters/agents-providers/AgentHttpAdapter.ts",
+			"line": 87,
+			"lastLine": 95,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6564e5ad2f97b797ade8",
+			"path": "packages/desktop/src/adapters/agents-providers/AgentHttpAdapter.ts",
+			"line": 98,
+			"lastLine": 98,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c50531323741fa735328",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.ts",
+			"line": 69,
+			"lastLine": 69,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7ec4e52cb272d57a852a",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.ts",
+			"line": 120,
+			"lastLine": 126,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "adb3de022fb420b82eea",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "31a5d42b1788e0113d3d",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+			"line": 139,
+			"lastLine": 139,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3da753edd880bd2715de",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+			"line": 158,
+			"lastLine": 158,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "90c937d18e2b448829d2",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
+			"line": 70,
+			"lastLine": 78,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1f33605b35080a1e0b27",
+			"path": "packages/hub/tests/e2e/hub-home-messages.spec.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cb0d5cf57fcf4fdd21ad",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerThread.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "replyTo",
+					"weight": 5
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "92b4b2601e94eb745aed",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"line": 141,
+			"lastLine": 141,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5cd124a6471e4de14811",
+			"path": "packages/desktop/src/lib/stores/agents-providers/projectAgent.svelte.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "33e7213b0057dfaf866b",
+			"path": "packages/hub/test/utils/hub-home-messages.test.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8b7b988a727773926b49",
+			"path": "packages/hub/test/utils/hub-home-messages.test.ts",
+			"line": 133,
+			"lastLine": 133,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fdd2536296318cf15d79",
+			"path": "packages/hub/test/utils/hub-home-messages.test.ts",
+			"line": 145,
+			"lastLine": 145,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0069de450d87a8155215",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxClose.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c2b2bfa3fcb7eaade375",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxClose.ts",
+			"line": 90,
+			"lastLine": 92,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "06553068c7c220eb9550",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "861731d891430ab3a724",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
+			"line": 140,
+			"lastLine": 140,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a786bc4fdaec38165ff4",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7f78a1dd807bb33b4901",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
+			"line": 89,
+			"lastLine": 96,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6812919b70dd612fb08f",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
+			"line": 104,
+			"lastLine": 104,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "11ed65863a0409b8d9fb",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"line": 116,
+			"lastLine": 121,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "08057e937d382f4876c8",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthPanes.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ecb386b9c7d0ef295728",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthPanes.ts",
+			"line": 32,
+			"lastLine": 37,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9df645acef533960161e",
+			"path": "packages/desktop/ios/Checks/Native/SessionChecks.swift",
+			"line": 71,
+			"lastLine": 71,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "07e3af63cbedd143de6f",
+			"path": "packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
+			"line": 41,
+			"lastLine": 48,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "78169a546cdba5817c35",
+			"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2a8dd2c1f195d16fc270",
+			"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+			"line": 79,
+			"lastLine": 79,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "af465f900acfafbfe2a5",
+			"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.types.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4c5f6ed4aac5e00b282d",
+			"path": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+			"line": 177,
+			"lastLine": 178,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "60276f34933df1d58945",
+			"path": "packages/desktop/src/models/development-tooling/RunContext.types.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4eff453f31064f4b73c9",
+			"path": "packages/desktop/src/utils/agents-providers/projectAgentActions.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2d02a60ca6c4bf4c20a7",
+			"path": "packages/desktop/src/utils/explorer-ui/project-agent-events/projectAgentEvents.ts",
+			"line": 36,
+			"lastLine": 44,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3f11c24ce1aac3baee5d",
+			"path": "packages/desktop/src/utils/explorer-ui/project-agent-events/projectAgentEvents.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "347a339fe39b626cfbb7",
+			"path": "packages/desktop/src/utils/projects-sessions/promoteChange.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7b2dc2cacd874d32e443",
+			"path": "packages/desktop/tests/e2e/ui-agent-creation-fixture.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f721bdbbba9dfa2260ce",
+			"path": "packages/desktop/tests/e2e/ui-design-fixture.ts",
+			"line": 88,
+			"lastLine": 88,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c945a6ec28f6ea7ec20d",
+			"path": "packages/desktop/tests/e2e/ui-designs.spec.ts",
+			"line": 174,
+			"lastLine": 174,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2944901a4dd21bf0e5f9",
+			"path": "packages/desktop/tests/e2e/ui-references-fixture.ts",
+			"line": 78,
+			"lastLine": 81,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8e16c053a4f7147144cb",
+			"path": "packages/desktop/tests/e2e/ui-workspace-fixture.ts",
+			"line": 130,
+			"lastLine": 130,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c46d3dc79b926463916d",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/homeChatInput.ts",
+			"line": 29,
+			"lastLine": 35,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0fd7f9cadd774eb33665",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerAgents.ts",
+			"line": 75,
+			"lastLine": 75,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c4f8ad643f2fe32a930f",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"line": 170,
+			"lastLine": 170,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a9a3a8fe9c75160d0f9e",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
+			"line": 160,
+			"lastLine": 162,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e6150d4dbc861ae12e32",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.types.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eed081bb5c123273a0fc",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
+			"line": 28,
+			"lastLine": 28,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a08452e58e5963bddf99",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
+			"line": 214,
+			"lastLine": 215,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2eb815ef71980ee52c55",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ca8ddbed4837391d9e01",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3d21289df4450588b23c",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess.ts",
+			"line": 150,
+			"lastLine": 155,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cf0f0c459b5c0c486877",
+			"path": "src/services/agents-providers/tracker-dispatcher-service/launchEligibility.ts",
+			"line": 195,
+			"lastLine": 195,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fa8305745cb821416622",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchPort.ts",
+			"line": 105,
+			"lastLine": 105,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "955ad8e5a1e5bf5b6f86",
+			"path": "src/services/projects-sessions/TrackerDispatchSchedulerService.ts",
+			"line": 113,
+			"lastLine": 115,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e47fef921ce487ef485d",
+			"path": "src/services/projects-sessions/WatchdogIdleService.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b19e8fd654c88aac5022",
+			"path": "src/services/projects-sessions/WatchdogIdleService.types.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "102d3a6624f4f95b814c",
+			"path": "src/services/projects-sessions/WatchdogRecoveryService.ts",
+			"line": 125,
+			"lastLine": 125,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "91f89cdf758dd6e96226",
+			"path": "src/services/projects-sessions/WatchdogRecoveryService.types.ts",
+			"line": 84,
+			"lastLine": 84,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a78f59d3ebd100a5555b",
+			"path": "src/services/projects-sessions/WatchdogStartupService.ts",
+			"line": 149,
+			"lastLine": 149,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0a69a315cf79dd100fd0",
+			"path": "src/services/projects-sessions/WatchdogStartupService.types.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1686a6062ce02b7ffcc0",
+			"path": "packages/desktop/src/lib/stores/agents-providers/projectAgent.svelte.ts",
+			"line": 78,
+			"lastLine": 78,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "476c323c638492e17e3f",
+			"path": "packages/desktop/src/lib/stores/agents-providers/projectAgent.svelte.ts",
+			"line": 87,
+			"lastLine": 87,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f8e4d3d366abf9810676",
+			"path": "packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d7b992fa29071fb9b881",
+			"path": "packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7747229702f96f64e2b5",
+			"path": "packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "99c37503420f34e47620",
+			"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorProjectsService.ts",
+			"line": 137,
+			"lastLine": 145,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5bb379f7ac8c7725c455",
+			"path": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"line": 162,
+			"lastLine": 162,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "01d2f20e01225553a7ea",
+			"path": "packages/desktop/src/utils/git-source-history/hostChanges.ts",
+			"line": 17,
+			"lastLine": 17,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5adec9dca061e36cc823",
+			"path": "packages/desktop/src/utils/git-source-history/hostChanges.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "19846bee895c13b05059",
+			"path": "packages/desktop/src/utils/planning-collaboration/mockupMatrix.ts",
+			"line": 56,
+			"lastLine": 56,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b211daa1001b3b93db44",
+			"path": "packages/desktop/src/utils/planning-collaboration/mockupPlan.ts",
+			"line": 98,
+			"lastLine": 98,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9a26c6eed719d55faa3",
+			"path": "packages/desktop/tests/e2e/agent-settings-fixture.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8f79d431792168736570",
+			"path": "packages/desktop/tests/e2e/compact-agent.spec.ts",
+			"line": 74,
+			"lastLine": 74,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "11d35e827d3ce0e69b0c",
+			"path": "packages/desktop/tests/e2e/ui-agent-creation-fixture.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "92b2bb3bb6f40b9a062d",
+			"path": "packages/desktop/tests/e2e/ui-design-fixture.ts",
+			"line": 172,
+			"lastLine": 176,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a480b7ae19d525967a4d",
+			"path": "packages/desktop/tests/e2e/ui-design-options-fixture.ts",
+			"line": 110,
+			"lastLine": 118,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "566b7906cfab004a5b8c",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"line": 58,
+			"lastLine": 58,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "da871a3ba7535f15f5fd",
+			"path": "src/services/agents-providers/module-task-analytics-service/trackerRunRecords.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ce5907b2edbf809a3311",
+			"path": "src/services/agents-providers/module-task-analytics-service/trackerRunRecords.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1596ac9af34e2ff0d959",
+			"path": "src/services/agents-providers/module-task-analytics-service/trackerRunRecords.ts",
+			"line": 50,
+			"lastLine": 50,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "aad75d134e63036efa51",
+			"path": "src/services/agents-providers/module-task-analytics-service/trackerRunRecords.ts",
+			"line": 83,
+			"lastLine": 83,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ede63fb2f48f3426f416",
+			"path": "src/services/agents-providers/TrackerDispatcherService.ts",
+			"line": 67,
+			"lastLine": 69,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6fc7c4ccac9bb0de2c6d",
+			"path": "src/utils/projects-sessions/hubSessionMessages.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ac3d7e198f251cc754d1",
+			"path": "packages/desktop/test/change-reply.test.ts",
+			"line": 65,
+			"lastLine": 65,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4ee5b2dd55180919b233",
+			"path": "packages/desktop/test/design-options-run.test.ts",
+			"line": 73,
+			"lastLine": 79,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c842adcbf4ac62c8acee",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 95,
+			"lastLine": 103,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4c71c2acda50f0957516",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 105,
+			"lastLine": 110,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "713ed457ea429565d8ff",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 123,
+			"lastLine": 128,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5bf7b7838b0dce0a301c",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 135,
+			"lastLine": 135,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bcbe83aeb6a000161dbd",
+			"path": "packages/desktop/test/project-agent-said.test.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "36b5c869c066042a0af0",
+			"path": "packages/desktop/test/remote-replay.test.ts",
+			"line": 22,
+			"lastLine": 25,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c3767b7f621f7071f069",
+			"path": "packages/desktop/test/remote-replay.test.ts",
+			"line": 36,
+			"lastLine": 39,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "77ca9e5a1c3a0fc2e388",
+			"path": "packages/hub/test/controllers/hub-agent.test.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3beeb03028ecef0452c1",
+			"path": "packages/hub/test/controllers/hub-agent.test.ts",
+			"line": 72,
+			"lastLine": 72,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dbb3c97f669cf6ebf96c",
+			"path": "packages/hub/test/utils/browser-bridge.test.ts",
+			"line": 50,
+			"lastLine": 50,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c5c40311aad7c3bcf182",
+			"path": "packages/hub/test/utils/browser-bridge.test.ts",
+			"line": 139,
+			"lastLine": 139,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "661131fdf71d03b9f7f3",
+			"path": "packages/hub/tests/e2e/hosted-tracker-overview.spec.ts",
+			"line": 213,
+			"lastLine": 213,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c705473f937246b59158",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/homeChatInput.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5532a29a96e55fb138e1",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
+			"line": 63,
+			"lastLine": 66,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "82ef1a41e9c1f6c038ff",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
+			"line": 117,
+			"lastLine": 117,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "27271c6ced4afea85f00",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types.ts",
+			"line": 80,
+			"lastLine": 80,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3969235df20a35c61f23",
+			"path": "src/workflows/development-tooling/sibling-bug-sweep/loopSiblingReport.ts",
+			"line": 14,
+			"lastLine": 18,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e2e5fc8a9292e2a786fa",
+			"path": "src/workflows/development-tooling/sibling-bug-sweep/repairSibling.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "db942d89857b51dc25d4",
+			"path": "src/workflows/development-tooling/sibling-bug-sweep/repairSibling.types.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d0f02e771fb9721a8e08",
+			"path": "src/workflows/networking-security/run-api/apiAgent.ts",
+			"line": 36,
+			"lastLine": 42,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d59f6e70de426e821ef8",
+			"path": "src/workflows/networking-security/run-api/apiAgent.ts",
+			"line": 48,
+			"lastLine": 50,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2ed0c4693c06243d2348",
+			"path": "src/workflows/networking-security/runApi.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "06ec3e2ee9a98516da0e",
+			"path": "test/utils/projects-sessions/hub-session-messages.test.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d769de51b7326ba6c2b0",
+			"path": "packages/desktop/scripts/ios-acceptance-prelude.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b2fcc6bc8a37a6cc631f",
+			"path": "packages/desktop/scripts/ios-acceptance-workspace.ts",
+			"line": 99,
+			"lastLine": 99,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c38f030d73e2261f8609",
+			"path": "packages/desktop/test/adapters/capacitor-bridge.test.ts",
+			"line": 156,
+			"lastLine": 158,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "39b783d75de534f9a59e",
+			"path": "packages/desktop/test/design-options-run.test.ts",
+			"line": 111,
+			"lastLine": 111,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ef7d4f6428b032f0036",
+			"path": "packages/desktop/test/examples/desktop.function.comment-entries.test.ts",
+			"line": 133,
+			"lastLine": 133,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6c8da4c1d6ecd5e57471",
+			"path": "packages/desktop/test/examples/desktop.function.comment-entries.test.ts",
+			"line": 158,
+			"lastLine": 158,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c35d407dd7eadd89dfd5",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-actions.cases.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c5d5b7f529123ce1228f",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 30,
+			"lastLine": 35,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "96d806e7d6abdabb3478",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 65,
+			"lastLine": 73,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ca603b2b5ff5c7c78120",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 146,
+			"lastLine": 146,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "194b923c6af0072e5a46",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 192,
+			"lastLine": 192,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "60f47718aeec35ae6ed0",
+			"path": "packages/desktop/test/examples/desktop.service.project-task.test.ts",
+			"line": 89,
+			"lastLine": 89,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8977785010cdcbc5d620",
+			"path": "packages/desktop/test/examples/desktop.store.project-agent.cases.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6216a1c0d1d25b662007",
+			"path": "packages/desktop/test/examples/desktop.store.project-agent.cases.ts",
+			"line": 57,
+			"lastLine": 57,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7173e6eb42a0b4f84edc",
+			"path": "packages/desktop/test/examples/desktop.store.project-agent.cases.ts",
+			"line": 70,
+			"lastLine": 70,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "361ac82f04ee07451587",
+			"path": "packages/desktop/test/examples/desktop.store.project-agent.cases.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f215b31f46bd06f685b7",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 11,
+			"lastLine": 13,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ec530c991bcb6395bf0a",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 28,
+			"lastLine": 29,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "866733c5ccf1f7dd1d3d",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 103,
+			"lastLine": 109,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ac9d22119ec7c95207e6",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 113,
+			"lastLine": 121,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "42d00d4c9245b0e5d111",
+			"path": "packages/desktop/test/project-agent-said.test.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2018b20d599dd4acd034",
+			"path": "packages/desktop/test/project-agent-said.test.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "74ae9388e42b3d9b895d",
+			"path": "packages/desktop/test/project-conversation-boundaries.test.ts",
+			"line": 90,
+			"lastLine": 93,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7e52787456771ae82bb6",
+			"path": "packages/desktop/test/project-conversation.test.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c959f2ce734098f7fbaa",
+			"path": "packages/desktop/test/remote-replay.test.ts",
+			"line": 47,
+			"lastLine": 47,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d0a07470cd8f70410443",
+			"path": "packages/desktop/test/remote-sessions.test.ts",
+			"line": 74,
+			"lastLine": 81,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8ca1d47563dba511a400",
+			"path": "packages/desktop/test/remote-sessions.test.ts",
+			"line": 89,
+			"lastLine": 89,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b8c04bac4ac8343088c0",
+			"path": "packages/desktop/test/run-integration.test.ts",
+			"line": 115,
+			"lastLine": 119,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7f4a906352122c8c813f",
+			"path": "packages/desktop/test/services/project-operations.test.ts",
+			"line": 78,
+			"lastLine": 78,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7f45c4c15987eea2f66e",
+			"path": "packages/desktop/test/services/project-run.test.ts",
+			"line": 66,
+			"lastLine": 66,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c5947161fdc9cdb3d24d",
+			"path": "packages/desktop/test/services/project-run.test.ts",
+			"line": 135,
+			"lastLine": 142,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4983134ac296af16232b",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5fa9f10dcb363e609583",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 66,
+			"lastLine": 66,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5d8fe2ee1c96a725ff6c",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 77,
+			"lastLine": 77,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a85e30c39681d94113ac",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 94,
+			"lastLine": 99,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fb457ea033420cbe8171",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 109,
+			"lastLine": 109,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "879c4d629e5b823292b4",
+			"path": "packages/desktop/test/stores/thread-run.test.ts",
+			"line": 59,
+			"lastLine": 66,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "01bce118bea3888c5f3b",
+			"path": "packages/desktop/test/stores/thread-run.test.ts",
+			"line": 70,
+			"lastLine": 76,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "003f2ea2659c1be34480",
+			"path": "packages/desktop/tests/e2e/project-overview-paired-ios.spec.ts",
+			"line": 180,
+			"lastLine": 180,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fc9ed11f6f391b8c40df",
+			"path": "packages/desktop/tests/e2e/project-overview-publisher.spec.ts",
+			"line": 140,
+			"lastLine": 140,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "741fc704c2c0c5d9ea8f",
+			"path": "packages/desktop/tests/e2e/ui-remote-cache.spec.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3e0b244cff95ba0efa69",
+			"path": "packages/hub/tests/e2e/account-projects.spec.ts",
+			"line": 160,
+			"lastLine": 160,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c54f9a867e6604398a2f",
+			"path": "packages/hub/tests/e2e/hosted-access.spec.ts",
+			"line": 165,
+			"lastLine": 165,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8c238aa8fb7d75dc4096",
+			"path": "packages/hub/tests/e2e/hosted-access.spec.ts",
+			"line": 181,
+			"lastLine": 184,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "04511b14bd68d82b7d44",
+			"path": "packages/hub/tests/e2e/hosted-access.spec.ts",
+			"line": 207,
+			"lastLine": 207,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "acab5fdc0439b4a04c01",
+			"path": "packages/reports/tests/e2e/support/component-previews/projectAgentRunFixture.ts",
+			"line": 26,
+			"lastLine": 32,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f1ba51e171465896ddc3",
+			"path": "packages/reports/tests/e2e/support/component-previews/projectAgentRunFixture.ts",
+			"line": 91,
+			"lastLine": 97,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0e4e3c6e6541d8cca37a",
+			"path": "src/adapters/accounts-access/vault-cdp-relay-adapter/VaultCdpPipe.ts",
+			"line": 87,
+			"lastLine": 93,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1af628c717c0146720a2",
+			"path": "src/adapters/agents-providers/ProviderSessionAdapter.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8cc1d710ae6a8caa51c2",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
+			"line": 128,
+			"lastLine": 131,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c2bdcb01ad684e692bc3",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
+			"line": 144,
+			"lastLine": 150,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e072652cfae96effed09",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl.ts",
+			"line": 154,
+			"lastLine": 154,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6b41cfece427bb33e567",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchEvents.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "265b0c5689895d87a94c",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchEvents.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6ab62e98b94fe136bf36",
+			"path": "src/repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchEvents.types.ts",
+			"line": 5,
+			"lastLine": 5,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1b1a2ef41f81796134ca",
+			"path": "src/services/projects-sessions/tracker-notification-service/attentionTransitions.ts",
+			"line": 117,
+			"lastLine": 117,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "latestNote",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "020359d2e390c9aa4780",
+			"path": "src/services/projects-sessions/TrackerNotificationService.types.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "latestNote",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "54676c768f8caf04fc0c",
+			"path": "packages/desktop/scripts/ios-acceptance-products.ts",
+			"line": 142,
+			"lastLine": 142,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8b789b15d6df12d9044f",
+			"path": "packages/desktop/test/adapters/agent-http.test.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cfb67e1a0777fb37546d",
+			"path": "packages/desktop/test/adapters/agent-http.test.ts",
+			"line": 57,
+			"lastLine": 64,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4e45d69759355313a7d1",
+			"path": "packages/desktop/test/adapters/agent-http.test.ts",
+			"line": 73,
+			"lastLine": 76,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e115fd1e047826f4ceb7",
+			"path": "packages/desktop/test/adapters/agent-http.test.ts",
+			"line": 83,
+			"lastLine": 89,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "46d3a95be62a3d852be1",
+			"path": "packages/desktop/test/adapters/capacitor-bridge.test.ts",
+			"line": 72,
+			"lastLine": 77,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "109c6699e0c7268eeaf7",
+			"path": "packages/desktop/test/examples/desktop.function.comment-entries.test.ts",
+			"line": 180,
+			"lastLine": 180,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "88c2921cf4b4f7ed6bb7",
+			"path": "packages/desktop/test/examples/desktop.function.comment-entries.test.ts",
+			"line": 194,
+			"lastLine": 199,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2422aa01ee510b5242ce",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-actions.cases.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "97799a05922ab0cd12f6",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-actions.cases.ts",
+			"line": 66,
+			"lastLine": 66,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b4b3edf97aacabc0b540",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-actions.test.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8737380be5e8bbcd7ec1",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-actions.test.ts",
+			"line": 97,
+			"lastLine": 104,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b8d0bc6455b8946b1f73",
+			"path": "packages/desktop/test/examples/desktop.function.project-agent-events.test.ts",
+			"line": 164,
+			"lastLine": 164,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "37cc27d7dbb57d7f03e5",
+			"path": "packages/desktop/test/examples/desktop.service.capacitor-projects.test.ts",
+			"line": 59,
+			"lastLine": 64,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2f6558fda95f4e587cb2",
+			"path": "packages/desktop/test/examples/desktop.service.capacitor-projects.test.ts",
+			"line": 88,
+			"lastLine": 96,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7dd98d8c2f6007f66281",
+			"path": "packages/desktop/test/examples/desktop.service.capacitor-projects.test.ts",
+			"line": 97,
+			"lastLine": 105,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c6388dba9add6e879438",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.cases.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "78c19b309837656a2711",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.cases.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "92ffbba74ef1081899d2",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 50,
+			"lastLine": 50,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "07aa46d434847a5826a2",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 61,
+			"lastLine": 61,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4f246320928f69def81f",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 145,
+			"lastLine": 151,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d7ff262ecac26bf96d56",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 161,
+			"lastLine": 161,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e51456989a2059e31d09",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 178,
+			"lastLine": 184,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ba4f05b7d2271823a806",
+			"path": "packages/desktop/test/examples/desktop.store.thread-run.test.ts",
+			"line": 193,
+			"lastLine": 193,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "385894017e917863550c",
+			"path": "packages/desktop/test/fixture-design-options.test.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fda2146acac090d64782",
+			"path": "packages/desktop/test/project-agent-said.test.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a086d6b0af3f9f580b2b",
+			"path": "packages/desktop/test/remote-relay-workerd.test.ts",
+			"line": 100,
+			"lastLine": 103,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8f416636e6220aff0047",
+			"path": "packages/desktop/test/services/project-task.test.ts",
+			"line": 60,
+			"lastLine": 61,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "006d47432c5cbed7a57b",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1ab008dd911e2797d577",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "50d17ddc86de25d2bef7",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 145,
+			"lastLine": 145,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6eb623fea98175756272",
+			"path": "packages/desktop/test/stores/project-agent.test.ts",
+			"line": 163,
+			"lastLine": 163,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "25ae8d5c2784eaf9dc08",
+			"path": "packages/desktop/test/stores/thread-run.test.ts",
+			"line": 22,
+			"lastLine": 30,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b7537234c81067d373cc",
+			"path": "packages/desktop/test/stores/thread-run.test.ts",
+			"line": 31,
+			"lastLine": 34,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a6218f77abfedf614591",
+			"path": "packages/desktop/tests/e2e/project-overview-publisher.spec.ts",
+			"line": 76,
+			"lastLine": 76,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fabc699afcc2eb5c311a",
+			"path": "packages/desktop/tests/e2e/ui-entity-usage-viewports.spec.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "25488b5cf71e12e51088",
+			"path": "packages/desktop/tests/e2e/ui-entity-usage.spec.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "af69394e1a171f05f9b5",
+			"path": "packages/desktop/tests/e2e/ui-evidence-review.spec.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b635eda039134c2b427d",
+			"path": "packages/desktop/tests/e2e/ui-evidence-states.spec.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0c691b8453960a869b63",
+			"path": "packages/desktop/tests/e2e/ui-search-scope.spec.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "79136c87280a1e7e87b0",
+			"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+			"line": 55,
+			"lastLine": 59,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f416b3ae948a2b913275",
+			"path": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dba7dd7654779327ff77",
+			"path": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
+			"line": 68,
+			"lastLine": 68,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "34cdb3e893a38d88d000",
+			"path": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
+			"line": 96,
+			"lastLine": 100,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5476e89878a22c65a7c6",
+			"path": "packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
+			"line": 137,
+			"lastLine": 142,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bfc33abc7451d22c1b6c",
+			"path": "packages/reports/tests/e2e/support/component-previews/projectAgentRunFixture.ts",
+			"line": 77,
+			"lastLine": 82,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fcd932bf0beb13ff6643",
+			"path": "packages/reports/tests/e2e/support/component-previews/projectAgentRunFixture.ts",
+			"line": 108,
+			"lastLine": 108,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "edfbd9b8b509317f64a6",
+			"path": "src/adapters/accounts-access/vault-cdp-relay-adapter/VaultCdpPipe.types.ts",
+			"line": 12,
+			"lastLine": 14,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5a3ca0d8fc5c75dfbca9",
+			"path": "src/adapters/agents-providers/module-task-runner-adapter/taskGeneration.ts",
+			"line": 43,
+			"lastLine": 43,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7d2b5d93b4291c14cf72",
+			"path": "src/adapters/agents-providers/module-task-runner-adapter/taskGeneration.ts",
+			"line": 66,
+			"lastLine": 67,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b220f537378c75a02670",
+			"path": "src/adapters/agents-providers/module-task-runner-adapter/taskGeneration.ts",
+			"line": 76,
+			"lastLine": 76,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a173c37b16a58956107e",
+			"path": "src/adapters/agents-providers/ProviderSessionAdapter.ts",
+			"line": 34,
+			"lastLine": 38,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6f177b2bbc7206ecbd88",
+			"path": "src/adapters/agents-providers/ProviderSessionAdapter.ts",
+			"line": 44,
+			"lastLine": 45,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2dd11368efedecc1d6f5",
+			"path": "src/adapters/agents-providers/ProviderSessionAdapter.types.ts",
+			"line": 5,
+			"lastLine": 5,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7bfc0991558753fd3932",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts",
+			"line": 105,
+			"lastLine": 108,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d28d2f7d2ecef9f7e853",
+			"path": "src/services/agents-providers/ProviderSwitchService.ts",
+			"line": 26,
+			"lastLine": 33,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4d3c760c2c0aa5df96f9",
+			"path": "src/services/agents-providers/ProviderSwitchService.ts",
+			"line": 42,
+			"lastLine": 49,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b9b8f85f781c02c67d29",
+			"path": "packages/desktop/tests/e2e/ui-catalog-listing.spec.ts",
+			"line": 85,
+			"lastLine": 85,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "205ac7c9aed9bbeb9232",
+			"path": "packages/desktop/tests/e2e/ui-projects.spec.ts",
+			"line": 85,
+			"lastLine": 85,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "32757020893afc8161fa",
+			"path": "packages/hub/tests/e2e/hub-home-fixture.ts",
+			"line": 161,
+			"lastLine": 161,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d4933e1c7c8b24f5ca99",
+			"path": "packages/remote/test/services/wire-client.test.ts",
+			"line": 96,
+			"lastLine": 97,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a9c7117c43663527c1d3",
+			"path": "packages/remote/test/services/wire-session.test.ts",
+			"line": 93,
+			"lastLine": 94,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3db8d714beebfb9847fd",
+			"path": "packages/remote/test/services/wire-session.test.ts",
+			"line": 158,
+			"lastLine": 158,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0e28152940a33d104755",
+			"path": "src/adapters/agents-providers/provider-session-adapter/codexRollout.ts",
+			"line": 9,
+			"lastLine": 12,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c06fae77ee00b50bf725",
+			"path": "src/cli/program/loopSiblings.ts",
+			"line": 100,
+			"lastLine": 108,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "470d1cbdfee859177bd6",
+			"path": "src/commands/networking-security/ApiCommand.ts",
+			"line": 74,
+			"lastLine": 75,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e8360d644f3a5515c92c",
+			"path": "src/core/execution-runtimes/scripted-deploy/contracts.ts",
+			"line": 9,
+			"lastLine": 9,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9a65bd26a8b7a2e543c9",
+			"path": "src/core/execution-runtimes/scripted-deploy/contracts.ts",
+			"line": 51,
+			"lastLine": 59,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c8c24ec90d99de9a153f",
+			"path": "src/repositories/execution-runtimes/DeployRunRepository.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c0f3fc390b23bf37835e",
+			"path": "src/repositories/execution-runtimes/DeployRunRepository.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9728c9459dc560bdea10",
+			"path": "src/repositories/execution-runtimes/DeployRunRepository.ts",
+			"line": 64,
+			"lastLine": 64,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "005e0711948187b2a94c",
+			"path": "src/repositories/execution-runtimes/DeployRunRepository.ts",
+			"line": 83,
+			"lastLine": 83,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5d1f6a18ff48397a90f1",
+			"path": "src/repositories/projects-sessions/TrackerNotificationSourceRepository.ts",
+			"line": 84,
+			"lastLine": 84,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "latestNote",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "012658948c5aa338d56b",
+			"path": "src/services/agents-providers/ProviderSwitchApplyService.ts",
+			"line": 18,
+			"lastLine": 22,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cf6c9c07b5db2ad8f5cf",
+			"path": "src/services/agents-providers/ProviderSwitchApplyService.ts",
+			"line": 31,
+			"lastLine": 37,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2e2c685cfdc73359e527",
+			"path": "src/services/agents-providers/ProviderSwitchApplyService.ts",
+			"line": 63,
+			"lastLine": 64,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2bda740963fbd2296a02",
+			"path": "src/services/agents-providers/ProviderSwitchService.ts",
+			"line": 55,
+			"lastLine": 58,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "93310cdbcdebe25bdcde",
+			"path": "src/services/agents-providers/ProviderSwitchService.ts",
+			"line": 66,
+			"lastLine": 71,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "664cc50e1aab31725326",
+			"path": "src/services/agents-providers/ProviderSwitchService.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a52c2a72fdda91145252",
+			"path": "test/adapters/projects-sessions/tracker-managed-host-launcher.test.ts",
+			"line": 105,
+			"lastLine": 108,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c352f581b191559131c0",
+			"path": "test/adapters/projects-sessions/tracker-managed-host-launcher.test.ts",
+			"line": 115,
+			"lastLine": 115,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "285350d6e79faa943ed0",
+			"path": "test/services/projects-sessions/tracker-managed-foreground.test.ts",
+			"line": 186,
+			"lastLine": 186,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e9f3bf756e59a1e56bc0",
+			"path": "test/support/trackerSlotFixture.ts",
+			"line": 197,
+			"lastLine": 201,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b75592434a4b75bf4be1",
+			"path": "test/utils/projects-sessions/hub-session-messages.test.ts",
+			"line": 61,
+			"lastLine": 61,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f4d2932fe13c5ed89147",
+			"path": "packages/desktop/tests/e2e/game-level-capture.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d342f15579efdbc6427e",
+			"path": "packages/desktop/tests/e2e/game-level-playback-capture.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "42e6977b1fda468b21bf",
+			"path": "packages/hub/tests/e2e/hosted-home.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dbe44e2906568ef1a0ca",
+			"path": "packages/hub/tests/e2e/hosted-home.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "17b8c2e604c1cfbae968",
+			"path": "packages/hub/tests/e2e/hub-home-capture.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fcf572dd6de62dd33fce",
+			"path": "packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte",
+			"line": 144,
+			"lastLine": 145,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "35d6b7f8557fc615bb78",
+			"path": "test/adapters/projects-sessions/tracker-managed-host-launcher.test.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9358491e664f7f6ac10a",
+			"path": "test/examples/script.build-picker.test.ts",
+			"line": 51,
+			"lastLine": 54,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3d04512b82eb70691092",
+			"path": "test/services/projects-sessions/tracker-managed-foreground.test.ts",
+			"line": 67,
+			"lastLine": 67,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6fb6c40c666519768af8",
+			"path": "test/services/projects-sessions/watchdog-idle.test.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f0d584c64161f7f125a5",
+			"path": "test/services/projects-sessions/watchdog-idle.test.ts",
+			"line": 76,
+			"lastLine": 76,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fe8bcf13171f5958a27e",
+			"path": "test/services/projects-sessions/watchdog-idle.test.ts",
+			"line": 86,
+			"lastLine": 86,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "88f67198ef9efad220fc",
+			"path": "test/services/projects-sessions/watchdog-recovery.test.ts",
+			"line": 161,
+			"lastLine": 169,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a4fdf398f38300edae52",
+			"path": "test/services/projects-sessions/watchdog-startup.test.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "52e51bd115694eee3faf",
+			"path": "test/support/trackerClaudeStartupFixture.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eb8b19454813195f8588",
+			"path": "test/support/trackerRecoveryFixture.ts",
+			"line": 202,
+			"lastLine": 202,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "847fb10d24194e0cb7ad",
+			"path": "packages/desktop/src/components/projects-sessions/nav-bar/keepActiveInRow.ts",
+			"line": 8,
+			"lastLine": 8,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6ddea3809e5144c539e5",
+			"path": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"line": 79,
+			"lastLine": 79,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2d939c3f345850d27647",
+			"path": "packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte",
+			"line": 84,
+			"lastLine": 92,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "64a3f90bce8ef90f2807",
+			"path": "packages/reports/test/console-bridge.test.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6acc71614b0a9177cae3",
+			"path": "packages/reports/tests/e2e/support/component-previews/providerPickerApi.ts",
+			"line": 40,
+			"lastLine": 40,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "91571fa7d1f5cb196359",
+			"path": "packages/reports/tests/e2e/support/component-previews/shared.ts",
+			"line": 80,
+			"lastLine": 84,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9e546cbc8905f7596fb5",
+			"path": "src/core/development-tooling/pickerTypes.types.ts",
+			"line": 28,
+			"lastLine": 33,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "19ac1edfd80919ed652a",
+			"path": "src/repositories/agents-providers/module-task-repository/taskUsage.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d9602323617d94fef7c9",
+			"path": "src/repositories/agents-providers/ProviderSwitchRepository.ts",
+			"line": 24,
+			"lastLine": 25,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a067567ad987d2758a7d",
+			"path": "src/repositories/agents-providers/ProviderSwitchRepository.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3c6b6ac52e002d3aabe2",
+			"path": "test/examples/script.build-picker.test.ts",
+			"line": 37,
+			"lastLine": 43,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fea83bd478cc6c4bc63f",
+			"path": "test/examples/workflow.networking-security-run-api-api-agent.test.ts",
+			"line": 57,
+			"lastLine": 57,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1bb101d3007c447537f4",
+			"path": "test/support/api-cli/apiFixture.ts",
+			"line": 103,
+			"lastLine": 104,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7cf0c8f484b7eab95bb8",
+			"path": "test/support/trackerDispatcherFixture.ts",
+			"line": 79,
+			"lastLine": 86,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "362ded218c130febf740",
+			"path": "packages/desktop/src/components/development-tooling/DeploymentActivity.svelte",
+			"line": 55,
+			"lastLine": 55,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f0159ad24c1ec546145c",
+			"path": "packages/desktop/src/components/shared-primitives/ChoiceDialog.svelte",
+			"line": 51,
+			"lastLine": 51,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "44d38d6e1ddbf82465dc",
+			"path": "packages/desktop/test/stores/hosted-connection.test.ts",
+			"line": 188,
+			"lastLine": 193,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f001d5c1c98c2c3468e7",
+			"path": "packages/desktop/test/stores/hosted-connection.test.ts",
+			"line": 197,
+			"lastLine": 197,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ef7bd3793470c3b4405b",
+			"path": "packages/desktop/tests/e2e/ui-search-fit.spec.ts",
+			"line": 64,
+			"lastLine": 64,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ca99f485318c36579496",
+			"path": "packages/desktop/tests/e2e/ui-workspace.spec.ts",
+			"line": 7,
+			"lastLine": 7,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e4a34fab3405e001f2ea",
+			"path": "packages/desktop/tests/e2e/ui-workspace.spec.ts",
+			"line": 189,
+			"lastLine": 190,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e8e977c04a381a55dcf5",
+			"path": "packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte",
+			"line": 35,
+			"lastLine": 39,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "937fa3ffa2d7fed675d5",
+			"path": "packages/reports/src/components/agents-providers/provider-picker/ProviderPicker.svelte",
+			"line": 195,
+			"lastLine": 195,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3f74161bc4f015e0d0b2",
+			"path": "packages/reports/test/console-bridge.test.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d4ce1903fcfdbfaed82e",
+			"path": "src/core/development-tooling/pickerTypes.types.ts",
+			"line": 7,
+			"lastLine": 15,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c736580461a393d2d220",
+			"path": "test/adapters/accounts-access/vault-cdp-relay.test.ts",
+			"line": 141,
+			"lastLine": 141,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "03ee3d909aeb97dead95",
+			"path": "test/api-cli.e2e.test.ts",
+			"line": 92,
+			"lastLine": 92,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "98ccbd0f4bffff0bb2a6",
+			"path": "test/api-cli.e2e.test.ts",
+			"line": 104,
+			"lastLine": 108,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "997c30dbb397364cd2e1",
+			"path": "test/api-context.e2e.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "aa4a0ed3905df85dc3fb",
+			"path": "test/examples/workflow.networking-security-run-api-api-agent.test.ts",
+			"line": 87,
+			"lastLine": 89,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8cdcbf40f7372937fc6c",
+			"path": "test/examples/workflow.networking-security-run-api-api-agent.test.ts",
+			"line": 125,
+			"lastLine": 133,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f300e1e7cd0547e8e788",
+			"path": "test/examples/workflow.networking-security-run-api-api-agent.test.ts",
+			"line": 134,
+			"lastLine": 134,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5b35d481b2f5deb76c3d",
+			"path": "test/examples/workflow.networking-security-run-api-api-agent.test.ts",
+			"line": 146,
+			"lastLine": 146,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "67aa09bc7c59aa642b23",
+			"path": "test/examples/workflow.networking-security-run-api-api-agent.test.ts",
+			"line": 183,
+			"lastLine": 183,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "31fce9a687d365e87649",
+			"path": "test/services/projects-sessions/tracker-notification/fixture.ts",
+			"line": 93,
+			"lastLine": 93,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "latestNote",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1b8fc009b0c6ed878885",
+			"path": "test/services/service.benchmark.test.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "12762035f220c8e97bf6",
+			"path": "test/services/service.benchmark.test.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e164d58aa4806c41967f",
+			"path": "test/services/service.benchmark.test.ts",
+			"line": 128,
+			"lastLine": 128,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0cbbc0063fabf5075e54",
+			"path": "test/support/api-cli/apiFixture.ts",
+			"line": 70,
+			"lastLine": 70,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "92a82b2166136123de32",
+			"path": "test/utils/development-tooling/sibling-repair.test.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1b2292efcadc236ba979",
+			"path": "packages/reports/tests/e2e/explorer-shell-search-scope.spec.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "832270b4550514de50f5",
+			"path": "packages/reports/tests/e2e/support/component-previews/usageLinkPreviewAssertions.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b946814e27b5286789c8",
+			"path": "packages/reports/test/examples/reports.function.agents-providers-provider-picker-provider-picker-reading.test.ts",
+			"line": 56,
+			"lastLine": 56,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d7c0d9dd2016e7b3f206",
+			"path": "packages/reports/test/examples/reports.function.provider-picker-client.test.ts",
+			"line": 8,
+			"lastLine": 8,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2dac43eff3c9115f7b6a",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopArtifactAssertions.ts",
+			"line": 138,
+			"lastLine": 138,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5991099f9732b8de8c4d",
+			"path": "packages/reports/tests/e2e/support/component-previews/pluginKitPreviewAssertions.ts",
+			"line": 136,
+			"lastLine": 140,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "97a592dfd1a59ba91c2c",
+			"path": "packages/reports/tests/e2e/support/component-previews/shellReviewAssertions.ts",
+			"line": 134,
+			"lastLine": 134,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "11ce6f638d9e5c594858",
+			"path": "test/adapters/agents-providers/provider-session.test.ts",
+			"line": 64,
+			"lastLine": 64,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "21410a69707eb96b8175",
+			"path": "test/examples/function.gateway-stream.test.ts",
+			"line": 93,
+			"lastLine": 93,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9bd166ec7848213cf6a",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b68c3a19c4ea058d5f3e",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b617eaae6c2c51c1fb33",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 96,
+			"lastLine": 96,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6cc4070aee06d142ae0d",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 106,
+			"lastLine": 108,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d3c5459e8e433f4e5560",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 123,
+			"lastLine": 123,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e513a2fd7a75c84beafc",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 147,
+			"lastLine": 147,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "20603b2ece2237b00843",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 171,
+			"lastLine": 171,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "48f2a037a121fc91f2c2",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 192,
+			"lastLine": 194,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a8b333b8f06b133e2d0a",
+			"path": "test/examples/service.provider-switch-apply.test.ts",
+			"line": 181,
+			"lastLine": 181,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2f9696ae3669970f032f",
+			"path": "test/examples/service.provider-switch.test.ts",
+			"line": 37,
+			"lastLine": 45,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cb703476d615113956c6",
+			"path": "test/examples/service.provider-switch.test.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "77d8a774cf860d3ff2a4",
+			"path": "test/examples/service.provider-switch.test.ts",
+			"line": 112,
+			"lastLine": 112,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c0d15372ff24c5168236",
+			"path": "test/examples/service.provider-switch.test.ts",
+			"line": 134,
+			"lastLine": 139,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "88f7b1f1b5f19662bf8e",
+			"path": "test/examples/service.provider-switch.test.ts",
+			"line": 152,
+			"lastLine": 152,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "58c812658cd945657051",
+			"path": "test/examples/service.provider-switch.test.ts",
+			"line": 161,
+			"lastLine": 161,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "969bc1a19a9a3fc00521",
+			"path": "test/examples/service.provider-switch.test.ts",
+			"line": 171,
+			"lastLine": 173,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "460b3668f49682267bec",
+			"path": "test/services/codex-picker-mcp.test.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "741bdea835f6449caf64",
+			"path": "packages/reports/src/components/planning-collaboration/FloatingChat.svelte",
+			"line": 60,
+			"lastLine": 60,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4c4d9626f997ac1e04a9",
+			"path": "packages/reports/test/examples/reports.function.agents-providers-provider-picker-provider-picker-reading.test.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a14449a19497b7a5bc36",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopStateActions.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "269c8d864b3fe05211ac",
+			"path": "test/examples/function.gateway-stream.test.ts",
+			"line": 64,
+			"lastLine": 64,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0f270641b60b1aac855a",
+			"path": "test/examples/function.picker-types.test.ts",
+			"line": 12,
+			"lastLine": 12,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f578277ace2a281bc134",
+			"path": "test/examples/model.provider-switch.test.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "880b71edac451ec563a1",
+			"path": "test/examples/repository.provider-switch.fixture.ts",
+			"line": 3,
+			"lastLine": 9,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "30fb673278ce9714d30c",
+			"path": "test/examples/repository.provider-switch.fixture.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6003f83c0fbbb381dc2e",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 203,
+			"lastLine": 204,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "48416fb1bdb84b5eb9b7",
+			"path": "test/examples/service.gateway-events.test.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f0096f528bd23874f185",
+			"path": "test/examples/service.gateway-events.test.ts",
+			"line": 75,
+			"lastLine": 75,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9374b987aa72dbf0d311",
+			"path": "test/examples/service.provider-switch-apply.test.ts",
+			"line": 28,
+			"lastLine": 28,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "31881ff4d253e7a6fde4",
+			"path": "test/examples/service.provider-switch-apply.test.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6c5a19ba173d95a869f4",
+			"path": "test/examples/service.provider-switch-apply.test.ts",
+			"line": 96,
+			"lastLine": 96,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9402ecd91764ddb3d957",
+			"path": "test/examples/service.provider-switch-apply.test.ts",
+			"line": 117,
+			"lastLine": 117,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1b3ce24c2724c58a5979",
+			"path": "test/examples/service.provider-switch-apply.test.ts",
+			"line": 198,
+			"lastLine": 198,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e7158337ccf26ce4d167",
+			"path": "test/examples/service.provider-switch.test.ts",
+			"line": 82,
+			"lastLine": 82,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "91eed031a15bb76fc054",
+			"path": "test/services/picker-preview.test.ts",
+			"line": 14,
+			"lastLine": 20,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0a1e0254e880303228be",
+			"path": "test/support/picker.ts",
+			"line": 10,
+			"lastLine": 11,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6020bcb9cf9fb7661310",
+			"path": "packages/game/test/utils/connect-decart.test.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0d2917c1241356b93099",
+			"path": "packages/reports/src/components/explorer-ui/ExplorerCatalogItems.svelte",
+			"line": 43,
+			"lastLine": 43,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "833b6b9dcb062d80f981",
+			"path": "packages/reports/src/components/explorer-ui/HarnessTabs.svelte",
+			"line": 38,
+			"lastLine": 38,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5db36af91a1ba8dba3d3",
+			"path": "packages/reports/src/components/explorer-ui/usagePreviewStyle.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9e32696e5bb54af94445",
+			"path": "packages/reports/src/components/explorer-ui/usagePreviewStyle.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1e4504d254942e378166",
+			"path": "packages/reports/src/components/shared-primitives/status/Status.svelte",
+			"line": 75,
+			"lastLine": 75,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8e55ca51fed58a9f4e86",
+			"path": "packages/reports/test/utils/trackpad-zoom.test.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7ecccfe5c0aefe5c070d",
+			"path": "packages/reports/test/utils/trackpad-zoom.test.ts",
+			"line": 33,
+			"lastLine": 37,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "77e85d07eca1426fda27",
+			"path": "packages/reports/test/utils/trackpad-zoom.test.ts",
+			"line": 69,
+			"lastLine": 69,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8677b2e4c16b29c403e0",
+			"path": "packages/reports/test/utils/trackpad-zoom.test.ts",
+			"line": 99,
+			"lastLine": 107,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fa8ca81fffe826524ea8",
+			"path": "packages/reports/tests/e2e/explorer-shell-pieces.spec.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5ea4e82091070e0910bc",
+			"path": "packages/reports/tests/e2e/explorer-shell-pieces.spec.ts",
+			"line": 175,
+			"lastLine": 175,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "646b76c8fc4594d00d7c",
+			"path": "packages/reports/tests/e2e/harness-explorer-evidence-frame.spec.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "61f6717737c9cdf235e5",
+			"path": "packages/reports/tests/e2e/harness-explorer-usage.spec.ts",
+			"line": 42,
+			"lastLine": 43,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5e253563ff4cbbd1ee09",
+			"path": "packages/reports/tests/e2e/support/component-previews/compatibilityPreviewAssertions.ts",
+			"line": 98,
+			"lastLine": 98,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3bd9c3af8b451000c3e1",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopPickerAssertions.ts",
+			"line": 101,
+			"lastLine": 101,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "325e8affa343b16802c1",
+			"path": "packages/reports/tests/e2e/support/component-previews/desktopRevisionTriggerAssertions.ts",
+			"line": 16,
+			"lastLine": 18,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4445078a48da51317bb5",
+			"path": "packages/reports/tests/e2e/support/component-previews/explorerTableActionAssertions.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "860b22b76313d3d2009a",
+			"path": "packages/reports/tests/e2e/support/component-previews/measurePreviewBounds.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ea95964e053cd8084c0d",
+			"path": "packages/reports/tests/e2e/support/component-previews/NativeAtomPreview.svelte",
+			"line": 41,
+			"lastLine": 41,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8bd82607a1f231630678",
+			"path": "packages/reports/tests/e2e/support/component-previews/videoReviewControls.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "80b117f5fc5a220f8265",
+			"path": "packages/reports/tests/e2e/support/component-previews/visualReviewFitAssertions.ts",
+			"line": 74,
+			"lastLine": 74,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e261339682bb10b8c24d",
+			"path": "packages/reports/tests/e2e/support/component-previews/visualReviewFitAssertions.ts",
+			"line": 94,
+			"lastLine": 94,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a798d36989fe79f3c27d",
+			"path": "packages/reports/test/entityPreviewServiceContract.ts",
+			"line": 83,
+			"lastLine": 83,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c0e21d299ac93d21db0a",
+			"path": "packages/reports/test/entityPreviewOverview.ts",
+			"line": 35,
+			"lastLine": 36,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "db39e6d8d94371c0a2da",
+			"path": "specification/designs/desktop-home/mockup/sign-in.html",
+			"line": 44,
+			"lastLine": 44,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "796b603b7e75897f1a65",
+			"path": "specification/designs/hub-home/render.mjs",
+			"line": 54,
+			"lastLine": 54,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d094646fcbbef6788e62",
+			"path": "packages/reports/test/entity-preview-words.spec.ts",
+			"line": 162,
+			"lastLine": 162,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "79e3b7b1c8770ef46cd8",
+			"path": "packages/reports/test/entityPreviewFunctions.ts",
+			"line": 98,
+			"lastLine": 99,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5c952ae9d2ef96bc8f53",
+			"path": "packages/reports/test/entityPreviewModels.ts",
+			"line": 14,
+			"lastLine": 15,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "463390d6417cb33b2498",
+			"path": "packages/reports/test/entityPreviewOverview.ts",
+			"line": 175,
+			"lastLine": 176,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "24e5521a4bee19feedc1",
+			"path": "packages/hub/src/services/networking-security/linkedHomeChat.ts",
+			"line": 17,
+			"lastLine": 17,
+			"score": 27,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At lines 10–17, the message target is accepted only for the `cos` agent or when agent ID, item ID, and run ID all match a snapshot agent. This is an explicit run-binding guard for non-CoS messages; the excerpt does not show delivery reporting based solely on a note."
+		},
+		{
+			"id": "4cd1c1dcab42112a2957",
+			"path": "packages/hub/test/utils/hub-home-messages.test.ts",
+			"line": 82,
+			"lastLine": 90,
+			"score": 26,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "replyTo",
+					"weight": 5
+				},
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This is test code asserting expected keyed replies and stored-session messages (lines 70–90), so it does not implement a delivery mechanism or establish an unbound delivery path."
+		},
+		{
+			"id": "17c7dd969cce3f05fbe4",
+			"path": "packages/hub/src/routes/api/hub-home/homePayload.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 24,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "replyTo",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This schema only validates optional messageId, status, and replyTo fields (lines 26–38); it does not implement delivery, note persistence, or reply selection."
+		},
+		{
+			"id": "2a365a68aa77cabcd649",
+			"path": "packages/hub/tests/e2e/hub-home-messages.spec.ts",
+			"line": 105,
+			"lastLine": 105,
+			"score": 24,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "replyTo",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The E2E excerpt simulates Tracker messages and asserts stored, delivered, acknowledged, and keyed-reply UI states (lines 93–105); it does not establish the underlying dispatch or correlation mechanism."
+		},
+		{
+			"id": "fe697be6b165fe74495a",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
+			"line": 115,
+			"lastLine": 115,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This change-recording code emits a runId with a change event and appends a message to the planning thread (lines 103–115); the excerpt does not show a chat-delivery claim or an unbound prompt write."
+		},
+		{
+			"id": "0e1bae39bfa9eb2d7293",
+			"path": "packages/desktop/src/adapters/agents-providers/AgentHttpAdapter.ts",
+			"line": 119,
+			"lastLine": 126,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt only pins/reuses pending startRun requests by project and input key and reports run-specific polling events (lines 107–126); it does not concern message dispatch or replies."
+		},
+		{
+			"id": "d2b9951541944f6a2ee6",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.ts",
+			"line": 48,
+			"lastLine": 48,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This service prevents concurrent runs per project and returns a runId for the started run (lines 36–48); it shows a visible run guard, not an unbound message-delivery path."
+		},
+		{
+			"id": "ae08ec587e91cdd7465f",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 14–19 emit a status tagged with the current context `id` as `runId`, then prepare and run the prompt. This excerpt shows run-bound status reporting; it does not show note-only delivery or unbound pane typing/reply selection."
+		},
+		{
+			"id": "16f726c89f978da32cb9",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 42–49 emit checked proposal text with `runId: context.id`; plain text is also emitted through that same helper. The excerpt shows run-keyed output, with no evidence of note-only delivery or unbound pane typing."
+		},
+		{
+			"id": "3be92a980989edfd0a3a",
+			"path": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "replyTo",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 11–23 define `replyTo` as the Hub message a session reply answers, and describe receipts and replies as keyed to `messageId`. This is explicit correlation metadata, not evidence that replies are selected from recent uncorrelated notes."
+		},
+		{
+			"id": "d86eaa1568c766fc08dd",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.ts",
+			"line": 64,
+			"lastLine": 65,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 54–65 look up the specified `target.runId` and refuse when it belongs to another item or is ended/not running; delivery returns its tmux name only for a running matching run. These are explicit target-run guards."
+		},
+		{
+			"id": "d9223702f870323bff4b",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/ThreadPanel.svelte",
+			"line": 191,
+			"lastLine": 191,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 179–191 display run streaming and status state in the thread panel and pass run cancellation through the status component. No note-based delivery or pane typing/reply mechanism is shown."
+		},
+		{
+			"id": "a244bcfbfa3877b3681b",
+			"path": "packages/desktop/src/lib/stores/agents-providers/projectAgent.svelte.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 15–25 keep the active `runId` and track asked/said content for the last request; the excerpt does not show replies inferred from recent notes or pane typing."
+		},
+		{
+			"id": "9fa3bc363692d675ac2d",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
+			"line": 52,
+			"lastLine": 57,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 52–57 emit streamed or fallback text with the current context `id` as `runId`. This is run-bound output; the excerpt shows no note-only delivery or unbound pane interaction."
+		},
+		{
+			"id": "d4bf58808ca7dc80cc54",
+			"path": "packages/desktop/src/components/agents-providers/ProjectAgent.svelte",
+			"line": 80,
+			"lastLine": 80,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt renders messages already held in `agent.messages` and shows pending request/status text (lines 68–84). It contains no message sending, note-based delivery claim, reply selection, or pane typing path."
+		},
+		{
+			"id": "e71f154f2299892cfc0d",
+			"path": "packages/desktop/src/lib/development-tooling/desktop-bridge/desktopBridge.ts",
+			"line": 136,
+			"lastLine": 136,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The bridge exposes `startRun(input)` and `cancelRun(input.runId)` (lines 134–137), with project assertion and pending-operation accounting around calls (lines 140–150). No message delivery or uncorrelated reply mechanism is shown."
+		},
+		{
+			"id": "5ce2f5df9f9debfb7aae",
+			"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerMessage.ts",
+			"line": 45,
+			"lastLine": 50,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "`messageTarget` checks that the selected agent, item, and supplied `runId` match, then derives the target node and run (lines 45–50). The excerpt also reports `sent` only after an OK response containing a message ID (lines 33–38), showing run-bound targeting and a receipt guard."
+		},
+		{
+			"id": "f528676dba88f03ef562",
+			"path": "packages/desktop/src/utils/planning-collaboration/plan-design/planDesign.ts",
+			"line": 43,
+			"lastLine": 49,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt emits design/status events keyed by `runId` and appends an agent message after saving the design (lines 39–58). This is a run-associated design workflow; no note-as-delivery, uncorrelated reply, or unbound pane typing is visible."
+		},
+		{
+			"id": "e07b5b4e71e064dc8504",
+			"path": "packages/desktop/tests/e2e/ui-agent-creation.spec.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The test stubs `startRun`, captures its input, and asserts the conversation sends one plan request (lines 96–106). It shows a test path, not an implementation that reports note persistence as delivery, selects uncorrelated replies, or types into an unbound pane."
+		},
+		{
+			"id": "bfda41c01cb8b0a0e3dc",
+			"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubAgentController.ts",
+			"line": 88,
+			"lastLine": 93,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The controller validates event cursors with a string `runId` and nonnegative `after`, and validates `startRun` request IDs and revision data (lines 82–93). These visible guards constrain run event requests; no affected message mechanism appears."
+		},
+		{
+			"id": "db1e6bad1646b6e7ea01",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
+			"line": 134,
+			"lastLine": 134,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "`validStartInput` requires a valid item ID and positive safe-integer `runId` before launch (lines 134–139). This is a guarded run-launch path, with no message delivery, reply correlation, or pane typing mechanism shown."
+		},
+		{
+			"id": "b287f3f3abb7e119245e",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxClose.ts",
+			"line": 42,
+			"lastLine": 45,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 42–45 destructure the run ID to build a managed session name and receipt path, then validate the probe and ownership record before stopping that exact session. This is guarded session termination; the excerpt shows no message delivery, reply selection, or unbound pane typing."
+		},
+		{
+			"id": "f0beaea3b3d671f3dc8e",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient.ts",
+			"line": 37,
+			"lastLine": 43,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 37–43 pass item ID, run ID, key, and API port to a guest-auth writer, then validate the resulting file is private and owned by the service user. This is per-run auth-file setup, not a note-based delivery/reply path or unbound pane typing."
+		},
+		{
+			"id": "da57d08cfd66959bce1c",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
+			"line": 86,
+			"lastLine": 86,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 86 defines guest-auth scope fields including item ID, run ID, and key. It declares a type only and shows no delivery, reply correlation, or pane input mechanism."
+		},
+		{
+			"id": "5962d0cbee7992bfb0fa",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostInventory.ts",
+			"line": 61,
+			"lastLine": 68,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 61–68 require a runner socket, matching session name, and ready/live pane before constructing a legacy session record with its run ID. This is guarded session inventory, not message dispatch, reply selection, or unbound pane typing."
+		},
+		{
+			"id": "fd230b05f7012fb4770b",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 33 includes run ID and key in the host start request type alongside the selection and brief. The type declaration does not show a message delivery or reply mechanism."
+		},
+		{
+			"id": "d8cd900799ad07aab61f",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"line": 102,
+			"lastLine": 102,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 102 begins a handoff ownership query keyed by item ID, run ID, and tmux pane, with state and timing constraints visible in lines 102 onward. This is run-bound ownership logic, not note-based delivery, uncorrelated replies, or typing into an unbound pane."
+		},
+		{
+			"id": "67a01fe8b1e81e5b4da3",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealth.types.ts",
+			"line": 28,
+			"lastLine": 28,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 28 declares a linked-items lookup keyed by run ID within a health snapshot type. This does not show message delivery, note-based reply inference, or pane typing."
+		},
+		{
+			"id": "b8e38a300aab21e5d348",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthPanes.ts",
+			"line": 13,
+			"lastLine": 18,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 13–18 parse a managed pane name for a run ID, resolve the matching item or possible prefix owners, and include linked items for that run. Ambiguous prefixes protect all possible owners from duplicate launches; the excerpt shows no message delivery or pane input."
+		},
+		{
+			"id": "53a11122c50f3744b2f1",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthRuntime.ts",
+			"line": 51,
+			"lastLine": 52,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 39–52 only pass a runId to linked-item lookup and construct watchdog health input; there is no message delivery, note-as-delivery, or reply selection path shown."
+		},
+		{
+			"id": "4d8b799e3026d1ed37c7",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogContext.types.ts",
+			"line": 18,
+			"lastLine": 25,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 6–25 define a handoff target with an optional runId and an attempt with a required runId. This is type data only; no message is persisted, dispatched, or correlated here."
+		},
+		{
+			"id": "1ee0358b92419423680a",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerWatchLaunchRequests.ts",
+			"line": 99,
+			"lastLine": 102,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 87–102 use pane names and a runId to determine whether live panes have attached work. This is watchdog task attachment logic, not message delivery or reply correlation."
+		},
+		{
+			"id": "2bc616f50b1188e6785c",
+			"path": "src/utils/projects-sessions/hubSessionMessages.types.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 1–14 define targets as Chief of Staff or an exact node/run and distinguish stored, delivered, acknowledged, and refused statuses. This visible run-bound model contradicts an unbound-target mechanism; no dispatch or reply selection implementation is shown."
+		},
+		{
+			"id": "28d1b1a49094376db7c6",
+			"path": "packages/desktop/ios/Checks/Native/SessionChecks.swift",
+			"line": 57,
+			"lastLine": 57,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 57 exercises stale-link callbacks and confirms they send nothing to the replacement link or page. This is connection epoch handling, unrelated to session-message delivery or reply correlation."
+		},
+		{
+			"id": "bf290e9eaa145449fb39",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/commentEntries.ts",
+			"line": 56,
+			"lastLine": 61,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 44–61 build a UI thread entry from a request and its runId. This ties the displayed request to a run and shows no note-based delivery or uncorrelated reply mechanism."
+		},
+		{
+			"id": "0739dd54a3b3c785f561",
+			"path": "packages/desktop/src/lib/stores/development-tooling/threadRun.svelte.ts",
+			"line": 7,
+			"lastLine": 7,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "runId",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 7 stores runId in thread run state; the excerpt shows no message dispatch, note-based delivery, pane typing, or reply selection."
+		},
+		{
+			"id": "dafb5047990228180222",
+			"path": "packages/desktop/tests/e2e/support/trackerOverviewPublisherFixture.ts",
+			"line": 188,
+			"lastLine": 188,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "dispatchEvent(",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At line 188, `dispatchEvent(new Event('focus'))` fires a window focus event in an end-to-end fixture after seeding a hosted session. It does not type or deliver a message to a session pane, and it is test setup."
+		},
+		{
+			"id": "894f955a0f01725e8e3b",
+			"path": "src/services/projects-sessions/tracker-native-runtime-service/trackerFinishedSessions.ts",
+			"line": 53,
+			"lastLine": 53,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "sessionId",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At lines 53–65, `sessionId` is compared with a managed token derived from the specific item, auto flag, and attempt before being passed as the close attempt; pane closure also checks the current completed run ID and end time. This is session/run-specific lifecycle handling, not message delivery or reply selection."
+		},
+		{
+			"id": "c3e1eee1575676319970",
+			"path": "src/services/projects-sessions/tracker-notification-service/attentionInitialization.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "latestNote",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At lines 35–42, `latestNote` is read only for a completed transition to attach context to an enqueued attention notification. The excerpt does not select a reply from recent notes or report a message delivered to a live session."
+		},
+		{
+			"id": "46bf1f6de8f1447f3081",
+			"path": "packages/desktop/tests/e2e/game-checkpoint-fixture.ts",
+			"line": 130,
+			"lastLine": 130,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "querySelector",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "At line 130, `querySelector` reads a build-stamp meta element in an end-to-end measurement fixture. It is unrelated to sending messages or correlating replies."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/unbound-session-message-delivery.json"
+}

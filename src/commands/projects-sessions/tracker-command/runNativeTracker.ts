@@ -4,11 +4,8 @@ import { homedir, userInfo } from 'node:os';
 import { join } from 'node:path';
 import { loadTrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
-import {
-	isLocalBackupCommand,
-	renderTrackerBackup,
-	runLocalTrackerBackup
-} from './runLocalTrackerBackup';
+import { renderTrackerBackup } from './runLocalTrackerBackup';
+import { runLocalTrackerCommand } from './runLocalTrackerCommand';
 import {
 	formatNativeTrackerItem,
 	formatNativeTrackerRunRead,
@@ -65,7 +62,8 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 		console.error('tracker: invalid or unreadable native configuration');
 		return 2;
 	}
-	if (isLocalBackupCommand(args)) return runLocalTrackerBackup(args.slice(1), config);
+	const local = runLocalTrackerCommand(args, config);
+	if (local !== undefined) return local;
 	let input: ReturnType<typeof nativeTrackerArgs>;
 	try {
 		input = await withTrackerAttachments(nativeTrackerArgs(args));
@@ -176,6 +174,7 @@ function renderNativeTracker(
 		case 'sync':
 			console.log('sync triggered');
 			return;
+
 		case 'digest':
 			console.log(String(data).trimEnd());
 			return;
@@ -193,6 +192,10 @@ function renderNativeTracker(
 }
 
 function renderNativeTrackerItemOrReport(command: string, data: unknown, first?: string): void {
+	if (command === 'reply') {
+		console.log(`reply sent to Daniel in the Hub (${(data as { id?: string }).id ?? 'message'})`);
+		return;
+	}
 	if (command === 'adapter' && first !== 'list') {
 		console.log(formatNativeTrackerAdapterReply(data as NativeTrackerAdapterReply));
 		return;

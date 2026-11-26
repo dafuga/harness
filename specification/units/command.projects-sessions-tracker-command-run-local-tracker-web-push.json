@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-command-run-local-tracker-web-push",
+	"uid": "u_xpp5e7jtlu",
+	"kind": "command",
+	"title": "runLocalTrackerWebPush",
+	"responsibility": "Sets up browser notifications on the Tracker hub and reports their state, printing the public key only.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-command/runLocalTrackerWebPush.ts"],
+		"symbols": ["runLocalTrackerWebPush"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "runLocalTrackerWebPush.args",
+				"type": "string[]",
+				"required": true,
+				"description": "Words after `tracker web-push`: setup --origin <https url> [--rotate], or status [--json]."
+			},
+			{
+				"name": "runLocalTrackerWebPush.config",
+				"type": "TrackerNodeConfig",
+				"required": true,
+				"description": "The native node configuration; only a hub is accepted and its journal folder holds the files."
+			}
+		],
+		"outputs": [
+			{
+				"name": "runLocalTrackerWebPush",
+				"type": "number",
+				"description": "Exit code: 0 on success, 1 on a refused or invalid command."
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown",
+				"description": "Caught here: bad usage, a spoke, or a different origin without --rotate prints one line and returns 1."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "runLocalTrackerWebPush",
+				"inputs": [
+					{
+						"name": "runLocalTrackerWebPush.args",
+						"type": "string[]",
+						"required": true,
+						"description": "Words after `tracker web-push`: setup --origin <https url> [--rotate], or status [--json]."
+					},
+					{
+						"name": "runLocalTrackerWebPush.config",
+						"type": "TrackerNodeConfig",
+						"required": true,
+						"description": "The native node configuration; only a hub is accepted and its journal folder holds the files."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runLocalTrackerWebPush",
+						"type": "number",
+						"description": "Exit code: 0 on success, 1 on a refused or invalid command."
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-tokens",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-command/runLocalTrackerWebPush.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-command/runLocalTrackerWebPush.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

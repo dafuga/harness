@@ -122,12 +122,15 @@
 		"hub.component.projects-sessions-hub-home-cards",
 		"hub.component.projects-sessions-hub-home-choices",
 		"hub.component.projects-sessions-hub-home-composer",
+		"hub.component.projects-sessions-hub-home-cos-chat",
 		"hub.component.projects-sessions-hub-home-dialogs",
 		"hub.component.projects-sessions-hub-home-header",
 		"hub.component.projects-sessions-hub-home-live",
 		"hub.component.projects-sessions-hub-home-live-project",
 		"hub.component.projects-sessions-hub-home-needs-you",
 		"hub.component.projects-sessions-hub-home-not-started",
+		"hub.component.projects-sessions-hub-home-notification-settings",
+		"hub.component.projects-sessions-hub-home-notifications",
 		"hub.component.projects-sessions-hub-home-plans",
 		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
@@ -2224,6 +2227,12 @@
 			"units": ["hub.component.projects-sessions-hub-home-composer"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-cos-chat",
+			"title": "HubHomeCosChat",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-cos-chat"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-dialogs",
 			"title": "HubHomeDialogs",
 			"coverage": "required",
@@ -2258,6 +2267,18 @@
 			"title": "HubHomeNotStarted",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-not-started"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-notification-settings",
+			"title": "HubHomeNotificationSettings",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-notification-settings"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-notifications",
+			"title": "HubHomeNotifications",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-notifications"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-plans",
@@ -9042,6 +9063,7 @@
 				"hub-component-projects-sessions-hub-home-card",
 				"hub-component-projects-sessions-hub-home-cards",
 				"hub-component-projects-sessions-hub-home-choices",
+				"hub-component-projects-sessions-hub-home-cos-chat",
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
 				"hub-component-projects-sessions-hub-home-header",
@@ -9049,6 +9071,8 @@
 				"hub-component-projects-sessions-hub-home-live-project",
 				"hub-component-projects-sessions-hub-home-needs-you",
 				"hub-component-projects-sessions-hub-home-not-started",
+				"hub-component-projects-sessions-hub-home-notification-settings",
+				"hub-component-projects-sessions-hub-home-notifications",
 				"hub-component-projects-sessions-hub-home-plans",
 				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",

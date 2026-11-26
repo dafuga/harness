@@ -70,6 +70,9 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogIdle.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubChiefMessages.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessageNotes.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubPermits.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchEventBatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchWait.ts",
@@ -237,6 +240,12 @@
 			"paneNudgeKey",
 			"handoffRunOwnership",
 			"activeWatchdogItem",
+			"chiefChannelSession",
+			"chiefChannelMissing",
+			"trackerHubChiefDelivery",
+			"pendingHubMessages",
+			"recordHubReceipt",
+			"trackerHubMessageDelivery",
 			"spokeGrant",
 			"spokeAutomaticPermit",
 			"batchTrackerLaunchEvents",
@@ -1280,6 +1289,41 @@
 			{
 				"name": "activeWatchdogItem.id",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHubChiefDelivery.input",
+				"type": "HubChiefDelivery",
+				"required": true
+			},
+			{
+				"name": "pendingHubMessages.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "pendingHubMessages.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHubMessageDelivery.input",
+				"type": "HubMessageDelivery",
 				"required": true
 			},
 			{
@@ -4049,6 +4093,93 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerHubChiefDelivery",
+				"inputs": [
+					{
+						"name": "trackerHubChiefDelivery.input",
+						"type": "HubChiefDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubChiefDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pendingHubMessages",
+				"inputs": [
+					{
+						"name": "pendingHubMessages.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "pendingHubMessages.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingHubMessages",
+						"type": "{ itemId: string; message: HubThreadMessage }[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordHubReceipt",
+				"inputs": [
+					{
+						"name": "recordHubReceipt.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordHubReceipt.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordHubReceipt.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordHubReceipt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHubMessageDelivery",
+				"inputs": [
+					{
+						"name": "trackerHubMessageDelivery.input",
+						"type": "HubMessageDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubMessageDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "spokeGrant",
 				"inputs": [
 					{
@@ -5392,6 +5523,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-hub-session-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "import",
 			"origin": "derived"
@@ -5527,6 +5663,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-web-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-ask-options-rule",
 			"via": "import",
 			"origin": "derived"
@@ -5588,6 +5729,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-spoke-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push",
 			"via": "import",
 			"origin": "derived"
 		},

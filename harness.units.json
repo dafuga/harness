@@ -392,6 +392,24 @@
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNotificationSettings.svelte",
+			"specifier": "$reports/components/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "The notification settings open in the shared Modal."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "A followed notification is matched against the shared open asks."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeNeedsTarget.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "A clicked notification is matched against the shared open asks."
+		},
+		{
 			"from": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
 			"specifier": "$reports/components/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
@@ -3156,6 +3174,30 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "The spec view on asks is shared Reports code used through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerMessage.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports display contract through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerMessage.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts",
+			"reason": "Hub Home uses the Reports display contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports display contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeMessages.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts",

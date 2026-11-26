@@ -1,0 +1,243 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.networking-security-hub-push",
+	"uid": "u_56mpqyme4j",
+	"kind": "module",
+	"title": "hubPush",
+	"responsibility": "Turns browser notifications on and off and keeps the Hub's subscription in step.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/lib/networking-security/hubPush.ts",
+			"packages/hub/src/lib/networking-security/hubPush.types.ts"
+		],
+		"symbols": [
+			"readHubPush",
+			"turnOnHubPush",
+			"turnOffHubPush",
+			"forgetHubPush",
+			"saveQuietHours",
+			"PushQuietHours",
+			"HubPushSettings",
+			"HubPushDevice",
+			"HubPushReading"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readHubPush.api",
+				"type": "BrowserApi",
+				"required": true,
+				"description": "The signed-in same-origin Hub API."
+			},
+			{
+				"name": "turnOnHubPush.api",
+				"type": "BrowserApi",
+				"required": true,
+				"description": "The signed-in same-origin Hub API."
+			},
+			{
+				"name": "turnOnHubPush.settings",
+				"type": "HubPushSettings",
+				"required": true,
+				"description": "The Hub's notification settings."
+			},
+			{
+				"name": "turnOffHubPush.api",
+				"type": "BrowserApi",
+				"required": true,
+				"description": "The signed-in same-origin Hub API."
+			},
+			{
+				"name": "forgetHubPush.api",
+				"type": "BrowserApi",
+				"required": true
+			},
+			{
+				"name": "saveQuietHours.api",
+				"type": "BrowserApi",
+				"required": true,
+				"description": "The signed-in same-origin Hub API."
+			},
+			{
+				"name": "saveQuietHours.quiet",
+				"type": "PushQuietHours",
+				"required": true,
+				"description": "The quiet hours to save."
+			}
+		],
+		"outputs": [
+			{
+				"name": "readHubPush",
+				"type": "Promise<HubPushReading | null>",
+				"description": "This browser's state, or null when the Hub offers no notifications."
+			},
+			{
+				"name": "turnOnHubPush",
+				"type": "Promise<HubPushReading>",
+				"description": "The state after the permission prompt."
+			},
+			{
+				"name": "turnOffHubPush",
+				"type": "Promise<HubPushReading | null>",
+				"description": "The state after unsubscribing."
+			},
+			{
+				"name": "saveQuietHours",
+				"type": "Promise<HubPushSettings>",
+				"description": "The saved settings."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readHubPush",
+				"inputs": [
+					{
+						"name": "readHubPush.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "The signed-in same-origin Hub API."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readHubPush",
+						"type": "Promise<HubPushReading | null>",
+						"description": "This browser's state, or null when the Hub offers no notifications."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "turnOnHubPush",
+				"inputs": [
+					{
+						"name": "turnOnHubPush.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "The signed-in same-origin Hub API."
+					},
+					{
+						"name": "turnOnHubPush.settings",
+						"type": "HubPushSettings",
+						"required": true,
+						"description": "The Hub's notification settings."
+					}
+				],
+				"outputs": [
+					{
+						"name": "turnOnHubPush",
+						"type": "Promise<HubPushReading>",
+						"description": "The state after the permission prompt."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "turnOffHubPush",
+				"inputs": [
+					{
+						"name": "turnOffHubPush.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "The signed-in same-origin Hub API."
+					}
+				],
+				"outputs": [
+					{
+						"name": "turnOffHubPush",
+						"type": "Promise<HubPushReading | null>",
+						"description": "The state after unsubscribing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "forgetHubPush",
+				"inputs": [
+					{
+						"name": "forgetHubPush.api",
+						"type": "BrowserApi",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "forgetHubPush",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "saveQuietHours",
+				"inputs": [
+					{
+						"name": "saveQuietHours.api",
+						"type": "BrowserApi",
+						"required": true,
+						"description": "The signed-in same-origin Hub API."
+					},
+					{
+						"name": "saveQuietHours.quiet",
+						"type": "PushQuietHours",
+						"required": true,
+						"description": "The quiet hours to save."
+					}
+				],
+				"outputs": [
+					{
+						"name": "saveQuietHours",
+						"type": "Promise<HubPushSettings>",
+						"description": "The saved settings."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-web-push-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.networking-security-hub-push-browser",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/networking-security/hubPush.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/networking-security/hubPush.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -19,6 +19,7 @@
 			"src/services/projects-sessions/tracker-notification-service/attentionInitialization.ts",
 			"src/services/projects-sessions/tracker-notification-service/attentionTransitions.ts",
 			"src/services/projects-sessions/tracker-notification-service/callbackDelivery.ts",
+			"src/services/projects-sessions/tracker-notification-service/chiefChannel.ts",
 			"src/services/projects-sessions/tracker-notification-service/completeDelivery.ts",
 			"src/services/projects-sessions/tracker-notification-service/deliveryRequest.ts",
 			"src/services/projects-sessions/tracker-notification-service/directReminders.ts",
@@ -35,6 +36,8 @@
 			"src/services/projects-sessions/tracker-notification-service/webhookReminders.ts"
 		],
 		"symbols": [
+			"TrackerChiefChannel",
+			"TrackerChiefMessage",
 			"TrackerDeliveryRequest",
 			"TrackerDeliveryResult",
 			"TrackerDestination",
@@ -50,6 +53,7 @@
 			"TrackerNotificationService",
 			"TrackerNotificationService.constructor",
 			"TrackerNotificationService.status",
+			"TrackerNotificationService.chiefChannel",
 			"TrackerNotificationService.tick",
 			"TrackerNotificationService.enqueue",
 			"TrackerNotificationService.pause",
@@ -63,6 +67,8 @@
 			"TrackerDeliveryRequest",
 			"TrackerDeliveryResult",
 			"TrackerNotificationDestinations",
+			"TrackerChiefMessage",
+			"TrackerChiefChannel",
 			"TrackerWebhookEvent",
 			"TrackerWebhookRoute",
 			"TrackerWebhookOptions",
@@ -81,6 +87,7 @@
 			"queueLaunchWait",
 			"scanCallbacks",
 			"nextCallback",
+			"trackerChiefChannel",
 			"completeDelivery",
 			"flagWebhook",
 			"webhookRequest",
@@ -350,6 +357,11 @@
 				"type": "number",
 				"required": true,
 				"description": "Epoch milliseconds from the injected clock for this scan or send."
+			},
+			{
+				"name": "trackerChiefChannel.options",
+				"type": "TrackerNotificationOptions",
+				"required": true
 			},
 			{
 				"name": "completeDelivery.state",
@@ -1176,6 +1188,18 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "TrackerNotificationService.chiefChannel",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNotificationService.chiefChannel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerNotificationService.tick",
 				"inputs": [
 					{
@@ -1636,6 +1660,24 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerChiefChannel",
+				"inputs": [
+					{
+						"name": "trackerChiefChannel.options",
+						"type": "TrackerNotificationOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerChiefChannel",
+						"type": "TrackerChiefChannel | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "completeDelivery",
