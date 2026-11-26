@@ -4,8 +4,8 @@
 	"uid": "u_gkkvalncwm",
 	"kind": "function",
 	"title": "trackerMachineStatus",
-	"responsibility": "Owns the trackerMachineStatus shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Judges a computer as ok, busy, overloaded or offline from its resource samples and names the reasons.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerMachineStatus.ts"],
@@ -17,45 +17,53 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerMachineRole.node",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Fleet node name of the computer."
 			},
 			{
 				"name": "trackerMachineStatus.latest",
 				"type": "TrackerResourceSample | null",
-				"required": true
+				"required": true,
+				"description": "Newest resource sample, or null when the computer never reported one."
 			},
 			{
 				"name": "trackerMachineStatus.recent",
 				"type": "readonly TrackerResourceSample[]",
-				"required": true
+				"required": true,
+				"description": "Earlier samples used to measure swap growth over ten minutes."
 			},
 			{
 				"name": "trackerMachineStatus.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerSampleOfflineMs",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Sample age in milliseconds after which a computer is offline."
 			},
 			{
 				"name": "trackerBusyLoadPerCore",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Five-minute load per core above which a computer is busy."
 			},
 			{
 				"name": "trackerMachineRole",
-				"type": "TrackerMachineRole"
+				"type": "TrackerMachineRole",
+				"description": "Shared, runner, primary or other."
 			},
 			{
 				"name": "trackerMachineStatus",
-				"type": "Pick<TrackerMachineRow, 'status' | 'reasons' | 'age_s'>"
+				"type": "Pick<TrackerMachineRow, 'status' | 'reasons' | 'age_s'>",
+				"description": "Status, the reasons for it and the sample age in seconds."
 			}
 		],
 		"errors": [],
@@ -67,13 +75,15 @@
 					{
 						"name": "trackerMachineRole.node",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Fleet node name of the computer."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerMachineRole",
-						"type": "TrackerMachineRole"
+						"type": "TrackerMachineRole",
+						"description": "Shared, runner, primary or other."
 					}
 				],
 				"errors": [],
@@ -85,23 +95,27 @@
 					{
 						"name": "trackerMachineStatus.latest",
 						"type": "TrackerResourceSample | null",
-						"required": true
+						"required": true,
+						"description": "Newest resource sample, or null when the computer never reported one."
 					},
 					{
 						"name": "trackerMachineStatus.recent",
 						"type": "readonly TrackerResourceSample[]",
-						"required": true
+						"required": true,
+						"description": "Earlier samples used to measure swap growth over ten minutes."
 					},
 					{
 						"name": "trackerMachineStatus.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Current time in milliseconds."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerMachineStatus",
-						"type": "Pick<TrackerMachineRow, 'status' | 'reasons' | 'age_s'>"
+						"type": "Pick<TrackerMachineRow, 'status' | 'reasons' | 'age_s'>",
+						"description": "Status, the reasons for it and the sample age in seconds."
 					}
 				],
 				"errors": [],

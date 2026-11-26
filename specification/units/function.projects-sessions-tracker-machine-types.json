@@ -4,8 +4,8 @@
 	"uid": "u_q5ilh2avzz",
 	"kind": "function",
 	"title": "trackerMachine",
-	"responsibility": "Owns the trackerMachine shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines the resource sample, computer status and placement shapes shared by Tracker machines.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerMachine.types.ts"],
@@ -24,7 +24,7 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],

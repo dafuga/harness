@@ -4,8 +4,8 @@
 	"uid": "u_bpxxjlm3vz",
 	"kind": "function",
 	"title": "groupTrackerProcesses",
-	"responsibility": "Owns the groupTrackerProcesses shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Parses a process table and groups agent sessions, test runners and Playwright browsers with their total usage, without returning command lines.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -21,52 +21,61 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "parseTrackerProcesses.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Output of ps with process id, parent id, resident KB, CPU percent and command name on each line."
 			},
 			{
 				"name": "classifyTrackerProcess.name",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Command name of the process without its directory."
 			},
 			{
 				"name": "classifyTrackerProcess.args",
 				"type": "string",
 				"required": false,
-				"default": ""
+				"default": "",
+				"description": "Full command line, only matched against and never returned. Defaults to empty."
 			},
 			{
 				"name": "groupTrackerProcesses.rows",
 				"type": "readonly TrackerProcessRow[]",
-				"required": true
+				"required": true,
+				"description": "Parsed process table of one computer."
 			},
 			{
 				"name": "groupTrackerProcesses.argsByPid",
 				"type": "ReadonlyMap<number, string>",
-				"required": true
+				"required": true,
+				"description": "Command line of each process id, used only to classify processes."
 			},
 			{
 				"name": "groupTrackerProcesses.panes",
 				"type": "ReadonlyMap<number, string>",
-				"required": true
+				"required": true,
+				"description": "tmux session name of each pane process id, used to label groups."
 			}
 		],
 		"outputs": [
 			{
 				"name": "parseTrackerProcesses",
-				"type": "TrackerProcessRow[]"
+				"type": "TrackerProcessRow[]",
+				"description": "One row for each readable line; other lines are skipped."
 			},
 			{
 				"name": "classifyTrackerProcess",
-				"type": "TrackerAgentKind | undefined"
+				"type": "TrackerAgentKind | undefined",
+				"description": "Claude, Codex, test runner or browser, or undefined for any other process."
 			},
 			{
 				"name": "groupTrackerProcesses",
-				"type": "TrackerProcessGroup[]"
+				"type": "TrackerProcessGroup[]",
+				"description": "One group for each outermost agent session, test runner or browser, with process count, CPU and memory."
 			}
 		],
 		"errors": [],
@@ -78,13 +87,15 @@
 					{
 						"name": "parseTrackerProcesses.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Output of ps with process id, parent id, resident KB, CPU percent and command name on each line."
 					}
 				],
 				"outputs": [
 					{
 						"name": "parseTrackerProcesses",
-						"type": "TrackerProcessRow[]"
+						"type": "TrackerProcessRow[]",
+						"description": "One row for each readable line; other lines are skipped."
 					}
 				],
 				"errors": [],
@@ -96,19 +107,22 @@
 					{
 						"name": "classifyTrackerProcess.name",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Command name of the process without its directory."
 					},
 					{
 						"name": "classifyTrackerProcess.args",
 						"type": "string",
 						"required": false,
-						"default": ""
+						"default": "",
+						"description": "Full command line, only matched against and never returned. Defaults to empty."
 					}
 				],
 				"outputs": [
 					{
 						"name": "classifyTrackerProcess",
-						"type": "TrackerAgentKind | undefined"
+						"type": "TrackerAgentKind | undefined",
+						"description": "Claude, Codex, test runner or browser, or undefined for any other process."
 					}
 				],
 				"errors": [],
@@ -120,23 +134,27 @@
 					{
 						"name": "groupTrackerProcesses.rows",
 						"type": "readonly TrackerProcessRow[]",
-						"required": true
+						"required": true,
+						"description": "Parsed process table of one computer."
 					},
 					{
 						"name": "groupTrackerProcesses.argsByPid",
 						"type": "ReadonlyMap<number, string>",
-						"required": true
+						"required": true,
+						"description": "Command line of each process id, used only to classify processes."
 					},
 					{
 						"name": "groupTrackerProcesses.panes",
 						"type": "ReadonlyMap<number, string>",
-						"required": true
+						"required": true,
+						"description": "tmux session name of each pane process id, used to label groups."
 					}
 				],
 				"outputs": [
 					{
 						"name": "groupTrackerProcesses",
-						"type": "TrackerProcessGroup[]"
+						"type": "TrackerProcessGroup[]",
+						"description": "One group for each outermost agent session, test runner or browser, with process count, CPU and memory."
 					}
 				],
 				"errors": [],

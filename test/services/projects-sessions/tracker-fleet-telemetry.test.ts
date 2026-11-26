@@ -40,7 +40,8 @@ test('both computers see each other in machines, place and status', async () => 
 
 test('raises one Chief of Staff alert for a sustained overload and closes it when calm', async () => {
 	const nodes = fleet({
-		hostEffects: { watchdog: { tmux: process.execPath, chiefOfStaff: true } }
+		// Never run here. A CI runner's own Node binary may be writable by others and is refused.
+		hostEffects: { watchdog: { tmux: '/bin/sh', chiefOfStaff: true } }
 	});
 	const advance = async (minutes: number) => {
 		for (let passed = 0; passed < minutes; passed++) {

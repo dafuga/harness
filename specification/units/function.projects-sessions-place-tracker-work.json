@@ -4,8 +4,8 @@
 	"uid": "u_47p4ljwkx5",
 	"kind": "function",
 	"title": "placeTrackerWork",
-	"responsibility": "Owns the placeTrackerWork shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Ranks computers for new work by headroom, role and fit, and recommends the best one that fits.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -15,28 +15,32 @@
 		"symbols": ["trackerWorkRamGB", "placeTrackerWork", "TrackerWorkPreference"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "placeTrackerWork.rows",
 				"type": "readonly TrackerMachineRow[]",
-				"required": true
+				"required": true,
+				"description": "Status and latest sample of each candidate computer."
 			},
 			{
 				"name": "placeTrackerWork.request",
 				"type": "TrackerPlacementRequest",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Kind of work, RAM it needs in GB and computers to leave out. Defaults to general work with none left out."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerWorkRamGB",
-				"type": "Record<TrackerWorkKind, number>"
+				"type": "Record<TrackerWorkKind, number>",
+				"description": "RAM in GB that each kind of work is assumed to need."
 			},
 			{
 				"name": "placeTrackerWork",
-				"type": "TrackerPlacement"
+				"type": "TrackerPlacement",
+				"description": "Candidates ranked with fitting ones first, their reasons, and the recommended computer or null."
 			}
 		],
 		"errors": [],
@@ -48,19 +52,22 @@
 					{
 						"name": "placeTrackerWork.rows",
 						"type": "readonly TrackerMachineRow[]",
-						"required": true
+						"required": true,
+						"description": "Status and latest sample of each candidate computer."
 					},
 					{
 						"name": "placeTrackerWork.request",
 						"type": "TrackerPlacementRequest",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Kind of work, RAM it needs in GB and computers to leave out. Defaults to general work with none left out."
 					}
 				],
 				"outputs": [
 					{
 						"name": "placeTrackerWork",
-						"type": "TrackerPlacement"
+						"type": "TrackerPlacement",
+						"description": "Candidates ranked with fitting ones first, their reasons, and the recommended computer or null."
 					}
 				],
 				"errors": [],
