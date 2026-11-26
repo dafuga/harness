@@ -5,8 +5,10 @@ import type { TrackerUnattendedCaller } from './trackerUnattendedCallers.types';
  * Inventoried 2026-11-26 on both Macs; the shared Linux box could not be reached.
  *
  * Before changing any verb's arguments or refusals:
- * 1. Repeat the inventory on every computer (LaunchAgents, systemd units, cron, relays). Read each
- *    job's script: a text search misses commands built from variables.
+ * 1. Repeat the inventory on every computer (LaunchAgents, systemd units, cron, relays). Start from
+ *    `launchctl list` plus `launchctl print`: some plists live outside the LaunchAgents folders.
+ *    Read each job's script: a text search misses commands built from variables. Redo it at release
+ *    time, because installed scripts change.
  * 2. Record new argument shapes here. Never edit a recorded shape to make a new rule pass while
  *    the installed script still sends the old one.
  * 3. A shape the new rule refuses must be `kept`, or its script must be migrated first.
@@ -78,6 +80,18 @@ export const trackerUnattendedCallers: readonly TrackerUnattendedCaller[] = [
 		]
 	},
 	{ caller: 'credential tunnel watchdog', computers: primary, calls: [add, note, asks(), done] },
+	{
+		caller: 'QA comment check',
+		computers: secondary,
+		calls: [
+			note,
+			// Despite its wording this asks Daniel: only "CoS:" openings or "for CoS" are rerouted.
+			{
+				args: ['flag', 'ITEM', 'For Chief of Staff (not Daniel): sample follow-up', ...choices],
+				outcome: 'asks'
+			}
+		]
+	},
 	{
 		caller: 'Chief of Staff status tick',
 		computers: primary,
