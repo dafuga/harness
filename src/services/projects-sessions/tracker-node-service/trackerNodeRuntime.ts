@@ -35,6 +35,7 @@ export function trackerNodeRuntime(
 		role: config.role,
 		phoneWrite: configuredPhoneWrite(),
 		backupDirectory: config.backupDirectory,
+		backup: configuredTrackerBackups(config),
 		notification,
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
@@ -47,6 +48,17 @@ export function trackerNodeRuntime(
 			parseTrackerModelSpec(String(model), ladder);
 		},
 		planLaunch: (fields, current, source) => planNativeLaunch(fields, current, config.node, source)
+	};
+}
+
+/** A live hub backs itself up. Held and effect-free rehearsal nodes never write backups. */
+function configuredTrackerBackups(config: TrackerNodeConfig) {
+	if (config.role !== 'hub' || config.hostEffects?.mode !== 'active') return undefined;
+	const shared = join(homedir(), 'backups', 'tracker');
+	return {
+		directory: config.backupDirectory ?? join(shared, 'native'),
+		externalDirectory: config.backupDirectory ? undefined : shared,
+		stateFile: join(dirname(config.database), 'tracker-backup.json')
 	};
 }
 

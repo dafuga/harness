@@ -1,0 +1,126 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-backup-service-restore-tracker-backup",
+	"uid": "u_d6mtahlgx2",
+	"kind": "service",
+	"title": "restoreTrackerBackup",
+	"responsibility": "Owns the restoreTrackerBackup service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-backup-service/restoreTrackerBackup.ts",
+			"src/services/projects-sessions/tracker-backup-service/restoreTrackerBackup.types.ts"
+		],
+		"symbols": ["verifyTrackerBackup", "restoreTrackerBackup", "TrackerBackupTable"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "verifyTrackerBackup.backup",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "restoreTrackerBackup.request",
+				"type": "{ backup: string; live?: string; to: string }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "verifyTrackerBackup",
+				"type": "unknown"
+			},
+			{
+				"name": "restoreTrackerBackup",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "verifyTrackerBackup",
+				"inputs": [
+					{
+						"name": "verifyTrackerBackup.backup",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "verifyTrackerBackup",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "restoreTrackerBackup",
+				"inputs": [
+					{
+						"name": "restoreTrackerBackup.request",
+						"type": "{ backup: string; live?: string; to: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "restoreTrackerBackup",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.open-sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-tracker-backup-files",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-backup-service/restoreTrackerBackup.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-backup-service/restoreTrackerBackup.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
