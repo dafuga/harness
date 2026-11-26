@@ -20,11 +20,6 @@
 				"name": "createHubHomePublisher.file",
 				"type": "string",
 				"required": false
-			},
-			{
-				"name": "createHubHomePublisher.sources",
-				"type": "QuotaSource[]",
-				"required": false
 			}
 		],
 		"outputs": [
@@ -42,11 +37,6 @@
 					{
 						"name": "createHubHomePublisher.file",
 						"type": "string",
-						"required": false
-					},
-					{
-						"name": "createHubHomePublisher.sources",
-						"type": "QuotaSource[]",
 						"required": false
 					}
 				],
@@ -70,11 +60,6 @@
 		},
 		{
 			"unit": "desktop.adapter.remote-http-project",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-codex-quota-source",
 			"via": "import",
 			"origin": "derived"
 		},
