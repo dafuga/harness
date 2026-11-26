@@ -1,0 +1,199 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-history",
+	"uid": "u_ly3hxvctan",
+	"kind": "adapter",
+	"title": "SlackHistoryAdapter",
+	"responsibility": "Owns the SlackHistoryAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/SlackHistoryAdapter.ts",
+			"src/adapters/agents-providers/SlackHistoryAdapter.types.ts"
+		],
+		"symbols": [
+			"SlackHistoryAdapter",
+			"SlackHistoryAdapter.constructor",
+			"SlackHistoryAdapter.identity",
+			"SlackHistoryAdapter.history",
+			"SlackHistoryAdapter.replies",
+			"SlackHistoryAdapterConfig",
+			"SlackHistoryAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "SlackHistoryAdapter.constructor.config",
+				"type": "SlackHistoryAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "SlackHistoryAdapter.history.channel",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SlackHistoryAdapter.history.oldest",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SlackHistoryAdapter.replies.channel",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "SlackHistoryAdapter.replies.parentTs",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "SlackHistoryAdapter.identity",
+				"type": "Promise<{ workspaceUrl: string }>"
+			},
+			{
+				"name": "SlackHistoryAdapter.history",
+				"type": "Promise<QaSlackMessage[]>"
+			},
+			{
+				"name": "SlackHistoryAdapter.replies",
+				"type": "Promise<QaSlackMessage[]>"
+			}
+		],
+		"errors": [
+			{
+				"name": "QaSyncError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "SlackHistoryAdapter.identity",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SlackHistoryAdapter.identity",
+						"type": "Promise<{ workspaceUrl: string }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "QaSyncError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackHistoryAdapter.history",
+				"inputs": [
+					{
+						"name": "SlackHistoryAdapter.history.channel",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SlackHistoryAdapter.history.oldest",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackHistoryAdapter.history",
+						"type": "Promise<QaSlackMessage[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackHistoryAdapter.replies",
+				"inputs": [
+					{
+						"name": "SlackHistoryAdapter.replies.channel",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "SlackHistoryAdapter.replies.parentTs",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackHistoryAdapter.replies",
+						"type": "Promise<QaSlackMessage[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "SlackHistoryAdapter.constructor",
+				"inputs": [
+					{
+						"name": "SlackHistoryAdapter.constructor.config",
+						"type": "SlackHistoryAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackHistoryAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack-history-adapter-slack-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-history-adapter-slack-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/SlackHistoryAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/SlackHistoryAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

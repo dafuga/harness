@@ -1,0 +1,84 @@
+{
+	"schemaVersion": 1,
+	"id": "command.agents-providers-qa-sync",
+	"uid": "u_apbouftqys",
+	"kind": "command",
+	"title": "QaSyncCommand",
+	"responsibility": "Owns the QaSyncCommand command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/commands/agents-providers/QaSyncCommand.ts",
+			"src/commands/agents-providers/QaSyncCommand.types.ts"
+		],
+		"symbols": ["QaSyncCommand", "QaSyncCommand.register", "QaSyncCommandOptions"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "QaSyncCommand.register.program",
+				"type": "Command",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "QaSyncCommand.register",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "InvalidArgumentError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "QaSyncCommand.register",
+				"inputs": [
+					{
+						"name": "QaSyncCommand.register.program",
+						"type": "Command",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaSyncCommand.register",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "workflow.agents-providers-run-qa-sync",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/agents-providers/QaSyncCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/agents-providers/QaSyncCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
