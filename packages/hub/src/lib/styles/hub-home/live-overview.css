@@ -79,6 +79,17 @@
 .hh-home .hh-live-stage {
 	font-size: var(--hx-type-size-xs);
 }
+/* The latest milestone: two lines, the full note in the tooltip. */
+.hh-home .hh-live-now {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+	grid-column: 1 / -1;
+	min-width: 0;
+	font-size: var(--hx-type-size-xs);
+}
 .hh-home .hh-live-facts {
 	display: flex;
 	flex-wrap: wrap;

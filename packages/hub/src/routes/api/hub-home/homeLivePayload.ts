@@ -20,6 +20,10 @@ const row = z.object({
 	outcome: short.nullable(),
 	status: z.enum(['open', 'in_progress', 'blocked', 'done']),
 	stage: z.enum(['idea', 'detail', 'design', 'build']).nullable(),
+	// Older Mac apps send no milestone; they show none rather than failing the overview.
+	now: text(300)
+		.nullish()
+		.transform((value) => value ?? null),
 	owner: short.nullable(),
 	computer: short.nullable(),
 	model: short.nullable(),
