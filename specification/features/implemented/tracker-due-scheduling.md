@@ -1,3 +1,11 @@
+---
+status: implemented
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
 # Tracker due scheduling
 
 A due task launches at its due time. The due scheduler is on unless the host launch
