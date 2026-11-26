@@ -57,7 +57,7 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 			});
 		}
 		await verifyClaudeRefusals(launcher, claude, paths.profiles.accountHome);
-		const unusable = { ...native, runId: 5, key: 'unusable', repo: paths.profiles.native };
+		const unusable = { ...native, runId: 5, key: 'unusable', repo: '/usr/share' };
 		expect(await launcher.start(unusable, signal)).toEqual({
 			status: 'rejected',
 			detail: expect.stringMatching(/could not create a worktree of .*not a git repository/s)
