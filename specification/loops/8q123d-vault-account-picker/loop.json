@@ -2,7 +2,7 @@
 	"name": "8q123d-vault-account-picker",
 	"goal": "A vault request that names no account offers every saved entry for the same site, so a saved password is never asked for again",
 	"createdAt": "2026-11-26T09:37:12.981Z",
-	"updatedAt": "2026-11-26T09:42:09.460Z",
+	"updatedAt": "2026-11-26T09:44:39.909Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -53,7 +53,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T09:44:39.909Z",
+			"evidence": "At a6ad4bd95c (same product code): format:check, typecheck, lint, harness audit, units check pass; credential-vault account-match + ios native tests 10/10. Picker rendered in a headless iPhone simulator host with synthetic entries (several, single preselected, named-account-missing); screenshots inspected, row tint and duplicate domain fixed and recaptured. Full bun run check (whole test suite) not run. App wiring and tap selection belong to bcx64s."
 		}
 	],
 	"evaluators": [
