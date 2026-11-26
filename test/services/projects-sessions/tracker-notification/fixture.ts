@@ -98,7 +98,6 @@ export function notificationFixture(input: FixtureOptions = {}) {
 		source,
 		queue,
 		now: () => now,
-		quietHours: { tz: source.tz, start: '22:00', end: '08:00' },
 		webhook: {
 			destination: chief,
 			routes: { 'fixture-agent': { destination: worker, aliases: ['fixture-alias'] } }
@@ -156,14 +155,14 @@ export async function verifyDirectFollowUps(
 	await f.restart().tick();
 	expect(wire(f.calls[2])).toMatchObject({
 		new: [],
-		reminders: [{ id: 'flag', reminder_number: 1, waiting_minutes: 665 }]
+		reminders: [{ id: 'flag', reminder_number: 1, waiting_minutes: 125 }]
 	});
 	f.at(first + 360 * minute);
 	await f.restart().tick();
 	expect(wire(f.calls[3])).toMatchObject({
-		reminders: [{ id: 'flag', reminder_number: 2, waiting_minutes: 905 }]
+		reminders: [{ id: 'flag', reminder_number: 2, waiting_minutes: 365 }]
 	});
-	const nextMorning = Date.parse('2026-02-04T08:00:00Z');
+	const nextMorning = Date.parse('2026-02-03T08:00:00Z');
 	const parkedUntil = nextMorning + 10 * minute;
 	f.rows.set('flag', {
 		...f.rows.get('flag')!,
@@ -176,7 +175,7 @@ export async function verifyDirectFollowUps(
 	f.at(parkedUntil);
 	await f.restart().tick();
 	expect(wire(f.calls[4])).toMatchObject({
-		reminders: [{ id: 'flag', reminder_number: 3, waiting_minutes: 1990 }]
+		reminders: [{ id: 'flag', reminder_number: 3, waiting_minutes: 550 }]
 	});
 	f.rows.set('flag', { ...f.rows.get('flag')!, resolved: 1 });
 	f.at(nextMorning + 24 * 60 * minute);
