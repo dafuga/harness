@@ -2879,31 +2879,31 @@
 			"from": "packages/desktop/src/components/game-authoring/GameLiveAi.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/desktop/src/components/game-authoring/GameLiveAi.svelte",
 			"specifier": "$shared/Select.svelte",
 			"to": "packages/reports/src/components/Select.svelte",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/desktop/src/components/game-authoring/GameViewFields.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/desktop/src/components/networking-security/remote-phone-panel/RemotePhonePanel.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/desktop/src/components/projects-sessions/ProjectGate.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/hub/src/components/accounts-access/LinkedComputers.svelte",
@@ -2915,25 +2915,25 @@
 			"from": "packages/hub/src/components/shared-primitives/HubFrame.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/hub/src/components/shared-primitives/MembersPanel.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/hub/src/routes/(accounts-access)/devices/+page.svelte",
 			"specifier": "$reports/helpers/strings/formatTime",
 			"to": "packages/reports/src/helpers/strings/formatTime.ts",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/hub/src/routes/projects/+page.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
-			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
+			"reason": "Resolve the shared Reports import through the consuming workspace\u2019s build alias."
 		},
 		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts",
@@ -3186,6 +3186,24 @@
 			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy",
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts",
 			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeReminder.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home reminders read this reports module through the build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeReminder.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderTimes",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderTimes.ts",
+			"reason": "Hub Home reminders read this reports module through the build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeReminders.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home reminders read this reports module through the build alias."
 		}
 	]
 }
