@@ -180,7 +180,8 @@
 				{:else if isHubHomePreview(id)}
 					<HubHomeCatalogPreview {id} {Component} />
 				{:else if id === 'desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices'}
-					<div class="detail"><Component {...fixture.props} /></div>
+					<!-- Choice styles are scoped to the inbox, which holds them on rows and in the detail. -->
+					<div class="inbox detail"><Component {...fixture.props} /></div>
 				{:else if unit.source?.includes('/atoms/')}
 					<NativeAtomPreview {Component} source={unit.source} {variant} />
 				{:else}

@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeTrackerAgents.ts"],
-		"symbols": ["buildHomeAgents"]
+		"source": [
+			"packages/reports/src/lib/projects-sessions/hub-home/homeTrackerAgents.ts",
+			"packages/reports/src/lib/projects-sessions/hub-home/homeTrackerThread.ts"
+		],
+		"symbols": ["buildHomeAgents", "cosChatTitle", "cosChatItem", "liveRunId", "homeThreadMessages"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -23,12 +26,48 @@
 				"name": "buildHomeAgents.sources",
 				"type": "TrackerSources",
 				"required": true
+			},
+			{
+				"name": "cosChatItem.items",
+				"type": "readonly TrackerItemRecord[]",
+				"required": true
+			},
+			{
+				"name": "liveRunId.sources",
+				"type": "Pick<TrackerSources, 'runs'>",
+				"required": true
+			},
+			{
+				"name": "liveRunId.itemId",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "homeThreadMessages.notes",
+				"type": "readonly TrackerNote[] | undefined",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "buildHomeAgents",
 				"type": "HomeAgent[]"
+			},
+			{
+				"name": "cosChatTitle",
+				"type": "unknown"
+			},
+			{
+				"name": "cosChatItem",
+				"type": "TrackerItemRecord | undefined"
+			},
+			{
+				"name": "liveRunId",
+				"type": "unknown"
+			},
+			{
+				"name": "homeThreadMessages",
+				"type": "HomeMessage[]"
 			}
 		],
 		"errors": [],
@@ -56,11 +95,75 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "cosChatItem",
+				"inputs": [
+					{
+						"name": "cosChatItem.items",
+						"type": "readonly TrackerItemRecord[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosChatItem",
+						"type": "TrackerItemRecord | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "liveRunId",
+				"inputs": [
+					{
+						"name": "liveRunId.sources",
+						"type": "Pick<TrackerSources, 'runs'>",
+						"required": true
+					},
+					{
+						"name": "liveRunId.itemId",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "liveRunId",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "homeThreadMessages",
+				"inputs": [
+					{
+						"name": "homeThreadMessages.notes",
+						"type": "readonly TrackerNote[] | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeThreadMessages",
+						"type": "HomeMessage[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-hub-session-messages",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
 			"via": "import",

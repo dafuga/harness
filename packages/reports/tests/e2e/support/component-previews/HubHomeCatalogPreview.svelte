@@ -37,6 +37,11 @@
 		'home-cards': { view, open: noop, send },
 		'home-choices': { agent: { options: previewAnswerOptions }, onpick: noop },
 		'home-composer': { agents: view.agents, send },
+		'home-cos-chat': {
+			agent: view.agents?.find((agent) => agent.id === 'cos'),
+			now: new Date(view.now).toISOString(),
+			send
+		},
 		'home-dialogs': {
 			selected: 'plans',
 			view,

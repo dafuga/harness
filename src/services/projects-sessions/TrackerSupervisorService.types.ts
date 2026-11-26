@@ -3,6 +3,7 @@ export type TrackerSupervisorWorker =
 	| 'adapter'
 	| 'backup'
 	| 'dispatch'
+	| 'messages'
 	| 'notifications'
 	| 'recurring'
 	| 'telemetry'

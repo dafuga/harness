@@ -30,7 +30,9 @@ export function nativeTrackerArgs(args: string[]) {
 		allowNegative: true,
 		options: { ...nativeTrackerCommonOptions, ...options }
 	});
-	return { command, values, words, request: nativeTrackerRequest(command, words, values) };
+	const request =
+		command === 'reply' ? replyRequest(words) : nativeTrackerRequest(command, words, values);
+	return { command, values, words, request };
 }
 
 function nativeTrackerRequest(
@@ -76,6 +78,16 @@ function runRequest(
 		default:
 			return undefined;
 	}
+}
+
+/** Answers one Hub message; the id carries its thread, so nothing else is needed. */
+function replyRequest([id, ...text]: string[]): NativeTrackerRequest {
+	if (!id || !text.length) throw new TypeError('usage: tracker reply <message id> <text...>');
+	return {
+		method: 'POST',
+		path: '/messages/' + encodeURIComponent(id) + '/reply',
+		body: { text: text.join(' ') }
+	};
 }
 
 function stopRequest(words: string[]): NativeTrackerRequest {

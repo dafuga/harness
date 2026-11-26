@@ -4,6 +4,7 @@ import type {
 	HomeAgent,
 	HomeAgentState,
 	HomeLimit,
+	HomeMessage,
 	HomePastDue,
 	HomePlanState,
 	HomeSection,
@@ -215,3 +216,17 @@ export function quotaSummary(subscriptions: HomeSubscription[], now: number) {
 }
 
 export { quotaReset, runDay, runTime, when } from './hubHomeTime';
+
+/** Where one of Daniel's Hub messages got to, in his words; nothing for plain notes. */
+export function messageStatusText(
+	message: Pick<HomeMessage, 'status' | 'reason'>,
+	name: string
+): string | null {
+	if (message.status === 'stored')
+		return message.reason ? `Not delivered yet: ${message.reason}` : 'Stored in Tracker';
+	if (message.status === 'delivered') return `Delivered to ${name}`;
+	if (message.status === 'acknowledged') return 'Replied';
+	if (message.status === 'refused')
+		return message.reason ? `Not delivered: ${message.reason}` : 'Not delivered';
+	return null;
+}

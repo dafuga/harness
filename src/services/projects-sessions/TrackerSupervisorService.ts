@@ -8,6 +8,7 @@ import type {
 import { batchTrackerLaunchEvents } from './tracker-native-runtime-service/trackerLaunchEventBatch';
 import { trackerSupervisorStatus } from './tracker-supervisor-service/trackerSupervisorStatus';
 import { assertTrackerLegacyRollbackSafe } from './tracker-supervisor-service/assertTrackerLegacyRollbackSafe';
+import { trackerHubChiefDelivery } from './tracker-native-runtime-service/trackerHubChiefMessages';
 
 /** Owns one node's workers and drains in-flight work before returning database ownership. */
 export class TrackerSupervisorService {
@@ -72,6 +73,7 @@ export class TrackerSupervisorService {
 	private workers() {
 		const { scheduler, notifications, recurring, adapter, telemetry, watchdog, backups } =
 			this.runtime;
+		const chiefMessages = chiefMessageWorker(this.runtime);
 		const ticks = {
 			...(telemetry && { telemetry }),
 			...(backups.service && { backup: () => backups.service!.tick() }),
@@ -85,6 +87,7 @@ export class TrackerSupervisorService {
 				}
 			}),
 			...(adapter && { adapter: (signal: AbortSignal) => adapter.tick(signal) }),
+			...(chiefMessages && { messages: chiefMessages }),
 			...this.options.ticks
 		};
 		return Object.entries(ticks) as [
@@ -92,4 +95,11 @@ export class TrackerSupervisorService {
 			(signal: AbortSignal) => Promise<void>
 		][];
 	}
+}
+
+/** On the hub: sends Chief of Staff's Hub messages through its notification channel. */
+function chiefMessageWorker(runtime: TrackerNativeRuntimeService) {
+	if (runtime.role !== 'hub') return undefined;
+	const { store, now, notifications } = runtime;
+	return trackerHubChiefDelivery({ store, now, channel: () => notifications?.chiefChannel() });
 }

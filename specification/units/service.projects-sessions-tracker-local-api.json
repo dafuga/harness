@@ -16,6 +16,7 @@
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalPlanning.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalRejection.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts",
@@ -41,6 +42,8 @@
 			"recordTrackerSessionItem",
 			"readItemBody",
 			"itemMutationContext",
+			"cosChatTitle",
+			"trackerMessageEndpoint",
 			"writeTrackerPlanning",
 			"trackerRejectItem",
 			"isTrackerManualLaunch",
@@ -230,6 +233,21 @@
 				"default": false
 			},
 			{
+				"name": "trackerMessageEndpoint.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.dependencies",
+				"type": "MessageDependencies",
+				"required": true
+			},
+			{
 				"name": "writeTrackerPlanning.request",
 				"type": "Request",
 				"required": true
@@ -368,6 +386,14 @@
 			{
 				"name": "itemMutationContext",
 				"type": "TrackerItemMutationContext"
+			},
+			{
+				"name": "cosChatTitle",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerMessageEndpoint",
+				"type": "Promise<{ status: number; body: object } | undefined>"
 			},
 			{
 				"name": "writeTrackerPlanning",
@@ -698,6 +724,34 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerMessageEndpoint",
+				"inputs": [
+					{
+						"name": "trackerMessageEndpoint.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerMessageEndpoint.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerMessageEndpoint.dependencies",
+						"type": "MessageDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMessageEndpoint",
+						"type": "Promise<{ status: number; body: object } | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "writeTrackerPlanning",
 				"inputs": [
 					{
@@ -908,6 +962,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-hub-session-messages",
 			"via": "import",
 			"origin": "derived"
 		},

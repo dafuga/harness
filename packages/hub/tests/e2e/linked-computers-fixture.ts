@@ -17,9 +17,12 @@ const project = { id: 'local-' + 'b'.repeat(64), name: 'Desk project' };
 /** A synthetic signed-in Hub and Mac, speaking the real encrypted wire protocol. */
 export async function linkedComputersFixture(
 	page: Page,
+	/** What the Mac answers to `homeSnapshot`, read again for every request when a function. */
 	home?: unknown,
 	/** Collects what the Mac is asked to write; without it the Mac offers no `homeChat`. */
-	chats?: unknown[]
+	chats?: unknown[],
+	/** The Mac's reply to one write; by default it was sent. */
+	answer?: (input: never) => unknown
 ) {
 	const keys = await remoteKeys();
 	const hostId = await remoteIdentity(keys.publicKey);
@@ -67,7 +70,7 @@ export async function linkedComputersFixture(
 			json: { deviceId: device?.deviceId, sealed: device?.sealed, credential: randomCredential() }
 		})
 	);
-	await connectFixture(page, { host, keys, grant, home, chats, device: () => device! });
+	await connectFixture(page, { host, keys, grant, home, chats, answer, device: () => device! });
 }
 
 async function connectFixture(
@@ -79,10 +82,11 @@ async function connectFixture(
 		/** What the Mac answers to `homeSnapshot`; without it the method is not offered. */
 		home?: unknown;
 		chats?: unknown[];
+		answer?: (input: never) => unknown;
 		device: () => Awaited<ReturnType<HostPairingService['approve']>>;
 	}
 ) {
-	const { host, keys, grant, home, chats, device } = input;
+	const { host, keys, grant, home, chats, answer, device } = input;
 	const offered = [
 		'listProjects' as const,
 		...(home === undefined ? [] : ['homeSnapshot' as const]),
@@ -105,9 +109,11 @@ async function connectFixture(
 			handle: async (request) => {
 				if (request.method === 'homeChat') {
 					chats?.push(request.input);
+					if (answer) return answer(request.input as never);
 					return { id: (request.input as { id: string }).id, status: 'sent' };
 				}
-				return request.method === 'homeSnapshot' ? home : [project];
+				if (request.method !== 'homeSnapshot') return [project];
+				return typeof home === 'function' ? (home as () => unknown)() : home;
 			}
 		});
 		const link = wire.connect(

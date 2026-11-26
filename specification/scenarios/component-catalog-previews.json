@@ -122,6 +122,7 @@
 		"hub.component.projects-sessions-hub-home-cards",
 		"hub.component.projects-sessions-hub-home-choices",
 		"hub.component.projects-sessions-hub-home-composer",
+		"hub.component.projects-sessions-hub-home-cos-chat",
 		"hub.component.projects-sessions-hub-home-dialogs",
 		"hub.component.projects-sessions-hub-home-header",
 		"hub.component.projects-sessions-hub-home-live",
@@ -2222,6 +2223,12 @@
 			"title": "HubHomeComposer",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-composer"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-cos-chat",
+			"title": "HubHomeCosChat",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-cos-chat"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-dialogs",
@@ -9042,6 +9049,7 @@
 				"hub-component-projects-sessions-hub-home-card",
 				"hub-component-projects-sessions-hub-home-cards",
 				"hub-component-projects-sessions-hub-home-choices",
+				"hub-component-projects-sessions-hub-home-cos-chat",
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
 				"hub-component-projects-sessions-hub-home-header",

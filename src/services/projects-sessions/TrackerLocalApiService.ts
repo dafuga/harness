@@ -13,6 +13,7 @@ import {
 import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
 import { trackerJobEndpoint } from './tracker-local-api-service/trackerLocalJobs';
+import { trackerMessageEndpoint } from './tracker-local-api-service/trackerLocalMessages';
 import {
 	trackerFailureResponse,
 	trackerResponse
@@ -154,6 +155,15 @@ function trackerSpecialResponse(
 	dependencies: Parameters<typeof trackerItemSpecialResponse>[2]
 ) {
 	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
+	if (parts[0] === 'messages')
+		return trackerMessageEndpoint(request, parts, {
+			...dependencies,
+			actor: readActor(request.headers)
+		}).then((result) =>
+			result
+				? trackerResponse(result.status, result.body)
+				: trackerResponse(404, { error: `no route ${request.method} /${parts.join('/')}` })
+		);
 	return trackerItemSpecialResponse(request, parts, dependencies);
 }
 
