@@ -1,5 +1,6 @@
 // @harness-uid u_fyf7e7kyi5
 import { setTimeout as delay } from 'node:timers/promises';
+import { submitClaudeTrackerDraft } from './submitClaudeTrackerDraft';
 import { trackerPaneFormat, trackerTmuxKeys } from './trackerTmuxPane';
 import type { TrackerTmuxNudge, TrackerTmuxPane } from '../TrackerTmuxAdapter.types';
 
@@ -80,15 +81,14 @@ export async function sendTrackerTmuxNudge(
 		]);
 		return result.code === 0 && result.stdout.trim() === 'tracker-watchdog-sent';
 	};
-	if (!(await send(raw, trackerTmuxKeys(id, input.message)))) return false;
-	return verifyTrackerTmuxSubmission(
-		input,
-		{
-			capture: effects.capture,
-			submit: (draft) => send(draft.raw, trackerTmuxKeys(id))
-		},
-		signal
-	);
+	const claude = input.cli === 'claude';
+	if (!(await send(raw, trackerTmuxKeys(id, input.message, !claude)))) return false;
+	const submit = (draft: TrackerTmuxPane) => send(draft.raw, trackerTmuxKeys(id));
+	const { capture } = effects;
+	if (!claude) return verifyTrackerTmuxSubmission(input, { capture, submit }, signal);
+	const working = ({ y, screen }: TrackerTmuxPane['pane']) =>
+		isWorking(y, screen?.replace(control, '') ?? '', 'claude');
+	return submitClaudeTrackerDraft(input.message, { capture, submit, working }, signal);
 }
 
 export async function trackerTmuxCwd(
