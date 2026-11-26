@@ -3,6 +3,7 @@ import { isTrackerPhase4Worker } from '../../../utils/projects-sessions/isTracke
 import { trackerStaleDecisionMinutes } from './splitTrackerAsks';
 import { clipTrackerText } from './clipTrackerText';
 import { formatTrackerProject } from './formatTrackerProject';
+import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import type {
 	TrackerDigest,
 	TrackerDigestItem,
@@ -17,6 +18,12 @@ export function formatTrackerDigest(digest: TrackerDigest): string {
 		`PROJECTS (${digest.projects.length})`,
 		...(digest.projects.length ? digest.projects.map(formatTrackerProject) : ['  (none)']),
 		...section('BLOCKED', digest.blocked, blockedDetail),
+		...section(
+			'NEEDS OPTIONS',
+			digest.needs_options,
+			decisionDetail,
+			'for Chief of Staff, not shown to Daniel'
+		),
 		...pingSection(digest.pings),
 		...section('QUEUED', digest.queued, (item) =>
 			[item.computer && `on ${item.computer}`, waitText(item.waiting_minutes)]
@@ -45,12 +52,13 @@ export function formatTrackerDigest(digest: TrackerDigest): string {
 function section<T extends TrackerDigestItem>(
 	title: string,
 	items: T[],
-	detail: (item: T) => string
+	detail: (item: T) => string,
+	note = ''
 ): string[] {
 	const others = items.filter((item) => !isWorker(item));
 	const workers = items.filter(isWorker);
 	return [
-		`${title} (${items.length})`,
+		`${title} (${items.length}${note ? `; ${note}` : ''})`,
 		...others.map((item) => line(item, detail(item))),
 		...(workers.length ? [workerLine(workers)] : []),
 		...(items.length ? [] : ['  (none)'])
@@ -131,15 +139,35 @@ function line(item: TrackerDigestItem, detail: string): string {
 	return `  - [${item.id.slice(0, 6)}] ${item.title}${detail ? ` - ${detail}` : ''} (${context}; ${item.stage})`;
 }
 
+function decisionDetail(item: TrackerDigestItem): string {
+	return [
+		ageText(item),
+		item.status === 'done' && 'ITEM DONE, FLAG STILL OPEN',
+		item.blocked_reason && `blocked: ${item.blocked_reason}`,
+		item.next_step
+			? [item.project && `Project: ${item.project}`, `Next step: ${item.next_step}`]
+					.filter(Boolean)
+					.join(' · ')
+			: item.question && `Q: ${item.question}`,
+		item.parked_until && `Parked until ${item.parked_until}`
+	]
+		.filter(Boolean)
+		.join('; ');
+}
+
 function blockedDetail(item: TrackerDigestItem): string {
 	return [
 		item.blocked_reason && `blocked: ${item.blocked_reason}`,
 		item.needs_daniel &&
-			`NEEDS DANIEL · ${item.next_step ? askDetail(item) : waitText(item.waiting_minutes)}`,
+			`${flagLabel(item)} · ${item.next_step ? askDetail(item) : waitText(item.waiting_minutes)}`,
 		item.due && `due ${item.due}`
 	]
 		.filter(Boolean)
 		.join('; ');
+}
+
+function flagLabel(item: TrackerDigestItem): string {
+	return trackerStructuredAsk(item) ? 'NEEDS DANIEL' : 'FLAGGED FOR CHIEF OF STAFF';
 }
 
 function askDetail(item: TrackerDigestItem): string {

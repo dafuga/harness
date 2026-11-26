@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.planning-collaboration-artboard-document",
+	"uid": "u_74tqvcb7t5",
+	"kind": "function",
+	"title": "artboardDocument",
+	"responsibility": "Builds the sandbox document that puts a no-script, no-network policy before artboard HTML.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/planning-collaboration/artboardDocument.ts"],
+		"symbols": ["artboardPolicy", "artboardDocument"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "artboardDocument.html",
+				"type": "string",
+				"required": true,
+				"description": "Artboard HTML; a starter page is used when saving without it."
+			},
+			{
+				"name": "artboardDocument.theme",
+				"type": "ArtboardTheme",
+				"required": true,
+				"description": "light, dark or both for rendering; light or dark for a viewer."
+			}
+		],
+		"outputs": [
+			{
+				"name": "artboardPolicy",
+				"type": "string",
+				"description": "Content-Security-Policy applied to every artboard."
+			},
+			{
+				"name": "artboardDocument",
+				"type": "string",
+				"description": "Result: Builds the sandbox document that puts a no-script, no-network policy before artboard HTML."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "artboardDocument",
+				"inputs": [
+					{
+						"name": "artboardDocument.html",
+						"type": "string",
+						"required": true,
+						"description": "Artboard HTML; a starter page is used when saving without it."
+					},
+					{
+						"name": "artboardDocument.theme",
+						"type": "ArtboardTheme",
+						"required": true,
+						"description": "light, dark or both for rendering; light or dark for a viewer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artboardDocument",
+						"type": "string",
+						"description": "Result: Builds the sandbox document that puts a no-script, no-network policy before artboard HTML."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/planning-collaboration/artboardDocument.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/planning-collaboration/artboardDocument.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

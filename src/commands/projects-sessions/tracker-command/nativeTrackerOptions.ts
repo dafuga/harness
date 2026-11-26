@@ -82,7 +82,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['priority', {}],
 	['park', { until: text }],
 	['move-on', {}],
-	['block', { 'needs-daniel': flag, force: flag }],
+	['block', { force: flag }],
 	['unblock', { note: text }],
 	['ignore', { reason: text, until: text }],
 	['unignore', { note: text }],

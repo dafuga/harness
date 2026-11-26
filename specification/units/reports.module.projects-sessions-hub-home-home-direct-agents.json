@@ -85,11 +85,11 @@
 			},
 			{
 				"name": "completeHomeSnapshot",
-				"type": "OwnerHomeSnapshot"
+				"type": "OwnerHomeSnapshot & { openAsks: HomeOpenAsk[] }"
 			},
 			{
 				"name": "listedHomeSnapshot",
-				"type": "OwnerHomeSnapshot & HomeLists"
+				"type": "OwnerHomeSnapshot & HomeLists & { openAsks: HomeOpenAsk[] }"
 			}
 		],
 		"errors": [],
@@ -167,7 +167,7 @@
 				"outputs": [
 					{
 						"name": "completeHomeSnapshot",
-						"type": "OwnerHomeSnapshot"
+						"type": "OwnerHomeSnapshot & { openAsks: HomeOpenAsk[] }"
 					}
 				],
 				"errors": [],
@@ -191,7 +191,7 @@
 				"outputs": [
 					{
 						"name": "listedHomeSnapshot",
-						"type": "OwnerHomeSnapshot & HomeLists"
+						"type": "OwnerHomeSnapshot & HomeLists & { openAsks: HomeOpenAsk[] }"
 					}
 				],
 				"errors": [],
@@ -201,6 +201,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",

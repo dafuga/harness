@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.planning-collaboration-design-canvas-canvas-gestures",
+	"uid": "u_xhvmmieda3",
+	"kind": "function",
+	"title": "canvasGestures",
+	"responsibility": "Turns drags, wheels, pinches and keys on the canvas into view changes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/components/planning-collaboration/design-canvas/canvasGestures.ts",
+			"packages/reports/src/components/planning-collaboration/design-canvas/canvasGestures.types.ts"
+		],
+		"symbols": ["canvasGestures", "GestureTarget"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "canvasGestures.node",
+				"type": "HTMLElement",
+				"required": true,
+				"description": "Stage element receiving gestures."
+			},
+			{
+				"name": "canvasGestures.target",
+				"type": "GestureTarget",
+				"required": true,
+				"description": "Reads and changes the canvas view and selection."
+			}
+		],
+		"outputs": [
+			{
+				"name": "canvasGestures",
+				"type": "{ destroy: () => void }",
+				"description": "Removes the listeners."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "canvasGestures",
+				"inputs": [
+					{
+						"name": "canvasGestures.node",
+						"type": "HTMLElement",
+						"required": true,
+						"description": "Stage element receiving gestures."
+					},
+					{
+						"name": "canvasGestures.target",
+						"type": "GestureTarget",
+						"required": true,
+						"description": "Reads and changes the canvas view and selection."
+					}
+				],
+				"outputs": [
+					{
+						"name": "canvasGestures",
+						"type": "{ destroy: () => void }",
+						"description": "Removes the listeners."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-fit-view",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/planning-collaboration/design-canvas/canvasGestures.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/planning-collaboration/design-canvas/canvasGestures.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

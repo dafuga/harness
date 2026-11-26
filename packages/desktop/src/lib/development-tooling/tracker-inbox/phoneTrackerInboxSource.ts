@@ -26,6 +26,16 @@ function candidatesOf(data: unknown): string[] | undefined {
 	return data.candidates.filter((id): id is string => typeof id === 'string');
 }
 
+/** Each Needs you entry also carries its question and when it was asked. */
+function askOf(entries: unknown, id: string): Pick<InboxRow, 'ask'> {
+	const entry = Array.isArray(entries)
+		? entries.find((value) => isRecord(value) && value.id === id)
+		: undefined;
+	if (!isRecord(entry) || typeof entry.question !== 'string') return {};
+	const since = typeof entry.askedAt === 'string' ? entry.askedAt : null;
+	return { ask: { question: entry.question, since } };
+}
+
 /** `tracker_status` lists the open-flag items and the 10 most recent items. Both are headers. */
 function overviewOf(data: unknown): InboxOverview | undefined {
 	if (!isRecord(data)) return undefined;
@@ -33,7 +43,11 @@ function overviewOf(data: unknown): InboxOverview | undefined {
 	const seen = new Set(needing.map((header) => header.id));
 	const recent = parseHeaders(data.recent).filter((header) => !seen.has(header.id));
 	const rows: InboxRow[] = [
-		...needing.map((header) => ({ header, bucket: 'needs-you' as const })),
+		...needing.map((header) => ({
+			header,
+			bucket: 'needs-you' as const,
+			...askOf(data.needsYou, header.id)
+		})),
 		...recent.map((header) => ({ header, bucket: itemBucket(header.status, false) }))
 	];
 	const unresolved = typeof data.unresolvedFlags === 'number' ? data.unresolvedFlags : 0;

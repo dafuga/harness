@@ -12,6 +12,7 @@
 			"src/services/projects-sessions/TrackerLocalApiService.ts",
 			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts",
+			"src/services/projects-sessions/tracker-local-api-service/recordCosFlag.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
@@ -25,6 +26,7 @@
 			"TrackerLocalApiOptions",
 			"readTrackerItemDetail",
 			"readTrackerRunEndpoint",
+			"recordCosFlag",
 			"trackerInboxItem",
 			"TrackerInboxReview",
 			"TrackerInboxRoute",
@@ -88,6 +90,21 @@
 			{
 				"name": "readTrackerRunEndpoint.options",
 				"type": "TrackerLocalApiOptions & { items: TrackerItemReadRepository }",
+				"required": true
+			},
+			{
+				"name": "recordCosFlag.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordCosFlag.flag",
+				"type": "{ itemId: string; action: string | undefined; question: TrackerItemValue }",
+				"required": true
+			},
+			{
+				"name": "recordCosFlag.now",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -261,6 +278,10 @@
 				"type": "unknown"
 			},
 			{
+				"name": "recordCosFlag",
+				"type": "void"
+			},
+			{
 				"name": "trackerInboxItem",
 				"type": "Promise<TrackerInboxResult>"
 			},
@@ -372,6 +393,34 @@
 					{
 						"name": "readTrackerRunEndpoint",
 						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordCosFlag",
+				"inputs": [
+					{
+						"name": "recordCosFlag.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordCosFlag.flag",
+						"type": "{ itemId: string; action: string | undefined; question: TrackerItemValue }",
+						"required": true
+					},
+					{
+						"name": "recordCosFlag.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCosFlag",
+						"type": "void"
 					}
 				],
 				"errors": [],
@@ -723,6 +772,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-is-tracker-ping",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-normalize-tracker-item-fields",
 			"via": "import",
 			"origin": "derived"
@@ -764,6 +818,11 @@
 		},
 		{
 			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
 		},

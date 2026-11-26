@@ -58,7 +58,7 @@ export async function applyIdleDecision(
 		});
 	} else {
 		const reason = `Could not verify submission of the watchdog check-in in ${pane.name}.`;
-		recordWatchdogAlert(store, { ...alert, reason }, snapshot.now, null);
+		recordWatchdogAlert(store, { ...alert, reason }, snapshot.now);
 	}
 }
 

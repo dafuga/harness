@@ -18,7 +18,7 @@ export interface RemoteError {
 	message: string;
 }
 
-export type WireChannel = 'run' | 'cache' | 'connection';
+export type WireChannel = 'run' | 'cache' | 'connection' | 'tracker';
 
 export interface WireRequest {
 	type: 'request';

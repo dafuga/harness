@@ -1,4 +1,5 @@
 // @harness-uid u_st4dufvqxm
+import { trackerStructuredAsk } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import { trackerAskOptions } from '../../../utils/projects-sessions/trackerAskOptions';
 import { createHash } from 'node:crypto';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
@@ -98,10 +99,10 @@ function projectItem(
 	};
 }
 
-/** Choices travel on the flag so the phone can show buttons; plain asks keep their old shape. */
+/** Choices travel only on a structured ask: the phone counts and offers exactly those. */
 function phoneAskChoices(item: PhoneItemSource) {
+	if (!trackerStructuredAsk(item)) return {};
 	const options = trackerAskOptions(item.options);
-	if (!options.length) return {};
 	return {
 		options: options.map(({ label, effect, recommended }) => ({
 			label: excerpt(label, 80),

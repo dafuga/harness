@@ -5,6 +5,8 @@ import { readJsonBody } from '../../../utils/development-tooling/readJsonBody';
 
 /** What a poke says changed: the op log or the objects of a scope. */
 const kinds = ['ops', 'objects'];
+/** What a content-free change notice may name. */
+const topics = ['home', 'chat'];
 const json = (body: unknown, status = 200) => Response.json(body, { status });
 const failure = (status: number, error: string) => json({ error }, status);
 
@@ -17,6 +19,7 @@ export class SyncHttp {
 		const parts = url.pathname.split('/').filter(Boolean);
 		if (parts[0] === 'live' && request.method === 'GET') return this.live(request, url);
 		if (parts[0] === 'poke' && request.method === 'POST') return this.poke(request);
+		if (parts[0] === 'changed' && request.method === 'POST') return this.changed(request);
 		if (parts[0] === 'enroll') return this.enroll(request, parts[1]);
 		return failure(404, 'not-found');
 	}
@@ -24,7 +27,17 @@ export class SyncHttp {
 	private live(request: Request, url: URL): Response {
 		if (request.headers.get('Upgrade') !== 'websocket') return failure(426, 'upgrade-required');
 		const client = this.deps.sockets.open(url.searchParams.get('device') ?? '');
-		return new Response(null, { status: 101, webSocket: client });
+		const protocol = request.headers.get('Sec-WebSocket-Protocol');
+		const headers: Record<string, string> = protocol ? { 'Sec-WebSocket-Protocol': protocol } : {};
+		return new Response(null, { status: 101, webSocket: client, headers });
+	}
+
+	private async changed(request: Request): Promise<Response> {
+		const body = await readJsonBody(request, false);
+		const topic = String(body?.topic);
+		if (!topics.includes(topic)) return failure(400, 'invalid');
+		this.deps.sockets.changed(topic);
+		return new Response(null, { status: 204 });
 	}
 
 	private async poke(request: Request): Promise<Response> {

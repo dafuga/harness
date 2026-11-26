@@ -5,6 +5,7 @@ import {
 	trackerPlanningSchema,
 	trackerStageSchema
 } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
+import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
 import { sanitizeTrackerText } from '../../../../../../src/utils/projects-sessions/sanitizeTrackerText';
 import type {
 	ConfirmedWrite,
@@ -26,6 +27,8 @@ export class MacTrackerInboxService {
 		input: TrackerInboxReadInput
 	): Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail>> {
 		switch (input.operation) {
+			case 'live':
+				return liveState();
 			case 'overview':
 				return this.overview();
 			case 'search':
@@ -99,6 +102,17 @@ export class MacTrackerInboxService {
 	}
 }
 
+/** Whether the local change feed answers, for a window that has not heard a push yet. */
+async function liveState(): Promise<InboxReply<never>> {
+	try {
+		const response = await trackerRequest('/changes');
+		await response.body?.cancel();
+		return response.ok ? current({}) : unavailable();
+	} catch {
+		return unavailable();
+	}
+}
+
 function parseWrite(input: Partial<ConfirmedWrite>): ConfirmedWrite | null {
 	const { action, id, text, revision, option } = input;
 	if (
@@ -131,12 +145,18 @@ async function readReply<T>(response: Response): Promise<T> {
 
 async function readRows(): Promise<InboxRow[]> {
 	const items = await readReply<TrackerItem[]>(await trackerRequest('/items?status=all&limit=-1'));
-	return items
-		.filter((item) => visible(item))
-		.map((item) => ({
-			header: projectHeader(item),
-			bucket: itemBucket(item.status ?? 'open', Boolean(item.needs_daniel && !item.resolved))
-		}));
+	return items.filter((item) => visible(item)).map(projectRow);
+}
+
+function projectRow(item: TrackerItem): InboxRow {
+	const open = trackerStructuredAsk(item);
+	return {
+		header: projectHeader(item),
+		bucket: itemBucket(item.status ?? 'open', open),
+		...(open && {
+			ask: { question: safe(item.question), since: item.asked_at ?? item.updated_at }
+		})
+	};
 }
 
 function visible(item: TrackerItem): boolean {

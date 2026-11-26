@@ -16,6 +16,9 @@
 	<hx-a href={resolve('/about') + '#download'}>Download</hx-a>{#if projectId}<hx-a
 			href={resolve('/projects/[projectId]/members', { projectId })}
 			data-sveltekit-reload>Members</hx-a
+		><hx-a
+			href={resolve('/projects/[projectId]/designs/[[canvas]]', { projectId })}
+			data-sveltekit-reload>Designs</hx-a
 		>{/if}<hx-button type="button" disabled={session.busy} onclick={() => void session.signOut()}
 		>Sign out</hx-button
 	>{/if}

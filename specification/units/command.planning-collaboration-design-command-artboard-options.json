@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "command.planning-collaboration-design-command-artboard-options",
+	"uid": "u_gcr4ee6amg",
+	"kind": "command",
+	"title": "artboardOptions",
+	"responsibility": "Turns the add and update command-line options into one validated artboard change.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/planning-collaboration/design-command/artboardOptions.ts"],
+		"symbols": ["artboardOptions"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "artboardOptions.options",
+				"type": "Record<string, string | undefined>",
+				"required": true,
+				"description": "Command-line option strings: title, from, size, order and at."
+			}
+		],
+		"outputs": [
+			{
+				"name": "artboardOptions",
+				"type": "Promise<ArtboardChange>",
+				"description": "Result: Turns the add and update command-line options into one validated artboard change."
+			}
+		],
+		"errors": [
+			{
+				"name": "DesignCanvasError",
+				"type": "thrown",
+				"description": "A canvas, artboard, option or prerequisite is not usable; the message says why."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "artboardOptions",
+				"inputs": [
+					{
+						"name": "artboardOptions.options",
+						"type": "Record<string, string | undefined>",
+						"required": true,
+						"description": "Command-line option strings: title, from, size, order and at."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artboardOptions",
+						"type": "Promise<ArtboardChange>",
+						"description": "Result: Turns the add and update command-line options into one validated artboard change."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-artboard-size",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-design-canvas",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/planning-collaboration/design-command/artboardOptions.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/planning-collaboration/design-command/artboardOptions.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

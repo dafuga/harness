@@ -15,7 +15,7 @@ export function createTrackerOverviewPublisher(
 	const ownerActorId = input.env.HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID?.trim();
 	if (!input.authority || input.env.HARNESS_TRACKER_OVERVIEW_PUBLISH !== '1' || !ownerActorId)
 		return null;
-	return new TrackerOverviewPublisher({
+	const publisher = new TrackerOverviewPublisher({
 		authority: input.authority,
 		ownerActorId,
 		read: input.read ?? (() => readProjectOverview()),
@@ -24,4 +24,5 @@ export function createTrackerOverviewPublisher(
 				? createHubHomePublisher(input.env.HARNESS_HUB_HOME_PROVIDER_FILE, liveQuotaSources())
 				: undefined
 	});
+	return publisher;
 }

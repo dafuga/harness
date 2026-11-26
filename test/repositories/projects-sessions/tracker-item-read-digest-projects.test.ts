@@ -92,7 +92,7 @@ test('To unblock lists unflagged blockers only when the blocker is Daniel', () =
 	const expected = Object.entries(reasons)
 		.filter(([, [, daniel]]) => daniel)
 		.map(([id]) => id);
-	expect(digest.to_unblock.map(({ id }) => id)).toEqual(['abc100', 'abc200', ...expected]);
+	expect(digest.to_unblock.map(({ id }) => id)).toEqual(expected);
 	expect(fixture.repository.digestText(NOW)).toContain(
 		'  - [ub0001] Blocked ub0001 - blocked: Waiting on Daniel (CanBoat exam and survey).'
 	);
@@ -117,7 +117,11 @@ test('Phase 4 module workers collapse into one Harness line without hiding Danie
 		title: 'Phase 4 visual states: design (p4.desktop.design)',
 		status: 'in_progress',
 		needs_daniel: 1,
-		question: 'Approve the design?'
+		question: 'Approve the design?',
+		options: JSON.stringify([
+			{ label: 'Approve', effect: '', recommended: true },
+			{ label: 'Hold', effect: '' }
+		])
 	});
 	insertItem(fixture.database, {
 		id: 'p4lead',

@@ -1,4 +1,4 @@
-import type { SyncFixture } from './syncFixture.types';
+import type { SyncFixture, SyncStart } from './syncFixture.types';
 import { build } from 'esbuild';
 import { Miniflare } from 'miniflare';
 import { readFileSync } from 'node:fs';
@@ -8,10 +8,8 @@ import { SyncSocket } from './syncSocket';
 const compatibilityDate = '2026-10-12';
 const hubEntry = fileURLToPath(new URL('./syncWorker.ts', import.meta.url));
 const relayEntry = fileURLToPath(new URL('../../../relay/src/index.ts', import.meta.url));
-const migration = readFileSync(
-	new URL('../../db/migrations/0008-sealed-sync.sql', import.meta.url),
-	'utf8'
-);
+const migration = (name: string) =>
+	readFileSync(new URL(`../../db/migrations/${name}.sql`, import.meta.url), 'utf8');
 
 async function bundle(entry: string, external: string[]): Promise<string> {
 	const result = await build({
@@ -36,8 +34,8 @@ function bodyText(body: unknown): string | undefined {
 }
 
 /** The statements of the migration without its comments, which hold rollback statements. */
-function statements(): string[] {
-	const code = migration
+function statements(name: string): string[] {
+	const code = migration(name)
 		.split('\n')
 		.filter((line) => !line.trimStart().startsWith('--'))
 		.join('\n');
@@ -88,9 +86,9 @@ function relayWorker(script: string) {
  * The sealed sync API (the Hub's own policy code) and the relay's account objects in workerd,
  * joined by a namespace binding, with a real D1 database and R2 bucket. Nothing leaves the machine.
  */
-export async function startSync(): Promise<SyncFixture> {
+export async function startSync(options: SyncStart = {}): Promise<SyncFixture> {
 	const [hub, relay] = await Promise.all([
-		bundle(hubEntry, []),
+		bundle(options.entry ?? hubEntry, []),
 		bundle(relayEntry, ['cloudflare:workers'])
 	]);
 	const miniflare = new Miniflare({
@@ -101,7 +99,8 @@ export async function startSync(): Promise<SyncFixture> {
 	});
 	const origin = (await miniflare.ready).origin;
 	const db = (await miniflare.getD1Database('DB', 'hub-sync')) as unknown as D1Database;
-	for (const sql of statements()) await db.prepare(sql).run();
+	for (const name of ['0008-sealed-sync', ...(options.migrations ?? [])])
+		for (const sql of statements(name)) await db.prepare(sql).run();
 	const sent: (string | Uint8Array)[] = [];
 	const bucket = (await miniflare.getR2Bucket('CACHE', 'hub-sync')) as unknown as R2Bucket;
 	return {

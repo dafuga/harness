@@ -11,8 +11,17 @@ import {
 
 let fixture: ReturnType<typeof trackerReadFixture>;
 
+const choices = [
+	{ label: 'Approve', effect: '', recommended: true as const },
+	{ label: 'Hold', effect: '' }
+];
+
 beforeEach(() => {
 	fixture = trackerReadFixture();
+	// One open flag is a structured ask; the finished item's flag offers no choices.
+	fixture.database
+		.prepare("UPDATE items SET options = ? WHERE id = 'abc100'")
+		.run(JSON.stringify(choices));
 });
 
 afterEach(() => fixture.database.close());
@@ -48,6 +57,7 @@ const blocked = summary('abc100', 'Blocked item', {
 	due: '2026-06-30',
 	owner: 'operator',
 	question: 'Approve?',
+	options: choices,
 	asked_at: UPDATED,
 	waiting_minutes: 2730
 });
@@ -97,26 +107,28 @@ test('digest returns counts, unanswered asks and the configured local day', () =
 			summary('def100', 'Date today', { kind: 'plan', status: 'in_progress', due: '2026-07-02' }),
 			summary('xyz100', 'Later today', { due: '2026-07-02T03:00:00.000Z' })
 		],
-		daniel_decisions: [blocked, doneItem],
+		daniel_decisions: [blocked],
+		needs_options: [doneItem],
 		pings: [],
 		projects: [fixtureProject],
-		to_unblock: [blocked, doneItem],
+		to_unblock: [blocked],
 		recurring_missed: [problem],
 		queued: [],
 		chased_7d: [],
 		counts: {
 			blocked: 1,
 			needs_daniel: 2,
-			daniel_decisions: 2,
+			daniel_decisions: 1,
+			needs_options: 1,
 			pings: 0,
-			stale_decisions: 2,
+			stale_decisions: 1,
 			overdue: 2,
 			due_today: 3,
 			recurring_missed: 1,
 			queued: 0,
 			chased_7d: 0,
 			projects: 1,
-			to_unblock: 2
+			to_unblock: 1
 		}
 	});
 	const utc = fixture.repository.digest(NOW, 'UTC');
@@ -155,6 +167,8 @@ test('digestText renders legacy section order and omits blocked rows from other 
 			'  - fixture-agent: 1 in progress, 1 blocked, 7 open · ETA 2026-07-02 [def100] · latest 1970-01-01 [abc100]: Other item note',
 			'BLOCKED (1)',
 			'  - [abc100] Blocked item - blocked: Needs a plan; NEEDS DANIEL · waiting 45h 30m; due 2026-06-30 (task; owner operator, agent fixture-agent; priority normal; idea)',
+			'NEEDS OPTIONS (1; for Chief of Staff, not shown to Daniel)',
+			'  - [abc200] Done item - STALE 1d 21h old; ITEM DONE, FLAG STILL OPEN (task; agent fixture-agent; priority normal; idea)',
 			'CoS/WORKER PINGS (0)',
 			'  (none)',
 			'QUEUED (0)',
@@ -169,9 +183,8 @@ test('digestText renders legacy section order and omits blocked rows from other 
 			'  - [xyz100] Later today - due 2026-07-02T03:00:00.000Z (task; agent fixture-agent; priority normal; idea)',
 			'RECURRING: MISSED OR FAILED (1)',
 			"  - [def200] Missed and failed - missed 2026-06-29 08:00; failed 2026-06-30 08:00: fixture failed; every '0 12 * * *' (recurring; agent fixture-agent; priority normal; idea)",
-			'To unblock (Daniel) (2; oldest first; 24h+ is STALE)',
-			'  - [abc100] Blocked item - Q: Approve? (STALE 1d 21h old)',
-			'  - [abc200] Done item - open flag (STALE 1d 21h old; ITEM DONE, FLAG STILL OPEN)'
+			'To unblock (Daniel) (1; oldest first; 24h+ is STALE)',
+			'  - [abc100] Blocked item - Q: Approve? (STALE 1d 21h old)'
 		].join('\n')
 	);
 });
@@ -199,8 +212,9 @@ test('pings are separate from Daniel decisions, collapsed, and never hide an old
 		'pa0002',
 		'pa0001'
 	]);
-	expect(digest.daniel_decisions.map(({ id }) => id)).toEqual(['abc100', 'abc200']);
-	expect(digest.counts).toMatchObject({ needs_daniel: 8, daniel_decisions: 2, pings: 6 });
+	expect(digest.daniel_decisions.map(({ id }) => id)).toEqual(['abc100']);
+	expect(digest.needs_options.map(({ id }) => id)).toEqual(['abc200']);
+	expect(digest.counts).toMatchObject({ needs_daniel: 8, daniel_decisions: 1, pings: 6 });
 	const text = fixture.repository.digestText(NOW);
 	expect(text).toContain('CoS/WORKER PINGS (6)');
 	expect(text).toContain('  ... and 1 more');
