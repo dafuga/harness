@@ -64,7 +64,8 @@ describe('filterRows and countBuckets', () => {
 			blocked: 0,
 			active: 1,
 			quiet: 0,
-			done: 0
+			done: 0,
+			reminders: 0
 		});
 	});
 

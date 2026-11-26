@@ -1,3 +1,4 @@
+// @harness-uid u_iyhps4wxee
 const macros: Readonly<Record<string, string>> = {
 	'@hourly': 'Hourly',
 	'@daily': 'Daily',

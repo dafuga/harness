@@ -1,5 +1,6 @@
 <!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_vrrs2tfb4l -->
 <script lang="ts">
 	import type {
 		HomeChatReceipt,

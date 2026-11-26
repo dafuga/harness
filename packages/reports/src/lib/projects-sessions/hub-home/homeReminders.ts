@@ -1,5 +1,8 @@
-import { trackerPersonalAgent } from '../../../../../../src/utils/projects-sessions/trackerUnattendedHold';
-import { trackerRepeatLabel } from '../../../../../../src/utils/projects-sessions/trackerRepeatLabel';
+// @harness-uid u_qb53xa7234
+import {
+	trackerPersonalReminder,
+	trackerReminderName
+} from '../../../../../../src/utils/projects-sessions/trackerPersonalReminder';
 import type { TrackerItemRecord } from '../project-overview/projectOverviewTracker.types';
 import { homeText } from './homeTrackerText';
 import type { HomeReminder } from './hubHome.types';
@@ -7,24 +10,16 @@ import type { HomeReminder } from './hubHome.types';
 const listed = 100;
 
 function reminder(item: TrackerItemRecord): HomeReminder[] {
-	if (!item.remindAt || item.status === 'done' || !trackerPersonalAgent(item.agent)) return [];
+	const armed = trackerPersonalReminder(item);
+	if (!armed) return [];
 	return [
 		{
 			itemId: item.id,
-			title: reminderTitle(homeText(item.title, 500) ?? 'Untitled reminder'),
-			at: new Date(item.remindAt).toISOString(),
-			repeats: trackerRepeatLabel(item.every),
+			title: trackerReminderName(homeText(item.title, 500) ?? 'Untitled reminder'),
+			...armed,
 			updatedAt: new Date(item.updated_at).toISOString()
 		}
 	];
-}
-
-/** Drops a leading "Reminder Sat 10:00:" label: the list already shows what and when. */
-function reminderTitle(title: string): string {
-	const label =
-		/^\s*(?:(?:daily|weekly|monthly)\s+)?(?:personal\s+)?remind(?:er)?\b(?:[^:]|:(?=\d))*:\s+/i;
-	const text = title.replace(label, '').trim() || title;
-	return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 /**

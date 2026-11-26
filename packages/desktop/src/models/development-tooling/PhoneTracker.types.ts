@@ -7,6 +7,8 @@ export type PhoneTrackerTool =
 	| 'tracker_note'
 	| 'tracker_flag'
 	| 'tracker_answer'
+	| 'tracker_done'
+	| 'tracker_remind'
 	| 'tracker_write_status'
 	| 'tracker_discard_write';
 

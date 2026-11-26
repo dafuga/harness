@@ -14,7 +14,13 @@ const failures: Record<string, string> = {
 	unavailable: 'The Tracker copy could not take the write. Try again after it syncs.'
 };
 
-const kinds: Record<WriteAction, string> = { note: 'Note', flag: 'Flag', answer: 'Answer' };
+const kinds: Record<WriteAction, string> = {
+	note: 'Note',
+	flag: 'Flag',
+	answer: 'Answer',
+	done: 'Done',
+	remind: 'Snooze'
+};
 
 /** Why an item could not be opened, in the words of the surface that asked for it. */
 export function loadFailureMessage(code: string | undefined, mode: 'phone' | 'mac'): string {

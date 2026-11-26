@@ -1,3 +1,4 @@
+// @harness-uid u_xh5ezxybkq
 const hour = 3_600_000;
 
 const dayLabel = (at: Date) =>

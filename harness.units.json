@@ -3204,6 +3204,12 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home reminders read this reports module through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderTimes",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderTimes.ts",
+			"reason": "The Mac and phone Reminders view uses the same next-time and snooze rules as Hub Home."
 		}
 	]
 }

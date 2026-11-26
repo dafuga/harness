@@ -1,5 +1,6 @@
 <!-- @harness-tier molecule -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-uid u_wppzl5o65z -->
 <script lang="ts">
 	import type {
 		HomeChatInput,

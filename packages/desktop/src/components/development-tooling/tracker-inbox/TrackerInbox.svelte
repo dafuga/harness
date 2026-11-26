@@ -12,8 +12,9 @@
 		TrackerInboxSource
 	} from '../../../models/development-tooling/TrackerInbox.types';
 	import {
-		bucketLabels,
 		countBuckets,
+		filterLabel,
+		bucketLabels,
 		filterRows,
 		inboxFilters,
 		writeView
@@ -22,6 +23,7 @@
 	import { withRowChoices } from '../../../lib/development-tooling/tracker-inbox/withRowChoices';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import TrackerInboxDetail from './TrackerInboxDetail.svelte';
+	import TrackerInboxReminders from './TrackerInboxReminders.svelte';
 	import TrackerInboxRows from './TrackerInboxRows.svelte';
 	import TrackerInboxWrites from './TrackerInboxWrites.svelte';
 
@@ -41,7 +43,7 @@
 	let link = $state<RealtimeState | null>(null);
 	let detailView = $state<ReturnType<typeof TrackerInboxDetail>>();
 
-	const counts = $derived(countBuckets(overview?.rows ?? []));
+	const counts = $derived(countBuckets(overview?.rows ?? [], overview?.reminders.length));
 	const listed = $derived(filterRows(overview?.rows ?? [], filter));
 
 	function note(reply: { freshness: typeof freshness; lastSyncedAt: string | null }) {
@@ -85,6 +87,15 @@
 		await Promise.all([reload(), found ? search(query) : undefined, detailView?.refresh()]);
 	}
 
+	/** What every list of items needs. */
+	const shared = $derived({
+		source,
+		mode,
+		onchanged: follow,
+		onnotice: (message: string) => (notice = message),
+		onselect: choose
+	});
+
 	onMount(() => {
 		void reload();
 		return followTrackerSource(source, { refresh: follow, state: (state) => (link = state) });
@@ -93,21 +104,17 @@
 
 {#snippet rows()}
 	<TrackerInboxRows
-		{source}
-		{mode}
-		onchanged={follow}
-		onnotice={(message) => (notice = message)}
+		{...shared}
 		rows={listed}
 		{selected}
-		label={filter === 'all' ? 'All items' : bucketLabels[filter]}
+		label={filter === 'all' ? 'All items' : filterLabel(filter)}
 		empty="Nothing here right now."
-		onselect={choose}
 	/>
 {/snippet}
 
 <hx-section class="inbox" aria-label="Tracker decisions">
 	<hx-header class="inbox-head">
-		<hx-h1>Needs you</hx-h1>
+		<hx-h1>{filter === 'reminders' ? 'Reminders' : 'Needs you'}</hx-h1>
 		{#if link}
 			<hx-span class="live" role="status" aria-label="Updates" data-state={link}>
 				{link === 'live' ? 'Live' : 'Reconnecting'}
@@ -146,7 +153,7 @@
 					data-bucket={name}
 					onclick={() => (filter = name)}
 				>
-					{name === 'all' ? 'All' : bucketLabels[name]}
+					{filterLabel(name)}
 					<hx-span class="count">{counts[name]}</hx-span>
 				</hx-button>
 			{/each}
@@ -168,20 +175,18 @@
 			/>
 		</hx-form>
 
-		{#if found}
+		{#if filter === 'reminders' && !found}
+			<TrackerInboxReminders {...shared} reminders={overview.reminders} />
+		{:else if found}
 			<hx-h2>Search results</hx-h2>
 			<TrackerInboxRows
-				{source}
-				{mode}
-				onchanged={follow}
-				onnotice={(message) => (notice = message)}
+				{...shared}
 				rows={found}
 				{selected}
 				label="Search results"
 				empty={mac
 					? 'No Tracker items match that search.'
 					: 'Nothing on this phone matches that search.'}
-				onselect={choose}
 			/>
 		{:else if filter === 'needs-you' && listed.length}
 			<hx-section class="needs" aria-labelledby="inbox-needs-title">

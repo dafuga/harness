@@ -18,8 +18,17 @@ struct TrackerItemHeader: Codable {
     let dueAt: String?
 
     let stage: String?
+    /// Set on an active personal item. Older Macs send none.
+    var reminder: TrackerReplicaReminder? = nil
 
     static let statuses = ["open", "in_progress", "blocked", "done", "ignored"]
+}
+
+struct TrackerReplicaReminder: Codable {
+    let at: String
+    let repeats: String?
+
+    var valid: Bool { TrackerReplicaItem.short(at, 40) && TrackerReplicaItem.short(repeats ?? "", 20) }
 }
 
 /// Only these fields are retained from an authenticated JSON reply.
@@ -71,15 +80,16 @@ struct TrackerReplicaItem: Codable {
     let attentionRevision: String?
     let stage: String?
     let planning: TrackerReplicaPlanning?
+    let reminder: TrackerReplicaReminder?
 
     var header: TrackerItemHeader {
-        TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt, stage: stage)
+        TrackerItemHeader(id: id, title: title, project: project, status: status, updatedAt: updatedAt, dueAt: dueAt, stage: stage, reminder: reminder)
     }
 
     var valid: Bool {
         Self.short(id, 80) && Self.short(title, 240) && Self.short(project, 120)
             && TrackerItemHeader.statuses.contains(status)
-            && Self.short(updatedAt ?? "", 40) && Self.short(dueAt ?? "", 40)
+            && Self.short(updatedAt ?? "", 40) && Self.short(dueAt ?? "", 40) && (reminder.map(\.valid) ?? true)
             && (stage.map { ["idea", "detail", "design", "build"].contains($0) } ?? true)
             && notes.count <= 10 && notes.allSatisfy(Self.validNote)
             && (flag.map(Self.validFlag) ?? true)
