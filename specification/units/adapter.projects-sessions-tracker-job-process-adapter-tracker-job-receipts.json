@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-job-process-adapter-tracker-job-receipts",
+	"uid": "u_bujko2d2cj",
+	"kind": "adapter",
+	"title": "trackerJobReceipts",
+	"responsibility": "Owns the trackerJobReceipts integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/projects-sessions/tracker-job-process-adapter/trackerJobReceipts.ts"],
+		"symbols": ["trackerJobStateDirectory", "trackerJobReceipts"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerJobStateDirectory.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerJobStateDirectory.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerJobReceipts.directory",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerJobStateDirectory",
+				"type": "string"
+			},
+			{
+				"name": "trackerJobReceipts",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerJobStateDirectory",
+				"inputs": [
+					{
+						"name": "trackerJobStateDirectory.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerJobStateDirectory.itemId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerJobStateDirectory",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerJobReceipts",
+				"inputs": [
+					{
+						"name": "trackerJobReceipts.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerJobReceipts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-recurring",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/tracker-job-process-adapter/trackerJobReceipts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/tracker-job-process-adapter/trackerJobReceipts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
