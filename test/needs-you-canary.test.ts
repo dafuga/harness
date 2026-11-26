@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { runCanary } from '../scripts/needs-you-canary/runCanary';
 import { isTrackerCosMessage } from '../src/utils/projects-sessions/isTrackerPing';
 import { canaryHub, canaryOptions, canaryTracker } from './support/needsYouCanaryWorld';
-import type { CanaryWorld } from './support/needsYouCanaryWorld';
+import type { CanaryWorld } from './support/needsYouCanaryWorld.types';
 
 const everyHand = new Set(['mac', 'iphone'] as const);
 
@@ -60,7 +60,9 @@ describe('needs-you release canary', () => {
 		expect(isTrackerCosMessage(String(item().question))).toBe(false);
 		expect(JSON.parse(String(item().options))).toHaveLength(3);
 	});
+});
 
+describe('needs-you release canary failures', () => {
 	test.each([
 		['rows without option buttons', { rowButtons: false }, 'no option buttons'],
 		['a tap that never reaches the Tracker', { delivers: false }, 'did not record an answer']
@@ -93,7 +95,9 @@ describe('needs-you release canary', () => {
 		expect(states(report)).toEqual({ web: 'passed', mac: 'failed', iphone: 'failed' });
 		expect(report.passed).toBe(false);
 	});
+});
 
+describe('needs-you release canary holds and cleanup', () => {
 	test('a later pass removes only the canary block and flag', async () => {
 		const { world, release, item } = setup();
 		await runCanary(canaryOptions(world, { release }));

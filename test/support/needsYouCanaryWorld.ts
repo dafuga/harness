@@ -10,8 +10,65 @@ import type {
 	CanaryOptions,
 	CanaryWeb
 } from '../../scripts/needs-you-canary/canary.types';
+import type { CanaryRow as Row, CanaryWorld } from './needsYouCanaryWorld.types';
+import type {
+	CanaryItem,
+	CanaryOptions,
+	CanaryWeb
+} from '../../scripts/needs-you-canary/canary.types';
 
-type Row = Record<string, unknown> & { id: string; notes: string[] };
+const context = () => ({ now: new Date(), node: 'test-node', candidates: [] });
+const view = (row: Row) =>
+	({ ...row, needs_daniel: Boolean(row.needs_daniel) }) as unknown as CanaryItem;
+
+/** One item write under the real item rules. */
+function apply(row: Row, action: string, body: Record<string, unknown>) {
+	const plan = planTrackerItemMutation(
+		{ action, item: row as unknown as TrackerItemSnapshot, body } as never,
+		context() as never
+	);
+	const fields = { ...(plan.fields as Record<string, unknown>) };
+	if (fields['note+']) row.notes.push(String(fields['note+']));
+	delete fields['note+'];
+	Object.assign(row, fields);
+}
+
+function create(rows: Map<string, Row>, body: Record<string, unknown>) {
+	const id = `item${rows.size + 1}`;
+	const plan = planTrackerItemMutation(
+		{ action: 'add', itemId: id, body } as never,
+		context() as never
+	);
+	const row = { ...(plan.fields as Record<string, unknown>), id, notes: [] } as Row;
+	rows.set(id, row);
+	return row;
+}
+
+/** One CLI command line, parsed and applied. */
+function command(rows: Map<string, Row>, args: string[]): CanaryItem {
+	const { command: verb, request } = nativeTrackerArgs(args);
+	const body = JSON.parse(JSON.stringify(request.body ?? {}));
+	if (verb === 'add') return view(create(rows, body));
+	const row = rows.get(request.path.split('/')[2]!);
+	if (!row) throw new Error('no such item');
+	if (verb !== 'show') {
+		if (!Object.hasOwn(trackerItemTransitions, verb)) throw new Error(`unknown ${verb}`);
+		apply(row, verb, body);
+	}
+	return view(row);
+}
+
+/** What a surface's tap sends: an answer by Daniel to the open ask carrying `marker`. */
+function tapAsk(rows: Map<string, Row>, marker: string, label: string, by?: string) {
+	const row = [...rows.values()].find(
+		(entry) => entry.needs_daniel && !entry.resolved && String(entry.question).includes(marker)
+	);
+	if (!row) return false;
+	const options = trackerAskOptions(row.options as string);
+	const option = options.findIndex((entry) => entry.label === label) + 1;
+	apply(row, 'answer', { option: String(option), by });
+	return true;
+}
 
 /**
  * An in-memory Tracker behind the real CLI argument parser and the real item rules, so a command
@@ -20,65 +77,18 @@ type Row = Record<string, unknown> & { id: string; notes: string[] };
 export function canaryTracker() {
 	const rows = new Map<string, Row>();
 	const commands: string[][] = [];
-	let created = 0;
-	const context = () => ({ now: new Date(), node: 'test-node', candidates: [] });
-	function apply(row: Row, action: string, body: Record<string, unknown>) {
-		const plan = planTrackerItemMutation(
-			{ action, item: row as unknown as TrackerItemSnapshot, body } as never,
-			context() as never
-		);
-		const fields = { ...(plan.fields as Record<string, unknown>) };
-		if (fields['note+']) row.notes.push(String(fields['note+']));
-		delete fields['note+'];
-		Object.assign(row, fields);
-	}
-	function add(body: Record<string, unknown>) {
-		const id = `item${++created}`;
-		const plan = planTrackerItemMutation(
-			{ action: 'add', itemId: id, body } as never,
-			context() as never
-		);
-		const row = { ...(plan.fields as Record<string, unknown>), id, notes: [] } as Row;
-		rows.set(id, row);
-		return row;
-	}
-	function run(args: string[]): CanaryItem {
-		commands.push(args);
-		const { command, request } = nativeTrackerArgs(args);
-		const body = JSON.parse(JSON.stringify(request.body ?? {}));
-		if (command === 'add') return view(add(body));
-		const row = rows.get(request.path.split('/')[2]!);
-		if (!row) throw new Error('no such item');
-		if (command !== 'show') {
-			if (!Object.hasOwn(trackerItemTransitions, command)) throw new Error(`unknown ${command}`);
-			apply(row, command, body);
-		}
-		return view(row);
-	}
-	const view = (row: Row) =>
-		({ ...row, needs_daniel: Boolean(row.needs_daniel) }) as unknown as CanaryItem;
-	/** What a surface's tap sends: an answer by Daniel to the ask carrying `marker`. */
-	function tap(marker: string, label: string, by?: string) {
-		const row = [...rows.values()].find(
-			(entry) => entry.needs_daniel && !entry.resolved && String(entry.question).includes(marker)
-		);
-		if (!row) return false;
-		const options = trackerAskOptions(row.options as string);
-		const option = options.findIndex((entry) => entry.label === label) + 1;
-		apply(row, 'answer', { option: String(option), by });
-		return true;
-	}
 	return {
 		rows,
 		commands,
-		tap,
-		add: (title: string) => add({ title, later: true }).id,
-		tracker: async (args: string[]) => run(args),
+		tap: (marker: string, label: string, by?: string) => tapAsk(rows, marker, label, by),
+		add: (title: string) => create(rows, { title, later: true }).id,
+		tracker: async (args: string[]) => {
+			commands.push(args);
+			return command(rows, args);
+		},
 		asked: () => [...rows.values()].filter((row) => String(row.title).startsWith('RELEASE CANARY'))
 	};
 }
-
-export type CanaryWorld = ReturnType<typeof canaryTracker>;
 
 /** Production Hub as the canary sees it. `rowButtons: false` is the Hub before kthwzz. */
 export function canaryHub(
