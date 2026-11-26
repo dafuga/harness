@@ -2,7 +2,7 @@
 	"name": "esqhv8-hub-message-session",
 	"goal": "A Hub Home chat box delivers Daniel's message into the Chief of Staff pane, and each session's Message button into that exact live run's pane, over the linked-computer connection with the Mac Home upload off; receipts show stored, delivered and acknowledged, and the session's tracker reply appears in the Hub thread, on desktop and phone width",
 	"createdAt": "2026-11-26T16:36:31.526Z",
-	"updatedAt": "2026-11-26T17:20:16.948Z",
+	"updatedAt": "2026-11-26T17:22:54.389Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T17:22:51.122Z",
+			"evidence": "c722b7fe0b: tracker POST /messages + /messages/<id>/reply + 'tracker reply'; per-node delivery in the watchdog tick (cos pane on the Chief of Staff computer, exact run pane on its own computer, ended/replaced run refused); Mac homeChat kind 'message'; Hub CoS chat box + Message threads with receipts/replies and fast re-read. Red re-recorded at 25ab58af6d (catalog scenario moved into the test commit); the e2e spec hub-home-messages failed 3/3 at the test commit (no chat box, composer sent a note)."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T17:22:54.389Z",
+			"evidence": "loop record --phase green passed at c722b7fe0b with the unchanged red command (4 test files). Also: hub-home-messages e2e 3/3 passed (desktop+phone), full Hub e2e 167/167 after updating 3 older expectations in the test commit."
 		},
 		{
 			"id": "siblings",
