@@ -169,3 +169,24 @@ inTemp('backup, spoke link, disk and duplicate-service failures are reported', a
 		'extra Tracker service running: pid 999 (90 min)'
 	);
 });
+
+inTemp('a host that cannot list processes still gets every other check', async (root) => {
+	await fixture(root);
+	const service = new TrackerHealthService(join(root, 'tracker.json'), {
+		now: () => noon,
+		host: {
+			...host,
+			freeDiskBytes: () => 1e9,
+			processes: () => {
+				throw new Error('spawnSync ps ENOENT');
+			}
+		}
+	});
+	const report = await service.run({ alert: false });
+	expect(report.failing.map(({ name }) => name)).toEqual(['disk']);
+	expect(report.checks.find(({ name }) => name === 'stray_services')).toMatchObject({
+		ok: false,
+		severity: 'info',
+		detail: expect.stringContaining('not checked')
+	});
+});

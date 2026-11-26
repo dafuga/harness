@@ -33,12 +33,19 @@ export function trackerHealthHostChecks(
 }
 
 /** A second long-lived service on the same config. Without a live pid there is nothing to compare. */
-function strayCheck(host: TrackerHealthHost, configPath: string, livePid: number | undefined) {
-	const serving = host
-		.processes()
-		.filter(
-			({ command }) => command.includes(' tracker serve ') && command.includes(` ${configPath} `)
-		);
+function strayCheck(
+	host: TrackerHealthHost,
+	configPath: string,
+	livePid: number | undefined
+): TrackerHealthCheck {
+	const processes = listedProcesses(host);
+	if (!processes) {
+		const detail = 'cannot list processes (is ps installed?), so extra services are not checked';
+		return { name: 'stray_services', ok: false, severity: 'info', detail };
+	}
+	const serving = processes.filter(
+		({ command }) => command.includes(' tracker serve ') && command.includes(` ${configPath} `)
+	);
 	const stray = serving.filter(
 		({ pid, ageMinutes }) => livePid !== undefined && pid !== livePid && ageMinutes > strayMinutes
 	);
@@ -50,6 +57,15 @@ function strayCheck(host: TrackerHealthHost, configPath: string, livePid: number
 		!stray.length,
 		stray.length ? `extra Tracker service running: ${listed}` : 'none'
 	);
+}
+
+/** Slim containers can lack `ps`; that must not stop the other checks or their alerts. */
+function listedProcesses(host: TrackerHealthHost) {
+	try {
+		return host.processes();
+	} catch {
+		return null;
+	}
 }
 
 function check(name: string, ok: boolean, detail: string): TrackerHealthCheck {

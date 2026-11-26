@@ -581,8 +581,8 @@ healthy, 1 when a check fails and 2 when it cannot run. It checks the local API;
 on a hub the sync listener, webhook delivery and, once native backups report
 `enabled`, backup freshness; on a spoke the hub link. Every node checks for a
 second long-lived service on the same config, free database disk and load, and
-Linux also checks available memory. Quiet peers, a paused webhook and disabled
-backups are information only.
+Linux also checks available memory. Quiet peers, a paused webhook, disabled
+backups and a host that cannot list processes are information only.
 
 With `--alert`, a newly failing check flags one `Tracker health on <node>` item
 and repeats daily while it fails. Backup failures are reported here but asked
