@@ -169,9 +169,9 @@ export function failRun(
 		unavailableRetry(item, failure.reopen) ||
 		automaticRequestHold({ ...item, ...reopen }, policy, now)
 	)
-		return recordRun(finished, reopen);
+		return recordFailedRun(finished, reopen);
 	const choice = retryRung(item, run, policy, failure.startup);
-	if (!choice) return recordRun(finished, giveUp(snapshot, finished, reopen));
+	if (!choice) return recordFailedRun(finished, giveUp(snapshot, finished, reopen));
 	const pick = {
 		rung: choice,
 		kind: run.kind ?? item.kind,
@@ -185,8 +185,13 @@ export function failRun(
 	);
 	return {
 		result: { status: 'recorded', run: finished, retry },
-		writes: { runs: [finished, retry], ...(reopen && { item: reopen }) }
+		writes: { runs: [finished, retry], failedRunId: finished.id, ...(reopen && { item: reopen }) }
 	};
+}
+
+function recordFailedRun(run: TrackerRunReceipt, item?: TrackerDispatchWrites['item']) {
+	const { result, writes } = recordRun(run, item);
+	return { result, writes: { ...writes, failedRunId: run.id } };
 }
 
 function unavailableRetry(item: TrackerDispatchItem, reopen?: boolean) {

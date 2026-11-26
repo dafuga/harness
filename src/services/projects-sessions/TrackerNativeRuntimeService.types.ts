@@ -38,7 +38,7 @@ export interface TrackerNativeNotificationOptions extends Omit<
 
 export interface TrackerNativeRuntimeOptions extends Omit<
 	TrackerLocalApiOptions,
-	'runs' | 'recurring' | 'schedulePreview' | 'reject'
+	'runs' | 'recurring' | 'schedulePreview' | 'launchWait' | 'reject'
 > {
 	node: string;
 	role: 'hub' | 'spoke';
