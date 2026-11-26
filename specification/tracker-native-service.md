@@ -120,9 +120,10 @@ operator verifies the stopped database and chooses a rollback.
   delivery receipts before enabling sending. Shell command targets and
   legacy custom webhook headers require separate integration.
 - **30-minute digest.** The hub's `webhook` target gets updates and new
-  needs-Daniel asks as one batch, at most once every 30 minutes. Asks hold
-  from 22:00 to 08:00 Lisbon time. Ask escalations and explicit reminders
-  keep their own timing. A target is a webhook, such as the Grok Bot Chief
+  needs-Daniel asks as one batch, at most once every 30 minutes. Quiet
+  hours apply only to what is meant for Daniel. Chief of Staff and agents
+  get asks, done and blocked lines, due events and reminders at any hour;
+  Chief of Staff holds asks for Daniel until 08:00 Lisbon. A target is a webhook, such as the Grok Bot Chief
   of Staff, or a local tmux session running Claude Code or Codex:
 
   ```json
@@ -140,7 +141,7 @@ operator verifies the stopped database and chooses a rollback.
   To switch, change `webhook` to another target ID and restart the service.
   Queued lines go to the new target. Session targets are digest only. Tracker
   types into one only while its composer is idle; a busy session is retried
-  after two minutes. Outside quiet hours each digest adds the next entry of
+  after two minutes. From 08:00 to 22:00 Lisbon each digest adds the next entry of
   `suggestions`; an empty list turns them off. Setting `webhook` also starts
   the hub's recurring scheduler.
 
@@ -205,9 +206,9 @@ operator verifies the stopped database and chooses a rollback.
   tick can still read `tracker list --flagged --json` for decisions.
 
   Tracker sends the first ask, follows up two and six hours after the first
-  delivery, then repeats at 08:00 Lisbon each morning. Quiet hours run from
-  22:00 through 08:00. A quiet-hour follow-up waits for morning. If both
-  follow-up times have passed, the next repeat waits for the following morning.
+  delivery, then repeats at 08:00 Lisbon each morning. These reach Chief of
+  Staff at any hour. If both follow-up times have passed, the next repeat
+  waits for the next 08:00.
   Each ping includes how long the ask has waited. The digest shows every
   open ask, including deferred and completed-item asks. Record Daniel's
   answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an
@@ -233,9 +234,35 @@ operator verifies the stopped database and chooses a rollback.
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an
   explicit, private account directory and the existing `tracked` label.
-- **Other effects.** Fleet telemetry, job execution, and external backup
-  scheduling remain out of the foreground configuration. Recurrence is
-  enabled by a configured hub webhook.
+- **Box jobs.** A recurring item on the hub can run a shell command at each
+  occurrence in place of waking a bot. Use
+  `tracker job set ITEM --cmd 'C' [--wake-on finding|fail|always] [--timeout S]`
+  and `tracker job list`, `rm ITEM` or `test ITEM`. Exit 0 records the
+  occurrence as done. Exit 10 also records it as done and wakes the owner
+  with the output as `finding`. Any other exit or a timeout records it as
+  failed. `wake-on` defaults to `finding`; `fail` adds failures and `always`
+  wakes after every run. `test` runs the command now and records nothing.
+
+  Commands run at low priority under `/bin/sh` on the hub's own computer,
+  two scheduled jobs at a time, in `jobs/state/ITEM` beside the journal. They
+  receive `TRACKER_ITEM_ID`, `TRACKER_OCCURRENCE`, `TRACKER_STATE_DIR` and a
+  limited environment (such as `HOME` and the service's `PATH`) without the
+  service's other variables. Each command's process group is killed on exit,
+  timeout and shutdown. Output keeps the first 8 KB, with obvious secrets
+  redacted. An item with a job still waiting or running skips the next
+  occurrence, which later shows as missed. A job interrupted by shutdown or
+  a crash records a failure and is never rerun; after a crash its processes
+  may still be running. The latest receipt for each item is in
+  `jobs/receipts`.
+
+  Job definitions live in the local, unsynced `box_jobs` table. Only the
+  hub's loopback API can set them. A hub migration must carry those rows to
+  the new journal or set them again, and the commands' scripts and paths must
+  exist on the new hub's computer.
+
+- **Other effects.** Fleet telemetry and external backup scheduling remain
+  out of the foreground configuration. Recurrence and box jobs are enabled
+  by a configured hub webhook.
 
 ## Host-effect configuration
 
@@ -429,6 +456,18 @@ with the computer, closed session and provider resume command. Long-lived
 control sessions fall outside the auto-launch name filter. Pending flagged
 launches report `waiting on Daniel (flagged)` in autolaunch status.
 
+### Launch events and waiting requests
+
+The transaction that changes a run also records its launch event: launched, done,
+blocked, failed, escalated, gave up or launch failed. Ten minutes after the oldest
+unsent event, the node settles them as one `autolaunch` summary. Only a hub with a
+webhook queues it. As in the legacy sender, Chief of Staff batch mode drops the
+summary (`webhook.batch: false` delivers it) and sends only its item batch.
+
+A due request adds a note naming its computer and model. Before a request has a
+run, `show` reports `launch_status` with its computer and wait reason. Autolaunch
+status lists unstarted requests as `ready` or `skipped`.
+
 ### Stop a managed session
 
 Run `tracker stop <item>` or `tracker stop '#<local run number>'` on the
@@ -446,7 +485,7 @@ to create an item that only delivers reminders. Use
 or `tracker remind <id> --at <time>` to snooze a reminder. Reminder items
 never start or recover a session, including when an explicit launch is
 requested. The hub delivers to Chief of Staff at the scheduled time,
-defers overnight reminders to 08:00 Lisbon, and follows up after two
+including overnight, and follows up after two
 hours, six hours, and at 08:00 daily until the item is done or snoozed.
 
 ### Scheduled reminders on other items
@@ -517,7 +556,7 @@ dispatch scan.
 
 - [x] Wire `reject` and post-done verification (see Completion review).
 - [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`.
-      Verify host admission, launcher limits, `ready/skipped`,
+      Verify host admission, launcher limits,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
 - [ ] Reconcile `machines`, `place`, `watchdog dry-run/alerts`, and `health
@@ -528,7 +567,7 @@ dispatch scan.
       `backup now` and `restore --yes` with the backup owner and an isolated
       restore rehearsal.
 - [ ] Qualify `agent register/list/rm`, `webhook status/pause/resume/test`,
-      `cos-test`, `job set/list/rm/test`, and local `instructions [--check]`.
+      `cos-test`, and local `instructions [--check]`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
       recurring `history`, `check` match details, `rm`, and empty `list`.
 

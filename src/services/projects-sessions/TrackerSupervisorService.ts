@@ -5,6 +5,7 @@ import type {
 	TrackerSupervisorOptions,
 	TrackerSupervisorWorker
 } from './TrackerSupervisorService.types';
+import { batchTrackerLaunchEvents } from './tracker-native-runtime-service/trackerLaunchEventBatch';
 import { trackerSupervisorStatus } from './tracker-supervisor-service/trackerSupervisorStatus';
 import { assertTrackerLegacyRollbackSafe } from './tracker-supervisor-service/assertTrackerLegacyRollbackSafe';
 
@@ -48,6 +49,7 @@ export class TrackerSupervisorService {
 		} finally {
 			controller.abort();
 			await Promise.allSettled(workers);
+			await this.runtime.recurring?.drain();
 			this.running = false;
 		}
 	}
@@ -68,13 +70,20 @@ export class TrackerSupervisorService {
 	}
 
 	private workers() {
-		const { scheduler, notifications, recurring, adapter, telemetry, watchdog } = this.runtime;
+		const { scheduler, notifications, recurring, adapter, telemetry, watchdog, backups } =
+			this.runtime;
 		const ticks = {
 			...(telemetry && { telemetry }),
+			...(backups.service && { backup: () => backups.service!.tick() }),
 			...(watchdog && { watchdog: watchdog.tick }),
 			...(scheduler && { dispatch: (signal: AbortSignal) => scheduler.tick(signal) }),
 			...(recurring && { recurring: (signal: AbortSignal) => recurring.tick(signal) }),
-			...(notifications && { notifications: () => notifications.tick() }),
+			...((scheduler ?? notifications) && {
+				notifications: async () => {
+					batchTrackerLaunchEvents(this.runtime);
+					await notifications?.tick();
+				}
+			}),
 			...(adapter && { adapter: (signal: AbortSignal) => adapter.tick(signal) }),
 			...this.options.ticks
 		};

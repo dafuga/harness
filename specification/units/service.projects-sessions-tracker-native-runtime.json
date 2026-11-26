@@ -64,6 +64,8 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogIdle.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchEventBatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchWait.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerObservedRuns.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerRecoveryHistory.ts",
@@ -215,6 +217,12 @@
 			"paneNudgeKey",
 			"handoffRunOwnership",
 			"activeWatchdogItem",
+			"batchTrackerLaunchEvents",
+			"trackerItemViews",
+			"trackerLaunchWait",
+			"trackerRequestWaits",
+			"trackerMachineSamples",
+			"machineOffline",
 			"trackerLegacyExitReceipt",
 			"legacyTrackerStartupProbe",
 			"trackerLegacySession",
@@ -1110,6 +1118,46 @@
 			{
 				"name": "activeWatchdogItem.id",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "batchTrackerLaunchEvents.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerItemViews.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchWait.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchWait.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerRequestWaits.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerMachineSamples.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "machineOffline.sampledAt",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "machineOffline.now",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -3420,6 +3468,124 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "batchTrackerLaunchEvents",
+				"inputs": [
+					{
+						"name": "batchTrackerLaunchEvents.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "batchTrackerLaunchEvents",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerItemViews",
+				"inputs": [
+					{
+						"name": "trackerItemViews.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerItemViews",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerLaunchWait",
+				"inputs": [
+					{
+						"name": "trackerLaunchWait.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchWait.item",
+						"type": "TrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLaunchWait",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerRequestWaits",
+				"inputs": [
+					{
+						"name": "trackerRequestWaits.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRequestWaits",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMachineSamples",
+				"inputs": [
+					{
+						"name": "trackerMachineSamples.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMachineSamples",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "machineOffline",
+				"inputs": [
+					{
+						"name": "machineOffline.sampledAt",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "machineOffline.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "machineOffline",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerLegacyExitReceipt",
 				"inputs": [
 					{
@@ -4342,6 +4508,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-backup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-compose-tracker-backups",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
 			"via": "import",
 			"origin": "derived"
@@ -4353,6 +4529,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-recurrence",
 			"via": "import",
 			"origin": "derived"
 		},

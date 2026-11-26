@@ -967,6 +967,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-jobs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
@@ -983,6 +993,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-phone-replica-service-phone-replica-write",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-recurring-service-tracker-box-job-admin",
 			"via": "import",
 			"origin": "derived"
 		}
