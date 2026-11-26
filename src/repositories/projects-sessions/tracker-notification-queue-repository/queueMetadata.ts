@@ -28,7 +28,8 @@ const metadataKeys = [
 	'cos_force',
 	'cos_last_attempt_at',
 	'cos_last_sent_at',
-	'cos_last_error'
+	'cos_last_error',
+	'cos_digests_sent'
 ];
 
 function integer(value: string | undefined, key: string): number | undefined {
@@ -80,6 +81,7 @@ export function readQueueMetadata(database: SqliteDatabase) {
 		lastAttentionAttempt: integer(values.get('cos_last_attempt_at'), 'cos_last_attempt_at'),
 		lastAttentionSent: integer(values.get('cos_last_sent_at'), 'cos_last_sent_at'),
 		lastAttentionError: values.get('cos_last_error'),
+		digestsSent: integer(values.get('cos_digests_sent'), 'cos_digests_sent'),
 		inFlight: readAttempt(database)
 	};
 }
@@ -93,7 +95,8 @@ function metadataValues(state: TrackerNotificationState) {
 		state.forceAttention ? '1' : null,
 		state.lastAttentionAttempt,
 		state.lastAttentionSent,
-		state.lastAttentionError
+		state.lastAttentionError,
+		state.digestsSent
 	];
 }
 
