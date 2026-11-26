@@ -4,7 +4,7 @@
 	"uid": "u_suxmf5vsuw",
 	"kind": "component",
 	"title": "HubHomeCosChat",
-	"responsibility": "Shows the Home chat box for Chief of Staff, which is always messageable, with each message's delivery receipt and Chief of Staff's replies.",
+	"responsibility": "Shows Daniel's latest messages to Chief of Staff on Home with their receipts and replies, and sends a new one.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -31,26 +31,26 @@
 				"type": "HomeAgent",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Chief of Staff as the Tracker reports it; when missing, an idle Chief of Staff with no messages is shown."
+				"description": "Chief of Staff as the linked computers report it; absent before the Tracker reports it."
 			},
 			{
 				"name": "HubHomeCosChat.now",
 				"type": "string",
 				"required": true,
-				"description": "The current time, used as the fallback agent's start time."
+				"description": "The time Home was read, used for a stand-in Chief of Staff."
 			},
 			{
 				"name": "HubHomeCosChat.send",
 				"type": "SendHomeChat",
 				"required": true,
-				"description": "Sends the message to the linked Mac, which stores it for Chief of Staff's pane, and returns its receipt."
+				"description": "Sends one Home message through a linked computer or the Hub queue."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeCosChat",
 				"type": "markup",
-				"description": "The latest four messages with their status and replies, and a composer addressed to Chief of Staff."
+				"description": "A \"Message Chief of Staff\" region with the latest four entries and one field."
 			}
 		],
 		"errors": [],

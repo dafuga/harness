@@ -247,13 +247,13 @@
 				"name": "messageStatusText.message",
 				"type": "Pick<HomeMessage, 'status' | 'reason'>",
 				"required": true,
-				"description": "A thread entry's delivery status and, for a refusal, its reason."
+				"description": "A thread entry's status and refusal reason."
 			},
 			{
 				"name": "messageStatusText.name",
 				"type": "string",
 				"required": true,
-				"description": "The name of the session the message was for, shown in Delivered to <name>."
+				"description": "The receiving session, as Daniel knows it."
 			},
 			{
 				"name": "runDay.at",
@@ -906,13 +906,13 @@
 						"name": "messageStatusText.message",
 						"type": "Pick<HomeMessage, 'status' | 'reason'>",
 						"required": true,
-						"description": "A thread entry's delivery status and, for a refusal, its reason."
+						"description": "A thread entry's status and refusal reason."
 					},
 					{
 						"name": "messageStatusText.name",
 						"type": "string",
 						"required": true,
-						"description": "The name of the session the message was for, shown in Delivered to <name>."
+						"description": "The receiving session, as Daniel knows it."
 					}
 				],
 				"outputs": [

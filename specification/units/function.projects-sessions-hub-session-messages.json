@@ -4,7 +4,7 @@
 	"uid": "u_hsyfpu5tqc",
 	"kind": "function",
 	"title": "hubSessionMessages",
-	"responsibility": "Formats and parses the Tracker notes that carry a Hub message, its delivery or refusal receipt and the session's keyed reply, and folds them into message threads.",
+	"responsibility": "Write and read the Tracker notes that carry a Hub message, its delivery receipt and the session's keyed reply, and fold them into one thread.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -39,97 +39,97 @@
 				"name": "hubMessageLine.text",
 				"type": "string",
 				"required": true,
-				"description": "Any text; control and line-separator characters become spaces."
+				"description": "Text from Daniel or a session, possibly with line breaks or control characters."
 			},
 			{
 				"name": "hubMessageId.itemId",
 				"type": "string",
 				"required": true,
-				"description": "The ten-character Tracker item id the message thread lives on."
+				"description": "The Tracker item that holds the thread."
 			},
 			{
 				"name": "hubMessageId.uuid",
 				"type": "string",
 				"required": true,
-				"description": "A random UUID whose first eight hex digits make the message unique."
+				"description": "The Hub's message UUID; its first 8 hex digits name the message."
 			},
 			{
 				"name": "hubMessageItem.messageId",
 				"type": "string",
 				"required": true,
-				"description": "A Hub message id of the form <item id>-<8 hex>."
+				"description": "A Hub message id such as <item>-<8 hex>."
 			},
 			{
 				"name": "hubMessageTargetLabel.target",
 				"type": "HubMessageTarget",
 				"required": true,
-				"description": "Chief of Staff, or one exact run named by its node and run id."
+				"description": "Chief of Staff's pane or one exact run (computer and run number)."
 			},
 			{
 				"name": "formatHubMessageNote.messageId",
 				"type": "string",
 				"required": true,
-				"description": "The id of the message being stored."
+				"description": "The Hub message id."
 			},
 			{
 				"name": "formatHubMessageNote.target",
 				"type": "HubMessageTarget",
 				"required": true,
-				"description": "Who the message is for: Chief of Staff or one exact run."
+				"description": "Where the message must be delivered."
 			},
 			{
 				"name": "formatHubMessageNote.text",
 				"type": "string",
 				"required": true,
-				"description": "Daniel's message text, flattened to one line."
+				"description": "Daniel's message."
 			},
 			{
 				"name": "formatHubDeliveredNote.messageId",
 				"type": "string",
 				"required": true,
-				"description": "The id of the message that reached its pane."
+				"description": "The Hub message id."
 			},
 			{
 				"name": "formatHubDeliveredNote.session",
 				"type": "string",
 				"required": true,
-				"description": "The tmux session the message was typed into and submitted."
+				"description": "The tmux session the message was typed into."
 			},
 			{
 				"name": "formatHubRefusedNote.messageId",
 				"type": "string",
 				"required": true,
-				"description": "The id of the message that was not delivered."
+				"description": "The Hub message id."
 			},
 			{
 				"name": "formatHubRefusedNote.reason",
 				"type": "string",
 				"required": true,
-				"description": "Why it was not delivered, such as the run having ended or been replaced."
+				"description": "Why it will never be delivered."
 			},
 			{
 				"name": "formatHubReplyNote.messageId",
 				"type": "string",
 				"required": true,
-				"description": "The id of the message being answered."
+				"description": "The Hub message being answered."
 			},
 			{
 				"name": "formatHubReplyNote.text",
 				"type": "string",
 				"required": true,
-				"description": "The session's reply text, flattened to one line."
+				"description": "The session's reply."
 			},
 			{
 				"name": "hubPaneMessage.messageId",
 				"type": "string",
 				"required": true,
-				"description": "The id the session must quote when it replies."
+				"description": "The Hub message id the session replies to."
 			},
 			{
 				"name": "hubPaneMessage.text",
 				"type": "string",
 				"required": true,
-				"description": "Daniel's message text."
+				"description": "Daniel's message."
 			},
 			{
 				"name": "parseHubMessageNote.text",
@@ -141,69 +141,69 @@
 				"name": "hubSessionMessages.notes",
 				"type": "readonly HubThreadNote[]",
 				"required": true,
-				"description": "An item's notes, oldest first, with their times."
+				"description": "An item's notes, oldest first, each with its time and text."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubMessageIdPattern",
 				"type": "unknown",
-				"description": "Matches a Hub message id and captures its item id and hex tail."
+				"description": "Matches a Hub message id and captures its thread item."
 			},
 			{
 				"name": "hubMessageLine",
 				"type": "string",
-				"description": "The text as one trimmed line with single spaces."
+				"description": "One line without control characters."
 			},
 			{
 				"name": "hubMessageId",
 				"type": "string | null",
-				"description": "The message id, or null when the item id is not a Tracker item id."
+				"description": "The message id <item>-<8 hex>, or null when the item id is not a Tracker id."
 			},
 			{
 				"name": "hubMessageItem",
 				"type": "string | null",
-				"description": "The item id inside a message id, or null for any other text."
+				"description": "The thread item of a message id, or null for anything else."
 			},
 			{
 				"name": "hubMessageTargetLabel",
 				"type": "string",
-				"description": "'Chief of Staff' or 'run <node>#<run id>'."
+				"description": "\"Chief of Staff\" or \"run <computer>#<run>\"."
 			},
 			{
 				"name": "formatHubMessageNote",
 				"type": "unknown",
-				"description": "The note text that stores a Hub message on its thread item."
+				"description": "The note that stores the message for its target."
 			},
 			{
 				"name": "formatHubDeliveredNote",
 				"type": "unknown",
-				"description": "The receipt note saying the message was submitted into that session's pane."
+				"description": "The receipt note written once the pane showed the message submitted."
 			},
 			{
 				"name": "formatHubRefusedNote",
 				"type": "unknown",
-				"description": "The receipt note saying the message was not delivered and why."
+				"description": "The note recording that the message was not and will not be delivered."
 			},
 			{
 				"name": "formatHubReplyNote",
 				"type": "unknown",
-				"description": "The note that records the session's reply, keyed to the message id."
+				"description": "The note holding the session's reply to that message."
 			},
 			{
 				"name": "hubPaneMessage",
 				"type": "string",
-				"description": "One line typed into the pane, never starting with / or !, that ends with the exact tracker reply command."
+				"description": "The single line typed into the pane, starting with \"Message from Daniel via Hub\" and ending with the exact tracker reply command."
 			},
 			{
 				"name": "parseHubMessageNote",
 				"type": "HubMessageEvent | null",
-				"description": "The message, delivered, refused or reply event the note records, or null for any other note."
+				"description": "The message, delivered, refused or reply event, or null for any other note."
 			},
 			{
 				"name": "hubSessionMessages",
 				"type": "HubThreadMessage[]",
-				"description": "Each Hub message once, with its status (stored, delivered, acknowledged or refused) and replies."
+				"description": "Each message with its status (stored, delivered, acknowledged or refused), receipt details and replies."
 			}
 		],
 		"errors": [],
@@ -216,14 +216,14 @@
 						"name": "hubMessageLine.text",
 						"type": "string",
 						"required": true,
-						"description": "Any text; control and line-separator characters become spaces."
+						"description": "Text from Daniel or a session, possibly with line breaks or control characters."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubMessageLine",
 						"type": "string",
-						"description": "The text as one trimmed line with single spaces."
+						"description": "One line without control characters."
 					}
 				],
 				"errors": [],
@@ -236,20 +236,20 @@
 						"name": "hubMessageId.itemId",
 						"type": "string",
 						"required": true,
-						"description": "The ten-character Tracker item id the message thread lives on."
+						"description": "The Tracker item that holds the thread."
 					},
 					{
 						"name": "hubMessageId.uuid",
 						"type": "string",
 						"required": true,
-						"description": "A random UUID whose first eight hex digits make the message unique."
+						"description": "The Hub's message UUID; its first 8 hex digits name the message."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubMessageId",
 						"type": "string | null",
-						"description": "The message id, or null when the item id is not a Tracker item id."
+						"description": "The message id <item>-<8 hex>, or null when the item id is not a Tracker id."
 					}
 				],
 				"errors": [],
@@ -262,14 +262,14 @@
 						"name": "hubMessageItem.messageId",
 						"type": "string",
 						"required": true,
-						"description": "A Hub message id of the form <item id>-<8 hex>."
+						"description": "A Hub message id such as <item>-<8 hex>."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubMessageItem",
 						"type": "string | null",
-						"description": "The item id inside a message id, or null for any other text."
+						"description": "The thread item of a message id, or null for anything else."
 					}
 				],
 				"errors": [],
@@ -282,14 +282,14 @@
 						"name": "hubMessageTargetLabel.target",
 						"type": "HubMessageTarget",
 						"required": true,
-						"description": "Chief of Staff, or one exact run named by its node and run id."
+						"description": "Chief of Staff's pane or one exact run (computer and run number)."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubMessageTargetLabel",
 						"type": "string",
-						"description": "'Chief of Staff' or 'run <node>#<run id>'."
+						"description": "\"Chief of Staff\" or \"run <computer>#<run>\"."
 					}
 				],
 				"errors": [],
@@ -302,26 +302,26 @@
 						"name": "formatHubMessageNote.messageId",
 						"type": "string",
 						"required": true,
-						"description": "The id of the message being stored."
+						"description": "The Hub message id."
 					},
 					{
 						"name": "formatHubMessageNote.target",
 						"type": "HubMessageTarget",
 						"required": true,
-						"description": "Who the message is for: Chief of Staff or one exact run."
+						"description": "Where the message must be delivered."
 					},
 					{
 						"name": "formatHubMessageNote.text",
 						"type": "string",
 						"required": true,
-						"description": "Daniel's message text, flattened to one line."
+						"description": "Daniel's message."
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatHubMessageNote",
 						"type": "unknown",
-						"description": "The note text that stores a Hub message on its thread item."
+						"description": "The note that stores the message for its target."
 					}
 				],
 				"errors": [],
@@ -334,20 +334,20 @@
 						"name": "formatHubDeliveredNote.messageId",
 						"type": "string",
 						"required": true,
-						"description": "The id of the message that reached its pane."
+						"description": "The Hub message id."
 					},
 					{
 						"name": "formatHubDeliveredNote.session",
 						"type": "string",
 						"required": true,
-						"description": "The tmux session the message was typed into and submitted."
+						"description": "The tmux session the message was typed into."
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatHubDeliveredNote",
 						"type": "unknown",
-						"description": "The receipt note saying the message was submitted into that session's pane."
+						"description": "The receipt note written once the pane showed the message submitted."
 					}
 				],
 				"errors": [],
@@ -360,20 +360,20 @@
 						"name": "formatHubRefusedNote.messageId",
 						"type": "string",
 						"required": true,
-						"description": "The id of the message that was not delivered."
+						"description": "The Hub message id."
 					},
 					{
 						"name": "formatHubRefusedNote.reason",
 						"type": "string",
 						"required": true,
-						"description": "Why it was not delivered, such as the run having ended or been replaced."
+						"description": "Why it will never be delivered."
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatHubRefusedNote",
 						"type": "unknown",
-						"description": "The receipt note saying the message was not delivered and why."
+						"description": "The note recording that the message was not and will not be delivered."
 					}
 				],
 				"errors": [],
@@ -386,20 +386,20 @@
 						"name": "formatHubReplyNote.messageId",
 						"type": "string",
 						"required": true,
-						"description": "The id of the message being answered."
+						"description": "The Hub message being answered."
 					},
 					{
 						"name": "formatHubReplyNote.text",
 						"type": "string",
 						"required": true,
-						"description": "The session's reply text, flattened to one line."
+						"description": "The session's reply."
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatHubReplyNote",
 						"type": "unknown",
-						"description": "The note that records the session's reply, keyed to the message id."
+						"description": "The note holding the session's reply to that message."
 					}
 				],
 				"errors": [],
@@ -412,20 +412,20 @@
 						"name": "hubPaneMessage.messageId",
 						"type": "string",
 						"required": true,
-						"description": "The id the session must quote when it replies."
+						"description": "The Hub message id the session replies to."
 					},
 					{
 						"name": "hubPaneMessage.text",
 						"type": "string",
 						"required": true,
-						"description": "Daniel's message text."
+						"description": "Daniel's message."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubPaneMessage",
 						"type": "string",
-						"description": "One line typed into the pane, never starting with / or !, that ends with the exact tracker reply command."
+						"description": "The single line typed into the pane, starting with \"Message from Daniel via Hub\" and ending with the exact tracker reply command."
 					}
 				],
 				"errors": [],
@@ -445,7 +445,7 @@
 					{
 						"name": "parseHubMessageNote",
 						"type": "HubMessageEvent | null",
-						"description": "The message, delivered, refused or reply event the note records, or null for any other note."
+						"description": "The message, delivered, refused or reply event, or null for any other note."
 					}
 				],
 				"errors": [],
@@ -458,14 +458,14 @@
 						"name": "hubSessionMessages.notes",
 						"type": "readonly HubThreadNote[]",
 						"required": true,
-						"description": "An item's notes, oldest first, with their times."
+						"description": "An item's notes, oldest first, each with its time and text."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubSessionMessages",
 						"type": "HubThreadMessage[]",
-						"description": "Each Hub message once, with its status (stored, delivered, acknowledged or refused) and replies."
+						"description": "Each message with its status (stored, delivered, acknowledged or refused), receipt details and replies."
 					}
 				],
 				"errors": [],
