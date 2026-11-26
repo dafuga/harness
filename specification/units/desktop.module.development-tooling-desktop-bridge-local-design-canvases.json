@@ -1,0 +1,115 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-bridge-local-design-canvases",
+	"uid": "u_mkdsgnc4nv",
+	"kind": "module",
+	"title": "localDesignCanvases",
+	"responsibility": "Reads the open project’s checked-out design canvases and refuses ones linked outside it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/localDesignCanvases.ts"
+		],
+		"symbols": ["localDesignCanvases"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "localDesignCanvases.root",
+				"type": "string",
+				"required": true,
+				"description": "Open project’s root folder."
+			},
+			{
+				"name": "localDesignCanvases.asked",
+				"type": "string | null",
+				"required": true,
+				"description": "Canvas name to read, or the first when null."
+			}
+		],
+		"outputs": [
+			{
+				"name": "localDesignCanvases",
+				"type": "Promise<DesignCanvasPage>",
+				"description": "The checkout’s commit, branch, canvases and the read canvas."
+			}
+		],
+		"errors": [
+			{
+				"name": "CanvasOutsideProjectError",
+				"type": "thrown",
+				"description": "The canvas is unknown or its folder links outside the project."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "localDesignCanvases",
+				"inputs": [
+					{
+						"name": "localDesignCanvases.root",
+						"type": "string",
+						"required": true,
+						"description": "Open project’s root folder."
+					},
+					{
+						"name": "localDesignCanvases.asked",
+						"type": "string | null",
+						"required": true,
+						"description": "Canvas name to read, or the first when null."
+					}
+				],
+				"outputs": [
+					{
+						"name": "localDesignCanvases",
+						"type": "Promise<DesignCanvasPage>",
+						"description": "The checkout’s commit, branch, canvases and the read canvas."
+					}
+				],
+				"errors": [
+					{
+						"name": "CanvasOutsideProjectError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-bridge-canvas-outside-project-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-design-canvas",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/localDesignCanvases.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-bridge/localDesignCanvases.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
