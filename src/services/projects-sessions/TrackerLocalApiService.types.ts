@@ -23,6 +23,8 @@ export interface TrackerLocalApiOptions {
 	runs?: TrackerRunReadRepository;
 	machines?: TrackerMachineService;
 	schedulePreview?(item: TrackerItem): string | null;
+	/** Why a requested launch has no run yet. */
+	launchWait?(item: TrackerItem): { computer: string; reason: string };
 	recurring?: {
 		role: 'hub' | 'spoke';
 		history?: (id: string, limit: number) => unknown;
