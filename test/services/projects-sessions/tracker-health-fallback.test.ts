@@ -2,7 +2,11 @@ import { appendFileSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { rotateTrackerLog } from '../../../src/services/projects-sessions/tracker-health-service/rotateTrackerLog';
-import { healthyHubStatus, privateHealthFile } from '../../support/trackerHealthFixture';
+import {
+	healthyHubStatus,
+	privateHealthFile,
+	unlinkedSpokeStatus
+} from '../../support/trackerHealthFixture';
 import { fixture, inTemp, night, noon } from '../../support/trackerHealthHarness';
 import { withTempDir } from '../../support/temporary';
 
@@ -44,6 +48,22 @@ inTemp(
 		expect(posted).toHaveLength(1);
 	}
 );
+
+inTemp('a spoke that lost the hub posts to the fallback after quiet hours', async (root) => {
+	const { service, clock, posted, writes } = await fixture(root, unlinkedSpokeStatus());
+	privateHealthFile(join(root, 'health-fallback.url'), 'https://alerts.example.test/hook');
+	privateHealthFile(join(root, 'health-fallback.key'), 'synthetic-fallback-key');
+	clock.now = night;
+	await service.run({ alert: true });
+	expect(posted).toHaveLength(0);
+	clock.now = noon + 24 * 3600_000;
+	const report = await service.run({ alert: true });
+	// The local API queues the ask, but it cannot reach anyone until the hub is back.
+	expect(writes().length).toBeGreaterThan(0);
+	expect(report.failing.map(({ name }) => name)).toEqual(['hub_link']);
+	expect(posted).toHaveLength(1);
+	expect(JSON.parse(posted[0].body)).toMatchObject({ node: 'fixture-spoke' });
+});
 
 test('log rotation copies then truncates so an appending writer keeps its file', () =>
 	withTempDir('hth-', async (dir) => {
