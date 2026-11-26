@@ -1,3 +1,11 @@
+---
+status: implemented
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
 # Hub browser notifications for "needs you"
 
 Daniel, 26 Nov: show browser notifications when something needs attention, and again every
