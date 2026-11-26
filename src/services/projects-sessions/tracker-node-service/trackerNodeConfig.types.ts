@@ -9,6 +9,22 @@ export interface TrackerNodeSessionTarget {
 
 export type TrackerNodeTarget = { url: string; bearerFile?: string } | TrackerNodeSessionTarget;
 
+export type TrackerNodeWebhookEvent =
+	| 'needs_daniel'
+	| 'due'
+	| 'blocked'
+	| 'done'
+	| 'resolved'
+	| 'changed'
+	| 'recurring_due'
+	| 'autolaunch';
+
+/** A bot route: webhook events for the named bots go to `target`, matched by name or alias. */
+export interface TrackerNodeWebhookRoute {
+	target: string;
+	aliases?: string[];
+}
+
 interface TrackerNodeConfigFields {
 	version: 1;
 	node: string;
@@ -25,6 +41,10 @@ interface TrackerNodeConfigFields {
 		itemCallbacks?: string[];
 		chiefOfStaff?: string;
 		webhook?: string;
+		/** Bot routes for the webhook; requires `webhook`. */
+		routes?: Record<string, TrackerNodeWebhookRoute>;
+		/** Per-event fallback for events no route claims: `cos` or `drop`. Requires `webhook`. */
+		unrouted?: Partial<Record<TrackerNodeWebhookEvent, 'cos' | 'drop'>>;
 		/** Rotating "until the next digest" ideas; an empty list turns them off. */
 		suggestions?: string[];
 	};

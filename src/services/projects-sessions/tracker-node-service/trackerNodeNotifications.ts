@@ -21,6 +21,9 @@ export function trackerNodeNotifications(
 	if (role === 'spoke' && notifications.webhook) {
 		throw new TypeError('Tracker webhook requires a hub');
 	}
+	if (!notifications.webhook && (notifications.routes || notifications.unrouted)) {
+		throw new TypeError('Tracker bot routes require a webhook');
+	}
 	const targets = new Map(
 		Object.entries(notifications.targets).map(([id, spec]) => [id, nodeTarget(spec, node)] as const)
 	);
@@ -54,10 +57,28 @@ export function trackerNodeNotifications(
 }
 
 function digestWebhook(
-	{ webhook, suggestions = defaultSuggestions }: NonNullable<TrackerNodeConfig['notifications']>,
+	{
+		webhook,
+		routes,
+		unrouted,
+		suggestions = defaultSuggestions
+	}: NonNullable<TrackerNodeConfig['notifications']>,
 	destination: (id: string) => TrackerDestination
 ) {
-	return webhook ? { destination: destination(webhook), suggestions } : undefined;
+	if (!webhook) return undefined;
+	return {
+		destination: destination(webhook),
+		suggestions,
+		...(routes && {
+			routes: Object.fromEntries(
+				Object.entries(routes).map(([name, route]) => [
+					name,
+					{ destination: destination(route.target), aliases: route.aliases }
+				])
+			)
+		}),
+		...(unrouted && { unrouted })
+	};
 }
 
 function nodeTarget(spec: TrackerNodeTarget, node: string) {

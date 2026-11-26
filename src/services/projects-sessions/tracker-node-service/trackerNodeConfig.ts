@@ -44,6 +44,30 @@ const configFields = {
 			itemCallbacks: z.array(id).optional(),
 			chiefOfStaff: id.optional(),
 			webhook: id.optional(),
+			routes: z
+				.record(
+					id,
+					z.strictObject({
+						target: id,
+						aliases: z.array(z.string().min(1).max(80)).max(20).optional()
+					})
+				)
+				.optional(),
+			unrouted: z
+				.partialRecord(
+					z.enum([
+						'needs_daniel',
+						'due',
+						'blocked',
+						'done',
+						'resolved',
+						'changed',
+						'recurring_due',
+						'autolaunch'
+					]),
+					z.enum(['cos', 'drop'])
+				)
+				.optional(),
 			suggestions: z.array(z.string().min(1).max(120)).max(30).optional()
 		})
 		.optional()
