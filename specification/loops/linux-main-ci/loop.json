@@ -2,7 +2,7 @@
 	"name": "linux-main-ci",
 	"goal": "Linux Full check passes: Tracker rehearsal rejects a duplicate with exit 1, cutover verification reads SQLite snapshots, and the Web workspace registry test fits its measured full-index cost",
 	"createdAt": "2026-11-26T16:24:55.096Z",
-	"updatedAt": "2026-11-26T16:29:22.555Z",
+	"updatedAt": "2026-11-26T16:44:33.447Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T16:44:26.072Z",
+			"evidence": "loop record red at 33d2fde3b6 in a Linux node:24 + bun 1.2.18 container: assigned port 35463 below 49152 (rehearsal) and verify-cutover exit 2 'Unable to read SQLite snapshot'; 2 failed."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T16:44:28.835Z",
+			"evidence": "2fa7a5b6a8: openSqlite passes SQLITE_OPEN_URI for read-only file: URIs; TrackerRehearsalService picks an unnamed port inside 49152-65535 and retries EADDRINUSE (Bun reports that code on macOS and Linux)."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T16:44:33.447Z",
+			"evidence": "loop record green passed at 2fa7a5b6a8: same unchanged tests and command in the Linux container; both also pass on macOS."
 		},
 		{
 			"id": "siblings",
