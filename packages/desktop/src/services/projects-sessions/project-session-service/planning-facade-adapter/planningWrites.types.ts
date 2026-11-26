@@ -4,6 +4,4 @@
  * missing from its version or with another state or viewport, or an approval of an unknown
  * version or of images that do not match it.
  */
-export class PlanningWriteError extends Error {
-	override name = 'PlanningWriteError';
-}
+export { PlanningWriteError } from './PlanningWriteError';

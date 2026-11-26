@@ -118,6 +118,8 @@
 	:global(.spec-markdown .spec-diagram) {
 		margin: 0.8em 0;
 		overflow-x: auto;
+		/* A wide diagram must not widen the document around it. */
+		contain: inline-size;
 	}
 	:global(.spec-markdown .spec-diagram svg) {
 		display: block;

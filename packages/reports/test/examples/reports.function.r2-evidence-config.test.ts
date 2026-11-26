@@ -5,15 +5,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { r2EvidenceConfig } from '../../src/utils/verification-evidence/r2EvidenceConfig';
-
-type R2Settings = {
-	accountId: string;
-	bucket: string;
-	accessKeyId: string;
-	secretAccessKey: string;
-	endpoint: string;
-};
-type Env = Record<string, string | undefined>;
+import type { R2Settings, Env } from './reports.function.r2-evidence-config.test.types';
 
 const R2_KEYS: Record<keyof R2Settings, string> = {
 	accountId: 'PROJECT_REPORTS_R2_ACCOUNT_ID',

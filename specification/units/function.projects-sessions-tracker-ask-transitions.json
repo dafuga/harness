@@ -4,20 +4,21 @@
 	"uid": "u_3rvpzml4j7",
 	"kind": "function",
 	"title": "trackerAskTransitions",
-	"responsibility": "Owns the trackerAskTransitions shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Plans tracker item changes for a new ask, a selected option, or a free-text answer.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerAskTransitions.ts"],
 		"symbols": ["trackerAskTransitions"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "trackerAskTransitions",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Transition handlers for answering an ask, storing replacement choice fields, and clearing prior choice fields."
 			}
 		],
 		"errors": [],

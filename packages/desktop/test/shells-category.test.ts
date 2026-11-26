@@ -5,7 +5,7 @@ import { createWorkspaceStore } from '../src/lib/stores/projects-sessions/worksp
 import { categories, type ProjectSnapshot } from '../src/models/development-tooling/Desktop.types';
 import type { DesktopBridge } from '../src/models/DesktopBridge.types';
 import { categoryOf } from '../src/utils/shared-primitives/categoryOf';
-import { ipcPayload } from '../src/utils/ipc-payload/ipcPayload';
+import { ipcPayload } from '../src/utils/execution-runtimes/ipc-payload/ipcPayload';
 import { visualPlan } from '../src/utils/planning-collaboration/mockupPlan';
 import { isWorkspacePath, workspacePath, workspaceRoute } from '../src/utils/workspaceRoute';
 

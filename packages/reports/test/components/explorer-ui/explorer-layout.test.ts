@@ -24,7 +24,7 @@ test('the layout puts shared navigation above its supplied child and keeps notic
 			children
 		}
 	}).body;
-	expect(body).toContain('data-harness-component="explorer-ui-explorer-layout"');
+	expect(body).toContain('class="hx-shell"');
 	expect(body).toContain('The selected revision is unavailable.');
 	expect(body).toContain('aria-label="Child content"');
 	expect(body.indexOf('Example project')).toBeLessThan(body.indexOf('A page'));

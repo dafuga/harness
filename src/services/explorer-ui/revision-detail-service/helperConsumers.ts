@@ -1,5 +1,6 @@
 // @harness-uid u_44u5mzzjmu
-import type { Context, Unit } from './helperConsumers.types';
+import type { RevisionUnit } from '../../../utils/verification-evidence/revision-registry/revisionRegistry.types';
+import type { Context } from './helperConsumers.types';
 import type { HelperTree, HelperConsumer } from '../../../utils/explorer-ui/helperConsumers';
 import { explorerKindCategory } from '../../../utils/explorer-ui/explorerRoute';
 import {
@@ -97,7 +98,7 @@ function forwardTarget(
 	return target(asked.path, binding, context);
 }
 
-function consumerOf(unit: Unit, reference: HelperReference): HelperConsumer | undefined {
+function consumerOf(unit: RevisionUnit, reference: HelperReference): HelperConsumer | undefined {
 	const category = explorerKindCategory(unit.kind);
 	if (category === 'components' || category === 'services') return { unit: unit.id };
 	return reference.caller ? { unit: unit.id, symbol: reference.caller } : undefined;
@@ -111,7 +112,12 @@ function consumerReference(path: string, reference: HelperReference, context: Co
 	return key;
 }
 
-function runtimeUser(unit: Unit, path: string, reference: HelperReference, context: Context) {
+function runtimeUser(
+	unit: RevisionUnit,
+	path: string,
+	reference: HelperReference,
+	context: Context
+) {
 	const key = consumerReference(path, reference, context);
 	if (!key || context.services.get(key) === unit.id) return undefined;
 	const consumer = context.services.has(key) ? { unit: unit.id } : consumerOf(unit, reference);
@@ -135,7 +141,7 @@ function usersOf(context: Context): Map<string, Map<string, HelperConsumer>> {
 }
 
 /** Actual runtime references, distinct per component/service or named function, at this revision. */
-export async function helperConsumers(tree: HelperTree, units: Unit[]): Promise<void> {
+export async function helperConsumers(tree: HelperTree, units: RevisionUnit[]): Promise<void> {
 	const active = units.filter((unit) => unit.status === 'active');
 	const owned = [...new Set(active.flatMap((unit) => unit.owns.source))].filter((path) =>
 		/\.(?:[cm]?[jt]sx?|svelte)$/.test(path)
@@ -177,7 +183,10 @@ export async function helperConsumers(tree: HelperTree, units: Unit[]): Promise<
 	});
 }
 
-function attachServices(units: Unit[], users: Map<string, Map<string, HelperConsumer>>): void {
+function attachServices(
+	units: RevisionUnit[],
+	users: Map<string, Map<string, HelperConsumer>>
+): void {
 	for (const unit of units) {
 		const consumers = new Map<string, HelperConsumer>();
 		for (const item of unit.serviceExports ?? [])

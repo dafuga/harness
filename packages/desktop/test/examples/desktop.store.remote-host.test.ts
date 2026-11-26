@@ -1,12 +1,12 @@
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { createRemoteHostStore } from '../../src/lib/stores/networking-security/remoteHost.svelte';
 import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte.types';
 import type {
 	RemoteDesktopControl,
 	RemoteHostStatus
 } from '../../../remote/src/models/networking-security/RemoteControl.types';
+import { record } from './desktop.store.remote-host.cases';
 
 // prettier-ignore
 const base: RemoteHostStatus = { supported: true, enabled: false, state: 'disabled', reason: null, host: null, origin: null, requests: [], devices: [], projects: [] };
@@ -16,20 +16,6 @@ const online: RemoteHostStatus = { ...base, enabled: true, state: 'online', host
 const approval = { pairingId: 'pairing-1', deviceId: 'device-1', projectIds: ['project-1'], agents: false };
 // prettier-ignore
 const methods = ['status', 'enable', 'disable', 'approvePairing', 'denyPairing', 'revokeDevice'];
-
-/** Writes this state's trace: its case is named after the state, and its file after the state. */
-function record(state: string, symbol: string, output: unknown) {
-	recordExampleCases(
-		{
-			unitId: 'desktop.store.remote-host',
-			symbol,
-			state,
-			evidence: 'examples-cases',
-			file: `${state}.json`
-		},
-		[{ name: state, input: null, output }]
-	);
-}
 
 /** A port that records each call, answers with one status and can announce a status. */
 function fakePort(answer: RemoteHostStatus, failing = '') {

@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.ts",
-			"packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.types.ts"
+			"packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunService.types.ts",
+			"packages/desktop/src/services/agents-providers/desktop-run-service/DesktopRunStartConflictError.ts"
 		],
 		"symbols": [
 			"DesktopRunService",
@@ -19,7 +20,8 @@
 			"DesktopRunService.cancelActive",
 			"DesktopRunService.cancel",
 			"DesktopRunStartConflictError",
-			"Prepared"
+			"Prepared",
+			"DesktopRunStartConflictError"
 		]
 	},
 	"contract": {

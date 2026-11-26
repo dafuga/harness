@@ -2,14 +2,13 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { gamePayload } from '../../src/validators/development-tooling/gamePayload';
+import type { ExampleCase } from './desktop.function.game-payload.test.types';
 
 const UNIT_ID = 'desktop.function.game-payload';
 const PROJECT_ID = 'local-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
 const IMAGE_PATH =
 	'static/game/checkpoints/abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789.png';
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
-
-type ExampleCase = { name: string; input: unknown } & ({ output: unknown } | { error: unknown });
 
 function recordFor(state: string, cases: ExampleCase[]): void {
 	recordExampleCases(

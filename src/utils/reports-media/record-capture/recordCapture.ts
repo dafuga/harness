@@ -1,11 +1,12 @@
 // @harness-uid u_nf25ajpffl
-import type { Environment } from './recordCapture.types';
+
+import type { RuntimeEnvironment } from '../../../core/execution-runtimes/runtimeTypes.types';
 import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { captureIndex, type CaptureLine } from '../../../core/verification-evidence/verifyTypes';
 
 /** True when the run asked for any evidence, including nonvisual evidence in Lite. */
-export function evidenceRequested(env: Environment = process.env): boolean {
+export function evidenceRequested(env: RuntimeEnvironment = process.env): boolean {
 	return (
 		Boolean(env.HARNESS_EVIDENCE_DIR) &&
 		(env.HARNESS_VERIFY_MODE === 'lite' || env.TAKE_SCREENSHOT === '1')
@@ -19,7 +20,7 @@ export function evidenceRequested(env: Environment = process.env): boolean {
 export function recordCapture(
 	line: CaptureLine,
 	bytes: Uint8Array | string,
-	env: Environment = process.env
+	env: RuntimeEnvironment = process.env
 ): boolean {
 	const directory = env.HARNESS_EVIDENCE_DIR;
 	if (!directory || !evidenceRequested(env)) return false;

@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/db/seed-data/NonTemporaryAnalyticsStoreError.ts",
 			"packages/reports/db/seed-data/analytics-e2e.ts",
 			"packages/reports/db/seed-data/analytics-e2e.types.ts"
 		],
-		"symbols": ["seedAnalyticsE2e", "NonTemporaryAnalyticsStoreError"]
+		"symbols": [
+			"NonTemporaryAnalyticsStoreError",
+			"seedAnalyticsE2e",
+			"NonTemporaryAnalyticsStoreError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -3,9 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { cloudflareSafety } from '../../src/utils/networking-security/cloudflareSafety';
 import { CloudflareSafetyError } from '../../src/utils/networking-security/cloudflareSafety.types';
-
-type Config = Record<string, unknown>;
-type Targets = Parameters<typeof cloudflareSafety>[1];
+import type { Targets, Config } from './desktop.function.cloudflare-safety.test.types';
 
 const ACCOUNT = '3f9c2a7e1b8d4c60a5e9f1d2c3b4a596';
 const OVERLAP =

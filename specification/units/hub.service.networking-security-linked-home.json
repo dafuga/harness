@@ -8,13 +8,18 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/services/networking-security/LinkedHomeService.ts"],
+		"source": [
+			"packages/hub/src/services/networking-security/LinkedHomeService.ts",
+			"packages/hub/src/services/networking-security/LinkedHomeService.types.ts"
+		],
 		"symbols": [
 			"LinkedHome",
 			"LinkedHomeService",
 			"LinkedHomeService.constructor",
 			"LinkedHomeService.read",
-			"LinkedHomeService.close"
+			"LinkedHomeService.close",
+			"LinkedHome",
+			"Connect"
 		]
 	},
 	"contract": {
@@ -138,6 +143,11 @@
 		},
 		{
 			"unit": "remote.model.remote-control-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
 			"via": "import",
 			"origin": "derived"
 		},

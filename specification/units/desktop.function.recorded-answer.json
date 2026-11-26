@@ -9,17 +9,19 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
-			"packages/desktop/src/utils/recorded-answer/recordedAnswer.types.ts",
-			"packages/desktop/src/utils/recordedAnswer.ts"
+			"packages/desktop/src/utils/recordedAnswer.ts",
+			"packages/desktop/src/utils/verification-evidence/recorded-answer/AnswerTooLargeError.ts",
+			"packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.ts",
+			"packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.types.ts"
 		],
 		"symbols": [
+			"AnswerInput",
+			"recordedAnswer",
+			"AnswerTooLargeError",
 			"recordedAnswer",
 			"AnswerInput",
 			"AnswerInput",
-			"AnswerTooLargeError",
-			"AnswerInput",
-			"recordedAnswer"
+			"AnswerTooLargeError"
 		]
 	},
 	"contract": {

@@ -4,44 +4,55 @@
 	"uid": "u_juwbctzpfw",
 	"kind": "function",
 	"title": "storedTrackerAttachments",
-	"responsibility": "Owns the storedTrackerAttachments shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Turns a flag request into the two stored attachment fields, and reads one stored document back after checking its hash.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/storedTrackerAttachments.ts"],
 		"symbols": ["storedTrackerAttachments", "readTrackerAttachment"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "storedTrackerAttachments.value",
 				"type": "TrackerItemValue",
-				"required": true
+				"required": true,
+				"description": "The 1 to 4 attachments sent with a flag, each a listing with optional markdown and images; null or undefined clears both fields."
 			},
 			{
 				"name": "readTrackerAttachment.stored",
 				"type": "{ attachments?: string | null; attachment_docs?: string | null }",
-				"required": true
+				"required": true,
+				"description": "The item fields holding the listing JSON and the compressed documents."
 			},
 			{
 				"name": "readTrackerAttachment.id",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The listing id, which is the SHA-256 of the stored document."
 			}
 		],
 		"outputs": [
 			{
 				"name": "storedTrackerAttachments",
-				"type": "{ attachments: string | null; attachment_docs: string | null; }"
+				"type": "{ attachments: string | null; attachment_docs: string | null; }",
+				"description": "The listing as JSON and a JSON map from id to gzip base64 document; each is null when there is nothing to store."
 			},
 			{
 				"name": "readTrackerAttachment",
-				"type": "({ attachment: TrackerAttachment } & TrackerAttachmentDocument) | null"
+				"type": "({ attachment: TrackerAttachment } & TrackerAttachmentDocument) | null",
+				"description": "The listing with its markdown and images, or null when it is missing, oversized or fails its hash."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "TrackerItemRequestError",
+				"type": "thrown",
+				"description": "storedTrackerAttachments throws a Tracker item error for a wrong count, invalid entry, size limit breach or a spec or doc without text."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "storedTrackerAttachments",
@@ -49,17 +60,25 @@
 					{
 						"name": "storedTrackerAttachments.value",
 						"type": "TrackerItemValue",
-						"required": true
+						"required": true,
+						"description": "The 1 to 4 attachments sent with a flag, each a listing with optional markdown and images; null or undefined clears both fields."
 					}
 				],
 				"outputs": [
 					{
 						"name": "storedTrackerAttachments",
-						"type": "{ attachments: string | null; attachment_docs: string | null; }"
+						"type": "{ attachments: string | null; attachment_docs: string | null; }",
+						"description": "The listing as JSON and a JSON map from id to gzip base64 document; each is null when there is nothing to store."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "TrackerItemRequestError",
+						"type": "thrown",
+						"description": "storedTrackerAttachments throws a Tracker item error for a wrong count, invalid entry, size limit breach or a spec or doc without text."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "readTrackerAttachment",
@@ -67,22 +86,25 @@
 					{
 						"name": "readTrackerAttachment.stored",
 						"type": "{ attachments?: string | null; attachment_docs?: string | null }",
-						"required": true
+						"required": true,
+						"description": "The item fields holding the listing JSON and the compressed documents."
 					},
 					{
 						"name": "readTrackerAttachment.id",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The listing id, which is the SHA-256 of the stored document."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readTrackerAttachment",
-						"type": "({ attachment: TrackerAttachment } & TrackerAttachmentDocument) | null"
+						"type": "({ attachment: TrackerAttachment } & TrackerAttachmentDocument) | null",
+						"description": "The listing with its markdown and images, or null when it is missing, oversized or fails its hash."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

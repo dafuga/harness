@@ -1,4 +1,3 @@
 // @harness-uid u_vy373725he
-export type Point = { x: number; y: number };
-
-export type DragStart = Point & { left: number; top: number };
+import type { ZoomPoint } from '../../../utils/shared-primitives/trackpadZoom.types';
+export type DragStart = ZoomPoint & { left: number; top: number };

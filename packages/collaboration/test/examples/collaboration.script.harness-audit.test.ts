@@ -7,6 +7,7 @@ import { test } from 'vitest';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { withTempDir } from '../../../../test/support/temporary';
 import { expect } from '../../../../test/verificationExpect';
+import type { Invocation, Fake } from './collaboration.script.harness-audit.test.types';
 
 /**
  * The harness-audit script exports nothing: it is top-level code that runs `harness audit` and
@@ -18,9 +19,6 @@ import { expect } from '../../../../test/verificationExpect';
 const unitId = 'collaboration.script.harness-audit';
 const scriptPath = fileURLToPath(new URL('../../scripts/harness-audit.ts', import.meta.url));
 const audit = ['audit', '.', '--profile', 'lib'];
-
-type Invocation = { runtime: string; cli: string; args: string[] };
-type Fake = { file: string; exitCode: number; stderr?: string };
 
 /** A fake harness CLI: it reports the runtime, file name and arguments it received, then exits. */
 function writeFakeCli(path: string, exitCode: number, stderr = ''): void {

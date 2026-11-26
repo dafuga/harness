@@ -4,44 +4,49 @@
 	"uid": "u_vfo44tzfa2",
 	"kind": "function",
 	"title": "trackerMarkdownImages",
-	"responsibility": "Owns the trackerMarkdownImages shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Finds the images a markdown document names and resolves which of them are image files inside its repository.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerMarkdownImages.ts"],
 		"symbols": ["trackerMarkdownImages", "trackerRepositoryImage"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerMarkdownImages.markdown",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The document text; images inside fenced code are ignored."
 			},
 			{
 				"name": "trackerRepositoryImage.documentPath",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The repository path of the document, against which relative sources resolve."
 			},
 			{
 				"name": "trackerRepositoryImage.source",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The image source exactly as the document wrote it."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerMarkdownImages",
-				"type": "string[]"
+				"type": "string[]",
+				"description": "Each named image source once, from markdown and img tags."
 			},
 			{
 				"name": "trackerRepositoryImage",
-				"type": "{ path: string; type: string } | null"
+				"type": "{ path: string; type: string } | null",
+				"description": "The repository path and media type, or null for a web address, a path outside the repository, a malformed escape or another file type."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "trackerMarkdownImages",
@@ -49,17 +54,19 @@
 					{
 						"name": "trackerMarkdownImages.markdown",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The document text; images inside fenced code are ignored."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerMarkdownImages",
-						"type": "string[]"
+						"type": "string[]",
+						"description": "Each named image source once, from markdown and img tags."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "trackerRepositoryImage",
@@ -67,22 +74,25 @@
 					{
 						"name": "trackerRepositoryImage.documentPath",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The repository path of the document, against which relative sources resolve."
 					},
 					{
 						"name": "trackerRepositoryImage.source",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The image source exactly as the document wrote it."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerRepositoryImage",
-						"type": "{ path: string; type: string } | null"
+						"type": "{ path: string; type: string } | null",
+						"description": "The repository path and media type, or null for a web address, a path outside the repository, a malformed escape or another file type."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

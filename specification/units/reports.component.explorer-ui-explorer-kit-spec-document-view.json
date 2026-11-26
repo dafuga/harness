@@ -4,8 +4,8 @@
 	"uid": "u_mcvctd4jcs",
 	"kind": "component",
 	"title": "SpecDocumentView",
-	"responsibility": "Owns the SpecDocumentView Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Loads one attached document and shows it as sanitised markdown with drawn diagrams.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -22,27 +22,30 @@
 		"symbols": ["SpecDocumentView", "LoadSpecDocument"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "SpecDocumentView.attachment",
 				"type": "TrackerAttachment",
-				"required": true
+				"required": true,
+				"description": "The listing of the document to show."
 			},
 			{
 				"name": "SpecDocumentView.load",
 				"type": "LoadSpecDocument",
-				"required": true
+				"required": true,
+				"description": "Fetches the document for this screen; a null result or rejection shows the unavailable message."
 			}
 		],
 		"outputs": [
 			{
 				"name": "SpecDocumentView",
-				"type": "markup"
+				"type": "markup",
+				"description": "A loading line, then the rendered document or an alert that it is not available."
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

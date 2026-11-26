@@ -10,13 +10,15 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameLevelService.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameLevelService.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/GameLevelService.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-bridge/LevelGenerationError.ts"
 		],
 		"symbols": [
 			"GameLevelService",
 			"GameLevelService.constructor",
 			"GameLevelService.generate",
 			"LevelRequest",
+			"LevelGenerationError",
 			"LevelGenerationError"
 		]
 	},

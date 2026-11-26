@@ -16,8 +16,16 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte"],
-		"symbols": ["MeasuresPanel", "MeasuresPanel.label", "MeasuresPanel.children"]
+		"source": [
+			"packages/desktop/src/components/shared-primitives/MeasuresPanel.svelte",
+			"packages/desktop/src/components/shared-primitives/MeasuresPanel.types.ts"
+		],
+		"symbols": [
+			"MeasuresPanel",
+			"MeasuresPanel.label",
+			"MeasuresPanel.children",
+			"MeasuresPanelRow"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/networking-security/InvalidRemoteBinaryError.ts",
 			"packages/desktop/src/utils/networking-security/remoteBinary.ts",
 			"packages/desktop/src/utils/networking-security/remoteBinary.types.ts"
 		],
-		"symbols": ["unreadableMedia", "damagedMedia", "remoteBinary", "InvalidRemoteBinaryError"]
+		"symbols": [
+			"InvalidRemoteBinaryError",
+			"unreadableMedia",
+			"damagedMedia",
+			"remoteBinary",
+			"InvalidRemoteBinaryError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

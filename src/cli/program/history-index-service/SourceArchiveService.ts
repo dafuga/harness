@@ -1,7 +1,8 @@
 // @harness-uid u_rnafd4d6rs
+import type { RevisionUnit } from '../../../utils/verification-evidence/revision-registry/revisionRegistry.types';
 import { associatedTests, testImporters } from './associatedTests';
 import type { StoredSide } from '../../../utils/explorer-ui/sideImpact';
-import type { Unit } from './SourceArchiveService.types';
+
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -17,7 +18,7 @@ export class SourceArchiveService {
 		private readonly out: string
 	) {}
 
-	async archive(commit: string, units: Unit[], side?: StoredSide): Promise<void> {
+	async archive(commit: string, units: RevisionUnit[], side?: StoredSide): Promise<void> {
 		const tree = await CommitTreeAdapter.open(this.root, commit);
 		const entries = await tree.list();
 		const owned = new Map(
@@ -64,7 +65,7 @@ export class SourceArchiveService {
 	}
 }
 
-function pathsFor(unit: Unit, entries: TreeEntry[]): string[] {
+function pathsFor(unit: RevisionUnit, entries: TreeEntry[]): string[] {
 	return [
 		...new Set(
 			unit.owns.source.flatMap((owned) => {

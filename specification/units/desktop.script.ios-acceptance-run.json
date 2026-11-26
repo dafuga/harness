@@ -9,10 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/FixtureControlOriginError.ts",
+			"packages/desktop/scripts/FixtureControlRefusedError.ts",
 			"packages/desktop/scripts/ios-acceptance-run.ts",
 			"packages/desktop/scripts/ios-acceptance-run.types.ts"
 		],
 		"symbols": [
+			"FixtureControlOriginError",
+			"FixtureControlRefusedError",
 			"computerName",
 			"panelText",
 			"footerText",

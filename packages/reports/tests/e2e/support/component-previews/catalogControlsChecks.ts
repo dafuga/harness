@@ -26,6 +26,7 @@ export async function assertCatalogControls({
 	await caseAssertions.assertCatalogDetails(component, unit.id, variant);
 	await assertVideoCatalogState({ component, unit, variant });
 	await assertDesktopChoices(component, unit.id);
+	await assertTrackerChoices(component, unit.id);
 	if (
 		['remote-connection', 'remote-host-panel'].some(
 			(name) => unit.id === `desktop.component.${name}`
@@ -57,6 +58,19 @@ export async function assertCatalogControls({
 			component.getByRole('link', { name: 'Open OrderCard', exact: true })
 		).toHaveAttribute('title', /Synthetic preview input/);
 	}
+}
+
+async function assertTrackerChoices(component: Locator, id: string) {
+	if (
+		id !== 'desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices' &&
+		id !== 'hub.component.projects-sessions-hub-home-choices'
+	)
+		return;
+	const recommended = component.getByRole('button', { name: /Keep existing names/ });
+	await expect(recommended).toBeEnabled();
+	await expect(recommended).toHaveAttribute('data-recommended', 'true');
+	await expect(recommended).toHaveCSS('text-align', 'left');
+	await expect(component.getByRole('button', { name: /Use new names/ })).toBeEnabled();
 }
 
 async function assertDesktopChoices(component: Locator, id: string) {

@@ -3,7 +3,7 @@ import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import type { ResourceContext } from '../../../../../../src/core/execution-runtimes/resourceTypes';
 import { resourceEnvironment } from '../../../../../../src/utils/execution-runtimes/resourceEnvironment';
 import type { CliCommand } from '../../../models/agents-providers/AgentRunner.types';
-import { cliEnvironment } from '../../cli-environment/cliEnvironment';
+import { cliEnvironment } from '../../execution-runtimes/cli-environment/cliEnvironment';
 import { killOwnedProcess } from '../cliProcess';
 import { streamLines } from '../../shared-primitives/streamLines';
 import type { RpcEvent, RpcPending } from '../rpcMessages';

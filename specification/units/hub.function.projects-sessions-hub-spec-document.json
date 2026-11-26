@@ -4,34 +4,43 @@
 	"uid": "u_s53zhfyepg",
 	"kind": "function",
 	"title": "hubSpecDocument",
-	"responsibility": "Owns the hubSpecDocument shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Gives the ask cards under Hub Home a way to load the signed-in owner's attached documents.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubSpecDocument.ts"],
 		"symbols": ["provideHubSpecDocuments", "hubSpecDocuments"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "provideHubSpecDocuments.api",
 				"type": "BrowserApi",
-				"required": true
+				"required": true,
+				"description": "The Hub browser API of the signed-in owner, used to request documents."
 			}
 		],
 		"outputs": [
 			{
 				"name": "provideHubSpecDocuments",
-				"type": "void"
+				"type": "void",
+				"description": "Sets the document loader in the current Svelte component context."
 			},
 			{
 				"name": "hubSpecDocuments",
-				"type": "LoadSpecDocument"
+				"type": "LoadSpecDocument",
+				"description": "The loader set by an ancestor; it requests a document by attachment id."
 			}
 		],
-		"errors": [],
-		"errorStatus": "unknown",
+		"errors": [
+			{
+				"name": "BrowserApiRequestError",
+				"type": "thrown",
+				"description": "The returned loader rejects when the Hub request fails, such as for a document not yet uploaded."
+			}
+		],
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "provideHubSpecDocuments",
@@ -39,17 +48,19 @@
 					{
 						"name": "provideHubSpecDocuments.api",
 						"type": "BrowserApi",
-						"required": true
+						"required": true,
+						"description": "The Hub browser API of the signed-in owner, used to request documents."
 					}
 				],
 				"outputs": [
 					{
 						"name": "provideHubSpecDocuments",
-						"type": "void"
+						"type": "void",
+						"description": "Sets the document loader in the current Svelte component context."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "hubSpecDocuments",
@@ -57,11 +68,18 @@
 				"outputs": [
 					{
 						"name": "hubSpecDocuments",
-						"type": "LoadSpecDocument"
+						"type": "LoadSpecDocument",
+						"description": "The loader set by an ancestor; it requests a document by attachment id."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "BrowserApiRequestError",
+						"type": "thrown",
+						"description": "The returned loader rejects when the Hub request fails, such as for a document not yet uploaded."
+					}
+				],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

@@ -1,4 +1,4 @@
-// @harness-uid u_aut0chr0me
+// @harness-uid u_uchzbpfigk
 export const trackerAutomationBrowserRule = `## Automation Chrome (primary Mac)
 
 On daniel-primary-mbp, run CDP or Playwright browser work in the dedicated automation Chrome at http://127.0.0.1:9333. It never asks Daniel to click Allow. Check it with \`curl -s http://127.0.0.1:9333/json/version\`; if it is down, run \`launchctl kickstart -k gui/$(id -u)/com.daniel.automation-chrome\`.

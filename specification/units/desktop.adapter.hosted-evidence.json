@@ -11,7 +11,8 @@
 		"source": [
 			"packages/desktop/src/adapters/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.ts",
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.types.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/HostedEvidenceAdapter.types.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/hosted-evidence-adapter/InvalidHostedEvidenceAnswerError.ts"
 		],
 		"symbols": [
 			"HostedEvidenceAdapter",
@@ -20,7 +21,7 @@
 			"HostedEvidenceAdapter.path",
 			"HostedEvidenceAdapter.evidence",
 			"HostedEvidenceAdapter.artifact",
-			"Query",
+			"InvalidHostedEvidenceAnswerError",
 			"InvalidHostedEvidenceAnswerError"
 		]
 	},
@@ -42,7 +43,7 @@
 			},
 			{
 				"name": "HostedEvidenceAdapter.path.query",
-				"type": "Query | (EvidenceArtifactQuery & { projectId: string })",
+				"type": "HostedEntityEvidenceQuery | (EvidenceArtifactQuery & { projectId: string })",
 				"required": true,
 				"description": "Supplies the project and entity evidence fields used to build the hosted URL, with artifact binding fields for an artifact read. The project ID and payload fields are validated, and fields outside the evidence payload are dropped.",
 				"examples": [
@@ -73,7 +74,7 @@
 			},
 			{
 				"name": "HostedEvidenceAdapter.evidence.query",
-				"type": "Query",
+				"type": "HostedEntityEvidenceQuery",
 				"required": true,
 				"description": "Identifies the project entity, branch, mode, and commit for a hosted evidence read. The project ID must match the hosted project pattern, the entity ID is a bounded identifier, the commit is 40 lowercase hexadecimal characters, and mode is current or commit.",
 				"examples": [
@@ -171,7 +172,7 @@
 					},
 					{
 						"name": "HostedEvidenceAdapter.path.query",
-						"type": "Query | (EvidenceArtifactQuery & { projectId: string })",
+						"type": "HostedEntityEvidenceQuery | (EvidenceArtifactQuery & { projectId: string })",
 						"required": true,
 						"description": "Supplies the project and entity evidence fields used to build the hosted URL, with artifact binding fields for an artifact read. The project ID and payload fields are validated, and fields outside the evidence payload are dropped.",
 						"examples": [
@@ -226,7 +227,7 @@
 				"inputs": [
 					{
 						"name": "HostedEvidenceAdapter.evidence.query",
-						"type": "Query",
+						"type": "HostedEntityEvidenceQuery",
 						"required": true,
 						"description": "Identifies the project entity, branch, mode, and commit for a hosted evidence read. The project ID must match the hosted project pattern, the entity ID is a bounded identifier, the commit is 40 lowercase hexadecimal characters, and mode is current or commit.",
 						"examples": [
@@ -376,6 +377,11 @@
 		},
 		{
 			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.hosted-evidence",
 			"via": "import",
 			"origin": "derived"
 		},

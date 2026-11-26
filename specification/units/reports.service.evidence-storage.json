@@ -10,9 +10,15 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/services/verification-evidence/EvidenceStorageService.ts",
-			"packages/reports/src/services/verification-evidence/EvidenceStorageService.types.ts"
+			"packages/reports/src/services/verification-evidence/EvidenceStorageService.types.ts",
+			"packages/reports/src/services/verification-evidence/ReportExpiredError.ts"
 		],
-		"symbols": ["EvidenceStorageService", "EvidenceStorageService.store", "ReportExpiredError"]
+		"symbols": [
+			"EvidenceStorageService",
+			"EvidenceStorageService.store",
+			"ReportExpiredError",
+			"ReportExpiredError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

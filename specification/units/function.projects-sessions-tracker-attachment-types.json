@@ -4,8 +4,8 @@
 	"uid": "u_ua2v4kfzyz",
 	"kind": "function",
 	"title": "trackerAttachment",
-	"responsibility": "Owns the trackerAttachment shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Names the shapes of an ask attachment: its small listing, its document snapshot and the flag input.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerAttachment.types.ts"],
@@ -18,11 +18,11 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

@@ -3,6 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { categories } from '../../src/models/development-tooling/DesktopValues';
 import { projectProposal, proposalPrompt } from '../../src/utils/agents-providers/projectProposal';
+import type { Refusal } from './desktop.function.project-proposal.test.types';
 
 const UNIT = 'desktop.function.project-proposal';
 const PREFIX = "The agent's proposal was not used: ";
@@ -22,8 +23,6 @@ const valid = {
 const answer = (change: Record<string, unknown> = {}) => JSON.stringify({ ...valid, ...change });
 const contractWith = (change: Record<string, unknown>) =>
 	answer({ contract: { ...valid.contract, ...change } });
-
-type Refusal = [name: string, text: string, message: string];
 
 /** Paths, source notes and out-of-bounds entries, each with the refusal it must produce. */
 const boundsRefusals: Refusal[] = [

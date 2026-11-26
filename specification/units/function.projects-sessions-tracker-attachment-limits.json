@@ -4,24 +4,25 @@
 	"uid": "u_yi5xg6n6n5",
 	"kind": "function",
 	"title": "trackerAttachmentLimits",
-	"responsibility": "Owns the trackerAttachmentLimits shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Holds the count and size limits that keep an ask's documents within one sync operation and request.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerAttachmentLimits.ts"],
 		"symbols": ["trackerAttachmentLimits"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
 				"name": "trackerAttachmentLimits",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Maximum attachments per ask, markdown bytes, image data length, bytes per document and bytes per ask."
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

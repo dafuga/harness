@@ -97,4 +97,9 @@ Hub handoff and device storage changes, and the iOS account adapter.
 
 Hub Home live sessions retains implementation commit `32f91c2f7` for the read-only homeSnapshot device method in the desktop device session and operations services.
 
+The shared verification baseline lint repair retains the reviews of the desktop relay frame check,
+project run service and relay host services at the commit that extracted their helpers.
+
 Realtime tracker pushes retain implementation commit `68fcb43a67` for the desktop initializer, preload and local client.
+
+Shared type consolidation retains implementation commit `6c9252a51` for the five moved services whose type references now name the one shared owner.

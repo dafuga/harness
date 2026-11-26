@@ -10,6 +10,7 @@
 	import type { ExplorerEvidence, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
 	import type { Evidence } from '../../models/reports-media/Report.types';
 	import { entityScreens, galleryItems } from '../../utils/explorer-ui/entityScreens';
+	import { latestVideoCoverage } from './entityStateVideo';
 	import VideoEvidence from '../verification-evidence/VideoEvidence.svelte';
 	import VideoGraphNavigation from '../verification-evidence/VideoGraphNavigation.svelte';
 	import EvidenceCard from '../verification-evidence/EvidenceCard.svelte';
@@ -40,17 +41,7 @@
 	let scenarios = $derived(evidence.scenarios.filter((scenario) => scenario.viewports.length > 0));
 	let scenario = $derived(scenarios.find((item) => item.id === wanted) ?? scenarios[0]);
 	let playlist = $derived(scenario?.video?.playlists.find((item) => item.id === path));
-	let graphCoverage = $derived.by(() => {
-		const records =
-			evidence.after.detail?.records ?? (evidence.after.record ? [evidence.after.record] : []);
-		return (
-			records
-				.filter((record) => record.valid && record.source.commit === evidence.after.commit)
-				.sort((left, right) => right.finishedAt.localeCompare(left.finishedAt))
-				.flatMap((record) => record.scenarios)
-				.find((item) => item.id === scenario?.id)?.videoCoverage ?? []
-		);
-	});
+	let graphCoverage = $derived(latestVideoCoverage(evidence, scenario?.id));
 	let screen = $derived(
 		scenario?.viewports.find((item) => item.id === viewport) ?? scenario?.viewports[0]
 	);

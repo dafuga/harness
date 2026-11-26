@@ -11,7 +11,8 @@
 		"source": [
 			"packages/reports/src/adapters/R2ScreenshotStoreAdapter.ts",
 			"packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.ts",
-			"packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.types.ts"
+			"packages/reports/src/adapters/reports-media/R2ScreenshotStoreAdapter.types.ts",
+			"packages/reports/src/adapters/reports-media/R2ScreenshotStoreError.ts"
 		],
 		"symbols": [
 			"screenshotObjectPrefix",
@@ -28,6 +29,7 @@
 			"R2ScreenshotStoreAdapter.get",
 			"R2ScreenshotStoreAdapterConfig",
 			"R2ScreenshotStoreAdapterConfig",
+			"R2ScreenshotStoreError",
 			"R2ScreenshotStoreError"
 		]
 	},

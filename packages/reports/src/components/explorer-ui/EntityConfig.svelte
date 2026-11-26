@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../shared-primitives/atoms -->
 <!-- @harness-uid u_chzh7fstkr -->
 <script lang="ts">
+	import type { Setting } from './EntityConfig.types';
 	import DetailList from '../shared-primitives/DetailList.svelte';
 	import Card from './explorer-kit/Card.svelte';
 	import type { ExplorerEntity, ExplorerScope } from '../../models/explorer-ui/Explorer.types';
@@ -19,7 +20,6 @@
 		nav: EntityNav;
 	} = $props();
 	// A setting is one of the config unit's contract outputs.
-	type Setting = ExplorerEntity['unit']['contract']['outputs'][number];
 	let current = $derived(scope.mode === 'current');
 	let commit = $derived(
 		entityLens(nav.route, { category: 'configs', entity: entity.id, commit: scope.commit })

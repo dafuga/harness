@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/networking-security/CloudflareSafetyError.ts",
 			"packages/desktop/src/utils/networking-security/cloudflareSafety.ts",
 			"packages/desktop/src/utils/networking-security/cloudflareSafety.types.ts"
 		],
-		"symbols": ["cloudflareSafety", "CloudflareSafetyError"]
+		"symbols": ["CloudflareSafetyError", "cloudflareSafety", "CloudflareSafetyError"]
 	},
 	"contract": {
 		"origin": "declared",

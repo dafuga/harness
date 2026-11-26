@@ -6,8 +6,7 @@ import { explorerSearchEntries } from '../../src/utils/explorer-ui/explorerSearc
 import type { ExplorerEntity } from '../../src/models/explorer-ui/Explorer.types';
 import type { HarnessRevision, HarnessUnit } from '../../src/models/explorer-ui/Harness.types';
 import { revision, sha, unit } from '../explorerFixture';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.explorer-search-entries.test.types';
 const unitId = 'reports.function.explorer-search-entries';
 const record = (state: string, cases: Cases) =>
 	recordExampleCases(

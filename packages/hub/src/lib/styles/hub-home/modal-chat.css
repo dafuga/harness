@@ -178,7 +178,7 @@
 	border-color: var(--hx-color-primary);
 }
 .hh-home .hh-choice:disabled {
-	opacity: 0.5;
+	opacity: var(--hx-opacity-disabled);
 }
 .hh-home .hh-choice-badge,
 .hh-home .hh-choice-effect {

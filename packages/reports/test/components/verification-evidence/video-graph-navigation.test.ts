@@ -7,28 +7,26 @@ import { record, revision } from '../../entityFixture';
 import { commits, ids, units } from '../../entityUnits';
 import { scope } from '../../entityPlaces';
 
-test('VideoGraphNavigation.svelte is generated', () => {
-	const library = {
-		graphs: [],
-		playlists: [
-			{ id: 'search-match', clips: ['match'] },
-			{ id: 'search-empty', clips: ['empty'] }
-		],
-		discoveryGaps: [{ unit: 'page.platforms', reason: 'Status filtering is awaiting inventory.' }]
-	};
-	const coverage = [
-		{
-			graph: 'platform-search',
-			states: 1,
-			edges: 0.5,
-			clips: 0.5,
-			complete: false,
-			missing: ['mobile/edge/search-empty']
-		}
-	];
-	const body = render(VideoGraphNavigation, {
-		props: { library, coverage, selected: 'search-match' } as never
-	}).body;
+const library = {
+	graphs: [],
+	playlists: [
+		{ id: 'search-match', clips: ['match'] },
+		{ id: 'search-empty', clips: ['empty'] }
+	],
+	discoveryGaps: [{ unit: 'page.platforms', reason: 'Status filtering is awaiting inventory.' }]
+};
+const coverage = [
+	{
+		graph: 'platform-search',
+		states: 1,
+		edges: 0.5,
+		clips: 0.5,
+		complete: false,
+		missing: ['mobile/edge/search-empty']
+	}
+];
+
+function assertGraphControls(body: string) {
 	for (const value of [
 		'Video path',
 		'Search match',
@@ -43,6 +41,13 @@ test('VideoGraphNavigation.svelte is generated', () => {
 			body,
 			'modular branch controls show verified coverage and remaining discovery'
 		).toContain(value);
+}
+
+test('VideoGraphNavigation.svelte is generated', () => {
+	const body = render(VideoGraphNavigation, {
+		props: { library, coverage, selected: 'search-match' } as never
+	}).body;
+	assertGraphControls(body);
 	const empty = render(VideoGraphNavigation, { props: { library } as never }).body;
 	expect(empty).toContain('No verified graph coverage');
 	expect(empty).not.toContain('100%');

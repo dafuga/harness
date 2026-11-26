@@ -194,7 +194,7 @@
 	content: '';
 	width: var(--hx-space-8);
 	height: var(--hx-space-8);
-	border-radius: 50%;
+	border-radius: var(--hx-radius-round);
 	background: var(--hx-color-warning);
 }
 

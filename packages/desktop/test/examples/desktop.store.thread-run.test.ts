@@ -1,9 +1,8 @@
 import { test, vi, type Mock } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { createThreadRunStore } from '../../src/lib/stores/development-tooling/threadRun.svelte';
-import type { Workspace } from '../../src/lib/stores/projects-sessions/workspace.svelte';
 import type { RunRequest } from '../../src/models/development-tooling/DesktopBridge.types';
+import { workspaceStub, record } from './desktop.store.thread-run.cases';
 
 /** Synthetic request: the store reads only mode and writes environment. */
 const request = (mode: 'plan' | 'change') => ({ mode, projectId: 'project-7' }) as RunRequest;
@@ -14,12 +13,6 @@ function bridgeStub(runId = 'run-1') {
 		startRun: vi.fn<(input: RunRequest) => Promise<{ runId: string }>>(async () => ({ runId })),
 		cancelRun: vi.fn(async () => true)
 	};
-}
-
-/** Synthetic workspace: only the fields the store reads, with refresh stubbed. */
-function workspaceStub(bridge: unknown, extra: Record<string, unknown> = {}) {
-	const refresh = vi.fn(async () => undefined);
-	return { bridge, context: { projectId: 'project-7' }, refresh, ...extra } as unknown as Workspace;
 }
 
 /** Resolves to the rejection message, or null when the promise resolves. */
@@ -34,41 +27,6 @@ const calls = (mock: unknown) => (mock as Mock).mock.calls.length;
 /** A finished event for a run; a Change's summary is what the notice shows. */
 const finishEvent = (runId: string) =>
 	({ runId, kind: 'finished', summary: 'Change applied', verified: false }) as const;
-
-function record(state: string, symbol: string, input: unknown, output: unknown) {
-	recordExampleCases(
-		{
-			unitId: 'desktop.store.thread-run',
-			symbol,
-			state,
-			evidence: 'examples-cases',
-			file: `${state}.json`
-		},
-		[{ name: symbol, input, output }]
-	);
-}
-
-test('starts each store idle with no run active', () => {
-	const first = createThreadRunStore(workspaceStub(undefined));
-	const second = createThreadRunStore(workspaceStub(undefined));
-	const idle = { distinct: first !== second, runId: first.runId, status: first.status };
-	const observed = {
-		...idle,
-		streaming: first.streaming,
-		error: first.error,
-		active: first.active
-	};
-
-	expect(observed).toEqual({
-		distinct: true,
-		runId: '',
-		status: '',
-		streaming: '',
-		error: '',
-		active: false
-	});
-	record('starts-each-store-idle-with-no-run-active', 'createThreadRunStore', null, observed);
-});
 
 test('start refuses a second run while one is still starting or active', async () => {
 	const bridge = bridgeStub('run-1');

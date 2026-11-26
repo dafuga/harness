@@ -4,35 +4,38 @@
 	"uid": "u_t332so7lwh",
 	"kind": "function",
 	"title": "isTrackerSpecReview",
-	"responsibility": "Owns the isTrackerSpecReview shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Decides whether an ask is about reviewing a spec, so that flagging it requires the spec to be attached.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/isTrackerSpecReview.ts"],
 		"symbols": ["isTrackerSpecReview"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "isTrackerSpecReview.question",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The ask text; it must name a spec or specification for the result to be true."
 			},
 			{
 				"name": "isTrackerSpecReview.labels",
 				"type": "readonly string[]",
-				"required": true
+				"required": true,
+				"description": "The offered choice labels, searched with the question for a review, approval, sign-off, accept or merge word."
 			}
 		],
 		"outputs": [
 			{
 				"name": "isTrackerSpecReview",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True only when the question names a spec and the question or a label asks for a decision on it."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "isTrackerSpecReview",
@@ -40,22 +43,25 @@
 					{
 						"name": "isTrackerSpecReview.question",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The ask text; it must name a spec or specification for the result to be true."
 					},
 					{
 						"name": "isTrackerSpecReview.labels",
 						"type": "readonly string[]",
-						"required": true
+						"required": true,
+						"description": "The offered choice labels, searched with the question for a review, approval, sign-off, accept or merge word."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isTrackerSpecReview",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True only when the question names a spec and the question or a label asks for a decision on it."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

@@ -18,7 +18,6 @@
 			"HostCommandService.constructor",
 			"HostCommandService.handle",
 			"Acknowledged",
-			"Address",
 			"HostCommandService"
 		]
 	},
@@ -178,6 +177,11 @@
 		},
 		{
 			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-relay-types",
 			"via": "import",
 			"origin": "derived"
 		}

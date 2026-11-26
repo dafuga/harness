@@ -41,6 +41,17 @@ function failure(cause: unknown): Error {
 	});
 }
 
+function listenToChannel(
+	plugin: CapacitorBridgeAdapterConfig['plugin'],
+	channel: WireChannel,
+	listener: (value: unknown) => void
+): () => void {
+	const handle = plugin.addListener('event', (event) => {
+		if (event.channel === channel) listener(event.value);
+	});
+	return () => void handle.then((item) => item.remove());
+}
+
 /**
  * The product interface of a phone: every operation is one named request to the computer.
  * No project is selected on the other side, so each request names its project and each change
@@ -162,10 +173,7 @@ export class CapacitorBridgeAdapter {
 
 	/** The plugin hands on each event once and in order; here it only finds its channel. */
 	private listen(channel: WireChannel, listener: (value: unknown) => void): () => void {
-		const handle = this.config.plugin.addListener('event', (event) => {
-			if (event.channel === channel) listener(event.value);
-		});
-		return () => void handle.then((item) => item.remove());
+		return listenToChannel(this.config.plugin, channel, listener);
 	}
 }
 

@@ -4,8 +4,8 @@
 	"uid": "u_5eegkvpd5c",
 	"kind": "component",
 	"title": "ViewSpecButtons",
-	"responsibility": "Owns the ViewSpecButtons Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Offers one button per attachment on an ask and opens the chosen one in the spec modal.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -22,37 +22,42 @@
 		"symbols": ["ViewSpecButtons"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ViewSpecButtons.attachments",
 				"type": "TrackerAttachment[]",
-				"required": true
+				"required": true,
+				"description": "The ask's attachment listings, one button each."
 			},
 			{
 				"name": "ViewSpecButtons.question",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The ask text repeated beside the document."
 			},
 			{
 				"name": "ViewSpecButtons.load",
 				"type": "LoadSpecDocument",
-				"required": true
+				"required": true,
+				"description": "Fetches a document for this screen."
 			},
 			{
 				"name": "ViewSpecButtons.answers",
 				"type": "Snippet<[close: () => void]>",
-				"required": true
+				"required": true,
+				"description": "The ask's answer controls for the modal; it receives a function that closes the modal."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ViewSpecButtons",
-				"type": "markup"
+				"type": "markup",
+				"description": "The View buttons and, while one is open, its modal."
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

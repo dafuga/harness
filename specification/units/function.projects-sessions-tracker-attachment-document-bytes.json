@@ -4,34 +4,37 @@
 	"uid": "u_svvcohckao",
 	"kind": "function",
 	"title": "trackerAttachmentDocumentBytes",
-	"responsibility": "Owns the trackerAttachmentDocumentBytes shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Defines what an attached document may contain and measures the bytes it costs.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerAttachmentDocumentBytes.ts"],
 		"symbols": ["trackerAttachmentDocumentSchema", "trackerAttachmentDocumentBytes"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerAttachmentDocumentBytes.document",
 				"type": "{ markdown: string; images?: Record<string, string>; }",
-				"required": true
+				"required": true,
+				"description": "The markdown and any images as data addresses."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerAttachmentDocumentSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Accepts bounded non-empty markdown and images that are base64 PNG, JPEG, GIF, WebP or SVG data addresses."
 			},
 			{
 				"name": "trackerAttachmentDocumentBytes",
-				"type": "number"
+				"type": "number",
+				"description": "UTF-8 bytes of the markdown plus the length of every image data address."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "trackerAttachmentDocumentBytes",
@@ -39,17 +42,19 @@
 					{
 						"name": "trackerAttachmentDocumentBytes.document",
 						"type": "{ markdown: string; images?: Record<string, string>; }",
-						"required": true
+						"required": true,
+						"description": "The markdown and any images as data addresses."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerAttachmentDocumentBytes",
-						"type": "number"
+						"type": "number",
+						"description": "UTF-8 bytes of the markdown plus the length of every image data address."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

@@ -37,8 +37,9 @@ test('Comment is the default, never starts a run and stays pending after a resta
 		'aria-pressed',
 		'true'
 	);
-	await expect(page.getByLabel('Model', { exact: true })).toHaveCount(0);
-	await expect(page.getByLabel('Reasoning effort', { exact: true })).toHaveCount(0);
+	const chooseModel = page.getByRole('button', { name: 'Choose model', exact: true });
+	await expect(chooseModel).toHaveCount(0);
+	await expect(page.getByRole('button', { name: /reasoning effort/i })).toHaveCount(0);
 	await expect(page.getByRole('button', { name: 'Codex CLI', exact: true })).toHaveCount(0);
 	await comment(page, 'Tighten the header');
 	await expect(page.getByText(/Pending on this device · not shared/)).toBeVisible();
@@ -64,9 +65,10 @@ test('Comment is the default, never starts a run and stays pending after a resta
 	await expect(page.getByText('Tighten the header', { exact: true })).toBeVisible();
 	await expect(page.getByText(/Pending on this device · not shared/)).toBeVisible();
 	await modes(page).getByRole('button', { name: 'Plan', exact: true }).click();
-	await expect(page.getByLabel('Model', { exact: true })).toBeVisible();
-	await expect(page.getByRole('button', { name: 'Codex CLI', exact: true })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Send plan', exact: true })).toBeVisible();
+	// A visual Plan names its fixed mockup models and offers no agent to choose.
+	await expect(page.getByText('Sonnet mockups · Haiku sizes and states')).toBeVisible();
+	await expect(chooseModel).toHaveCount(0);
 });
 
 test('a shared project acknowledges the collaboration commit and offers no agent control', async ({

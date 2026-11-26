@@ -7,7 +7,6 @@ import { DatabaseSync } from 'node:sqlite';
 import { _electron, expect, test } from '../../../../test/support/browserTest';
 import type { ElectronApplication, Page } from '../../../../test/support/browserTest';
 import scenario from '../../../../specification/scenarios/mac-tracker-inbox.json' with { type: 'json' };
-import { redirectTracker, serve } from './support/macTrackerServer';
 import { captureMacInbox, verifyMacWireframeOpen } from './support/macTrackerInboxEvidence';
 import { TrackerItemReadRepository } from '../../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../../src/repositories/projects-sessions/TrackerRunReadRepository';
@@ -19,6 +18,14 @@ import {
 	seedHostedPage,
 	startHubSpy
 } from './support/trackerOverviewPublisherFixture';
+import {
+	post,
+	serve,
+	redirectTracker,
+	stage,
+	writeOther,
+	confirm
+} from './support/macTrackerInboxActions';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
 const title = 'Fixture Mac decision';
@@ -30,28 +37,6 @@ const options = [
 ];
 
 test.setTimeout(120_000);
-
-function post(api: TrackerLocalApiService, path: string, body: object) {
-	return api.handle(
-		new Request(`http://127.0.0.1${path}`, { method: 'POST', body: JSON.stringify(body) })
-	);
-}
-
-async function stage(page: Page, action: string, text: string) {
-	await page.getByRole('button', { name: action, exact: true }).click();
-	await page.getByRole('textbox').fill(text);
-	await page.getByRole('button', { name: 'Review before sending' }).click();
-	await expect(page.getByRole('group', { name: 'Confirm this write' })).toBeVisible();
-}
-
-async function writeOther(page: Page, text: string) {
-	await page.getByRole('button', { name: /^Other/ }).click();
-	const field = page.getByRole('textbox', { name: 'Your answer' });
-	await expect(field).toBeFocused();
-	await field.fill(text);
-}
-
-const confirm = (page: Page) => page.getByRole('button', { name: 'Confirm and send' }).click();
 
 for (const viewport of scenario.viewports)
 	test.describe(viewport.id, () => {

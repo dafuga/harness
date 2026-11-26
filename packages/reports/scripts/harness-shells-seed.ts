@@ -1,11 +1,12 @@
 // @harness-uid u_b22codgvrd
-import type { ShellsSeed } from './harness-shells-seed.types';
+
 /**
  * Adds to the synthetic history a frame that puts the title list under a heading, and how it
  * becomes a shell: on a branch of its own it is first indexed as a component and baselined, then
  * declared a shell on its manifest alone, its id unchanged. A later commit no branch keeps is read
  * by its commit alone. Everything here is made up for the test.
  */
+import type { VerificationSeed } from './harness-emitted-seed.types';
 import { reviewer, type VerifyOutcome, type VerifyRepo } from '../../../test/support/verifyRepo';
 
 /** The branch of the frame, with a slash an address has to encode. */
@@ -27,7 +28,10 @@ const frame = (heading: string) =>
 /** The commits it made, by what the frame was at each; it leaves `main` checked out. */
 export async function seedShells(
 	repo: VerifyRepo,
-	{ verified, explain }: { verified: ShellsSeed['verified']; explain: ShellsSeed['explain'] },
+	{
+		verified,
+		explain
+	}: { verified: VerificationSeed['verified']; explain: VerificationSeed['explain'] },
 	from: string
 ): Promise<Record<'framed' | 'framedBaseline' | 'shelled' | 'shellRetained', string>> {
 	await repo.git(['checkout', '-q', '-b', shellsBranch, from]);
@@ -62,4 +66,4 @@ export async function seedShells(
 	return { framed, framedBaseline, shelled, shellRetained };
 }
 
-export type { ShellsSeed } from './harness-shells-seed.types';
+export type { VerificationSeed } from './harness-emitted-seed.types';

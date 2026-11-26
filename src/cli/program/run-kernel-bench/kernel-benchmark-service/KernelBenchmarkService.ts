@@ -1,6 +1,11 @@
 // @harness-uid u_4c6cbv56v5
-import type { BenchPlan, WorkloadRun, Workload } from './KernelBenchmarkService.types';
-import { KernelServerStartupError } from './KernelBenchmarkService.types';
+import type { RuntimeEnvironment } from '../../../../core/execution-runtimes/runtimeTypes.types';
+import {
+	type BenchPlan,
+	type WorkloadRun,
+	type Workload,
+	KernelServerStartupError
+} from './KernelBenchmarkService.types';
 import { spawn } from 'node:child_process';
 import {
 	BoundedCommandAdapter,
@@ -22,7 +27,6 @@ import { median } from '../../../../utils/development-tooling/benchSamples';
 import { impactKernel } from '../../../../utils/execution-runtimes/impact-kernel/impactKernel';
 import {
 	kernelArtifacts,
-	type Environment,
 	type KernelArtifacts
 } from '../../../../utils/execution-runtimes/kernelArtifacts';
 import { peakMemory } from './peakMemory';
@@ -167,7 +171,7 @@ export class KernelBenchmarkService {
 }
 
 /** Benchmark plumbing is not user activity, so its child commands record no analytics. */
-function internal(): Environment {
+function internal(): RuntimeEnvironment {
 	return commandEnvironment({ HARNESS_ANALYTICS_DISABLED: '1' });
 }
 

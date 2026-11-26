@@ -4,9 +4,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { artifactBytes } from '../../src/components/shared-primitives/recorded-preview/artifactBytes';
 import { ArtifactReadError } from '../../src/components/shared-primitives/recorded-preview/artifactBytes.types';
 import { unreadArtifact, damagedArtifact } from '../../src/utils/shared-primitives/artifactBytes';
-
-type Bridge = Parameters<typeof artifactBytes>[0];
-type Query = Parameters<typeof artifactBytes>[1];
+import type { Query, Bridge } from './desktop.function.artifact-bytes.test.types';
 
 const ABC = new TextEncoder().encode('abc');
 const ABC_SHA256 = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad';

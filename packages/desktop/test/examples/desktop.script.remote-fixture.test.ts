@@ -2,11 +2,9 @@ import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { startRemoteFixture } from '../../scripts/remote-fixture-host';
+import type { Fixture, Spies } from './desktop.script.remote-fixture.test.types';
 
 vi.mock('../../scripts/remote-fixture-host', () => ({ startRemoteFixture: vi.fn() }));
-
-type Fixture = Awaited<ReturnType<typeof startRemoteFixture>>;
-type Spies = ReturnType<typeof spyProcess>;
 
 const UNIT = 'desktop.script.remote-fixture';
 const FALLBACK = 'The remote fixture failed to start.';
@@ -26,7 +24,7 @@ const settle = () =>
 		Promise.resolve()
 	);
 
-function spyProcess() {
+export function spyProcess() {
 	return {
 		on: vi.spyOn(process, 'on').mockImplementation((() => process) as never),
 		exit: vi.spyOn(process, 'exit').mockImplementation((() => undefined) as never),

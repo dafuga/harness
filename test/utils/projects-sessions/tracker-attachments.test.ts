@@ -73,6 +73,7 @@ test('image names never leave the repository', () => {
 	expect(trackerRepositoryImage('docs/a.md', '../../secret.png')).toBeNull();
 	expect(trackerRepositoryImage('docs/a.md', 'file:///etc/a.png')).toBeNull();
 	expect(trackerRepositoryImage('docs/a.md', 'notes.env')).toBeNull();
+	expect(trackerRepositoryImage('docs/a.md', 'broken%zz.png')).toBeNull();
 });
 
 test('stored documents round trip, refuse oversize text and detect changes', () => {

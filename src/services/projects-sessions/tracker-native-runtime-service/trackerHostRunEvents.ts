@@ -22,7 +22,7 @@ export function recordedHostEvent(
 		key: string;
 		sessions: readonly TrackerHostSession[];
 		items: TrackerItemReadRepository;
-		legacySession(run: TrackerRunReceipt): TrackerHostSession | undefined;
+		legacySession: (run: TrackerRunReceipt) => TrackerHostSession | undefined;
 	}
 ): TrackerDispatchEvent | undefined {
 	const session = run.host_session_id

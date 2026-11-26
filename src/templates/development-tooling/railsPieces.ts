@@ -1,5 +1,6 @@
 // @harness-uid u_jllfqln26c
-import type { ClassEntityTemplate, FunctionTemplate } from './railsPieces.types';
+import type { ClassEntityTemplateInput } from './packagePieces.types';
+import type { FunctionTemplate } from './railsPieces.types';
 import { toCamelCase, toKebabCase, toPascalCase } from '../../helpers/strings/case';
 import type { PlannedFile } from '../../core/development-tooling/files';
 import { apiFiles, e2eFiles, viewFiles } from './appPieces';
@@ -138,7 +139,7 @@ export function resourceFiles(name: string): PlannedFile[] {
 	];
 }
 
-function classEntityFiles(input: ClassEntityTemplate): PlannedFile[] {
+function classEntityFiles(input: ClassEntityTemplateInput): PlannedFile[] {
 	return [
 		{ path: `src/${input.folder}/${input.className}.ts`, contents: input.contents },
 		{

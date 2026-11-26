@@ -4,9 +4,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { InvalidReportPublicationReceiptError } from '../../src/services/reports-media/report-command-service/report-retention-service/InvalidReportPublicationReceiptError';
 import { ReportPagesRetentionAdapter } from '../../src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter';
 import type { Deployment } from '../../src/services/reports-media/report-command-service/report-retention-service/ReportPagesRetentionAdapter.types';
-
-type Call = { args: string[] };
-type RunnerResult = { code: number; output: string };
+import type { RunnerResult, Call } from './reports.adapter.report-pages-retention.test.types';
 
 const RUN = 'run-20261114-0930';
 const OTHER_RUN_ID = '1b2c3d4e-5f60-4718-9a2b-3c4d5e6f7a8b';

@@ -9,6 +9,7 @@
 	import EvidenceProvenance from './EvidenceProvenance.svelte';
 	import Status from '../shared-primitives/status/Status.svelte';
 	import { loadVideoFlags, submitVideoFlag } from './video-evidence/videoFeedback';
+	import { videoProvenance } from './video-evidence/videoProvenance';
 	let { item, assetBase, initialFlags = [] }: VideoEvidenceProps = $props();
 	let player = $state<HTMLVideoElement>();
 	let frame = $state(0),
@@ -35,30 +36,7 @@
 	const frameImage = (flag: FrameFlag) =>
 		'/api/video-flag-frame?' + new URLSearchParams({ unit: flag.clip.unit, id: flag.id });
 	const standing = (flag: FrameFlag) => flag.status.charAt(0).toUpperCase() + flag.status.slice(1);
-	let details = $derived({
-		...item,
-		provenance: [
-			...(item.provenance ?? []),
-			{ label: 'Clip', value: video?.clipId ?? 'Not recorded' },
-			{
-				label: 'Original revision',
-				value: video?.reference?.revision ?? item.source ?? 'Not recorded'
-			},
-			{ label: 'Selected revision', value: video?.selectedRevision ?? 'Not recorded' },
-			{ label: 'Freshness', value: video?.freshness ?? 'Not recorded' },
-			{ label: 'Clip SHA-256', value: video?.sha256 ?? 'Not recorded' },
-			{ label: 'Input hash', value: video?.inputHash ?? 'Not recorded' },
-			{ label: 'Motion profile', value: video?.profile ?? 'Not recorded' },
-			{
-				label: 'States',
-				value: video?.states.map((state) => `${state.id} @ ${state.atSeconds}s`).join(', ') ?? ''
-			},
-			{
-				label: 'Transitions',
-				value: video?.edges.map((edge) => `${edge.id} @ ${edge.atSeconds}s`).join(', ') ?? ''
-			}
-		]
-	});
+	let details = $derived(videoProvenance(item));
 	$effect(() => {
 		const current = video,
 			controller = new AbortController();

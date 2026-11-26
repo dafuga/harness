@@ -33,7 +33,7 @@ test('the public visual layout catalog keeps bootstrap wrappers internal', () =>
 	expect(
 		catalogUnits.filter((unit) => unit.kind === 'layout').map((unit) => unit.id),
 		'Only visual frames belong in Layouts; bootstrap wrappers are internal'
-	).toEqual(['reports.layout.explorer-layout']);
+	).toEqual(['desktop.layout.root', 'reports.layout.explorer-layout']);
 	for (const id of ['hub.layout.root', 'reports.layout.root']) {
 		const wrapper = JSON.parse(
 			readFileSync(`../../specification/units/${id}.json`, 'utf8')

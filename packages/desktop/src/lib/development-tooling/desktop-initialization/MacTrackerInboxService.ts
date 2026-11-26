@@ -1,7 +1,5 @@
 // @harness-uid u_dpbqtddngd
 import type { TrackerItem } from '../../../../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
-import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
-import { sanitizeTrackerText } from '../../../../../../src/utils/projects-sessions/sanitizeTrackerText';
 import type {
 	ConfirmedWrite,
 	InboxDetail,
@@ -11,17 +9,17 @@ import type {
 	InboxWriteReceipt
 } from '../../../models/development-tooling/TrackerInbox.types';
 import { withLocalDocuments } from './macTrackerInboxDocuments';
-import {
-	projectDetail,
-	projectHeader,
-	safe,
-	safeItemId,
-	visible
-} from './macTrackerInboxProjection';
-import { confirmedWrite, itemBucket, matchesQuery } from '../tracker-inbox/trackerInbox';
+import { confirmedWrite, matchesQuery } from '../tracker-inbox/trackerInbox';
 import type { TrackerInboxItemReply, TrackerInboxReadInput } from './MacTrackerInboxService.types';
-
-const trackerOrigin = 'http://127.0.0.1:7701';
+import { projectDetail, projectRow, safeId, visible } from './macTrackerInboxProjection';
+import {
+	current,
+	liveState,
+	readReply,
+	trackerRequest,
+	unavailable,
+	writeError
+} from './macTrackerRequest';
 
 export class MacTrackerInboxService {
 	async read(
@@ -37,7 +35,7 @@ export class MacTrackerInboxService {
 					? this.search(input.query)
 					: current({ code: 'invalidInput' });
 			case 'detail':
-				return typeof input.id === 'string' && safeItemId.test(input.id)
+				return typeof input.id === 'string' && safeId.test(input.id)
 					? this.detail(input.id)
 					: current({ code: 'invalidInput' });
 			default:
@@ -103,76 +101,30 @@ export class MacTrackerInboxService {
 	}
 }
 
-/** Whether the local change feed answers, for a window that has not heard a push yet. */
-async function liveState(): Promise<InboxReply<never>> {
-	try {
-		const response = await trackerRequest('/changes');
-		await response.body?.cancel();
-		return response.ok ? current({}) : unavailable();
-	} catch {
-		return unavailable();
-	}
+function writeAction(action: unknown): action is ConfirmedWrite['action'] {
+	return action === 'note' || action === 'flag' || action === 'answer';
+}
+
+/** No tapped option, or one of the four an ask can offer. */
+function optionNumber(option: number | undefined): boolean {
+	return option === undefined || (Number.isInteger(option) && option >= 1 && option <= 4);
 }
 
 function parseWrite(input: Partial<ConfirmedWrite>): ConfirmedWrite | null {
 	const { action, id, text, revision, option } = input;
 	if (
-		(action !== 'note' && action !== 'flag' && action !== 'answer') ||
+		!writeAction(action) ||
 		typeof id !== 'string' ||
-		!safeItemId.test(id) ||
+		!safeId.test(id) ||
 		typeof text !== 'string' ||
 		(revision !== null && typeof revision !== 'string') ||
-		(option !== undefined && !(Number.isInteger(option) && option >= 1 && option <= 4))
+		!optionNumber(option)
 	)
 		return null;
 	return confirmedWrite({ action, id, text, revision, option }, true);
 }
 
-function trackerRequest(path: string, init?: RequestInit): Promise<Response> {
-	return fetch(trackerOrigin + path, {
-		...init,
-		redirect: 'error',
-		cache: 'no-store',
-		credentials: 'omit',
-		signal: AbortSignal.timeout(5000)
-	});
-}
-
-async function readReply<T>(response: Response): Promise<T> {
-	if (response.ok) return (await response.json()) as T;
-	await response.body?.cancel();
-	throw new TypeError('Tracker did not return item data');
-}
-
 async function readRows(): Promise<InboxRow[]> {
 	const items = await readReply<TrackerItem[]>(await trackerRequest('/items?status=all&limit=-1'));
 	return items.filter((item) => visible(item)).map(projectRow);
-}
-
-function projectRow(item: TrackerItem): InboxRow {
-	const open = trackerStructuredAsk(item);
-	return {
-		header: projectHeader(item),
-		bucket: itemBucket(item.status ?? 'open', open),
-		...(open && {
-			ask: { question: safe(item.question), since: item.asked_at ?? item.updated_at }
-		})
-	};
-}
-
-async function writeError(response: Response): Promise<string> {
-	const { code } = (await response.json()) as { code?: string };
-	if (code === 'staleReview') return code;
-	if (response.status === 404) return 'noLocalMatch';
-	if (response.status === 400) return 'invalidInput';
-	if (response.status === 409) return 'writeConflict';
-	return 'unavailable';
-}
-
-function current<T>(result: { value?: T; code?: string }): InboxReply<T> {
-	return { ...result, freshness: 'current', lastSyncedAt: null, partial: false };
-}
-
-function unavailable(): InboxReply<never> {
-	return { code: 'unavailable', freshness: 'unavailable', lastSyncedAt: null, partial: true };
 }

@@ -32,6 +32,14 @@ export function audioEvidenceVariant(props: PreviewCases[string], variant: strin
 	if (variant === 'minimal') return { ...props, item: minimalRecording(item) };
 	if (variant.startsWith('phase-'))
 		return { ...props, item: { ...item, phase: variant.slice('phase-'.length) } };
+	return recordingStatus(props, item, variant);
+}
+
+function recordingStatus(
+	props: PreviewCases[string],
+	item: Record<string, unknown>,
+	variant: string
+) {
 	if (variant === 'standing')
 		return { ...props, item: { ...item, standing: 'Baseline recording' } };
 	if (variant === 'audio-error')

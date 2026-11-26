@@ -4,8 +4,8 @@
 	"uid": "u_2c64lq6rce",
 	"kind": "function",
 	"title": "parseTrackerAttachmentWord",
-	"responsibility": "Owns the parseTrackerAttachmentWord shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Reads the command-line form owner/repo#PR:path[@commit] that names an attached GitHub file.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -15,22 +15,24 @@
 		"symbols": ["parseTrackerAttachmentWord", "TrackerAttachmentSource"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "parseTrackerAttachmentWord.word",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The text given to --spec or --doc; surrounding space is ignored."
 			}
 		],
 		"outputs": [
 			{
 				"name": "parseTrackerAttachmentWord",
-				"type": "TrackerAttachmentSource | null"
+				"type": "TrackerAttachmentSource | null",
+				"description": "Repository, path and any pull request or commit; null when malformed, lacking both PR and commit, or leaving the repository."
 			}
 		],
 		"errors": [],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "parseTrackerAttachmentWord",
@@ -38,17 +40,19 @@
 					{
 						"name": "parseTrackerAttachmentWord.word",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The text given to --spec or --doc; surrounding space is ignored."
 					}
 				],
 				"outputs": [
 					{
 						"name": "parseTrackerAttachmentWord",
-						"type": "TrackerAttachmentSource | null"
+						"type": "TrackerAttachmentSource | null",
+						"description": "Repository, path and any pull request or commit; null when malformed, lacking both PR and commit, or leaving the repository."
 					}
 				],
 				"errors": [],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

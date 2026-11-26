@@ -17,16 +17,14 @@ import type {
 } from './parseTrackerModelSpec.types';
 import type {
 	TrackerModelHistory,
+	ClaudeRoute,
+	PinContext,
+	SelectionContext,
 	TrackerModelSelection,
 	TrackerModelSelectionOptions,
 	TrackerRetryRun
 } from './pickTrackerModel.types';
-import type {
-	TrackerModelItem,
-	TrackerTaskKind,
-	TrackerTaskRoute,
-	TrackerTaskSize
-} from './classifyTrackerTask.types';
+import type { TrackerModelItem, TrackerTaskRoute } from './classifyTrackerTask.types';
 
 // Codex's weekly limit resets 27 Nov 2026 10:39 Europe/Lisbon (UTC+0 in November).
 const codexResetAt = Date.parse('2026-11-27T10:39:00Z');
@@ -35,11 +33,6 @@ const windowNote = 'Claude only until the Codex reset, 27 Nov 10:39 Lisbon';
 function claudeOnly({ cfg, now }: { cfg?: TrackerLadderConfig; now?: number }) {
 	const until = Date.parse(cfg?.autolaunch?.claudeOnlyUntil ?? '');
 	return (now ?? Date.now()) < (Number.isNaN(until) ? codexResetAt : until);
-}
-
-interface ClaudeRoute {
-	steps: TrackerModelRung[];
-	why: string;
 }
 
 // model-status.md before the reset: the cheapest Claude rung by task type, then Sonnet high, then Opus high.
@@ -90,8 +83,6 @@ export function pickTrackerModel(
 		: automaticSelection(item, ladder, context, options);
 }
 
-type SelectionContext = PinContext & { kind: TrackerTaskKind; size: TrackerTaskSize };
-
 function pinnedSelection(
 	item: TrackerModelItem,
 	ladder: TrackerModelRung[],
@@ -133,12 +124,6 @@ function automaticSelection(
 		kind,
 		reason: [`${kind}/${size}: ${label}`, ...window, ...why].join('; ')
 	};
-}
-
-interface PinContext {
-	route: TrackerTaskRoute;
-	restrictions: string[];
-	claude: boolean;
 }
 
 function raisedPinReason(

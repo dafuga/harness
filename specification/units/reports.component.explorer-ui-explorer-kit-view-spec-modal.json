@@ -4,8 +4,8 @@
 	"uid": "u_fywzaaju5j",
 	"kind": "component",
 	"title": "ViewSpecModal",
-	"responsibility": "Owns the ViewSpecModal Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows an attached document in a modal beside the ask's question and answer controls, stacked on a phone.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -28,42 +28,48 @@
 		"symbols": ["ViewSpecModal"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ViewSpecModal.attachment",
 				"type": "TrackerAttachment",
-				"required": true
+				"required": true,
+				"description": "The listing shown; one with zero bytes shows only its link."
 			},
 			{
 				"name": "ViewSpecModal.question",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The ask text shown above the answers."
 			},
 			{
 				"name": "ViewSpecModal.load",
 				"type": "LoadSpecDocument",
-				"required": true
+				"required": true,
+				"description": "Fetches the document for this screen."
 			},
 			{
 				"name": "ViewSpecModal.answers",
 				"type": "Snippet<[close: () => void]>",
-				"required": true
+				"required": true,
+				"description": "The answer choices and Other, given a function that closes the modal."
 			},
 			{
 				"name": "ViewSpecModal.onclose",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Called on the Close button or Escape, but not when a nested dialog is cancelled."
 			}
 		],
 		"outputs": [
 			{
 				"name": "ViewSpecModal",
-				"type": "markup"
+				"type": "markup",
+				"description": "A modal dialog with the title, source link, document and answers."
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "declared",
 		"operations": [],
 		"initialization": []
 	},

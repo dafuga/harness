@@ -5,8 +5,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { siteActivity } from '../../src/routes/api/project-activity/siteActivity';
-
-type SiteActivityResult = Awaited<ReturnType<typeof siteActivity>>;
+import type { SiteActivityResult } from './reports.function.site-activity.test.types';
 
 /** Reduces the site read to the fields that matter, without repository details. */
 function summarise(shown: SiteActivityResult): {

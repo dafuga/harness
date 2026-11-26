@@ -49,6 +49,10 @@ export class HostObjectController {
 			if (!['poll', 'exchange'].includes(route.action)) return relayError(404, 'not-found');
 			return this.pairing.handle(request, route, holder);
 		}
+		return this.accountSocket(request, holder);
+	}
+
+	private accountSocket(request: Request, holder: string): Response {
 		const deviceId = request.headers.get('X-Harness-Account-Device');
 		if (!deviceId || !remotePatterns.deviceId.test(deviceId))
 			return relayError(400, 'invalid-input');

@@ -4,10 +4,7 @@ import type { RegisterRemoteHost } from '../../../utils/networking-security/remo
 import type { RemoteSocket } from '../../../../../remote/src/index';
 import type { RemoteDeviceSessionsOptions } from './RemoteDeviceSessionsService';
 import type { RelayLinkTuning } from './RemoteHostRuntimeService';
-
-export class RemoteHostUnavailableError extends Error {
-	override name = 'RemoteHostUnavailableError';
-}
+export { RemoteHostUnavailableError } from './RemoteHostUnavailableError';
 
 export interface RemoteHostOptions {
 	store: RemoteHostStoreAdapter;

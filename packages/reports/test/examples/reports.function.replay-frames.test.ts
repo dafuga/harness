@@ -3,9 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { FRAME_SECONDS, replayFrames } from '../../src/utils/reports-media/replayFrames';
 import type { ReplayFrame } from '../../src/utils/reports-media/replayFrames.types';
-
-type Items = Parameters<typeof replayFrames>[0];
-type Item = Items[number];
+import type { Item } from './reports.function.replay-frames.test.types';
 
 const UNIT_ID = 'reports.function.replay-frames';
 

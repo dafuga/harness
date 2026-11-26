@@ -31,7 +31,17 @@ export function trackerRepositoryImage(
 	const base = new URL(documentPath.split('/').map(encodeURIComponent).join('/'), 'repo:/root/');
 	const target = new URL(source.split(/[?#]/)[0], base);
 	if (!target.pathname.startsWith('/root/')) return null;
-	const path = decodeURIComponent(target.pathname.slice('/root/'.length));
+	const path = decodedPath(target.pathname.slice('/root/'.length));
+	if (!path) return null;
 	const type = imageType[path.split('.').at(-1)?.toLowerCase() ?? ''];
 	return type ? { path, type } : null;
+}
+
+/** @pure Null for a malformed percent escape, which the document author can write. */
+function decodedPath(encoded: string): string | null {
+	try {
+		return decodeURIComponent(encoded);
+	} catch {
+		return null;
+	}
 }

@@ -3,7 +3,7 @@ import { test } from 'vitest';
 import type { EntityDetail, ThreadInfo } from '../src/models/development-tooling/Desktop.types';
 import type { RunRequest } from '../src/models/DesktopBridge.types';
 import { approvalMatch } from '../src/services/agents-providers/desktop-run-service/approvalMatch';
-import { runPayload } from '../src/utils/ipc-payload/ipcPayload';
+import { runPayload } from '../src/utils/execution-runtimes/ipc-payload/ipcPayload';
 
 /**
  * What is refused before any work: a design option count that is not a whole number from 1 to 10,

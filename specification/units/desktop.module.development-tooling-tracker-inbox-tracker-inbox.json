@@ -22,6 +22,7 @@
 			"flagQuestion",
 			"confirmedWrite",
 			"orderedOptions",
+			"writtenAnswer",
 			"optionWrite"
 		]
 	},
@@ -104,6 +105,21 @@
 				"required": true
 			},
 			{
+				"name": "writtenAnswer.detail",
+				"type": "InboxDetail",
+				"required": true
+			},
+			{
+				"name": "writtenAnswer.reviewed",
+				"type": "InboxReview",
+				"required": true
+			},
+			{
+				"name": "writtenAnswer.answer",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "optionWrite.detail",
 				"type": "InboxDetail",
 				"required": true
@@ -167,6 +183,10 @@
 			{
 				"name": "orderedOptions",
 				"type": "{ number: number; option: InboxOption }[]"
+			},
+			{
+				"name": "writtenAnswer",
+				"type": "ConfirmedWrite | null"
 			},
 			{
 				"name": "optionWrite",
@@ -363,6 +383,34 @@
 					{
 						"name": "orderedOptions",
 						"type": "{ number: number; option: InboxOption }[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writtenAnswer",
+				"inputs": [
+					{
+						"name": "writtenAnswer.detail",
+						"type": "InboxDetail",
+						"required": true
+					},
+					{
+						"name": "writtenAnswer.reviewed",
+						"type": "InboxReview",
+						"required": true
+					},
+					{
+						"name": "writtenAnswer.answer",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writtenAnswer",
+						"type": "ConfirmedWrite | null"
 					}
 				],
 				"errors": [],

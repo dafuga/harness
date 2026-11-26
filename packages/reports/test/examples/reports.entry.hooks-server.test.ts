@@ -2,15 +2,13 @@ import { afterAll, beforeAll, test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { handle } from '../../src/hooks.server';
+import type { HandleInput, Resolve } from './reports.entry.hooks-server.test.types';
 
 // The agent controller serves only /api/agent, which these cases never request; stubbing it keeps
 // the desktop services it pulls in out of this in-process load.
 vi.mock('../../src/lib/development-tooling/server-hooks/ConsoleAgentController', () => ({
 	ConsoleAgentController: class {}
 }));
-
-type HandleInput = Parameters<typeof handle>[0];
-type Resolve = HandleInput['resolve'];
 
 const unitId = 'reports.entry.hooks-server';
 const symbol = 'handle';

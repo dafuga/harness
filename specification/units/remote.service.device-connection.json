@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/remote/src/services/networking-security/DeviceConnectionError.ts",
 			"packages/remote/src/services/networking-security/DeviceConnectionService.ts",
 			"packages/remote/src/services/networking-security/DeviceConnectionService.types.ts"
 		],
 		"symbols": [
+			"DeviceConnectionError",
 			"DeviceConnectionService",
 			"DeviceConnectionService.constructor",
 			"DeviceConnectionService.onStatus",

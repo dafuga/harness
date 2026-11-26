@@ -9,11 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/repositories/reports-media/report-repository/InvalidReportStateInputError.ts",
 			"packages/reports/src/repositories/reports-media/report-repository/reportState.ts",
 			"packages/reports/src/repositories/reports-media/report-repository/reportState.types.ts",
 			"packages/reports/src/utils/reports-media/reportState.ts"
 		],
 		"symbols": [
+			"InvalidReportStateInputError",
 			"reportState",
 			"InvalidReportStateInputError",
 			"resultStatus",

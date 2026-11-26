@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/IosAcceptanceSimulatorError.ts",
 			"packages/desktop/scripts/ios-acceptance-simulator.ts",
 			"packages/desktop/scripts/ios-acceptance-simulator.types.ts"
 		],
 		"symbols": [
+			"IosAcceptanceSimulatorError",
 			"deviceName",
 			"bundleId",
 			"acceptanceDevice",

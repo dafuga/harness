@@ -7,13 +7,7 @@ import type {
 	NativeRequest,
 	BrowserAuth
 } from '../../src/utils/accounts-access/browserAuth.types';
-
-type Api = Parameters<typeof browserAuth>[0];
-interface Call {
-	method: string;
-	path: string;
-	body?: unknown;
-}
+import type { Call, Api } from './hub.function.browser-auth.test.types';
 
 const status = { actor: null, configured: true, clientId: 'fixture-client-id' };
 const challenge: LoginChallenge = { nonce: 'fixture-nonce-7', csrf: 'fixture-csrf-7' };

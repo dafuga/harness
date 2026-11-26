@@ -10,11 +10,13 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
-			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.types.ts"
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.types.ts",
+			"packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ReadOnlyAgentChangedFilesError.ts"
 		],
 		"symbols": [
 			"ProjectTaskService",
 			"ProjectTaskService.run",
+			"ReadOnlyAgentChangedFilesError",
 			"ReadOnlyAgentChangedFilesError",
 			"ReadOnlyAgentChangedFilesError.constructor"
 		]

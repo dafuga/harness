@@ -5,6 +5,7 @@ import type { PreviewCases } from './shared';
 import { children, text, names } from './shared';
 import * as d from './explorerData';
 import { sourceCases } from './source';
+import { specViewCases } from './specViewCases';
 import { desktopData } from './sealedData';
 const base = { nav: d.navigation, lens: d.reading, scope: d.shown.scope, mediaBase: '/media/' };
 const entity = { entity: d.entity, ...base };
@@ -19,6 +20,7 @@ const seen = {
 };
 export const explorerCases: PreviewCases = {
 	...moduleCases(d.host()),
+	...specViewCases,
 	'reports.component.explorer-ui-explorer-kit-card': {
 		children: text('<div><h2>OrderList</h2><p>Displays the current orders.</p></div>')
 	},

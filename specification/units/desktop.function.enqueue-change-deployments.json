@@ -9,10 +9,15 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/utils/projects-sessions/DeploymentReviewBlockedError.ts",
 			"packages/desktop/src/utils/projects-sessions/enqueueChangeDeployments.ts",
 			"packages/desktop/src/utils/projects-sessions/enqueueChangeDeployments.types.ts"
 		],
-		"symbols": ["enqueueChangeDeployments", "DeploymentReviewBlockedError"]
+		"symbols": [
+			"DeploymentReviewBlockedError",
+			"enqueueChangeDeployments",
+			"DeploymentReviewBlockedError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

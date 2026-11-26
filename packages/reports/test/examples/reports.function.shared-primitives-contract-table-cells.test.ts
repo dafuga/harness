@@ -6,8 +6,7 @@ import {
 	defaultText,
 	nameWords
 } from '../../src/components/shared-primitives/contractTableCells';
-
-type Field = Parameters<typeof requirementLabel>[0];
+import type { Field } from './reports.function.shared-primitives-contract-table-cells.test.types';
 
 const UNIT_ID = 'reports.function.shared-primitives-contract-table-cells';
 

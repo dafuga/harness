@@ -43,6 +43,8 @@ export async function verifyClaudeStartupRejection(
 	const database = new DatabaseSync(':memory:');
 	const id = 'claude0001';
 	vi.stubEnv('HOME', profiles.accountHome);
+	// Automatic retries are held overnight in Lisbon, so the dispatcher's day is fixed at midday.
+	vi.useFakeTimers({ toFake: ['Date'], now: Date.UTC(2026, 10, 26, 12), shouldAdvanceTime: true });
 	try {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
@@ -75,6 +77,7 @@ export async function verifyClaudeStartupRejection(
 		});
 		expect(readdirSync(root).filter((file) => file.startsWith('claude-pane-'))).toEqual([]);
 	} finally {
+		vi.useRealTimers();
 		vi.unstubAllEnvs();
 		database.close();
 	}

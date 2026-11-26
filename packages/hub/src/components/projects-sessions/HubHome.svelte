@@ -3,7 +3,7 @@
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
-	import { splitHomeSchedule } from '$reports/lib/projects-sessions/hub-home/homeSchedule';
+	import { homeBoard } from './hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -23,7 +23,7 @@
 	import { soonestWork, staleReading } from './hubHomePresentation';
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
-	import { followHubUpdates, liveReadMs } from '../../lib/realtime/hubLiveUpdates';
+	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
 	import HubHomeHeader from './HubHomeHeader.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
@@ -57,19 +57,7 @@
 		Array.isArray(snapshot?.providers.routines) &&
 			!staleReading(snapshot.providers.routinesReadAt, now)
 	);
-	const board = $derived(
-		snapshot
-			? splitHomeSchedule(
-					{
-						...snapshot,
-						scheduled: snapshot.scheduled.filter(
-							(run) => routinesConnected || run.source === 'tracker'
-						)
-					},
-					now
-				)
-			: null
-	);
+	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
 	const overview = $derived(
 		snapshot?.overview ?? (settled ? { status: 'unavailable' as const } : null)
 	);

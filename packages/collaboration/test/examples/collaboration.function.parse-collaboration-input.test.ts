@@ -10,10 +10,9 @@ import {
 	safePath
 } from '../../src/utils/planning-collaboration/parseCollaborationInput';
 import { CollaborationInputError } from '../../src/utils/planning-collaboration/parseCollaborationInput.types';
+import type { Outcome } from './collaboration.function.parse-collaboration-input.test.types';
 
 const unitId = 'collaboration.function.parse-collaboration-input';
-
-type Outcome = { output: unknown } | { error: { name: string; code: unknown; message: string } };
 
 /** Runs a call and summarises either its return value or the error it threw. */
 function settle(run: () => unknown): Outcome {

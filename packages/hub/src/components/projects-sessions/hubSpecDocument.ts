@@ -1,7 +1,7 @@
 // @harness-uid u_s53zhfyepg
 import { getContext, setContext } from 'svelte';
 import type { TrackerAttachmentDocument } from '../../../../../src/utils/projects-sessions/trackerAttachment.types';
-import type { LoadSpecDocument } from '../../../../reports/src/components/explorer-ui/explorer-kit/SpecDocumentView.types';
+import type { LoadSpecDocument } from '$reports/components/explorer-ui/explorer-kit/SpecDocumentView.types';
 import type { BrowserApi } from '../../utils/browserApi';
 
 const loader = Symbol('hub-spec-document');

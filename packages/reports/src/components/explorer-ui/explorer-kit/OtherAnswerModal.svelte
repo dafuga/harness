@@ -97,7 +97,7 @@
 		color: var(--hx-color-primary-contrast);
 	}
 	:global(.other-answer-actions button:disabled) {
-		opacity: 0.5;
+		opacity: var(--hx-opacity-half);
 		cursor: default;
 	}
 </style>

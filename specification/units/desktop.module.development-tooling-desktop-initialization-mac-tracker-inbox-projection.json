@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "desktop.module.development-tooling-desktop-initialization-mac-tracker-inbox-projection",
-	"uid": "u_hmoukzuqbk",
+	"uid": "u_pjjnyuon4j",
 	"kind": "module",
 	"title": "macTrackerInboxProjection",
 	"responsibility": "Owns the macTrackerInboxProjection library module.",
@@ -11,11 +11,16 @@
 		"source": [
 			"packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerInboxProjection.ts"
 		],
-		"symbols": ["safeItemId", "visible", "projectHeader", "projectDetail", "safe"]
+		"symbols": ["safeId", "projectRow", "visible", "projectHeader", "projectDetail"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "projectRow.item",
+				"type": "TrackerItem",
+				"required": true
+			},
 			{
 				"name": "visible.item",
 				"type": "TrackerItem",
@@ -30,17 +35,16 @@
 				"name": "projectDetail.reply",
 				"type": "TrackerInboxItemReply",
 				"required": true
-			},
-			{
-				"name": "safe.text",
-				"type": "string | null",
-				"required": true
 			}
 		],
 		"outputs": [
 			{
-				"name": "safeItemId",
+				"name": "safeId",
 				"type": "unknown"
+			},
+			{
+				"name": "projectRow",
+				"type": "InboxRow"
 			},
 			{
 				"name": "visible",
@@ -53,15 +57,29 @@
 			{
 				"name": "projectDetail",
 				"type": "InboxDetail"
-			},
-			{
-				"name": "safe",
-				"type": "string"
 			}
 		],
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "projectRow",
+				"inputs": [
+					{
+						"name": "projectRow.item",
+						"type": "TrackerItem",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectRow",
+						"type": "InboxRow"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "visible",
 				"inputs": [
@@ -115,24 +133,6 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
-			},
-			{
-				"name": "safe",
-				"inputs": [
-					{
-						"name": "safe.text",
-						"type": "string | null",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "safe",
-						"type": "string"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -149,12 +149,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-sanitize-tracker-text",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-structured-ask",
 			"via": "import",
 			"origin": "derived"
 		},

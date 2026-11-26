@@ -4,10 +4,11 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
-import { recordExampleCases } from '../../../../test/support/recordExampleCases';
+import { recordCases, outcome } from './desktop.service.project-task.fixture';
 import { ProjectTaskService } from '../../src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService';
 import type { ProjectTaskContext } from '../../src/utils/agents-providers/prepareProjectTask';
 import { promoteChange } from '../../src/utils/projects-sessions/promoteChange';
+import type { Agent, AgentInput } from './desktop.service.project-task.test.types';
 
 vi.mock('../../src/utils/projects-sessions/promoteChange', () => ({
 	promoteChange: vi.fn(async () => 'Promoted to stage.')
@@ -19,10 +20,6 @@ const OWNED = 'src/owned.ts';
 const CHANGED = 'Changes recorded. Verification is still required.';
 const REFUSED = 'The read-only agent changed files. Changes were preserved for review.';
 const CANCELLED = 'The run was cancelled.';
-
-type AgentInput = { cwd: string; access: string; signal: AbortSignal; onFile: (p: string) => void };
-type Agent = (input: AgentInput) => Promise<{ text: string }>;
-type Outcome = { output: unknown } | { error: string };
 
 let root: string;
 let controller: AbortController;
@@ -37,27 +34,6 @@ afterEach(async () => {
 	vi.clearAllMocks();
 	await rm(root, { recursive: true, force: true });
 });
-
-function recordCases(state: string, cases: Array<{ name: string; input: unknown } & Outcome>) {
-	recordExampleCases(
-		{
-			unitId: UNIT,
-			symbol: 'ProjectTaskService.run',
-			state,
-			evidence: 'examples-cases',
-			file: `${state}.json`
-		},
-		cases
-	);
-}
-
-async function outcome(run: Promise<unknown>): Promise<Outcome> {
-	try {
-		return { output: await run };
-	} catch (error) {
-		return { error: (error as Error).message };
-	}
-}
 
 async function writeOwned(): Promise<void> {
 	await mkdir(join(root, 'src'), { recursive: true });

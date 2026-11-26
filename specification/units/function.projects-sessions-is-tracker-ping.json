@@ -12,27 +12,31 @@
 		"symbols": ["isTrackerCosMessage", "isTrackerPing"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "isTrackerCosMessage.message",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "A flag question or note, or nothing."
 			},
 			{
 				"name": "isTrackerPing.question",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "The open flag question of a Tracker item, or nothing when none is recorded."
 			}
 		],
 		"outputs": [
 			{
 				"name": "isTrackerCosMessage",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the message is an automated ping or is addressed to Chief of Staff."
 			},
 			{
 				"name": "isTrackerPing",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the question is an automated watchdog or idle-session ping rather than a decision for Daniel."
 			}
 		],
 		"errors": [],
@@ -44,13 +48,15 @@
 					{
 						"name": "isTrackerCosMessage.message",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "A flag question or note, or nothing."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isTrackerCosMessage",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the message is an automated ping or is addressed to Chief of Staff."
 					}
 				],
 				"errors": [],
@@ -62,13 +68,15 @@
 					{
 						"name": "isTrackerPing.question",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "The open flag question of a Tracker item, or nothing when none is recorded."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isTrackerPing",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the question is an automated watchdog or idle-session ping rather than a decision for Daniel."
 					}
 				],
 				"errors": [],

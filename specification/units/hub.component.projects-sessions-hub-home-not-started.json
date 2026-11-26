@@ -4,8 +4,8 @@
 	"uid": "u_ufkzhmhxgn",
 	"kind": "component",
 	"title": "HubHomeNotStarted",
-	"responsibility": "Owns the HubHomeNotStarted Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Lists past-due Tracker work that is queued or blocked and not already shown as work, with the reason.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -23,29 +23,33 @@
 		"symbols": ["HubHomeNotStarted", "HubHomeNotStarted.trailing"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeNotStarted.pastDue",
 				"type": "HomePastDue[]",
-				"required": true
+				"required": true,
+				"description": "Past-due Tracker runs with their queued, running or blocked state."
 			},
 			{
 				"name": "HubHomeNotStarted.work",
 				"type": "{ id: string }[]",
-				"required": true
+				"required": true,
+				"description": "Work already listed, whose ids are left out here."
 			},
 			{
 				"name": "HubHomeNotStarted.limit",
 				"type": "number",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "The most rows to show. Defaults to showing all of them."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeNotStarted",
-				"type": "markup"
+				"type": "markup",
+				"description": "Rows of past-due work that has not started, with a summary."
 			}
 		],
 		"errors": [],
@@ -100,6 +104,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

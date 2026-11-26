@@ -5,6 +5,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { reportProcess } from '../../src/utils/reports-media/reportProcess';
+import type { Cases } from './reports.function.report-process.test.types';
 
 const UNIT_ID = 'reports.function.report-process';
 const FAKE_REPORT = `
@@ -14,8 +15,6 @@ else if (mode === 'env') console.log(process.cwd() + ' ' + process.env.REPORT_OU
 else if (mode === 'fail') { console.log('Invalid report configuration'); process.exit(1); }
 else { console.log('Report completed'); console.error('warning'); }
 `;
-
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 function makeFixture(): { dir: string; script: string } {
 	const dir = mkdtempSync(join(tmpdir(), 'report-process-'));

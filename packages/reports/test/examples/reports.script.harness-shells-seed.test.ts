@@ -1,3 +1,4 @@
+import type { VerificationSeed } from '../../scripts/harness-emitted-seed.types';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -5,7 +6,6 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { shellsBranch, shellUnit, seedShells } from '../../scripts/harness-shells-seed';
-import type { ShellsSeed } from '../../scripts/harness-shells-seed.types';
 
 function repository(directory: string): Parameters<typeof seedShells>[0] {
 	let commitNumber = 0;
@@ -25,11 +25,11 @@ test('Seeds the shell history', async () => {
 	const directory = mkdtempSync(join(tmpdir(), 'shells-seed-'));
 	try {
 		const calls: string[] = [];
-		const callbacks: ShellsSeed = {
+		const callbacks: VerificationSeed = {
 			verified: async () => {
 				calls.push('verified');
 				return { record: { id: 'verification-record' } } as Awaited<
-					ReturnType<ShellsSeed['verified']>
+					ReturnType<VerificationSeed['verified']>
 				>;
 			},
 			explain: async (_repo, behavior) => {

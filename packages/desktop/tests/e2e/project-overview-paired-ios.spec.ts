@@ -151,7 +151,7 @@ test('a revoked computer pairing leaves the signed-in Hub overview available', a
 	}
 	await inbox.click({ timeout: 5000 });
 	await expect(page).toHaveURL(/\/tracker$/);
-	await expect(page.getByRole('heading', { name: 'Needs you' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Needs you', exact: true })).toBeVisible();
 	await expect(page.getByText('Showing the last copy. It may be out of date.')).toBeVisible();
 	await page.getByRole('button', { name: /Fixture planning item/ }).click();
 	await expect(page.getByRole('heading', { name: 'Fixture planning item' })).toBeVisible();

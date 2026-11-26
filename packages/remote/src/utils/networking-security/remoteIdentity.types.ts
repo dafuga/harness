@@ -5,7 +5,4 @@ export interface CredentialBinding {
 	deviceId?: string;
 	credential: string;
 }
-
-export class InvalidRemoteIdentityPublicKeyError extends Error {
-	override name = 'InvalidRemoteIdentityPublicKeyError';
-}
+export { InvalidRemoteIdentityPublicKeyError } from './InvalidRemoteIdentityPublicKeyError';

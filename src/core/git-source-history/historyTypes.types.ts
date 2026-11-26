@@ -17,3 +17,7 @@ export type EvidenceFile = z.infer<typeof evidenceFileSchema>;
 export type EvidenceManifest = z.infer<typeof evidenceManifestSchema>;
 
 export type LegacyRecord = z.infer<typeof legacyRecordSchema>;
+
+export type VerificationNote = Extract<HistoryNote, { kind: 'verification' }>;
+
+export type RegressionNote = Extract<HistoryNote, { kind: 'regression' }>;

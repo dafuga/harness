@@ -10,7 +10,7 @@
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeChoices from './HubHomeChoices.svelte';
-	import ViewSpecButtons from '../../../../reports/src/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
+	import ViewSpecButtons from '$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
 	import { hubSpecDocuments } from './hubSpecDocument';
 
 	let {

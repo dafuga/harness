@@ -14,9 +14,11 @@
 	import {
 		confirmedWrite,
 		optionWrite,
-		writeGate
+		writeGate,
+		writtenAnswer
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 	import {
+		loadFailureMessage,
 		writeFailureMessage,
 		writeSentMessage
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
@@ -54,13 +56,7 @@
 
 	function fresh(reply: InboxReply<InboxDetail>) {
 		detail = reply.value ?? null;
-		loadMessage = reply.value
-			? ''
-			: mode === 'mac'
-				? reply.code === 'noLocalMatch'
-					? 'This Tracker item is unavailable.'
-					: 'Tracker could not be reached on this Mac.'
-				: 'This item is not on the phone copy.';
+		loadMessage = reply.value ? '' : loadFailureMessage(reply.code, mode);
 	}
 
 	/** Opening an item is the review. A refresh after a write does not count as one. */
@@ -117,14 +113,7 @@
 
 	/** A written answer from the Other modal is sent against the reviewed revision. */
 	async function other(answer: string) {
-		const write =
-			detail && reviewed && writeGate('answer', detail, reviewed).allowed
-				? confirmedWrite(
-						{ action: 'answer', id: detail.header.id, text: answer, revision: reviewed.revision },
-						true
-					)
-				: null;
-		await deliver(write);
+		await deliver(detail && reviewed ? writtenAnswer(detail, reviewed, answer) : null);
 	}
 
 	/** A tapped option is the answer. Any confirm step has already happened in the choices. */

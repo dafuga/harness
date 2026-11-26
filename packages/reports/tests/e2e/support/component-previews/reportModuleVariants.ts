@@ -35,6 +35,10 @@ export function moduleVariant(id: string, props: PreviewCases[string], variant: 
 	if (variant === 'playwright' || variant === 'headless-audio') return null;
 	const host = props as unknown as ExplorerScreenProps;
 	if (!id.endsWith('explorer-module-resources-screen')) return moduleListVariant(host, variant);
+	return moduleResourceVariant(host, variant);
+}
+
+function moduleResourceVariant(host: ExplorerScreenProps, variant: string) {
 	if (variant === 'unindexed') return changed(host, { modules: undefined }, host.route.entity);
 	if (variant === 'missing-id') return changed(host, {}, undefined);
 	if (variant === 'not-found') return changed(host, {}, 'unknown.resource');

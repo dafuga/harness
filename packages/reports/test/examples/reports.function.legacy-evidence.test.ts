@@ -5,8 +5,7 @@ import {
 	legacyLink,
 	legacyEvidence
 } from '../../src/components/explorer-ui/harness-legacy/legacyEvidence';
-
-type Report = Parameters<typeof legacyEvidence>[0];
+import type { Report } from './reports.function.legacy-evidence.test.types';
 
 const sameCommit = '0123456789abcdef0123456789abcdef01234567';
 const otherCommit = 'fedcba9876543210fedcba9876543210fedcba98';
