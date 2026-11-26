@@ -134,7 +134,8 @@
 			{
 				"name": "creditsLabel.balance",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Credit balance as the provider sent it: a number in text, or a word such as Unlimited."
 			},
 			{
 				"name": "warningFor.left",
@@ -241,7 +242,8 @@
 			{
 				"name": "lowSummary.limits",
 				"type": "HomeLimit[]",
-				"required": true
+				"required": true,
+				"description": "Limits that already carry a warning; those with nothing left are counted as out of quota."
 			},
 			{
 				"name": "quotaSummary.subscriptions",
@@ -294,12 +296,14 @@
 			{
 				"name": "resetClock.time",
 				"type": "string | null",
-				"required": true
+				"required": true,
+				"description": "ISO timestamp when the limit resets, or null when the reset time is unavailable."
 			},
 			{
 				"name": "resetClock.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			}
 		],
 		"outputs": [
@@ -621,7 +625,8 @@
 					{
 						"name": "creditsLabel.balance",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Credit balance as the provider sent it: a number in text, or a word such as Unlimited."
 					}
 				],
 				"outputs": [
@@ -907,7 +912,8 @@
 					{
 						"name": "lowSummary.limits",
 						"type": "HomeLimit[]",
-						"required": true
+						"required": true,
+						"description": "Limits that already carry a warning; those with nothing left are counted as out of quota."
 					}
 				],
 				"outputs": [
@@ -1043,12 +1049,14 @@
 					{
 						"name": "resetClock.time",
 						"type": "string | null",
-						"required": true
+						"required": true,
+						"description": "ISO timestamp when the limit resets, or null when the reset time is unavailable."
 					},
 					{
 						"name": "resetClock.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch."
 					}
 				],
 				"outputs": [

@@ -23,23 +23,26 @@
 		"symbols": ["HubHomeQuotaPills"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeQuotaPills.subscriptions",
 				"type": "HomeSubscription[]",
-				"required": true
+				"required": true,
+				"description": "The owner's subscription readings; Claude and Codex each get a pill even when one has no reading."
 			},
 			{
 				"name": "HubHomeQuotaPills.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch, for stale readings and reset wording."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeQuotaPills",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders one header pill per subscription and, after a tap, a line that explains its limits."
 			}
 		],
 		"errors": [],
@@ -80,6 +83,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}
