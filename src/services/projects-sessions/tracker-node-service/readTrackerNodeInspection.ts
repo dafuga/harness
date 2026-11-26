@@ -21,10 +21,17 @@ export function readTrackerNodeInspection(
 		case '/adapters':
 			return adapterList(runtime);
 		case '/backup/list':
-			return Response.json(readTrackerBackupList(runtime.backupDirectory));
+			return Response.json(backupList(runtime));
 		default:
 			return undefined;
 	}
+}
+
+function backupList({
+	backups: { directory, externalDirectory, service }
+}: TrackerNativeRuntimeService) {
+	const hub = service && { status: service.status(), externalDirectory };
+	return readTrackerBackupList(directory, hub);
 }
 
 function autolaunchStatus(

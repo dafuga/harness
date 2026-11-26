@@ -7,19 +7,38 @@ const backupNames = new Map([
 	[/^tracker-(\d{4}-\d{2}-\d{2})\.db\.gz$/, 'daily'],
 	[/^tracker-weekly-(\d{4}-\d{2}-\d{2})\.db\.gz$/, 'weekly'],
 	[/^tracker-latest-weekly\.db\.gz$/, 'latest-weekly'],
+	[/^tracker-\d{8}T\d{4}Z\.db\.gz$/, 'hourly'],
 	[/\.db\.bad$/, 'bad'],
 	[/^tracker-pre-restore-.*\.db\.gz$/, 'pre-restore']
 ]);
 
-/** Report local backup metadata while backup creation remains an external effect. */
-export function readTrackerBackupList(dir: string = join(homedir(), 'backups', 'tracker')) {
-	const files = missingAsUndefined(() => readdirSync(dir)) ?? [];
+/** Report local backup metadata, with the hub's own backup status when it takes them. */
+export function readTrackerBackupList(
+	dir: string = join(homedir(), 'backups', 'tracker'),
+	backups?: { status: object; externalDirectory?: string }
+) {
+	const external = backups?.externalDirectory
+		? readTrackerBackupFiles(backups.externalDirectory).filter(({ kind }) => kind === 'hourly')
+		: [];
 	return {
-		status: { enabled: false, note: 'backup scheduling is external to native Tracker' },
-		files: files
-			.flatMap((name) => backupFile(dir, name))
-			.sort((left, right) => (right.date ?? right.mtime).localeCompare(left.date ?? left.mtime))
+		status: backups?.status ?? {
+			enabled: false,
+			note: 'native backups are not enabled on this node'
+		},
+		files: [...readTrackerBackupFiles(dir), ...external].sort(newestFirst)
 	};
+}
+
+export function readTrackerBackupFiles(dir: string) {
+	const files = missingAsUndefined(() => readdirSync(dir)) ?? [];
+	return files.flatMap((name) => backupFile(dir, name)).sort(newestFirst);
+}
+
+function newestFirst(
+	left: { date: string | null; mtime: string },
+	right: { date: string | null; mtime: string }
+) {
+	return (right.date ?? right.mtime).localeCompare(left.date ?? left.mtime);
 }
 
 function backupFile(dir: string, name: string) {
@@ -40,7 +59,8 @@ function missingAsUndefined<T>(read: () => T): T | undefined {
 	try {
 		return read();
 	} catch (error) {
-		if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return undefined;
+		const code = error instanceof Error && 'code' in error ? error.code : undefined;
+		if (code === 'ENOENT' || code === 'ENOTDIR') return undefined;
 		throw error;
 	}
 }
