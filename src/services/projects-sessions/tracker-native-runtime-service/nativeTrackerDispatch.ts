@@ -1,3 +1,4 @@
+import type { PeerStarts } from './nativeTrackerDispatch.types';
 // @harness-uid u_bl6xl2h4a3
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { adapterFailover } from './trackerAdapterFailover';
@@ -6,6 +7,7 @@ import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrack
 import {
 	automaticEnabled,
 	automaticQuietHour,
+	canonicalNode,
 	mayScheduleHere
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { previewDueLaunch } from '../../agents-providers/tracker-dispatcher-service/launchIntent';
@@ -26,13 +28,14 @@ import { spokeAutomaticPermit, spokeGrant } from './trackerHubPermits';
 
 export function composeTrackerDispatch(
 	store: TrackerPersistenceService,
-	options: TrackerNativeRuntimeOptions
+	options: TrackerNativeRuntimeOptions,
+	machines?: PeerStarts
 ) {
 	if (!options.dispatch) {
 		if (options.syncResponder || options.links?.length) store.database.exec(trackerRunSchema);
 		return emptyDispatch(store, options);
 	}
-	return nativeDispatch(store, { ...options, dispatch: options.dispatch });
+	return nativeDispatch(store, { ...options, dispatch: options.dispatch }, machines);
 }
 
 function emptyDispatch(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
@@ -52,7 +55,8 @@ function nativeDispatch(
 	store: TrackerPersistenceService,
 	options: TrackerNativeRuntimeOptions & {
 		dispatch: NonNullable<TrackerNativeRuntimeOptions['dispatch']>;
-	}
+	},
+	machines?: PeerStarts
 ) {
 	const {
 		policy: supplied,
@@ -85,7 +89,7 @@ function nativeDispatch(
 			const { item, due: current } = repository.readSnapshot(itemId);
 			return Boolean(item && current && mayScheduleHere(item, current, policy));
 		});
-	const permits = dispatchPermits(store, repository, options, policy);
+	const permits = dispatchPermits(repository, { store, options, policy, machines });
 	return {
 		dispatch,
 		permitAutomatic: permits.hubAutomatic,
@@ -103,10 +107,18 @@ function nativeDispatch(
 }
 
 function dispatchPermits(
-	store: TrackerPersistenceService,
 	repository: TrackerDispatchRepository,
-	options: TrackerNativeRuntimeOptions,
-	policy: TrackerDispatchPolicy
+	{
+		store,
+		options,
+		policy,
+		machines
+	}: {
+		store: TrackerPersistenceService;
+		options: TrackerNativeRuntimeOptions;
+		policy: TrackerDispatchPolicy;
+		machines?: PeerStarts;
+	}
 ) {
 	const localPermit = () => {
 		const at = policy.now();
@@ -121,7 +133,9 @@ function dispatchPermits(
 	return {
 		automatic: localPermit,
 		hubAutomatic: localPermit,
+		// A due start also needs a fresh, calm reading from a peer that reports its resources.
 		permitDue: (id: string, token: string, target: string) =>
+			!machines?.peerStartHold(canonicalNode(target, policy)) &&
 			grantsDelegation(repository.readSnapshot(id), { token, target }, policy)
 	};
 }
