@@ -1,6 +1,11 @@
 // @harness-uid u_ugczr4eq3b
 import { parseArgs } from 'node:util';
+import {
+	isTrackerWorkerClient,
+	trackerWorkerClientRefusal
+} from '../../adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient';
 import { TrackerHealthService } from '../../services/projects-sessions/TrackerHealthService';
+import { loadTrackerNodeConfig } from '../../services/projects-sessions/tracker-node-service/trackerNodeConfig';
 import type { TrackerHealthReport } from '../../services/projects-sessions/TrackerHealthService.types';
 import { rotateTrackerLog } from '../../services/projects-sessions/tracker-health-service/rotateTrackerLog';
 import { selectedTrackerConfig } from './tracker-command/runNativeTracker';
@@ -22,14 +27,22 @@ export class TrackerHealthCommand {
 		}
 		rotateLogs(input.log ?? []);
 		try {
-			const report = await new TrackerHealthService(config).run({ alert: Boolean(input.alert) });
-			printReport(report, Boolean(input.json));
-			return report.ok ? 0 : 1;
+			return await checkNode(config, input);
 		} catch {
 			console.error('tracker: health could not run. Check the native configuration and its files.');
 			return 2;
 		}
 	}
+}
+
+async function checkNode(config: string, input: { alert?: boolean; json?: boolean }) {
+	if (isTrackerWorkerClient(loadTrackerNodeConfig(config))) {
+		console.error(trackerWorkerClientRefusal);
+		return 2;
+	}
+	const report = await new TrackerHealthService(config).run({ alert: Boolean(input.alert) });
+	printReport(report, Boolean(input.json));
+	return report.ok ? 0 : 1;
 }
 
 function parseHealthArgs(args: string[]) {

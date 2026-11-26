@@ -11,6 +11,7 @@ import type {
 } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerHostCapacityHold } from './trackerHostAdmission';
+import { trackerProviderHold } from './trackerProviderHolds';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { recoveryPollInterval, sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerWatchdogLaunch } from './trackerSessionHealth.types';
@@ -32,6 +33,12 @@ export async function recoverTrackerSession(
 	const latest = history.filter(({ node }) => node === store.node).at(-1);
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = recoveryBudget(store, { key, latest, item });
+	const held = latest && trackerProviderHold(store, latest.cli, now);
+	if (held) {
+		// A hold is not a failed relaunch. The request timeout restarts when it lifts.
+		if (state.token) saveRecovery(store, key, { ...state, requestedAt: now });
+		return `Tracker relaunch is waiting: ${held}.`;
+	}
 	if (state.token) return checkRecovery(store, { item, key, state, latest }, now);
 	if (now < state.retryAt) return null;
 	const rung = recoveryRung(latest, item, store.node);

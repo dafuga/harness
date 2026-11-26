@@ -554,9 +554,31 @@ and the verified legacy run directory and tmux inventory contain no startup evid
 Consumed tokens remain recorded for deduplication and are excluded from the pending
 dispatch scan.
 
+### Launch holds
+
+`tracker autolaunch pause` and `resume` run on the hub (a spoke returns 409). The
+choice persists, and the hub sends it with every journal pull. A spoke keeps the
+last value it received while the hub is unreachable. The pause stops due launches
+only. A hub with `launch.due: false` does not pause its spokes.
+
+On each scheduler tick the launcher reads the panes of its own runs. A usage-limit
+or empty-credit notice behind the CLI's own glyph holds all new starts of that
+provider on that computer, including manual launches, retries and relaunches. A
+warning that work continues on credits does not. The hold records one watchdog
+alert with a note on the item, and watchdog relaunch attempts are not used up
+while it lasts. It stays until `tracker autolaunch clear-quota <codex|claude>`
+runs on that computer, even after the provider's limit resets. Notices already
+seen cannot restore a cleared hold. Detection needs a tmux executable. Placement
+on another computer does not read these holds.
+
+`hostEffects.launch.codexPausedUntil` (ISO time) holds Codex starts until then.
+Change it in the configuration and restart the node.
+
+### Remaining commands
+
 - [x] Wire `reject` and post-done verification (see Completion review).
-- [ ] Wire owner-approved admin commands for `autolaunch pause/resume/clear-quota`.
-      Verify host admission, launcher limits,
+- [x] Wire `autolaunch pause/resume/clear-quota`, quota holds and the Codex pause.
+- [ ] Verify host admission, launcher limits, `ready/skipped`,
       repository mappings and live provider hold data before claiming full
       autolaunch status parity. Persisted quota holds are visible in status.
 - [ ] Reconcile `machines`, `place`, and `watchdog dry-run/alerts` with the
@@ -601,7 +623,9 @@ Each `--log` file, and the supervisor log, rotates above 5 MB by copying to
 `<log>.1` and truncating, because the writer keeps the file open for appending.
 
 `harness tracker service print|install|uninstall [--config PATH]
-[--executable PATH]` sets up the current host. `print` changes nothing.
+[--executable PATH]` sets up the current host. `print` changes nothing. A
+launched session's `HARNESS_TRACKER_CONFIG` is a client stub, so `health` and
+`service` refuse it; pass the node's own config with `--config`.
 
 - **Linux with systemd:** user units run `serve` with `Restart=always` and run
   the health check 5 minutes after the timer starts and every 4 hours Lisbon

@@ -54,7 +54,7 @@ export function trackerHostRunner(
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
 				report.retain(runs);
 				({ sessions, panes } = await trackerHostInventory(
-					{ store, driver, tmux, node, keys: runs.map(attemptKey), now: now() },
+					{ store, driver, tmux, node, runs, keys: runs.map(attemptKey), now: now() },
 					signal
 				));
 			},
