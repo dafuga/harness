@@ -53,7 +53,10 @@ test('Tracker plan children, due items, current question and privacy survive pro
 		now
 	);
 	expect(home.plans).toMatchObject([{ id: plan.id, total: 2, done: 1, state: 'draft' }]);
-	expect(home.scheduled.map((entry) => entry.id)).toEqual(['routine', 'plan-one', 'task-one']);
+	// The in-progress task is Work in progress, not a scheduled start.
+	// The synthetic plan belongs to the Chief of Staff, whose list stays off the schedule.
+	expect(home.scheduled.map((entry) => entry.id)).toEqual(['routine']);
+	expect(home.overdue).toEqual([]);
 	expect(listHomeAgents(home.agents).agents).toMatchObject([
 		{ name: 'Chief of Staff', itemId: base.id, question }
 	]);
