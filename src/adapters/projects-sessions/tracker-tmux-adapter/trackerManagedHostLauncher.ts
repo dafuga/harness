@@ -32,9 +32,9 @@ import {
 	workerScript,
 	launchTmux,
 	managedBrief,
-	prepareTrackerWorkingDirectory,
 	trackerSocket
 } from './trackerManagedWorkerProcess';
+import { prepareTrackerWorkingDirectory } from './trackerManagedWorkingDirectory';
 import { stopManagedRun } from './trackerTmuxClose';
 import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
 import {
@@ -164,6 +164,9 @@ async function prepareManagedLaunch(
 		...(input.backend === 'native' &&
 			input.selection.provider === 'claude' && { checkClaudeStartup: true })
 	};
+	// A separate file, so a release rollback can still read the receipt.
+	if (worktree !== join(directory, 'worktree'))
+		writeFileSync(join(directory, 'working-directory'), worktree, { mode: 0o600, flag: 'wx' });
 	writeFileSync(briefPath, managedBrief(input), { mode: 0o600, flag: 'wx' });
 	writeFileSync(script, workerScript, { mode: 0o600, flag: 'wx' });
 	writeFileSync(join(directory, 'receipt.json'), JSON.stringify(receipt), {

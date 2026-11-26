@@ -4,14 +4,9 @@ import { occupiedHostSlots, trackerHostAdmission } from './trackerHostAdmission'
 import { trackerHostLaunchPort } from './trackerHostLaunchPort';
 import { canonicalNode } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
-import {
-	pickTrackerModel,
-	retryTrackerModel
-} from '../../../utils/agents-providers/pickTrackerModel';
-import type {
-	TrackerDispatchItem,
-	TrackerDispatchPolicy
-} from '../../agents-providers/TrackerDispatcherService.types';
+import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
+import { trackerHostModelPolicy } from './trackerHostModelPick';
+import type { TrackerDispatchPolicy } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type {
@@ -40,6 +35,7 @@ export function trackerHostLaunch(
 		workerClient?: TrackerWorkerClient;
 		transcriptRoots?: readonly string[];
 		now?: () => number;
+		ladderConfig?: TrackerLadderConfig;
 	} = {}
 ): NonNullable<TrackerNativeRuntimeOptions['dispatch']> {
 	const { adapter } = effects;
@@ -72,8 +68,7 @@ export function trackerHostLaunch(
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
 			admit,
-			pickModel: (item) => pickHostModel(item, effects.now?.()),
-			retryModel: (item, run) => retryTrackerModel(item, run, undefined, effects.now?.())
+			...trackerHostModelPolicy(store, config, effects)
 		},
 		scheduleDue: config.due !== false || adapter?.scheduleDue === true,
 		due: () => ({
@@ -179,20 +174,15 @@ function approvedOpsWorkdir(item: TrackerHostRouteItem, node: string, workdir?: 
 	return undefined;
 }
 
-function pickHostModel(item: TrackerDispatchItem, now?: number) {
-	try {
-		return pickTrackerModel(item, { now });
-	} catch {
-		return { error: 'Tracker model cannot be selected for this task' };
-	}
-}
-
 /** Build the host launch dispatch from configured host effects, when launch is enabled. */
 export function configuredHostDispatch(
 	store: TrackerPersistenceService,
 	effects: TrackerNativeRuntimeOptions['hostEffects'],
-	now: () => number,
-	automaticEnabled?: () => boolean
+	{
+		now,
+		automaticEnabled,
+		ladderConfig
+	}: Pick<TrackerNativeRuntimeOptions, 'automaticEnabled' | 'ladderConfig'> & { now: () => number }
 ) {
 	const { launch, watchdog, adapter, workerClient } = effects ?? {};
 	return launch
@@ -203,6 +193,7 @@ export function configuredHostDispatch(
 				recoverDroppedSessions: watchdog && ('tmux' in watchdog || 'driver' in watchdog),
 				adapter,
 				now,
+				ladderConfig,
 				tmuxExecutable: watchdog && 'tmux' in watchdog ? watchdog.tmux : undefined
 			})
 		: undefined;

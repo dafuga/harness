@@ -165,13 +165,15 @@ function reserveStart(
 	now: number
 ): TrackerDispatchDecision {
 	const intent = item.launch!;
-	const reserved = reviseRun(run, { dispatch_at: now, eta_at: etaFor(item, policy, now) });
+	// A run queued before the model change starts on its replacement.
+	const model = rung.model === 'gpt-6.1-sol' ? 'gpt-6.2-sol' : rung.model;
+	const reserved = reviseRun(run, { model, dispatch_at: now, eta_at: etaFor(item, policy, now) });
 	return {
 		result: {
 			status: 'start',
 			run: reserved,
 			key: attemptKey(reserved),
-			selection: { provider: rung.cli, model: rung.model, intelligence: rung.effort ?? '' }
+			selection: { provider: rung.cli, model, intelligence: rung.effort ?? '' }
 		},
 		writes: {
 			runs: [reserved],

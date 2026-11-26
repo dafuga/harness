@@ -29,7 +29,8 @@ export function trackerNodeRuntime(
 	if (secret.length < 16) throw new TypeError('Tracker sync key is too short');
 	const hostEffectsHeld = config.hostEffects?.mode === 'held';
 	const notification = hostEffectsHeld ? undefined : trackerNodeNotifications(config);
-	const ladder = ladderFrom();
+	const ladderConfig = config.routing && { autolaunch: config.routing };
+	const ladder = ladderFrom(ladderConfig);
 	return {
 		node: config.node,
 		role: config.role,
@@ -39,6 +40,7 @@ export function trackerNodeRuntime(
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
 		manualLaunch: true,
+		ladderConfig,
 		automaticEnabled: trackerAutomaticSetting(config),
 		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),

@@ -2,25 +2,23 @@
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { homedir, userInfo } from 'node:os';
-import { join } from 'node:path';
 import type { TrackerRunReceipt } from '../../../services/agents-providers/TrackerDispatcherService.types';
 import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerVerifyResult } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
-import { trackerManagedToken } from './trackerManagedLaunchReceipt';
+import { trackerManagedWorkingDirectory } from './trackerManagedLaunchReceipt';
 
 const verifyTimeout = 30 * 60_000;
 const keptOutput = 8 * 1024;
 const drainGrace = 1000;
 
-/** Run a configured verify command in the worktree of one managed attempt. */
+/** Run a configured verify command where one managed attempt ran. */
 export function trackerManagedVerification(directory: string) {
 	return async (
 		run: TrackerRunReceipt,
 		command: string,
 		signal: AbortSignal
 	): Promise<TrackerVerifyResult> => {
-		const token = trackerManagedToken(run.node, attemptKey(run));
-		const worktree = join(directory, token, 'worktree');
+		const worktree = trackerManagedWorkingDirectory(directory, run.node, attemptKey(run));
 		if (!existsSync(worktree)) return { code: 1, output: 'the run worktree is missing' };
 		return runVerifyCommand(command, worktree, signal);
 	};

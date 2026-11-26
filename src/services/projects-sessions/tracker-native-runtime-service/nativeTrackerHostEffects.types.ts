@@ -30,6 +30,10 @@ export type TrackerHostLaunchConfig = {
 	repositories: Record<string, TrackerHostRepository>;
 	/** Due tasks launch at their time unless this is false. */
 	due?: boolean;
+	maxRetries?: number;
+	defaultEtaMinutes?: number;
+	stallMinutes?: number;
+	maxRunMinutes?: number;
 } & ({ driver: string } | { managed: TrackerManagedLaunchConfig });
 
 export interface TrackerManagedLaunchConfig {
@@ -52,6 +56,8 @@ export interface TrackerHostRepository {
 	platform: 'linux' | 'macos';
 	/** Shell command that must pass after done. Managed macOS routes only. */
 	verify?: string;
+	/** False runs sessions in the checkout itself. Non-git directories always run in place. */
+	worktree?: boolean;
 }
 
 export type TrackerHostAdapterBinding =

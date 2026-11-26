@@ -74,8 +74,7 @@ export class TrackerNativeRuntimeService {
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
 		const dispatch =
-			options.dispatch ??
-			configuredHostDispatch(store, hostEffects, this.now, options.automaticEnabled);
+			options.dispatch ?? configuredHostDispatch(store, hostEffects, { ...options, now: this.now });
 		const composed = composeTrackerDispatch(store, { ...options, dispatch });
 		({
 			dispatch: this.dispatch,
