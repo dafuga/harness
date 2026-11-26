@@ -31,6 +31,7 @@ import {
 	managedDispatchRuns,
 	persistDispatchRun
 } from './tracker-dispatch-repository/dispatchRunRows';
+import { humanRedoCandidates } from './tracker-dispatch-repository/dispatchHumanRedo';
 import { trackerDispatchControl } from './tracker-dispatch-repository/dispatchLaunchControl';
 import { trackerRunSchema } from './tracker-dispatch-repository/trackerRunSchema';
 
@@ -120,6 +121,10 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 				(due IS NULL), due, created_at, id`
 			)
 			.all() as TrackerDispatchCandidate[];
+	}
+
+	humanRedoCandidates() {
+		return humanRedoCandidates(this.store.database);
 	}
 
 	stuckRequests() {

@@ -25,6 +25,7 @@ import type {
 	TrackerManagedReceipt
 } from './trackerManagedHostLauncher.types';
 import { trackerManagedCodexUsage } from './trackerManagedCodexUsage';
+import { trackerManagedVerification } from './trackerManagedVerification';
 import {
 	confirmManagedStartupAbsent,
 	probeManagedTmuxSession,
@@ -61,6 +62,7 @@ export function trackerManagedHostLauncher(
 		),
 		inspect: ({ node, keys }, signal) =>
 			inspectManagedSessions({ directory, tmux, node, keys }, signal),
+		verify: trackerManagedVerification(directory),
 		stop: (run, signal) => stopManagedRun({ directory, tmux }, run, signal),
 		confirmNeverStarted: (run, signal) =>
 			confirmManagedStartupAbsent({ directory, tmux }, run, signal),

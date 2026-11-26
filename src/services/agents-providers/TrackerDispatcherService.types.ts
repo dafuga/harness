@@ -139,7 +139,7 @@ export interface TrackerDispatchSnapshot {
 }
 
 export interface TrackerDispatchWrites {
-	item?: Partial<Omit<TrackerDispatchItem, 'id'>>;
+	item?: Partial<Omit<TrackerDispatchItem, 'id'>> & { appendNote?: string };
 	runs?: readonly TrackerRunReceipt[];
 	lastDueStartAt?: number;
 }
