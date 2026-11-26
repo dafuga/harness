@@ -1,6 +1,9 @@
+import { execFile } from 'node:child_process';
 import { createServer, type RequestListener } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { DatabaseSync } from 'node:sqlite';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
 import { test, vi } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
@@ -187,3 +190,19 @@ test('offline due launches stay within two starts a minute', async () => {
 		peer.database.close();
 	}
 });
+
+// The Tracker ships as a Bun binary, and Bun names fetch failures differently from Node.
+test('under Bun, a spoke starts due work only when the hub is unreachable', async () => {
+	const probe = fileURLToPath(new URL('../../support/trackerHubOutageProbe.ts', import.meta.url));
+	const { stdout } = await promisify(execFile)('bun', [probe], { timeout: 30_000 });
+	expect(JSON.parse(stdout)).toEqual({
+		refused: true,
+		unresolved: true,
+		dropped: true,
+		silent: true,
+		gateway: true,
+		unauthorized: false,
+		redirected: false,
+		garbled: false
+	});
+}, 40_000);
