@@ -1,12 +1,12 @@
 // @harness-uid u_nyrzsecwoe
 import type { TrackerRecurringRepository } from '../../../repositories/projects-sessions/TrackerRecurringRepository';
-import type { TrackerRecurringJob } from '../../../repositories/projects-sessions/TrackerRecurringRepository.types';
+import type { TrackerBoxJob } from '../../../repositories/projects-sessions/TrackerRecurringRepository.types';
 import { trackerIsoTime } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 import type { TrackerBoxJobRunner } from '../TrackerRecurringService.types';
 import type { TrackerBoxJobTarget } from './trackerBoxJobAdmin.types';
 
-const wakeModes: readonly string[] = ['finding', 'fail', 'always'];
+const wakeModes = ['finding', 'fail', 'always'] as const;
 
 /** The `tracker job` commands over the hub's local job table. */
 export function trackerBoxJobAdmin(
@@ -59,17 +59,29 @@ export function trackerBoxJobAdmin(
 }
 
 /** Omitted settings keep the stored job's values. */
-function jobSettings(
-	input: Readonly<Record<string, unknown>>,
-	current: (TrackerRecurringJob & { cmd: string }) | undefined
-) {
-	const cmd = String(input.cmd ?? current?.cmd ?? '');
+function jobSettings(input: Readonly<Record<string, unknown>>, current: TrackerBoxJob | undefined) {
+	return {
+		cmd: jobCommand(input.cmd ?? current?.cmd),
+		wake_on: jobWakeMode(input.wake_on ?? current?.wake_on ?? 'finding'),
+		timeout_s: jobTimeout(input.timeout_s ?? current?.timeout_s ?? 120)
+	};
+}
+
+function jobCommand(value: unknown): string {
+	const cmd = String(value ?? '');
 	if (!cmd.trim()) throw trackerItemError('a box job needs --cmd', 400);
-	const wake = String(input.wake_on ?? current?.wake_on ?? 'finding');
-	if (!wakeModes.includes(wake))
-		throw trackerItemError('wake-on must be finding, fail or always', 400);
-	const timeout = Number(input.timeout_s ?? current?.timeout_s ?? 120);
-	if (!Number.isInteger(timeout) || timeout < 1 || timeout > 3600)
+	return cmd;
+}
+
+function jobWakeMode(value: unknown): TrackerBoxJob['wake_on'] {
+	const mode = wakeModes.find((candidate) => candidate === value);
+	if (!mode) throw trackerItemError('wake-on must be finding, fail or always', 400);
+	return mode;
+}
+
+function jobTimeout(value: unknown): number {
+	const seconds = Number(value);
+	if (!Number.isInteger(seconds) || seconds < 1 || seconds > 3600)
 		throw trackerItemError('timeout must be 1-3600 seconds', 400);
-	return { cmd, wake_on: wake as TrackerRecurringJob['wake_on'], timeout_s: timeout };
+	return seconds;
 }
