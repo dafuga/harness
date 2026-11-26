@@ -94,7 +94,8 @@ export interface TrackerNotificationDestinations {
 	available(destination: TrackerDestination): boolean;
 	/**
 	 * Deliver or replay the receipt for (destination, id). Return rejected only when no
-	 * side effect occurred, with a safe diagnostic. Throw for uncertain outcomes.
+	 * side effect occurred, with a safe diagnostic. Throw for uncertain outcomes; the
+	 * tick retries both with backoff, so a replayed id must not repeat the effect.
 	 */
 	send(request: TrackerDeliveryRequest): Promise<TrackerDeliveryResult>;
 }
@@ -152,6 +153,8 @@ export interface TrackerNotificationOptions {
 	webhook?: TrackerWebhookOptions;
 	reminderIntervalMinutes?: number;
 	retryMinutes?: number;
+	/** Receives one safe line for each failed delivery attempt. */
+	log?(message: string): void;
 }
 
 /** Extensible legacy event fields serialized by the notification transport. */

@@ -8,6 +8,7 @@ import type { DeliveryAttempt, TrackerNotificationState } from './notificationSt
 import { nextAttention } from './attentionBatch';
 import { nextCallback, scanCallbacks } from './callbackDelivery';
 import { completeDelivery } from './completeDelivery';
+import { logFailure, sendOutcome } from './deliveryOutcome';
 import { currentDirectAttempt, nextDirectReminder, scanDirectReminders } from './directReminders';
 import {
 	currentScheduledAttempt,
@@ -23,10 +24,9 @@ async function deliver(
 	options: TrackerNotificationOptions,
 	attempt: DeliveryAttempt
 ): Promise<void> {
-	// An exception leaves the issued request durable. The destination must return
-	// the original receipt for its id if the side effect already occurred.
-	const result = await options.destinations.send(globalThis.structuredClone(attempt.request));
+	const result = await sendOutcome(options, attempt);
 	options.queue.update((state) => completeDelivery(state, attempt, result, options));
+	logFailure(options, attempt, result);
 }
 
 async function sendNext(
