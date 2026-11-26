@@ -612,9 +612,9 @@ only by the backup service. Once every other check recovers, the item is noted
 and closed, even while the backup alert stays open. An ignored item is never
 raised again. An alerting run waits 20 seconds and asks
 the API again before calling it down. When the Tracker cannot record the alert,
-or the webhook check fails, it also posts to the URL in `health-fallback.url`
-with the bearer key in `health-fallback.key`. Both are private files beside the
-native config; the URL is HTTPS or literal IPv4 loopback. The fallback waits out
+or the webhook check or a spoke's hub link check fails, it also posts to the URL
+in `health-fallback.url` with the bearer key in `health-fallback.key`. Both are
+private files beside the native config; the URL is HTTPS or literal IPv4 loopback. The fallback waits out
 22:00-08:00 Lisbon unless the Tracker could not take the alert because its API
 is down. Alert state is kept in `<database>.health.json`. Without `--alert`
 nothing is written or sent.
