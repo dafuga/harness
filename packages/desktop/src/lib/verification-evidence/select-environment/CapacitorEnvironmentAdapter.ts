@@ -18,6 +18,15 @@ export const remotePluginName = 'HarnessRemote';
 
 export const accountPluginName = 'HarnessAccount';
 
+export const vaultPluginName = 'HarnessVault';
+
+/** Present only in a shell that ships the native Vault. */
+function nativeVault(): RemoteMobileControl['openVault'] {
+	if (!Capacitor.isPluginAvailable(vaultPluginName)) return undefined;
+	const vault = registerPlugin<{ open(): Promise<void> }>(vaultPluginName);
+	return () => vault.open();
+}
+
 function nativeAccount(): AccountNativePlugin | undefined {
 	if (!Capacitor.isPluginAvailable(accountPluginName)) return undefined;
 	return registerPlugin<AccountNativePlugin>(accountPluginName);
@@ -55,6 +64,8 @@ export class CapacitorEnvironmentAdapter {
 			phone.computers = async () => (await list()).computers;
 			phone.connectAccountComputer = async (input) => note(await connect(input));
 		}
+		const openVault = nativeVault();
+		if (openVault) phone.openVault = openVault;
 		const tracker = phoneTrackerTools(plugin);
 		const local = {
 			kind: 'capacitor',

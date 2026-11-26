@@ -15,6 +15,15 @@
 	 * to a computer. A host app without either, such as a hosted page, renders nothing here.
 	 */
 	const stores = getContext<{ host: RemoteHost; phone: RemotePhone } | undefined>(remoteContext);
+	let vaultIssue = $state('');
+	const openVault = async () => {
+		vaultIssue = '';
+		try {
+			await workspace.remote.phone?.openVault?.();
+		} catch (error) {
+			vaultIssue = error instanceof Error ? error.message : 'The Vault could not open.';
+		}
+	};
 </script>
 
 {#if stores && workspace.remote.host}<RemoteHostPanel
@@ -23,4 +32,23 @@
 	/>{:else if stores && workspace.remote.phone}<RemotePhonePanel
 		store={stores.phone}
 		{compact}
-	/>{/if}
+	/>{#if workspace.remote.phone.openVault}<button type="button" class="vault" onclick={openVault}
+			>Vault</button
+		>{#if vaultIssue}<span class="vault-issue" role="alert">{vaultIssue}</span>{/if}{/if}{/if}
+
+<style>
+	.vault {
+		min-height: 44px;
+		min-width: 44px;
+		padding: 0 var(--hx-space-12);
+		border: 1px solid var(--hx-color-border);
+		border-radius: var(--hx-radius);
+		background: var(--hx-color-surface);
+		color: var(--hx-color-text);
+		font: inherit;
+		cursor: pointer;
+	}
+	.vault-issue {
+		color: var(--hx-muted);
+	}
+</style>
