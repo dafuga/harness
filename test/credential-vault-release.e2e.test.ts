@@ -7,10 +7,11 @@ import {
 	generateKeyPairSync,
 	hkdfSync
 } from 'node:crypto';
-import { mkdtempSync, readdirSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readdirSync } from 'node:fs';
+import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { createTempDirectory } from './support/temporary';
 import type {
 	PhoneDecision,
 	QueuedRequestFlags,
@@ -19,8 +20,8 @@ import type {
 } from './credential-vault-release.e2e.test.types';
 
 const darwin = process.platform === 'darwin';
-const workspace = mkdtempSync(join(tmpdir(), 'vault-release-'));
-const binary = join(workspace, 'release');
+let workspace = '';
+let binary = '';
 const core = 'packages/desktop/ios/App/App/Vault/Core';
 const origin = 'https://broker.example';
 const requestId = '00112233445566778899aabbccddeeff';
@@ -69,15 +70,19 @@ function open(sealed: SealedApproval): unknown {
 	);
 }
 
-beforeAll(() => {
+beforeAll(async () => {
 	if (!darwin) return;
+	workspace = await createTempDirectory('vault-release-');
+	binary = join(workspace, 'release');
 	const sources = readdirSync(core)
 		.filter((name) => name.endsWith('.swift'))
 		.map((name) => join(core, name));
 	const driver = 'test/support/credential-vault/iosRelease.swift';
 	execFileSync('xcrun', ['swiftc', ...sources, driver, '-parse-as-library', '-o', binary]);
 }, 240_000);
-afterAll(() => rmSync(workspace, { recursive: true, force: true }));
+afterAll(async () => {
+	if (workspace) await rm(workspace, { recursive: true, force: true });
+});
 
 describe.skipIf(!darwin)('Harness iOS approvals for the live broker', () => {
 	test('a deferred sign-in releases the password and keeps the code for later', () => {
