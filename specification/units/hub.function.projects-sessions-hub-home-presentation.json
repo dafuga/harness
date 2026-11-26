@@ -34,6 +34,8 @@
 			"runTime",
 			"when",
 			"quotaReset",
+			"pastDueLabel",
+			"pastDueSummary",
 			"initials",
 			"overviewTone",
 			"summaryLine",
@@ -195,6 +197,16 @@
 				"type": "number",
 				"required": true,
 				"description": "Current time in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "pastDueLabel.run",
+				"type": "Pick<HomePastDue, 'state' | 'position'>",
+				"required": true
+			},
+			{
+				"name": "pastDueSummary.runs",
+				"type": "HomePastDue[]",
+				"required": true
 			},
 			{
 				"name": "initials.name",
@@ -768,6 +780,42 @@
 						"name": "quotaReset",
 						"type": "unknown",
 						"description": "Rounded countdown or current availability of the reset time."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pastDueLabel",
+				"inputs": [
+					{
+						"name": "pastDueLabel.run",
+						"type": "Pick<HomePastDue, 'state' | 'position'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pastDueLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pastDueSummary",
+				"inputs": [
+					{
+						"name": "pastDueSummary.runs",
+						"type": "HomePastDue[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pastDueSummary",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

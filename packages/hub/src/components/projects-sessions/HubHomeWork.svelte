@@ -5,11 +5,13 @@
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import ProjectOverview from '$reports/components/projects-sessions/project-overview/ProjectOverview.svelte';
 	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
-	import { workEta } from './hubHomePresentation';
+	import { pastDueLabel, workEta } from './hubHomePresentation';
+	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
 	import type { HomeView } from './hubHomeView.types';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
-	let { overview, work, now }: Pick<HomeView, 'overview' | 'work' | 'now'> = $props();
+	let { overview, work, pastDue, now }: Pick<HomeView, 'overview' | 'work' | 'pastDue' | 'now'> =
+		$props();
 	let tab = $state<'soonest' | 'projects'>('soonest');
 	let done = $state(false);
 	const visible = $derived(
@@ -49,13 +51,18 @@
 	<hx-div class="hh-overview"><ProjectOverview snapshot={visible} standalone={false} /></hx-div>
 {:else if overview === null}
 	<HubHomeSkeleton rows={6} />
-{:else if !work.length}
+{:else if !work.length && !pastDue.length}
 	<EmptyState as="div" className="po-empty hh-empty">No work is in progress.</EmptyState>
 {:else}
+	<HubHomeNotStarted {pastDue} {work} />
 	<hx-ul class="po-items hh-soonest">
 		{#each work as item (item.id)}
 			{@const eta = workEta(item.due, now)}
-			<HubHomeRow title={item.title} meta={`${item.project} · ${statusLabel(item.status)}`}>
+			{@const passed = pastDue.find((run) => run.id === item.id)}
+			<HubHomeRow
+				title={item.title}
+				meta={`${item.project} · ${passed ? pastDueLabel(passed) : statusLabel(item.status)}`}
+			>
 				{#snippet trailing()}<hx-span class="po-eta" data-tone={eta.tone}>{eta.text}</hx-span
 					>{/snippet}
 			</HubHomeRow>
