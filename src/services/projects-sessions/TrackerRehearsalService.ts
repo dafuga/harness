@@ -1,4 +1,5 @@
 // @harness-uid u_q52bxqlyeg
+import { randomInt } from 'node:crypto';
 import { tryAcquireTrackerSqliteLease } from '../../adapters/projects-sessions/TrackerAdapterLeaseAdapter';
 import { TrackerSupervisorService } from './TrackerSupervisorService';
 import { openSqlite } from '../../adapters/development-tooling/openSqlite';
@@ -58,7 +59,7 @@ async function startRehearsal(
 		));
 	};
 	try {
-		server = bindLoopback(port, (request) =>
+		server = bindIsolatedPort(port, (request) =>
 			rehearsalRequest(request, health, runtime, supervisor)
 		);
 		database = openSqlite(databasePath);
@@ -146,6 +147,18 @@ function rehearsalHealth(
 		pid: process.pid,
 		started_at: new Date(now()).toISOString()
 	};
+}
+
+/** Linux assigns port 0 below the range `--port` accepts, so an unnamed port is chosen inside it. */
+function bindIsolatedPort(port: number, handle: Parameters<typeof bindLoopback>[1]) {
+	if (port) return bindLoopback(port, handle);
+	for (let attempt = 1; ; attempt++) {
+		try {
+			return bindLoopback(randomInt(49152, 65536), handle);
+		} catch (error) {
+			if (attempt === 20 || (error as { code?: string }).code !== 'EADDRINUSE') throw error;
+		}
+	}
 }
 
 function bindLoopback(port: number, handle: (request: Request) => Response | Promise<Response>) {
