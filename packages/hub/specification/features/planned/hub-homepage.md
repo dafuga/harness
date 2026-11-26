@@ -67,6 +67,17 @@ running sessions. Quota stays Unknown until a computer reports it. `Connect a co
 appears only when the account has no linked computer. The owner snapshot below remains a
 fallback.
 
+### Scheduled shows only the future
+
+Scheduled lists only runs whose time is still ahead. Work whose time has passed is Running,
+Queued with its launch position (urgent first, then oldest due) or Blocked with a reason. It
+appears in Work in progress, and what has not started sits under "Past due, not started".
+A due time on in-progress or blocked work is an ETA, not a scheduled start. Past and future
+work are bounded separately. Hub applies the same rule to a published run whose time passes
+later, and to snapshots from older Mac apps. Personal and family agents, including the Chief
+of Staff's list, never appear in Scheduled or in past-due work. Hub shows no line about Claude
+routine dates when it has no current reading of them.
+
 ### Owner-host data
 
 The signed-in Projects card and dialog use the existing per-member project APIs. Tracker chat

@@ -8,8 +8,7 @@
 	import { runDay, runTime } from './hubHomePresentation';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
-	let { runs, now, connected }: { runs: HomeRun[] | null; now: number; connected: boolean } =
-		$props();
+	let { runs, now }: { runs: HomeRun[] | null; now: number } = $props();
 	let filter = $state<'all' | 'tracker' | 'claude'>('all');
 	const filters = [
 		{ id: 'all', label: 'All' },
@@ -30,7 +29,7 @@
 {#if runs === null}
 	<HubHomeSkeleton rows={6} />
 {:else}
-	{#if runs.length}
+	{#if runs.some((run) => run.source === 'claude')}
 		<hx-div class="po-filters hh-filters" role="group" aria-label="Schedule source">
 			{#each filters as entry (entry.id)}
 				<hx-button
@@ -41,15 +40,6 @@
 				>
 			{/each}
 		</hx-div>
-	{/if}
-	{#if !connected}
-		<hx-p class="po-sessions"
-			>Claude routine dates are unknown. <hx-a
-				href="https://claude.ai/code/routines"
-				target="_blank"
-				rel="noreferrer">Open Claude routines</hx-a
-			></hx-p
-		>
 	{/if}
 	{#if !groups.length}<EmptyState as="div" className="po-empty hh-empty"
 			>Nothing is scheduled here.</EmptyState

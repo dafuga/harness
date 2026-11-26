@@ -87,7 +87,23 @@ export interface HomeRun {
 	source: 'tracker' | 'claude';
 	recurring: boolean;
 	paused: boolean;
+	/** What this Tracker run is once its time passes. Older computers do not report it. */
+	whenDue?: HomeWhenDue;
 }
+
+export interface HomeWhenDue {
+	state: 'running' | 'queued' | 'blocked';
+	reason: string | null;
+	/** Launch order class: 0 urgent, 1 normal, 2 low. */
+	urgency: number;
+}
+
+/** A run whose time has passed. Queued runs carry their launch position. */
+export type HomePastDue = HomeRun & {
+	state: HomeWhenDue['state'];
+	reason: string | null;
+	position?: number;
+};
 
 export interface HomeLimit {
 	id: string;
@@ -123,6 +139,7 @@ export interface OwnerHomeSnapshot {
 	openAsks?: HomeOpenAsk[];
 	plans: HomePlan[];
 	scheduled: HomeRun[];
+	overdue?: HomeRun[];
 	providers: HomeProviderReadings;
 }
 

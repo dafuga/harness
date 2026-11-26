@@ -73,9 +73,9 @@ export function trackerHostLaunch(
 			pickModel: (item) => pickHostModel(item, effects.now?.()),
 			retryModel: (item, run) => retryTrackerModel(item, run, undefined, effects.now?.())
 		},
-		scheduleDue: config.due === true || adapter?.scheduleDue === true,
+		scheduleDue: config.due !== false || adapter?.scheduleDue === true,
 		due: () => ({
-			enabled: config.due === true,
+			enabled: config.due !== false,
 			paused: false,
 			localDue: true,
 			adapterDue: adapter?.scheduleDue === true

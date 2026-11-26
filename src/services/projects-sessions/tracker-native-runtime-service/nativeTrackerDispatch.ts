@@ -1,17 +1,11 @@
 // @harness-uid u_bl6xl2h4a3
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { adapterFailover } from './nativeTrackerLinks';
-import type {
-	TrackerDispatchSnapshot,
-	TrackerLaunchIntent
-} from '../../agents-providers/TrackerDispatcherService.types';
 import { TrackerDispatchRepository } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
 import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import {
 	automaticEnabled,
-	automaticQuietHour,
-	canonicalNode,
-	automaticRequestHold
+	automaticQuietHour
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { previewDueLaunch } from '../../agents-providers/tracker-dispatcher-service/launchIntent';
 import { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
@@ -27,6 +21,7 @@ import type {
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
 import { liveTrackerDuePolicy } from './nativeTrackerDuePolicy';
+import { grantsDelegation } from './trackerDueDelegation';
 
 export function composeTrackerDispatch(
 	store: TrackerPersistenceService,
@@ -123,33 +118,6 @@ function dispatchPermits(
 		permitDue: (id: string, token: string, target: string) =>
 			grantsDelegation(repository.readSnapshot(id), { token, target }, policy)
 	};
-}
-
-function grantsDelegation(
-	{ item, due, runs }: TrackerDispatchSnapshot,
-	{ token, target }: { token: string; target: string },
-	policy: TrackerDispatchPolicy
-) {
-	const now = policy.now();
-	if (!item?.adapterDueOwner || !due?.adapterDue || due.paused || automaticQuietHour(now))
-		return false;
-	if (
-		canonicalNode(item.adapterDueOwner, policy) !== policy.node ||
-		automaticRequestHold(item, policy, now)
-	)
-		return false;
-	const intent = item.launch;
-	return (
-		matchingDelegation(intent, { token, target }) &&
-		!runs.some((run) => run.auto_token === token && run.node !== target)
-	);
-}
-
-function matchingDelegation(
-	intent: TrackerLaunchIntent | null | undefined,
-	{ token, target }: { token: string; target: string }
-) {
-	return intent?.source === 'due' && intent.token === token && intent.target === target;
 }
 
 function configuredDuePreview(

@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-not-started",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
@@ -33,6 +34,11 @@
 				"type": "OverviewSnapshot | null",
 				"required": true,
 				"description": "Tracker status and grouped project activity shown under active work."
+			},
+			{
+				"name": "HubHomeWork.pastDue",
+				"type": "HomePastDue[]",
+				"required": true
 			},
 			{
 				"name": "HubHomeWork.work",
@@ -74,6 +80,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-not-started",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-row",
 			"via": "import",
