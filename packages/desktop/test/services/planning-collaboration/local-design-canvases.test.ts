@@ -3,6 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, test } from 'vitest';
+import { LocalOperationsService } from '../../../src/lib/development-tooling/desktop-initialization/LocalOperationsService';
 import { localDesignCanvases } from '../../../src/lib/development-tooling/desktop-bridge/localDesignCanvases';
 import { DesignCanvasService } from '../../../../../src/services/planning-collaboration/design-canvas-service/DesignCanvasService';
 import { IpcRequestValidator } from '../../../src/validators/development-tooling/IpcRequestValidator';

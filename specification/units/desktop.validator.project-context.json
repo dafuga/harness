@@ -15,7 +15,6 @@
 		"symbols": [
 			"ProjectContextValidator",
 			"ProjectContextValidator.operation",
-			"ProjectContextValidator.canvas",
 			"ProjectContextValidator.context",
 			"ProjectContextValidator.comment",
 			"ExplicitProjectRequiredError"
@@ -29,11 +28,7 @@
 				"type": "string",
 				"required": true,
 				"description": "The IPC channel name that selects the branch in operation(), matched exactly and never length- or pattern-checked. Channels the method does not name return undefined without reading the input.",
-				"examples": [
-					"project:select",
-					"thread:comment",
-					"project:capabilities"
-				]
+				"examples": ["project:select", "thread:comment", "project:capabilities"]
 			},
 			{
 				"name": "ProjectContextValidator.operation.input",
@@ -69,12 +64,6 @@
 					}
 				],
 				"unknownReason": "The operation receives raw IPC data and the channel determines whether and how it is parsed."
-			},
-			{
-				"name": "ProjectContextValidator.canvas.input",
-				"type": "string | number | boolean | null | object",
-				"required": true,
-				"description": "Untrusted canvas read request: an optional project and a canvas name or null."
 			},
 			{
 				"name": "ProjectContextValidator.context.input",
@@ -274,11 +263,7 @@
 						"type": "string",
 						"required": true,
 						"description": "The IPC channel name that selects the branch in operation(), matched exactly and never length- or pattern-checked. Channels the method does not name return undefined without reading the input.",
-						"examples": [
-							"project:select",
-							"thread:comment",
-							"project:capabilities"
-						]
+						"examples": ["project:select", "thread:comment", "project:capabilities"]
 					},
 					{
 						"name": "ProjectContextValidator.operation.input",
@@ -386,25 +371,6 @@
 					}
 				],
 				"errorStatus": "declared"
-			},
-			{
-				"name": "ProjectContextValidator.canvas",
-				"inputs": [
-					{
-						"name": "ProjectContextValidator.canvas.input",
-						"type": "unknown",
-						"required": true,
-						"description": "Untrusted canvas read request: an optional project and a canvas name or null."
-					}
-				],
-				"outputs": [
-					{
-						"name": "ProjectContextValidator.canvas",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
 			},
 			{
 				"name": "ProjectContextValidator.context",
