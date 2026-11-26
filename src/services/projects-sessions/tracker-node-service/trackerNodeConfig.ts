@@ -38,10 +38,12 @@ const configFields = {
 						cli: z.enum(['claude', 'codex']),
 						session: id.regex(/^[^.]+$/),
 						tmux: absolutePath
-					})
+					}),
+					z.strictObject({ script: absolutePath })
 				])
 			),
 			itemCallbacks: z.array(id).optional(),
+			commandCallbacks: z.record(id, id).optional(),
 			chiefOfStaff: id.optional(),
 			webhook: id.optional(),
 			routes: z

@@ -7,7 +7,15 @@ export interface TrackerNodeSessionTarget {
 	tmux: string;
 }
 
-export type TrackerNodeTarget = { url: string; bearerFile?: string } | TrackerNodeSessionTarget;
+/** A fixed local script: run with no arguments, the delivery JSON on stdin and `TRACKER_DELIVERY_ID` set. */
+export interface TrackerNodeScriptTarget {
+	script: string;
+}
+
+export type TrackerNodeTarget =
+	| { url: string; bearerFile?: string }
+	| TrackerNodeSessionTarget
+	| TrackerNodeScriptTarget;
 
 export type TrackerNodeWebhookEvent =
 	| 'needs_daniel'
@@ -39,6 +47,8 @@ interface TrackerNodeConfigFields {
 	notifications?: {
 		targets: Record<string, TrackerNodeTarget>;
 		itemCallbacks?: string[];
+		/** Legacy `--callback-cmd` name to a script target id. Item text picks a name only; it never supplies arguments. */
+		commandCallbacks?: Record<string, string>;
 		chiefOfStaff?: string;
 		webhook?: string;
 		/** Bot routes for the webhook; requires `webhook`. */
