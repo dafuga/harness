@@ -7,6 +7,8 @@ const testRunner =
 	/(?:^|[\s/])(?:vitest|jest|mocha|ava|tap)(?:\.js|\.mjs|\.cjs)?(?:\s|$)|\s--test(?:\s|=|$)|(?:^|[\s/])bun\s+test(?:\s|$)|playwright(?:\.js)?\s+test|npm-cli\.js\s+(?:run\s+)?test|(?:^|[\s/])(?:npm|pnpm|yarn)\s+(?:run\s+)?test(?:\s|$)/;
 const browserName =
 	/^(chrome|chromium|chrome-headless-shell|headless_shell|google chrome( helper.*)?|chromium( helper.*)?|firefox|webkitwebprocess|minibrowser|pw_run\.sh)$/i;
+/** The native Claude Code install runs a binary named after its version. */
+const versionedClaude = /^\S*\/claude\/versions\/\d+\.\d+\.\d+(?:\s|$)/;
 const scriptHost = /^(node|bun|deno|mainthread)$/;
 
 /** `ps -axo pid=,ppid=,rss=,pcpu=,comm=`. On macOS comm is a full path that may contain spaces. */
@@ -31,6 +33,7 @@ export function parseTrackerProcesses(text: string): TrackerProcessRow[] {
 export function classifyTrackerProcess(name: string, args = ''): TrackerAgentKind | undefined {
 	const lower = name.toLowerCase();
 	if (lower === 'claude' || lower === 'codex') return lower;
+	if (versionedClaude.test(args)) return 'claude';
 	if (scriptHost.test(lower) && testRunner.test(args)) return 'test-runner';
 	return browserName.test(lower) && /ms-playwright|playwright/.test(args) ? 'browser' : undefined;
 }

@@ -76,3 +76,19 @@ test('a sample of this computer passes the fleet schema', async () => {
 	expect(sample.ram.total_mb).toBeGreaterThan(0);
 	expect(sample.disks.length).toBeGreaterThan(0);
 }, 30_000);
+
+test('counts Claude Code launched from its versioned install path', () => {
+	const path = '/Users/x/.local/share/claude/versions/2.1.332';
+	const rows = parseTrackerProcesses(
+		[`40 1 1024 2.0 ${path}`, '41 1 1024 1.0 2.1.332', '42 1 1024 1.0 9.9.9'].join('\n')
+	);
+	const args = new Map([
+		[40, `${path} --model fixture`],
+		[41, `${path} --model fixture`],
+		[42, '/opt/other/9.9.9']
+	]);
+	expect(groupTrackerProcesses(rows, args, new Map()).map(({ kind, pid }) => [kind, pid])).toEqual([
+		['claude', 40],
+		['claude', 41]
+	]);
+});
