@@ -1,3 +1,11 @@
+---
+status: planned
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
 # Needs-you release canary
 
 26 Nov 2026 (eq0hnw, retro ecw4cy). Three Hub releases were marked done although nobody had seen
