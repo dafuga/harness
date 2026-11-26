@@ -3,7 +3,11 @@ import { parseArgs } from 'node:util';
 import { nativeTrackerTimedItemRequest } from './nativeTrackerTimedItemRequest';
 import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
 import type { NativeTrackerAskValues, NativeTrackerRequest } from './nativeTrackerCli.types';
-import { nativeTrackerAnswerBody, nativeTrackerFlagBody } from './nativeTrackerAskOptions';
+import {
+	nativeTrackerAnswerBody,
+	nativeTrackerBlockBody,
+	nativeTrackerFlagBody
+} from './nativeTrackerAskOptions';
 
 import {
 	nativeTrackerCommandOptions,
@@ -26,7 +30,9 @@ export function nativeTrackerArgs(args: string[]) {
 		allowNegative: true,
 		options: { ...nativeTrackerCommonOptions, ...options }
 	});
-	return { command, values, words, request: nativeTrackerRequest(command, words, values) };
+	const request =
+		command === 'reply' ? replyRequest(words) : nativeTrackerRequest(command, words, values);
+	return { command, values, words, request };
 }
 
 function nativeTrackerRequest(
@@ -72,6 +78,16 @@ function runRequest(
 		default:
 			return undefined;
 	}
+}
+
+/** Answers one Hub message; the id carries its thread, so nothing else is needed. */
+function replyRequest([id, ...text]: string[]): NativeTrackerRequest {
+	if (!id || !text.length) throw new TypeError('usage: tracker reply <message id> <text...>');
+	return {
+		method: 'POST',
+		path: '/messages/' + encodeURIComponent(id) + '/reply',
+		body: { text: text.join(' ') }
+	};
 }
 
 function stopRequest(words: string[]): NativeTrackerRequest {
@@ -179,7 +195,7 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		case 'flag':
 			return nativeTrackerFlagBody(text, values as NativeTrackerAskValues);
 		case 'block':
-			return blockBody(text, values);
+			return nativeTrackerBlockBody(text, values as NativeTrackerAskValues);
 		case 'answer':
 		case 'resolve':
 			return nativeTrackerAnswerBody(text, values as NativeTrackerAskValues);
@@ -196,10 +212,6 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		default:
 			return undefined;
 	}
-}
-
-function blockBody(reason: string, values: Record<string, unknown>) {
-	return { reason, force: values.force };
 }
 
 function requiredText(words: string[], command: string): string {

@@ -37,6 +37,11 @@
 		'home-cards': { view, open: noop, send },
 		'home-choices': { agent: { options: previewAnswerOptions }, onpick: noop },
 		'home-composer': { agents: view.agents, send },
+		'home-cos-chat': {
+			agent: view.agents?.find((agent) => agent.id === 'cos'),
+			now: new Date(view.now).toISOString(),
+			send
+		},
 		'home-dialogs': {
 			selected: 'plans',
 			view,
@@ -95,6 +100,7 @@
 		'home-project-card': { view, open: noop },
 		'home-projects': { projects: list, snapshots, readProject },
 		'home-quota': { quota: view.quota, now: view.now, connected: true, reload: noop },
+		'home-quota-pills': { subscriptions: view.quota, now: view.now },
 		'home-row': { title: 'Review the export columns', meta: 'Atlas · 2h ago' },
 		'home-schedule': { runs: view.schedule, now: view.now, connected: true },
 		'home-skeleton': { rows: 3 },

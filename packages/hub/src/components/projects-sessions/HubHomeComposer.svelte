@@ -9,16 +9,20 @@
 		HomeChatReceipt
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { currentAgent } from './hubHomePresentation';
+	import { composerFeedback, composedMessage as composed } from './hubHomeMessages';
 	import type { SendHomeChat } from './hubHomeView.types';
 
 	let {
 		agents,
 		agentId,
 		send,
-		submitted
+		submitted,
+		label = 'Message'
 	}: {
 		agents: HomeAgent[];
 		agentId?: string;
+		/** The field's accessible name. */
+		label?: string;
 		send: SendHomeChat;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 	} = $props();
@@ -26,7 +30,8 @@
 	let draft = $state('');
 	let pending = $state(false);
 	let feedback = $state('');
-	const options = $derived(agents.filter((agent) => agent.itemId));
+	/** Chief of Staff is always reachable; another session needs a Tracker item to write to. */
+	const options = $derived(agents.filter((agent) => agent.itemId || agent.id === 'cos'));
 	const active = $derived(
 		options.find((agent) => agent.id === (agentId ?? recipient)) ?? currentAgent(options)
 	);
@@ -34,27 +39,16 @@
 	async function post(event: SubmitEvent) {
 		event.preventDefault();
 		const text = draft.trim();
-		if (!active?.itemId || !text || pending) return;
-		const message: HomeChatInput = {
-			id: crypto.randomUUID(),
-			agentId: active.id,
-			itemId: active.itemId,
-			text,
-			kind: 'note',
-			question: null
-		};
+		if (!active || !text || pending) return;
+		const message = composed(active, text);
+		if (!message) return;
 		pending = true;
 		feedback = '';
 		try {
 			const receipt = await send(message);
 			submitted?.(message, receipt);
 			if (receipt.status === 'queued' || receipt.status === 'sent') draft = '';
-			feedback =
-				receipt.status === 'queued'
-					? 'Queued for Tracker'
-					: receipt.status === 'sent'
-						? 'Sent to Tracker'
-						: 'Tracker did not accept the message.';
+			feedback = composerFeedback(message, receipt, active.name);
 		} catch {
 			feedback = 'Could not queue the message. Check Tracker before retrying.';
 		} finally {
@@ -82,7 +76,7 @@
 		<hx-input
 			class="hh-composer-input"
 			placeholder={`Message ${active.name}…`}
-			aria-label="Message"
+			aria-label={label}
 			maxlength={2000}
 			bind:value={draft}
 		/>

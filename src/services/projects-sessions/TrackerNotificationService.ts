@@ -6,8 +6,11 @@ import type {
 import { enqueueWebhook } from './tracker-notification-service/enqueueWebhook';
 import { runNotificationTick } from './tracker-notification-service/notificationTick';
 import { trackerNotificationStatus } from './tracker-notification-service/trackerNotificationStatus';
+import { trackerChiefChannel } from './tracker-notification-service/chiefChannel';
 
 export type {
+	TrackerChiefChannel,
+	TrackerChiefMessage,
 	TrackerDeliveryRequest,
 	TrackerDeliveryResult,
 	TrackerDestination,
@@ -28,6 +31,11 @@ export class TrackerNotificationService {
 
 	status() {
 		return trackerNotificationStatus(this.options);
+	}
+
+	/** The hub's channel to Chief of Staff, or undefined when none is configured here. */
+	chiefChannel() {
+		return trackerChiefChannel(this.options);
 	}
 
 	/** Scan item changes and drain eligible work for this node. */

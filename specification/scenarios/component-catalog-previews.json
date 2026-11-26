@@ -122,6 +122,7 @@
 		"hub.component.projects-sessions-hub-home-cards",
 		"hub.component.projects-sessions-hub-home-choices",
 		"hub.component.projects-sessions-hub-home-composer",
+		"hub.component.projects-sessions-hub-home-cos-chat",
 		"hub.component.projects-sessions-hub-home-dialogs",
 		"hub.component.projects-sessions-hub-home-header",
 		"hub.component.projects-sessions-hub-home-live",
@@ -134,6 +135,7 @@
 		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
 		"hub.component.projects-sessions-hub-home-quota",
+		"hub.component.projects-sessions-hub-home-quota-pills",
 		"hub.component.projects-sessions-hub-home-row",
 		"hub.component.projects-sessions-hub-home-schedule",
 		"hub.component.projects-sessions-hub-home-skeleton",
@@ -2225,6 +2227,12 @@
 			"units": ["hub.component.projects-sessions-hub-home-composer"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-cos-chat",
+			"title": "HubHomeCosChat",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-cos-chat"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-dialogs",
 			"title": "HubHomeDialogs",
 			"coverage": "required",
@@ -2295,6 +2303,12 @@
 			"title": "HubHomeQuota",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-quota"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-quota-pills",
+			"title": "HubHomeQuotaPills",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-quota-pills"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-row",
@@ -9049,6 +9063,7 @@
 				"hub-component-projects-sessions-hub-home-card",
 				"hub-component-projects-sessions-hub-home-cards",
 				"hub-component-projects-sessions-hub-home-choices",
+				"hub-component-projects-sessions-hub-home-cos-chat",
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
 				"hub-component-projects-sessions-hub-home-header",
@@ -9062,6 +9077,7 @@
 				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",
 				"hub-component-projects-sessions-hub-home-quota",
+				"hub-component-projects-sessions-hub-home-quota-pills",
 				"hub-component-projects-sessions-hub-home-row",
 				"hub-component-projects-sessions-hub-home-schedule",
 				"hub-component-projects-sessions-hub-home-skeleton",

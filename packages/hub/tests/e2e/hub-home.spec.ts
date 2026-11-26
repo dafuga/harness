@@ -35,7 +35,7 @@ for (const viewport of manifest.viewports) {
 						? 'Loading your home…'
 						: mode === 'empty'
 							? 'Nothing is running yet'
-							: /working, .* need[s]? you/
+							: /running.*, .* need[s]? you/
 				);
 				if (mode === 'default' || mode === 'busy') {
 					await expect(page.locator('.hh-projects .hh-change').first()).toBeVisible();
@@ -52,7 +52,7 @@ for (const viewport of manifest.viewports) {
 				if (mode === 'loading') {
 					fixture.release();
 					await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-						/working, .* need[s]? you/
+						/running.*, .* need[s]? you/
 					);
 				}
 			});
@@ -114,11 +114,12 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 	const chat = dialog.getByRole('region', { name: 'Chat with Chief of Staff' });
 	await expect(chat.getByText('Yes, voicemail and carrier-busy passed.')).toBeVisible();
 	await capture(page, position, 'agent-chat');
-	await chat.getByRole('textbox', { name: 'Message', exact: true }).fill('Synthetic Tracker note');
+	await chat.getByRole('textbox', { name: 'Message', exact: true }).fill('Synthetic Hub message');
 	await chat.getByRole('button', { name: 'Send', exact: true }).click();
-	await expect(chat.getByText('sent', { exact: true })).toBeVisible();
+	await expect(chat.getByText('Sent to Tracker', { exact: true })).toBeVisible();
+	// Chief of Staff is messaged in its own pane, not through a note on its current item.
 	expect(fixture.sent).toMatchObject([
-		{ itemId: 'item-0', kind: 'note', text: 'Synthetic Tracker note' }
+		{ agentId: 'cos', itemId: 'cos', kind: 'message', text: 'Synthetic Hub message' }
 	]);
 	await optionTap(chat, fixture);
 	await dialog.getByRole('button', { name: 'Back to agents' }).click();

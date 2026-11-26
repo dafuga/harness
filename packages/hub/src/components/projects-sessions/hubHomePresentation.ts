@@ -4,6 +4,7 @@ import type {
 	HomeAgent,
 	HomeAgentState,
 	HomeLimit,
+	HomeMessage,
 	HomePastDue,
 	HomePlanState,
 	HomeSection,
@@ -70,11 +71,14 @@ export function agentActivity(agent: HomeAgent) {
 	return `${count(total, 'session')} running${subs} · ${first}${more}`;
 }
 
+/** Leads with live sessions, so it agrees with the live overview's run count just below it. */
 export function homeHeadline(agents: HomeAgent[], liveSessions = 0, needs = 0) {
-	const working = agents.filter(isWorking).length;
-	if (!agents.length && !needs)
-		return liveSessions ? `${count(liveSessions, 'session')} running` : 'Nothing is running yet';
-	return `${count(working, 'agent')} working${needs ? `, ${needs} ${needs === 1 ? 'needs' : 'need'} you` : ''}`;
+	const working = agents.filter(isWorking);
+	const sessions = Math.max(liveSessions, ...working.map(agentSessions), 0);
+	const asks = needs ? `${needs} ${needs === 1 ? 'needs' : 'need'} you` : '';
+	if (!sessions) return asks ? `Nothing is running, ${asks}` : 'Nothing is running yet';
+	const who = working.length ? ` for ${count(working.length, 'agent')}` : '';
+	return `${count(sessions, 'session')} running${who}${asks ? `, ${asks}` : ''}`;
 }
 
 export function currentAgent(agents: HomeAgent[]) {
@@ -99,6 +103,14 @@ export function soonestWork(snapshot: OverviewSnapshot | null) {
 
 export function workSummary(work: ReturnType<typeof soonestWork>) {
 	return `${count(work.length, 'task')} across ${count(new Set(work.map((item) => item.project)).size, 'project')}`;
+}
+
+/** A numeric balance reads 23,725; small ones keep cents, and words such as Unlimited stay. */
+export function creditsLabel(balance: string) {
+	const amount = Number(balance);
+	if (!Number.isFinite(amount)) return balance;
+	const maximumFractionDigits = Math.abs(amount) < 100 ? 2 : 0;
+	return new Intl.NumberFormat('en-GB', { maximumFractionDigits }).format(amount);
 }
 
 export function warningFor(left: number) {
@@ -129,6 +141,7 @@ export function missingQuotaProviders(subscriptions: HomeSubscription[]): string
 }
 
 export function warningLabel(limit: HomeLimit) {
+	if (limit.left <= 0) return 'Out of quota';
 	return warningFor(limit.left) === 'critical' ? 'Almost out' : 'Low';
 }
 
@@ -185,12 +198,35 @@ export function workEta(due: string | null, now: number) {
 	return { tone: 'scheduled', text: when(due) };
 }
 
+/** "1 out of quota · 2 running low"; empty when every limit has room. */
+export function lowSummary(limits: HomeLimit[]) {
+	const out = limits.filter((limit) => limit.left <= 0).length;
+	const low = limits.length - out;
+	return [out ? `${out} out of quota` : '', low ? `${low} running low` : '']
+		.filter(Boolean)
+		.join(' · ');
+}
+
 export function quotaSummary(subscriptions: HomeSubscription[], now: number) {
 	if (!subscriptions.length) return 'No subscriptions yet';
 	const low = subscriptions
 		.filter((subscription) => !staleReading(subscription.readAt, now))
 		.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)));
-	return `${count(subscriptions.length, 'subscription')} · ${low.length ? `${low.length} running low` : 'all OK'}`;
+	return `${count(subscriptions.length, 'subscription')} · ${lowSummary(low) || 'all OK'}`;
 }
 
 export { quotaReset, runDay, runTime, when } from './hubHomeTime';
+
+/** Where one of Daniel's Hub messages got to, in his words; nothing for plain notes. */
+export function messageStatusText(
+	message: Pick<HomeMessage, 'status' | 'reason'>,
+	name: string
+): string | null {
+	if (message.status === 'stored')
+		return message.reason ? `Not delivered yet: ${message.reason}` : 'Stored in Tracker';
+	if (message.status === 'delivered') return `Delivered to ${name}`;
+	if (message.status === 'acknowledged') return 'Replied';
+	if (message.status === 'refused')
+		return message.reason ? `Not delivered: ${message.reason}` : 'Not delivered';
+	return null;
+}

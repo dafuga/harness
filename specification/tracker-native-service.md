@@ -625,14 +625,20 @@ Change it in the configuration and restart the node.
 - [x] Wire `health [--alert]`, log rotation and host supervision (see Health,
       logs and host supervision).
 - [x] Wire `adapter run` and comment preview and backfill through runner ownership.
-- [ ] Wire `adapter add/pause/resume/remove` and issue backfill.
+- [x] Wire `adapter add/pause/resume/remove` and issue backfill. Changes run on the
+      designated runner under the poll lease; a running poll refuses them with a retry
+      message. `adapter add --dry-run` previews on any configured node and writes nothing.
 - [ ] Bind external backup receipts for last result and next run. Qualify
       `backup now` and `restore --yes` with the backup owner and an isolated
       restore rehearsal.
 - [ ] Qualify `agent register/list/rm`, `webhook status/pause/resume/test`,
-      `cos-test`, and local `instructions [--check]`.
+      `cos-test`.
+- [x] Wire local `instructions [--check] [file...]`. It needs no service or config. The
+      canonical block ships with Harness and names only native commands.
+- [x] Print human `history`, `check` and refused-duplicate matches, and the model pick
+      after `add`. `block` accepts `--no-needs-daniel`; `--needs-daniel` points to `flag`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
-      recurring `history`, `check` match details, `rm`, and empty `list`.
+      `rm` and empty `list`.
 
 ## Computers and placement
 

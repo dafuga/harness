@@ -8,18 +8,11 @@
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import HubHomeNotifications from './HubHomeNotifications.svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
-	import {
-		homeHeadline,
-		lowestLimit,
-		providerNames,
-		warningFor,
-		warningLabel,
-		summaryLine
-	} from './hubHomePresentation';
+	import { homeHeadline, summaryLine } from './hubHomePresentation';
+	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { HomeView } from './hubHomeView.types';
 	let { view }: { view: HomeView } = $props();
 	const { session } = browserContext();
-	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
 	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
 	const machines = $derived(view.overview?.status === 'ready' ? view.overview.machines : []);
 	let accountOpen = $state(false);
@@ -74,28 +67,17 @@
 								? 'Check Tracker on your Mac to resume sharing your work.'
 								: 'Your shared projects and activity appear here when available.'}</hx-p
 		>
-		{#if machines.length || warning}
-			<hx-ul class="po-machines" aria-label="Computers and quota">
+		{#if machines.length}
+			<hx-ul class="po-machines" aria-label="Computers">
 				{#each machines as machine (machine.name)}
 					<Pill as="li" tone="po-machine" state={machine.status}>
 						<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
 						{machine.name} <hx-span class="po-machine-status">{machine.status}</hx-span>
 					</Pill>
 				{/each}
-				{#if warning}
-					<hx-li class="po-machine hh-q-headflag" data-level={warningFor(warning.limit.left)}>
-						<hx-span class="hh-q-flag" data-level={warningFor(warning.limit.left)}
-							><hx-span class="hh-q-mark" aria-hidden="true"></hx-span>{warningLabel(
-								warning.limit
-							)}</hx-span
-						>
-						{providerNames[warning.subscription.provider]}
-						{warning.limit.label}
-						<hx-span class="po-machine-status">{warning.limit.left}% left</hx-span>
-					</hx-li>
-				{/if}
 			</hx-ul>
 		{/if}
+		{#if view.quota?.length}<HubHomeQuotaPills subscriptions={view.quota} now={view.now} />{/if}
 		{#if view.owner}<HubHomeNotifications />{/if}
 	</hx-div>
 </hx-header>

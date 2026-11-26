@@ -7,6 +7,7 @@ import type {
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import { deliverHomeMessage } from './homeTrackerMessage';
 
 const trackerOrigin = 'http://127.0.0.1:7701';
 
@@ -16,6 +17,7 @@ export async function deliverHomeChat(
 	home: Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>,
 	fetcher: typeof fetch = fetch
 ): Promise<HomeChatReceipt> {
+	if (input.kind === 'message') return deliverHomeMessage(input, home, fetcher);
 	const ask = home.openAsks?.find(
 		(entry) => entry.itemId === input.itemId && entry.agentId === input.agentId
 	);
