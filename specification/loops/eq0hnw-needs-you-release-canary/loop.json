@@ -2,7 +2,7 @@
 	"name": "eq0hnw-needs-you-release-canary",
 	"goal": "A Hub release cannot pass until a labelled test ask answered on prod Hub web, the Mac app and the iPhone is read back from the Tracker as answered by Daniel with the tapped option",
 	"createdAt": "2026-11-26T17:59:00.550Z",
-	"updatedAt": "2026-11-26T18:00:04.166Z",
+	"updatedAt": "2026-11-26T18:09:05.059Z",
 	"template": "regression-prevention",
 	"templateLineage": ["regression-prevention"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T18:02:28.969Z",
+			"evidence": "Recorded at 3c4b668907 against the release gate that checks nothing: bunx vitest run test/needs-you-canary.test.ts, 8/8 failing, e.g. expected {} to deeply equal { web: 'passed', mac: 'passed', ... }. (Re-recorded once after a test-only fixture fix: its simulated tap could hit a closed ask.)"
 		},
 		{
 			"id": "propose",
 			"title": "Propose a root-cause repair and an automated guard for the identified failure.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T18:02:31.670Z",
+			"evidence": "Repair: scripts/needs-you-canary.ts raises one labelled ask per surface on a never-launching item, answers Hub web in its own automation-Chrome tab (Mac/iPhone by Daniel's tap), reads answered_by/answer_option/answer back, cleans up, records on the release item, flags+blocks it unless all pass. Guard: test/needs-you-canary.test.ts in test:unit"
 		},
 		{
 			"id": "implement",
 			"title": "Implement the repair and wire the prevention test or guard into normal project verification.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T18:09:05.059Z",
+			"evidence": "scripts/needs-you-canary.ts + scripts/needs-you-canary/* (aed3b04d; row selector fix after); test/needs-you-canary.test.ts runs in test:unit; packages/hub/README.md 'After a release'"
 		},
 		{
 			"id": "green",
