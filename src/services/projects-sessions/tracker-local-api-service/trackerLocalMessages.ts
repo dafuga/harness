@@ -12,19 +12,12 @@ import {
 } from '../../../utils/projects-sessions/hubSessionMessages';
 import type { HubMessageTarget } from '../../../utils/projects-sessions/hubSessionMessages.types';
 import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
-import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { itemMutation, itemMutationContext, readItemBody } from './trackerLocalItemMutation';
+import type { MessageDependencies, RequestTarget } from './trackerLocalMessages.types';
 
 /** The thread item Chief of Staff's Hub messages live on; created on the first message. */
 export const cosChatTitle = 'Hub chat with Chief of Staff';
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-interface MessageDependencies {
-	store: TrackerPersistenceService;
-	items: TrackerItemReadRepository;
-	options: TrackerLocalApiOptions;
-	actor: string | null;
-}
 
 /** `POST /messages` stores one Hub message; `POST /messages/<id>/reply` answers it. */
 export async function trackerMessageEndpoint(
@@ -74,8 +67,6 @@ function messageText(value: unknown): string {
 	if (!text || text.length > 2000) throw trackerItemError('message text must be 1-2000 characters');
 	return text;
 }
-
-type RequestTarget = { kind: 'cos' } | { kind: 'run'; item: string; node: string; run: number };
 
 function messageTarget(value: unknown): RequestTarget {
 	if (value === 'cos') return { kind: 'cos' };

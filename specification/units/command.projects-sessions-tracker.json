@@ -24,6 +24,7 @@
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerPlanningRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerRequest.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerRunRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerTimedItemRequest.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerAddHint.ts",
 			"src/commands/projects-sessions/tracker-command/printNativeTrackerError.ts",
@@ -84,6 +85,8 @@
 			"nativeTrackerPlanningRequest",
 			"nativeTrackerCommands",
 			"nativeTrackerArgs",
+			"nativeTrackerRunRequest",
+			"nativeTrackerQuery",
 			"nativeTrackerTimedItemRequest",
 			"printNativeTrackerAddHint",
 			"printNativeTrackerError",
@@ -301,6 +304,26 @@
 			{
 				"name": "nativeTrackerArgs.args",
 				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerRunRequest.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerRunRequest.words",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerRunRequest.values",
+				"type": "Record<string, string | boolean | undefined>",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerQuery.fields",
+				"type": "Record<string, string | boolean | undefined>",
 				"required": true
 			},
 			{
@@ -522,6 +545,14 @@
 			{
 				"name": "nativeTrackerArgs",
 				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerRunRequest",
+				"type": "NativeTrackerRequest | undefined"
+			},
+			{
+				"name": "nativeTrackerQuery",
+				"type": "string"
 			},
 			{
 				"name": "nativeTrackerTimedItemRequest",
@@ -1137,6 +1168,57 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerRunRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerRunRequest.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerRunRequest.words",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "nativeTrackerRunRequest.values",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerRunRequest",
+						"type": "NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nativeTrackerQuery",
+				"inputs": [
+					{
+						"name": "nativeTrackerQuery.fields",
+						"type": "Record<string, string | boolean | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerQuery",
+						"type": "string"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{
