@@ -1,0 +1,38 @@
+import { expect, test, type Page } from '../../../../test/support/browserTest';
+import { macSpecPage, phoneSpecPage, specTracker } from './support/viewSpecInboxFixture';
+
+/**
+ * The "N need you" count sits with its items in the blocked section of the Mac and iPhone inbox,
+ * in headless Chromium. TAKE_SCREENSHOT=true keeps the pictures in SCREENSHOT_DIR.
+ */
+test.setTimeout(60_000);
+
+const sizes = { mac: { width: 1440, height: 900 }, iphone: { width: 390, height: 844 } };
+
+async function blockedSection(page: Page, name: keyof typeof sizes) {
+	await page.goto('/tracker');
+	const section = page.getByRole('region', { name: 'Blocked - needs you' });
+	await expect(section.getByText('1 needs you', { exact: true })).toBeVisible();
+	await expect(
+		section.getByRole('list', { name: 'Needs you' }).getByRole('button', { name: /Fixture/ })
+	).toHaveCount(1);
+	await expect(page.getByText(/\d+ needs? you/)).toHaveCount(1);
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	const directory = process.env.SCREENSHOT_DIR ?? 'test-results/needs-you';
+	await page.screenshot({ path: `${directory}/${name}-needs-you.png`, animations: 'disabled' });
+}
+
+for (const name of ['mac', 'iphone'] as const)
+	test(`${name}: the needs-you count and its items share the blocked section`, async ({ page }) => {
+		const tracker = await specTracker('# Notes service', 'notes-service.md');
+		await page.setViewportSize(sizes[name]);
+		await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+		const restore = name === 'mac' ? await macSpecPage(page, tracker) : undefined;
+		try {
+			if (name === 'iphone') await phoneSpecPage(page, tracker, []);
+			await blockedSection(page, name);
+		} finally {
+			restore?.();
+			tracker.close();
+		}
+	});

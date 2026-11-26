@@ -14,6 +14,7 @@
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-form",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-h2",
@@ -30,7 +31,7 @@
 			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
 			"packages/desktop/src/components/development-tooling/tracker-inbox/tracker-inbox.css"
 		],
-		"symbols": ["TrackerInbox", "reload"]
+		"symbols": ["TrackerInbox", "reload", "TrackerInbox.rows"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -78,7 +79,21 @@
 				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "TrackerInbox.rows",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerInbox.rows",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -123,6 +138,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

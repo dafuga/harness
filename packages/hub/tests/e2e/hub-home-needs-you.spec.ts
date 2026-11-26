@@ -52,13 +52,17 @@ const needsYou = (page: Page) => page.getByRole('region', { name: /^Blocked - ne
 const openers = (page: Page) => needsYou(page).getByRole('button', { name: /waiting \d+[mhd]/ });
 const rowOf = (page: Page, project: string) =>
 	needsYou(page).getByRole('listitem').filter({ hasText: project });
+const agentsCard = (page: Page) => page.getByRole('region', { name: 'Agents', exact: true });
 
 for (const size of ['desktop', 'phone'] as const) {
 	test(`Home rows offer their choices and open the session chat (${size})`, async ({ page }) => {
 		const fixture = await home(page, size, 'two-asks');
 		const rows = openers(page);
 		await expect(rows).toHaveCount(2);
-		await expect(page.getByText('2 need you', { exact: true })).toBeVisible();
+		// The count lives with the items in the blockers section; Agents shows only agents.
+		await expect(needsYou(page).getByText('2 need you', { exact: true })).toBeVisible();
+		await expect(agentsCard(page)).toBeVisible();
+		await expect(agentsCard(page).getByText(/\d+ needs? you/)).toHaveCount(0);
 		await expect(rows.filter({ hasText: 'harbor' })).toContainText(
 			/Ship harbor\?.*waiting \d+[mhd]/s
 		);
