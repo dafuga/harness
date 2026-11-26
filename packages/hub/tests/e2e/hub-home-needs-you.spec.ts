@@ -1,6 +1,5 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
-import { linkedComputersFixture } from './linked-computers-fixture';
 
 /**
  * "Needs you" on Home: each row carries its choices (recommended first) and Other, and opens the
@@ -151,23 +150,18 @@ test('with nothing stored on the Hub, a row tap goes to the linked Mac over its 
 }) => {
 	await page.setViewportSize(sizes.desktop);
 	const fixture = await hubHomeFixture(page, 'default');
-	await page.route('**/api/hub-home', (route) =>
-		route.fulfill({ json: { granted: false, snapshot: null } })
-	);
 	const asked = fixture.snapshot.agents.find((agent) => agent.options);
 	if (!asked?.options) throw new Error('Expected a fixture ask with choices');
 	delete asked.confirm;
-	const chats: unknown[] = [];
-	await linkedComputersFixture(page, fixture.snapshot, chats);
 	await page.goto('/');
 	await needsYou(page)
 		.getByRole('button', { name: new RegExp(asked.options[1].label) })
 		.click();
-	await expect.poll(() => chats.length).toBe(1);
-	expect(chats[0]).toMatchObject({ itemId: asked.itemId, kind: 'answer', option: 2 });
+	await expect.poll(() => fixture.sent.length).toBe(1);
+	expect(fixture.sent[0]).toMatchObject({ itemId: asked.itemId, kind: 'answer', option: 2 });
 	await expect(needsYou(page).getByRole('status')).toContainText('Answer sent');
 	// The Hub never sees the answer: nothing is queued there.
-	expect(fixture.sent).toHaveLength(0);
+	expect(fixture.posted).toEqual([]);
 });
 
 test('a flag without choices is not counted, listed or answerable', async ({ page }) => {

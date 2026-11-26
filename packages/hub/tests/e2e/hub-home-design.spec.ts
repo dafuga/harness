@@ -40,12 +40,14 @@ test('empty cards explain themselves and offer one next step inside a quiet pane
 	page
 }) => {
 	await home(page, 'empty');
-	const steps = [
-		['Agents', 'link', 'Connect a computer'],
-		['Projects', 'link', 'Add a project']
-	] as const;
-	for (const [title, role, name] of steps)
-		await expect(card(page, title).getByRole(role, { name, exact: true })).toBeVisible();
+	await expect(
+		card(page, 'Projects').getByRole('link', { name: 'Add a project', exact: true })
+	).toBeVisible();
+	// The installed app has a Mac linked, so Agents does not ask to connect one.
+	await expect(card(page, 'Agents')).toContainText('No agents are connected.');
+	await expect(card(page, 'Agents').getByRole('link', { name: 'Connect a computer' })).toHaveCount(
+		0
+	);
 	const panel = card(page, 'Plans').locator('.hh-empty');
 	await expect(panel).toContainText('Ask an agent to plan something');
 	const edge = await panel.evaluate((element) => {
