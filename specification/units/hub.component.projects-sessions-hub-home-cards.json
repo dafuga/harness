@@ -60,12 +60,14 @@
 			{
 				"name": "HubHomeCards.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Sends Daniel's answer or message to the linked Mac and returns its receipt."
 			},
 			{
 				"name": "HubHomeCards.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
-				"required": true
+				"required": true,
+				"description": "Reads the latest receipt for a sent answer or message by its id."
 			}
 		],
 		"outputs": [

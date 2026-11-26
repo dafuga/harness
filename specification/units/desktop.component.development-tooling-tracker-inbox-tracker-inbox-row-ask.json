@@ -4,8 +4,8 @@
 	"uid": "u_xtbyqrygml",
 	"kind": "component",
 	"title": "TrackerInboxRowAsk",
-	"responsibility": "Owns the TrackerInboxRowAsk Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows one needs-you row's answer choices and records the tapped choice for the revision that row shows.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -21,38 +21,44 @@
 		"symbols": ["TrackerInboxRowAsk"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "TrackerInboxRowAsk.source",
 				"type": "TrackerInboxSource",
-				"required": true
+				"required": true,
+				"description": "Tracker connection that records the answer, on the Mac directly or queued through the phone."
 			},
 			{
 				"name": "TrackerInboxRowAsk.review",
 				"type": "InboxDetail",
-				"required": true
+				"required": true,
+				"description": "The read this row shows; a tap answers its revision, or is refused if the item moved on."
 			},
 			{
 				"name": "TrackerInboxRowAsk.mode",
 				"type": "'phone' | 'mac'",
-				"required": true
+				"required": true,
+				"description": "Whether the row runs in the Mac app or the iPhone app, which sets the write path and its messages."
 			},
 			{
 				"name": "TrackerInboxRowAsk.onchanged",
 				"type": "() => Promise<void>",
-				"required": true
+				"required": true,
+				"description": "Re-reads the Tracker after an answer is written."
 			},
 			{
 				"name": "TrackerInboxRowAsk.onsent",
 				"type": "(message: string) => void",
-				"required": true
+				"required": true,
+				"description": "Receives the confirmation text, so the list can show it after the answered row leaves."
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerInboxRowAsk",
-				"type": "markup"
+				"type": "markup",
+				"description": "The row's choice buttons, with Other opening a modal for a written answer."
 			}
 		],
 		"errors": [],

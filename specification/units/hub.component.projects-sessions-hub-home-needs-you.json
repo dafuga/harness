@@ -51,12 +51,14 @@
 			{
 				"name": "HubHomeNeedsYou.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Sends the choice tapped on a row as the answer to that ask."
 			},
 			{
 				"name": "HubHomeNeedsYou.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
-				"required": true
+				"required": true,
+				"description": "Reads the latest receipt for an answer sent from a row."
 			}
 		],
 		"outputs": [

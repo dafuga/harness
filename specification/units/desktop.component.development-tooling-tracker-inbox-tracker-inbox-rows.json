@@ -30,17 +30,20 @@
 			{
 				"name": "TrackerInboxRows.source",
 				"type": "TrackerInboxSource",
-				"required": true
+				"required": true,
+				"description": "Tracker connection that the rows' answer buttons write through."
 			},
 			{
 				"name": "TrackerInboxRows.mode",
 				"type": "'phone' | 'mac'",
-				"required": true
+				"required": true,
+				"description": "Whether the rows run in the Mac app or the iPhone app."
 			},
 			{
 				"name": "TrackerInboxRows.onchanged",
 				"type": "() => Promise<void>",
-				"required": true
+				"required": true,
+				"description": "Re-reads the Tracker after a row's answer is written."
 			},
 			{
 				"name": "TrackerInboxRows.rows",

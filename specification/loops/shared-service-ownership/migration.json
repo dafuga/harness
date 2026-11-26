@@ -4525,13 +4525,13 @@
 			"unit": "desktop.service.device-session",
 			"from": "packages/desktop/src/services/device-session-service/DeviceSessionService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-			"definition": "b74a8ec0ea8e41df0c368608faccb8c9d71dca30b9ca254048239083c66a7a9a",
+			"definition": "4558e1455cff66946adad049fb222a550f0c6630e6d370ab91c224529e4edbb2",
 			"relocationDefinition": "b7d6fcb27f7bddb260c21675238683b8dd638ab0e3360df590dd1a39a8c7a51f",
 			"review": {
-				"commit": "32f91c2f702b2f1ec6652b91124f368be40639a2",
+				"commit": "be31af838e2edfc9be1b20a72648b5260db69c3e",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
-				"definition": "b74a8ec0ea8e41df0c368608faccb8c9d71dca30b9ca254048239083c66a7a9a",
-				"reason": "Answers the read-only homeSnapshot method so the signed-in Hub Home can read this computer over the encrypted device channel."
+				"definition": "4558e1455cff66946adad049fb222a550f0c6630e6d370ab91c224529e4edbb2",
+				"reason": "Answers the homeChat device method, so Hub Home's answers and messages reach this computer's Tracker over the encrypted device channel with the Home upload off."
 			},
 			"previousReviews": [
 				{
@@ -4545,6 +4545,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
 					"definition": "3ecdbe1cd559752425a2c066dad60cf9dccafc44419f9fb0391ab5feffbcb423",
 					"reason": "Advertises granted Tracker operations and cancels in-flight writes when the device session ends."
+				},
+				{
+					"commit": "32f91c2f702b2f1ec6652b91124f368be40639a2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/DeviceSessionService.ts",
+					"definition": "b74a8ec0ea8e41df0c368608faccb8c9d71dca30b9ca254048239083c66a7a9a",
+					"reason": "Answers the read-only homeSnapshot method so the signed-in Hub Home can read this computer over the encrypted device channel."
 				}
 			]
 		},
@@ -5449,13 +5455,13 @@
 			"unit": "desktop.service.device-operations",
 			"from": "packages/desktop/src/services/device-operations-service/DeviceOperationsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-			"definition": "fbde4a5560b9777c1b7499ffe81f114e9619e132120b19f89bf2a1dbc7b0205e",
+			"definition": "7c6005e51c451ca772f1b253d9b31556843d5fe412b6ae8d9bd0a4ab90af6d30",
 			"relocationDefinition": "6af0c5d46f2451c29e1730ba56ac45579308fe38681e82c0a939181c136a54db",
 			"review": {
-				"commit": "32f91c2f702b2f1ec6652b91124f368be40639a2",
+				"commit": "be31af838e2edfc9be1b20a72648b5260db69c3e",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
-				"definition": "fbde4a5560b9777c1b7499ffe81f114e9619e132120b19f89bf2a1dbc7b0205e",
-				"reason": "Answers the read-only homeSnapshot method so the signed-in Hub Home can read this computer over the encrypted device channel."
+				"definition": "7c6005e51c451ca772f1b253d9b31556843d5fe412b6ae8d9bd0a4ab90af6d30",
+				"reason": "Answers the homeChat device method, so Hub Home's answers and messages reach this computer's Tracker over the encrypted device channel with the Home upload off."
 			},
 			"previousReviews": [
 				{
@@ -5469,6 +5475,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
 					"definition": "a1bdbfed3868e6803dfaa7f7b8c4d96db4b7472d73f1d563cdd504623ca51942",
 					"reason": "Requires a granted callback and a live encrypted session when dispatching Tracker pulls and pushes."
+				},
+				{
+					"commit": "32f91c2f702b2f1ec6652b91124f368be40639a2",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/device-session-service/device-operations-service/DeviceOperationsService.ts",
+					"definition": "fbde4a5560b9777c1b7499ffe81f114e9619e132120b19f89bf2a1dbc7b0205e",
+					"reason": "Answers the read-only homeSnapshot method so the signed-in Hub Home can read this computer over the encrypted device channel."
 				}
 			]
 		},

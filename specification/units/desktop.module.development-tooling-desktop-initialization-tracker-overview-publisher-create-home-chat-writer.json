@@ -67,6 +67,21 @@
 			"unit": "remote.entry.index",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-chat-input",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-projection",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

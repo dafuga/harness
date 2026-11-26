@@ -4,8 +4,8 @@
 	"uid": "u_suxmf5vsuw",
 	"kind": "component",
 	"title": "HubHomeCosChat",
-	"responsibility": "Owns the HubHomeCosChat Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Shows the Home chat box for Chief of Staff, which is always messageable, with each message's delivery receipt and Chief of Staff's replies.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -24,29 +24,33 @@
 		"symbols": ["HubHomeCosChat"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeCosChat.agent",
 				"type": "HomeAgent",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Chief of Staff as the Tracker reports it; when missing, an idle Chief of Staff with no messages is shown."
 			},
 			{
 				"name": "HubHomeCosChat.now",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The current time, used as the fallback agent's start time."
 			},
 			{
 				"name": "HubHomeCosChat.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Sends the message to the linked Mac, which stores it for Chief of Staff's pane, and returns its receipt."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeCosChat",
-				"type": "markup"
+				"type": "markup",
+				"description": "The latest four messages with their status and replies, and a composer addressed to Chief of Staff."
 			}
 		],
 		"errors": [],
@@ -97,6 +101,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}
