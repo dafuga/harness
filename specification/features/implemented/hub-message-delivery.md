@@ -1,3 +1,11 @@
+---
+status: implemented
+shippedIn: null
+unitIds: []
+owner: null
+reviewedAt: null
+---
+
 # Hub messages reach the session
 
 Daniel, 26 Nov 2026 (esqhv8, part of dzmj43). Replaces the overview rule that kept every input off
