@@ -386,6 +386,12 @@
 			"reason": "The notification settings open in the shared Modal."
 		},
 		{
+			"from": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "A followed notification is matched against the shared open asks."
+		},
+		{
 			"from": "packages/hub/src/components/projects-sessions/hubHomeNeedsTarget.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",

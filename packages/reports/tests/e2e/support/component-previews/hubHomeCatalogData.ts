@@ -139,6 +139,14 @@ const catalogComputers: LinkedHome = {
 
 export const catalogHome = { granted: true, snapshot };
 
+/** Browser notifications offered, with no browser subscribed yet. */
+export const catalogPush = {
+	available: true,
+	publicKey: 'sample-public-key',
+	quiet: { enabled: true, start: '22:00', end: '08:00' },
+	browsers: []
+};
+
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
 	agents: snapshot.agents,

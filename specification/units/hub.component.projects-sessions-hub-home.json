@@ -13,7 +13,6 @@
 			"hub.component.projects-sessions-hub-home-cards",
 			"hub.component.projects-sessions-hub-home-dialogs",
 			"hub.component.projects-sessions-hub-home-header",
-			"hub.component.projects-sessions-hub-home-needs-link",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-main",
 			"reports.component.shared-primitives-atoms-html-p"
@@ -60,17 +59,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.component.projects-sessions-hub-home-needs-link",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.component.public-site-home-page",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-follow-needs-link",
 			"via": "import",
 			"origin": "derived"
 		},

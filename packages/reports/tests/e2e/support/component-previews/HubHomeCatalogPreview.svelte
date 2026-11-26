@@ -65,6 +65,16 @@
 			now: view.now,
 			open: noop
 		},
+		'home-notification-settings': {
+			quiet: { enabled: true, start: '22:00', end: '08:00' },
+			deliveredAt: view.now - 900_000,
+			busy: false,
+			failed: '',
+			save: noop,
+			turnOff: noop,
+			close: noop
+		},
+		'home-notifications': {},
 		'home-not-started': {
 			pastDue: [
 				{

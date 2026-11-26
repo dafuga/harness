@@ -26,7 +26,7 @@
 	import HubHomeHeader from './HubHomeHeader.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
-	import HubHomeNeedsLink from './HubHomeNeedsLink.svelte';
+	import { followNeedsLink } from './followNeedsLink.svelte';
 	import '../../lib/styles/home-scheme.css';
 	import '../../lib/styles/hub-home/index.css';
 
@@ -140,6 +140,11 @@
 		};
 	});
 
+	followNeedsLink(() => {
+		const dialog = selected !== null;
+		return { asks: view.openAsks, open, close, dialog, reload: refresh };
+	});
+
 	function open(section: HomeSection, id?: string) {
 		if (!selected)
 			opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -195,7 +200,6 @@
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
 			<HubHomeCards {view} {open} send={reads.send} {receipt} />
 		</hx-main>
-		<HubHomeNeedsLink {view} {open} {close} reload={refresh} dialog={selected !== null} />
 		{#if selected}
 			<HubHomeDialogs
 				{selected}

@@ -6,10 +6,14 @@
 	"title": "HubHomeNeedsLink",
 	"responsibility": "Takes a clicked notification to its ask's session chat, or to the needs-you list.",
 	"responsibilityOrigin": "declared",
-	"status": "active",
+	"status": "retired",
 	"composition": {
 		"level": "organism",
 		"uses": []
+	},
+	"retired": {
+		"reason": "Draws nothing, so it became the followNeedsLink module before landing.",
+		"at": "2026-11-26T22:17:27.133Z"
 	},
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/HubHomeNeedsLink.svelte"],
