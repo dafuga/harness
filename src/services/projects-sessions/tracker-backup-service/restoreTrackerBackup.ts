@@ -6,7 +6,11 @@ import { join } from 'node:path';
 import { openSqlite } from '../../../adapters/development-tooling/openSqlite';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import type { TrackerBackupTable } from './restoreTrackerBackup.types';
-import { assertTrackerBackupIntegrity, expandTrackerBackup } from './trackerBackupFiles';
+import {
+	assertTrackerBackupIntegrity,
+	expandTrackerBackup,
+	snapshotTrackerDatabase
+} from './trackerBackupFiles';
 
 // The backup supplies the synced journal. Every other table records what this computer really
 // did (runs, deliveries, reminders), which must not roll back and happen again.
@@ -35,21 +39,23 @@ export async function restoreTrackerBackup(request: { backup: string; live?: str
 	if (live && !existsSync(live))
 		throw new TypeError(`live database not found: ${live} (see --without-local-state)`);
 	const temporary = `${to}.tmp-${randomBytes(4).toString('hex')}`;
+	const finished = `${temporary}.done`;
 	try {
 		await expandTrackerBackup(backup, temporary);
 		inspectTrackerBackup(temporary);
-		const carried = prepareRestoredCopy(temporary, live);
-		const summary = inspectTrackerBackup(temporary);
-		linkSync(temporary, to);
+		const carried = prepareRestoredCopy(temporary, finished, live);
+		const summary = inspectTrackerBackup(finished);
+		linkSync(finished, to);
 		return { ...summary, carried };
 	} finally {
-		for (const suffix of ['', '-wal', '-shm']) rmSync(temporary + suffix, { force: true });
+		for (const path of [temporary, finished])
+			for (const suffix of ['', '-wal', '-shm']) rmSync(path + suffix, { force: true });
 	}
 }
 
 function inspectTrackerBackup(path: string) {
 	assertTrackerBackupIntegrity(path);
-	const database = openSqlite(path, true);
+	const database = openSqlite(path);
 	try {
 		const count = (table: 'items' | 'ops') =>
 			(database.prepare(`SELECT count(*) AS n FROM ${table}`).get() as { n: number }).n;
@@ -60,13 +66,13 @@ function inspectTrackerBackup(path: string) {
 }
 
 /** With no usable live database, local records stay as they were when the backup was taken. */
-function prepareRestoredCopy(restored: string, live?: string): string[] {
-	const database = openSqlite(restored);
+function prepareRestoredCopy(working: string, finished: string, live?: string): string[] {
+	const database = openSqlite(working);
 	try {
 		const carried = live ? carryOverLocalState(database, live) : [];
 		database.prepare("UPDATE meta SET v = ? WHERE k = 'db_id'").run(randomUUID());
-		// One self-contained file: nothing is left in a WAL when it is moved into place.
-		database.exec('PRAGMA journal_mode = DELETE');
+		// A fresh copy is one self-contained file, with nothing left in a WAL.
+		snapshotTrackerDatabase(database, finished);
 		return carried;
 	} finally {
 		database.close();

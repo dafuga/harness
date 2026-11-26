@@ -12,9 +12,12 @@ import { createGunzip, createGzip } from 'node:zlib';
 import { openSqlite } from '../../../adapters/development-tooling/openSqlite';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 
-/** Fail unless SQLite reads the whole file and reports it as intact. */
+/**
+ * Fail unless SQLite reads the whole file and reports it as intact. Pass only a private
+ * working copy: it opens writable because Bun cannot read a WAL-mode file without sidecars.
+ */
 export function assertTrackerBackupIntegrity(path: string): void {
-	const database = openSqlite(path, true);
+	const database = openSqlite(path);
 	try {
 		const rows = database.prepare('PRAGMA integrity_check').all() as object[];
 		const messages = rows.map((row) => String(Object.values(row)[0]));
