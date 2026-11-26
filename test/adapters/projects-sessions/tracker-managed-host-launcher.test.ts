@@ -44,7 +44,8 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 		...native,
 		runId: 3,
 		key: JSON.stringify([native.itemId, 'reserved-claude-fixture', 1]),
-		selection: { provider: 'claude', model: 'claude-sonnet-4-6', intelligence: 'high' }
+		selection: { provider: 'claude', model: 'claude-sonnet-4-6', intelligence: 'high' },
+		sessionName: 'Harness: Fixture'
 	} satisfies TrackerHostStartRequest;
 	vi.stubEnv('HOME', paths.profiles.accountHome);
 	vi.stubEnv('USER', 'untrusted-fixture-user');
@@ -56,6 +57,11 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 			});
 		}
 		await verifyClaudeRefusals(launcher, claude, paths.profiles.accountHome);
+		const unusable = { ...native, runId: 5, key: 'unusable', repo: paths.profiles.native };
+		expect(await launcher.start(unusable, signal)).toEqual({
+			status: 'rejected',
+			detail: expect.stringMatching(/could not create a worktree of .*not a git repository/s)
+		});
 	} finally {
 		vi.unstubAllEnvs();
 	}
@@ -186,6 +192,12 @@ function verifyNativeInvocations(
 	expect(claude).toMatchObject({
 		argv: [
 			'--dangerously-skip-permissions',
+			'--remote-control',
+			'Harness: Fixture',
+			'--session-id',
+			expect.stringMatching(/^[a-f0-9-]{36}$/),
+			'--settings',
+			'{"availableModels":["opus","sonnet","haiku"]}',
 			'--model',
 			'claude-sonnet-4-6',
 			'--effort',
