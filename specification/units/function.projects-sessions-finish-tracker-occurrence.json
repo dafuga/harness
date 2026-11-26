@@ -4,36 +4,40 @@
 	"uid": "u_ewas4mssnh",
 	"kind": "function",
 	"title": "finishTrackerOccurrence",
-	"responsibility": "Owns the finishTrackerOccurrence shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Record the done or failed result of one occurrence of a recurring Tracker item and reopen it for the next.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/finishTrackerOccurrence.ts"],
 		"symbols": ["finishTrackerOccurrence"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "finishTrackerOccurrence.item",
 				"type": "TrackerItemSnapshot",
-				"required": true
+				"required": true,
+				"description": "The recurring item, with its cadence, time zone, current status and latest due occurrence."
 			},
 			{
 				"name": "finishTrackerOccurrence.body",
 				"type": "TrackerItemInput",
-				"required": true
+				"required": true,
+				"description": "The done request: an optional occurrence time, failed flag, note and actor."
 			},
 			{
 				"name": "finishTrackerOccurrence.context",
 				"type": "TrackerItemMutationContext",
-				"required": true
+				"required": true,
+				"description": "The mutation clock and the node recorded as the actor when the request names none."
 			}
 		],
 		"outputs": [
 			{
 				"name": "finishTrackerOccurrence",
-				"type": "TrackerItemChange"
+				"type": "TrackerItemChange",
+				"description": "The recorded result and appended note; a done or in-progress item is reopened. It refuses a bad time or no due occurrence."
 			}
 		],
 		"errors": [],
@@ -45,23 +49,27 @@
 					{
 						"name": "finishTrackerOccurrence.item",
 						"type": "TrackerItemSnapshot",
-						"required": true
+						"required": true,
+						"description": "The recurring item, with its cadence, time zone, current status and latest due occurrence."
 					},
 					{
 						"name": "finishTrackerOccurrence.body",
 						"type": "TrackerItemInput",
-						"required": true
+						"required": true,
+						"description": "The done request: an optional occurrence time, failed flag, note and actor."
 					},
 					{
 						"name": "finishTrackerOccurrence.context",
 						"type": "TrackerItemMutationContext",
-						"required": true
+						"required": true,
+						"description": "The mutation clock and the node recorded as the actor when the request names none."
 					}
 				],
 				"outputs": [
 					{
 						"name": "finishTrackerOccurrence",
-						"type": "TrackerItemChange"
+						"type": "TrackerItemChange",
+						"description": "The recorded result and appended note; a done or in-progress item is reopened. It refuses a bad time or no due occurrence."
 					}
 				],
 				"errors": [],

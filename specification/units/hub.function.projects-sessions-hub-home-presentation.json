@@ -228,22 +228,26 @@
 			{
 				"name": "answerMessage.asked",
 				"type": "{ id: string; question?: string | null }",
-				"required": true
+				"required": true,
+				"description": "The agent whose open question is being answered: its id and the question text."
 			},
 			{
 				"name": "answerMessage.itemId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The Tracker item that carries the open question."
 			},
 			{
 				"name": "answerMessage.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The typed reply or tapped option label; surrounding space is trimmed."
 			},
 			{
 				"name": "answerMessage.tap",
 				"type": "{ number: number; confirmed: boolean }",
-				"required": false
+				"required": false,
+				"description": "The tapped option number and whether a deploy, money or secret tap was confirmed."
 			},
 			{
 				"name": "runDay.at",
@@ -856,28 +860,33 @@
 					{
 						"name": "answerMessage.asked",
 						"type": "{ id: string; question?: string | null }",
-						"required": true
+						"required": true,
+						"description": "The agent whose open question is being answered: its id and the question text."
 					},
 					{
 						"name": "answerMessage.itemId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The Tracker item that carries the open question."
 					},
 					{
 						"name": "answerMessage.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The typed reply or tapped option label; surrounding space is trimmed."
 					},
 					{
 						"name": "answerMessage.tap",
 						"type": "{ number: number; confirmed: boolean }",
-						"required": false
+						"required": false,
+						"description": "The tapped option number and whether a deploy, money or secret tap was confirmed."
 					}
 				],
 				"outputs": [
 					{
 						"name": "answerMessage",
-						"type": "HomeChatInput"
+						"type": "HomeChatInput",
+						"description": "The answer message with a fresh id that Home queues for Tracker."
 					}
 				],
 				"errors": [],

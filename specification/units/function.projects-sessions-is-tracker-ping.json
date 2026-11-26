@@ -12,18 +12,20 @@
 		"symbols": ["isTrackerPing"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "isTrackerPing.question",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "The open flag question of a Tracker item, or nothing when none is recorded."
 			}
 		],
 		"outputs": [
 			{
 				"name": "isTrackerPing",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "True when the question is an automated watchdog or idle-session ping rather than a decision for Daniel."
 			}
 		],
 		"errors": [],
@@ -35,13 +37,15 @@
 					{
 						"name": "isTrackerPing.question",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "The open flag question of a Tracker item, or nothing when none is recorded."
 					}
 				],
 				"outputs": [
 					{
 						"name": "isTrackerPing",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "True when the question is an automated watchdog or idle-session ping rather than a decision for Daniel."
 					}
 				],
 				"errors": [],

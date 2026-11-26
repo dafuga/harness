@@ -2778,6 +2778,48 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "The Hub choices reuse the Reports Home type through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/claudeQuotaSource.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Home publisher uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/codexQuotaSource.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Home publisher uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/codexQuotaSource.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Home publisher uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeDirectAgents",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"reason": "Hub Home uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAddSession.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeDirectAgents",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"reason": "Hub Home uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports Home contract through the app build alias."
 		}
 	]
 }
