@@ -1,0 +1,43 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.script.measure-ios-tracker-live",
+	"uid": "u_6cqqnlqxpd",
+	"kind": "script",
+	"title": "measure-ios-tracker-live",
+	"responsibility": "Owns the measure-ios-tracker-live build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/scripts/measure-ios-tracker-live.ts",
+			"packages/desktop/scripts/measure-ios-tracker-live.types.ts"
+		],
+		"symbols": ["HubFixture", "HubStart"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/scripts/measure-ios-tracker-live.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/scripts/measure-ios-tracker-live.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -18,6 +18,7 @@
 		"ios:check:vectors": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/check-ios-vectors.ts \"$@\"' --",
 		"ios:check:sealed": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/check-ios-sealed.ts \"$@\"' --",
 		"ios:check:native": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/check-ios-native.ts \"$@\"' --",
+		"ios:measure:live": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vite-node scripts/measure-ios-tracker-live.ts \"$@\"' --",
 		"desktop": "bun scripts/start-electron.ts",
 		"package:mac": "bun scripts/package-mac.ts",
 		"check": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-agent-test} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run format:check && bun run typecheck && bun run lint && bun run test && bun run build && bun run audit && bun run ios:check:limits \"$@\"' --",

@@ -204,6 +204,31 @@ background refresh, and force-quit. Measure actual bytes and wake duration
 on a device before claiming battery savings.
 [Apple background push guidance](https://developer.apple.com/documentation/usernotifications/pushing-background-updates-to-your-app)
 
+## Live pushes
+
+While the app is in front and holds the read grant, the phone follows its Hub
+account's live socket (`GET /api/sync/v1/live`) with its own session in the
+`Authorization` header and an opaque per-install `X-Harness-Device` id. The
+account object's notices carry no content. A `changed` notice for the `home`
+topic, a sealed `poke`, and every connect each pull the replica from the paired
+host at once. The phone subscribes to no sealed scope, so it needs no key.
+Sealed session streaming has its own socket and is outside this document.
+
+One pull stays in flight. Notices that arrive during it ask for exactly one more
+pull afterwards, so a change cannot be lost behind an older answer. The socket
+is pinged every 15 seconds, dropped when silent, and reopened with a backoff of
+0.5 to 10 seconds. It closes when the app leaves the front, and when the grant,
+the pairing or the account ends. The one-minute poll stays as the fallback.
+
+The native side sends the page a `tracker` event, `{ state, changed }`, when the
+local copy or its write states move. `state` is `live` only while the socket is
+open and the paired host is online; otherwise it is `reconnecting`. The open
+inbox reads again on `changed` and shows that state. A read on the page keeps a
+half-typed write and the reviewed revision it will be sent against.
+
+Pushes reach the phone only through a Hub that rings the account on publish and
+only while a Mac publishes to it.
+
 ## Queued writes after read-only acceptance
 
 The desktop and the colocated native hub require a separate write grant.

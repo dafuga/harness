@@ -43,6 +43,7 @@ extension RemoteSession {
                     status = "queued"
                 }
                 done(self.trackerWriteReply(data: ["intentId": intent.intentId, "status": status]))
+                self.reportTracker(changed: true)
                 self.drainTrackerWrites()
             } catch let error as TrackerReplicaWriteError {
                 done(self.trackerWriteReply(code: error.rawValue))
@@ -118,7 +119,7 @@ extension RemoteSession {
         else { return }
         if status == "accepted" {
             recordWriteOutcome(intent, conflict: nil)
-            pullTracker()
+            trackerNotice()
         } else if status == "conflict", let reason = receipt["reason"] as? String,
             ["item", "attention", "intent", "duplicate"].contains(reason) {
             recordWriteOutcome(intent, conflict: reason)
@@ -130,6 +131,7 @@ extension RemoteSession {
     private func recordWriteOutcome(_ intent: TrackerReplicaIntent, conflict: String?) {
         do {
             try trackerStore.finishWrite(intent, conflict: conflict)
+            reportTracker(changed: true)
             drainTrackerWrites()
         } catch {
             // A retained intent can retry safely after the next connection or refresh.

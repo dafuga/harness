@@ -3,6 +3,7 @@ import type {
 	PhoneTrackerTools,
 	PhoneTrackerToolSchema
 } from '../../../models/development-tooling/PhoneTracker.types';
+import { watchPhoneTracker } from './watchPhoneTracker';
 import type { RemoteNativePlugin } from '../../../models/development-tooling/Environment.types';
 
 const confirmedWrites = {
@@ -95,6 +96,7 @@ export function phoneTrackerTools(plugin: RemoteNativePlugin): PhoneTrackerTools
 	return {
 		schemas: trackerToolSchemas,
 		call: (name, input) => trackerTool.call(plugin, { name, input }),
-		refresh: () => refreshTracker.call(plugin)
+		refresh: () => refreshTracker.call(plugin),
+		...(plugin.trackerPush && { watch: (listener) => watchPhoneTracker(plugin, listener) })
 	};
 }

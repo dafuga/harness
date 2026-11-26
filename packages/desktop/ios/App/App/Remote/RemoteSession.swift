@@ -10,6 +10,7 @@ final class RemoteSession {
 
     var onStatus: (([String: Any]) -> Void)?
     var onEvent: (([String: Any]) -> Void)?
+    var onTrackerChange: (([String: Any]) -> Void)?
 
     let queue = DispatchQueue(label: "com.dafuga.harness.remote")
     let vault: RemoteVault
@@ -37,6 +38,7 @@ final class RemoteSession {
     var trackerDelay: Double = 60
     var trackerForeground = true
     var trackerBackground: TrackerBackgroundAttempt?
+    var trackerLive = TrackerLiveState()
 
     init(
         vault: RemoteVault = RemoteKeychain(), cache: RemoteCache = RemoteCache(),

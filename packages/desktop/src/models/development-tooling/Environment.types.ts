@@ -9,6 +9,7 @@ import type { RemoteMobileStatus } from '../../../../remote/src/models/networkin
 import type { DesktopBridge } from './DesktopBridge.types';
 import type { RemoteMethod } from '../../../../remote/src/models/Remote.types';
 import type { WireChannel } from '../../../../remote/src/models/Remote.types';
+import type { TrackerChangeEvent } from '$reports/lib/projects-sessions/realtime/realtime.types';
 import type { NativeHostedStatus } from '../projects-sessions/ProjectContext.types';
 
 import type { PhoneTrackerResult, PhoneTrackerTool, PhoneTrackerTools } from './PhoneTracker.types';
@@ -79,6 +80,8 @@ export interface RemoteNativeEvent {
 export interface RemoteNativeEvents {
 	status: RemoteNativeStatus;
 	event: RemoteNativeEvent;
+	/** The Tracker copy moved, or the pushes that say so started or stopped. */
+	tracker: TrackerChangeEvent;
 }
 
 /**
@@ -96,6 +99,8 @@ export interface RemoteNativePlugin {
 		input: Record<string, unknown>;
 	}): Promise<PhoneTrackerResult>;
 	refreshTracker?(): Promise<void>;
+	/** Whether tracker changes are being pushed now; `tracker` events report what follows. */
+	trackerPush?(): Promise<Pick<TrackerChangeEvent, 'state'>>;
 	addListener<K extends keyof RemoteNativeEvents>(
 		eventName: K,
 		listener: (value: RemoteNativeEvents[K]) => void

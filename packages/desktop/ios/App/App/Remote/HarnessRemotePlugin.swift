@@ -17,7 +17,8 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "disconnect", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "request", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "trackerTool", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "refreshTracker", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "refreshTracker", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "trackerPush", returnType: CAPPluginReturnPromise)
     ]
 
     private let session = TrackerRefresh.session
@@ -25,7 +26,13 @@ public class HarnessRemotePlugin: CAPPlugin, CAPBridgedPlugin {
     override public func load() {
         session.onStatus = { [weak self] status in self?.notifyListeners("status", data: status) }
         session.onEvent = { [weak self] event in self?.notifyListeners("event", data: event) }
+        session.onTrackerChange = { [weak self] change in self?.notifyListeners("tracker", data: change) }
         session.start()
+    }
+
+    /// Whether tracker changes are being pushed now, for a page that starts to listen.
+    @objc func trackerPush(_ call: CAPPluginCall) {
+        session.trackerPush { call.resolve($0) }
     }
 
     @objc func trackerTool(_ call: CAPPluginCall) {

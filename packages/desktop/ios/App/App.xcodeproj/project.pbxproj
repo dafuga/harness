@@ -60,6 +60,9 @@
 		7A1C4E2B9D3F5A6B8C0D1F31 /* HubAccountHttp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F32 /* HubAccountSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F52 /* HubAccountComputers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E52 /* HubAccountComputers.swift */; };
+		9C2D388F3CD53ED550EDAB5F /* HubAccountLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2256128CD49F58E586C55876 /* HubAccountLive.swift */; };
+		005FA250E16E8E4EB7C86CB1 /* TrackerDoorbellSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F5BF92CF1132FCC03116B /* TrackerDoorbellSocket.swift */; };
+		FFA2CEE8D9816E9F9E7D864E /* TrackerDoorbell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A41BD632C48BA8BA04703904 /* TrackerDoorbell.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F33 /* HubAccountHandoff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F34 /* HarnessAccountPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */; };
 		504EC30D1FED79650016851F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30B1FED79650016851F /* Main.storyboard */; };
@@ -77,6 +80,7 @@
 		06D587CB7FC6B410746F8B24 /* TrackerReplicaOutbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52FB429F22D70824637ED3 /* TrackerReplicaOutbox.swift */; };
 		D699CCB9AABD37B7EB869653 /* TrackerReplicaWrites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588D145A5C198FBBE2C3453A /* TrackerReplicaWrites.swift */; };
 		38FBE65D3B27F16D4CC46D37 /* TrackerReplicaSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6366F789F18B2CCF39072A /* TrackerReplicaSync.swift */; };
+		AC0F28AD75C0F0CE8F7ECDE1 /* TrackerReplicaLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEAF12EDFBF215D6710E9AF /* TrackerReplicaLive.swift */; };
 		0357881BC79015EECC352964 /* TrackerReplicaTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80692FE9910AA77AB5A2B6B /* TrackerReplicaTools.swift */; };
 		71CA10FA426439AE02D977A9 /* TrackerRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051BDF6A93006D0D5BEB3644 /* TrackerRefresh.swift */; };
 		AFC9321B54A240FA8C43DBB9 /* DecisionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057229D7C1CA44DCB864A471 /* DecisionAlert.swift */; };
@@ -138,6 +142,9 @@
 		7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountHttp.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountSession.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E52 /* HubAccountComputers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountComputers.swift; sourceTree = "<group>"; };
+		2256128CD49F58E586C55876 /* HubAccountLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountLive.swift; sourceTree = "<group>"; };
+		124F5BF92CF1132FCC03116B /* TrackerDoorbellSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerDoorbellSocket.swift; sourceTree = "<group>"; };
+		A41BD632C48BA8BA04703904 /* TrackerDoorbell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerDoorbell.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountHandoff.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HarnessAccountPlugin.swift; sourceTree = "<group>"; };
 		504EC30C1FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -157,6 +164,7 @@
 		DD52FB429F22D70824637ED3 /* TrackerReplicaOutbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaOutbox.swift; sourceTree = "<group>"; };
 		588D145A5C198FBBE2C3453A /* TrackerReplicaWrites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaWrites.swift; sourceTree = "<group>"; };
 		6A6366F789F18B2CCF39072A /* TrackerReplicaSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaSync.swift; sourceTree = "<group>"; };
+		6FEAF12EDFBF215D6710E9AF /* TrackerReplicaLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaLive.swift; sourceTree = "<group>"; };
 		D80692FE9910AA77AB5A2B6B /* TrackerReplicaTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/TrackerReplicaTools.swift; sourceTree = "<group>"; };
 		051BDF6A93006D0D5BEB3644 /* TrackerRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRefresh.swift; sourceTree = "<group>"; };
 		057229D7C1CA44DCB864A471 /* DecisionAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications/DecisionAlert.swift; sourceTree = "<group>"; };
@@ -249,6 +257,7 @@
 				DD52FB429F22D70824637ED3 /* TrackerReplicaOutbox.swift */,
 				588D145A5C198FBBE2C3453A /* TrackerReplicaWrites.swift */,
 				6A6366F789F18B2CCF39072A /* TrackerReplicaSync.swift */,
+				6FEAF12EDFBF215D6710E9AF /* TrackerReplicaLive.swift */,
 				D80692FE9910AA77AB5A2B6B /* TrackerReplicaTools.swift */,
 				051BDF6A93006D0D5BEB3644 /* TrackerRefresh.swift */,
 				D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */,
@@ -260,6 +269,9 @@
 				7A1C4E2B9D3F5A6B8C0D1E31 /* HubAccountHttp.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E32 /* HubAccountSession.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E52 /* HubAccountComputers.swift */,
+				2256128CD49F58E586C55876 /* HubAccountLive.swift */,
+				124F5BF92CF1132FCC03116B /* TrackerDoorbellSocket.swift */,
+				A41BD632C48BA8BA04703904 /* TrackerDoorbell.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E33 /* HubAccountHandoff.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E34 /* HarnessAccountPlugin.swift */,
 				057229D7C1CA44DCB864A471 /* DecisionAlert.swift */,
@@ -438,6 +450,7 @@
 				06D587CB7FC6B410746F8B24 /* TrackerReplicaOutbox.swift in Sources */,
 				D699CCB9AABD37B7EB869653 /* TrackerReplicaWrites.swift in Sources */,
 				38FBE65D3B27F16D4CC46D37 /* TrackerReplicaSync.swift in Sources */,
+				AC0F28AD75C0F0CE8F7ECDE1 /* TrackerReplicaLive.swift in Sources */,
 				0357881BC79015EECC352964 /* TrackerReplicaTools.swift in Sources */,
 				71CA10FA426439AE02D977A9 /* TrackerRefresh.swift in Sources */,
 				150A06A937141DE718B77115 /* RemoteSession.swift in Sources */,
@@ -449,6 +462,9 @@
 				7A1C4E2B9D3F5A6B8C0D1F31 /* HubAccountHttp.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F32 /* HubAccountSession.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F52 /* HubAccountComputers.swift in Sources */,
+				9C2D388F3CD53ED550EDAB5F /* HubAccountLive.swift in Sources */,
+				005FA250E16E8E4EB7C86CB1 /* TrackerDoorbellSocket.swift in Sources */,
+				FFA2CEE8D9816E9F9E7D864E /* TrackerDoorbell.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F33 /* HubAccountHandoff.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F34 /* HarnessAccountPlugin.swift in Sources */,
 			);

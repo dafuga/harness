@@ -110,6 +110,7 @@ export function phoneTrackerInboxSource(tools: PhoneTrackerTools): TrackerInboxS
 			),
 		writes: () =>
 			ask('tracker_write_status', {}, (data) => (isRecord(data) ? parseWrites(data) : undefined)),
-		discard: (intentId) => ask('tracker_discard_write', { intentId }, (data) => data ?? {})
+		discard: (intentId) => ask('tracker_discard_write', { intentId }, (data) => data ?? {}),
+		...(tools.watch && { watch: tools.watch.bind(tools) })
 	};
 }

@@ -19,14 +19,15 @@ export function followTrackerSource(
 	if (!source.watch) return () => undefined;
 	const refresh = coalesced(screen.refresh);
 	let poll: ReturnType<typeof setInterval> | undefined;
-	const stop = source.watch(({ state }) => {
+	const stop = source.watch(({ state, changed }) => {
 		screen.state(state);
 		if (state === 'live') {
 			clearInterval(poll);
 			poll = undefined;
-			// A push says something moved, or the link is back after a gap it cannot describe.
-			void refresh();
 		} else poll ??= setInterval(() => void refresh(), pollMs);
+		// A push says something moved, or the link is back after a gap it cannot describe. A
+		// source with its own copy can also move that copy while pushes are down.
+		if (state === 'live' || changed) void refresh();
 	});
 	return () => {
 		clearInterval(poll);

@@ -1,4 +1,6 @@
 // @harness-uid u_uhyljnc37o
+import type { TrackerChangeEvent } from '$reports/lib/projects-sessions/realtime/realtime.types';
+
 export type PhoneTrackerTool =
 	| 'tracker_status'
 	| 'tracker_show'
@@ -30,4 +32,6 @@ export interface PhoneTrackerTools {
 	schemas: readonly PhoneTrackerToolSchema[];
 	call(name: PhoneTrackerTool, input: Record<string, unknown>): Promise<PhoneTrackerResult>;
 	refresh(): Promise<void>;
+	/** Pushed changes of the phone's copy. Absent in an app build that cannot push them. */
+	watch?(listener: (event: TrackerChangeEvent) => void): () => void;
 }
