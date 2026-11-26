@@ -142,5 +142,7 @@ const claudeStartupMessage: Record<ClaudeStartupFailure, string> = {
 	'claude-sign-in': 'Sign in to Claude Code on the target host before relaunching.',
 	'claude-auth-unverified': 'Claude Code authentication could not be verified on the target host.',
 	'claude-onboarding': 'Complete Claude Code onboarding on the target host before relaunching.',
+	'claude-trust':
+		'Trust this project folder in Claude Code on the target host (run claude once in the repository and accept the trust prompt) before relaunching.',
 	'claude-not-ready': 'Claude Code did not reach its composer on the target host.'
 };

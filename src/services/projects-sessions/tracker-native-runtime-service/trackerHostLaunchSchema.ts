@@ -5,6 +5,7 @@ export const claudeStartupFailure = z.enum([
 	'claude-sign-in',
 	'claude-auth-unverified',
 	'claude-onboarding',
+	'claude-trust',
 	'claude-not-ready'
 ]);
 

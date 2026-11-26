@@ -43,9 +43,12 @@ const { join } = require('node:path');
 const target = args[args.indexOf('-t') + 1]?.replace(/^=/, '').replace(/:$/, '');
 const pane = (name) => join(__dirname, 'claude-pane-' + name);
 if (args.includes('capture-pane')) {
-	process.stdout.write(fs.readFileSync(join(__dirname, 'account-home', '.claude-session-fixture'), 'utf8') === 'onboarding'
-		? 'Choose the text style that looks best with your terminal\\n'
-		: '────────────\\n❯\\u00A0\\n────────────\\n  ⏵⏵ bypass permissions on\\n');
+	const screens = {
+		onboarding: 'Choose the text style that looks best with your terminal\\n',
+		untrusted: ' Accessing workspace:\\n /work/tree\\n Quick safety check: Is this a project you created or one you trust? (Like your\\n'
+	};
+	process.stdout.write(screens[fs.readFileSync(join(__dirname, 'account-home', '.claude-session-fixture'), 'utf8')]
+		?? '────────────\\n❯\\u00A0\\n────────────\\n  ⏵⏵ bypass permissions on\\n');
 	process.exit(0);
 }
 if (args.includes('if-shell')) fs.rmSync(pane(target), { force: true });
@@ -87,7 +90,7 @@ if (basename(process.argv[1]) === 'claude') {
 		process.stdout.write(JSON.stringify({ loggedIn, authMethod: loggedIn ? 'claude.ai' : 'none' }));
 		process.exit(loggedIn ? 0 : 1);
 	}
-	if (startup === 'onboarding') process.exit(0);
+	if (startup === 'onboarding' || startup === 'untrusted') process.exit(0);
 }
 if (basename(process.argv[1]) === 'codex') {
 	const timestamp = new Date().toISOString();

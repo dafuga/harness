@@ -186,6 +186,8 @@ async function claudePaneStartup(
 	if (/^\s*Choose the text style that looks best with your terminal/m.test(stdout))
 		return 'claude-onboarding';
 	if (/^\s*Select login method:/m.test(stdout)) return 'claude-sign-in';
+	if (/^\s*Quick safety check: Is this a project you created or one you trust\?/m.test(stdout))
+		return 'claude-trust';
 	return undefined;
 }
 
