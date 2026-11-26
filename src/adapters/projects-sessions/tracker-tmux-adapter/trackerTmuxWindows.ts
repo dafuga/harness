@@ -8,7 +8,9 @@ export async function trackerTmuxWindows(
 ): Promise<TrackerTmuxWindow[]> {
 	const windows: TrackerTmuxWindow[] = [];
 	for (const socket of sockets) {
+		// Host commands run under LANG=C, where tmux prints tabs and non-ASCII as "_" without -u.
 		const result = await command(socket, [
+			'-u',
 			'list-windows',
 			'-a',
 			'-F',
