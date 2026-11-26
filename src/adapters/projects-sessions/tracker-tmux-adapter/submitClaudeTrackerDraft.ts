@@ -1,6 +1,7 @@
 // @harness-uid u_fyf7e7kyi5
 import { setTimeout as delay } from 'node:timers/promises';
 import type { TrackerTmuxPane } from '../TrackerTmuxAdapter.types';
+import type { ClaudeComposer } from './submitClaudeTrackerDraft.types';
 
 const escape = '\u001b';
 const control = new RegExp(escape + '\\[[0-9;:]*m', 'g');
@@ -12,8 +13,6 @@ const resendAfterMs = 5_000;
 /** Stays inside the shortest delivery deadline, 15 seconds. */
 const limitMs = 12_000;
 const enterLimit = 2;
-
-type ClaudeComposer = 'empty' | 'ours' | 'other' | 'unknown';
 
 /**
  * Submit a message already typed into an empty Claude composer. Claude reads text and an Enter that

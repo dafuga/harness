@@ -41,7 +41,8 @@ export function recordedHostEvent(
 		type: 'monitor',
 		session: session.state,
 		activityAt: session.activityAt,
-		exitCode: session.exitCode
+		exitCode: session.exitCode,
+		diagnostic: session.diagnostic
 	};
 }
 

@@ -60,7 +60,8 @@ Home follows the OS color scheme and uses the approved design in
 Signing in is enough. Home asks every online computer linked to the signed-in Google account
 for its Home view (running agents and sessions, plans, schedule, quota) over the same
 end-to-end encrypted device connection as Devices, with no click and no stored copy on the
-Hub. The Mac answers the read-only `homeSnapshot` wire method. Each browser keeps one device
+Hub. The Mac answers the read-only `homeSnapshot` wire method, and takes Home's answers and
+notes through `homeChat` (see `specification/features/implemented/needs-you-row-answers.md`). Each browser keeps one device
 key pair per computer, so a reload is the same device and adds no new one. Views from several
 computers are merged: work the Tracker syncs between them appears once. The headline counts
 running sessions. Quota stays Unknown until a computer reports it. `Connect a computer`

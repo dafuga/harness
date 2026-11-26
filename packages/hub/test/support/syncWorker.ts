@@ -27,20 +27,30 @@ function withHeaders(request: Request): Request {
 	return new Request(request, { headers });
 }
 
+/**
+ * Local workerd can drop the connection when a Worker answers while the caller is still uploading,
+ * and the refusal is lost. This reads whatever the sync API left unread.
+ */
+async function drain(request: Request): Promise<void> {
+	if (!request.bodyUsed) await request.body?.pipeTo(new WritableStream());
+}
+
 export default {
-	fetch(request: Request, env: TestEnv): Promise<Response> {
+	async fetch(request: Request, env: TestEnv): Promise<Response> {
 		const framed = withHeaders(request);
 		const token = framed.headers.get('x-test-session') ?? '';
 		const id = Object.hasOwn(actors, token) ? actors[token] : null;
 		const record = id
 			? ({ actor: { id }, kind: 'native', resource: 'projects' } as SessionRecord)
 			: null;
-		return serveSync(framed, {
+		const response = await serveSync(framed, {
 			sessions: { resolve: async () => record },
 			db: env.DB,
 			bucket: env.CACHE,
 			accounts: env.ACCOUNT_SYNC,
 			now: Date.now()
 		});
+		await drain(framed);
+		return response;
 	}
 };

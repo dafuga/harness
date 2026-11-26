@@ -87,6 +87,8 @@ test('the source index resolves what the Web workspace imports of the shared wor
 	expect(references.filter((item) => item.uncertain ?? item.external?.startsWith('$'))).toEqual([]);
 });
 
+// Each `showUnit` indexes the whole repository, as the command does. On the Linux CI runner the
+// two took 52.7s in a passing run and over 60s in a failing one (27s on an idle Apple silicon Mac).
 test('the registry names the Web workspace beside the Electron and iOS one as a consumer of the shell', async () => {
 	const shell = await showUnit('desktop.component.workspace-shell');
 	expect(shell.consumers).toEqual(expect.arrayContaining(['desktop.page.root', web]));
@@ -98,7 +100,7 @@ test('the registry names the Web workspace beside the Electron and iOS one as a 
 	// What is stored is what the index derives: no hand-written link stands in for an import.
 	const fresh = loaded.fresh.manifests.find((unit) => unit.id === web);
 	expect(wrapper.manifest.dependencies).toEqual(fresh?.dependencies);
-}, 60_000);
+}, 180_000);
 
 test('a change of the shared shell reaches the Web workspace and its page, and the Electron and iOS one', async () => {
 	const head = workspaceImpactSide(loaded, loaded.index);

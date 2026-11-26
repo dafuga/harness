@@ -123,13 +123,18 @@ async function exerciseInbox(
 			.getByRole('heading', { name: 'Needs you', exact: true })
 			.or(page.getByRole('status').filter({ hasText: 'paired iPhone' }))
 	).toBeVisible();
-	// The overview shows one compact row per ask, with no answer controls.
+	// The overview shows one row per ask with its choices: recommended first, then Other.
 	const row = page
 		.getByRole('list', { name: 'Needs you' })
 		.getByRole('button', { name: /Fixture.*waiting/s });
 	if (hasLink) await expect(row).toContainText(firstQuestion);
 	await expect(page.getByRole('heading', { name: 'Blocked - needs you' })).toBeVisible();
-	await expect(page.locator('button.choice')).toHaveCount(0);
+	await expect(page.getByRole('list', { name: 'Needs you' }).locator('button.choice')).toHaveText([
+		/Proceed.*Recommended/s,
+		/Hold/,
+		/Other/
+	]);
+	await expect(page.getByRole('textbox')).toHaveCount(0);
 	await captureMacInbox(page, 'list');
 	expect(hasLink).toBe(true);
 	await row.click();

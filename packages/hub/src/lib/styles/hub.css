@@ -113,11 +113,17 @@
 }
 @media (max-width: 560px) {
 	.hub-page .topbar {
+		flex-wrap: nowrap;
 		min-height: 64px;
 		gap: var(--hx-space-8);
 	}
+	/* Fallback fonts differ in width, so the title gives way before the row wraps. */
 	.hub-title {
-		padding: var(--hx-space-8) var(--hx-space-12);
+		min-width: 0;
+		overflow: hidden;
+		padding: var(--hx-space-8);
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.account-inline {
 		display: none;
