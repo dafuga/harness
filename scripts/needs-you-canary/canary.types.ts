@@ -1,3 +1,4 @@
+// @harness-uid u_zcznmmfcdc
 export type CanarySurface = 'web' | 'mac' | 'iphone';
 
 /** Runs one `tracker` command with `--json` and returns the parsed reply. */
@@ -68,4 +69,15 @@ export interface CanaryAsk {
 	labels: string[];
 	/** The 1-based number of the option to answer with. */
 	expected: number;
+}
+
+export interface CanaryOutcome {
+	state: CanaryState;
+	detail: string;
+}
+
+export interface CdpReply {
+	id?: number;
+	error?: { message: string };
+	result?: Record<string, unknown>;
 }

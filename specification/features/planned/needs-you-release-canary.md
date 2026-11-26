@@ -22,3 +22,11 @@ scripted check to run after it is deployed:
 - The script reads one yes or no from the Hub (whether the browser is signed in). It never reads or
   prints cookies, storage, headers or the account, and takes no screenshot of the live Hub. It
   opens and closes only its own tab and does not sign in.
+
+## Running it
+
+Run it on the computer with the automation Chrome (primary Mac) after every Hub, Mac or iPhone
+release, before the release item is marked done. Exit code 0 means all three surfaces passed; 10
+means the release item is now held; 1 means the check could not run, so nothing is proven. With
+`--tap`, run it while Daniel is free (`--tap-minutes`, default 10 per surface). Stopping it midway
+can leave a test item open; close it with `tracker unflag <id>` and `tracker done <id>`.

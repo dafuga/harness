@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary-cdp-connection",
+	"uid": "u_2ojawq54hj",
+	"kind": "script",
+	"title": "cdpConnection",
+	"responsibility": "Owns the cdpConnection build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary/cdpConnection.ts"],
+		"symbols": ["cdpConnection"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "cdpConnection.address",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "cdpConnection",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "cdpConnection",
+				"inputs": [
+					{
+						"name": "cdpConnection.address",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cdpConnection",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.needs-you-canary-canary-browser-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-canary-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary/cdpConnection.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary/cdpConnection.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
