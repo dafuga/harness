@@ -4,3 +4,4 @@
 {"event":"step.completed","timestamp":"2026-11-26T09:37:32.675Z","loop":"8q123d-vault-account-picker","step":"red","evidence":"Test-only commit 226f5eee00: 7 of 8 fail; first: expected { offered: [], kind: 'missing' } to deeply equal { kind: 'choose' }."}
 {"event":"step.completed","timestamp":"2026-11-26T09:37:35.303Z","loop":"8q123d-vault-account-picker","step":"implement","evidence":"VaultAccountMatch + VaultAccountPickerSection in Vault/Picker/; broker queue site/account in dafuga/credential-broker PR #14."}
 {"event":"step.completed","timestamp":"2026-11-26T09:37:52.460Z","loop":"8q123d-vault-account-picker","step":"green","evidence":"Unchanged test 8/8 passes at 400058b333 (loop record green)."}
+{"event":"step.completed","timestamp":"2026-11-26T09:42:09.460Z","loop":"8q123d-vault-account-picker","step":"siblings","evidence":"siblings-333b1d6d-b3d5-4edd-801e-ae282f24651a.json"}

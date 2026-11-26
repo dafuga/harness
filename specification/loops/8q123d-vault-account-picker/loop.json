@@ -2,7 +2,7 @@
 	"name": "8q123d-vault-account-picker",
 	"goal": "A vault request that names no account offers every saved entry for the same site, so a saved password is never asked for again",
 	"createdAt": "2026-11-26T09:37:12.981Z",
-	"updatedAt": "2026-11-26T09:37:52.460Z",
+	"updatedAt": "2026-11-26T09:42:09.460Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T09:42:09.460Z",
+			"evidence": "siblings-333b1d6d-b3d5-4edd-801e-ae282f24651a.json"
 		},
 		{
 			"id": "verify",
