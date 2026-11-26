@@ -1,7 +1,10 @@
 // @harness-uid u_k2msamt5dy
-/** Page expressions against Hub Home's "Blocked - needs you" rows. */
+/**
+ * Page expressions against Hub Home's "Blocked - needs you" rows. A row is found by the list and
+ * its question, so a row without buttons is still found and reported as having none.
+ */
 const rowWith = (marker: string) =>
-	`[...document.querySelectorAll('.hh-needs-item')].find((row) => row.querySelector('.hh-needs-question')?.textContent.includes(${JSON.stringify(marker)}))`;
+	`[...document.querySelectorAll('.hh-needs-list > *')].find((row) => row.querySelector('.hh-needs-question')?.textContent.includes(${JSON.stringify(marker)}))`;
 const choices = "[...row.querySelectorAll('.hh-choices .hh-choice')]";
 const labelOf = "choice.querySelector('strong')?.textContent.trim()";
 
