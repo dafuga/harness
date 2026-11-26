@@ -49,6 +49,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.agents-providers-qa-sync",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.analytics",
 			"via": "dynamic-import",
 			"origin": "derived"
