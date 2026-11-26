@@ -1,19 +1,22 @@
 // @harness-uid u_4rnjtzp6cn
 import { trackerHostCapacityHold } from './tracker-native-runtime-service/trackerHostAdmission';
 import { randomUUID } from 'node:crypto';
+import {
+	automaticQueueHold,
+	queuedRung
+} from './tracker-native-runtime-service/trackerQueueAdmission';
 import type { TrackerDispatchRepository } from '../../repositories/projects-sessions/TrackerDispatchRepository';
 import type { TrackerDispatchCandidate } from '../../repositories/projects-sessions/TrackerDispatchRepository.types';
 import type {
 	TrackerDispatcherService,
 	TrackerLaunchIntent,
 	TrackerDispatchResult,
-	TrackerDispatchPolicy,
 	TrackerDispatchItem,
+	TrackerLaunchRung,
 	TrackerRunReceipt
 } from '../agents-providers/TrackerDispatcherService';
 import {
 	automaticQuietHour,
-	automaticRequestHold,
 	ownsLaunch,
 	schedulingHold
 } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
@@ -41,7 +44,7 @@ export class TrackerDispatchQueue {
 		if (
 			current?.launch?.token === token &&
 			!schedulingHold(current, policyNow(this.options)) &&
-			!(await this.automaticPermission(id, current.launch, signal))
+			!(await this.automaticPermission(id, current.launch, signal, queuedRung(run)))
 		)
 			return false;
 		const decision = await prepareQueuedRun(run, this.dispatcher, this.options, signal);
@@ -85,16 +88,21 @@ export class TrackerDispatchQueue {
 		);
 	}
 
-	private async automaticPermission(id: string, intent: TrackerLaunchIntent, signal: AbortSignal) {
+	private async automaticPermission(
+		id: string,
+		intent: TrackerLaunchIntent,
+		signal: AbortSignal,
+		queued?: TrackerLaunchRung
+	) {
 		const { policy, permitAutomatic } = this.options;
 		if (!permitAutomatic) return true;
 		const now = policyNow(this.options);
 		const item = this.repository.readSnapshot(id).item;
-		const hold = automaticQueueHold(item, { policy, intent, now });
+		const hold = automaticQueueHold(item, { policy, intent, now, queued });
 		if (hold) {
 			const moved =
 				item && hold === trackerHostCapacityHold && !automaticQuietHour(now)
-					? this.delegate(item, intent)
+					? delegateAdapterIntake(this.repository, this.options, { item, intent })
 					: undefined;
 			this.waits.set(id, { token: intent.token, reason: moved ?? hold });
 			return false;
@@ -106,16 +114,6 @@ export class TrackerDispatchQueue {
 				reason: 'automatic launch waiting for a fleet slot'
 			});
 		return !refused;
-	}
-
-	private delegate(item: TrackerDispatchItem, intent: TrackerLaunchIntent) {
-		const alternate = this.options.alternateAdapterHost?.(item, item.launch ?? intent);
-		if (
-			alternate &&
-			this.repository.launches.reassignAdapterLaunch(item.id, intent.token, alternate)
-		)
-			return `tester intake queued on ${alternate}`;
-		return undefined;
 	}
 
 	private async release(
@@ -156,20 +154,15 @@ async function takeFleetSlot(
 	return !refusedSlots.has(lane);
 }
 
-function automaticQueueHold(
-	item: TrackerDispatchItem | null,
-	{
-		policy,
-		intent,
-		now
-	}: { policy?: TrackerDispatchPolicy; intent: TrackerLaunchIntent; now: number }
+function delegateAdapterIntake(
+	repository: TrackerDispatchRepository,
+	{ alternateAdapterHost }: TrackerDispatchSchedulerOptions,
+	{ item, intent }: { item: TrackerDispatchItem; intent: TrackerLaunchIntent }
 ) {
-	if (!item || item.launch?.token !== intent.token) return 'launch request changed or is missing';
-	if (!policy) return null;
-	return (
-		automaticRequestHold(item, policy, now) ??
-		(automaticQuietHour(now) ? 'automatic launch night hold' : policy.admit(item, intent, null))
-	);
+	const alternate = alternateAdapterHost?.(item, item.launch ?? intent);
+	if (alternate && repository.launches.reassignAdapterLaunch(item.id, intent.token, alternate))
+		return `tester intake queued on ${alternate}`;
+	return undefined;
 }
 
 function policyNow({ policy }: TrackerDispatchSchedulerOptions) {

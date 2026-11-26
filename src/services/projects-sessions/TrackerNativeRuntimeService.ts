@@ -10,7 +10,7 @@ import { TrackerRunReadRepository } from '../../repositories/projects-sessions/T
 import { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
 import { composeTrackerBackups } from './tracker-backup-service/composeTrackerBackups';
 import type { TrackerAdapterPollService } from './TrackerAdapterPollService';
-import { TrackerHubSyncService } from './TrackerHubSyncService';
+import type { TrackerHubSyncService } from './TrackerHubSyncService';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
 import { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type {
@@ -21,6 +21,8 @@ import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
+import { trackerAutolaunchAdmin } from './tracker-native-runtime-service/trackerAutolaunchAdmin';
+import { composeTrackerResponder } from './tracker-native-runtime-service/composeTrackerResponder';
 import { composeTrackerRecurrence } from './tracker-native-runtime-service/composeTrackerRecurrence';
 import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
 import {
@@ -92,7 +94,11 @@ export class TrackerNativeRuntimeService {
 			{ ...options, dispatch },
 			this.scheduler
 		));
-		this.sync = composeResponder(store, runs, options, composed);
+		this.sync = composeTrackerResponder(store, runs, options, composed);
+	}
+
+	get admin() {
+		return trackerAutolaunchAdmin(this.store, this);
 	}
 
 	spokeStatus() {
@@ -151,17 +157,6 @@ function composeItemApi(
 			history: recurring && ((id, limit) => recurring.repo.history(id, limit))
 		}
 	});
-}
-
-function composeResponder(
-	store: TrackerPersistenceService,
-	runs: TrackerRunReadRepository,
-	{ syncResponder }: TrackerNativeRuntimeOptions,
-	permits: Pick<ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue'>
-) {
-	if (!syncResponder) return undefined;
-	// A spoke's responder serves its Mac peer, which exchanges run history while the hub is down.
-	return new TrackerHubSyncService({ runs: () => runs, ...permits, ...syncResponder, store });
 }
 
 function validateLinks({
