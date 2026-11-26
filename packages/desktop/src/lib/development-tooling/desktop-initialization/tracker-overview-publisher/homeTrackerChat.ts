@@ -18,9 +18,8 @@ export async function deliverHomeChat(
 	const path = chatPath(input, agent);
 	const id = input.id;
 	if (!path) return { id, status: 'refused' };
-	const text = sanitizeText(input.text).trim();
-	if (!text || text.length > 2000) return { id, status: 'refused' };
-	if (input.option !== undefined && !validTap(input, agent, text)) return { id, status: 'refused' };
+	const text = deliverableText(input, agent);
+	if (text === null) return { id, status: 'refused' };
 	const body = chatBody(input, text);
 	try {
 		const response = await fetcher(trackerOrigin + path, {
@@ -32,10 +31,23 @@ export async function deliverHomeChat(
 			signal: AbortSignal.timeout(4000)
 		});
 		await response.body?.cancel();
-		return { id, status: response.ok ? 'sent' : response.status < 500 ? 'refused' : 'unconfirmed' };
+		return { id, status: deliveryStatus(response) };
 	} catch {
 		return { id, status: 'unconfirmed' };
 	}
+}
+
+/** The sanitized text to write, or null when it or the tapped option does not fit the ask. */
+function deliverableText(input: HomeChatInput, agent: HomeAgent | undefined): string | null {
+	const text = sanitizeText(input.text).trim();
+	if (!text || text.length > 2000) return null;
+	if (input.option !== undefined && !validTap(input, agent, text)) return null;
+	return text;
+}
+
+function deliveryStatus(response: Response): HomeChatReceipt['status'] {
+	if (response.ok) return 'sent';
+	return response.status < 500 ? 'refused' : 'unconfirmed';
 }
 
 function chatBody(input: HomeChatInput, text: string) {

@@ -11,9 +11,7 @@ import type {
 import {
 	normalizeTrackerDue,
 	normalizeTrackerReminder,
-	trackerIsoTime,
-	trackerLocalStamp,
-	trackerTimeZone
+	trackerIsoTime
 } from './normalizeTrackerDue';
 import { trackerReminderLaunchFields } from './trackerItemLaunchFields';
 import { trackerItemError } from './trackerItemError';
@@ -26,6 +24,7 @@ import {
 	trackerParkNextStep,
 	trackerResolveItem
 } from './trackerItemInput';
+import { finishTrackerOccurrence } from './finishTrackerOccurrence';
 const start = { status: 'in_progress' };
 
 export const trackerItemTransitions: Record<
@@ -131,7 +130,7 @@ function finishItem(
 ): TrackerItemChange {
 	if (item.every && body.next_step !== undefined)
 		throw trackerItemError('recurring items cannot have a next step');
-	if (item.every) return finishOccurrence(item, body, context);
+	if (item.every) return finishTrackerOccurrence(item, body, context);
 	if (body.failed) throw trackerItemError('--failed is only for recurring items');
 	guardOpenDecision(item, body);
 	const decision = body.next_step === undefined ? {} : trackerNextStepFields(body.next_step);
@@ -147,40 +146,6 @@ function guardOpenDecision(item: TrackerItemSnapshot, body: TrackerItemInput): v
 		'item has an unanswered flag for Daniel: answer, resolve or unflag it first (or pass --force to finish it and keep the flag in the digest)',
 		409
 	);
-}
-
-function finishOccurrence(
-	item: TrackerItemSnapshot,
-	body: TrackerItemInput,
-	context: TrackerItemMutationContext
-): TrackerItemChange {
-	const occurrence = body.occurrence ? parseOccurrence(body.occurrence) : item.occurrence;
-	if (!occurrence) {
-		throw trackerItemError('no occurrence of this recurring item has come due yet');
-	}
-	const stamp = trackerLocalStamp(
-		Date.parse(occurrence),
-		trackerItemValueOr(item.every_tz, trackerTimeZone)
-	);
-	const status = body.failed ? 'failed' : 'done';
-	const result = {
-		occurrence,
-		status,
-		at: trackerIsoTime(context.now),
-		by: trackerItemValueOr(body.by, context.node),
-		note: trackerItemValueOr(body.note, null)
-	};
-	const reopen = item.status === 'in_progress' || item.status === 'done';
-	return {
-		fields: { last_result: result, ...(reopen ? { status: 'open' } : {}) },
-		appendNote: `occurrence ${stamp} ${status}${body.note ? `: ${body.note}` : ''}`
-	};
-}
-
-function parseOccurrence(value: unknown): string {
-	const time = Date.parse(value as string);
-	if (Number.isNaN(time)) throw trackerItemError(`bad occurrence time "${value}"`);
-	return trackerIsoTime(time);
 }
 
 function ignoreItem(

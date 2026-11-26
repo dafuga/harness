@@ -100,15 +100,24 @@ export class MacTrackerInboxService {
 	}
 }
 
+function writeAction(action: unknown): action is ConfirmedWrite['action'] {
+	return action === 'note' || action === 'flag' || action === 'answer';
+}
+
+/** No tapped option, or one of the four an ask can offer. */
+function optionNumber(option: number | undefined): boolean {
+	return option === undefined || (Number.isInteger(option) && option >= 1 && option <= 4);
+}
+
 function parseWrite(input: Partial<ConfirmedWrite>): ConfirmedWrite | null {
 	const { action, id, text, revision, option } = input;
 	if (
-		(action !== 'note' && action !== 'flag' && action !== 'answer') ||
+		!writeAction(action) ||
 		typeof id !== 'string' ||
 		!safeId.test(id) ||
 		typeof text !== 'string' ||
 		(revision !== null && typeof revision !== 'string') ||
-		(option !== undefined && !(Number.isInteger(option) && option >= 1 && option <= 4))
+		!optionNumber(option)
 	)
 		return null;
 	return confirmedWrite({ action, id, text, revision, option }, true);

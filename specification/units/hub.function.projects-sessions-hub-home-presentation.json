@@ -40,6 +40,7 @@
 			"relativeWhen",
 			"workEta",
 			"quotaSummary",
+			"answerMessage",
 			"quickReplies",
 			"quotaReset",
 			"runDay",
@@ -223,6 +224,26 @@
 				"type": "number",
 				"required": true,
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
+			},
+			{
+				"name": "answerMessage.asked",
+				"type": "{ id: string; question?: string | null }",
+				"required": true
+			},
+			{
+				"name": "answerMessage.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "answerMessage.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "answerMessage.tap",
+				"type": "{ number: number; confirmed: boolean }",
+				"required": false
 			},
 			{
 				"name": "runDay.at",
@@ -824,6 +845,39 @@
 						"name": "quotaSummary",
 						"type": "unknown",
 						"description": "Subscription count with how many readable limits are running low, or all OK."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "answerMessage",
+				"inputs": [
+					{
+						"name": "answerMessage.asked",
+						"type": "{ id: string; question?: string | null }",
+						"required": true
+					},
+					{
+						"name": "answerMessage.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "answerMessage.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "answerMessage.tap",
+						"type": "{ number: number; confirmed: boolean }",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "answerMessage",
+						"type": "HomeChatInput"
 					}
 				],
 				"errors": [],

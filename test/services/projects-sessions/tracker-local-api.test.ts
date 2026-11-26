@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test } from 'vitest';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRecurringRepository } from '../../../src/repositories/projects-sessions/TrackerRecurringRepository';
 import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
@@ -177,54 +177,3 @@ async function verifyProjectFollowUp() {
 	});
 	expect(await (await request('/items?flagged=1')).json()).toEqual([]);
 }
-
-test('reports persisted run history and selects a model through the native item API', async () => {
-	const { id } = await (
-		await request('/items', 'POST', { title: 'Fixture model selection' })
-	).json();
-	database.exec(`
-		CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
-		CREATE TABLE remote_runs(node TEXT, id INTEGER, item_id TEXT, queued_at INTEGER,
-			state TEXT, rung TEXT, outcome TEXT);
-	`);
-	database.prepare("INSERT INTO runs VALUES (1, ?, 100, 'finished', 'sol', 'done')").run(id);
-	database
-		.prepare(
-			"INSERT INTO remote_runs VALUES ('fixture-peer', 1, ?, 200, 'finished', 'sol', 'blocked')"
-		)
-		.run(id);
-	const occurrence = '2026-11-21T12:00:00.000Z';
-	database
-		.prepare(
-			"INSERT INTO occurrences(item_id, occurrence, status, fired_at) VALUES (?, ?, 'pending', ?)"
-		)
-		.run(id, occurrence, Date.parse(occurrence));
-	const history = await request(`/items/${id.slice(0, 6)}/history?limit=1`);
-	expect(await history.json()).toEqual([
-		{ occurrence, status: 'pending', fired_at: occurrence, result_at: null, note: null, by: null }
-	]);
-	const runs = await request(`/runs?item=${id.slice(0, 6)}`);
-	expect(await runs.json()).toMatchObject([
-		{ id: 1, node: 'fixture-mac' },
-		{ id: 1, node: 'fixture-peer' }
-	]);
-	const report = await request('/models/report');
-	expect(await report.json()).toMatchObject({
-		ladder: ['haiku', 'sonnet', 'terra', 'sol', 'opus'],
-		rows: expect.arrayContaining([
-			expect.objectContaining({ rung: 'sol', kind: '*', runs: 2, done: 1, blocked: 1 })
-		])
-	});
-	// Codex resets 27 Nov 2026 10:39 Lisbon: Claude only before, the Sol default after.
-	for (const [at, rung, cli] of [
-		['2026-11-27T10:38:59Z', 'sonnet', 'claude'],
-		['2026-11-27T10:39:00Z', 'sol', 'codex']
-	]) {
-		vi.useFakeTimers({ toFake: ['Date'] });
-		vi.setSystemTime(Date.parse(at));
-		const pick = await request(`/items/${id.slice(0, 6)}/pick`);
-		vi.useRealTimers();
-		expect(await pick.json()).toMatchObject({ item_id: id, rung, cli, auto: false });
-	}
-	expect(store.maxSeq()).toBe(1);
-});

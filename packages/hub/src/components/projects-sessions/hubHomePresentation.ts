@@ -6,6 +6,7 @@ import type {
 	HomeLimit,
 	HomePlanState,
 	HomeSection,
+	HomeChatInput,
 	HomeSubscription
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
@@ -177,6 +178,24 @@ export function quotaSummary(subscriptions: HomeSubscription[], now: number) {
 		.filter((subscription) => !staleReading(subscription.readAt, now))
 		.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)));
 	return `${count(subscriptions.length, 'subscription')} · ${low.length ? `${low.length} running low` : 'all OK'}`;
+}
+
+/** The Tracker answer Home sends for a typed reply, or for a tapped option with its confirmation. */
+export function answerMessage(
+	asked: { id: string; question?: string | null },
+	itemId: string,
+	text: string,
+	tap?: { number: number; confirmed: boolean }
+): HomeChatInput {
+	return {
+		id: crypto.randomUUID(),
+		agentId: asked.id,
+		itemId,
+		kind: 'answer',
+		question: asked.question ?? null,
+		text: text.trim(),
+		...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
+	};
 }
 
 export { quickReplies } from './quickReplies';

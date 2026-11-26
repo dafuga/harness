@@ -5,6 +5,21 @@ import type { ExplorerEvidence } from '$reports/models/explorer-ui/Explorer.type
 
 const unlisted = 'This capture is not listed by the evidence of this entity at these revisions.';
 
+/** The valid record at the side's commit that lists the found capture under the named id. */
+function listingRecord(
+	side: NonNullable<ExplorerEvidence[CaptureBinding['side']]>,
+	found: { recordId?: string | null },
+	requested: string
+) {
+	const recordId = found.recordId ?? side.record?.id;
+	if (recordId !== requested) throw new CaptureUnlistedError(unlisted);
+	const record = side.detail?.records.find(
+		(item) => item.id === recordId && item.valid && item.source.commit === side.commit
+	);
+	if (!record) throw new CaptureUnlistedError(unlisted);
+	return record;
+}
+
 /**
  * The one capture an artifact request names, out of the evidence of one entity read at the
  * revisions the request repeats. It is found only on the side it names, in the record that
@@ -29,12 +44,7 @@ export function recordedCapture(
 	if (!found) throw new CaptureUnlistedError(unlisted);
 	if (found.focused?.record === binding.recordId)
 		return { capture: found.capture, record: binding.recordId, focused: true };
-	const recordId = found.recordId ?? side.record?.id;
-	if (recordId !== binding.recordId) throw new CaptureUnlistedError(unlisted);
-	const record = side.detail?.records.find(
-		(item) => item.id === recordId && item.valid && item.source.commit === side.commit
-	);
-	if (!record) throw new CaptureUnlistedError(unlisted);
+	const record = listingRecord(side, found, binding.recordId);
 	const ran = record.scenarios.find((item) => item.id === binding.scenarioId);
 	if (!ran) throw new CaptureUnlistedError(unlisted);
 	return { capture: found.capture, record: ran.origin.record };

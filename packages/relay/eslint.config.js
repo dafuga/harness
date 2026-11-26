@@ -13,6 +13,7 @@ const runtimeGlobals = Object.fromEntries(
 		'DurableObjectNamespace',
 		'DurableObjectState',
 		'DurableObjectStorage',
+		'DurableObjectStub',
 		'ExportedHandler',
 		'Headers',
 		'ReadableStream',

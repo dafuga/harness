@@ -100,6 +100,8 @@ export const catalogHome = { granted: true, snapshot };
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
 	agents: snapshot.agents,
+	asks: [],
+	controlled: [],
 	plans: snapshot.plans,
 	schedule: snapshot.scheduled,
 	quota: snapshot.providers.quota,

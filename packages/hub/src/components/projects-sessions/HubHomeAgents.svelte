@@ -16,7 +16,8 @@
 		runTime,
 		initials,
 		overviewTone,
-		quickReplies
+		quickReplies,
+		answerMessage
 	} from './hubHomePresentation';
 	import type { HomeAgentsProps } from './hubHomeView.types';
 	import HubHomeAddSession from './HubHomeAddSession.svelte';
@@ -84,15 +85,7 @@
 
 	async function answerWith(text: string, tap?: { number: number; confirmed: boolean }) {
 		if (!active?.itemId || !active.question || !text.trim() || answering) return;
-		const message: HomeChatInput = {
-			id: crypto.randomUUID(),
-			agentId: active.id,
-			itemId: active.itemId,
-			kind: 'answer',
-			question: active.question,
-			text: text.trim(),
-			...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
-		};
+		const message = answerMessage(active, active.itemId, text, tap);
 		answering = true;
 		try {
 			const result = await send(message);

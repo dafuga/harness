@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-finish-tracker-occurrence",
+	"uid": "u_ewas4mssnh",
+	"kind": "function",
+	"title": "finishTrackerOccurrence",
+	"responsibility": "Owns the finishTrackerOccurrence shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/finishTrackerOccurrence.ts"],
+		"symbols": ["finishTrackerOccurrence"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "finishTrackerOccurrence.item",
+				"type": "TrackerItemSnapshot",
+				"required": true
+			},
+			{
+				"name": "finishTrackerOccurrence.body",
+				"type": "TrackerItemInput",
+				"required": true
+			},
+			{
+				"name": "finishTrackerOccurrence.context",
+				"type": "TrackerItemMutationContext",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "finishTrackerOccurrence",
+				"type": "TrackerItemChange"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "finishTrackerOccurrence",
+				"inputs": [
+					{
+						"name": "finishTrackerOccurrence.item",
+						"type": "TrackerItemSnapshot",
+						"required": true
+					},
+					{
+						"name": "finishTrackerOccurrence.body",
+						"type": "TrackerItemInput",
+						"required": true
+					},
+					{
+						"name": "finishTrackerOccurrence.context",
+						"type": "TrackerItemMutationContext",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishTrackerOccurrence",
+						"type": "TrackerItemChange"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-normalize-tracker-item-fields",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/finishTrackerOccurrence.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/finishTrackerOccurrence.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

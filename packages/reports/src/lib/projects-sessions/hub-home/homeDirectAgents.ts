@@ -1,5 +1,6 @@
 // @harness-uid u_qhdifpyhqs
 import type { HomeAgent, HomeAgentTask, OwnerHomeSnapshot } from './hubHome.types';
+import type { HomeLists } from './homeDirectAgents.types';
 
 /**
  * The sessions Daniel creates and talks to himself, by Tracker agent value, with the name Home
@@ -22,13 +23,6 @@ export function isDirectAgent(
 		Object.values(directAgentNames).includes(agent.name) ||
 		added.includes(agent.id)
 	);
-}
-
-/** The Home lists: the user-controlled agents, and the asks other projects have for Daniel. */
-export interface HomeLists {
-	agents: HomeAgent[];
-	/** Needs-you agents that are not listed. Their question and option buttons still show. */
-	asks: HomeAgent[];
 }
 
 /**

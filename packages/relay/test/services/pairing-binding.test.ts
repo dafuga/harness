@@ -8,24 +8,16 @@ import {
 	pairingPath,
 	registerHost,
 	sealedText,
-	submitPairing,
-	type TestHost,
-	type TestRequest
+	submitPairing
 } from '../support/relayActors';
 import { startRelay, type RelayFixture } from '../support/relayFixture';
-import type { RelaySocket } from '../support/relaySocket';
+import type { Own } from './pairing-binding.test.types';
 
 let relay: RelayFixture;
 beforeAll(async () => {
 	relay = await startRelay();
 }, 60_000);
 afterAll(() => relay.stop());
-
-interface Own {
-	host: TestHost;
-	socket: RelaySocket;
-	request: TestRequest;
-}
 
 /** A host of its own with one waiting account request; the host is told of it. */
 async function waiting(): Promise<Own> {

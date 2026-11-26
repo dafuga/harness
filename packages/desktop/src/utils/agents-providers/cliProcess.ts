@@ -76,13 +76,17 @@ export async function cliProcess(
 		child.on('close', (code) => {
 			output += decoder.end();
 			consume.end();
-			finish(
-				code === 0 ? null : new CliCommandFailedError('CLI failed (' + String(code) + '): ' + error)
-			);
+			finish(exitFailure(code, error));
 		});
 		closeInput(child, options.input ?? '', finish);
 		if (child.pid) options.resources?.track(child.pid);
 	});
+}
+
+function exitFailure(code: number | null, error: string): Error | null {
+	return code === 0
+		? null
+		: new CliCommandFailedError('CLI failed (' + String(code) + '): ' + error);
 }
 
 function closeInput(

@@ -177,13 +177,20 @@ async function expanded(context: RunContext, source: MockupSource) {
 	return result;
 }
 
-export async function mockupPlan(context: RunContext, proposal: string): Promise<MockupPlanDraft> {
+/** The comment thread the request answers, and the saved mockup it continues from. */
+function earlierDesign(context: RunContext) {
 	const anchor = context.entity.threads.find((thread) => thread.id === context.request.threadId);
 	const latest = context.entity.latestVersion;
 	const chosen = displayOnly(context.request.text) ? latest : (anchor?.version ?? latest);
 	const prior = mockupSource(
 		context.entity.versions.find((version) => version.version === chosen)?.notes
 	);
+	return { anchor, prior };
+}
+
+/** The source of the new design version, and the request its screens are rendered for. */
+async function draftSource(context: RunContext, proposal: string) {
+	const { anchor, prior } = earlierDesign(context);
 	const followup = prior && displayOnly(context.request.text);
 	const initial = authorPrompt(context, proposal);
 	const prompt =
@@ -194,14 +201,19 @@ export async function mockupPlan(context: RunContext, proposal: string): Promise
 			: initial;
 	let source = followup ? prior : await authored(context, prompt);
 	if (followup || displayRequest(context.request.text)) source = await expanded(context, source);
+	return { source, rendered: followup ? context.request.text : prompt };
+}
+
+export async function mockupPlan(context: RunContext, proposal: string): Promise<MockupPlanDraft> {
+	const { source, rendered } = await draftSource(context, proposal);
 	const notes = mockupMarker + JSON.stringify(source);
 	if (notes.length > 1000000)
 		throw new MockupFailure('The mockup source exceeds the design version size limit.');
-	const options = await mockupMatrix(context, source, followup ? context.request.text : prompt);
+	const options = await mockupMatrix(context, source, rendered);
 	return {
 		notes,
 		options,
-		prompt: followup ? context.request.text : prompt,
+		prompt: rendered,
 		generator: { provider: 'claude' as const, model: source.author }
 	};
 }

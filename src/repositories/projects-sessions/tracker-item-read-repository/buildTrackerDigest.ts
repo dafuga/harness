@@ -4,15 +4,14 @@ import type {
 	TrackerDigest,
 	TrackerDigestGroups,
 	TrackerDigestItem,
-	TrackerItemRow,
-	TrackerRecurringProblem
+	TrackerItemRow
 } from '../TrackerItemReadRepository.types';
 import type { TrackerRunReadRepository } from '../TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import { trackerChaseFields, trackerAskFields } from './serializeTrackerItem';
 import { trackerPlanningStage } from '../../../utils/projects-sessions/trackerPlanning';
 import { splitTrackerAsks, isStaleDecision } from './splitTrackerAsks';
-import type { StoredRecurringResult } from './buildTrackerDigest.types';
+import { trackerDigestStamp, trackerRecurringProblem } from './trackerRecurringProblem';
 
 /** Group active items by the configured calendar day and current recurring outcome. */
 export function buildTrackerDigest(
@@ -21,7 +20,7 @@ export function buildTrackerDigest(
 	timeZone: string,
 	runs: TrackerRunReadRepository
 ): TrackerDigest {
-	const localTime = stamp(nowMs, timeZone);
+	const localTime = trackerDigestStamp(nowMs, timeZone);
 	const [today] = localTime.split(' ');
 	const groups: TrackerDigestGroups = {
 		blocked: [],
@@ -80,11 +79,13 @@ function groupActive(
 ) {
 	if (row.status === 'blocked') groups.blocked.push(item);
 	if (row.every) {
-		const problem = recurringProblem(row, row.every, item, timeZone);
+		const problem = trackerRecurringProblem(row, row.every, item, timeZone);
 		if (problem) groups.recurring_missed.push(problem);
 	} else if (row.due) {
 		const day =
-			row.due.length === 10 ? row.due : stamp(Date.parse(row.due), timeZone).split(' ')[0];
+			row.due.length === 10
+				? row.due
+				: trackerDigestStamp(Date.parse(row.due), timeZone).split(' ')[0];
 		if (day < today) groups.overdue.push(item);
 		if (day === today) groups.due_today.push(item);
 	}
@@ -153,75 +154,4 @@ function launchRequestedAt(row: TrackerItemRow, now: number) {
 
 function elapsedMinutes(now: number, at: number) {
 	return Math.max(0, Math.floor((now - at) / 60_000));
-}
-
-function recurringProblem(
-	row: TrackerItemRow,
-	every: string,
-	item: TrackerDigestItem,
-	timeZone: string
-): TrackerRecurringProblem | null {
-	const result = recurringResult(row.last_result);
-	const missed = unresolvedMiss(row.missed, result);
-	const failed = currentFailure(row.occurrence, result);
-	if (!missed && !failed) return null;
-	const occurrenceZone = row.every_tz === '' ? null : row.every_tz;
-	const displayZone = occurrenceZone ?? timeZone;
-	return {
-		...item,
-		every,
-		every_tz: occurrenceZone ?? 'Europe/Lisbon',
-		missed,
-		missed_local: missed ? stamp(Date.parse(missed), displayZone) : null,
-		failed,
-		failed_local: failed ? stamp(Date.parse(failed.occurrence), displayZone) : null
-	};
-}
-
-function unresolvedMiss(
-	missed: string | null,
-	result: StoredRecurringResult | null
-): string | null {
-	if (!missed) return null;
-	if (result?.status === 'done' && result.occurrence && result.occurrence > missed) return null;
-	return missed;
-}
-
-function currentFailure(
-	occurrence: string | null,
-	result: StoredRecurringResult | null
-): TrackerRecurringProblem['failed'] {
-	if (result?.status !== 'failed' || result.occurrence !== occurrence) return null;
-	const note = result.note === '' ? null : (result.note ?? null);
-	return { occurrence: result.occurrence, note };
-}
-
-function recurringResult(raw: string | null): StoredRecurringResult | null {
-	try {
-		return raw ? JSON.parse(raw) : null;
-	} catch {
-		return null;
-	}
-}
-
-const formatters = new Map<string, Intl.DateTimeFormat>();
-
-function stamp(ms: number, timeZone: string): string {
-	let formatter = formatters.get(timeZone);
-	if (!formatter) {
-		formatter = new Intl.DateTimeFormat('en-US', {
-			timeZone,
-			hourCycle: 'h23',
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit'
-		});
-		formatters.set(timeZone, formatter);
-	}
-	const { year, month, day, hour, minute } = Object.fromEntries(
-		formatter.formatToParts(ms).map(({ type, value }) => [type, value])
-	);
-	return `${year}-${month}-${day} ${hour}:${minute}`;
 }
