@@ -9,6 +9,7 @@ import type {
 	TrackerHostStartRequest
 } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import type { TemporaryRepo } from './temporary.types';
+import { onIdleHost } from './trackerHostResourceFixture';
 import {
 	managedFixtureBindings,
 	managedForegroundConfig,
@@ -164,7 +165,7 @@ async function withClaudeLaunch(
 	try {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
-			trackerNodeRuntime(managedForegroundConfig(root, config, 'macos'))
+			onIdleHost(trackerNodeRuntime(managedForegroundConfig(root, config, 'macos')))
 		);
 		runtime.store.appendLocal({
 			itemId: claudeItem,

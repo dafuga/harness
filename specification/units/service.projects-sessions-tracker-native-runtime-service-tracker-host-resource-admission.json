@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-native-runtime-service-tracker-host-resource-admission",
+	"uid": "u_2jymbzvxjz",
+	"kind": "service",
+	"title": "trackerHostResourceAdmission",
+	"responsibility": "Owns the trackerHostResourceAdmission service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostResourceAdmission.ts"
+		],
+		"symbols": ["trackerHostResourceAdmission"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerHostResourceAdmission.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerHostResourceAdmission.config",
+				"type": "TrackerHostLaunchConfig",
+				"required": true
+			},
+			{
+				"name": "trackerHostResourceAdmission.resources",
+				"type": "TrackerHostResources",
+				"required": false
+			},
+			{
+				"name": "trackerHostResourceAdmission.occupied",
+				"type": "() => TrackerOccupiedRun[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerHostResourceAdmission",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "trackerHostResourceAdmission",
+				"inputs": [
+					{
+						"name": "trackerHostResourceAdmission.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerHostResourceAdmission.config",
+						"type": "TrackerHostLaunchConfig",
+						"required": true
+					},
+					{
+						"name": "trackerHostResourceAdmission.resources",
+						"type": "TrackerHostResources",
+						"required": false
+					},
+					{
+						"name": "trackerHostResourceAdmission.occupied",
+						"type": "() => TrackerOccupiedRun[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostResourceAdmission",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-host-resource",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-cpu-budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-resource-hold",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-resources-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-tracker-dispatcher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostResourceAdmission.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-native-runtime-service/trackerHostResourceAdmission.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

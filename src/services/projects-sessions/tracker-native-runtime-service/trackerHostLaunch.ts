@@ -27,6 +27,7 @@ import type {
 } from './trackerHostLaunch.types';
 import { configuredTrackerProviderHold } from './trackerProviderHolds';
 import { trackerHostRunner } from './trackerHostRunner';
+import type { TrackerHostResources } from '../../../utils/projects-sessions/trackerHostResources.types';
 
 const macNodes = new Set(['daniel-primary-mbp', 'harbor-mbp-2']);
 
@@ -41,6 +42,7 @@ export function trackerHostLaunch(
 		workerClient?: TrackerWorkerClient;
 		transcriptRoots?: readonly string[];
 		now?: () => number;
+		hostResources?: TrackerHostResources;
 	} = {}
 ): NonNullable<TrackerNativeRuntimeOptions['dispatch']> {
 	const { adapter } = effects;
@@ -71,18 +73,20 @@ export function trackerHostLaunch(
 			chooseHost: chooseTrackerHost(routeFor, node),
 			localRepoAvailable: (item) => Boolean(routeFor(item)),
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
-			admit: trackerHostAdmission(store, { config, adapter, routeFor, now: effects.now }),
+			admit: trackerHostAdmission(store, { ...effects, config, routeFor }),
 			providerHold: configuredTrackerProviderHold(store, config.codexPausedUntil, effects.now),
 			pickModel: (item) => pickHostModel(item, effects.now?.()),
 			retryModel: (item, run) => retryTrackerModel(item, run, undefined, effects.now?.())
 		},
-		scheduleDue: config.due !== false || adapter?.scheduleDue === true,
-		due: () => ({
-			enabled: config.due !== false,
-			paused: false,
-			localDue: true,
-			adapterDue: adapter?.scheduleDue === true
-		})
+		...hostDueSchedule(config, adapter)
+	};
+}
+
+function hostDueSchedule(config: TrackerHostLaunchConfig, adapter?: TrackerHostAdapterConfig) {
+	const [enabled, adapterDue] = [config.due !== false, adapter?.scheduleDue === true];
+	return {
+		scheduleDue: enabled || adapterDue,
+		due: () => ({ enabled, paused: false, localDue: true, adapterDue })
 	};
 }
 
@@ -199,6 +203,7 @@ export function configuredHostDispatch(
 	return launch
 		? trackerHostLaunch(store, launch, {
 				workerClient,
+				hostResources: effects?.hostResources,
 				automaticEnabled,
 				transcriptRoots: watchdog?.transcriptRoots,
 				recoverDroppedSessions: watchdog && ('tmux' in watchdog || 'driver' in watchdog),

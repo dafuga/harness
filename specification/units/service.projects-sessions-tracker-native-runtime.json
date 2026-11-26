@@ -272,7 +272,10 @@
 			"observeTrackerQuota",
 			"automaticQueueHold",
 			"queuedRung",
-			"resetBudget",
+			"maxRecoveryAttempts",
+			"emptyRecoveryState",
+			"recoveryBudget",
+			"hostWait",
 			"recoveryRung",
 			"trackerSecretSafetyRule",
 			"sessionHealthInterval",
@@ -782,6 +785,11 @@
 				"required": true
 			},
 			{
+				"name": "trackerHostAdmission.hostResources",
+				"type": "TrackerHostResources",
+				"required": false
+			},
+			{
 				"name": "trackerHostAdmission.now",
 				"type": "() => number",
 				"required": false
@@ -811,6 +819,11 @@
 				"type": "boolean",
 				"required": false,
 				"default": false
+			},
+			{
+				"name": "formatTrackerHostBrief.cpuBudget",
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "unsentCosAlerts.store",
@@ -914,7 +927,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; hostResources?: TrackerHostResources; }",
 				"required": false,
 				"default": {}
 			},
@@ -1000,7 +1013,7 @@
 			},
 			{
 				"name": "startTrackerHost.input",
-				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; sessionName?: string; }",
+				"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; cpuBudget?: number; sessionName?: string; }",
 				"required": true
 			},
 			{
@@ -1612,18 +1625,28 @@
 				"required": true
 			},
 			{
-				"name": "resetBudget.state",
-				"type": "TrackerRecoveryState | null",
+				"name": "recoveryBudget.store",
+				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
-				"name": "resetBudget.run",
-				"type": "TrackerListedRun | undefined",
+				"name": "recoveryBudget.key",
+				"type": "string",
 				"required": true
 			},
 			{
-				"name": "resetBudget.item",
+				"name": "recoveryBudget.latest",
+				"type": "TrackerListedRun",
+				"required": false
+			},
+			{
+				"name": "recoveryBudget.item",
 				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "hostWait.reason",
+				"type": "string",
 				"required": true
 			},
 			{
@@ -3188,6 +3211,11 @@
 						"required": true
 					},
 					{
+						"name": "trackerHostAdmission.hostResources",
+						"type": "TrackerHostResources",
+						"required": false
+					},
+					{
 						"name": "trackerHostAdmission.now",
 						"type": "() => number",
 						"required": false
@@ -3200,7 +3228,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "occupiedHostSlots",
@@ -3256,6 +3284,11 @@
 						"type": "boolean",
 						"required": false,
 						"default": false
+					},
+					{
+						"name": "formatTrackerHostBrief.cpuBudget",
+						"type": "number",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -3437,7 +3470,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; }",
+						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; hostResources?: TrackerHostResources; }",
 						"required": false,
 						"default": {}
 					}
@@ -3593,7 +3626,7 @@
 					},
 					{
 						"name": "startTrackerHost.input",
-						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; sessionName?: string; }",
+						"type": "{ node: string; route: TrackerHostTarget; reservation: TrackerReservedStart; brief: string; cpuBudget?: number; sessionName?: string; }",
 						"required": true
 					},
 					{
@@ -4805,27 +4838,50 @@
 				"errorStatus": "none-found"
 			},
 			{
-				"name": "resetBudget",
+				"name": "recoveryBudget",
 				"inputs": [
 					{
-						"name": "resetBudget.state",
-						"type": "TrackerRecoveryState | null",
+						"name": "recoveryBudget.store",
+						"type": "TrackerPersistenceService",
 						"required": true
 					},
 					{
-						"name": "resetBudget.run",
-						"type": "TrackerListedRun | undefined",
+						"name": "recoveryBudget.key",
+						"type": "string",
 						"required": true
 					},
 					{
-						"name": "resetBudget.item",
+						"name": "recoveryBudget.latest",
+						"type": "TrackerListedRun",
+						"required": false
+					},
+					{
+						"name": "recoveryBudget.item",
 						"type": "TrackerItem",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "resetBudget",
+						"name": "recoveryBudget",
+						"type": "TrackerRecoveryState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hostWait",
+				"inputs": [
+					{
+						"name": "hostWait.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hostWait",
 						"type": "unknown"
 					}
 				],
@@ -5570,7 +5626,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-cpu-budget",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-egress-policy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-resource-hold",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-resources-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -5676,6 +5747,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-done-proof-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-resource-admission",
 			"via": "import",
 			"origin": "derived"
 		},
