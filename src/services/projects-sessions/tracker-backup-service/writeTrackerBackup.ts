@@ -1,3 +1,4 @@
+// @harness-uid u_vak6ztnr2f
 import { randomBytes } from 'node:crypto';
 import { chmodSync, mkdirSync, renameSync, rmSync, statSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';

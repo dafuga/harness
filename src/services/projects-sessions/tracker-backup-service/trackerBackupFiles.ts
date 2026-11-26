@@ -1,3 +1,4 @@
+// @harness-uid u_7pqvmowcxi
 import {
 	chmodSync,
 	copyFileSync,

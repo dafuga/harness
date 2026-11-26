@@ -1,6 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
+import { takeTrackerBackupNow } from '../tracker-backup-service/takeTrackerBackupNow';
 import { stopTrackerRun, trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
 import { readTrackerNodeInspection } from './readTrackerNodeInspection';
 import { serveTrackerChanges } from '../tracker-change-feed/serveTrackerChanges';
@@ -106,6 +107,8 @@ function trackerCompatibleApi(
 			return trackerNodeStatus(runtime, supervisor, checkpoint);
 		case 'GET /changes':
 			return serveTrackerChanges(request, runtime.store);
+		case 'POST /backup/now':
+			return takeTrackerBackupNow(runtime.backups);
 		case 'POST /adapters/run':
 			return trackerAdapterRun(request, runtime);
 		default:
@@ -125,8 +128,6 @@ function trackerOperationalApi(
 		case 'GET /needs-attention':
 		case 'GET /watchdog/alerts':
 			return Response.json(runtime.watchdog?.alerts() ?? []);
-		case 'POST /backup/now':
-			return trackerBackupNow(runtime);
 		case 'POST /stop':
 			return stopTrackerRun(request, runtime);
 		case 'POST /sync':
@@ -138,12 +139,6 @@ function trackerOperationalApi(
 			return inspection ?? trackerLaunchAwareItemResponse(request, runtime);
 		}
 	}
-}
-
-async function trackerBackupNow({ backups }: TrackerNativeRuntimeService) {
-	if (!backups)
-		return Response.json({ error: 'native backups are not enabled on this node' }, { status: 409 });
-	return Response.json(await backups.service.take());
 }
 
 function trackerNodeStatus(

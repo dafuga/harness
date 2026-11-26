@@ -10,7 +10,8 @@ import {
 import type { TrackerBackupResult } from '../../../services/projects-sessions/TrackerBackupService.types';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
 
-const usage = 'usage: tracker backup verify <file> | restore <file> --to <new path>';
+const usage =
+	'usage: tracker backup verify <file> | restore <file> --to <new path> [--without-local-state]';
 
 /** Verify and restore run in this process: they must work when the service cannot start. */
 export function isLocalBackupCommand([command, mode]: string[]): boolean {
@@ -25,7 +26,7 @@ export async function runLocalTrackerBackup(
 		const { values, positionals } = parseArgs({
 			args,
 			allowPositionals: true,
-			options: { to: { type: 'string' } }
+			options: { to: { type: 'string' }, 'without-local-state': { type: 'boolean' } }
 		});
 		const [mode, name, ...rest] = positionals;
 		if (!name || rest.length || (mode === 'restore') !== Boolean(values.to))
@@ -37,7 +38,8 @@ export async function runLocalTrackerBackup(
 			return 0;
 		}
 		const to = resolve(values.to);
-		const { items, ops } = await restoreTrackerBackup({ backup, live: config.database, to });
+		const live = values['without-local-state'] ? undefined : config.database;
+		const { items, ops } = await restoreTrackerBackup({ backup, live, to });
 		console.log(restoreSteps(config.database, to, `${items} items, ${ops} ops`));
 		return 0;
 	} catch (error) {

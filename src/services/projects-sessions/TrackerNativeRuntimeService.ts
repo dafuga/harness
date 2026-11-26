@@ -43,8 +43,7 @@ export class TrackerNativeRuntimeService {
 	readonly dispatch?: TrackerDispatcherService;
 	readonly scheduler?: TrackerDispatchSchedulerService;
 	readonly duePreview: TrackerDuePreviewPolicy;
-	readonly backupDirectory?: string;
-	readonly backups?: ReturnType<typeof composeTrackerBackups>;
+	readonly backups: ReturnType<typeof composeTrackerBackups>;
 	readonly ladderConfig?: TrackerLadderConfig;
 	readonly store: TrackerPersistenceService;
 	readonly items: TrackerLocalApiService;
@@ -65,7 +64,6 @@ export class TrackerNativeRuntimeService {
 		const store = new TrackerPersistenceService(database, node, { ...storage, now });
 		this.store = store;
 		this.role = role;
-		this.backupDirectory = options.backupDirectory;
 		this.ladderConfig = options.ladderConfig;
 		this.now = now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;

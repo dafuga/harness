@@ -4197,6 +4197,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-backup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-compose-tracker-backups",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-dispatch-scheduler",
 			"via": "import",
 			"origin": "derived"

@@ -1,5 +1,7 @@
+// @harness-uid u_im4swoqn6p
 import { readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { z } from 'zod';
+import type { TrackerBackupState } from './trackerBackupState.types';
 
 const text = z.string().nullable().default(null);
 const stateSchema = z.object({
@@ -13,8 +15,6 @@ const stateSchema = z.object({
 	stale_flagged_for: text,
 	alert_item: text
 });
-
-export type TrackerBackupState = z.infer<typeof stateSchema>;
 
 /** Backup history lives beside the journal, so restoring the journal never rewrites it. */
 export function readTrackerBackupState(path: string): TrackerBackupState {

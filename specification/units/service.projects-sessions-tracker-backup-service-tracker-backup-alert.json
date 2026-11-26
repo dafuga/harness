@@ -1,0 +1,158 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-backup-service-tracker-backup-alert",
+	"uid": "u_bxb55zfvqw",
+	"kind": "service",
+	"title": "trackerBackupAlert",
+	"responsibility": "Owns the trackerBackupAlert service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-backup-service/trackerBackupAlert.ts"],
+		"symbols": ["raiseTrackerBackupAlert", "clearTrackerBackupAlert"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "raiseTrackerBackupAlert.items",
+				"type": "TrackerLocalApiService",
+				"required": true
+			},
+			{
+				"name": "raiseTrackerBackupAlert.stateFile",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "raiseTrackerBackupAlert.question",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "clearTrackerBackupAlert.items",
+				"type": "TrackerLocalApiService",
+				"required": true
+			},
+			{
+				"name": "clearTrackerBackupAlert.stateFile",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "clearTrackerBackupAlert.note",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "raiseTrackerBackupAlert",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "clearTrackerBackupAlert",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "raiseTrackerBackupAlert",
+				"inputs": [
+					{
+						"name": "raiseTrackerBackupAlert.items",
+						"type": "TrackerLocalApiService",
+						"required": true
+					},
+					{
+						"name": "raiseTrackerBackupAlert.stateFile",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "raiseTrackerBackupAlert.question",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "raiseTrackerBackupAlert",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "clearTrackerBackupAlert",
+				"inputs": [
+					{
+						"name": "clearTrackerBackupAlert.items",
+						"type": "TrackerLocalApiService",
+						"required": true
+					},
+					{
+						"name": "clearTrackerBackupAlert.stateFile",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "clearTrackerBackupAlert.note",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "clearTrackerBackupAlert",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-tracker-backup-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-backup-service/trackerBackupAlert.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-backup-service/trackerBackupAlert.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

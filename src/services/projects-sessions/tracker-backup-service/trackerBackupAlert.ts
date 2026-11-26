@@ -1,3 +1,4 @@
+// @harness-uid u_bxb55zfvqw
 import type { TrackerLocalApiService } from '../TrackerLocalApiService';
 import { readTrackerBackupState, writeTrackerBackupState } from './trackerBackupState';
 
@@ -34,7 +35,7 @@ export async function raiseTrackerBackupAlert(
 		later: true,
 		force: true
 	});
-	if (!created.id) throw new Error(`Tracker backup alert was refused: ${created.error}`);
+	if (!created.id) throw new TypeError(`Tracker backup alert was refused: ${created.error}`);
 	writeTrackerBackupState(stateFile, { alert_item: created.id });
 }
 

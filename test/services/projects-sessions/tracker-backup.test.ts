@@ -113,6 +113,15 @@ test('restore prepares a verified database that keeps local run state and gets a
 	restored.close();
 	expect(await hub.cli('backup', 'restore', taken.file, '--to', to)).toMatchObject({ code: 1 });
 	expect(hub.database.prepare('SELECT count(*) AS n FROM items').get()).toEqual({ n: 2 });
+	const alone = join(hub.root, 'alone.db');
+	expect(
+		await hub.cli('backup', 'restore', taken.file, '--to', alone, '--without-local-state')
+	).toMatchObject({ code: 0 });
+	const withoutLive = new DatabaseSync(alone);
+	expect(
+		withoutLive.prepare("SELECT 1 FROM sqlite_schema WHERE name = 'local_fixture'").get()
+	).toBeUndefined();
+	withoutLive.close();
 	writeFileSync(join(hub.directory, 'broken.db.gz'), 'garbage');
 	expect(await hub.cli('backup', 'verify', 'broken.db.gz')).toMatchObject({ code: 1 });
 	expect(readdirSync(hub.root).filter((name) => name.includes('.tmp'))).toEqual([]);

@@ -8,7 +8,6 @@ const flag = { type: 'boolean' } as const;
 const words = { type: 'string', multiple: true } as const;
 const askOptions = { option: words, recommend: text, confirm: text } as const;
 export const nativeTrackerCommonOptions = { json: flag, quiet: { ...flag, short: 'q' }, by: text };
-
 export function itemFields(input: Record<string, string | boolean | string[] | undefined>) {
 	const { tz, repo } = input;
 	const fields = Object.fromEntries(
@@ -189,7 +188,7 @@ export function nativeTrackerInspectionRequest(
 	words: string[],
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
-	if (command === 'backup' && words.join(' ') === 'now')
+	if (command === 'backup' && words.join() === 'now')
 		return { method: 'POST', path: '/backup/now' };
 	const adapter = command === 'adapter' ? nativeTrackerAdapterRequest(words, values) : undefined;
 	return adapter ?? nativeTrackerReadInspection(command, words);

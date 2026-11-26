@@ -27,10 +27,11 @@ export function readTrackerNodeInspection(
 	}
 }
 
-function backupList({ backups, backupDirectory }: TrackerNativeRuntimeService) {
-	if (!backups) return readTrackerBackupList(backupDirectory);
-	const { service, directory, externalDirectory } = backups;
-	return readTrackerBackupList(directory, { status: service.status(), externalDirectory });
+function backupList({
+	backups: { directory, externalDirectory, service }
+}: TrackerNativeRuntimeService) {
+	const hub = service && { status: service.status(), externalDirectory };
+	return readTrackerBackupList(directory, hub);
 }
 
 function autolaunchStatus(

@@ -44,7 +44,7 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 	if (!args.length || args[0] === 'help' || args.includes('--help') || args.includes('-h')) {
 		console.log(
 			`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
-				'Subcommands: autolaunch [status|dry-run], adapter list|run <source> [--backfill-comments] [--dry-run], backup now|list|verify <file>|restore <file> --to <new path>'
+				'Subcommands: autolaunch [status|dry-run], adapter list|run <source> [--backfill-comments] [--dry-run], backup now|list|verify <file>|restore <file> --to <new path> [--without-local-state]'
 		);
 		return 0;
 	}

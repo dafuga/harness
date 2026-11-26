@@ -38,7 +38,7 @@ function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolea
 	const notification = runtime.notifications?.status();
 	return {
 		chief_of_staff: notification?.chiefOfStaff ?? 'not configured',
-		backup: runtime.backups?.service.status() ?? trackerBackupsOff(hub),
+		backup: trackerBackupsStatus(runtime, hub),
 		machines: [],
 		webhook: notification?.webhook ?? defaultWebhookStatus(hub),
 		jobs: trackerJobsStatus(runtime),
@@ -48,7 +48,8 @@ function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolea
 	};
 }
 
-function trackerBackupsOff(hub: boolean) {
+function trackerBackupsStatus({ backups }: TrackerNativeRuntimeService, hub: boolean) {
+	if (backups.service) return backups.service.status();
 	return {
 		enabled: false,
 		note: hub ? 'native backups are not enabled on this hub' : 'only the hub takes backups'

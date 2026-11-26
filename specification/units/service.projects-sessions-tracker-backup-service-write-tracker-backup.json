@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-backup-service-write-tracker-backup",
+	"uid": "u_vak6ztnr2f",
+	"kind": "service",
+	"title": "writeTrackerBackup",
+	"responsibility": "Owns the writeTrackerBackup service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-backup-service/writeTrackerBackup.ts"],
+		"symbols": ["writeTrackerBackup"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "writeTrackerBackup.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "writeTrackerBackup.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeTrackerBackup.date",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "writeTrackerBackup",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "writeTrackerBackup",
+				"inputs": [
+					{
+						"name": "writeTrackerBackup.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "writeTrackerBackup.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeTrackerBackup.date",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeTrackerBackup",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-tracker-backup-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-backup-service/writeTrackerBackup.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-backup-service/writeTrackerBackup.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

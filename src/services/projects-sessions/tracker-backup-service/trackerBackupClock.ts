@@ -1,3 +1,4 @@
+// @harness-uid u_bkdzehyzad
 /** Local calendar date and HH:MM in the backup time zone. */
 export function trackerBackupClock(now: number, timeZone: string) {
 	const local = new Intl.DateTimeFormat('sv-SE', {

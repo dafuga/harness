@@ -72,7 +72,7 @@ export class TrackerSupervisorService {
 			this.runtime;
 		const ticks = {
 			...(telemetry && { telemetry }),
-			...(backups && { backup: () => backups.service.tick() }),
+			...(backups.service && { backup: () => backups.service!.tick() }),
 			...(watchdog && { watchdog: watchdog.tick }),
 			...(scheduler && { dispatch: (signal: AbortSignal) => scheduler.tick(signal) }),
 			...(recurring && { recurring: (signal: AbortSignal) => recurring.tick(signal) }),

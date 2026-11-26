@@ -1,15 +1,16 @@
+// @harness-uid u_d6mtahlgx2
 import { randomBytes, randomUUID } from 'node:crypto';
 import { existsSync, linkSync, mkdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { openSqlite } from '../../../adapters/development-tooling/openSqlite';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
+import type { TrackerBackupTable } from './restoreTrackerBackup.types';
 import { assertTrackerBackupIntegrity, expandTrackerBackup } from './trackerBackupFiles';
 
 // The backup supplies the synced journal. Every other table records what this computer really
 // did (runs, deliveries, reminders), which must not roll back and happen again.
 const restoredTables = new Set(['items', 'item_notes', 'ops', 'meta']);
-type Table = { name: string; sql: string };
 
 /** Prove a backup expands to an intact Tracker journal, without touching any live file. */
 export async function verifyTrackerBackup(backup: string) {
@@ -28,15 +29,16 @@ export async function verifyTrackerBackup(backup: string) {
  * Build a restored database at a new path. A new database identity makes every spoke
  * send its whole journal again, which recovers changes newer than the backup.
  */
-export async function restoreTrackerBackup(request: { backup: string; live: string; to: string }) {
+export async function restoreTrackerBackup(request: { backup: string; live?: string; to: string }) {
 	const { backup, live, to } = request;
 	if (existsSync(to)) throw new TypeError(`restore target already exists: ${to}`);
-	if (!existsSync(live)) throw new TypeError(`live database not found: ${live}`);
+	if (live && !existsSync(live))
+		throw new TypeError(`live database not found: ${live} (see --without-local-state)`);
 	const temporary = `${to}.tmp-${randomBytes(4).toString('hex')}`;
 	try {
 		await expandTrackerBackup(backup, temporary);
 		inspectTrackerBackup(temporary);
-		const carried = carryOverLocalState(live, temporary);
+		const carried = prepareRestoredCopy(temporary, live);
 		const summary = inspectTrackerBackup(temporary);
 		linkSync(temporary, to);
 		return { ...summary, carried };
@@ -57,31 +59,37 @@ function inspectTrackerBackup(path: string) {
 	}
 }
 
-function carryOverLocalState(live: string, restored: string): string[] {
+/** With no usable live database, local records stay as they were when the backup was taken. */
+function prepareRestoredCopy(restored: string, live?: string): string[] {
 	const database = openSqlite(restored);
 	try {
-		database.prepare('ATTACH DATABASE ? AS current').run(live);
-		database.exec('BEGIN');
-		const tables = database
-			.prepare(
-				"SELECT name, sql FROM current.sqlite_schema WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
-			)
-			.all() as Table[];
-		const local = tables.filter(({ name }) => !restoredTables.has(name));
-		for (const table of local) copyTable(database, table);
+		const carried = live ? carryOverLocalState(database, live) : [];
 		database.prepare("UPDATE meta SET v = ? WHERE k = 'db_id'").run(randomUUID());
-		database.exec('COMMIT');
-		database.exec('DETACH DATABASE current');
 		// One self-contained file: nothing is left in a WAL when it is moved into place.
 		database.exec('PRAGMA journal_mode = DELETE');
-		return local.map(({ name }) => name);
+		return carried;
 	} finally {
 		database.close();
 	}
 }
 
+function carryOverLocalState(database: SqliteDatabase, live: string): string[] {
+	database.prepare('ATTACH DATABASE ? AS current').run(live);
+	database.exec('BEGIN');
+	const tables = database
+		.prepare(
+			"SELECT name, sql FROM current.sqlite_schema WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
+		)
+		.all() as TrackerBackupTable[];
+	const local = tables.filter(({ name }) => !restoredTables.has(name));
+	for (const table of local) copyTable(database, table);
+	database.exec('COMMIT');
+	database.exec('DETACH DATABASE current');
+	return local.map(({ name }) => name);
+}
+
 /** Match columns by name so an older backup's schema still works. */
-function copyTable(database: SqliteDatabase, { name, sql }: Table): void {
+function copyTable(database: SqliteDatabase, { name, sql }: TrackerBackupTable): void {
 	const quoted = (value: string) => `"${value.replaceAll('"', '""')}"`;
 	const columns = (schema: 'main' | 'current') =>
 		(
