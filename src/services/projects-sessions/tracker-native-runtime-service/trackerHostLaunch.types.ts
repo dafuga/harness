@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { z } from 'zod';
+import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
 import type { TrackerDispatchRunner } from '../TrackerDispatchSchedulerService.types';
 import type {
 	TrackerRunReceipt,
@@ -14,6 +15,12 @@ import type { claudeStartupFailure, hostSession, hostStart } from './trackerHost
 export type ClaudeStartupFailure = z.infer<typeof claudeStartupFailure>;
 
 export type TrackerHostSession = z.infer<typeof hostSession>;
+
+export interface TrackerHostDispatchSettings {
+	now: () => number;
+	automaticEnabled?: () => boolean;
+	ladderConfig?: TrackerLadderConfig;
+}
 
 export interface TrackerHostRouteItem {
 	project?: string | null;

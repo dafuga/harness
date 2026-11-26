@@ -1,3 +1,4 @@
+// @harness-uid u_57drtxvxop
 import { z } from 'zod';
 
 const price = z.strictObject({

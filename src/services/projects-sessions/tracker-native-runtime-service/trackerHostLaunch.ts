@@ -16,6 +16,7 @@ import type {
 	TrackerWorkerClient
 } from './nativeTrackerHostEffects.types';
 import type {
+	TrackerHostDispatchSettings,
 	TrackerHostRoute,
 	TrackerHostRouteItem,
 	TrackerHostTarget
@@ -178,13 +179,10 @@ function approvedOpsWorkdir(item: TrackerHostRouteItem, node: string, workdir?: 
 export function configuredHostDispatch(
 	store: TrackerPersistenceService,
 	effects: TrackerNativeRuntimeOptions['hostEffects'],
-	{
-		now,
-		automaticEnabled,
-		ladderConfig
-	}: Pick<TrackerNativeRuntimeOptions, 'automaticEnabled' | 'ladderConfig'> & { now: () => number }
+	settings: TrackerHostDispatchSettings
 ) {
 	const { launch, watchdog, adapter, workerClient } = effects ?? {};
+	const { now, automaticEnabled, ladderConfig } = settings;
 	return launch
 		? trackerHostLaunch(store, launch, {
 				workerClient,

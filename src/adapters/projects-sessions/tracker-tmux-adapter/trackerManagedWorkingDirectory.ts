@@ -1,3 +1,4 @@
+// @harness-uid u_uaeavhckin
 import { realpathSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
