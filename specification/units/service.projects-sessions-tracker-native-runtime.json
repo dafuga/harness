@@ -29,10 +29,12 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerReminderHost.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
@@ -120,6 +122,7 @@
 			"configuredTrackerDestinations",
 			"configuredTrackerReminderHost",
 			"composeTrackerDispatch",
+			"PeerStarts",
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
 			"TrackerHostEffectsMode",
@@ -131,15 +134,16 @@
 			"TrackerHostAdapterConfig",
 			"TrackerWorkerClient",
 			"TrackerGuestAuthWriter",
+			"trackerMachineSample",
+			"trackerRunnerSample",
 			"composeTrackerLinks",
 			"trackerHubMachines",
 			"localRunnerStatus",
 			"machineReport",
-			"trackerRunnerSample",
-			"trackerMachineSample",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
 			"composeTrackerTelemetry",
+			"TrackerTelemetryParts",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
 			"adapterFailover",
@@ -369,6 +373,11 @@
 				"required": true
 			},
 			{
+				"name": "composeTrackerDispatch.machines",
+				"type": "PeerStarts",
+				"required": false
+			},
+			{
 				"name": "liveTrackerDuePolicy.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -464,9 +473,9 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerTelemetry.scheduler",
-				"type": "TrackerDispatchSchedulerService",
-				"required": false
+				"name": "composeTrackerTelemetry.parts",
+				"type": "TrackerTelemetryParts",
+				"required": true
 			},
 			{
 				"name": "readTrackerDuePreview.runtime",
@@ -2321,6 +2330,11 @@
 						"name": "composeTrackerDispatch.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
+					},
+					{
+						"name": "composeTrackerDispatch.machines",
+						"type": "PeerStarts",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -2534,9 +2548,9 @@
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.scheduler",
-						"type": "TrackerDispatchSchedulerService",
-						"required": false
+						"name": "composeTrackerTelemetry.parts",
+						"type": "TrackerTelemetryParts",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -5498,6 +5512,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-fleet",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-recurrence",
 			"via": "import",
 			"origin": "derived"
@@ -5518,7 +5542,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-sample-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-telemetry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-resource-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-spoke-telemetry",
 			"via": "import",
 			"origin": "derived"
 		},

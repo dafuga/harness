@@ -60,12 +60,14 @@
 			{
 				"name": "HubHomeCards.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Sends an answer tapped on a Needs you row and returns what became of it."
 			},
 			{
 				"name": "HubHomeCards.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
-				"required": true
+				"required": true,
+				"description": "Reads the later outcome of an answer the Hub queued."
 			}
 		],
 		"outputs": [
