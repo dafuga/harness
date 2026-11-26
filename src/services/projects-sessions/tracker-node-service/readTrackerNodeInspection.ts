@@ -4,6 +4,10 @@ import { TrackerRunReadRepository } from '../../../repositories/projects-session
 import { ladderFrom } from '../../../utils/agents-providers/parseTrackerModelSpec';
 import { trackerNodeNames } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { readTrackerDuePreview } from '../tracker-native-runtime-service/readTrackerDuePreview';
+import {
+	trackerCodexPause,
+	trackerQuotaHold
+} from '../tracker-native-runtime-service/trackerProviderHolds';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { readTrackerBackupList } from './readTrackerBackupList';
@@ -43,9 +47,10 @@ function autolaunchStatus(
 				: 'runner: launches items assigned to this computer',
 		names: trackerNodeNames(store.node, role === 'hub'),
 		quota_holds: {
-			codex: readQuotaHold(store.getMeta('autolaunch_quota_codex')),
-			claude: readQuotaHold(store.getMeta('autolaunch_quota_claude'))
+			codex: trackerQuotaHold(store, 'codex'),
+			claude: trackerQuotaHold(store, 'claude')
 		},
+		...trackerCodexPause(store, runtime.now()),
 		scheduler: readTrackerDuePreview(runtime),
 		active: active.map((run) => ({
 			run: run.id,
@@ -60,10 +65,6 @@ function autolaunchStatus(
 		waiting_on: scheduler?.runnerStatus().waiting_on ?? null,
 		pending_events: runs.pendingEvents()
 	};
-}
-
-function readQuotaHold(value: string | null): string | null {
-	return value === '' ? null : value;
 }
 
 function adapterList({ store, adapter }: TrackerNativeRuntimeService) {

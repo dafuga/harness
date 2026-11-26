@@ -9,7 +9,7 @@ import { TrackerNotificationSourceRepository } from '../../repositories/projects
 import { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
 import type { TrackerAdapterPollService } from './TrackerAdapterPollService';
-import { TrackerHubSyncService } from './TrackerHubSyncService';
+import type { TrackerHubSyncService } from './TrackerHubSyncService';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
 import { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type {
@@ -20,6 +20,8 @@ import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
+import { trackerAutolaunchAdmin } from './tracker-native-runtime-service/trackerAutolaunchAdmin';
+import { composeTrackerResponder } from './tracker-native-runtime-service/composeTrackerResponder';
 import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
 import {
 	configuredHostWatchdog,
@@ -90,7 +92,11 @@ export class TrackerNativeRuntimeService {
 			{ ...options, dispatch },
 			this.scheduler
 		));
-		this.sync = composeResponder(store, runs, options, composed);
+		this.sync = composeTrackerResponder(store, runs, options, composed);
+	}
+
+	get admin() {
+		return trackerAutolaunchAdmin(this.store, this);
 	}
 
 	spokeStatus() {
@@ -145,17 +151,6 @@ function composeItemApi(
 		runs,
 		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }
 	});
-}
-
-function composeResponder(
-	store: TrackerPersistenceService,
-	runs: TrackerRunReadRepository,
-	{ syncResponder, role }: TrackerNativeRuntimeOptions,
-	permits: Pick<ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue'>
-) {
-	if (!syncResponder) return undefined;
-	const runStore = role === 'hub' ? () => runs : undefined;
-	return new TrackerHubSyncService({ runs: runStore, ...permits, ...syncResponder, store });
 }
 
 function validateLinks({

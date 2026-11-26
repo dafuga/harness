@@ -175,7 +175,8 @@ function selectDueLaunch(
 		return { reason: 'due launch assigned to a different computer' };
 	const pick = policy.pickModel(item);
 	if ('error' in pick) return { reason: pick.error };
-	return { target, pick, reason: choice.why } as const;
+	const held = target === policy.node ? policy.providerHold?.(pick.rung.cli) : null;
+	return held ? { reason: held } : ({ target, pick, reason: choice.why } as const);
 }
 
 function dueIntentHold(

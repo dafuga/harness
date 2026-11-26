@@ -40,7 +40,7 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 	if (!args.length || args[0] === 'help' || args.includes('--help') || args.includes('-h')) {
 		console.log(
 			`Usage: tracker <command> [arguments] [--json]\nNative commands: ${nativeTrackerCommands}\n` +
-				'Subcommands: autolaunch [status|dry-run], adapter list|run <source> [--backfill-comments] [--dry-run], backup list'
+				'Subcommands: autolaunch [status|dry-run|pause|resume|clear-quota <codex|claude>], adapter list|run <source> [--backfill-comments] [--dry-run], backup list'
 		);
 		return 0;
 	}

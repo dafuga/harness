@@ -101,6 +101,8 @@ export interface TrackerDispatchPolicy {
 		intent: TrackerLaunchIntent,
 		rung: TrackerLaunchRung | null
 	): string | null;
+	/** Why this computer may not start the provider now. */
+	providerHold?(cli: string): string | null;
 	pickModel(item: TrackerDispatchItem): TrackerLaunchPick | { error: string };
 	retryModel(item: TrackerDispatchItem, run: TrackerRunReceipt): TrackerLaunchRung | null;
 	maxRetries?: number;

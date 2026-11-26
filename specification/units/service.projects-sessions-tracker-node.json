@@ -25,6 +25,7 @@
 			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerNodeInspection.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerAutolaunchCommand.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerDigestSession.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types.ts",
@@ -46,6 +47,7 @@
 			"holdLegacySupervisorSocket",
 			"readTrackerBackupList",
 			"readTrackerNodeInspection",
+			"trackerCommandOrItemResponse",
 			"trackerDigestSession",
 			"loadTrackerNodeConfig",
 			"trackerSyncPort",
@@ -118,6 +120,26 @@
 			},
 			{
 				"name": "readTrackerNodeInspection.supervisor",
+				"type": "TrackerSupervisorService",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.supervisor",
 				"type": "TrackerSupervisorService",
 				"required": true
 			},
@@ -281,6 +303,10 @@
 			{
 				"name": "readTrackerNodeInspection",
 				"type": "Response | undefined"
+			},
+			{
+				"name": "trackerCommandOrItemResponse",
+				"type": "unknown"
 			},
 			{
 				"name": "trackerDigestSession",
@@ -491,6 +517,39 @@
 					{
 						"name": "readTrackerNodeInspection",
 						"type": "Response | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCommandOrItemResponse",
+				"inputs": [
+					{
+						"name": "trackerCommandOrItemResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.supervisor",
+						"type": "TrackerSupervisorService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCommandOrItemResponse",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

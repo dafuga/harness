@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { nativeTrackerAutolaunchRequest } from './nativeTrackerAutolaunchRequest';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
 
 const inspectionRoutes = new Map<string, Record<string, string>>([
@@ -29,7 +30,8 @@ export function nativeTrackerInspectionRequest(
 	values: Record<string, string | boolean | undefined>
 ): NativeTrackerRequest | undefined {
 	const adapter = command === 'adapter' ? nativeTrackerAdapterRequest(words, values) : undefined;
-	return adapter ?? nativeTrackerReadInspection(command, words);
+	const admin = command === 'autolaunch' ? nativeTrackerAutolaunchRequest(words) : undefined;
+	return admin ?? adapter ?? nativeTrackerReadInspection(command, words);
 }
 
 function nativeTrackerReadInspection(
