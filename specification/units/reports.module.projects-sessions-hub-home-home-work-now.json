@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-hub-home-home-work-now",
+	"uid": "u_umjvzneh5k",
+	"kind": "module",
+	"title": "homeWorkNow",
+	"responsibility": "Owns the homeWorkNow library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeWorkNow.ts"],
+		"symbols": ["homeWorkNow"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "homeWorkNow.item",
+				"type": "TrackerItemRecord",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "homeWorkNow",
+				"type": "string | null"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "homeWorkNow",
+				"inputs": [
+					{
+						"name": "homeWorkNow.item",
+						"type": "TrackerItemRecord",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeWorkNow",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeWorkNow.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/hub-home/homeWorkNow.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

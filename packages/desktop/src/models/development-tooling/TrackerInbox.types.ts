@@ -73,6 +73,8 @@ export interface InboxRow {
 	bucket: InboxBucket;
 	/** The open structured ask of a Needs you row: its question and when it was raised. */
 	ask?: { question: string; since: string | null };
+	/** The item behind a Needs you row, read for its choices. Its revision is what a tap answers. */
+	review?: InboxDetail;
 }
 
 export interface InboxDetail {

@@ -5,6 +5,7 @@ import { onTestFinished, vi } from 'vitest';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../src/repositories/projects-sessions/TrackerRunReadRepository';
+import { idleHostResources } from './trackerHostResourceFixture';
 import { managedFixtureBindings } from './trackerManagedProcessFixture';
 import type { TemporaryRepo } from './temporary.types';
 import type { ReviewFixture } from './trackerCompletionReviewFixture.types';
@@ -34,6 +35,7 @@ export function completionReviewFixture({ root, git }: TemporaryRepo, verify?: s
 				role: 'hub',
 				hostEffects: {
 					workerClient: client,
+					hostResources: idleHostResources(),
 					launch: {
 						managed: config,
 						due: false,

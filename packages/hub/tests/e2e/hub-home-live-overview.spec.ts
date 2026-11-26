@@ -1,47 +1,9 @@
 import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
-import { buildHomeLiveOverview } from '../../../reports/src/lib/projects-sessions/hub-home/homeLiveOverview';
-import {
-	buildHomeSnapshot,
-	noProviders
-} from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
-import { readTrackerSources } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
-import {
-	recordedTracker,
-	recordedTrackerFetch,
-	type RecordedTracker
-} from '../../test/support/recordedTracker';
-import { hubHomeFixture } from './hub-home-fixture';
-import { linkedComputersFixture } from './linked-computers-fixture';
+import { recordedTracker } from '../../test/support/recordedTracker';
+import { liveRows, macAnswer, overview, productionHome } from './hub-home-live-fixture';
 
 test.setTimeout(90000);
-
-/** What an updated Mac answers `homeSnapshot` with, built from the recorded Tracker reading. */
-async function macAnswer(tracker: RecordedTracker) {
-	const now = Date.parse(tracker.recordedAt);
-	const sources = await readTrackerSources(recordedTrackerFetch(tracker), true);
-	return {
-		...buildHomeSnapshot(sources, noProviders, now),
-		liveOverview: buildHomeLiveOverview(sources, now)
-	};
-}
-
-/** Hub as it runs in production: the owner is signed in and nothing is uploaded or stored. */
-async function productionHome(page: Page, answer?: object, live = false) {
-	await hubHomeFixture(page, 'default');
-	const requests: { method: string; path: string }[] = [];
-	page.on('request', (request) =>
-		requests.push({ method: request.method(), path: new URL(request.url()).pathname })
-	);
-	await page.route('**/api/hub-home', (route) =>
-		route.fulfill({ json: { granted: true, snapshot: null, controlled: [], live } })
-	);
-	if (answer) await linkedComputersFixture(page, answer);
-	return requests;
-}
-
-const overview = (page: Page) => page.getByRole('region', { name: 'Live overview', exact: true });
-const liveRows = (page: Page) => overview(page).locator('.hh-live-row[data-state="running"]');
 
 async function expectNoSidewaysScroll(page: Page, width: number) {
 	const wide = await page.evaluate(() => {
@@ -53,6 +15,21 @@ async function expectNoSidewaysScroll(page: Page, width: number) {
 	});
 	expect(wide.page).toBeLessThanOrEqual(width);
 	expect(wide.right).toBeLessThanOrEqual(width);
+}
+
+/** Stacked on a phone, the heading, the summary and the source line are evenly spaced. */
+async function expectEvenHeaderSpacing(page: Page) {
+	const [heading, summary, source] = await Promise.all(
+		[
+			overview(page).getByRole('heading', { name: 'Live overview' }),
+			overview(page).getByRole('status'),
+			overview(page).getByText(/^From \d+ of /)
+		].map(async (line) => (await line.boundingBox())!)
+	);
+	const above = summary.y - (heading.y + heading.height);
+	const below = source.y - (summary.y + summary.height);
+	expect(Math.abs(below - above)).toBeLessThanOrEqual(2);
+	expect(below).toBeLessThanOrEqual(8);
 }
 
 for (const [device, width, height] of [
@@ -82,7 +59,6 @@ for (const [device, width, height] of [
 			await expect(row).toBeVisible();
 			for (const fact of [
 				'Running',
-				'Stage: Idea',
 				item.owner ?? 'No owner',
 				run.node,
 				run.effort ? `${run.model}:${run.effort}` : run.model,
@@ -96,6 +72,7 @@ for (const [device, width, height] of [
 			).toBeAttached();
 		await expect(overview(page)).toContainText('over an encrypted connection · read');
 		await expectNoSidewaysScroll(page, width);
+		if (device === 'phone') await expectEvenHeaderSpacing(page);
 		expect(requests.filter((entry) => entry.path === '/api/tracker-overview')).toEqual([]);
 		expect(requests.filter((entry) => entry.method === 'PUT')).toEqual([]);
 		if (process.env.TAKE_SCREENSHOT)
@@ -122,8 +99,27 @@ test('a paragraph-long title keeps its row short on a phone', async ({ page }) =
 	const other = tracker.runs.filter((entry) => entry.ended_at === null)[1];
 	const short = tracker.items.find((entry) => entry.id === other.item_id)!;
 	const oneLine = await height(overview(page).getByTitle(short.title, { exact: true }));
+	// The title reads as body text, not as the bold label of a disclosure.
+	const weight = (target: typeof title) =>
+		target.evaluate((node) => getComputedStyle(node).fontWeight);
+	expect(await weight(title)).toBe(await weight(overview(page).getByRole('status')));
 	// Two lines at the most, however long the title is.
 	expect(await height(title)).toBeLessThanOrEqual(oneLine * 2 + 1);
+
+	// A phone has no tooltip: a tap shows the whole title and the exact times in Lisbon.
+	await title.click();
+	expect(await height(title)).toBeGreaterThan(oneLine * 3);
+	const row = overview(page)
+		.locator('.hh-live-row')
+		.filter({ has: page.getByTitle(item.title) });
+	await expect(
+		row.getByText(
+			/^Started \d{1,2} \w{3,4} \d\d:\d\d · updated \d{1,2} \w{3,4} \d\d:\d\d, Lisbon time$/
+		)
+	).toBeVisible();
+	await expectNoSidewaysScroll(page, 390);
+	if (process.env.TAKE_SCREENSHOT)
+		await page.screenshot({ path: test.info().outputPath('live-overview-title-open.png') });
 });
 
 test('a change on the Mac shows within one turn, also while change notices are connected', async ({

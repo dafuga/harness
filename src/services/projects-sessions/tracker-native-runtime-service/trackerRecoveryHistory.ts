@@ -1,4 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
+import { trackerResourceHoldPrefix } from '../../../utils/projects-sessions/trackerHostResourceHold';
+import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { trackerHostCapacityHold } from './trackerHostAdmission';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import type { TrackerLaunchRung } from '../../agents-providers/TrackerDispatcherService.types';
@@ -6,7 +9,36 @@ import { handLaunchNode, handLaunchSelection } from './trackerHandLaunchSelectio
 import { sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerRecoveryState } from './trackerSessionRecovery.types';
 
-export function resetBudget(
+export const maxRecoveryAttempts = 3;
+export const emptyRecoveryState: TrackerRecoveryState = {
+	token: null,
+	requestedAt: 0,
+	retryAt: 0,
+	failures: []
+};
+
+export function recoveryBudget(
+	store: TrackerPersistenceService,
+	{ key, latest, item }: { key: string; latest?: TrackerListedRun; item: TrackerItem }
+): TrackerRecoveryState {
+	const stored = JSON.parse(store.getMeta(key) ?? 'null') as TrackerRecoveryState | null;
+	const exhausted = stored?.failures.length === maxRecoveryAttempts;
+	// Unblocking the held item is how Chief of Staff allows another attempt.
+	const cleared = item.status !== 'blocked';
+	if (!stored || (exhausted && cleared) || resetBudget(stored, latest, item))
+		return emptyRecoveryState;
+	return {
+		...stored,
+		failures: stored.failures.filter((reason) => !hostWait(reason))
+	};
+}
+
+/** A busy or short computer delays recovery without spending a relaunch attempt. */
+export function hostWait(reason: string) {
+	return reason === trackerHostCapacityHold || reason.startsWith(trackerResourceHoldPrefix);
+}
+
+function resetBudget(
 	state: TrackerRecoveryState | null,
 	run: TrackerListedRun | undefined,
 	item: TrackerItem

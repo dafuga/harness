@@ -77,6 +77,12 @@ export class BrowserComputerService {
 		}
 	}
 
+	/** One answer or note for this computer's Tracker, on the connection `home` already opened. */
+	async chat(message: object): Promise<unknown> {
+		if (!this.ready) throw new RemoteFailure('offline');
+		return (await this.ready).wire.request<unknown>('homeChat', { ...message });
+	}
+
 	private async open(hostId: string, lost: () => void): Promise<DeviceConnectionService> {
 		if (!remotePatterns.hostId.test(hostId))
 			throw new RemoteFailure('failed', 'Computer address is invalid.');
