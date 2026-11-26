@@ -1,0 +1,59 @@
+{
+	"name": "linux-main-ci",
+	"goal": "Linux Full check passes: Tracker rehearsal rejects a duplicate with exit 1, cutover verification reads SQLite snapshots, and the Web workspace registry test fits its measured full-index cost",
+	"createdAt": "2026-11-26T16:24:55.096Z",
+	"updatedAt": "2026-11-26T16:29:22.555Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-26T16:29:18.804Z",
+			"evidence": "Main Full check job 139905472453 (928c88cc3d): rehearsal duplicate --port expected exit 1 got 2; verify-cutover exit 2 'Unable to read SQLite snapshot'. Job 139921185581 (4bb678a83e): shared-workspace-registry showUnit test timed out at 60000ms. Both e2e failures reproduced in a node:24 + bun 1.2.18 Linux container."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-26T16:29:22.555Z",
+			"evidence": "Tests existed but sessions verify on macOS, where Apple SQLite always parses file: URIs and the OS ephemeral range (49152-65535) equals the accepted --port range; Linux Full check was the only Linux run and PRs merged while it was red or queued. The rehearsal helper never asserted the assigned port is acceptable to --port, so the cause surfaced as an unexplained exit 2; it now asserts the range. The registry test shared a 60s budget between two full repository indexes."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "pending"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
