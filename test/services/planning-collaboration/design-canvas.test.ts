@@ -87,6 +87,19 @@ test('attaching keeps the stage text and replaces only this canvas', () => {
 	]);
 });
 
+test('from a detached checkout the viewer link names the commit, as there is no branch', () => {
+	service.create('cards', 'Cards');
+	const source = {
+		repository: 'https://github.com/dafuga/harness',
+		commit: 'b'.repeat(40),
+		branch: 'HEAD',
+		viewer: 'https://hub.example.test/projects/p1'
+	};
+	expect(canvasArtifact(service.read('cards'), source).links?.[0].url).toBe(
+		`https://hub.example.test/projects/p1/designs/cards?commit=${source.commit}`
+	);
+});
+
 test('only a GitHub remote becomes a link, and never with its credentials', () => {
 	expect(githubRepository('https://user:pw@github.com/a/b')).toBe('https://github.com/a/b');
 	expect(() => githubRepository('https://example.test/a/b')).toThrow(/GitHub/);
