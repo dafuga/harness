@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-form",
@@ -90,6 +91,11 @@
 		},
 		{
 			"unit": "hub.module.networking-security-hub-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
 			"via": "import",
 			"origin": "derived"
 		},

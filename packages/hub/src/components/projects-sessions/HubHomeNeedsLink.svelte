@@ -65,7 +65,8 @@
 		await tick();
 		const list = document.getElementById('hh-needs-title')?.closest('section');
 		list?.scrollIntoView({ block: 'start' });
-		list?.querySelector('button')?.focus({ preventScroll: true });
+		// The row that opens the chat, never one of its answer buttons: Enter must not answer.
+		list?.querySelector<HTMLElement>('.hh-needs-row')?.focus({ preventScroll: true });
 	}
 
 	$effect(() => {

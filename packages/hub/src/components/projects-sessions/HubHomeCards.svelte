@@ -22,7 +22,8 @@
 		warningFor
 	} from './hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
-	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
+	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
+	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
@@ -31,7 +32,17 @@
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 
-	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
+	let {
+		view,
+		open,
+		send,
+		receipt
+	}: {
+		view: HomeView;
+		open: OpenHomeSection;
+		send: SendHomeChat;
+		receipt: (id: string) => Promise<HomeChatReceipt>;
+	} = $props();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
 	const recipient = $derived(currentAgent([...(view.agents ?? []), ...view.asks]));
 	const working = $derived(view.agents?.filter(isWorking).length ?? 0);
@@ -58,7 +69,7 @@
 	</EmptyState>
 {/snippet}
 
-<HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} />
+<HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} {send} {receipt} />
 <HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard

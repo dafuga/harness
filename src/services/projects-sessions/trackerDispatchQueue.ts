@@ -1,6 +1,7 @@
 // @harness-uid u_4rnjtzp6cn
 import { trackerHostCapacityHold } from './tracker-native-runtime-service/trackerHostAdmission';
 import { randomUUID } from 'node:crypto';
+import { awaitStartEvidence, trackerStartError } from './trackerStartError';
 import {
 	automaticQueueHold,
 	queuedRung
@@ -126,13 +127,8 @@ export class TrackerDispatchQueue {
 		if (result.status !== 'start') return false;
 		const { run } = result;
 		const event = await startReservedRun(this.options.runner, result, signal);
-		if (!event) {
-			this.waits.set(run.item_id, {
-				token: run.auto_token,
-				reason: 'waiting for host startup evidence'
-			});
-			return false;
-		}
+		if (!event || (event.type === 'startup-failed' && event.pending))
+			return awaitStartEvidence({ waits: this.waits, dispatcher: this.dispatcher }, run, event);
 		const observed = await this.dispatcher.record(run.item_id, run, event);
 		return event.type === 'session' && observed.status === 'recorded';
 	}
@@ -193,9 +189,9 @@ async function startReservedRun(
 			signal,
 			launchCompletionInstructions(reservation.run.item_id)
 		);
-	} catch {
+	} catch (error) {
 		// The host might have started the session before losing its reply.
-		return undefined;
+		return trackerStartError(error instanceof Error ? error.message : String(error));
 	} finally {
 		signal.throwIfAborted();
 	}

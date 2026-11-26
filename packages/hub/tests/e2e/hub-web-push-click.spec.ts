@@ -21,7 +21,7 @@ for (const size of ['desktop', 'phone'] as const) {
 		await webPushFixture(page, { permission: 'granted' });
 		await open(page, size, '/?needs=all');
 		const list = page.getByRole('region', { name: /^Blocked - needs you/ });
-		await expect(list.getByRole('button').first()).toBeFocused();
+		await expect(list.locator('.hh-needs-row').first()).toBeFocused();
 		await expect(page.getByRole('dialog')).toHaveCount(0);
 		await expect(page).toHaveURL(/\/$/);
 		await shot(page, `notification-click-list-${size}`);

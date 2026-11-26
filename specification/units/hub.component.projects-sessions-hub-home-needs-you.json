@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -46,6 +47,16 @@
 				"type": "OpenHomeSection",
 				"required": true,
 				"description": "Opens a Home section on the asking agent."
+			},
+			{
+				"name": "HubHomeNeedsYou.send",
+				"type": "SendHomeChat",
+				"required": true
+			},
+			{
+				"name": "HubHomeNeedsYou.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -61,6 +72,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",

@@ -16,6 +16,7 @@
 			"readHubPush",
 			"turnOnHubPush",
 			"turnOffHubPush",
+			"forgetHubPush",
 			"saveQuietHours",
 			"PushQuietHours",
 			"HubPushSettings",
@@ -49,6 +50,11 @@
 				"type": "BrowserApi",
 				"required": true,
 				"description": "The signed-in same-origin Hub API."
+			},
+			{
+				"name": "forgetHubPush.api",
+				"type": "BrowserApi",
+				"required": true
 			},
 			{
 				"name": "saveQuietHours.api",
@@ -149,6 +155,24 @@
 						"name": "turnOffHubPush",
 						"type": "Promise<HubPushReading | null>",
 						"description": "The state after unsubscribing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "forgetHubPush",
+				"inputs": [
+					{
+						"name": "forgetHubPush.api",
+						"type": "BrowserApi",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "forgetHubPush",
+						"type": "Promise<void>"
 					}
 				],
 				"errors": [],

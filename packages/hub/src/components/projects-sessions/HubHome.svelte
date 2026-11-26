@@ -8,7 +8,6 @@
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 	import type {
-		HomeChatInput,
 		HomeChatReceipt,
 		HomeSection
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -170,9 +169,6 @@
 		return request;
 	}
 
-	const send = (message: HomeChatInput) =>
-		api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message);
-
 	async function changeSession(id: string, add: boolean) {
 		const result = await api.send<{ controlled: string[] }>(
 			add ? 'POST' : 'DELETE',
@@ -197,7 +193,7 @@
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} />
+			<HubHomeCards {view} {open} send={reads.send} {receipt} />
 		</hx-main>
 		<HubHomeNeedsLink {view} {open} {close} reload={refresh} dialog={selected !== null} />
 		{#if selected}
@@ -206,7 +202,7 @@
 				{view}
 				{agentId}
 				{open}
-				{send}
+				send={reads.send}
 				{changeSession}
 				{receipt}
 				{readProject}

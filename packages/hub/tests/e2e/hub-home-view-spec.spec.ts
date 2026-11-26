@@ -104,7 +104,9 @@ async function chatWithSpec(page: Page, size: keyof typeof sizes) {
 for (const size of ['desktop', 'phone'] as const) {
 	test(`View spec reads the document beside the answer choices (${size})`, async ({ page }) => {
 		const { fixture, outside, proof } = await chatWithSpec(page, size);
-		const open = page.getByRole('button', { name: /View spec/ });
+		const open = page
+			.getByRole('list', { name: 'Tracker conversation' })
+			.getByRole('button', { name: /View spec/ });
 		await expect(open).toContainText(`PR ${attachment.pr}`);
 		await shot(page, `hub-chat-view-spec-${size}`);
 		await open.click();
