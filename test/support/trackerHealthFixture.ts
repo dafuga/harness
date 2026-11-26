@@ -51,17 +51,29 @@ export function healthyHubStatus() {
 	};
 }
 
-export function healthConfig(root: string, apiPort: number, syncPort: number) {
+export function unlinkedSpokeStatus() {
+	return {
+		node: 'fixture-spoke',
+		role: 'spoke',
+		pid: 4343,
+		sync: { connected: false, lastPullOk: '2026-01-15T06:00:00Z', pending_push: 1 }
+	};
+}
+
+export function healthConfig(
+	root: string,
+	{ apiPort, syncPort, role }: { apiPort: number; syncPort: number; role: unknown }
+) {
 	const path = join(root, 'tracker.json');
 	writeFileSync(
 		path,
 		JSON.stringify({
 			version: 1,
-			node: 'fixture-hub',
-			role: 'hub',
+			...(role === 'spoke'
+				? { node: 'fixture-spoke', role, upstream: { url: 'http://127.0.0.1:9' } }
+				: { node: 'fixture-hub', role: 'hub', syncPort }),
 			database: join(root, 'tracker.sqlite'),
 			apiPort,
-			syncPort,
 			legacyFenceFile: join(root, 'fence.json'),
 			syncSecretFile: join(root, 'sync.key')
 		}),
