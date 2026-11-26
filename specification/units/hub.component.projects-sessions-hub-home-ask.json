@@ -48,6 +48,12 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Receives each queued answer and its receipt. Defaults to nothing being notified."
+			},
+			{
+				"name": "HubHomeAsk.row",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
