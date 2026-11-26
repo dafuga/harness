@@ -14,6 +14,7 @@
 		warningFor,
 		warningLabel
 	} from './hubHomePresentation';
+	import { runMoment } from './hubHomeTime';
 	let {
 		subscription,
 		now,
@@ -171,7 +172,7 @@
 	{#if detailed}
 		<hx-div class="po-callout-actions">
 			<hx-time class="po-sessions" datetime={subscription.readAt}
-				>Read {new Date(subscription.readAt).toLocaleString()}</hx-time
+				>Read {runMoment(subscription.readAt)}</hx-time
 			>
 			{#if stale && reload}<hx-button type="button" class="po-action" onclick={reload}
 					>Read now</hx-button

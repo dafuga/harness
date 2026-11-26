@@ -151,3 +151,15 @@ for (const [balance, shown] of [
 		const codex = card(page, 'Quota').getByRole('region', { name: 'Codex' });
 		await expect(codex.locator('.hh-q-credits strong')).toHaveText(shown);
 	});
+
+test('the Quota dialog says when it was read as a Lisbon day and time', async ({ page }) => {
+	const fixture = await twoSubscriptions(page, 50);
+	fixture.snapshot.providers.quota = fixture.snapshot.providers.quota!.map((entry) => ({
+		...entry,
+		readAt: '2026-07-21T21:28:00.000Z'
+	}));
+	await page.reload();
+	const dialog = await openDialog(page, 'Quota');
+	await expect(dialog.getByText('Read 21 Jul 22:28', { exact: true }).first()).toBeVisible();
+	await expect(dialog).not.toContainText('PM');
+});
