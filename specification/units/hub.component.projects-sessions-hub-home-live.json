@@ -1,0 +1,144 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-live",
+	"uid": "u_z35itvtg7u",
+	"kind": "component",
+	"title": "HubHomeLive",
+	"responsibility": "Shows the Live overview on Hub Home: every project a linked computer reports, how fresh the reading is, and an honest notice when there is nothing current to show.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-live-project",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.shared-primitives-atoms-html-details",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-summary",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeLive.svelte"],
+		"symbols": ["HubHomeLive"]
+	},
+	"contract": {
+		"origin": "derived",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
+		"inputs": [
+			{
+				"name": "HubHomeLive.reading",
+				"type": "LinkedHome | null",
+				"required": true
+			},
+			{
+				"name": "HubHomeLive.now",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeLive",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-live-project",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.networking-security-linked-home",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-summary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

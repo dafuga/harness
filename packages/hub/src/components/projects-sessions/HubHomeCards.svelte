@@ -24,6 +24,7 @@
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -60,6 +61,7 @@
 {/snippet}
 
 <HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} />
+<HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard
 		section="agents"

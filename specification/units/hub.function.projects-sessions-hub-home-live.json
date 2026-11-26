@@ -1,0 +1,319 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-live",
+	"uid": "u_uioji3kibg",
+	"kind": "function",
+	"title": "hubHomeLive",
+	"responsibility": "Words the Live overview: stage, run state, age and summary labels, and why no overview can be shown.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeLive.ts"],
+		"symbols": [
+			"stageLabels",
+			"workStateLabels",
+			"statusWords",
+			"stageLabel",
+			"workStateLabel",
+			"span",
+			"workAge",
+			"workFacts",
+			"liveSummary",
+			"projectSummary",
+			"liveNotice"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "stageLabel.stage",
+				"type": "HomeWorkRow['stage']",
+				"required": true
+			},
+			{
+				"name": "workStateLabel.row",
+				"type": "HomeWorkRow",
+				"required": true
+			},
+			{
+				"name": "span.from",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "span.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "workAge.row",
+				"type": "HomeWorkRow",
+				"required": true
+			},
+			{
+				"name": "workAge.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "workFacts.row",
+				"type": "HomeWorkRow",
+				"required": true
+			},
+			{
+				"name": "liveSummary.overview",
+				"type": "HomeLiveOverview",
+				"required": true
+			},
+			{
+				"name": "projectSummary.project",
+				"type": "HomeWorkProject",
+				"required": true
+			},
+			{
+				"name": "liveNotice.reading",
+				"type": "LinkedHome | null",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "stageLabels",
+				"type": "unknown"
+			},
+			{
+				"name": "workStateLabels",
+				"type": "Record<HomeWorkState, string>"
+			},
+			{
+				"name": "statusWords",
+				"type": "unknown"
+			},
+			{
+				"name": "stageLabel",
+				"type": "unknown"
+			},
+			{
+				"name": "workStateLabel",
+				"type": "unknown"
+			},
+			{
+				"name": "span",
+				"type": "unknown"
+			},
+			{
+				"name": "workAge",
+				"type": "unknown"
+			},
+			{
+				"name": "workFacts",
+				"type": "unknown"
+			},
+			{
+				"name": "liveSummary",
+				"type": "unknown"
+			},
+			{
+				"name": "projectSummary",
+				"type": "unknown"
+			},
+			{
+				"name": "liveNotice",
+				"type": "string | null"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "stageLabel",
+				"inputs": [
+					{
+						"name": "stageLabel.stage",
+						"type": "HomeWorkRow['stage']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stageLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "workStateLabel",
+				"inputs": [
+					{
+						"name": "workStateLabel.row",
+						"type": "HomeWorkRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workStateLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "span",
+				"inputs": [
+					{
+						"name": "span.from",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "span.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "span",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workAge",
+				"inputs": [
+					{
+						"name": "workAge.row",
+						"type": "HomeWorkRow",
+						"required": true
+					},
+					{
+						"name": "workAge.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workAge",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workFacts",
+				"inputs": [
+					{
+						"name": "workFacts.row",
+						"type": "HomeWorkRow",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workFacts",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "liveSummary",
+				"inputs": [
+					{
+						"name": "liveSummary.overview",
+						"type": "HomeLiveOverview",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "liveSummary",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "projectSummary",
+				"inputs": [
+					{
+						"name": "projectSummary.project",
+						"type": "HomeWorkProject",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectSummary",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "liveNotice",
+				"inputs": [
+					{
+						"name": "liveNotice.reading",
+						"type": "LinkedHome | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "liveNotice",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.networking-security-linked-home",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeLive.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeLive.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

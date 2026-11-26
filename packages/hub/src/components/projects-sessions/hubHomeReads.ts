@@ -33,6 +33,9 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 			void stored();
 			void linked();
 		},
+		computers() {
+			void linked();
+		},
 		close() {
 			closed = true;
 			linkedHome?.service.close();
