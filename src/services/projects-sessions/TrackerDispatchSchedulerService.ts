@@ -28,10 +28,10 @@ export class TrackerDispatchSchedulerService {
 		private readonly options: TrackerDispatchSchedulerOptions
 	) {}
 
-	status() {
+	status(minimumAge?: number) {
 		return {
 			enabled: this.options.policy ? automaticEnabled(this.options.policy) : true,
-			stuck: this.repository.stuckRequests().map(({ flagged, ...item }) => ({
+			stuck: this.repository.stuckRequests(minimumAge).map(({ flagged, ...item }) => ({
 				...item,
 				computer: item.computer ?? 'box',
 				reason: flagged

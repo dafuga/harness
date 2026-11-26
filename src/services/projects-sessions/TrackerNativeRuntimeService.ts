@@ -28,7 +28,7 @@ import {
 } from './tracker-native-runtime-service/trackerHostWatchdog';
 import { configuredHostDispatch } from './tracker-native-runtime-service/trackerHostLaunch';
 import { composeTrackerDispatch } from './tracker-native-runtime-service/nativeTrackerDispatch';
-import { trackerDueItemPreview } from './tracker-native-runtime-service/readTrackerDuePreview';
+import { trackerItemViews } from './tracker-native-runtime-service/trackerLaunchWait';
 import {
 	composeTrackerLinks,
 	composeTrackerTelemetry,
@@ -141,7 +141,7 @@ function composeItemApi(
 		validateModel,
 		planLaunch,
 		manualLaunch,
-		schedulePreview: (item) => trackerDueItemPreview(runtime, item),
+		...trackerItemViews(runtime),
 		reject: runtime.dispatch && ((id, reason) => runtime.dispatch!.reject(id, reason)),
 		runs,
 		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }

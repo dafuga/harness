@@ -19,7 +19,6 @@ import type {
 } from './TrackerDispatchRepository.types';
 import {
 	dispatchItem,
-	dispatchJournalFields,
 	dispatchLaunchSource
 } from './tracker-dispatch-repository/dispatchItemFields';
 import {
@@ -28,14 +27,13 @@ import {
 	dispatchRunRows,
 	legacyDispatchRuns,
 	legacyUnstarted,
-	managedDispatchRuns,
-	persistDispatchRun
+	managedDispatchRuns
 } from './tracker-dispatch-repository/dispatchRunRows';
+import { commitDecision, dueStartKey } from './tracker-dispatch-repository/dispatchCommit';
 import { humanRedoCandidates } from './tracker-dispatch-repository/dispatchHumanRedo';
 import { trackerDispatchControl } from './tracker-dispatch-repository/dispatchLaunchControl';
 import { trackerRunSchema } from './tracker-dispatch-repository/trackerRunSchema';
 
-const dueStartKey = 'due_scheduler_last_grant';
 const previousDueStartKey = 'harness_dispatch_last_due_start';
 
 /** Share legacy run rows and the item journal while serializing native launch decisions. */
@@ -61,14 +59,9 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		itemId: string,
 		decide: (snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision
 	): Promise<TrackerDispatchResult> {
-		return this.store.commitLocal(() => {
-			const { result, writes } = decide(this.readSnapshot(itemId));
-			for (const run of writes?.runs ?? []) persistDispatchRun(this.store, run, this.node);
-			if (writes?.lastDueStartAt !== undefined)
-				this.store.writeMeta({ [dueStartKey]: String(writes.lastDueStartAt) });
-			const fields = writes?.item && dispatchJournalFields(writes.item);
-			return { result, operation: fields && { itemId, fields } };
-		});
+		const target = { store: this.store, node: this.node, now: this.options.now };
+		const read = (id: string) => this.readSnapshot(id);
+		return commitDecision(target, { itemId, read }, decide);
 	}
 
 	managedRuns(): TrackerRunReceipt[] {
@@ -127,8 +120,9 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		return humanRedoCandidates(this.store.database);
 	}
 
-	stuckRequests() {
-		return trackerStuckRequests(this.store.database, this.options.now?.() ?? Date.now());
+	stuckRequests(minimumAge = 300_000) {
+		const now = this.options.now?.() ?? Date.now();
+		return trackerStuckRequests(this.store.database, { now, minimumAge });
 	}
 
 	readSnapshot(itemId: string): TrackerDispatchSnapshot {
@@ -179,7 +173,10 @@ function hasUnmanagedSession(
 	);
 }
 
-function trackerStuckRequests(database: SqliteDatabase, now: number) {
+function trackerStuckRequests(
+	database: SqliteDatabase,
+	{ now, minimumAge }: { now: number; minimumAge: number }
+) {
 	const pending = database
 		.prepare(
 			`SELECT i.id, i.title, i.clocks, (i.needs_daniel = 1 AND i.resolved = 0) AS flagged,
@@ -205,7 +202,7 @@ function trackerStuckRequests(database: SqliteDatabase, now: number) {
 	return pending.flatMap(({ clocks, ...item }) => {
 		const clock = (JSON.parse(clocks) as { auto?: string }).auto;
 		const requested = clock && trackerClockMilliseconds(clock);
-		return requested && now - requested >= 300_000
+		return requested && now - requested >= minimumAge
 			? [{ ...item, requested_at: new Date(requested).toISOString() }]
 			: [];
 	});
