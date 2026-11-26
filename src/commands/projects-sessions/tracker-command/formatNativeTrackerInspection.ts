@@ -7,21 +7,19 @@ import {
 } from './formatNativeTrackerMachines';
 import type { NativeTrackerMachines } from './formatNativeTrackerMachines.types';
 import { formatListedRun, formatNativeTrackerItem } from './formatNativeTrackerItem';
+import { formatNativeTrackerAlert } from './formatNativeTrackerAlert';
 import type {
 	NativeTrackerAdapter,
+	NativeTrackerAdapterChange,
+	NativeTrackerAdapterReply,
+	NativeTrackerAlertReceipt,
 	NativeTrackerBackupList,
 	NativeTrackerInspection,
 	NativeTrackerItemDetail
 } from './nativeTrackerCli.types';
 
 /** Commands whose reply prints as JSON even without --json. */
-export const nativeJsonCommands = new Set([
-	'status',
-	'autolaunch',
-	'history',
-	'watchdog',
-	'needs-attention'
-]);
+export const nativeJsonCommands = new Set(['status', 'autolaunch', 'watchdog', 'needs-attention']);
 
 export function formatNativeTrackerInspection(command: string, data: NativeTrackerInspection) {
 	switch (command) {
@@ -29,6 +27,8 @@ export function formatNativeTrackerInspection(command: string, data: NativeTrack
 			return formatNativeTrackerMachines(data as unknown as NativeTrackerMachines);
 		case 'place':
 			return formatNativeTrackerPlacement(data as unknown as TrackerPlacement);
+		case 'alert':
+			return formatNativeTrackerAlert(data as unknown as NativeTrackerAlertReceipt);
 		case 'show':
 			return formatItemDetail(data as NativeTrackerItemDetail);
 		case 'adapter':
@@ -138,7 +138,20 @@ function formatBackupList({ status, files }: NativeTrackerBackupList): string {
 	return [head, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
 }
 
-export function formatNativeTrackerAdapterRun(
+export function formatNativeTrackerAdapterReply(reply: NativeTrackerAdapterReply): string {
+	return 'actions' in reply
+		? formatNativeTrackerAdapterRun(reply)
+		: formatNativeTrackerAdapterChange(reply);
+}
+
+function formatNativeTrackerAdapterChange(change: NativeTrackerAdapterChange): string {
+	if (change.removed) return `Removed ${change.id}`;
+	if (change.enabled_at !== undefined)
+		return `Enabled ${change.id} at ${new Date(change.enabled_at).toISOString()}`;
+	return `${change.id} is ${change.paused ? 'paused' : 'enabled'}`;
+}
+
+function formatNativeTrackerAdapterRun(
 	result: Extract<TrackerAdapterPollResult, { status: 'polled' }>
 ): string {
 	const lines = result.actions.map(({ action, title, url, item_id, auto_launch }) => {
@@ -151,16 +164,4 @@ export function formatNativeTrackerAdapterRun(
 		return `${verb} ${title} (${url})${link}${due}`;
 	});
 	return lines.join('\n') || 'No items to create or link.';
-}
-
-/** Report a refused request; duplicate refusals keep their own exit codes. */
-export function printResponseError(status: number, data: { error?: string; code?: string }) {
-	if (status === 404 && !data?.error) {
-		console.error('tracker: the configured listener does not serve native Tracker commands');
-		return 3;
-	}
-	console.error(`tracker: ${data?.error ?? `HTTP ${status}`}`);
-	if (data?.code === 'ignored_duplicate') return 4;
-	if (data?.code === 'open_duplicate') return 5;
-	return 1;
 }

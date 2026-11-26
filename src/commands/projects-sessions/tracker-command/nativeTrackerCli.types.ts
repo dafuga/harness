@@ -1,10 +1,22 @@
 // @harness-uid u_r7qgepnoax
+import type { TrackerItemMatch } from '../../../utils/projects-sessions/checkTrackerItem.types';
+import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
+import type { TrackerAdapterPollResult } from '../../../services/projects-sessions/TrackerAdapterPollService.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import type {
 	TrackerPlanning,
 	TrackerStage
 } from '../../../utils/projects-sessions/trackerPlanning.types';
 import type { trackerRunReport } from '../../../utils/agents-providers/trackerRunReport';
+
+/** The error body of a refused native request. */
+export interface NativeTrackerRefusal {
+	error?: string;
+	code?: string;
+	matches?: TrackerItemMatch[];
+}
+
+export type NativeTrackerListener = Pick<TrackerNodeConfig, 'apiPort' | 'node' | 'role'>;
 
 export interface NativeTrackerRequest {
 	method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
@@ -89,6 +101,18 @@ export interface NativeTrackerAdapter {
 	runner?: string;
 	last_error?: string;
 }
+
+/** The reply to adapter add, pause, resume or remove. */
+export interface NativeTrackerAdapterChange {
+	id: string;
+	enabled_at?: number;
+	paused?: boolean;
+	removed?: boolean;
+}
+
+export type NativeTrackerAdapterReply =
+	| NativeTrackerAdapterChange
+	| Extract<TrackerAdapterPollResult, { status: 'polled' }>;
 
 export interface NativeTrackerBackupList {
 	status:

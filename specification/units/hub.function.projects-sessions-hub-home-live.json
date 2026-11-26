@@ -17,6 +17,7 @@
 			"workStateLabel",
 			"span",
 			"workAge",
+			"workTimes",
 			"workFacts",
 			"liveSummary",
 			"projectSummary",
@@ -61,6 +62,12 @@
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds."
+			},
+			{
+				"name": "workTimes.row",
+				"type": "HomeWorkRow",
+				"required": true,
+				"description": "The overview row whose start or queue time and last Tracker change are written out."
 			},
 			{
 				"name": "workFacts.row",
@@ -234,6 +241,25 @@
 						"name": "workAge",
 						"type": "unknown",
 						"description": "How long the run has been going or waiting, and how long ago the task changed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workTimes",
+				"inputs": [
+					{
+						"name": "workTimes.row",
+						"type": "HomeWorkRow",
+						"required": true,
+						"description": "The overview row whose start or queue time and last Tracker change are written out."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workTimes",
+						"type": "string"
 					}
 				],
 				"errors": [],

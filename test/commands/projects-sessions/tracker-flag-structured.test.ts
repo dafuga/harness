@@ -66,7 +66,7 @@ test('the duplicate-ask guard cannot lose a monitor message', () =>
 		const ask = [outage, ...choices, '--recommend', '1'];
 		expect((await run('flag', 'monitor002', ...ask)).code).toBe(0);
 		const duplicate = await run('flag', channelItem, ...ask);
-		expect(duplicate.out).toContain('similar item already open');
+		expect(duplicate.out).toContain('a similar item is already open');
 		expect(duplicate.code).not.toBe(0);
 		expect((await run('alert', channelItem, 'Sample channel still failing')).code).toBe(0);
 		expect(inbox().map(({ item_id, kind }) => `${item_id}:${kind}`)).toEqual([

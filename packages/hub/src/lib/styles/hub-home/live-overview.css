@@ -17,12 +17,16 @@
 	align-items: baseline;
 	gap: var(--hx-space-4) var(--hx-space-12);
 }
+.hh-home .hh-live-top p {
+	margin: 0;
+}
 .hh-home .hh-live-summary {
 	font-size: var(--hx-type-size-sm);
 }
 .hh-home .hh-live-source,
 .hh-home .hh-live-counts,
 .hh-home .hh-live-facts,
+.hh-home .hh-live-times,
 .hh-home .hh-live-status {
 	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-xs);
@@ -59,7 +63,23 @@
 	padding: var(--hx-space-8) 0;
 	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 }
-/* Tracker titles can run to paragraphs: two lines here, with the rest in the tooltip. */
+.hh-home .hh-live-item {
+	min-width: 0;
+}
+.hh-home .hh-live-open {
+	display: flex;
+	align-items: center;
+	font-weight: var(--hx-style-weight-regular);
+	list-style: none;
+	cursor: pointer;
+}
+.hh-home .hh-live-open::-webkit-details-marker {
+	display: none;
+}
+.hh-home .hh-live-times {
+	margin: var(--hx-space-4) 0 0;
+}
+/* Tracker titles can run to paragraphs: two lines until a tap or click opens the row. */
 .hh-home .hh-live-title {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -68,6 +88,10 @@
 	overflow: hidden;
 	min-width: 0;
 	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-live-item[open] .hh-live-title,
+.hh-home .hh-live-row:has(.hh-live-item[open]) .hh-live-now {
+	display: block;
 }
 .hh-home .hh-live-tags {
 	display: flex;
@@ -79,6 +103,17 @@
 .hh-home .hh-live-stage {
 	font-size: var(--hx-type-size-xs);
 }
+/* The latest milestone: two lines, the full note in the tooltip. */
+.hh-home .hh-live-now {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+	grid-column: 1 / -1;
+	min-width: 0;
+	font-size: var(--hx-type-size-xs);
+}
 .hh-home .hh-live-facts {
 	display: flex;
 	flex-wrap: wrap;
@@ -87,6 +122,11 @@
 }
 .hh-home .hh-live-more {
 	margin: var(--hx-space-8) var(--hx-space-12);
+}
+@media (pointer: coarse), (max-width: 560px) {
+	.hh-home .hh-live-open {
+		min-height: 44px;
+	}
 }
 @media (max-width: 560px) {
 	.hh-home .hh-live-row,

@@ -111,6 +111,7 @@ export const catalogWorkProject: HomeWorkProject = {
 			outcome: null,
 			status: 'in_progress',
 			stage: 'build',
+			now: 'PR open; full check running, merge follows a pass.',
 			owner: 'Export session',
 			computer: 'preview-mac',
 			model: 'sample-model:high',

@@ -15,6 +15,7 @@ import type {
 	ItemWork
 } from './homeLive.types';
 import { homeText } from './homeTrackerText';
+import { homeWorkNow } from './homeWorkNow';
 
 export const homeLiveLimits = { projects: 200, rows: 100 } as const;
 const stateOrder: HomeWorkState[] = ['running', 'offline', 'queued', 'no-run', 'finished'];
@@ -44,6 +45,7 @@ function workRow({ item }: ItemWork, state: HomeWorkState, run?: TrackerRunRecor
 		state,
 		status: item.status,
 		stage: item.stage ?? null,
+		now: homeWorkNow(item),
 		owner: homeText(item.owner, 200),
 		model: homeText(runModel(run) ?? item.model, 200),
 		updatedAt: isoTime(item.updated_at),

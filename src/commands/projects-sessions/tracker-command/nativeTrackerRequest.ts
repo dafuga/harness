@@ -3,7 +3,11 @@ import { parseArgs } from 'node:util';
 import { nativeTrackerTimedItemRequest } from './nativeTrackerTimedItemRequest';
 import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
 import type { NativeTrackerAskValues, NativeTrackerRequest } from './nativeTrackerCli.types';
-import { nativeTrackerAnswerBody, nativeTrackerFlagBody } from './nativeTrackerAskOptions';
+import {
+	nativeTrackerAnswerBody,
+	nativeTrackerBlockBody,
+	nativeTrackerFlagBody
+} from './nativeTrackerAskOptions';
 
 import {
 	nativeTrackerCommandOptions,
@@ -179,7 +183,7 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		case 'flag':
 			return nativeTrackerFlagBody(text, values as NativeTrackerAskValues);
 		case 'block':
-			return blockBody(text, values);
+			return nativeTrackerBlockBody(text, values as NativeTrackerAskValues);
 		case 'answer':
 		case 'resolve':
 			return nativeTrackerAnswerBody(text, values as NativeTrackerAskValues);
@@ -196,10 +200,6 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 		default:
 			return undefined;
 	}
-}
-
-function blockBody(reason: string, values: Record<string, unknown>) {
-	return { reason, force: values.force };
 }
 
 function requiredText(words: string[], command: string): string {

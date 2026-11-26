@@ -70,7 +70,7 @@ Start with:
    rows with the same title, meta line and trailing chip, and states use the same pills
    (diamond = needs you, dot = active, square = blocked, dashed = quiet). The home reads as part
    of the overview, not as a new visual system.
-2. **The headline answers "what needs me?"** For example: "3 agents working, 1 needs you". It is
+2. **The headline answers "what needs me?"** For example: "17 sessions running for 3 agents, 1 needs you". It is
    followed by a totals line and the computer pills from the overview.
 3. **Layout by width.**
    - Laptop: three columns. Agents (two wide, it holds the chat entry) and Quota on top; Plans,
@@ -108,7 +108,10 @@ Start with:
       and when usage was last read.
     - Under 25% left is **Low** (amber, diamond mark) and under 10% is **Almost out** (red, square
       mark). The mark and the word are always shown, so colour is never the only signal.
-    - The tightest limit is repeated in the header pills, so it is seen without scrolling. An
+      At 0% left it is **Out of quota** instead.
+    - The header has one pill per subscription (Claude first, then Codex), so both are seen
+      without scrolling; a used-up limit names its reset in Lisbon time, and hover or tap says
+      which provider limit it is. An
       Almost out limit also gets a callout in the card: what, how much, and when it resets.
     - The root card shows up to two subscriptions ("1 more subscription" past that). The modal
       has one panel per subscription: limits with reset countdowns; a 7-day chart of the weekly

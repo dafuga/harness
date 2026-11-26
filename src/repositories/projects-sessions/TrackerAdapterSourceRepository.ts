@@ -3,6 +3,7 @@ import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes'
 import type {
 	TrackerAdapterListRow,
 	TrackerAdapterSource,
+	TrackerAdapterSourceAction,
 	TrackerAdapterSourceRow
 } from './TrackerAdapterRepository.types';
 
@@ -26,6 +27,12 @@ CREATE TABLE IF NOT EXISTS adapter_events(
 	PRIMARY KEY(source_id, external_id, event_id)
 );
 `;
+
+const sourceChanges = {
+	pause: ['paused', 1],
+	resume: ['paused', 0],
+	remove: ['removed', 1]
+} as const;
 
 /** Maintain the designated runner and persisted polling watermark. */
 export class TrackerAdapterSourceRepository {
@@ -107,6 +114,31 @@ export class TrackerAdapterSourceRepository {
 			cursor: row.cursor,
 			paused: Boolean(row.paused)
 		};
+	}
+
+	/** Save a new source, or revive a removed one; its links and receipts prevent duplicates. */
+	add(source: TrackerAdapterSource & { enabled_at: number }): boolean {
+		// Cursor and pause state live in their own columns, as in legacy rows.
+		const config = JSON.stringify({ ...source, cursor: undefined, paused: undefined });
+		const { enabled_at } = source;
+		const saved = this.database
+			.prepare(
+				`INSERT INTO adapter_sources(id, config, enabled_at, cursor) VALUES (?, ?, ?, ?)
+				ON CONFLICT(id) DO UPDATE SET config = excluded.config, enabled_at = excluded.enabled_at,
+				cursor = excluded.cursor, paused = 0, removed = 0, last_run = NULL, last_error = NULL
+				WHERE adapter_sources.removed = 1`
+			)
+			.run(source.id, config, enabled_at, enabled_at);
+		return Number(saved.changes) > 0;
+	}
+
+	/** Pause, resume or soft-remove a live source. False means there is no such source. */
+	change(id: string, action: TrackerAdapterSourceAction): boolean {
+		const [column, value] = sourceChanges[action];
+		const changed = this.database
+			.prepare(`UPDATE adapter_sources SET ${column} = ? WHERE id = ? AND removed = 0`)
+			.run(value, id);
+		return Number(changed.changes) > 0;
 	}
 
 	advance(id: string, startedAt: number): void {
