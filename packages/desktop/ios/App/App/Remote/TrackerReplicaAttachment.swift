@@ -27,4 +27,32 @@ struct TrackerReplicaAttachment: Codable {
         let images = content.images?.reduce(0) { $0 + $1.key.utf8.count + $1.value.utf8.count } ?? 0
         return content.markdown.utf8.count + images <= 64 * 1024
     }
+
+    /// The `tracker_document` input: an item and one of its attachments.
+    static func request(_ input: [String: Any]) throws -> (id: String, attachment: String) {
+        guard input.keys.sorted() == ["attachment", "id"], let id = input["id"] as? String,
+            let attachment = input["attachment"] as? String,
+            TrackerReplicaItem.short(id, 80), TrackerReplicaItem.short(attachment, 64)
+        else { throw TrackerReplicaError.invalidInput }
+        return (id, attachment)
+    }
+
+    static func reply(_ id: String, of flag: TrackerReplicaItem.Flag?) throws -> [String: Any] {
+        guard let content = flag?.attachments?.first(where: { $0.id == id })?.content
+        else { throw TrackerReplicaError.noMatch }
+        return ["document": try TrackerReplicaJSON.object(content)]
+    }
+
+    /// What the assistant reads about an item lists its documents without their text.
+    static func listing(_ flag: TrackerReplicaItem.Flag) -> TrackerReplicaItem.Flag {
+        var listed = flag
+        listed.attachments = flag.attachments.map { entries in
+            entries.map { entry -> TrackerReplicaAttachment in
+                var plain = entry
+                plain.content = nil
+                return plain
+            }
+        }
+        return listed
+    }
 }

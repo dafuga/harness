@@ -43,11 +43,8 @@ extension TrackerReplicaStore {
             return try show(id: trackerFold(id), slot: slot)
         case "tracker_document":
             // Not an assistant tool: only the item page reads documents, for "View spec".
-            guard input.keys.sorted() == ["attachment", "id"], let id = input["id"] as? String,
-                let attachment = input["attachment"] as? String,
-                TrackerReplicaItem.short(id, 80), TrackerReplicaItem.short(attachment, 64)
-            else { throw TrackerReplicaError.invalidInput }
-            return try document(id: id, attachment: attachment, slot: slot)
+            let wanted = try TrackerReplicaAttachment.request(input)
+            return try document(id: wanted.id, attachment: wanted.attachment, slot: slot)
         case "tracker_search":
             return try search(input, slot: slot)
         default:
@@ -117,12 +114,7 @@ extension TrackerReplicaStore {
             .first?.first.flatMap { $0 }
         let planning = try children(TrackerReplicaPlanning.self, from: "planning", item: [slot, item])
         // What the assistant reads about an item lists its documents without their text.
-        var listed = flags.first
-        listed?.attachments = listed?.attachments?.map { entry in
-            var plain = entry
-            plain.content = nil
-            return plain
-        }
+        let listed = flags.first.map(TrackerReplicaAttachment.listing)
         return ["item": try TrackerReplicaJSON.object(header), "notes": try TrackerReplicaJSON.object(notes),
                 "flag": try listed.map(TrackerReplicaJSON.object) ?? NSNull(),
                 "runs": try TrackerReplicaJSON.object(runs),
@@ -132,9 +124,7 @@ extension TrackerReplicaStore {
 
     private func document(id: String, attachment: String, slot: String) throws -> [String: Any] {
         let flags = try children(TrackerReplicaItem.Flag.self, from: "flags", item: [slot, id])
-        guard let content = flags.first?.attachments?.first(where: { $0.id == attachment })?.content
-        else { throw TrackerReplicaError.noMatch }
-        return ["document": try TrackerReplicaJSON.object(content)]
+        return try TrackerReplicaAttachment.reply(attachment, of: flags.first)
     }
 
     private func search(_ input: [String: Any], slot: String) throws -> [String: Any] {
