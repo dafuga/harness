@@ -42,7 +42,7 @@ export function recordedHostEvent(
 		session: session.state,
 		activityAt: session.activityAt,
 		exitCode: session.exitCode,
-		...(session.diagnostic && { diagnostic: session.diagnostic })
+		diagnostic: session.diagnostic
 	};
 }
 

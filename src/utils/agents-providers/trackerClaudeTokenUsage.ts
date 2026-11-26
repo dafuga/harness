@@ -1,13 +1,12 @@
 import { ladderFrom, parseTrackerModelSpec } from './parseTrackerModelSpec';
-import type { TrackerReceiptUsage } from '../../services/agents-providers/TrackerDispatcherService.types';
-import type { ClaudeMessageUsage } from './trackerClaudeTokenUsage.types';
+import type { ClaudeMessageUsage, ClaudeTokenTotals } from './trackerClaudeTokenUsage.types';
 
 /**
  * Total the usage of each API message once. Claude repeats a message id for every content block;
  * the last line has the final counts. Cost uses the Tracker rung's flat rates, and stays empty
  * when any model that used tokens has no rate.
  */
-export function trackerClaudeTokenUsage(lines: readonly string[]): TrackerReceiptUsage | undefined {
+export function trackerClaudeTokenUsage(lines: readonly string[]): ClaudeTokenTotals | undefined {
 	const messages = new Map<string, ClaudeMessageUsage>();
 	for (const line of lines) {
 		const message = parseMessage(line);

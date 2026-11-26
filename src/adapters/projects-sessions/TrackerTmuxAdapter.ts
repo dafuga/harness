@@ -64,7 +64,6 @@ export class TrackerTmuxAdapter {
 		return (await this.layouts(signal, trackerSessionName)).map(({ pane }) => pane);
 	}
 
-	/** Every session and window name, to recognise hand-launched sessions for an item. */
 	windows(signal: AbortSignal) {
 		return trackerTmuxWindows(this.sockets, (socket, args) => this.command(socket, args, signal));
 	}

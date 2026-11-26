@@ -25,8 +25,6 @@ export function transitionRun(
 			return adoptSession(run, event.session, clock, snapshot);
 		case 'monitor':
 			return monitorRun(snapshot, run, event, clock);
-		case 'start-error':
-			return recordStartError(run, event.reason);
 		case 'startup-failed':
 			return recordStartupFailure(snapshot, run, event, clock);
 		case 'never-started':
@@ -72,13 +70,6 @@ function adoptSession(
 	);
 }
 
-/** The session may still appear, so the cause waits on the reservation until it expires. */
-function recordStartError(run: TrackerRunReceipt, reason: string) {
-	if (run.state !== 'queued' || run.dispatch_at === undefined)
-		return skip('ignored', 'attempt is no longer starting');
-	return recordRun(reviseRun(run, { failure_reason: reason }));
-}
-
 function recordStartupFailure(
 	snapshot: TrackerDispatchSnapshot,
 	run: TrackerRunReceipt,
@@ -88,6 +79,7 @@ function recordStartupFailure(
 	if (run.dispatch_at === undefined || (run.state !== 'queued' && run.state !== 'running')) {
 		return skip('ignored', 'attempt is no longer starting');
 	}
+	if (event.pending) return recordPendingCause(run, event.reason);
 	return failRun(
 		snapshot,
 		run,
@@ -99,4 +91,10 @@ function recordStartupFailure(
 		},
 		clock
 	);
+}
+
+/** The session may still appear, so the cause waits on the reservation until it expires. */
+function recordPendingCause(run: TrackerRunReceipt, reason: string) {
+	if (run.state !== 'queued') return skip('ignored', 'attempt is no longer starting');
+	return recordRun(reviseRun(run, { failure_reason: reason }));
 }

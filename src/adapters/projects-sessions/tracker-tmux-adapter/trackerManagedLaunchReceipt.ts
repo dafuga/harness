@@ -14,10 +14,7 @@ import { join } from 'node:path';
 import { z } from 'zod';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
 import { claudeStartupFailure } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchSchema';
-import type {
-	ClaudeStartupFailure,
-	TrackerHostSession
-} from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
+import type { TrackerHostSession } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
 import { managedClaudeStartupPhase } from './trackerClaudeStartupPhase';
 import { trackerStartupCause } from './trackerStartupCause';
 import type {

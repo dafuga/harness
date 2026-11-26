@@ -48,10 +48,10 @@ export function trackerHostRunner(
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
 	let [sessions, panes]: [TrackerHostSession[], WatchdogPane[]] = [[], []];
-	let windows: readonly TrackerTmuxWindow[] = [];
+	let windows: TrackerTmuxWindow[] = [];
 	const legacySession = legacySessionReader(legacyRunDirectory, () => sessions);
-	const verification = trackerHostVerification(driver, options.verifyCommand);
-	const report = trackerHostReport({ store, driver, routeFor, now }, verification);
+	const verify = trackerHostVerification(driver, options.verifyCommand);
+	const report = trackerHostReport({ store, driver, routeFor, now }, verify);
 	return {
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
@@ -88,12 +88,32 @@ export function trackerHostRunner(
 			},
 			...optionalHostControls(driver)
 		},
-		sessions: (itemId: string) => ({
-			openSession:
-				hasManualTrackerPane(panes, itemId) ||
-				(windows.length > 0 && trackerHandSession(windows, items.getStored(itemId))),
-			activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
-		})
+		sessions: (itemId: string) => itemSessions({ store, items, sessions, panes, windows }, itemId)
+	};
+}
+
+/** What the host currently knows about sessions already working on an item. */
+function itemSessions(
+	{
+		store,
+		items,
+		sessions,
+		panes,
+		windows
+	}: {
+		store: TrackerPersistenceService;
+		items: TrackerItemReadRepository;
+		sessions: readonly TrackerHostSession[];
+		panes: readonly WatchdogPane[];
+		windows: readonly TrackerTmuxWindow[];
+	},
+	itemId: string
+) {
+	return {
+		openSession:
+			hasManualTrackerPane(panes, itemId) ||
+			(windows.length > 0 && trackerHandSession(windows, items.getStored(itemId))),
+		activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
 	};
 }
 

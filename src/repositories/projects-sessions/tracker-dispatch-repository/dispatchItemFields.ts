@@ -107,8 +107,13 @@ function launchJournalFields(intent: TrackerLaunchIntent | null) {
 	};
 }
 
+/** A new question replaces the earlier ask, so its choices must not stay attached. */
+function replacedAsk(question: string | null | undefined): Record<string, unknown> {
+	return question ? { question, options: null, confirm: null } : {};
+}
+
 export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['item']>) {
-	const fields: Record<string, unknown> = {};
+	const fields = replacedAsk(item.question);
 	for (const key of ['computer', 'project', 'repo', 'model', 'sensitive', 'status'] as const) {
 		if (item[key] !== undefined) fields[key] = item[key];
 	}
@@ -119,9 +124,6 @@ export function dispatchJournalFields(item: NonNullable<TrackerDispatchWrites['i
 	if (item.blockedReason !== undefined) fields.blocked_reason = item.blockedReason;
 	if (item.awaitingAnswer !== undefined) fields.needs_daniel = item.awaitingAnswer;
 	if (item.answeredCurrentBlock === false) fields.resolved = false;
-	// A new question replaces the earlier ask, so its choices must not stay attached.
-	if (item.question)
-		Object.assign(fields, { question: item.question, options: null, confirm: null });
 	return fields;
 }
 

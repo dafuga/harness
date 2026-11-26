@@ -33,6 +33,18 @@ export async function verifyClaudeRefusals(
 	}
 }
 
+/** A launch that cannot create its checkout says why. */
+export async function verifyUnusableWorktree(
+	launcher: TrackerHostLaunchPort,
+	native: TrackerHostStartRequest
+) {
+	const unusable = { ...native, runId: 5, key: 'unusable', repo: '/usr/share' };
+	expect(await launcher.start(unusable, new AbortController().signal)).toEqual({
+		status: 'rejected',
+		detail: expect.stringMatching(/could not create a worktree of .*not a git repository/s)
+	});
+}
+
 const startupCauses = {
 	'signed-out': /sign in/i,
 	onboarding: /onboarding/i,

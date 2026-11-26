@@ -1,7 +1,7 @@
 // @harness-uid u_4rnjtzp6cn
 import { trackerHostCapacityHold } from './tracker-native-runtime-service/trackerHostAdmission';
 import { randomUUID } from 'node:crypto';
-import { trackerStartError } from './trackerStartError';
+import { awaitStartEvidence, trackerStartError } from './trackerStartError';
 import type { TrackerDispatchRepository } from '../../repositories/projects-sessions/TrackerDispatchRepository';
 import type { TrackerDispatchCandidate } from '../../repositories/projects-sessions/TrackerDispatchRepository.types';
 import type {
@@ -130,15 +130,8 @@ export class TrackerDispatchQueue {
 		if (result.status !== 'start') return false;
 		const { run } = result;
 		const event = await startReservedRun(this.options.runner, result, signal);
-		if (!event || event.type === 'start-error') {
-			const cause = event ? `: ${event.reason}` : '';
-			this.waits.set(run.item_id, {
-				token: run.auto_token,
-				reason: `waiting for host startup evidence${cause}`
-			});
-			if (event) await this.dispatcher.record(run.item_id, run, event);
-			return false;
-		}
+		if (!event || (event.type === 'startup-failed' && event.pending))
+			return awaitStartEvidence({ waits: this.waits, dispatcher: this.dispatcher }, run, event);
 		const observed = await this.dispatcher.record(run.item_id, run, event);
 		return event.type === 'session' && observed.status === 'recorded';
 	}

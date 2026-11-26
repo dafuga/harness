@@ -24,11 +24,21 @@ export function trackerSessionLabel(
 	{ title, project, agent }: Omit<TrackerNamedItem, 'id' | 'owner'>,
 	fallback = 'Tracker'
 ): string {
-	const name = project || agent || fallback;
+	const name = [project, agent].find(Boolean) ?? fallback;
 	return `${name.charAt(0).toUpperCase()}${name.slice(1)}: ${title ?? ''}`
 		.replace(/#[({[]?/g, '')
 		.replace(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/gu, ' ')
 		.slice(0, 80);
+}
+
+/** The names a hand-launched session or window for this item may carry, ready to compare. */
+export function trackerSessionNames(item: TrackerNamedItem): ReadonlySet<string> {
+	const label = trackerSessionLabel(item, '');
+	return new Set(
+		[item.id, item.id.slice(0, 6), item.owner ?? '', label]
+			.map(comparable)
+			.filter((name) => !genericNames.has(name))
+	);
 }
 
 /** Whether a hand-launched tmux session or window is named for this item. */
@@ -36,12 +46,7 @@ export function trackerHandSession(
 	windows: readonly TrackerTmuxWindow[],
 	item: TrackerNamedItem
 ): boolean {
-	const label = trackerSessionLabel(item, '');
-	const wanted = new Set(
-		[item.id, item.id.slice(0, 6), item.owner ?? '', label]
-			.map(comparable)
-			.filter((name) => !genericNames.has(name))
-	);
+	const wanted = trackerSessionNames(item);
 	return windows.some(
 		({ session, window }) =>
 			!managedSession.test(session) &&

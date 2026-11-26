@@ -84,8 +84,13 @@ export type TrackerDispatchEvent =
 			usage?: TrackerReceiptUsage;
 			diagnostic?: string;
 	  }
-	| { type: 'start-error'; reason: string }
-	| { type: 'startup-failed'; reason: string; exitCode?: number | null }
+	| {
+			type: 'startup-failed';
+			reason: string;
+			exitCode?: number | null;
+			/** The start call threw, so the session may still appear. */
+			pending?: boolean;
+	  }
 	| { type: 'never-started' }
 	| {
 			type: 'verified';
