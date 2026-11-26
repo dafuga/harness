@@ -72,6 +72,17 @@ export interface HomeOpenAsk {
 	since: string;
 }
 
+/** One personal reminder: a Tracker item that reminds Daniel, listed only under Reminders. */
+export interface HomeReminder {
+	itemId: string;
+	title: string;
+	/** The armed time. Done and snooze name it, so a stale tap changes nothing. */
+	at: string;
+	/** "Daily", "Weekly" and so on; null for a reminder that happens once. */
+	repeats: string | null;
+	updatedAt: string;
+}
+
 export interface HomePlan {
 	id: string;
 	title: string;
@@ -142,6 +153,8 @@ export interface OwnerHomeSnapshot {
 	agents: HomeAgent[];
 	/** Every open structured ask, oldest first. Older Mac apps omit it. */
 	openAsks?: HomeOpenAsk[];
+	/** Personal reminders, soonest first. Older Mac apps omit them. */
+	reminders?: HomeReminder[];
 	plans: HomePlan[];
 	scheduled: HomeRun[];
 	overdue?: HomeRun[];
@@ -157,12 +170,15 @@ export interface HomeChatInput {
 	id: string;
 	agentId: string;
 	itemId: string;
-	kind: 'note' | 'answer';
+	kind: 'note' | 'answer' | 'reminder-done' | 'reminder-snooze';
 	question: string | null;
 	text: string;
 	/** A tapped option's 1-based number. The text then carries that option's label. */
 	option?: number;
 	confirmed?: boolean;
+	/** A reminder tap: the armed time the button showed, and for a snooze the new time. */
+	armed?: string;
+	until?: string;
 }
 
 export type HomeChatStatus = 'queued' | 'sent' | 'refused' | 'unconfirmed';

@@ -129,6 +129,8 @@ function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 		model: optionalText(row.model, 'item model'),
 		occurrence: optionalTime(row.occurrence, 'item occurrence'),
 		recurring: row.recurring === true || Boolean(row.every),
+		remindAt: optionalTime(row.remind_at, 'item remind_at'),
+		every: optionalText(row.every, 'item every'),
 		scheduleOff: row.schedule_off === true || row.schedule_off === 1,
 		priority: optionalText(row.priority, 'item priority'),
 		owner: typeof row.owner === 'string' ? row.owner : null,

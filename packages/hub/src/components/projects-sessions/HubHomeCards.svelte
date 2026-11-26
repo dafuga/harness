@@ -27,6 +27,7 @@
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
+	import HubHomeReminders from './HubHomeReminders.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
@@ -70,6 +71,9 @@
 {/snippet}
 
 <HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} {send} {receipt} />
+{#if view.reminders}
+	<HubHomeReminders reminders={view.reminders} now={view.now} {send} {receipt} />
+{/if}
 <HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard

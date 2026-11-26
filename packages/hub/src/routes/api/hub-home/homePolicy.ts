@@ -1,6 +1,8 @@
 import type {
 	HomeAgent,
-	HomeChatInput
+	HomeChatInput,
+	HomeReminder,
+	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { ZodError } from 'zod';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
@@ -140,14 +142,24 @@ async function postChat(request: Request, deps: HomeDeps, actor: string) {
 	if (!deps.db || !deps.bucket) return json({ error: 'unavailable' }, 503);
 	const message = chatInput.parse(JSON.parse(await readOverviewText(request, 8192)));
 	const snapshot = await readHomeSnapshot(deps.bucket, actor, deps.now);
-	const agent = snapshot?.agents.find((entry) => entry.id === message.agentId);
-	if (!matchesCurrentItem(message, agent)) return json({ id: message.id, status: 'refused' });
+	if (!matchesHome(message, snapshot)) return json({ id: message.id, status: 'refused' });
 	const receipt = await queueChat(deps.db, actor, message, deps.now);
 	if (receipt?.status === 'queued') await ringAccount(deps.accounts, actor, 'chat');
 	return json(
 		receipt ?? { id: message.id, status: 'refused' },
 		receipt?.status === 'queued' ? 202 : 200
 	);
+}
+
+function matchesHome(message: HomeChatInput, snapshot: OwnerHomeSnapshot | null) {
+	if (message.armed) return matchesListedReminder(message, snapshot?.reminders);
+	const agent = snapshot?.agents.find((entry) => entry.id === message.agentId);
+	return matchesCurrentItem(message, agent);
+}
+
+/** A reminder tap must name a listed reminder at the time it is still armed for. */
+function matchesListedReminder(message: HomeChatInput, reminders: HomeReminder[] = []) {
+	return reminders.some((entry) => entry.itemId === message.itemId && entry.at === message.armed);
 }
 
 function matchesCurrentItem(message: HomeChatInput, agent: HomeAgent | undefined) {

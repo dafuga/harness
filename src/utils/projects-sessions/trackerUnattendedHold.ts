@@ -11,6 +11,14 @@ export function trackerNonWorkAgent(agent: string | null | undefined): boolean {
 	return nonWorkAgent.test((agent ?? '').trim());
 }
 
+/**
+ * Daniel's own and family items. They show only under Reminders, never in Needs you or project
+ * status. Give an item one of these agents to make it personal.
+ */
+export function trackerPersonalAgent(agent: string | null | undefined): boolean {
+	return /^(?:personal(?:$|[-_ ])|dad$|family$)/i.test((agent ?? '').trim());
+}
+
 export function trackerReminderTitle(title: string): boolean {
 	return reminderTitle.test(title);
 }
