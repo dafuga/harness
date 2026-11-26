@@ -120,9 +120,10 @@ operator verifies the stopped database and chooses a rollback.
   delivery receipts before enabling sending. Shell command targets and
   legacy custom webhook headers require separate integration.
 - **30-minute digest.** The hub's `webhook` target gets updates and new
-  needs-Daniel asks as one batch, at most once every 30 minutes. Asks hold
-  from 22:00 to 08:00 Lisbon time. Ask escalations and explicit reminders
-  keep their own timing. A target is a webhook, such as the Grok Bot Chief
+  needs-Daniel asks as one batch, at most once every 30 minutes. Quiet
+  hours apply only to what is meant for Daniel. Chief of Staff and agents
+  get asks, done and blocked lines, due events and reminders at any hour;
+  Chief of Staff holds asks for Daniel until 08:00 Lisbon. A target is a webhook, such as the Grok Bot Chief
   of Staff, or a local tmux session running Claude Code or Codex:
 
   ```json
@@ -140,7 +141,7 @@ operator verifies the stopped database and chooses a rollback.
   To switch, change `webhook` to another target ID and restart the service.
   Queued lines go to the new target. Session targets are digest only. Tracker
   types into one only while its composer is idle; a busy session is retried
-  after two minutes. Outside quiet hours each digest adds the next entry of
+  after two minutes. From 08:00 to 22:00 Lisbon each digest adds the next entry of
   `suggestions`; an empty list turns them off. Setting `webhook` also starts
   the hub's recurring scheduler.
 
@@ -205,9 +206,9 @@ operator verifies the stopped database and chooses a rollback.
   tick can still read `tracker list --flagged --json` for decisions.
 
   Tracker sends the first ask, follows up two and six hours after the first
-  delivery, then repeats at 08:00 Lisbon each morning. Quiet hours run from
-  22:00 through 08:00. A quiet-hour follow-up waits for morning. If both
-  follow-up times have passed, the next repeat waits for the following morning.
+  delivery, then repeats at 08:00 Lisbon each morning. These reach Chief of
+  Staff at any hour. If both follow-up times have passed, the next repeat
+  waits for the next 08:00.
   Each ping includes how long the ask has waited. The digest shows every
   open ask, including deferred and completed-item asks. Record Daniel's
   answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an
@@ -446,7 +447,7 @@ to create an item that only delivers reminders. Use
 or `tracker remind <id> --at <time>` to snooze a reminder. Reminder items
 never start or recover a session, including when an explicit launch is
 requested. The hub delivers to Chief of Staff at the scheduled time,
-defers overnight reminders to 08:00 Lisbon, and follows up after two
+including overnight, and follows up after two
 hours, six hours, and at 08:00 daily until the item is done or snoozed.
 
 ### Scheduled reminders on other items

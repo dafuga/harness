@@ -8,11 +8,10 @@ export function trackerNotificationStatus(options: TrackerNotificationOptions) {
 		options.chiefOfStaff && destinations.available(options.chiefOfStaff)
 			? ('configured' as const)
 			: ('not configured' as const);
-	const quietHours = options.quietHours ?? null;
 	if (role !== 'hub' || !webhook) {
 		const note =
 			role === 'hub' ? 'webhook sender is disabled' : 'only the hub sends webhook events';
-		return { chiefOfStaff, quietHours, webhook: { sender: false, note } };
+		return { chiefOfStaff, webhook: { sender: false, note } };
 	}
 	return queue.update(({ outbox, flags, paused }) => {
 		const { counts, lastSent, stuck } = outboxStatus(outbox.values(), now());
@@ -22,7 +21,6 @@ export function trackerNotificationStatus(options: TrackerNotificationOptions) {
 		}));
 		return {
 			chiefOfStaff,
-			quietHours,
 			webhook: {
 				sender: true,
 				configured: destinations.available(webhook.destination),
