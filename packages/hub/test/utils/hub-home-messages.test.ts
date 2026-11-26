@@ -7,16 +7,19 @@ import { listHomeAgents } from '../../../reports/src/lib/projects-sessions/hub-h
 import { homeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/homeChatInput';
 import type { HomeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
+import { messageStatusText } from '../../src/components/projects-sessions/hubHomePresentation';
 import {
 	formatHubDeliveredNote,
 	formatHubMessageNote,
-	formatHubReplyNote
+	formatHubReplyNote,
+	formatHubWaitingNote
 } from '../../../../src/utils/projects-sessions/hubSessionMessages';
 
 /** The Hub thread is read from keyed message notes, never guessed from the latest notes. */
 const now = Date.parse('2026-11-26T17:30:00Z');
 const at = (minute: number) => new Date(now - (30 - minute) * 60_000).toISOString();
 const updated_at = at(0);
+const busy = 'Chief of Staff channel: Digest session is not idle';
 const chat = {
 	id: 'chatcos234',
 	title: 'Hub chat with Chief of Staff',
@@ -26,9 +29,17 @@ const chat = {
 	updated_at,
 	notes_log: [
 		{ at: at(1), text: formatHubMessageNote('chatcos234-1a2b3c4d', { kind: 'cos' }, 'Ship it') },
-		{ at: at(2), text: formatHubDeliveredNote('chatcos234-1a2b3c4d', 'cos') },
+		{
+			at: at(2),
+			text: formatHubDeliveredNote(
+				'chatcos234-1a2b3c4d',
+				'chief-of-staff-channel',
+				'hub_message|chatcos234-1a2b3c4d'
+			)
+		},
 		{ at: at(3), text: formatHubReplyNote('chatcos234-1a2b3c4d', 'Shipping now.') },
-		{ at: at(4), text: formatHubMessageNote('chatcos234-5e6f7a8b', { kind: 'cos' }, 'And docs') }
+		{ at: at(4), text: formatHubMessageNote('chatcos234-5e6f7a8b', { kind: 'cos' }, 'And docs') },
+		{ at: at(5), text: formatHubWaitingNote('chatcos234-5e6f7a8b', busy) }
 	]
 };
 const chiefWork = {
@@ -81,8 +92,18 @@ test("Chief of Staff's thread is its Hub chat, with each message's receipt and k
 			text: 'Shipping now.',
 			replyTo: 'chatcos234-1a2b3c4d'
 		}),
-		expect.objectContaining({ from: 'you', text: 'And docs', status: 'stored' })
+		expect.objectContaining({ from: 'you', text: 'And docs', status: 'stored', reason: busy })
 	]);
+	const [answered, , waiting] = chief!.messages;
+	expect(messageStatusText(answered, 'Chief of Staff')).toBe('Replied');
+	expect(messageStatusText(waiting, 'Chief of Staff')).toBe(`Not delivered yet: ${busy}`);
+	expect(messageStatusText({ status: 'stored' }, 'Chief of Staff')).toBe('Stored in Tracker');
+	expect(
+		messageStatusText(
+			{ status: 'refused', reason: 'Chief of Staff channel not configured' },
+			'Chief of Staff'
+		)
+	).toBe('Not delivered: Chief of Staff channel not configured');
 });
 
 test("a session's thread names its live run, the only place its messages may go", () => {

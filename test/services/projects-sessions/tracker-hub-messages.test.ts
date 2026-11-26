@@ -74,7 +74,7 @@ function port(result: 'delivered' | 'busy' | 'missing' = 'delivered') {
 	return { driver, deliver };
 }
 
-test('a message to Chief of Staff needs no item, is stored once and is typed into the cos pane', async () => {
+test('a message to Chief of Staff needs no item, is stored once and is never typed into a pane', async () => {
 	const stored = await request('/messages', { id: uuid, target: 'cos', text: 'Ship the\nrelease' });
 	expect(stored.status).toBe(201);
 	const receipt = await stored.json();
@@ -87,32 +87,11 @@ test('a message to Chief of Staff needs no item, is stored once and is typed int
 		{ id: receipt.id, text: 'Ship the release', status: 'stored', target: { kind: 'cos' } }
 	]);
 
-	// Only the computer running Chief of Staff types it, and only into the cos pane.
-	const elsewhere = port();
-	await trackerHubMessageDelivery({ store, driver: elsewhere.driver, chiefOfStaff: false })(signal);
-	expect(elsewhere.deliver).not.toHaveBeenCalled();
-	const primary = port();
-	await trackerHubMessageDelivery({ store, driver: primary.driver, chiefOfStaff: true })(signal);
-	expect(primary.deliver).toHaveBeenCalledExactlyOnceWith(
-		{
-			session: 'cos',
-			message: expect.stringMatching(
-				new RegExp(
-					`^Message from Daniel via Hub \\(${receipt.id}\\): Ship the release .*tracker reply ${receipt.id} `
-				)
-			)
-		},
-		signal
-	);
-	expect(thread(receipt.item)).toMatchObject([{ status: 'delivered', session: 'cos' }]);
-	await trackerHubMessageDelivery({ store, driver: primary.driver, chiefOfStaff: true })(signal);
-	expect(primary.deliver).toHaveBeenCalledTimes(1);
-
-	const reply = await request(`/messages/${receipt.id}/reply`, { text: 'On it.' }, 'cos');
-	expect(reply.status).toBe(200);
-	expect(thread(receipt.item)).toMatchObject([
-		{ status: 'acknowledged', replies: [{ text: 'On it.' }] }
-	]);
+	// Chief of Staff is reached through its notification channel on the hub, not the cos pane.
+	const pane = port();
+	await trackerHubMessageDelivery({ store, driver: pane.driver })(signal);
+	expect(pane.deliver).not.toHaveBeenCalled();
+	expect(thread(receipt.item)).toMatchObject([{ status: 'stored' }]);
 });
 
 test('a session message goes only to that exact live run, on the computer that runs it', async () => {
@@ -123,12 +102,12 @@ test('a session message goes only to that exact live run, on the computer that r
 		await request('/messages', { id: uuid, target, text: 'Rebase first' })
 	).json();
 	const busy = port('busy');
-	await trackerHubMessageDelivery({ store, driver: busy.driver, chiefOfStaff: true })(signal);
+	await trackerHubMessageDelivery({ store, driver: busy.driver })(signal);
 	expect(thread(itemId)).toMatchObject([{ id, status: 'stored' }]);
 
 	const live = port();
 	now += 60_000;
-	await trackerHubMessageDelivery({ store, driver: live.driver, chiefOfStaff: true })(signal);
+	await trackerHubMessageDelivery({ store, driver: live.driver })(signal);
 	expect(live.deliver).toHaveBeenCalledExactlyOnceWith(
 		{ session: `auto-${itemId}-r7`, message: expect.stringContaining('Rebase first') },
 		signal
@@ -142,7 +121,7 @@ test('a session message goes only to that exact live run, on the computer that r
 	});
 	expect(other.status).toBe(201);
 	const remote = port();
-	await trackerHubMessageDelivery({ store, driver: remote.driver, chiefOfStaff: true })(signal);
+	await trackerHubMessageDelivery({ store, driver: remote.driver })(signal);
 	expect(remote.deliver).not.toHaveBeenCalled();
 });
 
@@ -165,7 +144,7 @@ test('a replaced or ended run is refused and never handed to another session', a
 	).json();
 	database.prepare(`UPDATE runs SET state = 'finished', ended_at = ? WHERE id = 7`).run(now);
 	const { driver, deliver } = port();
-	await trackerHubMessageDelivery({ store, driver, chiefOfStaff: true })(signal);
+	await trackerHubMessageDelivery({ store, driver })(signal);
 	expect(deliver).not.toHaveBeenCalled();
 	expect(thread(itemId)).toMatchObject([
 		{ id, status: 'refused', reason: expect.stringContaining('run 7') }

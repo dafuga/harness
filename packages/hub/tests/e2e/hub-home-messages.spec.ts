@@ -93,6 +93,10 @@ for (const size of ['desktop', 'phone'] as const) {
 		const sent = box.getByRole('listitem').filter({ hasText: 'Ship the hub release' });
 		await expect(sent).toContainText('Stored in Tracker');
 
+		// Chief of Staff is reached through its Tracker channel; a busy channel says so.
+		const busy = 'Chief of Staff channel: Digest session is not idle';
+		chief.messages = [mine('Ship the hub release', 'stored', busy)];
+		await expect(sent).toContainText(`Not delivered yet: ${busy}`, { timeout: 15_000 });
 		chief.messages = [mine('Ship the hub release', 'delivered')];
 		await expect(sent).toContainText('Delivered to Chief of Staff', { timeout: 15_000 });
 		chief.messages = [
