@@ -24,6 +24,7 @@ import { TrackerRecurringService } from './TrackerRecurringService';
 import { trackerAutolaunchAdmin } from './tracker-native-runtime-service/trackerAutolaunchAdmin';
 import { composeTrackerResponder } from './tracker-native-runtime-service/composeTrackerResponder';
 import { composeTrackerRecurrence } from './tracker-native-runtime-service/composeTrackerRecurrence';
+import { composeTrackerWebPush } from './tracker-native-runtime-service/composeTrackerWebPush';
 import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
 import {
 	configuredHostWatchdog,
@@ -51,6 +52,7 @@ export class TrackerNativeRuntimeService {
 	readonly store: TrackerPersistenceService;
 	readonly items: TrackerLocalApiService;
 	readonly notifications?: TrackerNotificationService;
+	readonly webPush?: ReturnType<typeof composeTrackerWebPush>;
 	readonly adapter?: TrackerAdapterPollService;
 	readonly watchdog?: ReturnType<typeof trackerHostWatchdog>;
 	readonly hostEffectsHeld: boolean;
@@ -71,7 +73,7 @@ export class TrackerNativeRuntimeService {
 		this.now = now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
 		const runs = new TrackerRunReadRepository(database, node);
-		this.notifications = composeNotifications(store, options);
+		[this.notifications, this.webPush] = composeOutbound(store, options);
 		const recurring = composeTrackerRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
 		this.links = composeTrackerLinks(store, options);
@@ -170,6 +172,11 @@ function validateLinks({
 		throw new TypeError('Tracker recurrence needs a hub with a configured notification outbox');
 	const kinds = new Set(links.map((link) => link.link ?? 'hub'));
 	if (kinds.size !== links.length) throw new TypeError('Duplicate Tracker spoke link');
+}
+
+/** What the node sends out: its notification outbox and Daniel's browser notifications. */
+function composeOutbound(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
+	return [composeNotifications(store, options), composeTrackerWebPush(store, options)] as const;
 }
 
 function composeNotifications(

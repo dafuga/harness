@@ -1,0 +1,236 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-web-push-service-web-push-transport",
+	"uid": "u_jmisdaw57x",
+	"kind": "service",
+	"title": "webPushTransport",
+	"responsibility": "Talks to the Hub's sender route and to browser push services.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-web-push-service/webPushTransport.ts",
+			"src/services/projects-sessions/tracker-web-push-service/webPushTransport.types.ts"
+		],
+		"symbols": ["readSenderView", "reportPushDelivery", "sendWebPush", "PushPorts"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "readSenderView.config",
+				"type": "WebPushConfig",
+				"required": true,
+				"description": "The application server key pair and the Hub origin from web-push.json."
+			},
+			{
+				"name": "readSenderView.ports",
+				"type": "PushPorts",
+				"required": true,
+				"description": "Fetch and the send time."
+			},
+			{
+				"name": "reportPushDelivery.config",
+				"type": "WebPushConfig",
+				"required": true,
+				"description": "The application server key pair and the Hub origin from web-push.json."
+			},
+			{
+				"name": "reportPushDelivery.ports",
+				"type": "PushPorts",
+				"required": true,
+				"description": "Fetch and the send time."
+			},
+			{
+				"name": "reportPushDelivery.report",
+				"type": "PushSenderReport",
+				"required": true,
+				"description": "Delivered and gone addresses."
+			},
+			{
+				"name": "sendWebPush.config",
+				"type": "WebPushConfig",
+				"required": true,
+				"description": "The application server key pair and the Hub origin from web-push.json."
+			},
+			{
+				"name": "sendWebPush.ports",
+				"type": "PushPorts",
+				"required": true,
+				"description": "Fetch and the send time."
+			},
+			{
+				"name": "sendWebPush.delivery",
+				"type": "{ target: PushSubscriptionTarget; message: NeedsYouPushMessage }",
+				"required": true,
+				"description": "One subscription and the message."
+			}
+		],
+		"outputs": [
+			{
+				"name": "readSenderView",
+				"type": "Promise<PushSenderView>",
+				"description": "Quiet hours and validated subscriptions."
+			},
+			{
+				"name": "reportPushDelivery",
+				"type": "Promise<void>",
+				"description": "Resolves once the Hub records it."
+			},
+			{
+				"name": "sendWebPush",
+				"type": "Promise<PushDelivery>",
+				"description": "Delivered, gone (404 or 410) or failed."
+			}
+		],
+		"errors": [
+			{
+				"name": "WebPushHubError",
+				"type": "thrown",
+				"description": "The Hub did not answer with success."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "readSenderView",
+				"inputs": [
+					{
+						"name": "readSenderView.config",
+						"type": "WebPushConfig",
+						"required": true,
+						"description": "The application server key pair and the Hub origin from web-push.json."
+					},
+					{
+						"name": "readSenderView.ports",
+						"type": "PushPorts",
+						"required": true,
+						"description": "Fetch and the send time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "readSenderView",
+						"type": "Promise<PushSenderView>",
+						"description": "Quiet hours and validated subscriptions."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "reportPushDelivery",
+				"inputs": [
+					{
+						"name": "reportPushDelivery.config",
+						"type": "WebPushConfig",
+						"required": true,
+						"description": "The application server key pair and the Hub origin from web-push.json."
+					},
+					{
+						"name": "reportPushDelivery.ports",
+						"type": "PushPorts",
+						"required": true,
+						"description": "Fetch and the send time."
+					},
+					{
+						"name": "reportPushDelivery.report",
+						"type": "PushSenderReport",
+						"required": true,
+						"description": "Delivered and gone addresses."
+					}
+				],
+				"outputs": [
+					{
+						"name": "reportPushDelivery",
+						"type": "Promise<void>",
+						"description": "Resolves once the Hub records it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sendWebPush",
+				"inputs": [
+					{
+						"name": "sendWebPush.config",
+						"type": "WebPushConfig",
+						"required": true,
+						"description": "The application server key pair and the Hub origin from web-push.json."
+					},
+					{
+						"name": "sendWebPush.ports",
+						"type": "PushPorts",
+						"required": true,
+						"description": "Fetch and the send time."
+					},
+					{
+						"name": "sendWebPush.delivery",
+						"type": "{ target: PushSubscriptionTarget; message: NeedsYouPushMessage }",
+						"required": true,
+						"description": "One subscription and the message."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sendWebPush",
+						"type": "Promise<PushDelivery>",
+						"description": "Delivered, gone (404 or 410) or failed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-is-web-push-endpoint",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-web-push-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-encrypt-web-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-hub-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-tokens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-web-push-service/webPushTransport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-web-push-service/webPushTransport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

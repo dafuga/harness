@@ -1,0 +1,153 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-notification-settings",
+	"uid": "u_r6xro6gszn",
+	"kind": "component",
+	"title": "HubHomeNotificationSettings",
+	"responsibility": "The notification settings dialog: quiet hours, the last delivery and turning this browser off.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-form",
+			"reports.component.shared-primitives-atoms-html-input-checkbox",
+			"reports.component.shared-primitives-atoms-html-input-time",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeNotificationSettings.svelte"],
+		"symbols": ["HubHomeNotificationSettings"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeNotificationSettings.quiet",
+				"type": "PushQuietHours",
+				"required": true,
+				"description": "The saved quiet hours; the dialog edits a copy."
+			},
+			{
+				"name": "HubHomeNotificationSettings.deliveredAt",
+				"type": "number | null",
+				"required": true,
+				"description": "When this browser last received a decision notification, or null."
+			},
+			{
+				"name": "HubHomeNotificationSettings.busy",
+				"type": "boolean",
+				"required": true,
+				"description": "True while a change is being saved; disables both buttons."
+			},
+			{
+				"name": "HubHomeNotificationSettings.failed",
+				"type": "string",
+				"required": true,
+				"description": "The last failure to show, or empty."
+			},
+			{
+				"name": "HubHomeNotificationSettings.save",
+				"type": "(quiet: PushQuietHours) => void",
+				"required": true,
+				"description": "Saves the edited quiet hours."
+			},
+			{
+				"name": "HubHomeNotificationSettings.turnOff",
+				"type": "() => void",
+				"required": true,
+				"description": "Removes this browser's subscription."
+			},
+			{
+				"name": "HubHomeNotificationSettings.close",
+				"type": "() => void",
+				"required": true,
+				"description": "Closes the dialog."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeNotificationSettings",
+				"type": "markup",
+				"description": "A modal form with the quiet-hours switch, two times, Save and Turn off on this device."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-notification-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.module.networking-security-hub-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-form",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input-checkbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-input-time",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeNotificationSettings.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeNotificationSettings.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

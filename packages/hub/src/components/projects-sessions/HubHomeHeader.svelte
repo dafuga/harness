@@ -6,6 +6,7 @@
 	import BrandMark from '$reports/components/BrandMark.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
+	import HubHomeNotifications from './HubHomeNotifications.svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import {
 		homeHeadline,
@@ -95,5 +96,6 @@
 				{/if}
 			</hx-ul>
 		{/if}
+		{#if view.owner}<HubHomeNotifications />{/if}
 	</hx-div>
 </hx-header>

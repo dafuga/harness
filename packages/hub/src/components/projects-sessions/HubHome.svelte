@@ -27,6 +27,7 @@
 	import HubHomeHeader from './HubHomeHeader.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
+	import HubHomeNeedsLink from './HubHomeNeedsLink.svelte';
 	import '../../lib/styles/home-scheme.css';
 	import '../../lib/styles/hub-home/index.css';
 
@@ -169,9 +170,8 @@
 		return request;
 	}
 
-	function send(message: HomeChatInput) {
-		return api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message);
-	}
+	const send = (message: HomeChatInput) =>
+		api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message);
 
 	async function changeSession(id: string, add: boolean) {
 		const result = await api.send<{ controlled: string[] }>(
@@ -185,9 +185,7 @@
 		refresh();
 	}
 
-	function receipt(id: string) {
-		return api.get<HomeChatReceipt>('/api/hub-home/chat', { id });
-	}
+	const receipt = (id: string) => api.get<HomeChatReceipt>('/api/hub-home/chat', { id });
 </script>
 
 <hx-div class="home-scheme">
@@ -201,6 +199,7 @@
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
 			<HubHomeCards {view} {open} />
 		</hx-main>
+		<HubHomeNeedsLink {view} {open} {close} reload={refresh} dialog={selected !== null} />
 		{#if selected}
 			<HubHomeDialogs
 				{selected}
