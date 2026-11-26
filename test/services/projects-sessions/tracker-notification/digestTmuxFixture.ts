@@ -12,12 +12,14 @@ switch (args[2]) {
 	case 'list-panes': case 'display-message': process.stdout.write(raw + '\\n'); break;
 	case 'capture-pane':
 		if (existsSync(sent)) process.stdout.write('fixture\\n✻ Working (esc to interrupt)\\n');
+		else if (existsSync(join(dir, 'keys.json'))) process.stdout.write('fixture\\n' + rule + '\\n❯ typed digest\\n' + rule + '\\n? for shortcuts\\n');
 		else if (busy) process.stdout.write('✻ Working (esc to interrupt)\\n' + rule + '\\n❯ \\n' + rule + '\\n? for shortcuts\\n');
 		else process.stdout.write('fixture\\n' + rule + '\\n❯ \\n' + rule + '\\n? for shortcuts\\n');
 		break;
 	case 'if-shell':
-		writeFileSync(join(dir, 'keys.json'), JSON.stringify(args.map((arg) => arg)));
-		writeFileSync(sent, '1');
+		// The message is typed first; only the later Enter submits it.
+		if (args.at(-1).includes(' -l ')) writeFileSync(join(dir, 'keys.json'), JSON.stringify(args));
+		else writeFileSync(sent, '1');
 		process.stdout.write('tracker-watchdog-sent\\n');
 		break;
 	default: process.exit(2);
