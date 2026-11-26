@@ -6,13 +6,16 @@ import {
 	randomId,
 	remoteIdentity,
 	remoteKeys,
-	toBase64Url
+	toBase64Url,
+	type RemoteKeyPair,
+	type SecurePacket
 } from '../../remote/src/index';
-import type { RemoteKeyPair, SecurePacket } from '../../remote/src/index';
 import type { RemoteHostDevice } from '../src/adapters/networking-security/RemoteHostStoreAdapter';
 import { CommentOutboxService } from '../src/services/projects-sessions/CommentOutboxService';
-import { RemoteDeviceSessionsService } from '../src/services/RemoteDeviceSessionsService';
-import type { DeviceAddress } from '../src/services/RemoteDeviceSessionsService';
+import {
+	RemoteDeviceSessionsService,
+	type RemoteDeviceAddress
+} from '../src/services/RemoteDeviceSessionsService';
 import { remoteFixture } from './remote-fixture';
 
 /** The phone's end of one connection, with the keys it claims to hold. */
@@ -87,8 +90,8 @@ export async function setup(
 		lastSeenAt: null
 	};
 	const records = new Map([[deviceId, record]]),
-		sent: { address: DeviceAddress; packet: SecurePacket }[] = [],
-		drops: { address: DeviceAddress; code: number }[] = [],
+		sent: { address: RemoteDeviceAddress; packet: SecurePacket }[] = [],
+		drops: { address: RemoteDeviceAddress; code: number }[] = [],
 		inbox = new Map<string, (packet: SecurePacket) => void>();
 	const { registry, arbiter, providers, renderMockups } = f;
 	const trackerRequests: URL[] = [];

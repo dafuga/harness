@@ -1,8 +1,7 @@
 // @harness-uid u_q3g6hgpawh
-import type { HistoryNote } from '../../core/git-source-history/historyTypes';
-import type { RegressionRecord } from '../../core/verification-evidence/regressionTypes';
+import type { RegressionNote } from '../../core/git-source-history/historyTypes.types';
 
-export type RegressionNote = Extract<HistoryNote, { kind: 'regression' }>;
+import type { RegressionRecord } from '../../core/verification-evidence/regressionTypes';
 
 export type Loaded = { record: RegressionRecord; output: string; files?: Map<string, Buffer> };
 

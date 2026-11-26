@@ -1,4 +1,5 @@
 // @harness-uid u_t7hihkx2oh
+import type { RuntimeEnvironment } from '../../core/execution-runtimes/runtimeTypes.types';
 import type { RuntimeServiceOptions } from './UnitRuntimeService.types';
 import { resolve } from 'node:path';
 import { HttpRuntimeAdapter } from '../../adapters/execution-runtimes/HttpRuntimeAdapter';
@@ -16,12 +17,12 @@ import type {
 import { MeasurementRepository } from '../../repositories/verification-evidence/MeasurementRepository';
 import { chooseRuntime, type RuntimeChoice } from '../../utils/execution-runtimes/chooseRuntime';
 import { impactKernelPortable } from '../../utils/execution-runtimes/impact-kernel/impactKernel';
-import { kernelArtifacts, type Environment } from '../../utils/execution-runtimes/kernelArtifacts';
+import { kernelArtifacts } from '../../utils/execution-runtimes/kernelArtifacts';
 import { machineProfile } from '../../utils/development-tooling/machineProfile';
 
 /** Turns declared execution targets into working runtimes behind the one typed contract. */
 export class UnitRuntimeService {
-	private readonly env: Environment;
+	private readonly env: RuntimeEnvironment;
 
 	constructor(
 		private readonly root = process.cwd(),

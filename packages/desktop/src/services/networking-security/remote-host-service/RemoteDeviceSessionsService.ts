@@ -1,19 +1,14 @@
 // @harness-uid u_rdiarfthls
-import type {
-	Entry,
-	RemoteDeviceSessionsOptions,
-	DeviceAddress
-} from './RemoteDeviceSessionsService.types';
+import type { RemoteDeviceAddress } from '../../../../../remote/src/models/networking-security/RemoteRelay.types';
+import type { Entry, RemoteDeviceSessionsOptions } from './RemoteDeviceSessionsService.types';
 import {
 	SecureChannelService,
 	fromBase64Url,
-	relayCloseCodes
-} from '../../../../../remote/src/index';
-import type {
-	RemoteConnectionEvent,
-	RemoteGrant,
-	SecurePacket,
-	WireChannel
+	relayCloseCodes,
+	type RemoteConnectionEvent,
+	type RemoteGrant,
+	type SecurePacket,
+	type WireChannel
 } from '../../../../../remote/src/index';
 import type { RemoteHostDevice } from '../../../adapters/networking-security/RemoteHostStoreAdapter';
 import { phoneTrackerPull, phoneTrackerPush } from './pullPhoneTracker';
@@ -29,7 +24,7 @@ export class RemoteDeviceSessionsService {
 	connected(deviceId: string): boolean {
 		return Boolean(this.entries.get(deviceId)?.link);
 	}
-	async packet(address: DeviceAddress, packet: SecurePacket): Promise<void> {
+	async packet(address: RemoteDeviceAddress, packet: SecurePacket): Promise<void> {
 		if (packet.type === 'hello') return this.hello(address, packet);
 		const entry = this.entries.get(address.deviceId),
 			current = entry?.connectionId === address.connectionId ? entry : null;
@@ -39,7 +34,7 @@ export class RemoteDeviceSessionsService {
 		if (text === undefined) return this.violation(address);
 		if (text !== null) await current.link?.receive(text);
 	}
-	close(address: DeviceAddress): void {
+	close(address: RemoteDeviceAddress): void {
 		const entry = this.entries.get(address.deviceId);
 		if (entry?.connectionId === address.connectionId) this.detach(entry);
 	}
@@ -63,7 +58,7 @@ export class RemoteDeviceSessionsService {
 	end(): void {
 		for (const deviceId of [...this.entries.keys()]) this.revoke(deviceId);
 	}
-	private async hello(address: DeviceAddress, packet: SecurePacket): Promise<void> {
+	private async hello(address: RemoteDeviceAddress, packet: SecurePacket): Promise<void> {
 		const record = this.options.device(address.deviceId);
 		if (!record) {
 			this.options.send(address, { type: 'reject', reason: 'unknown-device' });
@@ -90,7 +85,7 @@ export class RemoteDeviceSessionsService {
 		this.options.send(address, accept);
 	}
 	/** Only the current connection of a device is written to. */
-	private forward(entry: Entry, address: DeviceAddress, packet: SecurePacket): void {
+	private forward(entry: Entry, address: RemoteDeviceAddress, packet: SecurePacket): void {
 		if (entry.connectionId === address.connectionId) this.options.send(address, packet);
 	}
 	/** A new approval generation is a new session: nothing of the old one carries over. */
@@ -139,13 +134,11 @@ export class RemoteDeviceSessionsService {
 		entry.channel = null;
 		entry.connectionId = null;
 	}
-	private violation(address: DeviceAddress): void {
+	private violation(address: RemoteDeviceAddress): void {
 		this.close(address);
 		this.options.drop(address, relayCloseCodes.protocol);
 	}
 }
 
-export type {
-	DeviceAddress,
-	RemoteDeviceSessionsOptions
-} from './RemoteDeviceSessionsService.types';
+export type { RemoteDeviceSessionsOptions } from './RemoteDeviceSessionsService.types';
+export type { RemoteDeviceAddress } from '../../../../../remote/src/models/networking-security/RemoteRelay.types';

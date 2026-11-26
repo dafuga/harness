@@ -1,3 +1,4 @@
+import type { RuntimeEnvironment } from '../../../../src/core/execution-runtimes/runtimeTypes.types';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -11,10 +12,9 @@ import {
 	namedE2eRun,
 	closeE2eRun
 } from '../../src/utils/development-tooling/e2e-fixtures/e2eFixtures';
-import { E2eRootNotSetError } from '../../src/utils/development-tooling/e2e-fixtures/e2eFixtures.types';
-import type {
-	Environment,
-	E2eFixtures
+import {
+	E2eRootNotSetError,
+	type E2eFixtures
 } from '../../src/utils/development-tooling/e2e-fixtures/e2eFixtures.types';
 
 const state = 'resolves-isolated-fixtures-and-manages-run-lifecycle';
@@ -37,8 +37,8 @@ function summary(fixtures: E2eFixtures): object {
 test('Resolves isolated fixtures and manages run lifecycle', () => {
 	const root = tempRoot();
 	const namedRoot = tempRoot();
-	const env: Environment = { HARNESS_E2E_ROOT: root };
-	const overridden: Environment = {
+	const env: RuntimeEnvironment = { HARNESS_E2E_ROOT: root };
+	const overridden: RuntimeEnvironment = {
 		HARNESS_E2E_ROOT: namedRoot,
 		HARNESS_CONSOLE_E2E_HOME: join(namedRoot, 'console-home'),
 		HARNESS_ANALYTICS_HOME: join(namedRoot, 'analytics-home')
@@ -46,9 +46,12 @@ test('Resolves isolated fixtures and manages run lifecycle', () => {
 	try {
 		const fixtures = e2eFixtures(env);
 		const overriddenFixtures = e2eFixtures(overridden);
-		const openedEnv: Environment = { HARNESS_E2E_ROOT: root, PROJECT_REPORTS_E2E_PORT: '4173' };
+		const openedEnv: RuntimeEnvironment = {
+			HARNESS_E2E_ROOT: root,
+			PROJECT_REPORTS_E2E_PORT: '4173'
+		};
 		const opened = openE2eRun(openedEnv);
-		const ownedEnv: Environment = {
+		const ownedEnv: RuntimeEnvironment = {
 			HARNESS_E2E_ROOT: root,
 			HARNESS_E2E_OWNER: String(process.pid)
 		};

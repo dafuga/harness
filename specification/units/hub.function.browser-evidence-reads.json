@@ -13,7 +13,7 @@
 			"packages/desktop/src/adapters/explorer-ui/browser-project-adapter/browserEvidenceReads.types.ts",
 			"packages/hub/src/utils/browser-bridge/browserEvidenceReads.ts"
 		],
-		"symbols": ["browserEvidenceReads", "Guard", "browserEvidenceReads"]
+		"symbols": ["browserEvidenceReads", "browserEvidenceReads"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -26,7 +26,7 @@
 			},
 			{
 				"name": "browserEvidenceReads.guard",
-				"type": "Guard",
+				"type": "ProjectReadGuard",
 				"required": true,
 				"description": "The project permission guard, called with each request's input as its context and with a read callback that receives the base path the guard resolves. Every evidence and artifact request goes through it and its result is returned unchanged, and this unit makes no permission check of its own and sends no request outside that callback."
 			}
@@ -86,7 +86,7 @@
 					},
 					{
 						"name": "browserEvidenceReads.guard",
-						"type": "Guard",
+						"type": "ProjectReadGuard",
 						"required": true,
 						"description": "The project permission guard, called with each request's input as its context and with a read callback that receives the base path the guard resolves. Every evidence and artifact request goes through it and its result is returned unchanged, and this unit makes no permission check of its own and sends no request outside that callback."
 					}
@@ -160,12 +160,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.model.project-context-types",
+			"unit": "hub.function.browser-artifact",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.browser-artifact",
+			"unit": "hub.function.browser-bridge",
 			"via": "import",
 			"origin": "derived"
 		}

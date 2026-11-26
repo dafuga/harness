@@ -1,12 +1,12 @@
 // @harness-uid u_fsvifdgvmp
-import type { ComponentManifest } from '../../../core/development-tooling/unitTypes';
-import type { ScenarioManifest } from '../../../core/development-tooling/unitTypes';
-import type { PublicHelper } from '../../explorer-ui/unitMetadata';
-import type { UnitMetadata } from '../../explorer-ui/unitMetadata';
+import type {
+	ComponentManifest,
+	ScenarioManifest
+} from '../../../core/development-tooling/unitTypes';
+import type { PublicHelper, UnitMetadata } from '../../explorer-ui/unitMetadata';
 import type { Measurement } from '../../../core/verification-evidence/verificationTypes';
 import type { UnitDocumentation } from '../../explorer-ui/unit-documentation/unitDocumentation';
-import type { EmittedLimits } from '../budgetReviews';
-import type { FrozenLimits } from '../budgetReviews';
+import type { EmittedLimits, FrozenLimits } from '../budgetReviews';
 
 export interface RevisionRegistry {
 	/** False when the revision stores no unit registry; nothing is substituted for it. */
@@ -75,3 +75,5 @@ export interface RevisionRegistry {
 		edges: Array<{ from: string; to: string; via: string }>;
 	};
 }
+
+export type RevisionUnit = RevisionRegistry['units'][number];

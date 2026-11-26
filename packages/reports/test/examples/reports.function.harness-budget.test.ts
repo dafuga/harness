@@ -1,12 +1,9 @@
+import type { HarnessMeasurement } from '../../src/models/explorer-ui/Harness.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { harnessBudget } from '../../src/utils/explorer-ui/harnessBudget';
-import type {
-	Finding,
-	Measurement,
-	Reviewed
-} from '../../src/utils/explorer-ui/harnessBudget.types';
+import type { Finding, Reviewed } from '../../src/utils/explorer-ui/harnessBudget.types';
 
 const UNIT = 'reports.function.harness-budget';
 const UNREVIEWED = 'freeze declared; no reviewed limit is recorded at this revision';
@@ -14,7 +11,10 @@ const NO_RECORD = 'no limit is recorded at this revision';
 const NOT_MEASURABLE = 'not frozen: reviewed as not measurable';
 const NO_VALUE = 'not frozen: no value to freeze';
 
-function measured(value: number | null, extra: Partial<Measurement> = {}): Measurement {
+function measured(
+	value: number | null,
+	extra: Partial<HarnessMeasurement> = {}
+): HarnessMeasurement {
 	return {
 		unit: UNIT,
 		metric: 'size',

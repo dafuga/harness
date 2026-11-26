@@ -205,3 +205,9 @@ export interface HarnessExplanation {
 }
 export type { HarnessRevision } from './HarnessRevision.types';
 export type HarnessMark = 'direct' | 'indirect' | 'added' | 'removed';
+
+export type HarnessContractItem = HarnessUnit['contract']['inputs'][number];
+
+export type HarnessMeasurement = HarnessRecord['measurements'][number];
+
+export type HarnessScenarioResult = HarnessRecord['scenarios'][number];

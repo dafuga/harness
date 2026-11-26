@@ -126,3 +126,8 @@ export interface RemoteHostSummary {
 	devices: { deviceId: string; online: boolean; createdAt: string; lastSeenAt: string | null }[];
 }
 export { relayCloseCodes, relayHeaders } from './RemoteRelayValues';
+
+export interface RemoteDeviceAddress {
+	deviceId: string;
+	connectionId: string;
+}

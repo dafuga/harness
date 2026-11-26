@@ -1,3 +1,4 @@
+import type { ZoomPoint, ZoomControls } from '../../src/utils/shared-primitives/trackpadZoom.types';
 import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
@@ -6,11 +7,10 @@ import {
 	keepPointerInPlace
 } from '../../src/components/shared-primitives/image-zoom/trackpadZoom';
 import { trackpadZoom } from '../../src/utils/shared-primitives/trackpadZoom';
-import type { Point, ZoomControls } from '../../src/utils/shared-primitives/trackpadZoom.types';
 
 function checkZoom(): {
 	prevented: boolean;
-	applied: { next: number | null; point: Point };
+	applied: { next: number | null; point: ZoomPoint };
 	listenersAfterDestroy: number;
 } {
 	const listeners = new Map<string, EventListener>();
@@ -20,7 +20,7 @@ function checkZoom(): {
 		addEventListener: (type: string, listener: EventListener) => listeners.set(type, listener),
 		removeEventListener: (type: string) => listeners.delete(type)
 	} as unknown as HTMLElement;
-	const applied: Array<{ next: number | null; point: Point }> = [];
+	const applied: Array<{ next: number | null; point: ZoomPoint }> = [];
 	const controls: ZoomControls = {
 		current: 2,
 		minimum: 1,

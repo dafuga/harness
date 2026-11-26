@@ -1,5 +1,5 @@
 // @harness-uid u_rptchqt5ts
-import type { ZoomControls, Gesture, Point } from './trackpadZoom.types';
+import type { ZoomPoint, ZoomControls, Gesture } from './trackpadZoom.types';
 
 // Chrome sends a pinch as Ctrl+wheel with deltaY = -100·ln(scale), so zoom follows the fingers;
 // the cap keeps one Ctrl+mouse-wheel notch to about 1.65×.
@@ -19,7 +19,7 @@ function wheelFactor(event: WheelEvent, pageHeight: number) {
 export function trackpadZoom(node: HTMLElement, controls: () => ZoomControls | null) {
 	let gestureScale = 1;
 	let gestureActive = false;
-	const point = (event: Gesture): Point => {
+	const point = (event: Gesture): ZoomPoint => {
 		const rect = node.getBoundingClientRect();
 		return {
 			x: event.clientX ?? rect.left + rect.width / 2,
@@ -72,4 +72,4 @@ export {
 	keepPointerInPlace
 } from '../../components/shared-primitives/image-zoom/trackpadZoom';
 
-export type { Point } from './trackpadZoom.types';
+export type { ZoomPoint } from './trackpadZoom.types';

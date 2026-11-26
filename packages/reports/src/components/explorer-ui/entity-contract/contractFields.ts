@@ -1,13 +1,13 @@
 // @harness-uid u_plxodrc2ry
-import type { Item, CallableContract } from './contractFields.types';
-import type {
-	ContractExample,
-	ContractField,
-	ContractGroup
+import type { HarnessContractItem, HarnessUnit } from '../../../models/explorer-ui/Harness.types';
+import type { CallableContract } from './contractFields.types';
+import {
+	type ContractExample,
+	type ContractField,
+	type ContractGroup,
+	guess
 } from '../../../utils/explorer-ui/contractFields';
-import { guess } from '../../../utils/explorer-ui/contractFields';
 import type { ExplorerCategory } from '../../../models/explorer-ui/Explorer.types';
-import type { HarnessUnit } from '../../../models/explorer-ui/Harness.types';
 import { type ContractRow } from '../../../utils/explorer-ui/entityContract';
 import { humanize } from '../../../helpers/strings/humanize';
 
@@ -39,7 +39,10 @@ function shown(value: unknown, markup: boolean): ContractExample {
 }
 
 /** The examples its contract declares, false, 0, null and empty text kept; else a placeholder. */
-function examplesOf(item: Item, type: string): Pick<ContractField, 'source' | 'examples'> {
+function examplesOf(
+	item: HarnessContractItem,
+	type: string
+): Pick<ContractField, 'source' | 'examples'> {
 	const markup = type === 'markup';
 	if (item.examples && item.examples.length > 0) {
 		return { source: 'declared', examples: item.examples.map((value) => shown(value, markup)) };
@@ -50,7 +53,7 @@ function examplesOf(item: Item, type: string): Pick<ContractField, 'source' | 'e
 }
 
 /** Component fields read as words; their derived markup output reads rendered markup. */
-function nameOf(item: Item, unit: HarnessUnit): string {
+function nameOf(item: HarnessContractItem, unit: HarnessUnit): string {
 	const name = item.name.slice(item.name.lastIndexOf('.') + 1);
 	const files = unit.owns.source.map((path) => path.slice(path.lastIndexOf('/') + 1).split('.')[0]);
 	const own = [unit.title, ...unit.owns.symbols, ...files];
@@ -59,7 +62,7 @@ function nameOf(item: Item, unit: HarnessUnit): string {
 	return words ? words[0].toUpperCase() + words.slice(1) : 'Unnamed';
 }
 
-export function fieldOf(item: Item, unit: HarnessUnit): ContractField {
+export function fieldOf(item: HarnessContractItem, unit: HarnessUnit): ContractField {
 	const type = typeLabel(item.type);
 	const description = item.description?.trim();
 	return {
@@ -108,7 +111,7 @@ function typeGroups(unit: HarnessUnit): ContractGroup[] {
 export function contractFields(unit: HarnessUnit, category: ExplorerCategory): ContractGroup[] {
 	if (category === 'types') return typeGroups(unit);
 	const { inputs, outputs, errors } = unit.contract;
-	const fields = (items: Item[]) => items.map((item) => fieldOf(item, unit));
+	const fields = (items: HarnessContractItem[]) => items.map((item) => fieldOf(item, unit));
 	const component = category === 'components';
 	const provides = category === 'configs';
 	const groups: ContractGroup[] = [
@@ -194,7 +197,7 @@ export function callableContracts(unit: HarnessUnit): CallableContract[] {
 
 /** A return value has its own declared name, distinct from the callable that produces it. */
 export function returnField(
-	declared: Item | undefined,
+	declared: HarnessContractItem | undefined,
 	type: string,
 	callable: string,
 	unit: HarnessUnit

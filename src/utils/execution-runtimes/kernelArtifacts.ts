@@ -1,11 +1,12 @@
 // @harness-uid u_7okxhscew6
-import type { Environment, KernelArtifacts, KernelBuild } from './kernelArtifacts.types';
+import type { RuntimeEnvironment } from '../../core/execution-runtimes/runtimeTypes.types';
+import type { KernelArtifacts, KernelBuild } from './kernelArtifacts.types';
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /** Where built kernels may live: an override, beside a bundle, or in a source checkout. */
-function candidates(env: Environment): string[] {
+function candidates(env: RuntimeEnvironment): string[] {
 	const beside = [
 		new URL('../kernel/', import.meta.url),
 		new URL('../../kernel/', import.meta.url),
@@ -15,7 +16,7 @@ function candidates(env: Environment): string[] {
 }
 
 /** Locates the built impact kernel without building anything. */
-export function kernelArtifacts(env: Environment = process.env): KernelArtifacts {
+export function kernelArtifacts(env: RuntimeEnvironment = process.env): KernelArtifacts {
 	const directory = candidates(env).find((path) => existsSync(join(path, 'build.json')));
 	if (!directory)
 		return { directory: undefined, wasm: undefined, native: undefined, build: undefined };
@@ -25,9 +26,5 @@ export function kernelArtifacts(env: Environment = process.env): KernelArtifacts
 	return { directory, wasm: file('impact-kernel.wasm'), native: file('impact-kernel'), build };
 }
 
-export type {
-	Environment,
-	KernelBuild,
-	KernelFile,
-	KernelArtifacts
-} from './kernelArtifacts.types';
+export type { KernelBuild, KernelFile, KernelArtifacts } from './kernelArtifacts.types';
+export type { RuntimeEnvironment } from '../../core/execution-runtimes/runtimeTypes.types';

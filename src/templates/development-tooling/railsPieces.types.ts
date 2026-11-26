@@ -1,12 +1,4 @@
 // @harness-uid u_jllfqln26c
-export interface ClassEntityTemplate {
-	folder: string;
-	fileName: string;
-	className: string;
-	contents: string;
-	expectation: string;
-}
-
 export interface FunctionTemplate {
 	folder: string;
 	name: string;
