@@ -112,7 +112,7 @@ test('an agent with a flag and live runs still counts as working, and sessions a
 	expect(merged?.agents).toHaveLength(1);
 	expect(merged?.agents[0]).toMatchObject({ sessions: 3, state: 'needs-you' });
 	expect(merged?.agents[0].tasks.map((task) => task.title)).toEqual(['a', 'b', 'c', 'd']);
-	expect(homeHeadline(merged?.agents ?? [])).toBe('1 agent working, 1 needs you');
+	expect(homeHeadline(merged?.agents ?? [], 0, 1)).toBe('1 agent working, 1 needs you');
 });
 
 test('sub-agent sessions count once across computers and make their parent agent working', () => {

@@ -5,6 +5,7 @@ import type {
 	HomeSubscription,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import { agentOpenAsks } from '$reports/lib/projects-sessions/hub-home/homeOpenAsks';
 
 const precedence: Record<HomeAgent['state'], number> = {
 	'needs-you': 0,
@@ -52,6 +53,15 @@ function mergeAgents(all: HomeAgent[]): HomeAgent[] {
 	return newest(all, (agent) => agent.id, wins)
 		.map((winner) => withLiveWork(winner, byId.get(winner.id) ?? [winner]))
 		.sort((a, b) => precedence[a.state] - precedence[b.state] || a.name.localeCompare(b.name));
+}
+
+/** An ask the Tracker synced to several computers is one decision; its newest copy shows. */
+function mergeOpenAsks(snapshots: OwnerHomeSnapshot[]) {
+	return newest(
+		snapshots.flatMap((entry) => entry.openAsks ?? agentOpenAsks(entry.agents)),
+		(ask) => ask.itemId,
+		(a, b) => Date.parse(a.since) > Date.parse(b.since)
+	).sort((a, b) => Date.parse(a.since) - Date.parse(b.since) || a.itemId.localeCompare(b.itemId));
 }
 
 function mergeQuota(all: (HomeSubscription[] | null)[]): HomeSubscription[] | null {
@@ -106,6 +116,7 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 	return {
 		overview,
 		agents: mergeAgents(snapshots.flatMap((entry) => entry.agents)),
+		openAsks: mergeOpenAsks(snapshots),
 		plans: newest(
 			snapshots.flatMap((entry) => entry.plans),
 			(plan) => plan.id,
