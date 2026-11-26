@@ -143,15 +143,15 @@ test('the scheduler reports an overdue live run without ending it or starting an
 test('unlaunch cancels a queued run that has not started in the same write', async () => {
 	const database = new DatabaseSync(':memory:');
 	const clock = { now: noon };
-	const { runtime } = launchRuntime(database, clock);
+	const { runtime, start } = launchRuntime(database, clock);
+	start.mockResolvedValueOnce({ type: 'startup-failed', reason: 'fixture start failure' });
 	try {
 		seed(runtime);
-		database
-			.prepare(
-				`INSERT INTO runs (id,item_id,auto_token,attempt,rung,cli,model,state,queued_at)
-			VALUES (7,?,'live-token',2,'sol','codex','gpt-6.2-sol','queued',?)`
-			)
-			.run(itemId, noon);
+		await runtime.scheduler!.tick(signal);
+		expect(runRows(database)).toEqual([
+			{ attempt: 1, state: 'finished', outcome: 'abandoned' },
+			{ attempt: 2, state: 'queued', outcome: null }
+		]);
 		const response = await runtime.items.handle(
 			new Request(`http://tracker-fixture.invalid/items/${itemId}/unlaunch`, {
 				method: 'POST',
@@ -160,7 +160,7 @@ test('unlaunch cancels a queued run that has not started in the same write', asy
 		);
 		expect(response.status).toBe(200);
 		expect(
-			database.prepare('SELECT state, outcome, failure_reason FROM runs WHERE id = 7').get()
+			database.prepare('SELECT state, outcome, failure_reason FROM runs WHERE attempt = 2').get()
 		).toEqual({
 			state: 'finished',
 			outcome: 'abandoned',
