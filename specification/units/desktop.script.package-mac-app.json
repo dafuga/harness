@@ -8,14 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/scripts/package-mac-app.ts"],
+		"source": [
+			"packages/desktop/scripts/package-mac-app.ts",
+			"packages/desktop/scripts/package-mac-app.types.ts"
+		],
 		"symbols": [
 			"bundleId",
 			"migrationBinary",
-			"MacAppSources",
 			"assembleMacApp",
 			"restrictBundleModes",
-			"verifyMacAppLayout"
+			"verifyMacAppLayout",
+			"MacAppSources"
 		]
 	},
 	"contract": {

@@ -6,20 +6,13 @@ import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
 import { macIcon } from './mac-icon/mac-icon';
 import { MacPackageError } from './package-mac.types';
+import type { MacAppSources } from './package-mac-app.types';
 import { stageTrackerBundle } from './package-mac-tracker';
 
 export const bundleId = 'dev.harness.desktop';
 /** Electron reports `isPackaged=false` for an executable named `electron`, so it is renamed. */
 const executableName = 'Harness';
 export const migrationBinary = 'Contents/Helpers/HarnessKeychainMigration';
-
-export interface MacAppSources {
-	/** The directory holding the built `main.cjs` and `preload.cjs`. */
-	bundles: string;
-	/** The built renderer. */
-	renderer: string;
-	revision: string;
-}
 
 async function copyProject(output: string, sources: MacAppSources): Promise<void> {
 	const project = resolve(output, 'Contents/Resources/app');
