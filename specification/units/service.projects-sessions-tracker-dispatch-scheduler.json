@@ -476,6 +476,11 @@
 			"unit": "service.projects-sessions-tracker-native-runtime",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-start-error",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

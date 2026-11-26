@@ -1,3 +1,4 @@
+// @harness-uid u_lkvgwgi2xf
 export interface TrackerClaudeTrustPane {
 	tmux: string;
 	socket: string;

@@ -1,3 +1,4 @@
+// @harness-uid u_2uiucmiztr
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { trackerManagedClaudeUsage } from './trackerManagedClaudeUsage';

@@ -12,6 +12,7 @@
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
@@ -28,6 +29,7 @@
 			"TrackerTmuxAdapter.constructor",
 			"TrackerTmuxAdapter.scan",
 			"TrackerTmuxAdapter.inventory",
+			"TrackerTmuxAdapter.windows",
 			"TrackerTmuxAdapter.nudge",
 			"TrackerTmuxAdapter.closeIdle",
 			"TrackerTmuxAdapterConfig",
@@ -35,10 +37,12 @@
 			"TrackerTmuxNudge",
 			"TrackerTmuxClose",
 			"trackerManagedCodexUsage",
+			"CodexCounters",
 			"trackerManagedHostLauncher",
 			"TrackerManagedPresence",
 			"TrackerManagedReceipt",
 			"TrackerManagedCommand",
+			"TrackerNativeLaunch",
 			"TrackerManagedProfiles",
 			"TrackerManagedTarget",
 			"TrackerManagedExec",
@@ -105,6 +109,11 @@
 				"type": "AbortSignal",
 				"required": true,
 				"description": "Lifetime for the socket inventory calls."
+			},
+			{
+				"name": "TrackerTmuxAdapter.windows.signal",
+				"type": "AbortSignal",
+				"required": true
 			},
 			{
 				"name": "TrackerTmuxAdapter.nudge.input",
@@ -304,23 +313,8 @@
 				"required": true
 			},
 			{
-				"name": "launchTmux.tmux",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "launchTmux.trackerBin",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "launchTmux.trackerExecutable",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "launchTmux.worktree",
-				"type": "string",
+				"name": "launchTmux.target",
+				"type": "TrackerManagedTarget",
 				"required": true
 			},
 			{
@@ -674,6 +668,24 @@
 						"name": "TrackerTmuxAdapter.inventory",
 						"type": "Promise<WatchdogPane[]>",
 						"description": "Read pane identity and timing without reading terminal output."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerTmuxAdapter.windows",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.windows.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.windows",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -1105,23 +1117,8 @@
 				"name": "launchTmux",
 				"inputs": [
 					{
-						"name": "launchTmux.tmux",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "launchTmux.trackerBin",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "launchTmux.trackerExecutable",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "launchTmux.worktree",
-						"type": "string",
+						"name": "launchTmux.target",
+						"type": "TrackerManagedTarget",
 						"required": true
 					},
 					{
@@ -1143,7 +1140,7 @@
 				"outputs": [
 					{
 						"name": "launchTmux",
-						"type": "Promise<void>"
+						"type": "Promise<string | undefined>"
 					}
 				],
 				"errors": [],
@@ -1171,7 +1168,7 @@
 				"outputs": [
 					{
 						"name": "prepareTrackerWorkingDirectory",
-						"type": "Promise<string | null>"
+						"type": "Promise<string | { failure: string }>"
 					}
 				],
 				"errors": [],
@@ -1653,6 +1650,41 @@
 		},
 		{
 			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-claude-session-arguments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-claude-startup-phase",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-managed-preparation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-managed-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-startup-cause",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-tmux-windows",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-claude-session-id",
 			"via": "import",
 			"origin": "derived"
 		},

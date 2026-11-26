@@ -1,3 +1,4 @@
+// @harness-uid u_lkvgwgi2xf
 import { realpathSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';

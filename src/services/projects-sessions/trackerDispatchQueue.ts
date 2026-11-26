@@ -183,7 +183,7 @@ async function startReservedRun(
 		);
 	} catch (error) {
 		// The host might have started the session before losing its reply.
-		return trackerStartError(error);
+		return trackerStartError(error instanceof Error ? error.message : String(error));
 	} finally {
 		signal.throwIfAborted();
 	}

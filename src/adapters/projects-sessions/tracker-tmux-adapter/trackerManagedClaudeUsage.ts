@@ -1,3 +1,4 @@
+// @harness-uid u_hhs647tr36
 import { constants } from 'node:fs';
 import { open, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -19,7 +20,7 @@ export function trackerManagedClaudeUsage(
 		const session = trackerClaudeSessionId(attempt);
 		if (run.cli !== 'claude' || run.session_id !== attempt || !session) return undefined;
 		const lines: string[] = [];
-		for (const path of await sessionTranscripts(projects, session)) {
+		for (const path of await sessionTranscripts(projects, { session, attempt })) {
 			signal.throwIfAborted();
 			lines.push(...(await usageLines(path, cache)));
 		}
@@ -28,9 +29,15 @@ export function trackerManagedClaudeUsage(
 }
 
 /** The main transcript and any subagent transcripts. The directory name follows the cwd. */
-async function sessionTranscripts(projects: string, session: string): Promise<string[]> {
+async function sessionTranscripts(
+	projects: string,
+	{ session, attempt }: { session: string; attempt: string }
+): Promise<string[]> {
 	const paths: string[] = [];
-	for (const project of await readdir(projects).catch(() => [])) {
+	const all = await readdir(projects).catch(() => [] as string[]);
+	// A worktree launch's directory carries the attempt token; only ops launches need the full scan.
+	const own = all.filter((name) => name.includes(attempt));
+	for (const project of own.length ? own : all) {
 		const directory = join(projects, project);
 		const names = await readdir(directory).catch(() => [] as string[]);
 		if (names.includes(`${session}.jsonl`)) paths.push(join(directory, `${session}.jsonl`));

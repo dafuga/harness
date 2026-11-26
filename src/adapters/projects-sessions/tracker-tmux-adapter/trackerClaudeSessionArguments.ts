@@ -1,3 +1,4 @@
+// @harness-uid u_5r4yfz7bnz
 import { trackerEgressArguments } from '../../../utils/projects-sessions/trackerEgressPolicy';
 import type { TrackerEgressPolicy } from '../../../utils/projects-sessions/trackerEgressPolicy.types';
 import type { TrackerNativeLaunch } from './trackerManagedHostLauncher.types';
@@ -9,9 +10,10 @@ import type { TrackerNativeLaunch } from './trackerManagedHostLauncher.types';
  */
 export function claudeSessionArguments(
 	model: string,
-	{ sessionName, claudeSession }: TrackerNativeLaunch,
+	launch: TrackerNativeLaunch,
 	egress?: TrackerEgressPolicy
 ): string[] {
+	const { sessionName, claudeSession } = launch;
 	const availableModels = ['opus', 'sonnet', 'haiku', ...(/fable/i.test(model) ? ['fable'] : [])];
 	const session = claudeSession ? ['--session-id', claudeSession] : [];
 	if (!egress)

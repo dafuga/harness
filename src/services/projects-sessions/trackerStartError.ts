@@ -1,3 +1,4 @@
+// @harness-uid u_44qijhmp62
 import { redactSecrets } from '../../utils/agents-providers/redactSecrets';
 import type {
 	TrackerDispatcherService,
@@ -6,8 +7,7 @@ import type {
 } from '../agents-providers/TrackerDispatcherService';
 
 /** A bounded, redacted cause for a start call that threw. */
-export function trackerStartError(error: unknown) {
-	const message = error instanceof Error ? error.message : String(error);
+export function trackerStartError(message: string) {
 	const reason = redactSecrets(message).slice(0, 500);
 	return { type: 'startup-failed', pending: true, reason } as const;
 }

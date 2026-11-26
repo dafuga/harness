@@ -1,3 +1,4 @@
+// @harness-uid u_f5lwwptgm5
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';

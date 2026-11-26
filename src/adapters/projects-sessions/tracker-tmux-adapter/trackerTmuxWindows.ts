@@ -1,3 +1,4 @@
+// @harness-uid u_47xjs4dkt5
 import type { TrackerTmuxWindow } from '../../../utils/projects-sessions/trackerSessionNames.types';
 
 /** Names only. A socket without a server, or a failed listing, contributes none. */

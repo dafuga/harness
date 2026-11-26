@@ -1,3 +1,4 @@
+// @harness-uid u_a4rjzqhwpz
 import type { TrackerNamedItem, TrackerTmuxWindow } from './trackerSessionNames.types';
 
 /** Panes the launcher owns. Their evidence comes from run receipts, not from their names. */
@@ -20,10 +21,8 @@ const genericNames = new Set([
  * "Project: title", used for the tmux window, Claude Remote Control and `runs.session_name`.
  * tmux expands `#` sequences in window names, including `#(command)`, so they are removed.
  */
-export function trackerSessionLabel(
-	{ title, project, agent }: Omit<TrackerNamedItem, 'id' | 'owner'>,
-	fallback = 'Tracker'
-): string {
+export function trackerSessionLabel(item: TrackerNamedItem, fallback = 'Tracker'): string {
+	const { title, project, agent } = item;
 	const name = [project, agent].find(Boolean) ?? fallback;
 	return `${name.charAt(0).toUpperCase()}${name.slice(1)}: ${title ?? ''}`
 		.replace(/#[({[]?/g, '')

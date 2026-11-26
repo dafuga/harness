@@ -53,11 +53,12 @@ exit "$result"
 `;
 
 export async function launchTmux(
-	{ tmux, trackerBin, trackerExecutable, worktree, windowName }: TrackerManagedTarget,
+	target: TrackerManagedTarget,
 	receipt: TrackerManagedReceipt,
 	execution: TrackerManagedExec,
 	signal: AbortSignal
 ): Promise<string | undefined> {
+	const { tmux, trackerBin, trackerExecutable, worktree, windowName } = target;
 	const { node, itemId, runId, token } = receipt;
 	const { script, command, clientPath, guestAuthFile } = execution;
 	const environment = [

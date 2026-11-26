@@ -1,3 +1,4 @@
+// @harness-uid u_tjjmc723tj
 export interface ClaudeMessageUsage {
 	id: string;
 	model?: string;
