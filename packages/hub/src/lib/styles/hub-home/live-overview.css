@@ -89,7 +89,8 @@
 	min-width: 0;
 	font-size: var(--hx-type-size-sm);
 }
-.hh-home .hh-live-item[open] .hh-live-title {
+.hh-home .hh-live-item[open] .hh-live-title,
+.hh-home .hh-live-row:has(.hh-live-item[open]) .hh-live-now {
 	display: block;
 }
 .hh-home .hh-live-tags {
