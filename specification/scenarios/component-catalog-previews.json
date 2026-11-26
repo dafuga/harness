@@ -109,6 +109,8 @@
 		"hub.component.login-panel",
 		"hub.component.members-panel",
 		"hub.component.native-approval",
+		"hub.component.planning-collaboration-designs-header",
+		"hub.component.planning-collaboration-hosted-designs",
 		"hub.component.project-create",
 		"hub.component.project-list",
 		"hub.component.projects-sessions-hub-home",
@@ -140,6 +142,7 @@
 		"hub.page.invite-project-id-invitation-id",
 		"hub.page.native-handoff-id",
 		"hub.page.projects",
+		"hub.page.projects-project-id-designs-canvas",
 		"hub.page.projects-project-id-harness-path",
 		"hub.page.projects-project-id-members",
 		"hub.page.public-site-about",
@@ -234,6 +237,11 @@
 		"reports.component.module-system-plugins-plugin-state-pills",
 		"reports.component.module-system-plugins-plugin-steps",
 		"reports.component.networking-security-explorer-permissions-screen",
+		"reports.component.planning-collaboration-design-canvas-artboard-frame",
+		"reports.component.planning-collaboration-design-canvas-artboard-full",
+		"reports.component.planning-collaboration-design-canvas-canvas-toolbar",
+		"reports.component.planning-collaboration-design-canvas-design-canvas",
+		"reports.component.planning-collaboration-design-canvas-sandboxed-artboard",
 		"reports.component.projects-sessions-project-overview-project-overview",
 		"reports.component.projects-sessions-project-overview-project-overview-card",
 		"reports.component.projects-sessions-project-overview-project-overview-item",
@@ -270,6 +278,7 @@
 		"reports.component.shared-primitives-atoms-html-h5",
 		"reports.component.shared-primitives-atoms-html-header",
 		"reports.component.shared-primitives-atoms-html-i",
+		"reports.component.shared-primitives-atoms-html-iframe",
 		"reports.component.shared-primitives-atoms-html-img",
 		"reports.component.shared-primitives-atoms-html-input",
 		"reports.component.shared-primitives-atoms-html-input-button",
@@ -2128,6 +2137,18 @@
 			"units": ["hub.component.native-approval"]
 		},
 		{
+			"id": "hub-component-planning-collaboration-designs-header",
+			"title": "DesignsHeader",
+			"coverage": "required",
+			"units": ["hub.component.planning-collaboration-designs-header"]
+		},
+		{
+			"id": "hub-component-planning-collaboration-hosted-designs",
+			"title": "HostedDesigns",
+			"coverage": "required",
+			"units": ["hub.component.planning-collaboration-hosted-designs"]
+		},
+		{
 			"id": "hub-component-project-create",
 			"title": "Project create",
 			"coverage": "required",
@@ -2312,6 +2333,12 @@
 			"title": "Private Hub projects and Google sign-in",
 			"coverage": "required",
 			"units": ["hub.page.projects"]
+		},
+		{
+			"id": "hub-page-projects-project-id-designs-canvas",
+			"title": "/projects/[projectId]/designs/[[canvas]]",
+			"coverage": "required",
+			"units": ["hub.page.projects-project-id-designs-canvas"]
 		},
 		{
 			"id": "hub-page-projects-project-id-harness-path",
@@ -6514,6 +6541,36 @@
 			"units": ["reports.component.networking-security-explorer-permissions-screen"]
 		},
 		{
+			"id": "reports-component-planning-collaboration-design-canvas-artboard-frame",
+			"title": "ArtboardFrame",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-artboard-frame"]
+		},
+		{
+			"id": "reports-component-planning-collaboration-design-canvas-artboard-full",
+			"title": "ArtboardFull",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-artboard-full"]
+		},
+		{
+			"id": "reports-component-planning-collaboration-design-canvas-canvas-toolbar",
+			"title": "CanvasToolbar",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-canvas-toolbar"]
+		},
+		{
+			"id": "reports-component-planning-collaboration-design-canvas-design-canvas",
+			"title": "DesignCanvas",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-design-canvas"]
+		},
+		{
+			"id": "reports-component-planning-collaboration-design-canvas-sandboxed-artboard",
+			"title": "SandboxedArtboard",
+			"coverage": "required",
+			"units": ["reports.component.planning-collaboration-design-canvas-sandboxed-artboard"]
+		},
+		{
 			"id": "reports-component-projects-sessions-project-overview-project-overview",
 			"title": "ProjectOverview",
 			"coverage": "required",
@@ -7232,6 +7289,12 @@
 			"title": "HtmlI",
 			"coverage": "required",
 			"units": ["reports.component.shared-primitives-atoms-html-i"]
+		},
+		{
+			"id": "reports-component-shared-primitives-atoms-html-iframe",
+			"title": "HtmlIframe",
+			"coverage": "required",
+			"units": ["reports.component.shared-primitives-atoms-html-iframe"]
 		},
 		{
 			"id": "reports-component-shared-primitives-atoms-html-img",

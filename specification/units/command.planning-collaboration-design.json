@@ -1,0 +1,85 @@
+{
+	"schemaVersion": 1,
+	"id": "command.planning-collaboration-design",
+	"uid": "u_mivrfzcqpq",
+	"kind": "command",
+	"title": "DesignCommand",
+	"responsibility": "Provides the harness design command family for authoring design canvases.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/planning-collaboration/DesignCommand.ts"],
+		"symbols": ["DesignCommand", "DesignCommand.register"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DesignCommand.register.program",
+				"type": "Command",
+				"required": true,
+				"description": "Root CLI program."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DesignCommand.register",
+				"type": "void",
+				"description": "Result: Provides the harness design command family for authoring design canvases."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "DesignCommand.register",
+				"inputs": [
+					{
+						"name": "DesignCommand.register.program",
+						"type": "Command",
+						"required": true,
+						"description": "Root CLI program."
+					}
+				],
+				"outputs": [
+					{
+						"name": "DesignCommand.register",
+						"type": "void",
+						"description": "Result: Provides the harness design command family for authoring design canvases."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.planning-collaboration-design-command-register-design-edits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.planning-collaboration-design-command-register-design-output",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/planning-collaboration/DesignCommand.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/planning-collaboration/DesignCommand.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

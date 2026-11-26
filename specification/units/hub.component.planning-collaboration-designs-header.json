@@ -1,0 +1,153 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.planning-collaboration-designs-header",
+	"uid": "u_6monqtdung",
+	"kind": "component",
+	"title": "DesignsHeader",
+	"responsibility": "Shows the viewed branch and commit and moves between branches and canvases.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "molecule",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-label",
+			"reports.component.shared-primitives-atoms-html-nav",
+			"reports.component.shared-primitives-atoms-html-option",
+			"reports.component.shared-primitives-atoms-html-select",
+			"reports.component.shared-primitives-atoms-html-small",
+			"reports.component.shared-primitives-atoms-html-span"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/planning-collaboration/DesignsHeader.svelte"],
+		"symbols": ["DesignsHeader"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DesignsHeader.projectId",
+				"type": "string",
+				"required": true,
+				"description": "Hub project identifier."
+			},
+			{
+				"name": "DesignsHeader.page",
+				"type": "DesignCanvasPage | null",
+				"required": true,
+				"description": "The canvas answer shown, or null while loading."
+			},
+			{
+				"name": "DesignsHeader.pinned",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether one commit is viewed instead of a branch tip."
+			},
+			{
+				"name": "DesignsHeader.workspace",
+				"type": "string",
+				"required": true,
+				"description": "Address of the project workspace."
+			},
+			{
+				"name": "DesignsHeader.onreload",
+				"type": "() => void",
+				"required": true,
+				"description": "Reads the canvases again."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DesignsHeader",
+				"type": "markup",
+				"description": "Renders: Shows the viewed branch and commit and moves between branches and canvases."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-label",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-nav",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-option",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-small",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.entity-lens",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.page.projects-project-id-designs-canvas",
+	"uid": "u_4rzissm43d",
+	"kind": "page",
+	"title": "/projects/[projectId]/designs/[[canvas]]",
+	"responsibility": "Gates a project’s hosted design canvases behind sign-in.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "page",
+		"uses": [
+			"hub.component.hub-frame",
+			"hub.component.login-panel",
+			"hub.component.planning-collaboration-hosted-designs",
+			"reports.component.shared-primitives-atoms-html-h1"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/routes/projects/[projectId]/designs/[[canvas]]/+page.svelte"],
+		"symbols": ["+page"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "+page",
+				"type": "markup",
+				"description": "Renders: Gates a project’s hosted design canvases behind sign-in."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.hub-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.login-panel",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.planning-collaboration-hosted-designs",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/projects/[projectId]/designs/[[canvas]]/+page.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/projects/[projectId]/designs/[[canvas]]/+page.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

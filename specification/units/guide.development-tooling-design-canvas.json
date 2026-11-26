@@ -1,0 +1,52 @@
+{
+	"schemaVersion": 1,
+	"id": "guide.development-tooling-design-canvas",
+	"uid": "u_l5cohz6zlc",
+	"kind": "guide",
+	"title": "designCanvas",
+	"responsibility": "Tells agents how to author, check, review and attach design canvases.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/guides/development-tooling/designCanvas.ts"],
+		"symbols": ["designCanvasGuide"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "designCanvasGuide",
+				"type": "Guide",
+				"description": "Result: Tells agents how to author, check, review and attach design canvases."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "guide.guide",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/guides/development-tooling/designCanvas.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/guides/development-tooling/designCanvas.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

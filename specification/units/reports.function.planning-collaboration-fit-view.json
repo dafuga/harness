@@ -1,0 +1,200 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.planning-collaboration-fit-view",
+	"uid": "u_mh6h42s4lx",
+	"kind": "function",
+	"title": "fitView",
+	"responsibility": "Computes pan and zoom views that fit boards or keep a pointed spot still.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/planning-collaboration/fitView.ts"],
+		"symbols": ["minScale", "maxScale", "zoomAt", "fitView", "fullScale"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "zoomAt.view",
+				"type": "CanvasView",
+				"required": true,
+				"description": "Current pan and zoom."
+			},
+			{
+				"name": "zoomAt.at",
+				"type": "CanvasPoint",
+				"required": true,
+				"description": "Viewport point that stays still while zooming."
+			},
+			{
+				"name": "zoomAt.factor",
+				"type": "number",
+				"required": true,
+				"description": "Zoom multiplier."
+			},
+			{
+				"name": "fitView.boards",
+				"type": "readonly CanvasBoard[]",
+				"required": true,
+				"description": "Placed artboards."
+			},
+			{
+				"name": "fitView.viewport",
+				"type": "ArtboardSize",
+				"required": true,
+				"description": "Visible area in pixels."
+			},
+			{
+				"name": "fullScale.board",
+				"type": "ArtboardSize",
+				"required": true,
+				"description": "The placed artboard, or the artboard name being changed."
+			},
+			{
+				"name": "fullScale.viewport",
+				"type": "ArtboardSize",
+				"required": true,
+				"description": "Visible area in pixels."
+			}
+		],
+		"outputs": [
+			{
+				"name": "minScale",
+				"type": "number",
+				"description": "Smallest zoom."
+			},
+			{
+				"name": "maxScale",
+				"type": "number",
+				"description": "Largest zoom."
+			},
+			{
+				"name": "zoomAt",
+				"type": "CanvasView",
+				"description": "Result: Computes pan and zoom views that fit boards or keep a pointed spot still."
+			},
+			{
+				"name": "fitView",
+				"type": "CanvasView",
+				"description": "Result: Computes pan and zoom views that fit boards or keep a pointed spot still."
+			},
+			{
+				"name": "fullScale",
+				"type": "number",
+				"description": "Result: Computes pan and zoom views that fit boards or keep a pointed spot still."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "zoomAt",
+				"inputs": [
+					{
+						"name": "zoomAt.view",
+						"type": "CanvasView",
+						"required": true,
+						"description": "Current pan and zoom."
+					},
+					{
+						"name": "zoomAt.at",
+						"type": "CanvasPoint",
+						"required": true,
+						"description": "Viewport point that stays still while zooming."
+					},
+					{
+						"name": "zoomAt.factor",
+						"type": "number",
+						"required": true,
+						"description": "Zoom multiplier."
+					}
+				],
+				"outputs": [
+					{
+						"name": "zoomAt",
+						"type": "CanvasView",
+						"description": "Result: Computes pan and zoom views that fit boards or keep a pointed spot still."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fitView",
+				"inputs": [
+					{
+						"name": "fitView.boards",
+						"type": "readonly CanvasBoard[]",
+						"required": true,
+						"description": "Placed artboards."
+					},
+					{
+						"name": "fitView.viewport",
+						"type": "ArtboardSize",
+						"required": true,
+						"description": "Visible area in pixels."
+					}
+				],
+				"outputs": [
+					{
+						"name": "fitView",
+						"type": "CanvasView",
+						"description": "Result: Computes pan and zoom views that fit boards or keep a pointed spot still."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "fullScale",
+				"inputs": [
+					{
+						"name": "fullScale.board",
+						"type": "ArtboardSize",
+						"required": true,
+						"description": "The placed artboard, or the artboard name being changed."
+					},
+					{
+						"name": "fullScale.viewport",
+						"type": "ArtboardSize",
+						"required": true,
+						"description": "Visible area in pixels."
+					}
+				],
+				"outputs": [
+					{
+						"name": "fullScale",
+						"type": "number",
+						"description": "Result: Computes pan and zoom views that fit boards or keep a pointed spot still."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/planning-collaboration/fitView.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/planning-collaboration/fitView.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -151,6 +151,10 @@
 						<ChoiceRow name="Main" meta="Current branch" current onchoose={noop} />
 						<ChoiceRow name="Order history" meta="Feature branch" onchoose={noop} />
 					</Component>
+				{:else if id.startsWith('reports.component.planning-collaboration-design-canvas-')}
+					<div class="design-preview-host" data-design={id.split('-').at(-1)}>
+						<Component {...fixture.props} />
+					</div>
 				{:else if fitted}
 					<div class="flow-host">
 						<SvelteFlow bind:nodes={flowNodes} bind:edges={flowEdges} colorMode="dark" fitView>

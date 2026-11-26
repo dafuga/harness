@@ -1,0 +1,102 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.planning-collaboration-canvas-boards",
+	"uid": "u_jsmh4lfzmp",
+	"kind": "function",
+	"title": "canvasBoards",
+	"responsibility": "Places a manifest’s artboards on the canvas and names any that cannot be shown.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/planning-collaboration/canvasBoards.ts"],
+		"symbols": ["boardGap", "canvasBoards"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "canvasBoards.manifest",
+				"type": "CanvasManifest",
+				"required": true,
+				"description": "Parsed canvas.json."
+			},
+			{
+				"name": "canvasBoards.sources",
+				"type": "ReadonlyMap<string, string>",
+				"required": true,
+				"description": "Artboard HTML by file name; a missing file has no entry."
+			}
+		],
+		"outputs": [
+			{
+				"name": "boardGap",
+				"type": "number",
+				"description": "Space between artboards in the row."
+			},
+			{
+				"name": "canvasBoards",
+				"type": "CanvasBoard[]",
+				"description": "Result: Places a manifest’s artboards on the canvas and names any that cannot be shown."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "canvasBoards",
+				"inputs": [
+					{
+						"name": "canvasBoards.manifest",
+						"type": "CanvasManifest",
+						"required": true,
+						"description": "Parsed canvas.json."
+					},
+					{
+						"name": "canvasBoards.sources",
+						"type": "ReadonlyMap<string, string>",
+						"required": true,
+						"description": "Artboard HTML by file name; a missing file has no entry."
+					}
+				],
+				"outputs": [
+					{
+						"name": "canvasBoards",
+						"type": "CanvasBoard[]",
+						"description": "Result: Places a manifest’s artboards on the canvas and names any that cannot be shown."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-artboard-size",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/planning-collaboration/canvasBoards.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/planning-collaboration/canvasBoards.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
