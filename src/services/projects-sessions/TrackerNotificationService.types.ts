@@ -86,7 +86,10 @@ export interface TrackerDeliveryRequest {
 	environment?: Readonly<Record<string, string>>;
 }
 
-export type TrackerDeliveryResult = { status: 'sent' } | { status: 'rejected'; error: string };
+export type TrackerDeliveryResult =
+	| { status: 'sent' }
+	/** `busy` means the target cannot take a message right now, so a digest retries soon. */
+	| { status: 'rejected'; error: string; busy?: boolean };
 
 export interface TrackerNotificationDestinations {
 	available(destination: TrackerDestination): boolean;
@@ -123,6 +126,8 @@ export interface TrackerWebhookOptions {
 	quietHours?: boolean;
 	coalesceMinutes?: number;
 	reminderTimes?: readonly string[];
+	/** Rotated one per delivered digest, outside quiet hours. */
+	suggestions?: readonly string[];
 }
 
 export interface TrackerNotificationOptions {

@@ -118,6 +118,8 @@ test('suggestions rotate per delivered digest and a busy target retries soon', a
 	await f.restart().tick();
 	expect(wire(f.calls[2])).toMatchObject({ suggestion: 'practice Portuguese' });
 
+	// A live node holds only asks overnight; other lines still flow, without a suggestion.
+	f.options.quietHours = null;
 	const night = start + 180 * minute;
 	f.at(night);
 	finish(f, 'c', 3, night);

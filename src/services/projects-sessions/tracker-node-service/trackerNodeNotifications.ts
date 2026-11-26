@@ -1,64 +1,90 @@
 // @harness-uid u_gvqtr5mdwv
 import type { TrackerNativeNotificationOptions } from '../TrackerNativeRuntimeService.types';
-import type { TrackerDestination } from '../TrackerNotificationService.types';
+import type {
+	TrackerDeliveryRequest,
+	TrackerDeliveryResult,
+	TrackerDestination
+} from '../TrackerNotificationService.types';
 import { readPrivateText } from './trackerNodeConfig';
-import type { TrackerNodeConfig } from './trackerNodeConfig.types';
+import type { TrackerNodeConfig, TrackerNodeTarget } from './trackerNodeConfig.types';
+import { trackerDigestSession } from './trackerDigestSession';
 import { allowedTrackerTransport } from './trackerUpstreamLink';
 import { TrackerNodeTransportError } from './TrackerNodeTransportError';
+
+const defaultSuggestions = ['play guitar', 'play video games', 'practice a language', 'just relax'];
 
 export function trackerNodeNotifications(
 	config: TrackerNodeConfig
 ): TrackerNativeNotificationOptions | undefined {
-	const { notifications, role } = config;
+	const { notifications, node, role } = config;
 	if (!notifications) return undefined;
 	if (role === 'spoke' && notifications.webhook) {
 		throw new TypeError('Tracker webhook requires a hub');
 	}
 	const targets = new Map(
-		Object.entries(notifications.targets).map(
-			([id, spec]) => [id, deliveryTarget(spec.url, spec.bearerFile)] as const
-		)
+		Object.entries(notifications.targets).map(([id, spec]) => [id, nodeTarget(spec, node)] as const)
 	);
 	const locate = (id: string) => {
 		const target = targets.get(id);
 		if (!target) throw new TypeError('Unknown Tracker notification binding');
 		return target;
 	};
-	const destination = (id: string): TrackerDestination => {
-		locate(id);
-		return { kind: 'http', id };
+	const http = (id: string) => {
+		const target = locate(id);
+		if (target.kind !== 'http') throw new TypeError('Tracker session targets are digest only');
+		return target;
 	};
+	const destination = (id: string): TrackerDestination => ({ kind: locate(id).kind, id });
+	const { chiefOfStaff, itemCallbacks = [] } = notifications;
+	if (chiefOfStaff) http(chiefOfStaff);
 	return {
-		legacyDestinations: {
-			urls: new Map((notifications.itemCallbacks ?? []).map((id) => [locate(id).raw, id]))
-		},
-		chiefOfStaff: notifications.chiefOfStaff ? destination(notifications.chiefOfStaff) : undefined,
-		webhook: notifications.webhook
-			? { destination: destination(notifications.webhook) }
-			: undefined,
+		legacyDestinations: { urls: new Map(itemCallbacks.map((id) => [http(id).raw, id])) },
+		chiefOfStaff: chiefOfStaff ? destination(chiefOfStaff) : undefined,
+		webhook: digestWebhook(notifications, destination),
 		destinations: {
-			available: ({ kind, id }) => kind === 'http' && targets.has(id),
-			async send({ id, destination, body, headers }) {
-				if (destination.kind !== 'http') throw new TypeError('Tracker destination is unavailable');
-				const { url, bearer } = locate(destination.id);
-				const response = await fetch(url, {
-					method: 'POST',
-					body,
-					headers: {
-						...headers,
-						...(bearer && { authorization: `Bearer ${bearer}` }),
-						'idempotency-key': id
-					},
-					redirect: 'error',
-					signal: AbortSignal.timeout(20_000)
-				});
-				await response.body?.cancel();
-				if (!response.ok)
-					throw new TrackerNodeTransportError('Tracker notification receipt is uncertain');
-				return { status: 'sent' };
+			available: ({ kind, id }) => targets.get(id)?.kind === kind,
+			async send(request) {
+				const target = locate(request.destination.id);
+				if (target.kind !== request.destination.kind)
+					throw new TypeError('Tracker destination is unavailable');
+				return target.kind === 'http' ? postDelivery(target, request) : target.send(request);
 			}
 		}
 	};
+}
+
+function digestWebhook(
+	{ webhook, suggestions = defaultSuggestions }: NonNullable<TrackerNodeConfig['notifications']>,
+	destination: (id: string) => TrackerDestination
+) {
+	return webhook ? { destination: destination(webhook), suggestions } : undefined;
+}
+
+function nodeTarget(spec: TrackerNodeTarget, node: string) {
+	if ('session' in spec)
+		return { kind: 'command' as const, send: trackerDigestSession(spec, node) };
+	return { kind: 'http' as const, ...deliveryTarget(spec.url, spec.bearerFile) };
+}
+
+async function postDelivery(
+	{ url, bearer }: ReturnType<typeof deliveryTarget>,
+	{ id, body, headers }: TrackerDeliveryRequest
+): Promise<TrackerDeliveryResult> {
+	const response = await fetch(url, {
+		method: 'POST',
+		body,
+		headers: {
+			...headers,
+			...(bearer && { authorization: `Bearer ${bearer}` }),
+			'idempotency-key': id
+		},
+		redirect: 'error',
+		signal: AbortSignal.timeout(20_000)
+	});
+	await response.body?.cancel();
+	if (!response.ok)
+		throw new TrackerNodeTransportError('Tracker notification receipt is uncertain');
+	return { status: 'sent' };
 }
 
 function deliveryTarget(raw: string, bearerFile?: string) {
