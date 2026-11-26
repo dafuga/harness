@@ -14,7 +14,7 @@ import {
 	verifyParkedReminderRetry
 } from './tracker-notification/fixture';
 
-test('tick holds direct reminders through quiet hours, groups once, and repeats only active flags after retry', async () => {
+test('tick sends overnight direct reminders, groups once, and repeats only active flags after retry', async () => {
 	let rejected = false;
 	const f = notificationFixture({
 		options: { chiefOfStaff: chief, webhook: undefined },
@@ -24,30 +24,25 @@ test('tick holds direct reminders through quiet hours, groups once, and repeats 
 			return { status: 'rejected', error: 'HTTP 503' };
 		}
 	});
-	const release = Date.parse('2026-02-03T08:00:00Z');
-	f.at(start + 180 * minute);
+	const night = start + 180 * minute;
+	f.at(night);
 	f.rows.set(
 		'flag',
 		fixtureItem('flag', {
 			needs_daniel: 1,
 			question: 'Fixture question',
-			clocks: { needs_daniel: clock(start + 180 * minute) }
+			clocks: { needs_daniel: clock(night) }
 		})
 	);
 	f.rows.set('due', fixtureItem('due', { due: '2026-02-02', clocks: { due: clock() } }));
 	await f.service.tick();
-	expect(f.calls).toHaveLength(0);
-	expect([...f.queue.read().reminders.values()].map((r) => r.nextAt)).toEqual([release, release]);
-
-	f.at(release);
-	await f.restart().tick();
 	expect(f.calls).toHaveLength(1);
 	expect([...f.queue.read().reminders.values()].map((r) => [r.pings, r.nextAt])).toEqual([
-		[0, release + 5 * minute],
-		[0, release + 5 * minute]
+		[0, night + 5 * minute],
+		[0, night + 5 * minute]
 	]);
 
-	f.at(release + 5 * minute);
+	f.at(night + 5 * minute);
 	await measureTick(f.restart(), 'grouped-reminders');
 	expect(f.calls.map((call) => call.id)).toEqual([f.calls[0].id, f.calls[0].id]);
 	expect(wire(f.calls[1])).toMatchObject({
@@ -59,10 +54,10 @@ test('tick holds direct reminders through quiet hours, groups once, and repeats 
 			{ id: 'due', reminder_number: 0, reason: 'due' }
 		]
 	});
-	await verifyDirectFollowUps(f, release + 5 * minute);
+	await verifyDirectFollowUps(f, night + 5 * minute);
 });
 
-test('tick delivers the current explicit reminder once at its timestamp across restarts and quiet hours', async () => {
+test('tick delivers the current explicit reminder once at its timestamp across restarts overnight', async () => {
 	let uncertain = true;
 	const f = notificationFixture({
 		options: { chiefOfStaff: chief },
@@ -184,7 +179,7 @@ test('tick follows up webhook asks on their own cadence and closes them on answe
 	expect([...f.queue.read().flags.values()].map((row) => row.status)).toEqual(['closed', 'closed']);
 });
 
-test('tick drops a held flag after answer and schedules the surviving flag at the next configured slot', async () => {
+test('tick sends overnight asks at once and schedules only the surviving flag at the next configured slot', async () => {
 	const f = notificationFixture();
 	f.options.webhook = { destination: chief, batch: false, reminderTimes: ['09:00', '13:00'] };
 	const night = start + 180 * minute;
@@ -193,20 +188,17 @@ test('tick drops a held flag after answer and schedules the surviving flag at th
 		f.rows.set(id, fixtureItem(id, { needs_daniel: 1, clocks: { needs_daniel: clock(night) } }));
 	}
 	await f.service.tick();
-	expect(f.calls).toHaveLength(0);
-
-	f.rows.set('answered', { ...f.rows.get('answered')!, resolved: 1 });
-	const release = Date.parse('2026-02-03T08:00:00Z');
-	f.at(release);
-	await f.restart().tick();
 	expect(wire(f.calls[0]).items).toMatchObject([
+		{ event: 'needs_daniel', item_id: 'answered', escalation: 0 },
 		{ event: 'needs_daniel', item_id: 'waiting', escalation: 0 }
 	]);
-	expect(f.queue.read().flags.get(`waiting|${clock(night)}`)?.nextAt).toBe(release + 60 * minute);
-	expect(f.queue.read().flags.get(`answered|${clock(night)}`)?.status).toBe('closed');
+	const slot = Date.parse('2026-02-03T09:00:00Z');
+	expect(f.queue.read().flags.get(`waiting|${clock(night)}`)?.nextAt).toBe(slot);
 
-	f.at(release + 60 * minute);
+	f.rows.set('answered', { ...f.rows.get('answered')!, resolved: 1 });
+	f.at(slot);
 	await f.restart().tick();
+	expect(f.queue.read().flags.get(`answered|${clock(night)}`)?.status).toBe('closed');
 	expect(wire(f.calls[1]).items).toMatchObject([{ item_id: 'waiting', escalation: 1 }]);
-	expect(f.queue.read().flags.get(`waiting|${clock(night)}`)?.nextAt).toBe(release + 300 * minute);
+	expect(f.queue.read().flags.get(`waiting|${clock(night)}`)?.nextAt).toBe(slot + 240 * minute);
 });
