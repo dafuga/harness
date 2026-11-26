@@ -41,6 +41,9 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 				api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message)
 			);
 		},
+		computers() {
+			void linked();
+		},
 		close() {
 			closed = true;
 			linkedHome?.service.close();

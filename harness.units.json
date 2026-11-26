@@ -3144,6 +3144,48 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "The spec view on asks is shared Reports code used through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLiveOverview",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLiveOverview.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeLive.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/api/hub-home/homeLivePayload.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
 		}
 	]
 }

@@ -38,7 +38,6 @@
 	const projectFlights = new SvelteMap<string, Promise<ProjectSnapshot>>();
 	let projectError = $state(false);
 	let home = $state<ReadHomeResult | null>(null);
-	/** What the account's own linked computers report over their encrypted device connections. */
 	let live = $state<LinkedHome | null>(null);
 	let now = $state(Date.now());
 	let flight = 0;
@@ -47,10 +46,9 @@
 	let readAllAt = 0;
 	const pushes = $derived(Boolean(home?.granted && home.live));
 	const controlled = $derived(home?.controlled ?? []);
-	/** Every project's agents as reported; Home lists only the sessions Daniel controls. */
 	const raw = $derived(live?.snapshot ?? homeSnapshot(home));
 	const snapshot = $derived(raw ? listedHomeSnapshot(raw, controlled) : null);
-	/** Both reads answered, or one already supplied data: loading ends once Home has something to say. */
+	/** Loading ends once both reads answered or one already supplied data. */
 	const settled = $derived(Boolean(snapshot) || (home !== null && live !== null));
 	const routinesConnected = $derived(
 		Array.isArray(snapshot?.providers.routines) &&
@@ -80,6 +78,7 @@
 		owner: home?.granted ?? false,
 		needsMac: settled && !snapshot && !linkedComputers,
 		linkedComputers,
+		computers: live,
 		trackerConnected: overview?.status === 'ready',
 		quotaConnected: Array.isArray(snapshot?.providers.quota),
 		now
@@ -89,7 +88,7 @@
 		api,
 		actor: () => session.actor?.id,
 		home: (result) => ((home = result), (now = Date.now())),
-		linked: (result) => (live = result)
+		linked: (result) => ((live = result), (now = Date.now()))
 	});
 
 	function refresh() {
@@ -126,10 +125,11 @@
 	onMount(() => {
 		refresh();
 		const stop = watchWhileVisible(() => {
-			if (link === 'live' && Date.now() - readAllAt < liveReadMs) return;
+			const pushed = link === 'live' && Date.now() - readAllAt < liveReadMs;
 			const actor = session.actor?.id;
 			void session.check().then(() => {
-				if (actor && session.actor?.id === actor) refresh();
+				// Change notices cover the stored Home only: linked computers are asked every turn.
+				if (actor && session.actor?.id === actor) (pushed ? reads.computers : refresh)();
 			});
 		});
 		return () => {

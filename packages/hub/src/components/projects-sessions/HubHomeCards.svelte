@@ -25,6 +25,7 @@
 	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
 	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -69,6 +70,7 @@
 {/snippet}
 
 <HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} {send} {receipt} />
+<HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard
 		section="agents"
