@@ -43,7 +43,7 @@ function liveTracker() {
 async function askedAgent(tracker: ReturnType<typeof liveTracker>, confirm?: string) {
 	tracker.store.appendLocal({
 		itemId: 'asked1',
-		fields: { title: 'Synthetic release', agent: 'cos', status: 'open' }
+		fields: { title: 'Synthetic release', agent: 'Synthetic agent', status: 'open' }
 	});
 	const flag = await tracker.post('/items/asked1/flag', {
 		question: 'Ship the synthetic release?',
