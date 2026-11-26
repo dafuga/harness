@@ -124,6 +124,8 @@
 		"hub.component.projects-sessions-hub-home-composer",
 		"hub.component.projects-sessions-hub-home-dialogs",
 		"hub.component.projects-sessions-hub-home-header",
+		"hub.component.projects-sessions-hub-home-live",
+		"hub.component.projects-sessions-hub-home-live-project",
 		"hub.component.projects-sessions-hub-home-needs-you",
 		"hub.component.projects-sessions-hub-home-not-started",
 		"hub.component.projects-sessions-hub-home-plans",
@@ -2231,6 +2233,18 @@
 			"title": "HubHomeHeader",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-header"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-live",
+			"title": "HubHomeLive",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-live"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-live-project",
+			"title": "HubHomeLiveProject",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-live-project"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-needs-you",
@@ -9024,6 +9038,8 @@
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
 				"hub-component-projects-sessions-hub-home-header",
+				"hub-component-projects-sessions-hub-home-live",
+				"hub-component-projects-sessions-hub-home-live-project",
 				"hub-component-projects-sessions-hub-home-needs-you",
 				"hub-component-projects-sessions-hub-home-not-started",
 				"hub-component-projects-sessions-hub-home-plans",

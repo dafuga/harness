@@ -104,7 +104,8 @@ function finishExitedRun(
 	clock: { policy: TrackerDispatchPolicy; now: number }
 ) {
 	const code = event.exitCode;
-	const reason = `session exited without tracker done${code == null ? '' : ` (exit ${code})`}`;
+	const exit = `session exited without tracker done${code == null ? '' : ` (exit ${code})`}`;
+	const reason = event.diagnostic ? `${exit}: ${event.diagnostic}` : exit;
 	const failure = { outcome: 'failed', reason, exitCode: code, usage: event.usage } as const;
 	if (snapshot.item?.status === 'in_progress' && clock.policy.recoverDroppedSessions)
 		return recordRun(finishRun(run, { ...failure, now: clock.now }));

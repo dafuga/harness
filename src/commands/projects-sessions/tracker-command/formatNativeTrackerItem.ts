@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { trackerClaudeSessionId } from '../../../utils/projects-sessions/trackerClaudeSessionId';
 import type {
 	NativeTrackerItem,
 	NativeTrackerListedRun,
@@ -137,8 +138,15 @@ export function formatListedRun(run: NativeTrackerListedRun): string {
 		run.failure_reason ? ` - ${run.failure_reason}` : '',
 		run.redone_by ? ` (redone by ${run.redone_by})` : '',
 		session,
+		claudeResumeHint(run),
 		run.idle_nudges ? `  idle nudges: ${run.idle_nudges}` : ''
 	].join('');
+}
+
+/** Only runs launched with a derived session id have a session name. */
+function claudeResumeHint({ cli, session_name, session_id }: NativeTrackerListedRun) {
+	const id = cli === 'claude' && session_name && trackerClaudeSessionId(session_id ?? '');
+	return id ? `  claude session ${id}` : '';
 }
 
 function formatModelPick(pick: NativeTrackerPick): string {
