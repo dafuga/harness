@@ -825,8 +825,8 @@
 				"required": true
 			},
 			{
-				"name": "recordWatchdogAlert.question",
-				"type": "| string | null",
+				"name": "recordWatchdogAlert.hold",
+				"type": "string",
 				"required": false
 			},
 			{
@@ -2761,8 +2761,8 @@
 						"required": true
 					},
 					{
-						"name": "recordWatchdogAlert.question",
-						"type": "| string | null",
+						"name": "recordWatchdogAlert.hold",
+						"type": "string",
 						"required": false
 					}
 				],

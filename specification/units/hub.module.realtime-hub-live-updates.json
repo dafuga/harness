@@ -1,0 +1,90 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.module.realtime-hub-live-updates",
+	"uid": "u_the62brjqn",
+	"kind": "module",
+	"title": "hubLiveUpdates",
+	"responsibility": "Owns the hubLiveUpdates library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/lib/networking-security/hubLiveUpdates.ts"],
+		"symbols": ["liveReadMs", "followHubUpdates"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "followHubUpdates.listener",
+				"type": "{ changed: () => void; state: (state: RealtimeState) => void; }",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "liveReadMs",
+				"type": "unknown"
+			},
+			{
+				"name": "followHubUpdates",
+				"type": "()"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "followHubUpdates",
+				"inputs": [
+					{
+						"name": "followHubUpdates.listener",
+						"type": "{ changed: () => void; state: (state: RealtimeState) => void; }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "followHubUpdates",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-follow-doorbell",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/lib/networking-security/hubLiveUpdates.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/lib/networking-security/hubLiveUpdates.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

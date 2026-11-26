@@ -22,6 +22,10 @@ export function fixturePhoneTracker() {
 			agent: 'fixture',
 			needs_daniel: true,
 			question: 'Read on the simulator?',
+			options: JSON.stringify([
+				{ label: 'Yes', effect: 'The note was readable.', recommended: true },
+				{ label: 'No', effect: 'Something was missing.' }
+			]),
 			'note+': 'This note was synced from the isolated hub.'
 		}
 	});

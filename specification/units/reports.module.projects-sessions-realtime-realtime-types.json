@@ -1,0 +1,47 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-realtime-realtime-types",
+	"uid": "u_ijav2xdawt",
+	"kind": "module",
+	"title": "realtime",
+	"responsibility": "Owns the realtime library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts"],
+		"symbols": [
+			"RealtimeState",
+			"TrackerChangeEvent",
+			"DoorbellSocket",
+			"FlightWork",
+			"DoorbellOptions",
+			"DoorbellSession"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

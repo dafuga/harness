@@ -10,8 +10,7 @@
 	"owns": {
 		"source": [
 			"packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
-			"packages/hub/src/components/projects-sessions/hubHomeTime.ts",
-			"packages/hub/src/components/projects-sessions/quickReplies.ts"
+			"packages/hub/src/components/projects-sessions/hubHomeTime.ts"
 		],
 		"symbols": [
 			"sections",
@@ -40,8 +39,6 @@
 			"relativeWhen",
 			"workEta",
 			"quotaSummary",
-			"answerMessage",
-			"quickReplies",
 			"quotaReset",
 			"runDay",
 			"runTime",
@@ -49,8 +46,7 @@
 			"runDay",
 			"runTime",
 			"when",
-			"quotaReset",
-			"quickReplies"
+			"quotaReset"
 		]
 	},
 	"contract": {
@@ -104,6 +100,12 @@
 				"required": false,
 				"default": 0,
 				"description": "Sessions the Tracker reports running. They name the headline when no agent card exists. Defaults to 0."
+			},
+			{
+				"name": "homeHeadline.needs",
+				"type": "number",
+				"required": false,
+				"default": 0
 			},
 			{
 				"name": "currentAgent.agents",
@@ -226,30 +228,6 @@
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
 			},
 			{
-				"name": "answerMessage.asked",
-				"type": "{ id: string; question?: string | null }",
-				"required": true,
-				"description": "The agent whose open question is being answered: its id and the question text."
-			},
-			{
-				"name": "answerMessage.itemId",
-				"type": "string",
-				"required": true,
-				"description": "The Tracker item that carries the open question."
-			},
-			{
-				"name": "answerMessage.text",
-				"type": "string",
-				"required": true,
-				"description": "The typed reply or tapped option label; surrounding space is trimmed."
-			},
-			{
-				"name": "answerMessage.tap",
-				"type": "{ number: number; confirmed: boolean }",
-				"required": false,
-				"description": "The tapped option number and whether a deploy, money or secret tap was confirmed."
-			},
-			{
 				"name": "runDay.at",
 				"type": "string",
 				"required": true,
@@ -284,12 +262,6 @@
 				"type": "number",
 				"required": true,
 				"description": "Current time in milliseconds since the Unix epoch."
-			},
-			{
-				"name": "quickReplies.question",
-				"type": "string | null",
-				"required": true,
-				"description": "Open Tracker question for the agent, or null when none is open."
 			}
 		],
 		"outputs": [
@@ -526,6 +498,12 @@
 						"required": false,
 						"default": 0,
 						"description": "Sessions the Tracker reports running. They name the headline when no agent card exists. Defaults to 0."
+					},
+					{
+						"name": "homeHeadline.needs",
+						"type": "number",
+						"required": false,
+						"default": 0
 					}
 				],
 				"outputs": [
@@ -855,44 +833,6 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "answerMessage",
-				"inputs": [
-					{
-						"name": "answerMessage.asked",
-						"type": "{ id: string; question?: string | null }",
-						"required": true,
-						"description": "The agent whose open question is being answered: its id and the question text."
-					},
-					{
-						"name": "answerMessage.itemId",
-						"type": "string",
-						"required": true,
-						"description": "The Tracker item that carries the open question."
-					},
-					{
-						"name": "answerMessage.text",
-						"type": "string",
-						"required": true,
-						"description": "The typed reply or tapped option label; surrounding space is trimmed."
-					},
-					{
-						"name": "answerMessage.tap",
-						"type": "{ number: number; confirmed: boolean }",
-						"required": false,
-						"description": "The tapped option number and whether a deploy, money or secret tap was confirmed."
-					}
-				],
-				"outputs": [
-					{
-						"name": "answerMessage",
-						"type": "HomeChatInput",
-						"description": "The answer message with a fresh id that Home queues for Tracker."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "runDay",
 				"inputs": [
 					{
@@ -979,26 +919,6 @@
 						"name": "quotaReset",
 						"type": "unknown",
 						"description": "Rounded countdown or current availability of the reset time."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "quickReplies",
-				"inputs": [
-					{
-						"name": "quickReplies.question",
-						"type": "string | null",
-						"required": true,
-						"description": "Open Tracker question for the agent, or null when none is open."
-					}
-				],
-				"outputs": [
-					{
-						"name": "quickReplies",
-						"type": "unknown",
-						"description": "Two one-tap answers for a yes-or-no question; empty for any other question."
 					}
 				],
 				"errors": [],

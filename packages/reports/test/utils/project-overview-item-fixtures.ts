@@ -40,6 +40,10 @@ function alphaBetaRows(): Record<string, unknown>[] {
 			extra: {
 				callback: CALLBACK,
 				needs_daniel: true,
+				options: [
+					{ label: 'Approve', effect: 'Continues.', recommended: true },
+					{ label: 'Hold', effect: 'Waits.' }
+				],
 				resolved: false,
 				question: 'Pick Stripe or Paddle?'
 			}

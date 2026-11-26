@@ -16,6 +16,14 @@ const failures: Record<string, string> = {
 
 const kinds: Record<WriteAction, string> = { note: 'Note', flag: 'Flag', answer: 'Answer' };
 
+/** Why an item could not be opened, in the words of the surface that asked for it. */
+export function loadFailureMessage(code: string | undefined, mode: 'phone' | 'mac'): string {
+	if (mode !== 'mac') return 'This item is not on the phone copy.';
+	return code === 'noLocalMatch'
+		? 'This Tracker item is unavailable.'
+		: 'Tracker could not be reached on this Mac.';
+}
+
 export function writeSentMessage(action: WriteAction, mode: 'phone' | 'mac' = 'phone'): string {
 	if (mode === 'mac') return `${kinds[action]} saved to Tracker.`;
 	return `${kinds[action]} confirmed and queued. It reaches the Tracker when this phone is connected.`;

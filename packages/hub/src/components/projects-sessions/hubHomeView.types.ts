@@ -4,6 +4,7 @@ import type {
 	HomeAgent,
 	HomeChatInput,
 	HomeChatReceipt,
+	HomeOpenAsk,
 	HomePlan,
 	HomeRun,
 	HomeSection,
@@ -19,6 +20,8 @@ export interface HomeView {
 	agents: HomeAgent[] | null;
 	/** Other projects' agents that need you now; they are not listed under Agents but their asks show. */
 	asks: HomeAgent[];
+	/** The open structured asks: what "needs you" counts and what the Agents card lists. */
+	openAsks: HomeOpenAsk[];
 	/** Tracker agent values Daniel added as sessions he created himself. */
 	controlled: string[];
 	plans: HomePlan[] | null;
@@ -45,21 +48,10 @@ export type ChangeSession = (id: string, add: boolean) => Promise<void>;
 export type SendHomeChat = (message: HomeChatInput) => Promise<HomeChatReceipt>;
 export type ReadHomeProject = (projectId: string) => Promise<ProjectSnapshot>;
 
-export interface HomeAgentsProps {
-	agents: HomeAgent[] | null;
-	/** Other projects' agents that need you: not listed sessions, but their asks and options show. */
-	asks?: HomeAgent[];
-	added?: string[];
-	changeSession: ChangeSession;
-	agentId?: string;
-	send: SendHomeChat;
-	receipt: (id: string) => Promise<HomeChatReceipt>;
-	chatOpen?: boolean;
-	chatName?: string;
-}
-
 export interface ReadHomeResult {
 	granted: boolean;
 	snapshot: OwnerHomeSnapshot | null;
 	controlled?: string[];
+	/** The Hub pushes change notices to this account. */
+	live?: boolean;
 }

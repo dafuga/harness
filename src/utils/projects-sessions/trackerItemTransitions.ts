@@ -1,5 +1,5 @@
 // @harness-uid u_4pgfvaopdt
-import { isTrackerPing } from './isTrackerPing';
+import { isTrackerPing, isTrackerCosMessage } from './isTrackerPing';
 import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemFields.types';
 import type {
 	TrackerItemAction,
@@ -106,6 +106,8 @@ function flagItem(
 	body: TrackerItemInput,
 	context: TrackerItemMutationContext
 ): TrackerItemChange {
+	if (body.question && isTrackerCosMessage(String(body.question)))
+		return { fields: {}, appendNote: `for Chief of Staff: ${body.question}` };
 	guardTrackerDuplicate(context, {
 		text: `${item.title} ${trackerItemValueOr(body.question, item.question) ?? ''}`,
 		agent: item.agent,

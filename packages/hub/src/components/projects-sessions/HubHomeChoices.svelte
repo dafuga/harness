@@ -4,18 +4,23 @@
 <!-- @harness-uid u_qoahc5zxzf -->
 <script lang="ts">
 	import type { HomeAgent } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	import OtherAnswerModal from '$reports/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte';
 	import { orderedChoices } from './hubHomeChoices';
 
 	let {
 		agent,
 		busy = false,
-		onpick
+		onpick,
+		onother
 	}: {
-		agent: Pick<HomeAgent, 'options' | 'confirm'>;
+		agent: Pick<HomeAgent, 'options' | 'confirm' | 'question'>;
 		busy?: boolean;
 		/** Called with the option's 1-based number and whether the confirm step was done. */
 		onpick: (number: number, confirmed: boolean) => void;
+		/** Called with the answer written in the Other modal. */
+		onother: (text: string) => void;
 	} = $props();
+	let writing = $state(false);
 
 	const choices = $derived(orderedChoices(agent));
 	let pending = $state<number | null>(null);
@@ -50,7 +55,25 @@
 				{#if option.effect}<hx-span class="hh-choice-effect">{option.effect}</hx-span>{/if}
 			</hx-button>
 		{/each}
-		<hx-p class="po-sessions">Or write your own answer below.</hx-p>
+		<hx-button
+			type="button"
+			class="hh-choice hh-choice-other"
+			aria-haspopup="dialog"
+			disabled={busy}
+			onclick={() => (writing = true)}
+		>
+			<hx-strong>Other…</hx-strong>
+			<hx-span class="hh-choice-effect">Write a different answer.</hx-span>
+		</hx-button>
+		{#if writing}
+			<OtherAnswerModal
+				question={agent.question ?? ''}
+				maxlength={2000}
+				{busy}
+				onsend={onother}
+				onclose={() => (writing = false)}
+			/>
+		{/if}
 		{#if pendingChoice && agent.confirm}
 			<hx-div
 				class="hh-choice-confirm"

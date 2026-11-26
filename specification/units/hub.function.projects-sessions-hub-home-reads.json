@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-reads",
+	"uid": "u_evpsejqo7k",
+	"kind": "function",
+	"title": "hubHomeReads",
+	"responsibility": "Reads Hub Home's published snapshot and linked computers again on request, one flight each, and drops answers for a closed page or another account.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/components/projects-sessions/hubHomeReads.ts",
+			"packages/hub/src/components/projects-sessions/hubHomeReads.types.ts"
+		],
+		"symbols": [
+			"HubHomeReadOptions",
+			"HubHomeReads",
+			"hubHomeReads",
+			"HubHomeReadOptions",
+			"HubHomeReads"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "hubHomeReads.options",
+				"type": "HubHomeReadOptions",
+				"required": true,
+				"description": "The Hub API, the signed-in account, and where the published Home and linked-computer answers are delivered."
+			}
+		],
+		"outputs": [
+			{
+				"name": "hubHomeReads",
+				"type": "HubHomeReads",
+				"description": "read() fetches both sources again; close() ends further reads and closes linked connections."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "hubHomeReads",
+				"inputs": [
+					{
+						"name": "hubHomeReads.options",
+						"type": "HubHomeReadOptions",
+						"required": true,
+						"description": "The Hub API, the signed-in account, and where the published Home and linked-computer answers are delivered."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hubHomeReads",
+						"type": "HubHomeReads",
+						"description": "read() fetches both sources again; close() ends further reads and closes linked connections."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.browser-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-client",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.networking-security-linked-home",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-coalesced",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeReads.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeReads.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

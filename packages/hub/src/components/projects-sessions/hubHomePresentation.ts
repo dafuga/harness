@@ -6,7 +6,6 @@ import type {
 	HomeLimit,
 	HomePlanState,
 	HomeSection,
-	HomeChatInput,
 	HomeSubscription
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
@@ -70,10 +69,9 @@ export function agentActivity(agent: HomeAgent) {
 	return `${count(total, 'session')} running${subs} · ${first}${more}`;
 }
 
-export function homeHeadline(agents: HomeAgent[], liveSessions = 0) {
+export function homeHeadline(agents: HomeAgent[], liveSessions = 0, needs = 0) {
 	const working = agents.filter(isWorking).length;
-	const needs = agents.filter((agent) => agent.state === 'needs-you').length;
-	if (!agents.length)
+	if (!agents.length && !needs)
 		return liveSessions ? `${count(liveSessions, 'session')} running` : 'Nothing is running yet';
 	return `${count(working, 'agent')} working${needs ? `, ${needs} ${needs === 1 ? 'needs' : 'need'} you` : ''}`;
 }
@@ -180,23 +178,4 @@ export function quotaSummary(subscriptions: HomeSubscription[], now: number) {
 	return `${count(subscriptions.length, 'subscription')} · ${low.length ? `${low.length} running low` : 'all OK'}`;
 }
 
-/** The Tracker answer Home sends for a typed reply, or for a tapped option with its confirmation. */
-export function answerMessage(
-	asked: { id: string; question?: string | null },
-	itemId: string,
-	text: string,
-	tap?: { number: number; confirmed: boolean }
-): HomeChatInput {
-	return {
-		id: crypto.randomUUID(),
-		agentId: asked.id,
-		itemId,
-		kind: 'answer',
-		question: asked.question ?? null,
-		text: text.trim(),
-		...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
-	};
-}
-
-export { quickReplies } from './quickReplies';
 export { quotaReset, runDay, runTime, when } from './hubHomeTime';

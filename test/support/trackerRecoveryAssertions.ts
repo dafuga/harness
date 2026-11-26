@@ -111,9 +111,11 @@ export async function verifyFailureBudget({
 		expect(items.getStored(id).needs_daniel).toBe(false);
 	}
 	await watchdog(11 * minute);
+	// The item is held as blocked for Chief of Staff; Daniel is not asked.
 	expect(items.getStored(id)).toMatchObject({
-		needs_daniel: true,
-		question: expect.stringMatching(/3.*relaunch/i)
+		needs_daniel: false,
+		status: 'blocked',
+		blocked_reason: expect.stringMatching(/3.*relaunch/i)
 	});
 	const count = database.prepare('SELECT COUNT(*) AS total FROM runs').get();
 	await watchdog(11 * minute);

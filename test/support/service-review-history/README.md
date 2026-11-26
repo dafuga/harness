@@ -93,3 +93,5 @@ Hub Home live sessions retains implementation commit `32f91c2f7` for the read-on
 
 The shared verification baseline lint repair retains the reviews of the desktop relay frame check,
 project run service and relay host services at the commit that extracted their helpers.
+
+Realtime tracker pushes retain implementation commit `68fcb43a67` for the desktop initializer, preload and local client.

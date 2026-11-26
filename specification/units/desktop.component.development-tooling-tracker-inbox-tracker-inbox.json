@@ -27,7 +27,8 @@
 	},
 	"owns": {
 		"source": [
-			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte"
+			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
+			"packages/desktop/src/components/development-tooling/tracker-inbox/tracker-inbox.css"
 		],
 		"symbols": ["TrackerInbox", "reload"]
 	},
@@ -101,6 +102,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-follow-tracker-source",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
 			"via": "import",
 			"origin": "derived"
@@ -152,6 +158,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
 			"via": "import",
 			"origin": "derived"
 		}

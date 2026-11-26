@@ -4,8 +4,8 @@
 	"uid": "u_qoahc5zxzf",
 	"kind": "component",
 	"title": "HubHomeChoices",
-	"responsibility": "Shows the Hub agent's answer options and requires confirmation when the ask specifies it.",
-	"responsibilityOrigin": "declared",
+	"responsibility": "Owns the HubHomeChoices Svelte component.",
+	"responsibilityOrigin": "derived",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -22,33 +22,34 @@
 		"symbols": ["HubHomeChoices"]
 	},
 	"contract": {
-		"origin": "declared",
+		"origin": "derived",
 		"inputs": [
 			{
 				"name": "HubHomeChoices.agent",
-				"type": "Pick<HomeAgent, 'options' | 'confirm'>",
-				"required": true,
-				"description": "Agent's answer options and confirmation requirement."
+				"type": "Pick<HomeAgent, 'options' | 'confirm' | 'question'>",
+				"required": true
 			},
 			{
 				"name": "HubHomeChoices.busy",
 				"type": "boolean",
 				"required": false,
-				"default": false,
-				"description": "Whether an answer is being submitted. Defaults to false."
+				"default": false
 			},
 			{
 				"name": "HubHomeChoices.onpick",
 				"type": "(number: number, confirmed: boolean) => void",
-				"required": true,
-				"description": "Callback accepting the selected option's original number and whether the user confirmed it."
+				"required": true
+			},
+			{
+				"name": "HubHomeChoices.onother",
+				"type": "(text: string) => void",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeChoices",
-				"type": "markup",
-				"description": "Choice buttons and any required confirmation prompt for agents with at least two options."
+				"type": "markup"
 			}
 		],
 		"errors": [],

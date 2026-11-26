@@ -17,7 +17,7 @@ import type {
 } from '../../models/networking-security/Remote.types';
 import { remoteBytes } from '../../utils/networking-security/remoteBytes';
 import { remotePatterns } from '../../utils/networking-security/remoteIdentity';
-const channels: readonly string[] = ['run', 'cache', 'connection'];
+const channels: readonly string[] = ['run', 'cache', 'connection', 'tracker'];
 
 function fields(value: unknown): Fields | null {
 	return value && typeof value === 'object' && !Array.isArray(value) ? (value as Fields) : null;

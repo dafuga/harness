@@ -4,37 +4,38 @@
 <!-- @harness-uid u_gnhmm7tirz -->
 <script lang="ts">
 	import type {
-		HomeAgent,
 		HomeChatInput,
-		HomeChatReceipt
+		HomeChatReceipt,
+		HomeOpenAsk
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeChoices from './HubHomeChoices.svelte';
 
 	let {
-		agent,
+		ask,
 		send,
-		receipt
+		receipt,
+		submitted
 	}: {
-		agent: HomeAgent;
+		ask: HomeOpenAsk;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
+		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 	} = $props();
-	let reply = $state('');
 	let busy = $state(false);
 	let status = $state('');
 	/** The question this card already answered, so it hides until the Tracker shows a new one. */
 	let answered = $state<string | null>(null);
-	const open = $derived(Boolean(agent.itemId && agent.question) && answered !== agent.question);
+	const open = $derived(answered !== ask.question);
 
 	async function answerWith(text: string, tap?: { number: number; confirmed: boolean }) {
-		if (!agent.itemId || !agent.question || !text.trim() || busy) return;
+		if (!text.trim() || busy) return;
 		const message: HomeChatInput = {
 			id: crypto.randomUUID(),
-			agentId: agent.id,
-			itemId: agent.itemId,
+			agentId: ask.agentId,
+			itemId: ask.itemId,
 			kind: 'answer',
-			question: agent.question,
+			question: ask.question,
 			text: text.trim(),
 			...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
 		};
@@ -42,9 +43,9 @@
 		status = '';
 		try {
 			const result = await send(message);
+			submitted?.(message, result);
 			if (result.status === 'queued' || result.status === 'sent') {
-				answered = agent.question;
-				reply = '';
+				answered = ask.question;
 				void settle(message.id, result);
 			} else status = 'The Tracker no longer has that question open.';
 		} catch {
@@ -62,42 +63,22 @@
 			status = `Answer ${first.status}`;
 		}
 	}
-
-	function onkeydown(event: KeyboardEvent) {
-		if (event.key !== 'Enter') return;
-		event.preventDefault();
-		void answerWith(reply);
-	}
 </script>
 
 {#if open}
-	<hx-section class="hh-ask" aria-label={`${agent.name} needs you`}>
-		<hx-p class="hh-ask-question"><hx-strong>{agent.name}</hx-strong> · {agent.question}</hx-p>
+	<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
+		<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
 		<HubHomeChoices
-			{agent}
+			agent={ask}
 			{busy}
 			onpick={(number, confirmed) => {
-				const option = agent.options?.[number - 1];
+				const option = ask.options[number - 1];
 				if (option) void answerWith(option.label, { number, confirmed });
 			}}
+			onother={(text) => void answerWith(text)}
 		/>
-		<hx-div class="hh-quick">
-			<hx-input
-				aria-label={`Reply to ${agent.name}`}
-				placeholder="Reply…"
-				maxlength={2000}
-				bind:value={reply}
-				{onkeydown}
-			/>
-			<hx-button
-				type="button"
-				class="po-action hh-primary"
-				disabled={busy || !reply.trim()}
-				onclick={() => answerWith(reply)}>Send</hx-button
-			>
-		</hx-div>
 	</hx-section>
 {:else if status}
-	<hx-p class="po-sessions" role="status">{agent.name}: {status}</hx-p>
+	<hx-p class="po-sessions" role="status">{ask.agentName}: {status}</hx-p>
 {/if}
 {#if open && status}<hx-p role="status">{status}</hx-p>{/if}

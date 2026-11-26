@@ -27,6 +27,7 @@ export function buildTrackerDigest(
 		needs_daniel: [],
 		daniel_decisions: [],
 		pings: [],
+		needs_options: [],
 		overdue: [],
 		due_today: [],
 		recurring_missed: [],

@@ -119,6 +119,7 @@
 			<HubHomeAgents
 				agents={view.agents}
 				asks={view.asks}
+				openAsks={view.openAsks}
 				added={view.controlled}
 				{changeSession}
 				{agentId}

@@ -189,7 +189,7 @@
 	display: grid;
 	gap: var(--hx-space-8);
 }
-/* An open ask shown right on the Agents card: the question, its choices and a short reply. */
+/* An open ask: the question and its choices; a written answer opens its own modal. */
 .hh-home .hh-ask {
 	display: grid;
 	gap: var(--hx-space-8);
