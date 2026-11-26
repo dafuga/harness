@@ -40,6 +40,7 @@ export const trackerWatchdogAlerts = z.record(
 		session: z.string().nullable().optional(),
 		reason: z.string(),
 		identity: z.string(),
-		at: z.number()
+		at: z.number(),
+		slots: z.string().max(2000).optional()
 	})
 );

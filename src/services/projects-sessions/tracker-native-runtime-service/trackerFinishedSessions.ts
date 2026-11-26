@@ -11,7 +11,7 @@ const quietGrace = 20_000;
 /** A finished pane that never returns to an empty composer is closed once it has gone silent. */
 const stuckGrace = 10 * 60_000;
 const linkedWorkGrace = 15 * 60_000;
-const runSessionName = /^auto-([a-z0-9]{6,10})-r([1-9][0-9]*)$/;
+export const runSessionName = /^auto-([a-z0-9]{6,10})-r([1-9][0-9]*)$/;
 
 export const closedBlockedKey = (runId: number) => 'tracker_closed_blocked_run:' + runId;
 
@@ -80,8 +80,16 @@ function finishedPaneRun(store: TrackerPersistenceService, pane: WatchdogPane, n
 	if (!Number.isSafeInteger(id)) return undefined;
 	const run = readFinishedPaneRun(store, pane, { id, itemPrefix: match[1] }, now - finishedGrace);
 	if (!run) return undefined;
-	const linkedBusy = now - pane.activity < linkedWorkGrace && hasActiveLinkedItem(store, id);
-	return linkedBusy ? undefined : run;
+	return linkedWorkActive(store, pane, id, now) ? undefined : run;
+}
+
+export function linkedWorkActive(
+	store: TrackerPersistenceService,
+	pane: WatchdogPane,
+	runId: number,
+	now: number
+): boolean {
+	return now - pane.activity < linkedWorkGrace && hasActiveLinkedItem(store, runId);
 }
 
 /** `tracker start` from inside a run links more work to its pane. */
