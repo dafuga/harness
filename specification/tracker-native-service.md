@@ -586,8 +586,9 @@ backups are information only.
 
 With `--alert`, a newly failing check flags one `Tracker health on <node>` item
 and repeats daily while it fails. Backup failures are reported here but asked
-only by the backup service. A full recovery notes and closes it, and an
-ignored item is never raised again. An alerting run waits 20 seconds and asks
+only by the backup service. Once every other check recovers, the item is noted
+and closed, even while the backup alert stays open. An ignored item is never
+raised again. An alerting run waits 20 seconds and asks
 the API again before calling it down. When the Tracker cannot record the alert,
 or the webhook check fails, it also posts to the URL in `health-fallback.url`
 with the bearer key in `health-fallback.key`. Both are private files beside the

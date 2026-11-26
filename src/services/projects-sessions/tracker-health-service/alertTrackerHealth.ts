@@ -34,7 +34,7 @@ async function recordOnTracker(
 		if (due.length) {
 			await raiseTrackerHealthItem(target.config, report, state);
 			for (const { name } of due) state.checks[name].last_alert = target.now;
-		} else if (report.ok && state.item_open) {
+		} else if (!asked.length && state.item_open) {
 			await recoverTrackerHealthItem(target.config, report, state);
 		}
 		return true;

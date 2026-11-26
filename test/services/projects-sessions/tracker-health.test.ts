@@ -87,6 +87,27 @@ inTemp(
 	}
 );
 
+inTemp(
+	'the health ask closes when only the separately asked backup check still fails',
+	async (root) => {
+		const status = healthyHubStatus();
+		status.webhook.stuck = 3;
+		const failingBackup = { ...status, backup: { enabled: true, stale: true } };
+		const { service, writes } = await fixture(root, failingBackup);
+		await service.run({ alert: true });
+		status.webhook.stuck = 0;
+		expect((await service.run({ alert: true })).failing).toMatchObject([{ name: 'backup' }]);
+		expect(
+			writes()
+				.slice(-3)
+				.map(({ path }) => path.replace('/native/v1/items/health0001/', ''))
+		).toEqual(['note', 'unflag', 'done']);
+		expect(String(writes().at(-1)?.body.note)).toContain('backup alert');
+		await service.run({ alert: true });
+		expect(writes()).toHaveLength(4);
+	}
+);
+
 inTemp('a run without --alert records and sends nothing', async (root) => {
 	const status = healthyHubStatus();
 	status.webhook.stuck = 1;

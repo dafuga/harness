@@ -54,7 +54,10 @@ export async function recoverTrackerHealthItem(
 	const path = `/items/${state.item_id}`;
 	const { status } = await item(config, path);
 	if (status && status !== 'done' && status !== 'ignored') {
-		const text = `recovered at ${report.at}: all checks pass`;
+		const result = report.ok
+			? 'all checks pass'
+			: 'the checks asked here pass; the backup alert covers what still fails';
+		const text = `recovered at ${report.at}: ${result}`;
 		await item(config, `${path}/note`, { text });
 		await item(config, `${path}/unflag`, {});
 		await item(config, `${path}/done`, { note: text, force: true });
