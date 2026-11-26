@@ -1,0 +1,173 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-backup",
+	"uid": "u_sebrprn5si",
+	"kind": "service",
+	"title": "TrackerBackupService",
+	"responsibility": "Owns the TrackerBackupService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerBackupService.ts",
+			"src/services/projects-sessions/TrackerBackupService.types.ts"
+		],
+		"symbols": [
+			"TrackerBackupService",
+			"TrackerBackupService.constructor",
+			"TrackerBackupService.tick",
+			"TrackerBackupService.take",
+			"TrackerBackupService.status",
+			"TrackerBackupOptions",
+			"TrackerBackupDependencies",
+			"TrackerBackupResult"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerBackupService.constructor.database",
+				"type": "SqliteDatabase",
+				"required": true
+			},
+			{
+				"name": "TrackerBackupService.constructor.options",
+				"type": "TrackerBackupDependencies",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerBackupService.tick",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "TrackerBackupService.take",
+				"type": "Promise<TrackerBackupResult>"
+			},
+			{
+				"name": "TrackerBackupService.status",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerBackupService.tick",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerBackupService.tick",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerBackupService.take",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerBackupService.take",
+						"type": "Promise<TrackerBackupResult>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerBackupService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerBackupService.status",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerBackupService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerBackupService.constructor.database",
+						"type": "SqliteDatabase",
+						"required": true
+					},
+					{
+						"name": "TrackerBackupService.constructor.options",
+						"type": "TrackerBackupDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerBackupService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.sqlite-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-tracker-backup-alert",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-tracker-backup-clock",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-tracker-backup-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-write-tracker-backup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerBackupService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerBackupService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
