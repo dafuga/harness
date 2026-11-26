@@ -1,6 +1,7 @@
 // @harness-uid u_nves237tvx
 import type { TrackerAttachmentListingSource } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import { trackerAttachmentFields } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
+import { trackerStageSchema } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptions';
 import type { HomeAskInput } from '../hub-home/hubHome.types';
 import type { MachineStatus } from './projectOverview.types';
@@ -17,6 +18,7 @@ import {
 	MACHINE_STATUSES,
 	TRACKER_TIMEOUT_MS
 } from './trackerReadTargets';
+import { trackerRunDetail } from './projectOverviewRunDetail';
 
 /** Read and validate items, runs and machines. The native tracker exposes machines in /status. */
 export async function readTrackerSources(
@@ -30,7 +32,7 @@ export async function readTrackerSources(
 	]);
 	return {
 		items: asList(items, 'items').map((item) => parseItem(item, includeHomeFields)),
-		runs: asList(runs, 'runs').map(parseRun),
+		runs: asList(runs, 'runs').map((run) => parseRun(run, includeHomeFields)),
 		machines: asList(machines, 'machines').map(parseMachine)
 	};
 }
@@ -132,11 +134,12 @@ function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 		owner: typeof row.owner === 'string' ? row.owner : null,
 		launchRequested: Boolean(row.auto),
 		answer: typeof row.answer === 'string' ? row.answer : null,
-		answeredAt: optionalTime(row.answered_at, 'item answered_at')
+		answeredAt: optionalTime(row.answered_at, 'item answered_at'),
+		stage: trackerStageSchema.safeParse(row.stage).data ?? null
 	};
 }
 
-function parseRun(value: unknown): TrackerRunRecord {
+function parseRun(value: unknown, includeHomeFields: boolean): TrackerRunRecord {
 	const row = asRecord(value, 'run');
 	const ended = row.ended_at ?? null;
 	if (ended !== null && (typeof ended !== 'number' || !Number.isFinite(ended)))
@@ -147,7 +150,8 @@ function parseRun(value: unknown): TrackerRunRecord {
 		node: optionalText(row.node, 'run node'),
 		item_id: requiredText(row.item_id, 'run item_id'),
 		state: requiredText(row.state, 'run state'),
-		ended_at: ended
+		ended_at: ended,
+		...(includeHomeFields ? trackerRunDetail(row) : {})
 	};
 }
 

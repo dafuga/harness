@@ -11,8 +11,9 @@ export interface HubHomeReadOptions {
 	linked: (result: LinkedHome) => void;
 }
 
-/** `read` fetches both sources again; `close` ends the reads and the linked connections. */
+/** `read` fetches both sources again, `computers` only the linked ones; `close` ends both. */
 export interface HubHomeReads {
 	read: () => void;
+	computers: () => void;
 	close: () => void;
 }
