@@ -154,6 +154,8 @@ async function optionTap(chat: Locator, fixture: HomeFixture) {
 		option: 1,
 		confirmed: true
 	});
+	// Every write went to the linked Mac; the Hub never saw one.
+	expect(fixture.posted).toEqual([]);
 }
 
 async function workByProject(page: Page, position: CapturePosition) {

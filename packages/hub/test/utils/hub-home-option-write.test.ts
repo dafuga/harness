@@ -19,6 +19,12 @@ const options = [
 	{ label: 'Wait', effect: 'Holds until tomorrow.' }
 ];
 
+/*
+ * Covers the Mac's Tracker write only: it calls deliverHomeChat itself, so it says nothing about
+ * the Hub routes, the connection or the installed app's settings. That chain is
+ * tests/e2e/hub-home-installed-chain.spec.ts.
+ */
+
 /** A real Tracker API on an in-memory store, reached through the same fixed loopback URLs. */
 function liveTracker() {
 	const database = new DatabaseSync(':memory:');

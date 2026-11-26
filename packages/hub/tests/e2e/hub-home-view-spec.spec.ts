@@ -3,7 +3,9 @@ import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 
 /**
- * "View spec" in the asking session's chat. The committed document is made up. To prove a real
+ * "View spec" in the asking session's chat. This spec covers how a document is shown, so it
+ * answers the document read itself; whether the installed Mac's document arrives at all is
+ * proved by hub-home-installed-chain.spec.ts. The committed document is made up. To prove a real
  * private spec, name a local copy in SPEC_PROOF_FILE and keep SCREENSHOT_DIR outside the
  * repository: neither the text nor its pictures belong in it.
  */

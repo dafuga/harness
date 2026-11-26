@@ -8,8 +8,9 @@ import {
 	disableCollaboration,
 	waitForHubStatus
 } from './hosted-fixture';
+import { homeSourceRoutes } from './hub-home-fixture-source';
 import { homeClock, homeData, mockup } from './hub-home-fixture-data';
-import type { FixtureProject, HomeFixtureState } from './hub-home-fixture.types';
+import type { FixtureProject, HomeFixtureState, HomeSource } from './hub-home-fixture.types';
 
 function projectId(index: number) {
 	return index === 0 ? atlas : `70000000-0000-4000-8000-${String(index).padStart(12, '0')}`;
@@ -57,11 +58,18 @@ async function projectFixture(page: Page, projects: FixtureProject[], held?: Pro
 	});
 }
 
-export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
+/**
+ * Home as the installed app serves it: a computer linked to the account answers over the
+ * encrypted connection, and the Hub has no stored snapshot. `sent` is what that Mac was asked to
+ * write; `posted` is what went to the Hub's own chat route, which refuses it with nothing stored.
+ * What happens past this synthetic Mac is proved by hub-home-installed-chain.spec.ts.
+ */
+export async function hubHomeFixture(
+	page: Page,
+	mode: HomeFixtureState,
+	source: HomeSource = 'linked'
+) {
 	const state = await hostedFixture(page, { actor: { ...ada, name: 'Daniel' } });
-	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
-		route.fulfill({ json: { computers: [] } })
-	);
 	await page.route('**/downloads/Harness-mac-arm64.zip', (route) =>
 		route.fulfill({ status: 200, contentType: 'text/html', body: '' })
 	);
@@ -79,7 +87,6 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 			resolve();
 		};
 	});
-	const sent: unknown[] = [];
 	const controlled = new Set<string>();
 	await page.route('**/api/hub-home/agents', async (route) => {
 		const { id } = route.request().postDataJSON() as { id: string };
@@ -88,24 +95,14 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 		await route.fulfill({ json: { controlled: [...controlled] } });
 	});
 	await projectFixture(page, data.projects, mode === 'loading' ? pending : undefined);
-	await page.route('**/api/hub-home', async (route) => {
-		if (mode === 'loading') await pending;
-		const granted = state.signedIn && state.actor.id === ada.id;
-		const hasSnapshot = granted && (mode !== 'unavailable' || released);
-		await route.fulfill({
-			json: { granted, snapshot: hasSnapshot ? snapshot : null, controlled: [...controlled] }
-		});
+	const records = await homeSourceRoutes(page, source, {
+		snapshot,
+		controlled,
+		held: mode === 'loading' ? pending : undefined,
+		granted: () => state.signedIn && state.actor.id === ada.id,
+		available: () => mode !== 'unavailable' || released
 	});
-	await page.route(/\/api\/hub-home\/chat(?:\?|$)/, async (route) => {
-		if (route.request().method() === 'POST') {
-			const message = route.request().postDataJSON();
-			sent.push(message);
-			return route.fulfill({ status: 202, json: { id: message.id, status: 'queued' } });
-		}
-		const id = new URL(route.request().url()).searchParams.get('id');
-		return route.fulfill({ json: { id, status: 'sent' } });
-	});
-	return { release, sent, state, snapshot };
+	return { release, ...records, state, snapshot };
 }
 
 export async function unavailableHome(

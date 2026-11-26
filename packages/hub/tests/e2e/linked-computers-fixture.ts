@@ -10,6 +10,7 @@ import {
 	toBase64Url
 } from '../../../remote/src/index';
 import type { RemoteGrant, RemoteKeyPair } from '../../../remote/src/index';
+import type { LinkedComputerOptions } from './linked-computers-fixture.types';
 import type { HostPairingFrame } from '../../../desktop/src/services/networking-security/remote-host-service/host-pairing-service/HostPairingService.types';
 
 const project = { id: 'local-' + 'b'.repeat(64), name: 'Desk project' };
@@ -19,7 +20,8 @@ export async function linkedComputersFixture(
 	page: Page,
 	home?: unknown,
 	/** Collects what the Mac is asked to write; without it the Mac offers no `homeChat`. */
-	chats?: unknown[]
+	chats?: unknown[],
+	options: LinkedComputerOptions = {}
 ) {
 	const keys = await remoteKeys();
 	const hostId = await remoteIdentity(keys.publicKey);
@@ -29,14 +31,14 @@ export async function linkedComputersFixture(
 	const grant = { projects: [project], comments: false, agents: false };
 	const pairing = new HostPairingService({ hostId, keys });
 	const endpoint = `/api/remote/hosts/${hostId}/pairing`;
-	let includeOffline = true;
+	let includeOffline = options.offline ?? true;
 	let device: Awaited<ReturnType<typeof pairing.approve>> | undefined;
+	const linked = () => [
+		{ hostId, name: host.name, online: true },
+		...(includeOffline ? [offline] : [])
+	];
 	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
-		route.fulfill({
-			json: {
-				computers: [{ hostId, name: host.name, online: true }, ...(includeOffline ? [offline] : [])]
-			}
-		})
+		route.fulfill({ json: { computers: (options.present?.() ?? true) ? linked() : [] } })
 	);
 	await page.route('**/api/remote/hosts/' + offline.hostId, (route) => {
 		expect(route.request().method()).toBe('DELETE');
@@ -67,7 +69,8 @@ export async function linkedComputersFixture(
 			json: { deviceId: device?.deviceId, sealed: device?.sealed, credential: randomCredential() }
 		})
 	);
-	await connectFixture(page, { host, keys, grant, home, chats, device: () => device! });
+	const { held } = options;
+	await connectFixture(page, { host, keys, grant, home, chats, held, device: () => device! });
 }
 
 async function connectFixture(
@@ -79,10 +82,11 @@ async function connectFixture(
 		/** What the Mac answers to `homeSnapshot`; without it the method is not offered. */
 		home?: unknown;
 		chats?: unknown[];
+		held?: Promise<void>;
 		device: () => Awaited<ReturnType<HostPairingService['approve']>>;
 	}
 ) {
-	const { host, keys, grant, home, chats, device } = input;
+	const { host, keys, grant, home, chats, held, device } = input;
 	const offered = [
 		'listProjects' as const,
 		...(home === undefined ? [] : ['homeSnapshot' as const]),
@@ -107,7 +111,9 @@ async function connectFixture(
 					chats?.push(request.input);
 					return { id: (request.input as { id: string }).id, status: 'sent' };
 				}
-				return request.method === 'homeSnapshot' ? home : [project];
+				if (request.method !== 'homeSnapshot') return [project];
+				await held;
+				return home;
 			}
 		});
 		const link = wire.connect(

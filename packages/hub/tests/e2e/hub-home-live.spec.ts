@@ -1,19 +1,14 @@
 import { expect, test } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
-import { homeData, mockup } from './hub-home-fixture-data';
-import { linkedComputersFixture } from './linked-computers-fixture';
 
 test.setTimeout(90000);
 
 test('a signed-in account sees its linked Mac streaming sessions without connecting anything', async ({
 	page
 }) => {
+	// The default is the installed app: nothing is stored for the account, and only the Mac, over
+	// the encrypted channel, knows.
 	await hubHomeFixture(page, 'default');
-	// No owner snapshot is stored for this account: only the Mac, over the encrypted channel, knows.
-	await page.route('**/api/hub-home', (route) =>
-		route.fulfill({ json: { granted: false, snapshot: null } })
-	);
-	await linkedComputersFixture(page, homeData(mockup('default')));
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/working, .* need[s]? you/);
 	await expect(page.getByText('Connect your Mac')).toHaveCount(0);
@@ -27,10 +22,8 @@ test('a signed-in account sees its linked Mac streaming sessions without connect
 test('with no Mac linked and nothing stored, Home asks to connect a Mac as the fallback', async ({
 	page
 }) => {
-	await hubHomeFixture(page, 'default');
-	await page.route('**/api/hub-home', (route) =>
-		route.fulfill({ json: { granted: false, snapshot: null } })
-	);
+	// This mode has no linked computer until it is released.
+	await hubHomeFixture(page, 'unavailable');
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Connect your Mac');
 });

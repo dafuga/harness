@@ -12,7 +12,9 @@ const device = 'AAAAAAAAAAAAAAAAAAAAAA';
 /** Points the page's Home calls and live socket at the Hub in workerd; the socket can be cut. */
 async function joinHub(page: Page, chain: Chain) {
 	const link = { cut: false, sockets: [] as WebSocketRoute[], reads: 0 };
-	await hubHomeFixture(page, 'default');
+	// This chain publishes a snapshot, which the installed app does not: it measures that push
+	// path only. hub-home-installed-chain.spec.ts is the installed configuration.
+	await hubHomeFixture(page, 'default', 'published');
 	await page.clock.setFixedTime(Date.now());
 	await page.route(/\/api\/hub-home(\/chat)?(\?.*)?$/, async (route) => {
 		const url = new URL(route.request().url());
