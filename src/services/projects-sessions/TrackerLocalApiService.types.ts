@@ -1,6 +1,7 @@
 // @harness-uid u_g7kdpz7bel
 import type { TrackerDispatchResult } from '../agents-providers/TrackerDispatcherService.types';
 import type { TrackerMachineService } from './TrackerMachineService';
+import type { TrackerBoxJobAdmin } from './tracker-recurring-service/trackerBoxJobAdmin.types';
 import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type { PhoneReplicaWriteGrant } from './tracker-phone-replica-service/PhoneReplicaWriteService.types';
 import type { TrackerRunReadRepository } from '../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -29,6 +30,8 @@ export interface TrackerLocalApiOptions {
 		role: 'hub' | 'spoke';
 		history?: (id: string, limit: number) => unknown;
 	};
+	/** Absent unless this node is a hub that runs box jobs. */
+	jobs?: TrackerBoxJobAdmin;
 	ladderConfig?: TrackerLadderConfig;
 	validateModel?: TrackerItemMutationContext['validateModel'];
 	planLaunch?(

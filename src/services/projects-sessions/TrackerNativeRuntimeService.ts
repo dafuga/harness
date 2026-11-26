@@ -89,7 +89,7 @@ export class TrackerNativeRuntimeService {
 		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
 		const fleet = composeTrackerFleet(runs, { ...options, dispatch }, this);
 		({ tick: this.telemetry, samples: this.fleetSamples } = fleet);
-		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring?.repo);
+		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring);
 		this.backups = composeTrackerBackups(this, options);
 		this.sync = composeResponder(store, runs, fleet.syncOptions, composed);
 	}
@@ -137,7 +137,7 @@ function composeItemApi(
 		manualLaunch,
 		phoneWrite
 	}: TrackerNativeRuntimeOptions,
-	recurring?: TrackerRecurringRepository
+	recurring?: ReturnType<typeof composeTrackerRecurrence>
 ) {
 	const { store } = runtime;
 	return new TrackerLocalApiService(store, new TrackerItemReadRepository(store.database), {
@@ -153,7 +153,11 @@ function composeItemApi(
 		reject: runtime.dispatch && ((id, reason) => runtime.dispatch!.reject(id, reason)),
 		runs,
 		machines: runtime.machines,
-		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }
+		jobs: recurring?.jobs,
+		recurring: {
+			role,
+			history: recurring && ((id, limit) => recurring.repo.history(id, limit))
+		}
 	});
 }
 

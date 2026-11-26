@@ -236,9 +236,35 @@ operator verifies the stopped database and chooses a rollback.
   explicit, private account directory and the existing `tracked` label.
 - **Fleet telemetry.** Each node samples itself; see
   [Computers and placement](#computers-and-placement).
-- **Other effects.** Job execution and external backup
-  scheduling remain out of the foreground configuration. Recurrence is
-  enabled by a configured hub webhook.
+- **Box jobs.** A recurring item on the hub can run a shell command at each
+  occurrence in place of waking a bot. Use
+  `tracker job set ITEM --cmd 'C' [--wake-on finding|fail|always] [--timeout S]`
+  and `tracker job list`, `rm ITEM` or `test ITEM`. Exit 0 records the
+  occurrence as done. Exit 10 also records it as done and wakes the owner
+  with the output as `finding`. Any other exit or a timeout records it as
+  failed. `wake-on` defaults to `finding`; `fail` adds failures and `always`
+  wakes after every run. `test` runs the command now and records nothing.
+
+  Commands run at low priority under `/bin/sh` on the hub's own computer,
+  two scheduled jobs at a time, in `jobs/state/ITEM` beside the journal. They
+  receive `TRACKER_ITEM_ID`, `TRACKER_OCCURRENCE`, `TRACKER_STATE_DIR` and a
+  limited environment (such as `HOME` and the service's `PATH`) without the
+  service's other variables. Each command's process group is killed on exit,
+  timeout and shutdown. Output keeps the first 8 KB, with obvious secrets
+  redacted. An item with a job still waiting or running skips the next
+  occurrence, which later shows as missed. A job interrupted by shutdown or
+  a crash records a failure and is never rerun; after a crash its processes
+  may still be running. The latest receipt for each item is in
+  `jobs/receipts`.
+
+  Job definitions live in the local, unsynced `box_jobs` table. Only the
+  hub's loopback API can set them. A hub migration must carry those rows to
+  the new journal or set them again, and the commands' scripts and paths must
+  exist on the new hub's computer.
+
+- **Other effects.** External backup scheduling remains out of the
+  foreground configuration. Recurrence and box jobs are enabled
+  by a configured hub webhook.
 
 ## Host-effect configuration
 
@@ -544,7 +570,7 @@ dispatch scan.
       `backup now` and `restore --yes` with the backup owner and an isolated
       restore rehearsal.
 - [ ] Qualify `agent register/list/rm`, `webhook status/pause/resume/test`,
-      `cos-test`, `job set/list/rm/test`, and local `instructions [--check]`.
+      `cos-test`, and local `instructions [--check]`.
 - [ ] Schedule ignore expiry on the hub. Compare remaining legacy output for
       recurring `history`, `check` match details, `rm`, and empty `list`.
 

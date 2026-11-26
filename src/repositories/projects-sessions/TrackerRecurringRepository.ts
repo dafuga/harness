@@ -15,6 +15,7 @@ import {
 	trackerRecurringSchema,
 	writeOccurrence
 } from './tracker-recurring-repository/recurringHistory';
+import { trackerBoxJobStore } from './tracker-recurring-repository/boxJobs';
 
 const workPrefix = 'harness_recurring_work:';
 const active =
@@ -22,8 +23,11 @@ const active =
 
 /** Shares legacy occurrence history and commits its native job or wake intent with the item journal. */
 export class TrackerRecurringRepository {
+	readonly boxJobs: ReturnType<typeof trackerBoxJobStore>;
+
 	constructor(private readonly store: TrackerPersistenceService) {
 		store.database.exec(trackerRecurringSchema);
+		this.boxJobs = trackerBoxJobStore(store.database);
 	}
 
 	activeItemIds(): string[] {

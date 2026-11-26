@@ -1,6 +1,7 @@
 // @harness-uid u_gvqtr5mdwv
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { TrackerJobProcessAdapter } from '../../../adapters/projects-sessions/TrackerJobProcessAdapter';
 import { TrackerMachineSamplerAdapter } from '../../../adapters/projects-sessions/TrackerMachineSamplerAdapter';
 import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import {
@@ -45,7 +46,7 @@ export function trackerNodeRuntime(
 		machineSampler: new TrackerMachineSamplerAdapter(config.node, configuredTmux(config)),
 		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
-		...(config.role === 'hub' && notification?.webhook && { recurring: {} }),
+		...(config.role === 'hub' && notification?.webhook && { recurring: boxJobs(config) }),
 		validateModel(model) {
 			parseTrackerModelSpec(String(model), ladder);
 		},
@@ -59,6 +60,11 @@ function configuredTmux(config: TrackerNodeConfig): string | undefined {
 	if (effects?.mode !== 'active' || !effects.launch || !('managed' in effects.launch))
 		return undefined;
 	return effects.launch.managed.tmux;
+}
+
+/** Box job state and receipts live beside the journal that owns the job definitions. */
+function boxJobs({ database }: TrackerNodeConfig) {
+	return { jobs: new TrackerJobProcessAdapter(join(dirname(database), 'jobs')) };
 }
 
 /** A live hub backs itself up. Held and effect-free rehearsal nodes never write backups. */
