@@ -1,12 +1,10 @@
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, vi } from 'vitest';
-import type { TrackerTmuxAdapter } from '../../../src/adapters/projects-sessions/TrackerTmuxAdapter';
 import type { TrackerDispatchRunner } from '../../../src/services/projects-sessions/TrackerDispatchSchedulerService.types';
 import { TrackerNativeRuntimeService } from '../../../src/services/projects-sessions/TrackerNativeRuntimeService';
-import { trackerHostInventory } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostInventory';
+import { trackerHostRunner } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunner';
+import { readWatchdogAlerts } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState';
 import type { TrackerHostLaunchPort } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
-import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
-import type { WatchdogPane } from '../../../src/services/projects-sessions/WatchdogPaneService.types';
 import {
 	dispatcherFixture,
 	fixturePolicy,
@@ -18,68 +16,6 @@ import {
 const signal = new AbortController().signal;
 const noon = Date.parse('2026-11-25T12:00:00Z');
 const minute = 60_000;
-
-function pane(name: string, activity: number, screen: string | null = null): WatchdogPane {
-	return {
-		name,
-		key: 'default:' + name,
-		activity,
-		createdAt: noon - 300 * minute,
-		x: 2,
-		y: 0,
-		live: true,
-		readable: true,
-		ready: false,
-		attached: false,
-		runnerSocket: true,
-		currentCommand: 'claude',
-		screen
-	};
-}
-
-test('managed sessions count pane output and live background work as activity', async () => {
-	const database = new DatabaseSync(':memory:');
-	const store = new TrackerPersistenceService(database, primary, { now: () => noon });
-	const names = ['auto-output-r1', 'auto-shells-r2', 'auto-silent-r3'];
-	const panes = [
-		pane(names[0], noon - 2 * minute),
-		pane(names[1], noon - 90 * minute),
-		pane(names[2], noon - 90 * minute)
-	];
-	const footers = new Map([
-		[names[1], '❯ \n\n  ⏵⏵ bypass permissions on · 1 shell, 1 monitor'],
-		[names[2], '❯ \n\n  ⏵⏵ bypass permissions on']
-	]);
-	const driver: TrackerHostLaunchPort = {
-		inspect: async () =>
-			names.map((tmux) => ({
-				itemId: tmux.split('-')[1],
-				key: tmux,
-				id: tmux,
-				tmux,
-				state: 'live',
-				startedAt: noon - 300 * minute
-			})),
-		start: async () => ({ status: 'pending' })
-	};
-	const tmux = {
-		inventory: async () => panes,
-		captured: async (seen: WatchdogPane) => ({ ...seen, screen: footers.get(seen.name) ?? null })
-	} as unknown as TrackerTmuxAdapter;
-	try {
-		const { sessions } = await trackerHostInventory(
-			{ store, driver, tmux, node: primary, keys: names, now: noon },
-			signal
-		);
-		expect(sessions.map(({ activityAt }) => activityAt)).toEqual([
-			noon - 2 * minute,
-			noon,
-			noon - 90 * minute
-		]);
-	} finally {
-		database.close();
-	}
-});
 
 function launchRuntime(database: DatabaseSync, clock: { now: number }) {
 	const start = vi.fn<TrackerDispatchRunner['start']>(async ({ run, key }) => ({
@@ -141,6 +77,37 @@ test('the scheduler reports an overdue live run without ending it or starting an
 			expect.objectContaining({ item_id: itemId }),
 			'ran past the 480 min cap; its session is still alive'
 		);
+	} finally {
+		database.close();
+	}
+});
+
+test('the host raises one Chief of Staff alert for an overdue run', async () => {
+	const database = new DatabaseSync(':memory:');
+	const { runtime } = launchRuntime(database, { now: noon });
+	try {
+		seed(runtime);
+		const driver: TrackerHostLaunchPort = {
+			inspect: async () => [],
+			start: async () => ({ status: 'pending' })
+		};
+		const { runner } = trackerHostRunner(runtime.store, driver, () => undefined, {
+			now: () => noon
+		});
+		const { run } = await runFixture(dispatcherFixture());
+		const overdue = { ...run, item_id: itemId };
+		runner.overdue(overdue, 'fixture is overdue');
+		runner.overdue(overdue, 'fixture is overdue');
+		expect(Object.values(readWatchdogAlerts(runtime.store))).toMatchObject([
+			{ kind: 'overdue', item_id: itemId }
+		]);
+		expect(
+			runtime.store.database.prepare('SELECT text FROM item_notes WHERE item_id = ?').all(itemId)
+		).toEqual([
+			{
+				text: `watchdog overdue: Run #${run.id} fixture is overdue. No retry is queued. Check the session, or end it with \`tracker stop live00\`.`
+			}
+		]);
 	} finally {
 		database.close();
 	}
