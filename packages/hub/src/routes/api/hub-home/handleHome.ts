@@ -11,6 +11,7 @@ export const handleHome: RequestHandler = ({ request, platform }) => {
 		sessions: overviewSessions(config),
 		bucket: config.CACHE,
 		db: config.DB,
+		accounts: config.ACCOUNT_SYNC ?? null,
 		now: Date.now()
 	});
 };

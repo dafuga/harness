@@ -68,6 +68,114 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/TrackerChangeWatcher.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/followHubChat.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/followDoorbell",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/followDoorbell.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/followHubChat.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/startTrackerRealtime.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/preload-initialization/watchLocalTracker.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/coalesced",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/coalesced.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/TrackerInbox.types.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/test/lib/tracker-realtime-client.test.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/coalesced",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/coalesced.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/test/lib/tracker-realtime-client.test.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/followDoorbell",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/followDoorbell.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/test/lib/tracker-realtime-client.test.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeReads.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/coalesced",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/coalesced.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/lib/realtime/hubLiveUpdates.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/followDoorbell",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/followDoorbell.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/lib/realtime/hubLiveUpdates.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/tests/e2e/hub-realtime-chain.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/readProjectOverview",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/readProjectOverview.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
 			"from": "packages/desktop/test/examples/desktop.function.artifact-query.test.ts",
 			"specifier": "$reports/models/explorer-ui/ExplorerEvidence.types",
 			"to": "packages/reports/src/models/explorer-ui/ExplorerEvidence.types.ts",

@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-realtime-follow-doorbell",
+	"uid": "u_lcptkbllua",
+	"kind": "module",
+	"title": "followDoorbell",
+	"responsibility": "Owns the followDoorbell library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/realtime/followDoorbell.ts"],
+		"symbols": ["followDoorbell"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "followDoorbell.options",
+				"type": "DoorbellOptions",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "followDoorbell",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "followDoorbell",
+				"inputs": [
+					{
+						"name": "followDoorbell.options",
+						"type": "DoorbellOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "followDoorbell",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/realtime/followDoorbell.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/realtime/followDoorbell.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

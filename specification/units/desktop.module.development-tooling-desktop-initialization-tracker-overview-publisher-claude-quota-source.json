@@ -1,0 +1,153 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-claude-quota-source",
+	"uid": "u_c5k2m7qpra",
+	"kind": "module",
+	"title": "claudeQuotaSource",
+	"responsibility": "Owns the claudeQuotaSource library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/claudeQuotaSource.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/claudeQuotaSource.types.ts"
+		],
+		"symbols": [
+			"claudeSubscription",
+			"readKeychainCredential",
+			"createClaudeQuotaSource",
+			"UsageWindow",
+			"UsageLimit",
+			"ClaudeUsage",
+			"ClaudeCredential",
+			"ClaudeQuotaDeps"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "claudeSubscription.usage",
+				"type": "ClaudeUsage",
+				"required": true
+			},
+			{
+				"name": "claudeSubscription.plan",
+				"type": "string | null",
+				"required": true
+			},
+			{
+				"name": "claudeSubscription.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "createClaudeQuotaSource.deps",
+				"type": "ClaudeQuotaDeps",
+				"required": false,
+				"default": {}
+			}
+		],
+		"outputs": [
+			{
+				"name": "claudeSubscription",
+				"type": "HomeSubscription | null"
+			},
+			{
+				"name": "readKeychainCredential",
+				"type": "Promise<ClaudeCredential | null>"
+			},
+			{
+				"name": "createClaudeQuotaSource",
+				"type": "QuotaSource"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "claudeSubscription",
+				"inputs": [
+					{
+						"name": "claudeSubscription.usage",
+						"type": "ClaudeUsage",
+						"required": true
+					},
+					{
+						"name": "claudeSubscription.plan",
+						"type": "string | null",
+						"required": true
+					},
+					{
+						"name": "claudeSubscription.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "claudeSubscription",
+						"type": "HomeSubscription | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readKeychainCredential",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "readKeychainCredential",
+						"type": "Promise<ClaudeCredential | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "createClaudeQuotaSource",
+				"inputs": [
+					{
+						"name": "createClaudeQuotaSource.deps",
+						"type": "ClaudeQuotaDeps",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "createClaudeQuotaSource",
+						"type": "QuotaSource"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-codex-quota-source",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/claudeQuotaSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/claudeQuotaSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

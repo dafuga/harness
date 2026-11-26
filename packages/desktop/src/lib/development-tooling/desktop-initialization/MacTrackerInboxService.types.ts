@@ -10,7 +10,7 @@ export interface TrackerInboxItemReply {
 }
 
 export interface TrackerInboxReadInput {
-	operation?: 'overview' | 'search' | 'detail';
+	operation?: 'overview' | 'search' | 'detail' | 'live';
 	id?: string;
 	query?: string;
 }

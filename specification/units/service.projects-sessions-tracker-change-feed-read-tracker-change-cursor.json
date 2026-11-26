@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-change-feed-read-tracker-change-cursor",
+	"uid": "u_dul2zizb3o",
+	"kind": "service",
+	"title": "readTrackerChangeCursor",
+	"responsibility": "Owns the readTrackerChangeCursor service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-change-feed/readTrackerChangeCursor.ts"],
+		"symbols": ["readTrackerChangeCursor"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "readTrackerChangeCursor.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "readTrackerChangeCursor",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "readTrackerChangeCursor",
+				"inputs": [
+					{
+						"name": "readTrackerChangeCursor.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerChangeCursor",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-change-feed/readTrackerChangeCursor.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-change-feed/readTrackerChangeCursor.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
