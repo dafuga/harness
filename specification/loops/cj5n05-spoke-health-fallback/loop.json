@@ -2,23 +2,25 @@
 	"name": "cj5n05-spoke-health-fallback",
 	"goal": "A spoke that cannot reach the hub sends its health alert on the backup channel",
 	"createdAt": "2026-11-26T17:49:16.367Z",
-	"updatedAt": "2026-11-26T17:49:16.367Z",
+	"updatedAt": "2026-11-26T18:08:51.573Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T18:08:49.478Z",
+			"evidence": "A spoke with the hub down fails only hub_link; its local API queues the health ask, so no fallback is posted. Expected: the fallback is posted after quiet hours."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T18:08:51.573Z",
+			"evidence": "tracker-health-fallback.test.ts only ran hub nodes; added the unlinked-spoke fixture and scenario there."
 		},
 		{
 			"id": "red",
