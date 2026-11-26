@@ -141,6 +141,7 @@ function composeItemApi(
 		planLaunch,
 		manualLaunch,
 		schedulePreview: (item) => trackerDueItemPreview(runtime, item),
+		reject: runtime.dispatch && ((id, reason) => runtime.dispatch!.reject(id, reason)),
 		runs,
 		recurring: { role, history: recurring && ((id, limit) => recurring.history(id, limit)) }
 	});

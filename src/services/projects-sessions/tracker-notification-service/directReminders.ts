@@ -1,5 +1,4 @@
 // @harness-uid u_vqnqshfas2
-import { quietHourBoundary } from '../../../helpers/attention-timing/quietHourBoundary';
 import type {
 	TrackerDestination,
 	TrackerNotificationItem,
@@ -13,7 +12,6 @@ import type {
 } from './notificationState.types';
 import { callbackRequest, flagWebhook } from './deliveryRequest';
 import {
-	askQuietHours,
 	clockTime,
 	directReminderDestination,
 	dueForDirectReminder,
@@ -35,9 +33,14 @@ function reminderRows(
 	const { source } = options;
 	const reminders = [];
 	const today = localDay(now, source.tz);
-	const nextAt = quietHourBoundary(now, options.quietHours);
 	for (const item of source.items()) {
-		const row = { itemId: item.id, status: 'active', nextAt, createdAt: now, pings: 0 } as const;
+		const row = {
+			itemId: item.id,
+			status: 'active',
+			nextAt: now,
+			createdAt: now,
+			pings: 0
+		} as const;
 		if (flagged(item)) {
 			const flag = flagReminder(
 				state,
@@ -80,10 +83,7 @@ function flagReminder(
 		kind: 'flag',
 		status: 'active',
 		createdAt,
-		nextAt:
-			firstPing === undefined
-				? quietHourBoundary(now, askQuietHours)
-				: nextAskAt(1, firstPing, firstPing),
+		nextAt: firstPing === undefined ? now : nextAskAt(1, firstPing, firstPing),
 		pings: Number(firstPing !== undefined),
 		firstPing
 	};
@@ -191,11 +191,6 @@ function readyReminder(
 	const item = options.source.item(row.itemId);
 	if (!item || (row.kind === 'flag' && !currentFlag(row, item))) {
 		row.status = 'closed';
-		return undefined;
-	}
-	const release = quietHourBoundary(now, row.kind === 'flag' ? askQuietHours : options.quietHours);
-	if (release > now) {
-		row.nextAt = release;
 		return undefined;
 	}
 	if (batched && initialBatch(state, item, row.key)?.status === 'pending') return undefined;
