@@ -28,7 +28,6 @@
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
-		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-row-ask",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
 		"desktop.component.entity-card",
@@ -861,12 +860,6 @@
 			"title": "Tracker item notes and runs",
 			"coverage": "required",
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-record"]
-		},
-		{
-			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-row-ask",
-			"title": "Tracker needs-you row answer",
-			"coverage": "required",
-			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-row-ask"]
 		},
 		{
 			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
@@ -8843,7 +8836,6 @@
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-choices",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-record",
-				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-row-ask",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-writes",
 				"desktop-component-entity-card",

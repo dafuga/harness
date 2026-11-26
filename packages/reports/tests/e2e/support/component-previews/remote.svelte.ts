@@ -152,17 +152,11 @@ function trackerInboxCases(): PreviewCases {
 		},
 		[`${unit}-detail`]: { source, id: trackerItem.id, onchanged: trackerNoop },
 		[`${unit}-record`]: { detail: trackerDetail },
-		[`${unit}-row-ask`]: {
-			source,
-			review: answerable,
-			mode: 'phone',
-			onchanged: trackerNoop,
-			onsent: trackerNoop
-		},
 		[`${unit}-rows`]: {
 			source,
 			mode: 'phone',
 			onchanged: trackerNoop,
+			onnotice: trackerNoop,
 			rows: [{ header: trackerItem, bucket: 'needs-you', review: answerable }],
 			selected: null,
 			label: 'Needs you',

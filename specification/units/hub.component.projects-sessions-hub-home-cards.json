@@ -169,6 +169,10 @@
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-cos-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-live",
 			"via": "import",
 			"origin": "derived"

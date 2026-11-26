@@ -1265,6 +1265,9 @@
 			{
 				"name": "trackerHubMessageDelivery.input",
 				"type": "HubMessageDelivery",
+				"required": true
+			},
+			{
 				"name": "spokeGrant.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -4011,6 +4014,19 @@
 					{
 						"name": "trackerHubMessageDelivery.input",
 						"type": "HubMessageDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubMessageDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "spokeGrant",
 				"inputs": [
 					{
@@ -4031,13 +4047,11 @@
 				],
 				"outputs": [
 					{
-						"name": "trackerHubMessageDelivery",
 						"name": "spokeGrant",
 						"type": "unknown"
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
 				"errorStatus": "unknown"
 			},
 			{
