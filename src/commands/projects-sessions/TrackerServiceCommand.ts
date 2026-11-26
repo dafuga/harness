@@ -3,6 +3,10 @@ import { spawn, spawnSync } from 'node:child_process';
 import { homedir } from 'node:os';
 import { isAbsolute } from 'node:path';
 import { parseArgs } from 'node:util';
+import {
+	isTrackerWorkerClient,
+	trackerWorkerClientRefusal
+} from '../../adapters/projects-sessions/tracker-tmux-adapter/trackerWorkerClient';
 import { TrackerHostInstallService } from '../../services/projects-sessions/TrackerHostInstallService';
 import type { TrackerHostInstallPorts } from '../../services/projects-sessions/TrackerHostInstallService.types';
 import { loadTrackerNodeConfig } from '../../services/projects-sessions/tracker-node-service/trackerNodeConfig';
@@ -27,6 +31,10 @@ export class TrackerServiceCommand {
 		const input = parseServiceArgs(args);
 		if (!input) {
 			console.error(usage);
+			return 2;
+		}
+		if (isTrackerWorkerClient(input.install)) {
+			console.error(trackerWorkerClientRefusal);
 			return 2;
 		}
 		try {
