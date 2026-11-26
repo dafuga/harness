@@ -68,7 +68,13 @@ const connectionFailures = new Set<unknown>([
 	'ENETUNREACH',
 	'EHOSTUNREACH',
 	'UND_ERR_SOCKET',
-	'UND_ERR_CONNECT_TIMEOUT'
+	'UND_ERR_CONNECT_TIMEOUT',
+	// A failed DNS lookup, as Node names it.
+	'ENOTFOUND',
+	'EAI_AGAIN',
+	// Bun 1.2, which the shipped binary runs on: refused or unresolved, and no usable network.
+	'ConnectionRefused',
+	'FailedToOpenSocket'
 ]);
 
 /** True only for an outage. A refusal or a bad reply from a reachable hub is not one. */
