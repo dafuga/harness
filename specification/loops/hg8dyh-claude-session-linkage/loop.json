@@ -2,7 +2,7 @@
 	"name": "hg8dyh-claude-session-linkage",
 	"goal": "Restore Claude session linkage, usage, startup cause and trust confirm lost in the native Tracker port",
 	"createdAt": "2026-11-26T11:40:35.765Z",
-	"updatedAt": "2026-11-26T11:40:35.765Z",
+	"updatedAt": "2026-11-26T12:10:26.098Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T12:10:24.355Z",
+			"evidence": "Parity audit j2jx6b rows D14,15,23,24,26,47,63-65,SL8: native launcher passed no session id, Remote Control, name or model limit; Claude usage and credits blank; startup causes, give-up question/note and owned-worktree trust confirm missing."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T12:10:26.098Z",
+			"evidence": "Managed launcher and foreground tests asserted only the argv and Codex tokens the port emitted; no fixture produced a Claude transcript, trust dialog, early crash, tmux refusal or hand-named window."
 		},
 		{
 			"id": "red",
