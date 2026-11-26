@@ -1,18 +1,20 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import {
+	chmodSync,
 	lstatSync,
 	mkdirSync,
 	mkdtempSync,
 	readdirSync,
 	readFileSync,
 	realpathSync,
+	renameSync,
 	rmSync,
 	writeFileSync
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { assembleMacApp } from '../scripts/package-mac-app';
+import { assembleMacApp, verifyMacAppLayout } from '../scripts/package-mac-app';
 
 const mac = process.platform === 'darwin';
 let root = '';
@@ -52,35 +54,71 @@ function writableByOthers(directory: string): string[] {
 	});
 }
 
+/** Launches the assembled app and returns what its probe main process observed. */
+function launch(name: string, args: string[]) {
+	const report = join(root, `${name}.json`);
+	const home = join(root, `${name}-home`);
+	mkdirSync(home);
+	execFileSync(join(app, 'Contents/MacOS', plistValue('CFBundleExecutable')), args, {
+		env: {
+			HOME: home,
+			PATH: process.env.PATH,
+			HARNESS_PROBE_PROFILE: join(root, `${name}-profile`),
+			HARNESS_PROBE_REPORT: report
+		},
+		stdio: 'inherit',
+		timeout: 60_000
+	});
+	return JSON.parse(readFileSync(report, 'utf8'));
+}
+
 test.runIf(mac)(
 	'the packaged app is packaged to Electron, starts the bundled Tracker and renders',
 	() => {
-		const executable = plistValue('CFBundleExecutable');
-		const report = join(root, 'report.json');
-		const home = join(root, 'home');
-		mkdirSync(home);
-		execFileSync(
-			join(app, 'Contents/MacOS', executable),
-			[`--user-data-dir=${join(root, 'profile')}`],
-			{
-				env: { HOME: home, PATH: process.env.PATH, HARNESS_PROBE_REPORT: report },
-				stdio: 'inherit',
-				timeout: 60_000
-			}
-		);
 		const project = join(app, 'Contents/Resources/app');
-		expect(JSON.parse(readFileSync(report, 'utf8'))).toEqual({
+		expect(launch('installed', [])).toEqual({
 			isPackaged: true,
 			appPath: project,
 			started: project,
 			rendered: 'probe'
 		});
-		expect(executable).toBe('Harness');
+		expect(plistValue('CFBundleExecutable')).toBe('Harness');
 		expect(readdirSync(join(app, 'Contents/MacOS'))).toEqual(['Harness']);
+	},
+	90_000
+);
+
+test.runIf(mac)(
+	'a launch with an isolated profile leaves the Mac Tracker alone',
+	() => {
+		const isolated = launch('isolated', [`--user-data-dir=${join(root, 'isolated-profile')}`]);
+		expect(isolated).toMatchObject({ isPackaged: true, started: null, rendered: 'probe' });
 	},
 	90_000
 );
 
 test.runIf(mac)('nothing in the packaged app is writable by group or others', () => {
 	expect(writableByOthers(app)).toEqual([]);
+});
+
+test.runIf(mac)('release verification refuses either defect when it returns', () => {
+	expect(() => verifyMacAppLayout(app)).not.toThrow();
+
+	const helper = join(app, 'Contents/Helpers/harness');
+	chmodSync(helper, 0o777);
+	expect(() => verifyMacAppLayout(app)).toThrow(/writable by group or others: .*Helpers.harness/);
+	chmodSync(helper, 0o755);
+
+	const plist = join(app, 'Contents/Info.plist');
+	const setExecutable = (name: string) =>
+		execFileSync('/usr/libexec/PlistBuddy', ['-c', `Set :CFBundleExecutable ${name}`, plist]);
+	setExecutable('Electron');
+	expect(() => verifyMacAppLayout(app)).toThrow(/must be named Harness/);
+	setExecutable('Harness');
+
+	const executable = join(app, 'Contents/MacOS/Harness');
+	renameSync(executable, join(app, 'Contents/MacOS/Electron'));
+	expect(() => verifyMacAppLayout(app)).toThrow(/missing its Harness executable/);
+	renameSync(join(app, 'Contents/MacOS/Electron'), executable);
+	expect(() => verifyMacAppLayout(app)).not.toThrow();
 });

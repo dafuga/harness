@@ -2,7 +2,7 @@
 	"name": "mac-app-packaged-identity",
 	"goal": "The packaged Harness.app reports isPackaged so the bundled Tracker self-install runs, and nothing in the bundle is group or world writable; a packaged-app test proves both",
 	"createdAt": "2026-11-26T13:25:57.824Z",
-	"updatedAt": "2026-11-26T13:28:49.758Z",
+	"updatedAt": "2026-11-26T13:32:34.669Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T13:32:31.544Z",
+			"evidence": "package-mac-app.ts renames the executable to Harness, sets CFBundleExecutable, and runs chmod -R go-w; verifyRelease refuses another executable name or a writable entry"
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T13:32:34.669Z",
+			"evidence": "loop record --phase green passed on the fix commit with the unchanged test"
 		},
 		{
 			"id": "siblings",

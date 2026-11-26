@@ -76,7 +76,7 @@ Installing or replacing the app is the only step. Each packaged launch starts `s
 3. Repoints only the executable (`ProgramArguments[0]`) of the existing `local.harness.tracker` LaunchAgent, then reloads it. The `--config` path, role, environment, logs, SQLite journal, secrets and fence files are not touched. If there is no agent but `~/.config/harness/tracker.json` exists, it writes one for that file's role; with no configuration it installs the command line only.
 4. Waits for `harness tracker ensure` to report ready. If the new release does not become ready in 30 seconds, it restores the previous executable, links and agent and reports `rolled-back`.
 
-A second launch with the same app changes and restarts nothing. Another app instance or an installer already running holds a lock, so two installs never interleave. A LaunchAgent whose command is not `tracker serve` is refused. Rollback of a bad app is the previous release directory plus `launchctl bootout`/`bootstrap` of the previous agent file; the previous app bundle remains the rollback source for the executable.
+A launch with its own `--user-data-dir` (tests, or a candidate run beside the installed app) skips all of this. A second launch with the same app changes and restarts nothing. Another app instance or an installer already running holds a lock, so two installs never interleave. A LaunchAgent whose command is not `tracker serve` is refused. Rollback of a bad app is the previous release directory plus `launchctl bootout`/`bootstrap` of the previous agent file; the previous app bundle remains the rollback source for the executable.
 
 ## Projects and shared collaboration
 

@@ -8,6 +8,8 @@ import { writeFileSync } from 'node:fs';
 import '../src/initializers/development-tooling/initializeTrackerBundle';
 
 app.setActivationPolicy('accessory');
+// The default profile would be the installed app's; this moves it without the launch switch.
+app.setPath('userData', process.env.HARNESS_PROBE_PROFILE as string);
 
 async function probe(report: string): Promise<void> {
 	await app.whenReady();
