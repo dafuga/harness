@@ -46,6 +46,7 @@ async function home(page: Page, size: keyof typeof sizes, change: 'two-asks' | '
 }
 
 const needsYou = (page: Page) => page.getByRole('region', { name: /^Blocked - needs you/ });
+const agentsCard = (page: Page) => page.getByRole('region', { name: 'Agents', exact: true });
 
 for (const size of ['desktop', 'phone'] as const) {
 	test(`Home lists each open ask as a row that opens its session chat (${size})`, async ({
@@ -54,7 +55,10 @@ for (const size of ['desktop', 'phone'] as const) {
 		const fixture = await home(page, size, 'two-asks');
 		const rows = needsYou(page).getByRole('button');
 		await expect(rows).toHaveCount(2);
-		await expect(page.getByText('2 need you', { exact: true })).toBeVisible();
+		// The count lives with the items in the blockers section; Agents shows only agents.
+		await expect(needsYou(page).getByText('2 need you', { exact: true })).toBeVisible();
+		await expect(agentsCard(page)).toBeVisible();
+		await expect(agentsCard(page).getByText(/\d+ needs? you/)).toHaveCount(0);
 		await expect(rows.filter({ hasText: 'harbor' })).toContainText(
 			/Ship harbor\?.*waiting \d+[mhd]/s
 		);
