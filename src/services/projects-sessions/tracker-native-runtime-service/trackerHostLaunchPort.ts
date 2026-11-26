@@ -89,6 +89,7 @@ export async function startTrackerHost(
 		route: TrackerHostTarget;
 		reservation: TrackerReservedStart;
 		brief: string;
+		cpuBudget?: number;
 		sessionName?: string;
 	},
 	signal: AbortSignal
@@ -98,6 +99,7 @@ export async function startTrackerHost(
 		route,
 		reservation: { run, key, selection },
 		brief,
+		cpuBudget,
 		sessionName
 	} = input;
 	const result = await driver.start(
@@ -111,6 +113,7 @@ export async function startTrackerHost(
 			...route,
 			backend: route.platform === 'macos' ? 'native' : 'docker',
 			queuedAt: run.queued_at,
+			...(cpuBudget && { cpuBudget }),
 			sessionName
 		},
 		signal
