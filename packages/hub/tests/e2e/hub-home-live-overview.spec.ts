@@ -1,59 +1,15 @@
-import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
-import { buildHomeLiveOverview } from '../../../reports/src/lib/projects-sessions/hub-home/homeLiveOverview';
+import { recordedTracker } from '../../test/support/recordedTracker';
 import {
-	buildHomeSnapshot,
-	noProviders
-} from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
-import { readTrackerSources } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
-import {
-	recordedTracker,
-	recordedTrackerFetch,
-	type RecordedTracker
-} from '../../test/support/recordedTracker';
-import { hubHomeFixture } from './hub-home-fixture';
-import { linkedComputersFixture } from './linked-computers-fixture';
+	expectEvenHeaderSpacing,
+	expectNoSidewaysScroll,
+	liveRows,
+	macAnswer,
+	overview,
+	productionHome
+} from './hub-home-live-overview-fixture';
 
 test.setTimeout(90000);
-
-/** What an updated Mac answers `homeSnapshot` with, built from the recorded Tracker reading. */
-async function macAnswer(tracker: RecordedTracker) {
-	const now = Date.parse(tracker.recordedAt);
-	const sources = await readTrackerSources(recordedTrackerFetch(tracker), true);
-	return {
-		...buildHomeSnapshot(sources, noProviders, now),
-		liveOverview: buildHomeLiveOverview(sources, now)
-	};
-}
-
-/** Hub as it runs in production: the owner is signed in and nothing is uploaded or stored. */
-async function productionHome(page: Page, answer?: object, live = false) {
-	await hubHomeFixture(page, 'default');
-	const requests: { method: string; path: string }[] = [];
-	page.on('request', (request) =>
-		requests.push({ method: request.method(), path: new URL(request.url()).pathname })
-	);
-	await page.route('**/api/hub-home', (route) =>
-		route.fulfill({ json: { granted: true, snapshot: null, controlled: [], live } })
-	);
-	if (answer) await linkedComputersFixture(page, answer);
-	return requests;
-}
-
-const overview = (page: Page) => page.getByRole('region', { name: 'Live overview', exact: true });
-const liveRows = (page: Page) => overview(page).locator('.hh-live-row[data-state="running"]');
-
-async function expectNoSidewaysScroll(page: Page, width: number) {
-	const wide = await page.evaluate(() => {
-		const rows = [...document.querySelectorAll('.hh-live-overview *')];
-		return {
-			page: document.documentElement.scrollWidth,
-			right: Math.max(...rows.map((node) => node.getBoundingClientRect().right))
-		};
-	});
-	expect(wide.page).toBeLessThanOrEqual(width);
-	expect(wide.right).toBeLessThanOrEqual(width);
-}
 
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
@@ -96,6 +52,7 @@ for (const [device, width, height] of [
 			).toBeAttached();
 		await expect(overview(page)).toContainText('over an encrypted connection · read');
 		await expectNoSidewaysScroll(page, width);
+		if (device === 'phone') await expectEvenHeaderSpacing(page);
 		expect(requests.filter((entry) => entry.path === '/api/tracker-overview')).toEqual([]);
 		expect(requests.filter((entry) => entry.method === 'PUT')).toEqual([]);
 		if (process.env.TAKE_SCREENSHOT)
@@ -124,6 +81,19 @@ test('a paragraph-long title keeps its row short on a phone', async ({ page }) =
 	const oneLine = await height(overview(page).getByTitle(short.title, { exact: true }));
 	// Two lines at the most, however long the title is.
 	expect(await height(title)).toBeLessThanOrEqual(oneLine * 2 + 1);
+
+	// A phone has no tooltip: a tap shows the whole title and the exact times in Lisbon.
+	await title.click();
+	expect(await height(title)).toBeGreaterThan(oneLine * 3);
+	const row = overview(page).locator('.hh-live-row').filter({ has: title });
+	await expect(
+		row.getByText(
+			/^Started \d{1,2} \w{3,4} \d\d:\d\d · updated \d{1,2} \w{3,4} \d\d:\d\d, Lisbon time$/
+		)
+	).toBeVisible();
+	await expectNoSidewaysScroll(page, 390);
+	if (process.env.TAKE_SCREENSHOT)
+		await page.screenshot({ path: test.info().outputPath('live-overview-title-open.png') });
 });
 
 test('a change on the Mac shows within one turn, also while change notices are connected', async ({
