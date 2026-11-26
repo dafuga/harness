@@ -1,4 +1,8 @@
 // @harness-uid u_ksy76trvsj
+import {
+	trackerBudgetNode,
+	trackerHomeProject
+} from '../../utils/projects-sessions/trackerCpuBudget';
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerDispatchDecision,
@@ -108,7 +112,8 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 				NOT EXISTS (SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
 				AND NOT EXISTS (SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
 			))
-			ORDER BY (i.auto IS NULL OR launch_source <> 'manual'),
+			ORDER BY ${trackerBudgetNode(this.node) ? `lower(coalesce(i.project, i.agent, '')) <> '${trackerHomeProject}',` : ''}
+				(i.auto IS NULL OR launch_source <> 'manual'),
 				CASE i.priority WHEN 'urgent' THEN 0 WHEN 'low' THEN 2 ELSE 1 END,
 				(i.adapter_due_owner IS NULL),
 				(due IS NULL), due, created_at, id`

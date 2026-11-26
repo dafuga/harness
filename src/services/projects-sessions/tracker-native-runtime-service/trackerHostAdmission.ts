@@ -9,6 +9,8 @@ import type {
 } from './nativeTrackerHostEffects.types';
 import type { TrackerHostRoute, TrackerHostTarget } from './trackerHostLaunch.types';
 import type { TrackerOccupiedRun } from './trackerHostAdmission.types';
+import type { TrackerHostResources } from '../../../utils/projects-sessions/trackerHostResources.types';
+import { trackerHostResourceAdmission } from './trackerHostResourceAdmission';
 
 export const trackerHostCapacityHold = 'Tracker host is at session capacity';
 
@@ -18,15 +20,21 @@ export function trackerHostAdmission(
 		config,
 		adapter,
 		routeFor,
+		hostResources,
 		now = Date.now
 	}: {
 		config: TrackerHostLaunchConfig;
 		adapter?: TrackerHostAdapterConfig;
 		routeFor: TrackerHostRoute;
+		hostResources?: TrackerHostResources;
 		now?: () => number;
 	}
 ): TrackerDispatchPolicy['admit'] {
 	const cap = config.maxConcurrent ?? 2;
+	const hostHold = trackerHostResourceAdmission(store, config, {
+		resources: hostResources,
+		occupied: () => occupiedHostRuns(store)
+	});
 	return (item, intent, rung) => {
 		const route = routeFor(item);
 		if (!route || !configuredLane(config, route.platform))
@@ -34,13 +42,10 @@ export function trackerHostAdmission(
 		if (occupiedHostSlots(store) >= cap) return trackerHostCapacityHold;
 		const unavailable = rung && providerAdmissionHold(store, rung.cli, now());
 		if (unavailable) return unavailable;
-		if (adapter?.dueDisk && intent.source === 'due' && item.adapterDueOwner === store.node)
-			return adapterDueDiskHold({
-				config,
-				route,
-				dueDisk: adapter.dueDisk
-			});
-		return null;
+		const shortage = hostHold(item, route);
+		if (shortage) return shortage;
+		const adapterDue = intent.source === 'due' && item.adapterDueOwner === store.node;
+		return adapterDue ? adapterDueDiskHold({ config, route, dueDisk: adapter?.dueDisk }) : null;
 	};
 }
 
@@ -107,8 +112,9 @@ function adapterDueDiskHold({
 }: {
 	config: TrackerHostLaunchConfig;
 	route: TrackerHostTarget;
-	dueDisk: NonNullable<TrackerHostAdapterConfig['dueDisk']>;
+	dueDisk: TrackerHostAdapterConfig['dueDisk'];
 }) {
+	if (!dueDisk) return null;
 	const repoHold = trackerAdapterDiskHold('workdir' in route ? route.workdir : route.repo, dueDisk);
 	if (repoHold || 'driver' in config) return repoHold;
 	return trackerAdapterDiskHold(config.managed.stateDirectory, dueDisk);
