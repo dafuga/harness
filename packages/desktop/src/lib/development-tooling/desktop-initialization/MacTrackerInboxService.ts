@@ -10,8 +10,7 @@ import type {
 	InboxRow,
 	InboxWriteReceipt
 } from '../../../models/development-tooling/TrackerInbox.types';
-import type { TrackerAttachmentDocument } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
-import { readLocalAttachment } from './tracker-overview-publisher/readLocalAttachment';
+import { withLocalDocuments } from './macTrackerInboxDocuments';
 import {
 	projectDetail,
 	projectHeader,
@@ -27,7 +26,7 @@ const trackerOrigin = 'http://127.0.0.1:7701';
 export class MacTrackerInboxService {
 	async read(
 		input: TrackerInboxReadInput
-	): Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail | TrackerAttachmentDocument>> {
+	): Promise<InboxReply<InboxOverview | InboxRow[] | InboxDetail>> {
 		switch (input.operation) {
 			case 'overview':
 				return this.overview();
@@ -39,8 +38,6 @@ export class MacTrackerInboxService {
 				return typeof input.id === 'string' && safeItemId.test(input.id)
 					? this.detail(input.id)
 					: current({ code: 'invalidInput' });
-			case 'document':
-				return this.document(input);
 			default:
 				return current({ code: 'invalidInput' });
 		}
@@ -63,18 +60,6 @@ export class MacTrackerInboxService {
 			return result.status === 'accepted'
 				? current({ value: { status: 'accepted' } })
 				: unavailable();
-		} catch {
-			return unavailable();
-		}
-	}
-
-	private async document({
-		id,
-		attachment
-	}: TrackerInboxReadInput): Promise<InboxReply<TrackerAttachmentDocument>> {
-		try {
-			const value = await readLocalAttachment({ itemId: id, id: attachment });
-			return value ? current({ value }) : current({ code: 'noLocalMatch' });
 		} catch {
 			return unavailable();
 		}
@@ -108,7 +93,7 @@ export class MacTrackerInboxService {
 			}
 			const detail = await readReply<TrackerInboxItemReply>(response);
 			return detail.item.id === id && visible(detail.item)
-				? current({ value: projectDetail(detail) })
+				? current({ value: await withLocalDocuments(projectDetail(detail)) })
 				: current({ code: 'noLocalMatch' });
 		} catch {
 			return unavailable();

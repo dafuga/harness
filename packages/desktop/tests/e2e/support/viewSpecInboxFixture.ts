@@ -59,7 +59,6 @@ export async function macSpecPage(page: Page, tracker: Tracker) {
 			overview: () => read({ operation: 'overview' }),
 			search: (query: string) => read({ operation: 'search', query }),
 			detail: (id: string) => read({ operation: 'detail', id }),
-			document: (id: string, attachment: string) => read({ operation: 'document', id, attachment }),
 			write: (write: object) => host.__inboxWrite(write),
 			writes: async () => ({ freshness: 'current', partial: false, value: [] }),
 			discard: async () => ({ freshness: 'current', partial: false })

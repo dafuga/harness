@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-mac-tracker-inbox-documents",
+	"uid": "u_atgwulv6mc",
+	"kind": "module",
+	"title": "macTrackerInboxDocuments",
+	"responsibility": "Owns the macTrackerInboxDocuments library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerInboxDocuments.ts"
+		],
+		"symbols": ["withLocalDocuments"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "withLocalDocuments.detail",
+				"type": "InboxDetail",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "withLocalDocuments",
+				"type": "Promise<InboxDetail>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "withLocalDocuments",
+				"inputs": [
+					{
+						"name": "withLocalDocuments.detail",
+						"type": "InboxDetail",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withLocalDocuments",
+						"type": "Promise<InboxDetail>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-read-local-attachment",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerInboxDocuments.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/macTrackerInboxDocuments.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

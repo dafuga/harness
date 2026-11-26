@@ -36,6 +36,8 @@ export interface InboxOption {
 
 export type InboxConfirmKind = 'deploy' | 'money' | 'secret';
 
+export type InboxAttachment = TrackerAttachment & { content?: TrackerAttachmentDocument };
+
 export interface InboxFlag {
 	state: string;
 	at: string | null;
@@ -44,7 +46,7 @@ export interface InboxFlag {
 	/** Deploy, money and secret asks need an extra confirm step (Face ID on the phone). */
 	confirm?: InboxConfirmKind;
 	/** Specs and documents behind "View spec". */
-	attachments?: TrackerAttachment[];
+	attachments?: InboxAttachment[];
 }
 
 export interface InboxNote {
@@ -149,8 +151,8 @@ export interface TrackerInboxSource {
 	overview(): Promise<InboxReply<InboxOverview>>;
 	search(query: string): Promise<InboxReply<InboxRow[]>>;
 	detail(id: string): Promise<InboxReply<InboxDetail>>;
-	/** One document of the item's open ask. */
-	document(itemId: string, attachmentId: string): Promise<InboxReply<TrackerAttachmentDocument>>;
+	/** One document of the open ask, where `detail` does not already carry the text (the phone). */
+	document?(itemId: string, attachmentId: string): Promise<InboxReply<TrackerAttachmentDocument>>;
 	write(write: ConfirmedWrite): Promise<InboxReply<InboxWriteReceipt>>;
 	writes(): Promise<InboxReply<InboxWrite[]>>;
 	discard(intentId: string): Promise<InboxReply<unknown>>;
