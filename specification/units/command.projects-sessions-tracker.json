@@ -1386,7 +1386,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.projects-sessions-tracker-command-format-native-tracker-machines",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.projects-sessions-tracker-command-native-tracker-job-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-command-native-tracker-machine-request",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -1452,6 +1462,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-claude-session-id",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-types",
 			"via": "import",
 			"origin": "derived"
 		},

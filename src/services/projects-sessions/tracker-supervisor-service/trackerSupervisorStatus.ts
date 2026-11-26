@@ -5,6 +5,7 @@ import {
 	canonicalNode,
 	trackerFleetNodes
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import { trackerMachineSummary } from '../tracker-machine-service/trackerMachineSummary';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import { trackerRunnerSample } from '../tracker-native-runtime-service/nativeTrackerLinks';
 import {
@@ -30,6 +31,7 @@ export function trackerSupervisorStatus(
 		db_id: store.dbId,
 		ops: store.maxSeq(),
 		...trackerStatusDefaults(runtime, hub),
+		machines: runtime.machines.rows().map(trackerMachineSummary),
 		sync: hub
 			? { hub: sync ? 'configured' : 'disabled (no secret)', peers_last_seen: sync?.peers() ?? {} }
 			: runtime.spokeStatus(),
@@ -44,7 +46,6 @@ function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolea
 	return {
 		chief_of_staff: notification?.chiefOfStaff ?? 'not configured',
 		backup: trackerBackupsStatus(runtime, hub),
-		machines: [],
 		webhook: notification?.webhook ?? defaultWebhookStatus(hub),
 		jobs: trackerJobsStatus(runtime),
 		adapters: runtime.adapter?.status() ?? { runner: null, active: false },

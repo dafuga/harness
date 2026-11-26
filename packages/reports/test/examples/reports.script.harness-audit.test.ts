@@ -11,7 +11,10 @@ test('Runs the app audit command', () => {
 	const directory = mkdtempSync(join(tmpdir(), 'reports-harness-audit-'));
 	const binDirectory = join(directory, 'bin');
 	const scriptPath = fileURLToPath(new URL('../../scripts/harness-audit.ts', import.meta.url));
-	const bunPath = '/Users/danielfugere/.bun/bin/bun';
+	// The script runs with only the fake CLI on PATH, so Bun needs its absolute path.
+	const bunPath = execFileSync('bun', ['-e', 'process.stdout.write(process.execPath)'], {
+		encoding: 'utf8'
+	});
 	try {
 		mkdirSync(binDirectory);
 		const fakeHarness = join(binDirectory, 'harness');
