@@ -2,7 +2,7 @@
 	"name": "tracker-refused-flag-delivery",
 	"goal": "A tighter tracker flag contract never silently drops a machine alert: monitors have 'tracker alert', every refused flag is kept for Chief of Staff, and unattended callers are contract-tested",
 	"createdAt": "2026-11-26T14:50:37.229Z",
-	"updatedAt": "2026-11-26T14:51:55.432Z",
+	"updatedAt": "2026-11-26T14:55:22.296Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T14:54:30.396Z",
+			"evidence": "Committed tests fail on unchanged product code: 9 failed, 23 passed; assertion: expected the CLI output to contain 'kept for Chief of Staff'."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T14:55:19.256Z",
+			"evidence": "tracker alert verb; refused flags (parser or service refusal) kept on the item and CoS inbox; inbox messages survive finished or unknown targets and are sent first; unattended caller inventory contract test."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T14:55:22.296Z",
+			"evidence": "loop record --phase green passed at the separate fix commit with unchanged tests."
 		},
 		{
 			"id": "siblings",
