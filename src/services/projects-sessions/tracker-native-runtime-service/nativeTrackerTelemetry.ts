@@ -4,6 +4,7 @@ import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedule
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
+import { localRunnerStatus, machineReport } from './nativeTrackerLinks';
 
 export function composeTrackerTelemetry(
 	store: TrackerPersistenceService,
@@ -55,7 +56,7 @@ function telemetryExchange(
 	let previousLaunchState = '';
 	return async (signal: AbortSignal) => {
 		const active = runs.activeLocal();
-		const runner = scheduler?.runnerStatus() ?? { enabled: false };
+		const runner = localRunnerStatus(scheduler);
 		const launchState = launchSampleRevision(runner, active, runs.latestLocalRunId());
 		if (now() < nextPoll && launchState === previousLaunchState) return;
 		nextPoll = now() + 60_000;
@@ -64,13 +65,7 @@ function telemetryExchange(
 			store,
 			transport: (request) => link.transport(request, signal)
 		});
-		const sample = options.dispatch?.telemetry?.sample() ?? {
-			at: new Date(now()).toISOString(),
-			runner: {
-				...runner,
-				active: active.filter(({ state }) => state !== 'queued').length
-			}
-		};
+		const sample = options.dispatch?.telemetry?.sample() ?? machineReport(runner, active, now());
 		const received = await client.exchangeMachine(sample, runs.exportLocal());
 		signal.throwIfAborted();
 		if (received.run_history) runs.importLinkHistory(received.run_history);
