@@ -9,14 +9,21 @@
 	"status": "active",
 	"composition": {
 		"level": "organism",
-		"uses": ["reports.component.harness-harness-icon"]
+		"uses": [
+			"reports.component.harness-harness-icon",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-textarea"
+		]
 	},
 	"owns": {
 		"source": [
 			"packages/reports/src/components/Modal.svelte",
+			"packages/reports/src/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
 			"packages/reports/src/components/shared-primitives/Modal.svelte"
 		],
-		"symbols": ["Modal", "Modal"]
+		"symbols": ["Modal", "OtherAnswerModal", "Modal"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -117,6 +124,26 @@
 	"dependencies": [
 		{
 			"unit": "reports.component.harness-harness-icon",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-textarea",
 			"via": "import",
 			"origin": "derived"
 		},

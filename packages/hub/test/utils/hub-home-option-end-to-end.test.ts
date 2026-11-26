@@ -74,7 +74,7 @@ test('a flag with options reaches the Hub, and a tap answers it on the Tracker b
 			text: 'Ship it',
 			option: 1
 		});
-		const receipt = await deliverHomeChat(tap, home.agents, tracker.fetcher);
+		const receipt = await deliverHomeChat(tap, home, tracker.fetcher);
 		expect(receipt.status).toBe('sent');
 		const answered = tracker.items.get('asked1');
 		expect(answered).toMatchObject({
@@ -103,10 +103,10 @@ test('a deploy ask is refused until the tap is confirmed, then it is answered', 
 			text: 'Ship it',
 			option: 1
 		};
-		expect((await deliverHomeChat(base, home.agents, tracker.fetcher)).status).toBe('refused');
+		expect((await deliverHomeChat(base, home, tracker.fetcher)).status).toBe('refused');
 		expect(tracker.items.get('asked1')).toMatchObject({ needs_daniel: true, answer: null });
 		const confirmed = { ...base, confirmed: true as const };
-		expect((await deliverHomeChat(confirmed, home.agents, tracker.fetcher)).status).toBe('sent');
+		expect((await deliverHomeChat(confirmed, home, tracker.fetcher)).status).toBe('sent');
 		expect(tracker.items.get('asked1')).toMatchObject({ needs_daniel: false, answer_option: 1 });
 	} finally {
 		tracker.close();

@@ -39,8 +39,7 @@
 			"summaryLine",
 			"relativeWhen",
 			"workEta",
-			"quotaSummary",
-			"quickReplies"
+			"quotaSummary"
 		]
 	},
 	"contract": {
@@ -94,6 +93,12 @@
 				"required": false,
 				"default": 0,
 				"description": "Sessions the Tracker reports running. They name the headline when no agent card exists. Defaults to 0."
+			},
+			{
+				"name": "homeHeadline.needs",
+				"type": "number",
+				"required": false,
+				"default": 0
 			},
 			{
 				"name": "currentAgent.agents",
@@ -250,12 +255,6 @@
 				"type": "number",
 				"required": true,
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
-			},
-			{
-				"name": "quickReplies.question",
-				"type": "string | null",
-				"required": true,
-				"description": "Open Tracker question for the agent, or null when none is open."
 			}
 		],
 		"outputs": [
@@ -492,6 +491,12 @@
 						"required": false,
 						"default": 0,
 						"description": "Sessions the Tracker reports running. They name the headline when no agent card exists. Defaults to 0."
+					},
+					{
+						"name": "homeHeadline.needs",
+						"type": "number",
+						"required": false,
+						"default": 0
 					}
 				],
 				"outputs": [
@@ -907,26 +912,6 @@
 						"name": "quotaSummary",
 						"type": "unknown",
 						"description": "Subscription count with how many readable limits are running low, or all OK."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "quickReplies",
-				"inputs": [
-					{
-						"name": "quickReplies.question",
-						"type": "string | null",
-						"required": true,
-						"description": "Open Tracker question for the agent, or null when none is open."
-					}
-				],
-				"outputs": [
-					{
-						"name": "quickReplies",
-						"type": "unknown",
-						"description": "Two one-tap answers for a yes-or-no question; empty for any other question."
 					}
 				],
 				"errors": [],

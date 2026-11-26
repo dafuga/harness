@@ -27,8 +27,7 @@ export function recordStartupAlerts(
 				session: action.pane,
 				identity: action.identity
 			},
-			snapshot.now,
-			action.question
+			snapshot.now
 		);
 	}
 	for (const cleared of plan.clearAlerts) clearStartupAlert(store, cleared);
@@ -46,6 +45,10 @@ function clearStartupAlert(
 	else persist();
 }
 
+/**
+ * Record one alert on the Chief of Staff channel (`needs-attention` and the CoS tick), with a note
+ * on the item. It never asks Daniel. An alert that must stop relaunches blocks the item instead.
+ */
 export function recordWatchdogAlert(
 	store: TrackerPersistenceService,
 	input: {
@@ -60,9 +63,7 @@ export function recordWatchdogAlert(
 		persist?: () => void;
 	},
 	at: number,
-	question:
-		| string
-		| null = `${store.node}: ${input.reason} Chief of Staff, please inspect the session.`
+	hold?: string
 ): void {
 	const { itemId, kind, reason, identity, session, localOnly } = input;
 	const key = input.key ?? `${itemId}:${kind}`;
@@ -80,11 +81,7 @@ export function recordWatchdogAlert(
 	};
 	const fields = {
 		'note+': `watchdog ${kind}: ${reason}`,
-		...(question && {
-			needs_daniel: 1,
-			resolved: 0,
-			question
-		})
+		...(hold && { status: 'blocked', blocked_reason: hold })
 	};
 	const persist = () => {
 		store.writeMeta({ watchdog_alerts: JSON.stringify({ ...alerts, [key]: alert }) });
@@ -104,8 +101,7 @@ export function contextAlert(
 	recordWatchdogAlert(
 		store,
 		{ itemId: id, session: pane.name, kind: 'context', reason, identity: pane.key },
-		now,
-		null
+		now
 	);
 }
 
@@ -120,6 +116,6 @@ export function recordHandoffFailure(
 		store,
 		{ itemId: id, session: pane.name, kind: 'handoff-failed', reason, identity: pane.key },
 		now,
-		`Tracker recovery: ${reason} Chief of Staff should inspect the pane and recover its worktree before clearing the flag.`
+		`Tracker recovery: ${reason} Chief of Staff should inspect the pane and recover its worktree before unblocking.`
 	);
 }

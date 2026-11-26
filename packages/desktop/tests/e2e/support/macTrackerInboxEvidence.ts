@@ -15,7 +15,7 @@ export async function captureMacInbox(page: Page, state: string) {
 		await document.fonts.ready;
 		await Promise.all([...document.images].map((image) => image.decode()));
 	});
-	if (state.startsWith('confirm-'))
+	if (state === 'confirm-note' || state === 'confirm-flag')
 		await page.getByRole('group', { name: 'Confirm this write' }).scrollIntoViewIfNeeded();
 	await page.mouse.move(0, 0);
 	const size = page.viewportSize();

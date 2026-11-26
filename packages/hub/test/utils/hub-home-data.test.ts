@@ -23,9 +23,18 @@ const base = {
 };
 const plan: TrackerItemRecord = { ...base, id: 'plan-one', kind: 'plan', status: 'open' };
 const question = 'Can we use the synthetic example?';
+/** The fields of an open structured ask, the only flag Home treats as needing Daniel. */
+const flaggedAsk = {
+	needs_daniel: true,
+	question,
+	options: [
+		{ label: 'Yes', effect: '', recommended: true as const },
+		{ label: 'No', effect: '' }
+	]
+};
 
 test('Tracker plan children, due items, current question and privacy survive projection', () => {
-	const work = { ...base, parent: plan.id, needs_daniel: true, question };
+	const work = { ...base, parent: plan.id, ...flaggedAsk };
 	const completed = { ...base, id: 'step-two', parent: plan.id, status: 'done' as const };
 	const sensitive = { ...base, id: 'hidden', parent: plan.id, sensitive: true };
 	const routine = {
@@ -54,8 +63,8 @@ test('Tracker plan children, due items, current question and privacy survive pro
 });
 
 test('native chat refuses an outdated question and calls only the fixed Tracker answer route', async () => {
-	const work = { ...base, needs_daniel: true, question };
-	const { agents } = buildHomeSnapshot({ items: [work], runs: [], machines: [] }, noProviders, now);
+	const work = { ...base, ...flaggedAsk };
+	const home = buildHomeSnapshot({ items: [work], runs: [], machines: [] }, noProviders, now);
 	const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(null, { status: 200 }));
 	const input = {
 		id: 'message-1',
@@ -65,12 +74,12 @@ test('native chat refuses an outdated question and calls only the fixed Tracker 
 		kind: 'answer' as const,
 		text: 'Yes'
 	};
-	expect(await deliverHomeChat({ ...input, question: 'Prior question' }, agents, fetcher)).toEqual({
+	expect(await deliverHomeChat({ ...input, question: 'Prior question' }, home, fetcher)).toEqual({
 		id: input.id,
 		status: 'refused'
 	});
 	expect(fetcher).not.toHaveBeenCalled();
-	expect(await deliverHomeChat(input, agents, fetcher)).toEqual({ id: input.id, status: 'sent' });
+	expect(await deliverHomeChat(input, home, fetcher)).toEqual({ id: input.id, status: 'sent' });
 	expect(fetcher).toHaveBeenCalledOnce();
 	expect(fetcher).toHaveBeenCalledWith(
 		'http://127.0.0.1:7701/items/task-one/answer',
@@ -92,7 +101,7 @@ test('only Chief of Staff is an agent: every other project is a sub-agent counte
 		ended_at: null
 	});
 	const chief = { ...base, id: 'chief', agent: 'cos' };
-	const flagged = { ...base, id: 'flagged', agent: 'flagged', needs_daniel: true, question };
+	const flagged = { ...base, id: 'flagged', agent: 'flagged', ...flaggedAsk };
 	const live = { ...base, id: 'live', agent: 'flagged' };
 	const touched = { ...base, id: 'touched', agent: 'touched' };
 	const away = { ...base, id: 'away', agent: 'away' };
@@ -142,7 +151,7 @@ test('no sub-agent sessions and no Chief of Staff gives no agents, and an idle C
 
 test('a session Daniel adds is listed, and no longer folded or asked about', () => {
 	const chief = { ...base, id: 'chief', agent: 'cos' };
-	const mine = { ...base, id: 'mine', agent: 'mine', needs_daniel: true, question };
+	const mine = { ...base, id: 'mine', agent: 'mine', ...flaggedAsk };
 	const home = buildHomeSnapshot(
 		{ items: [chief, mine], runs: [], machines: [] },
 		noProviders,

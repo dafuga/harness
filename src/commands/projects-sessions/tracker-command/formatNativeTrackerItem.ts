@@ -6,16 +6,28 @@ import type {
 	NativeTrackerRunRead,
 	NativeTrackerRunReport
 } from './nativeTrackerCli.types';
+import { trackerFlagKind } from '../../../utils/projects-sessions/trackerStructuredAsk';
 
 export function formatNativeTrackerItem(item: NativeTrackerItem): string {
 	const flags = [
 		itemStatus(item),
-		item.needs_daniel && !item.resolved && 'NEEDS DANIEL',
+		flagLabel(item),
 		item.resolved && 'resolved',
 		item.chased_count && `CHASED ×${item.chased_count}`
 	].filter(Boolean);
 	const meta = trackerItemMetadata(item);
 	return `[${item.id.slice(0, 6)}] ${item.title}  (${flags.join(', ')}; ${meta.join(' | ')})`;
+}
+
+const flagLabels = {
+	ask: 'NEEDS DANIEL',
+	ping: 'PING for Chief of Staff',
+	'needs-options': 'NEEDS OPTIONS (Chief of Staff; not shown to Daniel)'
+};
+
+function flagLabel(item: NativeTrackerItem) {
+	const kind = trackerFlagKind(item);
+	return kind && flagLabels[kind];
 }
 
 function trackerItemMetadata(item: NativeTrackerItem) {

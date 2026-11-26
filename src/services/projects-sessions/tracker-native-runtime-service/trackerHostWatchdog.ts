@@ -99,7 +99,7 @@ function localAlerts(store: TrackerPersistenceService, items: TrackerItemReadRep
 		if (kind === 'orphan' || kind === 'finished') return true;
 		const item = activeWatchdogItem(items, item_id);
 		if (kind === 'recovery-failed' || kind === 'handoff-failed')
-			return item?.needs_daniel && !item.resolved && item.question?.startsWith('Tracker recovery:');
+			return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
 		return Boolean(item);
 	});
 }

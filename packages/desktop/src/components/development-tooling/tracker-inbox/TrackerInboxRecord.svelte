@@ -5,10 +5,7 @@
 	import type { InboxDetail } from '../../../models/development-tooling/TrackerInbox.types';
 	import type { TrackerArtifact } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 	import { trackerStages } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
-	import {
-		flagQuestion,
-		trackerStageLabels
-	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import { trackerStageLabels } from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
 	let { detail, mode = 'phone' }: { detail: InboxDetail; mode?: 'phone' | 'mac' } = $props();
 
@@ -63,13 +60,6 @@
 		{/each}
 	</hx-ul>
 </hx-section>
-
-{#if detail.flag}
-	<hx-section class="flag" data-flag-state={detail.flag.state}>
-		<hx-h3>{detail.flag.state === 'open' ? 'Waiting on you' : 'Flag answered'}</hx-h3>
-		<hx-p>{flagQuestion(detail.flag)}</hx-p>
-	</hx-section>
-{/if}
 
 <hx-section>
 	<hx-h3>Runs</hx-h3>

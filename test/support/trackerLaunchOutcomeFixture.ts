@@ -50,7 +50,8 @@ export async function verifyIdleWatchdogAlert(
 		new Request('http://tracker-fixture.invalid/items/' + itemId)
 	);
 	expect(await item.json()).toMatchObject({
-		needs_daniel: true,
+		needs_daniel: false,
+		question: null,
 		notes_log: [
 			{ text: expect.stringContaining('watchdog nudge 1/1') },
 			{ text: expect.stringContaining('watchdog idle') }

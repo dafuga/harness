@@ -92,6 +92,12 @@
 
 	{#if loadFailure}
 		<hx-p class="meta" role="status">{loadFailure}</hx-p>
+	{:else if overview && selected}
+		<hx-button type="button" class="back" onclick={() => (selected = null)}>← All items</hx-button>
+		{#key selected}
+			<TrackerInboxDetail {source} {mode} id={selected} onchanged={reload} />
+		{/key}
+		{#if !mac}<TrackerInboxWrites {source} {writes} onchanged={reload} />{/if}
 	{:else if overview}
 		<hx-nav class="filters" aria-label="Filter items">
 			{#each inboxFilters as name (name)}
@@ -136,6 +142,9 @@
 				onselect={choose}
 			/>
 		{:else}
+			{#if filter === 'needs-you' && listed.length}<hx-h2 class="needs-title"
+					>Blocked - needs you</hx-h2
+				>{/if}
 			<TrackerInboxRows
 				rows={listed}
 				{selected}
@@ -148,12 +157,6 @@
 					>Only the most recent Needs you items are on this phone. Search for others.</hx-p
 				>
 			{/if}
-		{/if}
-
-		{#if selected}
-			{#key selected}
-				<TrackerInboxDetail {source} {mode} id={selected} onchanged={reload} />
-			{/key}
 		{/if}
 
 		{#if !mac}<TrackerInboxWrites {source} {writes} onchanged={reload} />{/if}
@@ -179,6 +182,19 @@
 		color: var(--hx-color-text-muted);
 		font-size: var(--hx-type-size-xs);
 		margin: 0;
+	}
+	:global(.inbox .needs-title) {
+		margin: 0;
+		font-size: var(--hx-type-size-sm);
+	}
+	:global(.inbox button.back) {
+		justify-self: start;
+		border: var(--hx-border-thin) solid var(--hx-color-border);
+		background: var(--hx-color-surface);
+		color: var(--hx-color-text);
+		border-radius: var(--hx-radius-small);
+		padding: var(--hx-space-8) var(--hx-space-10);
+		font: inherit;
 	}
 	:global(.filters) {
 		display: flex;

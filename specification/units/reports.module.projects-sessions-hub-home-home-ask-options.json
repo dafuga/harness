@@ -8,8 +8,21 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeAskOptions.ts"],
-		"symbols": ["readHomeAskOptions", "readHomeAskConfirm", "homeAskFields"]
+		"source": [
+			"packages/reports/src/lib/projects-sessions/hub-home/homeAskOptions.ts",
+			"packages/reports/src/lib/projects-sessions/hub-home/homeOpenAsks.ts",
+			"packages/reports/src/lib/projects-sessions/hub-home/waitAge.ts"
+		],
+		"symbols": [
+			"readHomeAskOptions",
+			"readHomeAskConfirm",
+			"homeAskFields",
+			"buildHomeOpenAsks",
+			"askChatAgents",
+			"agentOpenAsks",
+			"withListedAsk",
+			"waitAge"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -33,6 +46,46 @@
 				"name": "homeAskFields.question",
 				"type": "string | null",
 				"required": true
+			},
+			{
+				"name": "buildHomeOpenAsks.items",
+				"type": "TrackerItemRecord[]",
+				"required": true
+			},
+			{
+				"name": "askChatAgents.agents",
+				"type": "HomeAgent[]",
+				"required": true
+			},
+			{
+				"name": "askChatAgents.asks",
+				"type": "HomeOpenAsk[]",
+				"required": true
+			},
+			{
+				"name": "agentOpenAsks.agents",
+				"type": "HomeAgent[]",
+				"required": true
+			},
+			{
+				"name": "withListedAsk.agent",
+				"type": "HomeAgent",
+				"required": true
+			},
+			{
+				"name": "withListedAsk.asks",
+				"type": "HomeOpenAsk[]",
+				"required": true
+			},
+			{
+				"name": "waitAge.since",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "waitAge.now",
+				"type": "number",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -47,6 +100,26 @@
 			{
 				"name": "homeAskFields",
 				"type": "Pick<HomeAgent, 'options' | 'confirm'>"
+			},
+			{
+				"name": "buildHomeOpenAsks",
+				"type": "HomeOpenAsk[]"
+			},
+			{
+				"name": "askChatAgents",
+				"type": "HomeAgent[]"
+			},
+			{
+				"name": "agentOpenAsks",
+				"type": "HomeOpenAsk[]"
+			},
+			{
+				"name": "withListedAsk",
+				"type": "HomeAgent"
+			},
+			{
+				"name": "waitAge",
+				"type": "unknown"
 			}
 		],
 		"errors": [],
@@ -110,11 +183,126 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "buildHomeOpenAsks",
+				"inputs": [
+					{
+						"name": "buildHomeOpenAsks.items",
+						"type": "TrackerItemRecord[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "buildHomeOpenAsks",
+						"type": "HomeOpenAsk[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "askChatAgents",
+				"inputs": [
+					{
+						"name": "askChatAgents.agents",
+						"type": "HomeAgent[]",
+						"required": true
+					},
+					{
+						"name": "askChatAgents.asks",
+						"type": "HomeOpenAsk[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "askChatAgents",
+						"type": "HomeAgent[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "agentOpenAsks",
+				"inputs": [
+					{
+						"name": "agentOpenAsks.agents",
+						"type": "HomeAgent[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "agentOpenAsks",
+						"type": "HomeOpenAsk[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withListedAsk",
+				"inputs": [
+					{
+						"name": "withListedAsk.agent",
+						"type": "HomeAgent",
+						"required": true
+					},
+					{
+						"name": "withListedAsk.asks",
+						"type": "HomeOpenAsk[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withListedAsk",
+						"type": "HomeAgent"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "waitAge",
+				"inputs": [
+					{
+						"name": "waitAge.since",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "waitAge.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "waitAge",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.projects-sessions-tracker-structured-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-tracker-text",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
@@ -122,6 +310,11 @@
 		},
 		{
 			"unit": "reports.module.projects-sessions-project-overview-project-overview-privacy",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -112,8 +112,7 @@ function publishHealthNote(
 			key: healthKey(issue),
 			localOnly: !item || issue.kind === 'finished'
 		},
-		now,
-		null
+		now
 	);
 }
 
