@@ -17,7 +17,7 @@
 	text-align: left;
 }
 .spec-dialog::backdrop {
-	background: rgb(0 0 0 / 55%);
+	background: var(--hx-color-scrim);
 }
 .spec-dialog .spec-head {
 	display: flex;
@@ -68,7 +68,7 @@
 }
 .spec-dialog .spec-question {
 	margin: 0;
-	font-weight: 600;
+	font-weight: var(--hx-style-weight-semibold);
 	overflow-wrap: anywhere;
 }
 @media (max-width: 760px) {

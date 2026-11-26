@@ -47,7 +47,7 @@
 	let text = $state('');
 	let message = $state('');
 	let busy = $state(false);
-
+	const load = $derived(inboxDocuments(source, id));
 	const gate = $derived(
 		action && detail
 			? writeGate(action, detail, reviewed ? { revision: reviewed.revision } : null)
@@ -156,13 +156,7 @@
 		<TrackerInboxRecord {detail} {mode} />
 
 		{#if detail.flag}
-			<TrackerInboxAsk
-				flag={detail.flag}
-				{busy}
-				onpick={pick}
-				onother={other}
-				load={inboxDocuments(source, id)}
-			/>
+			<TrackerInboxAsk flag={detail.flag} {busy} {load} onpick={pick} onother={other} />
 		{/if}
 
 		<hx-section class="actions" aria-label="Confirm a write">

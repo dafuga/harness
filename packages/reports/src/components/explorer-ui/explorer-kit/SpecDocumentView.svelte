@@ -40,13 +40,13 @@
 	:global(.spec-markdown) {
 		max-width: 760px;
 		margin: 0 auto;
-		font-size: 15px;
-		line-height: 1.55;
+		font-size: var(--hx-type-size-body);
+		line-height: var(--hx-style-leading-normal);
 		overflow-wrap: anywhere;
 	}
 	/* The host app styles bare paragraphs as cards; a document reads as plain text. */
 	:global(.spec-dialog .spec-markdown :is(p, li, blockquote p)) {
-		margin: 0.6em 0;
+		margin: var(--hx-space-10) 0;
 		padding: 0;
 		border: 0;
 		border-radius: 0;
@@ -55,21 +55,21 @@
 		line-height: inherit;
 	}
 	:global(.spec-markdown :is(h1, h2, h3, h4)) {
-		margin: 1.2em 0 0.4em;
-		line-height: 1.3;
+		margin: var(--hx-space-20) 0 var(--hx-space-6);
+		line-height: var(--hx-style-leading-snug);
 	}
 	:global(.spec-dialog .spec-markdown h1) {
-		font-size: 1.5em;
+		font-size: var(--hx-type-size-2xl);
 		margin-top: 0;
 	}
 	:global(.spec-markdown h2) {
-		font-size: 1.2em;
+		font-size: var(--hx-type-size-xl);
 	}
 	:global(.spec-markdown h3) {
-		font-size: 1.05em;
+		font-size: var(--hx-type-size-lg);
 	}
 	:global(.spec-markdown :is(ul, ol)) {
-		padding-left: 1.4em;
+		padding-left: var(--hx-space-22);
 	}
 	:global(.spec-markdown ul) {
 		list-style: disc;
@@ -79,12 +79,12 @@
 	}
 	:global(.spec-markdown .spec-table) {
 		overflow-x: auto;
-		margin: 0.8em 0;
+		margin: var(--hx-space-12) 0;
 	}
 	:global(.spec-markdown table) {
 		width: 100%;
 		border-collapse: collapse;
-		font-size: 0.9em;
+		font-size: var(--hx-type-size-inline);
 	}
 	:global(.spec-markdown :is(th, td)) {
 		min-width: 6em;
@@ -102,13 +102,13 @@
 		padding: var(--hx-space-12);
 		border: var(--hx-border-thin) solid var(--hx-color-border);
 		border-radius: var(--hx-radius-small);
-		font-size: 0.85em;
+		font-size: var(--hx-type-size-compact);
 		overflow-wrap: normal;
 	}
 	:global(.spec-markdown blockquote) {
-		margin: 0.8em 0;
+		margin: var(--hx-space-12) 0;
 		padding-left: var(--hx-space-12);
-		border-left: 3px solid var(--hx-color-border-strong);
+		border-left: var(--hx-border-heavy) solid var(--hx-color-border-strong);
 		color: var(--hx-color-text-supporting);
 	}
 	:global(.spec-markdown img) {
@@ -116,7 +116,7 @@
 		height: auto;
 	}
 	:global(.spec-markdown .spec-diagram) {
-		margin: 0.8em 0;
+		margin: var(--hx-space-12) 0;
 		overflow-x: auto;
 		/* A wide diagram must not widen the document around it. */
 		contain: inline-size;

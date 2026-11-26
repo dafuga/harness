@@ -8,6 +8,7 @@ import { phoneAskAttachments } from '../../../../../src/services/projects-sessio
 import { MacTrackerInboxService } from '../../../src/lib/development-tooling/desktop-initialization/MacTrackerInboxService';
 import { projectFixture } from '../ui-project-fixture';
 import { remotePhoneFixture } from '../ui-remote-phone-fixture';
+import type { Tracker } from './viewSpecInboxFixture.types';
 
 export const specItem = 'fixturespec';
 
@@ -37,8 +38,6 @@ export async function specTracker(markdown: string, title: string) {
 	if (!flagged.ok) throw new Error(await flagged.text());
 	return { items, fetcher, close: () => database.close() };
 }
-
-type Tracker = Awaited<ReturnType<typeof specTracker>>;
 
 /** The Mac page over the real Mac inbox service. */
 export async function macSpecPage(page: Page, tracker: Tracker) {

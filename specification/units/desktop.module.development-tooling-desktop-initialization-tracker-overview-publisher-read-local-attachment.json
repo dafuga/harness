@@ -9,9 +9,10 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/readLocalAttachment.ts"
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/readLocalAttachment.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/readLocalAttachment.types.ts"
 		],
-		"symbols": ["readLocalAttachment"]
+		"symbols": ["readLocalAttachment", "WantedAttachment"]
 	},
 	"contract": {
 		"origin": "derived",

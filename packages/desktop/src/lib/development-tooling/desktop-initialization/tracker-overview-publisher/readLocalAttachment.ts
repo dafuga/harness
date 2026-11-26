@@ -1,9 +1,7 @@
 // @harness-uid u_ov2gw624xg
 import { trackerAttachmentDocumentSchema } from '../../../../../../../src/utils/projects-sessions/trackerAttachmentDocumentBytes';
+import type { WantedAttachment } from './readLocalAttachment.types';
 import type { TrackerAttachmentDocument } from '../../../../../../../src/utils/projects-sessions/trackerAttachment.types';
-
-/** As another party named it, so both parts are checked before they reach an address. */
-type WantedAttachment = { itemId?: string; id?: string };
 
 const trackerOrigin = 'http://127.0.0.1:7701';
 
