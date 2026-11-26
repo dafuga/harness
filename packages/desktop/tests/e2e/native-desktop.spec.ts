@@ -185,7 +185,7 @@ test('native isolated window uses real Git LFS planning and rejects historical w
 	try {
 		await project(root);
 		app = await _electron.launch({
-			executablePath: packagedApp ? join(packagedApp, 'Contents/MacOS/Electron') : electronBinary,
+			executablePath: packagedApp ? join(packagedApp, 'Contents/MacOS/Harness') : electronBinary,
 			args: packagedApp
 				? [`--user-data-dir=${profile}`]
 				: [await makeTemporaryDesktopEntry(temp, desktopRoot)],

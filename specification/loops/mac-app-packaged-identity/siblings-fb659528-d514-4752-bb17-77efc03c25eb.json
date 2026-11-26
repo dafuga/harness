@@ -1,0 +1,3906 @@
+{
+	"schemaVersion": 1,
+	"revision": "949730a9ceef2cbf97f0994af3ebef769f91567c",
+	"bugClass": {
+		"id": "electron-packaged-runtime-detection",
+		"title": "Packaged Electron startup depends on executable naming",
+		"cause": "Packaged-only startup work is gated on Electron's `app.isPackaged`, but the packaging configuration preserves or changes the executable name in a way that makes the runtime report false. This skips packaged initialization and can leave shipped bundle files with unsafe permissions. A missing assembled-app launch check allows the mismatch through.",
+		"criteria": "Include a site when its Electron packaging or startup configuration makes packaged-runtime detection depend on executable identity or naming, causing `app.isPackaged` to be false in the assembled application and thereby skipping packaged-only setup. Also include sites where bundle assets are emitted or copied with world-writable permissions as a separate manifestation of the same packaging configuration failure. Either manifestation qualifies independently; prioritize runtime and packaging source, not tests, servers, or workers.",
+		"patterns": [
+			{
+				"kind": "call",
+				"value": "app.isPackaged",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "app.isPackaged",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "executableName",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "productName",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "chmod",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "0o777",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "777",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "setPermissions",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "asar",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "afterPack",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "electron-builder",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "packagerConfig",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "electron-packager",
+				"weight": 2
+			}
+		],
+		"contextTerms": [
+			"electron",
+			"packaged",
+			"executable",
+			"startup",
+			"bundle",
+			"permissions",
+			"asar",
+			"afterpack"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/desktop/",
+				"weight": 5
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -1
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			}
+		]
+	},
+	"model": "gpt-6-luna",
+	"scannedFiles": 9103,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "4cd009d102decb8072c9",
+			"path": "packages/desktop/src/initializers/development-tooling/initializeTrackerBundle.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "app.isPackaged",
+					"weight": 5
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 3,
+			"evidence": "The Tracker initializer returns early unless `app.isPackaged` is true on macOS, then starts the bundled Tracker after Electron is ready (`initializeTrackerBundle.ts:11-20`). The trigger is a packaged Mac launch; the excerpt does not include the packaging configuration or assembled-app launch evidence needed to establish that the executable name makes `isPackaged` false."
+		},
+		{
+			"id": "8fa8f032370c79af3ebe",
+			"path": "src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 1–3 only import filesystem permission helpers for a tracker socket service. The excerpt does not show their use or any Electron packaging or startup configuration, so the trigger and mechanism are not established."
+		},
+		{
+			"id": "8394f4bcd30475bc4db4",
+			"path": "src/adapters/accounts-access/VaultBrokerServerAdapter.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 0,
+			"evidence": "Lines 1–2 import `chmodSync` and define a vault broker server adapter, but the excerpt does not show permission handling, Electron packaging, or packaged startup. The triggering path and cause are not established."
+		},
+		{
+			"id": "2904e7f38641ad3dcab4",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 97,
+			"lastLine": 100,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "executableName",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3401109df133551cabff",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 41,
+			"lastLine": 47,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "executableName",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ee6f8dc40f2c565d3a57",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 86,
+			"lastLine": 86,
+			"score": 18,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "de01bbaf5aa041c79724",
+			"path": "packages/desktop/scripts/package-mac-tracker.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "db2744a799d9a0efa42b",
+			"path": "packages/desktop/src/services/development-tooling/tracker-bundle/stageTrackerRelease.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e08331ba94d7170de192",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "productName",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e1215aac8387f048ce14",
+			"path": "src/adapters/agents-providers/managed-provider-docker-adapter/reconcileDockerWorkspace.ts",
+			"line": 120,
+			"lastLine": 120,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c4b57fb59e92648c46df",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-execution.test.ts",
+			"line": 94,
+			"lastLine": 94,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c71f6e2ff23311624921",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-proof.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fc3170fc4f2c359fc868",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-worktree.test.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "246b6dfb2313b3ff5738",
+			"path": "packages/desktop/test/examples/desktop.function.production-promotion.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d8d7c97621c2e488af2a",
+			"path": "packages/desktop/test/examples/desktop.function.project-game-credential.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0b3ef926491e911aa815",
+			"path": "packages/desktop/test/examples/desktop.service.project-image-cache.test.ts",
+			"line": 57,
+			"lastLine": 57,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b1f2430c275cd759d22e",
+			"path": "packages/desktop/test/examples/desktop.service.project-image-cache.test.ts",
+			"line": 180,
+			"lastLine": 180,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "df50cddb4d03c0634a7c",
+			"path": "packages/desktop/test/examples/desktop.service.project-registry.test.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fbed1e5ad610961380ec",
+			"path": "packages/desktop/test/ios-build-processes.test.ts",
+			"line": 104,
+			"lastLine": 104,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b6d62cbd34d0891baf13",
+			"path": "packages/desktop/test/ios-build-shared-daemons.test.ts",
+			"line": 108,
+			"lastLine": 108,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6afb7396f2ac2014545c",
+			"path": "packages/desktop/test/ios-build-shared-daemons.test.ts",
+			"line": 163,
+			"lastLine": 163,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c41859776e1b46b53626",
+			"path": "packages/desktop/test/package-mac-app.test.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9ee0f388374d6677c16d",
+			"path": "packages/desktop/test/services/game-project.test.ts",
+			"line": 109,
+			"lastLine": 111,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fe2b2ea89a2d5e5a431d",
+			"path": "packages/game/test/repositories/game-document.test.ts",
+			"line": 116,
+			"lastLine": 116,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0bcd7afe8b785d01bf2c",
+			"path": "packages/game/src/repositories/game-authoring/GameDocumentRepository.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d6e2dc3d6dad831e7e3d",
+			"path": "deploy/vault/mb2-cross-user.sh",
+			"line": 95,
+			"lastLine": 95,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "25495ce959b0d9ff26d4",
+			"path": "deploy/vault/slack_bot_token_test.py",
+			"line": 67,
+			"lastLine": 67,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c8d3f8f7a5a14991b157",
+			"path": "deploy/vault/slack_bot_token_test.py",
+			"line": 77,
+			"lastLine": 77,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8d13b17ae9034b201c23",
+			"path": "deploy/vault/slack_bot_token_test.py",
+			"line": 139,
+			"lastLine": 139,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "78871235277eac81ed7d",
+			"path": "packages/game/src/repositories/game-authoring/GameDocumentRepository.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "40e3ddc85c18b6df2632",
+			"path": "src/adapters/accounts-access/VaultBrokerServerAdapter.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6dc8cf39ec180f9b1917",
+			"path": "src/adapters/accounts-access/VaultBrokerServerAdapter.ts",
+			"line": 75,
+			"lastLine": 75,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2f47f39c6d307c98534d",
+			"path": "src/adapters/accounts-access/VaultCdpRelayAdapter.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b6379872f4b6c8b52baa",
+			"path": "src/adapters/accounts-access/VaultCdpRelayAdapter.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e6708e113b08b14482c4",
+			"path": "src/adapters/accounts-access/VaultCdpRelayAdapter.ts",
+			"line": 156,
+			"lastLine": 157,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eb0563e7bb1b7f5b6e29",
+			"path": "src/adapters/agents-providers/managed-provider-docker-adapter/reconcileDockerWorkspace.ts",
+			"line": 6,
+			"lastLine": 6,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2d9efefb3898b731d832",
+			"path": "src/adapters/projects-sessions/TrackerAdapterLeaseAdapter.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "577d68fb8753f8fe4d7b",
+			"path": "src/repositories/agents-providers/ProviderSwitchRepository.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ad0af27173488562ff36",
+			"path": "src/repositories/execution-runtimes/JobHistoryRepository.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d002eb545e3c8cd0636c",
+			"path": "src/repositories/execution-runtimes/JobHistoryRepository.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6ad7054e95340824863d",
+			"path": "src/repositories/reports-media/AnalyticsRepository.ts",
+			"line": 5,
+			"lastLine": 5,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8d1af73eabc701d5548e",
+			"path": "src/repositories/reports-media/AnalyticsRepository.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e1a05fdcb889107e9674",
+			"path": "src/services/execution-runtimes/resource-queue-service/resourceDatabase.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "826f288d68eec5f41519",
+			"path": "src/services/execution-runtimes/resource-queue-service/resourceDatabase.ts",
+			"line": 17,
+			"lastLine": 17,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fc663cce0376dce6afd3",
+			"path": "src/services/git-source-history/CatalogIndexService.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1d7230393a317ece939f",
+			"path": "src/services/git-source-history/CatalogIndexService.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9a14c37e5354f4ecf7f",
+			"path": "src/services/projects-sessions/tracker-backup-service/trackerBackupFiles.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "61348b2fffcf861d77de",
+			"path": "src/services/projects-sessions/tracker-backup-service/trackerBackupFiles.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c1257ed2fb64cde39396",
+			"path": "src/services/projects-sessions/tracker-backup-service/trackerBackupFiles.ts",
+			"line": 45,
+			"lastLine": 45,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d7cbd5542206a61bf44c",
+			"path": "src/services/projects-sessions/tracker-backup-service/trackerBackupFiles.ts",
+			"line": 55,
+			"lastLine": 55,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "22ab0da4eaf183cd4b00",
+			"path": "src/services/projects-sessions/tracker-backup-service/writeTrackerBackup.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4fc20bee563ac3817c96",
+			"path": "src/services/projects-sessions/tracker-backup-service/writeTrackerBackup.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d7240b64e566ce2dcb8d",
+			"path": "src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
+			"line": 37,
+			"lastLine": 37,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7d418c61d636ad478908",
+			"path": "test/examples/adapter.process-runtime.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c182412706a49e5c5ea3",
+			"path": "packages/desktop/ios/App/App/Account/HubAccountModels.swift",
+			"line": 44,
+			"lastLine": 44,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "55e2abc0ffa774ce63da",
+			"path": "packages/desktop/ios/App/App/Remote/RemoteModels.swift",
+			"line": 40,
+			"lastLine": 40,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b67ff3bb2cb558726dc7",
+			"path": "scripts/prepare-desktop-experiment/DesktopArchiveAdapter.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dff0090ab5078696ce37",
+			"path": "src/cli/program/benchmark-service/benchmarkWorkspace.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "a728ba07234f2e32ccc2",
+			"path": "src/cli/program/hook-install-service/HookInstallService.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "708e758800207e3c926b",
+			"path": "src/cli/program/hook-install-service/HookInstallService.ts",
+			"line": 76,
+			"lastLine": 76,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "500ed209e7861b97d5bd",
+			"path": "test/adapters/adapter.claude-benchmark.test.ts",
+			"line": 30,
+			"lastLine": 30,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "82333d1a27a542599625",
+			"path": "test/adapters/projects-sessions/tracker-host-process.test.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f1b18eb6c237ad20f683",
+			"path": "test/benchmark-trials.test.ts",
+			"line": 169,
+			"lastLine": 169,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "939e60068281d2c1de5c",
+			"path": "test/examples/adapter.execution-runtimes-driver-queue-driver-files.fixtures.ts",
+			"line": 28,
+			"lastLine": 28,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "060e18400e2b83f8a9cd",
+			"path": "test/examples/adapter.execution-runtimes-driver-queue-driver-worker-queue.test.ts",
+			"line": 65,
+			"lastLine": 65,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b2af727357cfe4ee6a6d",
+			"path": "test/examples/adapter.process-runtime.test.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fb453f455c14bf89fa73",
+			"path": "test/examples/audit.clean-code-discovery.test.ts",
+			"line": 115,
+			"lastLine": 115,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d387d4973480f9fd397d",
+			"path": "test/examples/function.process-descendants.test.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5f12aa32717b21414bb4",
+			"path": "test/examples/function.process-probes.test.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1185e247783cbfdf0f66",
+			"path": "test/support/benchmarkExecutable.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "56ec88dc739fbb43af79",
+			"path": "test/support/benchmarkExecutable.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "778ef232ab0ecdc24315",
+			"path": "test/support/sharedHooks.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f7059d38be8346650079",
+			"path": "test/support/syntheticServices.ts",
+			"line": 84,
+			"lastLine": 84,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "87910c745fcb0abf06dd",
+			"path": "packages/collaboration/test/examples/collaboration.script.harness-audit.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c17a6d71a53855c2e36c",
+			"path": "packages/collaboration/test/examples/collaboration.script.harness-audit.test.ts",
+			"line": 35,
+			"lastLine": 35,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3a01720928b29e9d1716",
+			"path": "packages/game/test/repositories/game-document.test.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d3b060579f57957a141b",
+			"path": "packages/game/test/repositories/game-document.test.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c4c32b2f64d741d69465",
+			"path": "packages/reports/test/examples/reports.script.harness-audit.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3f3138b6c62421c1deb5",
+			"path": "packages/reports/test/examples/reports.script.harness-audit.test.ts",
+			"line": 19,
+			"lastLine": 19,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6defd2533e93ed031210",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "636def99f628d2e37c07",
+			"path": "test/adapters/accounts-access/vault-cdp-relay.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "db7d1949f39877e452a9",
+			"path": "test/adapters/adapter.claude-benchmark.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ae3fc43c5d503adc4519",
+			"path": "test/adapters/projects-sessions/tracker-host-process.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4589f781387f06531e28",
+			"path": "test/benchmark-trials.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "53df437a706cd9240ada",
+			"path": "test/cli/record-command-analytics.test.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5e2c22f38785bb639249",
+			"path": "test/cli/record-command-analytics.test.ts",
+			"line": 99,
+			"lastLine": 99,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "aa62e3757f4575f36327",
+			"path": "test/codex-gateway.e2e.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b6d1be4f2bfee666ab9e",
+			"path": "test/codex-gateway.e2e.test.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1ec77dd38ba04960ef9f",
+			"path": "test/commands/planning-collaboration/design.e2e.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "99bf2a1fec6c5f61de77",
+			"path": "test/commands/planning-collaboration/design.e2e.test.ts",
+			"line": 58,
+			"lastLine": 58,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "719c99e590582a110c29",
+			"path": "test/examples/adapter.codex-benchmark.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b8e6d14a27c59257430f",
+			"path": "test/examples/adapter.codex-benchmark.test.ts",
+			"line": 42,
+			"lastLine": 42,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "aa462711955a9efb4e12",
+			"path": "test/examples/adapter.cpu-process.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "05f226ca98f275b2e86a",
+			"path": "test/examples/adapter.cpu-process.test.ts",
+			"line": 55,
+			"lastLine": 55,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1206c52ce492610402fe",
+			"path": "test/examples/adapter.execution-runtimes-driver-queue-driver-files.fixtures.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "11bcbcaed2adcb092083",
+			"path": "test/examples/adapter.execution-runtimes-driver-queue-driver-worker-queue.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "73f7cd8cb71d31502628",
+			"path": "test/examples/audit.clean-code-discovery.test.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "49b0b6cf0139053f4e06",
+			"path": "test/examples/command.codex.test.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "83c835ca7c0aed892def",
+			"path": "test/examples/command.codex.test.ts",
+			"line": 43,
+			"lastLine": 43,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "52081d9aa91b3fc6175b",
+			"path": "test/examples/function.index-files.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "267ee3326b9928343c15",
+			"path": "test/examples/function.index-files.test.ts",
+			"line": 87,
+			"lastLine": 87,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b9d3bc129db3521b4663",
+			"path": "test/examples/function.isolated-child.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "474680bd2e95053560ae",
+			"path": "test/examples/function.isolated-child.test.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d61943c88cf19d888724",
+			"path": "test/examples/function.platform-services.fixtures.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "05bcbd1c168fad84df22",
+			"path": "test/examples/function.platform-services.fixtures.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "77121fd8e375a4357dff",
+			"path": "test/examples/function.process-descendants.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "df830acc9ab50a830e2b",
+			"path": "test/examples/function.process-probes.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9895fd8e495f9c7fd4f",
+			"path": "test/examples/service.build-identity.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "84bf9675d75b640bff47",
+			"path": "test/examples/service.build-identity.test.ts",
+			"line": 164,
+			"lastLine": 171,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "432c3b553a93aa6471e0",
+			"path": "test/examples/workflow.run-benchmark.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f0515bce41e9d400300d",
+			"path": "test/examples/workflow.run-benchmark.test.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6b756d83862a2ef373fc",
+			"path": "test/history-legacy.e2e.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "414aec731d50cebb41dc",
+			"path": "test/history-legacy.e2e.test.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7f53b6deebd70d5c3593",
+			"path": "test/history-legacy.e2e.test.ts",
+			"line": 158,
+			"lastLine": 158,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9ed0585eea8b15ba784f",
+			"path": "test/history-legacy.e2e.test.ts",
+			"line": 167,
+			"lastLine": 167,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "84d6448ce8385e5298ad",
+			"path": "test/hooks-commit-msg.e2e.test.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eb96cea352b7e09341a6",
+			"path": "test/hooks-commit-msg.e2e.test.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dab2b0e31bb65de3d4a3",
+			"path": "test/hooks-commit-msg.e2e.test.ts",
+			"line": 98,
+			"lastLine": 98,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b76730ecf07a90f43bac",
+			"path": "test/hooks.e2e.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0d29896204a64c29c99a",
+			"path": "test/hooks.e2e.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b2b2051cf9416c777798",
+			"path": "test/late-cleanup.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e3e2d776799706e4ef2f",
+			"path": "test/late-cleanup.test.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1738bf1575a1bcee49e4",
+			"path": "test/repositories/agents-providers/platform-audit-log.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5f33f225fa1bf8a7fb71",
+			"path": "test/repositories/agents-providers/platform-audit-log.test.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0ca369fd246c4a18c4f7",
+			"path": "test/services/agents-providers/module-task-preflight.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "50fcc22c66e1e74efc2c",
+			"path": "test/services/agents-providers/module-task-preflight.test.ts",
+			"line": 91,
+			"lastLine": 99,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ad509944b0fa93a19f88",
+			"path": "test/services/commit-message-cleanup.test.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f8d74562a383c6211e48",
+			"path": "test/services/commit-message-cleanup.test.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c9ae05eaaf9934f6b653",
+			"path": "test/services/commit-message-cleanup.test.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "54097dd92380a3dbc41d",
+			"path": "test/services/hook-install.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c8e1b412495d9ab75f7a",
+			"path": "test/services/hook-install.test.ts",
+			"line": 54,
+			"lastLine": 54,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "208081427dd50056633b",
+			"path": "test/services/service.benchmark.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b479469a2b03078a0276",
+			"path": "test/services/service.benchmark.test.ts",
+			"line": 79,
+			"lastLine": 79,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fd95a3c74bec47c45cc3",
+			"path": "test/support/moduleTaskFixture.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "92435604bfa8027f0ecf",
+			"path": "test/support/moduleTaskFixture.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "55a9132cdf0cdff652ab",
+			"path": "test/support/moduleTaskFixture.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "707ca887b06fae13d23d",
+			"path": "test/support/sharedHooks.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "52e885fc644db12821f1",
+			"path": "test/support/syntheticServices.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6490c415dc58f8fa2bcc",
+			"path": "test/validators/execution-runtimes/deploy-manifest.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3cda8e92c30e8623512b",
+			"path": "test/validators/execution-runtimes/deploy-manifest.test.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0ac62373399ad3b3efdc",
+			"path": "packages/desktop/test/examples/desktop.function.evidence-reading.test.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bc19c3cb6c5b17b9357f",
+			"path": "test/adapters/desktop-archive.test.ts",
+			"line": 6,
+			"lastLine": 6,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "03ef109d983b4024291a",
+			"path": "test/adapters/desktop-archive.test.ts",
+			"line": 16,
+			"lastLine": 18,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4da5e8dd993c968ea40d",
+			"path": "test/adapters/desktop-integrity.test.ts",
+			"line": 18,
+			"lastLine": 24,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "81ef826e97565e8ab137",
+			"path": "test/desktop-archive-completion.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "64825bdd012056ee167f",
+			"path": "test/desktop-archive-completion.test.ts",
+			"line": 13,
+			"lastLine": 14,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "68859a308af125c3ec4e",
+			"path": "test/desktop-archive-completion.test.ts",
+			"line": 25,
+			"lastLine": 27,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1b804cc0659a1c7888cc",
+			"path": "test/examples/adapter.desktop-archive.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fa266627f8d738605aaf",
+			"path": "test/examples/adapter.desktop-integrity.test.ts",
+			"line": 20,
+			"lastLine": 27,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d1b31001994e94dd34e2",
+			"path": "test/examples/adapter.desktop-integrity.test.ts",
+			"line": 209,
+			"lastLine": 209,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "27222862ead768f2b9ce",
+			"path": "test/desktop-archive-completion.test.ts",
+			"line": 41,
+			"lastLine": 41,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7f36595eec16fc9633d2",
+			"path": "test/desktop-archive-completion.test.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "717820bbdb1c349eec91",
+			"path": "test/examples/adapter.desktop-archive.test.ts",
+			"line": 17,
+			"lastLine": 21,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2e39d7b7ed5c2a616935",
+			"path": "test/examples/adapter.desktop-archive.test.ts",
+			"line": 48,
+			"lastLine": 49,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8bfc8daea59eee6f732d",
+			"path": "test/examples/adapter.desktop-archive.test.ts",
+			"line": 57,
+			"lastLine": 58,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7691455c333d930e1028",
+			"path": "test/examples/adapter.desktop-archive.test.ts",
+			"line": 86,
+			"lastLine": 86,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ad33c19d539dc72b3288",
+			"path": "test/examples/adapter.desktop-integrity.test.ts",
+			"line": 173,
+			"lastLine": 175,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "529c082001b66640c1b5",
+			"path": "deploy/vault/entrypoint.sh",
+			"line": 9,
+			"lastLine": 9,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "bb3a866b15cfdac08a08",
+			"path": "src/adapters/accounts-access/vault-browser-docker-adapter/browserDockerConfig.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e376cf7cfb39682442cc",
+			"path": "src/adapters/execution-runtimes/DeployDockerAdapter.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "32ed91210008dd4e759a",
+			"path": "packages/remote/src/models/networking-security/RemoteValues.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 2,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cce90dfe614048cb798d",
+			"path": "packages/reports/test/examples/reports.function.harness-ancestry.test.ts",
+			"line": 48,
+			"lastLine": 48,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "18cd3b23f2894695a41e",
+			"path": "test/examples/entry.program-manage-units-storage.test.ts",
+			"line": 32,
+			"lastLine": 32,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "45817955389401b54fd6",
+			"path": "test/examples/function.host-memory.test.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "18effb360fe0f84b6124",
+			"path": "test/examples/function.process-descendants.test.ts",
+			"line": 92,
+			"lastLine": 92,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5dcd220147d65e6961a3",
+			"path": "test/examples/script.report-specification-storage.test.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "072e2328e6ee8b5bf32a",
+			"path": "test/examples/service.impact.test.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "104b6275e7db16e0fd14",
+			"path": "test/services/accounts-access/vault-broker.test.ts",
+			"line": 74,
+			"lastLine": 74,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "98693e044df7ed3e346d",
+			"path": "test/services/accounts-access/vault-lease-keeper.test.ts",
+			"line": 36,
+			"lastLine": 36,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "645af403cf66539e37fa",
+			"path": "test/specification-storage-report.test.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 1,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "afb62027fdb75d48acf7",
+			"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/macSafeStorage.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 24,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "app.isPackaged",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 1,
+			"evidence": "`macRelease` explicitly accommodates the stock executable reporting `isPackaged=false`: on macOS it also accepts an existing migration helper (`macSafeStorage.ts:10-13`). The excerpt does not establish a packaging mismatch or skipped initialization."
+		},
+		{
+			"id": "4b0a0649ae74d17bd6c0",
+			"path": "packages/desktop/test/package-mac-app.test.ts",
+			"line": 108,
+			"lastLine": 110,
+			"score": 23,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 1,
+			"evidence": "This is test code, and it verifies that the release-layout check rejects permissive permissions and executable-name mismatches (`package-mac-app.test.ts:108-110`). It does not show a shipping defect."
+		},
+		{
+			"id": "db55125d928f24494a7f",
+			"path": "packages/desktop/scripts/package-mac-app.ts",
+			"line": 14,
+			"lastLine": 14,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "executableName",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 1,
+			"evidence": "The packaging script sets the executable name to `Harness` and documents renaming it because Electron may report `isPackaged=false` for an executable named `electron` (`package-mac-app.ts:14`). This is a mitigation, not evidence that the assembled app has the mismatch."
+		},
+		{
+			"id": "5c250d51f61ba6a2acf0",
+			"path": "packages/desktop/scripts/package-mac-tracker.ts",
+			"line": 26,
+			"lastLine": 26,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 1,
+			"evidence": "The packaging script compiles the helper and sets the shell shim to mode `0o755` (`package-mac-tracker.ts:14-26`). The excerpt shows no world-writable bundle asset."
+		},
+		{
+			"id": "1b4a9c55125f9ecb93f0",
+			"path": "packages/desktop/test/adapters/remote-host-store.test.ts",
+			"line": 47,
+			"lastLine": 47,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 1,
+			"evidence": "This test asserts that remote-host state files have owner-only mode `0o600` (`remote-host-store.test.ts:35-47`). It does not concern packaged app assets or executable identity."
+		},
+		{
+			"id": "538450fac6c02ca1ae71",
+			"path": "packages/desktop/scripts/package-mac.ts",
+			"line": 85,
+			"lastLine": 85,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "productName",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 1,
+			"evidence": "Release verification checks the signed app layout and requires `productName` to be `Harness` (`package-mac.ts:73-85`). No executable-name mismatch or permission failure is established."
+		},
+		{
+			"id": "8246612345aee4c02b4e",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 44,
+			"lastLine": 49,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 1,
+			"evidence": "This script patches an experimental app archive and plist identity fields (`prepare-desktop-experiment.ts:44-49`). The excerpt shows no `app.isPackaged` gate, executable rename, or unsafe permissions."
+		},
+		{
+			"id": "4d5c2aeac43cd630e391",
+			"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+			"line": 179,
+			"lastLine": 179,
+			"score": 21,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "app.isPackaged",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 179 uses `app.isPackaged` to set account requirements, but the excerpt shows no executable naming or packaging configuration that could make it false or skip packaged initialization."
+		},
+		{
+			"id": "74cea414a23186b4468d",
+			"path": "packages/desktop/test/package-mac-app-probe.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 19,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "app.isPackaged",
+					"weight": 5
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 10–22 are a test probe that reports `app.isPackaged`; they do not establish a packaging mismatch or skipped startup setup."
+		},
+		{
+			"id": "7f76bdaa59095544e686",
+			"path": "packages/desktop/src/services/development-tooling/tracker-bundle/stageTrackerRelease.ts",
+			"line": 43,
+			"lastLine": 44,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 37–44 explicitly set staged executable and shim permissions to `0o700`; this is a runtime bundle staging path with restrictive modes, not a packaged Electron naming or world-writable asset issue."
+		},
+		{
+			"id": "4ab2990663701ffc2561",
+			"path": "src/adapters/agents-providers/managed-provider-docker-adapter/reconcileDockerWorkspace.ts",
+			"line": 110,
+			"lastLine": 114,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				},
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 110–114 copy a Docker workspace file and preserve its source mode. No Electron packaging, `app.isPackaged`, or world-writable mode is established."
+		},
+		{
+			"id": "24a1d82426b8e4c93c9b",
+			"path": "src/cli/program/benchmark-service/benchmarkWorkspace.ts",
+			"line": 102,
+			"lastLine": 102,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 90–102 copy benchmark workspace files and preserve their existing modes. This is unrelated to Electron packaging, and the excerpt does not establish world-writable bundle assets."
+		},
+		{
+			"id": "55cc3fd65cf79caf0fd1",
+			"path": "packages/game/src/repositories/game-authoring/GameDocumentRepository.ts",
+			"line": 48,
+			"lastLine": 48,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 36–48 preserve the mode of a game document during save; no Electron packaging or bundle asset permissions are involved."
+		},
+		{
+			"id": "b66439cf71309099ca92",
+			"path": "packages/game/test/repositories/game-document.test.ts",
+			"line": 69,
+			"lastLine": 76,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 57–76 are a game repository test that checks preserved file modes; it does not establish the Electron packaging failure."
+		},
+		{
+			"id": "1ad66ac8c0ad42ec5824",
+			"path": "test/adapters/accounts-access/vault-cdp-relay.test.ts",
+			"line": 105,
+			"lastLine": 109,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				},
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 93–109 are a macOS relay ACL test with explicit `0o711`, `0o700`, and `0o600` modes; no Electron packaging configuration or unsafe bundle permissions are shown."
+		},
+		{
+			"id": "517ff6ff264f51f046eb",
+			"path": "packages/desktop/test/examples/desktop.function.project-game-credential.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is test setup that creates a fake `git` executable and sets its mode to `0o755` (lines 12–24). It does not show Electron packaging, `app.isPackaged`, or bundle permissions."
+		},
+		{
+			"id": "2637d8c7d7542ae53d7f",
+			"path": "packages/desktop/test/examples/desktop.script.ios-build-processes.test.ts",
+			"line": 5,
+			"lastLine": 12,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is an iOS build-process test helper that writes a fake `xcodebuild` script and sets its mode to `0o755` (lines 1–12). No Electron packaged-runtime detection or shipped bundle configuration is shown."
+		},
+		{
+			"id": "3b1207264e7e80638a7d",
+			"path": "src/adapters/accounts-access/VaultCdpRelayAdapter.ts",
+			"line": 134,
+			"lastLine": 134,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This is a CDP relay runtime-directory check: it requires directory mode `0o700` or `0o711` (lines 128–141). It does not concern Electron executable naming, `app.isPackaged`, or packaged bundle permissions."
+		},
+		{
+			"id": "2fa4ef55a7526cb29b28",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-execution.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt only shows imports in a deployment-execution test, including filesystem `chmod` (line 1); it provides no packaging or startup mechanism related to Electron."
+		},
+		{
+			"id": "b5aeb58b21b011e22297",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-proof.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt only shows imports in a deployment-proof test, including filesystem `chmod` (line 2); it provides no evidence of Electron packaging or packaged startup behavior."
+		},
+		{
+			"id": "dede17a022cbef6487e3",
+			"path": "packages/desktop/test/examples/desktop.function.deployment-worktree.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt only shows imports in a deployment-worktree test, including filesystem `chmod` (line 1); no Electron packaging, runtime detection, or shipped asset permissions are visible."
+		},
+		{
+			"id": "ca27ccdcd829fe3f5934",
+			"path": "packages/desktop/test/examples/desktop.function.production-promotion.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is production-promotion test setup importing filesystem `chmod` (line 1). It does not establish Electron executable naming, packaged startup gating, or bundle permissions."
+		},
+		{
+			"id": "b6c6e0e600f71590ba43",
+			"path": "packages/desktop/test/examples/desktop.service.project-image-cache.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is a project-image-cache test import that includes `chmodSync` (line 2), with no evidence about Electron packaging, `app.isPackaged`, or bundle asset modes."
+		},
+		{
+			"id": "7ab796bcd0c86228301b",
+			"path": "packages/desktop/test/examples/desktop.service.project-registry.test.ts",
+			"line": 1,
+			"lastLine": 1,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is a test file and only shows importing `chmodSync` at line 1. It does not show Electron packaging or startup detection, nor a relevant permission change."
+		},
+		{
+			"id": "123defa9f21fcdbde59d",
+			"path": "packages/desktop/test/ios-build-processes.test.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is a test file and only shows importing `chmodSync` at line 3. No packaged-runtime detection or bundle permission behavior is visible."
+		},
+		{
+			"id": "a2dbba1516e0ec484a19",
+			"path": "packages/desktop/test/ios-build-shared-daemons.test.ts",
+			"line": 3,
+			"lastLine": 3,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is a test file and only shows importing `chmodSync` at line 3. It establishes no Electron packaging or startup mechanism."
+		},
+		{
+			"id": "a8c68b1c196fcfe9374a",
+			"path": "packages/desktop/test/services/game-project.test.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is a test file and only shows importing `chmod` at line 2. It provides no evidence of packaged-runtime detection or unsafe shipped asset permissions."
+		},
+		{
+			"id": "69e9edc10488ca4476c5",
+			"path": "test/support/sharedHooks.ts",
+			"line": 57,
+			"lastLine": 57,
+			"score": 12,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 45–57 show test-support code installing and snapshotting executable hooks; the `0o777` occurrence at line 57 masks mode bits for comparison. No Electron packaging or shipped bundle permissions are shown."
+		},
+		{
+			"id": "46a7033141319d6a62df",
+			"path": "test/adapters/accounts-access/vault-broker-server.test.ts",
+			"line": 32,
+			"lastLine": 33,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 20–33 show an adapter test asserting that a socket directory is `0o700` and its socket is `0o600`. This is a real restrictive permission guard in a test, with no Electron packaging or bundle asset mechanism."
+		},
+		{
+			"id": "8afb474401a97cec52a2",
+			"path": "test/adapters/projects-sessions/tracker-adapter-lease.test.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 10–22 show a lease test asserting the lock file mode is `0o600`; `0o777` is used as a mask to inspect permission bits. No Electron packaging or packaged-runtime detection is visible."
+		},
+		{
+			"id": "f28f91485e1ea42298d6",
+			"path": "test/api-cli.e2e.test.ts",
+			"line": 176,
+			"lastLine": 176,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 176 masks session file mode with `0o777` and asserts the result is `0o600` in a CLI test. This is a restrictive guard, unrelated to Electron packaging or shipped bundle assets."
+		},
+		{
+			"id": "63f78c27ed6f8cf3a933",
+			"path": "test/codex-picker.e2e.test.ts",
+			"line": 57,
+			"lastLine": 57,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is an end-to-end test asserting a provider-switch SQLite file has mode 0o600 (lines 45–57). It shows no Electron packaging or startup path, and the tested mode is owner-only."
+		},
+		{
+			"id": "c05f78a5fa2ae81a958b",
+			"path": "test/examples/repository.provider-switch.test.ts",
+			"line": 74,
+			"lastLine": 74,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This test asserts provider-switch storage uses directory mode 700 and database mode 600 (lines 62–74). It contains no Electron packaging or packaged-runtime detection mechanism."
+		},
+		{
+			"id": "ef15ee116e5d08fb5e45",
+			"path": "test/examples/service.catalog-index.test.ts",
+			"line": 28,
+			"lastLine": 28,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This test checks that a catalog database written by CatalogIndexService has mode 0o600 (lines 16–28). It does not show Electron packaging or startup configuration."
+		},
+		{
+			"id": "ad9434ea5c6c1a9f9620",
+			"path": "test/repositories/accounts-access/vault-audit.test.ts",
+			"line": 23,
+			"lastLine": 24,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This repository test asserts audit storage modes 700 and 600 (lines 11–24). The trigger is appending an audit entry; no Electron package setup or packaged-only initialization appears."
+		},
+		{
+			"id": "15e28aa12aca0e1d562a",
+			"path": "test/repositories/agents-providers/platform-audit-log.test.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This test checks a platform audit log is mode 0o600 and rejects a 0o644 file (lines 11–23). It provides no evidence of Electron packaging or executable-name-dependent detection."
+		},
+		{
+			"id": "d4ace9fe429030920c24",
+			"path": "test/services/catalog-index.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This service test asserts a catalog database has mode 0o600 after writing (lines 12–24). Its visible mechanism concerns test database permissions, with no Electron packaging or startup path."
+		},
+		{
+			"id": "8faaec523419cc4ed82d",
+			"path": "test/services/projects-sessions/tracker-backup.test.ts",
+			"line": 29,
+			"lastLine": 30,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This test verifies tracker backup directory and file modes are 0o700 and 0o600 (lines 17–30). Its trigger is the backup hub tick; no Electron packaging or packaged-runtime detection appears."
+		},
+		{
+			"id": "0c90591bc0e204a64bbb",
+			"path": "test/utils/resource-config.test.ts",
+			"line": 22,
+			"lastLine": 22,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "0o777",
+					"weight": 4
+				},
+				{
+					"kind": "text",
+					"value": "777",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "This utility test checks that saved resource configuration has mode 0o600 (lines 10–22). It shows neither Electron packaging nor an unsafe bundle permission mechanism."
+		},
+		{
+			"id": "c972474a30c82aa1f197",
+			"path": "deploy/vault/slack_bot_token_test.py",
+			"line": 156,
+			"lastLine": 156,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "The excerpt is a Python test for rejecting an invalid packet; its `path.chmod(0o600)` at line 156 sets a test fixture's permissions. It shows no Electron packaging, executable naming, packaged startup check, or unsafe bundle permissions."
+		},
+		{
+			"id": "45b7947b4af3fe7f8bd6",
+			"path": "deploy/vault/mb2-cross-user.sh",
+			"line": 22,
+			"lastLine": 22,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 19–22 copy a deployment fixture, verify it is a regular file and matches a checksum, then apply a supplied `mode`. This is shell deployment setup, with no Electron packaged-runtime detection or bundle asset permissions shown."
+		},
+		{
+			"id": "a79a29994da915b6fb7e",
+			"path": "packages/reports/scripts/install_screenshot_retention.py",
+			"line": 37,
+			"lastLine": 37,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Line 37 applies mode `0o600` to a generated launch-agent plist for screenshot retention. This is restrictive permissions for a scheduled cleanup configuration, not Electron packaging or packaged startup."
+		},
+		{
+			"id": "ba54cc29bc60e44fd159",
+			"path": "scripts/prepare-desktop-experiment/DesktopIntegrityAdapter.ts",
+			"line": 6,
+			"lastLine": 6,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "asar",
+					"weight": 2
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 1–16 import `@electron/asar` in an experimental integrity adapter and restrict operations to an experimental app copy. The excerpt shows no `app.isPackaged` gate, executable naming configuration, or unsafe bundle permissions."
+		},
+		{
+			"id": "3e9749c8b1034da1d064",
+			"path": "src/adapters/projects-sessions/TrackerAdapterLeaseAdapter.ts",
+			"line": 2,
+			"lastLine": 2,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 1–4 import `fchmodSync` for a tracker adapter SQLite lock lease. This is a project-session locking adapter; the excerpt shows no Electron packaging, executable naming, or packaged-only startup work."
+		},
+		{
+			"id": "42abebeacf52ff34b17f",
+			"path": "src/repositories/agents-providers/ProviderSwitchRepository.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "chmod",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "Lines 1–13 show a provider-switch repository creating a home directory with mode `0o700`. The visible permission is restrictive storage setup and is unrelated to Electron packaging or packaged-runtime detection."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/electron-packaged-runtime-detection.json"
+}
