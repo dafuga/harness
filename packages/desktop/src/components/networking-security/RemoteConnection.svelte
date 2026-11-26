@@ -32,23 +32,22 @@
 	/>{:else if stores && workspace.remote.phone}<RemotePhonePanel
 		store={stores.phone}
 		{compact}
-	/>{#if workspace.remote.phone.openVault}<button type="button" class="vault" onclick={openVault}
-			>Vault</button
-		>{#if vaultIssue}<span class="vault-issue" role="alert">{vaultIssue}</span>{/if}{/if}{/if}
+	/>{#if workspace.remote.phone.openVault}<hx-div class="vault-entry">
+			<hx-button type="button" class="vault" onclick={openVault}>Vault</hx-button>
+			{#if vaultIssue}<hx-span class="error" role="alert">{vaultIssue}</hx-span>{/if}
+		</hx-div>{/if}{/if}
 
 <style>
+	.vault-entry {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: var(--hx-space-12);
+		margin-top: var(--hx-space-12);
+	}
 	.vault {
 		min-height: 44px;
 		min-width: 44px;
-		padding: 0 var(--hx-space-12);
-		border: 1px solid var(--hx-color-border);
-		border-radius: var(--hx-radius);
-		background: var(--hx-color-surface);
-		color: var(--hx-color-text);
-		font: inherit;
-		cursor: pointer;
-	}
-	.vault-issue {
-		color: var(--hx-muted);
 	}
 </style>
