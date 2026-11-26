@@ -14,3 +14,11 @@ export { QaLedgerRepository } from '../../repositories/agents-providers/QaLedger
 export { RunbookCanvasService } from '../../services/agents-providers/RunbookCanvasService';
 export type { QaLabelEvent, QaThreadPorts } from '../../core/agents-providers/qaThread.types';
 export type { RunbookCanvasPorts } from '../../core/agents-providers/runbookCanvas.types';
+export { QaSyncService } from '../../services/agents-providers/QaSyncService';
+export { QaSyncConfigValidator } from '../../validators/agents-providers/QaSyncConfigValidator';
+export { QaSyncStateRepository } from '../../repositories/agents-providers/QaSyncStateRepository';
+export { SlackHistoryAdapter } from '../../adapters/agents-providers/SlackHistoryAdapter';
+export { GitHubIssueLabelAdapter } from '../../adapters/agents-providers/GitHubIssueLabelAdapter';
+export { TrackerNoteAdapter } from '../../adapters/agents-providers/TrackerNoteAdapter';
+export type { QaSyncConfig, QaSyncReport } from '../../core/agents-providers/qaSync.types';
+export type { QaSyncPorts } from '../../services/agents-providers/qa-sync-service/qaRun.types';
