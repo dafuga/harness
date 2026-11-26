@@ -20,6 +20,7 @@
 			"TrackerOverviewPublisher.start",
 			"TrackerOverviewPublisher.stop",
 			"TrackerOverviewPublisher.tick",
+			"TrackerOverviewPublisher.nudge",
 			"TrackerOverviewAuthority",
 			"TrackerOverviewTimers",
 			"TrackerOverviewPublisherOptions",
@@ -88,6 +89,18 @@
 					{
 						"name": "TrackerOverviewPublisher.tick",
 						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerOverviewPublisher.nudge",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerOverviewPublisher.nudge",
+						"type": "void"
 					}
 				],
 				"errors": [],

@@ -122,6 +122,11 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 			(plan) => plan.id,
 			(a, b) => Date.parse(a.updatedAt) > Date.parse(b.updatedAt)
 		),
+		overdue: newest(
+			snapshots.flatMap((entry) => entry.overdue ?? []),
+			(run) => run.id,
+			() => false
+		),
 		scheduled: newest(
 			snapshots.flatMap((entry) => entry.scheduled),
 			(run) => `${run.source}|${run.id}`,

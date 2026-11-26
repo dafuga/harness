@@ -119,6 +119,31 @@ operator verifies the stopped database and chooses a rollback.
   The target owner must reconcile migrated callback mappings and pending
   delivery receipts before enabling sending. Shell command targets and
   legacy custom webhook headers require separate integration.
+- **30-minute digest.** The hub's `webhook` target gets updates and new
+  needs-Daniel asks as one batch, at most once every 30 minutes. Asks hold
+  from 22:00 to 08:00 Lisbon time. Ask escalations and explicit reminders
+  keep their own timing. A target is a webhook, such as the Grok Bot Chief
+  of Staff, or a local tmux session running Claude Code or Codex:
+
+  ```json
+  "notifications": {
+  	"targets": {
+  		"claude": { "cli": "claude", "session": "cos", "tmux": "/opt/homebrew/bin/tmux" },
+  		"codex": { "cli": "codex", "session": "codex-cos", "tmux": "/opt/homebrew/bin/tmux" },
+  		"grok": { "url": "https://example.invalid/digest", "bearerFile": "/private/token" }
+  	},
+  	"webhook": "claude",
+  	"suggestions": ["play guitar", "practice a language", "just relax"]
+  }
+  ```
+
+  To switch, change `webhook` to another target ID and restart the service.
+  Queued lines go to the new target. Session targets are digest only. Tracker
+  types into one only while its composer is idle; a busy session is retried
+  after two minutes. Outside quiet hours each digest adds the next entry of
+  `suggestions`; an empty list turns them off. Setting `webhook` also starts
+  the hub's recurring scheduler.
+
 - **Watchdog.** Configure `watchdog.tmux` on each fenced node to run a
   local health scan every ten minutes. Tracker reports missing sessions,
   startup pickers, stranded launches, orphan panes, and panes left after

@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.component.planning-collaboration-design-canvas-design-canvas",
+	"uid": "u_3t5ragqzvc",
+	"kind": "component",
+	"title": "DesignCanvas",
+	"responsibility": "Lays out a canvas’s artboards with pan, zoom, selection, full view and theme.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.planning-collaboration-design-canvas-artboard-frame",
+			"reports.component.planning-collaboration-design-canvas-artboard-full",
+			"reports.component.planning-collaboration-design-canvas-canvas-toolbar",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-p"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/planning-collaboration/design-canvas/DesignCanvas.svelte"
+		],
+		"symbols": ["DesignCanvas"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "DesignCanvas.canvas",
+				"type": "DesignCanvasData",
+				"required": true,
+				"description": "Canvas name, or the canvas data to show or record."
+			},
+			{
+				"name": "DesignCanvas.theme",
+				"type": "ArtboardTheme",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "light, dark or both for rendering; light or dark for a viewer."
+			}
+		],
+		"outputs": [
+			{
+				"name": "DesignCanvas",
+				"type": "markup",
+				"description": "Renders: Lays out a canvas’s artboards with pan, zoom, selection, full view and theme."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.component.planning-collaboration-design-canvas-artboard-frame",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.planning-collaboration-design-canvas-artboard-full",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.planning-collaboration-design-canvas-canvas-toolbar",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-design-canvas-canvas-gestures",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.planning-collaboration-fit-view",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/planning-collaboration/design-canvas/DesignCanvas.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/planning-collaboration/design-canvas/DesignCanvas.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

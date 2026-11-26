@@ -1,0 +1,144 @@
+{
+	"schemaVersion": 1,
+	"id": "service.planning-collaboration-design-canvas-service-edit-artboard",
+	"uid": "u_q3z6auysrt",
+	"kind": "service",
+	"title": "editArtboard",
+	"responsibility": "Retitles, reorders or places one artboard in a manifest list.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/planning-collaboration/design-canvas-service/editArtboard.ts"],
+		"symbols": ["editArtboard"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "editArtboard.artboards",
+				"type": "readonly CanvasArtboard[]",
+				"required": true,
+				"description": "Manifest artboard entries."
+			},
+			{
+				"name": "editArtboard.file",
+				"type": "string",
+				"required": true,
+				"description": "Artboard file name."
+			},
+			{
+				"name": "editArtboard.title",
+				"type": "string | undefined",
+				"required": true,
+				"description": "Title shown for the canvas or artboard."
+			},
+			{
+				"name": "editArtboard.order",
+				"type": "number | undefined",
+				"required": true,
+				"description": "1-based canvas order."
+			},
+			{
+				"name": "editArtboard.position",
+				"type": "CanvasPoint | null | undefined",
+				"required": true,
+				"description": "Hand-placed position, or null for the row."
+			}
+		],
+		"outputs": [
+			{
+				"name": "editArtboard",
+				"type": "CanvasArtboard[]",
+				"description": "Result: Retitles, reorders or places one artboard in a manifest list."
+			}
+		],
+		"errors": [
+			{
+				"name": "DesignCanvasError",
+				"type": "thrown",
+				"description": "A canvas, artboard, option or prerequisite is not usable; the message says why."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "editArtboard",
+				"inputs": [
+					{
+						"name": "editArtboard.artboards",
+						"type": "readonly CanvasArtboard[]",
+						"required": true,
+						"description": "Manifest artboard entries."
+					},
+					{
+						"name": "editArtboard.file",
+						"type": "string",
+						"required": true,
+						"description": "Artboard file name."
+					},
+					{
+						"name": "editArtboard.title",
+						"type": "string | undefined",
+						"required": true,
+						"description": "Title shown for the canvas or artboard."
+					},
+					{
+						"name": "editArtboard.order",
+						"type": "number | undefined",
+						"required": true,
+						"description": "1-based canvas order."
+					},
+					{
+						"name": "editArtboard.position",
+						"type": "CanvasPoint | null | undefined",
+						"required": true,
+						"description": "Hand-placed position, or null for the row."
+					}
+				],
+				"outputs": [
+					{
+						"name": "editArtboard",
+						"type": "CanvasArtboard[]",
+						"description": "Result: Retitles, reorders or places one artboard in a manifest list."
+					}
+				],
+				"errors": [
+					{
+						"name": "DesignCanvasError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-canvas-manifest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-design-canvas",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/planning-collaboration/design-canvas-service/editArtboard.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/planning-collaboration/design-canvas-service/editArtboard.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

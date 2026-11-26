@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.planning-collaboration-artboard-violations",
+	"uid": "u_ni27mu75b6",
+	"kind": "function",
+	"title": "artboardViolations",
+	"responsibility": "Says why an artboard is not a self-contained, fixed-size page.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/planning-collaboration/artboardViolations.ts"],
+		"symbols": ["artboardViolations"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "artboardViolations.html",
+				"type": "string",
+				"required": true,
+				"description": "Artboard HTML; a starter page is used when saving without it."
+			}
+		],
+		"outputs": [
+			{
+				"name": "artboardViolations",
+				"type": "string[]",
+				"description": "Result: Says why an artboard is not a self-contained, fixed-size page."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "artboardViolations",
+				"inputs": [
+					{
+						"name": "artboardViolations.html",
+						"type": "string",
+						"required": true,
+						"description": "Artboard HTML; a starter page is used when saving without it."
+					}
+				],
+				"outputs": [
+					{
+						"name": "artboardViolations",
+						"type": "string[]",
+						"description": "Result: Says why an artboard is not a self-contained, fixed-size page."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.function.planning-collaboration-artboard-size",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/planning-collaboration/artboardViolations.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/planning-collaboration/artboardViolations.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

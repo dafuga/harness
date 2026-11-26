@@ -1,5 +1,6 @@
 // @harness-uid u_ha3divi7yk
 // @harness-uid u_ptjz1dsplt
+import { isTrackerBlockedOnDaniel } from '../../../utils/projects-sessions/isTrackerBlockedOnDaniel';
 import { trackerFlagKind } from '../../../utils/projects-sessions/trackerStructuredAsk';
 import type { TrackerDigestGroups, TrackerDigestItem } from '../TrackerItemReadRepository.types';
 
@@ -27,4 +28,14 @@ export function splitTrackerAsks(groups: TrackerDigestGroups): void {
 		if (kind) lists[kind].push(item);
 	}
 	for (const list of Object.values(lists)) list.sort(oldestFirst);
+}
+
+/** Flagged decisions first (oldest first), then unflagged items whose blocker is Daniel. */
+export function listTrackerUnblocks(groups: TrackerDigestGroups): TrackerDigestItem[] {
+	return [
+		...groups.daniel_decisions,
+		...groups.blocked.filter(
+			(item) => !item.needs_daniel && isTrackerBlockedOnDaniel(item.blocked_reason)
+		)
+	];
 }

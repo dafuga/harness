@@ -20,6 +20,7 @@
 			"SyncSockets.relay",
 			"SyncSockets.poke",
 			"SyncSockets.announce",
+			"SyncSockets.changed",
 			"Attachment"
 		]
 	},
@@ -90,6 +91,11 @@
 				"name": "SyncSockets.announce.message",
 				"type": "{ id: string; n: number }",
 				"required": true
+			},
+			{
+				"name": "SyncSockets.changed.topic",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -111,6 +117,10 @@
 			},
 			{
 				"name": "SyncSockets.announce",
+				"type": "void"
+			},
+			{
+				"name": "SyncSockets.changed",
 				"type": "void"
 			}
 		],
@@ -231,6 +241,24 @@
 				"outputs": [
 					{
 						"name": "SyncSockets.announce",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SyncSockets.changed",
+				"inputs": [
+					{
+						"name": "SyncSockets.changed.topic",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SyncSockets.changed",
 						"type": "void"
 					}
 				],

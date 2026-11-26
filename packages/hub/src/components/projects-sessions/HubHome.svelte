@@ -3,6 +3,7 @@
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import { splitHomeSchedule } from '$reports/lib/projects-sessions/hub-home/homeSchedule';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -14,15 +15,15 @@
 	import { onMount, tick } from 'svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
-	import { homeSnapshot, readHome } from './hubHomeClient';
+	import { homeSnapshot } from './hubHomeClient';
+	import { hubHomeReads } from './hubHomeReads';
 	import { provideHubSpecDocuments } from './hubSpecDocument';
-	import {
-		LinkedHomeService,
-		type LinkedHome
-	} from '../../services/networking-security/LinkedHomeService';
+	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 	import { soonestWork, staleReading } from './hubHomePresentation';
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
+	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
+	import { followHubUpdates, liveReadMs } from '../../lib/realtime/hubLiveUpdates';
 	import HubHomeHeader from './HubHomeHeader.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
@@ -40,10 +41,12 @@
 	let home = $state<ReadHomeResult | null>(null);
 	/** What the account's own linked computers report over their encrypted device connections. */
 	let live = $state<LinkedHome | null>(null);
-	let linkedHome: { actor: string; service: LinkedHomeService } | undefined;
 	let now = $state(Date.now());
 	let flight = 0;
 	let opener: HTMLElement | null = null;
+	let link = $state<RealtimeState | null>(null);
+	let readAllAt = 0;
+	const pushes = $derived(Boolean(home?.granted && home.live));
 	const controlled = $derived(home?.controlled ?? []);
 	/** Every project's agents as reported; Home lists only the sessions Daniel controls. */
 	const raw = $derived(live?.snapshot ?? homeSnapshot(home));
@@ -53,6 +56,19 @@
 	const routinesConnected = $derived(
 		Array.isArray(snapshot?.providers.routines) &&
 			!staleReading(snapshot.providers.routinesReadAt, now)
+	);
+	const board = $derived(
+		snapshot
+			? splitHomeSchedule(
+					{
+						...snapshot,
+						scheduled: snapshot.scheduled.filter(
+							(run) => routinesConnected || run.source === 'tracker'
+						)
+					},
+					now
+				)
+			: null
 	);
 	const overview = $derived(
 		snapshot?.overview ?? (settled ? { status: 'unavailable' as const } : null)
@@ -66,9 +82,8 @@
 		openAsks: snapshot?.openAsks ?? [],
 		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
-		schedule:
-			snapshot?.scheduled.filter((run) => routinesConnected || run.source === 'tracker') ??
-			(settled ? [] : null),
+		schedule: board?.upcoming ?? (settled ? [] : null),
+		pastDue: board?.pastDue ?? [],
 		quota: snapshot?.providers.quota ?? (settled ? [] : null),
 		projects: list,
 		projectsFailed,
@@ -79,27 +94,22 @@
 		needsMac: settled && !snapshot && !linkedComputers,
 		linkedComputers,
 		trackerConnected: overview?.status === 'ready',
-		routinesConnected,
 		quotaConnected: Array.isArray(snapshot?.providers.quota),
 		now
+	});
+
+	const reads = hubHomeReads({
+		api,
+		actor: () => session.actor?.id,
+		home: (result) => ((home = result), (now = Date.now())),
+		linked: (result) => (live = result)
 	});
 
 	function refresh() {
 		const actor = session.actor?.id;
 		const request = ++flight;
-		now = Date.now();
-		void readHome(api).then((result) => {
-			if (request === flight && actor === session.actor?.id) home = result;
-		});
-		if (actor) {
-			if (linkedHome?.actor !== actor) {
-				linkedHome?.service.close();
-				linkedHome = { actor, service: new LinkedHomeService(api, actor) };
-			}
-			void linkedHome.service.read().then((result) => {
-				if (request === flight && actor === session.actor?.id) live = result;
-			});
-		}
+		now = readAllAt = Date.now();
+		reads.read();
 		void projects.list().then(
 			(value) => {
 				if (request === flight && actor === session.actor?.id) {
@@ -114,9 +124,22 @@
 		);
 	}
 
+	$effect(() => {
+		if (!pushes) return;
+		const stop = followHubUpdates({
+			changed: () => ((now = Date.now()), reads.read()),
+			state: (state) => (link = state)
+		});
+		return () => {
+			stop();
+			link = null;
+		};
+	});
+
 	onMount(() => {
 		refresh();
 		const stop = watchWhileVisible(() => {
+			if (link === 'live' && Date.now() - readAllAt < liveReadMs) return;
 			const actor = session.actor?.id;
 			void session.check().then(() => {
 				if (actor && session.actor?.id === actor) refresh();
@@ -124,8 +147,7 @@
 		});
 		return () => {
 			flight++;
-			linkedHome?.service.close();
-			linkedHome = undefined;
+			reads.close();
 			stop();
 		};
 	});
@@ -183,6 +205,11 @@
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} />
+		{#if link}
+			<hx-p class="po-page hh-page hh-live" role="status" aria-label="Updates" data-state={link}>
+				{link === 'live' ? 'Live' : 'Reconnecting'}
+			</hx-p>
+		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
 			<HubHomeCards {view} {open} />
 		</hx-main>

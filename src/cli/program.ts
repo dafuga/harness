@@ -1,6 +1,7 @@
 // @harness-uid u_3tibsmkofv
 import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
+import { DesignCommand } from '../commands/planning-collaboration/DesignCommand';
 import { ContractsCommand } from '../commands/development-tooling/ContractsCommand';
 import { ProviderSignInCommand } from '../commands/agents-providers/ProviderSignInCommand';
 import { registerTaskCommand } from './program/TaskCommand';
@@ -75,6 +76,7 @@ export function buildProgram(): Command {
 	registerHooksCommand(program);
 	registerConsoleCommand(program);
 	registerAuditCommand(program);
+	new DesignCommand().register(program);
 	registerResponseCheckCommand(program);
 
 	return program;

@@ -135,7 +135,7 @@
 				discuss={(id) => open('agents', id)}
 			/>
 		{:else if selected === 'scheduled'}
-			<HubHomeSchedule runs={view.schedule} now={view.now} connected={view.routinesConnected} />
+			<HubHomeSchedule runs={view.schedule} now={view.now} />
 		{:else if selected === 'projects'}
 			{#if view.trackerProjects}
 				<hx-div class="hh-overview"
@@ -152,7 +152,12 @@
 		{:else if selected === 'quota'}
 			<HubHomeQuota quota={view.quota} now={view.now} connected={view.quotaConnected} {reload} />
 		{:else}
-			<HubHomeWork overview={view.overview} work={view.work} now={view.now} />
+			<HubHomeWork
+				overview={view.overview}
+				work={view.work}
+				pastDue={view.pastDue}
+				now={view.now}
+			/>
 		{/if}
 	{/key}
 </Modal>

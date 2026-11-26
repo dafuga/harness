@@ -35,6 +35,10 @@ export type TrackerItemRecord = {
 	occurrence?: string | null;
 	recurring?: boolean;
 	scheduleOff?: boolean;
+	priority?: string | null;
+	/** A launch has been requested and not cancelled. */
+	launchRequested?: boolean;
+	owner?: string | null;
 	answer?: string | null;
 	answeredAt?: string | null;
 };

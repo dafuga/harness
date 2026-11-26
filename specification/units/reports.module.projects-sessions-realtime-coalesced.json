@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-realtime-coalesced",
+	"uid": "u_s2jsy4e4gt",
+	"kind": "module",
+	"title": "coalesced",
+	"responsibility": "Owns the coalesced library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/realtime/coalesced.ts"],
+		"symbols": ["coalesced"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "coalesced.work",
+				"type": "FlightWork",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "coalesced",
+				"type": "()"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "coalesced",
+				"inputs": [
+					{
+						"name": "coalesced.work",
+						"type": "FlightWork",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "coalesced",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/realtime/coalesced.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/realtime/coalesced.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

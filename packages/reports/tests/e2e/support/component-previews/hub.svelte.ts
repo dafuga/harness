@@ -1,4 +1,5 @@
 import { catalogHome, isHubHomePreview } from './hubHomeCatalogData';
+import { designPreviewPage, hubDesignCases } from './designCanvasPreviews';
 import { children, done, stamp } from './shared';
 import type { PreviewCases } from './shared';
 import { desktopData } from './sealedData';
@@ -64,6 +65,7 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 			if (path === '/api/account/devices') return signedInDevices;
 			if (path === '/api/remote/hosts') return linkedComputers;
 			if (path === '/api/hub-home') return catalogHome;
+			if (path.endsWith('/designs')) return designPreviewPage;
 			if (path === `/api/projects/${project.id}/snapshot`) return hostedSnapshot(shown);
 			return hosted.read(path) ?? request;
 		},
@@ -82,6 +84,7 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 function hubCases(): PreviewCases {
 	return {
 		'hub.component.account-menu': { projectId: project.id },
+		...hubDesignCases(project.id),
 		'hub.component.accounts-access-linked-computers': {},
 		'hub.component.email-proof-panel': { proof },
 		'hub.component.hosted-workspace': {},

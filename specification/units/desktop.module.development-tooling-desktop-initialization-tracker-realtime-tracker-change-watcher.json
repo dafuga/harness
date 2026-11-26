@@ -1,0 +1,122 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-tracker-realtime-tracker-change-watcher",
+	"uid": "u_reqbbzj5we",
+	"kind": "module",
+	"title": "TrackerChangeWatcher",
+	"responsibility": "Owns the TrackerChangeWatcher library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/TrackerChangeWatcher.ts"
+		],
+		"symbols": [
+			"TrackerChangeWatcher",
+			"TrackerChangeWatcher.constructor",
+			"TrackerChangeWatcher.start",
+			"TrackerChangeWatcher.stop"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerChangeWatcher.constructor.listener",
+				"type": "(event: TrackerChangeEvent) => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerChangeWatcher.start",
+				"type": "this"
+			},
+			{
+				"name": "TrackerChangeWatcher.stop",
+				"type": "void"
+			}
+		],
+		"errors": [
+			{
+				"name": "MissingChangeFeedError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerChangeWatcher.start",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerChangeWatcher.start",
+						"type": "this"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerChangeWatcher.stop",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerChangeWatcher.stop",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerChangeWatcher.constructor",
+				"inputs": [
+					{
+						"name": "TrackerChangeWatcher.constructor.listener",
+						"type": "(event: TrackerChangeEvent) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerChangeWatcher.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-realtime-missing-change-feed-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/TrackerChangeWatcher.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/TrackerChangeWatcher.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

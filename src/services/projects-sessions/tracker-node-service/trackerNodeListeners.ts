@@ -3,6 +3,7 @@ import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { stopTrackerRun, trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
 import { readTrackerNodeInspection } from './readTrackerNodeInspection';
+import { serveTrackerChanges } from '../tracker-change-feed/serveTrackerChanges';
 
 const host = '127.0.0.1';
 const nativePrefix = '/native/v1';
@@ -103,6 +104,8 @@ function trackerCompatibleApi(
 			});
 		case 'GET /status':
 			return trackerNodeStatus(runtime, supervisor, checkpoint);
+		case 'GET /changes':
+			return serveTrackerChanges(request, runtime.store);
 		case 'POST /adapters/run':
 			return trackerAdapterRun(request, runtime);
 		default:

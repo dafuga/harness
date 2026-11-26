@@ -28,6 +28,12 @@
 	const gameViews = $derived(workspaceGameViews(workspace));
 	/** Offered by this computer's bridge, or by a paired phone's while it is online and signed in. */
 	const overview = $derived(!!workspace.bridge?.projectOverview);
+	/** The canvases of this computer's checkout: only a local project over a bridge that reads them. */
+	const designs = $derived(
+		workspace.local && workspace.bridge?.designCanvases && workspace.projectId
+			? `/designs?projectId=${encodeURIComponent(workspace.projectId)}&from=${encodeURIComponent(workspace.path())}`
+			: null
+	);
 </script>
 
 <!-- Focus follows the visible rows: project and identity, context and search, then categories. -->
@@ -79,6 +85,7 @@
 		{#if gameViews}<hx-a href={resolve(gameViews as '/')}
 				><Icon name="game" /><hx-span>Game Views</hx-span></hx-a
 			>{/if}
+		{#if designs}<hx-a href={resolve(designs as '/')}><hx-span>Designs</hx-span></hx-a>{/if}
 		{#if overview}<hx-a href={resolve('/projects' as '/')}><hx-span>Projects</hx-span></hx-a>{/if}
 	</hx-nav>
 

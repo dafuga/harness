@@ -109,9 +109,9 @@ test('blocks, unblocks and reopens an item with durable notes', async () => {
 	expect((await mark('unblock')).status).toBe(409);
 	expect(await (await mark('block', { reason: 'Waiting for fixture' })).json()).toMatchObject({
 		status: 'blocked',
-		needs_daniel: true,
-		question: 'Blocked: Waiting for fixture'
+		needs_daniel: false
 	});
+	await mark('flag', { question: 'Which fixture?' });
 	expect(await (await mark('unblock', { note: 'Available' })).json()).toMatchObject({
 		status: 'in_progress',
 		needs_daniel: true,
@@ -184,10 +184,8 @@ test('reports persisted run history and selects a model through the native item 
 	const { id } = await (
 		await request('/items', 'POST', { title: 'Fixture model selection' })
 	).json();
-	database.exec(`
-		CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
-		CREATE TABLE remote_runs(node TEXT, id INTEGER, item_id TEXT, queued_at INTEGER,
-			state TEXT, rung TEXT, outcome TEXT);
+	database.exec(`CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
+		CREATE TABLE remote_runs(node TEXT, id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
 	`);
 	database.prepare("INSERT INTO runs VALUES (1, ?, 100, 'finished', 'sol', 'done')").run(id);
 	database

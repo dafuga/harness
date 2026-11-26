@@ -94,6 +94,15 @@ function canSendAttention(
 	return !quietHold || Boolean(forced) || quietHourBoundary(now, options.quietHours) <= now;
 }
 
+function nextSuggestion(
+	state: TrackerNotificationState,
+	{ suggestions }: TrackerWebhookOptions,
+	now: number
+): string | undefined {
+	if (!suggestions?.length || quietHourBoundary(now, askQuietHours) > now) return undefined;
+	return suggestions[(state.digestsSent ?? 0) % suggestions.length];
+}
+
 function prepareAttention(
 	state: TrackerNotificationState,
 	pending: AttentionRow[],
@@ -116,6 +125,9 @@ function prepareAttention(
 			waiting_minutes: Math.max(0, Math.floor((now - at) / minute))
 		};
 	});
+	const suggestion = nextSuggestion(state, webhook, now);
+	const text = items.map(lineText);
+	if (suggestion) text.push(`Until the next digest: ${suggestion}`);
 	const keys = group.lines.map((row) => row.key);
 	const included = new Set(keys);
 	for (const row of pending) if (!included.has(row.key)) row.status = 'dropped';
@@ -129,7 +141,8 @@ function prepareAttention(
 		count: items.length,
 		counts: group.counts,
 		items,
-		text: items.map(lineText).join('\n'),
+		text: text.join('\n'),
+		...(suggestion && { suggestion }),
 		node: source.node,
 		sent_at: isoTime(now)
 	});

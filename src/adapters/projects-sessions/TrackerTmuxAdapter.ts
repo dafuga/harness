@@ -66,7 +66,7 @@ export class TrackerTmuxAdapter {
 	async nudge(input: TrackerTmuxNudge, signal: AbortSignal): Promise<boolean> {
 		const { pane, cli, message } = input;
 		if (!message || message.length > 5000 || unsafeInput.test(message)) return false;
-		const names = pane.name === 'cos' ? /^cos$/ : trackerSessionName;
+		const names = input.names ?? (pane.name === 'cos' ? /^cos$/ : trackerSessionName);
 		const candidate = (await this.layouts(signal, names)).find(
 			({ pane: observed }) => observed.name === pane.name && matchesTrackerTmuxPane(observed, pane)
 		);

@@ -5,14 +5,9 @@ import type {
 	TrackerItemRecord,
 	TrackerSources
 } from '../project-overview/projectOverviewTracker.types';
-import type {
-	HomeAgent,
-	HomePlan,
-	HomeRun,
-	HomeProviderReadings,
-	OwnerHomeSnapshot
-} from './hubHome.types';
+import type { HomeAgent, HomePlan, HomeProviderReadings, OwnerHomeSnapshot } from './hubHome.types';
 import { buildHomeAgents } from './homeTrackerAgents';
+import { listHomeSchedule } from './homeSchedule';
 import { buildHomeOpenAsks } from './homeOpenAsks';
 import { homeProviderReadingIsStale } from './homeProviderPayload';
 
@@ -55,28 +50,6 @@ function planState(item: TrackerItemRecord): HomePlan['state'] {
 	return item.resolved && item.answer ? 'approved' : 'draft';
 }
 
-function listSchedule(items: TrackerItemRecord[], routines: HomeRun[]) {
-	const scheduled = items.flatMap((item): HomeRun[] => {
-		const at = item.recurring ? (item.occurrence ?? item.due) : item.due;
-		if (!at || item.status === 'done') return [];
-		return [
-			{
-				id: item.id,
-				title: homeText(item.title, 500) ?? 'Untitled task',
-				at: new Date(at).toISOString(),
-				agent: homeText(item.agent, 200),
-				machine: homeText(item.computer, 200),
-				source: 'tracker',
-				recurring: Boolean(item.recurring),
-				paused: Boolean(item.scheduleOff)
-			}
-		];
-	});
-	return [...scheduled, ...routines]
-		.sort((left, right) => left.at.localeCompare(right.at))
-		.slice(0, 120);
-}
-
 export function buildHomeSnapshot(
 	sources: TrackerSources | null,
 	providers: HomeProviderReadings,
@@ -95,9 +68,10 @@ export function buildHomeSnapshot(
 		agents,
 		openAsks: buildHomeOpenAsks(items),
 		plans: listPlans(items),
-		scheduled: listSchedule(
-			items,
-			homeProviderReadingIsStale(providers.routinesReadAt, now) ? [] : (providers.routines ?? [])
+		...listHomeSchedule(
+			{ items, runs: sources?.runs ?? [] },
+			homeProviderReadingIsStale(providers.routinesReadAt, now) ? [] : (providers.routines ?? []),
+			now
 		),
 		providers
 	};
