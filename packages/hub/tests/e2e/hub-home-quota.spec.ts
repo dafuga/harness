@@ -138,3 +138,16 @@ test('a subscription with no current reading says its usage is unknown', async (
 	await expect(quotaPills(page).filter({ hasText: 'Claude' })).toHaveText('Claude usage unknown');
 	await expect(quotaPills(page).filter({ hasText: 'Codex' })).toHaveText('Codex weekly 50% left');
 });
+
+for (const [balance, shown] of [
+	['23724.9714480000', '23,725'],
+	['4.5000000000', '4.5'],
+	['Unlimited', 'Unlimited']
+] as const)
+	test(`a credit balance of ${balance} reads ${shown}`, async ({ page }) => {
+		const fixture = await twoSubscriptions(page, 50);
+		fixture.snapshot.providers.quota![1].credits = balance;
+		await page.reload();
+		const codex = card(page, 'Quota').getByRole('region', { name: 'Codex' });
+		await expect(codex.locator('.hh-q-credits strong')).toHaveText(shown);
+	});
