@@ -104,7 +104,7 @@ function recordVerification(
 	) {
 		return skip('ignored', 'verification no longer applies to this attempt');
 	}
-	if (event.passed) return completeRun(snapshot, run, { policy, now, usage: event.usage });
+	if (event.passed) return completeRun(snapshot, run, { now, usage: event.usage });
 	return failRun(
 		snapshot,
 		run,

@@ -82,7 +82,7 @@ export class TrackerNativeRuntimeService {
 			scheduler: this.scheduler,
 			duePreview: this.duePreview
 		} = composed);
-		this.watchdog = configuredHostWatchdog(this, hostEffects?.watchdog, options.automaticEnabled);
+		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
 		this.items = composeItemApi(this, runs, options, recurring?.repo);
 		({ tick: this.telemetry, samples: this.fleetSamples } = composeTrackerTelemetry(
 			store,

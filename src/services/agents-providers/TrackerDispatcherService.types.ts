@@ -107,7 +107,6 @@ export interface TrackerDispatchPolicy {
 	maxRunMinutes?: number;
 	stallMinutes?: number;
 	defaultEtaMinutes?: number;
-	keepSessionMinutes?: number;
 	dueIntervalMs?: number;
 }
 

@@ -45,7 +45,6 @@ test('a reopened item invalidates the previous verification result and records u
 		outcome: 'done',
 		state: 'finished',
 		ended_at: policy.now(),
-		kill_at: policy.now() + 30 * 60_000,
 		input_tokens: 80,
 		output_tokens: 10,
 		cost_usd: 0.03
