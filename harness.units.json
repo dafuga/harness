@@ -68,6 +68,48 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeChatWriter.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeTrackerProjection",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerProjection.ts",
+			"reason": "The Mac checks a Home answer against the same Home view it shares."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeChatWriter.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeChatInput",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeChatInput.ts",
+			"reason": "The Mac and the Hub accept one Home message shape."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeChatWriter.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewTracker",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.ts",
+			"reason": "The Mac reads the Tracker as it is now before a Home write."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeReads.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Home sends and receives the shared chat message and receipt."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeReads.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Home sends and receives the shared chat message and receipt."
+		},
+		{
+			"from": "packages/hub/src/routes/api/hub-home/homePayload.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeChatInput",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeChatInput.ts",
+			"reason": "The Mac and the Hub accept one Home message shape."
+		},
+		{
+			"from": "packages/hub/src/services/networking-security/linkedHomeChat.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "A linked computer's reply is read as the shared receipt."
+		},
+		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-bridge/localDesignCanvases.ts",
 			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
 			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
@@ -3102,6 +3144,48 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "The spec view on asks is shared Reports code used through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeSnapshotReader.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLiveOverview",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLiveOverview.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/Pill.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeLive.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/api/hub-home/homeLivePayload.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts",
+			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
 		}
 	]
 }

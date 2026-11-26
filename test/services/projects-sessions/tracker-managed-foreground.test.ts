@@ -15,6 +15,7 @@ import { trackerNodeRuntime } from '../../../src/services/projects-sessions/trac
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
+import { onIdleHost } from '../../support/trackerHostResourceFixture';
 import {
 	managedFixtureBindings,
 	managedForegroundConfig,
@@ -26,14 +27,20 @@ import {
 	verifyLegacyQueuedClaim
 } from '../../support/trackerManagedLaunchAssertions';
 
-import { verifyClaudeStartupRejection } from '../../support/trackerClaudeStartupFixture';
+import { expectedTokenUsage } from '../../support/trackerCodexUsageExpectation';
+import {
+	verifyClaudeLinkage,
+	verifyClaudeStartupRejection,
+	verifyOwnedWorktreeTrust,
+	verifyStartErrorCause
+} from '../../support/trackerClaudeStartupFixture';
 
 const itemId = 'abc123def4';
 const node = 'daniel-primary-mbp';
 
 test(
 	'the configured foreground completes managed runs through the normal Tracker done request',
-	{ timeout: 15_000 },
+	{ timeout: 60_000 },
 	() =>
 		measureWorkload('service.projects-sessions-tracker-node', 'managed-foreground', async () => {
 			await withTempRepo(proveManagedForeground);
@@ -47,6 +54,11 @@ test(
 						await withTempRepo((repo) => proveNativeUsage(repo, false, join(repo.root, 'ops')));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'signed-out'));
 						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'onboarding'));
+						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'untrusted'));
+						await withTempRepo((repo) => verifyClaudeStartupRejection(repo, 'crash'));
+						await withTempRepo(verifyOwnedWorktreeTrust);
+						await withTempRepo(verifyClaudeLinkage);
+						await withTempRepo(verifyStartErrorCause);
 					}
 				);
 			}
@@ -60,14 +72,16 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	const signal = new AbortController().signal;
 	try {
 		const runtime = new TrackerNativeRuntimeService(database, {
-			...trackerNodeRuntime(managedForegroundConfig(root, config), (scope) => {
-				expect(scope).toMatchObject({ itemId, apiPort: 49281 });
-				const run = database
-					.prepare('SELECT auto_token, attempt FROM runs WHERE id = ?')
-					.get(scope.runId);
-				expect(JSON.parse(scope.key)).toEqual([itemId, run?.auto_token, run?.attempt]);
-				writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
-			}),
+			...onIdleHost(
+				trackerNodeRuntime(managedForegroundConfig(root, config), (scope) => {
+					expect(scope).toMatchObject({ itemId, apiPort: 49281 });
+					const run = database
+						.prepare('SELECT auto_token, attempt FROM runs WHERE id = ?')
+						.get(scope.runId);
+					expect(JSON.parse(scope.key)).toEqual([itemId, run?.auto_token, run?.attempt]);
+					writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
+				})
+			),
 			now: () => Date.now()
 		});
 		runtime.store.appendLocal({
@@ -114,7 +128,7 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 	try {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
-			trackerNodeRuntime(managedForegroundConfig(root, config, 'macos', ops))
+			onIdleHost(trackerNodeRuntime(managedForegroundConfig(root, config, 'macos', ops)))
 		);
 		runtime.store.appendLocal({
 			itemId,
@@ -147,7 +161,7 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 		expect(
 			database
 				.prepare(
-					'SELECT state,outcome,input_tokens,output_tokens,cache_read_tokens,cache_write_tokens FROM runs'
+					'SELECT state,outcome,input_tokens,output_tokens,cache_read_tokens,cache_write_tokens,credits_balance FROM runs'
 				)
 				.get()
 		).toEqual({
@@ -158,17 +172,6 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 	} finally {
 		database.close();
 	}
-}
-
-function expectedTokenUsage(missing: boolean) {
-	if (!missing)
-		return { input_tokens: 95, output_tokens: 10, cache_read_tokens: 25, cache_write_tokens: 0 };
-	return {
-		input_tokens: null,
-		output_tokens: null,
-		cache_read_tokens: null,
-		cache_write_tokens: null
-	};
 }
 
 async function verifyLostSession(

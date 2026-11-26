@@ -5,6 +5,7 @@ import type {
 	HomeSubscription,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type { HomeLiveOverview } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 import { agentOpenAsks } from '$reports/lib/projects-sessions/hub-home/homeOpenAsks';
 import { splitHomeSchedule } from '$reports/lib/projects-sessions/hub-home/homeSchedule';
 
@@ -103,6 +104,23 @@ function betterOverview(a: OwnerHomeSnapshot['overview'], b: OwnerHomeSnapshot['
 	);
 }
 
+/** @pure The newest Tracker change a computer's overview has seen. */
+function newestChange(overview: HomeLiveOverview) {
+	return Math.max(0, ...overview.projects.map((project) => Date.parse(project.updatedAt)));
+}
+
+/**
+ * Computers read the same synced Tracker, so their overviews are never added together: the one
+ * holding the newest change is shown whole, so an ended run cannot return from one still behind.
+ */
+function mergeLiveOverview(snapshots: OwnerHomeSnapshot[]): HomeLiveOverview | undefined {
+	return snapshots
+		.flatMap((entry) => entry.liveOverview ?? [])
+		.sort(
+			(a, b) => newestChange(b) - newestChange(a) || Date.parse(b.readAt) - Date.parse(a.readAt)
+		)[0];
+}
+
 /**
  * One Home view from what each linked computer reported. Work the Tracker syncs between
  * computers appears once: the most urgent, then the most recent, entry of each id wins.
@@ -136,7 +154,8 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 		providers: {
 			quota: mergeQuota(providers.map((entry) => entry.quota)),
 			...mergeRoutines(providers)
-		}
+		},
+		liveOverview: mergeLiveOverview(snapshots)
 	};
 }
 

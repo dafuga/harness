@@ -27,7 +27,7 @@ export async function fixture(root: string, status: Record<string, unknown> = he
 	await once(sync, 'listening');
 	const syncPort = (sync.address() as { port: number }).port;
 	cleanups.push(api.close, () => sync.close());
-	const config = healthConfig(root, api.port, syncPort);
+	const config = healthConfig(root, { apiPort: api.port, syncPort, role: status.role });
 	const clock = { now: noon };
 	const posted: { url: string; body: string; authorization: string }[] = [];
 	const service = new TrackerHealthService(config, {

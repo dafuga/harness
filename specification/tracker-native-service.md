@@ -401,6 +401,31 @@ the daemon socket, signing key, and credentials outside guest storage.
 Worker exit alone never completes the Tracker item. Keep the Docker lane
 held on the protected hosts until the production seams pass rehearsal.
 
+### Launch resource guards
+
+The managed launcher reads this computer before every launch, including
+explicit ones. A hold keeps the request queued, reports
+`Tracker host resource hold: <reason>` as its wait reason, and spends no retry
+or recovery attempt. An external driver owns its own host and is not sampled.
+
+- Available RAM must be at least `launch.minAvailableMemMB` (default 2048).
+- The home, repository (or operations workdir) and managed state filesystems
+  need `launch.minFreeDiskGB` (default 5) free, at least 50,000 free inodes
+  and 1% of inodes free. An unreadable filesystem holds the launch.
+- On the primary Mac, MB2 and the box, the home filesystem needs 30 GB free.
+  Disk percentage does not hold a launch.
+- The Macs need at least 25% free memory (unknown holds) and a one-minute load
+  under 15. Other hosts hold when the five-minute load exceeds 1.5 per core or
+  free memory is under 10%.
+- The shared box also waits while busy: load over 1.0 per core, free memory
+  under 15%, or under 100,000 or 3% free inodes.
+
+On MB2, Harbor is the home project and its requests are considered first. All
+other work gets one session at a time, only while the one-minute load is under 4. Its worker runs under `nice -n 10` with a four-core budget in
+`TRACKER_CPU_BUDGET` and the CMake, Cargo, Make, OpenMP, Rayon and Go
+parallelism variables, and its brief states the budget. These cap
+cooperating build tools; they do not enforce a hard CPU limit.
+
 ### External provider driver protocol
 
 Set `launch.driver` instead of `launch.managed` for a separately qualified
@@ -628,9 +653,9 @@ only by the backup service. Once every other check recovers, the item is noted
 and closed, even while the backup alert stays open. An ignored item is never
 raised again. An alerting run waits 20 seconds and asks
 the API again before calling it down. When the Tracker cannot record the alert,
-or the webhook check fails, it also posts to the URL in `health-fallback.url`
-with the bearer key in `health-fallback.key`. Both are private files beside the
-native config; the URL is HTTPS or literal IPv4 loopback. The fallback waits out
+or the webhook check or a spoke's hub link check fails, it also posts to the URL
+in `health-fallback.url` with the bearer key in `health-fallback.key`. Both are
+private files beside the native config; the URL is HTTPS or literal IPv4 loopback. The fallback waits out
 22:00-08:00 Lisbon unless the Tracker could not take the alert because its API
 is down. Alert state is kept in `<database>.health.json`. Without `--alert`
 nothing is written or sent.

@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-project-overview-project-overview-run-detail",
+	"uid": "u_vpe7qzi4gu",
+	"kind": "module",
+	"title": "projectOverviewRunDetail",
+	"responsibility": "Reads the run times, outcome, model and effort that Home shows from a Tracker run, leaving an unusable value unreported.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/reports/src/lib/projects-sessions/project-overview/projectOverviewRunDetail.ts"
+		],
+		"symbols": ["trackerRunDetail"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerRunDetail.row",
+				"type": "TrackerRunDetailInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerRunDetail",
+				"type": "Partial<TrackerRunRecord>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerRunDetail",
+				"inputs": [
+					{
+						"name": "trackerRunDetail.row",
+						"type": "TrackerRunDetailInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRunDetail",
+						"type": "Partial<TrackerRunRecord>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-project-overview-project-overview-tracker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewRunDetail.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewRunDetail.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
