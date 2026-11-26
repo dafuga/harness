@@ -2,7 +2,7 @@
 	"name": "p10gqj-notification-stall",
 	"goal": "A failing HTTP target cannot stall native Tracker notifications",
 	"createdAt": "2026-11-26T13:42:54.234Z",
-	"updatedAt": "2026-11-26T13:42:54.234Z",
+	"updatedAt": "2026-11-26T22:06:04.745Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,12 +11,16 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T22:06:03.482Z",
+			"evidence": "A thrown native Tracker notification send stayed in flight and replayed every tick, so no other delivery ran. Expected: a failed attempt with backoff, cap, stored error, one safe log line. Reproduced with a fake loopback endpoint (HTTP 500, dropped socket)."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-26T22:06:04.745Z",
+			"evidence": "tracker-attention-delivery and verifyParkedReminderRetry asserted that the tick rejects and replays after a lost acknowledgement; none kept a target failing beside a second target. Added reusable fake-endpoint cases through trackerNodeNotifications."
 		},
 		{
 			"id": "red",
