@@ -139,6 +139,8 @@ export const nativeTrackerCommandOptions = new Map<
 	['digest', {}],
 	['sync', {}],
 	['watchdog', { item: text }],
+	['machines', { hours: text }],
+	['place', { kind: text, 'needs-ram': text }],
 	['needs-attention', {}],
 	['ensure', {}]
 ]);

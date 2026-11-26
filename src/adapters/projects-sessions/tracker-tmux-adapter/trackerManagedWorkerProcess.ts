@@ -21,6 +21,7 @@ import {
 } from './trackerManagedLaunchReceipt';
 import { managedTmuxEnvironment, missingTmuxSession } from './trackerTmuxClose';
 import { trackerManagedProviderEnvironment } from './trackerManagedProviderCommands';
+import { trackerCpuBudgetEnvironment } from '../../../utils/projects-sessions/trackerCpuBudget';
 import { trackerStartupCause } from './trackerStartupCause';
 
 export const workerScript = `#!/bin/sh
@@ -52,16 +53,12 @@ printf '%s\\n' "$result" > "$run_dir/exit.tmp"
 exit "$result"
 `;
 
-export async function launchTmux(
-	target: TrackerManagedTarget,
-	receipt: TrackerManagedReceipt,
-	execution: TrackerManagedExec,
-	signal: AbortSignal
-): Promise<string | undefined> {
-	const { tmux, trackerBin, trackerExecutable, worktree, windowName } = target;
-	const { node, itemId, runId, token } = receipt;
-	const { script, command, clientPath, guestAuthFile } = execution;
-	const environment = [
+function launchEnvironment(
+	{ tmux, trackerBin, trackerExecutable }: TrackerManagedTarget,
+	{ node, itemId, runId, tmux: pane }: TrackerManagedReceipt,
+	{ command, clientPath, guestAuthFile, cpuBudget }: TrackerManagedExec
+) {
+	return [
 		...Object.entries(trackerManagedProviderEnvironment(trackerBin, command)).map(
 			([name, value]) => `${name}=${value}`
 		),
@@ -72,10 +69,25 @@ export async function launchTmux(
 		`TRACKER_RUN_ID=${runId}`,
 		`HARNESS_TRACKER_TMUX=${tmux}`,
 		`HARNESS_TRACKER_SOCKET=${trackerSocket(node)}`,
-		`HARNESS_TRACKER_PANE=${receipt.tmux}`,
+		`HARNESS_TRACKER_PANE=${pane}`,
 		...(command.image ? [`HARNESS_TASK_DOCKER_IMAGE=${command.image}`] : []),
-		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : [])
+		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : []),
+		...(cpuBudget ? trackerCpuBudgetEnvironment(cpuBudget) : [])
 	];
+}
+
+export async function launchTmux(
+	target: TrackerManagedTarget,
+	receipt: TrackerManagedReceipt,
+	execution: TrackerManagedExec,
+	signal: AbortSignal
+): Promise<string | undefined> {
+	const { tmux, worktree, windowName } = target;
+	const { node, token } = receipt;
+	const { script, command, cpuBudget } = execution;
+	const environment = launchEnvironment(target, receipt, execution);
+	// Outside the home project, lower priority lets Harbor win contention.
+	const priority = cpuBudget ? ['/usr/bin/nice', '-n', '10'] : [];
 	const created = await runTrackerHostCommand(
 		tmux,
 		[
@@ -99,6 +111,7 @@ export async function launchTmux(
 			script,
 			dirname(script),
 			token,
+			...priority,
 			...command.argv
 		],
 		signal

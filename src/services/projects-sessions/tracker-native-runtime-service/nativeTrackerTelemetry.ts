@@ -3,6 +3,11 @@ import type { TrackerRunReadRepository } from '../../../repositories/projects-se
 import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import type { TrackerMachineService } from '../TrackerMachineService';
+import type { TrackerFleetReport } from '../TrackerMachineService.types';
+import { hubTelemetryTick } from './trackerFleetTelemetry';
+import { spokeReport } from './trackerSpokeTelemetry';
+import type { TrackerTelemetryParts } from './nativeTrackerTelemetry.types';
 import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
 import { localRunnerStatus, machineReport } from './nativeTrackerLinks';
 
@@ -10,19 +15,24 @@ export function composeTrackerTelemetry(
 	store: TrackerPersistenceService,
 	runs: TrackerRunReadRepository,
 	options: TrackerNativeRuntimeOptions,
-	scheduler?: TrackerDispatchSchedulerService
+	parts: TrackerTelemetryParts
 ) {
-	const machines = options.syncResponder?.machines;
-	if (machines) return { tick: undefined, samples: () => machines.latestSamples() };
+	const { machines, fleet, scheduler } = parts;
+	if (fleet)
+		return {
+			tick: hubTelemetryTick({ fleet, machines, runs, scheduler, options }),
+			samples: () => fleet.latestSamples()
+		};
 	const { links = [] } = options;
 	const hub = links.find((entry) => (entry.link ?? 'hub') === 'hub');
 	if (!hub) return { tick: undefined, samples: undefined };
 	let samples: readonly unknown[] = [];
 	const exchanges = links.map((link) =>
-		telemetryExchange({ store, runs, options, scheduler, link }, (received) => {
+		telemetryExchange({ store, runs, options, machines, scheduler, link }, (received) => {
 			// Only the hub has the fleet view; a Mac peer answers with run history alone.
 			if (link !== hub) return;
 			samples = received;
+			machines.ingest(received as readonly TrackerFleetReport[]);
 			options.dispatch?.telemetry?.onMachines?.(samples);
 		})
 	);
@@ -40,12 +50,14 @@ function telemetryExchange(
 		store,
 		runs,
 		options,
+		machines,
 		scheduler,
 		link
 	}: {
 		store: TrackerPersistenceService;
 		runs: TrackerRunReadRepository;
 		options: TrackerNativeRuntimeOptions;
+		machines: TrackerMachineService;
 		scheduler?: TrackerDispatchSchedulerService;
 		link: NonNullable<TrackerNativeRuntimeOptions['links']>[number];
 	},
@@ -65,7 +77,9 @@ function telemetryExchange(
 			store,
 			transport: (request) => link.transport(request, signal)
 		});
-		const sample = options.dispatch?.telemetry?.sample() ?? machineReport(runner, active, now());
+		const sample =
+			options.dispatch?.telemetry?.sample() ??
+			(await spokeReport(machines, machineReport(runner, active, now())));
 		const received = await client.exchangeMachine(sample, runs.exportLocal());
 		signal.throwIfAborted();
 		if (received.run_history) runs.importLinkHistory(received.run_history);

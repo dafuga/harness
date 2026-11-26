@@ -29,6 +29,8 @@ export async function proveTrackerRehearsal(root: string, home: string) {
 		]);
 		const ready = JSON.parse(line);
 		expect(ready).toMatchObject({ node: 'fixture-mac', pid: candidate.pid });
+		// The assigned port must be one `--port` accepts; Linux assigns ephemeral ports below this.
+		expect(ready.port).toBeGreaterThanOrEqual(49152);
 		const base = `http://127.0.0.1:${ready.port}`;
 		await expectTrackerRehearsalStatus(base, candidate.pid!);
 		const duplicate = await runHarness([...args, '--port', String(ready.port)], home, false, env);

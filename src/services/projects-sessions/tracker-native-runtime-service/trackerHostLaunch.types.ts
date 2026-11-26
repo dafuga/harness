@@ -36,6 +36,8 @@ export type TrackerHostStartRequest = TrackerHostTarget & {
 	brief: string;
 	backend: 'native' | 'docker';
 	queuedAt: number;
+	/** Cores the session must stay within; it also runs at lower priority. */
+	cpuBudget?: number;
 	/** "Project: title" for the tmux window and Claude Remote Control. */
 	sessionName?: string;
 };

@@ -40,6 +40,8 @@ const checkpoint = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/);
 const launchPolicy = {
 	maxConcurrent: z.int().positive().max(500).optional(),
 	legacyRunDirectory: absolutePath.optional(),
+	minAvailableMemMB: z.int().positive().optional(),
+	minFreeDiskGB: z.number().positive().optional(),
 	repositories: z.record(
 		z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/),
 		z.strictObject({

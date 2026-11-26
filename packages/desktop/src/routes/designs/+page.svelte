@@ -102,7 +102,7 @@
 	}
 	h1 {
 		margin: 0;
-		font-size: var(--hx-type-size-md, 1.1rem);
+		font-size: var(--hx-type-size-lg);
 	}
 	a,
 	span {
@@ -116,9 +116,9 @@
 	}
 	button {
 		min-height: 36px;
-		padding: 0 10px;
+		padding: 0 var(--hx-space-10);
 		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
-		border-radius: 8px;
+		border-radius: var(--hx-radius-small);
 		background: var(--hx-color-surface-raised);
 		color: var(--hx-color-text);
 		font: inherit;

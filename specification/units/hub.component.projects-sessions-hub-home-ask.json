@@ -54,7 +54,7 @@
 				"type": "boolean",
 				"required": false,
 				"default": false,
-				"description": "True on a Home needs-you row, which already shows who asks and the question, so only the choices are drawn."
+				"description": "True on a Home row, which already shows who asks and the question, so the card omits them."
 			}
 		],
 		"outputs": [

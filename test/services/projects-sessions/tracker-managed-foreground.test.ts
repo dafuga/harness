@@ -15,6 +15,7 @@ import { trackerNodeRuntime } from '../../../src/services/projects-sessions/trac
 import { withTempRepo } from '../../support/temporary';
 import type { TemporaryRepo } from '../../support/temporary.types';
 import { measureWorkload } from '../../support/measureWorkload';
+import { onIdleHost } from '../../support/trackerHostResourceFixture';
 import {
 	managedFixtureBindings,
 	managedForegroundConfig,
@@ -71,14 +72,16 @@ async function proveManagedForeground({ root, git }: TemporaryRepo) {
 	const signal = new AbortController().signal;
 	try {
 		const runtime = new TrackerNativeRuntimeService(database, {
-			...trackerNodeRuntime(managedForegroundConfig(root, config), (scope) => {
-				expect(scope).toMatchObject({ itemId, apiPort: 49281 });
-				const run = database
-					.prepare('SELECT auto_token, attempt FROM runs WHERE id = ?')
-					.get(scope.runId);
-				expect(JSON.parse(scope.key)).toEqual([itemId, run?.auto_token, run?.attempt]);
-				writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
-			}),
+			...onIdleHost(
+				trackerNodeRuntime(managedForegroundConfig(root, config), (scope) => {
+					expect(scope).toMatchObject({ itemId, apiPort: 49281 });
+					const run = database
+						.prepare('SELECT auto_token, attempt FROM runs WHERE id = ?')
+						.get(scope.runId);
+					expect(JSON.parse(scope.key)).toEqual([itemId, run?.auto_token, run?.attempt]);
+					writeFileSync(scope.path, 'synthetic host-signer fixture', { flag: 'wx', mode: 0o600 });
+				})
+			),
 			now: () => Date.now()
 		});
 		runtime.store.appendLocal({
@@ -125,7 +128,7 @@ async function proveNativeUsage({ root, git }: TemporaryRepo, competing: boolean
 	try {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
-			trackerNodeRuntime(managedForegroundConfig(root, config, 'macos', ops))
+			onIdleHost(trackerNodeRuntime(managedForegroundConfig(root, config, 'macos', ops)))
 		);
 		runtime.store.appendLocal({
 			itemId,

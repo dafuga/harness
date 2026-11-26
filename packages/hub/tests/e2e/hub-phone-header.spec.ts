@@ -4,13 +4,15 @@ import { hostedFixture } from './hosted-fixture';
 /**
  * The hosted header at phone width: the logo, the page title and one Menu button on a single row
  * of at most 64px. The account links open in the shared Modal as rows; wider screens keep them
- * in the header.
+ * in the header. The row holds when a device's fallback font is wider than the one measured here.
  */
 const phone = { width: 390, height: 844 };
 const tablet = { width: 834, height: 1112 };
 const headerMaximum = 64;
 const touchTarget = 44;
 const accountLinks = ['Projects', 'Devices', 'Download'] as const;
+/** Extra tracking widens the header text alike on every host, whatever fonts it has installed. */
+const wideText = '.hub-page .topbar * { letter-spacing: 1.5px !important }';
 test.setTimeout(60_000);
 
 async function box(locator: Locator) {
@@ -26,12 +28,7 @@ async function overflow(page: Page) {
 	expect(extra).toBe(0);
 }
 
-test('the phone header is one row with a Menu button that holds the account links', async ({
-	page
-}) => {
-	await page.setViewportSize(phone);
-	await hostedFixture(page);
-	await page.goto('/projects');
+async function expectOneRow(page: Page) {
 	const header = page.locator('.hub-page .topbar');
 	const brand = page.getByRole('link', { name: 'Harness', exact: false }).first();
 	const title = page.locator('.hub-title');
@@ -48,6 +45,20 @@ test('the phone header is one row with a Menu button that holds the account link
 	);
 	for (const centre of centres) expect(Math.abs(centre - centres[0])).toBeLessThanOrEqual(2);
 	await overflow(page);
+}
+
+test('the phone header is one row with a Menu button that holds the account links', async ({
+	page
+}) => {
+	await page.setViewportSize(phone);
+	await hostedFixture(page);
+	await page.goto('/projects');
+	const menu = page.getByRole('button', { name: 'Menu', exact: true });
+	await expectOneRow(page);
+	const cut = await page
+		.locator('.hub-title')
+		.evaluate((title) => title.scrollWidth - title.clientWidth);
+	expect(cut, 'The title is whole at the usual text width').toBeLessThanOrEqual(0);
 
 	await menu.click();
 	const dialog = page.getByRole('dialog', { name: 'Menu', exact: true });
@@ -62,6 +73,16 @@ test('the phone header is one row with a Menu button that holds the account link
 	expect((await box(signOut)).height).toBeGreaterThanOrEqual(touchTarget);
 	await expect(dialog.getByText('Ada Example', { exact: true })).toBeVisible();
 	await overflow(page);
+});
+
+test('wider header text stays on one phone row', async ({ page }) => {
+	await page.setViewportSize(phone);
+	await hostedFixture(page);
+	await page.goto('/projects');
+	await page.addStyleTag({ content: wideText });
+	await expectOneRow(page);
+	const menu = await box(page.getByRole('button', { name: 'Menu', exact: true }));
+	expect(menu.height).toBeGreaterThanOrEqual(touchTarget);
 });
 
 test('wider screens keep the account links in the header and show no Menu button', async ({

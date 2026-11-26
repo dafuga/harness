@@ -59,12 +59,7 @@ async function dispatchHome(
 
 async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: string) {
 	if (url.pathname === root && request.method === 'GET' && !url.search)
-		return json({
-			granted: true,
-			snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null,
-			controlled: deps.bucket ? await readControlled(deps.bucket, actor) : [],
-			...(deps.accounts && { live: true })
-		});
+		return await browserSnapshot(deps, actor);
 	if (url.pathname === chat) return await browserChat(request, url, deps, actor);
 	if (url.pathname === documentPath && request.method === 'GET') {
 		const found = await browseHomeDocument(url, deps, actor);
@@ -72,6 +67,15 @@ async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: st
 	}
 	if (url.pathname === agentsPath) return await browserAgents(request, url, deps, actor);
 	return json({ error: 'not-found' }, 404);
+}
+
+async function browserSnapshot(deps: HomeDeps, actor: string) {
+	return json({
+		granted: true,
+		snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null,
+		controlled: deps.bucket ? await readControlled(deps.bucket, actor) : [],
+		...(deps.accounts && { live: true })
+	});
 }
 
 async function nativeHome(
