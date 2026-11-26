@@ -1,0 +1,80 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-backup-service-tracker-backup-clock",
+	"uid": "u_bkdzehyzad",
+	"kind": "service",
+	"title": "trackerBackupClock",
+	"responsibility": "Owns the trackerBackupClock service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-backup-service/trackerBackupClock.ts"],
+		"symbols": ["trackerBackupClock"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerBackupClock.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerBackupClock.timeZone",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerBackupClock",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerBackupClock",
+				"inputs": [
+					{
+						"name": "trackerBackupClock.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "trackerBackupClock.timeZone",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBackupClock",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-backup-service/trackerBackupClock.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-backup-service/trackerBackupClock.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -1,0 +1,252 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.projects-sessions-tracker-job-process",
+	"uid": "u_h34aydgrjc",
+	"kind": "adapter",
+	"title": "TrackerJobProcessAdapter",
+	"responsibility": "Owns the TrackerJobProcessAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/projects-sessions/TrackerJobProcessAdapter.ts"],
+		"symbols": [
+			"TrackerJobProcessAdapter",
+			"TrackerJobProcessAdapter.constructor",
+			"TrackerJobProcessAdapter.busy",
+			"TrackerJobProcessAdapter.running",
+			"TrackerJobProcessAdapter.start",
+			"TrackerJobProcessAdapter.observe",
+			"TrackerJobProcessAdapter.test",
+			"TrackerJobProcessAdapter.drain"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerJobProcessAdapter.constructor.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerJobProcessAdapter.running.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerJobProcessAdapter.start.request",
+				"type": "TrackerRecurringJobRequest",
+				"required": true
+			},
+			{
+				"name": "TrackerJobProcessAdapter.start.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "TrackerJobProcessAdapter.observe.request",
+				"type": "TrackerRecurringJobRequest",
+				"required": true
+			},
+			{
+				"name": "TrackerJobProcessAdapter.test.request",
+				"type": "Omit<TrackerRecurringJobRequest, 'key'>",
+				"required": true
+			},
+			{
+				"name": "TrackerJobProcessAdapter.test.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerJobProcessAdapter.busy",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.running",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.start",
+				"type": "Promise<undefined>"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.observe",
+				"type": "Promise<TrackerRecurringJobReceipt | undefined>"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.test",
+				"type": "Promise<TrackerRecurringJobReceipt>"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.drain",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerJobProcessAdapter.busy",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerJobProcessAdapter.busy",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.running",
+				"inputs": [
+					{
+						"name": "TrackerJobProcessAdapter.running.itemId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerJobProcessAdapter.running",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.start",
+				"inputs": [
+					{
+						"name": "TrackerJobProcessAdapter.start.request",
+						"type": "TrackerRecurringJobRequest",
+						"required": true
+					},
+					{
+						"name": "TrackerJobProcessAdapter.start.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerJobProcessAdapter.start",
+						"type": "Promise<undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.observe",
+				"inputs": [
+					{
+						"name": "TrackerJobProcessAdapter.observe.request",
+						"type": "TrackerRecurringJobRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerJobProcessAdapter.observe",
+						"type": "Promise<TrackerRecurringJobReceipt | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.test",
+				"inputs": [
+					{
+						"name": "TrackerJobProcessAdapter.test.request",
+						"type": "Omit<TrackerRecurringJobRequest, 'key'>",
+						"required": true
+					},
+					{
+						"name": "TrackerJobProcessAdapter.test.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerJobProcessAdapter.test",
+						"type": "Promise<TrackerRecurringJobReceipt>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerJobProcessAdapter.drain",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerJobProcessAdapter.drain",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerJobProcessAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerJobProcessAdapter.constructor.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerJobProcessAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-job-process-adapter-run-tracker-job-command",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-job-process-adapter-tracker-job-receipts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-recurring",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/projects-sessions/TrackerJobProcessAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/projects-sessions/TrackerJobProcessAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
