@@ -97,6 +97,8 @@ for (const size of ['desktop', 'phone'] as const) {
 		const busy = 'Chief of Staff channel: Digest session is not idle';
 		chief.messages = [mine('Ship the hub release', 'stored', busy)];
 		await expect(sent).toContainText(`Not delivered yet: ${busy}`, { timeout: 15_000 });
+		await box.scrollIntoViewIfNeeded();
+		await shot(page, `hub-cos-chat-waiting-${size}`);
 		chief.messages = [mine('Ship the hub release', 'delivered')];
 		await expect(sent).toContainText('Delivered to Chief of Staff', { timeout: 15_000 });
 		chief.messages = [

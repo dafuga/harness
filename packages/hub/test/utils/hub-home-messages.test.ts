@@ -8,6 +8,7 @@ import { homeChatInput } from '../../../reports/src/lib/projects-sessions/hub-ho
 import type { HomeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
 import { messageStatusText } from '../../src/components/projects-sessions/hubHomePresentation';
+import { composerFeedback } from '../../src/components/projects-sessions/hubHomeMessages';
 import {
 	formatHubDeliveredNote,
 	formatHubMessageNote,
@@ -98,6 +99,15 @@ test("Chief of Staff's thread is its Hub chat, with each message's receipt and k
 	expect(messageStatusText(answered, 'Chief of Staff')).toBe('Replied');
 	expect(messageStatusText(waiting, 'Chief of Staff')).toBe(`Not delivered yet: ${busy}`);
 	expect(messageStatusText({ status: 'stored' }, 'Chief of Staff')).toBe('Stored in Tracker');
+	const sent = { id: 'send-1', status: 'sent' as const };
+	const toChief = { ...message({}), kind: 'message' as const };
+	expect(composerFeedback(toChief, sent, 'Chief of Staff')).toBe(
+		'Stored in Tracker; it goes to Chief of Staff through its Tracker channel.'
+	);
+	const toRun = { ...toChief, agentId: 'mine', itemId: 'minework23', runId: 'mb2#104' };
+	expect(composerFeedback(toRun, sent, 'mine')).toBe(
+		'Stored in Tracker; it goes to mine at its next empty prompt.'
+	);
 	expect(
 		messageStatusText(
 			{ status: 'refused', reason: 'Chief of Staff channel not configured' },

@@ -25,9 +25,10 @@ export function composerFeedback(
 ): string {
 	if (receipt.status === 'queued') return 'Queued for Tracker';
 	if (receipt.status !== 'sent') return 'Tracker did not accept the message.';
-	return message.kind === 'message'
-		? `Stored in Tracker; it goes to ${name} at its next empty prompt.`
-		: 'Sent to Tracker';
+	if (message.kind !== 'message') return 'Sent to Tracker';
+	return message.agentId === 'cos'
+		? `Stored in Tracker; it goes to ${name} through its Tracker channel.`
+		: `Stored in Tracker; it goes to ${name} at its next empty prompt.`;
 }
 
 /** A send of this chat that the Tracker's thread does not show yet. */
