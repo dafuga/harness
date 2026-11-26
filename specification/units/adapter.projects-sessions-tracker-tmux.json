@@ -11,6 +11,7 @@
 		"source": [
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/submitClaudeTrackerDraft.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
@@ -36,6 +37,7 @@
 			"TrackerTmuxPane",
 			"TrackerTmuxNudge",
 			"TrackerTmuxClose",
+			"submitClaudeTrackerDraft",
 			"trackerManagedCodexUsage",
 			"CodexCounters",
 			"trackerManagedHostLauncher",
@@ -136,6 +138,21 @@
 			},
 			{
 				"name": "TrackerTmuxAdapter.closeIdle.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "submitClaudeTrackerDraft.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "submitClaudeTrackerDraft.effects",
+				"type": "{ capture: () => Promise<TrackerTmuxPane | undefined>; submit: (draft: TrackerTmuxPane) => Promise<boolean>; working: (pane: TrackerTmuxPane['pane']) => boolean; }",
+				"required": true
+			},
+			{
+				"name": "submitClaudeTrackerDraft.signal",
 				"type": "AbortSignal",
 				"required": true
 			},
@@ -506,6 +523,12 @@
 				"description": "Control-character-free message already checked by the caller."
 			},
 			{
+				"name": "trackerTmuxKeys.enter",
+				"type": "boolean",
+				"required": false,
+				"default": true
+			},
+			{
 				"name": "isTrackerWorkerClient.database",
 				"type": "string",
 				"required": true
@@ -741,6 +764,34 @@
 				"outputs": [
 					{
 						"name": "TrackerTmuxAdapter.closeIdle",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "submitClaudeTrackerDraft",
+				"inputs": [
+					{
+						"name": "submitClaudeTrackerDraft.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "submitClaudeTrackerDraft.effects",
+						"type": "{ capture: () => Promise<TrackerTmuxPane | undefined>; submit: (draft: TrackerTmuxPane) => Promise<boolean>; working: (pane: TrackerTmuxPane['pane']) => boolean; }",
+						"required": true
+					},
+					{
+						"name": "submitClaudeTrackerDraft.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "submitClaudeTrackerDraft",
 						"type": "Promise<boolean>"
 					}
 				],
@@ -1484,6 +1535,12 @@
 						"type": "string",
 						"required": false,
 						"description": "Control-character-free message already checked by the caller."
+					},
+					{
+						"name": "trackerTmuxKeys.enter",
+						"type": "boolean",
+						"required": false,
+						"default": true
 					}
 				],
 				"outputs": [
