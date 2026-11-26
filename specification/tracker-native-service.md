@@ -120,9 +120,12 @@ operator verifies the stopped database and chooses a rollback.
   delivery receipts before enabling sending. Shell command targets and
   legacy custom webhook headers require separate integration.
 - **30-minute digest.** The hub's `webhook` target gets updates and new
-  needs-Daniel asks as one batch, at most once every 30 minutes. Asks hold
-  from 22:00 to 08:00 Lisbon time. Ask escalations and explicit reminders
-  keep their own timing. A target is a webhook, such as the Grok Bot Chief
+  needs-Daniel asks as one batch, at most once every 30 minutes. From
+  22:00 to 08:00 Lisbon time the node holds digests (including done and
+  blocked lines), due events and due reminders. A forced catch-up on resume
+  still sends. Agent callbacks, routed done or changed events and recurring
+  wake-ups are not held. Ask escalations and explicit reminders keep their
+  own timing. A target is a webhook, such as the Grok Bot Chief
   of Staff, or a local tmux session running Claude Code or Codex:
 
   ```json

@@ -9,6 +9,7 @@ import { readPrivateText } from './trackerNodeConfig';
 import type { TrackerNodeConfig, TrackerNodeTarget } from './trackerNodeConfig.types';
 import { trackerDigestSession } from './trackerDigestSession';
 import { allowedTrackerTransport } from './trackerUpstreamLink';
+import { askQuietHours } from '../tracker-notification-service/notificationRules';
 import { TrackerNodeTransportError } from './TrackerNodeTransportError';
 
 const defaultSuggestions = ['play guitar', 'play video games', 'practice a language', 'just relax'];
@@ -38,6 +39,7 @@ export function trackerNodeNotifications(
 	const { chiefOfStaff, itemCallbacks = [] } = notifications;
 	if (chiefOfStaff) http(chiefOfStaff);
 	return {
+		quietHours: askQuietHours,
 		legacyDestinations: { urls: new Map(itemCallbacks.map((id) => [http(id).raw, id])) },
 		chiefOfStaff: chiefOfStaff ? destination(chiefOfStaff) : undefined,
 		webhook: digestWebhook(notifications, destination),
