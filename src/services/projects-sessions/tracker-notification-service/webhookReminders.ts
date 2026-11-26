@@ -1,7 +1,5 @@
 // @harness-uid u_vqnqshfas2
-import { nextReminderAt } from '../../../helpers/attention-timing/nextReminderAt';
 import { nextReminderSlotAt } from '../../../helpers/attention-timing/nextReminderSlotAt';
-import { quietHourBoundary } from '../../../helpers/attention-timing/quietHourBoundary';
 import type {
 	TrackerNotificationItem,
 	TrackerNotificationOptions
@@ -9,7 +7,6 @@ import type {
 import type { FlagRow, TrackerNotificationState } from './notificationState.types';
 import {
 	activeItem,
-	askQuietHours,
 	clockTime,
 	dueTime,
 	flagged,
@@ -21,13 +18,9 @@ import {
 import { enqueueEvent, itemEvent } from './webhookEvents';
 
 function nextEscalation(from: number, options: TrackerNotificationOptions): number {
-	const { quietHours, source } = options;
 	const slots = options.webhook?.reminderTimes;
-	if (slots?.length) {
-		const slot = nextReminderSlotAt(from, slots, quietHours?.tz ?? source.tz);
-		return quietHourBoundary(slot, quietHours);
-	}
-	return nextReminderAt(from, intervalMs(options.reminderIntervalMinutes, 120), askQuietHours);
+	if (slots?.length) return nextReminderSlotAt(from, slots, options.source.tz);
+	return from + intervalMs(options.reminderIntervalMinutes, 120);
 }
 
 function firstEscalation(
@@ -41,10 +34,8 @@ function firstEscalation(
 		item.status === 'blocked' && status === flag
 			? state.outbox.get(`blocked|${item.id}|${status}`)
 			: undefined;
-	const initial = quietHourBoundary(now, askQuietHours);
-	if (!blocked) return { nextAt: initial, escalation: 0 };
-	const firstAt =
-		blocked.sentAt ?? quietHourBoundary(Math.max(blocked.nextAt, now), options.quietHours);
+	if (!blocked) return { nextAt: now, escalation: 0 };
+	const firstAt = blocked.sentAt ?? Math.max(blocked.nextAt, now);
 	return { nextAt: nextEscalation(firstAt, options), escalation: 1 };
 }
 
@@ -89,11 +80,6 @@ export function scanWebhookFlags(
 	});
 	const due = pending.filter((row) => row.nextAt <= now);
 	if (!due.length) return;
-	const release = quietHourBoundary(now, askQuietHours);
-	if (release > now) {
-		for (const row of due) row.nextAt = release;
-		return;
-	}
 	const grace = options.webhook?.reminderTimes?.length
 		? (options.webhook.coalesceMinutes ?? 10) * minute
 		: 0;
@@ -141,7 +127,6 @@ export function scanWebhookDue(
 	now: number
 ): void {
 	const { source } = options;
-	const nextAt = quietHourBoundary(now, options.quietHours);
 	for (const item of source.items()) {
 		if (
 			!activeItem(item) ||
@@ -155,6 +140,6 @@ export function scanWebhookDue(
 		const key = `due|${item.id}|${item.clocks.due}`;
 		if (state.outbox.has(key)) continue;
 		const event = itemEvent(item, 'due', { key, node: source.node, now }, { at });
-		enqueueEvent(state, event, { key, now, nextAt });
+		enqueueEvent(state, event, { key, now });
 	}
 }

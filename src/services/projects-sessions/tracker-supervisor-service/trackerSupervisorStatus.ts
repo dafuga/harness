@@ -44,7 +44,7 @@ function trackerStatusDefaults(runtime: TrackerNativeRuntimeService, hub: boolea
 		jobs: trackerJobsStatus(runtime),
 		adapters: runtime.adapter?.status() ?? { runner: null, active: false },
 		autolaunch: trackerAutolaunchStatus(runtime),
-		quiet_hours: notification?.quietHours ?? null
+		quiet_hours: null
 	};
 }
 
