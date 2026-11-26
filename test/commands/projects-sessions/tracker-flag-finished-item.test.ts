@@ -4,6 +4,7 @@ import { withTempDir } from '../../support/temporary';
 import { trackerNeedsYouViews } from '../../support/trackerFinishedFlagViews';
 import { notificationSink } from '../../support/trackerNodeAssertions';
 import * as node from '../../support/trackerNodeProcess';
+import type { TrackerNodeFixture } from '../../support/trackerNodeProcess.types';
 
 const question = 'Sample service is down again. Restart it?';
 const flag = ['--option', 'Restart=A session restarts it.', '--option', 'Wait=Keep watching.'];
@@ -32,9 +33,7 @@ test('a structured flag on a done item is shown in every needs-you view until an
 	});
 }, 60_000);
 
-type Hub = Parameters<typeof trackerNeedsYouViews>[0];
-
-async function proveShownUntilAnswered(hub: Hub, delivered: () => string) {
+async function proveShownUntilAnswered(hub: TrackerNodeFixture, delivered: () => string) {
 	const { id } = await node.fixtureTrackerJson(hub, [
 		'add',
 		'Sample service watch',

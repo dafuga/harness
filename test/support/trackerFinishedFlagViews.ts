@@ -25,8 +25,8 @@ export async function trackerNeedsYouViews(hub: TrackerNodeFixture, id: string) 
 
 /** What the Hub and the Mac app build from the same loopback reads they make in production. */
 async function appViews({ config }: TrackerNodeFixture, id: string) {
-	const local: typeof fetch = (url, init) =>
-		fetch(String(url).replace(loopback(7701), loopback(config.apiPort)), init);
+	const local = ((url: string, init?: RequestInit) =>
+		fetch(url.replace(loopback(7701), loopback(config.apiPort)), init)) as typeof fetch;
 	const home = buildHomeSnapshot(
 		await readTrackerSources(local, true),
 		{ routines: null, quota: null },
@@ -36,7 +36,7 @@ async function appViews({ config }: TrackerNodeFixture, id: string) {
 	const item = ((await reply.json()) as TrackerItem[]).find((row) => row.id === id);
 	const projects = home.overview.status === 'ready' ? home.overview.projects : [];
 	return {
-		hubOpenAsks: home.openAsks.some((ask) => ask.itemId === id),
+		hubOpenAsks: home.openAsks!.some((ask) => ask.itemId === id),
 		hubProjectNeedsYou: projects.some((project) => project.state === 'needs-you'),
 		macInbox: Boolean(item) && projectRow(item!).bucket === 'needs-you'
 	};
