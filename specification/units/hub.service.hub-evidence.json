@@ -484,7 +484,7 @@
 				"outputs": [
 					{
 						"name": "HubEvidenceService.artifact",
-						"type": "Promise<import('../../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types').EvidenceArtifactResult>",
+						"type": "Promise<EvidenceArtifactResult>",
 						"description": "The resolved EvidenceArtifactResult for one listed capture: `bytes` (the stored bytes as a Uint8Array), `mediaType` (what the capture is served as, decided from its kind and bytes) and `sha256` (the hash the capture states)."
 					}
 				],

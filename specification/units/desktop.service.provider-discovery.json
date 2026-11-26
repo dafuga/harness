@@ -125,7 +125,7 @@
 				"outputs": [
 					{
 						"name": "ProviderDiscoveryService.list",
-						"type": "Promise<import(\"../../../models/development-tooling/Desktop.types\").ProviderState[]>",
+						"type": "Promise<ProviderState[]>",
 						"description": "Resolves to an array of each configured runner's ProviderState, in the order returned by Object.values(this.runners). The array length follows the configured record, and any rejected discover() call rejects the list operation.",
 						"examples": [
 							[

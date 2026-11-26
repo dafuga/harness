@@ -14,12 +14,13 @@ import {
 	parse
 } from '../../planning-collaboration/parseCollaborationInput';
 import { currentProject, now, transaction } from '../currentProject';
+import type { CommittedThread } from '../../../models/planning-collaboration/Collaboration.types';
 
 export async function addComment(
 	deps: CollaborationDependencies,
 	actor: Actor,
 	input: AddCommentInput
-) {
+): Promise<CommittedThread> {
 	const verified = parse(actorSchema, actor);
 	const value = parse(
 		z.strictObject({

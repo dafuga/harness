@@ -132,7 +132,7 @@
 				"outputs": [
 					{
 						"name": "ConsoleAgentService.open",
-						"type": "Promise<import('../../../../../desktop/src/models/development-tooling/Desktop.types').ProjectSnapshot>",
+						"type": "Promise<ProjectSnapshot>",
 						"description": "The local project snapshot returned by opening reportSite().root, used to initialize the chat session. Its value is forwarded from ProjectSessionService.open without reshaping."
 					}
 				],
@@ -290,6 +290,11 @@
 		},
 		{
 			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
 		},

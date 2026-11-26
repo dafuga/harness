@@ -15,6 +15,7 @@ import { hubFail } from '../../../../../utils/development-tooling/hubJson';
 import { hubEvidenceOrigin } from '../../../../../utils/verification-evidence/hubEvidenceViews';
 import { hubEvidenceContext, hubEvidencePins, hubEvidenceScope } from './hubEvidenceScope';
 import { type HubEvidenceDependencies } from '../../../../../utils/networking-security/hubEvidenceScope';
+import type { EvidenceArtifactResult } from '../../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 
 /** Authenticated request-scoped GitHub readers. Kept answers are disposable and principal scoped. */
 export class HubEvidenceService {
@@ -41,7 +42,11 @@ export class HubEvidenceService {
 		await this.authorize(actor, projectId, context.repository);
 		return structuredClone(answer);
 	}
-	async artifact(actor: Actor, projectId: string, input: EvidenceArtifactQuery) {
+	async artifact(
+		actor: Actor,
+		projectId: string,
+		input: EvidenceArtifactQuery
+	): Promise<EvidenceArtifactResult> {
 		const query = {
 			...evidencePayload('evidence:artifact', input as unknown as Record<string, unknown>),
 			projectId
