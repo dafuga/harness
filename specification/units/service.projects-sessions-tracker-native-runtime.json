@@ -51,8 +51,13 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchPort.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunchSchema.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostReport.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunEvents.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostRunner.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostVerification.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostVerification.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostVerifyPolicy.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostVerifyPolicy.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdog.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogAlerts.ts",
@@ -164,6 +169,8 @@
 			"TrackerHostStartReply",
 			"TrackerHostStartRequest",
 			"TrackerHostLaunchPort",
+			"TrackerVerifyResult",
+			"TrackerHostVerifyCommand",
 			"TrackerHostRunnerOptions",
 			"CompletedTrackerPaneRun",
 			"TrackerSessionSweep",
@@ -176,8 +183,17 @@
 			"hostSession",
 			"hostInventory",
 			"hostStart",
+			"trackerHostReport",
+			"withSourceRepo",
 			"recordedHostEvent",
 			"trackerHostRunner",
+			"trackerHostVerification",
+			"MonitorEvent",
+			"VerifiedEvent",
+			"VerifyJob",
+			"hostVerify",
+			"noVerify",
+			"RouteSet",
 			"trackerHostWatchdog",
 			"configuredHostWatchdog",
 			"TrackerWatchdogAlerts",
@@ -780,6 +796,41 @@
 				"required": true
 			},
 			{
+				"name": "trackerHostReport.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.driver",
+				"type": "TrackerHostLaunchPort",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.routeFor",
+				"type": "TrackerHostRoute",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.now",
+				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "trackerHostReport.verification",
+				"type": "ReturnType<typeof trackerHostVerification>",
+				"required": true
+			},
+			{
+				"name": "withSourceRepo.event",
+				"type": "TrackerDispatchEvent | undefined",
+				"required": true
+			},
+			{
+				"name": "withSourceRepo.route",
+				"type": "TrackerHostTarget | false | undefined",
+				"required": true
+			},
+			{
 				"name": "recordedHostEvent.run",
 				"type": "TrackerRunReceipt",
 				"required": true
@@ -829,6 +880,16 @@
 				"type": "TrackerHostRunnerOptions",
 				"required": false,
 				"default": {}
+			},
+			{
+				"name": "trackerHostVerification.driver",
+				"type": "TrackerHostLaunchPort",
+				"required": true
+			},
+			{
+				"name": "trackerHostVerification.commandFor",
+				"type": "TrackerHostVerifyCommand",
+				"required": false
 			},
 			{
 				"name": "trackerHostWatchdog.store",
@@ -2782,6 +2843,67 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "trackerHostReport",
+				"inputs": [
+					{
+						"name": "trackerHostReport.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerHostReport.driver",
+						"type": "TrackerHostLaunchPort",
+						"required": true
+					},
+					{
+						"name": "trackerHostReport.routeFor",
+						"type": "TrackerHostRoute",
+						"required": true
+					},
+					{
+						"name": "trackerHostReport.now",
+						"type": "() => number",
+						"required": true
+					},
+					{
+						"name": "trackerHostReport.verification",
+						"type": "ReturnType<typeof trackerHostVerification>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostReport",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withSourceRepo",
+				"inputs": [
+					{
+						"name": "withSourceRepo.event",
+						"type": "TrackerDispatchEvent | undefined",
+						"required": true
+					},
+					{
+						"name": "withSourceRepo.route",
+						"type": "TrackerHostTarget | false | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withSourceRepo",
+						"type": "TrackerDispatchEvent | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "recordedHostEvent",
 				"inputs": [
 					{
@@ -2857,6 +2979,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHostVerification",
+				"inputs": [
+					{
+						"name": "trackerHostVerification.driver",
+						"type": "TrackerHostLaunchPort",
+						"required": true
+					},
+					{
+						"name": "trackerHostVerification.commandFor",
+						"type": "TrackerHostVerifyCommand",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHostVerification",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "trackerHostWatchdog",
@@ -4218,6 +4363,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-automation-browser-rule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-done-proof-rule",
 			"via": "import",
 			"origin": "derived"
 		},
