@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-health-service-tracker-health-webhook-checks",
+	"uid": "u_jmy2diemrg",
+	"kind": "service",
+	"title": "trackerHealthWebhookChecks",
+	"responsibility": "Owns the trackerHealthWebhookChecks service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-health-service/trackerHealthWebhookChecks.ts"
+		],
+		"symbols": ["trackerHealthWebhookChecks"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerHealthWebhookChecks.status",
+				"type": "TrackerHealthStatus",
+				"required": true
+			},
+			{
+				"name": "trackerHealthWebhookChecks.state",
+				"type": "TrackerHealthState",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerHealthWebhookChecks",
+				"type": "TrackerHealthCheck[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerHealthWebhookChecks",
+				"inputs": [
+					{
+						"name": "trackerHealthWebhookChecks.status",
+						"type": "TrackerHealthStatus",
+						"required": true
+					},
+					{
+						"name": "trackerHealthWebhookChecks.state",
+						"type": "TrackerHealthState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHealthWebhookChecks",
+						"type": "TrackerHealthCheck[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-health",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-state",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-health-service/trackerHealthWebhookChecks.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-health-service/trackerHealthWebhookChecks.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
