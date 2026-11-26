@@ -64,7 +64,7 @@
 				"name": "hubMessageTargetLabel.target",
 				"type": "HubMessageTarget",
 				"required": true,
-				"description": "Chief of Staff's pane or one exact run (computer and run number)."
+				"description": "Chief of Staff (through its Tracker channel) or one exact run (computer and run number)."
 			},
 			{
 				"name": "formatHubMessageNote.messageId",
@@ -94,22 +94,25 @@
 				"name": "formatHubDeliveredNote.session",
 				"type": "string",
 				"required": true,
-				"description": "The tmux session the message was typed into."
+				"description": "The tmux session the message was typed into, or chief-of-staff-channel."
 			},
 			{
 				"name": "formatHubDeliveredNote.attempt",
 				"type": "string",
-				"required": false
+				"required": false,
+				"description": "The notification delivery's idempotency id, when the message went through Chief of Staff's channel."
 			},
 			{
 				"name": "formatHubWaitingNote.messageId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "The Hub message id."
 			},
 			{
 				"name": "formatHubWaitingNote.reason",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Why the channel could not take it yet; delivery keeps retrying."
 			},
 			{
 				"name": "formatHubRefusedNote.messageId",
@@ -361,7 +364,8 @@
 					{
 						"name": "formatHubDeliveredNote.attempt",
 						"type": "string",
-						"required": false
+						"required": false,
+						"description": "The notification delivery's idempotency id, when the message went through Chief of Staff's channel."
 					}
 				],
 				"outputs": [
@@ -380,12 +384,14 @@
 					{
 						"name": "formatHubWaitingNote.messageId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "The Hub message id."
 					},
 					{
 						"name": "formatHubWaitingNote.reason",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Why the channel could not take it yet; delivery keeps retrying."
 					}
 				],
 				"outputs": [

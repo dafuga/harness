@@ -48,7 +48,8 @@
 			{
 				"name": "TrackerInboxRows.onnotice",
 				"type": "(message: string) => void",
-				"required": true
+				"required": true,
+				"description": "Told what a row's answer did; the list shows it, and an answered row leaves the list."
 			},
 			{
 				"name": "TrackerInboxRows.rows",
