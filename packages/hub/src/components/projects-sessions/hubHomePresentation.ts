@@ -101,6 +101,14 @@ export function workSummary(work: ReturnType<typeof soonestWork>) {
 	return `${count(work.length, 'task')} across ${count(new Set(work.map((item) => item.project)).size, 'project')}`;
 }
 
+/** A numeric balance reads 23,725; small ones keep cents, and words such as Unlimited stay. */
+export function creditsLabel(balance: string) {
+	const amount = Number(balance);
+	if (!Number.isFinite(amount)) return balance;
+	const maximumFractionDigits = Math.abs(amount) < 100 ? 2 : 0;
+	return new Intl.NumberFormat('en-GB', { maximumFractionDigits }).format(amount);
+}
+
 export function warningFor(left: number) {
 	if (left < 10) return 'critical' as const;
 	if (left < 25) return 'low' as const;
