@@ -6,6 +6,7 @@ import { TrackerNativeRuntimeService } from '../../../src/services/projects-sess
 import { TrackerSyncAuthService } from '../../../src/services/networking-security/TrackerSyncAuthService';
 import { TrackerSpokeSyncService } from '../../../src/services/projects-sessions/TrackerSpokeSyncService';
 import { trackerFleetMachineStore } from '../../../src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks';
+import { trackerSupervisorStatus } from '../../../src/services/projects-sessions/tracker-supervisor-service/trackerSupervisorStatus';
 import { trackerHostLaunch } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { fixturePolicy, primary, secondary } from '../../support/trackerDispatcherFixture';
@@ -114,8 +115,36 @@ test('the hub authorizes an ordinary past-due task for the computer that owns it
 		await hub.scheduler!.tick(signal);
 		expect(hubStart).not.toHaveBeenCalled();
 		expect(peerStart.mock.calls.map(([{ run }]) => run.item_id)).toEqual(['mbtwo00001']);
+		await expectHubSeenBySpoke(hub, peer, link);
 	} finally {
 		hubDb.close();
 		peerDb.close();
 	}
 });
+
+/** A spoke describes the hub from the hub's own report, as it does any other computer. */
+async function expectHubSeenBySpoke(
+	hub: TrackerNativeRuntimeService,
+	peer: TrackerNativeRuntimeService,
+	link: TrackerSpokeSyncService
+) {
+	hub.store.appendLocal({
+		itemId: 'primary001',
+		fields: { ...task('primary001', '2026-11-26T09:00:00.000Z').fields, auto: 'primary001' }
+	});
+	await link.pull();
+	await peer.telemetry!(signal);
+	const request = new Request('http://tracker-fixture.invalid/items/primary001');
+	expect(await (await peer.items.handle(request)).json()).toMatchObject({
+		launch_status: { computer: primary, reason: `queued on ${primary}` }
+	});
+	expect(trackerSupervisorStatus(peer, new Date(noon).toISOString()).autolaunch.computers).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({
+				computer: primary,
+				state: 'polling',
+				last_tick_at: new Date(noon).toISOString()
+			})
+		])
+	);
+}

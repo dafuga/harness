@@ -24,6 +24,7 @@
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -41,8 +42,6 @@
 			.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)))
 	);
 	const level = $derived(warning ? warningFor(warning.limit.left) : null);
-	/** "Needs you" is the length of the very list Home shows. */
-	const attention = $derived(view.openAsks.length);
 	const sessions = $derived(
 		view.agents?.reduce((sum, agent) => sum + agentSessions(agent), 0) ?? 0
 	);
@@ -60,6 +59,7 @@
 {/snippet}
 
 <HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} />
+<HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard
 		section="agents"
@@ -113,12 +113,6 @@
 		{:else}
 			{@render empty('Agent activity appears when Tracker data is available.')}
 		{/if}
-		{#snippet badge()}
-			{#if attention}<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
-					><hx-span class="po-mark" aria-hidden="true"></hx-span>{attention}
-					{attention === 1 ? 'needs' : 'need'} you</Pill
-				>{/if}
-		{/snippet}
 		{#snippet footer()}{#if recipient}<hx-button
 					type="button"
 					class="po-action hh-message"

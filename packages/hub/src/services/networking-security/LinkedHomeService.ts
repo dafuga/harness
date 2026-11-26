@@ -3,7 +3,7 @@ import type { RemoteAccountComputer } from '../../../../remote/src/models/networ
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { completeHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { mergeHomeSnapshots } from '../../components/projects-sessions/hubHomeMerge';
-import { parseHomePayload } from '../../routes/api/hub-home/homePayload';
+import { parseLinkedHome } from '../../routes/api/hub-home/homeLivePayload';
 import type { BrowserApi } from '../../utils/browserApi';
 import { browserDeviceKeys } from '../../utils/networking-security/browserDeviceKeys';
 import { BrowserComputerService } from './BrowserComputerService';
@@ -39,14 +39,16 @@ export class LinkedHomeService {
 	) {}
 
 	async read(): Promise<LinkedHome> {
-		const computers = await this.computers();
+		const listed = await this.computers();
+		const computers = listed ?? [];
 		const online = computers.filter((computer) => computer.online).slice(0, parallel);
 		const results = await Promise.all(online.map((computer) => this.ask(computer.hostId)));
 		const snapshots = results.filter((entry): entry is OwnerHomeSnapshot => entry !== null);
 		return {
 			linked: computers.length,
 			answered: snapshots.length,
-			snapshot: mergeHomeSnapshots(snapshots.map(completeHomeSnapshot))
+			snapshot: mergeHomeSnapshots(snapshots.map(completeHomeSnapshot)),
+			...(!listed && { unlisted: true as const })
 		};
 	}
 
@@ -56,14 +58,15 @@ export class LinkedHomeService {
 		this.open.clear();
 	}
 
-	private async computers(): Promise<RemoteAccountComputer[]> {
+	private async computers(): Promise<RemoteAccountComputer[] | null> {
 		try {
 			const reply = await this.api.get<{ computers: RemoteAccountComputer[] }>(hosts, {
 				linked: '1'
 			});
 			return reply.computers;
-		} catch {
-			return [];
+		} catch (error) {
+			// Remote access being off is a real "none linked"; any other failure leaves it unknown.
+			return (error as { code?: string }).code === 'remote-disabled' ? [] : null;
 		}
 	}
 
@@ -76,7 +79,7 @@ export class LinkedHomeService {
 				link.home(hostId, () => this.drop(hostId, link)),
 				readMs
 			);
-			return this.closed ? null : (parseHomePayload(value) as OwnerHomeSnapshot);
+			return this.closed ? null : (parseLinkedHome(value) as OwnerHomeSnapshot);
 		} catch {
 			this.drop(hostId, link);
 			return null;

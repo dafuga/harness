@@ -32,7 +32,9 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosInbox.ts",
@@ -67,6 +69,7 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogIdle.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubPermits.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchEventBatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchWait.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLegacyExitReceipt.ts",
@@ -130,14 +133,17 @@
 			"TrackerWorkerClient",
 			"TrackerGuestAuthWriter",
 			"composeTrackerLinks",
-			"composeTrackerTelemetry",
+			"trackerHubMachines",
+			"localRunnerStatus",
+			"machineReport",
 			"trackerRunnerSample",
 			"trackerMachineSample",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
-			"adapterFailover",
+			"composeTrackerTelemetry",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
+			"adapterFailover",
 			"duePauseKey",
 			"trackerAutolaunchAdmin",
 			"trackerHubDuePolicy",
@@ -229,6 +235,8 @@
 			"paneNudgeKey",
 			"handoffRunOwnership",
 			"activeWatchdogItem",
+			"spokeGrant",
+			"spokeAutomaticPermit",
 			"batchTrackerLaunchEvents",
 			"trackerItemViews",
 			"trackerLaunchWait",
@@ -334,8 +342,8 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerResponder.permits",
-				"type": "Pick<ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue'>",
+				"name": "composeTrackerResponder.composed",
+				"type": "Pick< ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue' | 'scheduler' >",
 				"required": true
 			},
 			{
@@ -395,6 +403,51 @@
 				"required": true
 			},
 			{
+				"name": "trackerHubMachines.machines",
+				"type": "TrackerHubMachineStore",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.runs",
+				"type": "TrackerRunReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.scheduler",
+				"type": "TrackerDispatchSchedulerService",
+				"required": false
+			},
+			{
+				"name": "localRunnerStatus.scheduler",
+				"type": "TrackerDispatchSchedulerService",
+				"required": false
+			},
+			{
+				"name": "machineReport.runner",
+				"type": "ReturnType<typeof localRunnerStatus>",
+				"required": true
+			},
+			{
+				"name": "machineReport.active",
+				"type": "ReturnType<TrackerRunReadRepository['activeLocal']>",
+				"required": true
+			},
+			{
+				"name": "machineReport.at",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "trackerSpokeStatus.links",
+				"type": "readonly TrackerSpokeLoopService[]",
+				"required": true
+			},
+			{
 				"name": "composeTrackerTelemetry.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -415,21 +468,6 @@
 				"required": false
 			},
 			{
-				"name": "trackerSpokeStatus.links",
-				"type": "readonly TrackerSpokeLoopService[]",
-				"required": true
-			},
-			{
-				"name": "adapterFailover.options",
-				"type": "TrackerNativeRuntimeOptions",
-				"required": true
-			},
-			{
-				"name": "adapterFailover.now",
-				"type": "() => number",
-				"required": true
-			},
-			{
 				"name": "readTrackerDuePreview.runtime",
 				"type": "TrackerNativeRuntimeService",
 				"required": true
@@ -442,6 +480,16 @@
 			{
 				"name": "trackerDueItemPreview.item",
 				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "adapterFailover.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "adapterFailover.now",
+				"type": "() => number",
 				"required": true
 			},
 			{
@@ -1197,6 +1245,36 @@
 			{
 				"name": "activeWatchdogItem.id",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "spokeGrant.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "spokeGrant.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "spokeGrant.mayStartAlone",
+				"type": "(itemId: string) => boolean",
+				"required": true
+			},
+			{
+				"name": "spokeAutomaticPermit.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "spokeAutomaticPermit.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "spokeAutomaticPermit.localPermit",
+				"type": "() => boolean",
 				"required": true
 			},
 			{
@@ -2143,8 +2221,8 @@
 						"required": true
 					},
 					{
-						"name": "composeTrackerResponder.permits",
-						"type": "Pick<ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue'>",
+						"name": "composeTrackerResponder.composed",
+						"type": "Pick< ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue' | 'scheduler' >",
 						"required": true
 					}
 				],
@@ -2293,32 +2371,78 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "composeTrackerTelemetry",
+				"name": "trackerHubMachines",
 				"inputs": [
 					{
-						"name": "composeTrackerTelemetry.store",
-						"type": "TrackerPersistenceService",
+						"name": "trackerHubMachines.machines",
+						"type": "TrackerHubMachineStore",
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.runs",
+						"name": "trackerHubMachines.runs",
 						"type": "TrackerRunReadRepository",
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.options",
+						"name": "trackerHubMachines.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.scheduler",
+						"name": "trackerHubMachines.scheduler",
 						"type": "TrackerDispatchSchedulerService",
 						"required": false
 					}
 				],
 				"outputs": [
 					{
-						"name": "composeTrackerTelemetry",
+						"name": "trackerHubMachines",
+						"type": "TrackerHubMachineStore"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "localRunnerStatus",
+				"inputs": [
+					{
+						"name": "localRunnerStatus.scheduler",
+						"type": "TrackerDispatchSchedulerService",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "localRunnerStatus",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "machineReport",
+				"inputs": [
+					{
+						"name": "machineReport.runner",
+						"type": "ReturnType<typeof localRunnerStatus>",
+						"required": true
+					},
+					{
+						"name": "machineReport.active",
+						"type": "ReturnType<TrackerRunReadRepository['activeLocal']>",
+						"required": true
+					},
+					{
+						"name": "machineReport.at",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "machineReport",
 						"type": "unknown"
 					}
 				],
@@ -2356,27 +2480,37 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "adapterFailover",
+				"name": "composeTrackerTelemetry",
 				"inputs": [
 					{
-						"name": "adapterFailover.options",
+						"name": "composeTrackerTelemetry.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.runs",
+						"type": "TrackerRunReadRepository",
+						"required": true
+					},
+					{
+						"name": "composeTrackerTelemetry.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
 					},
 					{
-						"name": "adapterFailover.now",
-						"type": "() => number",
-						"required": true
+						"name": "composeTrackerTelemetry.scheduler",
+						"type": "TrackerDispatchSchedulerService",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
-						"name": "adapterFailover",
+						"name": "composeTrackerTelemetry",
 						"type": "unknown"
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "readTrackerDuePreview",
@@ -2418,6 +2552,29 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "adapterFailover",
+				"inputs": [
+					{
+						"name": "adapterFailover.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "adapterFailover.now",
+						"type": "() => number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "adapterFailover",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
 			},
 			{
 				"name": "trackerAutolaunchAdmin",
@@ -3798,6 +3955,62 @@
 					{
 						"name": "activeWatchdogItem",
 						"type": "TrackerItem | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "spokeGrant",
+				"inputs": [
+					{
+						"name": "spokeGrant.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "spokeGrant.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "spokeGrant.mayStartAlone",
+						"type": "(itemId: string) => boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "spokeGrant",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "spokeAutomaticPermit",
+				"inputs": [
+					{
+						"name": "spokeAutomaticPermit.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "spokeAutomaticPermit.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "spokeAutomaticPermit.localPermit",
+						"type": "() => boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "spokeAutomaticPermit",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
