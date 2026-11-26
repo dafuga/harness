@@ -37,7 +37,9 @@ test('designless Plan preserves truthful status and branch/commit paths', async 
 	await expect(page).toHaveURL(/branch\/feat%2Factivity\/pages\/page%3Aactivity\/designs$/);
 	await expect(page.getByRole('heading', { name: 'No design image yet' })).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Change', exact: true })).toBeDisabled();
-	await expect(page.getByRole('button', { name: 'Claude CLI', exact: true })).toBeDisabled();
+	// A visual Plan names its fixed mockup models; no provider, usable or not, is offered.
+	await expect(page.getByText('Sonnet mockups · Haiku sizes and states')).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Choose model', exact: true })).toHaveCount(0);
 	await expect(page.getByText('src/activity.svelte', { exact: true })).toHaveCount(0);
 	await page
 		.getByRole('textbox', { name: 'Message', exact: true })
