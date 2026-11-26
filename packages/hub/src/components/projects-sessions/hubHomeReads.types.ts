@@ -18,7 +18,7 @@ export interface HubHomeReadOptions {
 /** `read` fetches both sources again; `close` ends the reads and the linked connections. */
 export interface HubHomeReads {
 	read: () => void;
-	/** Null when no linked computer takes this write; the Hub queue is then the only path. */
-	chat: (message: HomeChatInput) => Promise<HomeChatReceipt | null>;
+	/** A linked computer that showed the item takes the write itself; otherwise the Hub queues it. */
+	send: (message: HomeChatInput) => Promise<HomeChatReceipt>;
 	close: () => void;
 }

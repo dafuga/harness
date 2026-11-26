@@ -14,6 +14,7 @@
 			"BrowserComputerService.constructor",
 			"BrowserComputerService.connect",
 			"BrowserComputerService.home",
+			"BrowserComputerService.chat",
 			"BrowserComputerService.close"
 		]
 	},
@@ -49,6 +50,11 @@
 				"name": "BrowserComputerService.home.lost",
 				"type": "() => void",
 				"required": true
+			},
+			{
+				"name": "BrowserComputerService.chat.message",
+				"type": "object",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -58,6 +64,10 @@
 			},
 			{
 				"name": "BrowserComputerService.home",
+				"type": "Promise<unknown>"
+			},
+			{
+				"name": "BrowserComputerService.chat",
 				"type": "Promise<unknown>"
 			},
 			{
@@ -117,6 +127,29 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "BrowserComputerService.chat",
+				"inputs": [
+					{
+						"name": "BrowserComputerService.chat.message",
+						"type": "object",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "BrowserComputerService.chat",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [
+					{
+						"name": "RemoteFailure",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{

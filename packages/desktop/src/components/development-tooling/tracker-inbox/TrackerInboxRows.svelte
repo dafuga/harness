@@ -2,7 +2,10 @@
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_zj35fp7e6k -->
 <script lang="ts">
-	import type { InboxRow, TrackerInboxSource } from '../../../models/development-tooling/TrackerInbox.types';
+	import type {
+		InboxRow,
+		TrackerInboxSource
+	} from '../../../models/development-tooling/TrackerInbox.types';
 	import {
 		bucketLabels,
 		trackerStageLabels

@@ -1,4 +1,5 @@
 // @harness-uid u_evpsejqo7k
+import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { coalesced } from '$reports/lib/projects-sessions/realtime/coalesced';
 import { LinkedHomeService } from '../../services/networking-security/LinkedHomeService';
 import { readHome } from './hubHomeClient';
@@ -33,9 +34,12 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 			void stored();
 			void linked();
 		},
-		async chat(message) {
-			if (closed || !linkedHome || linkedHome.actor !== actor()) return null;
-			return linkedHome.service.chat(message);
+		async send(message) {
+			const mine = !closed && linkedHome && linkedHome.actor === actor();
+			return (
+				(mine ? await linkedHome?.service.chat(message) : null) ??
+				api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message)
+			);
 		},
 		close() {
 			closed = true;

@@ -1,4 +1,8 @@
-import { buildHomeSnapshot, noProviders } from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
+// @harness-uid u_q6kheadco5
+import {
+	buildHomeSnapshot,
+	noProviders
+} from '$reports/lib/projects-sessions/hub-home/homeTrackerProjection';
 import { homeChatInput } from '$reports/lib/projects-sessions/hub-home/homeChatInput';
 import { readTrackerSources } from '$reports/lib/projects-sessions/project-overview/projectOverviewTracker';
 import { RemoteFailure } from '../../../../../../remote/src/index';

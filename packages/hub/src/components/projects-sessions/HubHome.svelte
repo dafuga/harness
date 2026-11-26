@@ -8,7 +8,6 @@
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
 	import type {
-		HomeChatInput,
 		HomeChatReceipt,
 		HomeSection
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -169,14 +168,6 @@
 		return request;
 	}
 
-	/** A linked computer that showed the item takes the write itself; otherwise the Hub queues it. */
-	async function send(message: HomeChatInput) {
-		return (
-			(await reads.chat(message)) ??
-			api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message)
-		);
-	}
-
 	async function changeSession(id: string, add: boolean) {
 		const result = await api.send<{ controlled: string[] }>(
 			add ? 'POST' : 'DELETE',
@@ -203,7 +194,7 @@
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} {send} {receipt} />
+			<HubHomeCards {view} {open} send={reads.send} {receipt} />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs
@@ -211,7 +202,7 @@
 				{view}
 				{agentId}
 				{open}
-				{send}
+				send={reads.send}
 				{changeSession}
 				{receipt}
 				{readProject}

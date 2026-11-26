@@ -54,9 +54,7 @@ const rowOf = (page: Page, project: string) =>
 	needsYou(page).getByRole('listitem').filter({ hasText: project });
 
 for (const size of ['desktop', 'phone'] as const) {
-	test(`Home rows offer their choices and open the session chat (${size})`, async ({
-		page
-	}) => {
+	test(`Home rows offer their choices and open the session chat (${size})`, async ({ page }) => {
 		const fixture = await home(page, size, 'two-asks');
 		const rows = openers(page);
 		await expect(rows).toHaveCount(2);
@@ -69,11 +67,7 @@ for (const size of ['desktop', 'phone'] as const) {
 		const choices = rowOf(page, 'harbor')
 			.getByRole('group', { name: 'Choose an answer' })
 			.getByRole('button');
-		await expect(choices).toHaveText([
-			/Ship harbor now.*Recommended/s,
-			/Hold harbor/,
-			/Other/
-		]);
+		await expect(choices).toHaveText([/Ship harbor now.*Recommended/s, /Hold harbor/, /Other/]);
 		await expect(page.getByRole('textbox')).toHaveCount(0);
 		const widths = await page.evaluate(() => [
 			document.documentElement.scrollWidth,

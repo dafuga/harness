@@ -1,3 +1,4 @@
+// @harness-uid u_sl4rsq3jhi
 import type {
 	HomeChatInput,
 	HomeChatReceipt,
@@ -18,7 +19,10 @@ export function showsHomeChatTarget(snapshot: OwnerHomeSnapshot, message: HomeCh
 }
 
 /** A computer's reply, read as untrusted: anything but a plain outcome is unconfirmed. */
-export function homeChatReceipt(id: string, reply: unknown): HomeChatReceipt {
-	const status = (reply as Partial<HomeChatReceipt> | null)?.status;
+export function homeChatReceipt(
+	id: string,
+	reply: Partial<HomeChatReceipt> | null
+): HomeChatReceipt {
+	const status = reply?.status;
 	return { id, status: status === 'sent' || status === 'refused' ? status : 'unconfirmed' };
 }

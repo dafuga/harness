@@ -71,7 +71,8 @@ export class LinkedHomeService {
 			const link = this.open.get(hostId);
 			if (!link || !showsHomeChatTarget(snapshot, message)) continue;
 			try {
-				return homeChatReceipt(message.id, await within(link.chat(message), writeMs));
+				const reply = await within(link.chat(message), writeMs);
+				return homeChatReceipt(message.id, reply as Partial<HomeChatReceipt> | null);
 			} catch (cause) {
 				if (cause instanceof RemoteFailure && cause.code === 'method-denied') continue;
 				this.drop(hostId, link);

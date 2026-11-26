@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-row-ask",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -26,6 +27,21 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "TrackerInboxRows.source",
+				"type": "TrackerInboxSource",
+				"required": true
+			},
+			{
+				"name": "TrackerInboxRows.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
+			{
+				"name": "TrackerInboxRows.onchanged",
+				"type": "() => Promise<void>",
+				"required": true
+			},
 			{
 				"name": "TrackerInboxRows.rows",
 				"type": "InboxRow[]",
@@ -70,6 +86,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-row-ask",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.development-tooling-tracker-inbox-types",
 			"via": "import",
