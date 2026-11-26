@@ -1,0 +1,100 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-tracker-inbox-follow-tracker-source",
+	"uid": "u_4ds7oo3w22",
+	"kind": "module",
+	"title": "followTrackerSource",
+	"responsibility": "Owns the followTrackerSource library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.ts"],
+		"symbols": ["fallbackPollMs", "FollowedScreen", "followTrackerSource"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "followTrackerSource.source",
+				"type": "TrackerInboxSource",
+				"required": true
+			},
+			{
+				"name": "followTrackerSource.screen",
+				"type": "FollowedScreen",
+				"required": true
+			},
+			{
+				"name": "followTrackerSource.pollMs",
+				"type": "number",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "fallbackPollMs",
+				"type": "unknown"
+			},
+			{
+				"name": "followTrackerSource",
+				"type": "()"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "followTrackerSource",
+				"inputs": [
+					{
+						"name": "followTrackerSource.source",
+						"type": "TrackerInboxSource",
+						"required": true
+					},
+					{
+						"name": "followTrackerSource.screen",
+						"type": "FollowedScreen",
+						"required": true
+					},
+					{
+						"name": "followTrackerSource.pollMs",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "followTrackerSource",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

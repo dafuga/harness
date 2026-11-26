@@ -1,3 +1,4 @@
+// @harness-uid u_lcptkbllua
 import type { DoorbellOptions, DoorbellSocket } from './realtime.types';
 
 /**

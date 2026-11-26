@@ -1,8 +1,11 @@
+// @harness-uid u_s2jsy4e4gt
+import type { FlightWork } from './realtime.types';
+
 /**
  * Runs `work` one flight at a time. Calls made during a flight share one more flight after it,
  * so a burst of changes costs two reads and the last read always starts after the last change.
  */
-export function coalesced(work: () => Promise<unknown>): () => Promise<void> {
+export function coalesced(work: FlightWork): () => Promise<void> {
 	let flight: Promise<void> | null = null;
 	let again = false;
 	const drain = async () => {

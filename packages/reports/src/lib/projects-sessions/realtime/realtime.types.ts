@@ -1,3 +1,4 @@
+// @harness-uid u_ijav2xdawt
 /** What the small indicator shows: changes are pushed, or they are being polled for meanwhile. */
 export type RealtimeState = 'live' | 'reconnecting';
 
@@ -16,6 +17,9 @@ export interface DoorbellSocket {
 	send(text: string): void;
 	close(): void;
 }
+
+/** One read that `coalesced` keeps to a single flight. */
+export type FlightWork = () => Promise<unknown>;
 
 export interface DoorbellOptions {
 	/** Opens one authenticated socket to the account object. May reject without a session. */

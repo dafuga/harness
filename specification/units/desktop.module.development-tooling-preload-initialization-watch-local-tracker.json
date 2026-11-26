@@ -1,0 +1,108 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-preload-initialization-watch-local-tracker",
+	"uid": "u_saa6wluo2j",
+	"kind": "module",
+	"title": "watchLocalTracker",
+	"responsibility": "Owns the watchLocalTracker library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/preload-initialization/watchLocalTracker.ts"
+		],
+		"symbols": ["LocalTrackerRead", "watchLocalTracker"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "watchLocalTracker.transport",
+				"type": "Pick<LocalTransportClientService, 'on'>",
+				"required": true
+			},
+			{
+				"name": "watchLocalTracker.read",
+				"type": "LocalTrackerRead",
+				"required": true
+			},
+			{
+				"name": "watchLocalTracker.listener",
+				"type": "(event: TrackerChangeEvent) => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "watchLocalTracker",
+				"type": "()"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "watchLocalTracker",
+				"inputs": [
+					{
+						"name": "watchLocalTracker.transport",
+						"type": "Pick<LocalTransportClientService, 'on'>",
+						"required": true
+					},
+					{
+						"name": "watchLocalTracker.read",
+						"type": "LocalTrackerRead",
+						"required": true
+					},
+					{
+						"name": "watchLocalTracker.listener",
+						"type": "(event: TrackerChangeEvent) => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchLocalTracker",
+						"type": "()"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.initializer.initialize-preload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.development-tooling-tracker-inbox-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.service.local-transport-client",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/preload-initialization/watchLocalTracker.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/preload-initialization/watchLocalTracker.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

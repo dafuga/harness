@@ -50,7 +50,7 @@
 			},
 			{
 				"name": "LocalClientService.emit.value",
-				"type": "RunEvent | CacheStatus | RemoteConnectionEvent",
+				"type": "RunEvent | CacheStatus | RemoteConnectionEvent | TrackerChangeEvent",
 				"required": true,
 				"description": "The payload that emit forwards unchanged to the wire session; the two sends in this file pass a RunEvent on the 'run' channel. emit does not inspect the value.",
 				"examples": [
@@ -157,7 +157,7 @@
 					},
 					{
 						"name": "LocalClientService.emit.value",
-						"type": "RunEvent | CacheStatus | RemoteConnectionEvent",
+						"type": "RunEvent | CacheStatus | RemoteConnectionEvent | TrackerChangeEvent",
 						"required": true,
 						"description": "The payload that emit forwards unchanged to the wire session; the two sends in this file pass a RunEvent on the 'run' channel. emit does not inspect the value.",
 						"examples": [

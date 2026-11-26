@@ -84,7 +84,10 @@ async function measureLatency(page: Page, tracker: Tracker) {
 async function recoverFromOutage(page: Page, tracker: Tracker) {
 	await page.getByRole('button', { name: /Realtime decision number 1\./ }).click();
 	await expect(page.getByText('Proceed: Realtime decision number 1.')).toBeVisible();
-	await tracker.post('/items/fixturelive1/answer', { answer: 'Answered on the phone', by: 'Daniel' });
+	await tracker.post('/items/fixturelive1/answer', {
+		answer: 'Answered on the phone',
+		by: 'Daniel'
+	});
 	await expect(page.getByRole('heading', { name: 'Flag answered' })).toBeVisible({
 		timeout: 1000
 	});

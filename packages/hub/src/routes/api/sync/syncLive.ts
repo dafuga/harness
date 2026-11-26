@@ -10,8 +10,10 @@ function offered(request: Request): string[] {
 	return header.split(',').map((entry) => entry.trim());
 }
 
-/** A browser's device id: it cannot send `X-Harness-Device` on a WebSocket. */
-export function protocolDevice(request: Request): string | null {
+/** The caller's device id. A browser cannot send the header on a WebSocket, so it offers it. */
+export function namedDevice(request: Request, parts: string[]): string | null {
+	const named = request.headers.get('X-Harness-Device');
+	if (named !== null || parts[0] !== 'live') return named;
 	const entry = offered(request).find((name) => name.startsWith(devicePrefix));
 	return entry ? entry.slice(devicePrefix.length) : null;
 }
@@ -20,7 +22,8 @@ export function protocolDevice(request: Request): string | null {
  * A cookie rides along on a cross-site upgrade, and an upgrade is a GET. Browsers always name
  * their origin on a WebSocket, so a named origin that is not this one is refused.
  */
-export function foreignOrigin(request: Request, url: URL): boolean {
+export function foreignUpgrade(request: Request, url: URL, parts: string[]): boolean {
+	if (parts[0] !== 'live') return false;
 	const origin = request.headers.get('Origin');
 	return origin !== null && origin !== url.origin && !request.headers.has('Authorization');
 }

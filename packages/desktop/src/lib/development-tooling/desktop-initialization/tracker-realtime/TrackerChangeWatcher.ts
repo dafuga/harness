@@ -1,7 +1,10 @@
+// @harness-uid u_reqbbzj5we
 import type {
 	RealtimeState,
 	TrackerChangeEvent
 } from '$reports/lib/projects-sessions/realtime/realtime.types';
+
+import { MissingChangeFeedError } from './MissingChangeFeedError';
 
 const changesUrl = 'http://127.0.0.1:7701/changes';
 const waitSeconds = 25;
@@ -49,7 +52,7 @@ export class TrackerChangeWatcher {
 			signal: AbortSignal.any([this.lifetime.signal, AbortSignal.timeout((wait + 5) * 1000)])
 		});
 		const body = response.ok ? ((await response.json()) as { cursor?: unknown }) : {};
-		if (typeof body.cursor !== 'string') throw new TypeError('No tracker change feed');
+		if (typeof body.cursor !== 'string') throw new MissingChangeFeedError('No tracker change feed');
 		return body.cursor;
 	}
 

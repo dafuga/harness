@@ -1,3 +1,5 @@
+// @harness-uid u_qo6zkrcbuv
+import { clearInterval, clearTimeout, setInterval, setTimeout } from 'node:timers';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { readTrackerChangeCursor } from './readTrackerChangeCursor';
 
@@ -44,7 +46,8 @@ function nextCursor(
 		const stop = () => check(true);
 		const poll = setInterval(() => check(), checkMs);
 		const deadline = setTimeout(stop, options.ms);
-		const unsubscribe = store.subscribe(() => queueMicrotask(() => check()));
+		// Checked after the write returns, so a failing read can never fail the write itself.
+		const unsubscribe = store.subscribe(() => void Promise.resolve().then(() => check()));
 		options.signal.addEventListener('abort', stop, { once: true });
 		if (options.signal.aborted) stop();
 		else check();

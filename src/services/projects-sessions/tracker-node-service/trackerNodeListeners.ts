@@ -104,6 +104,8 @@ function trackerCompatibleApi(
 			});
 		case 'GET /status':
 			return trackerNodeStatus(runtime, supervisor, checkpoint);
+		case 'GET /changes':
+			return serveTrackerChanges(request, runtime.store);
 		case 'POST /adapters/run':
 			return trackerAdapterRun(request, runtime);
 		default:
@@ -120,8 +122,6 @@ function trackerOperationalApi(
 	switch (`${request.method} ${path}`) {
 		case 'GET /watchdog/dry-run':
 			return trackerWatchdogDryRun(request, runtime);
-		case 'GET /changes':
-			return serveTrackerChanges(request, runtime.store);
 		case 'GET /needs-attention':
 		case 'GET /watchdog/alerts':
 			return Response.json(runtime.watchdog?.alerts() ?? []);

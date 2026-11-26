@@ -1,0 +1,113 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-tracker-realtime-follow-hub-chat",
+	"uid": "u_jnly6lvbid",
+	"kind": "module",
+	"title": "followHubChat",
+	"responsibility": "Owns the followHubChat library module.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/followHubChat.ts"
+		],
+		"symbols": ["followHubChat"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "followHubChat.authority",
+				"type": "TrackerOverviewAuthority",
+				"required": true
+			},
+			{
+				"name": "followHubChat.ownerActorId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "followHubChat.wake",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "followHubChat",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "NotTrackerOwnerError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "followHubChat",
+				"inputs": [
+					{
+						"name": "followHubChat.authority",
+						"type": "TrackerOverviewAuthority",
+						"required": true
+					},
+					{
+						"name": "followHubChat.ownerActorId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "followHubChat.wake",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "followHubChat",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-realtime-not-tracker-owner-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.tracker-overview-publisher",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/followHubChat.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-realtime/followHubChat.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

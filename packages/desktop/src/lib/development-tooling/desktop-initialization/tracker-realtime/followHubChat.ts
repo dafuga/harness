@@ -1,7 +1,9 @@
+// @harness-uid u_jnly6lvbid
 import { WebSocket } from 'ws';
 import { followDoorbell } from '$reports/lib/projects-sessions/realtime/followDoorbell';
 import type { DoorbellSocket } from '$reports/lib/projects-sessions/realtime/realtime.types';
 import { randomBytes, toBase64Url } from '../../../../../../remote/src/index';
+import { NotTrackerOwnerError } from './NotTrackerOwnerError';
 import type { TrackerOverviewAuthority } from '../tracker-overview-publisher/TrackerOverviewPublisher.types';
 
 /**
@@ -18,7 +20,8 @@ export function followHubChat(
 	return followDoorbell({
 		open: async () => {
 			const credential = await authority.authorize();
-			if (credential.principalId !== ownerActorId) throw new Error('Not the tracker owner');
+			if (credential.principalId !== ownerActorId)
+				throw new NotTrackerOwnerError('Not the tracker owner');
 			const url = new URL('/api/sync/v1/live', credential.origin);
 			url.protocol = url.protocol === 'http:' ? 'ws:' : 'wss:';
 			return new WebSocket(url, {

@@ -1,3 +1,4 @@
+// @harness-uid u_3ypqfc5fm2
 import type { TrackerChangeEvent } from '$reports/lib/projects-sessions/realtime/realtime.types';
 import type { TrackerOverviewPublisher } from '../tracker-overview-publisher/TrackerOverviewPublisher';
 import type { TrackerOverviewAuthority } from '../tracker-overview-publisher/TrackerOverviewPublisher.types';

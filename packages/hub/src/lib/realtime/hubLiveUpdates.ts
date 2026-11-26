@@ -1,3 +1,4 @@
+// @harness-uid u_the62brjqn
 import { followDoorbell } from '$reports/lib/projects-sessions/realtime/followDoorbell';
 import type {
 	DoorbellSocket,
