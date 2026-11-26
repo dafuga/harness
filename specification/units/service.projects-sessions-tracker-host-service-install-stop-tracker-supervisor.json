@@ -1,0 +1,83 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-service-install-stop-tracker-supervisor",
+	"uid": "u_fgw6zfrlhw",
+	"kind": "service",
+	"title": "stopTrackerSupervisor",
+	"responsibility": "Owns the stopTrackerSupervisor service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-host-service-install/stopTrackerSupervisor.ts"
+		],
+		"symbols": ["stopTrackerSupervisor"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "stopTrackerSupervisor.database",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "stopTrackerSupervisor",
+				"type": "boolean"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "stopTrackerSupervisor",
+				"inputs": [
+					{
+						"name": "stopTrackerSupervisor.database",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "stopTrackerSupervisor",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-adapter-lease",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-tracker-supervisor-files",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-host-service-install/stopTrackerSupervisor.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-host-service-install/stopTrackerSupervisor.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

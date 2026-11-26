@@ -1,7 +1,17 @@
 // @harness-uid u_fyf7e7kyi5
 import { lstatSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import type { TrackerWorkerClient } from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
+
+const unopenedDatabase = 'unavailable-database';
+
+export const trackerWorkerClientRefusal =
+	"tracker: this is a launched session's client config. Pass --config with the node's own config, usually ~/.config/harness/tracker.json.";
+
+/** A worker's client config names no real files and goes away with its session. */
+export function isTrackerWorkerClient({ database }: { database: string }): boolean {
+	return basename(database) === unopenedDatabase;
+}
 
 /** Give the host worker a loopback client address without sharing the daemon configuration. */
 export function trackerWorkerClient(directory: string, address: TrackerWorkerClient): string {
@@ -13,7 +23,7 @@ export function trackerWorkerClient(directory: string, address: TrackerWorkerCli
 		role,
 		apiPort,
 		// The client validates these absolute paths but has no reason to open them.
-		database: join(directory, 'unavailable-database'),
+		database: join(directory, unopenedDatabase),
 		legacyFenceFile: join(directory, 'unavailable-fence'),
 		syncSecretFile: join(directory, 'unavailable-secret'),
 		...(role === 'hub' ? { syncPort } : { upstream: { url: 'http://127.0.0.1:1' } })
