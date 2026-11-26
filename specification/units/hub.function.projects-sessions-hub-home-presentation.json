@@ -28,6 +28,7 @@
 			"currentAgent",
 			"soonestWork",
 			"workSummary",
+			"creditsLabel",
 			"warningFor",
 			"lowestLimit",
 			"staleReading",
@@ -40,6 +41,7 @@
 			"summaryLine",
 			"relativeWhen",
 			"workEta",
+			"lowSummary",
 			"quotaSummary",
 			"quotaReset",
 			"runDay",
@@ -48,8 +50,10 @@
 			"messageStatusText",
 			"runDay",
 			"runTime",
+			"runMoment",
 			"when",
-			"quotaReset"
+			"quotaReset",
+			"resetClock"
 		]
 	},
 	"contract": {
@@ -128,6 +132,12 @@
 				"type": "ReturnType<typeof soonestWork>",
 				"required": true,
 				"description": "In-progress and blocked work items enriched with project labels and due dates."
+			},
+			{
+				"name": "creditsLabel.balance",
+				"type": "string",
+				"required": true,
+				"description": "Credit balance as the provider sent it: a number in text, or a word such as Unlimited."
 			},
 			{
 				"name": "warningFor.left",
@@ -232,6 +242,12 @@
 				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
+				"name": "lowSummary.limits",
+				"type": "HomeLimit[]",
+				"required": true,
+				"description": "Limits that already carry a warning; those with nothing left are counted as out of quota."
+			},
+			{
 				"name": "quotaSummary.subscriptions",
 				"type": "HomeSubscription[]",
 				"required": true,
@@ -274,6 +290,12 @@
 				"description": "ISO timestamp of a scheduled run."
 			},
 			{
+				"name": "runMoment.at",
+				"type": "string",
+				"required": true,
+				"description": "ISO time to write as a day, month and clock time in Europe/Lisbon."
+			},
+			{
 				"name": "when.time",
 				"type": "string",
 				"required": true,
@@ -287,6 +309,18 @@
 			},
 			{
 				"name": "quotaReset.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "resetClock.time",
+				"type": "string | null",
+				"required": true,
+				"description": "ISO timestamp when the limit resets, or null when the reset time is unavailable."
+			},
+			{
+				"name": "resetClock.now",
 				"type": "number",
 				"required": true,
 				"description": "Current time in milliseconds since the Unix epoch."
@@ -336,7 +370,7 @@
 			{
 				"name": "homeHeadline",
 				"type": "unknown",
-				"description": "Dashboard headline summarizing working agents and outstanding questions."
+				"description": "Dashboard headline leading with live sessions, then the agents they run for and outstanding questions."
 			},
 			{
 				"name": "currentAgent",
@@ -539,7 +573,7 @@
 					{
 						"name": "homeHeadline",
 						"type": "unknown",
-						"description": "Dashboard headline summarizing working agents and outstanding questions."
+						"description": "Dashboard headline leading with live sessions, then the agents they run for and outstanding questions."
 					}
 				],
 				"errors": [],
@@ -600,6 +634,25 @@
 						"name": "workSummary",
 						"type": "unknown",
 						"description": "Number of active tasks and unique projects."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "creditsLabel",
+				"inputs": [
+					{
+						"name": "creditsLabel.balance",
+						"type": "string",
+						"required": true,
+						"description": "Credit balance as the provider sent it: a number in text, or a word such as Unlimited."
+					}
+				],
+				"outputs": [
+					{
+						"name": "creditsLabel",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -874,6 +927,25 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "lowSummary",
+				"inputs": [
+					{
+						"name": "lowSummary.limits",
+						"type": "HomeLimit[]",
+						"required": true,
+						"description": "Limits that already carry a warning; those with nothing left are counted as out of quota."
+					}
+				],
+				"outputs": [
+					{
+						"name": "lowSummary",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "quotaSummary",
 				"inputs": [
 					{
@@ -971,6 +1043,25 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "runMoment",
+				"inputs": [
+					{
+						"name": "runMoment.at",
+						"type": "string",
+						"required": true,
+						"description": "ISO time to write as a day, month and clock time in Europe/Lisbon."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runMoment",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "when",
 				"inputs": [
 					{
@@ -1011,6 +1102,31 @@
 						"name": "quotaReset",
 						"type": "unknown",
 						"description": "Rounded countdown or current availability of the reset time."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "resetClock",
+				"inputs": [
+					{
+						"name": "resetClock.time",
+						"type": "string | null",
+						"required": true,
+						"description": "ISO timestamp when the limit resets, or null when the reset time is unavailable."
+					},
+					{
+						"name": "resetClock.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "resetClock",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

@@ -3,6 +3,7 @@ import { TrackerAdapterRepository } from '../../repositories/projects-sessions/T
 import { TrackerAdapterSourceRepository } from '../../repositories/projects-sessions/TrackerAdapterSourceRepository';
 import type { TrackerAdapterSource } from '../../repositories/projects-sessions/TrackerAdapterRepository.types';
 import type {
+	TrackerAdapterAction,
 	TrackerAdapterIntakeContext,
 	TrackerAdapterPollDependencies,
 	TrackerAdapterPollOptions,
@@ -11,10 +12,12 @@ import type {
 	TrackerAdapterWriteError
 } from './TrackerAdapterPollService.types';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
+import type { TrackerAdapterOwner } from './tracker-adapter-poll-service/manageTrackerAdapterSource.types';
 import {
 	readTrackerComments,
 	readTrackerIssues
 } from './tracker-adapter-poll-service/readTrackerIntake';
+import { unlinkedRepository } from './tracker-adapter-poll-service/manageTrackerAdapterSource';
 import {
 	assertTrackerPollActive,
 	TrackerAdapterPollError
@@ -61,6 +64,20 @@ export class TrackerAdapterPollService {
 				runner === this.store.node &&
 				(!this.sources.isInitialized() || this.sources.isOwner(runner, false))
 		};
+	}
+
+	owner(): TrackerAdapterOwner {
+		return { sources: this.sources, lease: this.dependencies.lease, node: this.store.node };
+	}
+
+	/** Preview a source that is not saved yet. Nothing is written, so any configured node may. */
+	preview(
+		source: TrackerAdapterSource,
+		query: TrackerAdapterReadQuery
+	): Promise<{ actions: TrackerAdapterAction[]; events: number }> {
+		const context = this.intakeContext(source);
+		const repository = unlinkedRepository(this.repository);
+		return readTrackerIssues({ ...context, repository }, source, query, true);
 	}
 
 	async tick(signal: AbortSignal): Promise<void> {

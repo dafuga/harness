@@ -90,6 +90,7 @@
 		'home-project-card': { view, open: noop },
 		'home-projects': { projects: list, snapshots, readProject },
 		'home-quota': { quota: view.quota, now: view.now, connected: true, reload: noop },
+		'home-quota-pills': { subscriptions: view.quota, now: view.now },
 		'home-row': { title: 'Review the export columns', meta: 'Atlas · 2h ago' },
 		'home-schedule': { runs: view.schedule, now: view.now, connected: true },
 		'home-skeleton': { rows: 3 },

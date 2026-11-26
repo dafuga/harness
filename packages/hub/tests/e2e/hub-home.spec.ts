@@ -35,7 +35,7 @@ for (const viewport of manifest.viewports) {
 						? 'Loading your home…'
 						: mode === 'empty'
 							? 'Nothing is running yet'
-							: /working, .* need[s]? you/
+							: /running.*, .* need[s]? you/
 				);
 				if (mode === 'default' || mode === 'busy') {
 					await expect(page.locator('.hh-projects .hh-change').first()).toBeVisible();
@@ -52,7 +52,7 @@ for (const viewport of manifest.viewports) {
 				if (mode === 'loading') {
 					fixture.release();
 					await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-						/working, .* need[s]? you/
+						/running.*, .* need[s]? you/
 					);
 				}
 			});

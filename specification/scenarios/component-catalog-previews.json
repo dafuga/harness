@@ -133,6 +133,7 @@
 		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
 		"hub.component.projects-sessions-hub-home-quota",
+		"hub.component.projects-sessions-hub-home-quota-pills",
 		"hub.component.projects-sessions-hub-home-row",
 		"hub.component.projects-sessions-hub-home-schedule",
 		"hub.component.projects-sessions-hub-home-skeleton",
@@ -2288,6 +2289,12 @@
 			"title": "HubHomeQuota",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-quota"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-quota-pills",
+			"title": "HubHomeQuotaPills",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-quota-pills"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-row",
@@ -9054,6 +9061,7 @@
 				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",
 				"hub-component-projects-sessions-hub-home-quota",
+				"hub-component-projects-sessions-hub-home-quota-pills",
 				"hub-component-projects-sessions-hub-home-row",
 				"hub-component-projects-sessions-hub-home-schedule",
 				"hub-component-projects-sessions-hub-home-skeleton",

@@ -15,11 +15,13 @@
 		initials,
 		overviewTone,
 		lowestLimit,
+		lowSummary,
 		missingQuotaProviders,
 		providerNames,
 		quotaReset,
 		staleReading,
-		warningFor
+		warningFor,
+		warningLabel
 	} from './hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
 	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
@@ -154,7 +156,7 @@
 			{#if warning}
 				{@const tone = level === 'critical' ? 'blocked' : 'needs-you'}
 				<Pill tone={`hh-tone po-state po-${tone}`} state={tone}
-					><hx-span class="po-mark" aria-hidden="true"></hx-span>{lows.length} running low</Pill
+					><hx-span class="po-mark" aria-hidden="true"></hx-span>{lowSummary(lows)}</Pill
 				>
 			{/if}
 		{/snippet}
@@ -165,7 +167,7 @@
 				{#if warning && level === 'critical'}
 					<hx-div class="po-callout hh-q-callout" data-kind="blocked" data-level="critical">
 						<hx-div class="po-callout-head"
-							><hx-span class="po-callout-label">Almost out</hx-span><hx-span
+							><hx-span class="po-callout-label">{warningLabel(warning.limit)}</hx-span><hx-span
 								class="po-callout-meta">{quotaReset(warning.limit.resetsAt, view.now)}</hx-span
 							></hx-div
 						>

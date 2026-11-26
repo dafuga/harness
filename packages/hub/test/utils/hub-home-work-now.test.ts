@@ -30,6 +30,22 @@ describe('where a piece of work really is', () => {
 		expect(homeWorkNow(blocked)).toBe('Blocked: waiting on kthwzz');
 	});
 
+	test('a note too long to send ends at a whole word and shows that it was cut', () => {
+		const text = 'Browser checks passed on both widths. '.repeat(12).trim();
+		for (const fields of [
+			{ notes_log: [{ at, text }] },
+			{ status: 'blocked' as const, blocked_reason: text }
+		]) {
+			const now = homeWorkNow(item(fields))!.replace(/^Blocked: /, '');
+			expect(now.length).toBeLessThanOrEqual(240);
+			expect(now.endsWith('…')).toBe(true);
+			const kept = now.slice(0, -1);
+			expect(text.startsWith(`${kept} `)).toBe(true);
+		}
+		const short = 'Browser checks passed.';
+		expect(homeWorkNow(item({ notes_log: [{ at, text: short }] }))).toBe(short);
+	});
+
 	test('nothing reported is shown as nothing, not guessed', () => {
 		expect(homeWorkNow(item({}))).toBeNull();
 		expect(homeWorkNow(item({ notes_log: [{ at, text: 'watchdog missing: no run' }] }))).toBeNull();
