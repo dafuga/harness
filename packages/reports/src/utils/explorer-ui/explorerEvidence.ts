@@ -87,12 +87,17 @@ function recordedCaptures(detail: HarnessRevision, unit: Named): ExplorerCapture
 }
 
 /** Why a stored revision shows nothing for a unit, before its captures are looked at. */
-function unrecorded(detail: HarnessRevision, record: HarnessRecord | null, unit: string) {
+function unrecorded(
+	detail: HarnessRevision,
+	{ record, attached }: { record: HarnessRecord | null; attached: number },
+	unit: string
+) {
 	if (!detail.registry.available) {
 		return detail.registry.gap ?? 'No unit registry is stored at this revision.';
 	}
 	if (!record) {
-		return detail.records.length === 0
+		// A record whose own file cannot be trusted is attached, though the detail leaves it out.
+		return detail.records.length === 0 && attached === 0
 			? 'No verification record is attached to this commit.'
 			: 'No record of this commit could be validated.';
 	}
@@ -107,7 +112,7 @@ function unrecorded(detail: HarnessRevision, record: HarnessRecord | null, unit:
 function side(
 	commit: string,
 	detail: HarnessRevision | null | undefined,
-	unit: Named
+	{ unit, attached = 0 }: { unit: Named; attached?: number }
 ): ExplorerSide {
 	if (!detail || detail.commit !== commit) {
 		const gap = `Revision ${shortCommit(commit)} is not available here; no other revision is shown in its place.`;
@@ -115,7 +120,7 @@ function side(
 	}
 	const record = verdictRecord(detail);
 	const coverage = verdictCoverage(unit, detail);
-	const gap = unrecorded(detail, record, unit.id);
+	const gap = unrecorded(detail, { record, attached }, unit.id);
 	const found = [
 		...focusedCaptures(detail, unit.id),
 		...(gap === null && record ? recordedCaptures(detail, unit) : [])
@@ -143,13 +148,15 @@ function side(
  * of a result that does not stand stay listed and unusable.
  */
 export function explorerEvidence(
-	scope: Pick<ExplorerScope, 'commit' | 'mode' | 'parent'>,
+	scope: Pick<ExplorerScope, 'commit' | 'mode' | 'parent'> &
+		Partial<Pick<ExplorerScope, 'summary'>>,
 	revisions: ExplorerRevisions,
 	unit: Pick<HarnessUnit, 'id'>
 ): ExplorerEvidence {
-	const after = side(scope.commit, revisions.head, unit);
+	const attached = scope.summary?.records.length;
+	const after = side(scope.commit, revisions.head, { unit, attached });
 	const compared = scope.mode === 'commit' && scope.parent !== null;
-	const before = compared ? side(scope.parent as string, revisions.parent, unit) : null;
+	const before = compared ? side(scope.parent as string, revisions.parent, { unit }) : null;
 	const earlier = covering(before?.detail ?? null, unit.id);
 	const now = covering(after.detail, unit.id).map((item) =>
 		merged(

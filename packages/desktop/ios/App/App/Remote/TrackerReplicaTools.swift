@@ -48,6 +48,9 @@ extension TrackerReplicaStore {
         }
     }
 
+}
+
+extension TrackerReplicaStore {
     /// "Needs you" is only an open structured ask: 2 to 4 choices with exactly one recommended.
     /// The Mac sends choices only on such asks; other open flags belong to Chief of Staff.
     private static let structuredAsk = """

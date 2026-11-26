@@ -13,8 +13,6 @@ const CONTROL = [
 	'status',
 	'enable',
 	'disable',
-	'createPairing',
-	'closePairing',
 	'approvePairing',
 	'denyPairing',
 	'revokeDevice',
@@ -43,7 +41,7 @@ function fixtureBridge(): DesktopBridge {
 	return { label: 'fixture-bridge' } as unknown as DesktopBridge;
 }
 
-/** All nine remote-control members as functions, except `broken`, which is not a function. */
+/** All seven remote-control members as functions, except `broken`, which is not a function. */
 function remoteControl(broken?: string): Partial<RemoteDesktopControl> {
 	const members = CONTROL.map((name) => [name, name === broken ? 'not-a-function' : () => {}]);
 	return Object.fromEntries(members) as unknown as Partial<RemoteDesktopControl>;
@@ -79,8 +77,8 @@ test('Connects local Electron with the bridge and whole remote control', () => {
 	expect(environment.host).toBe(harnessRemote);
 	recordCases('connect', 'connects-local-electron-with-bridge-and-remote-control', [
 		{
-			name: 'connect with a bridge and all nine remote-control members',
-			input: { harness: 'fixture-bridge', harnessRemote: 'nine functions' },
+			name: 'connect with a bridge and all seven remote-control members',
+			input: { harness: 'fixture-bridge', harnessRemote: 'seven functions' },
 			output: summary(environment)
 		}
 	]);
@@ -122,7 +120,7 @@ test('Omits an absent bridge or host without failing', () => {
 		{ name: 'connect with an empty host', input: { harness: 'absent' }, output: summary(bare) },
 		{
 			name: 'connect with remote control but no bridge',
-			input: { harness: 'absent', harnessRemote: 'nine functions' },
+			input: { harness: 'absent', harnessRemote: 'seven functions' },
 			output: summary(remoteOnly)
 		}
 	]);
@@ -148,7 +146,7 @@ test('Reads the retained host again on each connect', () => {
 		},
 		{
 			name: 'second connect after the host is made whole',
-			input: { harnessRemote: 'nine functions' },
+			input: { harnessRemote: 'seven functions' },
 			output: summary(second)
 		}
 	]);
