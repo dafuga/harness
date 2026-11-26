@@ -118,13 +118,28 @@ test('suggestions rotate per delivered digest and a busy target retries soon', a
 	await f.restart().tick();
 	expect(wire(f.calls[2])).toMatchObject({ suggestion: 'practice Portuguese' });
 
-	// A live node holds only asks overnight; other lines still flow, without a suggestion.
-	f.options.quietHours = null;
+	// The node's own quiet hours hold every digest overnight, not only asks.
+	f.options.quietHours = compose('grok').quietHours;
 	const night = start + 180 * minute;
 	f.at(night);
 	finish(f, 'c', 3, night);
 	await f.restart().tick();
 	f.at(night + 30 * minute);
 	await f.restart().tick();
+	expect(f.calls).toHaveLength(3);
+	// A forced catch-up still sends overnight, without a suggestion.
+	await f.restart().resume();
+	expect(wire(f.calls[3])).toMatchObject({ text: 'DONE: Fixture c' });
 	expect(wire(f.calls[3]).suggestion).toBeUndefined();
+	finish(f, 'd', 4, night + 31 * minute);
+	await f.restart().tick();
+	const morning = Date.parse('2026-02-03T08:00:00Z');
+	f.at(morning - 1);
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(4);
+	f.at(morning);
+	await f.restart().tick();
+	expect(wire(f.calls[4])).toMatchObject({
+		text: 'DONE: Fixture d\nUntil the next digest: practice Portuguese'
+	});
 });
