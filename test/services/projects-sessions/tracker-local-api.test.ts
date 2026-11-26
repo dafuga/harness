@@ -184,10 +184,8 @@ test('reports persisted run history and selects a model through the native item 
 	const { id } = await (
 		await request('/items', 'POST', { title: 'Fixture model selection' })
 	).json();
-	database.exec(`
-		CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
-		CREATE TABLE remote_runs(node TEXT, id INTEGER, item_id TEXT, queued_at INTEGER,
-			state TEXT, rung TEXT, outcome TEXT);
+	database.exec(`CREATE TABLE runs(id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
+		CREATE TABLE remote_runs(node TEXT, id INTEGER, item_id TEXT, queued_at INTEGER, state TEXT, rung TEXT, outcome TEXT);
 	`);
 	database.prepare("INSERT INTO runs VALUES (1, ?, 100, 'finished', 'sol', 'done')").run(id);
 	database
