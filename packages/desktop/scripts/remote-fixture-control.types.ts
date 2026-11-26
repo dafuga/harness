@@ -1,7 +1,5 @@
 // @harness-uid u_nmxl4zx5tk
-export class RemoteFixtureRequestTooLargeError extends Error {
-	override name = 'RemoteFixtureRequestTooLargeError';
-}
+export { RemoteFixtureRequestTooLargeError } from './RemoteFixtureRequestTooLargeError';
 
 /** One control operation: `METHOD /path` → what it answers. */
 export type FixtureAction = (body: Record<string, unknown>) => unknown;

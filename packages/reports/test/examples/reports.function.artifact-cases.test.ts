@@ -2,8 +2,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { artifactCases, caseForm } from '../../src/utils/explorer-ui/artifactCases';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.artifact-cases.test.types';
 
 const unitId = 'reports.function.artifact-cases';
 const gapWhy = 'Its cases are not in the recorded form.';

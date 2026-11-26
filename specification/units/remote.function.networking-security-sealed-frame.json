@@ -12,76 +12,90 @@
 		"symbols": ["sealedFrameHeader", "sealedStreamKey", "sealedFrame", "openSealedFrame"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "sealedFrameHeader.frame",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "Encoded frame from which to read the versioned header."
 			},
 			{
 				"name": "sealedStreamKey.keys",
 				"type": "ScopeKeys",
-				"required": true
+				"required": true,
+				"description": "Scope keys used to derive the session stream key."
 			},
 			{
 				"name": "sealedStreamKey.streamId",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "Identifier of the stream to bind to the derived key."
 			},
 			{
 				"name": "sealedFrame.keys",
 				"type": "ScopeKeys",
-				"required": true
+				"required": true,
+				"description": "Scope identity and epoch to bind to the frame header."
 			},
 			{
 				"name": "sealedFrame.streamKey",
 				"type": "CryptoKey",
-				"required": true
+				"required": true,
+				"description": "Derived key for this frame's stream."
 			},
 			{
 				"name": "sealedFrame.frame",
 				"type": "{ streamId: Uint8Array; counter: bigint; data: Uint8Array }",
-				"required": true
+				"required": true,
+				"description": "Stream identifier, frame counter, and bytes to encrypt."
 			},
 			{
 				"name": "openSealedFrame.keys",
 				"type": "ScopeKeys",
-				"required": true
+				"required": true,
+				"description": "Scope identity and epoch expected in the frame header."
 			},
 			{
 				"name": "openSealedFrame.streamKey",
 				"type": "CryptoKey",
-				"required": true
+				"required": true,
+				"description": "Derived key for the stream identified by the frame."
 			},
 			{
 				"name": "openSealedFrame.frame",
 				"type": "Uint8Array",
-				"required": true
+				"required": true,
+				"description": "Encoded frame to authenticate and decrypt."
 			}
 		],
 		"outputs": [
 			{
 				"name": "sealedFrameHeader",
-				"type": "SealedFrameHeader"
+				"type": "SealedFrameHeader",
+				"description": "Parsed frame header. Opening the frame authenticates its header."
 			},
 			{
 				"name": "sealedStreamKey",
-				"type": "Promise<CryptoKey>"
+				"type": "Promise<CryptoKey>",
+				"description": "Derived symmetric key for the specified stream."
 			},
 			{
 				"name": "sealedFrame",
-				"type": "Promise<Uint8Array>"
+				"type": "Promise<Uint8Array>",
+				"description": "Encoded header followed by the authenticated ciphertext."
 			},
 			{
 				"name": "openSealedFrame",
-				"type": "Promise<{ header: SealedFrameHeader; data: Uint8Array }>"
+				"type": "Promise<{ header: SealedFrameHeader; data: Uint8Array }>",
+				"description": "Authenticated header and original output bytes."
 			}
 		],
 		"errors": [
 			{
 				"name": "SealedError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The header, counter, or stream identifier is invalid, the scope does not match, or authentication fails."
 			}
 		],
 		"errorStatus": "unknown",
@@ -92,13 +106,15 @@
 					{
 						"name": "sealedFrameHeader.frame",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "Encoded frame from which to read the versioned header."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedFrameHeader",
-						"type": "SealedFrameHeader"
+						"type": "SealedFrameHeader",
+						"description": "Parsed frame header. Opening the frame authenticates its header."
 					}
 				],
 				"errors": [
@@ -115,18 +131,21 @@
 					{
 						"name": "sealedStreamKey.keys",
 						"type": "ScopeKeys",
-						"required": true
+						"required": true,
+						"description": "Scope keys used to derive the session stream key."
 					},
 					{
 						"name": "sealedStreamKey.streamId",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "Identifier of the stream to bind to the derived key."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedStreamKey",
-						"type": "Promise<CryptoKey>"
+						"type": "Promise<CryptoKey>",
+						"description": "Derived symmetric key for the specified stream."
 					}
 				],
 				"errors": [
@@ -143,23 +162,27 @@
 					{
 						"name": "sealedFrame.keys",
 						"type": "ScopeKeys",
-						"required": true
+						"required": true,
+						"description": "Scope identity and epoch to bind to the frame header."
 					},
 					{
 						"name": "sealedFrame.streamKey",
 						"type": "CryptoKey",
-						"required": true
+						"required": true,
+						"description": "Derived key for this frame's stream."
 					},
 					{
 						"name": "sealedFrame.frame",
 						"type": "{ streamId: Uint8Array; counter: bigint; data: Uint8Array }",
-						"required": true
+						"required": true,
+						"description": "Stream identifier, frame counter, and bytes to encrypt."
 					}
 				],
 				"outputs": [
 					{
 						"name": "sealedFrame",
-						"type": "Promise<Uint8Array>"
+						"type": "Promise<Uint8Array>",
+						"description": "Encoded header followed by the authenticated ciphertext."
 					}
 				],
 				"errors": [],
@@ -171,23 +194,27 @@
 					{
 						"name": "openSealedFrame.keys",
 						"type": "ScopeKeys",
-						"required": true
+						"required": true,
+						"description": "Scope identity and epoch expected in the frame header."
 					},
 					{
 						"name": "openSealedFrame.streamKey",
 						"type": "CryptoKey",
-						"required": true
+						"required": true,
+						"description": "Derived key for the stream identified by the frame."
 					},
 					{
 						"name": "openSealedFrame.frame",
 						"type": "Uint8Array",
-						"required": true
+						"required": true,
+						"description": "Encoded frame to authenticate and decrypt."
 					}
 				],
 				"outputs": [
 					{
 						"name": "openSealedFrame",
-						"type": "Promise<{ header: SealedFrameHeader; data: Uint8Array }>"
+						"type": "Promise<{ header: SealedFrameHeader; data: Uint8Array }>",
+						"description": "Authenticated header and original output bytes."
 					}
 				],
 				"errors": [

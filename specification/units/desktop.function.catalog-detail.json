@@ -9,10 +9,17 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/EntityNotFoundError.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/catalogDetail.types.ts"
 		],
-		"symbols": ["catalogDetail", "DetailContext", "DetailData", "EntityNotFoundError"]
+		"symbols": [
+			"EntityNotFoundError",
+			"catalogDetail",
+			"DetailContext",
+			"DetailData",
+			"EntityNotFoundError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

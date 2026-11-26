@@ -9,10 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/src/utils/reports-media/audio-asset/InvalidWavError.ts",
 			"packages/reports/src/utils/reports-media/audio-asset/wavInfo.ts",
 			"packages/reports/src/utils/reports-media/audio-asset/wavInfo.types.ts"
 		],
-		"symbols": ["wavInfo", "InvalidWavError"]
+		"symbols": ["InvalidWavError", "wavInfo", "InvalidWavError"]
 	},
 	"contract": {
 		"origin": "declared",

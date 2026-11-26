@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/explorer-ui/explorerComparison.ts"],
-		"symbols": ["covering", "united", "merged", "incomparable"]
+		"symbols": ["covering", "united", "merged", "explorerComparison"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -160,7 +160,7 @@
 				]
 			},
 			{
-				"name": "incomparable.before",
+				"name": "explorerComparison.before",
 				"type": "ExplorerSide",
 				"required": true,
 				"description": "The earlier side supplies the record profile and revision detail used for comparison. Its scenarios are checked only against later scenarios with the same id.",
@@ -176,7 +176,7 @@
 				]
 			},
 			{
-				"name": "incomparable.after",
+				"name": "explorerComparison.after",
 				"type": "ExplorerSide",
 				"required": true,
 				"description": "The later side supplies the record profile and revision detail used for comparison. Only matching earlier scenario ids can produce viewport or test differences.",
@@ -192,7 +192,7 @@
 				]
 			},
 			{
-				"name": "incomparable.unit",
+				"name": "explorerComparison.unit",
 				"type": "string",
 				"required": true,
 				"description": "The registry unit id whose covering scenarios are compared on both sides. Both revisions must use the same unit id for the comparison to refer to the same unit.",
@@ -325,7 +325,7 @@
 				]
 			},
 			{
-				"name": "incomparable",
+				"name": "explorerComparison",
 				"type": "string[]",
 				"description": "The reasons can include differing truthy profiles, changed dimensions for matching viewport ids in matching scenarios, and tests whose JSON serialization differs. Added or removed scenario ids alone produce no reason.",
 				"examples": [
@@ -638,10 +638,10 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "incomparable",
+				"name": "explorerComparison",
 				"inputs": [
 					{
-						"name": "incomparable.before",
+						"name": "explorerComparison.before",
 						"type": "ExplorerSide",
 						"required": true,
 						"description": "The earlier side supplies the record profile and revision detail used for comparison. Its scenarios are checked only against later scenarios with the same id.",
@@ -657,7 +657,7 @@
 						]
 					},
 					{
-						"name": "incomparable.after",
+						"name": "explorerComparison.after",
 						"type": "ExplorerSide",
 						"required": true,
 						"description": "The later side supplies the record profile and revision detail used for comparison. Only matching earlier scenario ids can produce viewport or test differences.",
@@ -673,7 +673,7 @@
 						]
 					},
 					{
-						"name": "incomparable.unit",
+						"name": "explorerComparison.unit",
 						"type": "string",
 						"required": true,
 						"description": "The registry unit id whose covering scenarios are compared on both sides. Both revisions must use the same unit id for the comparison to refer to the same unit.",
@@ -682,7 +682,7 @@
 				],
 				"outputs": [
 					{
-						"name": "incomparable",
+						"name": "explorerComparison",
 						"type": "string[]",
 						"description": "The reasons can include differing truthy profiles, changed dimensions for matching viewport ids in matching scenarios, and tests whose JSON serialization differs. Added or removed scenario ids alone produce no reason.",
 						"examples": [

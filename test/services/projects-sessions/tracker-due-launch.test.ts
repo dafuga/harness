@@ -25,7 +25,9 @@ function starter() {
 /** The due switches a host gets from a launch config that does not mention `due`. */
 function defaultDue(database: DatabaseSync, node: string) {
 	const store = new TrackerPersistenceService(database, node, { now });
-	const host = trackerHostLaunch(store, { driver: process.execPath, repositories: {} });
+	// Never started here. A root-owned shell passes the owner check everywhere; a CI runner's own
+	// Node binary may be writable by others and is rightly refused.
+	const host = trackerHostLaunch(store, { driver: '/bin/sh', repositories: {} });
 	return { scheduleDue: host.scheduleDue, due: host.due };
 }
 

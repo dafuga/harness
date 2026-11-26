@@ -2,10 +2,10 @@ import type { Page, WebSocketRoute } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 import { startChain } from './hub-realtime-chain';
+import type { Chain } from './hub-realtime.spec.types';
 
 test.setTimeout(180_000);
 
-type Chain = Awaited<ReturnType<typeof startChain>>;
 const samples = 30;
 const device = 'AAAAAAAAAAAAAAAAAAAAAA';
 

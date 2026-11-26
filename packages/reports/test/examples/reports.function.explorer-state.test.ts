@@ -1,5 +1,5 @@
 import { test } from 'vitest';
-import type { HarnessCapture, HarnessScenario } from '../../src/models/explorer-ui/Harness.types';
+import type { HarnessCapture } from '../../src/models/explorer-ui/Harness.types';
 import type { CoverageStanding } from '../../src/models/explorer-ui/ExplorerEvidence.types';
 import {
 	captureUnbound,
@@ -13,9 +13,13 @@ import { capture, declared, record, result, sha, unit } from '../explorerFixture
 import { clipSlots, clips, failedSecond, videoJudge } from '../explorerVideoCoverageFixture';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
-
-type Case = Parameters<typeof recordExampleCases>[1][number];
-type State = HarnessScenario['states'][number];
+import type {
+	Case,
+	State,
+	Selection,
+	Recorded,
+	Judging
+} from './reports.function.explorer-state.test.types';
 
 const unitId = 'reports.function.explorer-state';
 const commit = sha('a');
@@ -49,8 +53,6 @@ const screens = declared({
 	states: [catalog, entity, shared],
 	evidence: [{ id: 'screens', kind: 'screenshot', states: ['catalog'], viewports: ['desktop'] }]
 });
-
-type Selection = [string, string, Parameters<typeof scenarioFor>[2], string[]];
 
 function selections(rows: Selection[]): Case[] {
 	const cases = rows.map(([name, target, units]) => ({
@@ -139,14 +141,10 @@ const coverage = declared({
 	states: [catalog, pending, skipped, partial],
 	evidence: [{ id: 'screens', kind: 'screenshot', states: ['catalog'], viewports: ['desktop'] }]
 });
-
-type Recorded = Array<{ id: string; coverage: string; captures: HarnessCapture[] }>;
 function judge(states: Recorded): Judged {
 	const scenario = result([], { states });
 	return { declared: coverage, result: scenario, record: record([scenario]), bound: commit };
 }
-
-type Judging = [string, Judged | null, State, CoverageStanding, string[]?];
 
 /** Judges each row's state against the absent fallback and checks standing and reasons. */
 function judging(state: string, absent: Told, rows: Judging[]): void {

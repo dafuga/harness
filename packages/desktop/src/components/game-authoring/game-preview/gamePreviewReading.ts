@@ -1,17 +1,7 @@
 // @harness-uid u_vyqjqceknl
+import type { PreviewSummaryInput } from './gamePreviewReading.types';
+export type { PreviewSummaryInput } from './gamePreviewReading.types';
 import type { GameRun, GameView } from '../../../../../game/src/models/game-authoring/Game.types';
-
-/** What decides the line under the AI video control. */
-export interface PreviewSummaryInput {
-	readonly: boolean;
-	transportReady: boolean;
-	available: boolean;
-	status: 'off' | 'starting' | 'live';
-	left: number;
-	note: string;
-	limit: number;
-	rate: number;
-}
 
 /** @pure The sentence under the AI video control: why it is off, how it is running or its cost. */
 export function previewSummary(input: PreviewSummaryInput): string {

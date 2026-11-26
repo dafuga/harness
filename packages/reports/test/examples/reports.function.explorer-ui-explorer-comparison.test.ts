@@ -5,7 +5,7 @@ import {
 	covering,
 	united,
 	merged,
-	incomparable
+	explorerComparison
 } from '../../src/utils/explorer-ui/explorerComparison';
 
 const unit = 'reports.component.evidence-grid';
@@ -48,7 +48,7 @@ test('Compares evidence scenarios across revisions', () => {
 		]
 	);
 	const mergedScenario = merged(current, undefined);
-	const differences = incomparable(beforeSide, afterSide, unit);
+	const differences = explorerComparison(beforeSide, afterSide, unit);
 	const noRevisionScenarios = covering(null, unit);
 
 	expect(unitedEntries.map((item) => item.id)).toEqual([

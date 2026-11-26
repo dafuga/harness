@@ -6,9 +6,9 @@ import type {
 	EvidenceArtifactQuery
 } from '../../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import { evidencePayload } from '../../../../../../../desktop/src/utils/verification-evidence/evidencePayload';
-import { artifactAnswer } from '../../../../../../../desktop/src/utils/artifact-answer/artifactAnswer';
+import { artifactAnswer } from '../../../../../../../desktop/src/utils/verification-evidence/artifact-answer/artifactAnswer';
 import { artifactLimit } from '../../../../../../../desktop/src/utils/reports-media/artifactMedia';
-import { recordedAnswer } from '../../../../../../../desktop/src/utils/recorded-answer/recordedAnswer';
+import { recordedAnswer } from '../../../../../../../desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer';
 import { recordedCapture } from '../../../../../../../desktop/src/utils/reports-media/recordedCapture';
 import { explorerEvidence } from '$reports/utils/explorer-ui/explorerEvidence';
 import { hubFail } from '../../../../../utils/development-tooling/hubJson';

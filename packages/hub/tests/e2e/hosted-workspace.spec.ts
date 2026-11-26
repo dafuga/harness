@@ -77,7 +77,7 @@ test('a comment on a historical commit names that commit', async ({ page }) => {
 	const state = await hostedFixture(page);
 	await page.goto(designs(atlas, `main/commit/${earlier}`));
 	await expect(page.getByLabel('Viewed context', { exact: true }).locator('strong')).toHaveText(
-		earlier.slice(0, 7)
+		`Historical commit · ${earlier.slice(0, 7)}`
 	);
 	await expect(page.getByRole('contentinfo')).toContainText('Historical commit · comments only');
 	await expect(page.getByRole('contentinfo')).toContainText(earlier.slice(0, 7));
@@ -100,13 +100,12 @@ test('changing project leaves nothing of the previous one and reads only the new
 	await page.goto(designs(atlas, 'main'));
 	await page.getByRole('button', { name: 'Open thread 1', exact: true }).click();
 	await expect(page.getByText('Atlas: align the filters.')).toBeVisible();
-	const project = page.getByLabel('Project', { exact: true });
-	await expect(project.locator('option')).toHaveText(['Atlas', 'Borealis']);
-	await expect(project.locator('optgroup')).toHaveAttribute('label', 'Shared');
-	const before = state.calls.length;
 	await page.getByRole('button', { name: 'Choose workbench', exact: true }).click();
-	await project.selectOption(borealis);
-	await page.keyboard.press('Escape');
+	const workbenches = page.getByRole('dialog', { name: 'Choose workbench', exact: true });
+	const shared = workbenches.getByRole('group', { name: 'Shared', exact: true });
+	await expect(shared.locator('.choice-row')).toHaveText([/Atlas/, /Borealis/]);
+	const before = state.calls.length;
+	await shared.locator('.choice-row').filter({ hasText: 'Borealis' }).click();
 	await expect(page).toHaveURL(new RegExp(`/projects/${borealis}/harness/branch/trunk/pages$`));
 	await expect(page.getByRole('heading', { name: 'Borealis activity', exact: true })).toBeVisible();
 	await expect(page.getByRole('main').getByText(/Atlas/)).toHaveCount(0);

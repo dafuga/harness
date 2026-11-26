@@ -102,3 +102,11 @@ export const names = createRawSnippet((listed: () => CatalogRow[]) => ({
 			.join('') +
 		'</ul>'
 }));
+export const previewAnswerOptions = [
+	{
+		label: 'Keep existing names',
+		effect: 'Retains compatibility with saved exports.',
+		recommended: true as const
+	},
+	{ label: 'Use new names', effect: 'Matches the current report headings.' }
+];

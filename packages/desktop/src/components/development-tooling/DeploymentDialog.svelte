@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_k4lvak3h7p -->
 <script lang="ts">
+	import type { CommitRow } from './DeploymentDialog.types';
 	import DetailList from '$shared/shared-primitives/DetailList.svelte';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import type {
@@ -12,11 +13,6 @@
 	import ChoiceDialog from '../shared-primitives/ChoiceDialog.svelte';
 	import DeploymentDetails from './DeploymentDetails.svelte';
 	import Icon from '../shared-primitives/Icon.svelte';
-	/** A comparison row: an environment's name and the receipt of its deployment, if any. */
-	interface CommitRow {
-		name: string;
-		item: DeploymentReceipt | null;
-	}
 	/**
 	 * Deploy promotes the verified preprod commit to production, whatever environment, branch or
 	 * commit is shown. Opening reads the promotion and changes nothing; only Promote to production,

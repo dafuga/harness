@@ -757,7 +757,7 @@
 			},
 			{
 				"name": "recordedHostEvent.legacySession",
-				"type": "unknown",
+				"type": "(run: TrackerRunReceipt) => TrackerHostSession | undefined",
 				"required": true
 			},
 			{
@@ -2661,7 +2661,7 @@
 					},
 					{
 						"name": "recordedHostEvent.legacySession",
-						"type": "unknown",
+						"type": "(run: TrackerRunReceipt) => TrackerHostSession | undefined",
 						"required": true
 					},
 					{

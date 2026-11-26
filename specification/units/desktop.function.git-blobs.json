@@ -10,10 +10,11 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/services/project-session-service/git-source-adapter/gitBlobs.ts",
+			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitBlobReadError.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.ts",
 			"packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/gitBlobs.types.ts"
 		],
-		"symbols": ["gitBlobs", "gitBlobs", "BlobRequest", "GitBlobReadError"]
+		"symbols": ["gitBlobs", "GitBlobReadError", "gitBlobs", "BlobRequest", "GitBlobReadError"]
 	},
 	"contract": {
 		"origin": "declared",

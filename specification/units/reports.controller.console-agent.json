@@ -10,9 +10,15 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.ts",
-			"packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.types.ts"
+			"packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentController.types.ts",
+			"packages/reports/src/lib/development-tooling/server-hooks/InvalidRequestError.ts"
 		],
-		"symbols": ["ConsoleAgentController", "ConsoleAgentController.handle", "InvalidRequestError"]
+		"symbols": [
+			"ConsoleAgentController",
+			"ConsoleAgentController.handle",
+			"InvalidRequestError",
+			"InvalidRequestError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -7,8 +7,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { replayVideo } from '../../src/routes/api/replay-video/replay-video-service/replayVideo';
 import { replayVideoKey } from '../../src/utils/reports-media/replayVideo';
-
-type Item = Report['evidence'][number];
+import type { Item } from './reports.function.replay-video.test.types';
 
 const BEFORE_FILE = '5d1c8a0f3e7b92d4c6a1e8f05b3d7c29e4a6f1b8d0c3e5a7f9b2d4c6e8a0f1b3.png';
 const AFTER_FILE = 'a92f4c1e7d0b3e861c5a9f24e0d7b3c86f1a4e9d2b8c0f57d3e6a1b94c7f2e05.png';

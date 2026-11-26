@@ -9,11 +9,13 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/remote/src/utils/networking-security/RemoteKeyError.ts",
 			"packages/remote/src/utils/networking-security/remoteKeys.ts",
 			"packages/remote/src/utils/networking-security/remoteKeys.types.ts",
 			"packages/remote/src/utils/remoteKeys.ts"
 		],
 		"symbols": [
+			"RemoteKeyError",
 			"remoteKeys",
 			"sharedSecret",
 			"importRemoteKeys",

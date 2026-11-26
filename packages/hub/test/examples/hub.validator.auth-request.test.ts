@@ -3,12 +3,10 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { AuthRequestValidator } from '../../src/validators/accounts-access/AuthRequestValidator';
 import type { Body } from '../../src/validators/accounts-access/AuthRequestValidator.types';
+import type { Failure, Cases } from './hub.validator.auth-request.test.types';
 
 const UNIT_ID = 'hub.validator.auth-request';
 const validator = new AuthRequestValidator();
-
-type Failure = { name: string; message: string };
-type Cases = Parameters<typeof recordExampleCases>[1];
 
 const CREDENTIAL =
 	'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMDQ1ODMyMzQ1NjI5MDEyMzQ1NiJ9.Yq3Vx8Lr0TmWc2Ng5Hd7Ke1Pb9Zu4Js6Fo-RtEi_wAqM2sXhT8dLnGv0KbE';

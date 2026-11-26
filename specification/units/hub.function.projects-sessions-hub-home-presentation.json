@@ -8,7 +8,10 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomePresentation.ts"],
+		"source": [
+			"packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+			"packages/hub/src/components/projects-sessions/hubHomeTime.ts"
+		],
 		"symbols": [
 			"sections",
 			"agentLabels",
@@ -30,10 +33,6 @@
 			"staleReading",
 			"missingQuotaProviders",
 			"warningLabel",
-			"runDay",
-			"runTime",
-			"when",
-			"quotaReset",
 			"pastDueLabel",
 			"pastDueSummary",
 			"initials",
@@ -41,7 +40,15 @@
 			"summaryLine",
 			"relativeWhen",
 			"workEta",
-			"quotaSummary"
+			"quotaSummary",
+			"quotaReset",
+			"runDay",
+			"runTime",
+			"when",
+			"runDay",
+			"runTime",
+			"when",
+			"quotaReset"
 		]
 	},
 	"contract": {
@@ -100,7 +107,8 @@
 				"name": "homeHeadline.needs",
 				"type": "number",
 				"required": false,
-				"default": 0
+				"default": 0,
+				"description": "How many open asks need the owner. Defaults to zero."
 			},
 			{
 				"name": "currentAgent.agents",
@@ -163,50 +171,16 @@
 				"description": "Provider allowance window to label."
 			},
 			{
-				"name": "runDay.at",
-				"type": "string",
-				"required": true,
-				"description": "ISO timestamp of a scheduled run."
-			},
-			{
-				"name": "runDay.now",
-				"type": "number",
-				"required": true,
-				"description": "Current time in milliseconds since the Unix epoch."
-			},
-			{
-				"name": "runTime.at",
-				"type": "string",
-				"required": true,
-				"description": "ISO timestamp of a scheduled run."
-			},
-			{
-				"name": "when.time",
-				"type": "string",
-				"required": true,
-				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
-			},
-			{
-				"name": "quotaReset.time",
-				"type": "string | null",
-				"required": true,
-				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
-			},
-			{
-				"name": "quotaReset.now",
-				"type": "number",
-				"required": true,
-				"description": "Current time in milliseconds since the Unix epoch."
-			},
-			{
 				"name": "pastDueLabel.run",
 				"type": "Pick<HomePastDue, 'state' | 'position'>",
-				"required": true
+				"required": true,
+				"description": "The state and optional queue position of one past-due run."
 			},
 			{
 				"name": "pastDueSummary.runs",
 				"type": "HomePastDue[]",
-				"required": true
+				"required": true,
+				"description": "The past-due runs to total by state."
 			},
 			{
 				"name": "initials.name",
@@ -267,6 +241,42 @@
 				"type": "number",
 				"required": true,
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
+			},
+			{
+				"name": "runDay.at",
+				"type": "string",
+				"required": true,
+				"description": "ISO timestamp of a scheduled run."
+			},
+			{
+				"name": "runDay.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
+			},
+			{
+				"name": "runTime.at",
+				"type": "string",
+				"required": true,
+				"description": "ISO timestamp of a scheduled run."
+			},
+			{
+				"name": "when.time",
+				"type": "string",
+				"required": true,
+				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
+			},
+			{
+				"name": "quotaReset.time",
+				"type": "string | null",
+				"required": true,
+				"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
+			},
+			{
+				"name": "quotaReset.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch."
 			}
 		],
 		"outputs": [
@@ -508,7 +518,8 @@
 						"name": "homeHeadline.needs",
 						"type": "number",
 						"required": false,
-						"default": 0
+						"default": 0,
+						"description": "How many open asks need the owner. Defaults to zero."
 					}
 				],
 				"outputs": [
@@ -694,104 +705,13 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "runDay",
-				"inputs": [
-					{
-						"name": "runDay.at",
-						"type": "string",
-						"required": true,
-						"description": "ISO timestamp of a scheduled run."
-					},
-					{
-						"name": "runDay.now",
-						"type": "number",
-						"required": true,
-						"description": "Current time in milliseconds since the Unix epoch."
-					}
-				],
-				"outputs": [
-					{
-						"name": "runDay",
-						"type": "unknown",
-						"description": "Today, Tomorrow or the calendar date in Lisbon."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "runTime",
-				"inputs": [
-					{
-						"name": "runTime.at",
-						"type": "string",
-						"required": true,
-						"description": "ISO timestamp of a scheduled run."
-					}
-				],
-				"outputs": [
-					{
-						"name": "runTime",
-						"type": "unknown",
-						"description": "Scheduled time in Lisbon in 24-hour notation."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "when",
-				"inputs": [
-					{
-						"name": "when.time",
-						"type": "string",
-						"required": true,
-						"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
-					}
-				],
-				"outputs": [
-					{
-						"name": "when",
-						"type": "unknown",
-						"description": "Local short calendar date."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "quotaReset",
-				"inputs": [
-					{
-						"name": "quotaReset.time",
-						"type": "string | null",
-						"required": true,
-						"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
-					},
-					{
-						"name": "quotaReset.now",
-						"type": "number",
-						"required": true,
-						"description": "Current time in milliseconds since the Unix epoch."
-					}
-				],
-				"outputs": [
-					{
-						"name": "quotaReset",
-						"type": "unknown",
-						"description": "Rounded countdown or current availability of the reset time."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
 				"name": "pastDueLabel",
 				"inputs": [
 					{
 						"name": "pastDueLabel.run",
 						"type": "Pick<HomePastDue, 'state' | 'position'>",
-						"required": true
+						"required": true,
+						"description": "The state and optional queue position of one past-due run."
 					}
 				],
 				"outputs": [
@@ -809,7 +729,8 @@
 					{
 						"name": "pastDueSummary.runs",
 						"type": "HomePastDue[]",
-						"required": true
+						"required": true,
+						"description": "The past-due runs to total by state."
 					}
 				],
 				"outputs": [
@@ -960,6 +881,98 @@
 						"name": "quotaSummary",
 						"type": "unknown",
 						"description": "Subscription count with how many readable limits are running low, or all OK."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runDay",
+				"inputs": [
+					{
+						"name": "runDay.at",
+						"type": "string",
+						"required": true,
+						"description": "ISO timestamp of a scheduled run."
+					},
+					{
+						"name": "runDay.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runDay",
+						"type": "unknown",
+						"description": "Today, Tomorrow or the calendar date in Lisbon."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "runTime",
+				"inputs": [
+					{
+						"name": "runTime.at",
+						"type": "string",
+						"required": true,
+						"description": "ISO timestamp of a scheduled run."
+					}
+				],
+				"outputs": [
+					{
+						"name": "runTime",
+						"type": "unknown",
+						"description": "Scheduled time in Lisbon in 24-hour notation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "when",
+				"inputs": [
+					{
+						"name": "when.time",
+						"type": "string",
+						"required": true,
+						"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
+					}
+				],
+				"outputs": [
+					{
+						"name": "when",
+						"type": "unknown",
+						"description": "Local short calendar date."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "quotaReset",
+				"inputs": [
+					{
+						"name": "quotaReset.time",
+						"type": "string | null",
+						"required": true,
+						"description": "ISO timestamp for the presentation label, or null when the reset time is unavailable."
+					},
+					{
+						"name": "quotaReset.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "quotaReset",
+						"type": "unknown",
+						"description": "Rounded countdown or current availability of the reset time."
 					}
 				],
 				"errors": [],

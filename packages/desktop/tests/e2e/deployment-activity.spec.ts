@@ -170,11 +170,14 @@ async function capture(page: Page, name: string) {
 /** Every mobile dialog stays inside the visual viewport; its own content may scroll. */
 async function mobileDialog(page: Page, name: string) {
 	const dialog = page.getByRole('dialog', { name, exact: true });
-	const bounds = await dialog.boundingBox();
 	const viewport = page.viewportSize()!;
-	expect(bounds!.x).toBeGreaterThanOrEqual(8);
-	expect(bounds!.y).toBeGreaterThanOrEqual(8);
-	expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewport.width - 8);
-	expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport.height - 8);
+	// The dialog is placed again by its resize handler, a frame after the viewport changes.
+	await expect(async () => {
+		const bounds = await dialog.boundingBox();
+		expect(bounds!.x).toBeGreaterThanOrEqual(8);
+		expect(bounds!.y).toBeGreaterThanOrEqual(8);
+		expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(viewport.width - 8);
+		expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(viewport.height - 8);
+	}).toPass({ timeout: 5000 });
 	expect(await dialog.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
 }

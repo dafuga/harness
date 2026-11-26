@@ -27,6 +27,10 @@ export async function assertRuntimeAudioPresentation(
 		).toBeVisible();
 		return;
 	}
+	await assertAudioGap(component, clips, variant);
+}
+
+async function assertAudioGap(component: Locator, clips: Locator, variant: string) {
 	if (variant === 'missing-before') {
 		await expect(
 			component.getByText('No clip of this state is recorded for', { exact: false }),

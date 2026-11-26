@@ -9,10 +9,14 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/reports/scripts/FailedRevisionRecordNotFoundError.ts",
+			"packages/reports/scripts/SlugifyTemplateNotFoundError.ts",
 			"packages/reports/scripts/harness-scale-data.ts",
 			"packages/reports/scripts/harness-scale-data.types.ts"
 		],
 		"symbols": [
+			"FailedRevisionRecordNotFoundError",
+			"SlugifyTemplateNotFoundError",
 			"generatedUnits",
 			"generatedFailures",
 			"writeScaleData",

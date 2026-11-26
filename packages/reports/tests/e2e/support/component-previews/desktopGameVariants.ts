@@ -8,46 +8,26 @@ import type { PreviewProps } from './shared.types';
 import { noop } from './shared';
 import { commits } from '../../../../test/entityUnits';
 
-export const desktopGameCatalogVariants: Record<string, string[]> = {
-	'desktop.component.game-authoring-game-workspace-chips': ['demo', 'readonly', 'with-commit'],
-	'desktop.component.game-checkpoint-editor': ['empty', 'readonly', 'empty-rules', 'long'],
-	'desktop.component.game-checkpoint-pane': ['adding', 'readonly', 'advanced', 'long'],
-	'desktop.component.game-create': ['filled', 'game-2d', 'game-3d', 'unavailable', 'busy', 'error'],
-	'desktop.component.game-level-brief': [
-		'concept',
-		'empty',
-		'readonly',
-		'busy',
-		'error',
-		'reviewable',
-		'no-model',
-		'long'
-	],
-	'desktop.component.game-level-review': [
-		'approved',
-		'built',
-		'regenerating',
-		'error',
-		'unavailable',
-		'no-providers'
-	],
-	'desktop.component.game-preview': ['three-dimensional', 'readonly', 'reset'],
-	'desktop.component.game-workspace': ['project', 'loading', 'error', 'readonly', 'history'],
-	'desktop.component.game-view-fields': ['settings-open', 'readonly', 'gated', 'multiple']
-};
+export { desktopGameCatalogVariants } from './desktopGameCatalogVariants';
+
+const variants = new Map<string, (props: PreviewProps, variant: string) => PreviewProps | null>([
+	['game-create', creation],
+	['game-level-brief', brief],
+	['game-checkpoint-editor', checkpoint],
+	['game-level-review', review],
+	['game-workspace', workspace],
+	['game-authoring-game-workspace-chips', (_props, variant) => chips(variant)],
+	['game-checkpoint-pane', pane],
+	['game-view-fields', fields],
+	['game-preview', preview]
+]);
 
 /** Game authoring fixtures use public component inputs and synthetic bridge responses only. */
 export function desktopGameVariant(id: string, props: PreviewProps, variant: string) {
-	const name = id.replace('desktop.component.', '');
-	if (name === 'game-create') return creation(props, variant);
-	if (name === 'game-level-brief') return brief(props, variant);
-	if (name === 'game-checkpoint-editor') return checkpoint(props, variant);
-	if (name === 'game-level-review') return review(props, variant);
-	if (name === 'game-workspace') return workspace(props, variant);
-	if (name === 'game-authoring-game-workspace-chips') return chips(variant);
-	if (name === 'game-checkpoint-pane') return pane(props, variant);
-	if (name === 'game-view-fields') return fields(props, variant);
-	if (name !== 'game-preview') return null;
+	return variants.get(id.replace('desktop.component.', ''))?.(props, variant) ?? null;
+}
+
+function preview(props: PreviewProps, variant: string): PreviewProps {
 	if (variant === 'three-dimensional') return { ...props, view: exampleDocument('3d').views[0] };
 	return { ...props, readonly: variant === 'readonly' };
 }

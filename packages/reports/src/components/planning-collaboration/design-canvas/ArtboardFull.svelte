@@ -60,20 +60,20 @@
 	header {
 		display: flex;
 		align-items: center;
-		gap: 12px;
-		padding: 8px 16px;
+		gap: var(--hx-space-12);
+		padding: var(--hx-space-8) var(--hx-space-16);
 		background: var(--design-panel, var(--hx-color-surface));
-		border-bottom: 1px solid var(--design-line, var(--hx-color-border-strong));
+		border-bottom: var(--hx-border-thin) solid var(--design-line, var(--hx-color-border-strong));
 	}
 	header span {
 		flex: 1;
-		opacity: 0.75;
+		opacity: var(--hx-opacity-secondary);
 	}
 	button {
 		min-height: 36px;
-		padding: 0 12px;
-		border: 1px solid var(--design-line, var(--hx-color-border-strong));
-		border-radius: 8px;
+		padding: 0 var(--hx-space-12);
+		border: var(--hx-border-thin) solid var(--design-line, var(--hx-color-border-strong));
+		border-radius: var(--hx-radius-small);
 		background: transparent;
 		color: inherit;
 		font: inherit;

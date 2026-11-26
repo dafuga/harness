@@ -3,9 +3,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { githubGraphql } from '../../src/utils/git-source-history/create-git-hub-source/githubGraphql';
-
-type Options = Parameters<typeof githubGraphql>[0];
-type Fetch = NonNullable<Options['fetch']>;
+import type { Fetch, Options } from './collaboration.function.github-graphql.test.types';
 
 const COMMIT = '9d2c4f1a8b7e3f60c5d1a2b3e4f5a6b7c8d9e0f1';
 const PATH = 'packages/example/src/value.ts';

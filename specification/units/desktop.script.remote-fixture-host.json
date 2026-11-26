@@ -9,12 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/scripts/FixtureHostRelayConnectionError.ts",
+			"packages/desktop/scripts/FixtureRelayRegistrationError.ts",
 			"packages/desktop/scripts/fixturePhoneTracker.ts",
 			"packages/desktop/scripts/fixturePhoneTracker.types.ts",
 			"packages/desktop/scripts/remote-fixture-host.ts",
 			"packages/desktop/scripts/remote-fixture-host.types.ts"
 		],
 		"symbols": [
+			"FixtureHostRelayConnectionError",
+			"FixtureRelayRegistrationError",
 			"fixturePhoneTracker",
 			"FixtureTrackerPorts",
 			"startRemoteFixture",

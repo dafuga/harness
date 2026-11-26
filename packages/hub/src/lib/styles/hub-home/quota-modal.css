@@ -73,7 +73,7 @@
 }
 
 .hh-home .hh-q-chart {
-	--hh-plot-height: 76px;
+	--hh-plot-height: var(--hx-space-76);
 	--hh-chart-grid: linear-gradient(var(--hx-color-border), var(--hx-color-border));
 	display: grid;
 	grid-template-columns: auto minmax(0, 1fr);

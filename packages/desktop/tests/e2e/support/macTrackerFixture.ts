@@ -29,6 +29,16 @@ async function answer(
 	outgoing.end(await reply.text());
 }
 
+/** Points the app's fixed tracker address at the fixture's port. */
+const redirectApp = (app: ElectronApplication, port: number) =>
+	app.evaluate((_electron, port) => {
+		const original = globalThis.fetch;
+		globalThis.fetch = ((input, init) => {
+			const text = String(input);
+			return original(text.replace('//127.0.0.1:7701/', `//127.0.0.1:${port}/`), init);
+		}) as typeof fetch;
+	}, port);
+
 /**
  * A real Tracker journal, local API and change feed on a spare loopback port. `cut` takes the
  * port down while writes still land in the journal, as when the app loses the tracker.
@@ -77,14 +87,7 @@ export async function startMacTrackerFixture() {
 			const fields = { title, project: 'Fixture', status: 'open', ...asked };
 			store.appendLocal({ itemId: id, fields });
 		},
-		redirect: (app: ElectronApplication) =>
-			app.evaluate((_electron, port) => {
-				const original = globalThis.fetch;
-				globalThis.fetch = ((input, init) => {
-					const text = String(input);
-					return original(text.replace('//127.0.0.1:7701/', `//127.0.0.1:${port}/`), init);
-				}) as typeof fetch;
-			}, port),
+		redirect: (app: ElectronApplication) => redirectApp(app, port),
 		async stop() {
 			if (server.listening) await cut();
 		}

@@ -2,30 +2,16 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import {
-	previewSummary,
 	arrowDirection,
 	levelKey,
 	atSpawn
 } from '../../src/components/game-authoring/game-preview/gamePreviewReading';
 import type { PreviewSummaryInput } from '../../src/components/game-authoring/game-preview/gamePreviewReading';
-
-type View = Parameters<typeof levelKey>[0];
-type Run = Parameters<typeof atSpawn>[0];
-
-const READY: PreviewSummaryInput = {
-	readonly: false,
-	transportReady: true,
-	available: true,
-	status: 'off',
-	left: 0,
-	note: '',
-	limit: 120,
-	rate: 0.5
-};
-
-function summary(over: Partial<PreviewSummaryInput>): string {
-	return previewSummary({ ...READY, ...over });
-}
+import type {
+	View,
+	Run
+} from './desktop.function.game-authoring-game-preview-game-preview-reading.test.types';
+import { summary } from './desktop.function.game-authoring-game-preview-game-preview-reading.cases';
 
 function view(id: string, built?: number, world = true): View {
 	return {
@@ -54,36 +40,6 @@ function placed(next: Run): Record<string, unknown> {
 	const state = next.state as unknown as Record<string, unknown>;
 	return { viewId: next.viewId, x: state.x, y: state.y, level: state.level, view: state.view };
 }
-
-test('explains why the AI video cannot run', () => {
-	const inputs: Partial<PreviewSummaryInput>[] = [
-		{ readonly: true, transportReady: false },
-		{ transportReady: false },
-		{ available: false }
-	];
-	const outputs = inputs.map(summary);
-
-	expect(outputs).toEqual([
-		'AI video is disabled in this read-only preview.',
-		'Live AI is not configured for this build.',
-		'AI video needs a saved project open in the desktop app.'
-	]);
-
-	recordExampleCases(
-		{
-			unitId: 'desktop.function.game-authoring-game-preview-game-preview-reading',
-			symbol: 'previewSummary',
-			state: 'explains-why-the-ai-video-cannot-run',
-			evidence: 'examples-cases',
-			file: 'explains-why-the-ai-video-cannot-run.json'
-		},
-		[
-			{ name: 'read-only wins over unconfigured', input: inputs[0], output: outputs[0] },
-			{ name: 'live AI not configured', input: inputs[1], output: outputs[1] },
-			{ name: 'no saved project open', input: inputs[2], output: outputs[2] }
-		]
-	);
-});
 
 test('shows live, starting or idle AI video status', () => {
 	const inputs: Partial<PreviewSummaryInput>[] = [

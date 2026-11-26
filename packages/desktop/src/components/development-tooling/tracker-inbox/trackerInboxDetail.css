@@ -37,7 +37,7 @@
 	border-color: var(--hx-color-border);
 }
 .detail button:disabled {
-	opacity: 0.5;
+	opacity: var(--hx-opacity-disabled);
 }
 .detail .draft {
 	display: grid;
@@ -69,7 +69,7 @@
 	text-align: left;
 }
 .detail .choice[data-recommended='true'] {
-	border-width: var(--hx-border-medium, 2px);
+	border-width: var(--hx-border-medium);
 }
 .detail .choice .badge {
 	font-size: var(--hx-type-size-xs);

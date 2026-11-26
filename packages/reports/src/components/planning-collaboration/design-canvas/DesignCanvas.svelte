@@ -129,7 +129,7 @@
 		transform-origin: 0 0;
 	}
 	.design-empty {
-		padding: var(--hx-space-6, 24px);
+		padding: var(--hx-space-6);
 		text-align: center;
 	}
 </style>

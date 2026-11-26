@@ -2,12 +2,11 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { GET } from '../../src/routes/api/replay-video/+server';
+import type { Failure } from './reports.endpoint.api-replay-video.test.types';
 
 const UNIT_ID = 'reports.endpoint.api-replay-video';
 const VALID_ID = '0f8a2c3e-1b4d-4e5f-8a9b-0c1d2e3f4a5b';
 const BAD_REQUEST = { status: 400, message: 'A valid report ID is required' };
-
-type Failure = { status: number | null; message: string | null };
 
 function describeFailure(caught: unknown): Failure {
 	const record = (caught ?? {}) as { status?: unknown; body?: { message?: unknown } };

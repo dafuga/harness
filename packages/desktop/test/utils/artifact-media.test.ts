@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { artifactLimit } from '../../src/utils/reports-media/artifactMedia';
-import { artifactMedia } from '../../src/utils/artifact-answer/artifactMedia';
+import { artifactMedia } from '../../src/utils/verification-evidence/artifact-answer/artifactMedia';
 
 const bytes = (...parts: Array<number[] | string>) =>
 	new Uint8Array(parts.flatMap((part) => [...Buffer.from(part as never)]));

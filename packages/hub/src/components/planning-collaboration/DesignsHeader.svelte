@@ -70,7 +70,7 @@
 	}
 	h1 {
 		margin: 0;
-		font-size: var(--hx-type-size-md, 1.1rem);
+		font-size: var(--hx-type-size-lg);
 	}
 	a {
 		color: var(--hx-color-text-supporting);
@@ -78,15 +78,15 @@
 	label {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: var(--hx-space-8);
 	}
 	select,
 	button {
 		min-height: 36px;
 		max-width: 60vw;
-		padding: 0 10px;
+		padding: 0 var(--hx-space-10);
 		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
-		border-radius: 8px;
+		border-radius: var(--hx-radius-small);
 		background: var(--hx-color-surface-raised);
 		color: var(--hx-color-text);
 		font: inherit;
@@ -104,9 +104,9 @@
 	nav a {
 		display: inline-flex;
 		align-items: baseline;
-		gap: 6px;
-		padding: 4px 0;
-		border-bottom: 2px solid transparent;
+		gap: var(--hx-space-6);
+		padding: var(--hx-space-4) 0;
+		border-bottom: var(--hx-border-thick) solid transparent;
 		text-decoration: none;
 	}
 	nav a[aria-current='page'] {

@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/networking-security/wire-session-service/remoteIdentity.ts",
+			"packages/remote/src/utils/networking-security/InvalidRemoteIdentityPublicKeyError.ts",
 			"packages/remote/src/utils/networking-security/remoteIdentity.ts",
 			"packages/remote/src/utils/networking-security/remoteIdentity.types.ts",
 			"packages/remote/src/utils/remoteIdentity.ts"
 		],
 		"symbols": [
 			"requestDigest",
+			"InvalidRemoteIdentityPublicKeyError",
 			"remotePatterns",
 			"remoteIdentity",
 			"credentialHash",

@@ -206,19 +206,19 @@
 			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
 		},
 		{
-			"from": "packages/desktop/test/lib/tracker-realtime-client.test.ts",
+			"from": "packages/desktop/test/services/tracker-realtime-client.test.ts",
 			"specifier": "$reports/lib/projects-sessions/realtime/coalesced",
 			"to": "packages/reports/src/lib/projects-sessions/realtime/coalesced.ts",
 			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
 		},
 		{
-			"from": "packages/desktop/test/lib/tracker-realtime-client.test.ts",
+			"from": "packages/desktop/test/services/tracker-realtime-client.test.ts",
 			"specifier": "$reports/lib/projects-sessions/realtime/followDoorbell",
 			"to": "packages/reports/src/lib/projects-sessions/realtime/followDoorbell.ts",
 			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
 		},
 		{
-			"from": "packages/desktop/test/lib/tracker-realtime-client.test.ts",
+			"from": "packages/desktop/test/services/tracker-realtime-client.test.ts",
 			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
 			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
 			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
@@ -236,13 +236,13 @@
 			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
 		},
 		{
-			"from": "packages/hub/src/lib/realtime/hubLiveUpdates.ts",
+			"from": "packages/hub/src/lib/networking-security/hubLiveUpdates.ts",
 			"specifier": "$reports/lib/projects-sessions/realtime/followDoorbell",
 			"to": "packages/reports/src/lib/projects-sessions/realtime/followDoorbell.ts",
 			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
 		},
 		{
-			"from": "packages/hub/src/lib/realtime/hubLiveUpdates.ts",
+			"from": "packages/hub/src/lib/networking-security/hubLiveUpdates.ts",
 			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
 			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
 			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
@@ -1520,37 +1520,37 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/artifact-answer/artifactAnswer.types.ts",
+			"from": "packages/desktop/src/utils/verification-evidence/artifact-answer/artifactAnswer.types.ts",
 			"specifier": "$reports/models/explorer-ui/Harness.types",
 			"to": "packages/reports/src/models/explorer-ui/Harness.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/recorded-answer/recordedProjection.ts",
+			"from": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedProjection.ts",
 			"specifier": "$reports/models/explorer-ui/Explorer.types",
 			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.types.ts",
+			"from": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.types.ts",
 			"specifier": "$reports/utils/explorer-ui/explorerEvidence",
 			"to": "packages/reports/src/utils/explorer-ui/explorerEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.types.ts",
+			"from": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.types.ts",
 			"specifier": "$reports/models/explorer-ui/Explorer.types",
 			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
+			"from": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.ts",
 			"specifier": "$reports/utils/explorer-ui/explorerEvidence",
 			"to": "packages/reports/src/utils/explorer-ui/explorerEvidence.ts",
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
-			"from": "packages/desktop/src/utils/recorded-answer/recordedAnswer.ts",
+			"from": "packages/desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer.ts",
 			"specifier": "$reports/utils/explorer-ui/explorerBehavior",
 			"to": "packages/reports/src/utils/explorer-ui/explorerBehavior.ts",
 			"reason": "Shared Reports source through the workspace build alias."
@@ -2864,6 +2864,12 @@
 			"reason": "Resolve the shared Reports import through the consuming workspace’s build alias."
 		},
 		{
+			"from": "packages/hub/src/components/accounts-access/LinkedComputers.svelte",
+			"specifier": "$shared/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "Linked Computers uses the same shared dialog in the Hub build and source graph."
+		},
+		{
 			"from": "packages/hub/src/components/shared-primitives/HubFrame.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
@@ -2916,6 +2922,144 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/services/networking-security/LinkedHomeService.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Linked Home uses the Reports display contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Hub choices reuse the Reports Home type through the build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeChoices.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Hub choices reuse the Reports Home type through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/helpers/strings/plural.ts",
+			"specifier": "$reports/helpers/strings/plural",
+			"to": "packages/reports/src/helpers/strings/plural.ts",
+			"reason": "The desktop wrapper reuses the Reports plural helper through the build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/api/hub-home/homePayload.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeDirectAgents",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"reason": "The Hub builds this Home projection with the shared Reports alias."
+		},
+		{
+			"from": "packages/hub/src/services/networking-security/LinkedHomeService.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeDirectAgents",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"reason": "The Hub builds this Home projection with the shared Reports alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeChoices.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Hub choices reuse the Reports Home type through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/claudeQuotaSource.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Home publisher uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/codexQuotaSource.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Home publisher uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/codexQuotaSource.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The Home publisher uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeDirectAgents",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"reason": "Hub Home uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAddSession.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeDirectAgents",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"reason": "Hub Home uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the Reports Home contract through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeSchedule",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeSchedule.ts",
+			"reason": "Hub Home splits the schedule with the Reports board rule."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxChoices.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxRows.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/waitAge",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/waitAge.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.types.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/waitAge",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/waitAge.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNotStarted.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeMerge.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeOpenAsks",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeOpenAsks.ts",
+			"reason": "Uses the shared Reports module through the app build alias."
 		}
 	]
 }

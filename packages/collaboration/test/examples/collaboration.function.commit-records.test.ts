@@ -4,6 +4,7 @@ import type { CollaborationRecords } from '../../src/models/planning-collaborati
 import type { GitHubTransport } from '../../src/utils/git-source-history/githubTransport.types';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { expect } from '../../../../test/verificationExpect';
+import type { RequestCall } from './collaboration.function.commit-records.test.types';
 
 const path = 'packages/collaboration/collaboration-records.json';
 const parent = '0123456789abcdef0123456789abcdef01234567';
@@ -18,8 +19,6 @@ const records: CollaborationRecords = {
 	invitations: [],
 	threads: []
 };
-
-type RequestCall = { path: string; method: string; body?: unknown };
 
 function recordingTransport(responses: Record<string, unknown>) {
 	const calls: RequestCall[] = [];

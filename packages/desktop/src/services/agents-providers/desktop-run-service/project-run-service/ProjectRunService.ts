@@ -51,6 +51,13 @@ function answered(context: ProjectRunContext, text: string): ProjectProposal {
 	}
 }
 
+/** A cancellation stays one; any other failure also says what the agent wrote. */
+function runFailure(context: ProjectRunContext, failure: unknown, written: string): unknown {
+	if (failure instanceof RunCancelled || context.signal.aborted || !written) return failure;
+	const said = failure instanceof Error ? failure.message : 'The agent failed.';
+	return new AgentChangedFilesError(`${said} ${written}`);
+}
+
 /**
  * A creation run: the chosen agent is asked once, read-only, what the new unit is. Only a
  * proposal that was checked becomes a plan, with the request as the first message of its thread
@@ -115,17 +122,10 @@ export class ProjectRunService {
 		);
 		// Whatever came of the question, what the agent wrote although asked not to is said.
 		const written = await this.written(context, before, host);
-		if ('failure' in answer) throw this.failed(context, answer.failure, written);
+		if ('failure' in answer) throw runFailure(context, answer.failure, written);
 		if (signal.aborted) throw new RunCancelled();
 		if (written) throw new AgentChangedFilesError(written);
 		return answered(context, answer.result.text);
-	}
-
-	/** A cancellation stays one; any other failure also says what the agent wrote. */
-	private failed(context: ProjectRunContext, failure: unknown, written: string): unknown {
-		if (failure instanceof RunCancelled || context.signal.aborted || !written) return failure;
-		const said = failure instanceof Error ? failure.message : 'The agent failed.';
-		return new AgentChangedFilesError(`${said} ${written}`);
 	}
 
 	/**

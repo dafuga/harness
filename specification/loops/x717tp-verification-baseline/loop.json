@@ -1,0 +1,65 @@
+{
+	"name": "x717tp-verification-baseline",
+	"goal": "Prove the clean-main CI video and workspace audit failures, repair their causes without weakening recording authorization or audit limits, and pass normal full verification.",
+	"createdAt": "2026-11-25T15:36:37.251Z",
+	"updatedAt": "2026-11-25T15:48:16.167Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:37:25.229Z",
+			"evidence": "Clean current main e17f3b49b6 reproduces six capture authorization failures under CI=1. Current direct app audits report Reports 287, Desktop 243, Hub 71, Planning 6, Collaboration 27, Remote 7, Relay 1, Game 0. Prior clean-main MB2 captures document the 60s planner timeout."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:37:42.126Z",
+			"evidence": "Existing clip planning case checks readFileSync deduplication; extend it to check duplicate statSync validation inside an immutable plan. Existing capture cases exercise real behavior behind a host-specific authorization gate and synthetic cases currently inherit process CI."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:40:33.686Z",
+			"evidence": "Harness recorded failing checkpoint 29a5b34c38. The unchanged CI=1 planner case reports 36 stat calls for nine distinct paths. Clean-current-main MB2 comparison independently confirms the reported 60-second timeout."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:40:35.412Z",
+			"evidence": "The planner caches successfully validated bindings within one plan. Positive synthetic capture cases isolate authorization, and true authorization denial remains independently tested."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-25T15:48:16.167Z",
+			"evidence": "Same committed regression failed at 29a5b34c38 and passed unchanged at cd58e8ceb0 under matched runner environment. MB2 integrated focused runs also passed."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -3,8 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { tooltipPlace } from '../../src/utils/explorer-ui/tooltipPlace';
 import type { TooltipMark, TooltipSize } from '../../src/utils/explorer-ui/tooltipPlace';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.tooltip-place.test.types';
 const unitId = 'reports.function.tooltip-place';
 const record = (state: string, cases: Cases) =>
 	recordExampleCases(

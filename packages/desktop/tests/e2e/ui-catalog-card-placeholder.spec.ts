@@ -1,3 +1,4 @@
+import type { Shown } from './ui-catalog-card-placeholder.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { listedProject, pictured } from './ui-catalog-listing-fixture';
 
@@ -13,7 +14,6 @@ const cardOf = (page: Page, id: string) =>
  */
 async function withoutScreenshot(page: Page, id: string) {
 	await page.addInitScript((target: string) => {
-		type Shown = { entities: { id: string; thumbnail?: unknown }[] };
 		const bridge = (window as unknown as { harness: Record<string, (...a: unknown[]) => unknown> })
 			.harness;
 		const drop = (shown: Shown) => ({

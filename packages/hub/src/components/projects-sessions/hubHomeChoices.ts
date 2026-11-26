@@ -1,15 +1,7 @@
 // @harness-uid u_jnjcxmplge
 // @harness-uid u_hh0ch01c35
-import type {
-	HomeAgent,
-	HomeAskOption
-} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-
-export interface HomeChoice {
-	/** The option's 1-based number in the ask, which is what the tracker records. */
-	number: number;
-	option: HomeAskOption;
-}
+import type { HomeAgent } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+import type { HomeChoice } from './hubHomeChoices.types';
 
 /** The ask's options with the recommended one first, each keeping its own number. */
 export function orderedChoices(agent: Pick<HomeAgent, 'options'>): HomeChoice[] {

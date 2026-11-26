@@ -1,5 +1,7 @@
 import { expect, type Locator } from '@playwright/test';
 
+const variantCounts: Record<string, number> = { 'zero-entries': 0, multiple: 2 };
+
 /** Open the actual disclosure and check the classified diagnostic before capture. */
 export async function prepareBrowserErrors(component: Locator, variant: string) {
 	if (variant === 'unavailable' || variant === 'empty') {
@@ -12,7 +14,7 @@ export async function prepareBrowserErrors(component: Locator, variant: string) 
 		return;
 	}
 	const details = component.locator('details');
-	const count = variant === 'zero-entries' ? 0 : variant === 'multiple' ? 2 : 1;
+	const count = variantCounts[variant] ?? 1;
 	await expect(details.locator('summary')).toHaveText(
 		new RegExp(`^Browser errors · ${count} entr(?:y|ies)$`)
 	);
@@ -26,6 +28,10 @@ export async function prepareBrowserErrors(component: Locator, variant: string) 
 		await expect(details.locator('li')).toHaveCount(0);
 		return;
 	}
+	await assertClassification(details, variant);
+}
+
+async function assertClassification(details: Locator, variant: string) {
 	const statuses: Record<string, string> = {
 		'expected-open': 'Expected',
 		unexpected: 'Unexpected',

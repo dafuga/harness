@@ -17,13 +17,10 @@ import { RemotePairingControlService } from '../src/services/networking-security
 import type { RemoteHostAccess } from '../src/services/networking-security/remote-host-service/RemotePairingControlService';
 import type { ProjectRegistryService } from '../src/services/projects-sessions/ProjectRegistryService';
 import { deferred } from './remote-fixture';
+import type { Asked } from './remote-human-approval.test.types';
 
 afterEach(() => vi.restoreAllMocks());
 
-interface Asked {
-	pairingId: string;
-	expiresAt: string;
-}
 const asked = (): Asked => ({
 	pairingId: randomId(),
 	expiresAt: new Date(Date.now() + 300_000).toISOString()

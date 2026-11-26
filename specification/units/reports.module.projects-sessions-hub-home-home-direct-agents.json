@@ -8,16 +8,20 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts"],
+		"source": [
+			"packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.ts",
+			"packages/reports/src/lib/projects-sessions/hub-home/homeDirectAgents.types.ts"
+		],
 		"symbols": [
+			"HomeLists",
 			"directAgentNames",
 			"controlledIdPattern",
 			"noSubAgents",
 			"isDirectAgent",
-			"HomeLists",
 			"listHomeAgents",
 			"completeHomeSnapshot",
-			"listedHomeSnapshot"
+			"listedHomeSnapshot",
+			"HomeLists"
 		]
 	},
 	"contract": {

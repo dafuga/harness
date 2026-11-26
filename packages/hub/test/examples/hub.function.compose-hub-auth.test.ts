@@ -4,8 +4,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { composeHubAuth } from '../../src/lib/verification-evidence/server/auth/composeHubAuth';
 import { AuthFailure } from '../../src/utils/accounts-access/authFail';
 import type { HubAuthParts } from '../../src/utils/verification-evidence/composeHubAuth';
-
-type Hub = ReturnType<typeof composeHubAuth>;
+import type { Hub } from './hub.function.compose-hub-auth.test.types';
 
 const ORIGIN = 'https://hub.example.test';
 const NOW = 1_800_000_000_000;

@@ -11,8 +11,7 @@ import {
 
 import { unit as fixtureUnit } from '../explorerFixture';
 import { modelDefinition } from '../entityClassFixtures';
-
-type Cases = Parameters<typeof recordExampleCases>[1];
+import type { Cases } from './reports.function.contract-fields.test.types';
 const unitId = 'reports.function.contract-fields';
 const record = (symbol: string, state: string, cases: Cases) =>
 	recordExampleCases(

@@ -9,10 +9,16 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/remote/src/utils/networking-security/InvalidRelayAddressError.ts",
 			"packages/remote/src/utils/networking-security/relayOrigin.ts",
 			"packages/remote/src/utils/networking-security/relayOrigin.types.ts"
 		],
-		"symbols": ["relayOrigin", "relaySocketUrl", "InvalidRelayAddressError"]
+		"symbols": [
+			"InvalidRelayAddressError",
+			"relayOrigin",
+			"relaySocketUrl",
+			"InvalidRelayAddressError"
+		]
 	},
 	"contract": {
 		"origin": "declared",

@@ -8,8 +8,11 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.ts"],
-		"symbols": ["fallbackPollMs", "FollowedScreen", "followTrackerSource"]
+		"source": [
+			"packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.ts",
+			"packages/desktop/src/lib/development-tooling/tracker-inbox/followTrackerSource.types.ts"
+		],
+		"symbols": ["FollowedScreen", "fallbackPollMs", "followTrackerSource", "FollowedScreen"]
 	},
 	"contract": {
 		"origin": "derived",

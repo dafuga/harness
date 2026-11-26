@@ -10,12 +10,14 @@
 	"owns": {
 		"source": [
 			"packages/remote/src/services/networking-security/wire-session-service/remoteBytes.ts",
+			"packages/remote/src/utils/networking-security/InvalidBase64Error.ts",
 			"packages/remote/src/utils/networking-security/remoteBytes.ts",
 			"packages/remote/src/utils/networking-security/remoteBytes.types.ts",
 			"packages/remote/src/utils/remoteBytes.ts"
 		],
 		"symbols": [
 			"stableJson",
+			"InvalidBase64Error",
 			"cryptoSource",
 			"remoteBytes",
 			"bytesText",

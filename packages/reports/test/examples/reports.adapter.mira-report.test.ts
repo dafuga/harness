@@ -9,12 +9,7 @@ import type {
 	MiraAsset,
 	MiraFinding
 } from '../../src/services/reports-media/report-command-service/MiraReportAdapter.types';
-
-type Store = Parameters<MiraReportAdapter['ingest']>[0];
-type Written = {
-	id: string;
-	record: { kind: string; data: { id: string; status: string; path?: string } };
-};
+import type { Written, Store } from './reports.adapter.mira-report.test.types';
 
 const assets: MiraAsset[] = [
 	{

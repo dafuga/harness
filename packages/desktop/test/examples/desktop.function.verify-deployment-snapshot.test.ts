@@ -13,11 +13,10 @@ import {
 	verifyDeploymentSnapshot
 } from '../../src/utils/verification-evidence/verifyDeploymentSnapshot';
 import { DeploymentSnapshotVerificationError } from '../../src/utils/verification-evidence/verifyDeploymentSnapshot.types';
+import type { Environment } from './desktop.function.verify-deployment-snapshot.test.types';
 
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
 const PLAN_STEPS = ['Prepare source', 'Run checks', 'Build source', 'Deploy to Cloudflare'];
-
-type Environment = ReviewedDeployment['plan']['environment'];
 
 async function withRoot(run: (root: string) => Promise<void>) {
 	const root = mkdtempSync(join(tmpdir(), 'deploy-snapshot-'));

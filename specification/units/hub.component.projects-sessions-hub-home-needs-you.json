@@ -4,8 +4,8 @@
 	"uid": "u_kncvbfcpto",
 	"kind": "component",
 	"title": "HubHomeNeedsYou",
-	"responsibility": "Owns the HubHomeNeedsYou Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Lists the open structured asks that need Daniel as compact rows that open the asking session.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -24,28 +24,32 @@
 		"symbols": ["HubHomeNeedsYou"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomeNeedsYou.asks",
 				"type": "HomeOpenAsk[]",
-				"required": true
+				"required": true,
+				"description": "The open structured asks, in the order to show them."
 			},
 			{
 				"name": "HubHomeNeedsYou.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "The current time in milliseconds, used for how long each ask has waited."
 			},
 			{
 				"name": "HubHomeNeedsYou.open",
 				"type": "OpenHomeSection",
-				"required": true
+				"required": true,
+				"description": "Opens a Home section on the asking agent."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeNeedsYou",
-				"type": "markup"
+				"type": "markup",
+				"description": "Compact rows of the asks that need Daniel."
 			}
 		],
 		"errors": [],
@@ -91,6 +95,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

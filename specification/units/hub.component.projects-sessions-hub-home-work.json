@@ -38,7 +38,8 @@
 			{
 				"name": "HubHomeWork.pastDue",
 				"type": "HomePastDue[]",
-				"required": true
+				"required": true,
+				"description": "Past-due Tracker runs that are not yet started or are blocked."
 			},
 			{
 				"name": "HubHomeWork.work",

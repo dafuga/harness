@@ -4,6 +4,4 @@
  * selected branch, a manifest ID does not match its filename, or a path lies outside the unit
  * source contract.
  */
-export class GitSourceError extends Error {
-	override name = 'GitSourceError';
-}
+export { GitSourceError } from './GitSourceError';

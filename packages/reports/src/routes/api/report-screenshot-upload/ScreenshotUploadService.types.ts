@@ -5,7 +5,4 @@ export interface ScreenshotUploadInput {
 	before: File;
 	after: File;
 }
-/** A screenshot upload whose comparison title or viewport is refused; the message says which. */
-export class InvalidUploadInputError extends Error {
-	override name = 'InvalidUploadInputError';
-}
+export { InvalidUploadInputError } from './InvalidUploadInputError';

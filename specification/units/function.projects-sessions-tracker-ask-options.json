@@ -4,8 +4,8 @@
 	"uid": "u_liy3gizotu",
 	"kind": "function",
 	"title": "trackerAskOptions",
-	"responsibility": "Owns the trackerAskOptions shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validates and decodes tracker ask options, confirmation requirements, and selected answers.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -25,67 +25,80 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "trackerAskOptionFromWord.word",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "CLI word containing the option label and, optionally, its effect after an equals sign."
 			},
 			{
 				"name": "normalizeTrackerAskOptions.value",
 				"type": "TrackerItemValue",
-				"required": true
+				"required": true,
+				"description": "List or serialized list of candidate options. Empty input clears the options."
 			},
 			{
 				"name": "trackerAskOptions.stored",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "Stored JSON text for the available answer options."
 			},
 			{
 				"name": "normalizeTrackerAskConfirm.value",
 				"type": "TrackerItemValue",
-				"required": true
+				"required": true,
+				"description": "Confirmation kind supplied with an ask. Empty input and none clear the requirement."
 			},
 			{
 				"name": "chosenTrackerAskOption.stored",
 				"type": "string | null | undefined",
-				"required": true
+				"required": true,
+				"description": "Stored JSON options against which the selection is resolved."
 			},
 			{
 				"name": "chosenTrackerAskOption.choice",
 				"type": "TrackerItemValue",
-				"required": true
+				"required": true,
+				"description": "Option number in the original order, starting at one."
 			}
 		],
 		"outputs": [
 			{
 				"name": "trackerAskConfirmKinds",
-				"type": "readonly TrackerAskConfirm[]"
+				"type": "readonly TrackerAskConfirm[]",
+				"description": "Confirmation kinds that require an explicit user confirmation."
 			},
 			{
 				"name": "trackerAskOptionFromWord",
-				"type": "{ label: string; effect: string }"
+				"type": "{ label: string; effect: string }",
+				"description": "Parsed label and effect with surrounding whitespace removed."
 			},
 			{
 				"name": "normalizeTrackerAskOptions",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Validated, serialized options or null when the options are cleared."
 			},
 			{
 				"name": "trackerAskOptions",
-				"type": "TrackerAskOption[]"
+				"type": "TrackerAskOption[]",
+				"description": "Decoded option list, or an empty list for absent or unreadable text."
 			},
 			{
 				"name": "normalizeTrackerAskConfirm",
-				"type": "string | null"
+				"type": "string | null",
+				"description": "Accepted confirmation kind or null when the requirement is cleared."
 			},
 			{
 				"name": "chosenTrackerAskOption",
-				"type": "{ index: number; option: TrackerAskOption }"
+				"type": "{ index: number; option: TrackerAskOption }",
+				"description": "Selected option and its zero-based position in the stored list."
 			},
 			{
 				"name": "trackerAskNormalizers",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Normalizers for the options, confirmation kind, and chosen option fields."
 			}
 		],
 		"errors": [],
@@ -97,13 +110,15 @@
 					{
 						"name": "trackerAskOptionFromWord.word",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "CLI word containing the option label and, optionally, its effect after an equals sign."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerAskOptionFromWord",
-						"type": "{ label: string; effect: string }"
+						"type": "{ label: string; effect: string }",
+						"description": "Parsed label and effect with surrounding whitespace removed."
 					}
 				],
 				"errors": [],
@@ -115,13 +130,15 @@
 					{
 						"name": "normalizeTrackerAskOptions.value",
 						"type": "TrackerItemValue",
-						"required": true
+						"required": true,
+						"description": "List or serialized list of candidate options. Empty input clears the options."
 					}
 				],
 				"outputs": [
 					{
 						"name": "normalizeTrackerAskOptions",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "Validated, serialized options or null when the options are cleared."
 					}
 				],
 				"errors": [],
@@ -133,13 +150,15 @@
 					{
 						"name": "trackerAskOptions.stored",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "Stored JSON text for the available answer options."
 					}
 				],
 				"outputs": [
 					{
 						"name": "trackerAskOptions",
-						"type": "TrackerAskOption[]"
+						"type": "TrackerAskOption[]",
+						"description": "Decoded option list, or an empty list for absent or unreadable text."
 					}
 				],
 				"errors": [],
@@ -151,13 +170,15 @@
 					{
 						"name": "normalizeTrackerAskConfirm.value",
 						"type": "TrackerItemValue",
-						"required": true
+						"required": true,
+						"description": "Confirmation kind supplied with an ask. Empty input and none clear the requirement."
 					}
 				],
 				"outputs": [
 					{
 						"name": "normalizeTrackerAskConfirm",
-						"type": "string | null"
+						"type": "string | null",
+						"description": "Accepted confirmation kind or null when the requirement is cleared."
 					}
 				],
 				"errors": [],
@@ -169,18 +190,21 @@
 					{
 						"name": "chosenTrackerAskOption.stored",
 						"type": "string | null | undefined",
-						"required": true
+						"required": true,
+						"description": "Stored JSON options against which the selection is resolved."
 					},
 					{
 						"name": "chosenTrackerAskOption.choice",
 						"type": "TrackerItemValue",
-						"required": true
+						"required": true,
+						"description": "Option number in the original order, starting at one."
 					}
 				],
 				"outputs": [
 					{
 						"name": "chosenTrackerAskOption",
-						"type": "{ index: number; option: TrackerAskOption }"
+						"type": "{ index: number; option: TrackerAskOption }",
+						"description": "Selected option and its zero-based position in the stored list."
 					}
 				],
 				"errors": [],

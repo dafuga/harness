@@ -41,7 +41,11 @@ function redefined(now: HarnessScenario, was: HarnessScenario): string[] {
 }
 
 /** Why the two sides are not like for like; empty when they are, as far as the history records. */
-export function incomparable(before: ExplorerSide, after: ExplorerSide, unit: string): string[] {
+export function explorerComparison(
+	before: ExplorerSide,
+	after: ExplorerSide,
+	unit: string
+): string[] {
 	const profiles = [before.record?.profile, after.record?.profile];
 	const differ = profiles[0] && profiles[1] && profiles[0] !== profiles[1];
 	const earlier = covering(before.detail, unit);

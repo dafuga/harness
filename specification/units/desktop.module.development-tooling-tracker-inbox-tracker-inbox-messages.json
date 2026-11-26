@@ -11,11 +11,21 @@
 		"source": [
 			"packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
 		],
-		"symbols": ["writeSentMessage", "writeFailureMessage"]
+		"symbols": ["loadFailureMessage", "writeSentMessage", "writeFailureMessage"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "loadFailureMessage.code",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "loadFailureMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
 			{
 				"name": "writeSentMessage.action",
 				"type": "WriteAction",
@@ -41,6 +51,10 @@
 		],
 		"outputs": [
 			{
+				"name": "loadFailureMessage",
+				"type": "string"
+			},
+			{
 				"name": "writeSentMessage",
 				"type": "string"
 			},
@@ -52,6 +66,29 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [
+			{
+				"name": "loadFailureMessage",
+				"inputs": [
+					{
+						"name": "loadFailureMessage.code",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "loadFailureMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "loadFailureMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "writeSentMessage",
 				"inputs": [

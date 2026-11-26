@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { IpcRequestValidator } from '../src/validators/development-tooling/IpcRequestValidator';
 import { NavigationValidator } from '../src/validators/explorer-ui/NavigationValidator';
-import { scrubEnvironment } from '../src/utils/cli-environment/scrubEnvironment';
+import { scrubEnvironment } from '../src/utils/execution-runtimes/cli-environment/scrubEnvironment';
 import { publicCliEvents } from '../src/adapters/agents-providers/claude-cli-adapter/publicCliEvents';
 
 test('remote pages and child frames cannot use the project bridge', () => {

@@ -1,5 +1,5 @@
 import type { Software3dAdapter } from '../../src/adapters/game-authoring/Software3dAdapter';
-import type { makeContext, drawWith } from './game.function.software3d.test';
+import type { makeContext, drawWith } from './game.function.software3d.fixtures';
 
 export type Run = Parameters<Software3dAdapter['render']>[0];
 

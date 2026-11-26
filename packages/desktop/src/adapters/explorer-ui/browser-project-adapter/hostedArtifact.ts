@@ -1,7 +1,7 @@
 // @harness-uid u_si33ircueg
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
 import type { EvidenceArtifactResult } from '../../../models/verification-evidence/DesktopEvidence.types';
-import { artifactAnswer } from '../../../utils/artifact-answer/artifactAnswer';
+import { artifactAnswer } from '../../../utils/verification-evidence/artifact-answer/artifactAnswer';
 import { HostedArtifactRefusedError } from './hostedArtifact.types';
 
 /** The kinds this app shows, each with the media types the hosted service may attest for it. */

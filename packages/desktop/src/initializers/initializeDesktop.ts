@@ -1,3 +1,3 @@
 // @harness-uid u_3en7p2purk
-import './startTrackerBundle';
+import './development-tooling/initializeTrackerBundle';
 export { initializeDesktop } from '../lib/desktop-initialization/initializeDesktop';

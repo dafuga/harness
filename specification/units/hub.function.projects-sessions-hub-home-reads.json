@@ -8,8 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeReads.ts"],
-		"symbols": ["HubHomeReadOptions", "HubHomeReads", "hubHomeReads"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/hubHomeReads.ts",
+			"packages/hub/src/components/projects-sessions/hubHomeReads.types.ts"
+		],
+		"symbols": [
+			"HubHomeReadOptions",
+			"HubHomeReads",
+			"hubHomeReads",
+			"HubHomeReadOptions",
+			"HubHomeReads"
+		]
 	},
 	"contract": {
 		"origin": "declared",

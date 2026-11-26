@@ -9,10 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingError.ts",
 			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.ts",
 			"packages/remote/src/services/networking-security/device-pairing-service/DevicePairingService.types.ts"
 		],
 		"symbols": [
+			"DevicePairingError",
 			"DevicePairingService",
 			"DevicePairingService.constructor",
 			"DevicePairingService.requestAccount",

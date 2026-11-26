@@ -17,6 +17,12 @@ function routeOf(path: string): Route | null {
 	if (parts.length === 4) return { kind: 'hosts', ids: [] };
 	if (parts.length === 5) return { kind: 'host', ids: [parts[4]] };
 	if (parts.length === 6 && parts[5] === 'pairing') return { kind: 'pairing', ids: [parts[4]] };
+	if (parts.length === 7 && parts[5] === 'devices')
+		return { kind: 'device', ids: [parts[4], parts[6]] };
+	return browserRouteOf(parts);
+}
+
+function browserRouteOf(parts: string[]): Route | null {
 	if (parts.length === 7 && parts[5] === 'connect')
 		return { kind: 'browser-socket', ids: [parts[4], parts[6]] };
 	if (parts.length === 8 && parts[5] === 'pairing') {
@@ -24,8 +30,7 @@ function routeOf(path: string): Route | null {
 		if (action === 'poll' || action === 'exchange')
 			return { kind: `browser-${action}`, ids: [parts[4], parts[6]] };
 	}
-	const device = parts.length === 7 && parts[5] === 'devices';
-	return device ? { kind: 'device', ids: [parts[4], parts[6]] } : null;
+	return null;
 }
 
 async function register(call: Call): Promise<Response> {

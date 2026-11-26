@@ -15,8 +15,4 @@ export type Input = {
 };
 
 export type Operation = (input?: object) => unknown;
-
-/** Refused by the phone before anything is sent: no folder to open, or no branch tip on record. */
-export class RequestRefusedError extends Error {
-	override name = 'RequestRefusedError';
-}
+export { RequestRefusedError } from './RequestRefusedError';

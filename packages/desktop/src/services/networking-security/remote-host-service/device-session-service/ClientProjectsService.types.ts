@@ -9,10 +9,7 @@ import type { DesktopBridge } from '../../../../models/development-tooling/Deskt
 import type { ProjectionCacheService } from '../../../../lib/development-tooling/desktop-initialization/projection-cache-service/ProjectionCacheService';
 import type { ProjectSessionService } from '../../../projects-sessions/project-session-service/ProjectSessionService';
 import type { DesktopRunService } from '../../../agents-providers/desktop-run-service/DesktopRunService';
-
-export class ClientProjectsSessionEndedError extends Error {
-	override name = 'ClientProjectsSessionEndedError';
-}
+export { ClientProjectsSessionEndedError } from './ClientProjectsSessionEndedError';
 
 export interface ClientProjectsOptions {
 	registry: ProjectRegistryService;

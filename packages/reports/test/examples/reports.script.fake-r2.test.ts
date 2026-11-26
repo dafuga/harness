@@ -1,21 +1,7 @@
 import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-
-type Handler = (request: Request) => Promise<Response>;
-type RecordMeta = {
-	unitId: string;
-	symbol: string;
-	state: string;
-	evidence: string;
-	file: string;
-};
-type Summary = {
-	status: number;
-	etag: string | null;
-	contentType: string | null;
-	body: string;
-};
+import type { RecordMeta, Handler, Summary } from './reports.script.fake-r2.test.types';
 
 const BASE = 'http://127.0.0.1:5590';
 

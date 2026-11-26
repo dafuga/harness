@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.ts",
-			"packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.types.ts"
+			"packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeAdapter.types.ts",
+			"packages/reports/src/lib/projects-sessions/console-workspace/ConsoleBridgeError.ts"
 		],
 		"symbols": [
 			"ConsoleBridgeAdapter",
@@ -18,6 +19,7 @@
 			"ConsoleBridgeAdapter.bridge",
 			"ConsoleBridgeAdapter.close",
 			"EventBatch",
+			"ConsoleBridgeError",
 			"ConsoleBridgeError"
 		]
 	},

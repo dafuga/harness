@@ -18,9 +18,9 @@ import type {
 	EvidenceArtifactQuery,
 	EvidenceArtifactResult
 } from '../../../models/verification-evidence/DesktopEvidence.types';
-import { artifactAnswer } from '../../../utils/artifact-answer/artifactAnswer';
+import { artifactAnswer } from '../../../utils/verification-evidence/artifact-answer/artifactAnswer';
 import { gitRead } from '../../../utils/projects-sessions/gitRead';
-import { recordedAnswer } from '../../../utils/recorded-answer/recordedAnswer';
+import { recordedAnswer } from '../../../utils/verification-evidence/recorded-answer/recordedAnswer';
 import { recordedCapture } from '../../../utils/reports-media/recordedCapture';
 import { recordedScope, recordedTip } from '../../../utils/reports-media/recordedScope';
 import type { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';

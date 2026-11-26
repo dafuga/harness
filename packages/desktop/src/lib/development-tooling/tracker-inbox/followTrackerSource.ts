@@ -1,16 +1,11 @@
 // @harness-uid u_4ds7oo3w22
 import { coalesced } from '$reports/lib/projects-sessions/realtime/coalesced';
-import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 import type { TrackerInboxSource } from '../../../models/development-tooling/TrackerInbox.types';
+import type { FollowedScreen } from './followTrackerSource.types';
+export type { FollowedScreen } from './followTrackerSource.types';
 
 /** How often the screen reads for itself while pushes are not arriving. */
 export const fallbackPollMs = 15_000;
-
-/** The screen being kept current: how to read it again, and where its link state shows. */
-export interface FollowedScreen {
-	refresh: () => Promise<unknown>;
-	state: (state: RealtimeState) => void;
-}
 
 /**
  * Keeps a screen current: reads again on every pushed change and on every reconnect, and polls

@@ -3,8 +3,7 @@ import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { hubRuntime } from '../../src/routes/api/[...path]/hubRuntime';
 import type { HubApiRuntime } from '../../src/utils/networking-security/hubRuntime';
-
-type Env = Parameters<typeof hubRuntime>[0];
+import type { Env } from './hub.function.hub-runtime.test.types';
 
 const unitId = 'hub.function.hub-runtime';
 const localEnv: Env = { HARNESS_ENVIRONMENT: 'local' };

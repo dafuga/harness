@@ -5,7 +5,7 @@ import { mediaPlace } from '../../../../src/cli/program/history-index-service/hi
 import { recordView } from '../../../../src/utils/development-tooling/recordView';
 import { revisionRegistry } from '../../../../src/utils/revision-registry/revisionRegistry';
 import { revisionSummary } from '../../../../src/utils/development-tooling/revisionSummary';
-import { recordedAnswer } from '../../../desktop/src/utils/recorded-answer/recordedAnswer';
+import { recordedAnswer } from '../../../desktop/src/utils/verification-evidence/recorded-answer/recordedAnswer';
 import { recordedScope } from '../../../desktop/src/utils/reports-media/recordedScope';
 import type { HarnessRevision } from '../../../reports/src/models/explorer-ui/Harness.types';
 import { explorerVerdict } from '../../../reports/src/utils/explorer-verdict/explorerVerdict';

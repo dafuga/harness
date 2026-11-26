@@ -5,14 +5,7 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 import { ReportStorageSyncService } from '../../src/services/reports-media/report-command-service/ReportStorageSyncService';
-
-type Repository = ConstructorParameters<typeof ReportStorageSyncService>[0];
-
-interface FakeReport {
-	id: string;
-	startedAt: string;
-	evidence: Array<{ file: string; storage: null; missing: boolean }>;
-}
+import type { FakeReport, Repository } from './reports.service.report-storage-sync.test.types';
 
 const HASH_REPLAY = `${'a'.repeat(64)}.mp4`;
 

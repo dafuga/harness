@@ -7,9 +7,7 @@ import { PreviewOwnerPortOccupiedError } from '../../src/services/accounts-acces
 import { previewOwner } from '../../src/services/accounts-access/preview-server-service/previewOwner';
 import { previewOwnerPort } from '../../src/utils/accounts-access/previewOwner';
 import type { PreviewOwner } from '../../src/utils/accounts-access/previewOwner.types';
-
-type Case = Parameters<typeof recordExampleCases>[1][number];
-type Outcome = { value?: string; error?: Error };
+import type { Outcome, Case } from './reports.function.preview-owner.test.types';
 
 const identity = '9f2c4e7a1b8d03f56e2a9c71d4b8e0f3a6c5d2b1e9f8a7c6d5b4e3f2a1c0d9e8';
 const otherIdentity = '3c7e1a9b5d2f80e4a6c3b7d1f5e9a2c8b4d6f0e3a7c1b9d5f2e8a4c6b0d3f7e1';

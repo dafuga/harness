@@ -6,6 +6,7 @@ import {
 	createResendDelivery
 } from '../../src/lib/verification-evidence/server/auth/ResendEmailAdapter';
 import type { ResendEmailAdapterConfig } from '../../src/lib/verification-evidence/server/auth/ResendEmailAdapter.types';
+import type { Respond, Call } from './hub.adapter.resend-email.test.types';
 
 const UNIT = 'hub.adapter.resend-email';
 const API_KEY = 'ExampleKey_0123456789abcdef';
@@ -15,9 +16,6 @@ const MESSAGE = {
 	code: '04829173',
 	expiresAt: '2026-11-15T14:10:00.000Z'
 };
-
-type Respond = () => Response | Promise<Response>;
-type Call = { url: string; init: RequestInit };
 
 /** A fake fetch that records each call and answers with `respond`. The network is never used. */
 function recording(respond: Respond) {

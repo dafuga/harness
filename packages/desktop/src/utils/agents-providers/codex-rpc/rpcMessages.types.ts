@@ -7,7 +7,4 @@ export interface RpcState {
 	listeners: Set<(event: RpcEvent) => void>;
 	send: (value: unknown) => void;
 }
-/** A Codex RPC request that Codex answered with an error, or that timed out without an answer. */
-export class CodexRpcError extends Error {
-	override name = 'CodexRpcError';
-}
+export { CodexRpcError } from './CodexRpcError';

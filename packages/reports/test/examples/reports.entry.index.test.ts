@@ -1,13 +1,7 @@
 import { test, vi } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
-
-interface EntryRun {
-	argv: string[];
-	stdout: string[];
-	stderr: string[];
-	exitCode: number | undefined;
-}
+import type { EntryRun } from './reports.entry.index.test.types';
 
 // Runs the entry script once with a stubbed ReportCommandService. The stub answers
 // with `behaviour`, so no repository, file or process is touched.

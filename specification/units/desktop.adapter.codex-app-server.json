@@ -10,7 +10,8 @@
 	"owns": {
 		"source": [
 			"packages/desktop/src/adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter.ts",
-			"packages/desktop/src/adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter.types.ts"
+			"packages/desktop/src/adapters/agents-providers/codex-app-server-adapter/CodexAppServerAdapter.types.ts",
+			"packages/desktop/src/adapters/agents-providers/codex-app-server-adapter/CodexImageGenerationError.ts"
 		],
 		"symbols": [
 			"CodexAppServerAdapter",
@@ -18,6 +19,7 @@
 			"CodexAppServerAdapter.discover",
 			"CodexAppServerAdapter.run",
 			"CodexAppServerAdapter.generateImage",
+			"CodexImageGenerationError",
 			"CodexImageGenerationError"
 		]
 	},

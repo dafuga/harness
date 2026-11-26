@@ -9,6 +9,7 @@ import { recordExampleCases } from '../../../../test/support/recordExampleCases'
 import { reportHttp } from '../../src/routes/api/health/reportHttp';
 import { reportFile } from '../../src/routes/api/reports/[id]/[type]/[file]/reportHttp';
 import { repository } from '../../src/utils/reports-media/reportHttp';
+import type { Failure } from './reports.function.report-http.test.types';
 
 vi.mock('../../src/adapters/R2EvidenceStoreAdapter', () => ({
 	R2EvidenceStoreAdapter: { fromEnvironment: () => null }
@@ -22,8 +23,6 @@ vi.mock('../../src/adapters/reports-media/R2ScreenshotStoreAdapter', () => ({
 
 const UNIT = 'reports.function.report-http';
 const REPORT_ID = '3f6c9a2e-8b1d-4e7a-9c05-2d4b6f1a8e90';
-
-type Failure = { status: number | null; message: string };
 
 const tempDirs: string[] = [];
 

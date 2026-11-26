@@ -2368,13 +2368,13 @@
 			"unit": "desktop.service.remote-device-sessions",
 			"from": "packages/desktop/src/services/RemoteDeviceSessionsService.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-			"definition": "32da3c225b2c24de54f8c178ea35af5ba12aabcbfd1672d46a0328ff2f5900e5",
+			"definition": "d011665237c13879fb24e68725d83a6f34b664fd0b931866c34a01b6016dec74",
 			"relocationDefinition": "53acfdf80eaf7aadf2fd5badff05ee77c037c0d9cea8eb0fe415bb39a0f79653",
 			"review": {
-				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+				"commit": "2044fbbf0da5e5e33fc50f875bc3d6fde1634d80",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
-				"definition": "32da3c225b2c24de54f8c178ea35af5ba12aabcbfd1672d46a0328ff2f5900e5",
-				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
+				"definition": "d011665237c13879fb24e68725d83a6f34b664fd0b931866c34a01b6016dec74",
+				"reason": "Merge of the shared RemoteDeviceAddress type rename with the file-local connection detach routine. Detach order and revoke conditions are unchanged."
 			},
 			"previousReviews": [
 				{
@@ -2394,6 +2394,18 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
 					"definition": "0115e60704f6ebd56f93dcde0c389cb93b2670de24fccb1bf69554e21898afef",
 					"reason": "Derives the Tracker scope from the host, device and pairing generation and offers writes only to the separately approved phone."
+				},
+				{
+					"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "40e046dba953b85b037acbe99c986536dd1607eaae587f21e4a6fe6e3feec2f6",
+					"reason": "Keep the same detach sequence in a file-local helper so the service class meets the audit limit."
+				},
+				{
+					"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/RemoteDeviceSessionsService.ts",
+					"definition": "32da3c225b2c24de54f8c178ea35af5ba12aabcbfd1672d46a0328ff2f5900e5",
+					"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
 				}
 			]
 		},
@@ -2505,13 +2517,13 @@
 			"unit": "hub.controller.hub-remote",
 			"from": "packages/hub/src/controllers/HubRemoteController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-			"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
+			"definition": "1fb7f21d703747a416d5de11590eada81b75336fd1c72ea1e8f4690377e880d0",
 			"relocationDefinition": "69949fa0a61ff7bc03b458c831cc2500e441bad89a146faab9191123f86bbbfc",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
-				"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "1fb7f21d703747a416d5de11590eada81b75336fd1c72ea1e8f4690377e880d0",
+				"reason": "Keep the same accepted path shapes while extracting browser route matching."
 			},
 			"previousReviews": [
 				{
@@ -2525,6 +2537,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
 					"definition": "72bb6aded5ebd01c24422c3168f34c4a389a60e5f6a6ebe99484c0b17940c8f4",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubRemoteController.ts",
+					"definition": "9fa3a98cb5d8061b3a675b277710d5eeb44b295b8f9ffaacf3c95e2200c46e98",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -3063,13 +3081,13 @@
 			"unit": "desktop.function.relay-frame",
 			"from": "packages/desktop/src/services/relay-link-service/relayFrame.ts",
 			"to": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
-			"definition": "90000782bb56f08c67e0d4a59c7b0183ab8f7d99a40bef6336055695e235a75f",
+			"definition": "349cd2ad842d559df000d2575546c93866b30c6f8ccc5b3f63c87707b1c9a615",
 			"relocationDefinition": "c73bfca3686cc759002345ef1fc8b27750c7cb3ad6e44628483fbd48a8da992a",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
-				"definition": "90000782bb56f08c67e0d4a59c7b0183ab8f7d99a40bef6336055695e235a75f",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "349cd2ad842d559df000d2575546c93866b30c6f8ccc5b3f63c87707b1c9a615",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
 			},
 			"previousReviews": [
 				{
@@ -3083,6 +3101,12 @@
 					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
 					"definition": "da403987e099b1b3b6d4678f91ad7da1f5ba076c4eeede6fd369bcc393cbeef2",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/desktop/src/services/networking-security/remote-host-service/relay-link-service/relayFrame.ts",
+					"definition": "90000782bb56f08c67e0d4a59c7b0183ab8f7d99a40bef6336055695e235a75f",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -3589,14 +3613,22 @@
 			"unit": "reports.function.report-cleanup-log",
 			"from": "packages/reports/src/services/report-retention-service/reportCleanupLog.ts",
 			"to": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
-			"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
+			"definition": "6c1d4a6b865cab4688720e1b28c09ddf06877d2041d5e7e75d68dd71f0671d92",
 			"relocationDefinition": "f990585337ff82846ecf52563a07087274b1985f0bb5efecad806929ecb4d8a1",
 			"review": {
-				"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
-				"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
-				"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged."
-			}
+				"definition": "6c1d4a6b865cab4688720e1b28c09ddf06877d2041d5e7e75d68dd71f0671d92",
+				"reason": "Keep the cleanup log fields and move the exported type into its companion file."
+			},
+			"previousReviews": [
+				{
+					"commit": "1a95df8cade8484c9bc5084bf3f6be73e0476e19",
+					"path": "packages/reports/src/services/reports-media/report-command-service/report-retention-service/reportCleanupLog.ts",
+					"definition": "4b15ab64d65f137e1ecbbc167fc3784adf08bb743623ad71f226d9adc220bebe",
+					"reason": "Gives contract inputs their real types instead of unknown (code phase p2b-unknown-type-reports.function.report-cleanup-log, written by haiku); behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "reports.function.report-local-cleanup",
@@ -3741,13 +3773,13 @@
 			"unit": "desktop.service.project-session",
 			"from": "packages/desktop/src/services/ProjectSessionService.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-			"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
+			"definition": "bb297bdc3d467bd12e175b4a4c33da49fc6c702871a14b50da7cc742fe16395f",
 			"relocationDefinition": "0d0e15a7a7474cac77d924f1b80a3a0198d40d983f1f6f4db3086dec6a43609e",
 			"review": {
-				"commit": "928dbd0877bbe55f75bb4b060551d1c5fa3c884d",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-				"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-session, written by luna); messages and behavior unchanged."
+				"definition": "bb297bdc3d467bd12e175b4a4c33da49fc6c702871a14b50da7cc742fe16395f",
+				"reason": "Share the existing writable-tip predicate between the snapshot and the session mutation gate."
 			},
 			"previousReviews": [
 				{
@@ -3755,6 +3787,12 @@
 					"path": "packages/desktop/src/services/ProjectSessionService.ts",
 					"definition": "b682426cdf8ec2c96946aa9725037009973fff0487cff89abdd4695052f6b0be",
 					"reason": "Retain the game branch’s selection state and game project identity."
+				},
+				{
+					"commit": "928dbd0877bbe55f75bb4b060551d1c5fa3c884d",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
+					"definition": "2da1880fbb37c5df1f6d27651c116d9bc643386dc6ce3320044ba995ce8c1d65",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.project-session, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -3954,14 +3992,22 @@
 			"unit": "relay.service.host-registry",
 			"from": "packages/relay/src/services/HostRegistryService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
-			"definition": "d6057ad874e9ec173e6eac3291ef53f1d5ecb0c8f5e13002fde811f723267743",
+			"definition": "9de1e63b42b29cde3562a305ac01eaeb5735d2b5b09800f04df0d170c5f40856",
 			"relocationDefinition": "69de43d51c22d8b417cf4aa274ff4b0f4ceced25ff4562a850aa1392f9b28706",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
-				"definition": "d6057ad874e9ec173e6eac3291ef53f1d5ecb0c8f5e13002fde811f723267743",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
-			}
+				"definition": "9de1e63b42b29cde3562a305ac01eaeb5735d2b5b09800f04df0d170c5f40856",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostRegistryService.ts",
+					"definition": "d6057ad874e9ec173e6eac3291ef53f1d5ecb0c8f5e13002fde811f723267743",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "workflow.build-history",
@@ -4800,13 +4846,13 @@
 			"unit": "desktop.service.project-run",
 			"from": "packages/desktop/src/services/project-run-service/ProjectRunService.ts",
 			"to": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-			"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
+			"definition": "b15a1eece6254f09218f3d857fbc261fa943e1f0760ffcd304acf4ac99ddc62b",
 			"relocationDefinition": "1c852abd6f52c52c7ce29c47f3b8477eb7c958547321a94cfef241083068e502",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
-				"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
-				"reason": "Preserves named source guards while separating unit proposal and visual authoring providers."
+				"definition": "b15a1eece6254f09218f3d857fbc261fa943e1f0760ffcd304acf4ac99ddc62b",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
 			},
 			"previousReviews": [
 				{
@@ -4826,6 +4872,12 @@
 					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
 					"reason": "Use the selected agent for the new unit proposal, then send visual authoring to Sonnet.",
 					"definition": "2488d72e7e1acbad3d187edfba59d3c91903546bc74b5b9828bac0161e4d2b5c"
+				},
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+					"definition": "cedffe6f388707b039beea1a66a9703fccfd930591625766fe40a80654e4f553",
+					"reason": "Preserves named source guards while separating unit proposal and visual authoring providers."
 				}
 			]
 		},
@@ -4967,13 +5019,13 @@
 			"unit": "relay.controller.manage",
 			"from": "packages/relay/src/controllers/ManageController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
-			"definition": "40c6e95cbd8944a8532aabd479867a61fd5948cea154fc9ab3fa1ce43faa3482",
+			"definition": "6ad6f4791af99ee6ac6c4715ea4c5588fc0ec1c9b6c1f2e8dfdcce91494a33e7",
 			"relocationDefinition": "19f3865289625f04165dce6082558f633a40500c264a6d15e47ca519fbf5b8ee",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
-				"definition": "40c6e95cbd8944a8532aabd479867a61fd5948cea154fc9ab3fa1ce43faa3482",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "6ad6f4791af99ee6ac6c4715ea4c5588fc0ec1c9b6c1f2e8dfdcce91494a33e7",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
 			},
 			"previousReviews": [
 				{
@@ -4981,6 +5033,12 @@
 					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
 					"definition": "4bef6043008b147cdd84be05837bc3faeb08ec539f45a0332f252d039d7030d8",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/ManageController.ts",
+					"definition": "40c6e95cbd8944a8532aabd479867a61fd5948cea154fc9ab3fa1ce43faa3482",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -5496,13 +5554,13 @@
 			"unit": "desktop.adapter.capacitor-bridge",
 			"from": "packages/desktop/src/adapters/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-			"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+			"definition": "84e98062cdce91cc3b331c2f7e49aa29be686b8a1cc23327f563ace1bde4a8e2",
 			"relocationDefinition": "d508581532d44b290e7f920f2d540eb35ef9f9a804e77db0496990c21ef291f2",
 			"review": {
-				"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
+				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
-				"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
+				"definition": "84e98062cdce91cc3b331c2f7e49aa29be686b8a1cc23327f563ace1bde4a8e2",
+				"reason": "Move the existing bridge event listener binding into a file-local helper."
 			},
 			"previousReviews": [
 				{
@@ -5510,6 +5568,12 @@
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
 					"definition": "7b03459af4ed88c4eca953c6fd318aa93ed94f99c9becfea6d1609deaa43be58",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "14bd3bb172886986a597b0499cd7c86b50c942b7",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/capacitor-bridge-adapter/CapacitorBridgeAdapter.ts",
+					"definition": "8853423eb532092b9c4cc08398209bc901b40f92adf161a200e4a8881ada70dc",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.capacitor-bridge, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
@@ -5904,13 +5968,13 @@
 			"unit": "relay.service.socket-accept",
 			"from": "packages/relay/src/services/SocketAcceptService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
-			"definition": "c258b98191c03fde1343c8652509bd91b54f76d8d36775ad123bc688908992c3",
+			"definition": "84742cf8cb13fa0a665a0628071bfecf5f4cf629ef6ed8e576c9f5dfb1f489bf",
 			"relocationDefinition": "ba7aed08b415ca4ad794733e064241bb1f2895ffa5130175c371293a4498e539",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
-				"definition": "c258b98191c03fde1343c8652509bd91b54f76d8d36775ad123bc688908992c3",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "84742cf8cb13fa0a665a0628071bfecf5f4cf629ef6ed8e576c9f5dfb1f489bf",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
 			},
 			"previousReviews": [
 				{
@@ -5918,6 +5982,12 @@
 					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
 					"definition": "e082352d563473f0720e10ef1fb107d943037339c8867efb4dd325afefc7497b",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/SocketAcceptService.ts",
+					"definition": "c258b98191c03fde1343c8652509bd91b54f76d8d36775ad123bc688908992c3",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
@@ -6034,14 +6104,22 @@
 			"unit": "relay.service.device-revocation",
 			"from": "packages/relay/src/services/DeviceRevocationService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
-			"definition": "2689bd500d067c3f101f452a14d76e9e615fe8781eba9bfd56144b3d7d2b7759",
+			"definition": "3bee7072cecb0119edbda096ecd1d9d22e3d3480d1890528887d36977932b76c",
 			"relocationDefinition": "627c57b9882dd21b7415d799c30bef537f4d1d95e1c4c81c9132d8c3520339ae",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
-				"definition": "2689bd500d067c3f101f452a14d76e9e615fe8781eba9bfd56144b3d7d2b7759",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
-			}
+				"definition": "3bee7072cecb0119edbda096ecd1d9d22e3d3480d1890528887d36977932b76c",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/DeviceRevocationService.ts",
+					"definition": "2689bd500d067c3f101f452a14d76e9e615fe8781eba9bfd56144b3d7d2b7759",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "hub.adapter.github-api",
@@ -6716,14 +6794,22 @@
 			"unit": "relay.service.pairing-exchange",
 			"from": "packages/relay/src/services/PairingExchangeService.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
-			"definition": "72b853b7646440d814e408ee760c1a2e3c30df8d8e4fd4f5d84a7348d9db0bb5",
+			"definition": "0d1428f3e8457f901e2744890c7f0ed97bc34db76fad5f68fac48e43b109b4ea",
 			"relocationDefinition": "b28c17e09c6f5ce8283c1d279470f18f04d146de0163ab966dca1dee630e759f",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
-				"definition": "72b853b7646440d814e408ee760c1a2e3c30df8d8e4fd4f5d84a7348d9db0bb5",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
-			}
+				"definition": "0d1428f3e8457f901e2744890c7f0ed97bc34db76fad5f68fac48e43b109b4ea",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
+			},
+			"previousReviews": [
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/PairingExchangeService.ts",
+					"definition": "72b853b7646440d814e408ee760c1a2e3c30df8d8e4fd4f5d84a7348d9db0bb5",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				}
+			]
 		},
 		{
 			"unit": "service.hook-run",
@@ -7262,13 +7348,13 @@
 			"unit": "relay.controller.host-object",
 			"from": "packages/relay/src/controllers/HostObjectController.ts",
 			"to": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
-			"definition": "5db5f0a2d814f0c3fdc8583858e54dc56093379531a23c2df155e1782e36db58",
+			"definition": "b415bb25b9d75a46a8c032960fa99ad0d07fde162fc72827d82f659e5f997695",
 			"relocationDefinition": "32c9ce541f85805628b326ae3c56805974d8b6d463531ba47d9f7f4edcdf0064",
 			"review": {
-				"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+				"commit": "e5e72218949ab0a57d86b48668ea3bdac789d4c4",
 				"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
-				"definition": "5db5f0a2d814f0c3fdc8583858e54dc56093379531a23c2df155e1782e36db58",
-				"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				"definition": "b415bb25b9d75a46a8c032960fa99ad0d07fde162fc72827d82f659e5f997695",
+				"reason": "Lint baseline repair: extract small synchronous helpers to meet the complexity and size limits. Checks keep their order, no await is added between a check and its use, and behavior is unchanged."
 			},
 			"previousReviews": [
 				{
@@ -7276,6 +7362,12 @@
 					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
 					"definition": "b9950ca1e247d8c9e097881010aef61ec9e42eb695f6d0ee7d214e832aedd14c",
 					"reason": "Add owner-scoped computer discovery and account pairing while retaining explicit Mac approval and QR pairing."
+				},
+				{
+					"commit": "69adb962e6fced0faf3c910295bb63b291686d18",
+					"path": "packages/relay/src/lib/execution-runtimes/host-runtime/HostObjectController.ts",
+					"definition": "5db5f0a2d814f0c3fdc8583858e54dc56093379531a23c2df155e1782e36db58",
+					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
 				}
 			]
 		},
