@@ -266,6 +266,18 @@
 			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
 		},
 		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeQuotaPills.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The header quota pills read the shared subscription contract."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubQuotaPills.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Header pill wording reads the shared subscription and limit contract."
+		},
+		{
 			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
 			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
 			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",

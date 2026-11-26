@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-quota-pills",
+	"uid": "u_dmrprh2qpw",
+	"kind": "function",
+	"title": "hubQuotaPills",
+	"responsibility": "Words each subscription's header quota pill: level, room left or Lisbon reset time, and what each limit is.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubQuotaPills.ts"],
+		"symbols": ["quotaPills"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "quotaPills.subscriptions",
+				"type": "HomeSubscription[]",
+				"required": true,
+				"description": "The owner's subscription readings, in any provider order."
+			},
+			{
+				"name": "quotaPills.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch, for stale readings and reset wording."
+			}
+		],
+		"outputs": [
+			{
+				"name": "quotaPills",
+				"type": "unknown",
+				"description": "Pills with Claude first: id, provider, level, warning word, visible text and the plain explanation of each limit."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "quotaPills",
+				"inputs": [
+					{
+						"name": "quotaPills.subscriptions",
+						"type": "HomeSubscription[]",
+						"required": true,
+						"description": "The owner's subscription readings, in any provider order."
+					},
+					{
+						"name": "quotaPills.now",
+						"type": "number",
+						"required": true,
+						"description": "Current time in milliseconds since the Unix epoch, for stale readings and reset wording."
+					}
+				],
+				"outputs": [
+					{
+						"name": "quotaPills",
+						"type": "unknown",
+						"description": "Pills with Claude first: id, provider, level, warning word, visible text and the plain explanation of each limit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubQuotaPills.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubQuotaPills.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

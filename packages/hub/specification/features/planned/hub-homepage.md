@@ -47,8 +47,11 @@ Home follows the OS color scheme and uses the approved design in
 - Work in progress orders open tasks by due date. By project uses the existing overview
   and only includes done projects when Show done is selected.
 - Quota shows provider-reported remaining allowance, reset times, stale readings, and up
-  to seven days of observations. Low means below 25 percent and Almost out means below
-  10 percent. These are display warnings.
+  to seven days of observations. Low means below 25 percent, Almost out means below
+  10 percent and Out of quota means nothing is left. These are display warnings.
+- The header has one quota pill per subscription, Claude first, with its 5-hour and weekly
+  room left. A used-up limit names its reset day and Lisbon time instead. A provider with no
+  reading from the last hour says its usage is unknown. Hover or tap explains each limit.
 - Empty and loading views keep the section structure. Busy views clamp previews and long
   titles. Owner data is cleared when the verified account changes.
 - When the verified owner has no usable Tracker snapshot, Home asks them to open Harness on
