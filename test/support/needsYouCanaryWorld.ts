@@ -11,11 +11,6 @@ import type {
 	CanaryWeb
 } from '../../scripts/needs-you-canary/canary.types';
 import type { CanaryRow as Row, CanaryWorld } from './needsYouCanaryWorld.types';
-import type {
-	CanaryItem,
-	CanaryOptions,
-	CanaryWeb
-} from '../../scripts/needs-you-canary/canary.types';
 
 const context = () => ({ now: new Date(), node: 'test-node', candidates: [] });
 const view = (row: Row) =>
@@ -49,7 +44,7 @@ function command(rows: Map<string, Row>, args: string[]): CanaryItem {
 	const { command: verb, request } = nativeTrackerArgs(args);
 	const body = JSON.parse(JSON.stringify(request.body ?? {}));
 	if (verb === 'add') return view(create(rows, body));
-	const row = rows.get(request.path.split('/')[2]!);
+	const row = rows.get(request.path.split('/')[2] ?? '');
 	if (!row) throw new Error('no such item');
 	if (verb !== 'show') {
 		if (!Object.hasOwn(trackerItemTransitions, verb)) throw new Error(`unknown ${verb}`);

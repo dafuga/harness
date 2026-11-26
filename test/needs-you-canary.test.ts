@@ -77,7 +77,7 @@ describe('needs-you release canary failures', () => {
 		);
 		expect(report.passed).toBe(false);
 		expect(report.results[0]).toMatchObject({ surface: 'web', state: 'failed' });
-		expect(report.results[0]!.detail).toContain(reason);
+		expect(report.results[0]?.detail).toContain(reason);
 		expect(item()).toMatchObject({ status: 'blocked', needs_daniel: 1 });
 		for (const ask of world.asked()) expect(ask).toMatchObject({ status: 'done' });
 		expect(world.asked().filter((ask) => ask.needs_daniel && !ask.resolved)).toEqual([]);
