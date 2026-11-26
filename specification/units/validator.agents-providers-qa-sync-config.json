@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.agents-providers-qa-sync-config",
+	"uid": "u_dalbqdzx7b",
+	"kind": "validator",
+	"title": "QaSyncConfigValidator",
+	"responsibility": "Owns the QaSyncConfigValidator input validation.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/agents-providers/QaSyncConfigValidator.ts"],
+		"symbols": ["QaSyncConfigValidator", "QaSyncConfigValidator.parse"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "QaSyncConfigValidator.parse.value",
+				"type": "UntrustedValue",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "QaSyncConfigValidator.parse",
+				"type": "QaSyncConfig"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "QaSyncConfigValidator.parse",
+				"inputs": [
+					{
+						"name": "QaSyncConfigValidator.parse.value",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaSyncConfigValidator.parse",
+						"type": "QaSyncConfig"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/agents-providers/QaSyncConfigValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/agents-providers/QaSyncConfigValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -13,6 +13,7 @@
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerInspection.ts",
 			"src/commands/projects-sessions/tracker-command/formatNativeTrackerItem.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerAskOptions.ts",
+			"src/commands/projects-sessions/tracker-command/nativeTrackerAutolaunchRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerCli.types.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerInspectionRequest.ts",
 			"src/commands/projects-sessions/tracker-command/nativeTrackerOptions.ts",
@@ -39,6 +40,7 @@
 			"nativeTrackerAskBody",
 			"nativeTrackerFlagBody",
 			"nativeTrackerAnswerBody",
+			"nativeTrackerAutolaunchRequest",
 			"NativeTrackerRequest",
 			"NativeTrackerAskValues",
 			"NativeTrackerItem",
@@ -174,6 +176,11 @@
 			{
 				"name": "nativeTrackerAnswerBody.values",
 				"type": "NativeTrackerAskValues",
+				"required": true
+			},
+			{
+				"name": "nativeTrackerAutolaunchRequest.[mode, ...rest]",
+				"type": "string[]",
 				"required": true
 			},
 			{
@@ -343,6 +350,10 @@
 			{
 				"name": "nativeTrackerAnswerBody",
 				"type": "unknown"
+			},
+			{
+				"name": "nativeTrackerAutolaunchRequest",
+				"type": "| NativeTrackerRequest | undefined"
 			},
 			{
 				"name": "nativeTrackerInspectionRequest",
@@ -695,6 +706,29 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "nativeTrackerAutolaunchRequest",
+				"inputs": [
+					{
+						"name": "nativeTrackerAutolaunchRequest.[mode, ...rest]",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "nativeTrackerAutolaunchRequest",
+						"type": "| NativeTrackerRequest | undefined"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "found"
 			},
 			{
 				"name": "nativeTrackerInspectionRequest",

@@ -10,7 +10,7 @@ import { TrackerRunReadRepository } from '../../repositories/projects-sessions/T
 import { TrackerRecurringRepository } from '../../repositories/projects-sessions/TrackerRecurringRepository';
 import { composeTrackerBackups } from './tracker-backup-service/composeTrackerBackups';
 import type { TrackerAdapterPollService } from './TrackerAdapterPollService';
-import { TrackerHubSyncService } from './TrackerHubSyncService';
+import type { TrackerHubSyncService } from './TrackerHubSyncService';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
 import { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type {
@@ -21,6 +21,8 @@ import { TrackerNotificationService } from './TrackerNotificationService';
 import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
+import { trackerAutolaunchAdmin } from './tracker-native-runtime-service/trackerAutolaunchAdmin';
+import { composeTrackerResponder } from './tracker-native-runtime-service/composeTrackerResponder';
 import { composeTrackerRecurrence } from './tracker-native-runtime-service/composeTrackerRecurrence';
 import { configuredHostAdapter } from './tracker-native-runtime-service/trackerHostAdapter';
 import {
@@ -91,7 +93,11 @@ export class TrackerNativeRuntimeService {
 		({ tick: this.telemetry, samples: this.fleetSamples } = fleet);
 		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring);
 		this.backups = composeTrackerBackups(this, options);
-		this.sync = composeResponder(store, runs, fleet.syncOptions, composed);
+		this.sync = composeTrackerResponder(store, runs, fleet.syncOptions, composed);
+	}
+
+	get admin() {
+		return trackerAutolaunchAdmin(this.store, this);
 	}
 
 	spokeStatus() {
@@ -159,17 +165,6 @@ function composeItemApi(
 			history: recurring && ((id, limit) => recurring.repo.history(id, limit))
 		}
 	});
-}
-
-function composeResponder(
-	store: TrackerPersistenceService,
-	runs: TrackerRunReadRepository,
-	{ syncResponder, role }: TrackerNativeRuntimeOptions,
-	permits: Pick<ReturnType<typeof composeTrackerDispatch>, 'permitAutomatic' | 'permitDue'>
-) {
-	if (!syncResponder) return undefined;
-	const runStore = role === 'hub' ? () => runs : undefined;
-	return new TrackerHubSyncService({ runs: runStore, ...permits, ...syncResponder, store });
 }
 
 function validateLinks({

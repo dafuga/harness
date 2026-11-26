@@ -11,6 +11,7 @@ import type {
 import { createHash } from 'node:crypto';
 import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLocalItemMutation';
 import type { TrackerHandoffAttempt } from './trackerWatchdogContext.types';
+import { heldTrackerProviders } from './trackerProviderHolds';
 import { trackerWatchdogAlerts } from './trackerHostWatchdogSchema';
 
 export function watchdogItem(item: TrackerItem): WatchdogItem {
@@ -83,7 +84,14 @@ export function watchdogSnapshot(
 			run.idleNudges = 1;
 		}
 	}
-	return { panes, runs, items: allItems, now, host: store.node };
+	return {
+		panes,
+		runs,
+		items: allItems,
+		now,
+		host: store.node,
+		quotaHolds: heldTrackerProviders(store)
+	};
 }
 
 export function paneNudgeKey({ key }: WatchdogPane): string {
