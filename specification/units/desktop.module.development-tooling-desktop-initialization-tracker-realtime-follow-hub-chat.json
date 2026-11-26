@@ -92,6 +92,16 @@
 			"unit": "remote.entry.index",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-follow-doorbell",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

@@ -67,6 +67,11 @@
 			"unit": "desktop.module.tracker-overview-publisher",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {

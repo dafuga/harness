@@ -8,16 +8,25 @@ import { readHome } from './hubHomeClient';
 import type { BrowserApi } from '../../utils/browserApi';
 import type { ReadHomeResult } from './hubHomeView.types';
 
-/**
- * What a change notice reads again: the published Home and the linked computers. Each has one
- * flight at a time, so a burst of notices cannot discard every answer before it lands.
- */
-export function hubHomeReads(options: {
+/** Whose Home is read, and where each answer goes. */
+export interface HubHomeReadOptions {
 	api: BrowserApi;
 	actor: () => string | undefined;
 	home: (result: ReadHomeResult) => void;
 	linked: (result: LinkedHome) => void;
-}) {
+}
+
+/** `read` fetches both sources again; `close` ends the reads and the linked connections. */
+export interface HubHomeReads {
+	read: () => void;
+	close: () => void;
+}
+
+/**
+ * What a change notice reads again: the published Home and the linked computers. Each has one
+ * flight at a time, so a burst of notices cannot discard every answer before it lands.
+ */
+export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 	const { api, actor } = options;
 	let linkedHome: { actor: string; service: LinkedHomeService } | undefined;
 	let closed = false;

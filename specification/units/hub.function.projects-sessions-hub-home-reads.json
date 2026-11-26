@@ -4,26 +4,28 @@
 	"uid": "u_evpsejqo7k",
 	"kind": "function",
 	"title": "hubHomeReads",
-	"responsibility": "Owns the hubHomeReads shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Reads Hub Home's published snapshot and linked computers again on request, one flight each, and drops answers for a closed page or another account.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubHomeReads.ts"],
-		"symbols": ["hubHomeReads"]
+		"symbols": ["HubHomeReadOptions", "HubHomeReads", "hubHomeReads"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "hubHomeReads.options",
-				"type": "{ api: BrowserApi; actor: () => string | undefined; home: (result: ReadHomeResult) => void; linked: (result: LinkedHome) => void; }",
-				"required": true
+				"type": "HubHomeReadOptions",
+				"required": true,
+				"description": "The Hub API, the signed-in account, and where the published Home and linked-computer answers are delivered."
 			}
 		],
 		"outputs": [
 			{
 				"name": "hubHomeReads",
-				"type": "unknown"
+				"type": "HubHomeReads",
+				"description": "read() fetches both sources again; close() ends further reads and closes linked connections."
 			}
 		],
 		"errors": [],
@@ -34,14 +36,16 @@
 				"inputs": [
 					{
 						"name": "hubHomeReads.options",
-						"type": "{ api: BrowserApi; actor: () => string | undefined; home: (result: ReadHomeResult) => void; linked: (result: LinkedHome) => void; }",
-						"required": true
+						"type": "HubHomeReadOptions",
+						"required": true,
+						"description": "The Hub API, the signed-in account, and where the published Home and linked-computer answers are delivered."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hubHomeReads",
-						"type": "unknown"
+						"type": "HubHomeReads",
+						"description": "read() fetches both sources again; close() ends further reads and closes linked connections."
 					}
 				],
 				"errors": [],
@@ -68,6 +72,11 @@
 		},
 		{
 			"unit": "hub.service.networking-security-linked-home",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-coalesced",
 			"via": "import",
 			"origin": "derived"
 		}

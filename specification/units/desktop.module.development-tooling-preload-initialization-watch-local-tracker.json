@@ -87,6 +87,11 @@
 			"unit": "desktop.service.local-transport-client",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
