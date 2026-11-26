@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-qa-sync-render-qa-sync-report",
+	"uid": "u_scqa7s6mr2",
+	"kind": "workflow",
+	"title": "renderQaSyncReport",
+	"responsibility": "Owns the renderQaSyncReport command workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/agents-providers/run-qa-sync/renderQaSyncReport.ts"],
+		"symbols": ["renderQaSyncReport"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "renderQaSyncReport.report",
+				"type": "QaSyncReport",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "renderQaSyncReport",
+				"type": "string"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "renderQaSyncReport",
+				"inputs": [
+					{
+						"name": "renderQaSyncReport.report",
+						"type": "QaSyncReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "renderQaSyncReport",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/run-qa-sync/renderQaSyncReport.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/run-qa-sync/renderQaSyncReport.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
