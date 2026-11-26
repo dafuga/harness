@@ -129,6 +129,7 @@ export function missingQuotaProviders(subscriptions: HomeSubscription[]): string
 }
 
 export function warningLabel(limit: HomeLimit) {
+	if (limit.left <= 0) return 'Out of quota';
 	return warningFor(limit.left) === 'critical' ? 'Almost out' : 'Low';
 }
 
@@ -185,12 +186,21 @@ export function workEta(due: string | null, now: number) {
 	return { tone: 'scheduled', text: when(due) };
 }
 
+/** "1 out of quota · 2 running low"; empty when every limit has room. */
+export function lowSummary(limits: HomeLimit[]) {
+	const out = limits.filter((limit) => limit.left <= 0).length;
+	const low = limits.length - out;
+	return [out ? `${out} out of quota` : '', low ? `${low} running low` : '']
+		.filter(Boolean)
+		.join(' · ');
+}
+
 export function quotaSummary(subscriptions: HomeSubscription[], now: number) {
 	if (!subscriptions.length) return 'No subscriptions yet';
 	const low = subscriptions
 		.filter((subscription) => !staleReading(subscription.readAt, now))
 		.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)));
-	return `${count(subscriptions.length, 'subscription')} · ${low.length ? `${low.length} running low` : 'all OK'}`;
+	return `${count(subscriptions.length, 'subscription')} · ${lowSummary(low) || 'all OK'}`;
 }
 
 export { quotaReset, runDay, runTime, when } from './hubHomeTime';
