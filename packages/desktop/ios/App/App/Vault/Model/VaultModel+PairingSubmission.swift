@@ -2,6 +2,7 @@ import Foundation
 import CryptoKit
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 extension VaultModel {
     func pairingSubmission(
         for exchange: PairingExchange, at connection: BrokerConnection,

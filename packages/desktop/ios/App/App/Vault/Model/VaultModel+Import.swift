@@ -2,6 +2,7 @@ import CryptoKit
 import Foundation
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 extension VaultModel {
     func scopedImportReceipts(for connection: BrokerConnection) -> [StoredImportReceipt] {
         importReceipts.filter {
@@ -106,11 +107,13 @@ extension VaultModel {
     }
 }
 
+@available(iOS 17.0, *)
 private struct ImportSession {
     let api: any DeviceBroker
     let context: LAContext
 }
 
+@available(iOS 17.0, *)
 private struct ClaimedImport {
     let request: ReviewedPasswordImport
     let receipt: StoredImportReceipt

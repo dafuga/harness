@@ -1,11 +1,13 @@
 import CryptoKit
 import Foundation
 
+@available(iOS 17.0, *)
 enum DeviceRole: String, Codable, CaseIterable {
     case approver
     case recovery
 }
 
+@available(iOS 17.0, *)
 struct BrokerMachine: Codable, Equatable, Identifiable {
     let rawValue: String
     let title: String
@@ -24,6 +26,7 @@ struct BrokerMachine: Codable, Equatable, Identifiable {
     }
 }
 
+@available(iOS 17.0, *)
 struct BrokerConfiguration: Codable, Equatable {
     var origin = ""
     var deviceID = "harness-iphone"
@@ -39,16 +42,19 @@ struct BrokerConfiguration: Codable, Equatable {
     }
 }
 
+@available(iOS 17.0, *)
 struct StoredBrokerConnection: Codable {
     let configuration: BrokerConfiguration
 }
 
+@available(iOS 17.0, *)
 struct PairedBrokerConnection: Codable {
     static let keychainAccount = "broker-paired-connections"
     let machine: BrokerMachine
     let stored: StoredBrokerConnection
 }
 
+@available(iOS 17.0, *)
 struct PublicEnrollment: Identifiable {
     let id = UUID()
     let machine: BrokerMachine
@@ -58,6 +64,7 @@ struct PublicEnrollment: Identifiable {
     let recoveryFingerprint: String
 }
 
+@available(iOS 17.0, *)
 struct RecoveryPeer: Codable, Equatable {
     var deviceID = ""
     var key = ""

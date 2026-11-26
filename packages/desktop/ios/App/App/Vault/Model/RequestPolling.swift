@@ -1,5 +1,6 @@
 import Foundation
 
+@available(iOS 17.0, *)
 enum RequestPollState: Equatable {
     case checking
     case ready
@@ -24,6 +25,7 @@ enum RequestPollState: Equatable {
     }
 }
 
+@available(iOS 17.0, *)
 enum PollFailure: Equatable {
     case protectedRoute
     case network

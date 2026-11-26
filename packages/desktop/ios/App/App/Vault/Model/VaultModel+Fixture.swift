@@ -1,5 +1,6 @@
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 extension VaultModel {
     static func make() -> VaultModel {
         #if DEBUG && targetEnvironment(simulator)
@@ -15,6 +16,7 @@ extension VaultModel {
 import CryptoKit
 import Foundation
 
+@available(iOS 17.0, *)
 extension VaultModel {
     private static func fixture() -> VaultModel {
         let arguments = ProcessInfo.processInfo.arguments

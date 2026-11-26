@@ -1,5 +1,6 @@
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 extension VaultModel {
     func read(_ label: EntryLabel) async -> VaultEntry? {
         var entry: VaultEntry?

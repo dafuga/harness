@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 extension RequestsView {
     func inbox(_ connections: [BrokerConnection]) -> some View {
         let pending = pendingItems(connections)

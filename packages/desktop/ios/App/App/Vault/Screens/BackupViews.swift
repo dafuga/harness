@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct BackupBrokerSelection<Destination: View>: View {
     let connections: [BrokerConnection]
     @ViewBuilder var destination: (BrokerConnection) -> Destination
@@ -16,6 +17,7 @@ struct BackupBrokerSelection<Destination: View>: View {
     }
 }
 
+@available(iOS 17.0, *)
 struct ExportBackupView: View {
     let model: VaultModel
     let connection: BrokerConnection
@@ -57,6 +59,7 @@ struct ExportBackupView: View {
     }
 }
 
+@available(iOS 17.0, *)
 struct RestoreBackupView: View {
     let model: VaultModel
     let connection: BrokerConnection
@@ -99,6 +102,7 @@ struct RestoreBackupView: View {
     }
 }
 
+@available(iOS 17.0, *)
 private struct PeerFields: View {
     @Binding var peer: RecoveryPeer
     let keyLabel: String
@@ -110,6 +114,7 @@ private struct PeerFields: View {
     }
 }
 
+@available(iOS 17.0, *)
 private struct BackupTextField: View {
     let label: String
     @Binding var value: String

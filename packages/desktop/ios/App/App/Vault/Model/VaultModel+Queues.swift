@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 
+@available(iOS 17.0, *)
 struct BrokerClock {
     private let serverTime: Int64
     private let receivedAt = ContinuousClock.now
@@ -25,6 +26,7 @@ struct BrokerClock {
     }
 }
 
+@available(iOS 17.0, *)
 @MainActor
 @Observable
 final class BrokerConnection: Identifiable {
@@ -116,6 +118,7 @@ final class BrokerConnection: Identifiable {
     }
 }
 
+@available(iOS 17.0, *)
 extension VaultModel {
     func poll(_ connection: BrokerConnection, includeReleaseAlerts: Bool = true) async -> Bool {
         guard isCurrent(connection), connection.configuration.role == .approver, !workInProgress else { return false }

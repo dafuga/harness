@@ -3,6 +3,7 @@ import CryptoKit
 import Foundation
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 final class MemoryVault: VaultStorage {
     static let password = "synthetic-ui-fixture"
     private var journal = VaultContents()
@@ -10,7 +11,21 @@ final class MemoryVault: VaultStorage {
     private var records: [VaultEntry]
 
     init(empty: Bool) {
+        if ProcessInfo.processInfo.arguments.contains("--site-logins") {
+            records = Self.siteLogins()
+            return
+        }
         records = empty ? [] : [VaultEntry(service: "Demo registry", username: "demo", password: Self.password)]
+    }
+
+    /// Two logins for one site under other names. Only the second holds the password the fixture broker accepts.
+    private static func siteLogins() -> [VaultEntry] {
+        [("work-registry", "work@example.test", "synthetic-wrong-login"),
+         ("home-registry", "home@example.test", password)].map { name, username, secret in
+            var entry = VaultEntry(service: name, username: username, password: secret)
+            entry.domain = "registry.example"
+            return entry
+        }
     }
 
     func labels() throws -> [EntryLabel] {

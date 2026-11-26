@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct BrokerSettingsView: View {
     let model: VaultModel
     @Binding var alertsEnabled: Bool
@@ -63,6 +64,7 @@ struct BrokerSettingsView: View {
     }
 }
 
+@available(iOS 17.0, *)
 private struct BrokerConnectionView: View {
     let model: VaultModel
     let connection: BrokerConnection

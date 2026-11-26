@@ -2,6 +2,7 @@
 import CryptoKit
 import Foundation
 
+@available(iOS 17.0, *)
 struct PasswordImportFixture {
     static let deviceID = "daniel-iphone"
     static let id = "fedcba9876543210fedcba9876543210"

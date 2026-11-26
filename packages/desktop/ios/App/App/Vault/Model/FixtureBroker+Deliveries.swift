@@ -1,6 +1,7 @@
 #if DEBUG && targetEnvironment(simulator)
 import Foundation
 
+@available(iOS 17.0, *)
 extension FixtureBroker {
     func decideVaultAdd(_ decision: VaultAddDecision, sign: BrokerClient.Sign) async throws -> VaultAddDelivery? {
         guard let addFixture, decision.addId == addFixture.summary.id,

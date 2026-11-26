@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct PairingView: View {
     let model: VaultModel
     @Environment(\.dismiss) private var dismiss

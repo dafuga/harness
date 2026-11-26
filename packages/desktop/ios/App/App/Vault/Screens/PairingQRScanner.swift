@@ -5,6 +5,7 @@ import AVFoundation
 import VisionKit
 #endif
 
+@available(iOS 17.0, *)
 struct PairingQRScanner: View {
     let scanned: (String) -> Void
     @State private var cameraReady = false
@@ -53,6 +54,7 @@ struct PairingQRScanner: View {
 }
 
 #if !targetEnvironment(macCatalyst)
+@available(iOS 17.0, *)
 private struct LivePairingScanner: UIViewControllerRepresentable {
     let scanned: (String) -> Void
     let unavailable: () -> Void

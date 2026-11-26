@@ -2,6 +2,7 @@ import CryptoKit
 import Foundation
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 extension VaultModel {
     static func message(for error: Error) -> String {
         deviceMessage(for: error) ?? brokerMessage(for: error) ?? transferMessage(for: error)

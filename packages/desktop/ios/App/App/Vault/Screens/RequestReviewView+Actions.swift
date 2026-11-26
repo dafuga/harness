@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 extension RequestReviewView {
     var missingItem: some View {
         Section("Vault item missing") {

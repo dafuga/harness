@@ -1,5 +1,6 @@
 import Foundation
 
+@available(iOS 17.0, *)
 extension VaultModel {
     func retryVaultAddReceipt(using api: any DeviceBroker, at connection: BrokerConnection) async {
         guard let receipt = scopedImportReceipts(for: connection)

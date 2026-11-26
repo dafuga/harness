@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct ImportReviewView: View {
     let model: VaultModel
     let connection: BrokerConnection

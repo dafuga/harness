@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct EntriesView: View {
     let model: VaultModel
     @Environment(\.scenePhase) private var scenePhase
@@ -58,6 +59,7 @@ struct EntriesView: View {
     }
 }
 
+@available(iOS 17.0, *)
 struct EntryEditor: View {
     let model: VaultModel
     @State private var entry: VaultEntry

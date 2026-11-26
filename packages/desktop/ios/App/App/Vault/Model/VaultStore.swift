@@ -2,6 +2,7 @@ import CryptoKit
 import Foundation
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 struct EntryLabel: Identifiable, Equatable {
     let id: UUID
     let service: String
@@ -15,6 +16,7 @@ struct EntryLabel: Identifiable, Equatable {
     }
 }
 
+@available(iOS 17.0, *)
 @MainActor
 protocol VaultStorage {
     func labels() throws -> [EntryLabel]
@@ -29,6 +31,7 @@ protocol VaultStorage {
     func restore(_ entries: [VaultEntry], receipt: VaultBackup.Receipt, source: String, context: LAContext) throws
 }
 
+@available(iOS 17.0, *)
 @MainActor
 struct VaultStore: VaultStorage {
     let keychain: Keychain

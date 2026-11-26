@@ -2,12 +2,14 @@ import Foundation
 import LocalAuthentication
 
 /// What Daniel chose on the review screen.
+@available(iOS 17.0, *)
 struct RequestAnswer {
     let approved: Bool
     var otp = ""
     var entry: UUID? = nil
 }
 
+@available(iOS 17.0, *)
 extension VaultModel {
     /// True once the broker has recorded the answer.
     func decide(_ request: BrokerRequest, at connection: BrokerConnection, answer: RequestAnswer) async -> Bool {

@@ -2,6 +2,7 @@
 import CryptoKit
 import Foundation
 
+@available(iOS 17.0, *)
 extension FixtureBroker {
     func verifyFixtureApproval(_ decision: [String: Any], request: BrokerRequest) throws {
         guard let sealed = decision["sealed"] as? [String: String],

@@ -3,6 +3,7 @@ import Foundation
 import LocalAuthentication
 import Security
 
+@available(iOS 17.0, *)
 @MainActor
 struct DeviceKeys {
     enum Agreement: String {

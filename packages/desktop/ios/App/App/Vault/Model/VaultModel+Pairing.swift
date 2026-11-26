@@ -2,6 +2,7 @@ import CryptoKit
 import Foundation
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 extension VaultModel {
     func pairingMachine(for offer: PairingOffer) -> BrokerMachine {
         if let known = connections.first(where: { $0.configuration.origin == offer.origin }) {

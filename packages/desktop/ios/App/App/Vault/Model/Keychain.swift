@@ -1,6 +1,7 @@
 import Foundation
 import Security
 
+@available(iOS 17.0, *)
 enum DeviceVaultError: Error {
     case faceIDUnavailable
     case authentication
@@ -13,6 +14,7 @@ enum DeviceVaultError: Error {
     case duplicateService
 }
 
+@available(iOS 17.0, *)
 struct Keychain {
     private let service = "com.dafuga.harness.vault.v1"
 

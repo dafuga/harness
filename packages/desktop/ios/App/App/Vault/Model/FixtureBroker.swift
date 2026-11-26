@@ -2,6 +2,7 @@
 import CryptoKit
 import Foundation
 
+@available(iOS 17.0, *)
 final class FixtureBroker: DeviceBroker {
     var request: BrokerRequest?
     let receiver = Curve25519.KeyAgreement.PrivateKey()
@@ -38,7 +39,8 @@ final class FixtureBroker: DeviceBroker {
     private static func releaseRequest(publicKey: Data, now: Int64, arguments: [String]) -> BrokerRequest {
         let expiresAt = arguments.contains("--expired-release") ? now - 1_000 : now + 115_000
         let approvalOnly = arguments.contains("--approval-only")
-        let target = arguments.contains("--request-target")
+        let target = arguments.contains("--site-logins") ? ", \"site\": \"registry.example\""
+            : arguments.contains("--request-target")
             ? ", \"site\": \"registry.example\", \"account\": \"qa@example.test\"" : ""
         let fixture = """
         {

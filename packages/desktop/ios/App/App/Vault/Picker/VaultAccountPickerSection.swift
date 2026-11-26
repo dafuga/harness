@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// The saved logins for the requested site. Selecting one releases nothing; approval still needs Face ID.
+@available(iOS 17.0, *)
 struct VaultAccountPickerSection: View {
     let match: VaultAccountMatch
     let site: String

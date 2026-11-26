@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 extension PairingView {
     func scan(_ payload: String) {
         guard offer == nil, !paired else { return }

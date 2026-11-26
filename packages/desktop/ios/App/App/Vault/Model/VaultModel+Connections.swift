@@ -1,6 +1,7 @@
 import Foundation
 
 /// Every connection comes from a QR pairing; no computer or address is built into the app.
+@available(iOS 17.0, *)
 extension VaultModel {
     func loadConnections() {
         do {

@@ -81,6 +81,8 @@ extension BrokerClient {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.httpBody = try JSONEncoder().encode(body)
+        // The Vault opens on iOS 17 only; the app itself still installs on older versions.
+        guard #available(iOS 15.0, macOS 12.0, *) else { throw BrokerError.transport }
         let (bytes, response) = try await transport.bytes(for: request)
         guard let http = response as? HTTPURLResponse, http.url == url else { throw BrokerError.transport }
         if Self.isAccessGate(http) { throw BrokerError.routeProtected }

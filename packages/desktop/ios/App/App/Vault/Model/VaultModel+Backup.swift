@@ -1,12 +1,14 @@
 import CryptoKit
 import Foundation
 
+@available(iOS 17.0, *)
 struct BackupReference: Identifiable {
     let deviceID: String
     let fingerprint: String
     var id: String { deviceID }
 }
 
+@available(iOS 17.0, *)
 extension VaultModel {
     func recoveryKeys(for connection: BrokerConnection) async -> PublicEnrollment? {
         var enrollment: PublicEnrollment?

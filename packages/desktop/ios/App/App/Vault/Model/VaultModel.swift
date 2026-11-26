@@ -3,6 +3,7 @@ import Foundation
 import LocalAuthentication
 import Observation
 
+@available(iOS 17.0, *)
 @MainActor
 protocol DeviceBroker {
     func pending(publishing key: VaultAddKeyPublication?, sign: BrokerClient.Sign) async throws -> BrokerClient.Pending
@@ -15,8 +16,10 @@ protocol DeviceBroker {
     func download(sign: BrokerClient.Sign) async throws -> Data
 }
 
+@available(iOS 17.0, *)
 extension BrokerClient: DeviceBroker {}
 
+@available(iOS 17.0, *)
 @MainActor
 @Observable
 final class VaultModel {

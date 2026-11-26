@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct VaultAddReviewView: View {
     let model: VaultModel
     let connection: BrokerConnection
@@ -109,6 +110,7 @@ struct VaultAddReviewView: View {
     }
 }
 
+@available(iOS 17.0, *)
 extension VaultAddSummary {
     var siteName: String {
         switch service {

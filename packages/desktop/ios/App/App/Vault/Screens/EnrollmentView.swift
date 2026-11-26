@@ -1,6 +1,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+@available(iOS 17.0, *)
 struct EnrollmentView: View {
     let enrollment: PublicEnrollment
     @Environment(\.dismiss) private var dismiss
@@ -28,6 +29,7 @@ struct EnrollmentView: View {
     }
 }
 
+@available(iOS 17.0, *)
 struct PublicCode: View {
     let label: String
     let value: String

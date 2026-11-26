@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 
+@available(iOS 17.0, *)
 struct ProtectedField: UIViewRepresentable {
     private let label: String
     @Binding private var text: String

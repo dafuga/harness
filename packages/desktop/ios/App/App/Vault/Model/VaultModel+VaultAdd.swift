@@ -1,6 +1,7 @@
 import Foundation
 import LocalAuthentication
 
+@available(iOS 17.0, *)
 struct VaultAddReview {
     let account: String
     let request: VaultAddSummary
@@ -10,6 +11,7 @@ struct VaultAddReview {
     var isCurrent: Bool { ContinuousClock.now < deadline }
 }
 
+@available(iOS 17.0, *)
 extension VaultModel {
     func vaultAddPublication(for connection: BrokerConnection) -> VaultAddKeyPublication? {
         guard connection.releaseClock.isSynchronized,

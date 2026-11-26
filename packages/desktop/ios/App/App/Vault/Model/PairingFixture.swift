@@ -2,6 +2,7 @@
 import CryptoKit
 import Foundation
 
+@available(iOS 17.0, *)
 @MainActor
 enum PairingFixture {
     private static let computer = Curve25519.KeyAgreement.PrivateKey()

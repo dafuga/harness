@@ -2,6 +2,7 @@
 import CryptoKit
 import Foundation
 
+@available(iOS 17.0, *)
 extension FixtureBroker {
     func pending(publishing key: VaultAddKeyPublication?, sign: BrokerClient.Sign) async throws -> BrokerClient.Pending {
         pollAttempts += 1

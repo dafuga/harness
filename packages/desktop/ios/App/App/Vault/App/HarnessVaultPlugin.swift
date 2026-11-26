@@ -8,7 +8,7 @@ import UserNotifications
 class HarnessVaultPlugin: CAPPlugin, CAPBridgedPlugin {
     let identifier = "HarnessVaultPlugin"
     let jsName = "HarnessVault"
-    let pluginMethods = [CAPPluginMethod(name: "open", returnType: CAPPluginReturnPromise)]
+    let pluginMethods: [CAPPluginMethod] = [CAPPluginMethod(name: "open", returnType: CAPPluginReturnPromise)]
 
     @objc func open(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
