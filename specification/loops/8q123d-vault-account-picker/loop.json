@@ -1,0 +1,65 @@
+{
+	"name": "8q123d-vault-account-picker",
+	"goal": "A vault request that names no account offers every saved entry for the same site, so a saved password is never asked for again",
+	"createdAt": "2026-11-26T09:37:12.981Z",
+	"updatedAt": "2026-11-26T09:37:52.460Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:37:14.460Z",
+			"evidence": "Request 055deab2 (github automation-login): old app matches only entry.service == request.service and the live broker sends no site/account; a GitHub login saved under another name shows 'Vault item missing' and asks for the password again. Expected: offer every saved login for the site; Daniel picks; add only when none is saved."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:37:15.841Z",
+			"evidence": "No standardized test covered account choice: credential-vault-ios.e2e covers signing and sealing only; the old app's matching lived in untested view model code. New native e2e compiles the Swift matcher and asserts outcomes for synthetic entries."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:37:32.675Z",
+			"evidence": "Test-only commit 226f5eee00: 7 of 8 fail; first: expected { offered: [], kind: 'missing' } to deeply equal { kind: 'choose' }."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:37:35.303Z",
+			"evidence": "VaultAccountMatch + VaultAccountPickerSection in Vault/Picker/; broker queue site/account in dafuga/credential-broker PR #14."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:37:52.460Z",
+			"evidence": "Unchanged test 8/8 passes at 400058b333 (loop record green)."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
