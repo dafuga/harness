@@ -129,7 +129,8 @@ Before leaving private mode, revoke and drain viewer input and background
 operations. Close the private tab, confirm it is gone, then verify a separate
 reviewed result page. On restart, all admission starts closed. The executor
 must account for restored tabs before admitting a read. Agent receipts contain
-only status and the request identifier. Keep recording and content logging
+only status and the request identifier. Treat only a completed receipt for the
+same request as permission to continue the interrupted workflow. Keep recording and content logging
 disabled along the entire private route.
 
 ## Activation windows and rollback

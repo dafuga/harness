@@ -16,6 +16,7 @@
 			"PrivateBrowserGateService",
 			"PrivateBrowserGateService.constructor",
 			"PrivateBrowserGateService.status",
+			"PrivateBrowserGateService.receipt",
 			"PrivateBrowserGateService.recover",
 			"PrivateBrowserGateService.read",
 			"PrivateBrowserGateService.request",
@@ -25,7 +26,8 @@
 			"PrivateBrowserGateService.cancel",
 			"PrivateBrowserPhase",
 			"PrivateBrowserCleanup",
-			"PrivateBrowserRequest"
+			"PrivateBrowserRequest",
+			"PrivateBrowserReceipt"
 		]
 	},
 	"contract": {
@@ -93,6 +95,10 @@
 				"type": "PrivateBrowserPhase"
 			},
 			{
+				"name": "PrivateBrowserGateService.receipt",
+				"type": "PrivateBrowserReceipt | undefined"
+			},
+			{
 				"name": "PrivateBrowserGateService.recover",
 				"type": "Promise<boolean>"
 			},
@@ -131,6 +137,18 @@
 					{
 						"name": "PrivateBrowserGateService.status",
 						"type": "PrivateBrowserPhase"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "PrivateBrowserGateService.receipt",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.receipt",
+						"type": "PrivateBrowserReceipt | undefined"
 					}
 				],
 				"errors": [],

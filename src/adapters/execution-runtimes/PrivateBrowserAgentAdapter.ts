@@ -67,7 +67,7 @@ export class PrivateBrowserAgentAdapter {
 	): Promise<void> {
 		const { gate, deviceId, reviewedRead } = this.config;
 		if (method === 'GET' && url === '/status') {
-			return send(response, 200, { phase: gate.status() });
+			return send(response, 200, { phase: gate.status(), receipt: gate.receipt() });
 		}
 		if (method === 'POST' && url === '/private-entry') {
 			const receipt = await gate.request(deviceId);

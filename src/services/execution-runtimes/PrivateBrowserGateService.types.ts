@@ -18,3 +18,8 @@ export interface PrivateBrowserRequest {
 	drained: Promise<unknown>;
 	native?: { controller: AbortController; drained: Promise<void> };
 }
+
+export interface PrivateBrowserReceipt {
+	readonly requestId: string;
+	readonly outcome: 'completed' | 'aborted' | 'blocked';
+}

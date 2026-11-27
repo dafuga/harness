@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import type {
 	PrivateBrowserCleanup,
 	PrivateBrowserPhase,
+	PrivateBrowserReceipt,
 	PrivateBrowserRequest
 } from './PrivateBrowserGateService.types';
 
@@ -13,11 +14,16 @@ export class PrivateBrowserGateService {
 	private phase: PrivateBrowserPhase = 'blocked';
 	private readonly reads = new Map<AbortController, Promise<unknown>>();
 	private active?: PrivateBrowserRequest;
+	private lastReceipt?: PrivateBrowserReceipt;
 
 	constructor(private readonly cleanup: PrivateBrowserCleanup) {}
 
 	status(): PrivateBrowserPhase {
 		return this.phase;
+	}
+
+	receipt(): PrivateBrowserReceipt | undefined {
+		return this.lastReceipt;
 	}
 
 	/** Start closed on boot and after failed cleanup, including when Chrome survived the executor. */
@@ -36,10 +42,8 @@ export class PrivateBrowserGateService {
 		);
 		this.reads.set(control, pending);
 		try {
-			const result = await pending;
+			const result = await pending.catch(() => undefined);
 			return this.phase === 'ready' && !control.signal.aborted ? result : undefined;
-		} catch {
-			return undefined;
 		} finally {
 			this.reads.delete(control);
 		}
@@ -115,18 +119,14 @@ export class PrivateBrowserGateService {
 		clearTimeout(window.expiry);
 		window.native?.controller.abort();
 		await Promise.allSettled([window.drained, window.native?.drained]);
-		return this.clean(verify);
+		return this.clean(verify, window.requestId);
 	}
 
-	private async clean(verify: boolean): Promise<boolean> {
-		try {
-			await this.cleanup.revokeInput();
-			await this.cleanup.disposeForm();
-			this.phase = !verify || (await this.cleanup.verifyResult()) ? 'ready' : 'blocked';
-		} catch {
-			this.phase = 'blocked';
-		}
-		return this.phase === 'ready';
+	private async clean(verify: boolean, requestId?: string): Promise<boolean> {
+		const ready = await dispose(this.cleanup, verify);
+		if (requestId) this.lastReceipt = { requestId, outcome: outcome(ready, verify) };
+		this.phase = ready ? 'ready' : 'blocked';
+		return ready;
 	}
 }
 
@@ -145,4 +145,19 @@ function openWindow(
 		expiry,
 		drained: Promise.allSettled(reads)
 	};
+}
+
+async function dispose(cleanup: PrivateBrowserCleanup, verify: boolean): Promise<boolean> {
+	try {
+		await cleanup.revokeInput();
+		await cleanup.disposeForm();
+		return !verify || (await cleanup.verifyResult());
+	} catch {
+		return false;
+	}
+}
+
+function outcome(ready: boolean, verified: boolean): PrivateBrowserReceipt['outcome'] {
+	if (!ready) return 'blocked';
+	return verified ? 'completed' : 'aborted';
 }
