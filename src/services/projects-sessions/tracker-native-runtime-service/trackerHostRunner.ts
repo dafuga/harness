@@ -33,7 +33,7 @@ import type {
 import { trackerHandSession } from '../../../utils/projects-sessions/trackerSessionNames';
 import type { TrackerTmuxWindow } from '../../../utils/projects-sessions/trackerSessionNames.types';
 import { trackerHostReport, trackerRouteSessionName, withLaunchOrigin } from './trackerHostReport';
-import { formatTrackerHostBrief } from './trackerHostBrief';
+import { formatTrackerHostBrief, trackerLaunchContext } from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
 import { startTrackerHost } from './trackerHostLaunchPort';
 import { trackerCpuBudget } from '../../../utils/projects-sessions/trackerCpuBudget';
@@ -70,7 +70,7 @@ export function trackerHostRunner(
 						reason: 'automatic launch no longer permitted'
 					} as const;
 				const result = await launchApprovedItem(
-					{ driver, node, routeFor },
+					{ driver, node, routeFor, store },
 					{ item, reservation, instructions },
 					signal
 				);
@@ -156,8 +156,14 @@ async function launchApprovedItem(
 	{
 		driver,
 		node,
-		routeFor
-	}: { driver: TrackerHostLaunchPort; node: string; routeFor: TrackerHostRoute },
+		routeFor,
+		store
+	}: {
+		driver: TrackerHostLaunchPort;
+		node: string;
+		routeFor: TrackerHostRoute;
+		store: TrackerPersistenceService;
+	},
 	{
 		item,
 		reservation,
@@ -181,6 +187,7 @@ async function launchApprovedItem(
 			cpuBudget,
 			sessionName: trackerRouteSessionName(item, route),
 			brief: formatTrackerHostBrief(item, instructions, {
+				launch: trackerLaunchContext(store, item, reservation.run, route),
 				recovery: reservation.run.launch_source === 'recovery',
 				cpuBudget
 			})

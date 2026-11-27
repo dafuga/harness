@@ -2,7 +2,7 @@
 	"name": "e3w44p-native-launch-brief",
 	"goal": "Generated briefs retain safety rules, run and checkout identity, parent context and earlier attempts.",
 	"createdAt": "2026-11-27T19:11:37.698Z",
-	"updatedAt": "2026-11-27T19:12:32.289Z",
+	"updatedAt": "2026-11-27T19:21:56.173Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T19:21:56.173Z",
+			"evidence": "a80bb268b0: the regular and truncated briefs lack the Greymass rule; the managed fixture lacks Run 1, attempt 1. Three failures across six assertions cases. Committed red proof uses a fixed environment and one worker."
 		},
 		{
 			"id": "implement",
