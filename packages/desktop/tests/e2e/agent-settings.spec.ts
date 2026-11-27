@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { captureVaultSettings, exerciseVaultSetup, mockVaultSetup } from './vault-settings-fixture';
 import { expect, test } from '../../../../test/support/browserTest';
 import {
 	agentAt,
@@ -83,3 +84,15 @@ test('the workspace links to Settings and a headless Plan omits the design count
 	);
 	expect(run).not.toHaveProperty('designOptions');
 });
+
+for (const width of [1440, 920, 390]) {
+	test(`Vault setup on the local computer at ${width}px`, async ({ page }) => {
+		await page.setViewportSize({ width, height: width === 920 ? 800 : 900 });
+		await agentSettingsFixture(page);
+		await mockVaultSetup(page);
+		await page.goto(settingsAt);
+		await expect(page.getByRole('heading', { name: 'Settings', exact: true })).toBeVisible();
+		await captureVaultSettings(page, String(width));
+		await exerciseVaultSetup(page, String(width));
+	});
+}

@@ -104,6 +104,10 @@ export const commandLoaders = {
 		const m = await import('../commands/execution-runtimes/DeployCommand');
 		new m.DeployCommand().register(program);
 	},
+	vault: async (program: Command) => {
+		const { VaultSetupCommand } = await import('../commands/accounts-access/VaultSetupCommand');
+		new VaultSetupCommand().register(program);
+	},
 	module: async (program: Command) => {
 		const m = await import('./../commands/module-system/ModuleCommand');
 		new m.ModuleCommand().register(program);

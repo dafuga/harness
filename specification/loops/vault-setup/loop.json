@@ -1,0 +1,45 @@
+{
+	"name": "vault-setup",
+	"goal": "Resume and undo the isolated Vault executor installer, with one Mac approval and progress in both desktop apps",
+	"createdAt": "2026-11-24T00:08:34.595Z",
+	"updatedAt": "2026-11-24T00:31:59.271Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-24T00:09:46.552Z",
+			"evidence": "Tracker b3k3fs, xrmz3f and jw0799. Prove the Mac journal resumes and removes across interruption, rejects unsafe ownership, parses real sudo/Directory Services output, and both native Settings surfaces invoke the same installer and show its phases. Linux uses a separate rootless engine on an eligible host."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-24T00:31:56.931Z",
+			"evidence": "Harness CLI and Settings plus Harbor Settings use the journaled installer and a fixed macOS authorization command. Linux rootless lifecycle and vendor parity checked."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-24T00:31:59.271Z",
+			"evidence": "CLI missing-command red and green, both Settings red and green on harbor-mbp-2, setup and remove interruption and ownership fixtures, real mb2 macOS quirks, and successful disposable Ubuntu rootless install/repair/remove. macOS privileged qualification remains in verify."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

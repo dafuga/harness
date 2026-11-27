@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-vault-setup-vault-setup-ipc",
+	"uid": "u_qteonwy4tg",
+	"kind": "module",
+	"title": "Local Vault IPC",
+	"responsibility": "Restricts Vault installer status and write actions to the trusted top frame of the local Harness Mac window.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/lib/development-tooling/vault-setup/vaultSetupIpc.ts"],
+		"symbols": ["vaultSetupIpc"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "vaultSetupIpc.current",
+				"type": "() => BrowserWindow | undefined",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "vaultSetupIpc",
+				"type": "void",
+				"description": "Registers IPC handlers for Vault status and fixed setup or remove actions. Untrusted callers and unknown actions receive an error without starting the installer."
+			}
+		],
+		"errors": [
+			{
+				"name": "unsupported",
+				"type": "returned",
+				"description": "Status is unsupported for callers outside the trusted local macOS window."
+			},
+			{
+				"name": "Operation refused",
+				"type": "returned",
+				"description": "A mutation returns a reason if the caller is untrusted or the action is unknown."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "vaultSetupIpc",
+				"inputs": [
+					{
+						"name": "vaultSetupIpc.current",
+						"type": "() => BrowserWindow | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "vaultSetupIpc",
+						"type": "void",
+						"description": "Registers IPC handlers for Vault status and fixed setup or remove actions. Untrusted callers and unknown actions receive an error without starting the installer."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.function.trusted-sender",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/vault-setup/vaultSetupIpc.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/vault-setup/vaultSetupIpc.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

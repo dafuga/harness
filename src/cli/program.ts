@@ -1,4 +1,5 @@
 // @harness-uid u_3tibsmkofv
+import { VaultSetupCommand } from '../commands/accounts-access/VaultSetupCommand';
 import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
 import { QaSyncCommand } from '../commands/agents-providers/QaSyncCommand';
@@ -72,6 +73,7 @@ export function buildProgram(): Command {
 	registerTaskCommand(program);
 	new TrackerCommand().register(program);
 	new DeployCommand().register(program);
+	new VaultSetupCommand().register(program);
 	new ModuleCommand().register(program);
 	new ApiCommand().register(program);
 	new PermissionsCommand().register(program);

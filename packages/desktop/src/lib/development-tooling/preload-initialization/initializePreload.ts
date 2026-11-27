@@ -120,6 +120,13 @@ const remote: RemoteDesktopControl = {
 		})
 };
 export function initializePreload(): void {
+	contextBridge.exposeInMainWorld(
+		'vaultSetup',
+		Object.freeze({
+			status: () => ipcRenderer.invoke('vault-setup:status'),
+			run: (action: 'setup' | 'remove') => ipcRenderer.invoke('vault-setup:run', action)
+		})
+	);
 	contextBridge.exposeInMainWorld('harness', Object.freeze(bridge));
 	contextBridge.exposeInMainWorld('harnessRemote', Object.freeze(remote));
 }

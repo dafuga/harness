@@ -4,6 +4,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
+	import VaultSetup from '../../components/accounts-access/VaultSetup.svelte';
 	import AgentSettings from '../../components/agents-providers/AgentSettings.svelte';
 	import { isWorkspacePath } from '../../utils/projects-sessions/workspaceRoute';
 	import '../../lib/styles/workspace.css';
@@ -37,6 +38,7 @@
 	>
 	<hx-h1>{title}</hx-h1>
 	<AgentSettings />
+	<VaultSetup />
 </hx-main>
 
 <style>

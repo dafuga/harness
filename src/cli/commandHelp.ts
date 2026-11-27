@@ -134,6 +134,7 @@ export const commandHelp = [
 		term: 'deploy [options] [project] [environment]',
 		aliases: []
 	},
+	plainHelp('vault', 'Manage the local Vault executor.'),
 	{
 		name: 'module',
 		signature: 'module',

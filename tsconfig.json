@@ -14,5 +14,5 @@
 			"$shared/*": ["./packages/reports/src/components/*"]
 		}
 	},
-	"include": ["src/**/*.ts", "test/**/*.ts"]
+	"include": ["src/**/*.ts", "test/**/*.ts", "deploy/vault/setup/sh.d.ts"]
 }

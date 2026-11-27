@@ -30,25 +30,37 @@ mode-0700 lease directory and write access on its mode-0600 socket using ACLs. T
 executor-owned mode-0711 runtime directory whose ancestors the requester can traverse. The requester
 also needs the lease token and must pass `getpeereid`.
 
-## MB2 account provisioning
+## Local executor setup
 
-The provisioning script is for Daniel to review and run on MB2. Its read-only `plan` mode requires
-no sudo. The account is a hidden, non-admin local user with its own group, no login shell or usable
-password and an owner-only home. The script creates a separate Docker context in that home. The
-context points to a private socket for an independently provisioned engine. The script neither
-starts a Docker engine nor points at another account's engine.
+In the Harness or Harbor Mac app, open Settings and choose **Set up vault on this computer**.
+macOS asks for administrator approval. The same installer is available from the CLI:
 
 ```sh
-bash deploy/vault/mb2-executor-account.sh plan
-sudo bash deploy/vault/mb2-executor-account.sh provision
+harness vault setup
+harness vault status
+harness vault remove
 ```
 
-For the journaled MB2 Colima setup that reached `synthetic-checked`, check the dedicated
-executor after reboot with `bash deploy/vault/mb2-executor-engine.sh status`. If it is down,
-Daniel can run `sudo bash deploy/vault/mb2-executor-engine.sh start`. This starts the existing
-no-host-mount Colima profile and checks the dedicated Docker socket and context. Use the same
-command with `stop` to restore the stopped state. Do not rerun account provisioning after reboot.
-Engine health and the earlier synthetic fixture pass are separate from cross-user acceptance.
+On macOS, install Colima, Lima and the Docker CLI first. Setup uses the dedicated
+harness-vault account and a Colima profile with host mounts disabled. Fresh installs keep
+executor data under `/private/var/db/hv`, separate from macOS login homes. Run Setup or
+Repair again after an interruption or if you need to start the engine after reboot.
+Removal retains the private data under the root-owned journal's archive.
+
+In a dedicated Linux environment, install systemd, uidmap and matching versions
+of Docker Engine and its rootless extras.
+
+The installer starts an executor-owned rootless Docker service. A Linux host where
+agents have passwordless sudo still requires a separately controlled Vault VM.
+
+Setup reports local engine readiness. Browser sandbox, requester isolation and
+synthetic provider qualification are verified separately before provider use.
+Repair preserves the home of a journaled legacy install under `/Users`. If macOS blocks
+archiving that home, the installer stops with the original data intact. An administrator
+can retry `harness vault remove` from a terminal already authorized for Full Disk Access.
+To qualify the installer in a macOS operator session, run
+`bash test/support/vault-setup/macos-smoke.sh`. It uses a fresh temporary account
+and private VM profile, checks repair and removal, and deletes its test data.
 
 On MB2, `mb2-cross-user.sh` qualifies the existing synthetic SMS fixture on the dedicated
 engine. It runs the fixture supervisor as `harness-vault` and uses the unprivileged system test
@@ -64,17 +76,6 @@ On macOS, `bunx --no-install vitest run test/credential-vault-ios.e2e.test.ts` c
 Vault sources and checks them against the Harness broker and the standalone broker's synthetic
 `vault-add` vector from revision `cd792c0`. The test uses a disposable software signing key and no
 Keychain entries. Physical Face ID, pairing and save/reopen are acceptance checks on the iPhone.
-
-To undo, stop the dedicated engine and executor first. The script verifies the account and journal
-match, removes their Directory Services records and moves the assigned home out of `/Users`. The
-preserved copy is readable only via the root-owned journal at `/var/db/org.harness.vault-executor`.
-If either provisioning or undo stops mid-operation, inspect that journal before changing account
-records by hand. Keep the executor inactive until the dedicated engine and peer-access setup pass
-host preflight.
-
-```sh
-sudo bash deploy/vault/mb2-executor-account.sh undo
-```
 
 ## Secret-safe session setup
 

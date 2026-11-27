@@ -15,6 +15,10 @@ export const desktopControls: Record<string, DesktopCase> = {
 		cancel: noop,
 		retry: noop
 	}),
+	'desktop.component.accounts-access-vault-setup': () => {
+		Object.assign(window, { vaultSetup: { status: async () => 'absent', run: async () => null } });
+		return {};
+	},
 	'desktop.component.agent-controls': () => ({
 		providers: providers.map((provider) => ({
 			...provider,

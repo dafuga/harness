@@ -6,6 +6,7 @@
 		"skipLibCheck": true
 	},
 	"include": [
+		"../../deploy/vault/setup/sh.d.ts",
 		"src/**/*.ts",
 		"src/**/*.svelte",
 		"test/**/*.ts",

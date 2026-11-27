@@ -5,6 +5,7 @@
 	"kind": "ui",
 	"units": [
 		"desktop.component.accounts-access-account-sign-in",
+		"desktop.component.accounts-access-vault-setup",
 		"desktop.component.agent-controls",
 		"desktop.component.agent-effort-picker",
 		"desktop.component.agent-model-picker",
@@ -420,6 +421,12 @@
 			"title": "Google sign-in",
 			"coverage": "required",
 			"units": ["desktop.component.accounts-access-account-sign-in"]
+		},
+		{
+			"id": "desktop-component-accounts-access-vault-setup",
+			"title": "Credential Vault setup",
+			"coverage": "required",
+			"units": ["desktop.component.accounts-access-vault-setup"]
 		},
 		{
 			"id": "desktop-component-agent-controls",
@@ -8831,6 +8838,7 @@
 			"kind": "screenshot",
 			"states": [
 				"desktop-component-accounts-access-account-sign-in",
+				"desktop-component-accounts-access-vault-setup",
 				"desktop-component-agent-controls",
 				"desktop-component-agent-controls-compact",
 				"desktop-component-agent-controls-empty",

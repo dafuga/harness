@@ -1,0 +1,78 @@
+{
+	"schemaVersion": 1,
+	"id": "vault-local-setup",
+	"title": "Local Vault setup, repair and removal",
+	"kind": "ui",
+	"units": ["desktop.page.settings", "desktop.component.accounts-access-vault-setup"],
+	"states": [
+		{
+			"id": "initial",
+			"title": "Setup is available on the local Mac",
+			"coverage": "required",
+			"units": ["desktop.page.settings", "desktop.component.accounts-access-vault-setup"]
+		},
+		{
+			"id": "progress",
+			"title": "The active installer step is visible",
+			"coverage": "required",
+			"units": ["desktop.page.settings", "desktop.component.accounts-access-vault-setup"]
+		},
+		{
+			"id": "ready",
+			"title": "Repair and removal are available",
+			"coverage": "required",
+			"units": ["desktop.page.settings", "desktop.component.accounts-access-vault-setup"]
+		},
+		{
+			"id": "failed",
+			"title": "The failed step and retry are visible",
+			"coverage": "required",
+			"units": ["desktop.page.settings", "desktop.component.accounts-access-vault-setup"]
+		}
+	],
+	"viewports": [
+		{
+			"id": "desktop",
+			"width": 1440,
+			"height": 900
+		},
+		{
+			"id": "tablet",
+			"width": 920,
+			"height": 800
+		},
+		{
+			"id": "phone",
+			"width": 390,
+			"height": 900
+		}
+	],
+	"tests": [
+		{
+			"id": "local-setup",
+			"kind": "e2e",
+			"runner": "command",
+			"target": "bun ../../test/verification-output.ts playwright tests/e2e/agent-settings.spec.ts",
+			"cwd": "packages/desktop",
+			"timeoutMs": 180000
+		}
+	],
+	"evidence": [
+		{
+			"id": "vault-setup-output",
+			"kind": "output",
+			"states": ["initial", "progress", "ready", "failed"],
+			"viewports": [],
+			"required": true
+		},
+		{
+			"id": "vault-setup-settings",
+			"kind": "screenshot",
+			"states": ["initial", "progress", "ready", "failed"],
+			"viewports": ["desktop", "tablet", "phone"],
+			"required": true,
+			"build": "desktop-renderer",
+			"capture": "viewport"
+		}
+	]
+}

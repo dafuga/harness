@@ -39,6 +39,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.accounts-access-vault-setup",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.activity",
 			"via": "dynamic-import",
 			"origin": "derived"
