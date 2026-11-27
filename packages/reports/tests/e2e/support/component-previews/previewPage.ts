@@ -90,6 +90,10 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 	await expect(content).toBeAttached();
 	if (id === 'hub.component.projects-sessions-hub-home-dialogs')
 		await expect(content.getByRole('dialog', { name: 'Plans' })).toBeVisible();
+	if (id === 'hub.component.projects-sessions-hub-home-plan-detail')
+		await expect(content.getByRole('dialog', { name: 'Prepare the export cutover' })).toBeVisible();
+	if (id === 'desktop.component.development-tooling-tracker-work')
+		await expect(content.getByRole('button', { name: 'Prepare the export cutover' })).toBeVisible();
 	if (isBrokenPreviewImage(id, variant))
 		await expect(content.locator('.image-button').first()).toBeDisabled();
 	await applyActivityPreviewContext(page, content, id);

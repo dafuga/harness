@@ -3,7 +3,10 @@ import { soonestWork } from '../../../../../hub/src/components/projects-sessions
 import type { HomeView } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
 import type { LinkedHome } from '../../../../../hub/src/services/networking-security/LinkedHomeService';
 import type { HomeWorkProject } from '../../../../src/lib/projects-sessions/hub-home/homeLive.types';
-import type { OwnerHomeSnapshot } from '../../../../src/lib/projects-sessions/hub-home/hubHome.types';
+import type {
+	OwnerHomeSnapshot,
+	TrackerHomeSource
+} from '../../../../src/lib/projects-sessions/hub-home/hubHome.types';
 
 const prefix = 'hub.component.projects-sessions-hub-';
 export function isHubHomePreview(id: string) {
@@ -54,6 +57,16 @@ const snapshot: OwnerHomeSnapshot = {
 			title: 'Prepare the export cutover',
 			project: 'Atlas',
 			state: 'in-progress',
+			stage: 'design',
+			planning: {
+				promotions: [],
+				artifacts: {
+					design: {
+						summary: 'Review the export columns and empty states.',
+						links: [{ label: 'Export design canvas', url: 'https://design.example.test/export' }]
+					}
+				}
+			},
 			updatedAt: stamp(-1),
 			total: 2,
 			done: 1,
@@ -169,4 +182,15 @@ export const catalogHomeView: HomeView = {
 	pastDue: [],
 	quotaConnected: true,
 	now: NOW
+};
+
+export const catalogTrackerHomeSource: TrackerHomeSource = {
+	read: async () => ({
+		...snapshot,
+		scheduled: snapshot.scheduled.map((run) => ({
+			...run,
+			at: new Date(Date.now() + 8 * 3_600_000).toISOString()
+		}))
+	}),
+	send: async ({ id }) => ({ id, status: 'sent' })
 };
