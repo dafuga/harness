@@ -102,7 +102,7 @@ export function trackerAreaDispatch(
 					previous ? 'Previous sibling order: ' + previous : 'Overlapping siblings: none.',
 					'Edit only the claimed paths. Use tracker claim ' +
 						item.id +
-						' <path...> before extending the work.',
+						' <path...> before extending the work or resuming edits after a block or stop.',
 					'Land the PR through the repository queue with tracker land ' +
 						item.id +
 						' <PR>. It rebases and submits bun run check --item for the exact head. Full checks go through the same service with --release only for the combined release.'
@@ -137,8 +137,7 @@ export function areaDispatchServices(
 ) {
 	const dispatch = new TrackerDispatcherService(
 		guard ? guardedDispatchStore(repository, guard.permit) : repository,
-		policy,
-		guard?.commands
+		policy
 	);
 	if (!guard) return { dispatch, runner };
 	return {

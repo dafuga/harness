@@ -41,7 +41,10 @@ CREATE INDEX IF NOT EXISTS tracker_landing_repo ON tracker_landing_queue(repo,po
 const ticketLifetime = 120_000;
 
 /** Expire waiting/checking callers. A merge in flight retains its slot across restarts and outages. */
-export function trackerLandingAuthority(store: TrackerPersistenceService, now = Date.now) {
+export function trackerLandingAuthority(
+	store: TrackerPersistenceService,
+	now: () => number = Date.now
+) {
 	store.database.exec(schema);
 	return (input: unknown, node: string): LandingDecision => {
 		const parsed = landingRequest.safeParse(input);

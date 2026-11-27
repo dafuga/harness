@@ -15,6 +15,7 @@ Daniel's work is tracked in the shared \`tracker\` CLI, which runs and syncs on 
 ${trackerQuestionRoutingRule}
 
 - **Starting work:** \`tracker start <id>\`. Ask your bot or brief for the id. If there isn't one, create it: \`tracker add "<task>" --owner "<your session name>" --agent <project>\`. Record your ETA as a due time (\`tracker update <id> --due <ISO time>\`) and update it if it slips.
+- **Harness edits and landings:** Before editing a Harness path, acquire it with \`tracker claim <id> <path...>\`. Every session and Chief of Staff lands every Harness PR through \`tracker land <id> <PR>\` from the clean PR checkout. While the queue or shared checks are unavailable, record the wait on the item. Direct merges or pushes to main bypass repository serialization.
 - **At each meaningful milestone:** \`tracker note <id> "..."\`.
 - **A decision only Daniel can make:** run \`tracker flag <id> "<the exact question>" --option "<label>=<what happens>" --option "<label>=<what happens>" --recommend <number>\` (2 to 4 options; add \`--confirm deploy|money|secret\` when a tap would deploy, spend money or touch a secret) at the moment you ask, in addition to writing it in your terminal.
 - **Waiting on another item, computer or session** is not a question: \`tracker block <id> "waiting on <item>"\`.

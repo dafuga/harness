@@ -1,3 +1,4 @@
+import { isTrackerCoordinationCommand } from '../../../src/commands/projects-sessions/tracker-command/runTrackerCoordination';
 import { chmodSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afterEach, expect, onTestFinished, test, vi } from 'vitest';
@@ -86,9 +87,11 @@ test('every command named in the canonical block exists natively', async () => {
 	await run(file);
 	const text = readFileSync(file, 'utf8');
 	const named = [...text.matchAll(/`tracker ([a-z][a-z-]*)/g)].map(([, verb]) => verb);
-	expect(named).toEqual(expect.arrayContaining(['start', 'flag', 'check', 'done']));
+	expect(named).toEqual(
+		expect.arrayContaining(['start', 'flag', 'check', 'done', 'claim', 'land'])
+	);
 	for (const verb of named) {
-		if (verb === 'help') continue;
+		if (verb === 'help' || isTrackerCoordinationCommand(verb)) continue;
 		let message = '';
 		try {
 			nativeTrackerArgs([verb]);

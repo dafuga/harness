@@ -58,7 +58,7 @@ function claimInspector(
 	send: ReturnType<typeof authorityPort>
 ) {
 	const routes = Object.entries(options.hostEffects?.launch?.repositories ?? {});
-	const read = options.areaInventory ?? trackerAreaInventory;
+
 	return async (item: Item, attempt: Attempt, extra: string[] = []) => {
 		const project = item.project ?? item.agent ?? undefined;
 		const route = project
@@ -67,7 +67,7 @@ function claimInspector(
 		if (!route)
 			return { allowed: extra.length === 0, reason: 'Operations workdir has no repository claim' };
 		try {
-			const inspection = await read(
+			const inspection = await trackerAreaInventory(
 				route[1],
 				[item.title, item.notes].join('\n'),
 				AbortSignal.timeout(30000),

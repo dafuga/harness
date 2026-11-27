@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { TrackerHostProcessError } from '../../../adapters/projects-sessions/tracker-host-process-adapter/TrackerHostProcessError';
 import { basename } from 'node:path';
 import { stat } from 'node:fs/promises';
 import { z } from 'zod';
@@ -66,7 +67,9 @@ export async function trackerAreaInventory(
 	if (!tracked || !(await git(['remote']))) return localRepo;
 	const repo = githubRepository(await git(['remote', 'get-url', 'origin']));
 	if (!route.github)
-		throw new Error('Configure the repository GitHub read binding for Tracker area checks');
+		throw new TrackerHostProcessError(
+			'Configure the repository GitHub read binding for Tracker area checks'
+		);
 	const request = trackerGithubRequest(route.github);
 	const pulls = await readAreaPulls(repo, request, signal);
 	const refs = linkedPulls(text, repo);
@@ -100,7 +103,8 @@ async function readAreaPulls(
 		'number,headRefName,headRefOid,baseRefName,author,changedFiles,files'
 	];
 	const response = await request(args, signal);
-	if (response.code !== 0) throw new Error('Tracker cannot read open pull requests');
+	if (response.code !== 0)
+		throw new TrackerHostProcessError('Tracker cannot read open pull requests');
 	const pulls = z.array(pull).max(maxPulls).parse(JSON.parse(response.stdout));
 	for (const pr of pulls) {
 		if (pr.files.length === pr.changedFiles && !pr.files.some((f) => f.changeType === 'RENAMED'))
@@ -116,12 +120,14 @@ async function readAreaPulls(
 			],
 			signal
 		);
-		if (reply.code !== 0) throw new Error('Tracker cannot read the complete pull request paths');
+		if (reply.code !== 0)
+			throw new TrackerHostProcessError('Tracker cannot read the complete pull request paths');
 		const files = z
 			.array(z.array(z.object({ filename: z.string(), previous_filename: z.string().optional() })))
 			.parse(JSON.parse(reply.stdout))
 			.flat();
-		if (files.length !== pr.changedFiles) throw new Error('Incomplete pull request path inventory');
+		if (files.length !== pr.changedFiles)
+			throw new TrackerHostProcessError('Incomplete pull request path inventory');
 		pr.files = files.flatMap((f) =>
 			[f.filename, ...(f.previous_filename ? [f.previous_filename] : [])].map((path) => ({
 				path,
@@ -142,7 +148,7 @@ function linkedPulls(text: string, repo: string) {
 function checkoutReader(route: TrackerHostRepository, signal: AbortSignal) {
 	return async (args: string[]) => {
 		const result = await runTrackerHostCommand('/usr/bin/git', ['-C', route.repo, ...args], signal);
-		if (result.code !== 0) throw new Error('Cannot read checkout');
+		if (result.code !== 0) throw new TrackerHostProcessError('Cannot read checkout');
 		return result.stdout.trimEnd();
 	};
 }
@@ -151,7 +157,8 @@ async function checkoutPaths(
 	git: ReturnType<typeof checkoutReader>,
 	signal: AbortSignal
 ) {
-	if (!(await stat(route.repo)).isDirectory()) throw new Error('Checkout is unavailable');
+	if (!(await stat(route.repo)).isDirectory())
+		throw new TrackerHostProcessError('Checkout is unavailable');
 	const probe = await runTrackerHostCommand(
 		'/usr/bin/git',
 		['-C', route.repo, 'rev-parse', '--git-dir'],
@@ -159,7 +166,7 @@ async function checkoutPaths(
 	);
 	if (probe.code === 0) return (await git(['ls-files', '-z'])).split('\0').filter(Boolean);
 	if (/not a git repository/i.test(probe.stderr)) return undefined;
-	throw new Error('Cannot identify checkout');
+	throw new TrackerHostProcessError('Cannot identify checkout');
 }
 
 function githubRepository(remote: string) {
@@ -167,6 +174,9 @@ function githubRepository(remote: string) {
 		/^(?:git@github\.com:|https:\/\/github\.com\/|ssh:\/\/git@github\.com\/)([\w.-]+\/[\w.-]+?)(?:\.git)?\/?$/i
 			.exec(remote)?.[1]
 			?.toLowerCase();
-	if (!repo) throw new Error('Tracker needs the GitHub repository identity for this checkout');
+	if (!repo)
+		throw new TrackerHostProcessError(
+			'Tracker needs the GitHub repository identity for this checkout'
+		);
 	return repo;
 }

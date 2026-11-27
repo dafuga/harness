@@ -469,6 +469,16 @@ the daemon socket, signing key, and credentials outside guest storage.
 Worker exit alone never completes the Tracker item. Keep the Docker lane
 held on the protected hosts until the production seams pass rehearsal.
 
+### Area claims and Harness PR landings
+
+List the intended repository-relative paths in an `Areas: src/launcher, test/launcher` line in the item notes. The launcher also reads tracked paths and linked pull requests. It reserves the entire repository when it cannot infer a narrower area. An overlapping owner or open PR holds the launch and records the waiting order for Chief of Staff. Closing the item, blocking it or stopping the run releases its claim. The current claim appears in the item data and Hub Home. A running session requests additional paths with `tracker claim ITEM PATH...` before editing them.
+
+Each GitHub checkout in `hostEffects.launch.repositories` needs a `github` object with an absolute `executable` path and a private `configDirectory` for that repository's read identity. During the combined restart, configure these bindings on participating computers and have existing sessions declare their paths. A failed inventory or unreachable hub holds the launch. Non-Git workspaces use the configured project name as their claim namespace.
+
+Every Harness session and Chief of Staff runs `tracker land ITEM PR` from its clean PR checkout. The hub grants one FIFO slot per repository. The caller rebases on fresh main, pushes its feature branch with a lease, and submits the exact head through `bun run check --item ITEM --commit SHA --exact --json`. A changed base, changed PR head, failed check or mismatched receipt prevents the merge. The caller requests a squash merge using GitHub's expected-head check, then verifies the squash parent and tree. GitHub has no expected-base argument for that operation, so every writer to main must participate in the queue.
+
+After a lost GitHub response, use `tracker land ITEM PR --reconcile` on the originating computer. A merge in flight keeps its slot across restarts. Reconciliation releases it after confirming the matching merge or that the old request can no longer land. If GitHub still reports the original open head, inspect the PR and allow it to settle. A parent or tree mismatch requires Chief of Staff to inspect the repository.
+
 ### Launch resource guards
 
 The managed launcher reads this computer before every launch, including

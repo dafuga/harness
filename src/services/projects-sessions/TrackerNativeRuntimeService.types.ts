@@ -1,4 +1,3 @@
-import type { trackerAreaInventory } from './tracker-native-runtime-service/trackerAreaInventory';
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerBackupOptions } from './TrackerBackupService.types';
 import type {
@@ -46,7 +45,6 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 > {
 	node: string;
 	role: 'hub' | 'spoke';
-	areaInventory?: typeof trackerAreaInventory;
 	backupDirectory?: string;
 	/** Set on a hub that takes its own daily backups. */
 	backup?: TrackerBackupOptions;

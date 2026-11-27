@@ -1,6 +1,6 @@
+// @harness-uid u_gvqtr5mdwv
 import { reportDuplicateAdd } from './trackerDuplicateAdd';
 import { readItemBody } from '../tracker-local-api-service/trackerLocalItemMutation';
-// @harness-uid u_gvqtr5mdwv
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { takeTrackerBackupNow } from '../tracker-backup-service/takeTrackerBackupNow';
@@ -200,8 +200,7 @@ async function coordinateTrackerRequest(
 	runtime: TrackerNativeRuntimeService,
 	action: 'claim' | 'landing'
 ) {
-	const port = runtime.dispatch?.coordination;
-	if (!port) return Response.json({ error: 'Tracker coordination unavailable' }, { status: 503 });
+	const port = runtime.coordination;
 	try {
 		const reply = await port[action](await readItemBody(request));
 		return Response.json(reply, { status: reply.allowed || action === 'landing' ? 200 : 409 });

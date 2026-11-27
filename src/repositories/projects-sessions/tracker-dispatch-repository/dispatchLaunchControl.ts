@@ -90,6 +90,7 @@ function trackerStopControl(
 				fields: {
 					schedule_off: 1,
 					schedule_hold_reason: 'Run stopped by operator',
+					...(!run && { area_stop_idle: item.auto ?? '' }),
 					auto: null,
 					launch_target: null,
 					launch_source: null,

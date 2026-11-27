@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { z } from 'zod';
@@ -25,10 +26,11 @@ export function trackerLandingGit(cwd: string, signal: AbortSignal) {
 				['main', 'master', 'dev', 'staging', 'preprod', 'production'].includes(branch) ||
 				(await git('status', '--porcelain'))
 			)
-				throw new Error('Landing needs a clean feature branch');
+				throw new ExpectedCliError('Landing needs a clean feature branch');
 			const fetch = repositoryName(await git('remote', 'get-url', 'origin'));
 			const push = repositoryName(await git('remote', 'get-url', '--push', '--all', 'origin'));
-			if (fetch !== push) throw new Error('Fetch and push must address the same repository');
+			if (fetch !== push)
+				throw new ExpectedCliError('Fetch and push must address the same repository');
 			return { branch, repo: fetch, sha: oid.parse(await git('rev-parse', 'HEAD')) };
 		},
 		async base() {
@@ -63,7 +65,7 @@ export function trackerLandingGit(cwd: string, signal: AbortSignal) {
 			const parent = await git('show', '-s', '--format=%P', sha);
 			const checkedTree = await git('rev-parse', head + '^{tree}');
 			if (parent !== base || (await git('rev-parse', sha + '^{tree}')) !== checkedTree)
-				throw new Error('Squash parent or tree differs from the checked candidate');
+				throw new ExpectedCliError('Squash parent or tree differs from the checked candidate');
 		},
 		...landingCommands(command)
 	};
@@ -74,7 +76,7 @@ function repositoryName(remote: string) {
 		/^(?:git@github\.com:|https:\/\/github\.com\/|ssh:\/\/git@github\.com\/)([\w.-]+\/[\w.-]+?)(?:\.git)?\/?$/i.exec(
 			remote
 		);
-	if (!match) throw new Error('Landing needs one github.com origin');
+	if (!match) throw new ExpectedCliError('Landing needs one github.com origin');
 	return match[1].toLowerCase();
 }
 
@@ -103,7 +105,9 @@ function landingCommands(
 				scripts?: { check?: string };
 			};
 			if (pkg.scripts?.check !== 'bun scripts/shared-checks.ts')
-				throw new Error('Shared focused check entry point from tzd4cw is required before landing');
+				throw new ExpectedCliError(
+					'Shared focused check entry point from tzd4cw is required before landing'
+				);
 			const expectedTree = await command('git', ['rev-parse', head + '^{tree}']);
 			const output = await command(
 				'bun',
@@ -139,7 +143,7 @@ function landingRunner(cwd: string, signal: AbortSignal) {
 			});
 			return result.stdout.trim();
 		} catch {
-			throw new Error(`Landing command failed: ${bin} ${args[0]}`);
+			throw new ExpectedCliError(`Landing command failed: ${bin} ${args[0]}`);
 		}
 	};
 }
@@ -161,5 +165,5 @@ function verifyReceipt(output: string, head: string, base: string, expectedTree:
 		receipt.base !== base ||
 		receipt.tree !== expectedTree
 	)
-		throw new Error('Shared check did not verify the exact landing tree');
+		throw new ExpectedCliError('Shared check did not verify the exact landing tree');
 }

@@ -1,7 +1,8 @@
+// @harness-uid u_bl6xl2h4a3
 import { chooseTrackerFleetHost } from './composeTrackerFleet';
 import type { PeerStarts, TrackerFleetRuntime } from './nativeTrackerDispatch.types';
+import { trackerAreaCommands } from './trackerAreaCommands';
 import { areaDispatchServices, trackerAreaDispatch } from './trackerAreaDispatch';
-// @harness-uid u_bl6xl2h4a3
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { adapterFailover } from './trackerAdapterFailover';
 import { TrackerDispatchRepository } from '../../../repositories/projects-sessions/TrackerDispatchRepository';
@@ -40,6 +41,7 @@ export function composeTrackerDispatch(
 
 function emptyDispatch(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
 	return {
+		coordination: trackerAreaCommands(store, options).commands,
 		dispatch: undefined,
 		scheduler: undefined,
 		permitAutomatic: undefined,
@@ -68,8 +70,7 @@ function nativeDispatch(
 		sessions,
 		now
 	});
-	const guard = options.hostEffects?.launch && trackerAreaDispatch(store, options);
-	const guarded = areaDispatchServices(repository, policy, guard, runner);
+	const guarded = nativeAreaServices(store, options, repository, { policy, runner });
 	const grant =
 		configuredGrant ??
 		spokeGrant(store, options, (itemId) => {
@@ -83,6 +84,7 @@ function nativeDispatch(
 		machines: fleet?.machines
 	});
 	return {
+		coordination: guarded.coordination,
 		dispatch: guarded.dispatch,
 		permitAutomatic: permits.hubAutomatic,
 		permitDue: permits.permitDue,
@@ -172,5 +174,24 @@ function configuredDuePreview(
 		due,
 		preview: (id) =>
 			previewDueLaunch({ ...repository.readSnapshot(id), due: due() }, policy, policy.now())
+	};
+}
+
+function nativeAreaServices(
+	store: TrackerPersistenceService,
+	options: TrackerNativeRuntimeOptions,
+	repository: TrackerDispatchRepository,
+	{
+		policy,
+		runner
+	}: {
+		policy: TrackerDispatchPolicy;
+		runner: NonNullable<TrackerNativeRuntimeOptions['dispatch']>['runner'];
+	}
+) {
+	const guard = options.hostEffects?.launch && trackerAreaDispatch(store, options);
+	return {
+		...areaDispatchServices(repository, policy, guard, runner),
+		coordination: guard?.commands ?? trackerAreaCommands(store, options).commands
 	};
 }

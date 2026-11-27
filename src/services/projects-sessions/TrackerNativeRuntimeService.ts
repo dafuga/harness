@@ -46,6 +46,7 @@ import { configuredTrackerDestinations } from './tracker-native-runtime-service/
 /** Composes the Tracker node's API, delivery and link workers over one SQLite journal. */
 export class TrackerNativeRuntimeService {
 	readonly role: 'hub' | 'spoke';
+	readonly coordination: ReturnType<typeof composeTrackerDispatch>['coordination'];
 	readonly dispatch?: TrackerDispatcherService;
 	readonly scheduler?: TrackerDispatchSchedulerService;
 	readonly duePreview: TrackerDuePreviewPolicy;
@@ -87,6 +88,7 @@ export class TrackerNativeRuntimeService {
 			options.dispatch ?? configuredHostDispatch(store, hostEffects, { ...options, now: this.now });
 		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this);
 		({
+			coordination: this.coordination,
 			dispatch: this.dispatch,
 			scheduler: this.scheduler,
 			duePreview: this.duePreview

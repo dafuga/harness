@@ -1,5 +1,6 @@
-import { setInterval, clearInterval } from 'node:timers';
 // @harness-uid u_r7qgepnoax
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
+import { setInterval, clearInterval } from 'node:timers';
 import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 import type {
@@ -27,11 +28,11 @@ export async function trackerLandPull(
 		const candidate = await prepareLanding(original, target, git);
 		await heartbeat.stop();
 		signal.throwIfAborted();
-		if (heartbeat.lost()) throw new Error('Repository landing lease was interrupted');
+		if (heartbeat.lost()) throw new ExpectedCliError('Repository landing lease was interrupted');
 		const approved = await queue({ ...common, ...candidate, action: 'authorize' });
-		if (!approved.allowed) throw new Error(approved.reason);
+		if (!approved.allowed) throw new ExpectedCliError(approved.reason);
 		if ((await git.base()) !== candidate.base)
-			throw new Error('main moved after the focused check');
+			throw new ExpectedCliError('main moved after the focused check');
 		// A lost GitHub reply leaves the slot held until the merged state can be reconciled.
 		release = false;
 		try {
@@ -41,7 +42,7 @@ export async function trackerLandPull(
 		}
 		const result = await git.pull(original.repo, pr);
 		if (result.state !== 'MERGED' || !result.mergeCommit || result.headRefOid !== candidate.head)
-			throw new Error(
+			throw new ExpectedCliError(
 				`Merge unconfirmed. Run tracker land ${id} ${pr} --reconcile on this computer`
 			);
 		await git.verifyMerged(result.mergeCommit.oid, candidate.base, candidate.head);
@@ -61,14 +62,15 @@ async function prepareLanding(
 	const info = await git.pull(original.repo, pr);
 	assertPull(info, original);
 	const checkout = await git.checkout();
-	if (!sameCheckout(checkout, original)) throw new Error('Checkout changed while waiting');
+	if (!sameCheckout(checkout, original))
+		throw new ExpectedCliError('Checkout changed while waiting');
 	const base = await git.base();
 	const head = await git.rebase(base, original.sha);
 	await git.publish(original.branch, original.sha, head);
 	await git.check(id, head, base);
 	const checked = await git.checkout();
 	if (!sameCheckout(checked, { ...original, sha: head }) || (await git.base()) !== base)
-		throw new Error('Checked candidate or main moved during focused checks');
+		throw new ExpectedCliError('Checked candidate or main moved during focused checks');
 	assertPull(await git.pull(original.repo, pr), { ...original, sha: head });
 	return { base, head };
 }
@@ -78,7 +80,7 @@ async function waitForTurn(poll: () => Promise<LandingDecision>, signal: AbortSi
 		signal.throwIfAborted();
 		const decision = await poll();
 		if (decision.allowed) return;
-		if (!decision.reason.startsWith('queued behind ')) throw new Error(decision.reason);
+		if (!decision.reason.startsWith('queued behind ')) throw new ExpectedCliError(decision.reason);
 		await delay(5000, undefined, { signal });
 	}
 }
@@ -129,7 +131,7 @@ function assertPull(
 		pr.headRefOid !== checkout.sha ||
 		pr.headRefName !== checkout.branch
 	)
-		throw new Error('PR head must match the checked-out feature branch');
+		throw new ExpectedCliError('PR head must match the checked-out feature branch');
 }
 
 export async function reconcileLanding(
@@ -140,20 +142,20 @@ export async function reconcileLanding(
 	const { repo } = await git.checkout();
 	const common = { ...target, repo, ticket: randomUUID() };
 	const { pinned, reason } = await queue({ ...common, action: 'inspect' });
-	if (!pinned) throw new Error(reason);
+	if (!pinned) throw new ExpectedCliError(reason);
 	const result = await git.pull(repo, target.pr);
 	if (result.state === 'MERGED') {
 		if (!result.mergeCommit || result.headRefOid !== pinned.head)
-			throw new Error(
+			throw new ExpectedCliError(
 				'Merged head differs from the checked candidate. Chief of Staff must reconcile the repository.'
 			);
 		await git.verifyMerged(result.mergeCommit.oid, pinned.base, pinned.head);
 	} else if (result.state === 'OPEN' && result.headRefOid === pinned.head) {
-		throw new Error(
+		throw new ExpectedCliError(
 			'Merge outcome is unresolved. Wait for GitHub or close this PR to fence the old merge request.'
 		);
 	}
 	const released = await queue({ ...common, ticket: pinned.ticket, action: 'release' });
-	if (!released.allowed) throw new Error(released.reason);
+	if (!released.allowed) throw new ExpectedCliError(released.reason);
 	return 'Reconciled ' + repo + '#' + target.pr + ' and released the landing slot';
 }

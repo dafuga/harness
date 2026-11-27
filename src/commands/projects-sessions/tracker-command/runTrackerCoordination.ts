@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
@@ -6,11 +7,15 @@ import { fetchNativeTracker } from './fetchNativeTracker';
 import { trackerLandingGit } from './trackerLandingGit';
 import { trackerLandPull, reconcileLanding } from './trackerLandPull';
 
+export function isTrackerCoordinationCommand(verb: string) {
+	return verb === 'land' || verb === 'claim';
+}
+
 export async function runTrackerCoordination(args: string[], config: TrackerNodeConfig) {
 	const [action, id, ...words] = args;
 	try {
 		if (!id || !words.length)
-			throw new Error('Usage: tracker claim ITEM PATH... or tracker land ITEM PR');
+			throw new ExpectedCliError('Usage: tracker claim ITEM PATH... or tracker land ITEM PR');
 		if (action === 'claim') {
 			const reply = await claim(config, id, words);
 			console.log(reply.reason);
@@ -43,7 +48,8 @@ async function send(config: TrackerNodeConfig, command: string, body: Record<str
 				.optional()
 		})
 		.safeParse(await reply.json());
-	if (!result.success) throw new Error('Tracker coordination is unavailable on this node');
+	if (!result.success)
+		throw new ExpectedCliError('Tracker coordination is unavailable on this node');
 	return result.data;
 }
 
@@ -65,7 +71,7 @@ async function claim(config: TrackerNodeConfig, id: string, words: string[]) {
 async function land(config: TrackerNodeConfig, id: string, words: string[]) {
 	const reconcile = words.length === 2 && words[1] === '--reconcile';
 	if ((!reconcile && words.length !== 1) || !/^[1-9]\d{0,9}$/.test(words[0]))
-		throw new Error('Usage: tracker land ITEM PR');
+		throw new ExpectedCliError('Usage: tracker land ITEM PR');
 	const controller = new AbortController();
 	const abort = () => controller.abort();
 	process.once('SIGINT', abort);

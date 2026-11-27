@@ -45,7 +45,11 @@ BEGIN DELETE FROM tracker_area_claims WHERE id = NEW.id; END;
 CREATE TRIGGER IF NOT EXISTS tracker_area_stopped AFTER INSERT ON ops
 WHEN json_type(NEW.fields,'$.area_release') = 'text'
 BEGIN DELETE FROM tracker_area_claims WHERE id = NEW.item_id AND node = NEW.node
-AND token = json_extract(NEW.fields,'$.area_release') AND attempt = json_extract(NEW.fields,'$.area_attempt'); END;`;
+AND token = json_extract(NEW.fields,'$.area_release') AND attempt = json_extract(NEW.fields,'$.area_attempt'); END;
+CREATE TRIGGER IF NOT EXISTS tracker_area_idle_stop AFTER INSERT ON ops
+WHEN json_type(NEW.fields,'$.area_stop_idle')='text'
+BEGIN DELETE FROM tracker_area_claims WHERE id=NEW.item_id AND node=NEW.node
+AND (token GLOB 'manual:*' OR token=json_extract(NEW.fields,'$.area_stop_idle')); END;`;
 
 /** A directory covers its descendants. Case aliases on Mac must also conflict. */
 export function areaIntersects(left: string, right: string): boolean {
@@ -132,8 +136,8 @@ function sameOwner(existing: Owner, req: TrackerAreaClaim, node: string) {
 function legacyOwner(store: TrackerPersistenceService, req: TrackerAreaClaim) {
 	if (!req.project) return undefined;
 	const live = `WITH live AS (
-	  SELECT item_id,project FROM runs WHERE state IN ('running','observed','verifying')
-	  UNION ALL SELECT item_id,project FROM remote_runs WHERE state IN ('running','observed','verifying')
+	  SELECT item_id,project FROM runs WHERE state IN ('queued','running','observed','verifying')
+	  UNION ALL SELECT item_id,project FROM remote_runs WHERE state IN ('queued','running','observed','verifying')
 	) SELECT DISTINCT i.id FROM live r JOIN items i ON i.id=r.item_id
 	WHERE lower(coalesce(r.project,i.project,i.agent,''))=lower(?)
 	AND i.status IN ('open','in_progress') AND i.deleted=0
