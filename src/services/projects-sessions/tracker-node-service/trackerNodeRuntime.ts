@@ -31,7 +31,8 @@ export function trackerNodeRuntime(
 	if (secret.length < 16) throw new TypeError('Tracker sync key is too short');
 	const hostEffectsHeld = config.hostEffects?.mode === 'held';
 	const notification = hostEffectsHeld ? undefined : trackerNodeNotifications(config);
-	const ladder = ladderFrom();
+	const ladderConfig = { autolaunch: config.routing };
+	const ladder = ladderFrom(ladderConfig);
 	return {
 		node: config.node,
 		role: config.role,
@@ -44,6 +45,7 @@ export function trackerNodeRuntime(
 		// Held and effect-free rehearsal nodes never notify anyone.
 		webPush: config.hostEffects?.mode === 'active' ? { database: config.database } : undefined,
 		manualLaunch: true,
+		ladderConfig,
 		automaticEnabled: trackerAutomaticSetting(config),
 		machineSampler: new TrackerMachineSamplerAdapter(config.node, configuredTmux(config)),
 		syncResponder: configuredSyncResponder(config, secret),

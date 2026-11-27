@@ -1,0 +1,138 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-xfeed-reader",
+	"uid": "u_5euoqnzpyw",
+	"kind": "service",
+	"title": "XFeedReaderService",
+	"responsibility": "Read Following, For you and mentions read-only without touching sign-in pages.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/XFeedReaderService.ts",
+			"src/services/agents-providers/XFeedReaderService.types.ts"
+		],
+		"symbols": [
+			"XFeedReaderService",
+			"XFeedReaderService.constructor",
+			"XFeedReaderService.read",
+			"XFeedReaderPorts"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XFeedReaderService.constructor.ports",
+				"type": "XFeedReaderPorts",
+				"required": true
+			},
+			{
+				"name": "XFeedReaderService.read.scan",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "XFeedReaderService.read",
+				"type": "Promise<XReadResult>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XFeedReaderService.read",
+				"inputs": [
+					{
+						"name": "XFeedReaderService.read.scan",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XFeedReaderService.read",
+						"type": "Promise<XReadResult>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "XFeedReaderService.constructor",
+				"inputs": [
+					{
+						"name": "XFeedReaderService.constructor.ports",
+						"type": "XFeedReaderPorts",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XFeedReaderService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-cdp",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-x-feed-reader-service-classify-xurl",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-x-feed-reader-service-xtab-reader",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/XFeedReaderService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/XFeedReaderService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

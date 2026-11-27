@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-x-digest-service-select-posts",
+	"uid": "u_pelveyu2tz",
+	"kind": "service",
+	"title": "selectPosts",
+	"responsibility": "Pick unseen posts per feed within limits, ranked by engagement.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/x-digest-service/selectPosts.ts"],
+		"symbols": ["selectPosts"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "selectPosts.feeds",
+				"type": "XFeeds",
+				"required": true
+			},
+			{
+				"name": "selectPosts.seen",
+				"type": "ReadonlySet<string>",
+				"required": true
+			},
+			{
+				"name": "selectPosts.limits",
+				"type": "XDigestConfig['limits']",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "selectPosts",
+				"type": "XFeeds"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "selectPosts",
+				"inputs": [
+					{
+						"name": "selectPosts.feeds",
+						"type": "XFeeds",
+						"required": true
+					},
+					{
+						"name": "selectPosts.seen",
+						"type": "ReadonlySet<string>",
+						"required": true
+					},
+					{
+						"name": "selectPosts.limits",
+						"type": "XDigestConfig['limits']",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "selectPosts",
+						"type": "XFeeds"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/x-digest-service/selectPosts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/x-digest-service/selectPosts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

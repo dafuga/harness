@@ -1,12 +1,16 @@
 import { expect, test, vi } from 'vitest';
 import { withTempDir } from '../../support/temporary';
 import { measureWorkload } from '../../support/measureWorkload';
-import { composer, protectedPanes, trackerSlotFixture } from '../../support/trackerSlotFixture';
+import {
+	codexComposer,
+	composer,
+	protectedPanes,
+	trackerSlotFixture
+} from '../../support/trackerSlotFixture';
 import type { TrackerSlotFixture } from '../../support/trackerSlotFixture.types';
 
 const noon = Date.parse('2026-11-25T12:00:00Z');
 const minute = 60_000;
-// Each tick runs the scripted tmux and host driver as real processes.
 vi.setConfig({ testTimeout: 90_000 });
 const running = { state: 'running', outcome: null };
 const finished = (outcome: string) => ({ state: 'finished', outcome });
@@ -65,6 +69,70 @@ test('a session idle with a final report finishes its run and is not relaunched'
 		expect(hub.runs('report0001')).toEqual([finished('abandoned')]);
 	}));
 
+async function verifyLiveAnswerDelivery(hub: TrackerSlotFixture) {
+	for (const [item, model, prompt] of [
+		['liveclaude', 'claude-sonnet-5-5:high', composer()],
+		['livecodex0', 'gpt-6.2-sol:medium', codexComposer()]
+	]) {
+		hub.queue(item, model);
+		await hub.advance(5_000);
+		await hub.request(`/items/${item}/start`);
+		await hub.request(`/items/${item}/flag`, {
+			question: 'Choose the synthetic region',
+			options: [
+				{ label: 'First region', detail: 'Use the first synthetic region' },
+				{ label: 'Second region', detail: 'Use the second synthetic region' }
+			]
+		});
+		await hub.request(
+			`/items/${item}/answer`,
+			item === 'liveclaude' ? { answer: 'Synthetic free text' } : { option: 1 }
+		);
+		await hub.advance(3 * minute);
+		expect.soft(hub.runtime.watchdog!.alerts()).toContainEqual(
+			expect.objectContaining({
+				item_id: item,
+				kind: 'answer-delivery'
+			})
+		);
+		const name = hub.panes().find((pane) => pane.startsWith(`auto-${item.slice(0, 6)}-`))!;
+		expect(name).toBeDefined();
+		hub.screen(name, prompt);
+		await hub.advance(minute);
+		await hub.advance(minute);
+		expect
+			.soft(hub.tmuxInput().match(new RegExp(`Tracker answer for item ${item}`, 'g')) ?? [])
+			.toHaveLength(1);
+		const notes = hub.database.prepare('SELECT text FROM item_notes WHERE item_id = ?').all(item);
+		expect
+			.soft(notes.map(({ text }) => text))
+			.toContainEqual(expect.stringContaining(`delivered to ${name}`));
+		await hub.request(`/items/${item}/done`);
+		await hub.advance(minute);
+	}
+}
+
+async function verifyAnsweredPaneRetained(hub: TrackerSlotFixture) {
+	const id = 'resumetest';
+	hub.queue(id);
+	await hub.advance(5_000);
+	const name = hub.panes().find((pane) => pane.startsWith('auto-resume-'))!;
+	expect(name).toBeDefined();
+	await hub.request(`/items/${id}/start`);
+	await hub.request(`/items/${id}/block`, { reason: 'Choose the synthetic region' });
+	hub.screen(name, composer());
+	await hub.advance(5_000);
+	expect(hub.runs(id)).toEqual([finished('blocked')]);
+	await hub.request(`/items/${id}/flag`, { question: 'Choose the synthetic region' });
+	await hub.request(`/items/${id}/answer`, { answer: 'Use the first region' });
+	await hub.advance(minute);
+	expect(hub.panes()).toContain(name);
+	expect(hub.runs(id)).toEqual([running]);
+	expect(hub.tmuxInput()).toContain(`Tracker answer for item ${id}`);
+	await hub.request(`/items/${id}/done`);
+	await hub.advance(minute);
+}
+
 test('a blocked run closes and stays down until its answer allows a relaunch', () =>
 	slotCase('blocked-run-waits-for-answer', async (hub) => {
 		hub.queue('blocked001');
@@ -75,13 +143,8 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		await hub.advance(5_000);
 		await hub.advance(35_000);
 		expect(hub.panes()).toEqual([]);
-		// A block from before this launcher has no closed-pane record and never reopens.
-		const closed = hub.runtime.store.getMeta('tracker_closed_blocked_run:1')!;
+		// Model a finished run with no closer receipt, such as after the provider exits itself.
 		hub.database.exec("DELETE FROM meta WHERE k = 'tracker_closed_blocked_run:1'");
-		await hub.request('/items/blocked001/answer', { answer: 'An answer to older history' });
-		await hub.advance(minute);
-		expect(hub.item('blocked001').status).toBe('blocked');
-		hub.runtime.store.writeMeta({ 'tracker_closed_blocked_run:1': closed });
 		await hub.request('/items/blocked001/flag', { question: 'Choose the synthetic region' });
 		for (let poll = 0; poll < 15; poll++) await hub.advance(2 * minute);
 		await hub.request('/items/blocked001/answer', { answer: 'Correct, wait', keep_blocked: true });
@@ -90,10 +153,14 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		expect(hub.runs('blocked001')).toEqual([finished('blocked')]);
 		await hub.request('/items/blocked001/answer', { answer: 'Use the first region' });
 		await hub.advance(minute);
-		expect(hub.item('blocked001').status).toBe('in_progress');
+		expect.soft(hub.item('blocked001').status).toBe('in_progress');
 		await hub.advance(minute);
 		await hub.advance(5_000);
-		expect(hub.runs('blocked001')).toEqual([finished('blocked'), running]);
+		expect.soft(hub.runs('blocked001')).toEqual([finished('blocked'), running]);
+		await hub.request('/items/blocked001/done');
+		await hub.advance(minute);
+		await verifyLiveAnswerDelivery(hub);
+		await verifyAnsweredPaneRetained(hub);
 	}));
 
 test('keeps a live background task until the item closes, then closes the pane', () =>

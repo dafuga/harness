@@ -9,14 +9,13 @@ export function guardDesktopNavigation(contents: WebContents): void {
 	const gate = new NavigationValidator();
 	contents.setWindowOpenHandler(({ url, frameName }) => {
 		const source = contents.getURL();
-		if (
+		const artifact =
 			frameName === 'tracker-artifact' &&
 			gate.validate(source) &&
 			/^\/tracker\/?$/.test(new URL(source).pathname) &&
-			trackerArtifactUrlSchema.safeParse(url).success
-		) {
+			trackerArtifactUrlSchema.safeParse(url).success;
+		if (artifact || gate.allowsTrackerTextLink(source, url, frameName))
 			void shell.openExternal(url).catch(() => {});
-		}
 		return { action: 'deny' };
 	});
 	contents.on('will-navigate', (event, url) => {

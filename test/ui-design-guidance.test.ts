@@ -4,7 +4,12 @@ import {
 	uiDesignRules
 } from '../src/templates/development-tooling/uiDesignGuidance';
 
-const u0Rules = [
+const rules = [
+	'List cards never contain forms',
+	'one-line option chips',
+	'Render explicit HTTP and HTTPS URLs',
+	'rel="noopener noreferrer"',
+	'bottom-right overlay on desktop',
 	'A floating button never covers content or another control',
 	'Absence is not failure',
 	'Pickers use the shared list rows, never a native list box',
@@ -12,8 +17,8 @@ const u0Rules = [
 	'A gate page has one heading'
 ];
 
-test('Emits the U0 design rules into the shared UI design guidance', () => {
-	for (const fragment of u0Rules) {
+test('Emits the design rules into the shared UI design guidance', () => {
+	for (const fragment of rules) {
 		expect(uiDesignPatternRules.some((rule) => rule.includes(fragment))).toBe(true);
 		expect(uiDesignRules()).toContain(fragment);
 	}

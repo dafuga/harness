@@ -1,0 +1,145 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.agents-providers-xdigest-state",
+	"uid": "u_epe6zctrdy",
+	"kind": "repository",
+	"title": "XDigestStateRepository",
+	"responsibility": "Persist sent post ids and the last queued day, owner-only.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/agents-providers/XDigestStateRepository.ts"],
+		"symbols": [
+			"XDigestStateRepository",
+			"XDigestStateRepository.constructor",
+			"XDigestStateRepository.load",
+			"XDigestStateRepository.save"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XDigestStateRepository.constructor.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "XDigestStateRepository.save.state",
+				"type": "XDigestState",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "XDigestStateRepository.load",
+				"type": "Promise<XDigestState>"
+			},
+			{
+				"name": "XDigestStateRepository.save",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XDigestStateRepository.load",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "XDigestStateRepository.load",
+						"type": "Promise<XDigestState>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "XDigestStateRepository.save",
+				"inputs": [
+					{
+						"name": "XDigestStateRepository.save.state",
+						"type": "XDigestState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestStateRepository.save",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "XDigestStateRepository.constructor",
+				"inputs": [
+					{
+						"name": "XDigestStateRepository.constructor.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestStateRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/agents-providers/XDigestStateRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/agents-providers/XDigestStateRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

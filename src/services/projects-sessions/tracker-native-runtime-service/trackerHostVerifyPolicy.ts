@@ -17,6 +17,15 @@ export const hostVerify = [
 	'verify needs a macOS route, with one command for each repository'
 ] as const;
 
+/** Only macOS workers may run in place: a Docker worker always needs its own worktree. */
+export const hostWorktrees = [
+	({ repositories }: RouteSet) =>
+		Object.values(repositories).every(
+			({ platform, worktree }) => worktree !== false || platform === 'macos'
+		),
+	'worktree: false needs a macOS route'
+] as const;
+
 export const noVerify = [
 	({ repositories }: RouteSet) => Object.values(repositories).every(({ verify }) => !verify),
 	'verify needs the managed Tracker launcher'

@@ -1,0 +1,65 @@
+{
+	"name": "eta6de-answer-delivery",
+	"goal": "Prove recorded Tracker answers reach the correct live agent or trigger recovery and alert Chief of Staff on failure",
+	"createdAt": "2026-11-27T12:35:48.748Z",
+	"updatedAt": "2026-11-27T12:54:14.516Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:36:08.064Z",
+			"evidence": "Active runner is Harness. Answer mutation records the result in replicated items. Host watchdog sends Hub session messages but never observes answers. Closed-block resume requires local close receipt and a still-blocked item."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:37:04.851Z",
+			"evidence": "Strengthen blocked-run-waits-for-answer in tracker-finished-sessions. Existing test checks eventual restart after a locally recorded close, but never asserts live prompt delivery or recovery when the provider exits before the launcher closes it."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:44:32.288Z",
+			"evidence": "Committed red 1c02420257: expected blocked to be in_progress; both provider fixtures saw no messages or delivery receipts."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:44:34.427Z",
+			"evidence": "Guard pane identity, persist delivery receipt, expose missing-delivery alert, and reopen current blocked run with gone original session."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:54:14.516Z",
+			"evidence": "Unchanged frozen regression passed at cbc9c53dab. Both delivery receipts and the failure alert were produced, and the ended blocked run relaunched. The integrated branch independently passed the extended case."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

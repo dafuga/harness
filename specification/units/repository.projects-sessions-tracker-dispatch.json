@@ -50,6 +50,7 @@
 			"trackerStoredSchedulingHold",
 			"dispatchLaunchSource",
 			"trackerDispatchControl",
+			"cancelQueuedDispatchRuns",
 			"recordLaunchEvents",
 			"pendingLaunchEvents",
 			"markLaunchEventsBatched",
@@ -189,6 +190,21 @@
 			{
 				"name": "trackerDispatchControl.now",
 				"type": "() => number",
+				"required": true
+			},
+			{
+				"name": "cancelQueuedDispatchRuns.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "cancelQueuedDispatchRuns.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "cancelQueuedDispatchRuns.now",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -377,6 +393,10 @@
 			},
 			{
 				"name": "trackerDispatchControl",
+				"type": "unknown"
+			},
+			{
+				"name": "cancelQueuedDispatchRuns",
 				"type": "unknown"
 			},
 			{
@@ -753,6 +773,34 @@
 				"outputs": [
 					{
 						"name": "trackerDispatchControl",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cancelQueuedDispatchRuns",
+				"inputs": [
+					{
+						"name": "cancelQueuedDispatchRuns.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "cancelQueuedDispatchRuns.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "cancelQueuedDispatchRuns.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cancelQueuedDispatchRuns",
 						"type": "unknown"
 					}
 				],

@@ -3,6 +3,8 @@
 <!-- @harness-uid u_pkjntjini6 -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import Notice from '$reports/components/explorer-ui/explorer-kit/Notice.svelte';
+	import { liveSystemNotice } from './hubHomeLive';
 	import BrandMark from '$reports/components/BrandMark.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
@@ -10,11 +12,18 @@
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { homeHeadline, summaryLine } from './hubHomePresentation';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
+	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';
-	let { view }: { view: HomeView } = $props();
+	let { view, link }: { view: HomeView; link: RealtimeState | null } = $props();
 	const { session } = browserContext();
 	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
 	const machines = $derived(view.overview?.status === 'ready' ? view.overview.machines : []);
+	const offline = $derived(
+		(view.computers?.snapshot?.liveOverview?.machines ?? machines)
+			.filter((machine) => machine.status === 'offline')
+			.map((machine) => machine.name)
+	);
+	const systemNotice = $derived(liveSystemNotice(view.computers));
 	let accountOpen = $state(false);
 </script>
 
@@ -39,6 +48,18 @@
 		{#if accountOpen}<hx-div class="hh-account-menu account"><AccountMenu /></hx-div>{/if}
 	</hx-div>
 </hx-header>
+
+{#if offline.length || systemNotice || link === 'reconnecting'}
+	<hx-div class="po-page hh-page hh-system-alert">
+		<Notice as="div" className="po-notice" role="status" label="System alerts">
+			{#if offline.length}<hx-p>Offline: {offline.join(', ')}</hx-p>{/if}
+			{#if systemNotice}<hx-p>{systemNotice}</hx-p>{/if}
+			{#if link === 'reconnecting'}<hx-p role="status" aria-label="Updates" data-state={link}
+					>Reconnecting</hx-p
+				>{/if}
+		</Notice>
+	</hx-div>
+{/if}
 
 <hx-header class="po-page hh-page hh-heading">
 	<hx-div class="po-head hh-head">

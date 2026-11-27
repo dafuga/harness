@@ -115,3 +115,13 @@
 	background: var(--hx-color-error-soft);
 	color: var(--po-error-text);
 }
+
+.po-item-with-link {
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.po-item-title:has(.hx-text-link) {
+	display: block;
+	overflow: visible;
+}

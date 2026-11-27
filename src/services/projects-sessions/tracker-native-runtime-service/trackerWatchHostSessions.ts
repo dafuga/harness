@@ -33,11 +33,11 @@ export function watchHostSessions(hosts: WatchdogSessionHost, options: WatchdogS
 	let lastContextPoll = -Infinity;
 	return async (signal: AbortSignal) => {
 		const now = options.now();
-		if (now - lastHealthPoll < recoveryPollInterval) return;
+		if (now - lastHealthPoll < recoveryPollInterval) return undefined;
 		lastHealthPoll = now;
 		const sample = now - lastContextPoll >= sessionHealthInterval;
 		if (sample) lastContextPoll = now;
-		await scanHostSessions(
+		return scanHostSessions(
 			hosts,
 			{ ...options, roots: sample ? options.roots : undefined },
 			signal
@@ -52,7 +52,7 @@ async function scanHostSessions(
 ) {
 	const inventory = await hosts.driver.scan(signal);
 	signal.throwIfAborted();
-	if (!inventory) return;
+	if (!inventory) return new Set<string>();
 	const panes = await sampleTrackerContexts(inventory, options.roots ?? [], signal);
 	const rows = options.readItems();
 	const now = options.now();
@@ -76,6 +76,7 @@ async function scanHostSessions(
 	});
 	if (canLaunch && options.idleWork)
 		await queueIdleWork(hosts.store, { rows, snapshot, ...options.idleWork }, signal);
+	return new Set(panes.filter(({ live }) => live).map(({ name }) => name));
 }
 
 async function inspectHostSessions(

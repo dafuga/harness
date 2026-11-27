@@ -1,4 +1,5 @@
 // @harness-uid u_bizwcg2fkv
+import type { HomeChatItemContext } from './hubHomeChatContext.types';
 import type {
 	HomeAgent,
 	HomeChatInput,
@@ -50,4 +51,13 @@ export function receiptText(receipt: HomeChatReceipt): string {
 	if (receipt.status === 'sent') return receipt.messageId ? 'Stored in Tracker' : 'Sent to Tracker';
 	if (receipt.status === 'queued') return 'Queued for Tracker';
 	return receipt.status === 'refused' ? 'Not accepted' : 'Not confirmed';
+}
+
+/** @pure Reserves space in the existing Tracker message for the item attached from Home. */
+export function homeChatItemSuffix(item?: HomeChatItemContext): string {
+	if (!item) return '';
+	const title = item.title.trim().slice(0, 300);
+	const id = item.id.trim().slice(0, 200);
+	const details = item.details?.trim().slice(0, 300);
+	return `\n\nAttached Hub item: ${title} (${id})${details ? `\n${details}` : ''}`;
 }

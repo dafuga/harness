@@ -1,4 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
+import { attemptKey } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
@@ -117,5 +119,24 @@ export function recordHandoffFailure(
 		{ itemId: id, session: pane.name, kind: 'handoff-failed', reason, identity: pane.key },
 		now,
 		`Tracker recovery: ${reason} Chief of Staff should inspect the pane and recover its worktree before unblocking.`
+	);
+}
+
+export function recordOverdueAlert(
+	store: TrackerPersistenceService,
+	run: TrackerRunReceipt,
+	{ reason, at }: { reason: string; at: number }
+) {
+	const stop = `tracker stop ${run.item_id.slice(0, 6)}`;
+	recordWatchdogAlert(
+		store,
+		{
+			itemId: run.item_id,
+			kind: 'overdue',
+			reason: `Run #${run.id} ${reason}. No retry is queued. Check the session, or end it with \`${stop}\`.`,
+			identity: attemptKey(run),
+			session: run.tmux
+		},
+		at
 	);
 }

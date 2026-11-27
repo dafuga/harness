@@ -4,7 +4,7 @@
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
-	import { liveNotice, liveSummary, projectSummary } from './hubHomeLive';
+	import { liveNotice, liveSummary, projectSummary, liveSystemNotice } from './hubHomeLive';
 	import HubHomeLiveProject from './HubHomeLiveProject.svelte';
 	import { count } from './hubHomePresentation';
 	import { runTime } from './hubHomeTime';
@@ -28,20 +28,15 @@
 		{/if}
 	</hx-div>
 	{#if notice}
-		<EmptyState as="div" className="po-empty hh-empty"><hx-p>{notice}</hx-p></EmptyState>
+		<EmptyState as="div" className="po-empty hh-empty"
+			><hx-p>{liveSystemNotice(reading) ? 'Live overview is unavailable.' : notice}</hx-p
+			></EmptyState
+		>
 	{:else if overview && !overview.projects.length}
 		<EmptyState as="div" className="po-empty hh-empty"
 			><hx-p>Tracker has no projects yet.</hx-p></EmptyState
 		>
 	{:else if overview}
-		{#if overview.machines.some((machine) => machine.status === 'offline')}
-			<hx-p class="po-notice">
-				Offline: {overview.machines
-					.filter((machine) => machine.status === 'offline')
-					.map((machine) => machine.name)
-					.join(', ')}
-			</hx-p>
-		{/if}
 		{#each moving as project (project.agent)}
 			<HubHomeLiveProject {project} {now} />
 		{/each}

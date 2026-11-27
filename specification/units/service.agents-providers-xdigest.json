@@ -1,0 +1,137 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-xdigest",
+	"uid": "u_fprc5ohvkc",
+	"kind": "service",
+	"title": "XDigestService",
+	"responsibility": "Collect one day of new posts into the outbox once and ask the owner when X needs them.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/XDigestService.ts",
+			"src/services/agents-providers/XDigestService.types.ts"
+		],
+		"symbols": [
+			"XDigestService",
+			"XDigestService.constructor",
+			"XDigestService.run",
+			"XDigestPorts",
+			"XDigestRunOptions",
+			"XDigestSelection"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XDigestService.constructor.config",
+				"type": "XDigestConfig",
+				"required": true
+			},
+			{
+				"name": "XDigestService.constructor.ports",
+				"type": "XDigestPorts",
+				"required": true
+			},
+			{
+				"name": "XDigestService.run.options",
+				"type": "XDigestRunOptions",
+				"required": false,
+				"default": {}
+			}
+		],
+		"outputs": [
+			{
+				"name": "XDigestService.run",
+				"type": "Promise<XDigestReport>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XDigestService.run",
+				"inputs": [
+					{
+						"name": "XDigestService.run.options",
+						"type": "XDigestRunOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestService.run",
+						"type": "Promise<XDigestReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "XDigestService.constructor",
+				"inputs": [
+					{
+						"name": "XDigestService.constructor.config",
+						"type": "XDigestConfig",
+						"required": true
+					},
+					{
+						"name": "XDigestService.constructor.ports",
+						"type": "XDigestPorts",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-x-digest-service-format-xdigest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-x-digest-service-select-posts",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-x-digest-service-x-digest-question",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/XDigestService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/XDigestService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

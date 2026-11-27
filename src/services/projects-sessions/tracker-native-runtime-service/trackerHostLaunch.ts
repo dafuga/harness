@@ -4,14 +4,9 @@ import { occupiedHostSlots, trackerHostAdmission } from './trackerHostAdmission'
 import { trackerHostLaunchPort } from './trackerHostLaunchPort';
 import { canonicalNode } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
-import {
-	pickTrackerModel,
-	retryTrackerModel
-} from '../../../utils/agents-providers/pickTrackerModel';
-import type {
-	TrackerDispatchItem,
-	TrackerDispatchPolicy
-} from '../../agents-providers/TrackerDispatcherService.types';
+import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
+import { trackerHostModelPolicy } from './trackerHostModelPick';
+import type { TrackerDispatchPolicy } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type {
@@ -21,6 +16,7 @@ import type {
 	TrackerWorkerClient
 } from './nativeTrackerHostEffects.types';
 import type {
+	TrackerHostDispatchSettings,
 	TrackerHostRoute,
 	TrackerHostRouteItem,
 	TrackerHostTarget
@@ -42,6 +38,7 @@ export function trackerHostLaunch(
 		workerClient?: TrackerWorkerClient;
 		transcriptRoots?: readonly string[];
 		now?: () => number;
+		ladderConfig?: TrackerLadderConfig;
 		hostResources?: TrackerHostResources;
 	} = {}
 ): NonNullable<TrackerNativeRuntimeOptions['dispatch']> {
@@ -75,8 +72,7 @@ export function trackerHostLaunch(
 			opsWorkdirAvailable: (item) => 'workdir' in (routeFor(item) ?? {}),
 			admit: trackerHostAdmission(store, { ...effects, config, routeFor }),
 			providerHold: configuredTrackerProviderHold(store, config.codexPausedUntil, effects.now),
-			pickModel: (item) => pickHostModel(item, effects.now?.()),
-			retryModel: (item, run) => retryTrackerModel(item, run, undefined, effects.now?.())
+			...trackerHostModelPolicy(store, config, effects)
 		},
 		...hostDueSchedule(config, adapter)
 	};
@@ -184,22 +180,14 @@ function approvedOpsWorkdir(item: TrackerHostRouteItem, node: string, workdir?: 
 	return undefined;
 }
 
-function pickHostModel(item: TrackerDispatchItem, now?: number) {
-	try {
-		return pickTrackerModel(item, { now });
-	} catch {
-		return { error: 'Tracker model cannot be selected for this task' };
-	}
-}
-
 /** Build the host launch dispatch from configured host effects, when launch is enabled. */
 export function configuredHostDispatch(
 	store: TrackerPersistenceService,
 	effects: TrackerNativeRuntimeOptions['hostEffects'],
-	now: () => number,
-	automaticEnabled?: () => boolean
+	settings: TrackerHostDispatchSettings
 ) {
 	const { launch, watchdog, adapter, workerClient } = effects ?? {};
+	const { now, automaticEnabled, ladderConfig } = settings;
 	return launch
 		? trackerHostLaunch(store, launch, {
 				workerClient,
@@ -209,6 +197,7 @@ export function configuredHostDispatch(
 				recoverDroppedSessions: watchdog && ('tmux' in watchdog || 'driver' in watchdog),
 				adapter,
 				now,
+				ladderConfig,
 				tmuxExecutable: watchdog && 'tmux' in watchdog ? watchdog.tmux : undefined
 			})
 		: undefined;

@@ -1,0 +1,158 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-container-cdp",
+	"uid": "u_qqfbrdf4z2",
+	"kind": "adapter",
+	"title": "ContainerCdpAdapter",
+	"responsibility": "List tabs, attach to one and quit the browser over DevTools through private pipes.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/execution-runtimes/ContainerCdpAdapter.ts",
+			"src/adapters/execution-runtimes/ContainerCdpAdapter.types.ts"
+		],
+		"symbols": [
+			"ContainerCdpAdapter",
+			"ContainerCdpAdapter.constructor",
+			"ContainerCdpAdapter.pages",
+			"ContainerCdpAdapter.attach",
+			"ContainerCdpAdapter.quit",
+			"ContainerPageTarget",
+			"ContainerPage"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ContainerCdpAdapter.constructor.pipes",
+				"type": "ContainerBrowserPipes",
+				"required": true
+			},
+			{
+				"name": "ContainerCdpAdapter.attach.target",
+				"type": "ContainerPageTarget",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ContainerCdpAdapter.pages",
+				"type": "Promise<ContainerPageTarget[]>"
+			},
+			{
+				"name": "ContainerCdpAdapter.attach",
+				"type": "Promise<ContainerPage>"
+			},
+			{
+				"name": "ContainerCdpAdapter.quit",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ContainerCdpAdapter.pages",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ContainerCdpAdapter.pages",
+						"type": "Promise<ContainerPageTarget[]>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerCdpAdapter.attach",
+				"inputs": [
+					{
+						"name": "ContainerCdpAdapter.attach.target",
+						"type": "ContainerPageTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerCdpAdapter.attach",
+						"type": "Promise<ContainerPage>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerCdpAdapter.quit",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ContainerCdpAdapter.quit",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ContainerCdpAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ContainerCdpAdapter.constructor.pipes",
+						"type": "ContainerBrowserPipes",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerCdpAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-cdp-adapter-cdp-session",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-container-cdp-adapter-pipe-http-json",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-container-browser-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/ContainerCdpAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/ContainerCdpAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -19,7 +19,8 @@
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -41,12 +42,6 @@
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds, used for how long each ask has waited."
-			},
-			{
-				"name": "HubHomeNeedsYou.open",
-				"type": "OpenHomeSection",
-				"required": true,
-				"description": "Opens a Home section on the asking agent."
 			},
 			{
 				"name": "HubHomeNeedsYou.send",
@@ -76,6 +71,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -126,6 +126,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
 			"via": "import",
 			"origin": "derived"
 		},

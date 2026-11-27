@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_f6xsfq2f7u -->
 <script lang="ts">
+	import LinkifiedText from '../../shared-primitives/LinkifiedText.svelte';
 	import Modal from '../../Modal.svelte';
 
 	let {
@@ -30,7 +31,7 @@
 
 <Modal isOpen title="Other answer" variant="text" onClose={onclose}>
 	<hx-div class="other-answer">
-		<hx-p class="other-answer-question">{question}</hx-p>
+		<hx-p class="other-answer-question"><LinkifiedText text={question} /></hx-p>
 		<hx-textarea
 			class="other-answer-field"
 			aria-label="Your answer"
