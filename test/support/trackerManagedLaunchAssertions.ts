@@ -200,3 +200,17 @@ async function verifyLaunchCliTimeout(spoke: TrackerNodeFixture, short: string, 
 	});
 	expect(await fixtureTrackerJson(spoke, clear)).toMatchObject({ id, auto: null });
 }
+
+export function verifyManagedBrief(launched: { brief: string; cwd: string }, root: string) {
+	expect(launched.brief).toContain('Run 1, attempt 1');
+	expect(launched.brief).toContain('Project: Harness');
+	expect(launched.brief).toContain('2099-03-04');
+	expect(launched.brief).toContain(root);
+	expect(launched.brief).toContain('private git worktree');
+	expect(launched.brief).toContain(launched.cwd);
+	expect(launched.brief).toContain('Greymass remote');
+	expect(launched.brief).toMatch(
+		/## Parent[\s\S]+Parent assignment[\s\S]+Inspect the pending sibling/
+	);
+	expect(launched.brief).not.toContain('## Earlier attempts');
+}

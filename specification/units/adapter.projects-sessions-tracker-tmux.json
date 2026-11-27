@@ -414,6 +414,11 @@
 				"required": true
 			},
 			{
+				"name": "managedBrief.checkout",
+				"type": "string",
+				"required": false
+			},
+			{
 				"name": "confirmManagedStartupAbsent.directory",
 				"type": "string",
 				"required": true
@@ -1371,6 +1376,11 @@
 						"name": "managedBrief.input",
 						"type": "TrackerHostStartRequest",
 						"required": true
+					},
+					{
+						"name": "managedBrief.checkout",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [

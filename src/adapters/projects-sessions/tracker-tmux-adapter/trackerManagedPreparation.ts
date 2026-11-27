@@ -7,6 +7,7 @@ import { managedSessionName, trackerManagedToken } from './trackerManagedLaunchR
 import type { TrackerManagedReceipt } from './trackerManagedHostLauncher.types';
 import { managedBrief, workerScript } from './trackerManagedWorkerProcess';
 import { prepareTrackerWorkingDirectory } from './trackerManagedWorkingDirectory';
+import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
 import { trackerGuestAuthFile, trackerWorkerClient } from './trackerWorkerClient';
 
 /** Reserve the attempt directory, then write its checkout, brief, script and receipt. */
@@ -39,9 +40,11 @@ export async function prepareManagedLaunch(
 		...(input.backend === 'native' &&
 			input.selection.provider === 'claude' && { checkClaudeStartup: true })
 	};
-	if (worktree !== join(directory, 'worktree'))
+	const detached = worktree === join(directory, 'worktree');
+	if (!detached)
 		writeFileSync(join(directory, 'working-directory'), worktree, { mode: 0o600, flag: 'wx' });
-	writeFileSync(briefPath, managedBrief(input), { mode: 0o600, flag: 'wx' });
+	const checkout = await checkoutInstructions(input, worktree, detached, signal);
+	writeFileSync(briefPath, managedBrief(input, checkout), { mode: 0o600, flag: 'wx' });
 	writeFileSync(script, workerScript, { mode: 0o600, flag: 'wx' });
 	writeFileSync(join(directory, 'receipt.json'), JSON.stringify(receipt), {
 		mode: 0o600,
@@ -54,4 +57,35 @@ export async function prepareManagedLaunch(
 		guestAuthFile:
 			input.backend === 'docker' ? trackerGuestAuthFile(directory, receipt, client) : undefined
 	};
+}
+
+async function checkoutInstructions(
+	input: TrackerHostStartRequest,
+	cwd: string,
+	detached: boolean,
+	signal: AbortSignal
+) {
+	const location =
+		detached && 'repo' in input
+			? `The host created a private git worktree at ${cwd}, detached from the checkout at ${input.repo}. Create your branch in the task checkout with \`git switch -c <branch>\` and leave the source checkout to its owner.`
+			: `This task runs in place at ${cwd}. Preserve other sessions’ changes.`;
+	if (!('repo' in input)) return location;
+	// Ask Git to match the owner locally. Only config key names can reach stdout.
+	const remote = await runTrackerHostCommand(
+		'/usr/bin/git',
+		[
+			'-C',
+			cwd,
+			'config',
+			'--local',
+			'--name-only',
+			'--get-regexp',
+			'^remote\\..*\\.(url|pushurl)$',
+			'[:/][Gg][Rr][Ee][Yy][Mm][Aa][Ss][Ss]/'
+		],
+		signal
+	);
+	return remote.code === 0
+		? location + '\nThis repository has a Greymass remote. Open a PR only.'
+		: location;
 }

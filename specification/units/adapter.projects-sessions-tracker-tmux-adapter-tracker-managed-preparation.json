@@ -129,6 +129,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.projects-sessions-tracker-tmux",
 			"via": "import",
 			"origin": "derived"
