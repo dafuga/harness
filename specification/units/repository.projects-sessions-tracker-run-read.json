@@ -64,6 +64,12 @@
 				"required": true
 			},
 			{
+				"name": "TrackerRunReadRepository.launchConsumed.replaceBlocked",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "TrackerRunReadRepository.historyRowsFor.peer",
 				"type": "string",
 				"required": true
@@ -207,6 +213,12 @@
 						"name": "TrackerRunReadRepository.launchConsumed.token",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "TrackerRunReadRepository.launchConsumed.replaceBlocked",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [
