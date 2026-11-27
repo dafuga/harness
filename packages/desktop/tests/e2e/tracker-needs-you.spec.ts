@@ -31,6 +31,13 @@ for (const name of ['mac', 'iphone'] as const)
 		try {
 			if (name === 'iphone') await phoneSpecPage(page, tracker, []);
 			await blockedSection(page, name);
+			await page.goto('/');
+			await expect(
+				page.getByRole('link', { name: 'Plans and schedule', exact: true })
+			).toBeVisible();
+			await page.getByRole('link', { name: 'Plans and schedule', exact: true }).click();
+			await expect(page.getByRole('region', { name: 'Plans', exact: true })).toBeVisible();
+			await expect(page.getByRole('region', { name: 'Scheduled', exact: true })).toBeVisible();
 		} finally {
 			restore?.();
 			tracker.close();
