@@ -33,6 +33,18 @@ async function checkDetail(page: Page, opener: Locator, mode: string, screen: st
 
 export async function verifyPlanWork(page: Page, mode: string) {
 	const region = page.getByRole('region', { name: 'Plans', exact: true });
+	await expect(region).toBeVisible();
+	expect(
+		await region.evaluate((element) => {
+			const box = element.getBoundingClientRect();
+			return (
+				box.left >= 16 &&
+				box.right <= innerWidth - 16 &&
+				parseFloat(getComputedStyle(element).borderTopWidth) > 0
+			);
+		})
+	).toBe(true);
+	await capturePlanWork(page, mode, 'work');
 	await checkDetail(
 		page,
 		region.getByRole('button', { name: planTitle, exact: true }),

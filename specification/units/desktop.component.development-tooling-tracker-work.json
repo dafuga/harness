@@ -16,8 +16,10 @@
 			"hub.component.projects-sessions-hub-home-plans",
 			"hub.component.projects-sessions-hub-home-schedule",
 			"reports.component.modal",
+			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section"
 		]
@@ -101,12 +103,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -127,6 +139,26 @@
 		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-cards",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-responsive",
 			"via": "import",
 			"origin": "derived"
 		}

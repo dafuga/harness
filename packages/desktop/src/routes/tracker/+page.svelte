@@ -24,7 +24,9 @@
 
 <svelte:head><title>{work ? 'Plans and schedule' : 'Needs you'} · Harness</title></svelte:head>
 
-<hx-a class="project-overview-link" href={resolve('/')}>Home</hx-a>
+{#if !work || !environment?.trackerHome}
+	<hx-a class="project-overview-link" href={resolve('/')}>Home</hx-a>
+{/if}
 
 {#if work && environment?.trackerHome}
 	<TrackerWork source={environment.trackerHome} mac={environment.kind === 'electron'} />
