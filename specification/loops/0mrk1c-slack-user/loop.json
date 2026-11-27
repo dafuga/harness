@@ -2,7 +2,7 @@
 	"name": "0mrk1c-slack-user",
 	"goal": "Reuse the Slack Web API transport for workspace- and member-bound user reads and sends",
 	"createdAt": "2026-11-27T14:37:45.275Z",
-	"updatedAt": "2026-11-27T14:49:53.613Z",
+	"updatedAt": "2026-11-27T23:10:57.827Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -24,7 +24,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T23:10:57.827Z",
+			"evidence": "59a50c1776 on daniel-primary-mbp: 20/20 focused mocked Slack and loopback Socket Mode tests, with one worker. User history and replies assert GET encoding. Public Node SDK import and declaration build passed."
 		},
 		{
 			"id": "verify",
