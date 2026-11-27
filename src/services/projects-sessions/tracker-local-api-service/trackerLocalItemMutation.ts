@@ -161,7 +161,11 @@ export function itemMutationContext(
 				planLaunch(
 					fields,
 					current?.auto &&
-						(runs?.launchConsumed(current.id, current.auto) ||
+						(runs?.launchConsumed(
+							current.id,
+							current.auto,
+							explicitLaunch && (!current.needs_daniel || Boolean(current.resolved))
+						) ||
 							(explicitLaunch &&
 								!runs
 									?.list({ itemId: current.id })
