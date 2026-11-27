@@ -3,7 +3,7 @@
 <!-- @harness-uid u_62ump5nnwq -->
 <script lang="ts">
 	import './trackerInboxChoices.css';
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import type {
 		InboxFilter,
 		InboxOverview,
@@ -24,14 +24,20 @@
 	import TrackerInboxDetail from './TrackerInboxDetail.svelte';
 	import TrackerInboxRows from './TrackerInboxRows.svelte';
 	import TrackerInboxWrites from './TrackerInboxWrites.svelte';
-
-	let { source, mode = 'phone' }: { source: TrackerInboxSource; mode?: 'phone' | 'mac' } = $props();
+	let {
+		source,
+		mode = 'phone',
+		project
+	}: {
+		source: TrackerInboxSource;
+		mode?: 'phone' | 'mac';
+		project?: string;
+	} = $props();
 	const mac = $derived(mode === 'mac');
-
 	let overview = $state.raw<InboxOverview | null>(null);
 	let loadFailure = $state('');
 	let notice = $state('');
-	let filter = $state<InboxFilter>('needs-you');
+	let filter = $state<InboxFilter>(untrack(() => (project ? 'all' : 'needs-you')));
 	let query = $state('');
 	let found = $state.raw<InboxRow[] | null>(null);
 	let selected = $state<string | null>(null);
@@ -40,21 +46,23 @@
 	let lastSyncedAt = $state<string | null>(null);
 	let link = $state<RealtimeState | null>(null);
 	let detailView = $state<ReturnType<typeof TrackerInboxDetail>>();
-
 	const counts = $derived(countBuckets(overview?.rows ?? []));
 	const listed = $derived(filterRows(overview?.rows ?? [], filter));
-
+	function inProject(rows: InboxRow[]) {
+		return project ? rows.filter(({ header }) => header.project === project) : rows;
+	}
 	function note(reply: { freshness: typeof freshness; lastSyncedAt: string | null }) {
 		freshness = reply.freshness;
 		lastSyncedAt = reply.lastSyncedAt;
 	}
-
 	/** Reloads the decision list and the write states. Called after every confirmed write. */
 	export async function reload(): Promise<void> {
 		const [status, outbox] = await Promise.all([source.overview(), source.writes()]);
 		note(status);
 		const value = status.value;
-		overview = value ? { ...value, rows: await withRowChoices(source, value.rows) } : null;
+		overview = value
+			? { ...value, rows: await withRowChoices(source, inProject(value.rows)) }
+			: null;
 		loadFailure = status.value
 			? ''
 			: mac
@@ -64,7 +72,6 @@
 					: 'The Tracker copy on this phone could not be read.';
 		writes = (outbox.value ?? []).map(writeView);
 	}
-
 	async function search(term: string) {
 		if (term.trim() === '') {
 			found = null;
@@ -72,19 +79,16 @@
 		}
 		const reply = await source.search(term.trim());
 		note(reply);
-		found = await withRowChoices(source, reply.value ?? []);
+		found = await withRowChoices(source, inProject(reply.value ?? []));
 	}
-
 	function choose(id: string) {
 		selected = id;
 		notice = '';
 	}
-
 	/** A change made anywhere: the list, an open search and the open item are read again. */
 	async function follow() {
 		await Promise.all([reload(), found ? search(query) : undefined, detailView?.refresh()]);
 	}
-
 	onMount(() => {
 		void reload();
 		return followTrackerSource(source, { refresh: follow, state: (state) => (link = state) });
@@ -104,10 +108,9 @@
 		onselect={choose}
 	/>
 {/snippet}
-
 <hx-section class="inbox" aria-label="Tracker decisions">
 	<hx-header class="inbox-head">
-		<hx-h1>Needs you</hx-h1>
+		<hx-h1>{project ?? 'Needs you'}</hx-h1>
 		{#if link}
 			<hx-span class="live" role="status" aria-label="Updates" data-state={link}>
 				{link === 'live' ? 'Live' : 'Reconnecting'}
@@ -125,9 +128,7 @@
 			{/if}
 		</hx-p>
 	</hx-header>
-
 	{#if notice}<hx-p class="meta" role="status">{notice}</hx-p>{/if}
-
 	{#if loadFailure}
 		<hx-p class="meta" role="status">{loadFailure}</hx-p>
 	{:else if overview && selected}

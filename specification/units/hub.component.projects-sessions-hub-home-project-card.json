@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
+			"hub.component.projects-sessions-hub-home-directory",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
@@ -22,7 +23,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeProjectCard.svelte"
+		],
 		"symbols": ["HubHomeProjectCard", "HubHomeProjectCard.trailing"]
 	},
 	"contract": {
@@ -71,6 +74,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-directory",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -142,11 +150,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeProjectCard.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeProjectCard.svelte"
 			}
 		]
 	},

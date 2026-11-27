@@ -12,7 +12,6 @@
 		"uses": [
 			"reports.component.brand-mark",
 			"reports.component.shared-primitives-atoms-html-button",
-			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-img",
 			"reports.component.shared-primitives-atoms-html-main",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -69,7 +68,7 @@
 			{
 				"name": "AccountSignIn",
 				"type": "markup",
-				"description": "A native account gate showing a status or alert, the appropriate sign-in or recovery actions, and the code and Hub address when available."
+				"description": "Shows the Harness logo, Google sign-in or recovery controls, and the current sign-in status, error or one-time code."
 			}
 		],
 		"errors": [],
@@ -95,11 +94,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-h1",
 			"via": "import",
 			"origin": "derived"
 		},

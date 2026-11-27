@@ -3,6 +3,7 @@
 <!-- @harness-uid u_hy4wyfdeiv -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import { getContext } from 'svelte';
 	import TrackerInbox from '../../components/development-tooling/tracker-inbox/TrackerInbox.svelte';
 	import { nativeAccountContext } from '../../models/development-tooling/Environment.types';
@@ -17,6 +18,7 @@
 	const local = $derived(
 		environment?.kind === 'electron' ? environment.bridge?.trackerInbox : undefined
 	);
+	const project = $derived(page.url.searchParams.get('project') || undefined);
 </script>
 
 <svelte:head><title>Needs you · Harness</title></svelte:head>
@@ -24,7 +26,8 @@
 <hx-a class="project-overview-link" href={resolve('/')}>Home</hx-a>
 
 {#if local}
-	<TrackerInbox source={local} mode="mac" />
+	{#if project}<hx-a class="project-overview-link" href={resolve('/tracker')}>Needs you</hx-a>{/if}
+	{#key project}<TrackerInbox source={local} mode="mac" {project} />{/key}
 {:else if phone}
 	<TrackerInbox source={phone} />
 {:else}

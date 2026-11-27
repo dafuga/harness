@@ -89,8 +89,8 @@
 			signedIn: true,
 			signOut: () => {}
 		});
-	// The Designs page reads through the environment its layout provides; here, the route's bridge.
-	if (id === 'desktop.page.designs')
+	// These pages use the signed-in environment their layout supplies.
+	if (['desktop.page.designs', 'desktop.page.root'].includes(id))
 		setContext<NativeAccountContext>(nativeAccountContext, {
 			environment: {
 				kind: 'electron',
@@ -98,6 +98,7 @@
 				local: true
 			},
 			signedIn: true,
+			accountName: 'Ada Morgan',
 			signOut: () => {}
 		});
 	onDestroy(fixture.cleanup);

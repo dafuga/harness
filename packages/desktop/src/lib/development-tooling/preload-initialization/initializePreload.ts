@@ -79,6 +79,8 @@ const bridge: DesktopBridge = {
 	connectHosted: call('connectHosted'),
 	disconnectHosted: call('disconnectHosted'),
 	projectOverview: call('projectOverview'),
+	homeSnapshot: call('homeSnapshot'),
+	homeChat: call('homeChat'),
 	trackerInbox,
 	listProjects: call('listProjects'),
 	selectProject: call('selectProject'),

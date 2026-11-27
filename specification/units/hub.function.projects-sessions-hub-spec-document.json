@@ -8,17 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubSpecDocument.ts"],
-		"symbols": ["provideHubSpecDocuments", "hubSpecDocuments"]
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"],
+		"symbols": ["hubSpecDocumentKey", "provideHubSpecDocuments", "hubSpecDocuments"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "provideHubSpecDocuments.api",
-				"type": "BrowserApi",
+				"name": "provideHubSpecDocuments.load",
+				"type": "LoadSpecDocument",
 				"required": true,
-				"description": "The Hub browser API of the signed-in owner, used to request documents."
+				"description": "Loads the requested attachment for the signed-in account through the host app."
 			}
 		],
 		"outputs": [
@@ -33,23 +33,17 @@
 				"description": "The loader set by an ancestor; it requests a document by attachment id."
 			}
 		],
-		"errors": [
-			{
-				"name": "BrowserApiRequestError",
-				"type": "thrown",
-				"description": "The returned loader rejects when the Hub request fails, such as for a document not yet uploaded."
-			}
-		],
+		"errors": [],
 		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "provideHubSpecDocuments",
 				"inputs": [
 					{
-						"name": "provideHubSpecDocuments.api",
-						"type": "BrowserApi",
+						"name": "provideHubSpecDocuments.load",
+						"type": "LoadSpecDocument",
 						"required": true,
-						"description": "The Hub browser API of the signed-in owner, used to request documents."
+						"description": "Loads the requested attachment for the signed-in account through the host app."
 					}
 				],
 				"outputs": [
@@ -72,29 +66,13 @@
 						"description": "The loader set by an ancestor; it requests a document by attachment id."
 					}
 				],
-				"errors": [
-					{
-						"name": "BrowserApiRequestError",
-						"type": "thrown",
-						"description": "The returned loader rejects when the Hub request fails, such as for a document not yet uploaded."
-					}
-				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
-		{
-			"unit": "function.projects-sessions-tracker-attachment-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.browser-api",
-			"via": "import",
-			"origin": "derived"
-		},
 		{
 			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
 			"via": "import",
@@ -103,11 +81,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubSpecDocument.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubSpecDocument.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"
 			}
 		]
 	},

@@ -9,7 +9,7 @@
 	"scripts": {
 		"dev": "bun run sync:shared && bun ../reports/src/initializers/initializePreview.ts --port 5799",
 		"build": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && vite build && bun run build:main \"$@\"' --",
-		"sync:shared": "bun run --cwd ../reports svelte-kit sync",
+		"sync:shared": "bun run --cwd ../reports svelte-kit sync && bun run --cwd ../hub svelte-kit sync",
 		"build:main": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun scripts/build-main.ts \"$@\"' --",
 		"build:mobile": "bun ../../src/index.ts resources run --priority ${HARNESS_RESOURCE_PRIORITY:-coding} --cpus ${HARNESS_RESOURCE_CPUS:-1} --memory-mib ${HARNESS_RESOURCE_MEMORY_MIB:-2048} -- sh -c 'bun run sync:shared && BUILD_TARGET=mobile vite build \"$@\"' --",
 		"cap:sync": "bun run build:mobile && cap sync ios",

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { homeWorkNow } from '../../../reports/src/lib/projects-sessions/hub-home/homeWorkNow';
 import type { TrackerItemRecord } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types';
-import { stageLabel } from '../../src/components/projects-sessions/hubHomeLive';
+import { stageLabel } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeLive';
 
 const at = '2026-11-26T18:00:00.000Z';
 
