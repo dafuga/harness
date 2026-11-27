@@ -134,6 +134,9 @@ async function assertNewExposureReopens(
 ) {
 	const rotation = items.find(({ id }) => id !== itemId)!;
 	const target = 'http://fixture.invalid/items/' + rotation.id;
+	const alerts = () =>
+		runtime.watchdog!.alerts().filter(({ kind }) => kind.startsWith('credential exposure:'));
+	expect(alerts()).toHaveLength(1);
 	const completed = await runtime.items.handle(
 		new Request(target + '/done', { method: 'POST', body: '{"force":true}' })
 	);
@@ -141,10 +144,12 @@ async function assertNewExposureReopens(
 	await runtime.watchdog!.tick(signal);
 	const unchanged = await runtime.items.handle(new Request(target));
 	expect(await unchanged.json()).toMatchObject({ status: 'done' });
+	expect(alerts()).toHaveLength(0);
 	const anotherDummy = dummy.replaceAll('A', 'B');
 	appendFileSync(log, JSON.stringify({ type: 'tool_output', text: anotherDummy }) + '\n');
 	await runtime.watchdog!.tick(signal);
 	const reopened = await runtime.items.handle(new Request(target));
+	expect(alerts()).toHaveLength(1);
 	expect(await reopened.json()).toMatchObject({ status: 'open', needs_daniel: true });
 	expect(JSON.stringify(runtime.store.opsSince(0, 100)).includes(anotherDummy)).toBe(false);
 }

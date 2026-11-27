@@ -32,21 +32,36 @@ export function runTrackerHostCommand(
 			{
 				env: { PATH: '/usr/bin:/bin', LANG: 'C', TZ: 'UTC', ...options.environment },
 				cwd: '/',
-				timeout: 30_000,
 				maxBuffer: 4 * 1024 * 1024,
 				killSignal: 'SIGKILL'
 			},
 			(error, stdout, stderr) => {
-				signal.removeEventListener('abort', interrupt);
+				cleanup();
 				if (signal.aborted || (error && typeof error.code !== 'number'))
 					reject(new TrackerHostProcessError('Tracker host command did not complete'));
 				else resolve({ stdout, stderr, code: typeof error?.code === 'number' ? error.code : 0 });
 			}
 		);
-		const interrupt = () => child.kill('SIGKILL');
+		// A missing child-process callback must not strand the Tracker dispatch tick.
+		const deadline = setTimeout(interrupt, 30_000);
+		function cleanup() {
+			clearTimeout(deadline);
+			signal.removeEventListener('abort', interrupt);
+		}
+		function interrupt() {
+			cleanup();
+			reject(new TrackerHostProcessError('Tracker host command did not complete'));
+			child.stdin?.destroy();
+			child.stdout?.destroy();
+			child.stderr?.destroy();
+			child.kill('SIGKILL');
+		}
 		signal.addEventListener('abort', interrupt, { once: true });
-		if (signal.aborted) interrupt();
-		child.stdin?.on('error', interrupt);
+		if (signal.aborted) {
+			interrupt();
+			return;
+		}
+		child.stdin?.on('error', () => child.kill('SIGKILL'));
 		child.stdin?.end(options.input);
 	});
 }
