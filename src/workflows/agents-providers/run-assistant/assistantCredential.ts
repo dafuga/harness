@@ -1,3 +1,4 @@
+// @harness-uid u_w4n6xl3lyw
 import { constants } from 'node:fs';
 import { open } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -23,9 +24,9 @@ export async function assistantCredential<T>(
 				info.mode & 0o077 ||
 				info.size > 64_000
 			)
-				throw new Error();
+				throw new ProjectAssistantError('Assistant input refused.');
 			value = (await file.readFile('utf8')).trim();
-			if (!value) throw new Error();
+			if (!value) throw new ProjectAssistantError('Assistant input refused.');
 		} finally {
 			await file.close();
 		}

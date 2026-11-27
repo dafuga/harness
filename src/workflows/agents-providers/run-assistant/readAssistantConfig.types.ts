@@ -1,3 +1,4 @@
+// @harness-uid u_ntk72qiuao
 import type { readAssistantConfig } from './readAssistantConfig';
 
 export type AssistantRunnerConfig = Awaited<ReturnType<typeof readAssistantConfig>>;

@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "workflow.agents-providers-run-assistant-assistant-qa",
+	"uid": "u_ihonyzbmoj",
 	"kind": "workflow",
 	"title": "assistantQa",
 	"responsibility": "Owns the assistantQa command workflow.",
@@ -35,7 +36,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ProjectAssistantError",
 				"type": "thrown"
 			}
 		],
@@ -90,6 +91,11 @@
 		},
 		{
 			"unit": "adapter.agents-providers-tracker-note",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-error",
 			"via": "import",
 			"origin": "derived"
 		},

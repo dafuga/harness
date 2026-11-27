@@ -40,7 +40,7 @@
 			},
 			{
 				"name": "QaEligibilityService.evaluate.deployedRevision",
-				"type": "unknown",
+				"type": "string",
 				"required": false
 			}
 		],
@@ -63,7 +63,7 @@
 					},
 					{
 						"name": "QaEligibilityService.evaluate.deployedRevision",
-						"type": "unknown",
+						"type": "string",
 						"required": false
 					}
 				],

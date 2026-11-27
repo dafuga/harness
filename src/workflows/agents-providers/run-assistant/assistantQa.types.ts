@@ -1,3 +1,4 @@
+// @harness-uid u_ihonyzbmoj
 import type { ClaudeMessagesAdapter } from '../../../adapters/agents-providers/ClaudeMessagesAdapter';
 import type { GitHubAppAdapter } from '../../../adapters/agents-providers/GitHubAppAdapter';
 import type { SlackAdapter } from '../../../adapters/agents-providers/SlackAdapter';

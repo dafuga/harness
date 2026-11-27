@@ -30,7 +30,7 @@ export class QaEligibilityService {
 
 	async evaluate(
 		issueNumber: number,
-		deployedRevision = this.stagingBranch
+		deployedRevision: string = this.stagingBranch
 	): Promise<QaEligibility> {
 		const repo = this.github.repoPath;
 		const issue = (await this.github.read(`${repo}/issues/${issueNumber}`)) as QaGitHubRow;

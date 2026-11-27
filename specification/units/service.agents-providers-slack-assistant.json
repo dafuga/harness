@@ -41,7 +41,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ProjectAssistantError",
 				"type": "thrown"
 			}
 		],
@@ -90,6 +90,11 @@
 	"dependencies": [
 		{
 			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-error",
 			"via": "import",
 			"origin": "derived"
 		},

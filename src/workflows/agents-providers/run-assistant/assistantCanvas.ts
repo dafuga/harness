@@ -1,3 +1,4 @@
+// @harness-uid u_4qr6yj2aj3
 import { readFile, rename, writeFile } from 'node:fs/promises';
 import { z } from 'zod';
 import type { GitHubAppAdapter } from '../../../adapters/agents-providers/GitHubAppAdapter';

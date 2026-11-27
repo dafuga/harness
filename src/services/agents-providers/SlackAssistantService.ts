@@ -1,4 +1,5 @@
 // @harness-uid u_mrsb2rmpyo
+import { ProjectAssistantError } from '../../core/agents-providers/ProjectAssistantError';
 import type { PlatformEvent } from '../../core/agents-providers/platformAdapter.types';
 import { redactSecrets } from '../../utils/agents-providers/redactSecrets';
 import type { SlackAssistantServiceOptions } from './SlackAssistantService.types';
@@ -23,7 +24,7 @@ export class SlackAssistantService {
 	private enqueue(event: PlatformEvent): void {
 		if (this.pending >= queueLimit) {
 			// Leave the event unacknowledged so Slack can retry.
-			throw new Error('Assistant queue is full.');
+			throw new ProjectAssistantError('Assistant queue is full.');
 		}
 		this.pending++;
 		this.drain = this.drain.then(async () => {

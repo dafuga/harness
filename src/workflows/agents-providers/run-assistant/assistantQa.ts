@@ -1,3 +1,5 @@
+// @harness-uid u_ihonyzbmoj
+import { ProjectAssistantError } from '../../../core/agents-providers/ProjectAssistantError';
 import { stat, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ClaudeMessagesAdapter } from '../../../adapters/agents-providers/ClaudeMessagesAdapter';
@@ -29,7 +31,7 @@ export function assistantQa(settings: AssistantQaSettings, runtime: AssistantQaR
 				(await qaDeployedRevision(runtime.github, stagingBranch, options, settings.healthUrl)),
 			writeSteps: (task) => writeSteps(runtime.model, task),
 			record: (task, steps, sha) => {
-				if (!sha) throw new Error('A verified staging revision is required.');
+				if (!sha) throw new ProjectAssistantError('A verified staging revision is required.');
 				return assistantQaRecorder(
 					root,
 					{ task, steps, stagingUrl: options.stagingUrl, deployedRevision: sha },
@@ -88,12 +90,13 @@ async function postThread(
 ) {
 	const video = await stat(evidence.videoPath);
 	if (!video.isFile() || video.size === 0 || video.size > 40_000_000)
-		throw new Error('Invalid QA video.');
+		throw new ProjectAssistantError('Invalid QA video.');
 	const bytes = await readFile(evidence.videoPath);
-	if (bytes.subarray(4, 8).toString() !== 'ftyp') throw new Error('Invalid QA video format.');
+	if (bytes.subarray(4, 8).toString() !== 'ftyp')
+		throw new ProjectAssistantError('Invalid QA video format.');
 	const posted = await slack.slack.send({ channelId: channel, text: parent });
 	if (posted.status !== 'sent' || !posted.auditRecorded)
-		throw new Error('QA parent receipt unavailable.');
+		throw new ProjectAssistantError('QA parent receipt unavailable.');
 	const parentTs = posted.receipt.messageId;
 	await slack.media.upload(channel, parentTs, new Uint8Array(bytes), evidence.steps.slice(0, 3500));
 	return { channelId: channel, parentTs };
@@ -116,12 +119,13 @@ async function linkBack(
 		const items = await runtime.trackerNotes.openItems();
 		const inbox = settings.options.trackerInbox;
 		const route = routeQaItem(items, task.issue, inbox ?? '');
-		if (!route.item) throw new Error('No matching tracker item or configured inbox.');
+		if (!route.item)
+			throw new ProjectAssistantError('No matching tracker item or configured inbox.');
 		if (!items.some((item) => item.id === route.item))
-			throw new Error('QA tracker destination is outside this project.');
+			throw new ProjectAssistantError('QA tracker destination is outside this project.');
 		await runtime.trackerNotes.note(route.item, note);
 	};
 	const results = await Promise.allSettled([issue, tracker()]);
 	if (results.some(({ status }) => status === 'rejected'))
-		throw new Error('Incomplete QA link-back.');
+		throw new ProjectAssistantError('Incomplete QA link-back.');
 }

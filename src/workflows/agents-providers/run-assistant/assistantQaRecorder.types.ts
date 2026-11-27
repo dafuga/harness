@@ -1,3 +1,4 @@
+// @harness-uid u_ra7tnn4vxj
 import type { QaRunbookStep, QaTask } from '../../../core/agents-providers/qaThread.types';
 import type { NativeRecordingOptions } from '../../../services/verification-evidence/NativeVideoRecorderService.types';
 

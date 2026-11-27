@@ -33,3 +33,37 @@ test('harness assistant check validates BuildFlexity without credentials or exte
 		});
 	});
 });
+
+test('harness assistant run refuses a different bot identity before any live actions', async () => {
+	await withTempDir('assistant-cli-', async (root) => {
+		const config = resolve('specification/examples/buildflexity-slack-assistant.json');
+		const preload = join(root, 'identity.mjs');
+		const calls = join(root, 'requests.log');
+		await writeFile(join(root, 'slack-bot-token'), 'xoxb-synthetic-fixture', { mode: 0o600 });
+		await writeFile(
+			preload,
+			`
+			import { appendFileSync } from 'node:fs';
+			globalThis.fetch = async (input) => {
+				appendFileSync(${JSON.stringify(calls)}, new URL(String(input)).pathname + '\\n');
+				return Response.json({ ok: true, team_id: 'TOTHER', bot_id: 'BOTHER', user_id: 'UOTHER' });
+			};
+		`
+		);
+		const command = [
+			'--preload',
+			preload,
+			resolve('src/cli/index.ts'),
+			'assistant',
+			'run',
+			'--config',
+			config,
+			'--credentials',
+			root
+		];
+		await expect(
+			promisify(execFile)('bun', command, { env: { ...process.env, HOME: root } })
+		).rejects.toMatchObject({ code: 1, stderr: expect.stringContaining('identity-mismatch') });
+		expect((await readFile(calls, 'utf8')).trim()).toBe('/api/auth.test');
+	});
+});

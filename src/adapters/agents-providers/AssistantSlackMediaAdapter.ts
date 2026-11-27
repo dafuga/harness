@@ -109,7 +109,7 @@ async function uploadBytes(url: URL, video: Uint8Array<ArrayBuffer>): Promise<vo
 			headers: { 'content-type': 'application/octet-stream' },
 			body: video
 		});
-		if (!reply.ok) throw new Error();
+		if (!reply.ok) throw new SlackRequestError('provider-refused');
 	} catch {
 		throw new SlackRequestError('provider-unavailable');
 	}

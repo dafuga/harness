@@ -1,3 +1,4 @@
+// @harness-uid u_wdsnuzioed
 import { shortCommit } from '$reports/helpers/strings/shortCommit';
 import { z } from 'zod';
 import type { GitHubAppAdapter } from '../../../adapters/agents-providers/GitHubAppAdapter';

@@ -1,3 +1,4 @@
+// @harness-uid u_bbfpbxpahq
 import { execFile } from 'node:child_process';
 import { homedir } from 'node:os';
 import { isAbsolute, join } from 'node:path';

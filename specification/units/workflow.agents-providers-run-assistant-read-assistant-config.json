@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "workflow.agents-providers-run-assistant-read-assistant-config",
+	"uid": "u_ntk72qiuao",
 	"kind": "workflow",
 	"title": "readAssistantConfig",
 	"responsibility": "Owns the readAssistantConfig command workflow.",
@@ -35,10 +36,6 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
-				"type": "thrown"
-			},
-			{
 				"name": "ProjectAssistantError",
 				"type": "thrown"
 			}
@@ -61,10 +58,6 @@
 					}
 				],
 				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown"
-					},
 					{
 						"name": "ProjectAssistantError",
 						"type": "thrown"

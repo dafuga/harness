@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "workflow.agents-providers-run-assistant-assistant-qa-recorder",
+	"uid": "u_ra7tnn4vxj",
 	"kind": "workflow",
 	"title": "assistantQaRecorder",
 	"responsibility": "Owns the assistantQaRecorder command workflow.",
@@ -80,6 +81,11 @@
 	"dependencies": [
 		{
 			"unit": "function.agents-providers-qa-thread-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.planning-collaboration-design-canvas-service-load-chromium",
 			"via": "import",
 			"origin": "derived"
 		},

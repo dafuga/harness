@@ -1,3 +1,4 @@
+// @harness-uid u_ntk72qiuao
 import { readFile } from 'node:fs/promises';
 import { z } from 'zod';
 import {
@@ -57,7 +58,8 @@ export async function readAssistantConfig(file: string) {
 		const raw = runner.parse(JSON.parse(await readFile(file, 'utf8')));
 		const assistant = new ProjectAssistantConfigValidator().parse(raw.assistant);
 		const channels = [...(raw.canvas?.channels ?? []), ...(raw.qa ? [raw.qa.channel] : [])];
-		if (channels.some((id) => !assistant.answerChannels.includes(id))) throw new Error();
+		if (channels.some((id) => !assistant.answerChannels.includes(id)))
+			throw new ProjectAssistantError('Assistant input refused.');
 		if (
 			raw.qa &&
 			!Object.values(assistant.health).some(
@@ -66,9 +68,9 @@ export async function readAssistantConfig(file: string) {
 					new URL(target).pathname === '/api/health'
 			)
 		)
-			throw new Error();
+			throw new ProjectAssistantError('Assistant input refused.');
 		if (raw.canvas?.directory.split('/').some((part) => !part || part === '..' || part === '.'))
-			throw new Error();
+			throw new ProjectAssistantError('Assistant input refused.');
 		return { ...raw, assistant, workspaceUrl: new URL(raw.workspaceUrl).origin };
 	} catch {
 		throw new ProjectAssistantError('Assistant config is unreadable or invalid.');

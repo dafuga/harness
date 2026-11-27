@@ -1,3 +1,5 @@
+// @harness-uid u_sysofkibca
+import { ProjectAssistantError } from '../../../core/agents-providers/ProjectAssistantError';
 import { z } from 'zod';
 import type { GitHubAppAdapter } from '../../../adapters/agents-providers/GitHubAppAdapter';
 import type { QaLabelEvent } from '../../../core/agents-providers/qaThread.types';
@@ -62,5 +64,5 @@ async function readPages<T>(read: (page: number) => Promise<T[]>): Promise<T[]> 
 		rows.push(...batch);
 		if (batch.length < pageSize) return rows;
 	}
-	throw new Error('QA input exceeded its pagination bound.');
+	throw new ProjectAssistantError('QA input exceeded its pagination bound.');
 }
