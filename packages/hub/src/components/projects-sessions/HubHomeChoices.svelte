@@ -15,12 +15,15 @@
 	let {
 		agent,
 		busy = false,
+		selected,
 		onpick,
 		onother,
 		present
 	}: {
 		agent: Pick<HomeAgent, 'options' | 'confirm' | 'question'>;
 		busy?: boolean;
+		/** Option whose answer is being sent or has been acknowledged. */
+		selected?: number;
 		/** Called with the option's 1-based number and whether the confirm step was done. */
 		onpick: (number: number, confirmed: boolean) => void;
 		/** Called with the answer written in the Other modal. */
@@ -81,6 +84,7 @@
 			{#if linkedLabel || linkedEffect}
 				<hx-div
 					class="hh-choice hh-choice-linked"
+					data-chosen={busy && number === selected ? true : undefined}
 					data-recommended={option.recommended || undefined}
 				>
 					{#if linkedLabel}
@@ -127,6 +131,7 @@
 	<hx-button
 		type="button"
 		class={linkedLabel || linkedEffect ? 'po-action hh-linked-pick' : 'hh-choice'}
+		data-chosen={busy && number === selected ? true : undefined}
 		data-recommended={option.recommended ? 'true' : undefined}
 		disabled={busy}
 		aria-haspopup={present && agent.confirm ? 'dialog' : undefined}

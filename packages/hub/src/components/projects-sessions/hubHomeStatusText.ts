@@ -1,5 +1,9 @@
 // @harness-uid u_okueohjk4j
 import type {
+	OverviewSnapshot,
+	OverviewItem
+} from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
+import type {
 	HomeMessage,
 	HomePastDue
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -40,4 +44,26 @@ export function messageStatusText(
 	if (message.status === 'refused')
 		return message.reason ? `Not delivered: ${message.reason}` : 'Not delivered';
 	return null;
+}
+
+/** Adds the same current work state to Home rows, project callouts, and item detail. */
+export function workOverview(
+	value: OverviewSnapshot | null,
+	pastDue: HomePastDue[]
+): OverviewSnapshot | null {
+	if (value?.status !== 'ready') return value;
+	const states = new Map(pastDue.map((run) => [run.id, currentWorkLabel(run)]));
+	const withState = (item: OverviewItem) => ({ ...item, workLabel: states.get(item.id) });
+	return {
+		...value,
+		projects: value.projects.map((project) => ({
+			...project,
+			items: project.items.map(withState),
+			blocked: project.blocked && { ...project.blocked, item: withState(project.blocked.item) },
+			attention: project.attention && {
+				...project.attention,
+				item: withState(project.attention.item)
+			}
+		}))
+	};
 }

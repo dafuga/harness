@@ -23,6 +23,8 @@
 		warningFor,
 		warningLabel
 	} from './hubHomePresentation';
+	import HubHomePlannable from './HubHomePlannable.svelte';
+	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
 	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
 	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -208,6 +210,8 @@
 		{/if}
 	</HubHomeCard>
 
+	<HubHomePlannable {view} {open} />
+	<HubHomeProjectCard {view} open={() => open('projects')} />
 	<HubHomeWorkCards {view} {open} />
 </hx-div>
-<HubHomeLive reading={view.computers} now={view.now} />
+<HubHomeLive reading={view.computers} now={view.now} pastDue={view.pastDue} />

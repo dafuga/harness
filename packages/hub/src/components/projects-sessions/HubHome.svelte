@@ -3,7 +3,7 @@
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
-	import { currentWorkLabel } from './hubHomeStatusText';
+	import { workOverview } from './hubHomeStatusText';
 	import { homeBoard } from './hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
@@ -58,19 +58,12 @@
 			!staleReading(snapshot.providers.routinesReadAt, now)
 	);
 	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
-	const overview = $derived.by(() => {
-		const value = snapshot?.overview;
-		if (value?.status !== 'ready')
-			return value ?? (settled ? { status: 'unavailable' as const } : null);
-		const states = new Map(board?.pastDue.map((run) => [run.id, currentWorkLabel(run)]));
-		return {
-			...value,
-			projects: value.projects.map((project) => ({
-				...project,
-				items: project.items.map((item) => ({ ...item, workLabel: states.get(item.id) }))
-			}))
-		};
-	});
+	const overview = $derived(
+		workOverview(
+			snapshot?.overview ?? (settled ? { status: 'unavailable' } : null),
+			board?.pastDue ?? []
+		)
+	);
 	const linkedComputers = $derived(live?.linked ?? 0);
 	const projectsFailed = $derived(projectError && !list?.length);
 	const view: HomeView = $derived({

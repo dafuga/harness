@@ -92,3 +92,18 @@
 .inbox .live[data-state='live']::before {
 	background: var(--hx-color-success);
 }
+
+.inbox :is(button:enabled, a[href], summary):active {
+	filter: brightness(0.83);
+}
+@media (prefers-reduced-motion: no-preference) {
+	.inbox :is(button:enabled, a[href], summary):active {
+		translate: 0 1px;
+	}
+	.inbox .rows li {
+		transition: filter 320ms ease;
+	}
+	.inbox .rows li[inert] {
+		filter: opacity(0);
+	}
+}

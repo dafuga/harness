@@ -20,9 +20,11 @@
 	margin: 0;
 	font-size: var(--hx-type-size-base);
 }
+.hh-home .hh-needs-item + .hh-needs-item {
+	margin-top: var(--hx-space-8);
+}
 .hh-home .hh-needs-list {
 	display: grid;
-	gap: var(--hx-space-8);
 	margin: 0;
 	padding: 0;
 	list-style: none;

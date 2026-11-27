@@ -3,9 +3,9 @@
 <!-- @harness-uid u_kncvbfcpto -->
 <script lang="ts">
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
-	import { homeCosChat } from './hubHomeChatContext.svelte';
+	import { askKey, homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import type { Snippet } from 'svelte';
-	import { MediaQuery, SvelteMap, SvelteSet } from 'svelte/reactivity';
+	import { MediaQuery } from 'svelte/reactivity';
 	import { slide } from 'svelte/transition';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
@@ -27,43 +27,25 @@
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 	} = $props();
-	const chat = homeCosChat();
+	const chat = homeCosChat() ?? provideHomeCosChat();
 	let detail = $state<{ itemId: string; question: string; content: Snippet } | null>(null);
 	const reduceMotion = new MediaQuery('(prefers-reduced-motion: reduce)');
-	const pinned = new SvelteMap<string, { ask: HomeOpenAsk; index: number }>();
-	const dismissed = new SvelteSet<string>();
-	const key = (ask: HomeOpenAsk) => JSON.stringify([ask.itemId, ask.question]);
+	let order: string[] = [];
 	const shown = $derived.by(() => {
-		const list = asks.filter((ask) => !dismissed.has(key(ask)));
-		for (const [id, held] of pinned) {
-			if (!list.some((ask) => key(ask) === id)) list.splice(held.index, 0, held.ask);
+		const list = asks.filter((ask) => !chat.answers.get(askKey(ask))?.dismissed);
+		for (const [key, held] of chat.answers) {
+			if (held.dismissed || list.some((ask) => askKey(ask) === key)) continue;
+			const index = order.indexOf(key);
+			list.splice(index < 0 ? list.length : index, 0, held.ask);
 		}
 		return list;
 	});
 	$effect(() => {
-		for (const id of dismissed) if (!asks.some((ask) => key(ask) === id)) dismissed.delete(id);
+		order = shown.map(askKey);
+		for (const [key, held] of chat.answers) {
+			if (held.dismissed && !asks.some((ask) => askKey(ask) === key)) chat.answers.delete(key);
+		}
 	});
-
-	function sendAnswer(ask: HomeOpenAsk): SendHomeChat {
-		return async (message) => {
-			const id = key(ask);
-			pinned.set(id, { ask, index: shown.findIndex((entry) => key(entry) === id) });
-			try {
-				const result = await send(message);
-				if (!['queued', 'sent'].includes(result.status)) pinned.delete(id);
-				return result;
-			} catch (error) {
-				pinned.delete(id);
-				throw error;
-			}
-		};
-	}
-
-	function finish(ask: HomeOpenAsk, sent: boolean) {
-		const id = key(ask);
-		if (sent) dismissed.add(id);
-		pinned.delete(id);
-	}
 	const activeDetail = $derived(
 		asks.some((ask) => ask.itemId === detail?.itemId && ask.question === detail.question)
 			? detail?.content
@@ -81,7 +63,7 @@
 			>
 		</hx-div>
 		<hx-ul class="hh-needs-list">
-			{#each shown as ask (key(ask))}
+			{#each shown as ask (askKey(ask))}
 				<hx-li
 					class="hh-needs-item"
 					out:slide|global={{ duration: reduceMotion.current ? 0 : 320 }}
@@ -101,8 +83,7 @@
 					</hx-div>
 					<HubHomeAsk
 						{ask}
-						send={sendAnswer(ask)}
-						finished={(sent) => finish(ask, sent)}
+						{send}
 						{receipt}
 						present={(content) =>
 							(detail = content ? { itemId: ask.itemId, question: ask.question, content } : null)}

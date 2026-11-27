@@ -3,15 +3,28 @@
 <!-- @harness-uid u_z35itvtg7u -->
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
+	import type { HomeLiveOverview } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { liveNotice, liveSummary, liveSystemNotice } from './hubHomeLive';
 	import HubHomeLiveProject from './HubHomeLiveProject.svelte';
 	import { count } from './hubHomePresentation';
 	import { runTime } from './hubHomeTime';
 
-	let { reading, now }: { reading: LinkedHome | null; now: number } = $props();
-	const notice = $derived(liveNotice(reading));
-	const overview = $derived(notice ? null : (reading?.snapshot?.liveOverview ?? null));
+	let {
+		reading = null,
+		now,
+		native,
+		pastDue = []
+	}: {
+		reading?: LinkedHome | null;
+		now: number;
+		native?: HomeLiveOverview;
+		pastDue?: HomePastDue[];
+	} = $props();
+	const notice = $derived(native ? null : liveNotice(reading));
+	const overview = $derived(native ?? (notice ? null : reading?.snapshot?.liveOverview));
+	const dueById = $derived(new Map(pastDue.map((run) => [run.id, run])));
 </script>
 
 <hx-section class="hh-live-overview" aria-labelledby="hh-live-title">
@@ -19,10 +32,10 @@
 		<hx-h2 class="hh-needs-title" id="hh-live-title">Live overview</hx-h2>
 		{#if overview}
 			<hx-p class="hh-live-summary" role="status">{liveSummary(overview)}</hx-p>
-			<hx-p class="hh-live-source"
-				>From {reading!.answered} of {count(reading!.linked, 'linked computer')} over an encrypted connection
-				· read {runTime(overview.readAt)}</hx-p
-			>
+			{#if reading}<hx-p class="hh-live-source"
+					>From {reading.answered} of {count(reading.linked, 'linked computer')} over an encrypted connection
+					· read {runTime(overview.readAt)}</hx-p
+				>{/if}
 		{/if}
 	</hx-div>
 	{#if notice}
@@ -36,7 +49,7 @@
 		>
 	{:else if overview}
 		{#each overview.projects as project (project.agent)}
-			<HubHomeLiveProject {project} {now} />
+			<HubHomeLiveProject {project} {now} {dueById} />
 		{/each}
 		{#if overview.hiddenRuns}
 			<hx-p class="po-sessions"

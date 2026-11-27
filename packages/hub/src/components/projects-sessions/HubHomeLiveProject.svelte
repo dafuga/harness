@@ -2,6 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_52e2mcsala -->
 <script lang="ts">
+	import { pastDueLabel } from './hubHomeStatusText';
+	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { hasWebLink } from '$reports/utils/strings/linkSegments';
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
@@ -19,7 +21,12 @@
 		workTimes
 	} from './hubHomeLive';
 
-	let { project, now }: { project: HomeWorkProject; now: number } = $props();
+	let {
+		project,
+		now,
+		dueById
+	}: { project: HomeWorkProject; now: number; dueById?: ReadonlyMap<string, HomePastDue> } =
+		$props();
 	let all = $state(false);
 	const tones: Record<HomeWorkState, string> = {
 		running: 'active',
@@ -42,6 +49,11 @@
 	<hx-ul class="hh-live-rows" aria-label={label}>
 		{#each rows as row (row.key)}
 			{@const linked = hasWebLink(row.title)}
+			{@const due = dueById?.get(row.itemId)}
+			{@const label =
+				due && !['offline', 'finished', 'running'].includes(row.state)
+					? pastDueLabel(due)
+					: workStateLabel(row)}
 			<hx-li class="hh-live-row" data-state={row.state}>
 				<hx-div class="hh-live-item-text">
 					{#if linked}<hx-p class="hh-live-linked"><LinkifiedText text={row.title} /></hx-p>{/if}
@@ -56,7 +68,7 @@
 				</hx-div>
 				<hx-span class="hh-live-tags">
 					<Pill tone={`hh-tone po-state po-${tones[row.state]}`} state={tones[row.state]}
-						><hx-span class="po-mark" aria-hidden="true"></hx-span>{workStateLabel(row)}</Pill
+						><hx-span class="po-mark" aria-hidden="true"></hx-span>{label}</Pill
 					>
 					{#if stageLabel(row.stage)}<hx-span class="hh-live-stage">{stageLabel(row.stage)}</hx-span
 						>{/if}

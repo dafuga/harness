@@ -8,12 +8,16 @@
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
-	import HubHomePlannable from './HubHomePlannable.svelte';
-	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
-	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
+	let {
+		view,
+		open
+	}: {
+		view: Pick<HomeView, 'work' | 'pastDue' | 'overview' | 'agents' | 'trackerConnected' | 'now'>;
+		open: OpenHomeSection;
+	} = $props();
 </script>
 
 {#snippet empty(text: string, action?: string)}
@@ -26,10 +30,6 @@
 			>{/if}
 	</EmptyState>
 {/snippet}
-
-<HubHomePlannable {view} {open} />
-
-<HubHomeProjectCard {view} open={() => open('projects')} />
 
 <HubHomeCard
 	section="wip"
