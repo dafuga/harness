@@ -1,3 +1,4 @@
+import type { Locator } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildStamp } from '../../../../src/utils/buildStamp';
@@ -73,4 +74,17 @@ export async function capture(page: Page, position: CapturePosition, screen: str
 			path: join(directory, `${screen}--${state}--${scheme}${full ? '--full' : ''}.png`)
 		});
 	}
+}
+
+export async function captureNeedsYou(page: Page, name: string, target: Page | Locator = page) {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	const directory = process.env.SCREENSHOT_DIR ?? 'test-results/needs-you';
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all(Array.from(document.images, (image) => image.decode()));
+	});
+	await target.screenshot({
+		path: `${directory}/${process.env.SCREENSHOT_LABEL ?? 'current'}-${name}.png`,
+		animations: 'disabled'
+	});
 }

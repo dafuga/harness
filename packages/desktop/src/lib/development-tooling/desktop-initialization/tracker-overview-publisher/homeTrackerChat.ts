@@ -26,7 +26,7 @@ export async function deliverHomeChat(
 	if (!path) return { id, status: 'refused' };
 	const text = deliverableText(input, ask);
 	if (text === null) return { id, status: 'refused' };
-	const body = chatBody(input, text);
+	const body = chatBody(input, text, ask);
 	try {
 		const response = await fetcher(trackerOrigin + path, {
 			method: 'POST',
@@ -56,9 +56,10 @@ function deliveryStatus(response: Response): HomeChatReceipt['status'] {
 	return response.status < 500 ? 'refused' : 'unconfirmed';
 }
 
-function chatBody(input: HomeChatInput, text: string) {
+function chatBody(input: HomeChatInput, text: string, ask: HomeOpenAsk | undefined) {
 	if (input.kind !== 'answer') return { text: 'Hub message: ' + text };
-	const by = 'Daniel via Hub';
+	// Only the fresh Tracker item can mark a disposable question as automation-owned.
+	const by = ask?.title.startsWith('[QA automation] ') ? 'QA automation via Hub' : 'Daniel via Hub';
 	return input.option === undefined
 		? { answer: text, by }
 		: { option: input.option, confirmed: input.confirmed === true, by };
