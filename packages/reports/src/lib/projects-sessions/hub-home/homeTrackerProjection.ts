@@ -81,10 +81,12 @@ export function buildHomeSnapshot(
 	const agents: HomeAgent[] = sources ? buildHomeAgents(overview, { ...sources, items }) : [];
 	return {
 		overview,
-		...(sources && { projectDirectory: listTrackerProjects(items) }),
+		...(sources && {
+			projectDirectory: listTrackerProjects(items),
+			reminders: listHomeReminders(shown)
+		}),
 		agents,
 		openAsks: buildHomeOpenAsks(items),
-		...(sources && { reminders: listHomeReminders(shown) }),
 		plans: listPlans(items),
 		...listHomeSchedule(
 			{ items, runs: sources?.runs ?? [] },

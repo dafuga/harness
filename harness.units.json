@@ -3434,6 +3434,12 @@
 			"reason": "Resolve the Reports source used by Home through the workspace build alias."
 		},
 		{
+			"from": "packages/desktop/test/utils/projects-sessions/desktop-home-view.test.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeTrackerProjection",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerProjection.ts",
+			"reason": "The Mac Home test builds its Tracker reading with the shared Home projection."
+		},
+		{
 			"from": "packages/desktop/src/utils/projects-sessions/desktopHomeView.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",

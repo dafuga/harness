@@ -48,8 +48,6 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	await expect(page).toHaveURL(/\/$/, { timeout: 15000 });
 	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toBeVisible();
 	const projects = page.getByRole('region', { name: 'Projects', exact: true });
-	const reminders = page.getByRole('region', { name: 'Reminders', exact: true });
-	await expect(reminders.getByRole('listitem')).toContainText(/Water the sample plant\s*Due now/);
 	await captureSignedInHome(page);
 	await expect(projects.getByText('2 need you')).toBeVisible();
 	await expect(
@@ -64,7 +62,6 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	await expect(page.getByRole('heading', { name: 'Needs you', exact: true })).toBeVisible();
 	await expect(page.getByText('Review the launch plan')).toBeVisible();
 	await expect(projects).toHaveCount(0);
-	await expect(reminders).toHaveCount(0);
 	await page.getByRole('link', { name: 'Home', exact: true }).click();
 	await projects.getByRole('link', { name: 'Open Tracker Orion' }).click();
 	await expect(page).toHaveURL(/\/tracker\?project=Tracker\+Orion$/);
@@ -80,6 +77,16 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	await page.getByRole('button', { name: 'Sign out', exact: true }).click();
 	await expect(google).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toHaveCount(0);
+});
+
+test('signed-in Home lists personal reminders and Needs you leaves them out', async ({ page }) => {
+	await hostedFixture(page);
+	await page.goto('/');
+	const reminders = page.getByRole('region', { name: 'Reminders', exact: true });
+	await expect(reminders.getByRole('listitem')).toContainText(/Water the sample plant\s*Due now/);
+	await page.getByRole('link', { name: 'Needs you', exact: true }).click();
+	await expect(page.getByText('Review the launch plan')).toBeVisible();
+	await expect(reminders).toHaveCount(0);
 });
 
 test('typed-code recovery displays the code and polls at the Hub interval', async ({ page }) => {

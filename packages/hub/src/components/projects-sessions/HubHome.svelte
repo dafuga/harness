@@ -177,9 +177,7 @@
 		const result = await api.send<{ controlled: string[] }>(
 			add ? 'POST' : 'DELETE',
 			'/api/hub-home/agents',
-			{
-				id
-			}
+			{ id }
 		);
 		if (home) home = { ...home, controlled: result.controlled };
 		refresh();
