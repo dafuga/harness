@@ -2,7 +2,7 @@
 	"name": "eq0hnw-canary-answer-actors",
 	"goal": "The needs-you release canary passes each surface only on what that app really writes to the Tracker: Hub web 'Daniel via Hub', Mac app 'daniel', iPhone 'Daniel'",
 	"createdAt": "2026-11-27T08:08:14.930Z",
-	"updatedAt": "2026-11-27T08:26:02.840Z",
+	"updatedAt": "2026-11-27T10:43:13.425Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T10:43:13.425Z",
+			"evidence": "siblings-3966f949-7492-4237-a17a-22fca5696c16.json"
 		},
 		{
 			"id": "verify",
