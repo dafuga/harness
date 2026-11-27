@@ -1,0 +1,43 @@
+{
+	"name": "zgfvhk-login-device-approval",
+	"goal": "Prove first-device genesis, pending access denial, approved key exchange, automatic Tracker access and a physical iPhone needs-you response",
+	"createdAt": "2026-11-27T17:42:19.396Z",
+	"updatedAt": "2026-11-27T17:43:11.161Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T17:43:11.161Z",
+			"evidence": "Tracker zgfvhkc5b6 plan records login and platform UI states, signed key exchange, recovery dependency, Tracker scope and exact-host acceptance."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
