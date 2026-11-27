@@ -42,12 +42,13 @@ export class SealedEnrollmentReviewService {
 			self = this.options.device;
 		if (steps.length > 1 && (!this.opening || !this.matchesClaim(steps[1])))
 			throw new SealedError('Another review already claimed this request.');
+		// Pin the first opening before any asynchronous verification or claim can reveal our nonce.
 		if (this.opening && !sameOpening(first, this.opening))
 			throw new SealedError('The device request changed.');
+		this.opening = first;
 		const chain = await this.hub.chain();
 		assertAdmin(this.options, chain, first.by);
 		await openingKeys(first);
-		this.opening = first;
 		if (steps.length === 1)
 			await this.hub.append(1, { approver: self.deviceId, nonce: toBase64Url(this.nonce) });
 	}

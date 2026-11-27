@@ -135,17 +135,25 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	expect(mailbox.status).toBe(201);
 	const { id } = (await mailbox.json()) as { id: string };
 	await expect(fixture.socket(otherSession, pending.deviceId)).rejects.toThrow();
+	let dropPublishedReply = true;
 	const review = new SealedEnrollmentReviewService(
 		{
 			account,
 			pin,
 			device,
 			signal: new AbortController().signal,
-			request: (path, init) =>
-				fetch(fixture.origin + path, {
+			request: async (path, init) => {
+				const response = await fetch(fixture.origin + path, {
 					...init,
 					headers: { ...init.headers, 'X-Test-Session': session }
-				})
+				});
+				if (path.endsWith('/devices') && dropPublishedReply && response.status === 201) {
+					dropPublishedReply = false;
+					await response.body?.cancel();
+					throw new Error('Fixture lost the enrollment reply.');
+				}
+				return response;
+			}
 		},
 		id
 	);
@@ -177,7 +185,12 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 			await fixture.call(otherSession, 'GET', 'device-session', { headers: newHeaders })
 		)
 	).toEqual({ status: 200, body: { state: 'waiting-for-approval' } });
-	const nextPin = await review.approve(code, async () => true);
+	await expect(review.approve(code, async () => true)).rejects.toThrow(
+		'Fixture lost the enrollment reply.'
+	);
+	const nextPin = await review.approve(code, async () => {
+		throw new Error('Retry prompted twice.');
+	});
 	expect(nextPin?.seq).toBe(1);
 	const history = (await (
 		await fixture.call(otherSession, 'GET', 'chain', { headers: newHeaders })
