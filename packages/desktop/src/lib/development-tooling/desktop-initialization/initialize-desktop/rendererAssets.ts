@@ -43,16 +43,20 @@ function assetPath(url: string): string | null {
 	return path;
 }
 
-export async function rendererAssets(root: string, url: string, connect = ''): Promise<Response> {
-	const path = assetPath(url);
-	if (path === null) return new Response('Refused', { status: 403 });
-	let file = resolve(root, '.' + path);
+async function rendererFile(root: string, path: string): Promise<string> {
+	const file = resolve(root, '.' + path);
 	try {
 		if (!(await stat(file)).isFile()) throw new RendererAssetMissingError('Missing');
 	} catch {
-		file = resolve(root, 'index.html');
+		return resolve(root, 'index.html');
 	}
-	const actual = await realpath(file),
+	return file;
+}
+
+export async function rendererAssets(root: string, url: string, connect = ''): Promise<Response> {
+	const path = assetPath(url);
+	if (path === null) return new Response('Refused', { status: 403 });
+	const actual = await realpath(await rendererFile(root, path)),
 		inside = relative(await realpath(root), actual);
 	if (inside.startsWith('..') || inside.startsWith('/'))
 		return new Response('Refused', { status: 403 });

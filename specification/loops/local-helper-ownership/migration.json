@@ -6753,6 +6753,13 @@
 			"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
 			"reason": "Enables HTTPS image previews on the Plans and schedule document by its local route and view.",
 			"definition": "ad1a4063a13a239f1b02f10836accd8ff855c93fbc4b1b1cd900bdff6edf924d"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "b442b79f09e089f667e205bb0455648e834b4172",
+			"reason": "Extracts filesystem fallback resolution while preserving the renderer route, asset containment and content policy.",
+			"definition": "1fab226c14bba012f3eeddd476c8d1263900879fc7e48463c2bb8327a4a17cb9"
 		}
 	],
 	"retiredOwners": [
