@@ -38,6 +38,13 @@ function files() {
 	};
 }
 
+function trustFile(directory: string, phone: FakePhone): string {
+	const trust = join(directory, 'trust.json');
+	const devices = [{ id: phone.deviceId, role: 'approver', signingKey: phone.signingKey }];
+	writeFileSync(trust, JSON.stringify({ devices }));
+	return trust;
+}
+
 async function run(args: string[]): Promise<unknown> {
 	const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
 	const program = new Command().exitOverride();
@@ -114,13 +121,7 @@ test('an action with an unready API token is blocked and never becomes a browser
 test('a browser action is filed with the broker for phone approval', async () => {
 	const paths = files();
 	const phone = new FakePhone();
-	const trust = join(paths.directory, 'trust.json');
-	writeFileSync(
-		trust,
-		JSON.stringify({
-			devices: [{ id: phone.deviceId, role: 'approver', signingKey: phone.signingKey }]
-		})
-	);
+	const trust = trustFile(paths.directory, phone);
 	const socket = join(paths.directory, 's', 'broker.sock');
 	const served = await serveCredentialBroker({
 		socket,
@@ -139,14 +140,7 @@ function protectedBrowserFixture() {
 	const phone = new FakePhone();
 	const socketPath = join(paths.directory, 's', 'broker.sock');
 	const agentSocket = join(paths.directory, 'agent.sock');
-	const trust = join(paths.directory, 'trust.json');
 	const origin = 'https://vault.example.test';
-	writeFileSync(
-		trust,
-		JSON.stringify({
-			devices: [{ id: phone.deviceId, role: 'approver', signingKey: phone.signingKey }]
-		})
-	);
 	const agentUid = process.getuid?.() === 65534 ? 65533 : 65534;
 	const disposeForm = vi.fn(async () => undefined);
 	return {
@@ -157,7 +151,7 @@ function protectedBrowserFixture() {
 			socket: socketPath,
 			state: join(paths.directory, 'state'),
 			origin,
-			trust,
+			trust: trustFile(paths.directory, phone),
 			privateBrowserExecutor: {
 				cleanup: {
 					revokeInput: async () => undefined,
