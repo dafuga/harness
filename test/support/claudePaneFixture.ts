@@ -17,6 +17,7 @@ const x = state.draft ? 20 : 2;
 const raw = 'cos|1800000000|71|%9|200|1800000000|' + x + '|2|0|0|0|0|1|1|claude';
 function screen() {
 	if (mode === 'busy') return ['✻ Working (esc to interrupt)', rule, '❯ ', rule, '? for shortcuts'];
+	if (state.scrolled) return ['─── ↑ 1 more ───', state.draft, rule, '  paste again to expand'];
 	const footer = state.draft ? '  paste again to expand' : '  ⏵⏵ bypass permissions on · 1 shell';
 	return ['fixture', rule, '❯ ' + state.draft, rule, footer];
 }
@@ -29,6 +30,7 @@ function type(command) {
 		// A very long message arrives as several pastes, sometimes with a short typed remainder.
 		if (text.length >= 4000) shown = '[Pasted text #1][Pasted text #2]' + text.slice(-24);
 		state.draft = mode === 'foreign' ? 'half a sentence from a person' : shown;
+		state.scrolled = mode === 'window-80x24' && Buffer.byteLength(text) >= 500;
 		return;
 	}
 	state.enters += 1;

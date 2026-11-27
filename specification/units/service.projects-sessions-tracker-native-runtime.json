@@ -203,6 +203,8 @@
 			"formatTrackerHostBrief",
 			"unsentCosAlerts",
 			"sendWatchdogAlerts",
+			"recordCosReceipts",
+			"cosReceiptReference",
 			"trackerHostEffectsSchema",
 			"trackerHostInventory",
 			"hasManualTrackerPane",
@@ -901,6 +903,21 @@
 			{
 				"name": "sendWatchdogAlerts.signal",
 				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "recordCosReceipts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordCosReceipts.alerts",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
+			},
+			{
+				"name": "cosReceiptReference.alert",
+				"type": "TrackerWatchdogAlert",
 				"required": true
 			},
 			{
@@ -3468,6 +3485,54 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordCosReceipts",
+				"inputs": [
+					{
+						"name": "recordCosReceipts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordCosReceipts.alerts",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCosReceipts",
+						"type": "void"
+					}
+				],
+				"errors": [
+					{
+						"name": "SQLiteError",
+						"type": "thrown",
+						"description": "The Tracker database could not commit the receipts."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "cosReceiptReference",
+				"inputs": [
+					{
+						"name": "cosReceiptReference.alert",
+						"type": "TrackerWatchdogAlert",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosReceiptReference",
+						"type": "string",
+						"description": "An opaque stable identifier for a watchdog alert or CoS message."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "trackerHostInventory",
