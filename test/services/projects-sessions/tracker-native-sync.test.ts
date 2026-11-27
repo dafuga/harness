@@ -159,3 +159,60 @@ async function proveAdapterDelegation() {
 		peerDb.close();
 	}
 }
+
+test('two fleet sessions acquire intersecting paths through one hub before editing', async () => {
+	const hub = nativeStore('hub', 'hub');
+	const first = 'alpha00001';
+	const second = 'beta000002';
+	try {
+		for (const id of [first, second]) {
+			hub.store.appendLocal({ itemId: id, fields: { title: id, status: 'open', auto: id } });
+		}
+		const claim = async (node: string, id: string, areas: string[]) => {
+			const request = {
+				method: 'POST' as const,
+				pathAndQuery: '/sync/area-claim',
+				body: JSON.stringify({ id, token: id, repo: 'fixture/project', areas })
+			};
+			return wire(hub.sync!)({
+				...request,
+				timeoutMs: 1000,
+				headers: {
+					authorization: new TrackerSyncAuthService(fixtureSecret).authorizationHeader(request),
+					'x-tracker-node': node
+				}
+			}) as Promise<{ allowed: boolean; reason: string }>;
+		};
+		const grants = await Promise.all([
+			claim('alpha', first, ['src/launcher']),
+			claim('beta', second, ['src/launcher/start.ts'])
+		]);
+		expect(grants.map(({ allowed }) => allowed).sort()).toEqual([false, true]);
+		const aWon = grants[0].allowed;
+		const [winner, loser] = aWon ? [first, second] : [second, first];
+		expect(grants[aWon ? 1 : 0].reason).toContain(winner);
+		expect(
+			await claim(aWon ? 'alpha' : 'beta', winner, [
+				aWon ? 'src/launcher' : 'src/launcher/start.ts'
+			])
+		).toMatchObject({ allowed: true });
+		expect(await claim('unrelated-host', winner, ['src/launcher'])).toMatchObject({
+			allowed: false
+		});
+		expect(
+			(await (await local(hub.api, '/items/' + winner)).json()).notes_log.at(-1).text
+		).toContain('src/launcher');
+		expect(
+			(
+				await local(hub.api, '/items/' + winner + '/block', 'POST', {
+					reason: 'fixture dependency'
+				})
+			).status
+		).toBe(200);
+		expect(await claim(aWon ? 'beta' : 'alpha', loser, ['src/launcher'])).toMatchObject({
+			allowed: true
+		});
+	} finally {
+		hub.database.close();
+	}
+});

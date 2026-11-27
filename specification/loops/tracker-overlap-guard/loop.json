@@ -1,0 +1,43 @@
+{
+	"name": "tracker-overlap-guard",
+	"goal": "Two sessions competing for a path yield one owner, a visible wait and ordered checks before merge.",
+	"createdAt": "2026-11-27T19:56:05.115Z",
+	"updatedAt": "2026-11-27T19:58:25.277Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:58:25.277Z",
+			"evidence": "Tracker bxd6cn plan and two-spoke conflict case, http 404 on current main"
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "pending"
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

@@ -1,0 +1,2 @@
+{"event":"loop.created","timestamp":"2026-11-27T19:56:05.115Z","name":"tracker-overlap-guard","goal":"Two sessions competing for a path yield one owner, a visible wait and ordered checks before merge.","template":"feature","templateLineage":["feature"]}
+{"event":"step.completed","timestamp":"2026-11-27T19:58:25.277Z","loop":"tracker-overlap-guard","step":"spec","evidence":"Tracker bxd6cn plan and two-spoke conflict case, http 404 on current main"}
