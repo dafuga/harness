@@ -12,7 +12,6 @@ import {
 } from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
 import { readRecordedHomeTracker } from '../../test/support/hubHomeTrackerRecording';
 import type { HomeFixtureState, MockupHomeData } from './hub-home-fixture.types';
-
 import { at, homeClock, quotas } from './hub-home-fixture-quota';
 export { homeClock } from './hub-home-fixture-quota';
 
@@ -61,10 +60,14 @@ function scheduled(data: MockupHomeData): HomeRun[] {
 
 export async function homeData(
 	data: MockupHomeData,
-	mode: HomeFixtureState
+	mode: HomeFixtureState,
+	withoutChoices: boolean
 ): Promise<OwnerHomeSnapshot> {
 	const sources =
 		mode === 'empty' ? { items: [], runs: [], machines: [] } : await readRecordedHomeTracker();
+	if (sources && withoutChoices) {
+		for (const item of sources.items) delete item.options;
+	}
 	const { agents, openAsks, overview, projectDirectory } = buildHomeSnapshot(
 		sources,
 		noProviders,
