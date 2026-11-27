@@ -37,6 +37,8 @@ const row = z.object({
 const project = z.object({
 	agent: short,
 	running: count,
+	totalRows: count.optional(),
+	blockedRows: count.optional(),
 	counts: z.object({ open: count, in_progress: count, blocked: count, done: count }),
 	rows: z.array(row).max(100),
 	updatedAt: time

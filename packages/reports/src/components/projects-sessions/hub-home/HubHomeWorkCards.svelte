@@ -4,20 +4,21 @@
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
-	import {
-		pastDueLabel,
-		workSummary,
-		workEta
-	} from './hubHomePresentation';
-	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
+	import { workSummary, workEta } from './hubHomePresentation';
+	import type { HomeWorkView } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+	import type { OpenHomeSection } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
-	import HubHomePlannable from './HubHomePlannable.svelte';
-	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
-	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
+	let {
+		view,
+		open
+	}: {
+		view: HomeWorkView;
+		open: OpenHomeSection;
+	} = $props();
 </script>
 
 {#snippet empty(text: string, action?: string)}
@@ -30,10 +31,6 @@
 			>{/if}
 	</EmptyState>
 {/snippet}
-
-<HubHomePlannable {view} {open} />
-
-<HubHomeProjectCard {view} open={() => open('projects')} />
 
 <HubHomeCard
 	section="wip"
@@ -55,11 +52,12 @@
 		<hx-p class="hh-wip-line">{workSummary(view.work)}</hx-p>
 		<hx-ul class="po-items">
 			{#each view.work.slice(0, 8) as item, index (item.id)}
-				{@const eta = workEta(item.due, view.now)}
-				{@const passed = view.pastDue.find((run) => run.id === item.id)}
+				{@const eta = workEta(item, view.now)}
 				<HubHomeRow
 					title={item.title}
-					meta={`${item.project} · ${passed ? pastDueLabel(passed) : statusLabel(item.status)}`}
+					meta={eta.tone === 'current'
+						? item.project
+						: `${item.project} · ${statusLabel(item.status)}`}
 					extra={index >= 2}
 					wide={index >= 4}
 				>

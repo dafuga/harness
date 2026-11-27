@@ -1,5 +1,7 @@
-import { expect, type Locator, type Page } from '../../../../test/support/browserTest';
-import { capture } from './hub-home-capture';
+import { readFileSync } from 'node:fs';
+import type { HomePlan } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
+import { capture, captureNeedsYou } from './hub-home-capture';
 import type { CapturePosition, HomeFixture } from './hub-home-fixture.types';
 
 export async function planClickThrough(
@@ -92,3 +94,121 @@ export async function scheduledClickThrough(
 	await page.keyboard.press('Escape');
 	await expect(all).toBeFocused();
 }
+
+export async function planArtifacts(page: Page, plan?: HomePlan) {
+	if (plan)
+		Object.assign(plan, {
+			stage: 'design',
+			planning: {
+				promotions: [],
+				artifacts: {
+					design: {
+						summary: 'Approved designs for the dashboard.',
+						pages: [
+							{
+								name: 'Dashboard',
+								states: { ready: 'Shows the latest plan activity.' },
+								links: [
+									{
+										kind: 'image',
+										label: 'Dashboard mockup',
+										url: 'https://design.example.test/dashboard.png'
+									},
+									{
+										kind: 'link',
+										label: 'Dashboard design canvas',
+										url: 'https://design.example.test/canvas'
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		});
+	await page.route('https://design.example.test/dashboard.png', (route) =>
+		route.fulfill({
+			contentType: 'image/png',
+			body: readFileSync(new URL('../../static/icons/harness-512.png', import.meta.url))
+		})
+	);
+}
+
+export async function expectAnswerGrid(choices: Locator, phone: boolean) {
+	const tiles = await choices.evaluateAll((buttons) =>
+		buttons.map((button) => {
+			const { x, y, width } = button.getBoundingClientRect();
+			return { x, y, width: Math.round(width) };
+		})
+	);
+	const [first, second] = tiles;
+	expect.soft(second.y === first.y, 'Answer tiles share a row above phone widths').toBe(!phone);
+	expect.soft(second.x === first.x, 'Phone answer tiles share a column').toBe(phone);
+	expect
+		.soft(
+			tiles.map(({ width }) => width),
+			'Answer tiles have equal widths'
+		)
+		.toEqual(tiles.map(() => first.width));
+}
+
+export async function expectAnswerDialogs(
+	page: Page,
+	deploy: Locator,
+	screens: { confirm: string; other: string }
+) {
+	await deploy.getByRole('button', { name: /Approve Saturday/ }).click();
+	const confirmation = page.getByRole('dialog', { name: 'Confirm answer' });
+	await expect(confirmation.getByText('Approve Saturday 09:00', { exact: true })).toBeVisible();
+	await expect(deploy.getByRole('group', { name: /Confirm this deploy answer/ })).toHaveCount(0);
+	await captureNeedsYou(page, screens.confirm);
+	await page.keyboard.press('Escape');
+	await expect(confirmation).toHaveCount(0);
+	await expect(deploy.getByRole('button', { name: /Approve Saturday/ })).toBeFocused();
+	const other = deploy.getByRole('button', { name: 'Other…', exact: true });
+	await other.click();
+	const answer = page.getByRole('dialog', { name: 'Other answer' });
+	await expect(answer.getByRole('textbox', { name: 'Your answer' })).toBeFocused();
+	await expect(deploy.locator('input, textarea, select, form')).toHaveCount(0);
+	await captureNeedsYou(page, screens.other);
+	await page.keyboard.press('Escape');
+	await expect(answer).toHaveCount(0);
+	await expect(other).toBeFocused();
+}
+
+export async function recordAnswerMotion(
+	page: Page,
+	row: Locator,
+	size: 'desktop' | 'phone',
+	viewport: { width: number; height: number }
+) {
+	const choice = row.getByRole('button', { name: /Hold harbor/ });
+	await page.emulateMedia({ reducedMotion: 'no-preference' });
+	await choice.scrollIntoViewIfNeeded();
+	await page.evaluate(() => document.fonts.ready.then(() => {}));
+	const record = process.env.TAKE_SCREENSHOT === 'true';
+	if (record)
+		await page.screencast.start({
+			path: test.info().outputPath(`answer-${size}.webm`),
+			size: viewport
+		});
+	try {
+		await choice.click();
+		await expect(row.getByRole('status')).toContainText(/Answer sent.*Hold harbor/);
+		await captureNeedsYou(page, `answer-confirmed-${size}`);
+		await expect(row).toHaveCount(0);
+	} finally {
+		if (record) await page.screencast.stop();
+	}
+}
+
+export const needsYou = (page: Page) => page.getByRole('region', { name: /^Blocked - needs you/ });
+export const openers = (page: Page) =>
+	needsYou(page).getByRole('button', { name: 'Talk to Chief of Staff', exact: true });
+export const widget = (page: Page) =>
+	page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
+export const talk = (page: Page, project: string) =>
+	rowOf(page, project).getByRole('button', { name: 'Talk to Chief of Staff', exact: true });
+export const rowOf = (page: Page, project: string) =>
+	needsYou(page).getByRole('listitem').filter({ hasText: project });
+export const agentsCard = (page: Page) => page.getByRole('region', { name: 'Agents', exact: true });

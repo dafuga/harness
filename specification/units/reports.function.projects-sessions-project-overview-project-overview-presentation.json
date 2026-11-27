@@ -118,10 +118,10 @@
 				"description": "The display-ready projects considered for a filter, band, count, or item detail."
 			},
 			{
-				"name": "etaFor.due",
-				"type": "string | null",
+				"name": "etaFor.item",
+				"type": "OverviewItem",
 				"required": true,
-				"description": "The item due timestamp, or null when no due time is set."
+				"description": "Overview item carrying its current work label, Tracker status and optional due time."
 			},
 			{
 				"name": "etaFor.now",
@@ -471,10 +471,10 @@
 				"name": "etaFor",
 				"inputs": [
 					{
-						"name": "etaFor.due",
-						"type": "string | null",
+						"name": "etaFor.item",
+						"type": "OverviewItem",
 						"required": true,
-						"description": "The item due timestamp, or null when no due time is set."
+						"description": "Overview item carrying its current work label, Tracker status and optional due time."
 					},
 					{
 						"name": "etaFor.now",

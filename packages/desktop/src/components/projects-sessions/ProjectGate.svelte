@@ -20,6 +20,7 @@
 		projects = [],
 		choose,
 		phone,
+		blockers,
 		children
 	}: {
 		available: boolean;
@@ -33,6 +34,8 @@
 		choose?: (projectId: string) => void;
 		/** Phone access settings of this computer; given, the phone hint offers them in a dialog. */
 		phone?: Snippet;
+		/** First Home section, supplied by the native Tracker inbox. */
+		blockers?: Snippet;
 		children?: Snippet;
 	} = $props();
 	/** The one dialog open over the home: the New project form or the phone access settings. */
@@ -58,6 +61,7 @@
 			><BrandMark size={local ? undefined : 64} /></hx-div
 		>
 	</hx-header>
+	{@render blockers?.()}
 	{#if local}<hx-div class="gate-actions">
 			<hx-button class="primary" disabled={!available || busy} aria-busy={busy} onclick={open}
 				>{busy ? 'Opening project…' : 'Open project'}</hx-button

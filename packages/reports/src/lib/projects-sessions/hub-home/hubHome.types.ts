@@ -126,7 +126,7 @@ export interface HomeRun {
 }
 
 export interface HomeWhenDue {
-	state: 'running' | 'queued' | 'blocked';
+	state: 'running' | 'queued' | 'blocked' | 'due';
 	reason: string | null;
 	/** Launch order class: 0 urgent, 1 normal, 2 low. */
 	urgency: number;

@@ -115,6 +115,8 @@ function workProject(agent: string, works: ItemWork[]) {
 	const project: HomeWorkProject = {
 		agent: homeText(agent, 200) ?? 'No project',
 		running: rows.filter((row) => row.state === 'running').length,
+		blockedRows: rows.filter((row) => row.state !== 'running' && row.status === 'blocked').length,
+		totalRows: rows.length,
 		counts,
 		rows: rows.slice(0, homeLiveLimits.rows),
 		updatedAt: works

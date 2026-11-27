@@ -99,11 +99,17 @@ export function bandsFor(cards: OverviewCard[]): OverviewBand[] {
 		.filter((band) => band.cards.length > 0);
 }
 
+const dueStates = { open: 'Due now', in_progress: 'Due now', blocked: 'Blocked', done: 'Done' };
+
 /** @pure The ETA shown for an item, judged against the time given in milliseconds. */
-export function etaFor(due: string | null, now: number): OverviewEta {
+export function etaFor(item: OverviewItem, now: number): OverviewEta {
+	const { due } = item;
 	const at = due === null ? Number.NaN : Date.parse(due);
 	if (Number.isNaN(at)) return { text: 'No ETA', tone: 'none' };
-	if (at < now) return { text: 'Overdue', tone: 'overdue' };
+	if (at <= now) {
+		const fallback = item.live ? 'Running' : dueStates[item.status];
+		return { text: item.workLabel ?? fallback, tone: 'current' };
+	}
 	return { text: `Due ${dayFormat.format(at)}`, tone: 'scheduled' };
 }
 

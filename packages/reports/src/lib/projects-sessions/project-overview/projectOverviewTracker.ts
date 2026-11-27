@@ -127,9 +127,8 @@ function asList(value: unknown, name: string): unknown[] {
 }
 
 function asRecord(value: unknown, name: string): Record<string, unknown> {
-	if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+	if (typeof value !== 'object' || value === null || Array.isArray(value))
 		throw new Error(`malformed tracker ${name}`);
-	}
 	return value as Record<string, unknown>;
 }
 

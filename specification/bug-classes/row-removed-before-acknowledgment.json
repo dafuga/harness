@@ -1,0 +1,184 @@
+{
+	"schemaVersion": 1,
+	"revision": "d69238383ddfe1f15ffe73c57c96ab10be70bb2a",
+	"bugClass": {
+		"id": "row-removed-before-acknowledgment",
+		"title": "Actionable row disappears before its confirmation is visible",
+		"cause": "The view uses membership in the pending list to control the lifetime of a row that also displays the action result. Hiding an answered ID, optimistically removing an item, or replacing the list after a refresh can therefore unmount the row or its enclosing section before the user sees the acknowledged choice and the row finishes its exit.",
+		"criteria": "Follow a successful answer or dismissal from the selected state through the next render. Count a match if any one path hides the row or its section too early: an answered-ID check suppresses it, an optimistic update removes it, or a refresh supplies a list that omits it. Check the last item in a section as well as an item with siblings. The deciding evidence is that removal prevents a visible confirmation followed by a completed collapse. A filter or refresh alone is insufficient.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "!answeredIds.has(",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "!answeredItemIds.includes(",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "answeredIds.add(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "answeredIDs.contains(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": ".filter(item => item.id !==",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": ".removeAll { $0.id ==",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "setQueryData",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "filter",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "splice",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "refreshAsks",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "asks = await",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "invalidateQueries",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "invalidateAll",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "{#if asks.length",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "if !items.isEmpty",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "{#each",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "ForEach",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "out:slide",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "transition:slide",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "on:outroend",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": ".transition(",
+				"weight": 2
+			}
+		],
+		"contextTerms": [
+			"answered",
+			"dismiss",
+			"selected",
+			"confirmed",
+			"receipt",
+			"pending",
+			"asks",
+			"inbox",
+			"reminder",
+			"collapse",
+			"outro"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/hub/",
+				"weight": 8
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 8
+			},
+			{
+				"contains": ".svelte",
+				"weight": 4
+			},
+			{
+				"contains": ".swift",
+				"weight": 4
+			},
+			{
+				"contains": "Inbox",
+				"weight": 4
+			},
+			{
+				"contains": "Reminder",
+				"weight": 3
+			},
+			{
+				"contains": "specification/",
+				"weight": -6
+			},
+			{
+				"contains": "test/",
+				"weight": -7
+			},
+			{
+				"contains": ".test.",
+				"weight": -7
+			},
+			{
+				"contains": ".spec.",
+				"weight": -7
+			},
+			{
+				"contains": "/server/",
+				"weight": -6
+			},
+			{
+				"contains": ".server.",
+				"weight": -6
+			},
+			{
+				"contains": "/workers/",
+				"weight": -6
+			}
+		]
+	}
+}

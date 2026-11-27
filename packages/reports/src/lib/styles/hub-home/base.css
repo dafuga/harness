@@ -96,7 +96,7 @@
 		text-decoration: underline;
 		text-underline-offset: var(--hx-space-3);
 	}
-	.hh-home select.hh-to-chip:hover:not(:disabled) {
+	.hh-home .hh-to-chip select:hover:not(:disabled) {
 		background-color: var(--hx-color-border);
 	}
 }

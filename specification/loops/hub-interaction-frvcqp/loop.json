@@ -1,0 +1,67 @@
+{
+	"name": "hub-interaction-frvcqp",
+	"goal": "Answer confirmation survives refresh, project groups expose running first and due-state labels show the current work state.",
+	"createdAt": "2026-11-27T13:03:02.027Z",
+	"updatedAt": "2026-11-27T16:43:34.482Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T13:03:23.648Z",
+			"evidence": "Home answers lose their selected label on receipt or refresh. Live group summaries omit zero counts, and queued and inactive work appears on first expand. WIP and detail use a red past-due clock."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T13:03:25.010Z",
+			"evidence": "Needs-you scenarios assert dispatch only. Live overview scenarios check running rows without requiring the initial group filter. Past-due scenarios verify the unlisted queue but never inspect WIP badges. Strengthen all three existing paths."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:38:44.459Z",
+			"evidence": "At test-only commit 1803197e04, all six Chromium cases failed on harbor-mbp-2. The selected answer receipt, live project counts and current work labels were missing. Harness red checkpoint 8ea942c35993ef9db607f692dcd0f06f570d6c4eaedc59ee7793ec3cb09d4af1."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:38:49.672Z",
+			"evidence": "62c84f46b7 retains the selected answer through refresh, renders running jobs first, and replaces elapsed overdue labels with the current work state."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:38:55.284Z",
+			"evidence": "At 62c84f46b7 the same six desktop and phone Chromium cases passed on harbor-mbp-2 in 34.6 seconds with the same frozen tests, runner and assertion. Harness green checkpoint f8d4894215e48bdd207e12c08f15e79a27f4c0b1dfe4401e261e7bffd91d4b3b."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:43:34.482Z",
+			"evidence": "siblings-b6e9ab6e-f7e5-4665-90aa-384da174bd4c.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

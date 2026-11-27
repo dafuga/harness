@@ -18,6 +18,8 @@
 			"HomeWorkProject",
 			"HomeLiveOverview",
 			"ItemWork",
+			"LinkedHome",
+			"HomeWorkView",
 			"homeLiveLimits",
 			"buildHomeLiveOverview"
 		]
@@ -88,6 +90,11 @@
 		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-home-work-now",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -161,11 +161,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
-			"via": "reexport",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.service.networking-security-browser-computer",
 			"via": "import",
 			"origin": "derived"
@@ -188,6 +183,11 @@
 		{
 			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
 			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "reexport",
 			"origin": "derived"
 		},
 		{

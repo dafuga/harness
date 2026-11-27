@@ -4,6 +4,7 @@
 <!-- @harness-view overview -->
 <script lang="ts">
 	import { page } from '$app/state';
+	import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
 	import { homeBoard } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
@@ -62,8 +63,10 @@
 			!presentation.staleReading(snapshot.providers.routinesReadAt, now)
 	);
 	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
+	const pastDue = $derived(board?.pastDue ?? []);
+	const unavailable = { status: 'unavailable' } as const;
 	const overview = $derived(
-		snapshot?.overview ?? (settled ? { status: 'unavailable' as const } : null)
+		workOverview(snapshot?.overview ?? (settled ? unavailable : null), pastDue)
 	);
 	const linkedComputers = $derived(live?.linked ?? 0);
 	const projectsFailed = $derived(projectError && !list?.length);
@@ -75,7 +78,7 @@
 		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
 		schedule: board?.upcoming ?? (settled ? [] : null),
-		pastDue: board?.pastDue ?? [],
+		pastDue,
 		quota: snapshot?.providers.quota ?? (settled ? [] : null),
 		projects: list,
 		projectsFailed,
@@ -174,11 +177,8 @@
 		return request;
 	}
 	async function changeSession(id: string, add: boolean) {
-		const result = await api.send<{ controlled: string[] }>(
-			add ? 'POST' : 'DELETE',
-			'/api/hub-home/agents',
-			{ id }
-		);
+		const method = add ? 'POST' : 'DELETE';
+		const result = await api.send<{ controlled: string[] }>(method, '/api/hub-home/agents', { id });
 		if (home) home = { ...home, controlled: result.controlled };
 		refresh();
 	}
@@ -198,7 +198,7 @@
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
 			<HubHomeCards {view} {open} send={reads.send} {receipt} {needsOnly} />
-			{#if !needsOnly}<HubHomeLive reading={view.computers} now={view.now} />{/if}
+			{#if !needsOnly}<HubHomeLive reading={live} {now} {pastDue} />{/if}
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

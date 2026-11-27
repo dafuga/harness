@@ -133,6 +133,7 @@
 					reading={null}
 					{now}
 					local={home.liveOverview}
+					pastDue={view.pastDue}
 				/>{/if}
 			<hx-div class="gate-actions" aria-label="Project and account actions">
 				{#if needsOnly}

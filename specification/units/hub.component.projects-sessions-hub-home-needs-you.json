@@ -16,6 +16,7 @@
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-strong",
@@ -42,6 +43,13 @@
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds, used for how long each ask has waited."
+			},
+			{
+				"name": "HubHomeNeedsYou.reading",
+				"type": "'loading' | 'ready' | 'unavailable'",
+				"required": false,
+				"default": "ready",
+				"description": "Whether the snapshot can establish the blocker count or needs a loading or unavailable message."
 			},
 			{
 				"name": "HubHomeNeedsYou.send",
@@ -106,6 +114,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,4 +1,5 @@
 // @harness-uid u_xxjw7sfoen
+import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { homeProviderReadingIsStale } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
@@ -78,7 +79,7 @@ function trackerHome(home: OwnerHomeSnapshot | null, settled: boolean, now: numb
 		Array.isArray(providers.routines) && !homeProviderReadingIsStale(providers.routinesReadAt, now);
 	const { upcoming, pastDue } = homeBoard(home, routines, now);
 	return {
-		overview,
+		overview: workOverview(overview, pastDue),
 		agents,
 		openAsks,
 		plans,
