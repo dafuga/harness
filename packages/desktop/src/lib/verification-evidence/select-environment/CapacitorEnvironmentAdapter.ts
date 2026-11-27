@@ -4,6 +4,11 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
 import { CapacitorAccountAdapter } from './capacitor-account-adapter/CapacitorAccountAdapter';
 import { CapacitorBridgeAdapter } from './capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import { CapacitorProjectsService } from './CapacitorProjectsService';
+import type {
+	OwnerHomeSnapshot,
+	HomeChatReceipt,
+	TrackerHomeSource
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { phoneTrackerTools } from './phoneTrackerTools';
 import type {
 	AccountNativePlugin,
@@ -66,9 +71,17 @@ export class CapacitorEnvironmentAdapter {
 		}
 		offerVault(phone);
 		const tracker = phoneTrackerTools(plugin);
+		const trackerHome: TrackerHomeSource = {
+			read: async () =>
+				(await plugin.request({ method: 'homeSnapshot', input: {} })).value as OwnerHomeSnapshot,
+			send: async (message) =>
+				(await plugin.request({ method: 'homeChat', input: { ...message } }))
+					.value as HomeChatReceipt
+		};
 		const local = {
 			kind: 'capacitor',
 			local: false,
+			trackerHome,
 			phone,
 			...(tracker ? { tracker } : {})
 		} as const;

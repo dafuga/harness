@@ -15,8 +15,33 @@ test('the browser owner queues one scoped message, only native claims it, and a 
 		const scoped = await fixture.native(OWNER, 'project:synthetic');
 		expect((await serve(homeRequest('PUT', { cookie }, '', payload))).status).toBe(404);
 		expect((await serve(homeRequest('PUT', { bearer: scoped }, '', payload))).status).toBe(404);
-		const first = await serve(homeRequest('PUT', { bearer }, '', payload));
+		const plan = {
+			id: 'fixture-plan',
+			title: 'Plan the fixture',
+			project: null,
+			state: 'draft',
+			updatedAt: '2026-11-21T07:59:00.000Z',
+			stage: 'design',
+			total: 0,
+			done: 0,
+			steps: [],
+			planning: {
+				promotions: [],
+				artifacts: {
+					design: {
+						summary: 'Fixture design',
+						links: [{ kind: 'image', label: 'Mockup', url: 'https://design.example.test/plan.png' }]
+					}
+				}
+			}
+		};
+		const published = { ...payload, plans: [plan] };
+		const first = await serve(homeRequest('PUT', { bearer }, '', published));
 		expect(await first.json()).toEqual({ messages: [] });
+		expect(await (await serve(homeRequest('GET', { cookie }))).json()).toMatchObject({
+			granted: true,
+			snapshot: { plans: [plan] }
+		});
 		const denied = await serve(homeRequest('GET', { cookie: other }));
 		expect(await denied.json()).toEqual({ granted: false, snapshot: null });
 		expect(denied.headers.get('cache-control')).toBe('private, no-store');

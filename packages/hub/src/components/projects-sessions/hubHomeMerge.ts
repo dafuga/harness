@@ -1,6 +1,7 @@
 // @harness-uid u_dinthu4j65
 import type {
 	HomeAgent,
+	HomePlan,
 	HomeProviderReadings,
 	HomeSubscription,
 	OwnerHomeSnapshot
@@ -95,6 +96,12 @@ function mergeRoutines(
 	return { routines: routines as typeof runs, routinesReadAt: latest ?? null };
 }
 
+function newerPlan(candidate: HomePlan, known: HomePlan) {
+	const difference = Date.parse(candidate.updatedAt) - Date.parse(known.updatedAt);
+	if (difference !== 0) return difference > 0;
+	return Boolean(candidate.planning && !known.planning);
+}
+
 function betterOverview(a: OwnerHomeSnapshot['overview'], b: OwnerHomeSnapshot['overview']) {
 	if (a.status !== 'ready') return false;
 	if (b.status !== 'ready') return true;
@@ -139,7 +146,7 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 		plans: newest(
 			snapshots.flatMap((entry) => entry.plans),
 			(plan) => plan.id,
-			(a, b) => Date.parse(a.updatedAt) > Date.parse(b.updatedAt)
+			newerPlan
 		),
 		overdue: newest(
 			snapshots.flatMap((entry) => entry.overdue ?? []),

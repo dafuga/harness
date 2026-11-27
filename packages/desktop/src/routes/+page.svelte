@@ -108,6 +108,13 @@
 		{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
 			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
 		{/if}
+		{#if account.environment?.trackerHome}
+			<hx-a
+				class="project-overview-link"
+				href={resolve('/tracker' as '/') + '?view=work'}
+				data-sveltekit-reload>Plans and schedule</hx-a
+			>
+		{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}
 			<hx-div class="account-status" class:phone-account={!local}>

@@ -194,3 +194,9 @@ export interface HomeChatReceipt {
 	/** The Tracker id of a stored Hub message. */
 	messageId?: string;
 }
+
+/** The active local Mac or approved connection used by the installed apps. */
+export interface TrackerHomeSource {
+	read(): Promise<OwnerHomeSnapshot>;
+	send(message: HomeChatInput): Promise<HomeChatReceipt>;
+}

@@ -7,7 +7,7 @@
 	import type { HomePlan } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { planLabels } from './hubHomePresentation';
 
-	let { plan, close }: { plan: HomePlan; close: () => void } = $props();
+	let { plan, close, mac = false }: { plan: HomePlan; close: () => void; mac?: boolean } = $props();
 </script>
 
 <Modal
@@ -17,7 +17,11 @@
 	variant="section"
 	onClose={close}
 >
-	<TrackerPlanningDetails stage={plan.stage ?? 'idea'} planning={plan.planning} />
+	<TrackerPlanningDetails
+		stage={plan.stage}
+		planning={plan.planning}
+		linkTarget={mac ? 'tracker-artifact' : '_blank'}
+	/>
 	{#if plan.steps.length}
 		<hx-section aria-label="Plan steps">
 			<hx-h3>Steps · {plan.done} of {plan.total} complete</hx-h3>

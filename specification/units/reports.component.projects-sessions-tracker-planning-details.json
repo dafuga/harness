@@ -13,6 +13,7 @@
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-h4",
+			"reports.component.shared-primitives-atoms-html-img",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
@@ -30,7 +31,8 @@
 			{
 				"name": "TrackerPlanningDetails.stage",
 				"type": "TrackerStage",
-				"required": true,
+				"required": false,
+				"default": "undefined (omitted)",
 				"description": "The item's current stage, marked in the four-stage list."
 			},
 			{
@@ -98,6 +100,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-h4",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-img",
 			"via": "import",
 			"origin": "derived"
 		},

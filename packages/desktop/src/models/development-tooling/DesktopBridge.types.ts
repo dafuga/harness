@@ -29,6 +29,7 @@ import type { EvidenceArtifactResult } from '../verification-evidence/DesktopEvi
 import type { ProjectTaskRequest } from '../projects-sessions/ProjectTask.types';
 import type { RunEvent } from './RunContext.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
+import type { TrackerHomeSource } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { TrackerInboxSource } from './TrackerInbox.types';
 import type { channels } from './DesktopBridgeValues';
 import type { DesignCanvasPage } from '$reports/utils/planning-collaboration/designCanvas.types';
@@ -155,6 +156,7 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 	projectOverview?(): Promise<OverviewSnapshot>;
 	/** Direct inbox access on this Mac through the trusted local transport. */
 	trackerInbox?: TrackerInboxSource;
+	trackerHome?: TrackerHomeSource;
 	pendingComments?(input?: ProjectContext): Promise<HumanCommentResult[]>;
 	listProjects?(): Promise<DesktopProject[]>;
 	selectProject?(input: { projectId: string }): Promise<ProjectSnapshot>;

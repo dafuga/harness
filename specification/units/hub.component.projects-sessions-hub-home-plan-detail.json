@@ -1,0 +1,97 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-plan-detail",
+	"uid": "u_rwyjhp4g5i",
+	"kind": "component",
+	"title": "HubHomePlanDetail",
+	"responsibility": "Owns the HubHomePlanDetail Svelte component.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-ol",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte"],
+		"symbols": ["HubHomePlanDetail"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "HubHomePlanDetail.plan",
+				"type": "HomePlan",
+				"required": true
+			},
+			{
+				"name": "HubHomePlanDetail.close",
+				"type": "() => void",
+				"required": true
+			},
+			{
+				"name": "HubHomePlanDetail.mac",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomePlanDetail",
+				"type": "markup"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

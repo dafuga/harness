@@ -4,6 +4,7 @@ import {
 	noProviders
 } from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
 import { listHomeAgents } from '../../../reports/src/lib/projects-sessions/hub-home/homeDirectAgents';
+import { readTrackerSources } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
 import type { TrackerItemRecord } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
 import {
@@ -33,7 +34,16 @@ const flaggedAsk = {
 	]
 };
 
-test('Tracker plan children, due items, current question and privacy survive projection', () => {
+test('Tracker plan artifacts, children, due items, current question and privacy survive projection', async () => {
+	const planning = {
+		promotions: [],
+		artifacts: {
+			design: {
+				summary: 'Fixture design',
+				links: [{ kind: 'image', label: 'Mockup', url: 'https://design.example.test/plan.png' }]
+			}
+		}
+	};
 	const work = { ...base, parent: plan.id, ...flaggedAsk };
 	const completed = { ...base, id: 'step-two', parent: plan.id, status: 'done' as const };
 	const sensitive = { ...base, id: 'hidden', parent: plan.id, sensitive: true };
@@ -47,12 +57,24 @@ test('Tracker plan children, due items, current question and privacy survive pro
 		recurring: true,
 		paused: false
 	};
+	const fetcher = vi
+		.fn<typeof fetch>()
+		.mockImplementation(async (url) =>
+			Response.json(
+				String(url).includes('/items?')
+					? [{ ...plan, stage: 'design', planning }, work, completed, sensitive]
+					: []
+			)
+		);
+	const sources = await readTrackerSources(fetcher, true);
 	const home = buildHomeSnapshot(
-		{ items: [plan, work, completed, sensitive], runs: [], machines: [] },
+		sources,
 		{ ...noProviders, routines: [routine], routinesReadAt: updated_at },
 		now
 	);
-	expect(home.plans).toMatchObject([{ id: plan.id, total: 2, done: 1, state: 'draft' }]);
+	expect(home.plans).toMatchObject([
+		{ id: plan.id, total: 2, done: 1, state: 'draft', stage: 'design', planning }
+	]);
 	// The in-progress task is Work in progress, not a scheduled start.
 	// The synthetic plan belongs to the Chief of Staff, whose list stays off the schedule.
 	expect(home.scheduled.map((entry) => entry.id)).toEqual(['routine']);

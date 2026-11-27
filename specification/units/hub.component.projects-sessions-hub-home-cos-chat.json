@@ -46,6 +46,12 @@
 				"type": "SendHomeChat",
 				"required": true,
 				"description": "Sends one Home message through a linked computer or the Hub queue."
+			},
+			{
+				"name": "HubHomeCosChat.showCard",
+				"type": "boolean",
+				"required": false,
+				"default": true
 			}
 		],
 		"outputs": [

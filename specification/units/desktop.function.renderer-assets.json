@@ -48,6 +48,12 @@
 				"examples": ["", "ws://localhost:4312"]
 			},
 			{
+				"name": "rendererPolicy.planningImages",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "rendererAssets.root",
 				"type": "string",
 				"required": true,
@@ -121,6 +127,12 @@
 						"default": "",
 						"description": "Optional CSP source text appended verbatim to connect-src after 'self' when nonempty; this function does not parse or validate it. Defaults to the empty string.",
 						"examples": ["", "ws://localhost:4312"]
+					},
+					{
+						"name": "rendererPolicy.planningImages",
+						"type": "boolean",
+						"required": false,
+						"default": false
 					}
 				],
 				"outputs": [

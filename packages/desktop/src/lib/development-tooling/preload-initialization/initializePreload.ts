@@ -60,6 +60,10 @@ const trackerInbox: TrackerInboxSource = {
 	watch: (listener) => watchLocalTracker(transport, inboxRead, listener)
 };
 const bridge: DesktopBridge = {
+	trackerHome: {
+		read: call('homeSnapshot'),
+		send: call('homeChat')
+	},
 	gameCreate: call('gameCreate'),
 	gameImageGenerate: call('gameImageGenerate'),
 	gameLevelGenerate: call('gameLevelGenerate'),

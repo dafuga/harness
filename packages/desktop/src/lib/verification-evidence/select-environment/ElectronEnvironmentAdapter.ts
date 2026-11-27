@@ -29,6 +29,7 @@ export class ElectronEnvironmentAdapter {
 		return {
 			kind: 'electron',
 			bridge: harness,
+			trackerHome: harness?.trackerHome,
 			local: true,
 			host: whole ? (harnessRemote as RemoteDesktopControl) : undefined
 		};

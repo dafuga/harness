@@ -6,7 +6,7 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { HomeRun } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import { runDay, runTime } from './hubHomePresentation';
+	import { runDay, runTime, scheduledChatItem } from './hubHomePresentation';
 	import { homeCosChat } from './hubHomeChatContext.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
@@ -77,19 +77,7 @@
 									class="hh-open-row"
 									aria-label={run.title}
 									aria-haspopup="dialog"
-									onclick={(event) =>
-										chat?.open(event.currentTarget, {
-											id: run.id,
-											title: run.title,
-											details: [
-												run.source === 'claude' ? 'Claude routine' : 'Tracker',
-												run.at,
-												run.agent,
-												run.machine
-											]
-												.filter(Boolean)
-												.join(' · ')
-										})}
+									onclick={(event) => chat?.open(event.currentTarget, scheduledChatItem(run))}
 								></hx-button>
 							</hx-div>
 						</hx-li>

@@ -17,7 +17,7 @@
 		planning,
 		linkTarget = '_blank'
 	}: {
-		stage: TrackerStage;
+		stage?: TrackerStage;
 		planning?: TrackerPlanning;
 		linkTarget?: '_blank' | 'tracker-artifact';
 	} = $props();
@@ -26,7 +26,7 @@
 {#snippet designLinks(links: TrackerArtifact['links'])}
 	{#each links ?? [] as link (link)}
 		<hx-p>
-			{#if link.kind === 'image'}
+			{#if link.kind === 'image' || (!link.kind && /\.(?:png|webp|jpe?g|avif|gif)$/i.test(new URL(link.url).pathname))}
 				<hx-img
 					class="tracker-planning-image"
 					src={link.url}

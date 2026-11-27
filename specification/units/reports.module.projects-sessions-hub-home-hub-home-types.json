@@ -30,7 +30,8 @@
 			"OwnerHomeSnapshot",
 			"HomeChatInput",
 			"HomeChatStatus",
-			"HomeChatReceipt"
+			"HomeChatReceipt",
+			"TrackerHomeSource"
 		]
 	},
 	"contract": {
@@ -50,6 +51,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-planning",
 			"via": "import",
 			"origin": "derived"
 		},

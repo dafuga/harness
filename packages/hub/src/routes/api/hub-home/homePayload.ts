@@ -11,6 +11,7 @@ import {
 import { controlledIdPattern } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
 import {
+	trackerArtifactMaxBytes,
 	trackerPlanningSchema,
 	trackerStageSchema
 } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
@@ -94,6 +95,15 @@ const openAsk = z.object({
 	since: time
 });
 
+const planning = trackerPlanningSchema.refine(
+	({ artifacts }) =>
+		Object.values(artifacts).every(
+			(artifact) =>
+				new TextEncoder().encode(JSON.stringify(artifact)).byteLength <= trackerArtifactMaxBytes
+		),
+	'Each stage artifact must fit the Tracker limit'
+);
+
 const plan = z
 	.object({
 		id,
@@ -101,7 +111,7 @@ const plan = z
 		project: short.nullable(),
 		state: z.enum(['draft', 'in-review', 'approved', 'in-progress', 'done']),
 		stage: trackerStageSchema.optional(),
-		planning: trackerPlanningSchema.optional(),
+		planning: planning.optional(),
 		updatedAt: time,
 		total: unsigned,
 		done: unsigned,

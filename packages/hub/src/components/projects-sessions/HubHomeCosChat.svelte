@@ -16,7 +16,12 @@
 	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 
-	let { agent, now, send }: { agent?: HomeAgent; now: string; send: SendHomeChat } = $props();
+	let {
+		agent,
+		now,
+		send,
+		showCard = true
+	}: { agent?: HomeAgent; now: string; send: SendHomeChat; showCard?: boolean } = $props();
 	const chat = homeCosChat() ?? provideHomeCosChat();
 	const name = 'Chief of Staff';
 	const item = $derived(chat.target?.item);
@@ -72,23 +77,25 @@
 	}
 </script>
 
-<hx-section class="po-card hh-cos-card" aria-label={name}>
-	<hx-div class="hh-cos-heading">
-		<hx-h2 class="hh-needs-title">{name}</hx-h2>
-		{#if agent}
-			{@const tone = overviewTone(agent.state)}
-			<Pill tone={`hh-tone po-state po-${tone}`} state={tone}>{agentLabels[agent.state]}</Pill>
-		{:else}
-			<hx-p class="po-sessions">Status unavailable</hx-p>
-		{/if}
-	</hx-div>
-	<hx-button
-		type="button"
-		class="po-action"
-		aria-haspopup="dialog"
-		onclick={(event) => chat.open(event.currentTarget)}>Open chat</hx-button
-	>
-</hx-section>
+{#if showCard}
+	<hx-section class="po-card hh-cos-card" aria-label={name}>
+		<hx-div class="hh-cos-heading">
+			<hx-h2 class="hh-needs-title">{name}</hx-h2>
+			{#if agent}
+				{@const tone = overviewTone(agent.state)}
+				<Pill tone={`hh-tone po-state po-${tone}`} state={tone}>{agentLabels[agent.state]}</Pill>
+			{:else}
+				<hx-p class="po-sessions">Status unavailable</hx-p>
+			{/if}
+		</hx-div>
+		<hx-button
+			type="button"
+			class="po-action"
+			aria-haspopup="dialog"
+			onclick={(event) => chat.open(event.currentTarget)}>Open chat</hx-button
+		>
+	</hx-section>
+{/if}
 
 <Modal isOpen={Boolean(chat.target)} title={name} variant="section" onClose={chat.close}>
 	<hx-div class="hh-cos-widget">

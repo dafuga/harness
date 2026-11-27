@@ -18,16 +18,18 @@ const types: Record<string, string> = {
 /**
  * `connect` names the one address beside the app itself that a page may open: its own socket.
  * A picture or a recorded clip may come from an object URL the page made of bytes it checked;
- * no script, frame or object may, and nothing may come from another origin.
+ * no script, frame or object may. The Plans and schedule document also displays HTTPS mockups.
  */
-export function rendererPolicy(html: string, connect = ''): string {
+export function rendererPolicy(html: string, connect = '', planningImages = false): string {
 	const hashes = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(
 		(m) => "'sha256-" + createHash('sha256').update(m[1]).digest('base64') + "'"
 	);
 	return (
 		"default-src 'self'; script-src 'self' " +
 		hashes.join(' ') +
-		"; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; font-src 'self'; connect-src 'self'" +
+		"; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:" +
+		(planningImages ? ' https:' : '') +
+		"; media-src 'self' blob:; font-src 'self'; connect-src 'self'" +
 		(connect ? ' ' + connect : '') +
 		"; frame-src 'none'; object-src 'none'; base-uri 'none'"
 	);
@@ -56,10 +58,16 @@ export async function rendererAssets(root: string, url: string, connect = ''): P
 		return new Response('Refused', { status: 403 });
 	const bytes = await readFile(actual),
 		html = extname(actual) === '.html';
+	const request = new URL(url);
+	const planningImages = html && path === '/tracker' && request.searchParams.get('view') === 'work';
 	return new Response(bytes, {
 		headers: {
 			'Content-Type': types[extname(actual)] ?? 'application/octet-stream',
-			'Content-Security-Policy': rendererPolicy(html ? bytes.toString() : '', connect),
+			'Content-Security-Policy': rendererPolicy(
+				html ? bytes.toString() : '',
+				connect,
+				planningImages
+			),
 			'X-Content-Type-Options': 'nosniff'
 		}
 	});
