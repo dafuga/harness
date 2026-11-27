@@ -42,6 +42,35 @@ test('a refused flag is kept on its item and for Chief of Staff, and still fails
 			expect(out).toContain('kept for Chief of Staff');
 			expect(items.getStored(channelItem).notes_log.at(-1)?.text).toContain(outage);
 		}
+		for (const [question, reason] of [
+			[
+				'Tracker refused move-on from this launched run: only Daniel can park or close a next step. May I use the ignore action for this cleanup?',
+				'move-on'
+			],
+			['Which command should I use to close this already approved cleanup?', 'tool or process'],
+			['Should I change the next-step record?', 'next-step record']
+		]) {
+			const { code, out } = await run(
+				'flag',
+				channelItem,
+				question,
+				...choices,
+				'--recommend',
+				'1'
+			);
+			expect(code, question).toBe(1);
+			expect(out).toContain(reason);
+			expect(out).toContain('kept for Chief of Staff');
+			expect(inbox()).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({
+						item_id: channelItem,
+						kind: 'flag-refused',
+						reason: expect.stringContaining(question)
+					})
+				])
+			);
+		}
 		expect(items.getStored(channelItem)).toMatchObject({ needs_daniel: false, question: null });
 		expect(inbox()).toContainEqual(
 			expect.objectContaining({ item_id: channelItem, kind: 'flag-refused' })

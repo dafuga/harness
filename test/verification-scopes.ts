@@ -154,6 +154,8 @@ export const scopes: Record<string, VerificationScope> = {
 			},
 			'test/backend-boundaries.test.ts': {
 				'remote pages and child frames cannot use the project bridge': 'project-scope',
+				'only the packaged Tracker and Projects screens can open HTTP and HTTPS text links':
+					'project-scope',
 				'IPC refuses unknown operations, invalid regions and unapproved changes': 'project-scope',
 				'subscription subprocesses omit API overrides without changing the parent':
 					'cli-boundaries',
