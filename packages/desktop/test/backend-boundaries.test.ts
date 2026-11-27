@@ -15,6 +15,24 @@ test('remote pages and child frames cannot use the project bridge', () => {
 	expect(gate.validate('file:///tmp/unknown.html')).toBe(false);
 });
 
+test('only the packaged Tracker and Projects screens can open HTTP and HTTPS text links', () => {
+	const gate = new NavigationValidator();
+	const web = 'https://example.invalid/item';
+	expect(gate.allowsTrackerTextLink('harness://app/projects', web, '_blank')).toBe(true);
+	expect(gate.allowsTrackerTextLink('harness://app/tracker', 'http://example.invalid/', '')).toBe(
+		true
+	);
+	expect(gate.allowsTrackerTextLink('harness://app/settings', web, '_blank')).toBe(false);
+	expect(gate.allowsTrackerTextLink('https://example.invalid/projects', web, '_blank')).toBe(false);
+	expect(gate.allowsTrackerTextLink('harness://app/projects', web, 'named')).toBe(false);
+	expect(gate.allowsTrackerTextLink('harness://app/projects', 'file:///tmp/item', '_blank')).toBe(
+		false
+	);
+	expect(gate.allowsTrackerTextLink('harness://app/projects', 'javascript:void(0)', '_blank')).toBe(
+		false
+	);
+});
+
 test('IPC refuses unknown operations, invalid regions and unapproved changes', () => {
 	const gate = new IpcRequestValidator();
 	expect(
