@@ -4,7 +4,7 @@
 	"uid": "u_gs5pnxnxt4",
 	"kind": "function",
 	"title": "pickTrackerModel",
-	"responsibility": "Select a Tracker model by activity, Claude only until the Codex reset, honor eligible pins and escalate along the route.",
+	"responsibility": "Select Astra high for unpinned non-deploy Tracker work after the Claude-only window. Honor eligible pins and retain Claude deployment routing on launch and retry.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -74,7 +74,7 @@
 			{
 				"name": "retryTrackerModel",
 				"type": "TrackerModelRung",
-				"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
+				"description": "Eligible pinned model and effort, the next Claude rung during its window, or the current automatic model for another attempt."
 			}
 		],
 		"errors": [],
@@ -139,7 +139,7 @@
 					{
 						"name": "retryTrackerModel",
 						"type": "TrackerModelRung",
-						"description": "Pinned model, next eligible model, or higher Sol effort for another attempt."
+						"description": "Eligible pinned model and effort, the next Claude rung during its window, or the current automatic model for another attempt."
 					}
 				],
 				"errors": [],

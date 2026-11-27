@@ -27,7 +27,8 @@ const defaultLadder: readonly TrackerModelRung[] = [
 		model: 'claude-opus-5-5',
 		effort: 'high',
 		price: { input: 4, output: 20, cacheRead: 0.2, cacheWrite: 8 }
-	}
+	},
+	{ id: 'astra', cli: 'codex', model: 'gpt-6.2-astra', effort: 'high', price: null }
 ];
 
 const pinnedModels: readonly TrackerModelRung[] = [
@@ -64,6 +65,8 @@ export function parseTrackerModelSpec(
 	const effort = explicitEffort === '' ? undefined : explicitEffort;
 	const alias = name.toLowerCase();
 	if (alias === 'gpt-6.1-sol') throw new RangeError('use gpt-6.2-sol instead of gpt-6.1-sol');
+	// The provider ID was already a valid explicit pin with Codex's xhigh default.
+	if (alias === 'gpt-6.2-astra') return pinnedProviderModel(name, effort, ladder);
 	return namedPin(alias, effort, ladder) ?? pinnedProviderModel(name, effort, ladder);
 }
 

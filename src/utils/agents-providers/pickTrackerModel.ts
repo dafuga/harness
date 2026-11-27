@@ -1,5 +1,5 @@
 // @harness-uid u_gs5pnxnxt4
-import { ladderFrom, parseTrackerModelSpec, solEfforts } from './parseTrackerModelSpec';
+import { ladderFrom, parseTrackerModelSpec } from './parseTrackerModelSpec';
 import {
 	classifyTrackerTask,
 	floorReasons,
@@ -54,16 +54,9 @@ function claudeRoute(item: TrackerModelItem, ladder: TrackerModelRung[], restric
 	return plan([medium, high, top], 'features, fixes, ops and triage: Sonnet medium');
 }
 
-function eligibleLadder(route: TrackerTaskRoute, ladder: TrackerModelRung[], restricted: boolean) {
-	const [, , terra, sol, opus] = ladder;
-	switch (route) {
-		case 'live-deploy':
-			return [opus];
-		case 'computer-use':
-			return restricted ? [sol] : [terra, sol];
-		default:
-			return [sol];
-	}
+function defaultRung(route: TrackerTaskRoute, ladder: TrackerModelRung[]) {
+	const [, , , , opus, astra] = ladder;
+	return route === 'live-deploy' ? opus : astra;
 }
 
 export function pickTrackerModel(
@@ -92,9 +85,12 @@ function pinnedSelection(
 	const rung = parseTrackerModelSpec(item.model ?? '', ladder);
 	const raised = raisedPinReason(item, rung, context);
 	if (!raised) return { rung, kind, reason: `named on the item (${item.model})` };
+	const [, , , sol, opus] = ladder;
 	const replacement = claude
 		? claudeRoute(item, ladder, true).steps[0]
-		: eligibleLadder(route === 'live-deploy' ? route : 'default', ladder, true)[0];
+		: route === 'live-deploy'
+			? opus
+			: sol;
 	const name = { opus: 'Opus', sonnet: 'Sonnet' }[replacement.id] ?? 'Sol';
 	const effort = replacement.id === 'sol' ? solEffort(kind, size) : replacement.effort;
 	return {
@@ -113,14 +109,13 @@ function automaticSelection(
 	const { kind, size, route, restrictions, claude } = context;
 	const plan = claude
 		? claudeRoute(item, ladder, restrictions.length > 0)
-		: { steps: eligibleLadder(route, ladder, restrictions.length > 0), why: '' };
+		: { steps: [defaultRung(route, ladder)], why: '' };
 	const { index, why } = adjustByHistory(plan.steps, history, cfg?.autolaunch?.learning);
 	const rung = plan.steps[index];
-	const effort = rung.id === 'sol' ? solEffort(kind, size) : rung.effort;
-	const label = claude ? `${rung.id} ${effort}` : rung.id;
+	const label = `${rung.id} ${rung.effort}`;
 	const window = claude ? [plan.why, windowNote] : [];
 	return {
-		rung: { ...rung, effort },
+		rung,
 		kind,
 		reason: [`${kind}/${size}: ${label}`, ...window, ...why].join('; ')
 	};
@@ -154,17 +149,7 @@ export function retryTrackerModel(
 	const restricted = floorReasons(item).length > 0;
 	const ladder = ladderFrom(cfg);
 	if (claudeOnly({ cfg, now })) return nextClaudeRung(claudeRoute(item, ladder, restricted), run);
-	const eligible = eligibleLadder(trackerTaskRoute(item), ladder, restricted);
-	const previous = run.rung === 'sol-xhigh' ? 'sol' : run.rung;
-	const index = eligible.findIndex(({ id }) => id === previous);
-	const rung = eligible[Math.min(index + 1, eligible.length - 1)];
-	if (rung.id !== 'sol') return rung;
-	const current = solEfforts.indexOf(run.effort ?? '');
-	const effort =
-		previous === 'sol' && current >= 0
-			? (solEfforts[current + 1] ?? 'xhigh')
-			: solEffort(classifyTrackerTask(item), sizeOf(item));
-	return { ...rung, effort };
+	return defaultRung(trackerTaskRoute(item), ladder);
 }
 
 // A failed Claude rung moves to the next step of its route; an unknown rung restarts at the first.
