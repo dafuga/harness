@@ -5,11 +5,42 @@ import { once } from 'node:events';
 import { expect, test, vi } from 'vitest';
 import { measureWorkload } from '../../support/measureWorkload';
 import { PrivateBrowserAgentAdapter } from '../../../src/adapters/execution-runtimes/PrivateBrowserAgentAdapter';
+import { VaultDeviceRepository } from '../../../src/repositories/accounts-access/VaultDeviceRepository';
+import { PrivateBrowserPhoneService } from '../../../src/services/execution-runtimes/PrivateBrowserPhoneService';
+import type { PrivateBrowserFieldScope } from '../../../src/services/execution-runtimes/PrivateBrowserPhoneService.types';
+import { FakePhone } from '../../support/credential-vault/phone';
 import { PrivateBrowserGateService } from '../../../src/services/execution-runtimes/PrivateBrowserGateService';
 import { createTempDirectory } from '../../support/temporary';
 
 const unexposed = ['/finish', '/screen', '/json/list', '/devtools', '/logs', '/recording'];
 const agentUid = process.getuid?.() === 65534 ? 65533 : 65534;
+
+function deviceDelivery(gate: PrivateBrowserGateService) {
+	const phone = new FakePhone('paired-fixture');
+	const origin = 'https://broker.fixture.test';
+	const devices = new VaultDeviceRepository(
+		[{ id: phone.deviceId, signingKey: phone.signingKey, role: 'approver' }],
+		origin
+	);
+	const delivery = new PrivateBrowserPhoneService({
+		gate,
+		devices,
+		submitField: async () => undefined
+	});
+	const reviewedField = vi.fn<() => PrivateBrowserFieldScope | undefined>(() => ({
+		executor: 'fixture-executor',
+		origin: 'https://provider.fixture.test',
+		tabId: 'fixture-tab',
+		field: 'fixture-field',
+		action: 'submit-fixture',
+		recipeDigest: 'a'.repeat(64)
+	}));
+	const activeOffer = () => {
+		const { nonce } = devices.issue(phone.deviceId);
+		return delivery.activeOffer(phone.prove(origin, '/v1/private-browser/offer', nonce));
+	};
+	return { deviceId: phone.deviceId, nativeEntry: { delivery, reviewedField }, activeOffer };
+}
 
 async function fixture() {
 	const directory = await createTempDirectory('harness-private-agent-', '/tmp');
@@ -22,12 +53,14 @@ async function fixture() {
 	await gate.recover();
 	const peerUid = vi.fn<() => number | null>(() => agentUid);
 	const reviewedRead = vi.fn(async () => ({ state: 'reviewed' }));
+	const device = deviceDelivery(gate);
 	const adapter = new PrivateBrowserAgentAdapter({
 		socketPath,
 		agentUid,
 		peerUid,
 		gate,
-		deviceId: 'paired-fixture',
+		deviceId: device.deviceId,
+		...{ nativeEntry: device.nativeEntry },
 		reviewedRead
 	});
 
@@ -38,7 +71,7 @@ async function fixture() {
 			rmSync(directory, { recursive: true, force: true });
 		}
 	};
-	return { adapter, socketPath, close, peerUid, gate, reviewedRead };
+	return { adapter, socketPath, close, peerUid, gate, reviewedRead, ...device };
 }
 
 function call(socketPath: string, path: string, method = 'POST', body?: string) {
@@ -80,7 +113,7 @@ test('only reviewed reads, request and status are exposed and private entry bloc
 		'adapter.execution-runtimes-private-browser-agent',
 		'unix-agent-read-and-private-refusal',
 		async () => {
-			const { adapter, socketPath, close, gate, reviewedRead } = await fixture();
+			const { adapter, socketPath, close, gate, reviewedRead, activeOffer } = await fixture();
 			try {
 				await adapter.listen();
 				expect(await call(socketPath, '/status', 'GET')).toEqual({
@@ -113,6 +146,7 @@ test('only reviewed reads, request and status are exposed and private entry bloc
 				});
 				expect(reviewedRead).toHaveBeenCalledTimes(1);
 				const { requestId } = admitted.body as { requestId: string };
+				expect(activeOffer()).toMatchObject({ requestId, field: 'fixture-field' });
 				expect(await gate.finish(requestId, 'paired-fixture')).toBe(true);
 				expect(await call(socketPath, '/status', 'GET')).toEqual({
 					status: 200,
@@ -143,6 +177,23 @@ test('close preserves a socket whose bind failed because another service owns th
 		expect(response).toBe(200);
 	} finally {
 		await new Promise<void>((resolve) => existing.close(() => resolve()));
+		await close();
+	}
+});
+
+test('an unavailable native offer cancels admission without exposing a private request', async () => {
+	const { adapter, socketPath, close, nativeEntry, activeOffer, gate } = await fixture();
+	try {
+		await adapter.listen();
+		nativeEntry.reviewedField.mockReturnValueOnce(undefined);
+		expect(await call(socketPath, '/private-entry')).toEqual({
+			status: 409,
+			body: { error: 'Private entry unavailable' }
+		});
+		expect(activeOffer()).toBeUndefined();
+		expect(gate.receipt()?.outcome).toBe('aborted');
+		expect((await call(socketPath, '/read')).status).toBe(200);
+	} finally {
 		await close();
 	}
 });
