@@ -1,3 +1,4 @@
+// @harness-uid u_oexlu2ge7b
 import { readFileSync } from 'node:fs';
 import { dirname, isAbsolute, join } from 'node:path';
 import { missingTmuxSession } from '../../../adapters/projects-sessions/tracker-tmux-adapter/trackerTmuxClose';

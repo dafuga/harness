@@ -55,6 +55,10 @@ async function watchWorker(directory: string, worker: number, start: string, min
 		}
 		await Bun.sleep(1500);
 	}
+	await cleanupAfterWorker(directory);
+}
+
+async function cleanupAfterWorker(directory: string) {
 	if (!existsSync(directory)) return;
 	const remaining = await sweepHygiene(directory);
 	if (remaining.length) {

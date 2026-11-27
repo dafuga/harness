@@ -44,6 +44,7 @@ export function hygieneFixture(root: string, tmux: string) {
 				'-e',
 				'HARNESS_TRACKER_ATTEMPT=' + token,
 				'/usr/bin/env',
+				'-i',
 				...Object.entries(env).map(([name, value]) => name + '=' + value),
 				'/bin/sh',
 				worker,
