@@ -1,0 +1,103 @@
+{
+	"schemaVersion": 1,
+	"revision": "415c365ca75ee61fe2c85c3de0647216657e6d2c",
+	"bugClass": {
+		"id": "serial-workflow-timeout",
+		"title": "Serial CI stages exceed the job time limit",
+		"cause": "A single CI workflow job executes all check stages serially, so cumulative runtime approaches or exceeds its timeout; there is no parallel job split or headroom guard to keep execution within the limit.",
+		"criteria": "Match when a workflow defines one job that sequences multiple check stages and their combined runtime can consume the job timeout, without parallelizing stages or enforcing a runtime/headroom guard. Each condition is sufficient: serial accumulation toward the timeout, or lack of a guard against it. Exclude cases where the limit is exceeded by one independently slow stage rather than cumulative serial work.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "timeout-minutes:",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "needs:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "steps:",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "strategy:",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "matrix:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "workflow_dispatch:",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "Promise.all",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "&&",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "run:",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "jobs:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "concurrency:",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"workflow",
+			"jobs",
+			"steps",
+			"timeout-minutes",
+			"needs",
+			"matrix",
+			"checks",
+			"ci"
+		],
+		"pathHints": [
+			{
+				"contains": ".github/workflows/",
+				"weight": 10
+			},
+			{
+				"contains": "workflow",
+				"weight": 5
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "packages/",
+				"weight": -1
+			},
+			{
+				"contains": "src/",
+				"weight": -1
+			}
+		]
+	}
+}
