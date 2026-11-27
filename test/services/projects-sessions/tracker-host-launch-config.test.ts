@@ -7,6 +7,12 @@ import {
 	seedFailedRuns
 } from '../../support/trackerLaunchConfigFixture';
 import { withTempDir } from '../../support/temporary';
+import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
+import { trackerNodeApi } from '../../../src/services/projects-sessions/tracker-node-service/trackerNodeListeners';
+import { TrackerSupervisorService } from '../../../src/services/projects-sessions/TrackerSupervisorService';
+import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
+import { recoverTrackerSession } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerSessionRecovery';
+import { trackerRecoveryLaunch } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerSessionHealthRuntime';
 
 const minute = 60_000;
 
@@ -47,6 +53,102 @@ test('configured learning, ladder, Claude window and default ETA reach the launc
 			});
 		} finally {
 			fixture.database.close();
+		}
+	}));
+
+test('an explicit provider in the native config reaches the actual launcher and its receipt', () =>
+	withTempDir('hnt-provider-', async (root) => {
+		const fixture = configuredLaunchRuntime(root, {
+			routing: { preferredProvider: { provider: 'codex' } }
+		});
+		try {
+			expect(await launchFixtureItem(fixture, 'next200004')).toMatchObject({
+				model: 'gpt-6.2-sol',
+				effort: 'medium',
+				reason: expect.stringContaining('Codex preferred')
+			});
+			expect(() =>
+				configuredLaunchRuntime(root, {
+					routing: { preferredProvider: { provider: 'claude', until: 'tomorrow' } }
+				})
+			).toThrow();
+		} finally {
+			fixture.database.close();
+		}
+	}));
+
+test('the Tracker provider command changes the running launcher and can clear its override', () =>
+	withTempDir('hnt-provider-command-', async (root) => {
+		const fixture = configuredLaunchRuntime(root);
+		const { database, runtime } = fixture;
+		const supervisor = new TrackerSupervisorService(runtime);
+		async function command(...words: string[]) {
+			const { request } = nativeTrackerArgs(['autolaunch', 'provider', ...words]);
+			const response = await trackerNodeApi(
+				new Request('http://tracker-fixture.invalid' + request.path, {
+					method: request.method,
+					body: request.body && JSON.stringify(request.body)
+				}),
+				runtime,
+				supervisor,
+				'synthetic-fence'
+			);
+			expect(response.ok).toBe(true);
+			return response.json();
+		}
+		try {
+			expect(await command()).toMatchObject({ setting: null, effective: 'claude' });
+			expect(await command('codex')).toMatchObject({ setting: { provider: 'codex' } });
+			expect(await launchFixtureItem(fixture, 'next200005')).toMatchObject({
+				model: 'gpt-6.2-sol',
+				reason: expect.stringContaining('Codex preferred')
+			});
+			expect(await command('default')).toMatchObject({ setting: null, effective: 'claude' });
+		} finally {
+			database.close();
+		}
+	}));
+
+test('a fresh recovery uses the current preference when the previous provider is held', () =>
+	withTempDir('hnt-provider-recovery-', async (root) => {
+		const { database, runtime } = configuredLaunchRuntime(root, {
+			routing: { preferredProvider: { provider: 'codex' } }
+		});
+		try {
+			const itemId = 'recover001';
+			runtime.store.appendLocal({
+				itemId,
+				fields: {
+					title: 'Recover a missing export session',
+					kind: 'task',
+					status: 'in_progress',
+					project: 'Harness'
+				}
+			});
+			database
+				.prepare(
+					`INSERT INTO runs
+				(item_id, auto_token, attempt, rung, cli, model, effort, queued_at, state)
+				VALUES (?, 'old', 1, 'sonnet', 'claude', 'claude-sonnet-5-5', 'medium', 1, 'finished')`
+				)
+				.run(itemId);
+			runtime.store.writeMeta({ autolaunch_quota_claude: '2026-11-25T13:00:00Z' });
+			const item = new TrackerItemReadRepository(database).getStored(itemId);
+			const message = await recoverTrackerSession(runtime.store, {
+				item,
+				launch: trackerRecoveryLaunch(runtime.dispatch)!,
+				now: fixtureNow,
+				ladderConfig: runtime.ladderConfig
+			});
+			expect(message).toContain('using gpt-6.2-sol');
+			await runtime.scheduler!.tick(new AbortController().signal);
+			expect(
+				database
+					.prepare('SELECT model, reason FROM runs WHERE item_id = ? ORDER BY id DESC')
+					.get(itemId)
+			).toMatchObject({ model: 'gpt-6.2-sol', reason: expect.stringContaining('Codex preferred') });
+		} finally {
+			database.close();
 		}
 	}));
 

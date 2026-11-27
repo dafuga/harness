@@ -305,6 +305,7 @@
 			"recoveryBudget",
 			"hostWait",
 			"recoveryRung",
+			"recoverySelection",
 			"trackerSecretSafetyRule",
 			"sessionHealthInterval",
 			"recoveryPollInterval",
@@ -312,6 +313,7 @@
 			"TrackerSessionHealthIssue",
 			"TrackerSessionHealthSnapshot",
 			"TrackerWatchdogLaunch",
+			"TrackerSessionHealthActions",
 			"paneItems",
 			"unownedPane",
 			"readTrackerSessionHealth",
@@ -320,6 +322,7 @@
 			"recheckTrackerRecovery",
 			"recoverTrackerSession",
 			"flagRecoveryError",
+			"TrackerRecoveryInput",
 			"TrackerRecoveryState",
 			"publishTrackerSlotAlerts",
 			"withSlotSummary",
@@ -567,13 +570,8 @@
 				"required": true
 			},
 			{
-				"name": "trackerAutolaunchAdmin.role",
-				"type": "'hub' | 'spoke'",
-				"required": true
-			},
-			{
-				"name": "trackerAutolaunchAdmin.now",
-				"type": "() => number",
+				"name": "trackerAutolaunchAdmin.runtime",
+				"type": "Pick<TrackerNativeRuntimeService, 'role' | 'now' | 'ladderConfig'>",
 				"required": true
 			},
 			{
@@ -1187,12 +1185,12 @@
 			},
 			{
 				"name": "trackerHostWatchdog.options",
-				"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' >",
+				"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' | 'ladderConfig' >",
 				"required": true
 			},
 			{
 				"name": "configuredHostWatchdog.runtime",
-				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
+				"type": "Pick< TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role' | 'ladderConfig' >",
 				"required": true
 			},
 			{
@@ -1758,6 +1756,31 @@
 				"required": true
 			},
 			{
+				"name": "recoverySelection.run",
+				"type": "TrackerListedRun | undefined",
+				"required": true
+			},
+			{
+				"name": "recoverySelection.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "recoverySelection.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recoverySelection.cfg",
+				"type": "TrackerLadderConfig",
+				"required": false
+			},
+			{
+				"name": "recoverySelection.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "trackerSessionHealth.snapshot",
 				"type": "TrackerSessionHealthSnapshot",
 				"required": true
@@ -1824,7 +1847,7 @@
 			},
 			{
 				"name": "applyTrackerSessionHealth.state",
-				"type": "{ now: number; items: readonly TrackerItem[]; launch?: TrackerWatchdogLaunch }",
+				"type": "TrackerSessionHealthActions",
 				"required": true
 			},
 			{
@@ -1874,7 +1897,7 @@
 			},
 			{
 				"name": "recoverTrackerSession.input",
-				"type": "{ item: TrackerItem; launch: TrackerWatchdogLaunch; now: number }",
+				"type": "TrackerRecoveryInput",
 				"required": true
 			},
 			{
@@ -2837,13 +2860,8 @@
 						"required": true
 					},
 					{
-						"name": "trackerAutolaunchAdmin.role",
-						"type": "'hub' | 'spoke'",
-						"required": true
-					},
-					{
-						"name": "trackerAutolaunchAdmin.now",
-						"type": "() => number",
+						"name": "trackerAutolaunchAdmin.runtime",
+						"type": "Pick<TrackerNativeRuntimeService, 'role' | 'now' | 'ladderConfig'>",
 						"required": true
 					}
 				],
@@ -2854,7 +2872,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "trackerHubDuePolicy",
@@ -3969,7 +3987,7 @@
 					},
 					{
 						"name": "trackerHostWatchdog.options",
-						"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' >",
+						"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' | 'ladderConfig' >",
 						"required": true
 					}
 				],
@@ -3987,7 +4005,7 @@
 				"inputs": [
 					{
 						"name": "configuredHostWatchdog.runtime",
-						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
+						"type": "Pick< TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role' | 'ladderConfig' >",
 						"required": true
 					},
 					{
@@ -5140,6 +5158,44 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "recoverySelection",
+				"inputs": [
+					{
+						"name": "recoverySelection.run",
+						"type": "TrackerListedRun | undefined",
+						"required": true
+					},
+					{
+						"name": "recoverySelection.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "recoverySelection.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recoverySelection.cfg",
+						"type": "TrackerLadderConfig",
+						"required": false
+					},
+					{
+						"name": "recoverySelection.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoverySelection",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "trackerSessionHealth",
 				"inputs": [
 					{
@@ -5261,7 +5317,7 @@
 					},
 					{
 						"name": "applyTrackerSessionHealth.state",
-						"type": "{ now: number; items: readonly TrackerItem[]; launch?: TrackerWatchdogLaunch }",
+						"type": "TrackerSessionHealthActions",
 						"required": true
 					},
 					{
@@ -5350,7 +5406,7 @@
 					},
 					{
 						"name": "recoverTrackerSession.input",
-						"type": "{ item: TrackerItem; launch: TrackerWatchdogLaunch; now: number }",
+						"type": "TrackerRecoveryInput",
 						"required": true
 					}
 				],
@@ -5824,6 +5880,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-check-tracker-item",
 			"via": "import",
 			"origin": "derived"
@@ -6005,6 +6066,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-run-limits",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-preferred-provider-setting",
 			"via": "import",
 			"origin": "derived"
 		},

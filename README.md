@@ -86,6 +86,14 @@ harness tracker --help
 node configuration is present. See the [native service guide](specification/tracker-native-service.md)
 for role selection, ownership and compatibility.
 
+Use `tracker autolaunch provider` to read this computer's preference, `tracker autolaunch provider codex`
+to change it, or `tracker autolaunch provider default` to restore its configured routing. A scheduled
+switch takes an ISO timestamp with an offset and the next provider, such as
+`tracker autolaunch provider claude 2026-11-27T10:39:00+00:00 codex`. The corresponding node config is
+`routing.preferredProvider` with `provider`, optional `until`, and optional `then` fields. The CLI sets
+a persisted host override. `tracker pick ITEM` previews the choice and `tracker runs` shows the chosen
+model and reason on its receipt.
+
 Use `chase` when Daniel has to ask for an update that was due. The digest
 reports chased items from the last seven days, pending launch age and the
 age of unanswered asks. Eligible tasks added by Daniel or Chief of Staff

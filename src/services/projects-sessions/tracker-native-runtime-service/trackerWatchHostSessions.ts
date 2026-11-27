@@ -25,7 +25,6 @@ import {
 	readTrackerSessionHealth,
 	recheckTrackerRecovery
 } from './trackerSessionHealthRuntime';
-import type { TrackerWatchdogLaunch } from './trackerSessionHealth.types';
 import type { WatchdogSessionHost, WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
 export function watchHostSessions(hosts: WatchdogSessionHost, options: WatchdogSessionScan) {
@@ -66,7 +65,13 @@ async function scanHostSessions(
 	const canLaunch = options.automaticEnabled?.() !== false;
 	await inspectHostSessions(
 		hosts,
-		{ rows, snapshot, launch: canLaunch ? options.launch : undefined, settle: options.settle },
+		{
+			rows,
+			snapshot,
+			launch: canLaunch ? options.launch : undefined,
+			settle: options.settle,
+			ladderConfig: options.ladderConfig
+		},
 		signal
 	);
 	// After settling, so a run the launcher just finished is never reported as idle.
@@ -85,12 +90,11 @@ async function inspectHostSessions(
 		rows,
 		snapshot,
 		launch,
-		settle
-	}: {
+		settle,
+		ladderConfig
+	}: Pick<WatchdogSessionScan, 'launch' | 'settle' | 'ladderConfig'> & {
 		rows: readonly TrackerItem[];
 		snapshot: WatchdogScan;
-		launch?: TrackerWatchdogLaunch;
-		settle?: TrackerDispatcherService;
 	},
 	signal: AbortSignal
 ) {
@@ -101,6 +105,7 @@ async function inspectHostSessions(
 		{
 			now: snapshot.now,
 			items: rows,
+			ladderConfig,
 			launch:
 				launch &&
 				((item, attempt) =>

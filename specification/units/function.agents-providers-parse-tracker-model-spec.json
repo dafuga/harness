@@ -125,7 +125,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-resolve-preferred-provider",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/utils/agents-providers/parseTrackerModelSpec.ts",

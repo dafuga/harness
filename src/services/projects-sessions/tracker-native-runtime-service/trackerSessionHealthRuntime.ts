@@ -20,6 +20,7 @@ import { trackerSessionHealth } from './trackerSessionHealth';
 import { flagRecoveryError, recoverTrackerSession } from './trackerSessionRecovery';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type {
+	TrackerSessionHealthActions,
 	TrackerSessionHealthIssue,
 	TrackerWatchdogLaunch
 } from './trackerSessionHealth.types';
@@ -73,7 +74,7 @@ function runJudgedPanes(
 export async function applyTrackerSessionHealth(
 	store: TrackerPersistenceService,
 	issues: readonly TrackerSessionHealthIssue[],
-	state: { now: number; items: readonly TrackerItem[]; launch?: TrackerWatchdogLaunch },
+	state: TrackerSessionHealthActions,
 	signal: AbortSignal
 ) {
 	// The hub delivers request-only alerts through the one-minute launch scan.
@@ -97,11 +98,7 @@ export async function applyTrackerSessionHealth(
 async function publishIssue(
 	store: TrackerPersistenceService,
 	issue: TrackerSessionHealthIssue,
-	{
-		now,
-		items,
-		launch
-	}: { now: number; items: readonly TrackerItem[]; launch?: TrackerWatchdogLaunch }
+	{ now, items, launch, ladderConfig }: TrackerSessionHealthActions
 ) {
 	const candidate = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
 	const item = candidate && new TrackerItemReadRepository(store.database).getStored(candidate.id);
@@ -112,7 +109,7 @@ async function publishIssue(
 	}
 	const recovery =
 		issue.recover && item && launch
-			? await recoverTrackerSession(store, { item, launch, now })
+			? await recoverTrackerSession(store, { item, launch, now, ladderConfig })
 			: null;
 	publishHealthNote(store, issue, { item, recovery, now });
 }

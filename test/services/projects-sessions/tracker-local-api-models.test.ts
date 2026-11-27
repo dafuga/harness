@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test } from 'vitest';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRecurringRepository } from '../../../src/repositories/projects-sessions/TrackerRecurringRepository';
 import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
@@ -78,10 +78,8 @@ test('reports persisted run history and selects a model through the native item 
 		['2026-11-27T10:38:59Z', 'sonnet', 'claude'],
 		['2026-11-27T10:39:00Z', 'sol', 'codex']
 	]) {
-		vi.useFakeTimers({ toFake: ['Date'] });
-		vi.setSystemTime(Date.parse(at));
+		now = Date.parse(at);
 		const pick = await request(`/items/${id.slice(0, 6)}/pick`);
-		vi.useRealTimers();
 		expect(await pick.json()).toMatchObject({ item_id: id, rung, cli, auto: false });
 	}
 	expect(store.maxSeq()).toBe(1);

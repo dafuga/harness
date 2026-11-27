@@ -119,6 +119,10 @@ test('startup refuses an unfenced role or competing API, sync or journal owner a
 				id,
 				notes_log: [{ text: 'Native note visible after rollback' }]
 			});
+			expect(await fixtureTrackerJson(hub, ['autolaunch', 'provider'])).toMatchObject({
+				setting: { provider: 'claude', until: '2099-11-27T10:39:00+00:00', then: 'codex' },
+				effective: 'claude'
+			});
 		} finally {
 			expect((await restarted.stop()).code).toBe(0);
 		}
@@ -136,6 +140,17 @@ async function verifyCompetingOwners(
 ) {
 	const { id } = await fixtureTrackerJson(hub, ['add', 'Lease fixture survives native restart']);
 	await fixtureTrackerJson(hub, ['note', id, 'Native note visible after rollback']);
+	await fixtureTrackerJson(hub, [
+		'autolaunch',
+		'provider',
+		'claude',
+		'2099-11-27T10:39:00+00:00',
+		'codex'
+	]);
+	expect(await fixtureTrackerJson(hub, ['pick', id])).toMatchObject({
+		model: 'claude-sonnet-5-5',
+		reason: expect.stringContaining('Claude preferred until')
+	});
 	for (const collision of [
 		{ apiPort: hub.config.apiPort, syncPort: sync },
 		{ apiPort: api, syncPort: 'syncPort' in hub.config ? hub.config.syncPort : sync },

@@ -8,6 +8,12 @@ const price = z.strictObject({
 	cacheWrite: z.number().nonnegative()
 });
 
+const provider = z.enum(['claude', 'codex']);
+export const trackerPreferredProviderSchema = z.union([
+	z.strictObject({ provider }),
+	z.strictObject({ provider, until: z.iso.datetime({ offset: true }), then: provider.optional() })
+]);
+
 /** Model routing overrides. Learning only moves up, so there is no downward threshold. */
 export const trackerRoutingSchema = z.strictObject({
 	ladder: z
@@ -27,5 +33,6 @@ export const trackerRoutingSchema = z.strictObject({
 			upBelow: z.number().min(0).max(1).optional()
 		})
 		.optional(),
-	claudeOnlyUntil: z.iso.datetime({ offset: true }).optional()
+	claudeOnlyUntil: z.iso.datetime({ offset: true }).optional(),
+	preferredProvider: trackerPreferredProviderSchema.optional()
 });

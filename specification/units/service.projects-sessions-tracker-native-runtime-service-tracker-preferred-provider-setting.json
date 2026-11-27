@@ -1,0 +1,169 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-native-runtime-service-tracker-preferred-provider-setting",
+	"uid": "u_piy2pdpljn",
+	"kind": "service",
+	"title": "trackerPreferredProviderSetting",
+	"responsibility": "Persist this Tracker host's provider override and apply it at model selection time.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerPreferredProviderSetting.ts"
+		],
+		"symbols": ["trackerRoutingWithPreference", "trackerPreferredProviderAdmin"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerRoutingWithPreference.store",
+				"type": "TrackerPersistenceService",
+				"required": true,
+				"description": "The local Tracker journal that holds the operator override."
+			},
+			{
+				"name": "trackerRoutingWithPreference.config",
+				"type": "TrackerLadderConfig",
+				"required": false,
+				"description": "Node model routing that supplies the defaults."
+			},
+			{
+				"name": "trackerPreferredProviderAdmin.store",
+				"type": "TrackerPersistenceService",
+				"required": true,
+				"description": "The local Tracker journal that persists provider changes."
+			},
+			{
+				"name": "trackerPreferredProviderAdmin.ladderConfig",
+				"type": "TrackerLadderConfig",
+				"required": false,
+				"description": "Live model routing with the persisted preference applied."
+			},
+			{
+				"name": "trackerPreferredProviderAdmin.now",
+				"type": "() => number",
+				"required": true,
+				"description": "Clock used to resolve the effective provider."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerRoutingWithPreference",
+				"type": "TrackerLadderConfig",
+				"description": "Tracker routing with the current persisted preference taking precedence."
+			},
+			{
+				"name": "trackerPreferredProviderAdmin",
+				"type": "unknown",
+				"description": "Read and update operations for this Tracker host’s provider override."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "trackerRoutingWithPreference",
+				"inputs": [
+					{
+						"name": "trackerRoutingWithPreference.store",
+						"type": "TrackerPersistenceService",
+						"required": true,
+						"description": "The local Tracker journal that holds the operator override."
+					},
+					{
+						"name": "trackerRoutingWithPreference.config",
+						"type": "TrackerLadderConfig",
+						"required": false,
+						"description": "Node model routing that supplies the defaults."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRoutingWithPreference",
+						"type": "TrackerLadderConfig",
+						"description": "Tracker routing with the current persisted preference taking precedence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerPreferredProviderAdmin",
+				"inputs": [
+					{
+						"name": "trackerPreferredProviderAdmin.store",
+						"type": "TrackerPersistenceService",
+						"required": true,
+						"description": "The local Tracker journal that persists provider changes."
+					},
+					{
+						"name": "trackerPreferredProviderAdmin.ladderConfig",
+						"type": "TrackerLadderConfig",
+						"required": false,
+						"description": "Live model routing with the persisted preference applied."
+					},
+					{
+						"name": "trackerPreferredProviderAdmin.now",
+						"type": "() => number",
+						"required": true,
+						"description": "Clock used to resolve the effective provider."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerPreferredProviderAdmin",
+						"type": "unknown",
+						"description": "Read and update operations for this Tracker host’s provider override."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-check-tracker-item",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node-service-tracker-routing-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-native-runtime-service/trackerPreferredProviderSetting.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-native-runtime-service/trackerPreferredProviderSetting.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

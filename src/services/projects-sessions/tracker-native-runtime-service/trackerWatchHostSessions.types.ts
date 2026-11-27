@@ -1,5 +1,6 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
+import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -16,6 +17,7 @@ export interface WatchdogSessionScan {
 	readItems: () => readonly TrackerItem[];
 	now: () => number;
 	launch?: TrackerWatchdogLaunch;
+	ladderConfig?: TrackerLadderConfig;
 	/** Records the end of runs that stopped without closing their item. */
 	settle?: TrackerDispatcherService;
 	automaticEnabled?(): boolean;

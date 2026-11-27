@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
+import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
 import type {
 	TrackerDispatchResult,
 	TrackerLaunchRung
@@ -34,3 +35,10 @@ export type TrackerWatchdogLaunch = (
 	item: TrackerItem,
 	attempt?: { token: string; rung?: TrackerLaunchRung }
 ) => Promise<TrackerDispatchResult>;
+
+export interface TrackerSessionHealthActions {
+	now: number;
+	items: readonly TrackerItem[];
+	launch?: TrackerWatchdogLaunch;
+	ladderConfig?: TrackerLadderConfig;
+}

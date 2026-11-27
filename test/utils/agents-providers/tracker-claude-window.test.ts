@@ -76,6 +76,35 @@ test('lets the config move the reset time', () => {
 	);
 });
 
+test('follows the configured provider and its scheduled switch through picks and retries', () => {
+	const until = '2026-11-28T10:39:00+00:00';
+	const cfg = {
+		autolaunch: { preferredProvider: { provider: 'claude', until, then: 'codex' } }
+	} as const;
+	const now = Date.parse(until);
+	const item = { title: 'Update the README' };
+	expect(pickTrackerModel(item, { cfg, now: now - 1 })).toMatchObject({
+		rung: { id: 'haiku', cli: 'claude' },
+		reason: expect.stringContaining('Claude preferred until 28 Nov, 10:39 Lisbon')
+	});
+	expect(pickTrackerModel(item, { cfg, now })).toMatchObject({
+		rung: { id: 'sol', cli: 'codex', effort: 'medium' },
+		reason: expect.stringContaining('Codex preferred since 28 Nov, 10:39 Lisbon')
+	});
+	expect(
+		retryTrackerModel(item, { rung: 'haiku', model: 'claude-haiku-5-5' }, cfg, now)
+	).toMatchObject({ id: 'sol', effort: 'medium' });
+	expect(pickTrackerModel({ title: 'Deploy to preprod' }, { cfg, now }).rung).toMatchObject({
+		id: 'opus',
+		model: 'claude-opus-5-5',
+		effort: 'high'
+	});
+	expect(pickTrackerModel({ ...item, model: 'fable' }, { cfg, now }).rung).toMatchObject({
+		id: 'fable',
+		pinned: true
+	});
+});
+
 test('keeps explicit pins, and still floors Haiku for risky work', () => {
 	const now = before;
 	expect(pickTrackerModel({ title: 'Add CSV export', model: 'sol' }, { now }).rung).toMatchObject({

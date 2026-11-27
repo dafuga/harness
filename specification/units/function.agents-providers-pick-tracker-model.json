@@ -4,7 +4,7 @@
 	"uid": "u_gs5pnxnxt4",
 	"kind": "function",
 	"title": "pickTrackerModel",
-	"responsibility": "Select a Tracker model by activity, Claude only until the Codex reset, honor eligible pins and escalate along the route.",
+	"responsibility": "Select a Tracker model using its task route, provider preference, explicit pin and run history.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -38,7 +38,7 @@
 				"type": "TrackerModelSelectionOptions",
 				"required": false,
 				"default": {},
-				"description": "Optional ladder configuration and outcomes from similar prior work."
+				"description": "Optional routing and scheduled provider, successful prior runs, and the current clock."
 			},
 			{
 				"name": "retryTrackerModel.item",
@@ -56,7 +56,7 @@
 				"name": "retryTrackerModel.cfg",
 				"type": "TrackerLadderConfig",
 				"required": false,
-				"description": "Optional configuration for the current model ladder and eligibility rules."
+				"description": "Optional model ladder and provider preference for the next attempt."
 			},
 			{
 				"name": "retryTrackerModel.now",
@@ -94,7 +94,7 @@
 						"type": "TrackerModelSelectionOptions",
 						"required": false,
 						"default": {},
-						"description": "Optional ladder configuration and outcomes from similar prior work."
+						"description": "Optional routing and scheduled provider, successful prior runs, and the current clock."
 					}
 				],
 				"outputs": [
@@ -126,7 +126,7 @@
 						"name": "retryTrackerModel.cfg",
 						"type": "TrackerLadderConfig",
 						"required": false,
-						"description": "Optional configuration for the current model ladder and eligibility rules."
+						"description": "Optional model ladder and provider preference for the next attempt."
 					},
 					{
 						"name": "retryTrackerModel.now",
@@ -150,12 +150,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.agents-providers-adjust-tracker-model-by-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.agents-providers-classify-tracker-task",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-resolve-preferred-provider",
 			"via": "import",
 			"origin": "derived"
 		}

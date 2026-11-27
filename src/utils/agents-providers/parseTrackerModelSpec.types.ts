@@ -1,4 +1,6 @@
 // @harness-uid u_b5x7mlx577
+import type { TrackerPreferredProvider } from './resolvePreferredProvider.types';
+
 export interface TrackerFlatPrice {
 	input: number;
 	output: number;
@@ -21,6 +23,8 @@ export interface TrackerLadderConfig {
 		learning?: TrackerLearningConfig;
 		/** ISO time of the Codex weekly reset; automatic routing is Claude-only before it. */
 		claudeOnlyUntil?: string;
+		/** A provider preference or timed switch. Takes precedence over the old Claude-only window. */
+		preferredProvider?: TrackerPreferredProvider;
 	};
 }
 

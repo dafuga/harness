@@ -27,7 +27,12 @@ export function composeTrackerFleet(
 		fleet,
 		scheduler
 	});
-	const view: TrackerFleetView = { machines, now, samples: () => telemetry.samples?.() ?? [] };
+	const view: TrackerFleetView = {
+		machines,
+		now,
+		ladderConfig: options.ladderConfig,
+		samples: () => telemetry.samples?.() ?? []
+	};
 	return {
 		samples: telemetry.samples,
 		tick: withAssignment(telemetry.tick, view, options),
