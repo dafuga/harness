@@ -8,7 +8,7 @@
 	import { liveSystemNotice } from './hubHomeLive';
 	import BrandMark from '$reports/components/BrandMark.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
-	import { homeHeadline, summaryLine } from './hubHomePresentation';
+	import { count, homeHeadline, summaryLine } from './hubHomePresentation';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';
@@ -30,11 +30,12 @@
 		notifications?: Snippet;
 	} = $props();
 	const liveSessions = $derived(view.overview?.status === 'ready' ? view.overview.liveSessions : 0);
-	const machines = $derived(view.overview?.status === 'ready' ? view.overview.machines : []);
+	const machines = $derived(
+		view.computers?.snapshot?.liveOverview?.machines ??
+			(view.overview?.status === 'ready' ? view.overview.machines : [])
+	);
 	const offline = $derived(
-		(view.computers?.snapshot?.liveOverview?.machines ?? machines)
-			.filter((machine) => machine.status === 'offline')
-			.map((machine) => machine.name)
+		machines.filter((machine) => machine.status === 'offline').map((machine) => machine.name)
 	);
 	const systemNotice = $derived(liveSystemNotice(view.computers));
 	let accountOpen = $state(false);
@@ -119,7 +120,12 @@
 				{#each machines as machine (machine.name)}
 					<Pill as="li" tone="po-machine" state={machine.status}>
 						<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
-						{machine.name} <hx-span class="po-machine-status">{machine.status}</hx-span>
+						{machine.name}
+						<hx-span class="po-machine-status"
+							>{machine.status}{machine.remoteRuns
+								? ` · ${count(machine.remoteRuns, 'remote run')}`
+								: ''}</hx-span
+						>
 					</Pill>
 				{/each}
 			</hx-ul>

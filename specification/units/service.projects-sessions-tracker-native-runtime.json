@@ -373,8 +373,8 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerResponder.store",
-				"type": "TrackerPersistenceService",
+				"name": "composeTrackerResponder.runtime",
+				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'machines'>",
 				"required": true
 			},
 			{
@@ -466,6 +466,11 @@
 			{
 				"name": "trackerHubMachines.options",
 				"type": "TrackerNativeRuntimeOptions",
+				"required": true
+			},
+			{
+				"name": "trackerHubMachines.machines",
+				"type": "TrackerMachineService",
 				"required": true
 			},
 			{
@@ -2437,8 +2442,8 @@
 				"name": "composeTrackerResponder",
 				"inputs": [
 					{
-						"name": "composeTrackerResponder.store",
-						"type": "TrackerPersistenceService",
+						"name": "composeTrackerResponder.runtime",
+						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'machines'>",
 						"required": true
 					},
 					{
@@ -2622,6 +2627,11 @@
 					{
 						"name": "trackerHubMachines.options",
 						"type": "TrackerNativeRuntimeOptions",
+						"required": true
+					},
+					{
+						"name": "trackerHubMachines.machines",
+						"type": "TrackerMachineService",
 						"required": true
 					},
 					{
@@ -5930,6 +5940,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-host-resources-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-work",
 			"via": "import",
 			"origin": "derived"
 		},

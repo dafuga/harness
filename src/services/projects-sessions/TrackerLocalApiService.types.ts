@@ -1,5 +1,7 @@
 // @harness-uid u_g7kdpz7bel
 import type { TrackerDispatchResult } from '../agents-providers/TrackerDispatcherService.types';
+import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
+import type { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerMachineService } from './TrackerMachineService';
 import type { TrackerBoxJobAdmin } from './tracker-recurring-service/trackerBoxJobAdmin.types';
 import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
@@ -39,4 +41,10 @@ export interface TrackerLocalApiOptions {
 		current: TrackerItemSnapshot | undefined,
 		source: 'manual' | 'automatic'
 	): TrackerItemInput;
+}
+
+export interface TrackerLocalApiDependencies {
+	store: TrackerPersistenceService;
+	items: TrackerItemReadRepository;
+	options: TrackerLocalApiOptions;
 }
