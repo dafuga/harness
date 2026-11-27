@@ -161,10 +161,26 @@ test('a sign-in request is a mailbox the approver hears about and fills', async 
 	expect(
 		(await f.call(A, 'POST', `enroll/${request.id}`, { body: claim, headers: as(phone) })).status
 	).toBe(201);
+	const retryClaim = await f.call(A, 'POST', path, {
+		body: { nonce, approver: phone },
+		headers: as(phone)
+	});
+	expect(retryClaim.status).toBe(200);
+	expect(await retryClaim.json()).toEqual({ n: 1, by: phone, body: claim });
+	const secondClaim = await f.call(A, 'POST', path, {
+		body: { approver: mac, nonce },
+		headers: as(mac)
+	});
+	expect(secondClaim.status).toBe(409);
 	const reveal = JSON.stringify({ nonce: toBase64Url(requestNonce) });
 	const approval = JSON.stringify({ entryHash: '1'.repeat(64) });
 	expect((await f.call(A, 'POST', path, { body: reveal, headers: as(web) })).status).toBe(201);
 	expect((await f.call(A, 'POST', path, { body: approval, headers: as(phone) })).status).toBe(201);
+	const receiptRetry = await f.call(A, 'POST', path, { body: approval, headers: as(phone) });
+	expect(receiptRetry.status).toBe(200);
+	expect(await receiptRetry.json()).toEqual({ n: 3, by: phone, body: approval });
+	const remaining = await f.call(A, 'GET', 'enroll', { headers: as(phone) });
+	expect(await remaining.json()).toEqual({ requests: [] });
 	const read = (await (
 		await f.call(A, 'GET', `enroll/${request.id}`, { headers: as(web) })
 	).json()) as {
