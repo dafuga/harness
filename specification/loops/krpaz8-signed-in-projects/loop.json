@@ -2,7 +2,7 @@
 	"name": "krpaz8-signed-in-projects",
 	"goal": "A signed-in Mac home lists Tracker and Hub projects, retains healthy sources, opens projects directly, and keeps Needs you accessible.",
 	"createdAt": "2026-11-27T18:13:38.879Z",
-	"updatedAt": "2026-11-27T19:02:12.513Z",
+	"updatedAt": "2026-11-27T19:22:53.772Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -46,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T19:22:53.772Z",
+			"evidence": "siblings-4cff33ba-bfde-48c4-bd5a-02933d16819c.json"
 		},
 		{
 			"id": "verify",
