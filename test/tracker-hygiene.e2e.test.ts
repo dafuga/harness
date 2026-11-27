@@ -2,6 +2,7 @@ import { execFileSync, spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { expect, test } from 'vitest';
+import { openHygieneBrowserFixture } from './support/trackerHygieneBrowserFixture';
 import { withTempDir } from './support/temporary';
 import { hygieneFixture, findHygieneTmux } from './support/trackerHygieneFixture';
 
@@ -25,6 +26,32 @@ test('the CLI installs exactly the built-in documents into both assistant profil
 		}
 	});
 });
+
+test(
+	'browser cleanup closes only targets created by the run in its test-launched browser',
+	{ timeout: 30_000 },
+	() =>
+		withTempDir('harness-hygiene-browser-', async (root) => {
+			mkdirSync(join(root, 'ledger'), { mode: 0o700 });
+			const browser = await openHygieneBrowserFixture(root);
+			try {
+				const control = await browser.control.newPage();
+				await control.goto('about:blank#independent-control');
+				const tab = browser.hygiene('tab');
+				const window = browser.hygiene('window');
+				const targetIds = async () => (await browser.targets()).map(({ id }) => id);
+				expect(await targetIds()).toEqual(expect.arrayContaining([tab.target, window.target]));
+				browser.hygiene('close', tab.resource);
+				browser.hygiene('close', window.resource);
+				expect(await targetIds()).not.toEqual(expect.arrayContaining([tab.target]));
+				expect(await targetIds()).not.toEqual(expect.arrayContaining([window.target]));
+				expect(control.url()).toBe('about:blank#independent-control');
+				expect(control.isClosed()).toBe(false);
+			} finally {
+				await browser.control.close();
+			}
+		})
+);
 
 test.skipIf(!tmux).each(scenarios)(
 	'managed worker %s reaps only its recorded process group',

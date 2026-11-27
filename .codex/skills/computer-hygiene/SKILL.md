@@ -33,7 +33,10 @@ Use the launcher’s resource commands on the host. They create and record owner
   - Apps you launched for computer use (e.g. Simulator.app, Xcode, Preview, TextEdit): quit them if nothing else of yours needs them.
 - Before `tracker done` or a handoff, check your list: everything you opened is closed, or the done note says what was left open and why.
 
-## 3. Never close Daniel's things
+## 3. Leave Daniel's browser and other work alone
+
+- Never read, snapshot, switch, or close Daniel's own browser tabs and windows. Do not inspect his active tab to find out what it contains.
+- Browser verification must launch its own browser with a disposable profile and a private debugging endpoint. Use only the endpoint from that launched instance. Close the test-owned browser during teardown.
 
 - If you didn't open it (not on your list), don't close it. This includes his Chrome windows and tabs, Mail, Messages, Slack, his editor, terminals and tmux sessions he uses, Finder windows, music, calls, documents.
 - Never quit an app that Daniel also uses (Chrome, Slack, Mail...) just to close your own window in it: close only your window or tab.

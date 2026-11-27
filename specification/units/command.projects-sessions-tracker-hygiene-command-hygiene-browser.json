@@ -26,6 +26,11 @@
 				"default": "about:blank"
 			},
 			{
+				"name": "openHygieneBrowser.origin",
+				"type": "unknown",
+				"required": false
+			},
+			{
 				"name": "closeHygieneBrowser.browser",
 				"type": "string",
 				"required": true
@@ -38,6 +43,11 @@
 			{
 				"name": "closeHygieneBrowser.target",
 				"type": "string",
+				"required": false
+			},
+			{
+				"name": "closeHygieneBrowser.origin",
+				"type": "unknown",
 				"required": false
 			}
 		],
@@ -72,6 +82,11 @@
 						"type": "string",
 						"required": false,
 						"default": "about:blank"
+					},
+					{
+						"name": "openHygieneBrowser.origin",
+						"type": "unknown",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -104,6 +119,11 @@
 					{
 						"name": "closeHygieneBrowser.target",
 						"type": "string",
+						"required": false
+					},
+					{
+						"name": "closeHygieneBrowser.origin",
+						"type": "unknown",
 						"required": false
 					}
 				],

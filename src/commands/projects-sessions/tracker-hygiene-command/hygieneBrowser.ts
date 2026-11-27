@@ -5,11 +5,13 @@ import { z } from 'zod';
 import { beginResource, markResource, saveResource } from './hygieneLedger';
 import { waitForHygiene } from './hygieneChild';
 
-const origin = 'http://127.0.0.1:9333';
+const automationOrigin = 'http://127.0.0.1:9333';
 const browserPath = /^\/devtools\/browser\/([a-f0-9-]{36})$/i;
 const targetId = z.string().regex(/^[a-f0-9]{32}$/i);
 
-async function browserIdentity() {
+async function browserIdentity(origin: string) {
+	if (!/^http:\/\/127\.0\.0\.1:[0-9]+$/.test(origin))
+		throw new HygieneError('Chrome debugging requires a loopback endpoint.');
 	const response = await fetch(origin + '/json/version', {
 		redirect: 'error',
 		signal: AbortSignal.timeout(2500)
@@ -18,12 +20,16 @@ async function browserIdentity() {
 	const version = z.object({ webSocketDebuggerUrl: z.string() }).parse(await response.json());
 	const url = new URL(version.webSocketDebuggerUrl);
 	const id = browserPath.exec(url.pathname)?.[1];
-	if (!id || url.origin !== 'ws://127.0.0.1:9333')
+	if (!id || url.origin !== origin.replace('http:', 'ws:'))
 		throw new HygieneError('Unexpected automation Chrome identity.');
 	return z.string().uuid().parse(id);
 }
 
-export async function openHygieneBrowser(kind: 'tab' | 'window', address = 'about:blank') {
+export async function openHygieneBrowser(
+	kind: 'tab' | 'window',
+	address = 'about:blank',
+	origin = automationOrigin
+) {
 	const url = new URL(address);
 	if (
 		(!['http:', 'https:'].includes(url.protocol) && url.href !== 'about:blank') ||
@@ -31,10 +37,10 @@ export async function openHygieneBrowser(kind: 'tab' | 'window', address = 'abou
 		url.password
 	)
 		throw new HygieneError('Use an HTTP(S) URL or about:blank in automation Chrome.');
-	const browser = await browserIdentity();
+	const browser = await browserIdentity(origin);
 	const entry = beginResource({ kind, browser });
 	const blank = 'about:blank#harness-' + basename(entry);
-	const response = await browserMessage(browser, 'Target.createTarget', {
+	const response = await browserMessage({ browser, origin }, 'Target.createTarget', {
 		url: blank,
 		newWindow: kind === 'window'
 	});
@@ -42,9 +48,9 @@ export async function openHygieneBrowser(kind: 'tab' | 'window', address = 'abou
 	saveResource(entry, { kind, browser, target });
 	try {
 		if (url.href !== 'about:blank') {
-			if (browser !== (await browserIdentity()))
+			if (browser !== (await browserIdentity(origin)))
 				throw new HygieneError('Automation Chrome identity changed.');
-			await browserMessage(browser, 'Page.navigate', { url: url.href }, target);
+			await browserMessage({ browser, origin }, 'Page.navigate', { url: url.href }, target);
 		}
 		return { resource: basename(entry), target };
 	} finally {
@@ -52,31 +58,44 @@ export async function openHygieneBrowser(kind: 'tab' | 'window', address = 'abou
 	}
 }
 
-export async function closeHygieneBrowser(browser: string, entry: string, target?: string) {
-	if (browser !== (await browserIdentity()))
+export async function closeHygieneBrowser(
+	browser: string,
+	entry: string,
+	target?: string,
+	origin = automationOrigin
+) {
+	if (browser !== (await browserIdentity(origin)))
 		throw new HygieneError('Automation Chrome identity changed.');
-	const targets = await browserTargets(browser);
+	const targets = await browserTargets(browser, origin);
 	const identity =
 		target ?? targets.find(({ url }) => url === 'about:blank#harness-' + basename(entry))?.targetId;
 	if (!identity || !targets.some(({ targetId }) => targetId === identity)) return;
-	await browserMessage(browser, 'Target.closeTarget', { targetId: identity }).catch(
+	await browserMessage({ browser, origin }, 'Target.closeTarget', { targetId: identity }).catch(
 		() => undefined
 	);
 	const gone = await waitForHygiene(
-		async () => !(await browserTargets(browser)).some(({ targetId }) => targetId === identity),
+		async () =>
+			!(await browserTargets(browser, origin)).some(({ targetId }) => targetId === identity),
 		2000
 	);
 	if (!gone) throw new HygieneError('Automation Chrome still reports this target.');
 }
 
-async function browserTargets(browser: string) {
-	const response = await browserMessage(browser, 'Target.getTargets');
+async function browserTargets(browser: string, origin: string) {
+	const response = await browserMessage({ browser, origin }, 'Target.getTargets');
 	return z.array(z.object({ targetId, url: z.string() })).parse(response.targetInfos);
 }
 
-async function browserMessage(browser: string, method: string, params = {}, target?: string) {
+async function browserMessage(
+	{ browser, origin }: { browser: string; origin: string },
+	method: string,
+	params = {},
+	target?: string
+) {
 	const socket = new WebSocket(
-		'ws://127.0.0.1:9333/devtools/' + (target ? 'page/' + target : 'browser/' + browser)
+		origin.replace('http:', 'ws:') +
+			'/devtools/' +
+			(target ? 'page/' + target : 'browser/' + browser)
 	);
 	try {
 		return await new Promise<Record<string, unknown>>((resolve, reject) => {
