@@ -208,7 +208,7 @@
 			"trackerHostEffectsSchema",
 			"trackerHostInventory",
 			"hasManualTrackerPane",
-			"finishedTrackerSession",
+			"retiredTrackerSession",
 			"trackerHostLaunch",
 			"configuredHostDispatch",
 			"ClaudeStartupFailure",
@@ -976,12 +976,12 @@
 				"required": true
 			},
 			{
-				"name": "finishedTrackerSession.store",
+				"name": "retiredTrackerSession.store",
 				"type": "TrackerPersistenceService",
 				"required": true
 			},
 			{
-				"name": "finishedTrackerSession.session",
+				"name": "retiredTrackerSession.session",
 				"type": "TrackerHostSession",
 				"required": true
 			},
@@ -2218,8 +2218,9 @@
 				"type": "unknown"
 			},
 			{
-				"name": "finishedTrackerSession",
-				"type": "boolean"
+				"name": "retiredTrackerSession",
+				"type": "boolean",
+				"description": "Whether the recorded session belongs to a finished attempt that no longer fences a new launch. A live blocked pane still fences a retry."
 			},
 			{
 				"name": "trackerHostLaunch",
@@ -3621,23 +3622,24 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "finishedTrackerSession",
+				"name": "retiredTrackerSession",
 				"inputs": [
 					{
-						"name": "finishedTrackerSession.store",
+						"name": "retiredTrackerSession.store",
 						"type": "TrackerPersistenceService",
 						"required": true
 					},
 					{
-						"name": "finishedTrackerSession.session",
+						"name": "retiredTrackerSession.session",
 						"type": "TrackerHostSession",
 						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "finishedTrackerSession",
-						"type": "boolean"
+						"name": "retiredTrackerSession",
+						"type": "boolean",
+						"description": "Whether the recorded session belongs to a finished attempt that no longer fences a new launch. A live blocked pane still fences a retry."
 					}
 				],
 				"errors": [],

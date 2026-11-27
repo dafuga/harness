@@ -4,7 +4,7 @@ import { unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
-import { expect } from 'vitest';
+import { expect } from '../verificationExpect';
 
 export async function verifyAdoption(
 	runtime: TrackerNativeRuntimeService,
