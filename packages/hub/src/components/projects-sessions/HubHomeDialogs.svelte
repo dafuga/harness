@@ -25,6 +25,7 @@
 	import HubHomePlans from './HubHomePlans.svelte';
 	import HubHomeSchedule from './HubHomeSchedule.svelte';
 	import HubHomeProjects from './HubHomeProjects.svelte';
+	import HubHomeDirectory from './HubHomeDirectory.svelte';
 	import HubHomeQuota from './HubHomeQuota.svelte';
 	import HubHomeWork from './HubHomeWork.svelte';
 	let {
@@ -44,9 +45,9 @@
 		agentId?: string;
 		open: OpenHomeSection;
 		send: SendHomeChat;
-		changeSession: ChangeSession;
+		changeSession?: ChangeSession;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
-		readProject: ReadHomeProject;
+		readProject?: ReadHomeProject;
 		reload: () => void;
 		close: () => void;
 	} = $props();
@@ -59,6 +60,7 @@
 	const projects = $derived(view.projects ?? []);
 	const snapshots = $derived(projects.map((project) => view.projectSnapshots[project.id]));
 	const projectsSummary = $derived.by(() => {
+		if (view.native) return 'Projects from Tracker, Hub and this Mac';
 		if (view.trackerProjects) return count(view.trackerProjects.projects.length, 'Tracker project');
 		if (view.projectsFailed) return 'Shared projects unavailable';
 		if (view.projects === null) return 'Loading projects…';
@@ -110,9 +112,10 @@
 			>
 				<HarnessIcon name="arrow-left" size={18} />
 			</hx-button>
-		{:else if selected === 'projects' && view.trackerProjects}
-			<hx-a class="po-action" href={resolve('/tracker-overview')}>Open Project Overview</hx-a>
-		{:else if selected === 'projects' && !view.projectsFailed}
+		{:else if selected === 'projects' && view.trackerProjects && !view.native}
+			<hx-a class="po-action" href={resolve('/tracker-overview' as '/')}>Open Project Overview</hx-a
+			>
+		{:else if selected === 'projects' && !view.projectsFailed && !view.native}
 			<hx-a class="po-action hh-primary" href={resolve('/projects')}>Manage projects</hx-a>
 		{/if}
 	{/snippet}
@@ -137,16 +140,19 @@
 		{:else if selected === 'scheduled'}
 			<HubHomeSchedule runs={view.schedule} now={view.now} />
 		{:else if selected === 'projects'}
-			{#if view.trackerProjects}
+			{#if view.native || view.projectDirectory !== undefined}
+				<HubHomeDirectory {view} />
+			{/if}
+			{#if !view.native && view.trackerProjects && view.projectDirectory === undefined}
 				<hx-div class="hh-overview"
 					><ProjectOverview snapshot={view.trackerProjects} standalone={false} /></hx-div
 				>
-			{:else if view.projectsFailed}
+			{:else if !view.native && view.projectsFailed && view.projectDirectory === undefined}
 				<EmptyState as="div" className="po-empty hh-empty">
 					<hx-p>Shared projects could not be read.</hx-p>
 					<hx-button type="button" class="po-action" onclick={reload}>Try again</hx-button>
 				</EmptyState>
-			{:else}
+			{:else if !view.native && readProject && (view.projectDirectory === undefined || view.projects?.length)}
 				<HubHomeProjects projects={view.projects} snapshots={view.projectSnapshots} {readProject} />
 			{/if}
 		{:else if selected === 'quota'}

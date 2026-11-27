@@ -10,6 +10,7 @@
 	import { projectInventory, inventorySummary } from './hubHomeProjects';
 	import type { HomeView } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeDirectory from './HubHomeDirectory.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
@@ -23,25 +24,40 @@
 			.filter(({ commit }) => commit)
 			.sort((a, b) => Date.parse(b.commit!.authoredAt) - Date.parse(a.commit!.authoredAt))[0]
 	);
+	const directory = $derived(view.native || view.projectDirectory !== undefined);
+	const listed = $derived(view.native ? view.native.projects : view.projects);
+	const total = $derived(
+		(listed?.length ?? 0) +
+			(view.projectDirectory ?? []).filter(
+				(project) =>
+					!listed?.some((entry) => entry.name.toLowerCase() === project.name.toLowerCase())
+			).length
+	);
 </script>
 
 <HubHomeCard
 	section="projects"
-	total={view.trackerProjects?.projects.length ?? view.projects?.length}
-	summary={view.trackerProjects
-		? count(view.trackerProjects.projects.length, 'Tracker project')
-		: view.projectsFailed
-			? 'Shared projects unavailable'
-			: view.projects === null
-				? 'Loading projects…'
-				: latest?.commit
-					? `Last change: ${latest.project.name}, ${relativeWhen(latest.commit.authoredAt, view.now)}`
-					: view.projects.length
-						? count(view.projects.length, 'shared project')
-						: 'No projects yet'}
+	total={directory ? total : (view.trackerProjects?.projects.length ?? view.projects?.length)}
+	summary={directory
+		? listed === null && !total
+			? 'Loading projects…'
+			: count(total, 'project')
+		: view.trackerProjects
+			? count(view.trackerProjects.projects.length, 'Tracker project')
+			: view.projectsFailed
+				? 'Shared projects unavailable'
+				: view.projects === null
+					? 'Loading projects…'
+					: latest?.commit
+						? `Last change: ${latest.project.name}, ${relativeWhen(latest.commit.authoredAt, view.now)}`
+						: view.projects.length
+							? count(view.projects.length, 'shared project')
+							: 'No projects yet'}
 	{open}
 >
-	{#if view.trackerProjects?.projects.length}
+	{#if directory}
+		<HubHomeDirectory {view} />
+	{:else if view.trackerProjects?.projects.length}
 		<hx-ul class="po-items">
 			{#each view.trackerProjects.projects.slice(0, 4) as project, index (project.agent)}
 				<HubHomeRow

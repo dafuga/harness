@@ -10,11 +10,13 @@ import type {
 	HomePastDue,
 	HomeSection,
 	HomeSubscription,
+	HomeTrackerProject,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
+import type { DesktopProject } from '../../../../desktop/src/models/projects-sessions/ProjectContext.types';
 import type { soonestWork } from './hubHomePresentation';
 
 export interface HomeView {
@@ -32,6 +34,13 @@ export interface HomeView {
 	quota: HomeSubscription[] | null;
 	projects: ProjectSummary[] | null;
 	projectsFailed: boolean;
+	projectDirectory?: HomeTrackerProject[];
+	native?: {
+		projects: DesktopProject[] | null;
+		openProject: (id: string) => void;
+		projectBusy: boolean;
+		notices: string[];
+	};
 	trackerProjects: Extract<OverviewSnapshot, { status: 'ready' }> | null;
 	projectSnapshots: Record<string, ProjectSnapshot>;
 	work: ReturnType<typeof soonestWork>;

@@ -42,6 +42,12 @@
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds, used for run ages."
+			},
+			{
+				"name": "HubHomeLive.local",
+				"type": "HomeLiveOverview",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [

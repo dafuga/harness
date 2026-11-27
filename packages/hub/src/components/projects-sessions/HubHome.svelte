@@ -25,12 +25,14 @@
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
 	import HubHomeHeader from './HubHomeHeader.svelte';
+	import AccountMenu from '../accounts-access/AccountMenu.svelte';
+	import HubHomeNotifications from './HubHomeNotifications.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
+	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
 	import { followNeedsLink } from './followNeedsLink.svelte';
 	import '../../lib/styles/home-scheme.css';
 	import '../../lib/styles/hub-home/index.css';
-
 	const { api, session, projects } = browserContext();
 	provideHubSpecDocuments(api);
 	const cosChat = provideHomeCosChat(() => reads.read());
@@ -73,6 +75,7 @@
 		quota: snapshot?.providers.quota ?? (settled ? [] : null),
 		projects: list,
 		projectsFailed,
+		projectDirectory: snapshot?.projectDirectory ?? homeSnapshot(home)?.projectDirectory,
 		trackerProjects: projectsFailed && overview?.status === 'ready' ? overview : null,
 		projectSnapshots,
 		work: soonestWork(overview),
@@ -84,14 +87,12 @@
 		quotaConnected: Array.isArray(snapshot?.providers.quota),
 		now
 	});
-
 	const reads = hubHomeReads({
 		api,
 		actor: () => session.actor?.id,
 		home: (result) => ((home = result), (now = Date.now())),
 		linked: (result) => ((live = result), (now = Date.now()))
 	});
-
 	function refresh() {
 		const actor = session.actor?.id;
 		const request = ++flight;
@@ -110,7 +111,6 @@
 			}
 		);
 	}
-
 	$effect(() => {
 		if (!pushes) return;
 		const stop = followHubUpdates({
@@ -122,7 +122,6 @@
 			link = null;
 		};
 	});
-
 	onMount(() => {
 		refresh();
 		const stop = watchWhileVisible(() => {
@@ -139,7 +138,6 @@
 			stop();
 		};
 	});
-
 	followNeedsLink(() => {
 		const dialog = selected !== null;
 		return { asks: view.openAsks, openAsk: cosChat.openAsk, close, dialog, reload: refresh };
@@ -191,7 +189,10 @@
 
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
-		<HubHomeHeader {view} {link} />
+		<HubHomeHeader {view} {link} accountName={session.actor?.name}>
+			{#snippet accountMenu()}<AccountMenu />{/snippet}
+			{#snippet notifications()}<HubHomeNotifications />{/snippet}
+		</HubHomeHeader>
 		{#if link === 'live'}
 			<hx-p class="po-page hh-page hh-live" role="status" aria-label="Updates" data-state={link}>
 				Live
@@ -199,6 +200,7 @@
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
 			<HubHomeCards {view} {open} send={reads.send} {receipt} />
+			<HubHomeLive reading={view.computers} now={view.now} />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

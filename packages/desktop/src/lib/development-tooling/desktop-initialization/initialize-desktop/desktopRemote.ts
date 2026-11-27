@@ -21,6 +21,11 @@ export function desktopRemote(options: DesktopRemoteOptions) {
 		screen: { locked?: boolean } = {};
 	const phoneWriteDevice = process.env.HARNESS_TRACKER_PHONE_WRITE_DEVICE?.trim();
 	const phoneWriteToken = process.env.HARNESS_TRACKER_PHONE_WRITE_TOKEN;
+	const home = createHomeSnapshotReader(
+		process.env.HARNESS_HUB_HOME_PROVIDER_FILE,
+		liveQuotaSources()
+	);
+	const homeChat = createHomeChatWriter();
 	const remote = new RemoteHostService({
 		store: new RemoteHostStoreAdapter({
 			file: resolve(directory, 'remote.enc'),
@@ -32,11 +37,8 @@ export function desktopRemote(options: DesktopRemoteOptions) {
 		open: (url, headers) => sockets.open(url, headers),
 		shared: {
 			...stores,
-			home: createHomeSnapshotReader(
-				process.env.HARNESS_HUB_HOME_PROVIDER_FILE,
-				liveQuotaSources()
-			),
-			homeChat: createHomeChatWriter(),
+			home,
+			homeChat,
 			trackerPhone: process.env.HARNESS_TRACKER_PHONE_DEVICE?.trim(),
 			trackerWrite:
 				phoneWriteDevice && phoneWriteToken
@@ -56,5 +58,5 @@ export function desktopRemote(options: DesktopRemoteOptions) {
 		}
 	});
 	lifecycle.start();
-	return { remote, lifecycle };
+	return { remote, lifecycle, home, homeChat };
 }

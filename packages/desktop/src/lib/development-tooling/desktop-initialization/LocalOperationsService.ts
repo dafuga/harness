@@ -57,6 +57,9 @@ export class LocalOperationsService {
 			input: Fields = { ...request.input };
 		delete input.epoch;
 		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
+		if (method === 'homeSnapshot' && this.options.home && !Object.keys(input).length)
+			return this.options.home();
+		if (method === 'homeChat' && this.options.homeChat) return this.options.homeChat(input);
 		if (method === 'trackerInboxRead') return this.tracker.read(input);
 		if (method === 'trackerInboxWrite') return this.tracker.write(input);
 		if (Object.hasOwn(controls, method)) return this.control(controls[method], input);

@@ -39,6 +39,9 @@ class WorkspaceState {
 	category = $state<Category>('pages');
 	suffix = $state<RouteSuffix>(null);
 	projects = $state<DesktopProject[]>([]);
+	projectListReady = $state(false);
+	hubProjectListStatus = $state<CacheStatus['status']>('fresh');
+	localProjectListFailed = $state(false);
 	capabilities = $state<ProjectCapabilities>(closedCapabilities);
 	/** True while the address names a commit, also when that commit is the tip. */
 	pinned = $state(false);
@@ -141,9 +144,15 @@ class WorkspaceState {
 		const listing = ++this.listing;
 		try {
 			const listed = await listedProjects(this.bridge);
-			if (listing === this.listing) reconcile(this, listed);
-		} catch (cause) {
-			if (listing === this.listing) this.error = String(cause);
+			if (listing === this.listing) {
+				this.projectListReady = true;
+				reconcile(this, listed);
+			}
+		} catch {
+			if (listing === this.listing) {
+				this.projectListReady = true;
+				this.localProjectListFailed = true;
+			}
 		}
 	}
 	refresh = () => this.navigate(globalThis.location.pathname, false);
@@ -153,7 +162,12 @@ export function createWorkspaceStore() {
 }
 /** A discovery event says whether the list it precedes is current; every event is applied. */
 function heard(workspace: WorkspaceState, event: CacheStatus) {
-	if (event.projectId === everyProject) workspace.listedOffline = event.status === 'offline';
+	if (event.projectId === everyProject) {
+		workspace.hubProjectListStatus = event.status;
+		workspace.listedOffline = event.status === 'offline' || event.status === 'unavailable';
+	}
+	if (event.projectId === '$local-projects')
+		workspace.localProjectListFailed = event.status === 'unavailable';
 	cacheStatus(workspace, event);
 }
 /**

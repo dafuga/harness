@@ -134,6 +134,8 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 	const providers = snapshots.map((entry) => entry.providers);
 	return {
 		overview,
+		projectDirectory: snapshots.find((entry) => entry.projectDirectory !== undefined)
+			?.projectDirectory,
 		agents: mergeAgents(snapshots.flatMap((entry) => entry.agents)),
 		openAsks: mergeOpenAsks(snapshots),
 		plans: newest(

@@ -10,8 +10,6 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"hub.component.account-menu",
-			"hub.component.projects-sessions-hub-home-notifications",
 			"hub.component.projects-sessions-hub-home-quota-pills",
 			"reports.component.brand-mark",
 			"reports.component.explorer-ui-explorer-kit-notice",
@@ -48,13 +46,43 @@
 				"type": "RealtimeState | null",
 				"required": true,
 				"description": "Provides the linked computer data and connection notices for the banner."
+			},
+			{
+				"name": "HubHomeHeader.accountName",
+				"type": "string",
+				"required": false,
+				"default": ""
+			},
+			{
+				"name": "HubHomeHeader.accountMenu",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "HubHomeHeader.needsHref",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "HubHomeHeader.needsOnly",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "HubHomeHeader.notifications",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeHeader",
 				"type": "markup",
-				"description": "Shows account navigation, current activity totals, computers and each subscription's quota."
+				"description": "The shared Home header with the Harness logo, account controls, activity, machine and quota summaries, and optional Home and Needs you navigation."
 			}
 		],
 		"errors": [],
@@ -64,22 +92,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "hub.component.account-menu",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-notifications",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.component.projects-sessions-hub-home-quota-pills",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.browser-context",
 			"via": "import",
 			"origin": "derived"
 		},

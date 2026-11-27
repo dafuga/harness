@@ -55,6 +55,12 @@
 		],
 		"inputs": [
 			{
+				"name": "ProjectOverview.project",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
 				"name": "ProjectOverview.snapshot",
 				"type": "OverviewSnapshot | null",
 				"required": true,

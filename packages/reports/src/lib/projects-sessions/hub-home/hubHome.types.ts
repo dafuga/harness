@@ -1,5 +1,5 @@
 // @harness-uid u_kda7xezayo
-import type { OverviewSnapshot } from '../project-overview/projectOverview.types';
+import type { OverviewSnapshot, ProjectState } from '../project-overview/projectOverview.types';
 import type { HomeLiveOverview } from './homeLive.types';
 
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
@@ -148,8 +148,16 @@ export interface HomeProviderReadings {
 	quota: HomeSubscription[] | null;
 }
 
+/** A visible Tracker project, including projects whose last task finished long ago. */
+export interface HomeTrackerProject {
+	name: string;
+	state: ProjectState;
+	needsYou: number;
+}
+
 export interface OwnerHomeSnapshot {
 	overview: OverviewSnapshot;
+	projectDirectory?: HomeTrackerProject[];
 	agents: HomeAgent[];
 	/** Every open structured ask, oldest first. Older Mac apps omit it. */
 	openAsks?: HomeOpenAsk[];

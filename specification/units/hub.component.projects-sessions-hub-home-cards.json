@@ -12,7 +12,6 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
 			"hub.component.projects-sessions-hub-home-cos-chat",
-			"hub.component.projects-sessions-hub-home-live",
 			"hub.component.projects-sessions-hub-home-needs-you",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
@@ -69,6 +68,12 @@
 				"type": "(id: string) => Promise<HomeChatReceipt>",
 				"required": true,
 				"description": "Reads the latest receipt for a sent answer or message by its id."
+			},
+			{
+				"name": "HubHomeCards.needsOnly",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -169,11 +174,6 @@
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-cos-chat",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-live",
 			"via": "import",
 			"origin": "derived"
 		},

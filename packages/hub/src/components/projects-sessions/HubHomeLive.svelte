@@ -4,14 +4,19 @@
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
+	import type { HomeLiveOverview } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 	import { liveNotice, liveSummary, projectSummary, liveSystemNotice } from './hubHomeLive';
 	import HubHomeLiveProject from './HubHomeLiveProject.svelte';
 	import { count } from './hubHomePresentation';
 	import { runTime } from './hubHomeTime';
 
-	let { reading, now }: { reading: LinkedHome | null; now: number } = $props();
-	const notice = $derived(liveNotice(reading));
-	const overview = $derived(notice ? null : (reading?.snapshot?.liveOverview ?? null));
+	let {
+		reading,
+		now,
+		local
+	}: { reading: LinkedHome | null; now: number; local?: HomeLiveOverview } = $props();
+	const notice = $derived(local ? null : liveNotice(reading));
+	const overview = $derived(local ?? (notice ? null : (reading?.snapshot?.liveOverview ?? null)));
 	const moving = $derived(overview?.projects.filter((project) => project.rows.length) ?? []);
 	const quiet = $derived(overview?.projects.filter((project) => !project.rows.length) ?? []);
 </script>
@@ -21,10 +26,12 @@
 		<hx-h2 class="hh-needs-title" id="hh-live-title">Live overview</hx-h2>
 		{#if overview}
 			<hx-p class="hh-live-summary" role="status">{liveSummary(overview)}</hx-p>
-			<hx-p class="hh-live-source"
-				>From {reading!.answered} of {count(reading!.linked, 'linked computer')} over an encrypted connection
-				· read {runTime(overview.readAt)}</hx-p
-			>
+			<hx-p class="hh-live-source">
+				{#if local}From Tracker on this Mac{:else if reading}
+					From {reading.answered} of {count(reading.linked, 'linked computer')} over an encrypted connection
+				{/if}
+				· read {runTime(overview.readAt)}
+			</hx-p>
 		{/if}
 	</hx-div>
 	{#if notice}

@@ -52,12 +52,16 @@ export class LocalClientService {
 			renderMockups
 		);
 		const { session, runs } = this,
-			bridge = new DesktopBridgeService(session, providers, runs, options.choose).bridge(),
+			bridge = new DesktopBridgeService(session, providers, runs, options.choose).bridge((event) =>
+				this.wire.emit('cache', event)
+			),
 			auth = options.shared.auth,
 			operations = new LocalOperationsService({
 				bridge,
 				control: options.control,
-				hubOverview: auth && (() => auth.overview())
+				hubOverview: auth && (() => auth.overview()),
+				home: options.shared.home,
+				homeChat: options.shared.homeChat
 			}),
 			host = { id: null, name: hostname(), platform: process.platform };
 		this.wire = new WireSessionService({
@@ -66,6 +70,9 @@ export class LocalClientService {
 			methods: () => operations.methods(),
 			describe: () => ({ host, device: null, grant: null }),
 			handle: (request) => {
+				if (request.method === 'homeSnapshot' || request.method === 'homeChat') {
+					if (!auth?.admitted) throw new Error('Sign in to Harness to continue.');
+				}
 				if (options.accountRequired && !auth?.admitted && !accountMethods.has(request.method))
 					throw new Error('Sign in to Harness to continue.');
 				return operations.handle(request);
