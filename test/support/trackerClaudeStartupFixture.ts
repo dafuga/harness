@@ -8,6 +8,7 @@ import type {
 	TrackerHostLaunchPort,
 	TrackerHostStartRequest
 } from '../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
+import { withTempRepo } from './temporary';
 import type { TemporaryRepo } from './temporary.types';
 import { onIdleHost } from './trackerHostResourceFixture';
 import {
@@ -39,10 +40,13 @@ export async function verifyUnusableWorktree(
 	launcher: TrackerHostLaunchPort,
 	native: TrackerHostStartRequest
 ) {
-	const unusable = { ...native, runId: 5, key: 'unusable', repo: '/usr/share' };
-	expect(await launcher.start(unusable, new AbortController().signal)).toEqual({
-		status: 'rejected',
-		detail: expect.stringMatching(/could not create a worktree of .*not a git repository/s)
+	await withTempRepo(async ({ root }) => {
+		// An initialized repository without a commit cannot create a detached checkout.
+		const unusable = { ...native, runId: 5, key: 'unusable', repo: root };
+		expect(await launcher.start(unusable, new AbortController().signal)).toEqual({
+			status: 'rejected',
+			detail: expect.stringMatching(/could not create a worktree of .*HEAD/s)
+		});
 	});
 }
 

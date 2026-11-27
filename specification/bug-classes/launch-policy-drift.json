@@ -1,0 +1,161 @@
+{
+	"schemaVersion": 1,
+	"revision": "69f1538c677ceb2f88c790e04374f7f5179c7698",
+	"bugClass": {
+		"id": "launch-policy-drift",
+		"title": "Native launch or retry rebuilds the preview policy and loses effective settings",
+		"cause": "A native entry point independently assembles the policy used to start a run. That assembly can omit routing settings, configured limits or finished-run history, or apply different rules for choosing the project working directory or resolving a retired model.",
+		"criteria": "Trace the same project settings and run history through preview and through a native launch or retry to the execution boundary. Classify a site if its separate policy assembly causes any one difference: routing configuration is lost, a configured run limit is replaced or omitted, finished runs are missing from a history-dependent decision, the working directory violates project policy, or a retired model identifier reaches execution without the normalization used by preview. A difference on either launch or retry is sufficient.",
+		"patterns": [
+			{
+				"kind": "call",
+				"value": "buildLaunchPolicy",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "resolveRunPolicy",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "...defaultRunPolicy",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "launchRun",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "retryRun",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "routingConfig:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "routing: {}",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "runLimits:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "maxRuns ??",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "loadFinishedRuns",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "finishedRuns: []",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "runHistory: []",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "resolveWorkingDirectory",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "cwd: process.cwd()",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": ".currentDirectoryURL =",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "normalizeModelId",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "resolveModelAlias",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "model: request.model",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "spawn",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "Process()",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"launch",
+			"retry",
+			"preview",
+			"policy",
+			"routing",
+			"limits",
+			"history",
+			"finished",
+			"project",
+			"cwd",
+			"model",
+			"retired",
+			"alias"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/desktop/",
+				"weight": 10
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 6
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 5
+			},
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "specification/",
+				"weight": -6
+			},
+			{
+				"contains": "test/",
+				"weight": -7
+			},
+			{
+				"contains": "packages/reports/",
+				"weight": -5
+			}
+		]
+	}
+}

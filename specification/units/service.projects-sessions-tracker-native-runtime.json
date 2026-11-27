@@ -207,6 +207,7 @@
 			"configuredHostDispatch",
 			"ClaudeStartupFailure",
 			"TrackerHostSession",
+			"TrackerHostDispatchSettings",
 			"TrackerHostRouteItem",
 			"TrackerHostTarget",
 			"TrackerHostRoute",
@@ -237,6 +238,7 @@
 			"VerifiedEvent",
 			"VerifyJob",
 			"hostVerify",
+			"hostWorktrees",
 			"noVerify",
 			"RouteSet",
 			"trackerHostWatchdog",
@@ -954,7 +956,7 @@
 			},
 			{
 				"name": "trackerHostLaunch.effects",
-				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; hostResources?: TrackerHostResources; }",
+				"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; ladderConfig?: TrackerLadderConfig; hostResources?: TrackerHostResources; }",
 				"required": false,
 				"default": {}
 			},
@@ -969,14 +971,9 @@
 				"required": true
 			},
 			{
-				"name": "configuredHostDispatch.now",
-				"type": "() => number",
+				"name": "configuredHostDispatch.settings",
+				"type": "TrackerHostDispatchSettings",
 				"required": true
-			},
-			{
-				"name": "configuredHostDispatch.automaticEnabled",
-				"type": "() => boolean",
-				"required": false
 			},
 			{
 				"name": "trackerHostLaunchPort.config",
@@ -3557,7 +3554,7 @@
 					},
 					{
 						"name": "trackerHostLaunch.effects",
-						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; hostResources?: TrackerHostResources; }",
+						"type": "{ tmuxExecutable?: string; recoverDroppedSessions?: boolean; automaticEnabled?(): boolean; adapter?: TrackerHostAdapterConfig; workerClient?: TrackerWorkerClient; transcriptRoots?: readonly string[]; now?: () => number; ladderConfig?: TrackerLadderConfig; hostResources?: TrackerHostResources; }",
 						"required": false,
 						"default": {}
 					}
@@ -3585,14 +3582,9 @@
 						"required": true
 					},
 					{
-						"name": "configuredHostDispatch.now",
-						"type": "() => number",
+						"name": "configuredHostDispatch.settings",
+						"type": "TrackerHostDispatchSettings",
 						"required": true
-					},
-					{
-						"name": "configuredHostDispatch.automaticEnabled",
-						"type": "() => boolean",
-						"required": false
 					}
 				],
 				"outputs": [
@@ -5808,11 +5800,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "function.agents-providers-pick-tracker-model",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.projects-sessions-check-tracker-item",
 			"via": "import",
 			"origin": "derived"
@@ -5983,7 +5970,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-model-pick",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-resource-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-run-limits",
 			"via": "import",
 			"origin": "derived"
 		},
