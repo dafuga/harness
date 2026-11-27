@@ -113,6 +113,27 @@ async function verifyLiveAnswerDelivery(hub: TrackerSlotFixture) {
 	}
 }
 
+async function verifyAnsweredPaneRetained(hub: TrackerSlotFixture) {
+	const id = 'resumetest';
+	hub.queue(id);
+	await hub.advance(5_000);
+	const name = hub.panes().find((pane) => pane.startsWith('auto-resume-'))!;
+	expect(name).toBeDefined();
+	await hub.request(`/items/${id}/start`);
+	await hub.request(`/items/${id}/block`, { reason: 'Choose the synthetic region' });
+	hub.screen(name, composer());
+	await hub.advance(5_000);
+	expect(hub.runs(id)).toEqual([finished('blocked')]);
+	await hub.request(`/items/${id}/flag`, { question: 'Choose the synthetic region' });
+	await hub.request(`/items/${id}/answer`, { answer: 'Use the first region' });
+	await hub.advance(minute);
+	expect(hub.panes()).toContain(name);
+	expect(hub.runs(id)).toEqual([running]);
+	expect(hub.tmuxInput()).toContain(`Tracker answer for item ${id}`);
+	await hub.request(`/items/${id}/done`);
+	await hub.advance(minute);
+}
+
 test('a blocked run closes and stays down until its answer allows a relaunch', () =>
 	slotCase('blocked-run-waits-for-answer', async (hub) => {
 		hub.queue('blocked001');
@@ -140,6 +161,7 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		await hub.request('/items/blocked001/done');
 		await hub.advance(minute);
 		await verifyLiveAnswerDelivery(hub);
+		await verifyAnsweredPaneRetained(hub);
 	}));
 
 test('keeps a live background task until the item closes, then closes the pane', () =>

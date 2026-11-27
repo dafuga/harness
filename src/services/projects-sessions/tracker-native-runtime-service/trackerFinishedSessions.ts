@@ -117,6 +117,12 @@ function readFinishedPaneRun(
 		WHERE r.id = ? AND (r.tmux = ? OR (r.tmux IS NULL AND r.started_at IS NULL))
 		AND (r.item_id = ? OR substr(r.item_id, 1, 6) = ?)
 		AND r.state = 'finished' AND r.ended_at <= ? AND r.cli IN ('codex', 'claude')
+		AND NOT (
+			r.outcome = 'blocked' AND i.status = 'blocked' AND i.auto = r.auto_token
+			AND i.resolved = 1 AND i.needs_daniel = 0
+			AND coalesce(json_extract(i.clocks,'$.answer'),'') > coalesce(json_extract(i.clocks,'$.question'),'')
+			AND coalesce(json_extract(i.clocks,'$.answer'),'') > coalesce(json_extract(i.clocks,'$.status'),'')
+		)
 		AND (r.started_at IS NULL OR r.started_at BETWEEN ? AND ?)
 		AND (r.watch_pane IS NULL OR r.watch_pane = ?)
 		AND (coalesce(json_extract(reservation.v, '$.hostSessionId'), '') NOT GLOB '*:%*'
