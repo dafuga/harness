@@ -134,7 +134,7 @@
 							>
 						</hx-li>
 					{/each}
-				{#if ask && receipt}
+					{#if ask && receipt}
 						<hx-li class="hh-msg hh-msg-ask" data-from="agent">
 							{#key `${ask.itemId}:${ask.question}`}<HubHomeAsk {ask} {send} {receipt} />{/key}
 						</hx-li>
