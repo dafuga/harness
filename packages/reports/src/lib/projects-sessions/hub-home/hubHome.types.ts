@@ -1,5 +1,9 @@
 // @harness-uid u_kda7xezayo
 import type { OverviewSnapshot } from '../project-overview/projectOverview.types';
+import type {
+	TrackerPlanning,
+	TrackerStage
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 import type { HomeLiveOverview } from './homeLive.types';
 
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
@@ -88,6 +92,9 @@ export interface HomePlan {
 	title: string;
 	project: string | null;
 	state: HomePlanState;
+	/** Older Home publishers omit stage and artifacts. */
+	stage?: TrackerStage;
+	planning?: TrackerPlanning;
 	updatedAt: string;
 	total: number;
 	done: number;

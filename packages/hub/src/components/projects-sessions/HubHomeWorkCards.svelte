@@ -13,6 +13,7 @@
 		workSummary,
 		workEta
 	} from './hubHomePresentation';
+	import { homeCosChat } from './hubHomeChatContext.svelte';
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
@@ -21,6 +22,7 @@
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
 	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
+	const chat = homeCosChat();
 </script>
 
 {#snippet empty(text: string, action?: string)}
@@ -55,6 +57,7 @@
 			{#each view.plans.slice(0, 4) as plan, index (plan.id)}
 				<HubHomeRow
 					title={plan.title}
+					activate={() => open('plans', plan.id)}
 					meta={[
 						plan.project,
 						planLabels[plan.state],
@@ -106,6 +109,19 @@
 			{#each view.schedule.slice(0, 4) as run, index (`${run.source}:${run.id}`)}
 				<HubHomeRow
 					title={run.title}
+					activate={(trigger) =>
+						chat?.open(trigger, {
+							id: run.id,
+							title: run.title,
+							details: [
+								run.source === 'claude' ? 'Claude routine' : 'Tracker',
+								run.at,
+								run.agent,
+								run.machine
+							]
+								.filter(Boolean)
+								.join(' · ')
+						})}
 					meta={[run.agent, run.machine, run.paused ? 'Paused' : run.recurring ? 'Repeats' : null]
 						.filter(Boolean)
 						.join(' · ')}

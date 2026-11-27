@@ -7,9 +7,11 @@
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { HomeRun } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { runDay, runTime } from './hubHomePresentation';
+	import { homeCosChat } from './hubHomeChatContext.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
 	let { runs, now }: { runs: HomeRun[] | null; now: number } = $props();
+	const chat = homeCosChat();
 	let filter = $state<'all' | 'tracker' | 'claude'>('all');
 	const filters = [
 		{ id: 'all', label: 'All' },
@@ -52,7 +54,7 @@
 				<hx-ul class="po-items">
 					{#each agenda as run (`${run.source}:${run.id}`)}
 						<hx-li class="po-item hh-agenda-row" data-paused={run.paused ? '' : undefined}>
-							<hx-div class="hh-row">
+							<hx-div class="hh-row hh-row-target">
 								<hx-time class="hh-agenda-time" datetime={run.at}>{runTime(run.at)}</hx-time>
 								<hx-span class="po-item-text">
 									<hx-span class="po-item-title"><LinkifiedText text={run.title} /></hx-span>
@@ -70,6 +72,25 @@
 												? 'Repeats'
 												: 'Tracker'}
 								</hx-span>
+								<hx-button
+									type="button"
+									class="hh-open-row"
+									aria-label={run.title}
+									aria-haspopup="dialog"
+									onclick={(event) =>
+										chat?.open(event.currentTarget, {
+											id: run.id,
+											title: run.title,
+											details: [
+												run.source === 'claude' ? 'Claude routine' : 'Tracker',
+												run.at,
+												run.agent,
+												run.machine
+											]
+												.filter(Boolean)
+												.join(' · ')
+										})}
+								></hx-button>
 							</hx-div>
 						</hx-li>
 					{/each}

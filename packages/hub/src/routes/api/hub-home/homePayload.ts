@@ -10,6 +10,10 @@ import {
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { controlledIdPattern } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import {
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { trackerAttachmentLimits } from '../../../../../../src/utils/projects-sessions/trackerAttachmentLimits';
 import { trackerAttachmentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
@@ -96,6 +100,8 @@ const plan = z
 		title,
 		project: short.nullable(),
 		state: z.enum(['draft', 'in-review', 'approved', 'in-progress', 'done']),
+		stage: trackerStageSchema.optional(),
+		planning: trackerPlanningSchema.optional(),
 		updatedAt: time,
 		total: unsigned,
 		done: unsigned,

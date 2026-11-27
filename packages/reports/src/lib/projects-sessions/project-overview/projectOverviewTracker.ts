@@ -1,7 +1,10 @@
 // @harness-uid u_nves237tvx
 import type { TrackerAttachmentListingSource } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import { trackerAttachmentFields } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
-import { trackerStageSchema } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
+import {
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptions';
 import type { HomeAskInput } from '../hub-home/hubHome.types';
 import type { MachineStatus } from './projectOverview.types';
@@ -135,7 +138,8 @@ function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 		launchRequested: Boolean(row.auto),
 		answer: typeof row.answer === 'string' ? row.answer : null,
 		answeredAt: optionalTime(row.answered_at, 'item answered_at'),
-		stage: trackerStageSchema.safeParse(row.stage).data ?? null
+		stage: trackerStageSchema.safeParse(row.stage).data ?? null,
+		planning: trackerPlanningSchema.safeParse(row.planning).data
 	};
 }
 
