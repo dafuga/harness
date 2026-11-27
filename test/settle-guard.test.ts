@@ -1,6 +1,5 @@
 import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, realpathSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
@@ -10,6 +9,7 @@ import { epoch, realProbes } from './support/realProbes';
 import { stopFixtureProcesses } from './support/syntheticFixtureCleanup';
 import { isStaleSyntheticWrapper } from './support/sweepSyntheticServices';
 import { fixtureProcessTable } from './support/syntheticProcessTable';
+import { withTempDir } from './support/temporary';
 import {
 	adopted,
 	alive,
@@ -85,17 +85,20 @@ test.skipIf(!mac)(
 
 test.skipIf(!mac)(
 	'a crashed fixture worker leaves neither its wrapper nor its unrecorded child',
-	async () => {
-		const home = realpathSync(mkdtempSync(join(tmpdir(), 'harness-services-')));
-		const ready = file('crashed-worker');
-		const cleanup = fileURLToPath(new URL('./support/syntheticFixtureCleanup.ts', import.meta.url));
-		const wrapper = `
+	() =>
+		withTempDir('harness-services-', async (directory) => {
+			const home = realpathSync(directory);
+			const ready = file('crashed-worker');
+			const cleanup = fileURLToPath(
+				new URL('./support/syntheticFixtureCleanup.ts', import.meta.url)
+			);
+			const wrapper = `
 		const {spawn} = require('node:child_process');
 		const child = spawn('/bin/sleep', ['60'], {stdio: 'ignore'});
 		require('node:fs').writeFileSync(${JSON.stringify(ready)}, process.pid + ' ' + child.pid);
 		setInterval(() => {}, 1000);
 	`;
-		const script = `
+			const script = `
 		import {spawn, execFileSync} from 'node:child_process';
 		import {watchFixture, recordFixtureProcess} from ${JSON.stringify(cleanup)};
 		const home = ${JSON.stringify(home)};
@@ -106,26 +109,27 @@ test.skipIf(!mac)(
 		recordFixtureProcess(home, {pid: child.pid, started});
 		setInterval(() => {}, 1000);
 	`;
-		const worker = spawn('bun', ['-e', script], { stdio: 'inherit' });
-		try {
-			await expect.poll(() => existsSync(ready) && existsSync(join(home, '.processes'))).toBe(true);
-			const pids = readFileSync(ready, 'utf8').split(' ').map(Number);
-			const known = pids.map((pid) => {
-				const [row] = fixtureProcessTable(pid);
-				expect(row.group).toBe(pids[0]);
-				return row;
-			});
-			worker.kill('SIGKILL');
-			await expect
-				.poll(() => [existsSync(home), ...known.map(alive)])
-				.toEqual([false, false, false]);
-		} finally {
-			worker.kill('SIGKILL');
-			stopFixtureProcesses(home);
-			// The watchdog owns removal. Leave it the directory while it is acting on EOF.
-			await expect.poll(() => existsSync(home)).toBe(false);
-		}
-	},
+			const worker = spawn('bun', ['-e', script], { stdio: 'inherit' });
+			try {
+				await expect
+					.poll(() => existsSync(ready) && existsSync(join(home, '.processes')))
+					.toBe(true);
+				const pids = readFileSync(ready, 'utf8').split(' ').map(Number);
+				const known = pids.map((pid) => {
+					const [row] = fixtureProcessTable(pid);
+					expect(row.group).toBe(pids[0]);
+					return row;
+				});
+				worker.kill('SIGKILL');
+				await expect
+					.poll(() => [existsSync(home), ...known.map(alive)])
+					.toEqual([false, false, false]);
+			} finally {
+				worker.kill('SIGKILL');
+				stopFixtureProcesses(home);
+				await expect.poll(() => existsSync(home)).toBe(false);
+			}
+		}),
 	15_000
 );
 
