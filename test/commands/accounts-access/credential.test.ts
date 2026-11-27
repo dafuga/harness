@@ -1,11 +1,9 @@
 import { Command } from 'commander';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { request } from 'node:http';
 import { join } from 'node:path';
 import { afterAll, afterEach, expect, test, vi } from 'vitest';
 import { VaultBrokerClientAdapter } from '../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
-import type { VaultDeviceRepository } from '../../../src/repositories/accounts-access/VaultDeviceRepository';
-import { PrivateBrowserGateService } from '../../../src/services/execution-runtimes/PrivateBrowserGateService';
-import { PrivateBrowserPhoneService } from '../../../src/services/execution-runtimes/PrivateBrowserPhoneService';
 import { VaultSealAdapter } from '../../../src/adapters/accounts-access/VaultSealAdapter';
 import { CredentialCommand } from '../../../src/commands/accounts-access/CredentialCommand';
 import { serveCredentialBroker } from '../../../src/workflows/accounts-access/serveCredentialBroker';
@@ -136,10 +134,11 @@ test('a browser action is filed with the broker for phone approval', async () =>
 	expect((result as { requestId: string }).requestId).toMatch(/^[0-9a-f]{32}$/u);
 });
 
-test('the broker startup shares device trust with its optional private browser routes', async () => {
+test('protected broker startup shares one recovered browser with its agent socket', async () => {
 	const paths = files();
 	const phone = new FakePhone();
 	const socketPath = join(paths.directory, 's', 'broker.sock');
+	const agentSocket = join(paths.directory, 'agent.sock');
 	const trust = join(paths.directory, 'trust.json');
 	const origin = 'https://vault.example.test';
 	writeFileSync(
@@ -148,30 +147,65 @@ test('the broker startup shares device trust with its optional private browser r
 			devices: [{ id: phone.deviceId, role: 'approver', signingKey: phone.signingKey }]
 		})
 	);
-	const gate = new PrivateBrowserGateService({
-		revokeInput: async () => undefined,
-		disposeForm: async () => undefined,
-		verifyResult: async () => false
-	});
-	await gate.recover();
+	const agentUid = process.getuid?.() === 65534 ? 65533 : 65534;
+	const disposeForm = vi.fn(async () => undefined);
 	const options = {
 		socket: socketPath,
 		state: join(paths.directory, 'state'),
 		origin,
 		trust,
-		privateBrowser: (devices: VaultDeviceRepository) =>
-			new PrivateBrowserPhoneService({
-				devices,
-				gate,
-				submitField: async () => undefined
-			})
+		privateBrowserExecutor: {
+			cleanup: { revokeInput: async () => undefined, disposeForm, verifyResult: async () => false },
+			agent: {
+				socketPath: agentSocket,
+				agentUid,
+				peerUid: () => agentUid,
+				deviceId: phone.deviceId,
+				reviewedRead: async () => 'safe result'
+			},
+			reviewedField: () => ({
+				executor: 'synthetic-executor',
+				origin: 'https://form.example.test',
+				tabId: 'private-target',
+				field: 'fixture-field',
+				action: 'submit',
+				recipeDigest: 'a'.repeat(64)
+			}),
+			submitField: async () => undefined
+		}
 	};
 	const served = await serveCredentialBroker(options);
 	closers.push(served.close);
 	const client = new VaultBrokerClientAdapter({ socketPath });
 	const path = '/v1/private-browser/offer';
 	const start = '/v1/private-browser/challenge';
-	const proof = phone.prove(origin, start, randomNonce(), { path, expiresAt: Date.now() + 20_000 });
-	const { nonce } = await client.call<{ nonce: string }>(start, proof);
+	const proof = () =>
+		phone.prove(origin, start, randomNonce(), { path, expiresAt: Date.now() + 20_000 });
+	const { nonce } = await client.call<{ nonce: string }>(start, proof());
 	expect(await client.call(path, phone.prove(origin, path, nonce))).toEqual({ offer: null });
+	expect(disposeForm).toHaveBeenCalledTimes(1);
+	expect(await agentPost(agentSocket, '/read')).toEqual([200, { result: 'safe result' }]);
+	const [status, receipt] = await agentPost(agentSocket, '/private-entry');
+	expect(status).toBe(202);
+	expect(await agentPost(agentSocket, '/read')).toEqual([409, { error: 'Read unavailable' }]);
+	const issued = await client.call<{ nonce: string }>(start, proof());
+	expect(await client.call(path, phone.prove(origin, path, issued.nonce))).toMatchObject({
+		offer: { ...receipt, field: 'fixture-field' }
+	});
+	await served.close();
+	await expect(agentPost(agentSocket, '/read')).rejects.toMatchObject({ code: 'ENOENT' });
+	expect(disposeForm).toHaveBeenCalledTimes(2);
 });
+
+function agentPost(socketPath: string, path: string): Promise<[number | undefined, object]> {
+	return new Promise((resolve, reject) => {
+		const call = request({ socketPath, path, method: 'POST' }, (response) => {
+			let body = '';
+			response.setEncoding('utf8');
+			response.on('data', (chunk: string) => (body += chunk));
+			response.on('end', () => resolve([response.statusCode, JSON.parse(body) as object]));
+		});
+		call.once('error', reject);
+		call.end();
+	});
+}
