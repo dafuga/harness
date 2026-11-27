@@ -295,7 +295,7 @@
 				"outputs": [
 					{
 						"name": "planHistory",
-						"type": "Promise<import('../../../../models/planning-collaboration/PlanningView.types').EntityHistory>",
+						"type": "Promise<EntityHistory>",
 						"description": "Object with unitId (the input unit ID), revision (the RevisionInfo of the resolved revision) and entries: up to the requested limit of commits that touched the plan folder, newest first, each with the CommitInfo fields and events. Each event has a kind of plan-created, design-added (with version), design-approved (with approvalId), thread-opened or message-appended (with threadId), or other (with path relative to the plan folder).",
 						"examples": [
 							{

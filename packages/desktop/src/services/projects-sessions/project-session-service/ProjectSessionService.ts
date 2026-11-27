@@ -18,6 +18,7 @@ import { ProjectNotOpenError } from './ProjectNotOpenError';
 import { ProjectNotSelectedError } from './ProjectNotSelectedError';
 import { ProjectRevisionReadOnlyError } from './ProjectRevisionReadOnlyError';
 import { ProjectSwitchBlockedError } from './ProjectSwitchBlockedError';
+import type { Revision } from '../../../models/development-tooling/Desktop.types';
 
 function isWritableTip(
 	revision: Pick<ProjectSnapshot['revision'], 'branch' | 'atTip'>,
@@ -122,7 +123,13 @@ export class ProjectSessionService {
 			throw new ProjectNotOpenError('Open a project first.');
 		return { root: this.root, source: this.source, planning: this.planning, catalog: this.catalog };
 	}
-	async mutable() {
+	async mutable(): Promise<{
+		revision: Revision;
+		root: string;
+		source: GitSourceAdapter;
+		planning: PlanningFacadeAdapter;
+		catalog: CatalogService;
+	}> {
 		const project = this.requireProject(),
 			revision = await project.source.revision(this.query);
 		const current = (await project.source.branches()).find((b) => b.current);

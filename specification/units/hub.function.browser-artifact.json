@@ -26,7 +26,7 @@
 		"inputs": [
 			{
 				"name": "browserArtifact.media",
-				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"type": "AttestedMedia",
 				"required": true,
 				"description": "The evidence bytes and their exact media type, passed together to the hosted artifact reader. The media type must appear in artifactMediaTypes.",
 				"examples": [
@@ -136,7 +136,7 @@
 				"inputs": [
 					{
 						"name": "browserArtifact.media",
-						"type": "{ bytes: Uint8Array; mediaType: string }",
+						"type": "AttestedMedia",
 						"required": true,
 						"description": "The evidence bytes and their exact media type, passed together to the hosted artifact reader. The media type must appear in artifactMediaTypes.",
 						"examples": [
@@ -228,7 +228,7 @@
 				"outputs": [
 					{
 						"name": "browserArtifact",
-						"type": "Promise<import(\"../../../models/verification-evidence/DesktopEvidence.types\").EvidenceArtifactResult>",
+						"type": "Promise<EvidenceArtifactResult>",
 						"description": "The value resolved by hostedArtifact after it accepts the supplied media and digest. This adapter does not declare the returned value's concrete shape."
 					}
 				],
@@ -252,6 +252,11 @@
 		},
 		{
 			"unit": "desktop.function.remote-artifact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-evidence-types",
 			"via": "import",
 			"origin": "derived"
 		}
