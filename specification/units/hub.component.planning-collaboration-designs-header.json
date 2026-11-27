@@ -4,7 +4,7 @@
 	"uid": "u_6monqtdung",
 	"kind": "component",
 	"title": "DesignsHeader",
-	"responsibility": "Shows the viewed branch and commit and moves between branches and canvases.",
+	"responsibility": "Shows the viewed checkout or revision and lets the user select a canvas or reload.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -23,18 +23,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/planning-collaboration/DesignsHeader.svelte"],
-		"symbols": ["DesignsHeader"]
+		"source": ["packages/reports/src/components/planning-collaboration/DesignsHeader.svelte"],
+		"symbols": ["DesignsHeader", "DesignsHeader.caption"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
-			{
-				"name": "DesignsHeader.projectId",
-				"type": "string",
-				"required": true,
-				"description": "Hub project identifier."
-			},
 			{
 				"name": "DesignsHeader.page",
 				"type": "DesignCanvasPage | null",
@@ -44,7 +38,8 @@
 			{
 				"name": "DesignsHeader.pinned",
 				"type": "boolean",
-				"required": true,
+				"required": false,
+				"default": false,
 				"description": "Whether one commit is viewed instead of a branch tip."
 			},
 			{
@@ -58,19 +53,57 @@
 				"type": "() => void",
 				"required": true,
 				"description": "Reads the canvases again."
+			},
+			{
+				"name": "DesignsHeader.onbranch",
+				"type": "(branch: string) => void",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "DesignsHeader.canvasHref",
+				"type": "(name: string, branch: string) => string",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "DesignsHeader.oncanvas",
+				"type": "(name: string) => void",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesignsHeader",
 				"type": "markup",
-				"description": "Renders: Shows the viewed branch and commit and moves between branches and canvases."
+				"description": "Renders the revision label, reload action and canvas selectors with artboard counts."
 			}
 		],
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "DesignsHeader.caption",
+				"inputs": [
+					{
+						"name": "DesignsHeader.caption.item",
+						"type": "DesignCanvasSummary",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "DesignsHeader.caption",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -136,11 +169,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
+		"entry": "packages/reports/src/components/planning-collaboration/DesignsHeader.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte"
+				"entry": "packages/reports/src/components/planning-collaboration/DesignsHeader.svelte"
 			}
 		]
 	},

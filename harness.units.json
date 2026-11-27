@@ -38,15 +38,8 @@
 			"root": "packages/game"
 		}
 	],
-	"tests": [
-		"test/",
-		"tests/"
-	],
-	"global": [
-		"**/.prettierignore",
-		"tsconfig.api.json",
-		"specification/measurements/"
-	],
+	"tests": ["test/", "tests/"],
+	"global": ["**/.prettierignore", "tsconfig.api.json", "specification/measurements/"],
 	"ignored": [
 		"**/*.md",
 		"specification/features/",
@@ -286,9 +279,9 @@
 		},
 		{
 			"from": "packages/desktop/src/routes/designs/+page.svelte",
-			"specifier": "$reports/helpers/strings/shortCommit",
-			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
-			"reason": "The Mac designs page shows the checkout commit with the shared short form."
+			"specifier": "$shared/planning-collaboration/DesignsHeader.svelte",
+			"to": "packages/reports/src/components/planning-collaboration/DesignsHeader.svelte",
+			"reason": "Mac and Hub share canvas navigation and revision presentation."
 		},
 		{
 			"from": "packages/desktop/src/routes/designs/+page.svelte",
@@ -297,16 +290,28 @@
 			"reason": "The Mac designs page shows the shared canvas viewer."
 		},
 		{
-			"from": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
-			"specifier": "$reports/helpers/strings/shortCommit",
-			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
-			"reason": "The hosted designs header shows the viewed commit with the shared short form."
+			"from": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte",
+			"specifier": "$shared/planning-collaboration/DesignsHeader.svelte",
+			"to": "packages/reports/src/components/planning-collaboration/DesignsHeader.svelte",
+			"reason": "Mac and Hub share canvas navigation and revision presentation."
 		},
 		{
-			"from": "packages/hub/src/components/planning-collaboration/DesignsHeader.svelte",
-			"specifier": "$reports/utils/planning-collaboration/designCanvas.types",
-			"to": "packages/reports/src/utils/planning-collaboration/designCanvas.types.ts",
-			"reason": "The hosted designs header lists a revision's branches and canvases through the shared canvas types."
+			"from": "packages/desktop/src/components/networking-security/RemoteDevices.svelte",
+			"specifier": "$shared/accounts-access/DeviceListRow.svelte",
+			"to": "packages/reports/src/components/accounts-access/DeviceListRow.svelte",
+			"reason": "Mac connected devices use the Hub device row presentation."
+		},
+		{
+			"from": "packages/hub/src/routes/(accounts-access)/devices/+page.svelte",
+			"specifier": "$shared/accounts-access/DeviceListRow.svelte",
+			"to": "packages/reports/src/components/accounts-access/DeviceListRow.svelte",
+			"reason": "Hub and Mac show device name, status and available actions in the shared row."
+		},
+		{
+			"from": "packages/hub/src/components/accounts-access/LinkedComputers.svelte",
+			"specifier": "$shared/accounts-access/DeviceListRow.svelte",
+			"to": "packages/reports/src/components/accounts-access/DeviceListRow.svelte",
+			"reason": "Linked computers use the same row as other devices."
 		},
 		{
 			"from": "packages/hub/src/components/planning-collaboration/HostedDesigns.svelte",

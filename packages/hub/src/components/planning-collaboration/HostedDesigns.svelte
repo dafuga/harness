@@ -2,11 +2,12 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_tred5euwjc -->
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import DesignCanvas from '$shared/planning-collaboration/design-canvas/DesignCanvas.svelte';
+	import DesignsHeader from '$shared/planning-collaboration/DesignsHeader.svelte';
 	import type { DesignCanvasPage } from '$reports/utils/planning-collaboration/designCanvas.types';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
-	import DesignsHeader from './DesignsHeader.svelte';
 	let {
 		projectId,
 		canvas,
@@ -24,6 +25,15 @@
 	let attempt = $state(0);
 	/** Only the answer to the latest address is shown. */
 	let asked = 0;
+	const address = (canvas: string | undefined, branch: string) =>
+		resolve('/projects/[projectId]/designs/[[canvas]]', { projectId, canvas }) +
+		`?branch=${encodeURIComponent(branch)}`;
+
+	function chooseBranch(branch: string) {
+		// eslint-disable-next-line svelte/no-navigation-without-resolve -- address resolves the route before adding its branch
+		void goto(address(undefined, branch));
+	}
+
 	$effect(() => {
 		void attempt;
 		const turn = ++asked;
@@ -47,11 +57,12 @@
 
 <hx-div class="designs-page">
 	<DesignsHeader
-		{projectId}
 		page={shown}
 		pinned={Boolean(commit)}
 		workspace={resolve('/projects/[projectId]/harness/[...path]', { projectId, path: 'pages' })}
 		onreload={() => attempt++}
+		onbranch={chooseBranch}
+		canvasHref={address}
 	/>
 	{#if failure}<hx-p class="designs-note" role="alert">{failure}</hx-p>
 	{:else if !shown}<hx-p class="designs-note" role="status">Loading designs…</hx-p>

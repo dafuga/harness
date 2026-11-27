@@ -6,7 +6,7 @@
 	import { resolve } from '$app/paths';
 	import { getContext, onMount } from 'svelte';
 	import DesignCanvas from '$shared/planning-collaboration/design-canvas/DesignCanvas.svelte';
-	import { shortCommit } from '$reports/helpers/strings/shortCommit';
+	import DesignsHeader from '$shared/planning-collaboration/DesignsHeader.svelte';
 	import type { DesignCanvasPage } from '$reports/utils/planning-collaboration/designCanvas.types';
 	import { nativeAccountContext } from '../../models/development-tooling/Environment.types';
 	import type { NativeAccountContext } from '../../models/development-tooling/Environment.types';
@@ -58,25 +58,12 @@
 <svelte:head><title>Designs · Harness</title></svelte:head>
 
 <hx-div class="designs-page">
-	<hx-header>
-		<hx-a href={resolve(back as '/')}>← Project</hx-a>
-		<hx-h1>Designs</hx-h1>
-		{#if shown}
-			<hx-span>{shown.branch} · {shortCommit(shown.commit)} and local edits</hx-span>
-		{/if}
-		<hx-button type="button" onclick={() => void read(chosen)}>Reload</hx-button>
-		{#if shown}
-			<hx-nav aria-label="Canvases">
-				{#each shown.canvases as item (item.name)}
-					<hx-button
-						type="button"
-						aria-pressed={item.name === chosen}
-						onclick={() => void read(item.name)}>{item.title}</hx-button
-					>
-				{/each}
-			</hx-nav>
-		{/if}
-	</hx-header>
+	<DesignsHeader
+		workspace={resolve(back as '/')}
+		page={shown}
+		onreload={() => void read(chosen)}
+		oncanvas={(name) => void read(name)}
+	/>
 	{#if failure}<hx-p role="alert">{failure}</hx-p>
 	{:else if !shown}<hx-p role="status">Loading designs…</hx-p>
 	{:else if shown.canvas}<DesignCanvas canvas={shown.canvas} />
@@ -90,42 +77,6 @@
 		height: 100dvh;
 		background: var(--hx-color-background);
 		color: var(--hx-color-text);
-	}
-	header {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--hx-space-12);
-		padding: var(--hx-space-12) var(--hx-space-18);
-		border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
-		background: var(--hx-color-surface);
-	}
-	h1 {
-		margin: 0;
-		font-size: var(--hx-type-size-lg);
-	}
-	a,
-	span {
-		color: var(--hx-color-text-supporting);
-	}
-	nav {
-		display: flex;
-		gap: var(--hx-space-12);
-		width: 100%;
-		overflow-x: auto;
-	}
-	button {
-		min-height: 36px;
-		padding: 0 var(--hx-space-10);
-		border: var(--hx-border-thin) solid var(--hx-color-border-strong);
-		border-radius: var(--hx-radius-small);
-		background: var(--hx-color-surface-raised);
-		color: var(--hx-color-text);
-		font: inherit;
-		white-space: nowrap;
-	}
-	button[aria-pressed='true'] {
-		border-color: var(--hx-color-primary);
 	}
 	p {
 		padding: var(--hx-space-32) var(--hx-space-24);

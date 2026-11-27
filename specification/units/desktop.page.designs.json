@@ -10,15 +10,10 @@
 	"composition": {
 		"level": "page",
 		"uses": [
+			"hub.component.planning-collaboration-designs-header",
 			"reports.component.planning-collaboration-design-canvas-design-canvas",
-			"reports.component.shared-primitives-atoms-html-a",
-			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-h1",
-			"reports.component.shared-primitives-atoms-html-header",
-			"reports.component.shared-primitives-atoms-html-nav",
-			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-p"
 		]
 	},
 	"owns": {
@@ -47,17 +42,12 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.component.planning-collaboration-designs-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.planning-collaboration-design-canvas-design-canvas",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-a",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -67,32 +57,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-h1",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-header",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-nav",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.function.entity-lens",
 			"via": "import",
 			"origin": "derived"
 		},
