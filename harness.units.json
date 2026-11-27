@@ -3351,6 +3351,12 @@
 		},
 		{
 			"from": "packages/hub/src/components/projects-sessions/HubHomeReminder.svelte",
+			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
+			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
+			"reason": "Reminder titles show web addresses as links through the shared Reports component."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeReminder.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home reminders read this reports module through the build alias."
@@ -3366,6 +3372,18 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home reminders read this reports module through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
+			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
+			"reason": "Reminder titles show web addresses as links through the shared Reports component."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+			"specifier": "$reports/utils/strings/linkSegments",
+			"to": "packages/reports/src/utils/strings/linkSegments.ts",
+			"reason": "A title with a link is shown outside the button that opens the reminder."
 		},
 		{
 			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",

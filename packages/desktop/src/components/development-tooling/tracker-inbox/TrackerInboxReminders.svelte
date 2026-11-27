@@ -2,6 +2,8 @@
 <!-- @harness-atoms ../../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_x6knq6fa2b -->
 <script lang="ts">
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
+	import { hasWebLink } from '$reports/utils/strings/linkSegments';
 	import type {
 		InboxHeader,
 		TrackerInboxSource
@@ -63,14 +65,18 @@
 		{#each reminders as header (header.id)}
 			{@const next = reminderNextTime(header.reminder!.at, Date.now())}
 			{@const name = trackerReminderName(header.title)}
+			{@const linked = hasWebLink(name)}
 			<hx-li class="reminder" data-due={next.due}>
-				<hx-button type="button" class="reminder-open" onclick={() => onselect(header.id)}>
-					<hx-span class="reminder-title">{name}</hx-span>
-					<hx-span class="reminder-meta">
-						<hx-span class="reminder-when">{next.label}</hx-span>
-						{#if header.reminder?.repeats}<hx-span>{header.reminder.repeats}</hx-span>{/if}
-					</hx-span>
-				</hx-button>
+				<hx-div class="reminder-text">
+					{#if linked}<hx-p class="reminder-title"><LinkifiedText text={name} /></hx-p>{/if}
+					<hx-button type="button" class="reminder-open" onclick={() => onselect(header.id)}>
+						{#if !linked}<hx-span class="reminder-title">{name}</hx-span>{/if}
+						<hx-span class="reminder-meta">
+							<hx-span class="reminder-when">{next.label}</hx-span>
+							{#if header.reminder?.repeats}<hx-span>{header.reminder.repeats}</hx-span>{/if}
+						</hx-span>
+					</hx-button>
+				</hx-div>
 				{#if !acted.includes(key(header))}
 					<hx-div class="reminder-actions">
 						<hx-button

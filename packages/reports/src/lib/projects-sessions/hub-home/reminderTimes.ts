@@ -19,19 +19,14 @@ function daysLater(now: number, days: number): Date {
 function relativeDay(at: Date, now: number): string {
 	const day = dayLabel(at);
 	if (day === dayLabel(new Date(now))) return 'Today';
-	if (day === dayLabel(daysLater(now, 1))) return 'Tomorrow';
-	return day === dayLabel(daysLater(now, -1)) ? 'Yesterday' : day;
+	return day === dayLabel(daysLater(now, 1)) ? 'Tomorrow' : day;
 }
 
-/** @pure When a reminder fires next, in the viewer's own time zone. A passed time is due. */
+/** @pure When a reminder fires next, in the viewer's own time zone. A passed time is due now. */
 export function reminderNextTime(at: string, now: number): { due: boolean; label: string } {
 	const time = new Date(at);
 	const due = time.getTime() <= now;
-	const label = `${relativeDay(time, now)} ${clockLabel(time)}`;
-	return {
-		due,
-		label: due ? `Due since ${label.replace(/^(To|Yes)/, (w) => w.toLowerCase())}` : label
-	};
+	return { due, label: due ? 'Due now' : `${relativeDay(time, now)} ${clockLabel(time)}` };
 }
 
 /** @pure The three snoozes offered: an hour, tomorrow morning and a week. */

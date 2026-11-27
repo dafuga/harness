@@ -13,7 +13,7 @@ const armed = (hours: number) => new Date(homeClock + hours * 3_600_000).toISOSt
 const titles = [
 	'Water the sample plant',
 	'Pick up sample groceries on the way home from the long walk by the river',
-	'Book a sample room',
+	'Book a sample room at https://example.com/rooms',
 	'Send the sample follow-up',
 	'Charge the sample camera',
 	'Renew the sample card'
@@ -54,7 +54,10 @@ for (const size of ['desktop', 'phone'] as const) {
 			await expect(section.getByRole('heading', { name: 'Personal' })).toBeVisible();
 			const rows = section.getByRole('listitem');
 			await expect(rows).toHaveCount(5);
-			await expect(rows.first()).toContainText('Due since');
+			await expect(rows.first()).toContainText('Due now');
+			const link = section.getByRole('link', { name: 'https://example.com/rooms' });
+			await expect(link).toHaveAttribute('href', 'https://example.com/rooms');
+			await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
 			await expect(rows.first()).toContainText('Weekly');
 			await shot(page, `${size}-${scheme}-list`);
 

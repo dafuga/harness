@@ -34,7 +34,8 @@ function reminderTracker() {
 			}
 		});
 	add('plant00001', 'Reminder Sun 10:00: water the sample plant', -3, '0 10 * * 0');
-	add('room000001', 'Book a sample room before the long sample weekend by the river', 30);
+	const room = 'Book a sample room before the long sample weekend at https://example.com/rooms';
+	add('room000001', room, 30);
 	const fetcher = (async (input: string | URL, init?: RequestInit) =>
 		api.handle(new Request(String(input), init))) as typeof fetch;
 	return { items, fetcher, close: () => database.close() };
@@ -57,7 +58,12 @@ for (const [size, width] of [
 				await expect(view.getByRole('heading', { name: 'Personal' })).toBeVisible();
 				const rows = view.getByRole('listitem');
 				await expect(rows).toHaveCount(2);
-				await expect(rows.first()).toContainText(/Water the sample plant\s*Due since.*Weekly/s);
+				await expect(rows.first()).toContainText(/Water the sample plant\s*Due now.*Weekly/s);
+				const link = view.getByRole('link', { name: 'https://example.com/rooms' });
+				await expect(link).toHaveAttribute('href', 'https://example.com/rooms');
+				await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+				// A link is never nested inside the button that opens the item.
+				await expect(view.locator('hx-button a, button a')).toHaveCount(0);
 				await rows
 					.first()
 					.getByRole('button', { name: /^Snooze:/ })

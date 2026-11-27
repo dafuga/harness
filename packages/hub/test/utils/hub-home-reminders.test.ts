@@ -169,10 +169,8 @@ test('next times name the day, mark a passed one due and offer three snoozes', (
 	expect(reminderNextTime(local(26, 18), noon)).toEqual({ due: false, label: 'Today 18:00' });
 	expect(reminderNextTime(local(27, 9), noon).label).toBe('Tomorrow 09:00');
 	expect(reminderNextTime(local(29, 10), noon).label).toBe('Sun 29 Nov 10:00');
-	expect(reminderNextTime(local(25, 9), noon)).toEqual({
-		due: true,
-		label: 'Due since yesterday 09:00'
-	});
+	expect(reminderNextTime(local(25, 9), noon)).toEqual({ due: true, label: 'Due now' });
+	expect(reminderNextTime(local(26, 12), noon)).toEqual({ due: true, label: 'Due now' });
 	expect(snoozeChoices(noon).map((choice) => choice.until)).toEqual([
 		local(26, 13),
 		local(27, 9),

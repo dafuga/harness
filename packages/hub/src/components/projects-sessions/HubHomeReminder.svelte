@@ -1,7 +1,8 @@
-<!-- @harness-tier molecule -->
+<!-- @harness-tier organism -->
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_wppzl5o65z -->
 <script lang="ts">
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import type {
 		HomeChatInput,
 		HomeChatReceipt,
@@ -79,7 +80,7 @@
 
 <hx-li class="hh-reminder" data-due={next.due}>
 	<hx-div class="hh-reminder-text">
-		<hx-span class="hh-reminder-title">{reminder.title}</hx-span>
+		<hx-span class="hh-reminder-title"><LinkifiedText text={reminder.title} /></hx-span>
 		<hx-span class="hh-reminder-meta">
 			<hx-span class="hh-reminder-when">{next.label}</hx-span>
 			{#if reminder.repeats}<hx-span>{reminder.repeats}</hx-span>{/if}

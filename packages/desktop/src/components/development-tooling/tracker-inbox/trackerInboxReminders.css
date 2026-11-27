@@ -24,6 +24,11 @@
 	border-radius: var(--hx-radius-small);
 	background: var(--hx-color-surface);
 }
+.reminder-text {
+	display: grid;
+	gap: var(--hx-space-4);
+	min-width: 0;
+}
 .reminder .reminder-open {
 	display: grid;
 	gap: var(--hx-space-4);
@@ -36,6 +41,8 @@
 	text-align: left;
 }
 .reminder-title {
+	margin: 0;
+	line-height: 1.5;
 	overflow-wrap: anywhere;
 }
 .reminder-meta {
