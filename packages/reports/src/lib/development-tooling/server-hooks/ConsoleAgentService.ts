@@ -14,6 +14,7 @@ import { join } from 'node:path';
 import { CommentOutboxService } from '../../../../../desktop/src/services/projects-sessions/CommentOutboxService';
 import { reportSite } from '../../../utils/reports-media/reportSite';
 import { ChatSessionError } from './ConsoleAgentService.types';
+import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 
 const arbiter = new RepositoryArbiterService();
 const outbox = new CommentOutboxService(join(reportSite().root, 'work/console-comments.json'));
@@ -65,7 +66,7 @@ export class ConsoleAgentService {
 		this.runs,
 		async () => null
 	).bridge();
-	async open() {
+	async open(): Promise<ProjectSnapshot> {
 		return this.session.open(reportSite().root);
 	}
 	close() {

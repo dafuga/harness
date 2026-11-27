@@ -283,7 +283,8 @@
 									}
 								}
 							}
-						]
+						],
+						"unknownReason": "Parsed JSON from an on-disk cache entry that is untrusted until the caller validates it."
 					}
 				],
 				"errors": [],

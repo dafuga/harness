@@ -4,10 +4,11 @@ import type { ProviderId } from '../../../models/development-tooling/Desktop.typ
 import { ProviderUnavailableError } from './ProviderDiscoveryService.types';
 import { MockupProviderUnavailableError } from './MockupProviderUnavailableError';
 import { validateModel } from './providerModels';
+import type { ProviderState } from '../../../models/development-tooling/Desktop.types';
 
 export class ProviderDiscoveryService {
 	constructor(private runners: Record<ProviderId, AgentRunner>) {}
-	async list() {
+	async list(): Promise<ProviderState[]> {
 		return Promise.all(Object.values(this.runners).map((runner) => runner.discover()));
 	}
 	/** The authoring models serve the workflow independently of the chat model picker. */

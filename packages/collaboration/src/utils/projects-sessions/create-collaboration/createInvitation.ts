@@ -14,6 +14,7 @@ import {
 	parse
 } from '../../planning-collaboration/parseCollaborationInput';
 import { currentProject, now, transaction } from '../currentProject';
+import type { ProjectSummary } from '../../../models/planning-collaboration/Collaboration.types';
 
 export async function createInvitation(
 	deps: CollaborationDependencies,
@@ -53,7 +54,7 @@ export async function acceptInvitation(
 	deps: CollaborationDependencies,
 	actor: Actor,
 	input: Parameters<CollaborationApi['acceptInvitation']>[1]
-) {
+): Promise<ProjectSummary> {
 	const value = parse(
 		z.strictObject({ projectId: id, invitationId: id, code: z.string().regex(/^[a-f0-9]{64}$/) }),
 		input

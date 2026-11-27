@@ -8,7 +8,8 @@ export function trackerHealthBackupChecks(status: TrackerHealthStatus): TrackerH
 		return [{ name: 'backup', ok: false, severity: 'info', detail }];
 	}
 	const ok = !backup.stale && !backup.last_error;
-	const cause = backup.last_error ? `: ${backup.last_error.slice(0, 120)}` : '';
+	const error = backup.file_error ?? backup.last_error;
+	const cause = error ? `: ${error.slice(0, 120)}` : '';
 	const detail = ok ? 'ok' : `backup ${backup.stale ? 'stale' : 'failing'}${cause}`;
 	return [{ name: 'backup', ok, severity: 'fail', detail }];
 }

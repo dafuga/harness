@@ -156,7 +156,7 @@
 				"outputs": [
 					{
 						"name": "hubEvidenceRevision",
-						"type": "Promise<{ facts: import('../../../../../collaboration/src/models/git-source-history/SourceHistory.types').SourceCommitFacts; detail: import('../../../../../reports/src/models/explorer-ui/HarnessRevision.types').HarnessRevision | (Omit<import('../../../../../reports/src/models/explorer-ui/HarnessRevision.types').HarnessRevision, 'registry'> & { registry: import('../../../../../../src/utils/verification-evidence/revision-registry/revisionRegistry.types').RevisionRegistry }); judged: import('../../../../../../src/utils/development-tooling/revisionSummary.types').RevisionRecords; legacy: string[]; }>",
+						"type": "Promise<{ facts: SourceCommitFacts; detail: HarnessRevision | (Omit<HarnessRevision, 'registry'> & { registry: RevisionRegistry }); judged: RevisionRecords; legacy: string[]; }>",
 						"description": "The resolved evidence object for the commit: facts are its Git facts, detail holds the registry, comparison, record views, explanations and regressions, judged is the revision summary, and legacy lists the ids of its legacy-report notes. detail.comparison uses the first passed original record, otherwise the first original record, and is null when there are none; detail.sourceImpact is always null, and failures are thrown rather than returned.",
 						"examples": [
 							{
@@ -244,12 +244,22 @@
 	},
 	"dependencies": [
 		{
+			"unit": "collaboration.model.source-history-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.regression-history",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.revision-reasons",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.revision-registry",
 			"via": "import",
 			"origin": "derived"
 		},

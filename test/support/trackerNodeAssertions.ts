@@ -70,7 +70,6 @@ export async function proveForegroundSync(
 	}
 	expect((await trackerProcess(spoke, ['ensure']).exited).code).toBe(3);
 }
-
 async function verifySpokePublication(hub: TrackerNodeFixture) {
 	await expect
 		.poll(() => fixtureTrackerJson(hub, ['runs', '--item', 'spokerun22']), { timeout: 8_000 })
@@ -112,7 +111,6 @@ async function qualifyItemCommands(spoke: TrackerNodeFixture, id: string) {
 	});
 	await verifyLaunchCliOptions(spoke, id);
 }
-
 async function verifyTrackerNotificationFlow(
 	hub: TrackerNodeFixture,
 	spoke: TrackerNodeFixture,
@@ -120,6 +118,13 @@ async function verifyTrackerNotificationFlow(
 	receipts: Awaited<ReturnType<typeof notificationSink>>['receipts']
 ) {
 	const choices = ['--option', 'Ready=Continues.', '--option', 'Wait=Holds.', '--recommend', 'A'];
+	const processQuestion = 'Which command should I use to close this already approved cleanup?';
+	const refused = await trackerProcess(spoke, ['flag', id, processQuestion, ...choices]).exited;
+	expect(refused.code, processQuestion).toBe(1);
+	expect(refused.stderr).toContain('kept for Chief of Staff');
+	expect(await fixtureTrackerJson(spoke, ['list', '--flagged'])).toEqual([]);
+	const alerts = await fixtureTrackerJson(spoke, ['needs-attention']);
+	expect(alerts).toContainEqual(expect.objectContaining({ item_id: id, kind: 'flag-refused' }));
 	expect(
 		await fixtureTrackerJson(spoke, ['flag', id, 'Is the fixture ready?', ...choices])
 	).toMatchObject({ needs_daniel: true });

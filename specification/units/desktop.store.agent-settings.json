@@ -11,6 +11,7 @@
 		"source": [
 			"packages/desktop/src/lib/agent-settings/agentSettings.svelte.ts",
 			"packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
+			"packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.types.ts",
 			"packages/desktop/src/lib/stores/agentSettings.svelte.ts"
 		],
 		"symbols": [
@@ -18,6 +19,7 @@
 			"agentSettings",
 			"createAgentSettingsStore",
 			"agentSettings",
+			"AgentSettingsStore",
 			"createAgentSettingsStore",
 			"agentSettings"
 		]
@@ -60,7 +62,7 @@
 				"outputs": [
 					{
 						"name": "createAgentSettingsStore",
-						"type": "ReturnType<typeof createAgentSettingsStore>",
+						"type": "AgentSettingsStore",
 						"description": "Reactive store returned by the factory, with designOptions and saved getters plus load() and setDesignOptions(value) methods. It starts with designOptions set to defaultDesignCount, saved set to true, and an unloaded state; load() reads once, and setDesignOptions() writes only values included in designCounts, returning false without writing for other numbers."
 					}
 				],
