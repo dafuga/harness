@@ -8,11 +8,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/utils/projects-sessions/trackerMachineStatus.ts"],
+		"source": [
+			"src/utils/projects-sessions/trackerMachineStatus.ts"
+		],
 		"symbols": [
 			"trackerSampleOfflineMs",
 			"trackerDiskAlertFloor",
-			"trackerMachineNeedsPromptAlert",
 			"trackerBusyLoadPerCore",
 			"trackerMachineRole",
 			"trackerMachineStatus"
@@ -26,12 +27,6 @@
 				"type": "string",
 				"required": true,
 				"description": "Platform of the sampled host, such as darwin or linux."
-			},
-			{
-				"name": "trackerMachineNeedsPromptAlert.sample",
-				"type": "TrackerResourceSample",
-				"required": true,
-				"description": "Latest resource sample with running load, memory pressure and mounted disk headroom."
 			},
 			{
 				"name": "trackerMachineRole.node",
@@ -49,7 +44,7 @@
 				"name": "trackerMachineStatus.recent",
 				"type": "readonly TrackerResourceSample[]",
 				"required": true,
-				"description": "Earlier samples used to measure swap growth over ten minutes."
+				"description": "Earlier samples used to confirm sustained or severe load and measure swap growth."
 			},
 			{
 				"name": "trackerMachineStatus.now",
@@ -104,26 +99,6 @@
 				"errorStatus": "declared"
 			},
 			{
-				"name": "trackerMachineNeedsPromptAlert",
-				"inputs": [
-					{
-						"name": "trackerMachineNeedsPromptAlert.sample",
-						"type": "TrackerResourceSample",
-						"required": true,
-						"description": "Latest resource sample with running load, memory pressure and mounted disk headroom."
-					}
-				],
-				"outputs": [
-					{
-						"name": "trackerMachineNeedsPromptAlert",
-						"type": "boolean",
-						"description": "True for an extreme one-minute load, memory pressure or low disk that warrants a one-minute confirmation."
-					}
-				],
-				"errors": [],
-				"errorStatus": "declared"
-			},
-			{
 				"name": "trackerMachineRole",
 				"inputs": [
 					{
@@ -156,7 +131,7 @@
 						"name": "trackerMachineStatus.recent",
 						"type": "readonly TrackerResourceSample[]",
 						"required": true,
-						"description": "Earlier samples used to measure swap growth over ten minutes."
+						"description": "Earlier samples used to confirm sustained or severe load and measure swap growth."
 					},
 					{
 						"name": "trackerMachineStatus.now",

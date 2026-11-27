@@ -1,9 +1,6 @@
 // @harness-uid u_dq6rdp5vsp
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
-import {
-	trackerDiskAlertFloor,
-	trackerMachineNeedsPromptAlert
-} from '../../../utils/projects-sessions/trackerMachineStatus';
+import { trackerDiskAlertFloor } from '../../../utils/projects-sessions/trackerMachineStatus';
 import type { TrackerOverloadState } from '../../../repositories/projects-sessions/TrackerMachineRepository.types';
 import { planTrackerItemMutation } from '../../../utils/projects-sessions/planTrackerItemMutation';
 import type {
@@ -26,8 +23,8 @@ import type { TrackerMachineService } from '../TrackerMachineService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 
 const minute = 60_000;
-/** Ordinary overload and recovery both require ten minutes of continuing samples. */
-const sustained = 10 * minute;
+/** Resolve the alert after ten minutes of continuing healthy samples. */
+const recovery = 10 * minute;
 
 const sampleGap = 150_000;
 
@@ -74,8 +71,7 @@ function whileOverloaded(
 	const observedAt = row.sample ? Date.parse(row.sample.at) : now;
 	const overSince = state.over_since ?? observedAt;
 	const next = { ...state, over_since: overSince, calm_since: null };
-	const delay = row.sample && trackerMachineNeedsPromptAlert(row.sample) ? minute : sustained;
-	if (state.flagged_item || observedAt - overSince < delay) return next;
+	if (state.flagged_item) return next;
 	const title = trackerOverloadTitle(row.node);
 	const existing = overloadItems(machines.store, title);
 	// An ignored overload item stays ignored.
@@ -90,7 +86,7 @@ function whileOverloaded(
 			kind: trackerOverloadAlertKind,
 			host: row.node,
 			identity: `${row.node}:${overSince}`,
-			reason: overloadReason(machines, row, Math.round((observedAt - overSince) / minute))
+			reason: overloadReason(machines, row)
 		},
 		now
 	);
@@ -106,7 +102,7 @@ function whileCalm(
 	if (!state.flagged_item) return cleared;
 	const observedAt = row.sample ? Date.parse(row.sample.at) : now;
 	const calmSince = state.calm_since ?? observedAt;
-	if (observedAt - calmSince < sustained)
+	if (observedAt - calmSince < recovery)
 		return { over_since: null, calm_since: calmSince, flagged_item: state.flagged_item };
 	clearAlert(store, row.node);
 	const items = new TrackerItemReadRepository(store.database);
@@ -114,7 +110,7 @@ function whileCalm(
 		({ id, status }) => id === state.flagged_item && status !== 'done' && status !== 'ignored'
 	);
 	if (open) {
-		const note = `${row.node} back to ${row.status} for ${sustained / minute} min`;
+		const note = `${row.node} back to ${row.status} for ${recovery / minute} min`;
 		const plan = planTrackerItemMutation(
 			{ action: 'done', item: items.resolve(open.id), body: { note } },
 			{ ...itemMutationContext(store, items, { now: () => now }) }
@@ -148,8 +144,8 @@ function addItem(store: TrackerPersistenceService, title: string, now: number): 
 	return plan.itemId;
 }
 
-function overloadReason(machines: TrackerMachineService, row: TrackerMachineRow, minutes: number) {
-	const lead = `${row.node} has been overloaded for ${minutes} min: ${row.reasons.join('; ')}.`;
+function overloadReason(machines: TrackerMachineService, row: TrackerMachineRow) {
+	const lead = `${row.node} is overloaded: ${row.reasons.join('; ')}.`;
 	if (!row.sample) return lead;
 	const { sample } = row;
 	const cpu = highest(sample.top_cpu, sample.system_cpu ?? [], 'cpu');
