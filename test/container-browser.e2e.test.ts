@@ -38,7 +38,7 @@ test.skipIf(!live)(
 );
 
 test.skipIf(!process.env.HARNESS_TEST_PROTECTED_CHROME_SOCKET)(
-	'stock Chrome starts without a debug transport and retains its separate profile',
+	'stock Chrome keeps a website session across container recreation without DevTools',
 	{ timeout: 180_000 },
 	async () => {
 		await withTempDir('protected-chrome-', async (config) => {
@@ -60,12 +60,16 @@ test.skipIf(!process.env.HARNESS_TEST_PROTECTED_CHROME_SOCKET)(
 				await expect(inside('socat', '-T1', 'STDIO', 'TCP:127.0.0.1:9222')).rejects.toThrow(
 					/connection refused/iu
 				);
-				await inside('touch', '/profile/google-chrome/harness-fixture');
+				await expect(chromeSessionFixture(docker, name, 'enroll')).resolves.toBe(
+					'reauth-required\nready'
+				);
 				await docker(['stop', '--time=30', name], 60_000);
 				await docker(['rm', name]);
 				await start();
 				expect(await waitForChrome(inside)).toBe('RFB 003.008');
-				await inside('test', '-f', '/profile/google-chrome/harness-fixture');
+				await expect(chromeSessionFixture(docker, name, 'restart')).resolves.toBe(
+					'ready\nreauth-required\nunknown'
+				);
 			} finally {
 				await docker(['rm', '-f', name]).catch(() => '');
 				await docker(['volume', 'rm', `${name}-profile`]).catch(() => '');
@@ -73,6 +77,16 @@ test.skipIf(!process.env.HARNESS_TEST_PROTECTED_CHROME_SOCKET)(
 		});
 	}
 );
+
+async function chromeSessionFixture(
+	docker: ReturnType<typeof dockerHost>['docker'],
+	name: string,
+	phase: 'enroll' | 'restart'
+): Promise<string> {
+	const fixture = resolve(import.meta.dirname, 'support/protectedChromeSession.py');
+	await docker(['cp', fixture, `${name}:/tmp/protectedChromeSession.py`]);
+	return docker(['exec', name, 'python3', '/tmp/protectedChromeSession.py', phase], 65_000);
+}
 
 async function waitForChrome(inside: (...command: string[]) => Promise<string>): Promise<string> {
 	const readScreen =

@@ -86,6 +86,10 @@ test('the protected Chrome image has a separate profile and disables remote debu
 	const entrypoint = await readFile(new URL('entrypoint.sh', image), 'utf8');
 	expect(dockerfile).toContain('AS protected-chrome');
 	expect(dockerfile).toContain('/etc/opt/chrome/policies/managed');
+	expect(dockerfile.split('FROM desktop AS chromium')[0]).toContain(
+		'protected-chrome-health.py /opt/browser/protected-chrome-health.py'
+	);
+	expect(dockerfile.split('FROM desktop AS chromium')[1]).not.toContain('protected-chrome-health');
 	const policy = JSON.parse(await readFile(new URL('protected-chrome-policy.json', image), 'utf8'));
 	expect(policy).toMatchObject({
 		RemoteDebuggingAllowed: false,
