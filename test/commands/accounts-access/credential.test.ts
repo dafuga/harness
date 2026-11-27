@@ -134,7 +134,7 @@ test('a browser action is filed with the broker for phone approval', async () =>
 	expect((result as { requestId: string }).requestId).toMatch(/^[0-9a-f]{32}$/u);
 });
 
-test('protected broker startup shares one recovered browser with its agent socket', async () => {
+function protectedBrowserFixture() {
 	const paths = files();
 	const phone = new FakePhone();
 	const socketPath = join(paths.directory, 's', 'broker.sock');
@@ -149,31 +149,45 @@ test('protected broker startup shares one recovered browser with its agent socke
 	);
 	const agentUid = process.getuid?.() === 65534 ? 65533 : 65534;
 	const disposeForm = vi.fn(async () => undefined);
-	const options = {
-		socket: socketPath,
-		state: join(paths.directory, 'state'),
-		origin,
-		trust,
-		privateBrowserExecutor: {
-			cleanup: { revokeInput: async () => undefined, disposeForm, verifyResult: async () => false },
-			agent: {
-				socketPath: agentSocket,
-				agentUid,
-				peerUid: () => agentUid,
-				deviceId: phone.deviceId,
-				reviewedRead: async () => 'safe result'
-			},
-			reviewedField: () => ({
-				executor: 'synthetic-executor',
-				origin: 'https://form.example.test',
-				tabId: 'private-target',
-				field: 'fixture-field',
-				action: 'submit',
-				recipeDigest: 'a'.repeat(64)
-			}),
-			submitField: async () => undefined
+	return {
+		phone,
+		agentSocket,
+		disposeForm,
+		options: {
+			socket: socketPath,
+			state: join(paths.directory, 'state'),
+			origin,
+			trust,
+			privateBrowserExecutor: {
+				cleanup: {
+					revokeInput: async () => undefined,
+					disposeForm,
+					verifyResult: async () => false
+				},
+				agent: {
+					socketPath: agentSocket,
+					agentUid,
+					peerUid: () => agentUid,
+					deviceId: phone.deviceId,
+					reviewedRead: async () => 'safe result'
+				},
+				reviewedField: () => ({
+					executor: 'synthetic-executor',
+					origin: 'https://form.example.test',
+					tabId: 'private-target',
+					field: 'fixture-field',
+					action: 'submit',
+					recipeDigest: 'a'.repeat(64)
+				}),
+				submitField: async () => undefined
+			}
 		}
 	};
+}
+
+test('protected broker startup shares one recovered browser with its agent socket', async () => {
+	const { phone, agentSocket, disposeForm, options } = protectedBrowserFixture();
+	const { origin, socket: socketPath } = options;
 	const served = await serveCredentialBroker(options);
 	closers.push(served.close);
 	const client = new VaultBrokerClientAdapter({ socketPath });
