@@ -48,7 +48,7 @@ test('configured learning, ladder, Claude window and default ETA reach the launc
 			const receipt = join(root, 'started');
 			const [first] = JSON.parse(readFileSync(receipt, 'utf8'));
 			const selection = { provider: 'codex', model: 'gpt-6.2-astra', intelligence: 'high' };
-			expect(first.selection).toEqual(selection);
+
 			writeFileSync(receipt, JSON.stringify([{ ...first, state: 'exited', exitCode: 1 }]));
 			await fixture.runtime.scheduler!.tick(new AbortController().signal);
 			await fixture.runtime.scheduler!.tick(new AbortController().signal);
@@ -64,7 +64,12 @@ test('configured learning, ladder, Claude window and default ETA reach the launc
 			});
 			const sessions = JSON.parse(readFileSync(receipt, 'utf8'));
 			expect(sessions).toHaveLength(2);
-			expect(sessions[1].selection).toEqual(selection);
+			expect(
+				readFileSync(receipt + '.selections', 'utf8')
+					.trim()
+					.split('\n')
+					.map((row) => JSON.parse(row))
+			).toEqual([selection, selection]);
 			expect(fixture.options.ladderConfig).toMatchObject({
 				autolaunch: { claudeOnlyUntil: '2026-01-01T00:00:00Z' }
 			});

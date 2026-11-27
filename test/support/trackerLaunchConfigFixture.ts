@@ -97,7 +97,8 @@ const sessions = fs.existsSync(receipt) ? JSON.parse(fs.readFileSync(receipt, 'u
 if (process.argv[2] === 'inspect') process.stdout.write(JSON.stringify(sessions));
 else {
 	const { itemId, key, queuedAt } = input;
-	const session = { itemId, key, id: 'synthetic-' + itemId, state: 'live', startedAt: queuedAt, selection: input.selection };
+	const session = { itemId, key, id: 'synthetic-' + key, state: 'live', startedAt: queuedAt };
+	fs.appendFileSync(receipt + '.selections', JSON.stringify(input.selection) + '\\n');
 	fs.writeFileSync(receipt, JSON.stringify([...sessions, session]));
 	process.stdout.write(JSON.stringify({ status: 'started', session }));
 }
