@@ -15,12 +15,12 @@ import {
 import { regionField } from './regionField';
 import { planPayload } from './planPayload';
 import { InvalidPayloadError } from './ipcPayload.types';
-import type { Region } from '../../models/development-tooling/Desktop.types';
+import type { Region } from '../../../models/development-tooling/Desktop.types';
 import type {
 	ProjectRunRequest,
 	RunRequest
-} from '../../models/development-tooling/DesktopBridge.types';
-import type { ProjectTaskRequest } from '../../models/projects-sessions/ProjectTask.types';
+} from '../../../models/development-tooling/DesktopBridge.types';
+import type { ProjectTaskRequest } from '../../../models/projects-sessions/ProjectTask.types';
 
 export function approvalPayload(value: unknown) {
 	const x = ipcFields(value);
