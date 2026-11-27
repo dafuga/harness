@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-xdigest-send",
+	"uid": "u_x2f4mju4ib",
+	"kind": "service",
+	"title": "XDigestSendService",
+	"responsibility": "Post one day from the outbox once, resuming after the last delivered message.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/XDigestSendService.ts",
+			"src/services/agents-providers/XDigestSendService.types.ts"
+		],
+		"symbols": [
+			"XDigestSendService",
+			"XDigestSendService.constructor",
+			"XDigestSendService.run",
+			"XDigestSendPorts"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XDigestSendService.constructor.ports",
+				"type": "XDigestSendPorts",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "XDigestSendService.run",
+				"type": "Promise<XDigestSendReport>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XDigestSendService.run",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "XDigestSendService.run",
+						"type": "Promise<XDigestSendReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "XDigestSendService.constructor",
+				"inputs": [
+					{
+						"name": "XDigestSendService.constructor.ports",
+						"type": "XDigestSendPorts",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestSendService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-x-digest-send-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-x-digest-send-service-parse-xdigest-outbox",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/XDigestSendService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/XDigestSendService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

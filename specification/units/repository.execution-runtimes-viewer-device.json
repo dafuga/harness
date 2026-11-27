@@ -1,0 +1,239 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.execution-runtimes-viewer-device",
+	"uid": "u_qvo6rcr4rm",
+	"kind": "repository",
+	"title": "ViewerDeviceRepository",
+	"responsibility": "Keep approved and waiting viewer devices as cookie hashes, plus the watching marker.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/repositories/execution-runtimes/ViewerDeviceRepository.ts",
+			"src/repositories/execution-runtimes/ViewerDeviceRepository.types.ts"
+		],
+		"symbols": [
+			"ViewerDeviceRepository",
+			"ViewerDeviceRepository.constructor",
+			"ViewerDeviceRepository.access",
+			"ViewerDeviceRepository.request",
+			"ViewerDeviceRepository.approve",
+			"ViewerDeviceRepository.counts",
+			"ViewerDeviceRepository.revokeAll",
+			"ViewerDeviceRepository.markAttended",
+			"ViewerDeviceRepository.attended",
+			"ViewerDevice",
+			"ViewerPairing",
+			"ViewerDevices",
+			"ViewerAccess"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ViewerDeviceRepository.constructor.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ViewerDeviceRepository.constructor.now",
+				"type": "() => number",
+				"required": false
+			},
+			{
+				"name": "ViewerDeviceRepository.access.token",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "ViewerDeviceRepository.approve.code",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ViewerDeviceRepository.markAttended.watching",
+				"type": "boolean",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ViewerDeviceRepository.access",
+				"type": "ViewerAccess"
+			},
+			{
+				"name": "ViewerDeviceRepository.request",
+				"type": "{ token: string; code: string }"
+			},
+			{
+				"name": "ViewerDeviceRepository.approve",
+				"type": "boolean"
+			},
+			{
+				"name": "ViewerDeviceRepository.counts",
+				"type": "{ devices: number; pending: number }"
+			},
+			{
+				"name": "ViewerDeviceRepository.revokeAll",
+				"type": "void"
+			},
+			{
+				"name": "ViewerDeviceRepository.markAttended",
+				"type": "void"
+			},
+			{
+				"name": "ViewerDeviceRepository.attended",
+				"type": "boolean"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ViewerDeviceRepository.access",
+				"inputs": [
+					{
+						"name": "ViewerDeviceRepository.access.token",
+						"type": "string | undefined",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ViewerDeviceRepository.access",
+						"type": "ViewerAccess"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ViewerDeviceRepository.request",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ViewerDeviceRepository.request",
+						"type": "{ token: string; code: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ViewerDeviceRepository.approve",
+				"inputs": [
+					{
+						"name": "ViewerDeviceRepository.approve.code",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ViewerDeviceRepository.approve",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ViewerDeviceRepository.counts",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ViewerDeviceRepository.counts",
+						"type": "{ devices: number; pending: number }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ViewerDeviceRepository.revokeAll",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ViewerDeviceRepository.revokeAll",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ViewerDeviceRepository.markAttended",
+				"inputs": [
+					{
+						"name": "ViewerDeviceRepository.markAttended.watching",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ViewerDeviceRepository.markAttended",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ViewerDeviceRepository.attended",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ViewerDeviceRepository.attended",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ViewerDeviceRepository.constructor",
+				"inputs": [
+					{
+						"name": "ViewerDeviceRepository.constructor.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ViewerDeviceRepository.constructor.now",
+						"type": "() => number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ViewerDeviceRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/execution-runtimes/ViewerDeviceRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/execution-runtimes/ViewerDeviceRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

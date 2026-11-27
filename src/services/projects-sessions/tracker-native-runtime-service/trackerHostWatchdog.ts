@@ -7,7 +7,6 @@ import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { automaticQuietHour } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { watchLaunchRequests } from './trackerWatchLaunchRequests';
 import { sendWatchdogAlerts } from './trackerHostCos';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
@@ -20,9 +19,11 @@ import { readTrackerSessionHealth, trackerRecoveryLaunch } from './trackerSessio
 import { readTrackerSlotState, slotAlertKinds } from './trackerSlotInvariants';
 import { withSlotSummary } from './trackerSlotAlerts';
 import { trackerTranscriptScan } from './trackerTranscriptScan';
+import { trackerCosInboxKinds, trackerCosInboxRetention } from './trackerCosInbox';
 import { trackerWatchdogPort } from './trackerWatchdogPort';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { watchHostSessions } from './trackerWatchHostSessions';
+import { trackerHubMessageDelivery } from './trackerHubMessages';
 import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
 const minute = 60_000;
@@ -44,11 +45,12 @@ export function trackerHostWatchdog(
 	let lastCosPoll = -Infinity;
 	let peerAlerts: readonly TrackerWatchdogAlert[] = [];
 	const readItems = () => items.list({ status: 'all', limit: -1 });
-	const alerts = () => [...localAlerts(store, items), ...peerAlerts];
+	const alerts = () => [...localAlerts(store, items, now()), ...peerAlerts];
 	const pollSessions = watchHostSessions(
 		{ store, items, driver },
 		{ ...options, readItems, roots: config.transcriptRoots }
 	);
+	const deliverMessages = trackerHubMessageDelivery({ store, driver, now });
 	return {
 		alerts,
 		chiefOfStaff,
@@ -57,8 +59,7 @@ export function trackerHostWatchdog(
 			if (config.transcriptRoots?.length) await scanTranscripts(signal);
 			await pollSessions(signal);
 			const launchAlert =
-				chiefOfStaff &&
-				watchLaunchRequests(store, now(), !watchdogLaunchHold(now(), automaticEnabled));
+				chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
 			if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
 				lastCosPoll = now();
 				peerAlerts = (await driver.peers?.(signal)) ?? peerAlerts;
@@ -69,6 +70,8 @@ export function trackerHostWatchdog(
 					signal
 				);
 			}
+			// Last, so a pane that cannot be typed into never holds back the checks above.
+			await deliverMessages(signal);
 		}
 	};
 }
@@ -94,16 +97,29 @@ export function configuredHostWatchdog(
 	});
 }
 
-function localAlerts(store: TrackerPersistenceService, items: TrackerItemReadRepository) {
-	const open = Object.values(readWatchdogAlerts(store)).filter(({ item_id, kind }) => {
-		// A leaked pane or idle run matters whatever its item says.
-		if (kind === 'orphan' || kind === 'finished' || slotAlertKinds.has(kind)) return true;
-		const item = activeWatchdogItem(items, item_id);
-		if (kind === 'recovery-failed' || kind === 'handoff-failed')
-			return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
-		return Boolean(item);
-	});
+function localAlerts(
+	store: TrackerPersistenceService,
+	items: TrackerItemReadRepository,
+	now: number
+) {
+	const open = Object.values(readWatchdogAlerts(store)).filter(
+		(alert) => unreadMessage(alert, now) || stillApplies(items, alert)
+	);
 	return open.map((alert) => withSlotSummary(store, alert));
+}
+
+/** A monitor may target a finished or missing item; its message must still be read. */
+function unreadMessage({ kind, at }: TrackerWatchdogAlert, now: number) {
+	return trackerCosInboxKinds.has(kind) && now - at < trackerCosInboxRetention;
+}
+
+function stillApplies(items: TrackerItemReadRepository, { item_id, kind }: TrackerWatchdogAlert) {
+	// A leaked pane or idle run matters whatever its item says.
+	if (kind === 'orphan' || kind === 'finished' || slotAlertKinds.has(kind)) return true;
+	const item = activeWatchdogItem(items, item_id);
+	if (kind === 'recovery-failed' || kind === 'handoff-failed')
+		return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
+	return Boolean(item);
 }
 
 function inspectHostWatchdog(
@@ -133,7 +149,7 @@ function inspectHostWatchdog(
 		if (!panes) return { computer: store.node, available: false, sessions: [], recovery: [] };
 		const rows = readItems();
 		const snapshot = watchdogSnapshot(store, rows, panes, now());
-		const automaticHold = watchdogLaunchHold(snapshot.now, automaticEnabled);
+		const automaticHold = watchdogLaunchHold(automaticEnabled);
 		const itemId = id ? items.resolve(id).id : undefined;
 		const slots = readTrackerSlotState(store, panes, { now: snapshot.now, cap: slotCap });
 		return {
@@ -157,7 +173,6 @@ function inspectHostWatchdog(
 	};
 }
 
-function watchdogLaunchHold(now: number, enabled?: () => boolean): string | null {
-	if (enabled?.() === false) return 'automatic launcher disabled';
-	return automaticQuietHour(now) ? 'automatic launch night hold' : null;
+function watchdogLaunchHold(enabled?: () => boolean): string | null {
+	return enabled?.() === false ? 'automatic launcher disabled' : null;
 }

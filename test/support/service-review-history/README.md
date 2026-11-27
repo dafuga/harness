@@ -103,3 +103,9 @@ project run service and relay host services at the commit that extracted their h
 Realtime tracker pushes retain implementation commit `68fcb43a67` for the desktop initializer, preload and local client.
 
 Shared type consolidation retains implementation commit `6c9252a51` for the five moved services whose type references now name the one shared owner.
+
+Home row answers retain the commit that adds the `homeChat` device method to the desktop device session
+and operations services; the earlier `homeSnapshot` reviews remain present.
+
+The Harness Vault entry retains implementation commit `baa2b466c` for the phone adapter that
+offers the native Vault.

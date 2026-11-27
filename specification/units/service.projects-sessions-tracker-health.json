@@ -1,0 +1,155 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-health",
+	"uid": "u_vv3mkblggu",
+	"kind": "service",
+	"title": "TrackerHealthService",
+	"responsibility": "Owns the TrackerHealthService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerHealthService.ts",
+			"src/services/projects-sessions/TrackerHealthService.types.ts"
+		],
+		"symbols": [
+			"TrackerHealthService",
+			"TrackerHealthService.constructor",
+			"TrackerHealthService.run",
+			"TrackerHealthCheck",
+			"TrackerHealthReport",
+			"TrackerHealthProcess",
+			"TrackerHealthHost",
+			"TrackerHealthOptions",
+			"TrackerHealthStatus"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerHealthService.constructor.configPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerHealthService.constructor.options",
+				"type": "TrackerHealthOptions",
+				"required": false,
+				"default": {}
+			},
+			{
+				"name": "TrackerHealthService.run.alert",
+				"type": "boolean",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerHealthService.run",
+				"type": "Promise<TrackerHealthReport>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerHealthService.run",
+				"inputs": [
+					{
+						"name": "TrackerHealthService.run.alert",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHealthService.run",
+						"type": "Promise<TrackerHealthReport>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerHealthService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerHealthService.constructor.configPath",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerHealthService.constructor.options",
+						"type": "TrackerHealthOptions",
+						"required": false,
+						"default": {}
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHealthService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-health-service-alert-tracker-health",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-local-tracker-health-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-api",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-host-checks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-health-service-tracker-health-status-checks",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerHealthService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerHealthService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

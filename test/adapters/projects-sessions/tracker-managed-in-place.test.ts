@@ -33,7 +33,8 @@ test('refuses to run in place when git cannot create the worktree', () =>
 		writeFileSync(join(source, '.git', 'HEAD'), 'ref: refs/heads/main\n');
 		for (const name of ['objects', 'refs']) mkdirSync(join(source, '.git', name));
 		expect(await launcher.start(input, AbortSignal.timeout(20_000))).toEqual({
-			status: 'rejected'
+			status: 'rejected',
+			detail: expect.stringContaining('could not create a worktree')
 		});
 	}));
 
@@ -42,6 +43,7 @@ test('keeps Docker workers out of an in-place directory', () =>
 		const { launcher, input } = inPlaceLaunch(root);
 		const docker = { ...input, backend: 'docker' as const, platform: 'linux' as const };
 		expect(await launcher.start(docker, AbortSignal.timeout(20_000))).toEqual({
-			status: 'rejected'
+			status: 'rejected',
+			detail: expect.stringContaining('could not create a worktree')
 		});
 	}));

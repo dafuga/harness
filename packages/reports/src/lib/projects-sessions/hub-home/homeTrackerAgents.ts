@@ -8,6 +8,7 @@ import type { HomeAgent, HomeAgentTask, HomeMessage } from './hubHome.types';
 import { homeAskFields } from './homeAskOptions';
 import { homeText, openQuestion } from './homeTrackerText';
 import { noSubAgents } from './homeDirectAgents';
+import { cosChatItem, homeThreadMessages, liveRunId } from './homeTrackerThread';
 
 const precedence: Record<HomeAgent['state'], number> = {
 	'needs-you': 0,
@@ -16,18 +17,13 @@ const precedence: Record<HomeAgent['state'], number> = {
 	offline: 3
 };
 
-function messages(item: TrackerItemRecord | undefined, question: string | null): HomeMessage[] {
-	if (!item) return [];
-	const notes: HomeMessage[] = (item.notes_log ?? []).slice(-5).map((note, index) => {
-		const from = note.text.startsWith('Hub message: ') ? 'you' : 'agent';
-		const text = from === 'you' ? note.text.slice('Hub message: '.length) : note.text;
-		return {
-			id: `note-${note.at}-${index}`,
-			text: homeText(text, 900) ?? '',
-			at: new Date(note.at).toISOString(),
-			from
-		};
-	});
+function messages(
+	item: TrackerItemRecord | undefined,
+	question: string | null,
+	thread: TrackerItemRecord | undefined
+): HomeMessage[] {
+	const notes = homeThreadMessages((thread ?? item)?.notes_log);
+	if (!item) return notes;
 	if (question)
 		notes.push({
 			id: 'question',
@@ -66,6 +62,8 @@ function currentWork(card: OverviewCard, sources: TrackerSources) {
 function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
 	const { item, machine } = currentWork(card, sources);
 	const question = item ? openQuestion(item) : null;
+	// Chief of Staff is messaged in its own pane, so its thread is its Hub chat, not an item's.
+	const thread = card.agent === 'cos' ? cosChatItem(sources.items) : undefined;
 	return {
 		id: card.agent,
 		name: card.agent,
@@ -74,13 +72,14 @@ function homeAgent(card: OverviewCard, sources: TrackerSources): HomeAgent {
 		tasks: liveTasks(card, sources),
 		subAgents: noSubAgents(),
 		itemId: item?.id ?? null,
+		runId: card.agent === 'cos' ? null : liveRunId(sources, item?.id),
 		task: homeText(item?.title, 500) ?? 'No current Tracker item',
 		machine: homeText(machine, 200),
 		model: homeText(item?.model, 200),
 		since: card.updatedAt,
 		question,
 		...homeAskFields(item, question),
-		messages: messages(item, question)
+		messages: messages(item, question, thread)
 	};
 }
 

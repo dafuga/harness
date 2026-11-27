@@ -11,7 +11,10 @@
 		"source": [
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/submitClaudeTrackerDraft.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/submitClaudeTrackerDraft.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedLaunchReceipt.ts",
@@ -28,17 +31,22 @@
 			"TrackerTmuxAdapter.constructor",
 			"TrackerTmuxAdapter.scan",
 			"TrackerTmuxAdapter.inventory",
+			"TrackerTmuxAdapter.windows",
 			"TrackerTmuxAdapter.nudge",
 			"TrackerTmuxAdapter.closeIdle",
 			"TrackerTmuxAdapterConfig",
 			"TrackerTmuxPane",
 			"TrackerTmuxNudge",
 			"TrackerTmuxClose",
+			"submitClaudeTrackerDraft",
+			"ClaudeComposer",
 			"trackerManagedCodexUsage",
+			"CodexCounters",
 			"trackerManagedHostLauncher",
 			"TrackerManagedPresence",
 			"TrackerManagedReceipt",
 			"TrackerManagedCommand",
+			"TrackerNativeLaunch",
 			"TrackerManagedProfiles",
 			"TrackerManagedTarget",
 			"TrackerManagedExec",
@@ -73,6 +81,8 @@
 			"trackerTmuxPane",
 			"matchesTrackerTmuxPane",
 			"trackerTmuxKeys",
+			"trackerWorkerClientRefusal",
+			"isTrackerWorkerClient",
 			"trackerWorkerClient",
 			"trackerGuestAuthFile",
 			"sendTrackerTmuxNudge",
@@ -107,6 +117,11 @@
 				"description": "Lifetime for the socket inventory calls."
 			},
 			{
+				"name": "TrackerTmuxAdapter.windows.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
 				"name": "TrackerTmuxAdapter.nudge.input",
 				"type": "TrackerTmuxNudge",
 				"required": true,
@@ -125,6 +140,21 @@
 			},
 			{
 				"name": "TrackerTmuxAdapter.closeIdle.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "submitClaudeTrackerDraft.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "submitClaudeTrackerDraft.effects",
+				"type": "{ capture: () => Promise<TrackerTmuxPane | undefined>; submit: (draft: TrackerTmuxPane) => Promise<boolean>; working: (pane: TrackerTmuxPane['pane']) => boolean; }",
+				"required": true
+			},
+			{
+				"name": "submitClaudeTrackerDraft.signal",
 				"type": "AbortSignal",
 				"required": true
 			},
@@ -319,23 +349,8 @@
 				"required": true
 			},
 			{
-				"name": "launchTmux.tmux",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "launchTmux.trackerBin",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "launchTmux.trackerExecutable",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "launchTmux.worktree",
-				"type": "string",
+				"name": "launchTmux.target",
+				"type": "TrackerManagedTarget",
 				"required": true
 			},
 			{
@@ -510,6 +525,17 @@
 				"description": "Control-character-free message already checked by the caller."
 			},
 			{
+				"name": "trackerTmuxKeys.enter",
+				"type": "boolean",
+				"required": false,
+				"default": true
+			},
+			{
+				"name": "isTrackerWorkerClient.database",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "trackerWorkerClient.directory",
 				"type": "string",
 				"required": true
@@ -680,6 +706,24 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "TrackerTmuxAdapter.windows",
+				"inputs": [
+					{
+						"name": "TrackerTmuxAdapter.windows.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerTmuxAdapter.windows",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "TrackerTmuxAdapter.nudge",
 				"inputs": [
 					{
@@ -722,6 +766,34 @@
 				"outputs": [
 					{
 						"name": "TrackerTmuxAdapter.closeIdle",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "submitClaudeTrackerDraft",
+				"inputs": [
+					{
+						"name": "submitClaudeTrackerDraft.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "submitClaudeTrackerDraft.effects",
+						"type": "{ capture: () => Promise<TrackerTmuxPane | undefined>; submit: (draft: TrackerTmuxPane) => Promise<boolean>; working: (pane: TrackerTmuxPane['pane']) => boolean; }",
+						"required": true
+					},
+					{
+						"name": "submitClaudeTrackerDraft.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "submitClaudeTrackerDraft",
 						"type": "Promise<boolean>"
 					}
 				],
@@ -1133,23 +1205,8 @@
 				"name": "launchTmux",
 				"inputs": [
 					{
-						"name": "launchTmux.tmux",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "launchTmux.trackerBin",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "launchTmux.trackerExecutable",
-						"type": "string",
-						"required": true
-					},
-					{
-						"name": "launchTmux.worktree",
-						"type": "string",
+						"name": "launchTmux.target",
+						"type": "TrackerManagedTarget",
 						"required": true
 					},
 					{
@@ -1171,7 +1228,7 @@
 				"outputs": [
 					{
 						"name": "launchTmux",
-						"type": "Promise<void>"
+						"type": "Promise<string | undefined>"
 					}
 				],
 				"errors": [],
@@ -1480,6 +1537,12 @@
 						"type": "string",
 						"required": false,
 						"description": "Control-character-free message already checked by the caller."
+					},
+					{
+						"name": "trackerTmuxKeys.enter",
+						"type": "boolean",
+						"required": false,
+						"default": true
 					}
 				],
 				"outputs": [
@@ -1487,6 +1550,24 @@
 						"name": "trackerTmuxKeys",
 						"type": "string",
 						"description": "Build the tmux command body with text escaped for literal input."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerWorkerClient",
+				"inputs": [
+					{
+						"name": "isTrackerWorkerClient.database",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerWorkerClient",
+						"type": "boolean"
 					}
 				],
 				"errors": [],
@@ -1657,7 +1738,42 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-managed-working-directory",
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-claude-session-arguments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-claude-startup-phase",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-managed-preparation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-managed-usage",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-startup-cause",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-tmux-adapter-tracker-tmux-windows",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-claude-session-id",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-cpu-budget",
 			"via": "import",
 			"origin": "derived"
 		},

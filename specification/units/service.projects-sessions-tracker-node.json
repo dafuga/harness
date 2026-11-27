@@ -25,6 +25,8 @@
 			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerNodeInspection.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerAdapterRoutes.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerAutolaunchCommand.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerDigestSession.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.types.ts",
@@ -41,12 +43,16 @@
 			"TrackerNodeOwnership",
 			"TrackerNodeStartupError",
 			"TrackerNodeTransportError",
+			"TrackerNodeTransportError.constructor",
 			"trackerLaunchAwareItemResponse",
 			"stopTrackerRun",
 			"holdLegacySupervisorSocket",
 			"readTrackerBackupList",
 			"readTrackerBackupFiles",
 			"readTrackerNodeInspection",
+			"trackerSlowAdapterPath",
+			"trackerAdapterRoute",
+			"trackerCommandOrItemResponse",
 			"trackerDigestSession",
 			"loadTrackerNodeConfig",
 			"trackerSyncPort",
@@ -76,6 +82,16 @@
 				"name": "TrackerNodeService.start.config",
 				"type": "TrackerNodeConfig",
 				"required": true
+			},
+			{
+				"name": "TrackerNodeTransportError.constructor.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNodeTransportError.constructor.status",
+				"type": "number",
+				"required": false
 			},
 			{
 				"name": "trackerLaunchAwareItemResponse.request",
@@ -129,6 +145,36 @@
 			},
 			{
 				"name": "readTrackerNodeInspection.supervisor",
+				"type": "TrackerSupervisorService",
+				"required": true
+			},
+			{
+				"name": "trackerAdapterRoute.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerAdapterRoute.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.runtime",
+				"type": "TrackerNativeRuntimeService",
+				"required": true
+			},
+			{
+				"name": "trackerCommandOrItemResponse.supervisor",
 				"type": "TrackerSupervisorService",
 				"required": true
 			},
@@ -296,6 +342,18 @@
 			{
 				"name": "readTrackerNodeInspection",
 				"type": "Response | undefined"
+			},
+			{
+				"name": "trackerSlowAdapterPath",
+				"type": "RegExp"
+			},
+			{
+				"name": "trackerAdapterRoute",
+				"type": "Promise<Response> | undefined"
+			},
+			{
+				"name": "trackerCommandOrItemResponse",
+				"type": "unknown"
 			},
 			{
 				"name": "trackerDigestSession",
@@ -529,6 +587,62 @@
 					{
 						"name": "readTrackerNodeInspection",
 						"type": "Response | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAdapterRoute",
+				"inputs": [
+					{
+						"name": "trackerAdapterRoute.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerAdapterRoute.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAdapterRoute",
+						"type": "Promise<Response> | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCommandOrItemResponse",
+				"inputs": [
+					{
+						"name": "trackerCommandOrItemResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					},
+					{
+						"name": "trackerCommandOrItemResponse.supervisor",
+						"type": "TrackerSupervisorService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCommandOrItemResponse",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -907,7 +1021,31 @@
 				"errorStatus": "none-found"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "TrackerNodeTransportError.constructor",
+				"inputs": [
+					{
+						"name": "TrackerNodeTransportError.constructor.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerNodeTransportError.constructor.status",
+						"type": "number",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNodeTransportError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -922,6 +1060,11 @@
 		},
 		{
 			"unit": "adapter.projects-sessions-tracker-job-process",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.projects-sessions-tracker-machine-sampler",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -956,6 +1099,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-adapter",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-adapter-source",
 			"via": "import",
 			"origin": "derived"
@@ -981,12 +1129,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-backup-service-take-tracker-backup-now",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.projects-sessions-tracker-change-feed-serve-tracker-changes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
 			"via": "import",
 			"origin": "derived"
 		},

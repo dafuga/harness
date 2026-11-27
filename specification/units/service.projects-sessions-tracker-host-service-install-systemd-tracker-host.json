@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-service-install-systemd-tracker-host",
+	"uid": "u_trvsc33zhs",
+	"kind": "service",
+	"title": "systemdTrackerHost",
+	"responsibility": "Owns the systemdTrackerHost service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-host-service-install/systemdTrackerHost.ts"],
+		"symbols": ["systemdTrackerHost"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "systemdTrackerHost",
+				"type": "TrackerHost"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-host-install",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-service-install-host-file-writes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-service-install-systemd-word",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-service-install-tracker-host-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-tracker-health-times",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-notification",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-host-service-install/systemdTrackerHost.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-host-service-install/systemdTrackerHost.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

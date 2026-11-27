@@ -2,9 +2,10 @@
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerSupervisorService } from '../TrackerSupervisorService';
 import { takeTrackerBackupNow } from '../tracker-backup-service/takeTrackerBackupNow';
-import { stopTrackerRun, trackerLaunchAwareItemResponse } from './confirmTrackerLaunch';
+import { trackerCommandOrItemResponse } from './trackerAutolaunchCommand';
+import { stopTrackerRun } from './confirmTrackerLaunch';
 import { extendTrackerSlowRequest } from './extendTrackerSlowRequest';
-import { readTrackerNodeInspection } from './readTrackerNodeInspection';
+import { trackerAdapterRoute } from './trackerAdapterRoutes';
 import { serveTrackerChanges } from '../tracker-change-feed/serveTrackerChanges';
 
 const host = '127.0.0.1';
@@ -109,10 +110,11 @@ function trackerCompatibleApi(
 			return serveTrackerChanges(request, runtime.store);
 		case 'POST /backup/now':
 			return takeTrackerBackupNow(runtime.backups);
-		case 'POST /adapters/run':
-			return trackerAdapterRun(request, runtime);
 		default:
-			return trackerOperationalApi(request, runtime, supervisor, path);
+			return (
+				trackerAdapterRoute(request, runtime) ??
+				trackerOperationalApi(request, runtime, supervisor, path)
+			);
 	}
 }
 
@@ -133,11 +135,8 @@ function trackerOperationalApi(
 		case 'POST /sync':
 			runtime.kickLinks();
 			return Response.json({ ok: true });
-		default: {
-			const inspection =
-				request.method === 'GET' ? readTrackerNodeInspection(path, runtime, supervisor) : undefined;
-			return inspection ?? trackerLaunchAwareItemResponse(request, runtime);
-		}
+		default:
+			return trackerCommandOrItemResponse(request, path, runtime, supervisor);
 	}
 }
 
@@ -170,38 +169,6 @@ async function trackerWatchdogDryRun(request: Request, runtime: TrackerNativeRun
 	return Response.json(
 		result ?? { computer: runtime.store.node, available: false, sessions: [], recovery: [] }
 	);
-}
-
-async function trackerAdapterRun(request: Request, { adapter }: TrackerNativeRuntimeService) {
-	if (!adapter?.status().active)
-		return Response.json(
-			{ error: 'Run adapters on the designated Tracker runner' },
-			{ status: 409 }
-		);
-	const query = new URL(request.url).searchParams;
-	const source = query.get('source');
-	if (!source || !/^github:[a-z0-9][a-z0-9-]*\/[a-z0-9_.-]+$/.test(source))
-		return Response.json({ error: 'A GitHub adapter source ID is required' }, { status: 400 });
-	try {
-		const result = await adapter.poll(source, {
-			dryRun: query.get('dry-run') === '1',
-			backfillComments: query.get('backfill-comments') === '1',
-			signal: request.signal
-		});
-		switch (result.status) {
-			case 'polled':
-				return Response.json(result);
-			case 'inactive':
-				return Response.json({ error: 'Tracker adapter is missing or paused' }, { status: 404 });
-			default:
-				return Response.json(
-					{ error: 'Tracker adapter is busy or owned by another node' },
-					{ status: 409 }
-				);
-		}
-	} catch {
-		return Response.json({ error: 'Tracker adapter intake failed' }, { status: 502 });
-	}
 }
 
 export function trackerNodeSync(request: Request, runtime: TrackerNativeRuntimeService) {

@@ -1,6 +1,9 @@
 // @harness-uid u_3tibsmkofv
 import { DeployCommand } from '../commands/execution-runtimes/DeployCommand';
 import { PermissionsCommand } from '../commands/networking-security/PermissionsCommand';
+import { QaSyncCommand } from '../commands/agents-providers/QaSyncCommand';
+import { XDigestCommand } from '../commands/agents-providers/XDigestCommand';
+import { ContainerBrowserCommand } from '../commands/execution-runtimes/ContainerBrowserCommand';
 import { DesignCommand } from '../commands/planning-collaboration/DesignCommand';
 import { ContractsCommand } from '../commands/development-tooling/ContractsCommand';
 import { ProviderSignInCommand } from '../commands/agents-providers/ProviderSignInCommand';
@@ -77,6 +80,9 @@ export function buildProgram(): Command {
 	registerConsoleCommand(program);
 	registerAuditCommand(program);
 	new DesignCommand().register(program);
+	new QaSyncCommand().register(program);
+	new ContainerBrowserCommand().register(program);
+	new XDigestCommand().register(program);
 	registerResponseCheckCommand(program);
 
 	return program;

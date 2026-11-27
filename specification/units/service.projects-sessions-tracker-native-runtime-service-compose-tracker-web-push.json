@@ -1,0 +1,114 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-web-push",
+	"uid": "u_54duc53h47",
+	"kind": "service",
+	"title": "composeTrackerWebPush",
+	"responsibility": "Gives only a Tracker hub node the browser notification sender.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-native-runtime-service/composeTrackerWebPush.ts"
+		],
+		"symbols": ["composeTrackerWebPush"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "composeTrackerWebPush.store",
+				"type": "TrackerPersistenceService",
+				"required": true,
+				"description": "The node's journal."
+			},
+			{
+				"name": "composeTrackerWebPush.options",
+				"type": "TrackerNativeRuntimeOptions",
+				"required": true,
+				"description": "Runtime options; webPush names the journal path whose folder holds the key."
+			}
+		],
+		"outputs": [
+			{
+				"name": "composeTrackerWebPush",
+				"type": "TrackerWebPushService | undefined",
+				"description": "The sender, or undefined on a spoke or without webPush."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "composeTrackerWebPush",
+				"inputs": [
+					{
+						"name": "composeTrackerWebPush.store",
+						"type": "TrackerPersistenceService",
+						"required": true,
+						"description": "The node's journal."
+					},
+					{
+						"name": "composeTrackerWebPush.options",
+						"type": "TrackerNativeRuntimeOptions",
+						"required": true,
+						"description": "Runtime options; webPush names the journal path whose folder holds the key."
+					}
+				],
+				"outputs": [
+					{
+						"name": "composeTrackerWebPush",
+						"type": "TrackerWebPushService | undefined",
+						"description": "The sender, or undefined on a spoke or without webPush."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "repository.projects-sessions-tracker-item-read",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-persistence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-open-push-asks",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-native-runtime-service/composeTrackerWebPush.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-native-runtime-service/composeTrackerWebPush.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

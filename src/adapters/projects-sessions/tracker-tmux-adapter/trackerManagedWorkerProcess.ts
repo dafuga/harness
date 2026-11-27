@@ -20,6 +20,8 @@ import {
 } from './trackerManagedLaunchReceipt';
 import { managedTmuxEnvironment, missingTmuxSession } from './trackerTmuxClose';
 import { trackerManagedProviderEnvironment } from './trackerManagedProviderCommands';
+import { trackerCpuBudgetEnvironment } from '../../../utils/projects-sessions/trackerCpuBudget';
+import { trackerStartupCause } from './trackerStartupCause';
 
 export const workerScript = `#!/bin/sh
 set -u
@@ -35,23 +37,27 @@ remove_guest_auth() {
 trap 'remove_guest_auth' 0
 printf '%s\\n' "$token" > "$run_dir/started.tmp" || exit 125
 /bin/mv "$run_dir/started.tmp" "$run_dir/started" || exit 125
+began=$(/bin/date +%s)
 "$@"
 result=$?
 remove_guest_auth
+# A launch that dies within a minute leaves its cause only on the pane, which is about to close.
+if [ "$result" -ne 0 ] && [ -n "\${HARNESS_TRACKER_PANE:-}" ] && [ "$(($(/bin/date +%s) - began))" -le 60 ]; then
+	"$HARNESS_TRACKER_TMUX" -L "$HARNESS_TRACKER_SOCKET" capture-pane -p -J -S -16 -t "=$HARNESS_TRACKER_PANE:" 2>/dev/null |
+		/usr/bin/grep -iE '^[[:space:]]*(error|fatal):[[:space:]]' | /usr/bin/tail -n 1 |
+		/usr/bin/head -c 500 > "$run_dir/startup-error"
+fi
 printf '%s\\n' "$result" > "$run_dir/exit.tmp"
 /bin/mv "$run_dir/exit.tmp" "$run_dir/exit"
 exit "$result"
 `;
 
-export async function launchTmux(
-	{ tmux, trackerBin, trackerExecutable, worktree }: TrackerManagedTarget,
-	receipt: TrackerManagedReceipt,
-	execution: TrackerManagedExec,
-	signal: AbortSignal
-): Promise<void> {
-	const { node, itemId, runId, token } = receipt;
-	const { script, command, clientPath, guestAuthFile } = execution;
-	const environment = [
+function launchEnvironment(
+	{ tmux, trackerBin, trackerExecutable }: TrackerManagedTarget,
+	{ node, itemId, runId, tmux: pane }: TrackerManagedReceipt,
+	{ command, clientPath, guestAuthFile, cpuBudget }: TrackerManagedExec
+) {
+	return [
 		...Object.entries(trackerManagedProviderEnvironment(trackerBin, command)).map(
 			([name, value]) => `${name}=${value}`
 		),
@@ -60,10 +66,28 @@ export async function launchTmux(
 		'HARNESS_TRACKER_LEGACY_BIN=/dev/null/tracker',
 		`TRACKER_ITEM_ID=${itemId}`,
 		`TRACKER_RUN_ID=${runId}`,
+		`HARNESS_TRACKER_TMUX=${tmux}`,
+		`HARNESS_TRACKER_SOCKET=${trackerSocket(node)}`,
+		`HARNESS_TRACKER_PANE=${pane}`,
 		...(command.image ? [`HARNESS_TASK_DOCKER_IMAGE=${command.image}`] : []),
-		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : [])
+		...(command.image && guestAuthFile ? [`HARNESS_TRACKER_GUEST_AUTH_FILE=${guestAuthFile}`] : []),
+		...(cpuBudget ? trackerCpuBudgetEnvironment(cpuBudget) : [])
 	];
-	await runTrackerHostCommand(
+}
+
+export async function launchTmux(
+	target: TrackerManagedTarget,
+	receipt: TrackerManagedReceipt,
+	execution: TrackerManagedExec,
+	signal: AbortSignal
+): Promise<string | undefined> {
+	const { tmux, worktree, windowName } = target;
+	const { node, token } = receipt;
+	const { script, command, cpuBudget } = execution;
+	const environment = launchEnvironment(target, receipt, execution);
+	// Outside the home project, lower priority lets Harbor win contention.
+	const priority = cpuBudget ? ['/usr/bin/nice', '-n', '10'] : [];
+	const created = await runTrackerHostCommand(
 		tmux,
 		[
 			'-f',
@@ -74,6 +98,7 @@ export async function launchTmux(
 			'-d',
 			'-s',
 			receipt.tmux,
+			...(windowName ? ['-n', windowName] : []),
 			'-e',
 			`HARNESS_TRACKER_ATTEMPT=${token}`,
 			'-c',
@@ -85,10 +110,14 @@ export async function launchTmux(
 			script,
 			dirname(script),
 			token,
+			...priority,
 			...command.argv
 		],
 		signal
 	);
+	return created.code === 0
+		? undefined
+		: trackerStartupCause(`tmux could not start the session: ${created.stderr}`);
 }
 
 export function trackerSocket(node: string): string {

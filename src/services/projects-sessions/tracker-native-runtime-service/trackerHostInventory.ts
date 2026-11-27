@@ -1,5 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
+import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { watchTrackerQuota } from './trackerProviderHolds';
 import type { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import { watchdogManualPrefix } from '../WatchdogPaneService';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
@@ -14,6 +16,7 @@ export async function trackerHostInventory(
 		driver,
 		tmux,
 		node,
+		runs,
 		keys,
 		now
 	}: {
@@ -21,14 +24,16 @@ export async function trackerHostInventory(
 		driver: TrackerHostLaunchPort;
 		tmux?: TrackerTmuxAdapter;
 		node: string;
+		runs: readonly TrackerRunReceipt[];
 		keys: readonly string[];
 		now: number;
 	},
 	signal: AbortSignal
 ) {
-	const [sessions, panes] = await Promise.all([
+	const [sessions, panes, windows] = await Promise.all([
 		driver.inspect({ node, keys }, signal),
-		tmux?.inventory(signal) ?? []
+		tmux?.inventory(signal) ?? [],
+		tmux?.windows(signal) ?? []
 	]);
 	const direct = panes.flatMap((pane) => {
 		const evidence = legacyTmuxSession(pane);
@@ -39,8 +44,9 @@ export async function trackerHostInventory(
 			? [evidence]
 			: [];
 	});
+	await watchTrackerQuota(store, { tmux, runs, now }, signal);
 	if (tmux) await closeFinishedTrackerSessions(store, { tmux, panes, node, now }, signal);
-	return { sessions: [...sessions, ...direct], panes };
+	return { sessions: [...sessions, ...direct], panes, windows };
 }
 
 export function hasManualTrackerPane(panes: readonly WatchdogPane[], itemId: string) {

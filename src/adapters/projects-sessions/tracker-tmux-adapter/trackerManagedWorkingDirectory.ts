@@ -12,9 +12,9 @@ export async function prepareTrackerWorkingDirectory(
 	directory: string,
 	input: TrackerHostStartRequest,
 	signal: AbortSignal
-): Promise<string | null> {
+): Promise<string | { failure: string }> {
 	const source = realpathSync('workdir' in input ? input.workdir : input.repo);
-	if (!statSync(source).isDirectory()) return null;
+	if (!statSync(source).isDirectory()) return { failure: `${source} is not a directory` };
 	if ('workdir' in input) return source;
 	const native = input.backend === 'native';
 	if (native && input.worktree === false) return source;
@@ -25,7 +25,9 @@ export async function prepareTrackerWorkingDirectory(
 		['-c', 'core.hooksPath=/dev/null', 'worktree', 'add', '--detach', worktree, 'HEAD'],
 		signal
 	);
-	return git.code === 0 ? worktree : null;
+	return git.code === 0
+		? worktree
+		: { failure: `could not create a worktree of ${source}: ${git.stderr}` };
 }
 
 // Only git's own "not a git repository" answer counts, for a directory with no .git of its own.

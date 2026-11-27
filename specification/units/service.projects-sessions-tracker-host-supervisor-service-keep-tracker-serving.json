@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-supervisor-service-keep-tracker-serving",
+	"uid": "u_lqt6xmept4",
+	"kind": "service",
+	"title": "keepTrackerServing",
+	"responsibility": "Owns the keepTrackerServing service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-host-supervisor-service/keepTrackerServing.ts"
+		],
+		"symbols": ["keepTrackerServing"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "keepTrackerServing.options",
+				"type": "TrackerHostSupervisorOptions",
+				"required": true
+			},
+			{
+				"name": "keepTrackerServing.signal",
+				"type": "AbortSignal",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "keepTrackerServing",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "keepTrackerServing",
+				"inputs": [
+					{
+						"name": "keepTrackerServing.options",
+						"type": "TrackerHostSupervisorOptions",
+						"required": true
+					},
+					{
+						"name": "keepTrackerServing.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "keepTrackerServing",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-appending-tracker-child",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-supervisor-service-rotate-supervised-log",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-host-supervisor-service/keepTrackerServing.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-host-supervisor-service/keepTrackerServing.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

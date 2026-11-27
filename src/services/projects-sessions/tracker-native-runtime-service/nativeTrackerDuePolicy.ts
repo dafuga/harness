@@ -4,6 +4,8 @@ import type { TrackerDuePolicy } from '../../agents-providers/TrackerDispatcherS
 import type { TrackerWireValue } from '../TrackerHubSyncService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 
+import { duePauseKey } from './trackerAutolaunchAdmin';
+
 const peerPolicy = z.object({
 	paused: z.boolean(),
 	local_due: z.boolean().optional(),
@@ -17,7 +19,7 @@ export function liveTrackerDuePolicy(
 	role: 'hub' | 'spoke'
 ): TrackerDuePolicy {
 	if (role === 'hub')
-		return { ...policy, paused: policy.paused || store.getMeta('due_scheduler_paused') === '1' };
+		return { ...policy, paused: policy.paused || store.getMeta(duePauseKey) === '1' };
 	const remote = readPolicy(store);
 	return {
 		...policy,

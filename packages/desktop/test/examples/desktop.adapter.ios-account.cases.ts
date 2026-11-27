@@ -7,6 +7,8 @@ import { test } from 'vitest';
 import { expect } from '../../../../test/verificationExpect';
 import { recordExampleCases } from '../../../../test/support/recordExampleCases';
 
+/** Each example compiles the Swift adapter, so it needs the Apple toolchain. */
+export const darwin = test.runIf(process.platform === 'darwin');
 export const temporaryDirectories = new Set<string>();
 const stateId = 'status-shows-all-public-account-states';
 const accountSources = [
@@ -166,44 +168,48 @@ export function nativeAccountResult(mode: 'status' | 'request'): Record<string, 
 	return JSON.parse(result) as Record<string, unknown>;
 }
 
-test('status shows all public account states', () => {
-	const result = nativeAccountResult('status');
-	const signedOut = result.signedOut;
-	const pending = result.pending as { handoff: Record<string, unknown> };
-	const signedIn = result.signedIn;
-	expect(signedOut).toEqual({ configured: true, state: 'signed-out' });
-	expect(pending).toMatchObject({
-		configured: true,
-		state: 'pending',
-		handoff: {
-			userCode: 'K8M-2Q',
-			verificationUrl: `https://hub.example.invalid/native/${'h'.repeat(43)}`,
-			expiresAt: '2026-11-15T18:05:00Z',
-			interval: 5
-		}
-	});
-	expect(signedIn).toEqual({
-		configured: true,
-		state: 'signed-in',
-		actor: {
-			id: '109876543210987654321',
-			name: 'Alex Morgan',
-			email: 'alex.morgan@example.com'
-		}
-	});
-	expect(JSON.stringify(result)).not.toContain('fixture-private-session-token');
-	recordExampleCases(
-		{
-			unitId: 'desktop.adapter.ios-account',
-			symbol: 'status',
-			state: stateId,
-			evidence: 'examples-cases',
-			file: `${stateId}.json`
-		},
-		[
-			{ name: 'no stored account', input: {}, output: signedOut },
-			{ name: 'approval is pending', input: {}, output: result.pending },
-			{ name: 'verified Google account', input: {}, output: signedIn }
-		]
-	);
-}, 20_000);
+darwin(
+	'status shows all public account states',
+	() => {
+		const result = nativeAccountResult('status');
+		const signedOut = result.signedOut;
+		const pending = result.pending as { handoff: Record<string, unknown> };
+		const signedIn = result.signedIn;
+		expect(signedOut).toEqual({ configured: true, state: 'signed-out' });
+		expect(pending).toMatchObject({
+			configured: true,
+			state: 'pending',
+			handoff: {
+				userCode: 'K8M-2Q',
+				verificationUrl: `https://hub.example.invalid/native/${'h'.repeat(43)}`,
+				expiresAt: '2026-11-15T18:05:00Z',
+				interval: 5
+			}
+		});
+		expect(signedIn).toEqual({
+			configured: true,
+			state: 'signed-in',
+			actor: {
+				id: '109876543210987654321',
+				name: 'Alex Morgan',
+				email: 'alex.morgan@example.com'
+			}
+		});
+		expect(JSON.stringify(result)).not.toContain('fixture-private-session-token');
+		recordExampleCases(
+			{
+				unitId: 'desktop.adapter.ios-account',
+				symbol: 'status',
+				state: stateId,
+				evidence: 'examples-cases',
+				file: `${stateId}.json`
+			},
+			[
+				{ name: 'no stored account', input: {}, output: signedOut },
+				{ name: 'approval is pending', input: {}, output: result.pending },
+				{ name: 'verified Google account', input: {}, output: signedIn }
+			]
+		);
+	},
+	20_000
+);

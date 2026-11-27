@@ -10,14 +10,20 @@ import {
 	recordTrackerSessionItem,
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
-import { trackerJobEndpoint } from './tracker-local-api-service/trackerLocalJobs';
+import { trackerJobResponse } from './tracker-local-api-service/trackerLocalJobResponse';
+import { trackerMessageEndpoint } from './tracker-local-api-service/trackerLocalMessages';
 import {
 	trackerFailureResponse,
 	trackerResponse
 } from './tracker-local-api-service/trackerLocalResponse';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
 import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
+import {
+	isTrackerAlert,
+	trackerAlertResponse
+} from './tracker-local-api-service/trackerLocalAlert';
 import { phoneReplicaResponse } from './tracker-local-api-service/trackerPhoneReplicaResponse';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
@@ -92,6 +98,8 @@ export class TrackerLocalApiService {
 				return trackerResponse(200, digest);
 			}
 		}
+		const machine = readTrackerMachineEndpoint(parts, query, this.options.machines);
+		if (machine) return trackerResponse(machine.status, machine.body);
 		const run = readTrackerRunEndpoint(parts, query, { ...this.options, items: this.items });
 		return run === undefined ? undefined : trackerResponse(200, run);
 	}
@@ -151,6 +159,16 @@ function trackerSpecialResponse(
 	dependencies: Parameters<typeof trackerItemSpecialResponse>[2]
 ) {
 	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
+	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
+	if (parts[0] === 'messages')
+		return trackerMessageEndpoint(request, parts, {
+			...dependencies,
+			actor: readActor(request.headers)
+		}).then((result) =>
+			result
+				? trackerResponse(result.status, result.body)
+				: trackerResponse(404, { error: `no route ${request.method} /${parts.join('/')}` })
+		);
 	return trackerItemSpecialResponse(request, parts, dependencies);
 }
 
@@ -183,17 +201,6 @@ function trackerItemSpecialResponse(
 			now: dependencies.options.now?.() ?? Date.now()
 		}
 	).then((item) => trackerResponse(200, item));
-}
-
-async function trackerJobResponse(
-	request: Request,
-	parts: string[],
-	{ items, options }: { items: TrackerItemReadRepository; options: TrackerLocalApiOptions }
-): Promise<Response> {
-	const result = await trackerJobEndpoint(request, parts, { items, jobs: options.jobs });
-	return result === undefined
-		? trackerResponse(404, { error: `no route ${request.method} /${parts.join('/')}` })
-		: trackerResponse(200, result);
 }
 
 function readActor(headers: Headers): string | null {

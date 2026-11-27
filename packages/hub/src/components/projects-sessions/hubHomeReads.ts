@@ -1,9 +1,31 @@
 // @harness-uid u_evpsejqo7k
+import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { coalesced } from '$reports/lib/projects-sessions/realtime/coalesced';
 import { LinkedHomeService } from '../../services/networking-security/LinkedHomeService';
 import { readHome } from './hubHomeClient';
 import type { HubHomeReadOptions, HubHomeReads } from './hubHomeReads.types';
 export type { HubHomeReadOptions, HubHomeReads } from './hubHomeReads.types';
+
+const followMs = 5 * 60_000;
+const followEveryMs = 3000;
+
+/** While a message is fresh, its receipt and reply are read every few seconds. */
+function freshFollower(closed: () => boolean, read: () => void) {
+	let until = 0;
+	let timer: ReturnType<typeof setInterval> | undefined;
+	function stop() {
+		clearInterval(timer);
+		timer = undefined;
+	}
+	function start() {
+		until = performance.now() + followMs;
+		timer ??= setInterval(() => {
+			if (closed() || performance.now() > until) stop();
+			else read();
+		}, followEveryMs);
+	}
+	return { start, stop };
+}
 
 /**
  * What a change notice reads again: the published Home and the linked computers. Each has one
@@ -28,13 +50,33 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 		const result = await linkedHome.service.read();
 		if (!closed && reader === actor()) options.linked(result);
 	});
+	const follower = freshFollower(
+		() => closed,
+		() => {
+			void stored();
+			void linked();
+		}
+	);
 	return {
 		read() {
 			void stored();
 			void linked();
 		},
+		async send(message) {
+			const mine = !closed && linkedHome && linkedHome.actor === actor();
+			const receipt =
+				(mine ? await linkedHome?.service.chat(message) : null) ??
+				(await api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message));
+			if (message.kind === 'message' && ['sent', 'queued'].includes(receipt.status))
+				follower.start();
+			return receipt;
+		},
+		computers() {
+			void linked();
+		},
 		close() {
 			closed = true;
+			follower.stop();
 			linkedHome?.service.close();
 			linkedHome = undefined;
 		}

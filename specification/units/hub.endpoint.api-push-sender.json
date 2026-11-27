@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.endpoint.api-push-sender",
+	"uid": "u_gu7u3udr7y",
+	"kind": "endpoint",
+	"title": "/api/push/sender",
+	"responsibility": "Lets the Tracker hub, proving its key, read subscriptions and report deliveries.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/api/push/sender/+server.ts"],
+		"symbols": ["GET", "POST"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "GET",
+				"type": "unknown",
+				"description": "Quiet hours and subscriptions for a valid sender signature; 401 otherwise."
+			},
+			{
+				"name": "POST",
+				"type": "unknown",
+				"description": "Records delivered browsers and removes gone ones."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/api/push/sender/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/api/push/sender/+server.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

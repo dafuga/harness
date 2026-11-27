@@ -1,0 +1,384 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-live",
+	"uid": "u_uioji3kibg",
+	"kind": "function",
+	"title": "hubHomeLive",
+	"responsibility": "Words the Live overview: stage, run state, age and summary labels, and why no overview can be shown.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeLive.ts"],
+		"symbols": [
+			"stageLabels",
+			"workStateLabels",
+			"statusWords",
+			"stageLabel",
+			"workStateLabel",
+			"span",
+			"workAge",
+			"workTimes",
+			"workFacts",
+			"liveSummary",
+			"projectSummary",
+			"liveNotice"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "stageLabel.stage",
+				"type": "HomeWorkRow['stage']",
+				"required": true,
+				"description": "The planning stage Tracker records, or null when it reports none."
+			},
+			{
+				"name": "workStateLabel.row",
+				"type": "HomeWorkRow",
+				"required": true,
+				"description": "The row whose run state and latest recorded outcome are worded."
+			},
+			{
+				"name": "span.from",
+				"type": "string",
+				"required": true,
+				"description": "The earlier moment, as an ISO time."
+			},
+			{
+				"name": "span.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in milliseconds."
+			},
+			{
+				"name": "workAge.row",
+				"type": "HomeWorkRow",
+				"required": true,
+				"description": "The row whose run age and last change are worded."
+			},
+			{
+				"name": "workAge.now",
+				"type": "number",
+				"required": true,
+				"description": "The current time in milliseconds."
+			},
+			{
+				"name": "workTimes.row",
+				"type": "HomeWorkRow",
+				"required": true,
+				"description": "The overview row whose start or queue time and last Tracker change are written out."
+			},
+			{
+				"name": "workFacts.row",
+				"type": "HomeWorkRow",
+				"required": true,
+				"description": "The row whose owner, computer and model are listed."
+			},
+			{
+				"name": "liveSummary.overview",
+				"type": "HomeLiveOverview",
+				"required": true,
+				"description": "The overview being totalled."
+			},
+			{
+				"name": "projectSummary.project",
+				"type": "HomeWorkProject",
+				"required": true,
+				"description": "The project whose running and status counts are worded."
+			},
+			{
+				"name": "liveNotice.reading",
+				"type": "LinkedHome | null",
+				"required": true,
+				"description": "What the linked computers last answered, or null before the first answer."
+			}
+		],
+		"outputs": [
+			{
+				"name": "stageLabels",
+				"type": "unknown",
+				"description": "The words for each of the four planning stages."
+			},
+			{
+				"name": "workStateLabels",
+				"type": "Record<HomeWorkState, string>",
+				"description": "The words for each run state."
+			},
+			{
+				"name": "statusWords",
+				"type": "unknown",
+				"description": "The words for each Tracker task status."
+			},
+			{
+				"name": "stageLabel",
+				"type": "unknown",
+				"description": "The stage in words, or that the stage was not reported."
+			},
+			{
+				"name": "workStateLabel",
+				"type": "unknown",
+				"description": "The run state in words, with the recorded outcome when there is one."
+			},
+			{
+				"name": "span",
+				"type": "unknown",
+				"description": "The elapsed time in its largest whole unit."
+			},
+			{
+				"name": "workAge",
+				"type": "unknown",
+				"description": "How long the run has been going or waiting, and how long ago the task changed."
+			},
+			{
+				"name": "workFacts",
+				"type": "unknown",
+				"description": "Owner, computer and model, each saying so when Tracker does not know it."
+			},
+			{
+				"name": "liveSummary",
+				"type": "unknown",
+				"description": "The totals of live runs, the computers they run on and the projects listed."
+			},
+			{
+				"name": "projectSummary",
+				"type": "unknown",
+				"description": "The non-zero counts of a project in one line."
+			},
+			{
+				"name": "liveNotice",
+				"type": "string | null",
+				"description": "Why no overview can be shown, or null when there is one to show."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "stageLabel",
+				"inputs": [
+					{
+						"name": "stageLabel.stage",
+						"type": "HomeWorkRow['stage']",
+						"required": true,
+						"description": "The planning stage Tracker records, or null when it reports none."
+					}
+				],
+				"outputs": [
+					{
+						"name": "stageLabel",
+						"type": "unknown",
+						"description": "The stage in words, or that the stage was not reported."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "workStateLabel",
+				"inputs": [
+					{
+						"name": "workStateLabel.row",
+						"type": "HomeWorkRow",
+						"required": true,
+						"description": "The row whose run state and latest recorded outcome are worded."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workStateLabel",
+						"type": "unknown",
+						"description": "The run state in words, with the recorded outcome when there is one."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "span",
+				"inputs": [
+					{
+						"name": "span.from",
+						"type": "string",
+						"required": true,
+						"description": "The earlier moment, as an ISO time."
+					},
+					{
+						"name": "span.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "span",
+						"type": "unknown",
+						"description": "The elapsed time in its largest whole unit."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workAge",
+				"inputs": [
+					{
+						"name": "workAge.row",
+						"type": "HomeWorkRow",
+						"required": true,
+						"description": "The row whose run age and last change are worded."
+					},
+					{
+						"name": "workAge.now",
+						"type": "number",
+						"required": true,
+						"description": "The current time in milliseconds."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workAge",
+						"type": "unknown",
+						"description": "How long the run has been going or waiting, and how long ago the task changed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workTimes",
+				"inputs": [
+					{
+						"name": "workTimes.row",
+						"type": "HomeWorkRow",
+						"required": true,
+						"description": "The overview row whose start or queue time and last Tracker change are written out."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workTimes",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workFacts",
+				"inputs": [
+					{
+						"name": "workFacts.row",
+						"type": "HomeWorkRow",
+						"required": true,
+						"description": "The row whose owner, computer and model are listed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workFacts",
+						"type": "unknown",
+						"description": "Owner, computer and model, each saying so when Tracker does not know it."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "liveSummary",
+				"inputs": [
+					{
+						"name": "liveSummary.overview",
+						"type": "HomeLiveOverview",
+						"required": true,
+						"description": "The overview being totalled."
+					}
+				],
+				"outputs": [
+					{
+						"name": "liveSummary",
+						"type": "unknown",
+						"description": "The totals of live runs, the computers they run on and the projects listed."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "projectSummary",
+				"inputs": [
+					{
+						"name": "projectSummary.project",
+						"type": "HomeWorkProject",
+						"required": true,
+						"description": "The project whose running and status counts are worded."
+					}
+				],
+				"outputs": [
+					{
+						"name": "projectSummary",
+						"type": "unknown",
+						"description": "The non-zero counts of a project in one line."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "liveNotice",
+				"inputs": [
+					{
+						"name": "liveNotice.reading",
+						"type": "LinkedHome | null",
+						"required": true,
+						"description": "What the linked computers last answered, or null before the first answer."
+					}
+				],
+				"outputs": [
+					{
+						"name": "liveNotice",
+						"type": "string | null",
+						"description": "Why no overview can be shown, or null when there is one to show."
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.service.networking-security-linked-home",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeLive.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeLive.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

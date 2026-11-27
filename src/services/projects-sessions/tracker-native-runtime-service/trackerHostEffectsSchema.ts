@@ -42,6 +42,8 @@ const launchPolicy = {
 	maxConcurrent: z.int().positive().max(500).optional(),
 	legacyRunDirectory: absolutePath.optional(),
 	...trackerRunLimits,
+	minAvailableMemMB: z.int().positive().optional(),
+	minFreeDiskGB: z.number().positive().optional(),
 	repositories: z.record(
 		z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$/),
 		z.strictObject({
@@ -51,7 +53,8 @@ const launchPolicy = {
 			worktree: z.boolean().optional()
 		})
 	),
-	due: z.boolean().optional()
+	due: z.boolean().optional(),
+	codexPausedUntil: z.iso.datetime({ offset: true }).optional()
 };
 const egressHost = z.string().trim().min(1).max(253);
 const egressPilot = z

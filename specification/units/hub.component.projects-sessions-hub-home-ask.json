@@ -48,6 +48,13 @@
 				"required": false,
 				"default": "undefined (omitted)",
 				"description": "Receives each queued answer and its receipt. Defaults to nothing being notified."
+			},
+			{
+				"name": "HubHomeAsk.row",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "True on a Home row, which already shows who asks and the question, so the card omits them."
 			}
 		],
 		"outputs": [

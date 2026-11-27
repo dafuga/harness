@@ -122,6 +122,7 @@ function phoneReply(tracker: Tracker, name: string) {
 			}
 		},
 		tracker_document: { document: attachments[0]?.content },
+		tracker_answer: { intentId: 'fixture-intent', status: 'queued' },
 		tracker_write_status: { writes: [] }
 	}[name];
 	return {

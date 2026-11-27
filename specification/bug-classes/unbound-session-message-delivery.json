@@ -1,0 +1,161 @@
+{
+	"schemaVersion": 1,
+	"revision": "66e2f045f0a8f65501d686edcbfed178a2781729",
+	"bugClass": {
+		"id": "unbound-session-message-delivery",
+		"title": "Messages reported without run-bound delivery or replies",
+		"cause": "A message is treated as delivered when it is merely persisted as a note, with no dispatch to the live session pane; replies are inferred from recent notes without correlating them to the originating run. A related failure occurs when text is typed into a pane without first binding that pane to the exact target run.",
+		"criteria": "Classify a site when either (1) it reports delivery or receipt based on storing or reading a note/message without dispatching to the intended live session, or (2) it types into a pane without pinning the exact target run. Also classify when replies are selected from recent notes without a run- or request-keyed correlation channel. These mechanisms may occur independently.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "tracker.note",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "Hub message:",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "activeRunId",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "sessionId",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "paneId",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "replyTo",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "correlationId",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "runId",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "latestNote",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "sendKeys(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "typeText(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "dispatchEvent(",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "message.status = \"sent\"",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "status: \"delivered\"",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "tracker.note",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "sendKeys",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "typeText",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "getActiveSession",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "getLatestNote",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "querySelector",
+				"weight": 2
+			},
+			{
+				"kind": "construct",
+				"value": "MessageChannel",
+				"weight": 3
+			},
+			{
+				"kind": "construct",
+				"value": "BroadcastChannel",
+				"weight": 2
+			}
+		],
+		"contextTerms": ["hub", "message", "tracker", "pane", "run", "reply", "note", "session"],
+		"pathHints": [
+			{
+				"contains": "packages/hub/",
+				"weight": 5
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/collaboration/",
+				"weight": 2
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "specification/",
+				"weight": -3
+			}
+		]
+	}
+}

@@ -3,7 +3,11 @@ import { parseArgs } from 'node:util';
 import { nativeTrackerTimedItemRequest } from './nativeTrackerTimedItemRequest';
 import { nativeTrackerPlanningRequest } from './nativeTrackerPlanningRequest';
 import type { NativeTrackerAskValues, NativeTrackerRequest } from './nativeTrackerCli.types';
-import { nativeTrackerAnswerBody, nativeTrackerFlagBody } from './nativeTrackerAskOptions';
+import {
+	nativeTrackerAnswerBody,
+	nativeTrackerBlockBody,
+	nativeTrackerFlagBody
+} from './nativeTrackerAskOptions';
 
 import {
 	nativeTrackerCommandOptions,
@@ -13,6 +17,7 @@ import {
 	launchAction
 } from './nativeTrackerOptions';
 import { nativeTrackerInspectionRequest } from './nativeTrackerInspectionRequest';
+import { nativeTrackerQuery as query, nativeTrackerRunRequest } from './nativeTrackerRunRequest';
 
 export const nativeTrackerCommands = [...nativeTrackerCommandOptions.keys()].join(', ');
 
@@ -26,7 +31,9 @@ export function nativeTrackerArgs(args: string[]) {
 		allowNegative: true,
 		options: { ...nativeTrackerCommonOptions, ...options }
 	});
-	return { command, values, words, request: nativeTrackerRequest(command, words, values) };
+	const request =
+		command === 'reply' ? replyRequest(words) : nativeTrackerRequest(command, words, values);
+	return { command, values, words, request };
 }
 
 function nativeTrackerRequest(
@@ -36,7 +43,7 @@ function nativeTrackerRequest(
 ): NativeTrackerRequest {
 	const item =
 		itemQuery(command, words, values) ??
-		runRequest(command, words, values) ??
+		nativeTrackerRunRequest(command, words, values) ??
 		nativeTrackerInspectionRequest(command, words, values);
 	if (item) return item;
 	if (nativeTrackerIdVerbs.has(command)) return itemAction(command, words, values);
@@ -49,45 +56,14 @@ function nativeTrackerRequest(
 	};
 }
 
-function runRequest(
-	command: string,
-	words: string[],
-	values: Record<string, unknown>
-): NativeTrackerRequest | undefined {
-	switch (command) {
-		case 'stop':
-			return stopRequest(words);
-		case 'watchdog':
-			return watchdogRequest(words, values);
-		case 'runs':
-			if (words.length) throw new TypeError('usage: tracker runs [--item ID] [--limit N]');
-			return { method: 'GET', path: '/runs' + query({ item: values.item, limit: values.limit }) };
-		case 'models':
-			if (words.length !== 1 || words[0] !== 'report')
-				throw new TypeError('usage: tracker models report');
-			return { method: 'GET', path: '/models/report' };
-		case 'pick':
-			if (words.length !== 1) throw new TypeError('usage: tracker pick <id>');
-			return { method: 'GET', path: '/items/' + encodeURIComponent(words[0]) + '/pick' };
-		default:
-			return undefined;
-	}
-}
-
-function stopRequest(words: string[]): NativeTrackerRequest {
-	if (words.length !== 1) throw new TypeError('usage: tracker stop <run|item>');
-	return { method: 'POST', path: '/stop?target=' + encodeURIComponent(words[0]) };
-}
-
-function watchdogRequest(
-	[mode, ...trailing]: string[],
-	{ item }: Record<string, unknown>
-): NativeTrackerRequest {
-	if (!trailing.length && mode === 'alerts' && !item)
-		return { method: 'GET', path: '/watchdog/alerts' };
-	if (!trailing.length && mode === 'dry-run')
-		return { method: 'GET', path: '/watchdog/dry-run' + query({ item }) };
-	throw new TypeError('usage: tracker watchdog alerts|dry-run [--item ID]');
+/** Answers one Hub message; the id carries its thread, so nothing else is needed. */
+function replyRequest([id, ...text]: string[]): NativeTrackerRequest {
+	if (!id || !text.length) throw new TypeError('usage: tracker reply <message id> <text...>');
+	return {
+		method: 'POST',
+		path: '/messages/' + encodeURIComponent(id) + '/reply',
+		body: { text: text.join(' ') }
+	};
 }
 
 function itemQuery(
@@ -168,18 +144,18 @@ function itemAction(
 	}
 }
 
+const textVerbs = new Set(['note', 'progress', 'alert']);
+
 function actionBody(command: string, words: string[], values: Record<string, unknown>) {
 	const text = words.join(' ');
+	if (textVerbs.has(command)) return { text };
 	switch (command) {
-		case 'note':
-		case 'progress':
-			return { text };
 		case 'reject':
 			return { reason: text };
 		case 'flag':
 			return nativeTrackerFlagBody(text, values as NativeTrackerAskValues);
 		case 'block':
-			return blockBody(text, values);
+			return nativeTrackerBlockBody(text, values as NativeTrackerAskValues);
 		case 'answer':
 		case 'resolve':
 			return nativeTrackerAnswerBody(text, values as NativeTrackerAskValues);
@@ -198,21 +174,8 @@ function actionBody(command: string, words: string[], values: Record<string, unk
 	}
 }
 
-function blockBody(reason: string, values: Record<string, unknown>) {
-	return { reason, force: values.force };
-}
-
 function requiredText(words: string[], command: string): string {
 	const value = words.join(' ');
 	if (!value) throw new TypeError(`usage: tracker ${command} <text...>`);
 	return value;
-}
-
-function query(fields: Record<string, unknown>): string {
-	const params = new URLSearchParams();
-	for (const [key, value] of Object.entries(fields)) {
-		if (value !== undefined && value !== false)
-			params.set(key, value === true ? '1' : String(value));
-	}
-	return params.size ? '?' + params.toString() : '';
 }

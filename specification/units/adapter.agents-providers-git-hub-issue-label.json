@@ -1,0 +1,162 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-git-hub-issue-label",
+	"uid": "u_b7mnbsg4vi",
+	"kind": "adapter",
+	"title": "GitHubIssueLabelAdapter",
+	"responsibility": "Owns the GitHubIssueLabelAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/GitHubIssueLabelAdapter.ts",
+			"src/adapters/agents-providers/GitHubIssueLabelAdapter.types.ts"
+		],
+		"symbols": [
+			"GitHubIssueLabelAdapter",
+			"GitHubIssueLabelAdapter.constructor",
+			"GitHubIssueLabelAdapter.labels",
+			"GitHubIssueLabelAdapter.addLabel",
+			"GitHubIssueLabelAdapterConfig",
+			"GitHubIssueLabelAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "GitHubIssueLabelAdapter.constructor.config",
+				"type": "GitHubIssueLabelAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "GitHubIssueLabelAdapter.labels.issue",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "GitHubIssueLabelAdapter.addLabel.issue",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "GitHubIssueLabelAdapter.addLabel.label",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "GitHubIssueLabelAdapter.labels",
+				"type": "Promise<string[] | undefined>"
+			},
+			{
+				"name": "GitHubIssueLabelAdapter.addLabel",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "QaSyncError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "GitHubIssueLabelAdapter.labels",
+				"inputs": [
+					{
+						"name": "GitHubIssueLabelAdapter.labels.issue",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitHubIssueLabelAdapter.labels",
+						"type": "Promise<string[] | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitHubIssueLabelAdapter.addLabel",
+				"inputs": [
+					{
+						"name": "GitHubIssueLabelAdapter.addLabel.issue",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "GitHubIssueLabelAdapter.addLabel.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitHubIssueLabelAdapter.addLabel",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "GitHubIssueLabelAdapter.constructor",
+				"inputs": [
+					{
+						"name": "GitHubIssueLabelAdapter.constructor.config",
+						"type": "GitHubIssueLabelAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitHubIssueLabelAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "QaSyncError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/GitHubIssueLabelAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/GitHubIssueLabelAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

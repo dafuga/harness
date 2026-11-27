@@ -2,6 +2,7 @@
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { TrackerJobProcessAdapter } from '../../../adapters/projects-sessions/TrackerJobProcessAdapter';
+import { TrackerMachineSamplerAdapter } from '../../../adapters/projects-sessions/TrackerMachineSamplerAdapter';
 import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import {
 	canonicalNode,
@@ -41,9 +42,12 @@ export function trackerNodeRuntime(
 		notification,
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
+		// Held and effect-free rehearsal nodes never notify anyone.
+		webPush: config.hostEffects?.mode === 'active' ? { database: config.database } : undefined,
 		manualLaunch: true,
 		ladderConfig,
 		automaticEnabled: trackerAutomaticSetting(config),
+		machineSampler: new TrackerMachineSamplerAdapter(config.node, configuredTmux(config)),
 		syncResponder: configuredSyncResponder(config, secret),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: boxJobs(config) }),
@@ -52,6 +56,14 @@ export function trackerNodeRuntime(
 		},
 		planLaunch: (fields, current, source) => planNativeLaunch(fields, current, config.node, source)
 	};
+}
+
+/** The sampler labels agent sessions with their tmux names when it knows the executable. */
+function configuredTmux(config: TrackerNodeConfig): string | undefined {
+	const effects = config.hostEffects;
+	if (effects?.mode !== 'active' || !effects.launch || !('managed' in effects.launch))
+		return undefined;
+	return effects.launch.managed.tmux;
 }
 
 /** Box job state and receipts live beside the journal that owns the job definitions. */

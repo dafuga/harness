@@ -13,9 +13,14 @@
 			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts",
 			"src/services/projects-sessions/tracker-local-api-service/recordCosFlag.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalAlert.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalAlert.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalJobResponse.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalPlanning.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalRejection.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts",
@@ -30,6 +35,9 @@
 			"readTrackerItemDetail",
 			"readTrackerRunEndpoint",
 			"recordCosFlag",
+			"isTrackerAlert",
+			"trackerAlertResponse",
+			"TrackerAlertDependencies",
 			"trackerInboxItem",
 			"TrackerInboxReview",
 			"TrackerInboxRoute",
@@ -41,6 +49,11 @@
 			"recordTrackerSessionItem",
 			"readItemBody",
 			"itemMutationContext",
+			"trackerJobResponse",
+			"cosChatTitle",
+			"trackerMessageEndpoint",
+			"MessageDependencies",
+			"RequestTarget",
 			"writeTrackerPlanning",
 			"trackerRejectItem",
 			"isTrackerManualLaunch",
@@ -111,6 +124,31 @@
 			{
 				"name": "recordCosFlag.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "isTrackerAlert.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "isTrackerAlert.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.target",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.dependencies",
+				"type": "TrackerAlertDependencies",
 				"required": true
 			},
 			{
@@ -230,6 +268,41 @@
 				"default": false
 			},
 			{
+				"name": "trackerJobResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.options",
+				"type": "TrackerLocalApiOptions",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerMessageEndpoint.dependencies",
+				"type": "MessageDependencies",
+				"required": true
+			},
+			{
 				"name": "writeTrackerPlanning.request",
 				"type": "Request",
 				"required": true
@@ -338,6 +411,14 @@
 				"type": "void"
 			},
 			{
+				"name": "isTrackerAlert",
+				"type": "boolean"
+			},
+			{
+				"name": "trackerAlertResponse",
+				"type": "Promise<Response>"
+			},
+			{
 				"name": "trackerInboxItem",
 				"type": "Promise<TrackerInboxResult>"
 			},
@@ -368,6 +449,18 @@
 			{
 				"name": "itemMutationContext",
 				"type": "TrackerItemMutationContext"
+			},
+			{
+				"name": "trackerJobResponse",
+				"type": "Promise<Response>"
+			},
+			{
+				"name": "cosChatTitle",
+				"type": "unknown"
+			},
+			{
+				"name": "trackerMessageEndpoint",
+				"type": "Promise<{ status: number; body: object } | undefined>"
 			},
 			{
 				"name": "writeTrackerPlanning",
@@ -485,6 +578,57 @@
 					{
 						"name": "recordCosFlag",
 						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerAlert",
+				"inputs": [
+					{
+						"name": "isTrackerAlert.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "isTrackerAlert.parts",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerAlert",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerAlertResponse",
+				"inputs": [
+					{
+						"name": "trackerAlertResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerAlertResponse.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerAlertResponse.dependencies",
+						"type": "TrackerAlertDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAlertResponse",
+						"type": "Promise<Response>"
 					}
 				],
 				"errors": [],
@@ -692,6 +836,67 @@
 					{
 						"name": "itemMutationContext",
 						"type": "TrackerItemMutationContext"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerJobResponse",
+				"inputs": [
+					{
+						"name": "trackerJobResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.options",
+						"type": "TrackerLocalApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerJobResponse",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerMessageEndpoint",
+				"inputs": [
+					{
+						"name": "trackerMessageEndpoint.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerMessageEndpoint.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerMessageEndpoint.dependencies",
+						"type": "MessageDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMessageEndpoint",
+						"type": "Promise<{ status: number; body: object } | undefined>"
 					}
 				],
 				"errors": [],
@@ -907,6 +1112,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-hub-session-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-is-tracker-ping",
 			"via": "import",
 			"origin": "derived"
@@ -962,12 +1172,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-local-api-service-read-tracker-machine-endpoint",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-jobs",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.projects-sessions-tracker-local-api-service-tracker-local-response",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine",
 			"via": "import",
 			"origin": "derived"
 		},

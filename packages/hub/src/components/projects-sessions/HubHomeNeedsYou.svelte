@@ -2,21 +2,42 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_kncvbfcpto -->
 <script lang="ts">
-	import type { HomeOpenAsk } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
+	import type {
+		HomeChatReceipt,
+		HomeOpenAsk
+	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
-	import type { OpenHomeSection } from './hubHomeView.types';
+	import type { OpenHomeSection, SendHomeChat } from './hubHomeView.types';
+	import HubHomeAsk from './HubHomeAsk.svelte';
 
-	let { asks, now, open }: { asks: HomeOpenAsk[]; now: number; open: OpenHomeSection } = $props();
+	let {
+		asks,
+		now,
+		open,
+		send,
+		receipt
+	}: {
+		asks: HomeOpenAsk[];
+		now: number;
+		open: OpenHomeSection;
+		send: SendHomeChat;
+		receipt: (id: string) => Promise<HomeChatReceipt>;
+	} = $props();
 </script>
 
 {#if asks.length}
 	<hx-section class="hh-needs" aria-labelledby="hh-needs-title">
-		<hx-h2 class="hh-needs-title" id="hh-needs-title"
-			>Blocked - needs you <hx-span class="po-band-count">{asks.length}</hx-span></hx-h2
-		>
+		<hx-div class="hh-needs-head">
+			<hx-h2 class="hh-needs-title" id="hh-needs-title">Blocked - needs you</hx-h2>
+			<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
+				><hx-span class="po-mark" aria-hidden="true"></hx-span>{asks.length}
+				{asks.length === 1 ? 'needs' : 'need'} you</Pill
+			>
+		</hx-div>
 		<hx-ul class="hh-needs-list">
 			{#each asks as ask (ask.itemId)}
-				<hx-li>
+				<hx-li class="hh-needs-item">
 					<hx-button
 						type="button"
 						class="hh-needs-row"
@@ -27,6 +48,7 @@
 						<hx-span class="hh-needs-question">{ask.question}</hx-span>
 						<hx-span class="hh-needs-age">waiting {waitAge(ask.since, now)}</hx-span>
 					</hx-button>
+					<HubHomeAsk {ask} {send} {receipt} row />
 				</hx-li>
 			{/each}
 		</hx-ul>

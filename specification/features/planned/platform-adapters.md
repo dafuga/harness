@@ -62,7 +62,9 @@ or `groups:read` for public or private channel discovery when required,
 message events, and `app_mentions:read` for `app_mention`. Request only the
 event and channel scopes the installation needs. Slack calls posts through
 `chat.postMessage`. Use Block Kit with readable fallback text and `thread_ts`
-for replies. Verify the connected bot and workspace with `auth.test`.
+for replies. Verify the connected bot and workspace with `auth.test`. A binding may
+also name one direct message (`D…`), such as an owner's own digest; it is
+allowlisted by id like any channel.
 
 Receive Events API traffic using Socket Mode. A separate app-level credential
 with `connections:write` opens an outbound WebSocket using
