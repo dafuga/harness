@@ -136,7 +136,7 @@ export async function verifyLegacyQueuedClaim(
 export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: string) {
 	const short = id.slice(0, 6);
 	const { id: visualId } = await fixtureTrackerJson(spoke, ['add', 'Design a dashboard mockup']);
-	// The Tracker process uses the real clock: Claude Sonnet until the Codex reset, then Sol.
+	// The Tracker process uses the real clock: Claude Sonnet until the Codex reset, then Astra high.
 	const claudeOnly = Date.now() < Date.parse('2026-11-27T10:39:00Z');
 	expect(await fixtureTrackerJson(spoke, ['pick', visualId])).toMatchObject(
 		claudeOnly
@@ -147,7 +147,7 @@ export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: stri
 					effort: 'medium',
 					pinned: false
 				}
-			: { rung: 'sol', model: 'gpt-6.2-sol', cli: 'codex', effort: 'medium', pinned: false }
+			: { rung: 'astra', model: 'gpt-6.2-astra', cli: 'codex', effort: 'high', pinned: false }
 	);
 	const launch = ['launch', short, '--project', 'Tracker', '--model', 'Fable:high'];
 	const rejected = await trackerProcess(spoke, launch).exited;
