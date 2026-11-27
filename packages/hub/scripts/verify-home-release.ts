@@ -1,5 +1,6 @@
 import { createInterface } from 'node:readline/promises';
 import { z } from 'zod';
+import { trackerPersonalAgent } from '../../../src/utils/projects-sessions/trackerUnattendedHold';
 import type { TrackerFetch } from './verify-home-release.types';
 
 const trackerOrigin = 'http://127.0.0.1:7701';
@@ -59,7 +60,13 @@ async function sampleTracker(nodes: string[], fetcher: TrackerFetch) {
 		if (!node) continue;
 		const item = byId.get(run.item_id);
 		if (!item) throw new Error('A live Tracker run has no matching item. Check Tracker sync.');
-		if (!item.deleted && !item.sensitive && item.status !== 'ignored' && item.agent) {
+		if (
+			!item.deleted &&
+			!item.sensitive &&
+			item.status !== 'ignored' &&
+			item.agent &&
+			!trackerPersonalAgent(item.agent)
+		) {
 			node.add(run.id);
 		}
 	}
