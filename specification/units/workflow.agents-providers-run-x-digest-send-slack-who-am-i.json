@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-x-digest-send-slack-who-am-i",
+	"uid": "u_yoy3rxeugg",
+	"kind": "workflow",
+	"title": "slackWhoAmI",
+	"responsibility": "Return the bot non-secret ids from auth.test.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/workflows/agents-providers/run-x-digest-send/slackWhoAmI.ts"],
+		"symbols": ["slackWhoAmI"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "slackWhoAmI.token",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "slackWhoAmI.request",
+				"type": "typeof fetch",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "slackWhoAmI",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "slackWhoAmI",
+				"inputs": [
+					{
+						"name": "slackWhoAmI.token",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "slackWhoAmI.request",
+						"type": "typeof fetch",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "slackWhoAmI",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/run-x-digest-send/slackWhoAmI.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/run-x-digest-send/slackWhoAmI.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

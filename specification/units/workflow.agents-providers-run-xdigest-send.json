@@ -1,0 +1,151 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-xdigest-send",
+	"uid": "u_5unsyumim2",
+	"kind": "workflow",
+	"title": "runXDigestSend",
+	"responsibility": "Wait for the day file, post it, and print bot ids on request.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/agents-providers/runXDigestSend.ts",
+			"src/workflows/agents-providers/runXDigestSend.types.ts"
+		],
+		"symbols": ["runXDigestSend", "printSlackIdentity", "XDigestSendRunInput"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runXDigestSend.input",
+				"type": "XDigestSendRunInput",
+				"required": true
+			},
+			{
+				"name": "printSlackIdentity.secretConfig",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "runXDigestSend",
+				"type": "Promise<number>"
+			},
+			{
+				"name": "printSlackIdentity",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runXDigestSend",
+				"inputs": [
+					{
+						"name": "runXDigestSend.input",
+						"type": "XDigestSendRunInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runXDigestSend",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "printSlackIdentity",
+				"inputs": [
+					{
+						"name": "printSlackIdentity.secretConfig",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "printSlackIdentity",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-x-digest-send-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-xdigest-send-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-xdigest-send",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-xdigest-sender-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-x-digest-send-fetch-outbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-x-digest-send-secret-manager-token",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-x-digest-send-slack-who-am-i",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-x-digest-send-x-digest-slack",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-x-digest-x-digest-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-x-digest-x-digest-home",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/runXDigestSend.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/runXDigestSend.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
