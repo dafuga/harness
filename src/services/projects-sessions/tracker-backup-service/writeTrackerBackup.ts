@@ -59,9 +59,7 @@ async function acquireBackupLock(lock: SqliteDatabase): Promise<void> {
 			lock.exec('BEGIN IMMEDIATE');
 			return;
 		} catch (error) {
-			if (!isSqliteBusy(error)) throw error;
-			if (performance.now() >= deadline)
-				throw new Error('another Tracker backup is still being published', { cause: error });
+			if (!isSqliteBusy(error) || performance.now() >= deadline) throw error;
 		}
 		// Yield so another backup in this process can finish and release its lock.
 		await delay(10);

@@ -2,7 +2,7 @@
 	"name": "tracker-backup-writer-race",
 	"goal": "Two Tracker databases competing for the same backup directory cannot both publish a backup for the same day.",
 	"createdAt": "2026-11-27T14:25:44.902Z",
-	"updatedAt": "2026-11-27T14:28:06.077Z",
+	"updatedAt": "2026-11-27T14:31:04.742Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -39,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T14:31:04.742Z",
+			"evidence": "Unchanged test: clean a9e989b843 failed with both writers succeeding; clean 876cf1e636 passed with exactly one winner in each of 256 attempts. 22 focused backup and health tests also passed on primary Mac."
 		},
 		{
 			"id": "siblings",
