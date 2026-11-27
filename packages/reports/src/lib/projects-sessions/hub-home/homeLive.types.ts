@@ -1,9 +1,14 @@
 // @harness-uid u_dpe5j4r3is
-import type { OverviewItem, MachineStatus } from '../project-overview/projectOverview.types';
+import type {
+	OverviewItem,
+	OverviewSnapshot,
+	MachineStatus
+} from '../project-overview/projectOverview.types';
 import type {
 	IncludedTrackerItem,
 	TrackerRunRecord
 } from '../project-overview/projectOverviewTracker.types';
+import type { HomeAgent, HomePastDue, OwnerHomeSnapshot } from './hubHome.types';
 import type { TrackerStage } from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 
 /**
@@ -64,5 +69,24 @@ export interface ItemWork {
 	item: IncludedTrackerItem;
 	runs: TrackerRunRecord[];
 	offline: ReadonlySet<string>;
+	now: number;
+}
+
+export interface LinkedHome {
+	/** Computers linked to the signed-in account, online or not. */
+	linked: number;
+	/** How many of them answered this read. */
+	answered: number;
+	snapshot: OwnerHomeSnapshot | null;
+	/** The list of linked computers itself could not be read, so zero linked means unknown. */
+	unlisted?: true;
+}
+
+export interface HomeWorkView {
+	overview: OverviewSnapshot | null;
+	work: (OverviewItem & { project: string })[];
+	agents: HomeAgent[] | null;
+	pastDue: HomePastDue[];
+	trackerConnected: boolean;
 	now: number;
 }

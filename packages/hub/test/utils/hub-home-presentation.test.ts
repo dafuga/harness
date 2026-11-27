@@ -4,7 +4,7 @@ import {
 	quotaReset,
 	quotaSummary,
 	runDay
-} from '../../src/components/projects-sessions/hubHomePresentation';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 import { quotaPills } from '../../src/components/projects-sessions/hubQuotaPills';
 import type { HomeSubscription } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 

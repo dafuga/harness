@@ -21,7 +21,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeLive.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte"],
 		"symbols": ["HubHomeLive", "HubHomeLive.list"]
 	},
 	"contract": {
@@ -45,13 +45,15 @@
 				"name": "HubHomeLive.native",
 				"type": "HomeLiveOverview",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Live project overview supplied directly by the installed app."
 			},
 			{
 				"name": "HubHomeLive.pastDue",
 				"type": "HomePastDue[]",
 				"required": false,
-				"default": []
+				"default": [],
+				"description": "Scheduled items whose due time has passed, used to label their current work state."
 			}
 		],
 		"outputs": [
@@ -103,11 +105,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.service.networking-security-linked-home",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
@@ -155,11 +152,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte"
 			}
 		]
 	},

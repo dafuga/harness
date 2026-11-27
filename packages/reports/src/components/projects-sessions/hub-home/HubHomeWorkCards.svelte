@@ -1,11 +1,12 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_yo3goi2ees -->
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
 	import { workSummary, workEta } from './hubHomePresentation';
-	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
+	import type { HomeWorkView } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
+	import type { OpenHomeSection } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
@@ -15,7 +16,7 @@
 		view,
 		open
 	}: {
-		view: Pick<HomeView, 'work' | 'pastDue' | 'overview' | 'agents' | 'trackerConnected' | 'now'>;
+		view: HomeWorkView;
 		open: OpenHomeSection;
 	} = $props();
 </script>

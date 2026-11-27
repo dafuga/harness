@@ -21,7 +21,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomePlannable.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte"
+		],
 		"symbols": [
 			"HubHomePlannable",
 			"HubHomePlannable.empty",
@@ -35,7 +37,7 @@
 		"inputs": [
 			{
 				"name": "HubHomePlannable.view",
-				"type": "Pick<HomeView, 'plans' | 'schedule' | 'agents' | 'now' | 'needsMac'>",
+				"type": "HomePlannableView",
 				"required": true,
 				"description": "The current plans, schedule, connection state, clock and available agents."
 			},
@@ -139,11 +141,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
@@ -167,15 +164,20 @@
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomePlannable.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomePlannable.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte"
 			}
 		]
 	},

@@ -120,7 +120,8 @@
 			{
 				"name": "etaFor.item",
 				"type": "OverviewItem",
-				"required": true
+				"required": true,
+				"description": "Overview item carrying its current work label, Tracker status and optional due time."
 			},
 			{
 				"name": "etaFor.now",
@@ -472,7 +473,8 @@
 					{
 						"name": "etaFor.item",
 						"type": "OverviewItem",
-						"required": true
+						"required": true,
+						"description": "Overview item carrying its current work label, Tracker status and optional due time."
 					},
 					{
 						"name": "etaFor.now",

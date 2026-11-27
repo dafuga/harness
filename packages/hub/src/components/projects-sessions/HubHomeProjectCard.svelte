@@ -6,12 +6,15 @@
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { stateLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
-	import { count, relativeWhen } from './hubHomePresentation';
+	import {
+		count,
+		relativeWhen
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import { projectInventory, inventorySummary } from './hubHomeProjects';
 	import type { HomeView } from './hubHomeView.types';
-	import HubHomeCard from './HubHomeCard.svelte';
-	import HubHomeRow from './HubHomeRow.svelte';
-	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
+	import HubHomeCard from '$reports/components/projects-sessions/hub-home/HubHomeCard.svelte';
+	import HubHomeRow from '$reports/components/projects-sessions/hub-home/HubHomeRow.svelte';
+	import HubHomeSkeleton from '$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 
 	let { view, open }: { view: HomeView; open: () => void } = $props();
 	const latest = $derived(

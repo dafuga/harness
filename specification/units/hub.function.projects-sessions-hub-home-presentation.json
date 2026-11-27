@@ -9,9 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
-			"packages/hub/src/components/projects-sessions/hubHomeStatusText.ts",
-			"packages/hub/src/components/projects-sessions/hubHomeTime.ts"
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts"
 		],
 		"symbols": [
 			"sections",
@@ -226,7 +226,8 @@
 			{
 				"name": "workEta.item",
 				"type": "OverviewItem",
-				"required": true
+				"required": true,
+				"description": "Overview item whose current work label or due time appears in the Home row."
 			},
 			{
 				"name": "workEta.now",
@@ -261,7 +262,8 @@
 			{
 				"name": "currentWorkLabel.run",
 				"type": "HomePastDue",
-				"required": true
+				"required": true,
+				"description": "Due item carrying its current run state, queue position or blocker reason."
 			},
 			{
 				"name": "pastDueSummary.runs",
@@ -284,12 +286,14 @@
 			{
 				"name": "workOverview.value",
 				"type": "OverviewSnapshot | null",
-				"required": true
+				"required": true,
+				"description": "Latest project overview, or null while the first reading is pending."
 			},
 			{
 				"name": "workOverview.pastDue",
 				"type": "HomePastDue[]",
-				"required": true
+				"required": true,
+				"description": "Due items whose current states are matched to overview items and callouts by ID."
 			},
 			{
 				"name": "runDay.at",
@@ -888,7 +892,8 @@
 					{
 						"name": "workEta.item",
 						"type": "OverviewItem",
-						"required": true
+						"required": true,
+						"description": "Overview item whose current work label or due time appears in the Home row."
 					},
 					{
 						"name": "workEta.now",
@@ -977,7 +982,8 @@
 					{
 						"name": "currentWorkLabel.run",
 						"type": "HomePastDue",
-						"required": true
+						"required": true,
+						"description": "Due item carrying its current run state, queue position or blocker reason."
 					}
 				],
 				"outputs": [
@@ -1039,12 +1045,14 @@
 					{
 						"name": "workOverview.value",
 						"type": "OverviewSnapshot | null",
-						"required": true
+						"required": true,
+						"description": "Latest project overview, or null while the first reading is pending."
 					},
 					{
 						"name": "workOverview.pastDue",
 						"type": "HomePastDue[]",
-						"required": true
+						"required": true,
+						"description": "Due items whose current states are matched to overview items and callouts by ID."
 					}
 				],
 				"outputs": [
@@ -1219,11 +1227,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts"
 			}
 		]
 	},

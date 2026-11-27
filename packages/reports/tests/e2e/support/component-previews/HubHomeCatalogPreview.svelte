@@ -3,12 +3,12 @@
 	import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 	import type { ProjectSummary } from 'collaboration';
 	import type { SendHomeChat } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
-	import HubHomeRow from '../../../../../hub/src/components/projects-sessions/HubHomeRow.svelte';
+	import HubHomeRow from '../../../../src/components/projects-sessions/hub-home/HubHomeRow.svelte';
 	import { browserContext } from '../../../../../hub/src/utils/development-tooling/browserContext';
 	import { catalogHomeView, catalogWorkProject } from './hubHomeCatalogData';
 	import { previewAnswerOptions } from './shared';
-	import '../../../../../hub/src/lib/styles/home-scheme.css';
-	import '../../../../../hub/src/lib/styles/hub-home/index.css';
+	import '../../../../src/lib/styles/home-scheme.css';
+	import '../../../../src/lib/styles/hub-home/index.css';
 
 	let { id, Component }: { id: string; Component: SvelteComponent<Record<string, unknown>> } =
 		$props();

@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_suxmf5vsuw -->
 <script lang="ts">
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
@@ -11,10 +11,10 @@
 		HomeChatInput,
 		HomeChatReceipt,
 		HomeMessage,
-		HomeOpenAsk
+		HomeOpenAsk,
+		SendHomeChat
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { agentLabels, messageStatusText, overviewTone, runTime } from './hubHomePresentation';
-	import type { SendHomeChat } from './hubHomeView.types';
 	import { MediaQuery } from 'svelte/reactivity';
 	import HubHomeAsk from './HubHomeAsk.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';

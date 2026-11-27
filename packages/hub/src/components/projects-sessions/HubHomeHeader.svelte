@@ -5,13 +5,16 @@
 	import type { Snippet } from 'svelte';
 	import { resolve } from '$app/paths';
 	import Notice from '$reports/components/explorer-ui/explorer-kit/Notice.svelte';
-	import { liveSystemNotice } from './hubHomeLive';
+	import { liveSystemNotice } from '$reports/components/projects-sessions/hub-home/hubHomeLive';
 	import BrandMark from '$reports/components/BrandMark.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import HubHomeNotifications from './HubHomeNotifications.svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
-	import { homeHeadline, summaryLine } from './hubHomePresentation';
+	import {
+		homeHeadline,
+		summaryLine
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';

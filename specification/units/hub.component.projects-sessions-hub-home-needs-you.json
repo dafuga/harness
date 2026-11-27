@@ -48,7 +48,8 @@
 				"name": "HubHomeNeedsYou.reading",
 				"type": "'loading' | 'ready' | 'unavailable'",
 				"required": false,
-				"default": "ready"
+				"default": "ready",
+				"description": "Whether the snapshot can establish the blocker count or needs a loading or unavailable message."
 			},
 			{
 				"name": "HubHomeNeedsYou.send",

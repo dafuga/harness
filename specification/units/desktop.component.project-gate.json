@@ -124,7 +124,8 @@
 				"name": "ProjectGate.blockers",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Home blocker section rendered before the recent projects list."
 			},
 			{
 				"name": "ProjectGate.children",

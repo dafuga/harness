@@ -1,5 +1,5 @@
 import { render } from 'svelte/server';
-import HubHomeLive from '../../src/components/projects-sessions/HubHomeLive.svelte';
+import HubHomeLive from '../../../reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import type { HomeLiveOverview } from '../../../reports/src/lib/projects-sessions/hub-home/homeLive.types';
 import type { OwnerHomeSnapshot } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
@@ -8,7 +8,7 @@ import {
 	noProviders
 } from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
 import { readTrackerSources } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
-import { liveNotice } from '../../src/components/projects-sessions/hubHomeLive';
+import { liveNotice } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeLive';
 import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
 import { parseHomePayload } from '../../src/routes/api/hub-home/homePayload';
 import {

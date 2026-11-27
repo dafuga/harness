@@ -1,6 +1,6 @@
 // @harness-uid u_vg7qhfaumu
 import type { HubPushDevice, PushQuietHours } from '../../lib/networking-security/hubPush.types';
-import { runDay, runTime } from './hubHomeTime';
+import { runDay, runTime } from '$reports/components/projects-sessions/hub-home/hubHomeTime';
 
 export const deviceHints: Record<Exclude<HubPushDevice, 'on'>, string> = {
 	off: 'Hear about new decisions, even with this tab closed.',

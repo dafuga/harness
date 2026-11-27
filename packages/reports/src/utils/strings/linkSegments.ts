@@ -32,7 +32,7 @@ function validUrl(value: string): boolean {
 	}
 }
 
-function trimProseEnding(value: string): string {
+function delimiterBalance(value: string) {
 	const balance = { ')': 0, ']': 0, '}': 0 };
 	for (const character of value) {
 		if (character === '(') balance[')']++;
@@ -40,6 +40,11 @@ function trimProseEnding(value: string): string {
 		if (character === '{') balance['}']++;
 		if (character === ')' || character === ']' || character === '}') balance[character]--;
 	}
+	return balance;
+}
+
+function trimProseEnding(value: string): string {
+	const balance = delimiterBalance(value);
 	let end = value.length;
 	while (end > 0) {
 		const trailing = value[end - 1];

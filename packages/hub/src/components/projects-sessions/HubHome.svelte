@@ -3,7 +3,7 @@
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
-	import { workOverview } from './hubHomeStatusText';
+	import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
 	import { homeBoard } from './hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
@@ -17,11 +17,14 @@
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
-	import { provideHubSpecDocuments } from './hubSpecDocument';
-	import { provideHomeCosChat } from './hubHomeChatContext.svelte';
+	import { provideHubSpecDocuments } from '$reports/components/projects-sessions/hub-home/hubSpecDocument';
+	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
-	import { soonestWork, staleReading } from './hubHomePresentation';
+	import {
+		soonestWork,
+		staleReading
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
@@ -30,11 +33,11 @@
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
 	import { followNeedsLink } from './followNeedsLink.svelte';
-	import '../../lib/styles/home-scheme.css';
-	import '../../lib/styles/hub-home/index.css';
+	import '$reports/lib/styles/home-scheme.css';
+	import '$reports/lib/styles/hub-home/index.css';
 
 	const { api, session, projects } = browserContext();
-	provideHubSpecDocuments(api);
+	provideHubSpecDocuments((attachment) => api.get('/api/hub-home/doc', { id: attachment.id }));
 	const cosChat = provideHomeCosChat(() => reads.read());
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();

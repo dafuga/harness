@@ -22,7 +22,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte"
+		],
 		"symbols": ["HubHomeWorkCards", "HubHomeWorkCards.empty", "HubHomeWorkCards.trailing"]
 	},
 	"contract": {
@@ -31,7 +33,7 @@
 		"inputs": [
 			{
 				"name": "HubHomeWorkCards.view",
-				"type": "Pick<HomeView, 'work' | 'pastDue' | 'overview' | 'agents' | 'trackerConnected' | 'now'>",
+				"type": "HomeWorkView",
 				"required": true,
 				"description": "Home data, project snapshots, source availability and clock used for presentation."
 			},
@@ -118,11 +120,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
@@ -151,15 +148,25 @@
 			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte"
 			}
 		]
 	},

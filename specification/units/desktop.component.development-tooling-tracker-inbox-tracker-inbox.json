@@ -53,7 +53,8 @@
 				"name": "TrackerInbox.home",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Shows the compact Home blocker section, including its count and empty state."
 			}
 		],
 		"outputs": [

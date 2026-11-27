@@ -24,7 +24,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte"
+		],
 		"symbols": ["HubHomeLiveProject", "HubHomeLiveProject.list"]
 	},
 	"contract": {
@@ -47,7 +49,8 @@
 				"name": "HubHomeLiveProject.dueById",
 				"type": "ReadonlyMap<string, HomePastDue>",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Current schedule states indexed by Tracker item ID for the project rows."
 			}
 		],
 		"outputs": [
@@ -171,11 +174,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte"
 			}
 		]
 	},

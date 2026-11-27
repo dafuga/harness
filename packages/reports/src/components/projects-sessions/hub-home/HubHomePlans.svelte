@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_jz3ojqls6h -->
 <script lang="ts">
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';

@@ -13,8 +13,8 @@
 		usageLinks,
 		warningFor,
 		warningLabel
-	} from './hubHomePresentation';
-	import { runMoment } from './hubHomeTime';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+	import { runMoment } from '$reports/components/projects-sessions/hub-home/hubHomeTime';
 	let {
 		subscription,
 		now,

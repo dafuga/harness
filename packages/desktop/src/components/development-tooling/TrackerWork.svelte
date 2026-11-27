@@ -12,23 +12,23 @@
 		OwnerHomeSnapshot,
 		TrackerHomeSource
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import HubHomeCosChat from '../../../../hub/src/components/projects-sessions/HubHomeCosChat.svelte';
-	import HubHomePlannable from '../../../../hub/src/components/projects-sessions/HubHomePlannable.svelte';
-	import HubHomePlanDetail from '../../../../hub/src/components/projects-sessions/HubHomePlanDetail.svelte';
-	import HubHomeWorkCards from '../../../../hub/src/components/projects-sessions/HubHomeWorkCards.svelte';
-	import HubHomeWork from '../../../../hub/src/components/projects-sessions/HubHomeWork.svelte';
-	import HubHomeLive from '../../../../hub/src/components/projects-sessions/HubHomeLive.svelte';
-	import { soonestWork } from '../../../../hub/src/components/projects-sessions/hubHomePresentation';
-	import { workOverview } from '../../../../hub/src/components/projects-sessions/hubHomeStatusText';
-	import HubHomePlans from '../../../../hub/src/components/projects-sessions/HubHomePlans.svelte';
-	import HubHomeSchedule from '../../../../hub/src/components/projects-sessions/HubHomeSchedule.svelte';
-	import { provideHomeCosChat } from '../../../../hub/src/components/projects-sessions/hubHomeChatContext.svelte';
+	import HubHomeCosChat from '$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte';
+	import HubHomePlannable from '$reports/components/projects-sessions/hub-home/HubHomePlannable.svelte';
+	import HubHomePlanDetail from '$reports/components/projects-sessions/hub-home/HubHomePlanDetail.svelte';
+	import HubHomeWorkCards from '$reports/components/projects-sessions/hub-home/HubHomeWorkCards.svelte';
+	import HubHomeWork from '$reports/components/projects-sessions/hub-home/HubHomeWork.svelte';
+	import HubHomeLive from '$reports/components/projects-sessions/hub-home/HubHomeLive.svelte';
+	import { soonestWork } from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+	import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
+	import HubHomePlans from '$reports/components/projects-sessions/hub-home/HubHomePlans.svelte';
+	import HubHomeSchedule from '$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte';
+	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import '$reports/lib/styles/project-overview.css';
 	import '$reports/lib/styles/project-overview-cards.css';
 	import '$reports/lib/styles/project-overview-controls.css';
 	import '$reports/lib/styles/project-overview-responsive.css';
-	import '../../../../hub/src/lib/styles/home-scheme.css';
-	import '../../../../hub/src/lib/styles/hub-home/index.css';
+	import '$reports/lib/styles/home-scheme.css';
+	import '$reports/lib/styles/hub-home/index.css';
 
 	let { source, mac }: { source: TrackerHomeSource; mac: boolean } = $props();
 	const chat = provideHomeCosChat();

@@ -5,7 +5,7 @@ import type {
 	HomeWorkRow,
 	HomeWorkState
 } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
-import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
+import type { LinkedHome } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 import { count } from './hubHomePresentation';
 import { runMoment } from './hubHomeTime';
 

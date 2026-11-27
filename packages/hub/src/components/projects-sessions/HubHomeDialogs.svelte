@@ -13,7 +13,12 @@
 		HomeSection
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { MediaQuery } from 'svelte/reactivity';
-	import { sections, workSummary, count, quotaSummary } from './hubHomePresentation';
+	import {
+		sections,
+		workSummary,
+		count,
+		quotaSummary
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import { projectInventory } from './hubHomeProjects';
 	import type {
 		HomeView,
@@ -23,12 +28,12 @@
 		SendHomeChat
 	} from './hubHomeView.types';
 	import HubHomeAgents from './HubHomeAgents.svelte';
-	import HubHomePlanDetail from './HubHomePlanDetail.svelte';
-	import HubHomePlans from './HubHomePlans.svelte';
-	import HubHomeSchedule from './HubHomeSchedule.svelte';
+	import HubHomePlanDetail from '$reports/components/projects-sessions/hub-home/HubHomePlanDetail.svelte';
+	import HubHomePlans from '$reports/components/projects-sessions/hub-home/HubHomePlans.svelte';
+	import HubHomeSchedule from '$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte';
 	import HubHomeProjects from './HubHomeProjects.svelte';
 	import HubHomeQuota from './HubHomeQuota.svelte';
-	import HubHomeWork from './HubHomeWork.svelte';
+	import HubHomeWork from '$reports/components/projects-sessions/hub-home/HubHomeWork.svelte';
 	let {
 		selected,
 		view,

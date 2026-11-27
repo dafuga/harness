@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeLive.ts"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubHomeLive.ts"],
 		"symbols": [
 			"stageLabels",
 			"workStateLabels",
@@ -85,7 +85,8 @@
 			{
 				"name": "projectWorkCounts.project",
 				"type": "HomeWorkProject",
-				"required": true
+				"required": true,
+				"description": "Project snapshot with its running count, item totals and summarized work rows."
 			},
 			{
 				"name": "liveNotice.reading",
@@ -317,7 +318,8 @@
 					{
 						"name": "projectWorkCounts.project",
 						"type": "HomeWorkProject",
-						"required": true
+						"required": true,
+						"description": "Project snapshot with its running count, item totals and summarized work rows."
 					}
 				],
 				"outputs": [
@@ -378,11 +380,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.service.networking-security-linked-home",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
 			"via": "import",
 			"origin": "derived"
@@ -390,11 +387,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomeLive.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeLive.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomeLive.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeLive.ts"
 			}
 		]
 	},

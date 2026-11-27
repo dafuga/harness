@@ -53,7 +53,8 @@
 				"name": "HubHomeHeader.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Home content displayed immediately after the linked-computer alert and before the summary."
 			}
 		],
 		"outputs": [

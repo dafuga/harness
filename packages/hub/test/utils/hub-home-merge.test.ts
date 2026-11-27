@@ -4,7 +4,7 @@ import {
 	agentActivity,
 	homeHeadline,
 	isWorking
-} from '../../src/components/projects-sessions/hubHomePresentation';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 import type {
 	HomeAgent,
 	HomePlan,
