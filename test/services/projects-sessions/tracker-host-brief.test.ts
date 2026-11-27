@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import { formatTrackerHostBrief } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostBrief';
 import { managedBrief } from '../../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedWorkerProcess';
+import { trackerComputerHygieneRule } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerComputerHygieneRule';
 import { trackerDoneProofRule } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerDoneProofRule';
 import type { TrackerItem } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 
@@ -14,6 +15,7 @@ const item = {
 
 test('every session brief tells the agent to flag with 2 to 4 options and one recommendation', () => {
 	const brief = formatTrackerHostBrief(item, 'Finish by running tracker done.');
+	expect(brief).toContain(trackerComputerHygieneRule);
 	expect(brief).toContain('## Asking Daniel');
 	expect(brief).toContain('--option "<label>=<what happens if chosen>"');
 	expect(brief).toContain('--recommend');
@@ -71,6 +73,7 @@ test('a truncated Docker brief keeps the done proof rule within its 15,900 byte 
 			brief: formatTrackerHostBrief(long, completion)
 		} as Parameters<typeof managedBrief>[0]);
 		expect(brief).toContain(trackerDoneProofRule);
+		expect(brief.split(trackerComputerHygieneRule)).toHaveLength(2);
 		expect(brief).toContain('Read the full task with `tracker show abcdef1234567890`.');
 		expect(brief).not.toContain('�');
 		expect(Buffer.byteLength(brief)).toBeLessThanOrEqual(15_900);

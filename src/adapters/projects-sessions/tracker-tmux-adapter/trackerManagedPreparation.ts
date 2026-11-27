@@ -41,6 +41,7 @@ export async function prepareManagedLaunch(
 	};
 	if (worktree !== join(directory, 'worktree'))
 		writeFileSync(join(directory, 'working-directory'), worktree, { mode: 0o600, flag: 'wx' });
+	mkdirSync(join(directory, 'hygiene'), { mode: 0o700 });
 	writeFileSync(briefPath, managedBrief(input), { mode: 0o600, flag: 'wx' });
 	writeFileSync(script, workerScript, { mode: 0o600, flag: 'wx' });
 	writeFileSync(join(directory, 'receipt.json'), JSON.stringify(receipt), {

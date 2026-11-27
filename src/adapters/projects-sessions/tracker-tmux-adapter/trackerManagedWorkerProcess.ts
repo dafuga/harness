@@ -1,4 +1,5 @@
 // @harness-uid u_fyf7e7kyi5
+import { trackerComputerHygieneRule } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerComputerHygieneRule';
 import { trackerSecretSafetyRule } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule';
 import { dirname, join } from 'node:path';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
@@ -34,12 +35,23 @@ remove_guest_auth() {
 		/bin/rm -f "$run_dir/guest-auth.json"
 	fi
 }
-trap 'remove_guest_auth' 0
+finish_worker() {
+	remove_guest_auth
+	"$HARNESS_EXECUTABLE" hygiene _finish
+}
+trap 'finish_worker' 0
+trap 'exit 129' HUP
+trap 'exit 143' TERM
 printf '%s\\n' "$token" > "$run_dir/started.tmp" || exit 125
 /bin/mv "$run_dir/started.tmp" "$run_dir/started" || exit 125
 began=$(/bin/date +%s)
-"$@"
-result=$?
+if "$HARNESS_EXECUTABLE" hygiene _start "$$" "$HARNESS_TRACKER_MAX_RUN_MINUTES"; then
+	"$@"
+	result=$?
+else
+	result=125
+	printf '%s\\n' 'Computer hygiene supervisor did not start' > "$run_dir/startup-error"
+fi
 remove_guest_auth
 # A launch that dies within a minute leaves its cause only on the pane, which is about to close.
 if [ "$result" -ne 0 ] && [ -n "\${HARNESS_TRACKER_PANE:-}" ] && [ "$(($(/bin/date +%s) - began))" -le 60 ]; then
@@ -55,7 +67,7 @@ exit "$result"
 function launchEnvironment(
 	{ tmux, trackerBin, trackerExecutable }: TrackerManagedTarget,
 	{ node, itemId, runId, tmux: pane }: TrackerManagedReceipt,
-	{ command, clientPath, guestAuthFile, cpuBudget }: TrackerManagedExec
+	{ command, clientPath, guestAuthFile, cpuBudget, maxRunMinutes }: TrackerManagedExec
 ) {
 	return [
 		...Object.entries(trackerManagedProviderEnvironment(trackerBin, command)).map(
@@ -64,8 +76,11 @@ function launchEnvironment(
 		`HARNESS_TRACKER_CONFIG=${clientPath}`,
 		`HARNESS_EXECUTABLE=${trackerExecutable}`,
 		'HARNESS_TRACKER_LEGACY_BIN=/dev/null/tracker',
+		`HARNESS_TRACKER_HYGIENE=${dirname(clientPath)}/hygiene`,
+		`HARNESS_TRACKER_MAX_RUN_MINUTES=${maxRunMinutes}`,
 		`TRACKER_ITEM_ID=${itemId}`,
 		`TRACKER_RUN_ID=${runId}`,
+		`HARNESS_TRACKER_NODE=${node}`,
 		`HARNESS_TRACKER_TMUX=${tmux}`,
 		`HARNESS_TRACKER_SOCKET=${trackerSocket(node)}`,
 		`HARNESS_TRACKER_PANE=${pane}`,
@@ -126,9 +141,9 @@ export function trackerSocket(node: string): string {
 
 export function managedBrief(input: TrackerHostStartRequest): string {
 	const { backend, itemId } = input;
-	const brief = input.brief.startsWith(trackerSecretSafetyRule)
-		? input.brief
-		: trackerSecretSafetyRule + '\n\n' + input.brief.replace(trackerSecretSafetyRule + '\n\n', '');
+	const rules = [trackerSecretSafetyRule, trackerComputerHygieneRule];
+	const task = rules.reduce((value, rule) => value.replace(rule + '\n\n', ''), input.brief);
+	const brief = [...rules, task].join('\n\n');
 	const source = Buffer.from(brief);
 	if (backend !== 'docker' || source.length <= 15_900) return brief;
 	const completion = brief.indexOf('## Completion and worktree cleanup');

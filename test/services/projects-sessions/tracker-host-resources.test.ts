@@ -197,6 +197,7 @@ async function launchedArguments(root: string, cpuBudget?: number): Promise<stri
 			script: join(root, 'launch.sh'),
 			command: { home: root, argv: ['/fixture/worker'] },
 			clientPath: join(root, 'client.json'),
+			maxRunMinutes: 480,
 			cpuBudget
 		},
 		new AbortController().signal

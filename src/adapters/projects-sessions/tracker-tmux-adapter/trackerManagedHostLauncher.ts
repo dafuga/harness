@@ -41,7 +41,12 @@ export function trackerManagedHostLauncher(
 	config: TrackerManagedLaunchConfig,
 	options: TrackerManagedLauncherOptions
 ): TrackerHostLaunchPort {
-	const { client, platform = process.platform, transcriptRoots = [] } = options;
+	const {
+		client,
+		platform = process.platform,
+		transcriptRoots = [],
+		maxRunMinutes = 480
+	} = options;
 	const tmux = controlledTrackerExecutable(config.tmux);
 	const directory = privateTrackerDirectory(config.stateDirectory);
 	const trackerBin = realpathSync(config.trackerBinDirectory);
@@ -61,7 +66,16 @@ export function trackerManagedHostLauncher(
 			confirmManagedStartupAbsent({ directory, tmux }, run, signal),
 		start: (input, signal) =>
 			startManagedSession(
-				{ directory, tmux, trackerBin, trackerExecutable, profiles, platform, client },
+				{
+					directory,
+					tmux,
+					trackerBin,
+					trackerExecutable,
+					profiles,
+					platform,
+					client,
+					maxRunMinutes
+				},
 				input,
 				signal
 			)
@@ -74,6 +88,7 @@ async function startManagedSession(
 		tmux,
 		trackerBin,
 		trackerExecutable,
+		maxRunMinutes,
 		profiles,
 		platform,
 		client
@@ -104,7 +119,7 @@ async function startManagedSession(
 		refusal = await launchTmux(
 			{ ...target, windowName: input.sessionName },
 			plan.receipt,
-			{ ...plan, script, command, cpuBudget: input.cpuBudget },
+			{ ...plan, script, command, cpuBudget: input.cpuBudget, maxRunMinutes },
 			signal
 		);
 	}

@@ -47,6 +47,7 @@ export interface TrackerManagedExec {
 	command: TrackerManagedCommand;
 	clientPath: string;
 	cpuBudget?: number;
+	maxRunMinutes: number;
 	guestAuthFile?: string;
 }
 
@@ -54,6 +55,7 @@ export interface TrackerManagedLauncherOptions {
 	client: TrackerWorkerClient;
 	platform?: typeof process.platform;
 	transcriptRoots?: readonly string[];
+	maxRunMinutes?: number;
 }
 
 export interface TrackerManagedStartBindings {
@@ -61,6 +63,7 @@ export interface TrackerManagedStartBindings {
 	tmux: string;
 	trackerBin: string;
 	trackerExecutable: string;
+	maxRunMinutes: number;
 	profiles: TrackerManagedProfiles;
 	platform: typeof process.platform;
 	client: TrackerWorkerClient;

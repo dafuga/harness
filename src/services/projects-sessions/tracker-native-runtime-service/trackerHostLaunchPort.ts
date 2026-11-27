@@ -27,7 +27,11 @@ export function trackerHostLaunchPort(
 	if ('managed' in config) {
 		if (!client)
 			throw new TypeError('Tracker managed launcher needs the verified local client address');
-		return trackerManagedHostLauncher(config.managed, { client, transcriptRoots });
+		return trackerManagedHostLauncher(config.managed, {
+			client,
+			transcriptRoots,
+			maxRunMinutes: config.maxRunMinutes
+		});
 	}
 	const driver = new TrackerHostProcessAdapter(config.driver);
 	return {

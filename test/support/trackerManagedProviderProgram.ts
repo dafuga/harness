@@ -3,6 +3,7 @@ export const providerProgram = `
 const { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } = require('node:fs');
 const { basename, join } = require('node:path');
 const argv = process.argv.slice(2);
+if (argv[0] === 'hygiene' && ['_start', '_finish'].includes(argv[1])) process.exit(0);
 if (basename(process.argv[1]) === 'claude') {
 	const mode = join(process.env.HOME, '.claude-session-fixture');
 	if (!existsSync(mode)) process.exit(41);

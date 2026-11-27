@@ -3,6 +3,7 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 
 import { trackerAskOptionsRule } from './trackerAskOptionsRule';
 import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
+import { trackerComputerHygieneRule } from './trackerComputerHygieneRule';
 import { trackerDoneProofRule } from './trackerDoneProofRule';
 import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
 import { trackerCpuBudgetRule } from '../../../utils/projects-sessions/trackerCpuBudget';
@@ -16,6 +17,8 @@ export function formatTrackerHostBrief(
 	const notes = item.notes_log.slice(-10).map(({ at, text }) => `- ${at} ${text.slice(0, 1200)}`);
 	return [
 		trackerSecretSafetyRule,
+		'',
+		trackerComputerHygieneRule,
 		'',
 		trackerAskOptionsRule,
 		'',

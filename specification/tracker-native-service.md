@@ -829,3 +829,30 @@ writes for rollback. Compare quiesced disposable copies with
 `harness tracker verify-cutover` and verify that item, note and queued
 operation identities remain readable before re-enabling the previous
 manager. Verify fleet effect resumption separately under the cutover runbook.
+
+## Built-in computer hygiene and design skills
+
+The Harness executable includes `.codex/skills/computer-hygiene/SKILL.md`
+and `.codex/skills/design-patterns/SKILL.md`. After activating an approved
+Tracker release, run the release executable's `harness hygiene install-skills`
+as the account that runs the agents on each computer. It mirrors the two files
+into Codex and Claude's skill directories. The native launcher also installs
+both into its worker's profile before starting the agent, and includes the
+computer hygiene instructions at the start of every brief.
+
+`harness hygiene` lists the managed resource commands. The commands create
+new resources and return an ID for `harness hygiene close <resource-id>`. The
+worker's detached supervisor checks the attempt's private `hygiene` directory
+when the worker exits, its tmux session stops, or the host's `maxRunMinutes`
+limit elapses. At the deadline it asks tmux to stop only the session whose
+attempt token still matches. It records anything it cannot confirm closed in
+`hygiene/cleanup.json` and writes a Tracker note if the item is reachable.
+Keep the attempt directory until cleanup confirms closure.
+
+The browser cleanup targets only the tab created through automation Chrome,
+including the initial tab of a new window. A window remains open if it has
+independent tabs. The simulator command clones a device and uses the clone.
+Docker cleanup verifies the local engine and the run-specific creation label.
+Process cleanup signals the group from its own detached leader. Shared previews,
+native apps, other browser profiles and commands that detach from their group
+remain under the opening tool's lifecycle.
