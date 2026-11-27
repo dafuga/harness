@@ -110,8 +110,9 @@ under `/v1/private-browser/`: `challenge`, `offer`, and `submit`. A signed
 challenge start names the next route and expires in at most 30 seconds. The
 reply nonce answers only that route. The offer request signs an empty JSON
 object. Only the device assigned to the active window receives the offer.
-Submission signs the reviewed scope and sealed field. The broker returns
-`completed` only after tab disposal and result verification. Expose only these
+Submission signs the reviewed scope and sealed field values. For a form with
+multiple values, the signed scope pins the complete field list in order. The
+broker returns `completed` only after tab disposal and result verification. Expose only these
 private routes through the paired native transport. Keep the socket and the
 other Vault routes private to the executor.
 
@@ -142,8 +143,15 @@ operations. Close the private tab, confirm it is gone, then verify a separate
 reviewed result page. On restart, all admission starts closed. The executor
 must account for restored tabs before admitting a read. Agent receipts contain
 only status and the request identifier. Treat only a completed receipt for the
-same request as permission to continue the interrupted workflow. Keep recording and content logging
-disabled along the entire private route.
+same request as permission to continue the interrupted workflow. Keep recording
+and content logging disabled along the entire private route.
+
+For installed startup, provide `privateBrowserExecutor` to the broker workflow
+with the approved device pin, kernel peer lookup, executor-owned browser
+callbacks and separate agent socket. The workflow recovers the gate before
+opening either socket and shares that gate across both. Graceful close drains
+operations and disposes the form before returning. The host service must
+supply the pinned runtime and recovery callbacks and handle unclean restarts.
 
 ## Activation windows and rollback
 

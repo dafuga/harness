@@ -18,6 +18,7 @@
 			"PrivateBrowserGateService.status",
 			"PrivateBrowserGateService.receipt",
 			"PrivateBrowserGateService.recover",
+			"PrivateBrowserGateService.close",
 			"PrivateBrowserGateService.read",
 			"PrivateBrowserGateService.request",
 			"PrivateBrowserGateService.permitsInput",
@@ -103,6 +104,10 @@
 				"type": "Promise<boolean>"
 			},
 			{
+				"name": "PrivateBrowserGateService.close",
+				"type": "Promise<boolean>"
+			},
+			{
 				"name": "PrivateBrowserGateService.read",
 				"type": "Promise<T | undefined>"
 			},
@@ -160,6 +165,18 @@
 				"outputs": [
 					{
 						"name": "PrivateBrowserGateService.recover",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserGateService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.close",
 						"type": "Promise<boolean>"
 					}
 				],
