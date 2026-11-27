@@ -1,0 +1,92 @@
+{
+	"schemaVersion": 1,
+	"id": "script.check-installed-device-proof",
+	"uid": "u_qxvhfl3o2e",
+	"kind": "script",
+	"title": "check-installed-device-proof",
+	"responsibility": "Owns the check-installed-device-proof build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/check-installed-device-proof.ts"],
+		"symbols": ["installedDeviceProofBlockers"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "installedDeviceProofBlockers.input",
+				"type": "unknown",
+				"required": true,
+				"unknownReason": "Untrusted JSON is validated against the versioned proof schema before any claim is accepted."
+			},
+			{
+				"name": "installedDeviceProofBlockers.releaseBoundary",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "installedDeviceProofBlockers.expectedSurfaces",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "installedDeviceProofBlockers",
+				"type": "string[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "installedDeviceProofBlockers",
+				"inputs": [
+					{
+						"name": "installedDeviceProofBlockers.input",
+						"type": "unknown",
+						"required": true,
+						"unknownReason": "Untrusted JSON is validated against the versioned proof schema before any claim is accepted."
+					},
+					{
+						"name": "installedDeviceProofBlockers.releaseBoundary",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "installedDeviceProofBlockers.expectedSurfaces",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "installedDeviceProofBlockers",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/check-installed-device-proof.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/check-installed-device-proof.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
