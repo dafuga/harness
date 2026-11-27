@@ -19,8 +19,16 @@ const launchRules = [
 	'Never merge into a Greymass repository. For Greymass work, stop at the pull request.',
 	'For other repositories, work on a branch and open a PR within the task scope. Merge only if Daniel explicitly authorized the PR and target on this item, or the standing authorization for Harness PRs covers this merge. Follow the item restrictions and required checks.',
 	'A production deploy or promotion, including a merge that deploys to production, requires Daniel’s explicit approval for the specific release.',
+	'Before raising a problem or asking Daniel, run `tracker check "<topic>"`. If the topic is ignored, do not raise it again.',
+	'',
+	'## Tests',
 	'Add or update relevant tests for each change and run them before tracker done. Fix failures or record the blocker.',
-	'Before raising a problem or asking Daniel, run `tracker check "<topic>"`. If the topic is ignored, do not raise it again.'
+	'Run only the tests relevant to your change. Run focused unit and E2E tests for changed modules and their dependents, and typecheck and lint the changed files.',
+	'Reuse GitHub CI results when available. Run the full suite once per combined release.',
+	'',
+	'## Video evidence',
+	'If the task asks for a video, deliver a screen recording of the real app.',
+	'Extract and inspect frames that show the requested flow. In the acceptance evidence, list the timestamp of each extracted frame and describe what it shows.'
 ].join('\n');
 
 export function formatTrackerHostBrief(
