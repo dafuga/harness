@@ -56,7 +56,22 @@ openbox >/dev/null 2>&1 &
   --window-position=0,0 --window-size="${size/x/,}" --start-maximized about:blank >/dev/null 2>&1 &
 browser=$!
 
+close_protected_chrome() {
+  local window
+  for window in $(xprop -root _NET_CLIENT_LIST | grep -oE '0x[0-9a-f]+'); do
+    if xprop -id "$window" _NET_WM_PID 2>/dev/null | grep -qE "= ${browser}$"; then
+      wmctrl -ic "$window" >/dev/null 2>&1 || true
+    fi
+  done
+  # Closing the last window lets Chrome flush its profile before Docker stops the container.
+  for _ in $(seq 1 100); do
+    kill -0 "$browser" 2>/dev/null || return 0
+    sleep 0.1
+  done
+}
+
 stop() {
+  if [[ -n "$bus" ]]; then close_protected_chrome; fi
   kill -TERM "$browser" 2>/dev/null || true
   wait "$browser" 2>/dev/null || true
   kill "$display" 2>/dev/null || true
