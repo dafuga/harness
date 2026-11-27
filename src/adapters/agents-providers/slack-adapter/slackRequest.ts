@@ -2,6 +2,7 @@
 import type { UntrustedValue } from '../../../core/agents-providers/projectAssistant.types';
 import type { PlatformFailureCode } from '../../../core/agents-providers/platformAdapter.types';
 import { SlackRequestError } from './SlackRequestError';
+import type { SlackMethod } from './slackRequest.types';
 
 const ambiguousErrors = new Set([
 	'fatal_error',
@@ -17,14 +18,6 @@ const reads = new Set<SlackMethod>([
 ]);
 
 const expired = new Set(['invalid_auth', 'token_revoked', 'token_expired', 'account_inactive']);
-
-type SlackMethod =
-	| 'auth.test'
-	| 'chat.postMessage'
-	| 'apps.connections.open'
-	| 'users.conversations'
-	| 'conversations.history'
-	| 'conversations.replies';
 
 export async function slackRequest(
 	fetchImpl: typeof fetch,

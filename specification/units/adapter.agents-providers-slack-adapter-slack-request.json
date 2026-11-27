@@ -8,47 +8,59 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/agents-providers/slack-adapter/slackRequest.ts"],
-		"symbols": ["slackRequest"]
+		"source": [
+			"src/adapters/agents-providers/slack-adapter/slackRequest.ts",
+			"src/adapters/agents-providers/slack-adapter/slackRequest.types.ts"
+		],
+		"symbols": [
+			"slackRequest",
+			"SlackMethod"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "slackRequest.fetchImpl",
 				"type": "typeof fetch",
-				"required": true
+				"required": true,
+				"description": "HTTP fetch implementation used to send the request."
 			},
 			{
 				"name": "slackRequest.method",
 				"type": "SlackMethod",
-				"required": true
+				"required": true,
+				"description": "Slack Web API operation, used to select the request method and classify delivery failures."
 			},
 			{
 				"name": "slackRequest.token",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Bearer token from the calling adapter's scoped binding."
 			},
 			{
 				"name": "slackRequest.options",
 				"type": "{ body?: object; userGrant?: boolean }",
 				"required": false,
-				"default": {}
+				"default": {},
+				"description": "Provider parameters and whether the calling adapter is using a workspace member grant."
 			}
 		],
 		"outputs": [
 			{
 				"name": "slackRequest",
-				"type": "Promise<UntrustedValue>"
+				"type": "Promise<UntrustedValue>",
+				"description": "Decoded provider payload for the caller to validate, or null if JSON decoding fails."
 			}
 		],
 		"errors": [
 			{
 				"name": "SlackRequestError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "Reports rate limits, provider refusal or unavailability, expired user grants, and ambiguous post delivery."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "slackRequest",
@@ -56,38 +68,44 @@
 					{
 						"name": "slackRequest.fetchImpl",
 						"type": "typeof fetch",
-						"required": true
+						"required": true,
+						"description": "HTTP fetch implementation used to send the request."
 					},
 					{
 						"name": "slackRequest.method",
 						"type": "SlackMethod",
-						"required": true
+						"required": true,
+						"description": "Slack Web API operation, used to select the request method and classify delivery failures."
 					},
 					{
 						"name": "slackRequest.token",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Bearer token from the calling adapter's scoped binding."
 					},
 					{
 						"name": "slackRequest.options",
 						"type": "{ body?: object; userGrant?: boolean }",
 						"required": false,
-						"default": {}
+						"default": {},
+						"description": "Provider parameters and whether the calling adapter is using a workspace member grant."
 					}
 				],
 				"outputs": [
 					{
 						"name": "slackRequest",
-						"type": "Promise<UntrustedValue>"
+						"type": "Promise<UntrustedValue>",
+						"description": "Decoded provider payload for the caller to validate, or null if JSON decoding fails."
 					}
 				],
 				"errors": [
 					{
 						"name": "SlackRequestError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "Reports rate limits, provider refusal or unavailability, expired user grants, and ambiguous post delivery."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

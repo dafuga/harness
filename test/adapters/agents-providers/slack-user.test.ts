@@ -1,5 +1,5 @@
 import { expect, test, vi } from 'vitest';
-import { SlackUserAdapter } from '../../../src/lib/slackUser';
+import { SlackUserAdapter } from '../../../src/lib/agents-providers/slackUser';
 
 const binding = { workspaceId: 'T123', userId: 'U123' };
 const auth = { ok: true, team_id: 'T123', user_id: 'U123', team: 'Test workspace', user: 'Sam' };
@@ -31,6 +31,16 @@ test('a rotated user token is bound again before polling or posting', async () =
 		'conversations.replies',
 		'chat.postMessage'
 	]);
+	expect(fetch).toHaveBeenNthCalledWith(
+		2,
+		expect.stringContaining('/api/conversations.history?channel=C123'),
+		expect.objectContaining({ method: 'GET', body: undefined })
+	);
+	expect(fetch).toHaveBeenNthCalledWith(
+		4,
+		expect.stringContaining('/api/conversations.replies?channel=C123&ts=' + ts),
+		expect.objectContaining({ method: 'GET', body: undefined })
+	);
 	expect(fetch).toHaveBeenLastCalledWith(
 		expect.any(String),
 		expect.objectContaining({
