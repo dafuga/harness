@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-browser",
+	"uid": "u_hak2dumjlg",
 	"kind": "command",
 	"title": "hygieneBrowser",
 	"responsibility": "Owns the hygieneBrowser command registration.",
@@ -52,7 +53,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HygieneError",
 				"type": "thrown"
 			}
 		],
@@ -81,7 +82,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -114,7 +115,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -126,6 +127,11 @@
 	"dependencies": [
 		{
 			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-child",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-error",
 			"via": "import",
 			"origin": "derived"
 		},

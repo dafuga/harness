@@ -1,3 +1,5 @@
+// @harness-uid u_xsyi2dx2ep
+import { HygieneError } from './HygieneError';
 import { existsSync, readdirSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { z } from 'zod';
@@ -29,21 +31,19 @@ export async function sweepHygiene(directory: string) {
 export async function sweepResource(entry: string) {
 	let kind = 'unverified resource';
 	try {
-		if (existsSync(join(entry, 'closed'))) return;
+		if (existsSync(join(entry, 'closed'))) return undefined;
 		const settled = await waitForHygiene(
 			() => existsSync(join(entry, 'ready')) || existsSync(join(entry, 'closed')),
 			3000
 		);
-		if (existsSync(join(entry, 'closed'))) return;
+		if (existsSync(join(entry, 'closed'))) return undefined;
 		const resource = readResource(entry);
 		kind = resource.kind;
-		try {
-			await reapResource(entry, resource);
-		} finally {
-			// A creation request may still be in flight. Keep the receipt for a later sweep.
-			if (!settled) throw new Error('Creation was not confirmed before cleanup.');
-		}
+		await reapResource(entry, resource);
+		// A creation request may still be in flight. Keep the receipt for a later sweep.
+		if (!settled) return kind + ' ' + basename(entry);
 		markResource(entry, 'closed');
+		return undefined;
 	} catch {
 		return kind + ' ' + basename(entry);
 	}
@@ -60,5 +60,7 @@ function reapResource(entry: string, resource: ReturnType<typeof readResource>) 
 			return closeHygieneSimulator(entry, resource.udid);
 		case 'process':
 			return closeHygieneProcess(entry, resource.pid, resource.start);
+		default:
+			throw new HygieneError('Unknown cleanup resource.');
 	}
 }

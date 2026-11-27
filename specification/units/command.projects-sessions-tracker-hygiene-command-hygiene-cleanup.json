@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-cleanup",
+	"uid": "u_xsyi2dx2ep",
 	"kind": "command",
 	"title": "hygieneCleanup",
 	"responsibility": "Owns the hygieneCleanup command registration.",
@@ -36,7 +37,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HygieneError",
 				"type": "thrown"
 			}
 		],
@@ -75,12 +76,7 @@
 						"type": "unknown"
 					}
 				],
-				"errors": [
-					{
-						"name": "Error",
-						"type": "thrown"
-					}
-				],
+				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],
@@ -99,6 +95,11 @@
 		},
 		{
 			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-container",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-error",
 			"via": "import",
 			"origin": "derived"
 		},

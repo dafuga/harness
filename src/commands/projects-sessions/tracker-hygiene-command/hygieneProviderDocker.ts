@@ -1,3 +1,4 @@
+// @harness-uid u_xfnlgckxod
 import { readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { dockerDaemon } from '../../../adapters/agents-providers/managed-provider-docker-adapter/dockerControl';
@@ -24,4 +25,5 @@ async function recoverProviderDocker(root: string) {
 		await recoverLaunches(journal, await dockerDaemon(), AbortSignal.timeout(30_000));
 		if ((await readdir(journal)).length) return 'managed Docker task workspace';
 	}
+	return undefined;
 }

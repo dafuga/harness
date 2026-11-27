@@ -1,3 +1,5 @@
+// @harness-uid u_qwcok2ny3o
+import { HygieneError } from './HygieneError';
 import { basename } from 'node:path';
 import {
 	containerIdPattern,
@@ -12,7 +14,7 @@ const label = 'org.harness.tracker-run-resource';
 
 export async function openHygieneContainer([image, ...command]: string[]) {
 	if (!image || !/^sha256:[a-f0-9]{64}$/.test(image))
-		throw new Error('Use the full image ID of a local Docker image.');
+		throw new HygieneError('Use the full image ID of a local Docker image.');
 	const daemon = await dockerDaemon();
 	await requireWorkspaceImage(daemon, image);
 	const entry = beginResource({ kind: 'container', host: daemon.host, daemon: daemon.id });
@@ -26,7 +28,7 @@ export async function openHygieneContainer([image, ...command]: string[]) {
 		image,
 		...command
 	]);
-	if (!containerIdPattern.test(id)) throw new Error('Docker did not confirm creation.');
+	if (!containerIdPattern.test(id)) throw new HygieneError('Docker did not confirm creation.');
 	try {
 		await requireDaemon(daemon);
 		await dockerControl(daemon, ['start', id]);
@@ -51,7 +53,7 @@ export async function closeHygieneContainer(entry: string, host: string, id: str
 		]);
 	for (const container of (await list()).split('\n').filter(Boolean)) {
 		if (!containerIdPattern.test(container))
-			throw new Error('Docker returned an invalid container identity.');
+			throw new HygieneError('Docker returned an invalid container identity.');
 		await requireDaemon(daemon);
 		// The immutable container ID and its creation label both have to match.
 		const actual = await dockerControl(daemon, [
@@ -61,9 +63,9 @@ export async function closeHygieneContainer(entry: string, host: string, id: str
 			'{{index .Config.Labels "' + label + '"}}',
 			container
 		]);
-		if (actual !== owner) throw new Error('Docker container ownership changed.');
+		if (actual !== owner) throw new HygieneError('Docker container ownership changed.');
 		await dockerControl(daemon, ['rm', '--force', '--volumes', container]).catch(() => undefined);
 	}
 	await requireDaemon(daemon);
-	if (await list()) throw new Error('Docker still lists a run-owned container.');
+	if (await list()) throw new HygieneError('Docker still lists a run-owned container.');
 }

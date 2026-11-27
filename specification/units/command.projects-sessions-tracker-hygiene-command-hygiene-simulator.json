@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-simulator",
+	"uid": "u_spkeodq5z6",
 	"kind": "command",
 	"title": "hygieneSimulator",
 	"responsibility": "Owns the hygieneSimulator command registration.",
@@ -41,7 +42,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HygieneError",
 				"type": "thrown"
 			}
 		],
@@ -64,7 +65,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -92,7 +93,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -102,6 +103,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-error",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-ledger",
 			"via": "import",

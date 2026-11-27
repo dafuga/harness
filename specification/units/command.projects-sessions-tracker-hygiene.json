@@ -28,7 +28,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HygieneError",
 				"type": "thrown"
 			}
 		],
@@ -73,6 +73,11 @@
 		},
 		{
 			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-container",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-error",
 			"via": "import",
 			"origin": "derived"
 		},

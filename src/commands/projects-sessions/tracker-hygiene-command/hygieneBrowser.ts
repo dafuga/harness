@@ -1,3 +1,5 @@
+// @harness-uid u_hak2dumjlg
+import { HygieneError } from './HygieneError';
 import { basename } from 'node:path';
 import { z } from 'zod';
 import { beginResource, markResource, saveResource } from './hygieneLedger';
@@ -12,12 +14,12 @@ async function browserIdentity() {
 		redirect: 'error',
 		signal: AbortSignal.timeout(2500)
 	});
-	if (!response.ok) throw new Error('Automation Chrome is unavailable.');
+	if (!response.ok) throw new HygieneError('Automation Chrome is unavailable.');
 	const version = z.object({ webSocketDebuggerUrl: z.string() }).parse(await response.json());
 	const url = new URL(version.webSocketDebuggerUrl);
 	const id = browserPath.exec(url.pathname)?.[1];
 	if (!id || url.origin !== 'ws://127.0.0.1:9333')
-		throw new Error('Unexpected automation Chrome identity.');
+		throw new HygieneError('Unexpected automation Chrome identity.');
 	return z.string().uuid().parse(id);
 }
 
@@ -28,7 +30,7 @@ export async function openHygieneBrowser(kind: 'tab' | 'window', address = 'abou
 		url.username ||
 		url.password
 	)
-		throw new Error('Use an HTTP(S) URL or about:blank in automation Chrome.');
+		throw new HygieneError('Use an HTTP(S) URL or about:blank in automation Chrome.');
 	const browser = await browserIdentity();
 	const entry = beginResource({ kind, browser });
 	const blank = 'about:blank#harness-' + basename(entry);
@@ -41,7 +43,7 @@ export async function openHygieneBrowser(kind: 'tab' | 'window', address = 'abou
 	try {
 		if (url.href !== 'about:blank') {
 			if (browser !== (await browserIdentity()))
-				throw new Error('Automation Chrome identity changed.');
+				throw new HygieneError('Automation Chrome identity changed.');
 			await browserMessage(browser, 'Page.navigate', { url: url.href }, target);
 		}
 		return { resource: basename(entry), target };
@@ -51,7 +53,8 @@ export async function openHygieneBrowser(kind: 'tab' | 'window', address = 'abou
 }
 
 export async function closeHygieneBrowser(browser: string, entry: string, target?: string) {
-	if (browser !== (await browserIdentity())) throw new Error('Automation Chrome identity changed.');
+	if (browser !== (await browserIdentity()))
+		throw new HygieneError('Automation Chrome identity changed.');
 	const targets = await browserTargets(browser);
 	const identity =
 		target ?? targets.find(({ url }) => url === 'about:blank#harness-' + basename(entry))?.targetId;
@@ -63,7 +66,7 @@ export async function closeHygieneBrowser(browser: string, entry: string, target
 		async () => !(await browserTargets(browser)).some(({ targetId }) => targetId === identity),
 		2000
 	);
-	if (!gone) throw new Error('Automation Chrome still reports this target.');
+	if (!gone) throw new HygieneError('Automation Chrome still reports this target.');
 }
 
 async function browserTargets(browser: string) {
@@ -77,7 +80,8 @@ async function browserMessage(browser: string, method: string, params = {}, targ
 	);
 	try {
 		return await new Promise<Record<string, unknown>>((resolve, reject) => {
-			const refuse = () => reject(new Error('Automation Chrome did not complete ' + method + '.'));
+			const refuse = () =>
+				reject(new HygieneError('Automation Chrome did not complete ' + method + '.'));
 			const timeout = setTimeout(refuse, 4000);
 			const finish = () => clearTimeout(timeout);
 			socket.addEventListener('open', () => socket.send(JSON.stringify({ id: 1, method, params })));

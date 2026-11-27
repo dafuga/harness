@@ -31,10 +31,7 @@ export function hygieneFixture(root: string, tmux: string) {
 		HARNESS_TRACKER_SOCKET: socket,
 		HARNESS_TRACKER_PANE: pane
 	};
-	const report = () => {
-		const file = join(ledger, 'cleanup.json');
-		if (existsSync(file)) return JSON.parse(readFileSync(file, 'utf8'));
-	};
+	const report = () => readCleanupReport(join(ledger, 'cleanup.json'));
 	return {
 		start() {
 			command([
@@ -56,19 +53,18 @@ export function hygieneFixture(root: string, tmux: string) {
 				job
 			]);
 		},
-		stop() {
-			try {
-				command(['kill-session', '-t', '=' + pane]);
-			} catch {
-				/* Already stopped. */
-			}
-		},
+		stop: () => command(['kill-session', '-t', '=' + pane]),
+		hasSession: () => sessionIsRunning(command),
 		async waitForCleanup() {
-			for (let attempt = 0; attempt < 25 && !report(); attempt++) await delay(200);
+			return waitForCleanup(report);
 		},
 		report,
 		processAlive: processIsRunning
 	};
+}
+
+function readCleanupReport(file: string): { remaining: string[] } | undefined {
+	return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : undefined;
 }
 
 function writeFixturePrograms({
@@ -102,6 +98,19 @@ function processIsRunning(pid: number) {
 			encoding: 'utf8'
 		}).trim();
 		return state.length > 0 && !state.startsWith('Z');
+	} catch {
+		return false;
+	}
+}
+
+async function waitForCleanup(report: () => { remaining: string[] } | undefined) {
+	for (let attempt = 0; attempt < 25 && !report(); attempt++) await delay(200);
+}
+
+function sessionIsRunning(command: (args: string[]) => void) {
+	try {
+		command(['has-session', '-t', '=' + pane]);
+		return true;
 	} catch {
 		return false;
 	}

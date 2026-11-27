@@ -1,3 +1,5 @@
+// @harness-uid u_p353dt4snw
+import { HygieneError } from './HygieneError';
 import { execFile, spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { basename, join } from 'node:path';
@@ -7,11 +9,11 @@ import { beginResource, isClosing, markResource, saveResource } from './hygieneL
 import { startHygieneChild, waitForHygiene } from './hygieneChild';
 
 export async function openHygieneProcess(command: string[]) {
-	if (!command[0]) throw new Error('Supply a foreground executable and its arguments.');
+	if (!command[0]) throw new HygieneError('Supply a foreground executable and its arguments.');
 	const entry = beginResource({ kind: 'process' });
 	const child = await startHygieneChild(['_process', entry], JSON.stringify(command));
 	if (!(await waitForHygiene(() => existsSync(join(entry, 'ready')), 4000)))
-		throw new Error('The run process group did not acknowledge start.');
+		throw new HygieneError('The run process group did not acknowledge start.');
 	return { resource: basename(entry), pid: child };
 }
 
@@ -20,7 +22,7 @@ export async function holdHygieneProcess(entry: string, [program, ...args]: stri
 	process.on('SIGTERM', () => {});
 	const pid = process.pid;
 	const start = new ProcessIdentityAdapter().find(pid).startedAt;
-	if (!start) throw new Error('Could not identify the run process group.');
+	if (!start) throw new HygieneError('Could not identify the run process group.');
 	saveResource(entry, { kind: 'process', pid, start });
 	if (!isClosing(entry)) {
 		const child = spawn(program, args, { stdio: 'ignore' });
@@ -38,9 +40,11 @@ export async function holdHygieneProcess(entry: string, [program, ...args]: stri
 
 export async function closeHygieneProcess(entry: string, pid?: number, start?: string) {
 	markResource(entry, 'closing');
-	if (!pid || !start) throw new Error('The process group never confirmed its identity.');
+	if (!pid || !start) throw new HygieneError('The process group never confirmed its identity.');
 	if (!(await waitForHygiene(() => groupGone(pid, start), 5000)))
-		throw new Error('The process group is still present or its identity could not be checked.');
+		throw new HygieneError(
+			'The process group is still present or its identity could not be checked.'
+		);
 }
 
 async function groupGone(pid: number, start: string) {

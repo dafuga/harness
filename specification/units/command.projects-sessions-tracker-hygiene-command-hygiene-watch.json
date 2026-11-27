@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-watch",
+	"uid": "u_fnb3unroyq",
 	"kind": "command",
 	"title": "hygieneWatch",
 	"responsibility": "Owns the hygieneWatch command registration.",
@@ -61,7 +62,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HygieneError",
 				"type": "thrown"
 			}
 		],
@@ -94,7 +95,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -149,6 +150,11 @@
 		},
 		{
 			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-cleanup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-error",
 			"via": "import",
 			"origin": "derived"
 		},

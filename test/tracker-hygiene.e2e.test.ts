@@ -10,7 +10,12 @@ const scenarios = ['exit', 'stop', 'timeout'] as const;
 
 test('the CLI installs exactly the built-in documents into both assistant profiles', async () => {
 	await withTempDir('harness-hygiene-skills-', async (home) => {
-		const env = { ...process.env, HOME: home, CODEX_HOME: '', CLAUDE_CONFIG_DIR: '' };
+		const env = {
+			...process.env,
+			HOME: home,
+			CODEX_HOME: join(home, '.codex'),
+			CLAUDE_CONFIG_DIR: join(home, '.claude')
+		};
 		execFileSync('bun', ['src/cli/index.ts', 'hygiene', 'install-skills'], { env, timeout: 10000 });
 		for (const name of ['computer-hygiene', 'design-patterns']) {
 			const source = readFileSync(resolve('.codex', 'skills', name, 'SKILL.md'), 'utf8');
@@ -39,9 +44,10 @@ test.skipIf(!tmux).each(scenarios)(
 				if (reason === 'stop') fixture.stop();
 				await expect.poll(fixture.report, { timeout: 75_000 }).toEqual({ remaining: [] });
 				expect(fixture.processAlive(pid)).toBe(false);
+				await expect.poll(fixture.hasSession).toBe(false);
 				expect(fixture.processAlive(unrelated.pid!)).toBe(true);
 			} finally {
-				fixture.stop();
+				if (fixture.hasSession()) fixture.stop();
 				await fixture.waitForCleanup();
 				unrelated.kill();
 			}

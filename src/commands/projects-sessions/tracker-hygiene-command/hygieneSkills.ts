@@ -1,3 +1,4 @@
+// @harness-uid u_5cak6jbcpm
 // Bun embeds both canonical skill documents in the compiled CLI.
 // @ts-expect-error Bun text import, embedded by the CLI bundler.
 import computerHygiene from '../../../../.codex/skills/computer-hygiene/SKILL.md' with { type: 'text' };
@@ -15,8 +16,8 @@ export const hygieneSkills = {
 
 export function installHygieneSkills() {
 	const profiles = new Set([
-		process.env.CODEX_HOME || join(homedir(), '.codex'),
-		process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude')
+		process.env.CODEX_HOME ?? join(homedir(), '.codex'),
+		process.env.CLAUDE_CONFIG_DIR ?? join(homedir(), '.claude')
 	]);
 	for (const profile of profiles)
 		for (const [name, text] of Object.entries(hygieneSkills))

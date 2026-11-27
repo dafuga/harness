@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-ledger",
+	"uid": "u_gi6kzo7d53",
 	"kind": "command",
 	"title": "hygieneLedger",
 	"responsibility": "Owns the hygieneLedger command registration.",
@@ -43,7 +44,7 @@
 			},
 			{
 				"name": "writeHygieneJson.value",
-				"type": "unknown",
+				"type": "object",
 				"required": true
 			},
 			{
@@ -99,7 +100,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HygieneError",
 				"type": "thrown"
 			}
 		],
@@ -116,7 +117,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -139,7 +140,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -178,7 +179,7 @@
 					},
 					{
 						"name": "writeHygieneJson.value",
-						"type": "unknown",
+						"type": "object",
 						"required": true
 					}
 				],
@@ -208,7 +209,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -258,7 +259,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-error",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneLedger.ts",

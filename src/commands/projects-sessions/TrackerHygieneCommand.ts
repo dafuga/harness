@@ -1,4 +1,5 @@
 // @harness-uid u_w7rfpwiwmn
+import { HygieneError } from './tracker-hygiene-command/HygieneError';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'zod';
@@ -18,26 +19,26 @@ const usage = `Usage: harness hygiene <skills [computer-hygiene|design-patterns]
 
 export class TrackerHygieneCommand {
 	async run(args: string[]): Promise<number> {
-		const [action, ...values] = args;
 		try {
-			if (action === 'install-skills') installHygieneSkills();
-			else if (action === 'skills') showSkills(values[0]);
-			else if (action?.startsWith('_')) await supervise(action, values);
-			else if (!action || action === '--help' || action === '-h') console.log(usage);
-			else {
-				const result = await manageResource(action, values);
-				if (result) console.log(JSON.stringify(result));
-			}
+			await runAction(args);
 			return 0;
 		} catch {
 			console.error(
 				'Computer hygiene could not complete ' +
-					(action?.startsWith('_') ? 'run supervision' : 'the requested action') +
+					(args[0]?.startsWith('_') ? 'run supervision' : 'the requested action') +
 					'. Check the run ledger and command usage.'
 			);
 			return 1;
 		}
 	}
+}
+
+async function runAction([action, ...values]: string[]) {
+	if (!action || action === '--help' || action === '-h') console.log(usage);
+	else if (action === 'install-skills') installHygieneSkills();
+	else if (action === 'skills') showSkills(values[0]);
+	else if (action.startsWith('_')) await supervise(action, values);
+	else console.log(JSON.stringify(await manageResource(action, values)));
 }
 
 function showSkills(name?: string) {
@@ -64,11 +65,11 @@ async function manageResource(action: string, args: string[]) {
 			const resource = z.string().uuid().parse(values[0]);
 			const entry = join(hygieneDirectory(), resource);
 			if (!existsSync(entry) || (await sweepResource(entry)))
-				throw new Error('Resource closure was not confirmed.');
+				throw new HygieneError('Resource closure was not confirmed.');
 			return { closed: resource };
 		}
 		default:
-			throw new Error(usage);
+			throw new HygieneError(usage);
 	}
 }
 
@@ -82,7 +83,7 @@ async function supervise(action: string, [id, start, limit]: string[]) {
 			return watchHygiene(directory, Number(id), start, Number(limit));
 		case '_process':
 			if (join(directory, z.string().uuid().parse(id.split('/').pop())) !== id)
-				throw new Error('Invalid run resource.');
+				throw new HygieneError('Invalid run resource.');
 			return holdHygieneProcess(
 				id,
 				z
@@ -91,10 +92,13 @@ async function supervise(action: string, [id, start, limit]: string[]) {
 					.parse(JSON.parse(await Bun.stdin.text()))
 			);
 		case '_finish':
-			markResource(directory, 'closing');
-			await waitForHygiene(() => existsSync(join(directory, 'cleanup.json')), 3000);
-			return;
+			return finishHygiene(directory);
 		default:
-			throw new Error('Unknown resource supervisor action.');
+			throw new HygieneError('Unknown resource supervisor action.');
 	}
+}
+
+async function finishHygiene(directory: string) {
+	markResource(directory, 'closing');
+	await waitForHygiene(() => existsSync(join(directory, 'cleanup.json')), 3000);
 }

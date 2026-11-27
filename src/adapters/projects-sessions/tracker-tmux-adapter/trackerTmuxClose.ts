@@ -69,7 +69,7 @@ export async function stopManagedRun(
 	const path = join(directory, token);
 	const record = checkTrackerManagedReceipt(path, node, key);
 	const probe = await managedTmuxEnvironment(tmux, node, name, signal);
-	if (probe.code === 1 && missingTmuxSession(probe.stderr, name)) {
+	if (managedSessionAbsent(probe, name)) {
 		if (matchesManagedStop(record, { itemId, runId, name })) requestResourceCleanup(path);
 		return true;
 	}
@@ -98,7 +98,7 @@ export async function stopManagedRun(
 	);
 	if (result.code !== 0 || result.stdout.trim() !== 'tracker-session-stopped') return false;
 	const after = await managedTmuxEnvironment(tmux, node, name, signal);
-	const stopped = after.code === 1 && missingTmuxSession(after.stderr, name);
+	const stopped = managedSessionAbsent(after, name);
 	if (stopped) requestResourceCleanup(path);
 	return stopped;
 }
@@ -145,4 +145,8 @@ export function missingTmuxSession(stderr: string, name: string): boolean {
 function requestResourceCleanup(attempt: string) {
 	const directory = join(attempt, 'hygiene');
 	if (existsSync(directory)) writeFileSync(join(directory, 'closing'), '', { mode: 0o600 });
+}
+
+function managedSessionAbsent(result: { code: number; stderr: string }, name: string) {
+	return result.code === 1 && missingTmuxSession(result.stderr, name);
 }

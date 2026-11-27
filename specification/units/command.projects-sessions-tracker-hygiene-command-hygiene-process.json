@@ -1,6 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-process",
+	"uid": "u_p353dt4snw",
 	"kind": "command",
 	"title": "hygieneProcess",
 	"responsibility": "Owns the hygieneProcess command registration.",
@@ -60,7 +61,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "HygieneError",
 				"type": "thrown"
 			}
 		],
@@ -83,7 +84,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -111,7 +112,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -144,7 +145,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "HygieneError",
 						"type": "thrown"
 					}
 				],
@@ -161,6 +162,11 @@
 		},
 		{
 			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-child",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-error",
 			"via": "import",
 			"origin": "derived"
 		},
