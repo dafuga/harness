@@ -14,6 +14,7 @@
 			"scripts/shared-checks.ts",
 			"scripts/shared-checks/checkCache.ts",
 			"scripts/shared-checks/checkExecution.ts",
+			"scripts/shared-checks/checkExecution.types.ts",
 			"scripts/shared-checks/checkGit.ts",
 			"scripts/shared-checks/checkGitHub.ts",
 			"scripts/shared-checks/checkGitHub.types.ts",
@@ -41,6 +42,8 @@
 			"SharedCheckCache.save",
 			"SharedCheckCache.publish",
 			"executeCandidate",
+			"CheckOutcome",
+			"CheckSnapshot",
 			"CandidateConflict",
 			"checkGit",
 			"emptyCheckCommit",
@@ -790,7 +793,7 @@
 				"outputs": [
 					{
 						"name": "executeCandidate",
-						"type": "Promise<Outcome>"
+						"type": "Promise<CheckOutcome>"
 					}
 				],
 				"errors": [],

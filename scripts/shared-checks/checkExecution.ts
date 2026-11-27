@@ -9,6 +9,7 @@ import { checkGit, inCheckWorktree } from './checkGit';
 import { withSharedCheckLease } from './checkLease';
 import { checkPlan, installCheckDependencies } from './checkPlanning';
 import type { CheckQueue } from './checkQueue';
+import type { CheckOutcome, CheckSnapshot } from './checkExecution.types';
 import { existingProof, refreshSharedProof } from './checkProof';
 import {
 	allowsE2e,
@@ -22,37 +23,20 @@ import type {
 	CheckObservation,
 	CheckPlan,
 	CandidateRun,
-	CheckResult,
 	SharedCheck
 } from './sharedCheck.types';
-
-type Outcome = Omit<CheckResult, 'batch'>;
 
 export async function executeCandidate(
 	queue: CheckQueue,
 	candidate: CandidateTree,
 	release: boolean,
 	signal: AbortSignal
-): Promise<Outcome> {
+): Promise<CheckOutcome> {
 	const started = performance.now();
 	const previous = release ? undefined : queue.plan(candidate);
 	const plan = previous ?? (await checkPlan(candidate, release));
 	if (!previous && plan.mode === 'focused') queue.storePlan(candidate, plan);
-	const finish = (
-		status: Outcome['status'],
-		checks: CheckObservation[],
-		detail = plan.reason
-	): Outcome => ({
-		status,
-		mode: plan.mode,
-		base: candidate.base,
-		testedCommit: candidate.commit,
-		workerRssBytes: process.memoryUsage().rss,
-		tree: candidate.tree,
-		checks,
-		detail,
-		elapsedMs: Math.round(performance.now() - started)
-	});
+	const finish = candidateOutcome(candidate, plan, started);
 	const cache = new SharedCheckCache(queue, candidate);
 	const satisfied = existingProof(cache, candidate, plan);
 
@@ -121,17 +105,27 @@ async function runCandidateChecks(
 	}
 }
 
-type Snapshot = {
-	directory: string;
-	queue: CheckQueue;
-	signal: AbortSignal;
-	env: Record<string, string | undefined>;
-	track: (pid: number) => void;
-};
+function candidateOutcome(candidate: CandidateTree, plan: CheckPlan, started: number) {
+	return (
+		status: CheckOutcome['status'],
+		checks: CheckObservation[],
+		detail = plan.reason
+	): CheckOutcome => ({
+		status,
+		mode: plan.mode,
+		base: candidate.base,
+		testedCommit: candidate.commit,
+		workerRssBytes: process.memoryUsage().rss,
+		tree: candidate.tree,
+		checks,
+		detail,
+		elapsedMs: Math.round(performance.now() - started)
+	});
+}
 
 async function runPlan(
 	{ plan, satisfied }: { plan: CheckPlan; satisfied: ReadonlyMap<string, CheckObservation> },
-	snapshot: Snapshot,
+	snapshot: CheckSnapshot,
 	cache: SharedCheckCache,
 	observed: CheckObservation[]
 ): Promise<string | undefined> {
@@ -159,7 +153,7 @@ async function runChecks(
 		checks,
 		satisfied
 	}: { checks: SharedCheck[]; satisfied: ReadonlyMap<string, CheckObservation> },
-	snapshot: Snapshot,
+	snapshot: CheckSnapshot,
 	cache: SharedCheckCache,
 	observed: CheckObservation[]
 ): Promise<string | undefined> {
@@ -186,7 +180,7 @@ async function runChecks(
 	}
 }
 
-async function runCheck(snapshot: Snapshot, check: SharedCheck) {
+async function runCheck(snapshot: CheckSnapshot, check: SharedCheck) {
 	const cwd = resolve(snapshot.directory, check.cwd ?? '.');
 	const rel = relative(snapshot.directory, cwd);
 	if (rel === '..' || rel.startsWith('../'))
