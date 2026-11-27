@@ -2,6 +2,7 @@
 import { once } from 'node:events';
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { z } from 'zod';
 import type { ContainerBrowserAdapter } from '../../../adapters/execution-runtimes/ContainerBrowserAdapter';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { ViewerDeviceRepository } from '../../../repositories/execution-runtimes/ViewerDeviceRepository';
@@ -12,6 +13,13 @@ import {
 	viewerSessionMs
 } from '../../../utils/execution-runtimes/createViewerAccess';
 import type { ContainerBrowserRunInput } from '../runContainerBrowser.types';
+
+const accessFlags = z.object({
+	accessHost: z.string().regex(/^[a-z\d-]+(?:\.[a-z\d-]+)+$/u),
+	accessTeam: z.string().regex(/^[a-z\d-]+$/u),
+	accessAudience: z.string().regex(/^[a-f\d]{64}$/u),
+	accessEmail: z.email()
+});
 
 /** Serves the viewer until interrupted. */
 export async function serveViewer(
@@ -45,21 +53,14 @@ function remoteAccess(
 	state: string,
 	input: ContainerBrowserRunInput
 ): ContainerViewerGateConfig['remote'] {
-	const { accessHost, accessTeam, accessAudience, accessEmail } = input;
-	if (!(accessHost || accessTeam || accessAudience || accessEmail)) return;
-	if (
-		!accessHost ||
-		!/^[a-z\d-]+(?:\.[a-z\d-]+)+$/u.test(accessHost) ||
-		!accessTeam ||
-		!/^[a-z\d-]+$/u.test(accessTeam) ||
-		!accessAudience ||
-		!/^[a-f\d]{64}$/u.test(accessAudience) ||
-		!accessEmail ||
-		!/^[^@\s]+@[^@\s]+$/u.test(accessEmail)
-	)
+	if (![input.accessHost, input.accessTeam, input.accessAudience, input.accessEmail].some(Boolean))
+		return undefined;
+	const parsed = accessFlags.safeParse(input);
+	if (!parsed.success)
 		throw new ExpectedCliError(
 			'Pass a valid --access-host, --access-team, --access-audience and --access-email together.'
 		);
+	const { accessHost, accessTeam, accessAudience, accessEmail } = parsed.data;
 	return {
 		host: accessHost,
 		devices: new ViewerDeviceRepository(join(state, 'cloudflare'), Date.now, viewerSessionMs),

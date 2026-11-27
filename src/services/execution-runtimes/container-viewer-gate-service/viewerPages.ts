@@ -33,7 +33,10 @@ export function sendViewerPairing(
 	access: Exclude<ViewerAccess, { status: 'approved' }>,
 	secure: boolean
 ): void {
-	if (access.status === 'pending') return sendPairingPage(response, access.code);
+	if (access.status === 'pending') {
+		sendPairingPage(response, access.code);
+		return;
+	}
 	const { token, code } = devices.request();
 	const age = secure ? viewerSessionMs / 1000 : 31_536_000;
 	const cookie = `${viewerCookie(secure)}=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${age}`;

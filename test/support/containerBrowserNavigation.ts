@@ -81,15 +81,12 @@ async function capture(viewer: Page) {
 		: viewer;
 	await expect(frame.locator('html.noVNC_connected canvas')).toBeVisible({ timeout: 15_000 });
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
-	await viewer.evaluate(() => document.fonts.ready.then(() => undefined));
+	await viewer.evaluate('document.fonts.ready.then(() => undefined)');
 	const directory = process.env.SCREENSHOT_DIR ?? 'test-results/container-viewer';
 	for (const [name, [width, height]] of Object.entries(sizes)) {
 		await viewer.setViewportSize({ width, height });
 		await viewer.evaluate(
-			() =>
-				new Promise<void>((ready) =>
-					requestAnimationFrame(() => requestAnimationFrame(() => ready()))
-				)
+			'new Promise((ready) => requestAnimationFrame(() => requestAnimationFrame(ready)))'
 		);
 		await viewer.screenshot({
 			path: join(directory, `container-viewer-${name}.png`),

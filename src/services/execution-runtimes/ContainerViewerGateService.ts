@@ -5,8 +5,10 @@ import type { Duplex } from 'node:stream';
 import { clearInterval, setInterval } from 'node:timers';
 import { WebSocketServer, type WebSocket } from 'ws';
 import { ContainerCdpAdapter } from '../../adapters/execution-runtimes/ContainerCdpAdapter';
+import type { ViewerAccess } from '../../repositories/execution-runtimes/ViewerDeviceRepository.types';
 import type {
 	ContainerViewerGateConfig,
+	ViewerAdmission,
 	ViewerConnection
 } from './ContainerViewerGateService.types';
 import { bridgeScreen } from './container-viewer-gate-service/bridgeScreen';
@@ -75,11 +77,20 @@ export class ContainerViewerGateService {
 			return navigateViewer(request, response, this.cdp);
 		}
 		if (request.method !== 'GET') return refuse(response, 403);
+		return this.servePage(response, path, admission, access);
+	}
+
+	private async servePage(
+		response: ServerResponse,
+		path: string,
+		admission: ViewerAdmission,
+		access: ViewerAccess
+	): Promise<void> {
 		if (access.status !== 'approved') {
-			if (path !== '/') return refuse(response, 403);
-			return sendViewerPairing(response, admission.devices, access, secure);
-		}
-		if (path === '/')
+			if (path === '/')
+				sendViewerPairing(response, admission.devices, access, admission.expiresAt !== undefined);
+			else refuse(response, 403);
+		} else if (path === '/')
 			response.writeHead(302, { location: '/viewer', 'cache-control': 'no-store' }).end();
 		else if (path === '/viewer') sendViewerControls(response);
 		else await sendViewerAsset(response, this.config.assets, path);

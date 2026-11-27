@@ -16,11 +16,16 @@ export async function navigateViewer(
 	browser: ContainerCdpAdapter
 ): Promise<void> {
 	const input = await readCommand(request);
-	if (!input) return refuse(response, 400);
+	if (!input) {
+		refuse(response, 400);
+		return;
+	}
 	if (input.action === 'open') {
 		const url = URL.parse(input.url);
-		if (!url || !['https:', 'http:'].includes(url.protocol) || url.username || url.password)
-			return refuse(response, 400);
+		if (!url || !['https:', 'http:'].includes(url.protocol) || url.username || url.password) {
+			refuse(response, 400);
+			return;
+		}
 		await browser.navigateFocused('open', url.href);
 	} else if (input.action === 'home') await browser.navigateFocused('open', 'about:blank');
 	else await browser.navigateFocused(input.action, '');
@@ -28,13 +33,13 @@ export async function navigateViewer(
 }
 
 async function readCommand(request: IncomingMessage) {
-	if (request.headers['content-type'] !== 'application/json') return;
+	if (request.headers['content-type'] !== 'application/json') return undefined;
 	try {
 		let body = '';
 		request.setEncoding('utf8');
 		for await (const chunk of request.iterator({ destroyOnReturn: false })) {
 			body += chunk as string;
-			if (body.length > 4096) return;
+			if (body.length > 4096) return undefined;
 		}
 		return command.safeParse(JSON.parse(body)).data;
 	} catch {

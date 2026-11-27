@@ -17,16 +17,23 @@ export async function admitViewer(
 ): Promise<ViewerAdmission | undefined> {
 	const authority = request.headers.host?.toLowerCase();
 	const host = authority?.replace(/:\d+$/u, '');
-	if (!host) return;
+	if (!host) return undefined;
 	const remote = config.remote;
-	if (remote && host === remote.host) {
-		const assertion = request.headers['cf-access-jwt-assertion'];
-		if (authority !== remote.host || typeof assertion !== 'string') return;
-		const expiresAt = await remote.authorize(assertion);
-		if (expiresAt === undefined || expiresAt <= Date.now()) return;
-		return { devices: remote.devices, origin: `https://${remote.host}`, expiresAt };
-	}
+	if (remote?.host === host) return admitRemoteViewer(request, authority, remote);
 	if (hosts.has(host)) return { devices: config.devices, origin: `http://${authority}` };
+	return undefined;
+}
+
+async function admitRemoteViewer(
+	request: IncomingMessage,
+	authority: string | undefined,
+	remote: NonNullable<ContainerViewerGateConfig['remote']>
+): Promise<ViewerAdmission | undefined> {
+	const assertion = request.headers['cf-access-jwt-assertion'];
+	if (authority !== remote.host || typeof assertion !== 'string') return undefined;
+	const expiresAt = await remote.authorize(assertion);
+	if (expiresAt === undefined || expiresAt <= Date.now()) return undefined;
+	return { devices: remote.devices, origin: `https://${remote.host}`, expiresAt };
 }
 
 export function viewerToken(request: IncomingMessage, secure: boolean): string | undefined {
