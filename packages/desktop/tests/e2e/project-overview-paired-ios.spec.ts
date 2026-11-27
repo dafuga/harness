@@ -1,7 +1,7 @@
 import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import type { Page } from '@playwright/test';
 import {
-	completeGoogle,
+	setLoginStage,
 	pairedAccountCalls,
 	pairedPhoneFixture,
 	setPairedState
@@ -107,7 +107,27 @@ test('iOS opens at Google sign-in before it reads Tracker or projects', async ({
 	await expect(google).toBeVisible();
 	expect(await pairedAccountCalls(page)).toEqual([]);
 	await google.click();
-	await completeGoogle(page);
+	await setLoginStage(page, 'waiting-for-approval');
+	await expect(page.getByText('Waiting for Google…')).toHaveCount(0);
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+			await Promise.all(
+				[...document.querySelectorAll('main img')].map((img) => (img as HTMLImageElement).decode())
+			);
+		});
+		await page.screenshot({
+			path:
+				(process.env.HEADLESS_RUN_ARTIFACTS ?? '/tmp') +
+				'/zgfvhk-wait-' +
+				process.env.SCREENSHOT_LABEL +
+				'.png'
+		});
+	}
+	await expect(page.getByText('Waiting for approval', { exact: true })).toBeVisible();
+	await expect(page.getByText('018427', { exact: true })).toBeVisible();
+	expect(await pairedAccountCalls(page)).toEqual([]);
+	await setLoginStage(page, 'signed-in');
 	await expect(page).toHaveURL(/\/$/);
 	await overviewLink(page).click();
 	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();

@@ -37,6 +37,7 @@ export function pairedAccount(
 			: {
 					configured: true,
 					state: shell.account,
+					verificationCode: shell.account === 'waiting-for-approval' ? '018427' : undefined,
 					handoff:
 						shell.account === 'pending'
 							? {

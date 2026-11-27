@@ -14,7 +14,7 @@ export type PairedAccountCall = { method: string; path: string };
 /** The window state the paired double exposes to the test: calls seen and the pairing switch. */
 export type PairedPhoneHost = {
 	__pairedAccountCalls: PairedAccountCall[];
-	__pairedPhone: { setState: (state: string) => void; completeGoogle: () => void };
+	__pairedPhone: { setState: (state: string) => void; setAccount: (state: string) => void };
 };
 
 /** The arguments the init script receives: the mode and the synthetic overview it answers with. */

@@ -36,6 +36,25 @@ test('projects only public phone account status', () => {
 		identity: accountIdentity(pendingPublic),
 		principal: principal(pendingPublic)
 	};
+	const waitingInput = {
+		...pendingInput,
+		state: 'waiting-for-approval',
+		verificationCode: '018427'
+	};
+	const waitingPublic = publicStatus(waitingInput);
+	expect(waitingPublic).toEqual({
+		configured: true,
+		state: 'waiting-for-approval',
+		verificationCode: '018427'
+	});
+	expect(principal(waitingPublic)).toBeNull();
+	for (const state of ['first-device', 'checking-device']) {
+		expect(publicStatus({ ...waitingInput, state })).toEqual({ configured: true, state });
+	}
+	expect(publicStatus({ ...waitingInput, verificationCode: 'invalid' })).toEqual({
+		configured: true,
+		state: 'waiting-for-approval'
+	});
 	const unknownResult = { identity: accountIdentity(null), principal: principal(null) };
 
 	expect(signedInPublic).toEqual({ configured: true, state: 'signed-in', actor });
