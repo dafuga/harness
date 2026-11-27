@@ -206,7 +206,7 @@
 				"outputs": [
 					{
 						"name": "pause",
-						"type": "Promise<unknown>",
+						"type": "Promise<void>",
 						"description": "A function that resolves after scheduling a setTimeout for the supplied milliseconds. Timer scheduling is subject to runtime timing, and the function resolves without a value."
 					}
 				],

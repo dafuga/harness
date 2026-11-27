@@ -1,11 +1,22 @@
 // @harness-uid u_fq2qh7235c
 import type { RunContext } from '../../models/development-tooling/RunContext.types';
+import type { RunMode, ProviderId } from '../../models/development-tooling/Desktop.types';
 
 export function messageFor(
 	context: Pick<RunContext, 'request'>,
 	author: 'user' | 'agent',
 	text: string
-) {
+): {
+	entityId: string;
+	threadId: string;
+	author: 'user' | 'agent';
+	text: string;
+	mode: RunMode;
+	provider: ProviderId;
+	model: string;
+	version: string | null;
+	imageSha256: string | null;
+} {
 	const request = context.request,
 		version = request.approval?.version ?? null,
 		imageSha256 = request.approval?.imageHashes[0] ?? null;

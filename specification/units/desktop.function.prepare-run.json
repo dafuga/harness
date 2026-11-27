@@ -258,7 +258,7 @@
 				"outputs": [
 					{
 						"name": "messageFor",
-						"type": "{ entityId: string; threadId: string; author: \"user\" | \"agent\"; text: string; mode: import(\"../../models/development-tooling/Desktop.types\").RunMode; provider: import(\"../../models/development-tooling/Desktop.types\").ProviderId; model: string; version: string | null; imageSha256: string | null; }",
+						"type": "{ entityId: string; threadId: string; author: 'user' | 'agent'; text: string; mode: RunMode; provider: ProviderId; model: string; version: string | null; imageSha256: string | null; }",
 						"description": "Returns a message draft with the request's entity and thread ids, the supplied author and text, mode, provider, and model. Version and imageSha256 are copied from the approval or set to null when absent.",
 						"examples": [
 							{
@@ -343,6 +343,11 @@
 		},
 		{
 			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
 		},

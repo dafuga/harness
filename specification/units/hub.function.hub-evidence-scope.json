@@ -204,7 +204,7 @@
 				"outputs": [
 					{
 						"name": "hubEvidenceContext",
-						"type": "Promise<{ base: HubSourceContext; tip: string; repository: import('../../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types').RepositoryIdentity; }>",
+						"type": "Promise<{ base: HubSourceContext; tip: string; repository: RepositoryIdentity }>",
 						"description": "Resolves to { base, tip, repository } after loading the selected project and resolving its requested commit. It refuses a missing project id, a missing branch tip, or a current-mode commit that differs from the tip."
 					}
 				],
@@ -304,7 +304,7 @@
 				"outputs": [
 					{
 						"name": "hubEvidenceScope",
-						"type": "Promise<{ scope: import('../../../../../../../reports/src/models/explorer-ui/Explorer.types').ExplorerScope; revisions: { head: import('../../../../../../../reports/src/models/explorer-ui/HarnessRevision.types').HarnessRevision; parent: import('../../../../../../../reports/src/models/explorer-ui/HarnessRevision.types').HarnessRevision | null; }; history: HubRecordStatusService; }>",
+						"type": "Promise<{ scope: ExplorerScope; revisions: { head: HarnessRevision; parent: HarnessRevision | null }; history: HubRecordStatusService; }>",
 						"description": "Resolves to { scope, revisions, history } for a registered entity and a commit reachable from tip. revisions.parent is the exact first-parent detail or null, and history reads records under the pinned notes and evidence revisions."
 					}
 				],
@@ -326,6 +326,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "collaboration.model.collaboration-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.function.recorded-scope",
 			"via": "import",
@@ -363,6 +368,16 @@
 		},
 		{
 			"unit": "hub.service.hub-record-status",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.explorer-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.model.harness-types",
 			"via": "import",
 			"origin": "derived"
 		}

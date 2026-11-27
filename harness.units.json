@@ -1676,6 +1676,18 @@
 			"reason": "Shared Reports source through the workspace build alias."
 		},
 		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
+			"specifier": "$reports/models/explorer-ui/Explorer.types",
+			"to": "packages/reports/src/models/explorer-ui/Explorer.types.ts",
+			"reason": "Hub evidence scope uses the same Reports scope and revision contracts through the workspace build alias."
+		},
+		{
+			"from": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
+			"specifier": "$reports/models/explorer-ui/HarnessRevision.types",
+			"to": "packages/reports/src/models/explorer-ui/HarnessRevision.types.ts",
+			"reason": "Hub evidence scope uses the same Reports scope and revision contracts through the workspace build alias."
+		},
+		{
 			"from": "packages/hub/src/lib/atoms/native-elements.d.ts",
 			"specifier": "$reports/lib/atoms/native-elements",
 			"to": "packages/reports/src/lib/atoms/native-elements.d.ts",

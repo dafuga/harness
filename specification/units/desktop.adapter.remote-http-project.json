@@ -126,7 +126,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.snapshot.input",
-				"type": "{ projectId: string; branch: string | null; commit: string | null }",
+				"type": "RevisionQuery & { projectId: string }",
 				"required": true,
 				"description": "Selects a hosted project snapshot at the requested branch and commit; null branch or commit values are omitted from the request query. A commit-pinned or non-tip snapshot is not writable by this adapter.",
 				"examples": [
@@ -195,7 +195,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.history.input",
-				"type": "EntityQuery & { projectId: string; page: number; branch?: string }",
+				"type": "HostedHistoryQuery",
 				"required": true,
 				"description": "Selects one history page for an entity at a source commit; page is required and branch optionally scopes the request. The response must contain valid history entries and a consistent completion cursor.",
 				"examples": [
@@ -752,7 +752,8 @@
 								"region": null,
 								"messageCount": 0
 							}
-						]
+						],
+						"unknownReason": "Dispatcher: the result shape depends on the agent method name."
 					}
 				],
 				"errors": [
@@ -831,7 +832,7 @@
 				"inputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.snapshot.input",
-						"type": "{ projectId: string; branch: string | null; commit: string | null }",
+						"type": "RevisionQuery & { projectId: string }",
 						"required": true,
 						"description": "Selects a hosted project snapshot at the requested branch and commit; null branch or commit values are omitted from the request query. A commit-pinned or non-tip snapshot is not writable by this adapter.",
 						"examples": [
@@ -846,7 +847,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.snapshot",
-						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ProjectSnapshot>",
+						"type": "Promise<ProjectSnapshot>",
 						"description": "Returns the hosted snapshot with capabilities read for the project and writable set only when the request is not commit-pinned, the revision is at its tip, and agents are available. An offline cached snapshot is returned read-only without that additional capability read.",
 						"examples": [
 							{
@@ -907,7 +908,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.entity",
-						"type": "Promise<import('../../../../models/development-tooling/DesktopEntity.types').EntityDetail>",
+						"type": "Promise<EntityDetail>",
 						"description": "Returns the hosted entity detail for the requested entity id. Validation checks the id and that versions, sources, and threads are arrays; other entity fields pass through.",
 						"examples": [
 							{
@@ -1056,7 +1057,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.messages",
-						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadMessage[]>",
+						"type": "Promise<ThreadMessage[]>",
 						"description": "Returns the hosted thread's message array after checking that each item has a string id and text. Other message fields are passed through by the response validator.",
 						"examples": [
 							[
@@ -1089,7 +1090,7 @@
 				"inputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.history.input",
-						"type": "EntityQuery & { projectId: string; page: number; branch?: string }",
+						"type": "HostedHistoryQuery",
 						"required": true,
 						"description": "Selects one history page for an entity at a source commit; page is required and branch optionally scopes the request. The response must contain valid history entries and a consistent completion cursor.",
 						"examples": [
@@ -1106,7 +1107,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.history",
-						"type": "Promise<{ entries: import('../../../../models/development-tooling/DesktopEntity.types').HistoryEvent[]; complete: boolean; nextPage: number | null; }>",
+						"type": "Promise<HostedHistoryPage>",
 						"description": "Returns a validated history page with entries, completion state, and the next page number or null. Each entry is checked for string id and title; its other fields pass through.",
 						"examples": [
 							{
@@ -1194,7 +1195,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.addComment",
-						"type": "Promise<import('../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types').CommittedThread>",
+						"type": "Promise<CommittedThread>",
 						"description": "Returns the acknowledged committed thread after checking its project, optional requested thread id, anchor, comment request id and text, and verified actor identity.",
 						"examples": [
 							{
@@ -1311,6 +1312,16 @@
 		},
 		{
 			"unit": "desktop.model.desktop-evidence-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.development-tooling-desktop-entity-types",
 			"via": "import",
 			"origin": "derived"
 		},

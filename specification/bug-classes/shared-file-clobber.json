@@ -1,0 +1,160 @@
+{
+	"schemaVersion": 1,
+	"revision": "28af4c5d9dc7474606059928b86a4f1c59072be6",
+	"bugClass": {
+		"id": "shared-file-clobber",
+		"title": "Shared output file overwritten without ownership validation",
+		"cause": "A process writes to a default or shared filesystem path and replaces existing contents without verifying that the file belongs to the same database, instance, or owner. Related status reporting reads a persisted success record rather than validating the current file on disk, so it can report success after the file has been replaced or emptied.",
+		"criteria": "Classify another site when runtime code writes, copies, renames, or atomically replaces a file at a shared or default-derived path without checking the existing file's owner or data identity. Also admit cases where status is derived only from a stored success/state record and does not inspect the artifact it claims is current. Either mechanism is sufficient when it can produce the reported stale or clobbered artifact.",
+		"patterns": [
+			{
+				"kind": "call",
+				"value": "writeFile",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "writeFileSync",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "rename",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "copyFile",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "atomicWriteFile",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "mkdir",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "writeFile(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "writeFileSync(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "rename(",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "copyFile(",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "homedir(",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "process.env.HOME",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "os.homedir",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "backupPath",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "lastBackup",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "backupStatus",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "status = 'ok'",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "$state",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"backup",
+			"path",
+			"home",
+			"owner",
+			"database",
+			"status",
+			"state",
+			"file",
+			"write",
+			"artifact"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/hub/",
+				"weight": 4
+			},
+			{
+				"contains": "src/services/",
+				"weight": 3
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 3
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 2
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 1
+			},
+			{
+				"contains": "test/",
+				"weight": -2
+			},
+			{
+				"contains": "test/examples/",
+				"weight": -3
+			},
+			{
+				"contains": "specification/",
+				"weight": -3
+			},
+			{
+				"contains": "packages/relay/",
+				"weight": -2
+			},
+			{
+				"contains": "src/cli/",
+				"weight": -1
+			}
+		]
+	}
+}
