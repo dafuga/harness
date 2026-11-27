@@ -3,7 +3,10 @@ import { chmodSync, mkdirSync, rmSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { dirname } from 'node:path';
 import type { z } from 'zod';
-import { privateBrowserPhonePaths } from '../../services/execution-runtimes/PrivateBrowserPhoneService';
+import {
+	privateBrowserPhonePaths,
+	type PrivateBrowserPhoneService
+} from '../../services/execution-runtimes/PrivateBrowserPhoneService';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
 import {
 	VaultWireValidator,
@@ -32,8 +35,6 @@ export class VaultBrokerServerAdapter {
 
 	constructor(private readonly config: VaultBrokerServerConfig) {
 		const { broker, keeper, devices, privateBrowser } = config;
-		const route = <T>(schema: z.ZodType<T>, run: (body: T, uid: number | null) => unknown) =>
-			({ schema, run }) as Route;
 		this.routes = {
 			'/v1/session/requests': route(vaultSessionRequest, (body, uid) => broker.create(body, uid)),
 			'/v1/session/status': route(vaultTicket, (body, uid) => ({
@@ -54,19 +55,9 @@ export class VaultBrokerServerAdapter {
 			),
 			'/v1/device/challenge': route(vaultChallenge, (body) => devices.issue(body.deviceId)),
 			'/v1/device/requests': route(vaultProof, (body) => broker.queue(body)),
-			'/v1/device/decision': route(vaultProof, (body) => ({ status: broker.decide(body) }))
+			'/v1/device/decision': route(vaultProof, (body) => ({ status: broker.decide(body) })),
+			...(privateBrowser ? privateRoutes(privateBrowser) : {})
 		};
-		if (privateBrowser) {
-			this.routes[privateBrowserPhonePaths.challenge] = route(vaultProof, (proof) =>
-				privateBrowser.challenge(proof)
-			);
-			this.routes[privateBrowserPhonePaths.offer] = route(vaultProof, (proof) => ({
-				offer: privateBrowser.activeOffer(proof) ?? null
-			}));
-			this.routes[privateBrowserPhonePaths.submit] = route(vaultProof, async (proof) => ({
-				status: (await privateBrowser.submit(proof)) ? 'completed' : 'unavailable'
-			}));
-		}
 	}
 
 	async listen(): Promise<string> {
@@ -134,6 +125,22 @@ export class VaultBrokerServerAdapter {
 		response.writeHead(status, { ...headers, 'Content-Length': Buffer.byteLength(text) });
 		response.end(text);
 	}
+}
+
+function route<T>(schema: z.ZodType<T>, run: (body: T, uid: number | null) => unknown): Route {
+	return { schema, run };
+}
+
+function privateRoutes(delivery: PrivateBrowserPhoneService): Record<string, Route> {
+	return {
+		[privateBrowserPhonePaths.challenge]: route(vaultProof, (proof) => delivery.challenge(proof)),
+		[privateBrowserPhonePaths.offer]: route(vaultProof, (proof) => ({
+			offer: delivery.activeOffer(proof) ?? null
+		})),
+		[privateBrowserPhonePaths.submit]: route(vaultProof, async (proof) => ({
+			status: (await delivery.submit(proof)) ? 'completed' : 'unavailable'
+		}))
+	};
 }
 
 export type { VaultBrokerServerConfig } from './VaultBrokerServerAdapter.types';

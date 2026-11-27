@@ -107,7 +107,7 @@ export class PrivateBrowserPhoneService {
 		this.config.devices.authenticate(privateBrowserPhonePaths.offer, proof);
 		this.wire.json(offerQuery, Buffer.from(proof.payload, 'base64url'), 'offer query');
 		const pending = this.pending;
-		if (!pending || pending.deviceId !== proof.deviceId) return undefined;
+		if (pending?.deviceId !== proof.deviceId) return undefined;
 		const { offer } = pending;
 		if (
 			this.now() >= offer.expiresAt ||

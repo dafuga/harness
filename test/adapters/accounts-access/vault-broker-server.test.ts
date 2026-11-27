@@ -125,80 +125,86 @@ test('without a kernel-verified peer the broker files requests but refuses a CDP
 	).rejects.toMatchObject({ status: 403 });
 });
 
-test('serves a scoped private entry offer and verifies sealed completion over the socket', async () => {
-	await measureWorkload(
+async function servedPrivateOffer() {
+	const checked = { submitted: false };
+	const dispose = async () => undefined;
+	const gate = new PrivateBrowserGateService({
+		revokeInput: dispose,
+		disposeForm: dispose,
+		verifyResult: async () => checked.submitted
+	});
+	await gate.recover();
+	let delivery: PrivateBrowserPhoneService | undefined;
+	const run = await served(sessionUid, ({ devices, clock }) => {
+		delivery = new PrivateBrowserPhoneService({
+			devices,
+			gate,
+			now: () => clock.now,
+			submitField: async (_scope, value) => {
+				checked.submitted = value.equals(Buffer.from(canary.password));
+			}
+		});
+		return { privateBrowser: delivery };
+	});
+	const request = await gate.request(run.phone.deviceId);
+	const offer = delivery?.offer(request?.requestId ?? '', run.phone.deviceId, {
+		executor: 'mb2-fixture',
+		origin: 'https://provider.fixture.test',
+		tabId: 'fixture-tab',
+		field: 'fixture-password',
+		action: 'submit-fixture',
+		recipeDigest: 'b'.repeat(64)
+	});
+	if (!offer) throw new Error('Synthetic private offer was rejected');
+	return { run, gate, offer };
+}
+
+async function verifyPrivateOffer() {
+	const { run, gate, offer } = await servedPrivateOffer();
+	const challengePath = '/v1/private-browser/challenge';
+	const signRoute = async (path: string, body?: object) => {
+		const start = run.phone.prove(origin, challengePath, randomNonce(), {
+			path,
+			expiresAt: run.clock.now + 30_000
+		});
+		const { nonce } = await run.client.call<{ nonce: string }>(challengePath, start);
+		await expect(run.client.call(challengePath, start)).rejects.toMatchObject({ status: 401 });
+		return run.phone.prove(origin, path, nonce, body);
+	};
+	const offerPath = '/v1/private-browser/offer';
+	const submitPath = '/v1/private-browser/submit';
+	await expect(
+		run.client.call(challengePath, { deviceId: run.phone.deviceId })
+	).rejects.toMatchObject({ status: 400 });
+	const unrelated = run.phone.prove(origin, challengePath, randomNonce(), {
+		path: '/v1/device/decision',
+		expiresAt: run.clock.now + 30_000
+	});
+	await expect(run.client.call(challengePath, unrelated)).rejects.toMatchObject({
+		status: 400
+	});
+	await expect(run.client.call(offerPath, {})).rejects.toMatchObject({ status: 400 });
+	const poll = await signRoute(offerPath);
+	const response = await run.client.call<{ offer: PrivateBrowserPhoneOffer }>(offerPath, poll);
+	expect(response).toEqual({ offer });
+	await expect(run.client.call(offerPath, poll)).rejects.toMatchObject({ status: 401 });
+	const copied = await signRoute(offerPath, { requestId: offer.requestId });
+	await expect(run.client.call(offerPath, copied)).rejects.toMatchObject({ status: 400 });
+	const { runnerPublicKey, ...scope } = response.offer;
+	const sealed = run.seal.seal(runnerPublicKey, scope.requestId, Buffer.from(canary.password));
+	const submission = await signRoute(submitPath, { ...scope, sealed });
+	expect(await run.client.call(submitPath, submission)).toEqual({ status: 'completed' });
+	expect(gate.receipt()).toEqual({ requestId: scope.requestId, outcome: 'completed' });
+	expect(await run.client.call(submitPath, submission)).toEqual({ status: 'unavailable' });
+	expect(await run.client.call(offerPath, await signRoute(offerPath))).toEqual({ offer: null });
+	expect(JSON.stringify([response, gate.receipt(), run.audit.read()])).not.toContain(
+		canary.password
+	);
+}
+
+test('serves a scoped private entry offer and verifies sealed completion over the socket', () =>
+	measureWorkload(
 		'adapter.accounts-access-vault-broker-server',
 		'serve-private-field',
-		async () => {
-			const checked = { submitted: false };
-			const dispose = async () => undefined;
-			const gate = new PrivateBrowserGateService({
-				revokeInput: dispose,
-				disposeForm: dispose,
-				verifyResult: async () => checked.submitted
-			});
-			await gate.recover();
-			let delivery: PrivateBrowserPhoneService | undefined;
-			const run = await served(sessionUid, ({ devices, clock }) => {
-				delivery = new PrivateBrowserPhoneService({
-					devices,
-					gate,
-					now: () => clock.now,
-					submitField: async (_scope, value) => {
-						checked.submitted = value.equals(Buffer.from(canary.password));
-					}
-				});
-				return { privateBrowser: delivery };
-			});
-			const request = await gate.request(run.phone.deviceId);
-			const offer = delivery?.offer(request?.requestId ?? '', run.phone.deviceId, {
-				executor: 'mb2-fixture',
-				origin: 'https://provider.fixture.test',
-				tabId: 'fixture-tab',
-				field: 'fixture-password',
-				action: 'submit-fixture',
-				recipeDigest: 'b'.repeat(64)
-			});
-			if (!offer) throw new Error('Synthetic private offer was rejected');
-			const challengePath = '/v1/private-browser/challenge';
-			const signRoute = async (path: string, body?: object) => {
-				const start = run.phone.prove(origin, challengePath, randomNonce(), {
-					path,
-					expiresAt: run.clock.now + 30_000
-				});
-				const { nonce } = await run.client.call<{ nonce: string }>(challengePath, start);
-				await expect(run.client.call(challengePath, start)).rejects.toMatchObject({ status: 401 });
-				return run.phone.prove(origin, path, nonce, body);
-			};
-			const offerPath = '/v1/private-browser/offer';
-			const submitPath = '/v1/private-browser/submit';
-			await expect(
-				run.client.call(challengePath, { deviceId: run.phone.deviceId })
-			).rejects.toMatchObject({ status: 400 });
-			const unrelated = run.phone.prove(origin, challengePath, randomNonce(), {
-				path: '/v1/device/decision',
-				expiresAt: run.clock.now + 30_000
-			});
-			await expect(run.client.call(challengePath, unrelated)).rejects.toMatchObject({
-				status: 400
-			});
-			await expect(run.client.call(offerPath, {})).rejects.toMatchObject({ status: 400 });
-			const poll = await signRoute(offerPath);
-			const response = await run.client.call<{ offer: PrivateBrowserPhoneOffer }>(offerPath, poll);
-			expect(response).toEqual({ offer });
-			await expect(run.client.call(offerPath, poll)).rejects.toMatchObject({ status: 401 });
-			const copied = await signRoute(offerPath, { requestId: offer.requestId });
-			await expect(run.client.call(offerPath, copied)).rejects.toMatchObject({ status: 400 });
-			const { runnerPublicKey, ...scope } = response.offer;
-			const sealed = run.seal.seal(runnerPublicKey, scope.requestId, Buffer.from(canary.password));
-			const submission = await signRoute(submitPath, { ...scope, sealed });
-			expect(await run.client.call(submitPath, submission)).toEqual({ status: 'completed' });
-			expect(gate.receipt()).toEqual({ requestId: scope.requestId, outcome: 'completed' });
-			expect(await run.client.call(submitPath, submission)).toEqual({ status: 'unavailable' });
-			expect(await run.client.call(offerPath, await signRoute(offerPath))).toEqual({ offer: null });
-			expect(JSON.stringify([response, gate.receipt(), run.audit.read()])).not.toContain(
-				canary.password
-			);
-		}
-	);
-});
+		verifyPrivateOffer
+	));

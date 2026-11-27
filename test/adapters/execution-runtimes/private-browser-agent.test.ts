@@ -60,7 +60,7 @@ async function fixture() {
 		peerUid,
 		gate,
 		deviceId: device.deviceId,
-		...{ nativeEntry: device.nativeEntry },
+		nativeEntry: device.nativeEntry,
 		reviewedRead
 	});
 

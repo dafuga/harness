@@ -65,12 +65,12 @@ export class PrivateBrowserAgentAdapter {
 		url: string | undefined,
 		response: ServerResponse
 	): Promise<void> {
-		const { gate, deviceId, reviewedRead } = this.config;
+		const { gate, reviewedRead } = this.config;
 		if (method === 'GET' && url === '/status') {
 			return send(response, 200, { phase: gate.status(), receipt: gate.receipt() });
 		}
 		if (method === 'POST' && url === '/private-entry') {
-			const receipt = await gate.request(deviceId);
+			const receipt = await this.requestPrivateEntry();
 			if (receipt) return send(response, 202, receipt);
 			return send(response, 409, { error: 'Private entry unavailable' });
 		}
@@ -80,6 +80,20 @@ export class PrivateBrowserAgentAdapter {
 			return send(response, 409, { error: 'Read unavailable' });
 		}
 		return send(response, 404, { error: 'Unknown route' });
+	}
+
+	private async requestPrivateEntry(): Promise<{ requestId: string } | undefined> {
+		const { gate, deviceId, nativeEntry } = this.config;
+		const receipt = await gate.request(deviceId);
+		if (!receipt) return undefined;
+		try {
+			const scope = nativeEntry.reviewedField();
+			if (scope && nativeEntry.delivery.offer(receipt.requestId, deviceId, scope)) return receipt;
+		} catch {
+			// The reviewed field may have disappeared. Dispose of the private window before replying.
+		}
+		await gate.cancel(receipt.requestId);
+		return undefined;
 	}
 }
 

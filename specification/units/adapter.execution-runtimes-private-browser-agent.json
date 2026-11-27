@@ -21,31 +21,35 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "PrivateBrowserAgentAdapter.constructor.config",
 				"type": "PrivateBrowserAgentAdapterConfig",
-				"required": true
+				"required": true,
+				"description": "Executor-owned socket, pinned agent UID and peer lookup, the gate, a paired device and reviewed field delivery, and one allowlisted read."
 			}
 		],
 		"outputs": [
 			{
 				"name": "PrivateBrowserAgentAdapter.listen",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Starts the owner-controlled Unix listener and grants socket access only to its configured group."
 			},
 			{
 				"name": "PrivateBrowserAgentAdapter.close",
-				"type": "Promise<void>"
+				"type": "Promise<void>",
+				"description": "Stops the listener and destroys its connections. A failed bind leaves another server’s socket alone."
 			}
 		],
 		"errors": [
 			{
 				"name": "ExpectedCliError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "An invalid socket path or agent UID, or a socket whose permissions cannot be restricted."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PrivateBrowserAgentAdapter.listen",
@@ -53,16 +57,18 @@
 				"outputs": [
 					{
 						"name": "PrivateBrowserAgentAdapter.listen",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Starts the owner-controlled Unix listener and grants socket access only to its configured group."
 					}
 				],
 				"errors": [
 					{
 						"name": "ExpectedCliError",
-						"type": "thrown"
+						"type": "thrown",
+						"description": "An invalid socket path or agent UID, or a socket whose permissions cannot be restricted."
 					}
 				],
-				"errorStatus": "unknown"
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PrivateBrowserAgentAdapter.close",
@@ -70,7 +76,8 @@
 				"outputs": [
 					{
 						"name": "PrivateBrowserAgentAdapter.close",
-						"type": "Promise<void>"
+						"type": "Promise<void>",
+						"description": "Stops the listener and destroys its connections. A failed bind leaves another server’s socket alone."
 					}
 				],
 				"errors": [],
@@ -84,13 +91,15 @@
 					{
 						"name": "PrivateBrowserAgentAdapter.constructor.config",
 						"type": "PrivateBrowserAgentAdapterConfig",
-						"required": true
+						"required": true,
+						"description": "Executor-owned socket, pinned agent UID and peer lookup, the gate, a paired device and reviewed field delivery, and one allowlisted read."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PrivateBrowserAgentAdapter.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Builds the adapter; no socket is bound until listen is called."
 					}
 				],
 				"errors": [],
@@ -106,6 +115,11 @@
 		},
 		{
 			"unit": "service.execution-runtimes-private-browser-gate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-private-browser-phone",
 			"via": "import",
 			"origin": "derived"
 		}

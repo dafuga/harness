@@ -100,8 +100,10 @@ fixture. Run the agent-side probes before, during and after private entry.
 
 The agent API accepts no request body. It uses `GET /status`, `POST
 /private-entry` and `POST /read` over a Unix socket. The executor config binds a
-reviewed read and a paired device to that admission surface. Device requests
-travel through the enrolled Vault path.
+reviewed read and a paired device to that admission surface. A private entry
+request returns its identifier once the reviewed native offer is available.
+If the tab or field cannot be reviewed, the executor disposes of the form and
+refuses the request. Device requests travel through the enrolled Vault path.
 
 The optional private routes on the executor-owned Vault broker are JSON POSTs
 under `/v1/private-browser/`: `challenge`, `offer`, and `submit`. A signed
