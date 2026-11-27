@@ -15,6 +15,7 @@ export interface TrackerSessionHealthIssue {
 	reason: string;
 	identity: string;
 	recover?: boolean;
+	blockReason?: string;
 }
 
 export interface TrackerSessionHealthSnapshot {

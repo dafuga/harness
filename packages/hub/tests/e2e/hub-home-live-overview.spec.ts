@@ -1,22 +1,18 @@
 import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
 import { recordedTracker } from '../../test/support/recordedTracker';
-import { liveRows, macAnswer, overview, productionHome } from './hub-home-live-fixture';
+import {
+	expectLiveDisposition,
+	expectNoSidewaysScroll,
+	liveRows,
+	macAnswer,
+	overview,
+	productionHome,
+	seedLiveDisposition
+} from './hub-home-live-fixture';
 import { captureNeedsYou } from './hub-home-capture';
 
 test.setTimeout(90000);
-
-async function expectNoSidewaysScroll(page: Page, width: number) {
-	const wide = await page.evaluate(() => {
-		const rows = [...document.querySelectorAll('.hh-live-overview *')];
-		return {
-			page: document.documentElement.scrollWidth,
-			right: Math.max(...rows.map((node) => node.getBoundingClientRect().right))
-		};
-	});
-	expect(wide.page).toBeLessThanOrEqual(width);
-	expect(wide.right).toBeLessThanOrEqual(width);
-}
 
 async function expectEvenHeaderSpacing(page: Page) {
 	const [heading, summary, source] = await Promise.all(
@@ -50,13 +46,14 @@ for (const [device, width, height] of [
 		tracker.machines.push(
 			Object.assign({ node: 'harbor-mbp-2', status: 'overloaded' }, { remote_runs: 2 })
 		);
+		seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
 		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
 		const requests = await productionHome(page, answer);
 		await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
 		await page.goto('/');
 
-		const live = tracker.runs.filter((run) => run.ended_at === null);
+		const live = tracker.runs.filter((run) => run.state === 'running' && run.ended_at === null);
 		const groups = overview(page).locator('details.hh-live-project');
 		await expect(groups.first()).toBeVisible();
 		await expect(overview(page).locator('details.hh-live-project[open]')).toHaveCount(0);
@@ -72,9 +69,6 @@ for (const [device, width, height] of [
 		if (process.env.TAKE_SCREENSHOT === 'true') {
 			await page.evaluate(() => document.fonts.ready.then(() => {}));
 			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
-			await overview(page).screenshot({
-				path: test.info().outputPath(`live-collapsed-${device}.png`)
-			});
 		}
 		const computer = page
 			.getByRole('list', { name: 'Computers' })
@@ -86,6 +80,7 @@ for (const [device, width, height] of [
 		await expect(computer).toContainText('2 remote runs');
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
+		await expectLiveDisposition(page, test.info().outputPath(`live-disposition-${device}.png`));
 		const projects = new Set(tracker.items.map((item) => item.agent));
 		await expect(overview(page).getByRole('status')).toHaveText(
 			`${live.length} runs live on 2 computers · ${projects.size} projects`

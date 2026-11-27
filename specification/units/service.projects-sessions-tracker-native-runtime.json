@@ -258,6 +258,7 @@
 			"contextAlert",
 			"recordHandoffFailure",
 			"recordOverdueAlert",
+			"blockMissingItem",
 			"applyIdleDecision",
 			"watchdogScan",
 			"watchdogEffectReceipt",
@@ -309,6 +310,8 @@
 			"recoveryBudget",
 			"hostWait",
 			"recoveryRung",
+			"recoveryHold",
+			"hasRecoveryBrief",
 			"trackerSecretSafetyRule",
 			"sessionHealthInterval",
 			"recoveryPollInterval",
@@ -1320,6 +1323,26 @@
 				"required": true
 			},
 			{
+				"name": "blockMissingItem.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "blockMissingItem.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "blockMissingItem.candidate",
+				"type": "TrackerItem",
+				"required": false
+			},
+			{
+				"name": "blockMissingItem.reason",
+				"type": "string",
+				"required": true
+			},
+			{
 				"name": "applyIdleDecision.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -1785,6 +1808,36 @@
 				"name": "recoveryRung.node",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "recoveryHold.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.latest",
+				"type": "TrackerListedRun | undefined",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.changedAt",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "hasRecoveryBrief.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "hasRecoveryBrief.latest",
+				"type": "TrackerListedRun",
+				"required": false
 			},
 			{
 				"name": "trackerSessionHealth.snapshot",
@@ -4250,6 +4303,39 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "blockMissingItem",
+				"inputs": [
+					{
+						"name": "blockMissingItem.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "blockMissingItem.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "blockMissingItem.candidate",
+						"type": "TrackerItem",
+						"required": false
+					},
+					{
+						"name": "blockMissingItem.reason",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "blockMissingItem",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "applyIdleDecision",
 				"inputs": [
 					{
@@ -5236,6 +5322,62 @@
 					{
 						"name": "recoveryRung",
 						"type": "TrackerLaunchRung | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoveryHold",
+				"inputs": [
+					{
+						"name": "recoveryHold.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.latest",
+						"type": "TrackerListedRun | undefined",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.changedAt",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoveryHold",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasRecoveryBrief",
+				"inputs": [
+					{
+						"name": "hasRecoveryBrief.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "hasRecoveryBrief.latest",
+						"type": "TrackerListedRun",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasRecoveryBrief",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

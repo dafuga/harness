@@ -1,12 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import {
-	existsSync,
-	readFileSync,
-	readdirSync,
-	realpathSync,
-	unlinkSync,
-	writeFileSync
-} from 'node:fs';
+import { existsSync, realpathSync, unlinkSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, vi } from 'vitest';
@@ -22,6 +15,7 @@ import {
 	seedTask,
 	verifyFailureBudget,
 	verifyKilledReminder,
+	verifyResumeBrief,
 	verifyStoppedRun
 } from './trackerRecoveryAssertions';
 import { measureWorkload } from './measureWorkload';
@@ -85,8 +79,7 @@ async function proveRecovery(root: string) {
 		writeFileSync(join(root, 'reject-boot'), '');
 		runtime = makeRuntime();
 		await verifyFailureBudget({ id, watchdog, items, database });
-		const rejectBoot = join(root, 'reject-boot');
-		unlinkSync(rejectBoot);
+		unlinkSync(join(root, 'reject-boot'));
 		await verifyStoppedRun(runtime, { dispatch, tmux, watchdog });
 		await verifyKilledReminder(runtime, { dispatch, tmux, watchdog });
 	} finally {
@@ -117,8 +110,14 @@ async function verifyEligibleRecovery(
 	}
 ) {
 	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 1 });
-	expect(items.getStored(id).auto).not.toBeNull();
-	runtime.store.appendLocal({ itemId: id, fields: { schedule_off: 0 } });
+	expect(items.getStored(id)).toMatchObject({
+		status: 'blocked',
+		blocked_reason: expect.stringContaining('automatic launch opted out')
+	});
+	runtime.store.appendLocal({
+		itemId: id,
+		fields: { schedule_off: 0, status: 'in_progress', blocked_reason: null }
+	});
 	await waitForRecoveryCapacity(runtime, database, { dispatch, tmux, watchdog });
 	await watchdog(11 * minute);
 	await expect
@@ -154,9 +153,14 @@ async function waitForRecoveryCapacity(
 		.toEqual({ state: 'running' });
 	for (let step = 0; step < 4; step++) await watchdog(11 * minute);
 	const waiting = new TrackerItemReadRepository(database).getStored(id);
-	expect(waiting.needs_daniel).toBe(false);
+	expect(waiting).toMatchObject({ status: 'open', needs_daniel: false });
 	expect(waiting.notes_log.some(({ text }) => /Relaunch [0-9]+\/3 failed:/.test(text))).toBe(false);
-	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 2 });
+	expect(
+		database.prepare('SELECT id, state FROM runs WHERE item_id = ? ORDER BY id').all(id)
+	).toEqual([
+		{ id: 1, state: 'finished' },
+		{ id: 3, state: 'queued' }
+	]);
 	expect((await managedTrackerItemRequest(runtime, occupantId, 'done')).ok).toBe(true);
 	tmux('kill-session', '-t', '=auto-occupy-r2');
 }
@@ -187,22 +191,6 @@ async function startAndDrop(
 		state: 'finished',
 		outcome: 'abandoned'
 	});
-}
-
-function verifyResumeBrief(directory: string, run: number) {
-	const brief = readBrief(directory, run);
-	expect(brief).toContain('Resume the synthetic task');
-	expect(brief).toContain('Progress note 11');
-	expect(brief).toContain('resume from: checkpoint commit');
-}
-
-function readBrief(state: string, run: number) {
-	for (const attempt of readdirSync(state)) {
-		const receipt = join(state, attempt, 'receipt.json');
-		if (existsSync(receipt) && JSON.parse(readFileSync(receipt, 'utf8')).runId === run)
-			return readFileSync(join(state, attempt, 'brief.md'), 'utf8');
-	}
-	return '';
 }
 
 function isolatedTmux(socket: string) {

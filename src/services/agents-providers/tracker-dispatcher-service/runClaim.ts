@@ -73,7 +73,13 @@ export function prepareRetry(
 		pinned: run.pinned
 	};
 	const problem = policy.admit(item, item.launch, rung);
-	if (problem) return skip('held', problem);
+	if (problem) {
+		if (problem === run.failure_reason) return skip('held', problem);
+		return {
+			result: { status: 'held', reason: problem },
+			writes: { runs: [reviseRun(run, { failure_reason: problem })] }
+		};
+	}
 	return reserveStart(item, { run, rung }, policy, now);
 }
 
@@ -158,9 +164,7 @@ function claimItemHold(
 		if (hold) return hold;
 	}
 	if (!startable(item)) return 'item is not startable';
-	return item.launch?.source === 'recovery' && item.status !== 'in_progress'
-		? 'item is no longer in progress'
-		: null;
+	return null;
 }
 
 function reserveStart(
