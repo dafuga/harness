@@ -27,7 +27,7 @@
 			},
 			{
 				"name": "openHygieneBrowser.origin",
-				"type": "unknown",
+				"type": "string",
 				"required": false
 			},
 			{
@@ -47,7 +47,7 @@
 			},
 			{
 				"name": "closeHygieneBrowser.origin",
-				"type": "unknown",
+				"type": "string",
 				"required": false
 			}
 		],
@@ -85,7 +85,7 @@
 					},
 					{
 						"name": "openHygieneBrowser.origin",
-						"type": "unknown",
+						"type": "string",
 						"required": false
 					}
 				],
@@ -123,7 +123,7 @@
 					},
 					{
 						"name": "closeHygieneBrowser.origin",
-						"type": "unknown",
+						"type": "string",
 						"required": false
 					}
 				],

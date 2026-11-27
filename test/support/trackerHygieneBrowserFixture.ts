@@ -33,6 +33,7 @@ async function fixtureEndpoint(profile: string) {
 	await expect.poll(() => existsSync(activePort)).toBe(true);
 	const [port, path] = readFileSync(activePort, 'utf8').split('\n');
 	expect(port).toMatch(/^[0-9]+$/);
+	expect(Number(port)).not.toBe(9333);
 	expect(path).toMatch(/^\/devtools\/browser\/[0-9a-f-]+$/);
 	const endpoint = 'http://127.0.0.1:' + port;
 	const response = await fetch(endpoint + '/json/version');

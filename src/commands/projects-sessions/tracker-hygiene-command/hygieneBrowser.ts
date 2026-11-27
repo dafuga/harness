@@ -28,7 +28,7 @@ async function browserIdentity(origin: string) {
 export async function openHygieneBrowser(
 	kind: 'tab' | 'window',
 	address = 'about:blank',
-	origin = automationOrigin
+	origin: string = automationOrigin
 ) {
 	const url = new URL(address);
 	if (
@@ -62,7 +62,7 @@ export async function closeHygieneBrowser(
 	browser: string,
 	entry: string,
 	target?: string,
-	origin = automationOrigin
+	origin: string = automationOrigin
 ) {
 	if (browser !== (await browserIdentity(origin)))
 		throw new HygieneError('Automation Chrome identity changed.');
