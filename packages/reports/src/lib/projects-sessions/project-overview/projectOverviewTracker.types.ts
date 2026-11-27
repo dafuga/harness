@@ -38,6 +38,9 @@ export type TrackerItemRecord = {
 	computer?: string | null;
 	model?: string | null;
 	occurrence?: string | null;
+	/** When the item next reminds, and the schedule it repeats on. */
+	remindAt?: string | null;
+	every?: string | null;
 	recurring?: boolean;
 	scheduleOff?: boolean;
 	priority?: string | null;

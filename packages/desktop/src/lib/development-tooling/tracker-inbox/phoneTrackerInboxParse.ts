@@ -32,6 +32,13 @@ function num(value: unknown): number | null {
 	return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
+function reminderOf(value: unknown): Pick<InboxHeader, 'reminder'> {
+	if (!isRecord(value)) return {};
+	const at = text(value.at);
+	if (at === null || Number.isNaN(Date.parse(at))) return {};
+	return { reminder: { at, repeats: nullableText(value.repeats) } };
+}
+
 /** Returns the parsed value, or null when any required field is missing. Never throws. */
 export function parseHeader(value: unknown): InboxHeader | null {
 	if (!isRecord(value)) return null;
@@ -48,7 +55,8 @@ export function parseHeader(value: unknown): InboxHeader | null {
 		status,
 		...(stage.success && { stage: stage.data }),
 		updatedAt: nullableText(value.updatedAt),
-		dueAt: nullableText(value.dueAt)
+		dueAt: nullableText(value.dueAt),
+		...reminderOf(value.reminder)
 	};
 }
 

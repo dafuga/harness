@@ -12,6 +12,7 @@ import type {
 	InboxRow,
 	TrackerInboxSource
 } from '../../../models/development-tooling/TrackerInbox.types';
+import { reminderHeaders } from './trackerReminders';
 import { itemBucket } from './trackerInbox';
 import { parseDetail, parseHeaders, parseWrites } from './phoneTrackerInboxParse';
 
@@ -52,7 +53,12 @@ function overviewOf(data: unknown): InboxOverview | undefined {
 		...recent.map((header) => ({ header, bucket: itemBucket(header.status, false) }))
 	];
 	const unresolved = typeof data.unresolvedFlags === 'number' ? data.unresolvedFlags : 0;
-	return { rows, unresolvedFlags: unresolved, needsYouCapped: needing.length >= NEEDS_YOU_CAP };
+	return {
+		rows,
+		reminders: reminderHeaders(parseHeaders(data.reminders)),
+		unresolvedFlags: unresolved,
+		needsYouCapped: needing.length >= NEEDS_YOU_CAP
+	};
 }
 
 function documentOf(data: unknown) {
@@ -61,9 +67,22 @@ function documentOf(data: unknown) {
 }
 
 function writeInput(write: ConfirmedWrite): Record<string, unknown> {
+	if (write.action === 'done') return { id: write.id, text: '' };
+	if (write.action === 'remind') return { id: write.id, text: write.text };
 	if (write.action === 'note') return { id: write.id, text: write.text };
 	const reviewed = { id: write.id, text: write.text, revision: write.revision };
 	return write.option === undefined ? reviewed : { ...reviewed, option: write.option };
+}
+
+/** A reminder that moved since the list was read is not written. */
+async function sendReminder(
+	draft: ConfirmedWrite,
+	detail: TrackerInboxSource['detail'],
+	send: TrackerInboxSource['write']
+): ReturnType<TrackerInboxSource['write']> {
+	const { value, ...read } = await detail(draft.id);
+	if (value?.header.reminder?.at === draft.armed) return send(draft);
+	return { ...read, code: read.code ?? 'staleReview' };
 }
 
 /** Adapts the phone's Tracker tools to the inbox page. Writes reach the outbox only when called. */
@@ -88,6 +107,14 @@ export function phoneTrackerInboxSource(tools: PhoneTrackerTools): TrackerInboxS
 		const value = read(result.data);
 		return value === undefined ? { ...base, code: 'invalidReply' } : { ...base, value };
 	};
+	const send = (write: ConfirmedWrite) =>
+		ask(`tracker_${write.action}` as PhoneTrackerTool, writeInput(write), (data) =>
+			isRecord(data) && typeof data.intentId === 'string' && typeof data.status === 'string'
+				? { intentId: data.intentId, status: data.status }
+				: undefined
+		);
+	const detail = (id: string) =>
+		ask('tracker_show', { id }, (data) => parseDetail(data) ?? undefined);
 	return {
 		document: (itemId, attachment) =>
 			ask('tracker_document', { id: itemId, attachment }, documentOf),
@@ -101,13 +128,8 @@ export function phoneTrackerInboxSource(tools: PhoneTrackerTools): TrackerInboxS
 						}))
 					: undefined
 			),
-		detail: (id) => ask('tracker_show', { id }, (data) => parseDetail(data) ?? undefined),
-		write: (write) =>
-			ask(`tracker_${write.action}` as PhoneTrackerTool, writeInput(write), (data) =>
-				isRecord(data) && typeof data.intentId === 'string' && typeof data.status === 'string'
-					? { intentId: data.intentId, status: data.status }
-					: undefined
-			),
+		detail,
+		write: (draft) => (draft.armed === undefined ? send(draft) : sendReminder(draft, detail, send)),
 		writes: () =>
 			ask('tracker_write_status', {}, (data) => (isRecord(data) ? parseWrites(data) : undefined)),
 		discard: (intentId) => ask('tracker_discard_write', { intentId }, (data) => data ?? {})

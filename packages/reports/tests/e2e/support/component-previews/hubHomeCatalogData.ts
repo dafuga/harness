@@ -1,4 +1,5 @@
 import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
+import { catalogReminders, catalogStamp as stamp } from './hubHomeReminderData';
 import { soonestWork } from '../../../../src/components/projects-sessions/hub-home/hubHomePresentation';
 import type { HomeView } from '../../../../src/components/projects-sessions/hub-home/hubHomeView.types';
 import type { LinkedHome } from '../../../../../hub/src/services/networking-security/LinkedHomeService';
@@ -12,10 +13,6 @@ import { previewAnswerOptions } from './shared';
 const prefix = 'hub.component.projects-sessions-hub-';
 export function isHubHomePreview(id: string) {
 	return id.startsWith(prefix + 'home') || id === prefix + 'quota-subscription';
-}
-
-function stamp(hours: number) {
-	return new Date(NOW + hours * 3_600_000).toISOString();
 }
 
 const snapshot: OwnerHomeSnapshot = {
@@ -188,6 +185,7 @@ export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
 	agents: snapshot.agents,
 	openAsks: [],
+	reminders: catalogReminders,
 	controlled: [],
 	plans: snapshot.plans,
 	schedule: snapshot.scheduled,

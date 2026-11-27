@@ -79,6 +79,16 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toHaveCount(0);
 });
 
+test('signed-in Home lists personal reminders and Needs you leaves them out', async ({ page }) => {
+	await hostedFixture(page);
+	await page.goto('/');
+	const reminders = page.getByRole('region', { name: 'Reminders', exact: true });
+	await expect(reminders.getByRole('listitem')).toContainText(/Water the sample plant\s*Due now/);
+	await page.getByRole('link', { name: 'Needs you', exact: true }).click();
+	await expect(page.getByText('Review the launch plan')).toBeVisible();
+	await expect(reminders).toHaveCount(0);
+});
+
 test('typed-code recovery displays the code and polls at the Hub interval', async ({ page }) => {
 	await hostedFixture(page, 'signed-out');
 	await page.goto('/');

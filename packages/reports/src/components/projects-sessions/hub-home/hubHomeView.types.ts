@@ -5,6 +5,7 @@ import type {
 	HomeChatReceipt,
 	HomeOpenAsk,
 	HomePlan,
+	HomeReminder,
 	HomeRun,
 	HomePastDue,
 	HomeSubscription,
@@ -33,6 +34,8 @@ export interface HomeView {
 	agents: HomeAgent[] | null;
 	/** The open structured asks: what "needs you" counts and what the Agents card lists. */
 	openAsks: HomeOpenAsk[];
+	/** Personal reminders; null until a computer that lists them has answered. */
+	reminders: HomeReminder[] | null;
 	/** Tracker agent values Daniel added as sessions he created himself. */
 	controlled: string[];
 	plans: HomePlan[] | null;

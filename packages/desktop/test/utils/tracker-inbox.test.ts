@@ -8,6 +8,7 @@ import {
 	writeGate,
 	writeView
 } from '../../src/lib/development-tooling/tracker-inbox/trackerInbox';
+import { overviewFailureMessage } from '../../src/lib/development-tooling/tracker-inbox/trackerInboxMessages';
 import type {
 	InboxDetail,
 	InboxHeader,
@@ -64,13 +65,28 @@ describe('filterRows and countBuckets', () => {
 			blocked: 0,
 			active: 1,
 			quiet: 0,
-			done: 0
+			done: 0,
+			reminders: 0
 		});
 	});
 
 	it('keeps source order and filters by bucket', () => {
 		expect(filterRows(rows, 'needs-you').map((row) => row.header.id)).toEqual(['a', 'c']);
 		expect(filterRows(rows, 'all')).toHaveLength(3);
+	});
+});
+
+describe('overviewFailureMessage', () => {
+	it('says why the list could not be read on each surface', () => {
+		const unlinked = 'No Tracker copy is on this phone yet. Connect to your computer to sync it.';
+		expect(overviewFailureMessage('denied', 'mac')).toBe(
+			'Tracker could not be reached on this Mac.'
+		);
+		expect(overviewFailureMessage('denied', 'phone')).toBe(unlinked);
+		expect(overviewFailureMessage('noReplica', 'phone')).toBe(unlinked);
+		expect(overviewFailureMessage(undefined, 'phone')).toBe(
+			'The Tracker copy on this phone could not be read.'
+		);
 	});
 });
 

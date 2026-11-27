@@ -3519,6 +3519,48 @@
 			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
 		},
 		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminder.svelte",
+			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
+			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
+			"reason": "Reminder titles show web addresses as links through the shared Reports component."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminder.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home reminders read this reports module through the build alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminder.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderTimes",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderTimes.ts",
+			"reason": "Hub Home reminders read this reports module through the build alias."
+		},
+		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminders.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home reminders read this reports module through the build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
+			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
+			"reason": "Reminder titles show web addresses as links through the shared Reports component."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+			"specifier": "$reports/utils/strings/linkSegments",
+			"to": "packages/reports/src/utils/strings/linkSegments.ts",
+			"reason": "A title with a link is shown outside the button that opens the reminder."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInboxReminders.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/reminderTimes",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/reminderTimes.ts",
+			"reason": "The Mac and phone Reminders view uses the same next-time and snooze rules as Hub Home."
+		},
+		{
 			"from": "packages/desktop/src/components/projects-sessions/DesktopHome.svelte",
 			"specifier": "$shared/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
@@ -3547,6 +3589,12 @@
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Resolve the Reports source used by Home through the workspace build alias."
+		},
+		{
+			"from": "packages/desktop/test/utils/projects-sessions/desktop-home-view.test.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeTrackerProjection",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerProjection.ts",
+			"reason": "The Mac Home test builds its Tracker reading with the shared Home projection."
 		},
 		{
 			"from": "packages/desktop/src/utils/projects-sessions/desktopHomeView.ts",

@@ -78,6 +78,15 @@ function homeFixture() {
 				],
 				since: new Date(Date.now() - 3600000).toISOString()
 			})),
+			reminders: [
+				{
+					itemId: 'fixture-reminder',
+					title: 'Water the sample plant',
+					at: new Date(Date.now() - 3600000).toISOString(),
+					repeats: 'Weekly',
+					updatedAt: new Date(Date.now() - 86400000).toISOString()
+				}
+			],
 			plans: [],
 			scheduled: [],
 			pastDue: [],
@@ -97,6 +106,7 @@ function homeFixture() {
 					},
 					bucket: 'quiet'
 				})),
+				reminders: [],
 				unresolvedFlags: 0,
 				needsYouCapped: false
 			}

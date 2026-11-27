@@ -12,16 +12,18 @@
 		TrackerInboxSource
 	} from '../../../models/development-tooling/TrackerInbox.types';
 	import {
-		bucketLabels,
 		countBuckets,
+		filterLabel,
 		filterRows,
 		inboxFilters,
 		writeView
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
+	import { overviewFailureMessage } from '../../../lib/development-tooling/tracker-inbox/trackerInboxMessages';
 	import { followTrackerSource } from '../../../lib/development-tooling/tracker-inbox/followTrackerSource';
 	import { withRowChoices } from '../../../lib/development-tooling/tracker-inbox/withRowChoices';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import TrackerInboxDetail from './TrackerInboxDetail.svelte';
+	import TrackerInboxReminders from './TrackerInboxReminders.svelte';
 	import TrackerInboxRows from './TrackerInboxRows.svelte';
 	import TrackerInboxWrites from './TrackerInboxWrites.svelte';
 	let {
@@ -34,6 +36,7 @@
 		project?: string;
 	} = $props();
 	const mac = $derived(mode === 'mac');
+	const tabs = $derived(inboxFilters.filter((name) => !project || name !== 'reminders'));
 	let overview = $state.raw<InboxOverview | null>(null);
 	let loadFailure = $state('');
 	let notice = $state('');
@@ -46,7 +49,7 @@
 	let lastSyncedAt = $state<string | null>(null);
 	let link = $state<RealtimeState | null>(null);
 	let detailView = $state<ReturnType<typeof TrackerInboxDetail>>();
-	const counts = $derived(countBuckets(overview?.rows ?? []));
+	const counts = $derived(countBuckets(overview?.rows ?? [], overview?.reminders.length));
 	const listed = $derived(filterRows(overview?.rows ?? [], filter));
 	function inProject(rows: InboxRow[]) {
 		return project ? rows.filter(({ header }) => header.project === project) : rows;
@@ -63,13 +66,7 @@
 		overview = value
 			? { ...value, rows: await withRowChoices(source, inProject(value.rows)) }
 			: null;
-		loadFailure = status.value
-			? ''
-			: mac
-				? 'Tracker could not be reached on this Mac.'
-				: status.code === 'denied' || status.code === 'noReplica'
-					? 'No Tracker copy is on this phone yet. Connect to your computer to sync it.'
-					: 'The Tracker copy on this phone could not be read.';
+		loadFailure = value ? '' : overviewFailureMessage(status.code, mode);
 		writes = (outbox.value ?? []).map(writeView);
 	}
 	async function search(term: string) {
@@ -89,6 +86,14 @@
 	async function follow() {
 		await Promise.all([reload(), found ? search(query) : undefined, detailView?.refresh()]);
 	}
+	/** What every list of items needs. */
+	const shared = $derived({
+		source,
+		mode,
+		onchanged: follow,
+		onnotice: (message: string) => (notice = message),
+		onselect: choose
+	});
 	onMount(() => {
 		void reload();
 		return followTrackerSource(source, { refresh: follow, state: (state) => (link = state) });
@@ -97,20 +102,16 @@
 
 {#snippet rows()}
 	<TrackerInboxRows
-		{source}
-		{mode}
-		onchanged={follow}
-		onnotice={(message) => (notice = message)}
+		{...shared}
 		rows={listed}
 		{selected}
-		label={filter === 'all' ? 'All items' : bucketLabels[filter]}
+		label={filter === 'all' ? 'All items' : filterLabel(filter)}
 		empty="Nothing here right now."
-		onselect={choose}
 	/>
 {/snippet}
 <hx-section class="inbox" aria-label="Tracker decisions">
 	<hx-header class="inbox-head">
-		<hx-h1>{project ?? 'Needs you'}</hx-h1>
+		<hx-h1>{filter === 'reminders' ? 'Reminders' : (project ?? 'Needs you')}</hx-h1>
 		{#if link}
 			<hx-span class="live" role="status" aria-label="Updates" data-state={link}>
 				{link === 'live' ? 'Live' : 'Reconnecting'}
@@ -139,7 +140,7 @@
 		{#if !mac}<TrackerInboxWrites {source} {writes} onchanged={reload} />{/if}
 	{:else if overview}
 		<hx-nav class="filters" aria-label="Filter items">
-			{#each inboxFilters as name (name)}
+			{#each tabs as name (name)}
 				<hx-button
 					type="button"
 					class="filter"
@@ -147,7 +148,7 @@
 					data-bucket={name}
 					onclick={() => (filter = name)}
 				>
-					{name === 'all' ? 'All' : bucketLabels[name]}
+					{filterLabel(name)}
 					<hx-span class="count">{counts[name]}</hx-span>
 				</hx-button>
 			{/each}
@@ -169,20 +170,18 @@
 			/>
 		</hx-form>
 
-		{#if found}
+		{#if filter === 'reminders' && !found}
+			<TrackerInboxReminders {...shared} reminders={overview.reminders} />
+		{:else if found}
 			<hx-h2>Search results</hx-h2>
 			<TrackerInboxRows
-				{source}
-				{mode}
-				onchanged={follow}
-				onnotice={(message) => (notice = message)}
+				{...shared}
 				rows={found}
 				{selected}
 				label="Search results"
 				empty={mac
 					? 'No Tracker items match that search.'
 					: 'Nothing on this phone matches that search.'}
-				onselect={choose}
 			/>
 		{:else if filter === 'needs-you'}
 			<!-- One rows instance for both states, so an answer's status survives its row leaving. -->

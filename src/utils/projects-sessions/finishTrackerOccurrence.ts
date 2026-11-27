@@ -1,11 +1,12 @@
 // @harness-uid u_ewas4mssnh
-import type { TrackerItemInput } from './normalizeTrackerItemFields.types';
+import type { TrackerItemInput, TrackerItemValue } from './normalizeTrackerItemFields.types';
 import type {
 	TrackerItemChange,
 	TrackerItemMutationContext,
 	TrackerItemSnapshot
 } from './planTrackerItemMutation.types';
 import { trackerIsoTime, trackerLocalStamp, trackerTimeZone } from './normalizeTrackerDue';
+import { normalizeTrackerCron, trackerCronOccurrences } from './normalizeTrackerCron';
 import { trackerItemError } from './trackerItemError';
 import { trackerItemValueOr } from './trackerItemValueOr';
 
@@ -35,6 +36,41 @@ export function finishTrackerOccurrence(
 	return {
 		fields: { last_result: result, ...(reopen ? { status: 'open' } : {}) },
 		appendNote: `occurrence ${stamp} ${status}${body.note ? `: ${body.note}` : ''}`
+	};
+}
+
+/** The first scheduled time of a repeating reminder after the given instant. */
+export function nextTrackerReminder(
+	every: TrackerItemValue,
+	timeZone: TrackerItemValue,
+	after: number
+): string {
+	const zone = String(trackerItemValueOr(timeZone, trackerTimeZone));
+	const cron = normalizeTrackerCron(every, zone, after);
+	return trackerIsoTime(trackerCronOccurrences(cron, zone)(after));
+}
+
+/**
+ * Done on a repeating reminder arms the next scheduled time and keeps the item open. Done before
+ * the armed time skips that time. `occurrence` names the armed time a button showed, so a second
+ * tap cannot skip another one.
+ */
+export function finishTrackerReminder(
+	item: TrackerItemSnapshot,
+	body: TrackerItemInput,
+	context: TrackerItemMutationContext
+): TrackerItemChange {
+	if (body.failed) throw trackerItemError('--failed is only for recurring jobs');
+	const armed = Date.parse(item.remind_at ?? '') || 0;
+	if (body.occurrence && Date.parse(parseOccurrence(body.occurrence)) !== armed)
+		throw trackerItemError('this reminder has already moved to another time', 409);
+	const next = nextTrackerReminder(item.every, item.every_tz, Math.max(context.now, armed));
+	const zone = String(trackerItemValueOr(item.every_tz, trackerTimeZone));
+	return {
+		fields: { remind_at: next, ...(item.status !== 'open' && { status: 'open' }) },
+		appendNote: `reminder done; next ${trackerLocalStamp(Date.parse(next), zone)} ${zone}${
+			body.note ? `: ${body.note}` : ''
+		}`
 	};
 }
 

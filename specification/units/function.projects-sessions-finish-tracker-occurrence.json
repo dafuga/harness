@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/finishTrackerOccurrence.ts"],
-		"symbols": ["finishTrackerOccurrence"]
+		"symbols": ["finishTrackerOccurrence", "nextTrackerReminder", "finishTrackerReminder"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -31,6 +31,42 @@
 				"type": "TrackerItemMutationContext",
 				"required": true,
 				"description": "The mutation clock and the node recorded as the actor when the request names none."
+			},
+			{
+				"name": "nextTrackerReminder.every",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Cron schedule or macro the reminder repeats on."
+			},
+			{
+				"name": "nextTrackerReminder.timeZone",
+				"type": "TrackerItemValue",
+				"required": true,
+				"description": "Time zone the schedule is read in; Europe/Lisbon when absent."
+			},
+			{
+				"name": "nextTrackerReminder.after",
+				"type": "number",
+				"required": true,
+				"description": "Epoch milliseconds the returned time must be later than."
+			},
+			{
+				"name": "finishTrackerReminder.item",
+				"type": "TrackerItemSnapshot",
+				"required": true,
+				"description": "The repeating reminder being marked done, with its armed time and schedule."
+			},
+			{
+				"name": "finishTrackerReminder.body",
+				"type": "TrackerItemInput",
+				"required": true,
+				"description": "Done request; an occurrence names the armed time shown, a note is kept, failed is refused."
+			},
+			{
+				"name": "finishTrackerReminder.context",
+				"type": "TrackerItemMutationContext",
+				"required": true,
+				"description": "Mutation context supplying the current time."
 			}
 		],
 		"outputs": [
@@ -70,6 +106,70 @@
 						"name": "finishTrackerOccurrence",
 						"type": "TrackerItemChange",
 						"description": "The recorded result and appended note; a done or in-progress item is reopened. It refuses a bad time or no due occurrence."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "nextTrackerReminder",
+				"inputs": [
+					{
+						"name": "nextTrackerReminder.every",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Cron schedule or macro the reminder repeats on."
+					},
+					{
+						"name": "nextTrackerReminder.timeZone",
+						"type": "TrackerItemValue",
+						"required": true,
+						"description": "Time zone the schedule is read in; Europe/Lisbon when absent."
+					},
+					{
+						"name": "nextTrackerReminder.after",
+						"type": "number",
+						"required": true,
+						"description": "Epoch milliseconds the returned time must be later than."
+					}
+				],
+				"outputs": [
+					{
+						"name": "nextTrackerReminder",
+						"type": "string",
+						"description": "The first scheduled time after the instant, as an ISO timestamp."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "finishTrackerReminder",
+				"inputs": [
+					{
+						"name": "finishTrackerReminder.item",
+						"type": "TrackerItemSnapshot",
+						"required": true,
+						"description": "The repeating reminder being marked done, with its armed time and schedule."
+					},
+					{
+						"name": "finishTrackerReminder.body",
+						"type": "TrackerItemInput",
+						"required": true,
+						"description": "Done request; an occurrence names the armed time shown, a note is kept, failed is refused."
+					},
+					{
+						"name": "finishTrackerReminder.context",
+						"type": "TrackerItemMutationContext",
+						"required": true,
+						"description": "Mutation context supplying the current time."
+					}
+				],
+				"outputs": [
+					{
+						"name": "finishTrackerReminder",
+						"type": "TrackerItemChange",
+						"description": "The next armed time, an open status when needed, and the history note."
 					}
 				],
 				"errors": [],

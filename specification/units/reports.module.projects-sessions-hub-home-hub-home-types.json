@@ -20,6 +20,7 @@
 			"HomeAskConfirm",
 			"HomeAgent",
 			"HomeOpenAsk",
+			"HomeReminder",
 			"HomePlan",
 			"HomeRun",
 			"HomeWhenDue",
@@ -29,9 +30,6 @@
 			"HomeProviderReadings",
 			"HomeTrackerProject",
 			"OwnerHomeSnapshot",
-			"HomeChatInput",
-			"HomeChatStatus",
-			"HomeChatReceipt",
 			"TrackerHomeSource",
 			"OpenHomeSection",
 			"SendHomeChat",
@@ -60,6 +58,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-tracker-planning",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-chat-types",
 			"via": "import",
 			"origin": "derived"
 		},

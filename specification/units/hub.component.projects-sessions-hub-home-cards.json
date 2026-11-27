@@ -13,6 +13,7 @@
 			"hub.component.projects-sessions-hub-home-card",
 			"hub.component.projects-sessions-hub-home-cos-chat",
 			"hub.component.projects-sessions-hub-home-needs-you",
+			"hub.component.projects-sessions-hub-home-reminders",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"hub.component.projects-sessions-hub-home-work-cards",
@@ -180,6 +181,11 @@
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-needs-you",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-reminders",
 			"via": "import",
 			"origin": "derived"
 		},

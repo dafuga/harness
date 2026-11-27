@@ -34,6 +34,7 @@ enum TrackerReplicaActions {
         "done": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
         "ignore": TrackerReplicaActionRule(textRequired: true, expectsStatus: true, needsOpenFlag: false),
         "unignore": TrackerReplicaActionRule(textRequired: false, expectsStatus: true, needsOpenFlag: false),
+        "remind": TrackerReplicaActionRule(textRequired: true, expectsStatus: true, needsOpenFlag: false),
     ]
 }
 

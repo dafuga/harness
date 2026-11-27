@@ -5,8 +5,14 @@ import type {
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 
-/** Whether this computer reported the open ask being answered, or the agent's item being noted. */
+/** Whether this computer reported what the write targets: an ask, an item, a run or a reminder. */
 export function showsHomeChatTarget(snapshot: OwnerHomeSnapshot, message: HomeChatInput) {
+	if (message.armed)
+		return Boolean(
+			snapshot.reminders?.some(
+				(entry) => entry.itemId === message.itemId && entry.at === message.armed
+			)
+		);
 	// Any computer's Tracker can take a Chief of Staff message; sync carries it to that pane.
 	if (message.kind === 'message')
 		return (

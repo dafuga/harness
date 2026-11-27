@@ -1,4 +1,6 @@
 // @harness-uid u_3fnmp7mnr4
+import { trackerPersonalAgent } from '../../../../../../src/utils/projects-sessions/trackerUnattendedHold';
+import { listHomeReminders } from './homeReminders';
 import { homeText, openQuestion } from './homeTrackerText';
 import { projectOverviewSnapshot } from '../project-overview/projectOverviewSnapshot';
 import type {
@@ -70,17 +72,21 @@ export function buildHomeSnapshot(
 	providers: HomeProviderReadings,
 	now: number
 ): OwnerHomeSnapshot {
-	const items =
+	const shown =
 		sources?.items.filter(
 			(item) => !item.deleted && !item.sensitive && item.status !== 'ignored'
 		) ?? [];
+	const items = shown.filter((item) => !trackerPersonalAgent(item.agent));
 	const overview = sources
 		? projectOverviewSnapshot(sources, now)
 		: { status: 'unavailable' as const };
 	const agents: HomeAgent[] = sources ? buildHomeAgents(overview, { ...sources, items }) : [];
 	return {
 		overview,
-		...(sources && { projectDirectory: listTrackerProjects(items) }),
+		...(sources && {
+			projectDirectory: listTrackerProjects(items),
+			reminders: listHomeReminders(shown)
+		}),
 		agents,
 		openAsks: buildHomeOpenAsks(items),
 		plans: listPlans(items),

@@ -18,8 +18,9 @@ import {
 import { trackerBoxJobStore } from './tracker-recurring-repository/boxJobs';
 
 const workPrefix = 'harness_recurring_work:';
+/** Repeating reminders are armed by `tracker done`; only repeating jobs are scheduled here. */
 const active =
-	"deleted = 0 AND title IS NOT NULL AND every IS NOT NULL AND status NOT IN ('done','ignored')";
+	"deleted = 0 AND title IS NOT NULL AND every IS NOT NULL AND coalesce(kind, '') <> 'reminder' AND status NOT IN ('done','ignored')";
 
 /** Shares legacy occurrence history and commits its native job or wake intent with the item journal. */
 export class TrackerRecurringRepository {

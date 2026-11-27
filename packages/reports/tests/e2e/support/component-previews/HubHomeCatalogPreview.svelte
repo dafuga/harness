@@ -6,6 +6,7 @@
 	import HubHomeRow from '../../../../src/components/projects-sessions/hub-home/HubHomeRow.svelte';
 	import { browserContext } from '../../../../../hub/src/utils/development-tooling/browserContext';
 	import { catalogHomeView, catalogWorkProject } from './hubHomeCatalogData';
+	import { catalogReminders } from './hubHomeReminderData';
 	import { previewAnswerOptions } from './shared';
 	import '../../../../src/lib/styles/home-scheme.css';
 	import '../../../../src/lib/styles/hub-home/index.css';
@@ -109,6 +110,8 @@
 		'home-projects': { projects: list, snapshots, readProject },
 		'home-quota': { quota: view.quota, now: view.now, connected: true, reload: noop },
 		'home-quota-pills': { subscriptions: view.quota, now: view.now },
+		'home-reminder': { reminder: catalogReminders[0], now: view.now, send, receipt },
+		'home-reminders': { reminders: catalogReminders, now: view.now, send, receipt },
 		'home-row': { title: 'Review the export columns', meta: 'Atlas · 2h ago' },
 		'home-schedule': { runs: view.schedule, now: view.now, connected: true },
 		'home-skeleton': { rows: 3 },
