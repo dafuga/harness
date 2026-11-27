@@ -111,17 +111,38 @@ export async function agentLoaded(host: TrackerBundleHost): Promise<boolean> {
 	return (await host.run(launchctl, ['print', `gui/${host.uid}/${trackerLabel}`])).status === 0;
 }
 
-/** Unloads and loads the agent so launchd reads the changed command line. */
+/** launchctl print returns 113 when the named service is absent from the domain. */
+async function waitForBootout(host: TrackerBundleHost, target: string): Promise<void> {
+	const bootout = await host.run(launchctl, ['bootout', target]);
+	const interval = 250;
+	const timeout = 30_000;
+	for (let elapsed = 0; elapsed <= timeout; elapsed += interval) {
+		const { status } = await host.run(launchctl, ['print', target]);
+		if (status === 113) return;
+		if (status !== 0)
+			throw new TrackerBundleError(
+				`Cannot confirm Tracker stopped (launchctl print exit ${status}).`
+			);
+		if (elapsed < timeout) await host.sleep(interval);
+	}
+	throw new TrackerBundleError(
+		`Tracker did not stop within 30 seconds (bootout exit ${bootout.status}).`
+	);
+}
+
+/** Waits for removal before loading the changed plist. Zero attempts requests unload only. */
 export async function reloadAgent(
 	agent: string,
 	host: TrackerBundleHost,
 	attempts = 5
 ): Promise<void> {
 	const domain = `gui/${host.uid}`;
-	await host.run(launchctl, ['bootout', `${domain}/${trackerLabel}`]);
+	await waitForBootout(host, `${domain}/${trackerLabel}`);
 	for (let attempt = 1; attempt <= attempts; attempt++) {
-		if ((await host.run(launchctl, ['bootstrap', domain, agent])).status === 0) return;
+		const { status } = await host.run(launchctl, ['bootstrap', domain, agent]);
+		if (status === 0) return;
+		if (attempt === attempts)
+			throw new TrackerBundleError(`launchctl bootstrap failed for Tracker (exit ${status}).`);
 		await host.sleep(1000);
 	}
-	throw new TrackerBundleError('launchd would not load the Tracker service.');
 }

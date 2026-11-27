@@ -45,7 +45,7 @@ async function rollBack(a: ActivateInput, reason: string): Promise<Activation> {
 	await restoreLink(a.layout.entry, a.before.entry);
 	if (a.program === null) {
 		await rm(a.layout.agent, { force: true });
-		await reloadAgent(a.layout.agent, host, 0).catch(() => undefined);
+		await reloadAgent(a.layout.agent, host, 0);
 	} else {
 		await setAgentExecutable(a.layout.agent, a.program[0], host);
 		await reloadAgent(a.layout.agent, host);
