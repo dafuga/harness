@@ -100,6 +100,7 @@
 				<TrackerInboxChoices
 					flag={row.review.flag}
 					{busy}
+					compact
 					onpick={(number) => void deliver(review, optionWrite(review, reviewed(review), number))}
 					onother={(text) => void deliver(review, writtenAnswer(review, reviewed(review), text))}
 				/>
