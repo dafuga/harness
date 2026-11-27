@@ -26,7 +26,7 @@ test('a precompiled module, its bytes and a loader all run the same unit as the 
 	await loaded.close();
 });
 
-test('a module without the JSON ABI, or bytes that are not Wasm, are unavailable', async () => {
+test('module load failures and invocation traps report their error category', async () => {
 	await measureWorkload('adapter.wasm-module-runtime', 'wasm-loader-failures', async () => {
 		const empty = new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0]);
 		expect(
@@ -46,8 +46,30 @@ test('a module without the JSON ABI, or bytes that are not Wasm, are unavailable
 			ok: false,
 			error: { code: 'runtime-failed', message: 'no module here' }
 		});
+		const trapped = await new WasmModuleRuntimeAdapter(trappingModule()).invoke(request);
+		expect(trapped).toEqual({
+			ok: false,
+			error: {
+				code: 'runtime-failed',
+				message: expect.stringMatching(
+					/unreachable[\s\S]*harness_invoke\(pointer=8, inputBytes=23, memoryBytes=65536\)/i
+				)
+			}
+		});
 	});
 });
+
+/** One page, an allocator returning 8, a no-op free, and an invoke ending in unreachable. */
+function trappingModule(): Uint8Array<ArrayBuffer> {
+	return Uint8Array.of(
+		...Buffer.from('0061736d01000000', 'hex'), // module header
+		...Buffer.from('01110360017f017f60027f7f0060027f7f017e', 'hex'), // ABI signatures
+		...Buffer.from('0304030001020503010001', 'hex'), // functions and memory
+		...Buffer.from('073a04066d656d6f727902000d6861726e6573735f616c6c6f630000', 'hex'), // exports
+		...Buffer.from('0c6861726e6573735f6672656500010e6861726e6573735f696e766f6b650002', 'hex'),
+		...Buffer.from('0a0d03040041080b02000b0300000b', 'hex') // function bodies
+	);
+}
 
 test('the file adapter still reports an unreadable file as unavailable', async () => {
 	const missing = new WasmRuntimeAdapter('/nonexistent/unit.wasm');

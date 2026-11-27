@@ -7105,13 +7105,13 @@
 			"unit": "adapter.wasm-module-runtime",
 			"from": "src/adapters/WasmModuleRuntimeAdapter.ts",
 			"to": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
-			"definition": "f802fe77cb7deb02ca71a0e4f3f60a7b91204493a6b53922b91f62436dcfaad3",
+			"definition": "e6a0121884598b6b5ea9c57b60aef105a04569acbdf8e1e4a9d96dbf71f71abd",
 			"relocationDefinition": "6e795040118ba3425b9dabbd4884df717cc4f45b43bbcf841bb021b762d2f41a",
 			"review": {
-				"commit": "ba1559ab09d5816ba55ee8417aa1858f6c9f271f",
+				"commit": "af9fa20dfc344591792515367356108aee1b668f",
 				"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
-				"definition": "f802fe77cb7deb02ca71a0e4f3f60a7b91204493a6b53922b91f62436dcfaad3",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-adapter.wasm-module-runtime, written by haiku); messages and behavior unchanged."
+				"definition": "e6a0121884598b6b5ea9c57b60aef105a04569acbdf8e1e4a9d96dbf71f71abd",
+				"reason": "Include byte pointer, input length, and current linear-memory size when the JSON ABI invocation traps. The original error and runtime failure classification are preserved."
 			},
 			"previousReviews": [
 				{
@@ -7125,6 +7125,12 @@
 					"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
 					"definition": "0512728dea030c994ef4a31f12bbd1490de7b3c38aa93e0563ceb7fd5964ed43",
 					"reason": "Delegate error text to the shared formatter while preserving ABI failure classification and recovery."
+				},
+				{
+					"commit": "ba1559ab09d5816ba55ee8417aa1858f6c9f271f",
+					"path": "src/adapters/execution-runtimes/wasm-runtime-adapter/WasmModuleRuntimeAdapter.ts",
+					"definition": "f802fe77cb7deb02ca71a0e4f3f60a7b91204493a6b53922b91f62436dcfaad3",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-adapter.wasm-module-runtime, written by haiku); messages and behavior unchanged."
 				}
 			]
 		},
