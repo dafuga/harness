@@ -7,9 +7,9 @@ const listed = 12;
 // The wording must stay clear of `isTrackerCosMessage`, or the ask is hidden from Daniel.
 const options = JSON.stringify([
 	{
-		label: 'Restart Chief of Staff',
+		label: 'Run Chief of Staff in tmux "cos"',
 		effect:
-			'Restart the "cos" tmux session on the primary Mac, or ask any session to. This closes by itself once the waiting alerts are delivered.',
+			'Start or move Chief of Staff into a tmux session named cos on the primary Mac, or ask any session to. This closes by itself once the waiting alerts are delivered.',
 		recommended: true
 	},
 	{
@@ -54,7 +54,7 @@ export function cosDeliveryAsk({
 		resolved: 0,
 		answer: null,
 		answer_option: null,
-		question: `${count} not reached your Chief of Staff session (oldest waiting ${minutes} minutes; ${outages.length} outage or security). What should happen?`,
+		question: `${count} not reached your Chief of Staff session (oldest waiting ${minutes} minutes; ${outages.length} outage or security). The Tracker can only send them to a tmux session named "cos" on the primary Mac. What should happen?`,
 		options,
 		'note+': waitingList(outages.length ? outages : pending)
 	};
