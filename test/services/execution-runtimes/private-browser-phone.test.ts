@@ -86,7 +86,7 @@ async function fixture() {
 test('accepts one enrolled phone submission, never returns the field and clears plaintext', async () => {
 	await measureWorkload(
 		'service.execution-runtimes-private-browser-phone',
-		'signed phone delivery and result verification',
+		'verify-signed-phone-delivery',
 		async () => {
 			const { offer, proof, service, gate, submitField, verifyResult } = await fixture();
 			const offered = offer();

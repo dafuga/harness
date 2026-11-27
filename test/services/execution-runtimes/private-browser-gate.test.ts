@@ -45,7 +45,7 @@ test('recover denies reads on boot and requires input revocation and confirmed f
 test('request aborts and drains existing work before private input and drops its output', async () => {
 	await measureWorkload(
 		'service.execution-runtimes-private-browser-gate',
-		'in-flight read through private admission and cancel',
+		'drain-read-and-cancel-private-window',
 		async () => {
 			const { gate } = fixture();
 			await gate.recover();

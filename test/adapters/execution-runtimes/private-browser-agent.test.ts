@@ -78,7 +78,7 @@ test('listen fails closed for an unverified or wrong agent identity', async () =
 test('only reviewed reads, request and status are exposed and private entry blocks all reads', async () => {
 	await measureWorkload(
 		'adapter.execution-runtimes-private-browser-agent',
-		'ordinary reads and private refusal over a Unix socket',
+		'unix-agent-read-and-private-refusal',
 		async () => {
 			const { adapter, socketPath, close, gate, reviewedRead } = await fixture();
 			try {
