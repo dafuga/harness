@@ -166,8 +166,8 @@ operator verifies the stopped database and chooses a rollback.
 
   The native `autolaunch.enabled` setting governs unattended launches.
   When omitted, the node follows the legacy setting in
-  `~/.config/tracker/config.json` if present. Automatic launches hold from
-  22:00 to 08:00 Lisbon time. After the hold, the hub admits up to two
+  `~/.config/tracker/config.json` if present. Automatic launches run at any
+  hour: quiet hours cover only what is for Daniel. The hub admits up to two
   automatic launch reservations in any rolling minute across the fleet.
   Connected spokes wait for a hub slot. If the hub is unreachable, a spoke
   still starts the due tasks it owns, using the same two-per-minute limit on
@@ -176,8 +176,7 @@ operator verifies the stopped database and chooses a rollback.
   error, a redirect, a certificate error or an unreadable reply holds the
   launch. A due pause or local-due opt-out that the spoke has already received
   still applies. Other automatic launches wait for the hub. Explicit launch
-  requests get the first available local slots and bypass the night hold and
-  rate limit.
+  requests get the first available local slots and bypass the rate limit.
   Each adapter can classify intake as urgent, normal or low. The configured
   GitHub tester rule marks issues and comments by its allowed tester logins
   urgent. Urgent items take the next free slot ahead of normal and low
@@ -191,8 +190,7 @@ operator verifies the stopped database and chooses a rollback.
 
   For other open or in-progress tasks, the hub watchdog checks for owner
   activity, pending launches and active runs or panes before requesting
-  dispatch. It checks during 08:00–22:00 Lisbon time after two idle hours
-  by default. Configure `hostEffects.watchdog.idleWorkMinutes` to change
+  dispatch. It checks at any hour, after two idle hours by default. Configure `hostEffects.watchdog.idleWorkMinutes` to change
   that threshold. The dispatcher chooses an approved computer, applies
   normal capacity and retries pending requests. The digest lists queued
   requests and their wait. If the task has no approved placement, the
@@ -746,6 +744,43 @@ supervise`, and install starts it at once. The supervisor holds one lock per
 - **Human redo.** When a done item has failed, rejected or timed-out attempts
   with no active attempt and no later successful one on any computer, the
   owning computer records `redone_by` as `human`.
+
+## Release copy and soak
+
+Stage the release locally under
+`~/.local/state/tracker/harness-releases/<id>/` with its `SHA256SUMS`. Copy it
+to every other computer with the checked-in script, from the release revision.
+Do not copy a previous session's staging script or run `rsync` into the
+releases folder by hand.
+
+```sh
+scripts/tracker-release-copy.sh copy ~/.local/state/tracker/harness-releases/<id> <ssh-host>
+# after activation on every computer; waits 15 minutes, so run it in the background
+scripts/tracker-release-copy.sh soak <id> <ssh-host>...
+```
+
+A failed or timed-out copy can leave an `rsync --server` receiver running on
+the other computer. It keeps a handle on its destination directory, even after
+that directory is renamed. With `--partial` it can later rename a partial file
+over the real one: this truncated a live `harness` binary 11 minutes after a
+release which had passed its checksums. `copy` therefore:
+
+- gives every attempt a fresh directory and never uses `--partial`, so a retry
+  sends the whole release again;
+- kills the release's receivers and confirms none remain before each attempt,
+  after a failed or interrupted one, and before publishing. If it cannot
+  confirm this, it publishes nothing;
+- publishes a local copy, made on that computer, in a directory `rsync` never
+  wrote to, after checking `SHA256SUMS` and the signature.
+
+`soak` checks `SHA256SUMS`, its match with this computer's copy, the signature
+and the absence of receivers on this computer and every named host. A release
+is not done until it exits 0. Treat any `FAILED` line as a broken release: do
+not restart that computer's Tracker until its files verify again.
+
+If the connection is lost altogether, `copy` warns that it could not stop the
+receiver. Run `copy` again once the host is reachable; it stops leftovers first.
+`HARNESS_RELEASE_BWLIMIT` sets the transfer cap in KB/s (default 2000).
 
 ## Rollback evidence
 

@@ -6,10 +6,7 @@ import type {
 	TrackerLaunchRung,
 	TrackerRunReceipt
 } from '../../agents-providers/TrackerDispatcherService';
-import {
-	automaticQuietHour,
-	automaticRequestHold
-} from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
+import { automaticRequestHold } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 
 export function automaticQueueHold(
 	item: TrackerDispatchItem | null,
@@ -29,7 +26,6 @@ export function automaticQueueHold(
 	if (!policy) return null;
 	const held = automaticRequestHold(item, policy, now);
 	if (held) return held;
-	if (automaticQuietHour(now)) return 'automatic launch night hold';
 	// Admit with the model, so a held provider never takes a fleet slot from another one.
 	return policy.admit(item, intent, queued ?? intendedRung(item, intent, policy));
 }

@@ -7,7 +7,6 @@ import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogPaneService } from '../WatchdogPaneService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
-import { automaticQuietHour } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { publishTrackerSlotAlerts } from './trackerSlotAlerts';
 import { queueIdleWork } from './trackerWatchLaunchRequests';
 import { recordStartupAlerts } from './trackerHostWatchdogAlerts';
@@ -64,7 +63,7 @@ async function scanHostSessions(
 	);
 	adoptTrackerHandLaunches(hosts.store, rows, panes);
 	const snapshot = watchdogSnapshot(hosts.store, rows, panes, now);
-	const canLaunch = options.automaticEnabled?.() !== false && !automaticQuietHour(now);
+	const canLaunch = options.automaticEnabled?.() !== false;
 	await inspectHostSessions(
 		hosts,
 		{ rows, snapshot, launch: canLaunch ? options.launch : undefined, settle: options.settle },

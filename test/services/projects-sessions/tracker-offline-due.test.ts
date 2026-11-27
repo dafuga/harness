@@ -13,8 +13,9 @@ import { fixturePolicy, primary, secondary } from '../../support/trackerDispatch
 import { fixtureSecret } from '../../support/trackerDispatchQueueFixture';
 
 const signal = new AbortController().signal;
-const noon = Date.parse('2026-11-25T12:00:00Z');
-const now = () => noon;
+// 02:00 in Lisbon: due work launches through the night.
+const night = Date.parse('2026-11-25T02:00:00Z');
+const now = () => night;
 
 async function listener(handler: RequestListener) {
 	const server = createServer(handler);
@@ -41,7 +42,7 @@ function spoke(hubUrl: string, cachedPolicy?: object) {
 	const database = new DatabaseSync(':memory:');
 	const start = vi.fn<TrackerDispatchRunner['start']>(async ({ run, key }) => ({
 		type: 'session',
-		session: { key, id: run.item_id, state: 'live', startedAt: noon }
+		session: { key, id: run.item_id, state: 'live', startedAt: night }
 	}));
 	const runtime = new TrackerNativeRuntimeService(database, {
 		node: secondary,
@@ -122,8 +123,8 @@ for (const [name, status, body] of refusals) {
 }
 
 const cached: [string, object][] = [
-	['paused due launches', { paused: true, local_due: true, at: noon - 1 }],
-	['turned local due off', { paused: false, local_due: false, at: noon - 1 }]
+	['paused due launches', { paused: true, local_due: true, at: night - 1 }],
+	['turned local due off', { paused: false, local_due: false, at: night - 1 }]
 ];
 
 for (const [name, policy] of cached) {

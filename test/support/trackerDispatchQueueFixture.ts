@@ -19,7 +19,8 @@ import { fixturePolicy, primary, secondary } from './trackerDispatcherFixture';
 
 const signal = new AbortController().signal;
 export async function provePriorityAndPacing() {
-	let clock = Date.parse('2026-11-25T07:59:59Z');
+	// 02:00 in Lisbon: only the launcher switch and fleet pacing hold automatic work.
+	let clock = Date.parse('2026-11-25T02:00:00Z');
 	const database = new DatabaseSync(':memory:');
 	const store = new TrackerPersistenceService(database, primary, { now: () => clock });
 	const repo = new TrackerDispatchRepository(store);
@@ -45,11 +46,6 @@ export async function provePriorityAndPacing() {
 		expect(start.mock.calls.map(([{ run }]) => run.item_id)).toEqual(['manual0001']);
 		expect(scheduler.status().enabled).toBe(false);
 		enabled = true;
-		await scheduler.tick(signal);
-		expect(start).toHaveBeenCalledTimes(1);
-		expect(scheduler.runnerStatus().waiting_on).toBe('automatic launch night hold');
-
-		clock += 1000;
 		queueExplicit(store, 'manual0002');
 		await scheduler.tick(signal);
 		await scheduler.tick(signal);

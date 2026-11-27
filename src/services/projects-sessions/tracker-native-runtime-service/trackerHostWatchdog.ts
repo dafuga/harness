@@ -7,7 +7,6 @@ import { WatchdogIdleService } from '../WatchdogIdleService';
 import { WatchdogStartupService } from '../WatchdogStartupService';
 import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { automaticQuietHour } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { watchLaunchRequests } from './trackerWatchLaunchRequests';
 import { trackerCosRound } from './trackerCosRound';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
@@ -58,8 +57,7 @@ export function trackerHostWatchdog(
 			} finally {
 				// A broken pane scan must not also silence the alerts or the stuck-delivery ask.
 				const launchAlert =
-					chiefOfStaff &&
-					watchLaunchRequests(store, now(), !watchdogLaunchHold(now(), automaticEnabled));
+					chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
 				if (chiefOfStaff && !signal.aborted) await cos.run(signal, launchAlert);
 			}
 			// Last, so a pane that cannot be typed into never holds back the checks above.
@@ -128,7 +126,7 @@ function inspectHostWatchdog(
 		if (!panes) return { computer: store.node, available: false, sessions: [], recovery: [] };
 		const rows = readItems();
 		const snapshot = watchdogSnapshot(store, rows, panes, now());
-		const automaticHold = watchdogLaunchHold(snapshot.now, automaticEnabled);
+		const automaticHold = watchdogLaunchHold(automaticEnabled);
 		const itemId = id ? items.resolve(id).id : undefined;
 		const slots = readTrackerSlotState(store, panes, { now: snapshot.now, cap: slotCap });
 		return {
@@ -152,7 +150,6 @@ function inspectHostWatchdog(
 	};
 }
 
-function watchdogLaunchHold(now: number, enabled?: () => boolean): string | null {
-	if (enabled?.() === false) return 'automatic launcher disabled';
-	return automaticQuietHour(now) ? 'automatic launch night hold' : null;
+function watchdogLaunchHold(enabled?: () => boolean): string | null {
+	return enabled?.() === false ? 'automatic launcher disabled' : null;
 }
