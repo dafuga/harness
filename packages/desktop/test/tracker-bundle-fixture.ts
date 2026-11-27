@@ -9,7 +9,28 @@ import type { TrackerBundleRun } from '../src/services/development-tooling/track
 /** A host that runs the real `plutil` on temporary files and pretends to be launchd. */
 export function fakeLaunchd(): FakeLaunchd {
 	let elapsed = 0;
-	let stopsAt: number | undefined;
+	let labelRemovedAt = Infinity;
+	let processExitsAt: number | undefined;
+	let pid = 730;
+	function launchctl(command: string): TrackerBundleRun {
+		state.calls.push(command);
+		if (command === 'print') {
+			const stdout = state.loaded ? `\tpid = ${pid}\n` : '';
+			return { status: state.loaded ? 0 : 113, stdout };
+		}
+		if (command === 'bootout' && state.loaded) {
+			labelRemovedAt = elapsed + Math.min(250, state.stopDelayMs);
+			processExitsAt = elapsed + state.stopDelayMs;
+		}
+		if (command === 'bootstrap') {
+			if (state.loaded || elapsed < (processExitsAt ?? 0)) return { status: 5, stdout: '' };
+			state.loaded = true;
+			labelRemovedAt = Infinity;
+			processExitsAt = undefined;
+			pid++;
+		}
+		return { status: 0, stdout: '' };
+	}
 	const state: FakeLaunchd = {
 		calls: [],
 		loaded: false,
@@ -17,26 +38,17 @@ export function fakeLaunchd(): FakeLaunchd {
 		ready: () => true,
 		host: {
 			uid: 501,
+			isProcessRunning: (id: number) =>
+				id === pid && (state.loaded || elapsed < (processExitsAt ?? 0)),
 			sleep: async (milliseconds) => {
 				elapsed += milliseconds;
 			},
 			run: async (file, args): Promise<TrackerBundleRun> => {
+				if (elapsed >= labelRemovedAt) state.loaded = false;
+				if (file === '/bin/launchctl') return launchctl(args[0]);
 				if (file === '/usr/bin/plutil') {
 					const result = spawnSync(file, args, { encoding: 'utf8' });
 					return { status: result.status ?? 1, stdout: result.stdout };
-				}
-				if (file === '/bin/launchctl') {
-					state.calls.push(args[0]);
-					if (stopsAt !== undefined && elapsed >= stopsAt) {
-						state.loaded = false;
-						stopsAt = undefined;
-					}
-					if (args[0] === 'bootout' && state.loaded) stopsAt ??= elapsed + state.stopDelayMs;
-					if (args[0] === 'bootstrap') {
-						if (state.loaded) return { status: 5, stdout: '' };
-						state.loaded = true;
-					}
-					return { status: args[0] === 'print' && !state.loaded ? 113 : 0, stdout: '' };
 				}
 				state.calls.push('ensure');
 				return { status: state.ready(file) ? 0 : 3, stdout: '' };

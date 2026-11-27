@@ -100,7 +100,10 @@ darwin(
 		expect({ ...after, ProgramArguments: null }).toEqual({ ...before, ProgramArguments: null });
 		expect(readFileSync(database, 'utf8')).toBe('journal');
 		expect(readFileSync(config, 'utf8')).toContain('"role":"hub"');
-		expect(launchd.calls.filter((call) => ['bootout', 'bootstrap'].includes(call))).toEqual(['bootout', 'bootstrap']);
+		expect(launchd.calls.filter((call) => ['bootout', 'bootstrap'].includes(call))).toEqual([
+			'bootout',
+			'bootstrap'
+		]);
 		expect(readInstallLog(layout.logs).at(-1)).toMatchObject({ revision, ...outcome });
 	}
 );
