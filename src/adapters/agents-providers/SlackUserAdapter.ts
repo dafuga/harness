@@ -43,13 +43,10 @@ export class SlackUserAdapter {
 	conversations(types: string, cursor?: string): Promise<SlackUserConversationPage> {
 		return this.use(async (token) =>
 			decodeConversations(
-				await slackRequest(
-					this.fetch,
-					'users.conversations',
-					token,
-					{ types, limit: 100, exclude_archived: true, cursor },
-					true
-				)
+				await slackRequest(this.fetch, 'users.conversations', token, {
+					body: { types, limit: 100, exclude_archived: true, cursor },
+					userGrant: true
+				})
 			)
 		);
 	}
@@ -66,19 +63,10 @@ export class SlackUserAdapter {
 			this.checkChannel(channel);
 			const method = threadTs ? 'conversations.replies' : 'conversations.history';
 			return decodeHistory(
-				await slackRequest(
-					this.fetch,
-					method,
-					token,
-					{
-						channel,
-						ts: threadTs,
-						oldest,
-						cursor,
-						limit: 15
-					},
-					true
-				)
+				await slackRequest(this.fetch, method, token, {
+					body: { channel, ts: threadTs, oldest, cursor, limit: 15 },
+					userGrant: true
+				})
 			);
 		});
 	}
@@ -114,7 +102,7 @@ export class SlackUserAdapter {
 	private async verify(token: string): Promise<void> {
 		const digest = createHash('sha256').update(token).digest('hex');
 		if (this.verified?.digest === digest) return;
-		const raw = await slackRequest(this.fetch, 'auth.test', token, undefined, true);
+		const raw = await slackRequest(this.fetch, 'auth.test', token, { userGrant: true });
 		const reply = raw as {
 			ok?: boolean;
 			team_id?: string;

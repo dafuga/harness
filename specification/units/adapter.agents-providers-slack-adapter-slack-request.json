@@ -30,15 +30,10 @@
 				"required": true
 			},
 			{
-				"name": "slackRequest.body",
-				"type": "object",
-				"required": false
-			},
-			{
-				"name": "slackRequest.userGrant",
-				"type": "boolean",
+				"name": "slackRequest.options",
+				"type": "{ body?: object; userGrant?: boolean }",
 				"required": false,
-				"default": false
+				"default": {}
 			}
 		],
 		"outputs": [
@@ -74,15 +69,10 @@
 						"required": true
 					},
 					{
-						"name": "slackRequest.body",
-						"type": "object",
-						"required": false
-					},
-					{
-						"name": "slackRequest.userGrant",
-						"type": "boolean",
+						"name": "slackRequest.options",
+						"type": "{ body?: object; userGrant?: boolean }",
 						"required": false,
-						"default": false
+						"default": {}
 					}
 				],
 				"outputs": [

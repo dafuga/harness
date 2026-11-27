@@ -30,11 +30,10 @@ export async function slackRequest(
 	fetchImpl: typeof fetch,
 	method: SlackMethod,
 	token: string,
-	body?: object,
-	userGrant = false
+	options: { body?: object; userGrant?: boolean } = {}
 ): Promise<UntrustedValue> {
 	const unavailable = method === 'chat.postMessage' ? 'delivery-unknown' : 'provider-unavailable';
-	const request = requestFor(method, body);
+	const request = requestFor(method, options.body);
 	let response: Response;
 	try {
 		response = await fetchImpl(request.url, {
@@ -54,7 +53,7 @@ export async function slackRequest(
 		throw new SlackRequestError('rate-limited', retryAfter(response.headers));
 	if (response.status >= 500) throw new SlackRequestError(unavailable);
 	if (!response.ok) throw new SlackRequestError('provider-refused');
-	return readReply(response, unavailable, userGrant);
+	return readReply(response, unavailable, options.userGrant === true);
 }
 
 function requestFor(method: SlackMethod, body: object | undefined) {
@@ -80,13 +79,14 @@ async function readReply(
 	userGrant: boolean
 ): Promise<UntrustedValue> {
 	const decoded = (await response.json().catch(() => null)) as UntrustedValue;
-	if (decoded && typeof decoded === 'object' && 'ok' in decoded && decoded.ok === false) {
-		const code = 'error' in decoded ? decoded.error : null;
-		if (typeof code === 'string' && ambiguousErrors.has(code))
-			throw new SlackRequestError(unavailable);
-		if (userGrant && typeof code === 'string' && expired.has(code))
-			throw new SlackRequestError('credential-unavailable');
-		throw new SlackRequestError('provider-refused');
-	}
-	return decoded;
+	const code = errorCode(decoded);
+	if (code === null) return decoded;
+	if (ambiguousErrors.has(code)) throw new SlackRequestError(unavailable);
+	if (userGrant && expired.has(code)) throw new SlackRequestError('credential-unavailable');
+	throw new SlackRequestError('provider-refused');
+}
+
+function errorCode(reply: UntrustedValue): string | null {
+	if (!reply || typeof reply !== 'object' || !('ok' in reply) || reply.ok !== false) return null;
+	return 'error' in reply && typeof reply.error === 'string' ? reply.error : '';
 }

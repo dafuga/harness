@@ -25,10 +25,16 @@ export function decodeConversations(raw: UntrustedValue): SlackUserConversationP
 	const conversations = rows.flatMap(({ id, name, is_ext_shared, is_im, is_mpim }) => {
 		if (typeof id !== 'string' || !slackConversationId.test(id) || is_ext_shared === true)
 			return [];
-		const fallback = is_im ? 'Direct message' : is_mpim ? 'Group message' : 'Conversation';
+		const fallback = conversationType(is_im === true, is_mpim === true);
 		return [{ id, name: typeof name === 'string' && name ? name.slice(0, 120) : fallback }];
 	});
 	return { conversations, nextCursor };
+}
+
+function conversationType(isDirect: boolean, isGroupDirect: boolean): string {
+	if (isDirect) return 'Direct message';
+	if (isGroupDirect) return 'Group message';
+	return 'Conversation';
 }
 
 export function decodeHistory(raw: UntrustedValue): SlackUserMessagePage {

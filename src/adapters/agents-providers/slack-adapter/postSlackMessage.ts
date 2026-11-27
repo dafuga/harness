@@ -15,11 +15,9 @@ export async function postSlackMessage(
 	message: PlatformMessage,
 	userGrant = false
 ): Promise<PlatformReceipt> {
-	const raw = await slackRequest(
-		fetchImpl,
-		'chat.postMessage',
-		token,
-		{
+	const raw = await slackRequest(fetchImpl, 'chat.postMessage', token, {
+		userGrant,
+		body: {
 			channel: message.channelId,
 			text: message.text,
 			thread_ts: message.threadId,
@@ -27,9 +25,8 @@ export async function postSlackMessage(
 			unfurl_links: false,
 			unfurl_media: false,
 			...(userGrant && { mrkdwn: false })
-		},
-		userGrant
-	);
+		}
+	});
 	const reply = raw as { ok?: boolean; channel?: unknown; ts?: unknown } | null;
 	if (
 		reply?.ok !== true ||
