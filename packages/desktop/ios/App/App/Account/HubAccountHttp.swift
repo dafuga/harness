@@ -173,3 +173,24 @@ final class HubAccountHttp: NSObject, HubAccountTransport, URLSessionDataDelegat
         return .success(HubAccountReply(status: item.status, contentType: item.type, data: item.data))
     }
 }
+
+extension HubAccountSession {
+    /// Asks the Hub to end a session this phone no longer keeps. Its answer changes nothing here.
+    func revoke(_ token: String, _ origin: URL) {
+        let call = HubAccountCall(method: "POST", path: "/api/auth/logout", body: Data("{}".utf8))
+        guard let request = HubAccountPolicy.request(origin, call, token: token) else { return }
+        transport.send(request) { _ in }
+    }
+
+    /// Sends one call and answers on the queue, only while the account it was made under holds.
+    func send(_ call: HubAccountCall, _ origin: URL, _ token: String?, _ done: @escaping Answer) {
+        guard var request = HubAccountPolicy.request(origin, call, token: token) else {
+            return done(.failure(.refused))
+        }
+        if let device = call.device { request.setValue(device, forHTTPHeaderField: "X-Harness-Device") }
+        let asked = generation
+        transport.send(request) { result in
+            self.queue.async { done(asked == self.generation ? result : .failure(.superseded)) }
+        }
+    }
+}

@@ -13,6 +13,11 @@ func accountGoogleChecks() {
           "Google account: the S256 challenge is bound to the iOS callback")
     check(HubAccountSession.browserCode(url, state: "other") == nil,
           "Google account: an unrelated callback is refused")
+    let signer = P256.Signing.PrivateKey()
+    bench.session.makeLoginDevice = {
+        SealedDevice(deviceId: RemoteCoding.base64url(RemoteCoding.random(16)),
+                     kem: .software(P256.KeyAgreement.PrivateKey()), signing: .software(signer))
+    }
     let devicePath = "/api/sync/v1/device-session"
     bench.hub.routes["GET " + devicePath] = { _ in hubJSON(200, ["state": "waiting-for-approval"]) }
     bench.session.browserReturned(url, state: handoff)
@@ -25,15 +30,7 @@ func accountGoogleChecks() {
           "Google account: a waiting device cannot read projects")
     check(awaited(bench.session.computers)?.refusal != nil && bench.hub.asked("/api/remote/hosts").isEmpty,
           "Google account: a waiting device cannot discover or pair computers")
-    let challenge = RemoteCoding.base64url(Data(repeating: 9, count: 32))
-    bench.hub.routes["GET " + devicePath] = { _ in hubJSON(200, ["state": "proof-required", "challenge": challenge]) }
-    bench.hub.routes["POST " + devicePath] = { request in
-        let body = request.httpBody.flatMap(RemoteCoding.object)
-        let signature = (body?["signature"] as? String).flatMap(RemoteCoding.data(base64url:))
-        let accepted = request.value(forHTTPHeaderField: "X-Harness-Device") != nil
-            && body?["challenge"] as? String == challenge && signature?.count == 64
-        return accepted ? hubJSON(200, ["state": "approved"]) : hubJSON(403, ["error": "device-proof-denied"])
-    }
+    approvedDeviceReply(bench, path: devicePath, signer: signer)
     wait { (try? bench.status()?.get())?["state"] as? String == "signed-in" }
     check(bench.hub.asked(devicePath).contains { $0.httpMethod == "POST" } &&
           bench.hub.bearer(devicePath) == "Bearer " + hubToken,
@@ -53,6 +50,20 @@ func accountGoogleChecks() {
     _ = cancelled.status()
     check(cancelled.hub.asked("/api/auth/native/exchange").isEmpty && cancelled.vault.credential == nil,
           "Google account: cancelling abandons the pending browser sign-in")
+}
+
+private func approvedDeviceReply(_ bench: AccountBench, path: String, signer: P256.Signing.PrivateKey) {
+    let challenge = RemoteCoding.base64url(Data(repeating: 9, count: 32))
+    bench.hub.routes["GET " + path] = { _ in hubJSON(200, ["state": "proof-required", "challenge": challenge]) }
+    bench.hub.routes["POST " + path] = { request in
+        let body = request.httpBody.flatMap(RemoteCoding.object)
+        let signature = (body?["signature"] as? String).flatMap(RemoteCoding.data(base64url:))
+        let signed = signature.flatMap { try? P256.Signing.ECDSASignature(rawRepresentation: $0) }
+        let message = Data(("harness/sealed/v1/session\0" + challenge).utf8)
+        let accepted = request.value(forHTTPHeaderField: "X-Harness-Device") != nil
+            && body?["challenge"] as? String == challenge && signed.map { signer.publicKey.isValidSignature($0, for: message) } == true
+        return accepted ? hubJSON(200, ["state": "approved"]) : hubJSON(403, ["error": "device-proof-denied"])
+    }
 }
 
 func accountComputerChecks() {

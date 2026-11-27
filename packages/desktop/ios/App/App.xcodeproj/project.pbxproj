@@ -54,6 +54,7 @@
 		150A06A937141DE718B77115 /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F2F /* HubAccountModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */; };
 		7A1C4E2B9D3F5A6B8C0D1F30 /* HubAccountVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */; };
+		AB57B801D93C49A084751F30 /* HubAccountDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB57B801D93C49A084751E30 /* HubAccountDevice.swift */; };
 		F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */; };
 		F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */; };
 		F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */; };
@@ -200,6 +201,7 @@
 		D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote/RemoteSession.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountModels.swift; sourceTree = "<group>"; };
 		7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountVault.swift; sourceTree = "<group>"; };
+		AB57B801D93C49A084751E30 /* HubAccountDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account/HubAccountDevice.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultApprovalCrypto.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultApprovalRequest.swift; sourceTree = "<group>"; };
 		F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vault/VaultLegacyAdd.swift; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 				D5827BD6FA246D531D8E8BD7 /* RemoteSession.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E2F /* HubAccountModels.swift */,
 				7A1C4E2B9D3F5A6B8C0D1E30 /* HubAccountVault.swift */,
+				AB57B801D93C49A084751E30 /* HubAccountDevice.swift */,
 				F7116F5832344A9F9FE7B902 /* VaultApprovalCrypto.swift */,
 				F7116F5832344A9F9FE7B904 /* VaultApprovalRequest.swift */,
 				F7116F5832344A9F9FE7B906 /* VaultLegacyAdd.swift */,
@@ -647,6 +650,7 @@
 				150A06A937141DE718B77115 /* RemoteSession.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F2F /* HubAccountModels.swift in Sources */,
 				7A1C4E2B9D3F5A6B8C0D1F30 /* HubAccountVault.swift in Sources */,
+				AB57B801D93C49A084751F30 /* HubAccountDevice.swift in Sources */,
 				F7116F5832344A9F9FE7B901 /* VaultApprovalCrypto.swift in Sources */,
 				F7116F5832344A9F9FE7B903 /* VaultApprovalRequest.swift in Sources */,
 				F7116F5832344A9F9FE7B905 /* VaultLegacyAdd.swift in Sources */,

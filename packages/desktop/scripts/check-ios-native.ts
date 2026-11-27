@@ -19,7 +19,13 @@ const swift = (folder: string) =>
 	readdirSync(folder)
 		.filter((name) => name.endsWith('.swift') && !plugins.includes(name))
 		.map((name) => resolve(folder, name));
-const sources = [...swift(remote), ...swift(account), ...swift(notifications), ...swift(checks)];
+const sources = [
+	...swift(remote),
+	...swift(account),
+	...swift(resolve(root, 'ios/App/App/Sealed')),
+	...swift(notifications),
+	...swift(checks)
+];
 
 function run(command: string[]): number {
 	return Bun.spawnSync(command, { stdout: 'inherit', stderr: 'inherit' }).exitCode;

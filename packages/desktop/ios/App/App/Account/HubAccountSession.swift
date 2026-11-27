@@ -25,6 +25,10 @@ final class HubAccountSession {
     /// Counts every change of account: an answer to a call made before one is never used.
     var generation = 0
     private var loaded = false
+    var deviceStage = HubDeviceStage.checking
+    var deviceCheck = 0
+    var loginKeys: SealedSecretStore = SealedKeychain(insertOnly: true)
+    var makeLoginDevice: () throws -> SealedDevice = { try SealedDevice.create(enclave: true) }
 
     init(origin: URL?, vault: HubAccountVault = HubAccountKeychain(), transport: HubAccountTransport = HubAccountHttp()) {
         self.origin = origin
@@ -60,11 +64,7 @@ final class HubAccountSession {
         queue.async {
             guard let origin = self.origin else { return done(.failure(.notConfigured)) }
             guard HubAccountPolicy.allowed(call) else { return done(.failure(.refused)) }
-            guard let credential = self.live() else { return done(.failure(.signedOut)) }
-            self.send(call, origin, credential.token) { result in
-                if case .success(let reply) = result, reply.status == 401 { self.erase() }
-                done(result)
-            }
+            self.authorizedCall(call, origin, done)
         }
     }
 
@@ -75,8 +75,10 @@ final class HubAccountSession {
             status["state"] = "pending"
             status["handoff"] = handoff.object
         } else if let credential = credential {
-            status["state"] = "signed-in"
-            status["actor"] = ["id": credential.subject, "name": credential.name, "email": credential.email]
+            status["state"] = deviceStage == .approved ? "signed-in" : deviceStage.rawValue
+            if deviceStage == .approved {
+                status["actor"] = ["id": credential.subject, "name": credential.name, "email": credential.email]
+            }
         }
         return status
     }
@@ -97,6 +99,11 @@ final class HubAccountSession {
     /// The session leaves the Keychain and memory, a sign-in under way ends, and every answer
     /// still awaited is refused when it arrives.
     func erase() {
+        if let credential, let store = try? HubLoginDeviceStore(credential, base: loginKeys) {
+            store.remove(SealedDeviceStore.name)
+        }
+        deviceCheck += 1
+        deviceStage = .checking
         vault.wipe()
         credential = nil
         handoff = nil
@@ -105,23 +112,7 @@ final class HubAccountSession {
         accountEnded()
     }
 
-    /// Asks the Hub to end a session this phone no longer keeps. Its answer changes nothing here.
-    func revoke(_ token: String, _ origin: URL) {
-        let call = HubAccountCall(method: "POST", path: "/api/auth/logout", body: Data("{}".utf8))
-        guard let request = HubAccountPolicy.request(origin, call, token: token) else { return }
-        transport.send(request) { _ in }
-    }
 
-    /// Sends one call and answers on the queue, only while the account it was made under holds.
-    func send(_ call: HubAccountCall, _ origin: URL, _ token: String?, _ done: @escaping Answer) {
-        guard let request = HubAccountPolicy.request(origin, call, token: token) else {
-            return done(.failure(.refused))
-        }
-        let asked = generation
-        transport.send(request) { result in
-            self.queue.async { done(asked == self.generation ? result : .failure(.superseded)) }
-        }
-    }
 }
 
 /// What the Hub says of a kept session, asked each time the page asks for the status.
@@ -137,7 +128,10 @@ extension HubAccountSession {
             case .failure(let failure):
                 if failure == .offline || failure == .superseded { done(.success(self.snapshot)) }
                 else { done(.failure(failure)) }
-            case .success(let reply): done(self.confirmed(reply, kept, origin))
+            case .success(let reply):
+                let answer = self.confirmed(reply, kept, origin)
+                guard case .success = answer, self.credential != nil else { return done(answer) }
+                self.checkDevice(kept, origin, done)
             }
         }
     }

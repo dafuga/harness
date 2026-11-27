@@ -14,6 +14,7 @@ protocol SealedSecretStore {
 /// The Keychain of this device: not synchronised, readable after the first unlock so background
 /// sync runs while the phone is locked.
 struct SealedKeychain: SealedSecretStore {
+    var insertOnly = false
     private let service = "com.dafuga.harness.sealed"
 
     private func query(_ name: String) -> [String: Any] {
@@ -33,7 +34,8 @@ struct SealedKeychain: SealedSecretStore {
     }
 
     func save(_ name: String, _ data: Data) throws {
-        SecItemDelete(query(name) as CFDictionary)
+        // An unavailable key must never be replaced by a newly generated login identity.
+        if !insertOnly { SecItemDelete(query(name) as CFDictionary) }
         var item = query(name)
         item[kSecValueData as String] = data
         item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly

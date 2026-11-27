@@ -29,9 +29,10 @@ public class HarnessAccountPlugin: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticat
     }
 
     static func storedSubject() -> String? {
-        guard let kept = HubAccountKeychain().load(), kept.origin == hubOrigin?.absoluteString,
-            kept.expiresAt > Date() else { return nil }
-        return kept.subject
+        sharedSession.queue.sync {
+            guard sharedSession.deviceStage == .approved else { return nil }
+            return sharedSession.live()?.subject
+        }
     }
 
     private var session: HubAccountSession { Self.sharedSession }

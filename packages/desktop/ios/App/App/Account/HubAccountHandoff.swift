@@ -203,7 +203,12 @@ extension HubAccountSession {
             revoke(credential.token, origin)
             return done(.failure(.unkept))
         }
-        self.credential = credential
+        guard let kept = vault.load(), kept.origin == credential.origin, kept.subject == credential.subject,
+            kept.token == credential.token else {
+            revoke(credential.token, origin)
+            return done(.failure(.unkept))
+        }
+        self.credential = kept
         generation += 1
         confirm(origin, done)
     }

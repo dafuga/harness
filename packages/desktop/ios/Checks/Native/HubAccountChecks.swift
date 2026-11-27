@@ -3,19 +3,6 @@ import Foundation
 // The rules of the Hub account on the real `HubAccountSession`, `HubAccountPolicy` and `HubAccountHttp`.
 // The vault is memory and the Hub is played here: no network but loopback fixtures, no real keychain.
 
-/// Where a check keeps an account session: memory only.
-final class MemoryAccountVault: HubAccountVault {
-    var credential: HubAccountCredential?
-    var wipes = 0
-    init(_ credential: HubAccountCredential? = nil) { self.credential = credential }
-    func load() -> HubAccountCredential? { credential }
-    func save(_ credential: HubAccountCredential) throws { self.credential = credential }
-    func wipe() {
-        credential = nil
-        wipes += 1
-    }
-}
-
 final class FakeHub: HubAccountTransport {
     var routes: [String: (URLRequest) -> HubAccountReply] = [:]
     var seen: [URLRequest] = []
@@ -50,7 +37,7 @@ let hubToken = String(repeating: "t", count: 43)
 private let hubHandoff = String(repeating: "h", count: 43)
 private let hubAda: [String: Any] = ["id": "google:ada", "name": "Ada", "email": "ada@example.invalid", "emailVerified": true]
 private let hubKept = HubAccountCredential(origin: hubOrigin.absoluteString, subject: "google:ada", name: "Ada",
-    email: "ada@example.invalid", token: hubToken, expiresAt: Date(timeIntervalSince1970: 1_900_000_000))
+    email: "ada@example.invalid", token: hubToken, expiresAt: Date(timeIntervalSince1970: 1_900_000_000), installationBinding: UUID())
 
 func hubJSON(_ status: Int, _ object: [String: Any]) -> HubAccountReply {
     HubAccountReply(status: status, contentType: "application/json", data: RemoteCoding.json(object) ?? Data())
@@ -68,6 +55,10 @@ final class AccountBench {
         self.vault = vault
         self.hub = hub
         session = HubAccountSession(origin: origin, vault: vault, transport: hub)
+        session.loginKeys = vault.deviceKeys
+        session.makeLoginDevice = { try SealedDevice.create(enclave: false) }
+        hub.routes["GET /api/auth/status"] = { _ in hubJSON(200, ["configured": true, "actor": hubAda]) }
+        hub.routes["GET /api/sync/v1/device-session"] = { _ in hubJSON(200, ["state": "approved"]) }
         session.now = { [unowned self] in self.time }
         session.open = { [unowned self] in self.opened.append($0) }
         session.authenticate = { [unowned self] page, _ in self.opened.append(page) }
@@ -190,30 +181,8 @@ func accountRequestChecks() {
     check(bench.hub.bearer("/api/auth/logout") == "Bearer \(hubToken)" && bench.request("/api/projects")?.refusal == .signedOut, "account: Disconnect ends the session at the Hub, and nothing is signed after it")
 }
 
-private func accountInstallationChecks() {
-    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-    defer { try? FileManager.default.removeItem(at: directory) }
-    let item = MemoryAccountVault(hubKept)
-    let vault = HubAccountKeychain(item: item, directory: directory)
-    check(vault.load() == nil, "account installation: a session without an installation binding requires login")
-    do {
-        try vault.save(hubKept)
-        let relaunched = HubAccountKeychain(item: item, directory: directory)
-        check(relaunched.load()?.subject == hubKept.subject, "account installation: relaunch keeps the login")
-        if FileManager.default.fileExists(atPath: directory.path) {
-            try FileManager.default.removeItem(at: directory)
-        }
-        let reinstalled = HubAccountKeychain(item: item, directory: directory)
-        check(reinstalled.load() == nil && item.credential != nil,
-              "account installation: reinstall with the former keychain item requires login")
-        try reinstalled.save(hubKept)
-        reinstalled.wipe()
-        check(reinstalled.load() == nil, "account installation: explicit sign-out clears the login")
-    } catch { check(false, "account installation: disposable session storage works") }
-}
-
 func accountReuseChecks() {
-    accountInstallationChecks()
+    accountInstallationChecks(hubKept)
     let denied = AccountBench(vault: MemoryAccountVault(hubKept))
     denied.hub.routes["GET /api/projects"] = { _ in hubJSON(401, ["error": "session-required"]) }
     check((try? denied.request("/api/projects")?.get())?.status == 401 && denied.vault.credential == nil, "account: a 401 reaches the page as one and ends the session here")

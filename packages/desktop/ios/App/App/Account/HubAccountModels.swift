@@ -68,6 +68,7 @@ struct HubAccountCredential: Codable, Equatable {
 struct HubAccountCall {
     let method: String
     let path: String
+    var device: String?
     let query: [String: String]
     let body: Data?
 
