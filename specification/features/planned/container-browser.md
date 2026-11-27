@@ -68,8 +68,46 @@ every cookie older than the browser's periodic save, about 30 seconds.
 
 The screen is portrait (600×1100), so a sign-in can be finished from a phone.
 
+## Google and Slack in a protected profile
+
+The opt-in `protected-chrome` image target uses Google's ARM64 Chrome Stable.
+It runs on the same virtual display with a dedicated `google-slack` volume.
+Chrome starts without DevTools flags. Managed policy disables remote debugging,
+browser-account sync, and credential and autofill saving. Google website sign-in
+is still available. The existing X collector uses the default Chromium target.
+
+Connect the Chrome target to the executor and paired phone viewer from
+Tracker items `9z0dtp` and `qs1qgx` before using a real account. Keep the
+engine socket, display, and profile under the executor identity. The legacy
+viewer is unsuitable for sensitive entry because its host user can access
+the display and Docker socket.
+
+For initial sign-in and reauthentication, the executor drains agent work
+before opening the private viewer and requires Daniel's paired device.
+Daniel signs in to the Google website and completes any Google challenge on
+that device. After Done, the executor revokes viewer input, closes the
+sensitive view and verifies the result before admitting reviewed screen
+actions in the virtual display. If Google asks for reauthentication during
+Slack's Sign in with Google, return to private takeover. Preserve the dedicated
+volume through restarts. A rollback stops the separate Chrome container and
+revokes its viewer session while retaining the volume.
+
+For acceptance, confirm the actual Google sign-in succeeds through the phone
+viewer, then use Slack's Sign in with Google in the same virtual desktop.
+Check that the intended Slack workspace opens through the admitted executor
+path, including after the container is recreated with its existing volume.
+Record sanitized outcomes without capturing either sign-in page.
+
 ## Proof
 
 `HARNESS_TEST_CONTAINER_BROWSER=1 bunx vitest run test/container-browser.e2e.test.ts`
 runs a throwaway profile in a real container: no published port, a VNC greeting
 over the pipe, and the page scripts reading a fixture over DevTools.
+
+For the Chrome smoke test, use a disposable ARM64 Docker engine on MB2.
+Build `deploy/container-browser` with
+`--target protected-chrome --tag harness-protected-chrome:test`, then set
+`HARNESS_TEST_PROTECTED_CHROME_SOCKET` to that engine's Unix socket and run
+`bunx vitest run test/container-browser.e2e.test.ts`. The test disables
+networking and checks the virtual screen, absence of a debug listener,
+and the profile surviving container recreation.

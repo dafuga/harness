@@ -1,15 +1,31 @@
 #!/usr/bin/env bash
-# A full, headed Chromium on a virtual display. Nothing here listens beyond the container's own
-# loopback: the host reaches the screen (5900) and DevTools (9222) only through `docker exec`.
-# The browser is stock: no user agent, webdriver or fingerprint changes.
+# A stock browser on a virtual display. VNC listens on container loopback.
+# Only the legacy Chromium target starts DevTools.
 set -euo pipefail
 
 export HOME=/profile XDG_CONFIG_HOME=/profile/.config XDG_CACHE_HOME=/tmp/cache DISPLAY=:99
 size=${BROWSER_SCREEN:-600x1100}
 [[ "$size" =~ ^[0-9]{3,4}x[0-9]{3,4}$ ]] || { echo 'BROWSER_SCREEN must be WIDTHxHEIGHT.' >&2; exit 1; }
 
+case "$#" in
+  0|1) ;;
+  *) echo 'Expected one browser mode.' >&2; exit 1 ;;
+esac
+case "${1-chromium}" in
+  chromium)
+    profile=/profile/chromium
+    launch=(chromium --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222
+      --password-store=basic)
+    ;;
+  protected-chrome)
+    profile=/profile/google-chrome
+    launch=(/usr/bin/google-chrome-stable)
+    ;;
+  *) echo 'Unrecognized browser mode.' >&2; exit 1 ;;
+esac
+
 # A recreated container has a new hostname, so a lock left in the saved profile is stale.
-rm -f /profile/chromium/Singleton{Lock,Cookie,Socket}
+rm -f "$profile"/Singleton{Lock,Cookie,Socket}
 
 # Authentication happens at the host gate; VNC itself is reachable only from inside this container.
 Xvnc :99 -geometry "$size" -depth 24 -localhost -rfbport 5900 -SecurityTypes None \
@@ -22,9 +38,8 @@ done
 [ -S /tmp/.X11-unix/X99 ] || { echo 'The virtual display did not start.' >&2; exit 1; }
 openbox >/dev/null 2>&1 &
 
-chromium --user-data-dir=/profile/chromium --remote-debugging-address=127.0.0.1 \
-  --remote-debugging-port=9222 --no-first-run --no-default-browser-check \
-  --password-store=basic --disable-gpu --disable-sync --hide-crash-restore-bubble \
+"${launch[@]}" --user-data-dir="$profile" --no-first-run --no-default-browser-check \
+  --disable-gpu --disable-sync --hide-crash-restore-bubble \
   --window-position=0,0 --window-size="${size/x/,}" --start-maximized about:blank >/dev/null 2>&1 &
 browser=$!
 
