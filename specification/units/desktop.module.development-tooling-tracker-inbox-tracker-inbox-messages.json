@@ -11,11 +11,42 @@
 		"source": [
 			"packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
 		],
-		"symbols": ["loadFailureMessage", "writeSentMessage", "writeFailureMessage"]
+		"symbols": [
+			"overviewFailureMessage",
+			"syncMessage",
+			"loadFailureMessage",
+			"writeSentMessage",
+			"writeFailureMessage"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "overviewFailureMessage.code",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "overviewFailureMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
+			{
+				"name": "syncMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
+			{
+				"name": "syncMessage.loaded",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "syncMessage.sync",
+				"type": "Pick<InboxReply<never>, 'freshness' | 'lastSyncedAt'>",
+				"required": false
+			},
 			{
 				"name": "loadFailureMessage.code",
 				"type": "string | undefined",
@@ -51,6 +82,14 @@
 		],
 		"outputs": [
 			{
+				"name": "overviewFailureMessage",
+				"type": "string"
+			},
+			{
+				"name": "syncMessage",
+				"type": "string"
+			},
+			{
 				"name": "loadFailureMessage",
 				"type": "string"
 			},
@@ -64,8 +103,59 @@
 			}
 		],
 		"errors": [],
-		"errorStatus": "none-found",
+		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "overviewFailureMessage",
+				"inputs": [
+					{
+						"name": "overviewFailureMessage.code",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "overviewFailureMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewFailureMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "syncMessage",
+				"inputs": [
+					{
+						"name": "syncMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": true
+					},
+					{
+						"name": "syncMessage.loaded",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "syncMessage.sync",
+						"type": "Pick<InboxReply<never>, 'freshness' | 'lastSyncedAt'>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "syncMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "loadFailureMessage",
 				"inputs": [

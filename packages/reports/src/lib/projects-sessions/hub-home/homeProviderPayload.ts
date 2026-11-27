@@ -24,7 +24,7 @@ export const homeRunPayload = z.object({
 	paused: z.boolean(),
 	whenDue: z
 		.object({
-			state: z.enum(['running', 'queued', 'blocked']),
+			state: z.enum(['running', 'queued', 'blocked', 'due']),
 			reason: short.nullable(),
 			urgency: z.number().int().min(0).max(2)
 		})

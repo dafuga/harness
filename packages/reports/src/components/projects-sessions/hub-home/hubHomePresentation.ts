@@ -9,6 +9,8 @@ import type {
 	HomeSubscription
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
+import { etaFor } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
+import type { OverviewItem } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import { when } from './hubHomeTime';
 
 export const sections = {
@@ -174,12 +176,13 @@ export function relativeWhen(time: string, now: number) {
 	return when(time);
 }
 
-export function workEta(due: string | null, now: number) {
+export function workEta(item: OverviewItem, now: number) {
+	const { due } = item;
 	if (!due) return { tone: 'none', text: 'No ETA' };
 	const minutes = Math.round((Date.parse(due) - now) / 60000);
 	const absolute = Math.abs(minutes);
 	const span = absolute < 60 ? `${Math.max(1, absolute)}m` : `${Math.floor(absolute / 60)}h`;
-	if (minutes < 0) return { tone: 'overdue', text: `overdue ${span}` };
+	if (Date.parse(due) <= now) return etaFor(item, now);
 	if (minutes < 1440) return { tone: 'soon', text: `in ${span}` };
 	return { tone: 'scheduled', text: when(due) };
 }

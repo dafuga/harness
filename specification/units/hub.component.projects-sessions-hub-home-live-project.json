@@ -14,6 +14,7 @@
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h3",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
@@ -23,8 +24,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte"],
-		"symbols": ["HubHomeLiveProject"]
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte"
+		],
+		"symbols": ["HubHomeLiveProject", "HubHomeLiveProject.list"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,6 +44,13 @@
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds, used for run ages."
+			},
+			{
+				"name": "HubHomeLiveProject.dueById",
+				"type": "ReadonlyMap<string, HomePastDue>",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Current schedule states indexed by Tracker item ID for the project rows."
 			}
 		],
 		"outputs": [
@@ -53,11 +63,41 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeLiveProject.list",
+				"inputs": [
+					{
+						"name": "HubHomeLiveProject.list.rows",
+						"type": "HomeWorkProject['rows']",
+						"required": true
+					},
+					{
+						"name": "HubHomeLiveProject.list.label",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeLiveProject.list",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "hub.function.projects-sessions-hub-home-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -78,6 +118,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -120,15 +165,20 @@
 			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte"
 			}
 		]
 	},

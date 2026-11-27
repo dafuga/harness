@@ -11,10 +11,13 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-cos-chat",
+			"hub.component.projects-sessions-hub-home-live",
 			"hub.component.projects-sessions-hub-home-plan-detail",
 			"hub.component.projects-sessions-hub-home-plannable",
 			"hub.component.projects-sessions-hub-home-plans",
 			"hub.component.projects-sessions-hub-home-schedule",
+			"hub.component.projects-sessions-hub-home-work",
+			"hub.component.projects-sessions-hub-home-work-cards",
 			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -63,6 +66,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.component.projects-sessions-hub-home-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-plan-detail",
 			"via": "import",
 			"origin": "derived"
@@ -83,12 +91,27 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.component.projects-sessions-hub-home-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-work-cards",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.public-site-home-page",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-chat-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
 			"via": "import",
 			"origin": "derived"
 		},

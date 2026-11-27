@@ -7,7 +7,7 @@
 	import { etaFor, formatWhen, statusLabel } from './projectOverviewPresentation';
 	import type { ProjectOverviewItemProps } from './ProjectOverviewItem.types';
 	let { item, now, onOpen, extra = false }: ProjectOverviewItemProps = $props();
-	const eta = $derived(etaFor(item.due, now));
+	const eta = $derived(etaFor(item, now));
 	const meta = $derived(
 		[
 			statusLabel(item.status),

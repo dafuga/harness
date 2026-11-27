@@ -3,6 +3,7 @@
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
 	import { homeBoard } from './hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
@@ -27,6 +28,7 @@
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
+	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import HubHomeHeader from './HubHomeHeader.svelte';
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
@@ -61,7 +63,10 @@
 	);
 	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
 	const overview = $derived(
-		snapshot?.overview ?? (settled ? { status: 'unavailable' as const } : null)
+		workOverview(
+			snapshot?.overview ?? (settled ? { status: 'unavailable' } : null),
+			board?.pastDue ?? []
+		)
 	);
 	const linkedComputers = $derived(live?.linked ?? 0);
 	const projectsFailed = $derived(projectError && !list?.length);
@@ -194,7 +199,21 @@
 
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
-		<HubHomeHeader {view} {link} />
+		<HubHomeHeader {view} {link}>
+			<hx-div class="po-page hh-page hh-blockers-first">
+				<HubHomeNeedsYou
+					asks={view.openAsks}
+					now={view.now}
+					send={reads.send}
+					{receipt}
+					reading={view.trackerConnected || view.openAsks.length
+						? 'ready'
+						: settled
+							? 'unavailable'
+							: 'loading'}
+				/>
+			</hx-div>
+		</HubHomeHeader>
 		{#if link === 'live'}
 			<hx-p class="po-page hh-page hh-live" role="status" aria-label="Updates" data-state={link}>
 				Live

@@ -92,3 +92,30 @@
 .inbox .live[data-state='live']::before {
 	background: var(--hx-color-success);
 }
+
+.inbox :global(:is(button:enabled, a[href], summary):active) {
+	filter: var(--hx-effect-pressed);
+}
+@media (prefers-reduced-motion: no-preference) {
+	.inbox :global(:is(button:enabled, a[href], summary):active) {
+		translate: 0 1px;
+	}
+	.inbox :global(.rows li) {
+		transition: filter var(--hx-motion-collapse) var(--hx-motion-ease);
+	}
+	.inbox :global(.rows li[inert]) {
+		filter: var(--hx-effect-fade-out);
+	}
+}
+.inbox.home-blockers {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	text-align: start;
+}
+.inbox .empty-count {
+	color: var(--hx-color-text-muted);
+	border-color: transparent;
+}

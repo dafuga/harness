@@ -1,22 +1,18 @@
 // @harness-uid u_u3mne4fgyr
 import type { ProjectSummary } from 'collaboration';
 import type {
-	HomeAgent,
 	HomeOpenAsk,
 	HomePlan,
 	HomeRun,
-	HomePastDue,
 	HomeSubscription,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
-import type { soonestWork } from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+import type { HomeWorkView } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 
-export interface HomeView {
-	overview: OverviewSnapshot | null;
-	agents: HomeAgent[] | null;
+export interface HomeView extends HomeWorkView {
 	/** The open structured asks: what "needs you" counts and what the Agents card lists. */
 	openAsks: HomeOpenAsk[];
 	/** Tracker agent values Daniel added as sessions he created himself. */
@@ -24,23 +20,18 @@ export interface HomeView {
 	plans: HomePlan[] | null;
 	/** Future runs only. */
 	schedule: HomeRun[] | null;
-	/** Work whose time has passed: running, queued in launch order, or blocked. */
-	pastDue: HomePastDue[];
 	quota: HomeSubscription[] | null;
 	projects: ProjectSummary[] | null;
 	projectsFailed: boolean;
 	trackerProjects: Extract<OverviewSnapshot, { status: 'ready' }> | null;
 	projectSnapshots: Record<string, ProjectSnapshot>;
-	work: ReturnType<typeof soonestWork>;
 	owner: boolean;
 	needsMac: boolean;
 	/** Computers linked to this account, online or not. */
 	linkedComputers: number;
 	/** The last answer of the linked computers; null until the first one arrives. */
 	computers: LinkedHome | null;
-	trackerConnected: boolean;
 	quotaConnected: boolean;
-	now: number;
 }
 
 /** Adds or removes a session Daniel created himself, so it is listed under Agents. */

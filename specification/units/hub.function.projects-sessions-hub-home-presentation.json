@@ -50,8 +50,10 @@
 			"runTime",
 			"when",
 			"pastDueLabel",
+			"currentWorkLabel",
 			"pastDueSummary",
 			"messageStatusText",
+			"workOverview",
 			"runDay",
 			"runTime",
 			"runMoment",
@@ -222,10 +224,10 @@
 				"description": "Current time in milliseconds since the Unix epoch."
 			},
 			{
-				"name": "workEta.due",
-				"type": "string | null",
+				"name": "workEta.item",
+				"type": "OverviewItem",
 				"required": true,
-				"description": "Due date as an ISO timestamp, or null if the work has no due date."
+				"description": "Overview item whose current work label or due time appears in the Home row."
 			},
 			{
 				"name": "workEta.now",
@@ -258,6 +260,12 @@
 				"description": "The state and optional queue position of one past-due run."
 			},
 			{
+				"name": "currentWorkLabel.run",
+				"type": "HomePastDue",
+				"required": true,
+				"description": "Due item carrying its current run state, queue position or blocker reason."
+			},
+			{
 				"name": "pastDueSummary.runs",
 				"type": "HomePastDue[]",
 				"required": true,
@@ -274,6 +282,18 @@
 				"type": "string",
 				"required": true,
 				"description": "The receiving session, as Daniel knows it."
+			},
+			{
+				"name": "workOverview.value",
+				"type": "OverviewSnapshot | null",
+				"required": true,
+				"description": "Latest project overview, or null while the first reading is pending."
+			},
+			{
+				"name": "workOverview.pastDue",
+				"type": "HomePastDue[]",
+				"required": true,
+				"description": "Due items whose current states are matched to overview items and callouts by ID."
 			},
 			{
 				"name": "runDay.at",
@@ -870,10 +890,10 @@
 				"name": "workEta",
 				"inputs": [
 					{
-						"name": "workEta.due",
-						"type": "string | null",
+						"name": "workEta.item",
+						"type": "OverviewItem",
 						"required": true,
-						"description": "Due date as an ISO timestamp, or null if the work has no due date."
+						"description": "Overview item whose current work label or due time appears in the Home row."
 					},
 					{
 						"name": "workEta.now",
@@ -957,6 +977,25 @@
 				"errorStatus": "none-found"
 			},
 			{
+				"name": "currentWorkLabel",
+				"inputs": [
+					{
+						"name": "currentWorkLabel.run",
+						"type": "HomePastDue",
+						"required": true,
+						"description": "Due item carrying its current run state, queue position or blocker reason."
+					}
+				],
+				"outputs": [
+					{
+						"name": "currentWorkLabel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "pastDueSummary",
 				"inputs": [
 					{
@@ -999,6 +1038,31 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "workOverview",
+				"inputs": [
+					{
+						"name": "workOverview.value",
+						"type": "OverviewSnapshot | null",
+						"required": true,
+						"description": "Latest project overview, or null while the first reading is pending."
+					},
+					{
+						"name": "workOverview.pastDue",
+						"type": "HomePastDue[]",
+						"required": true,
+						"description": "Due items whose current states are matched to overview items and callouts by ID."
+					}
+				],
+				"outputs": [
+					{
+						"name": "workOverview",
+						"type": "OverviewSnapshot | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "runDay",
@@ -1140,6 +1204,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
 			"via": "import",

@@ -10,8 +10,6 @@ import type { HomeAskInput } from '../hub-home/hubHome.types';
 import type { MachineStatus } from './projectOverview.types';
 import type {
 	TrackerItemRecord,
-	TrackerItemStatus,
-	TrackerNote,
 	TrackerRunRecord,
 	TrackerSources
 } from './projectOverviewTracker.types';
@@ -96,7 +94,7 @@ function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecor
 	return {
 		id: requiredText(row.id, 'item id'),
 		title: requiredText(row.title, 'item title'),
-		status: oneOf(row.status, ITEM_STATUSES, 'item status') as TrackerItemStatus,
+		status: oneOf(row.status, ITEM_STATUSES, 'item status') as TrackerItemRecord['status'],
 		updated_at: requiredTime(row.updated_at, 'item updated_at'),
 		due: optionalTime(row.due, 'item due'),
 		agent: optionalText(row.agent, 'item agent'),
@@ -167,7 +165,7 @@ function parseMachine(value: unknown): { node: string; status: MachineStatus } {
 	};
 }
 
-function optionalNotes(value: unknown): TrackerNote[] | undefined {
+function optionalNotes(value: unknown): TrackerItemRecord['notes_log'] {
 	if (value === undefined || value === null) return undefined;
 	return asList(value, 'notes_log').map((note) => {
 		const row = asRecord(note, 'note');

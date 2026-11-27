@@ -11,6 +11,8 @@
 		trackerStageLabels
 	} from '../../../lib/development-tooling/tracker-inbox/trackerInbox';
 
+	import { slide } from 'svelte/transition';
+	import { MediaQuery } from 'svelte/reactivity';
 	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
 
 	import {
@@ -46,7 +48,11 @@
 		label: string;
 		onselect: (id: string) => void;
 	} = $props();
-	let busy = $state(false);
+	const reduceMotion = new MediaQuery('(prefers-reduced-motion: reduce)');
+	let active = $state<{ row: InboxRow; index: number; text: string; accepted: boolean } | null>(
+		null
+	);
+	const busy = $derived(Boolean(active));
 	/** The revisions answered here, so a queued answer cannot be tapped twice. */
 	let answered = $state<string[]>([]);
 	const key = (review: InboxDetail) => `${review.header.id} ${review.revision}`;
@@ -55,23 +61,37 @@
 		revision: review.revision
 	});
 
-	async function deliver(review: InboxDetail, write: ConfirmedWrite | null) {
-		if (busy) return;
-		busy = true;
+	const shown = $derived.by(() => {
+		const list = rows.filter(
+			(row) => label !== 'Needs you' || !row.review || !answered.includes(key(row.review))
+		);
+		if (active && !list.some((row) => row.header.id === active?.row.header.id))
+			list.splice(active.index, 0, active.row);
+		return list;
+	});
+
+	async function deliver(row: InboxRow, write: ConfirmedWrite | null) {
+		if (busy || !row.review) return;
+		active = { row, index: rows.indexOf(row), text: write?.text ?? '', accepted: false };
 		try {
 			const result = await sendRowAnswer(source, write, mode);
 			onnotice(result.message);
-			if (result.sent) answered = [...answered, key(review)];
-			await onchanged();
+			if (result.sent) {
+				active.accepted = true;
+				answered = [...answered, key(row.review)];
+				await Promise.all([onchanged(), new Promise((done) => setTimeout(done, 900))]);
+			} else await onchanged();
+		} catch {
+			onnotice('Could not confirm the Tracker update. Check the item before retrying.');
 		} finally {
-			busy = false;
+			active = null;
 		}
 	}
 </script>
 
 <hx-ul class="rows" aria-label={label}>
-	{#each rows as row (row.header.id)}
-		<hx-li>
+	{#each shown as row (row.header.id)}
+		<hx-li out:slide={{ duration: reduceMotion.current ? 0 : 320 }}>
 			<hx-button
 				type="button"
 				class="row"
@@ -95,13 +115,18 @@
 					>
 				{/if}
 			</hx-button>
-			{#if row.review?.flag && !answered.includes(key(row.review))}
+			{#if active?.row.header.id === row.header.id}
+				<hx-p role="status" class="meta"
+					>{active.accepted ? (mode === 'phone' ? 'Queued' : 'Answered') : 'Sending'} · {active.text}</hx-p
+				>
+			{:else if row.review?.flag && !answered.includes(key(row.review))}
 				{@const review = row.review}
 				<TrackerInboxChoices
 					flag={row.review.flag}
 					{busy}
-					onpick={(number) => void deliver(review, optionWrite(review, reviewed(review), number))}
-					onother={(text) => void deliver(review, writtenAnswer(review, reviewed(review), text))}
+					compact
+					onpick={(number) => void deliver(row, optionWrite(review, reviewed(review), number))}
+					onother={(text) => void deliver(row, writtenAnswer(review, reviewed(review), text))}
 				/>
 			{/if}
 		</hx-li>

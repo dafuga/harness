@@ -48,6 +48,13 @@
 				"type": "RealtimeState | null",
 				"required": true,
 				"description": "Provides the linked computer data and connection notices for the banner."
+			},
+			{
+				"name": "HubHomeHeader.children",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Home content displayed immediately after the linked-computer alert and before the summary."
 			}
 		],
 		"outputs": [

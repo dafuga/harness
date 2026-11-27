@@ -23,12 +23,13 @@
 		warningFor,
 		warningLabel
 	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
-	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
+	import HubHomePlannable from '$reports/components/projects-sessions/hub-home/HubHomePlannable.svelte';
+	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
+	import HubHomeWorkCards from '$reports/components/projects-sessions/hub-home/HubHomeWorkCards.svelte';
 	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
 	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from '$reports/components/projects-sessions/hub-home/HubHomeCard.svelte';
-	import HubHomeLive from './HubHomeLive.svelte';
-	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
+	import HubHomeLive from '$reports/components/projects-sessions/hub-home/HubHomeLive.svelte';
 	import {
 		homeCosChat,
 		provideHomeCosChat
@@ -77,7 +78,6 @@
 	</EmptyState>
 {/snippet}
 
-<HubHomeNeedsYou asks={view.openAsks} now={view.now} {send} {receipt} />
 {#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
 		agent={view.agents.find((agent) => agent.id === 'cos')}
 		now={new Date(view.now).toISOString()}
@@ -211,6 +211,8 @@
 		{/if}
 	</HubHomeCard>
 
+	<HubHomePlannable {view} {open} />
+	<HubHomeProjectCard {view} open={() => open('projects')} />
 	<HubHomeWorkCards {view} {open} />
 </hx-div>
-<HubHomeLive reading={view.computers} now={view.now} />
+<HubHomeLive reading={view.computers} now={view.now} pastDue={view.pastDue} />

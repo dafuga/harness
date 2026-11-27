@@ -11,13 +11,12 @@
 		"level": "organism",
 		"uses": [
 			"reports.component.harness-harness-icon",
+			"reports.component.select",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-form",
 			"reports.component.shared-primitives-atoms-html-input",
-			"reports.component.shared-primitives-atoms-html-label",
 			"reports.component.shared-primitives-atoms-html-option",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-select",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
@@ -38,6 +37,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.select"],
 		"inputs": [
 			{
 				"name": "HubHomeComposer.agents",
@@ -259,6 +259,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.select",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
 			"via": "import",
 			"origin": "derived"
@@ -274,22 +279,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-label",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-option",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-select",
 			"via": "import",
 			"origin": "derived"
 		},

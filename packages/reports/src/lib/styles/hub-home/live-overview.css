@@ -36,6 +36,13 @@
 	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 }
+.hh-home .hh-live-more-projects {
+	display: grid;
+	gap: inherit;
+}
+.hh-home .hh-projects-toggle {
+	justify-self: start;
+}
 .hh-home .hh-live-head {
 	display: list-item;
 	min-height: 44px;
@@ -129,6 +136,10 @@
 	}
 }
 @media (max-width: 560px) {
+	.hh-home .hh-live-head .hh-live-counts {
+		display: block;
+		margin-top: var(--hx-space-4);
+	}
 	.hh-home .hh-live-row,
 	.hh-home .hh-live-quiet {
 		grid-template-columns: minmax(0, 1fr);

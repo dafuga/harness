@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '../../../../test/support/browserTest';
+import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 import { linkedComputersFixture } from './linked-computers-fixture';
 
@@ -21,6 +21,24 @@ async function shot(page: Page, name: string) {
 		path: `${directory}/${process.env.SCREENSHOT_LABEL ?? 'current'}-${name}.png`,
 		animations: 'disabled'
 	});
+}
+
+async function expectAnswerGrid(choices: Locator, phone: boolean) {
+	const tiles = await choices.evaluateAll((buttons) =>
+		buttons.map((button) => {
+			const { x, y, width } = button.getBoundingClientRect();
+			return { x, y, width: Math.round(width) };
+		})
+	);
+	const [first, second] = tiles;
+	expect.soft(second.y === first.y, 'Answer tiles share a row above phone widths').toBe(!phone);
+	expect.soft(second.x === first.x, 'Phone answer tiles share a column').toBe(phone);
+	expect
+		.soft(
+			tiles.map(({ width }) => width),
+			'Answer tiles have equal widths'
+		)
+		.toEqual(tiles.map(() => first.width));
 }
 
 async function home(page: Page, size: keyof typeof sizes, change: 'two-asks' | 'no-choices') {
@@ -87,6 +105,7 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		]);
 		expect(widths[0]).toBeLessThanOrEqual(widths[1]);
 		await shot(page, `hub-home-needs-you-${size}`);
+		await expectAnswerGrid(choices, size === 'phone');
 		await expect(rowOf(page, 'harbor').getByText('Merges and releases.')).toHaveCount(0);
 		await expect(rowOf(page, 'harbor').getByText('Waits a day.')).toHaveCount(0);
 
@@ -104,6 +123,10 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		await expect(latest.getByRole('button', { name: /Other/ })).toBeVisible();
 		await expect(chat.getByRole('textbox', { name: 'Message Chief of Staff' })).toBeVisible();
 		await shot(page, `hub-chat-ask-${size}`);
+		await expectAnswerGrid(
+			latest.getByRole('group', { name: 'Choose an answer' }).getByRole('button'),
+			size === 'phone'
+		);
 
 		await latest.getByRole('button', { name: /Other/ }).click();
 		const modal = page.getByRole('dialog', { name: 'Other answer' });
@@ -150,41 +173,60 @@ test('a tapped choice in the chat is sent as that option', async ({ page }) => {
 	expect(fixture.sent[0]).toMatchObject({ agentId: 'harbor', kind: 'answer', option: 2 });
 });
 
-test('a choice tapped on a row answers that ask without opening the chat', async ({ page }) => {
-	const fixture = await home(page, 'phone', 'two-asks');
-	await rowOf(page, 'harbor')
-		.getByRole('button', { name: /Hold harbor/ })
-		.click();
-	await expect.poll(() => fixture.sent.length).toBe(1);
-	expect(fixture.sent[0]).toMatchObject({
-		itemId: 'item-harbor',
-		kind: 'answer',
-		question: 'Ship harbor?',
-		text: 'Hold harbor',
-		option: 2
+for (const size of ['desktop', 'phone'] as const)
+	test(`a choice tapped on a row answers that ask without opening the chat (${size})`, async ({
+		page
+	}) => {
+		const fixture = await home(page, size, 'two-asks');
+		const row = rowOf(page, 'harbor');
+		const choice = row.getByRole('button', { name: /Hold harbor/ });
+		await page.emulateMedia({ reducedMotion: 'no-preference' });
+		await choice.scrollIntoViewIfNeeded();
+		await page.evaluate(() => document.fonts.ready.then(() => {}));
+		const record = process.env.TAKE_SCREENSHOT === 'true';
+		if (record)
+			await page.screencast.start({
+				path: test.info().outputPath(`answer-${size}.webm`),
+				size: sizes[size]
+			});
+		try {
+			await choice.click();
+			await expect(row.getByRole('status')).toContainText(/Answer sent.*Hold harbor/);
+			await shot(page, `answer-confirmed-${size}`);
+			await expect(row).toHaveCount(0);
+		} finally {
+			if (record) await page.screencast.stop();
+		}
+		await expect.poll(() => fixture.sent.length).toBe(1);
+		expect(fixture.sent[0]).toMatchObject({
+			itemId: 'item-harbor',
+			kind: 'answer',
+			question: 'Ship harbor?',
+			text: 'Hold harbor',
+			option: 2
+		});
+		await expect(page.getByRole('dialog')).toHaveCount(0);
+		const deploy = rowOf(page, 'Chief of Staff');
+		await deploy.getByRole('button', { name: /Approve Saturday/ }).click();
+		const confirmation = page.getByRole('dialog', { name: 'Confirm answer' });
+		await expect(confirmation.getByText('Approve Saturday 09:00', { exact: true })).toBeVisible();
+		await expect(deploy.getByRole('group', { name: /Confirm this deploy answer/ })).toHaveCount(0);
+		await shot(page, 'hub-home-confirm-phone');
+		await page.keyboard.press('Escape');
+		await expect(confirmation).toHaveCount(0);
+		await expect(deploy.getByRole('button', { name: /Approve Saturday/ })).toBeFocused();
+		const other = deploy.getByRole('button', { name: 'Other…', exact: true });
+		await other.click();
+		const answer = page.getByRole('dialog', { name: 'Other answer' });
+		await expect(answer.getByRole('textbox', { name: 'Your answer' })).toBeFocused();
+		await expect(deploy.locator('input, textarea, select, form')).toHaveCount(0);
+		await shot(page, 'hub-home-other-phone');
+		await page.keyboard.press('Escape');
+		await expect(answer).toHaveCount(0);
+		await expect(other).toBeFocused();
+		expect(fixture.sent).toHaveLength(1);
+		await expect(row).toHaveCount(0);
 	});
-	await expect(page.getByRole('dialog')).toHaveCount(0);
-	const deploy = rowOf(page, 'Chief of Staff');
-	await deploy.getByRole('button', { name: /Approve Saturday/ }).click();
-	const confirmation = page.getByRole('dialog', { name: 'Confirm answer' });
-	await expect(confirmation.getByText('Approve Saturday 09:00', { exact: true })).toBeVisible();
-	await expect(deploy.getByRole('group', { name: /Confirm this deploy answer/ })).toHaveCount(0);
-	await shot(page, 'hub-home-confirm-phone');
-	await page.keyboard.press('Escape');
-	await expect(confirmation).toHaveCount(0);
-	await expect(deploy.getByRole('button', { name: /Approve Saturday/ })).toBeFocused();
-	const other = deploy.getByRole('button', { name: 'Other…', exact: true });
-	await other.click();
-	const answer = page.getByRole('dialog', { name: 'Other answer' });
-	await expect(answer.getByRole('textbox', { name: 'Your answer' })).toBeFocused();
-	await expect(deploy.locator('input, textarea, select, form')).toHaveCount(0);
-	await shot(page, 'hub-home-other-phone');
-	await page.keyboard.press('Escape');
-	await expect(answer).toHaveCount(0);
-	await expect(other).toBeFocused();
-	expect(fixture.sent).toHaveLength(1);
-	await expect(rowOf(page, 'harbor').getByRole('status')).toContainText('Answer sent');
-});
 
 test('with nothing stored on the Hub, a row tap goes to the linked Mac over its connection', async ({
 	page
@@ -212,7 +254,15 @@ test('with nothing stored on the Hub, a row tap goes to the linked Mac over its 
 
 test('a flag without choices is not counted, listed or answerable', async ({ page }) => {
 	await home(page, 'desktop', 'no-choices');
-	await expect(needsYou(page)).toHaveCount(0);
-	await expect(page.getByText(/\d+ needs? you/)).toHaveCount(0);
+	await expect(page.locator('.hh-home section').first()).toHaveAccessibleName(
+		'Blocked - needs you'
+	);
+	await expect(needsYou(page)).toContainText('Nothing needs you right now');
+	await expect(needsYou(page).getByText('0', { exact: true })).toBeVisible();
+	await expect(needsYou(page).getByRole('button')).toHaveCount(0);
+	await shot(page, 'blockers-empty-desktop');
+	await page.setViewportSize(sizes.phone);
+	await expect(needsYou(page).getByText('Nothing needs you right now')).toBeVisible();
+	await shot(page, 'blockers-empty-phone');
 	await expect(page.getByRole('heading', { level: 1 })).not.toContainText('you');
 });

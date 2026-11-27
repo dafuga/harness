@@ -33,7 +33,7 @@
 	import HubHomeSchedule from '$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte';
 	import HubHomeProjects from './HubHomeProjects.svelte';
 	import HubHomeQuota from './HubHomeQuota.svelte';
-	import HubHomeWork from './HubHomeWork.svelte';
+	import HubHomeWork from '$reports/components/projects-sessions/hub-home/HubHomeWork.svelte';
 	let {
 		selected,
 		view,

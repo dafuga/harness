@@ -10,7 +10,14 @@ test.setTimeout(90_000);
 async function shot(page: Page, name: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	const directory = process.env.SCREENSHOT_DIR ?? 'test-results/row-choices';
-	await page.screenshot({ path: `${directory}/${name}.png`, animations: 'disabled' });
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all(Array.from(document.images, (image) => image.decode()));
+	});
+	await page.screenshot({
+		path: `${directory}/${process.env.SCREENSHOT_LABEL ?? 'current'}-${name}.png`,
+		animations: 'disabled'
+	});
 }
 
 async function rowChoices(page: Page, name: string) {
@@ -21,6 +28,16 @@ async function rowChoices(page: Page, name: string) {
 	const overflow = () => document.documentElement.scrollWidth - window.innerWidth;
 	expect(await page.evaluate(overflow)).toBeLessThanOrEqual(0);
 	await shot(page, `${name}-rows`);
+	const [first, second] = await choices.evaluateAll((buttons) =>
+		buttons.map((button) => {
+			const { x, y, width } = button.getBoundingClientRect();
+			return { x, y, width: Math.round(width) };
+		})
+	);
+	expect.soft(second.y === first.y, 'Mac answer tiles share a row').toBe(name === 'mac');
+	expect.soft(second.x === first.x, 'iPhone answer tiles share a column').toBe(name === 'iphone');
+	expect.soft(second.width, 'Answer tiles have equal widths').toBe(first.width);
+	await expect.soft(list.getByText('Starts the build.')).toHaveCount(0);
 	return choices;
 }
 

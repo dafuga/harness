@@ -10,19 +10,22 @@
 	"composition": {
 		"level": "page",
 		"uses": [
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox",
 			"desktop.component.project-gate",
 			"desktop.component.remote-connection",
 			"desktop.component.workspace-shell",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span"
 		]
 	},
 	"owns": {
 		"source": ["packages/desktop/src/routes/+page.svelte"],
-		"symbols": ["+page", "+page.phoneAccess"]
+		"symbols": ["+page", "+page.blockers", "+page.phoneAccess"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -40,6 +43,18 @@
 		"initialization": [],
 		"snippets": [
 			{
+				"name": "+page.blockers",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "+page.blockers",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "+page.phoneAccess",
 				"inputs": [],
 				"outputs": [
@@ -54,6 +69,11 @@
 		]
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.component.project-gate",
 			"via": "import",
@@ -76,6 +96,11 @@
 		},
 		{
 			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-phone-tracker-inbox-source",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -125,7 +150,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-h2",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
 			"via": "import",
 			"origin": "derived"
 		},
