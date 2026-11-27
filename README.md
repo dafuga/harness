@@ -129,11 +129,15 @@ as it is back that day) into `~/backups/tracker/native`, keeping 14 daily and 8 
 failed backup, or none for 36 hours, raises one "Tracker backups need attention" ask. `tracker status`
 and `tracker backup list` report the result (the list also shows hourly copies kept in
 `~/backups/tracker`), and `tracker backup now` takes one. These copies stay on the hub's disk.
+A backup folder belongs to the database that wrote its newest daily copy: another database is
+refused before it replaces or rotates anything. Status also checks that the last good file is still
+on disk at its recorded size. A rehearsal hub with active host effects should set its own
+`backupDirectory`.
 
 `tracker backup verify <file>` and `tracker backup restore <file> --to <new path>` run without the
 service. Restore never changes the live database: it writes a checked copy that keeps this computer's
 current run and delivery records and has a new database identity, so spokes send their journals again,
-then prints the steps to swap it in. Add `--without-local-state` if the live database is unreadable.
+then prints the steps to swap it in, including moving the old identity's backups into a subfolder. Add `--without-local-state` if the live database is unreadable.
 
 Compare quiesced SQLite backup copies before changing a Tracker service.
 `--node` is the spoke's configured name. Add `--hub-relay-ops` when the spoke

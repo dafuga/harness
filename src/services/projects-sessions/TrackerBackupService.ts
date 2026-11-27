@@ -7,6 +7,7 @@ import {
 	raiseTrackerBackupAlert
 } from './tracker-backup-service/trackerBackupAlert';
 import { trackerBackupClock } from './tracker-backup-service/trackerBackupClock';
+import { trackerBackupFileError } from './tracker-backup-service/trackerBackupFileError';
 import {
 	readTrackerBackupState,
 	writeTrackerBackupState
@@ -44,8 +45,9 @@ export class TrackerBackupService {
 
 	status() {
 		const { directory, stateFile, timeZone } = this.options;
-		const { last_ok, last_ok_file, last_ok_size, last_error, last_error_at, first_seen } =
-			readTrackerBackupState(stateFile);
+		const state = readTrackerBackupState(stateFile);
+		const { last_ok, last_ok_file, last_ok_size, last_error, last_error_at, first_seen } = state;
+		const file_error = trackerBackupFileError(directory, state);
 		const files = readTrackerBackupFiles(directory);
 		const count = (kind: string) => files.filter((file) => file.kind === kind).length;
 		return {
@@ -57,7 +59,8 @@ export class TrackerBackupService {
 			last_ok_size,
 			last_error,
 			last_error_at,
-			stale: this.isStale(last_ok ?? first_seen),
+			file_error,
+			stale: file_error !== null || this.isStale(last_ok ?? first_seen),
 			counts: { daily: count('daily'), weekly: count('weekly'), bad: count('bad') }
 		};
 	}
@@ -92,17 +95,18 @@ export class TrackerBackupService {
 	}
 
 	private async checkStale(): Promise<void> {
-		const { stateFile, items } = this.options;
+		const { directory, stateFile, items } = this.options;
 		const state = readTrackerBackupState(stateFile);
 		const period = state.last_ok ?? 'never';
-		if (!this.isStale(state.last_ok ?? state.first_seen) || state.stale_flagged_for === period)
-			return;
+		const old = this.isStale(state.last_ok ?? state.first_seen);
+		const fileError = trackerBackupFileError(directory, state);
+		const key = old ? period : fileError;
+		if (key === null || state.stale_flagged_for === key) return;
 		const cause = state.last_error ? `; last error: ${state.last_error}` : '';
-		await raiseTrackerBackupAlert(
-			items,
-			stateFile,
-			`Tracker backups are stale: no good backup for over 36 hours (last: ${period})${cause}`
-		);
-		writeTrackerBackupState(stateFile, { stale_flagged_for: period });
+		const question = old
+			? `Tracker backups are stale: no good backup for over 36 hours (last: ${period})${cause}`
+			: `Tracker backup file check failed: ${fileError}`;
+		await raiseTrackerBackupAlert(items, stateFile, question);
+		writeTrackerBackupState(stateFile, { stale_flagged_for: key });
 	}
 }
