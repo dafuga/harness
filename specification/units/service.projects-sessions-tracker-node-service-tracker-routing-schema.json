@@ -8,13 +8,8 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/services/projects-sessions/tracker-node-service/trackerRoutingSchema.ts"
-		],
-		"symbols": [
-			"trackerPreferredProviderSchema",
-			"trackerRoutingSchema"
-		]
+		"source": ["src/services/projects-sessions/tracker-node-service/trackerRoutingSchema.ts"],
+		"symbols": ["trackerPreferredProviderSchema", "trackerRoutingSchema"]
 	},
 	"contract": {
 		"origin": "declared",
