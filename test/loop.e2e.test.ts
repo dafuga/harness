@@ -1,4 +1,5 @@
 import { observedLoop, expectCaptureBindings } from './support/loop-repair/observedLoop';
+import { expectInstalledAcceptanceGuidance } from './support/loop-repair/installedAcceptanceGuidance';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -13,7 +14,7 @@ test('loop CLI traces work and remains audit-safe in generated projects', async 
 	try {
 		await runHarness(['new', 'app', 'loop-app'], root);
 		const project = join(root, 'loop-app');
-
+		await expectInstalledAcceptanceGuidance(project);
 		await runHarness(['loop', 'create', 'newsletter-signup', '--goal', 'Collect emails'], project);
 		await runHarness(
 			['loop', 'add', 'newsletter-signup', 'verify', '--title', 'Run checks and browser proof'],
