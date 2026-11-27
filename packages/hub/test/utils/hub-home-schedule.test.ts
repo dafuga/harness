@@ -62,7 +62,7 @@ test('each past-due item says whether it is running, queued or blocked', () => {
 	expect(Object.fromEntries(view.pastDue.map((run) => [run.id, [run.state, run.reason]]))).toEqual({
 		live: ['running', null],
 		requested: ['queued', null],
-		stale: ['blocked', 'In progress with no live session'],
+		stale: ['due', null],
 		waiting: ['blocked', 'Waiting on the box'],
 		asks: ['blocked', 'Waiting on your answer'],
 		paused: ['blocked', 'Automatic launch is off'],
@@ -84,10 +84,10 @@ test('personal and family work never appears, past due or upcoming', () => {
 
 test('queued work is numbered in launch order: urgent first, then oldest due', () => {
 	const view = board([
-		item('newer', { due: '2026-11-20T09:00:00.000Z' }),
-		item('older'),
-		item('low', { priority: 'low', due: '2026-11-10T09:00:00.000Z' }),
-		item('urgent', { priority: 'urgent', due: '2026-11-24T09:00:00.000Z' })
+		item('newer', { launchRequested: true, due: '2026-11-20T09:00:00.000Z' }),
+		item('older', { launchRequested: true }),
+		item('low', { launchRequested: true, priority: 'low', due: '2026-11-10T09:00:00.000Z' }),
+		item('urgent', { launchRequested: true, priority: 'urgent', due: '2026-11-24T09:00:00.000Z' })
 	]);
 	expect(view.pastDue.map((run) => [run.id, run.position])).toEqual([
 		['urgent', 1],
@@ -110,7 +110,7 @@ test('a run whose time passes after it was published leaves the schedule', () =>
 	const items = [item('future', { due: soon })];
 	const later = board(items, undefined, Date.parse(soon) + 1000);
 	expect(later.upcoming).toEqual([]);
-	expect(later.pastDue).toMatchObject([{ id: 'future', state: 'queued', position: 1 }]);
+	expect(later.pastDue).toMatchObject([{ id: 'future', state: 'due' }]);
 });
 
 test('a Mac that reports past runs without a state still cannot show them as scheduled', () => {
@@ -125,8 +125,12 @@ test('a Mac that reports past runs without a state still cannot show them as sch
 
 test('the Hub keeps the past-due states a Mac publishes', () => {
 	const parsed = parseHomePayload(
-		JSON.parse(JSON.stringify(snapshot([item('queued'), item('future', { due: soon })])))
+		JSON.parse(
+			JSON.stringify(
+				snapshot([item('queued', { launchRequested: true }), item('future', { due: soon })])
+			)
+		)
 	);
 	expect(parsed.overdue).toMatchObject([{ id: 'queued', whenDue: { state: 'queued' } }]);
-	expect(parsed.scheduled).toMatchObject([{ id: 'future', whenDue: { state: 'queued' } }]);
+	expect(parsed.scheduled).toMatchObject([{ id: 'future', whenDue: { state: 'due' } }]);
 });

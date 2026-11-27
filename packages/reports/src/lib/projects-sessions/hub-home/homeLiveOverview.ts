@@ -73,7 +73,7 @@ function restingRow(work: ItemWork): HomeWorkRow[] {
 		return [{ ...row, outcome: homeText(last?.outcome, 200) }];
 	}
 	if (last) return [workRow(work, 'finished', last)];
-	if (item.status === 'done') return [workRow(work, 'finished')];
+	if (item.status === 'done') return [];
 	return [workRow(work, item.launchRequested && item.status === 'open' ? 'queued' : 'no-run')];
 }
 

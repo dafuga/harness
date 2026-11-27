@@ -12,7 +12,12 @@ import { homeText } from './homeTrackerText';
 
 const upcomingLimit = 120;
 const pastDueLimit = 200;
-const stateOrder: Record<HomeWhenDue['state'], number> = { running: 0, queued: 1, blocked: 2 };
+const stateOrder: Record<HomeWhenDue['state'], number> = {
+	running: 0,
+	queued: 1,
+	due: 2,
+	blocked: 3
+};
 const unreported = 'This computer has not reported why it has not started';
 
 const holdText: Record<string, string> = {
@@ -26,7 +31,7 @@ function blocker(item: TrackerItemRecord): string | null {
 	if (item.status === 'blocked')
 		return homeText(item.blocked_reason, 200) ?? 'Blocked; no reason recorded';
 	if (item.launchRequested) return null;
-	if (item.status === 'in_progress') return 'In progress with no live session';
+	if (item.status === 'in_progress') return null;
 	return neverLaunches(item);
 }
 
@@ -42,14 +47,15 @@ function neverLaunches(item: TrackerItemRecord): string | null {
 /** Urgent runs sort first and low ones last; every other priority sits between them. */
 const urgencies: Record<string, number | undefined> = { urgent: 0, low: 2 };
 
-function whenDue(item: TrackerItemRecord, live: boolean): HomeWhenDue {
+function whenDue(item: TrackerItemRecord, live: boolean, queued: boolean): HomeWhenDue {
 	const urgency = urgencies[item.priority ?? ''] ?? 1;
 	if (live) return { state: 'running', reason: null, urgency };
 	const reason = blocker(item);
-	return { state: reason ? 'blocked' : 'queued', reason, urgency };
+	if (reason) return { state: 'blocked', reason, urgency };
+	return { state: queued || item.launchRequested ? 'queued' : 'due', reason: null, urgency };
 }
 
-function itemRun(item: TrackerItemRecord, live: boolean): HomeRun[] {
+function itemRun(item: TrackerItemRecord, live: boolean, queued: boolean): HomeRun[] {
 	const at = item.recurring ? (item.occurrence ?? item.due) : item.due;
 	if (!at || item.status === 'done') return [];
 	return [
@@ -62,7 +68,7 @@ function itemRun(item: TrackerItemRecord, live: boolean): HomeRun[] {
 			source: 'tracker',
 			recurring: Boolean(item.recurring),
 			paused: Boolean(item.scheduleOff),
-			whenDue: whenDue(item, live)
+			whenDue: whenDue(item, live, queued)
 		}
 	];
 }
@@ -79,14 +85,19 @@ export function listHomeSchedule(
 	const live = new Set(
 		runs.filter((run) => run.state === 'running' && run.ended_at === null).map((run) => run.item_id)
 	);
+	const queued = new Set(
+		runs.filter((run) => run.state === 'queued' && run.ended_at === null).map((run) => run.item_id)
+	);
 	// Personal and family work never appears on the Hub.
 	const shown = items.filter((item) => !trackerNonWorkAgent(item.agent));
 	// Only work that has not started yet is still scheduled; the rest is already Work in progress.
 	const upcoming = shown.flatMap((item) =>
-		item.status === 'open' ? itemRun(item, false).filter((run) => isUpcoming(run, now)) : []
+		item.status === 'open'
+			? itemRun(item, false, queued.has(item.id)).filter((run) => isUpcoming(run, now))
+			: []
 	);
 	const passed = shown
-		.flatMap((item) => itemRun(item, live.has(item.id)))
+		.flatMap((item) => itemRun(item, live.has(item.id), queued.has(item.id)))
 		.filter((run) => !isUpcoming(run, now));
 	return {
 		scheduled: [...upcoming, ...routines.filter((run) => isUpcoming(run, now))]
@@ -129,6 +140,7 @@ export function splitHomeSchedule(
 		...inState('queued')
 			.sort(launchOrder)
 			.map((run, index) => ({ ...run, position: index + 1 })),
+		...inState('due').sort(byTime),
 		...inState('blocked').sort(byTime)
 	];
 	return { upcoming, pastDue };

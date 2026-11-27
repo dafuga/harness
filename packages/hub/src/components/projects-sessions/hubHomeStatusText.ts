@@ -4,7 +4,12 @@ import type {
 	HomePastDue
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 
-const pastDueLabels = { running: 'Running', queued: 'Queued', blocked: 'Blocked' } as const;
+const pastDueLabels = {
+	running: 'Running',
+	queued: 'Queued',
+	due: 'Due now',
+	blocked: 'Blocked'
+} as const;
 
 export function pastDueLabel(run: Pick<HomePastDue, 'state' | 'position'>) {
 	return run.position ? `Queued #${run.position}` : pastDueLabels[run.state];
