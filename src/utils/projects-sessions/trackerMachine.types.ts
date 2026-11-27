@@ -1,15 +1,24 @@
 // @harness-uid u_q5ilh2avzz
 export type TrackerAgentKind = 'claude' | 'codex' | 'test-runner' | 'browser';
 
-/** One agent session, or a test runner or browser outside any session. */
-export interface TrackerProcessGroup {
-	kind: TrackerAgentKind;
+/** Resource use by one process or group, with a display label and representative PID. */
+export interface TrackerSystemProcessGroup {
 	pid: number;
 	label: string;
 	procs: number;
 	/** Percent of one core. */
 	cpu: number;
 	rss_mb: number;
+}
+
+/** One agent session, or a test runner or browser outside any session. */
+export interface TrackerProcessGroup extends TrackerSystemProcessGroup {
+	kind: TrackerAgentKind;
+}
+
+export interface TrackerDiskUser {
+	label: string;
+	used_gb: number;
 }
 
 export interface TrackerDiskSample {
@@ -40,6 +49,10 @@ export interface TrackerResourceSample {
 	agents: { claude: number; codex: number; test_runners: number; browsers: number };
 	top_cpu: TrackerProcessGroup[];
 	top_rss: TrackerProcessGroup[];
+	system_cpu?: TrackerSystemProcessGroup[];
+	system_rss?: TrackerSystemProcessGroup[];
+	system_groups?: TrackerSystemProcessGroup[];
+	disk_users?: TrackerDiskUser[];
 }
 
 export type TrackerMachineState = 'ok' | 'busy' | 'overloaded' | 'offline';

@@ -11,6 +11,8 @@
 		"source": ["src/utils/projects-sessions/trackerMachineStatus.ts"],
 		"symbols": [
 			"trackerSampleOfflineMs",
+			"trackerDiskAlertFloor",
+			"trackerMachineNeedsPromptAlert",
 			"trackerBusyLoadPerCore",
 			"trackerMachineRole",
 			"trackerMachineStatus"
@@ -19,6 +21,18 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerDiskAlertFloor.platform",
+				"type": "string",
+				"required": true,
+				"description": "Platform of the sampled host, such as darwin or linux."
+			},
+			{
+				"name": "trackerMachineNeedsPromptAlert.sample",
+				"type": "TrackerResourceSample",
+				"required": true,
+				"description": "Latest resource sample with running load, memory pressure and mounted disk headroom."
+			},
 			{
 				"name": "trackerMachineRole.node",
 				"type": "string",
@@ -69,6 +83,46 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerDiskAlertFloor",
+				"inputs": [
+					{
+						"name": "trackerDiskAlertFloor.platform",
+						"type": "string",
+						"required": true,
+						"description": "Platform of the sampled host, such as darwin or linux."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDiskAlertFloor",
+						"type": "number",
+						"description": "Free-space alert floor in GB for the platform. macOS uses 60 GB and other platforms use 20 GB."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerMachineNeedsPromptAlert",
+				"inputs": [
+					{
+						"name": "trackerMachineNeedsPromptAlert.sample",
+						"type": "TrackerResourceSample",
+						"required": true,
+						"description": "Latest resource sample with running load, memory pressure and mounted disk headroom."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerMachineNeedsPromptAlert",
+						"type": "boolean",
+						"description": "True for an extreme one-minute load, memory pressure or low disk that warrants a one-minute confirmation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
 			{
 				"name": "trackerMachineRole",
 				"inputs": [

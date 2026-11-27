@@ -9,14 +9,15 @@ const label = z
 	.max(120)
 	.regex(/^[\w .:@-]+$/);
 
-const group = z.object({
-	kind: z.enum(['claude', 'codex', 'test-runner', 'browser']),
+const systemGroup = z.object({
 	pid: z.int().nonnegative(),
 	label,
 	procs: count,
 	cpu: amount,
 	rss_mb: amount
 });
+
+const group = systemGroup.extend({ kind: z.enum(['claude', 'codex', 'test-runner', 'browser']) });
 
 const disk = z.object({
 	mount: z
@@ -47,5 +48,12 @@ export const trackerResourceSample = z.object({
 	disks: z.array(disk).max(10),
 	agents: z.object({ claude: count, codex: count, test_runners: count, browsers: count }),
 	top_cpu: z.array(group).max(5),
-	top_rss: z.array(group).max(5)
+	top_rss: z.array(group).max(5),
+	system_cpu: z.array(systemGroup).max(5).optional(),
+	system_rss: z.array(systemGroup).max(5).optional(),
+	system_groups: z.array(systemGroup).max(5).optional(),
+	disk_users: z
+		.array(z.object({ label, used_gb: amount }))
+		.max(3)
+		.optional()
 });

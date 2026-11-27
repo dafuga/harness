@@ -4,8 +4,8 @@
 	"uid": "u_fnfvgcje7d",
 	"kind": "adapter",
 	"title": "TrackerMachineSamplerAdapter",
-	"responsibility": "Owns the TrackerMachineSamplerAdapter integration boundary.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Samples local CPU, memory, swap, volume headroom and process usage. On a constrained disk it measures selected workspace and cache directories with a bounded background scan.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/adapters/projects-sessions/TrackerMachineSamplerAdapter.ts"],
@@ -98,6 +98,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-group-tracker-processes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-status",
 			"via": "import",
 			"origin": "derived"
 		},

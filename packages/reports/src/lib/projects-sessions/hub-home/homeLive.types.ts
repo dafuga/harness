@@ -48,7 +48,7 @@ export interface HomeWorkProject {
 export interface HomeLiveOverview {
 	readAt: string;
 	projects: HomeWorkProject[];
-	machines: { name: string; status: MachineStatus }[];
+	machines: { name: string; status: MachineStatus; reason?: string }[];
 	/** Live runs of private or ignored items: counted, never described. */
 	hiddenRuns: number;
 	/** Rows left out because a project had more than the list holds. */

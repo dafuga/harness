@@ -153,10 +153,15 @@ export function buildHomeLiveOverview(sources: TrackerSources, now: number): Hom
 	return {
 		readAt: new Date(now).toISOString(),
 		projects: projects.slice(0, homeLiveLimits.projects),
-		machines: sources.machines.map((entry) => ({
-			name: homeText(entry.node, 200) ?? '',
-			status: entry.status
-		})),
+		machines: sources.machines.map((entry) => {
+			const reason =
+				entry.status === 'overloaded' && homeText(entry.reasons?.slice(0, 5).join(' · '), 200);
+			return {
+				name: homeText(entry.node, 200) ?? '',
+				status: entry.status,
+				...(reason && { reason })
+			};
+		}),
 		hiddenRuns,
 		omittedRows:
 			built.reduce((sum, entry) => sum + entry.omitted, 0) +

@@ -105,6 +105,10 @@
 .hh-home .hh-head .po-machine {
 	white-space: nowrap;
 }
+.hh-home .hh-head .po-machine[data-state='overloaded'] {
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
 /* Tablet: two columns, Agents across the top, Work in progress across the bottom in one column. */
 @media (max-width: 1000px) {
 	.hh-home .hh-grid {
@@ -146,6 +150,9 @@
 	.hh-home .hh-head .po-machines {
 		flex-wrap: nowrap;
 		overflow-x: auto;
+	}
+	.hh-home .hh-head .po-machines:has([data-state='overloaded']) {
+		flex-wrap: wrap;
 	}
 	.hh-home .hh-section.po-card {
 		padding: var(--hx-space-16);

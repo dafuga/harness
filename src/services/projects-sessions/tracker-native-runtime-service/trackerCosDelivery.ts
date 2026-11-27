@@ -2,6 +2,7 @@
 import { randomBytes } from 'node:crypto';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import { trackerOverloadAlertKind } from './trackerHostWatchdogAlerts';
 import { isOutageAlert } from './trackerCosAlertKinds';
 import { cosDeliveryAsk, cosDeliveryDelivered } from './trackerCosDeliveryAsk';
 import { cosSendWindowStart } from './trackerCosWindow';
@@ -21,12 +22,13 @@ const alphabet = '0123456789abcdefghjkmnpqrstvwxyz';
  */
 export function watchCosDelivery(
 	store: TrackerPersistenceService,
-	pending: readonly TrackerWatchdogAlert[],
+	alerts: readonly TrackerWatchdogAlert[],
 	now: number
 ): void {
 	const windowStart = cosSendWindowStart(now);
 	if (windowStart === null) return;
 	const alarm = readAlarm(store);
+	const pending = alerts.filter(({ kind }) => kind !== trackerOverloadAlertKind);
 	// Overdue by real age keeps an ask open; only waiting time in today's window raises one.
 	if (!pending.some((alert) => overdue(alert, now - alert.at))) {
 		if (alarm?.open) closeAlarm(store, alarm);

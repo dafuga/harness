@@ -74,7 +74,7 @@ export type TrackerRunRecord = {
 };
 
 /** A computer from /machines or /status.machines. Session and process counts are omitted. */
-export type TrackerMachineRecord = { node: string; status: MachineStatus };
+export type TrackerMachineRecord = { node: string; status: MachineStatus; reasons?: string[] };
 
 /** Validated item, run, and machine records from the tracker. */
 export type TrackerSources = {

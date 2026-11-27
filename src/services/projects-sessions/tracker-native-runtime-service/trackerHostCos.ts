@@ -1,7 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
+import { trackerOverloadAlertKind, urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { launchWithoutRunKind } from './trackerWatchLaunchRequests';
 import { isOutageAlert } from './trackerCosAlertKinds';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
@@ -26,6 +26,21 @@ export async function sendWatchdogAlerts(
 	const unsent = unsentCosAlerts(store, alerts).sort(
 		(a, b) => alertRank(a.kind) - alertRank(b.kind) || a.at - b.at
 	);
+	// Keep computer health on its own batch so it bypasses the routine window and digest throttle.
+	const health = unsent.filter(({ kind }) => kind === trackerOverloadAlertKind);
+	const ordinary = unsent.filter(({ kind }) => kind !== trackerOverloadAlertKind);
+	try {
+		await sendBatch(store, driver, { unsent: health, signal });
+	} finally {
+		await sendBatch(store, driver, { unsent: ordinary, signal });
+	}
+}
+
+async function sendBatch(
+	store: TrackerPersistenceService,
+	driver: TrackerWatchdogPort,
+	{ unsent, signal }: { unsent: TrackerWatchdogAlert[]; signal: AbortSignal }
+) {
 	const batch = unsent.slice(0, batchSize);
 	if (!batch.length) return;
 	if (!(await driver.send(batch, signal, { backlog: unsent.length > batch.length }))) return;

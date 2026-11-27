@@ -1,23 +1,31 @@
 // @harness-uid u_fnfvgcje7d
 import { execFile } from 'node:child_process';
 import { existsSync, statfsSync, statSync } from 'node:fs';
-import { availableParallelism, cpus, loadavg } from 'node:os';
+import { availableParallelism, cpus, homedir, loadavg, tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { trackerDiskAlertFloor } from '../../utils/projects-sessions/trackerMachineStatus';
 import {
 	groupTrackerProcesses,
+	groupTrackerSystemProcesses,
 	parseTrackerProcesses
 } from '../../utils/projects-sessions/groupTrackerProcesses';
 import type {
 	TrackerDiskSample,
+	TrackerDiskUser,
+	TrackerSystemProcessGroup,
 	TrackerProcessGroup,
 	TrackerResourceSample
 } from '../../utils/projects-sessions/trackerMachine.types';
 import { readTrackerMemory } from './tracker-machine-sampler-adapter/readTrackerMemory';
 
 const gib = 1024 ** 3;
+const diskScanInterval = 15 * 60_000;
 
 /** Samples this computer's CPU, memory, swap, disks and agent sessions. */
 export class TrackerMachineSamplerAdapter {
 	private previous = cpuTimes();
+	private diskUsers: TrackerDiskUser[] = [];
+	private nextDiskScan = -Infinity;
 
 	constructor(
 		private readonly node: string,
@@ -28,7 +36,9 @@ export class TrackerMachineSamplerAdapter {
 		const times = cpuTimes();
 		const busy = busyPercent(this.previous, times);
 		this.previous = times;
-		const [memory, groups] = await Promise.all([readTrackerMemory(), this.groups()]);
+		const [memory, { agents, system }] = await Promise.all([readTrackerMemory(), this.groups()]);
+		const disks = diskSamples();
+		this.scanLowDisks(disks, now);
 		return {
 			at: new Date(now).toISOString(),
 			platform: process.platform,
@@ -36,15 +46,34 @@ export class TrackerMachineSamplerAdapter {
 			load: loadavg().map(round),
 			cpu_busy_pct: busy,
 			...memory,
-			disks: diskSamples(),
-			agents: agentCounts(groups),
-			top_cpu: top(groups, 'cpu'),
-			top_rss: top(groups, 'rss_mb')
+			disks,
+			agents: agentCounts(agents),
+			top_cpu: top(agents, 'cpu'),
+			top_rss: top(agents, 'rss_mb'),
+			system_cpu: top(system, 'cpu'),
+			system_rss: top(system, 'rss_mb'),
+			system_groups: system.filter(({ procs }) => procs > 1),
+			disk_users: this.diskUsers
 		};
 	}
 
+	/** Start a bounded low-priority scan without delaying resource reports. */
+	private scanLowDisks(disks: readonly TrackerDiskSample[], now: number) {
+		const low = disks.filter(({ free_gb }) => free_gb < trackerDiskAlertFloor(process.platform));
+		if (!low.length) {
+			this.diskUsers = [];
+			this.nextDiskScan = -Infinity;
+			return;
+		}
+		if (now < this.nextDiskScan) return;
+		this.nextDiskScan = now + diskScanInterval;
+		void largestDiskUsers(low)
+			.then((users) => (this.diskUsers = users))
+			.catch(() => {});
+	}
+
 	/** Command lines are read to classify processes and dropped before the sample leaves here. */
-	private async groups(): Promise<TrackerProcessGroup[]> {
+	private async groups() {
 		const [table, commands, panes] = await Promise.all([
 			read('/bin/ps', ['-axo', 'pid=,ppid=,rss=,pcpu=,comm=']),
 			read('/bin/ps', ['-axo', 'pid=,args=']),
@@ -55,7 +84,9 @@ export class TrackerMachineSamplerAdapter {
 			const match = /^\s*(\d+)\s+(.*)$/.exec(line);
 			if (match) args.set(Number(match[1]), match[2]);
 		}
-		return groupTrackerProcesses(parseTrackerProcesses(table), args, panes);
+		const rows = parseTrackerProcesses(table);
+		const agents = groupTrackerProcesses(rows, args, panes);
+		return { agents, system: groupTrackerSystemProcesses(rows, args, agents) };
 	}
 
 	private async panes(): Promise<Map<number, string>> {
@@ -123,6 +154,45 @@ function diskSamples(): TrackerDiskSample[] {
 	});
 }
 
+/** Only scan known workspace and cache directories on the constrained volume. */
+async function largestDiskUsers(disks: readonly TrackerDiskSample[]): Promise<TrackerDiskUser[]> {
+	const home = homedir();
+	const volumes = new Set(
+		disks.map(({ mount }) => statSync(mount, { throwIfNoEntry: false })?.dev)
+	);
+	volumes.delete(undefined);
+	const directories = new Map([
+		[join(home, 'projects'), 'Projects'],
+		[join(home, '.local/state/harness'), 'Harness state and worktrees'],
+		[join(home, 'Library/Developer'), 'Xcode and simulator data'],
+		[join(home, 'Library/Caches'), 'User caches'],
+		[join(home, '.cache'), 'User cache directory'],
+		['/workspace', 'Workspace'],
+		[tmpdir(), 'Temporary files']
+	]);
+	const users: TrackerDiskUser[] = [];
+	for (const [path, label] of directories) {
+		if (!volumes.has(statSync(path, { throwIfNoEntry: false })?.dev)) continue;
+		const used = await diskUsageKB(path);
+		if (used !== undefined) users.push({ label, used_gb: round(used / 1024 ** 2) });
+	}
+	return users.sort((left, right) => right.used_gb - left.used_gb).slice(0, 3);
+}
+
+function diskUsageKB(path: string): Promise<number | undefined> {
+	return new Promise((resolve) => {
+		execFile(
+			'/usr/bin/nice',
+			['-n', '15', '/usr/bin/du', '-skx', path],
+			{ timeout: 3_000, killSignal: 'SIGKILL', maxBuffer: 64 * 1024 },
+			(error, stdout) => {
+				const match = /^(\d+)\s/.exec(stdout);
+				resolve(!error && match ? Number(match[1]) : undefined);
+			}
+		);
+	});
+}
+
 function agentCounts(groups: readonly TrackerProcessGroup[]) {
 	const count = (kind: TrackerProcessGroup['kind']) =>
 		groups.filter((group) => group.kind === kind).length;
@@ -134,7 +204,7 @@ function agentCounts(groups: readonly TrackerProcessGroup[]) {
 	};
 }
 
-function top(groups: readonly TrackerProcessGroup[], key: 'cpu' | 'rss_mb') {
+function top<T extends TrackerSystemProcessGroup>(groups: readonly T[], key: 'cpu' | 'rss_mb') {
 	return [...groups].sort((left, right) => right[key] - left[key]).slice(0, 5);
 }
 

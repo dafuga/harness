@@ -10,6 +10,24 @@ const minute = 60_000;
 /** A computer is offline after five minutes without a sample. */
 export const trackerSampleOfflineMs = 5 * minute;
 const swapWindow = 10 * minute;
+const spikeLoadPerCore = 3;
+
+export function trackerDiskAlertFloor(platform: string): number {
+	return platform === 'darwin' ? 60 : 20;
+}
+
+/** An extreme spike, memory pressure or a low disk merits a prompt Chief of Staff alert. */
+export function trackerMachineNeedsPromptAlert(sample: TrackerResourceSample): boolean {
+	return (
+		isLoadSpike(sample) ||
+		memoryBreaches(sample.ram, overloaded.ramPct, 'overloaded').length > 0 ||
+		sample.disks.some(({ free_gb }) => free_gb < trackerDiskAlertFloor(sample.platform))
+	);
+}
+
+function isLoadSpike(sample: TrackerResourceSample): boolean {
+	return (sample.load[0] ?? 0) > spikeLoadPerCore * sample.cores;
+}
 
 export const trackerBusyLoadPerCore = 1;
 
@@ -68,6 +86,10 @@ function breaches(
 	const reasons: string[] = [];
 	const load = sample.load[1] ?? 0;
 	const loadLimit = limits.loadPerCore * sample.cores;
+	if (status === 'overloaded' && isLoadSpike(sample))
+		reasons.push(
+			`1-min load ${sample.load[0]} > ${spikeLoadPerCore * sample.cores} (${spikeLoadPerCore}x ${sample.cores} cores)`
+		);
 	if (load > loadLimit)
 		reasons.push(
 			`5-min load ${load} > ${round(loadLimit)} (${limits.loadPerCore}x ${sample.cores} cores)`
@@ -75,8 +97,10 @@ function breaches(
 	reasons.push(...memoryBreaches(sample.ram, limits.ramPct, status));
 	if (growth > limits.swapGrowthMB) reasons.push(`swap grew ${growth} MB in 10 min`);
 	// Absolute free space protects a disk; a percentage floor would hold a large, full-ish disk.
+	const diskFloor =
+		status === 'overloaded' ? trackerDiskAlertFloor(sample.platform) : limits.diskFreeGB;
 	for (const disk of sample.disks)
-		if (disk.free_gb < limits.diskFreeGB)
+		if (disk.free_gb < diskFloor)
 			reasons.push(`disk ${disk.mount} ${disk.free_gb} GB free (${disk.free_pct}%)`);
 	return reasons;
 }
@@ -93,8 +117,8 @@ function memoryBreaches(
 		reasons.push(
 			`RAM available ${percent}% < ${floor}% (${round(ram.available_mb / 1024)} GB free)`
 		);
-	const pressure = status === 'overloaded' ? 'critical' : 'warn';
-	if (ram.pressure === pressure) reasons.push(`macOS memory pressure ${pressure}`);
+	if (status === 'overloaded' && (ram.pressure === 'warn' || ram.pressure === 'critical'))
+		reasons.push(`macOS memory pressure ${ram.pressure}`);
 	return reasons;
 }
 
