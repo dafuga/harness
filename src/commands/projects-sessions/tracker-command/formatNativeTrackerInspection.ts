@@ -7,10 +7,12 @@ import {
 } from './formatNativeTrackerMachines';
 import type { NativeTrackerMachines } from './formatNativeTrackerMachines.types';
 import { formatListedRun, formatNativeTrackerItem } from './formatNativeTrackerItem';
+import { formatNativeTrackerAlert } from './formatNativeTrackerAlert';
 import type {
 	NativeTrackerAdapter,
 	NativeTrackerAdapterChange,
 	NativeTrackerAdapterReply,
+	NativeTrackerAlertReceipt,
 	NativeTrackerBackupList,
 	NativeTrackerInspection,
 	NativeTrackerItemDetail
@@ -25,6 +27,8 @@ export function formatNativeTrackerInspection(command: string, data: NativeTrack
 			return formatNativeTrackerMachines(data as unknown as NativeTrackerMachines);
 		case 'place':
 			return formatNativeTrackerPlacement(data as unknown as TrackerPlacement);
+		case 'alert':
+			return formatNativeTrackerAlert(data as unknown as NativeTrackerAlertReceipt);
 		case 'show':
 			return formatItemDetail(data as NativeTrackerItemDetail);
 		case 'adapter':

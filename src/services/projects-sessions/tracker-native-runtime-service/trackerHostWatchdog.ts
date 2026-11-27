@@ -19,6 +19,7 @@ import { readTrackerSessionHealth, trackerRecoveryLaunch } from './trackerSessio
 import { readTrackerSlotState, slotAlertKinds } from './trackerSlotInvariants';
 import { withSlotSummary } from './trackerSlotAlerts';
 import { trackerTranscriptScan } from './trackerTranscriptScan';
+import { trackerCosInboxKinds, trackerCosInboxRetention } from './trackerCosInbox';
 import { trackerWatchdogPort } from './trackerWatchdogPort';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { watchHostSessions } from './trackerWatchHostSessions';
@@ -44,7 +45,7 @@ export function trackerHostWatchdog(
 	let lastCosPoll = -Infinity;
 	let peerAlerts: readonly TrackerWatchdogAlert[] = [];
 	const readItems = () => items.list({ status: 'all', limit: -1 });
-	const alerts = () => [...localAlerts(store, items), ...peerAlerts];
+	const alerts = () => [...localAlerts(store, items, now()), ...peerAlerts];
 	const pollSessions = watchHostSessions(
 		{ store, items, driver },
 		{ ...options, readItems, roots: config.transcriptRoots }
@@ -96,16 +97,29 @@ export function configuredHostWatchdog(
 	});
 }
 
-function localAlerts(store: TrackerPersistenceService, items: TrackerItemReadRepository) {
-	const open = Object.values(readWatchdogAlerts(store)).filter(({ item_id, kind }) => {
-		// A leaked pane or idle run matters whatever its item says.
-		if (kind === 'orphan' || kind === 'finished' || slotAlertKinds.has(kind)) return true;
-		const item = activeWatchdogItem(items, item_id);
-		if (kind === 'recovery-failed' || kind === 'handoff-failed')
-			return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
-		return Boolean(item);
-	});
+function localAlerts(
+	store: TrackerPersistenceService,
+	items: TrackerItemReadRepository,
+	now: number
+) {
+	const open = Object.values(readWatchdogAlerts(store)).filter(
+		(alert) => unreadMessage(alert, now) || stillApplies(items, alert)
+	);
 	return open.map((alert) => withSlotSummary(store, alert));
+}
+
+/** A monitor may target a finished or missing item; its message must still be read. */
+function unreadMessage({ kind, at }: TrackerWatchdogAlert, now: number) {
+	return trackerCosInboxKinds.has(kind) && now - at < trackerCosInboxRetention;
+}
+
+function stillApplies(items: TrackerItemReadRepository, { item_id, kind }: TrackerWatchdogAlert) {
+	// A leaked pane or idle run matters whatever its item says.
+	if (kind === 'orphan' || kind === 'finished' || slotAlertKinds.has(kind)) return true;
+	const item = activeWatchdogItem(items, item_id);
+	if (kind === 'recovery-failed' || kind === 'handoff-failed')
+		return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
+	return Boolean(item);
 }
 
 function inspectHostWatchdog(

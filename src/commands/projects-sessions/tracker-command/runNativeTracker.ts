@@ -21,21 +21,23 @@ import type {
 	NativeTrackerAdapterReply,
 	NativeTrackerInspection,
 	NativeTrackerItem,
+	NativeTrackerRefusal,
 	NativeTrackerRequest,
 	NativeTrackerRunRead
 } from './nativeTrackerCli.types';
 import { nativeTrackerArgs } from './nativeTrackerRequest';
 import { printNativeTrackerHelp, wantsNativeTrackerHelp } from './nativeTrackerHelp';
 import { printNativeTrackerAddHint } from './printNativeTrackerAddHint';
-import { printNativeTrackerError } from './printNativeTrackerError';
+import { refuseNativeTrackerRequest } from './printNativeTrackerError';
 import { formatNativeTrackerCheck } from './formatNativeTrackerMatches';
 import { formatNativeTrackerHistory } from './formatNativeTrackerHistory';
 import { runTrackerInstructions } from './runTrackerInstructions';
 import { formatNativeTrackerJob } from './formatNativeTrackerJob';
+import { fetchNativeTracker } from './fetchNativeTracker';
+import { keepRefusedTrackerFlag } from './keepRefusedTrackerFlag';
 import type { NativeTrackerJobResponse } from './formatNativeTrackerJob.types';
 import type { TrackerItemMatches } from '../../../utils/projects-sessions/checkTrackerItem.types';
 import type { TrackerOccurrenceRow } from '../../../repositories/projects-sessions/TrackerRecurringRepository.types';
-import { trackerRequestTimeout } from './trackerRequestTimeout';
 import { withTrackerAttachments } from './withTrackerAttachments';
 
 export function selectedTrackerConfig(): string | undefined {
@@ -64,46 +66,43 @@ export async function runNativeTracker(args: string[], path: string): Promise<nu
 	}
 	const local = runLocalTrackerCommand(args, config);
 	if (local !== undefined) return local;
+	const keep = async (refused: string) => {
+		if (args[0] !== 'flag') return;
+		const actor = trackerActor('flag', undefined, config.node);
+		await keepRefusedTrackerFlag(args, refused, { config, actor });
+	};
 	let input: ReturnType<typeof nativeTrackerArgs>;
 	try {
 		input = await withTrackerAttachments(nativeTrackerArgs(args));
 	} catch (error) {
-		console.error(`tracker: ${error instanceof Error ? error.message : 'invalid arguments'}`);
+		const reason = error instanceof Error ? error.message : 'invalid arguments';
+		console.error(`tracker: ${reason}`);
+		await keep(reason);
 		return 1;
 	}
 	try {
-		return await sendNativeTracker(input, config);
+		return await sendNativeTracker(input, config, keep);
 	} catch {
 		console.error('tracker: native service unavailable. Check the configured supervisor.');
+		await keep('native service unavailable');
 		return 3;
 	}
 }
 
 async function sendNativeTracker(
 	input: ReturnType<typeof nativeTrackerArgs>,
-	config: TrackerNodeConfig
+	config: TrackerNodeConfig,
+	keep: (refused: string) => Promise<void>
 ) {
 	const { command, values, request, words } = input;
 	const actor = trackerActor(command, values.by, config.node);
 	const body = trackerRequestBody(command, request, actor);
-	const response = await fetch(`http://127.0.0.1:${config.apiPort}/native/v1${request.path}`, {
-		method: request.method,
-		body: JSON.stringify(body),
-		headers: {
-			'content-type': 'application/json',
-			'x-tracker-as': actor.replace(/[^\x20-\x7e]/g, '?').slice(0, 80),
-			'x-harness-tracker-node': config.node,
-			'x-harness-tracker-role': config.role
-		},
-		redirect: 'error',
-		// Bun's own five minute limit would cut off a long job test; the signal bounds the wait.
-		...({ timeout: false } as object),
-		signal: AbortSignal.timeout(trackerRequestTimeout(request.path))
-	});
+	const response = await fetchNativeTracker(config, { ...request, body }, actor);
 	const data = response.headers.get('content-type')?.startsWith('application/json')
 		? await response.json()
 		: await response.text();
-	if (!response.ok) return printNativeTrackerError(response.status, data);
+	if (!response.ok)
+		return refuseNativeTrackerRequest(response.status, data as NativeTrackerRefusal, keep);
 	if (request.path.endsWith('/launch?outcome=run')) return renderLaunch(data, Boolean(values.json));
 	if (request.path === '/backup/now') return renderTrackerBackup(data, Boolean(values.json));
 	if (command === 'check') return renderCheck(data, Boolean(values.json));

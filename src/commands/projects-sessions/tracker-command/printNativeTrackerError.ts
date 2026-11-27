@@ -4,8 +4,19 @@ import { formatNativeTrackerMatches } from './formatNativeTrackerMatches';
 
 const duplicateExits: Record<string, number> = { ignored_duplicate: 4, open_duplicate: 5 };
 
+/** Print a refused request, let the caller keep its words, and return its exit code. */
+export async function refuseNativeTrackerRequest(
+	status: number,
+	data: NativeTrackerRefusal,
+	keep: (refused: string) => Promise<void>
+): Promise<number> {
+	const code = printNativeTrackerError(status, data);
+	await keep(data?.error ?? `HTTP ${status}`);
+	return code;
+}
+
 /** Print a refused request and return its exit code; duplicates list every match. */
-export function printNativeTrackerError(status: number, data: NativeTrackerRefusal): number {
+function printNativeTrackerError(status: number, data: NativeTrackerRefusal): number {
 	if (status === 404 && !data?.error) {
 		console.error('tracker: the configured listener does not serve native Tracker commands');
 		return 3;

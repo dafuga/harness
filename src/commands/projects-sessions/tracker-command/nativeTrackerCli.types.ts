@@ -88,6 +88,12 @@ export interface NativeTrackerItemDetail extends NativeTrackerItem {
 	updated_at?: string;
 }
 
+export interface NativeTrackerAlertReceipt {
+	/** Null when the target is not a known item; the message is in the inbox all the same. */
+	item_id: string | null;
+	target: string;
+}
+
 export interface NativeTrackerAdapter {
 	id: string;
 	agent: string;
