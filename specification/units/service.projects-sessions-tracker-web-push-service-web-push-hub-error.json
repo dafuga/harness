@@ -1,0 +1,67 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-web-push-service-web-push-hub-error",
+	"uid": "u_ovui74xdee",
+	"kind": "service",
+	"title": "WebPushHubError",
+	"responsibility": "Names a refused or failed sender request by status only.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-web-push-service/WebPushHubError.ts"],
+		"symbols": ["WebPushHubError", "WebPushHubError.constructor"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "WebPushHubError.constructor.status",
+				"type": "number",
+				"required": true,
+				"description": "The Hub's HTTP status."
+			}
+		],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [],
+		"initialization": [
+			{
+				"name": "WebPushHubError.constructor",
+				"inputs": [
+					{
+						"name": "WebPushHubError.constructor.status",
+						"type": "number",
+						"required": true,
+						"description": "The Hub's HTTP status."
+					}
+				],
+				"outputs": [
+					{
+						"name": "WebPushHubError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-web-push-service/WebPushHubError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-web-push-service/WebPushHubError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -13,6 +13,7 @@ import type { TrackerHubOptions, TrackerWireValue } from './TrackerHubSyncServic
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import type { TrackerMachineSampler } from './TrackerMachineService.types';
 import type { TrackerNotificationOptions } from './TrackerNotificationService.types';
+import type { TrackerWebPushOptions } from './TrackerWebPushService.types';
 import type { TrackerBoxJobRunner } from './TrackerRecurringService.types';
 import type { TrackerSpokeLoopOptions } from './TrackerSpokeLoopService.types';
 import type { TrackerHostEffects } from './tracker-native-runtime-service/nativeTrackerHostEffects.types';
@@ -49,6 +50,8 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 	backup?: TrackerBackupOptions;
 	storage?: Omit<TrackerSchemaAdapterConfig, 'now'>;
 	notification?: TrackerNativeNotificationOptions;
+	/** Browser notifications for Daniel's open decisions; a hub node only. */
+	webPush?: Pick<TrackerWebPushOptions, 'database' | 'fetch'>;
 	adapter?: TrackerAdapterPollDependencies;
 	hostEffects?: TrackerHostEffects;
 	hostEffectsHeld?: boolean;

@@ -1,0 +1,51 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.endpoint.api-push",
+	"uid": "u_lpcbx3goia",
+	"kind": "endpoint",
+	"title": "/api/push",
+	"responsibility": "Reads and saves the owner's notification settings.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/routes/api/push/+server.ts"],
+		"symbols": ["GET", "POST"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "GET",
+				"type": "unknown",
+				"description": "The public key, quiet hours and per-browser delivery times, or available false."
+			},
+			{
+				"name": "POST",
+				"type": "unknown",
+				"description": "Saves quiet hours."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/routes/api/push/+server.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/routes/api/push/+server.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

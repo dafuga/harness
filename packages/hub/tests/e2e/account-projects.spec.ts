@@ -153,11 +153,12 @@ test('switching accounts clears the owner link on /projects', async ({
 		...forbidden,
 		reason: 'After the account switch the owner endpoint refuses the other account on purpose.'
 	});
-	const { state } = await overviewFixture(page, 'ready');
+	const { state, overview } = await overviewFixture(page, 'ready');
 	await open(page, viewports[0], '/projects');
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toBeVisible();
-	state.actor = grace;
-	await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+	const reads = overview.calls.length;
+	await hosted.switchOnOvertakenFocus(page, state, grace);
+	await expect.poll(() => overview.calls.length - reads, 'one read for the new account').toBe(1);
 	await expect(page.getByRole('link', { name: 'Project overview', exact: true })).toHaveCount(0);
 	await expect(page.locator(overviewRoot)).toHaveCount(0);
 	await expect(page.getByText('synthetic-sync', { exact: true })).toHaveCount(0);

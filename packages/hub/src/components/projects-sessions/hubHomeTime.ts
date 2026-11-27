@@ -54,3 +54,11 @@ const scheduleWeekday = new Intl.DateTimeFormat('en-GB', {
 	weekday: 'short',
 	timeZone: scheduleZone
 });
+
+/** The day and Lisbon clock time a used-up limit comes back. */
+export function resetClock(time: string | null, now: number) {
+	if (!time) return 'reset time unknown';
+	if (Date.parse(time) <= now) return 'reset due';
+	const day = scheduleDay.format(new Date(time)).replace(',', '');
+	return `resets ${day} ${runTime(time)} Lisbon`;
+}

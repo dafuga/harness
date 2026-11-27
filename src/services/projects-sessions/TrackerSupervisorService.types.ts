@@ -3,10 +3,12 @@ export type TrackerSupervisorWorker =
 	| 'adapter'
 	| 'backup'
 	| 'dispatch'
+	| 'messages'
 	| 'notifications'
 	| 'recurring'
 	| 'telemetry'
-	| 'watchdog';
+	| 'watchdog'
+	| 'web_push';
 
 export interface TrackerSupervisorOptions {
 	now?: () => number;

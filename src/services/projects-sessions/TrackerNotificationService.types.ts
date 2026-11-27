@@ -99,6 +99,18 @@ export interface TrackerNotificationDestinations {
 	send(request: TrackerDeliveryRequest): Promise<TrackerDeliveryResult>;
 }
 
+/** One Hub message for Chief of Staff, already worded for the reader. */
+export interface TrackerChiefMessage {
+	id: string;
+	itemId: string;
+	text: string;
+}
+
+export interface TrackerChiefChannel {
+	/** Sends once per message id; the destination dedupes a retry by its idempotency key. */
+	send(message: TrackerChiefMessage): Promise<{ attempt: string; result: TrackerDeliveryResult }>;
+}
+
 export type TrackerWebhookEvent =
 	| 'needs_daniel'
 	| 'due'
