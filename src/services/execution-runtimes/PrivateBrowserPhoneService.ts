@@ -1,5 +1,6 @@
 // @harness-uid u_xwkimz47da
 import { z } from 'zod';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { VaultSealAdapter } from '../../adapters/accounts-access/VaultSealAdapter';
 import {
 	VaultWireValidator,
@@ -102,7 +103,7 @@ export class PrivateBrowserPhoneService {
 		sealed: VaultSealed,
 		signal: AbortSignal
 	): Promise<void> {
-		if (this.now() >= offer.expiresAt) throw new Error('Private delivery expired.');
+		if (this.now() >= offer.expiresAt) throw new ExpectedCliError('Private delivery expired.');
 		const plaintext = key.open(offer.requestId, sealed);
 		try {
 			await this.config.submitField(scope, plaintext, signal);

@@ -1,3 +1,4 @@
+// @harness-uid u_uhsrsey7pi
 export type PrivateBrowserPhase = 'blocked' | 'ready' | 'draining' | 'private' | 'disposing';
 
 export interface PrivateBrowserCleanup {

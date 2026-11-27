@@ -1,3 +1,4 @@
+// @harness-uid u_xwkimz47da
 import type { VaultRunnerKey } from '../../adapters/accounts-access/VaultSealAdapter.types';
 import type { VaultDeviceRepository } from '../../repositories/accounts-access/VaultDeviceRepository';
 import type { PrivateBrowserGateService } from './PrivateBrowserGateService';

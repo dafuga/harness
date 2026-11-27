@@ -3,6 +3,7 @@ import { once } from 'node:events';
 import { chmodSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { isAbsolute } from 'node:path';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
 import type { PrivateBrowserAgentAdapterConfig } from './PrivateBrowserAgentAdapter.types';
 
 /** Executor-owned Unix API for reviewed agent operations. It never exposes a browser stream. */
@@ -21,10 +22,10 @@ export class PrivateBrowserAgentAdapter {
 	async listen(): Promise<void> {
 		const { agentUid, socketPath } = this.config;
 		if (!isAbsolute(socketPath) || Buffer.byteLength(socketPath) > 103) {
-			throw new Error('Private browser requires a short, absolute Unix socket path.');
+			throw new ExpectedCliError('Private browser requires a short, absolute Unix socket path.');
 		}
 		if (!Number.isSafeInteger(agentUid) || agentUid <= 0 || agentUid === process.getuid?.()) {
-			throw new Error('Private browser requires a distinct, non-root agent UID.');
+			throw new ExpectedCliError('Private browser requires a distinct, non-root agent UID.');
 		}
 		const listening = once(this.server, 'listening');
 		this.server.listen(socketPath);
@@ -33,7 +34,7 @@ export class PrivateBrowserAgentAdapter {
 			chmodSync(socketPath, 0o660);
 		} catch {
 			await this.close();
-			throw new Error('Could not restrict the private browser socket.');
+			throw new ExpectedCliError('Could not restrict the private browser socket.');
 		}
 	}
 

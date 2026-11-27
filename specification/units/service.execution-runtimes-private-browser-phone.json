@@ -64,7 +64,7 @@
 		],
 		"errors": [
 			{
-				"name": "Error",
+				"name": "ExpectedCliError",
 				"type": "thrown"
 			}
 		],
@@ -141,6 +141,11 @@
 	"dependencies": [
 		{
 			"unit": "adapter.accounts-access-vault-seal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

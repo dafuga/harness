@@ -101,7 +101,25 @@ fixture. Run the agent-side probes before, during and after private entry.
 The agent API accepts no request body. It uses `GET /status`, `POST
 /private-entry` and `POST /read` over a Unix socket. The executor config binds a
 reviewed read and a paired device to that admission surface. Device requests
-travel through the enrolled Vault path. A signed native delivery binds the
+travel through the enrolled Vault path.
+
+After the candidate binds the Unix socket, run these commands inside the
+installed agent job. The job supplies `PRIVATE_BROWSER_AGENT_SOCKET` from its
+operator-owned launch configuration. Record status codes and reviewed
+receipts only.
+
+```sh
+curl --unix-socket "$PRIVATE_BROWSER_AGENT_SOCKET" http://localhost/status
+curl --unix-socket "$PRIVATE_BROWSER_AGENT_SOCKET" -X POST http://localhost/read
+curl --unix-socket "$PRIVATE_BROWSER_AGENT_SOCKET" -X POST http://localhost/private-entry
+curl --unix-socket "$PRIVATE_BROWSER_AGENT_SOCKET" -X POST http://localhost/finish
+```
+
+The read must return HTTP 409 during private entry. The agent’s Done request
+must return HTTP 404. Test a paired device’s Done separately through the
+viewer.
+
+A signed native delivery binds the
 executor, request, tab, HTTPS origin, reviewed field and action, recipe digest,
 runner fingerprint and expiry. The optional viewer authenticates the paired
 device and authorizes Done for the exact active request. Its link contains no
@@ -126,7 +144,9 @@ proposing the primary window.
 
 In a separate primary window, preserve `gui/501/com.daniel.automation-chrome`
 and `gui/501/com.harness.x-digest.sender`. Confirm the new approved browser
-consumers and health path end-to-end before retiring the legacy 9333 route.
+consumers and health path before opening admission to the new agent. Before
+admitting real work, stop the legacy 9333 listener and verify the new agent
+cannot connect. Retain its launch definition for rollback.
 Read back browser, executor, agent, Mac app and paired iPhone app versions. Use
 only synthetic fields for installed native, viewer and result-page acceptance.
 

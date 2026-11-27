@@ -1,3 +1,4 @@
+// @harness-uid u_2gqbg52t3o
 import type { Socket } from 'node:net';
 import type { PrivateBrowserGateService } from '../../services/execution-runtimes/PrivateBrowserGateService';
 
