@@ -29,6 +29,10 @@ scripted check to run after it is deployed:
   browser reads as Hub web, and `daniel` is also what `tracker answer` writes without `--by`, so the
   Mac result also rests on the instruction.
 - Every test item is closed afterwards, passed or not. A cleanup that fails is not a pass.
+- A Tracker restart or release does not end the run: a command the service did not answer is
+  repeated for up to five minutes. A refusal is not repeated. If the service stays down longer, the
+  check fails. A reply lost after a write can repeat the write: a second note, or a second test item
+  that was never flagged, so it asks Daniel nothing but stays open until closed by hand.
 - The result is noted on the release item. Unless all three surfaces pass, the release item is
   flagged with an exact ask for Daniel and blocked. A later pass removes only the canary's own
   flag and block.

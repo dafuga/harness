@@ -15,7 +15,7 @@
 		"origin": "derived",
 		"inputs": [
 			{
-				"name": "runCanary.options",
+				"name": "runCanary.given",
 				"type": "CanaryOptions",
 				"required": true
 			}
@@ -37,7 +37,7 @@
 				"name": "runCanary",
 				"inputs": [
 					{
-						"name": "runCanary.options",
+						"name": "runCanary.given",
 						"type": "CanaryOptions",
 						"required": true
 					}
@@ -62,6 +62,11 @@
 		},
 		{
 			"unit": "script.needs-you-canary-check-surface",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-patient-tracker",
 			"via": "import",
 			"origin": "derived"
 		},
