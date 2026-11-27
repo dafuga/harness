@@ -1,12 +1,12 @@
 import { Command } from 'commander';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
-import { request } from 'node:http';
 import { join } from 'node:path';
 import { afterAll, afterEach, expect, test, vi } from 'vitest';
 import { VaultBrokerClientAdapter } from '../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
 import { VaultSealAdapter } from '../../../src/adapters/accounts-access/VaultSealAdapter';
 import { CredentialCommand } from '../../../src/commands/accounts-access/CredentialCommand';
 import { serveCredentialBroker } from '../../../src/workflows/accounts-access/serveCredentialBroker';
+import { agentRequest } from '../../support/credential-vault/broker';
 import { FakePhone, randomNonce } from '../../support/credential-vault/phone';
 import { reviewed, syntheticRecipe } from '../../support/credential-vault/recipe';
 import { createTempDirectory } from '../../support/temporary';
@@ -192,28 +192,15 @@ test('protected broker startup shares one recovered browser with its agent socke
 	const { nonce } = await client.call<{ nonce: string }>(start, proof());
 	expect(await client.call(path, phone.prove(origin, path, nonce))).toEqual({ offer: null });
 	expect(disposeForm).toHaveBeenCalledTimes(1);
-	expect(await agentPost(agentSocket, '/read')).toEqual([200, { result: 'safe result' }]);
-	const [status, receipt] = await agentPost(agentSocket, '/private-entry');
+	expect(await agentRequest(agentSocket, '/read')).toEqual([200, { result: 'safe result' }]);
+	const [status, receipt] = await agentRequest(agentSocket, '/private-entry');
 	expect(status).toBe(202);
-	expect(await agentPost(agentSocket, '/read')).toEqual([409, { error: 'Read unavailable' }]);
+	expect(await agentRequest(agentSocket, '/read')).toEqual([409, { error: 'Read unavailable' }]);
 	const issued = await client.call<{ nonce: string }>(start, proof());
 	expect(await client.call(path, phone.prove(origin, path, issued.nonce))).toMatchObject({
 		offer: { ...receipt, field: 'fixture-field' }
 	});
 	await served.close();
-	await expect(agentPost(agentSocket, '/read')).rejects.toMatchObject({ code: 'ENOENT' });
+	await expect(agentRequest(agentSocket, '/read')).rejects.toMatchObject({ code: 'ENOENT' });
 	expect(disposeForm).toHaveBeenCalledTimes(2);
 });
-
-function agentPost(socketPath: string, path: string): Promise<[number | undefined, object]> {
-	return new Promise((resolve, reject) => {
-		const call = request({ socketPath, path, method: 'POST' }, (response) => {
-			let body = '';
-			response.setEncoding('utf8');
-			response.on('data', (chunk: string) => (body += chunk));
-			response.on('end', () => resolve([response.statusCode, JSON.parse(body) as object]));
-		});
-		call.once('error', reject);
-		call.end();
-	});
-}

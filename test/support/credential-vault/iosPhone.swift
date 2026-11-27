@@ -9,12 +9,25 @@ private struct Command: Decodable {
     let request: VaultApprovalRequest?
     let decision: String?
     let privateOffer: PrivateBrowserOffer?
+    let privateRequest: PrivateRequest?
+
+    struct PrivateRequest: Decodable {
+        let path: String
+        let payload: String
+    }
 
     var challenge: VaultDeviceChallenge {
         VaultDeviceChallenge(origin: origin, deviceId: deviceId, nonce: nonce, expiresAt: expiresAt)
     }
 
     func proof(sign: VaultApprovalCrypto.Sign) throws -> VaultDeviceProof {
+        if let privateRequest {
+            guard let path = BrokerPath(rawValue: privateRequest.path),
+                  path == .privateBrowserChallenge || path == .privateBrowserOffer else {
+                throw BrokerError.invalidRequest
+            }
+            return try privateProof(path, payload: BrokerProtocol.decode(privateRequest.payload), sign: sign)
+        }
         if let privateOffer {
             let now = Int64(Date().timeIntervalSince1970 * 1_000)
             let payload = if privateOffer.fields == nil {
@@ -22,14 +35,7 @@ private struct Command: Decodable {
             } else {
                 try privateOffer.seal(privateOffer.fieldNames.indices.map { String($0 + 7) }, now: now)
             }
-            let proof = BrokerProtocol.signingInput(
-                for: .init(origin: origin, deviceID: deviceId), path: .privateBrowserSubmit,
-                nonce: nonce, payload: payload
-            )
-            return VaultDeviceProof(
-                deviceId: deviceId, nonce: nonce, payload: BrokerProtocol.base64url(payload),
-                signature: BrokerProtocol.base64url(try sign(proof))
-            )
+            return try privateProof(.privateBrowserSubmit, payload: payload, sign: sign)
         }
         guard let request = request else {
             return try VaultApprovalCrypto.queue(challenge, now: Int64(Date().timeIntervalSince1970 * 1000), sign: sign)
@@ -43,6 +49,18 @@ private struct Command: Decodable {
         default: throw VaultApprovalFailure.payload
         }
         return try VaultApprovalCrypto.decision(request, intent: intent, at: challenge, sign: sign)
+    }
+
+    private func privateProof(
+        _ path: BrokerPath, payload: Data, sign: VaultApprovalCrypto.Sign
+    ) throws -> VaultDeviceProof {
+        let proof = BrokerProtocol.signingInput(
+            for: .init(origin: origin, deviceID: deviceId), path: path, nonce: nonce, payload: payload
+        )
+        return VaultDeviceProof(
+            deviceId: deviceId, nonce: nonce, payload: BrokerProtocol.base64url(payload),
+            signature: BrokerProtocol.base64url(try sign(proof))
+        )
     }
 }
 

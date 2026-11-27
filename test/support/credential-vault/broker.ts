@@ -1,6 +1,8 @@
-import { mkdirSync, rmSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { request } from 'node:http';
 import { join } from 'node:path';
 import { afterAll } from 'vitest';
+import { VaultBrokerClientAdapter } from '../../../src/adapters/accounts-access/VaultBrokerClientAdapter';
 import { VaultSealAdapter } from '../../../src/adapters/accounts-access/VaultSealAdapter';
 import type { VaultRunnerKey } from '../../../src/adapters/accounts-access/VaultSealAdapter.types';
 import { VaultAuditRepository } from '../../../src/repositories/accounts-access/VaultAuditRepository';
@@ -12,6 +14,7 @@ import type {
 	VaultApproval,
 	VaultSessionRequest
 } from '../../../src/validators/accounts-access/VaultWireValidator.types';
+import { serveCredentialBroker } from '../../../src/workflows/accounts-access/serveCredentialBroker';
 import { createTempDirectory } from '../temporary';
 import { FakePhone } from './phone';
 
@@ -109,4 +112,77 @@ export function sign(
 	const runnerFingerprint = fixture.seal.keyFingerprint(input.runnerPublicKey);
 	const binding = { ...input, recipeDigest: input.recipe.digest, runnerFingerprint };
 	return fixture.phone.decide(origin, nonce, decision as VaultApproval, binding);
+}
+
+export async function privateBrowserExecutorFixture(
+	state: string,
+	device: { id: string; signingKey: string },
+	fields?: string[]
+) {
+	const socketPath = join(state, 'native', 'broker.sock');
+	const agentSocket = join(state, 'native-agent.sock');
+	const trust = join(state, 'native-trust.json');
+	writeFileSync(trust, JSON.stringify({ devices: [{ ...device, role: 'approver' }] }));
+	const agentUid = process.getuid?.() === 65534 ? 65533 : 65534;
+	const values = fields?.map((_field, index) => String(index + 7));
+	const expected = Buffer.from(values ? JSON.stringify(values) : '7');
+	let validField = false;
+	let disposed = 0;
+	const broker = await serveCredentialBroker({
+		socket: socketPath,
+		state,
+		trust,
+		origin,
+		privateBrowserExecutor: {
+			cleanup: {
+				revokeInput: async () => undefined,
+				disposeForm: async () => {
+					disposed += 1;
+				},
+				verifyResult: async () => validField
+			},
+			agent: {
+				socketPath: agentSocket,
+				agentUid,
+				peerUid: () => agentUid,
+				deviceId: device.id,
+				reviewedRead: async () => 'ordinary result'
+			},
+			reviewedField: () => ({
+				executor: 'mb2-fixture',
+				origin: 'https://private.fixture.test',
+				tabId: 'fixture-tab',
+				field: fields ? 'fixture-form' : 'fixture-code',
+				fields,
+				action: 'submit-code',
+				recipeDigest: 'd'.repeat(64)
+			}),
+			submitField: async (_scope, plaintext) => {
+				validField = plaintext.equals(expected);
+			}
+		}
+	});
+	return {
+		client: new VaultBrokerClientAdapter({ socketPath }),
+		close: broker.close,
+		disposed: () => disposed,
+		agent: (path: string, method = 'POST') => agentRequest(agentSocket, path, method)
+	};
+}
+
+export function agentRequest(
+	socketPath: string,
+	path: string,
+	method = 'POST'
+): Promise<[number | undefined, object]> {
+	return new Promise((resolve, reject) => {
+		const call = request({ socketPath, path, method }, (response) => {
+			let body = '';
+			response.setEncoding('utf8');
+			response.on('data', (chunk: string) => (body += chunk));
+			response.on('end', () => resolve([response.statusCode, JSON.parse(body) as object]));
+		});
+		call.once('error', reject);
+		call.end();
+	});
 }

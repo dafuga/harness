@@ -6,15 +6,21 @@ import { createInterface } from 'node:readline';
 import { expect, test } from 'vitest';
 import { VaultDeviceRepository } from '../src/repositories/accounts-access/VaultDeviceRepository';
 import { VaultBrokerService } from '../src/services/accounts-access/VaultBrokerService';
-import { PrivateBrowserGateService } from '../src/services/execution-runtimes/PrivateBrowserGateService';
-import { PrivateBrowserPhoneService } from '../src/services/execution-runtimes/PrivateBrowserPhoneService';
+import { privateBrowserPhonePaths } from '../src/services/execution-runtimes/PrivateBrowserPhoneService';
+import type { PrivateBrowserPhoneOffer } from '../src/services/execution-runtimes/PrivateBrowserPhoneService.types';
 import type { VaultQueueEntry } from '../src/services/accounts-access/VaultBrokerService.types';
 import type {
 	VaultApproval,
 	VaultProof,
 	VaultSessionRequest
 } from '../src/validators/accounts-access/VaultWireValidator.types';
-import { origin, sessionRequest, vaultBroker } from './support/credential-vault/broker';
+import {
+	origin,
+	privateBrowserExecutorFixture,
+	sessionRequest,
+	vaultBroker
+} from './support/credential-vault/broker';
+import { randomNonce } from './support/credential-vault/phone';
 import type { NativeVaultTestRun } from './credential-vault-ios.e2e.test.types';
 
 const deviceId = 'synthetic-native-iphone';
@@ -41,8 +47,12 @@ test.skipIf(process.platform !== 'darwin')(
 			await verifyDecision(run, 'api-token', 'token', { token: 'synthetic-ios-api-token' });
 			await verifyDecision(run, 'oauth-device', 'grant', null);
 			await verifyDecision(run, 'browser', 'deny', null);
-			await verifyPrivateField(run);
-			await verifyPrivateField(run, ['fixture-account', 'fixture-code', 'fixture-challenge']);
+			await verifyPrivateField(run, signingKey);
+			await verifyPrivateField(run, signingKey, [
+				'fixture-account',
+				'fixture-code',
+				'fixture-challenge'
+			]);
 		} finally {
 			await phone.close();
 		}
@@ -154,43 +164,54 @@ async function verifyNativeRefusals(
 	expect(wrongMethod).toEqual(refused);
 }
 
-async function verifyPrivateField(run: NativeVaultTestRun, fields?: string[]): Promise<void> {
-	const dispose = async () => undefined;
-	let validField = false;
-	const gate = new PrivateBrowserGateService({
-		revokeInput: dispose,
-		disposeForm: dispose,
-		verifyResult: async () => validField
-	});
-	await gate.recover();
-	const request = await gate.request(deviceId);
-	const delivery = new PrivateBrowserPhoneService({
-		gate,
-		devices: run.devices,
-		submitField: async (_scope, plaintext) => {
-			const expected = fields
-				? JSON.stringify(fields.map((_field, index) => String(index + 7)))
-				: '7';
-			validField = plaintext.equals(Buffer.from(expected));
-		}
-	});
-	const privateOffer = delivery.offer(request?.requestId ?? '', deviceId, {
-		executor: 'mb2-fixture',
-		origin: 'https://private.fixture.test',
-		tabId: 'fixture-tab',
-		field: fields ? 'fixture-form' : 'fixture-code',
-		fields,
-		action: 'submit-code',
-		recipeDigest: 'd'.repeat(64)
-	});
-	if (!privateOffer) throw new Error('The fixture did not prepare a private offer.');
-	const badOffer = { ...privateOffer, runnerFingerprint: 'a'.repeat(64) };
-	expect(await run.phone.write({ ...challenge(run), privateOffer: badOffer })).toEqual(refused);
-	const proof = await run.phone.write<VaultProof>({ ...challenge(run), privateOffer });
-	const payload = JSON.parse(Buffer.from(proof.payload, 'base64url').toString('utf8'));
-	expect(payload).not.toHaveProperty('runnerPublicKey');
-	expect(payload).not.toHaveProperty('plaintext');
-	expect(await delivery.submit(proof)).toBe(true);
-	expect(await delivery.submit(proof)).toBe(false);
-	expect(gate.receipt()).toEqual({ requestId: privateOffer.requestId, outcome: 'completed' });
+async function verifyPrivateField(run: NativeVaultTestRun, signingKey: string, fields?: string[]) {
+	const executor = await privateBrowserExecutorFixture(
+		run.fixture.state,
+		{ id: deviceId, signingKey },
+		fields
+	);
+	const { challenge, offer, submit } = privateBrowserPhonePaths;
+	const proof = (path: string, nonce: string, payload: object) =>
+		run.phone.write<VaultProof>({
+			origin,
+			deviceId,
+			nonce,
+			expiresAt: Date.now() + 20_000,
+			privateRequest: { path, payload: Buffer.from(JSON.stringify(payload)).toString('base64url') }
+		});
+	const issue = async (path: string) => {
+		const start = await proof(challenge, randomNonce(), { path, expiresAt: Date.now() + 20_000 });
+		return executor.client.call<{ nonce: string; expiresAt: number }>(challenge, start);
+	};
+	try {
+		const [status, receipt] = await executor.agent('/private-entry');
+		expect(status).toBe(202);
+		expect(await executor.agent('/read')).toEqual([409, { error: 'Read unavailable' }]);
+		const polling = await proof(offer, (await issue(offer)).nonce, {});
+		const { offer: privateOffer } = await executor.client.call<{ offer: PrivateBrowserPhoneOffer }>(
+			offer,
+			polling
+		);
+		expect(privateOffer).toMatchObject({
+			...receipt,
+			field: fields ? 'fixture-form' : 'fixture-code'
+		});
+		const submission = { origin, deviceId, ...(await issue(submit)) };
+		const bad = { ...privateOffer, runnerFingerprint: 'a'.repeat(64) };
+		expect(await run.phone.write({ ...submission, privateOffer: bad })).toEqual(refused);
+		const sealed = await run.phone.write<VaultProof>({ ...submission, privateOffer });
+		const payload = JSON.parse(Buffer.from(sealed.payload, 'base64url').toString('utf8'));
+		expect(payload).not.toHaveProperty('runnerPublicKey');
+		expect(payload).not.toHaveProperty('plaintext');
+		expect(await executor.client.call(submit, sealed)).toEqual({ status: 'completed' });
+		expect(await executor.client.call(submit, sealed)).toEqual({ status: 'unavailable' });
+		expect(executor.disposed()).toBe(2);
+		expect(await executor.agent('/status', 'GET')).toEqual([
+			200,
+			{ phase: 'ready', receipt: { requestId: privateOffer.requestId, outcome: 'completed' } }
+		]);
+		expect(await executor.agent('/read')).toEqual([200, { result: 'ordinary result' }]);
+	} finally {
+		await executor.close();
+	}
 }
