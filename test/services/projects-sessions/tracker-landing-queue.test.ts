@@ -1,11 +1,9 @@
+import type { LandingRequest } from '../../../src/services/projects-sessions/tracker-hub-sync/trackerLandingQueue.types';
 import { randomUUID } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, vi, onTestFinished } from 'vitest';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
-import {
-	trackerLandingAuthority,
-	type LandingRequest
-} from '../../../src/services/projects-sessions/tracker-hub-sync/trackerLandingQueue';
+import { trackerLandingAuthority } from '../../../src/services/projects-sessions/tracker-hub-sync/trackerLandingQueue';
 import {
 	reconcileLanding,
 	trackerLandPull

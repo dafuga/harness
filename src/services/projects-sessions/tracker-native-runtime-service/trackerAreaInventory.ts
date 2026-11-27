@@ -17,7 +17,6 @@ const pull = z.object({
 	changedFiles: z.int().nonnegative(),
 	files: z.array(z.object({ path: z.string(), changeType: z.string() }))
 });
-type Pull = z.infer<typeof pull>;
 const maxPulls = 1000;
 const links = /https:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/pull\/(\d+)\b/gi;
 const shortLink = /\bPR\s*#(\d+)\b/gi;
@@ -26,7 +25,7 @@ const shortLink = /\bPR\s*#(\d+)\b/gi;
 export function intendedAreas(
 	text: string,
 	tracked: string[],
-	linked: Pull[],
+	linked: z.infer<typeof pull>[],
 	extra: string[] = []
 ) {
 	const declared = [...text.matchAll(/^\s*areas:\s*(.+)$/gim)].flatMap(([, value]) =>

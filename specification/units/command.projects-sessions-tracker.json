@@ -38,6 +38,7 @@
 			"src/commands/projects-sessions/tracker-command/runTrackerInstructions.types.ts",
 			"src/commands/projects-sessions/tracker-command/trackerInstructionsBlock.ts",
 			"src/commands/projects-sessions/tracker-command/trackerLandPull.ts",
+			"src/commands/projects-sessions/tracker-command/trackerLandPull.types.ts",
 			"src/commands/projects-sessions/tracker-command/trackerLandingGit.ts",
 			"src/commands/projects-sessions/tracker-command/trackerRequestTimeout.ts"
 		],
@@ -112,9 +113,10 @@
 			"TrackerInstructionsResult",
 			"trackerInstructionsBlock",
 			"repairTrackerInstructions",
-			"LandingPort",
 			"trackerLandPull",
 			"reconcileLanding",
+			"LandingPort",
+			"Checkout",
 			"trackerLandingGit",
 			"trackerRequestTimeout"
 		]

@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import { reviewIncomingAdds } from '../tracker-node-service/trackerDuplicateAdd';
 import { trackerLandingAuthority } from '../tracker-hub-sync/trackerLandingQueue';
 import { trackerAreaAuthority } from '../tracker-hub-sync/trackerAreaClaim';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
@@ -29,6 +30,7 @@ export function composeTrackerResponder(
 		duePolicy,
 		...permits,
 		...syncResponder,
+		reviewIncomingAdds: role === 'hub' ? (ids) => reviewIncomingAdds(store, ids, now) : undefined,
 		landing: role === 'hub' ? trackerLandingAuthority(store, now) : undefined,
 		claimAreas: role === 'hub' ? trackerAreaAuthority(store) : undefined,
 		machines:

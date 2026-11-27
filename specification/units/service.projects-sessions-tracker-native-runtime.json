@@ -46,7 +46,9 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAnswerDelivery.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAnswerDelivery.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaCommands.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaCommands.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaDispatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaDispatch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAreaInventory.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
@@ -178,9 +180,12 @@
 			"PendingTrackerAnswer",
 			"TrackerAnswerAttempt",
 			"trackerAreaCommands",
+			"Item",
+			"Attempt",
 			"guardedDispatchStore",
 			"trackerAreaDispatch",
 			"areaDispatchServices",
+			"AreaPermit",
 			"intendedAreas",
 			"trackerAreaInventory",
 			"duePauseKey",
@@ -628,6 +633,11 @@
 				"required": true
 			},
 			{
+				"name": "guardedDispatchStore.history",
+				"type": "(id: string) => string",
+				"required": true
+			},
+			{
 				"name": "trackerAreaDispatch.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -669,7 +679,7 @@
 			},
 			{
 				"name": "intendedAreas.linked",
-				"type": "Pull[]",
+				"type": "z.infer<typeof pull>[]",
 				"required": true
 			},
 			{
@@ -3248,6 +3258,11 @@
 						"name": "guardedDispatchStore.permit",
 						"type": "AreaPermit",
 						"required": true
+					},
+					{
+						"name": "guardedDispatchStore.history",
+						"type": "(id: string) => string",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -3330,7 +3345,7 @@
 					},
 					{
 						"name": "intendedAreas.linked",
-						"type": "Pull[]",
+						"type": "z.infer<typeof pull>[]",
 						"required": true
 					},
 					{
@@ -7093,6 +7108,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-spoke-telemetry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
 			"via": "import",
 			"origin": "derived"
 		},

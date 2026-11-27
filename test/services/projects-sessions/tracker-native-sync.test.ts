@@ -1,3 +1,4 @@
+import { claimFrom } from '../../support/trackerAreaClient';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, vi } from 'vitest';
 import { TrackerSyncAuthService } from '../../../src/services/networking-security/TrackerSyncAuthService';
@@ -168,7 +169,7 @@ test('two fleet sessions acquire intersecting paths through one hub before editi
 		for (const id of [first, second]) {
 			hub.store.appendLocal({ itemId: id, fields: { title: id, status: 'open', auto: id } });
 		}
-		const claim = claimFrom(hub);
+		const claim = claimFrom(hub.sync!);
 		const grants = await Promise.all([
 			claim('alpha', first, ['src/launcher']),
 			claim('beta', second, ['src/launcher/start.ts'])
@@ -203,21 +204,3 @@ test('two fleet sessions acquire intersecting paths through one hub before editi
 		hub.database.close();
 	}
 });
-
-function claimFrom(hub: ReturnType<typeof nativeStore>) {
-	return async (node: string, id: string, areas: string[]) => {
-		const request = {
-			method: 'POST' as const,
-			pathAndQuery: '/sync/area-claim',
-			body: JSON.stringify({ id, token: id, repo: 'fixture/project', areas })
-		};
-		return wire(hub.sync!)({
-			...request,
-			timeoutMs: 1000,
-			headers: {
-				authorization: new TrackerSyncAuthService(fixtureSecret).authorizationHeader(request),
-				'x-tracker-node': node
-			}
-		}) as Promise<{ allowed: boolean; reason: string }>;
-	};
-}

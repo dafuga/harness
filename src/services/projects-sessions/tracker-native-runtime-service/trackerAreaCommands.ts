@@ -1,12 +1,16 @@
 // @harness-uid u_bl6xl2h4a3
+import type { Item, Attempt } from './trackerAreaCommands.types';
 import { z } from 'zod';
 import { createTrackerSpokeRequester } from '../TrackerSpokeSyncService';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
-import type { TrackerDispatchItem } from '../../agents-providers/TrackerDispatcherService.types';
 import { areaClaim, trackerAreaAuthority } from '../tracker-hub-sync/trackerAreaClaim';
-import { landingRequest, trackerLandingAuthority } from '../tracker-hub-sync/trackerLandingQueue';
+import {
+	landingDecision,
+	landingRequest,
+	trackerLandingAuthority
+} from '../tracker-hub-sync/trackerLandingQueue';
 import { trackerAreaInventory } from './trackerAreaInventory';
 
 const claimRequest = z.strictObject({
@@ -15,19 +19,6 @@ const claimRequest = z.strictObject({
 	run: z.int().positive().optional(),
 	session: z.string().regex(/^[a-f0-9]{64}$/)
 });
-const reply = z.object({
-	allowed: z.boolean(),
-	reason: z.string(),
-	pinned: z
-		.object({
-			ticket: z.uuid(),
-			head: z.string().regex(/^[0-9a-f]{40}$/),
-			base: z.string().regex(/^[0-9a-f]{40}$/)
-		})
-		.optional()
-});
-type Item = Pick<TrackerDispatchItem, 'id' | 'title' | 'notes' | 'project' | 'agent' | 'repo'>;
-type Attempt = { token: string; attempt: number };
 function authorityPort(store: TrackerPersistenceService, options: TrackerNativeRuntimeOptions) {
 	if (options.role === 'hub') {
 		const claim = trackerAreaAuthority(store);
@@ -45,7 +36,7 @@ function authorityPort(store: TrackerPersistenceService, options: TrackerNativeR
 		});
 	return async (kind: 'area-claim' | 'landing', input: unknown) => {
 		if (!send) return { allowed: false, reason: 'Waiting for the Tracker hub authority' };
-		return reply.parse(
+		return landingDecision.parse(
 			await send(
 				{ method: 'POST', pathAndQuery: '/sync/' + kind, body: JSON.stringify(input) },
 				10000
@@ -55,7 +46,8 @@ function authorityPort(store: TrackerPersistenceService, options: TrackerNativeR
 }
 function claimInspector(
 	options: TrackerNativeRuntimeOptions,
-	send: ReturnType<typeof authorityPort>
+	send: ReturnType<typeof authorityPort>,
+	history: (id: string) => string
 ) {
 	const routes = Object.entries(options.hostEffects?.launch?.repositories ?? {});
 
@@ -69,24 +61,25 @@ function claimInspector(
 		try {
 			const inspection = await trackerAreaInventory(
 				route[1],
-				[item.title, item.notes].join('\n'),
+				[item.title, item.notes, history(item.id)].join('\n'),
 				AbortSignal.timeout(30000),
 				{ project: route[0], extra }
 			);
 			const { repo, areas, siblings } = inspection;
-			if (siblings.length)
-				return {
-					allowed: false,
-					reason:
-						'Land after ' +
-						siblings
-							.map(
-								(pr) =>
-									`${repo}#${pr.number} (${pr.author?.login ?? 'unknown owner'}, ${pr.headRefName})`
-							)
-							.join(', ')
-				};
-			return await send('area-claim', { repo, areas, project: route[0], id: item.id, ...attempt });
+			const request = { repo, areas, project: route[0], id: item.id, ...attempt };
+			if (!siblings.length) return await send('area-claim', request);
+			const owners = await send('area-claim', { ...request, probe: true });
+			const pulls = siblings
+				.map(
+					(pr) => `${repo}#${pr.number} (${pr.author?.login ?? 'unknown owner'}, ${pr.headRefName})`
+				)
+				.join(', ');
+			return {
+				allowed: false,
+				reason: ['Land after ' + pulls, owners.allowed ? '' : owners.reason]
+					.filter(Boolean)
+					.join('. ')
+			};
 		} catch {
 			return {
 				allowed: false,
@@ -101,9 +94,23 @@ export function trackerAreaCommands(
 	options: TrackerNativeRuntimeOptions
 ) {
 	const authority = authorityPort(store, options);
-	const inspect = claimInspector(options, authority);
+	const journal = store.database.prepare(
+		'SELECT text FROM item_notes WHERE item_id=? ORDER BY hlc'
+	);
+	const history = (id: string) =>
+		(journal.all(id) as { text: string }[])
+			.map((n) => n.text)
+			.filter(
+				(text) =>
+					!/^(Area claim on |watchdog |auto-launch |Confirmed run stop|Landing [\w.-]+\/)/i.test(
+						text
+					)
+			)
+			.join('\n');
+	const inspect = claimInspector(options, authority, history);
 	const items = new TrackerItemReadRepository(store.database);
 	return {
+		history,
 		inspect,
 		commands: {
 			async landing(input: unknown) {

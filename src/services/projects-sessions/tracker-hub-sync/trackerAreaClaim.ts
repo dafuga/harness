@@ -1,4 +1,5 @@
 // @harness-uid u_jkomno4o5u
+import type { TrackerAreaClaim, Owner, AreaDecision } from './trackerAreaClaim.types';
 import { z } from 'zod';
 import { TrackerHubInputError } from './TrackerHubInputError';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -21,19 +22,10 @@ export const areaClaim = z.strictObject({
 		.string()
 		.regex(/^[\w.-]+\/[\w.-]+$/)
 		.max(200),
+	probe: z.boolean().optional(),
 	project: z.string().min(1).max(200).optional(),
 	areas: z.array(path).min(1).max(512)
 });
-export type TrackerAreaClaim = z.infer<typeof areaClaim>;
-export interface AreaDecision {
-	allowed: boolean;
-	reason: string;
-}
-interface Owner extends Omit<TrackerAreaClaim, 'areas'> {
-	node: string;
-	areas: string;
-}
-
 const schema = `
 CREATE TABLE IF NOT EXISTS tracker_area_claims (
 	id TEXT PRIMARY KEY, token TEXT NOT NULL, node TEXT NOT NULL, repo TEXT NOT NULL, areas TEXT NOT NULL, attempt INTEGER NOT NULL
@@ -69,12 +61,14 @@ export function trackerAreaAuthority(store: TrackerPersistenceService) {
 	};
 }
 
+const eligibleItem = `SELECT 1 FROM items WHERE id=? AND deleted=0
+ AND (auto=? OR (auto IS NULL AND ? GLOB 'manual:*'))
+ AND (status IN ('open','in_progress') OR
+ (status='blocked' AND resolved=1 AND needs_daniel=0
+ AND json_extract(clocks,'$.answer') > json_extract(clocks,'$.status')))`;
+
 function acquireAreas(store: TrackerPersistenceService, req: TrackerAreaClaim, node: string) {
-	const item = store.database
-		.prepare(
-			"SELECT 1 FROM items WHERE id = ? AND (auto = ? OR (auto IS NULL AND ? GLOB 'manual:*')) AND (status IN ('open','in_progress') OR (status='blocked' AND resolved=1 AND needs_daniel=0 AND json_extract(clocks,'$.answer') > json_extract(clocks,'$.status'))) AND deleted = 0"
-		)
-		.get(req.id, req.token, req.token);
+	const item = store.database.prepare(eligibleItem).get(req.id, req.token, req.token);
 	if (!item) return denied('waiting for the current launch on the Tracker hub');
 	const legacy = legacyOwner(store, req);
 	if (legacy) return denied('waiting for existing run ' + legacy.id + ' to claim its areas');
@@ -84,6 +78,15 @@ function acquireAreas(store: TrackerPersistenceService, req: TrackerAreaClaim, n
 	const existing = owners.find(({ id }) => id === req.id);
 	if (existing && !sameOwner(existing, req, node))
 		return denied('previous run still owns the item claim on ' + existing.node);
+	return reservePaths(store, { req, node }, owners, existing);
+}
+
+function reservePaths(
+	store: TrackerPersistenceService,
+	{ req, node }: { req: TrackerAreaClaim; node: string },
+	owners: Owner[],
+	existing?: Owner
+) {
 	const areas: string[] = [
 		...new Set<string>([...req.areas, ...JSON.parse(existing?.areas ?? '[]')])
 	].sort();
@@ -101,6 +104,7 @@ function acquireAreas(store: TrackerPersistenceService, req: TrackerAreaClaim, n
 				reason: 'waiting for ' + blockers.map((b) => b.id + ' on ' + b.node).join(', ')
 			}
 		};
+	if (req.probe) return { result: { allowed: true, reason: 'No overlapping Tracker claims' } };
 	const json = JSON.stringify(areas);
 	const reason = `Area claim on ${req.repo} by ${req.id} (${node}): ${areas.join(', ')}`;
 	const result = { allowed: true, reason };

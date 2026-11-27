@@ -20,7 +20,9 @@
 			"src/services/projects-sessions/tracker-hub-sync/hubRoutes.ts",
 			"src/services/projects-sessions/tracker-hub-sync/readJournalPage.ts",
 			"src/services/projects-sessions/tracker-hub-sync/trackerAreaClaim.ts",
-			"src/services/projects-sessions/tracker-hub-sync/trackerLandingQueue.ts"
+			"src/services/projects-sessions/tracker-hub-sync/trackerAreaClaim.types.ts",
+			"src/services/projects-sessions/tracker-hub-sync/trackerLandingQueue.ts",
+			"src/services/projects-sessions/tracker-hub-sync/trackerLandingQueue.types.ts"
 		],
 		"symbols": [
 			"TrackerHubSyncService",
@@ -50,14 +52,17 @@
 			"parseBody",
 			"readJournalPage",
 			"areaClaim",
-			"TrackerAreaClaim",
-			"AreaDecision",
 			"areaIntersects",
 			"trackerAreaAuthority",
+			"TrackerAreaClaim",
+			"AreaDecision",
+			"Owner",
 			"landingRequest",
+			"landingDecision",
+			"trackerLandingAuthority",
 			"LandingRequest",
 			"LandingDecision",
-			"trackerLandingAuthority"
+			"Entry"
 		]
 	},
 	"contract": {
@@ -124,6 +129,11 @@
 				"name": "receiveJournalPush.body",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "receiveJournalPush.review",
+				"type": "TrackerHubOptions['reviewIncomingAdds']",
+				"required": false
 			},
 			{
 				"name": "grantDuePermission.options",
@@ -386,6 +396,11 @@
 						"name": "receiveJournalPush.body",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "receiveJournalPush.review",
+						"type": "TrackerHubOptions['reviewIncomingAdds']",
+						"required": false
 					}
 				],
 				"outputs": [

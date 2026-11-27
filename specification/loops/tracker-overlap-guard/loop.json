@@ -2,7 +2,7 @@
 	"name": "tracker-overlap-guard",
 	"goal": "Two sessions competing for a path yield one owner, a visible wait and ordered checks before merge.",
 	"createdAt": "2026-11-27T19:56:05.115Z",
-	"updatedAt": "2026-11-27T19:58:25.277Z",
+	"updatedAt": "2026-11-27T20:41:45.821Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -19,12 +19,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T20:41:44.791Z",
+			"evidence": "Signed Hub owns area paths and per-repository merge tickets. Launcher, CLI, item and Hub flows are connected. Deployed acceptance is reserved for the approved combined restart."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T20:41:45.821Z",
+			"evidence": "Two schedulers and a signed hub demonstrate one owner. Changed-base checks, concurrent adds, CoS visibility and an actual git rebase and squash flow are covered. GitHub is a fixture in the landing E2E."
 		},
 		{
 			"id": "verify",

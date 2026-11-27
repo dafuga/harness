@@ -57,7 +57,7 @@ test('two normal schedulers targeting the same checkout hold the sibling until t
 			itemId: id,
 			fields: {
 				title: id,
-				notes: 'Areas: ' + area,
+				notes: 'See implementation note',
 				project: 'Harness',
 				kind: 'task',
 				status: 'open',
@@ -67,6 +67,7 @@ test('two normal schedulers targeting the same checkout hold the sibling until t
 				'note+': 'auto-launch requested on ' + node
 			}
 		});
+		a.runtime.store.appendLocal({ itemId: id, fields: { 'note+': 'Areas: ' + area } });
 	}
 	await link.pull();
 	const signal = new AbortController().signal;
@@ -82,4 +83,36 @@ test('two normal schedulers targeting the same checkout hold the sibling until t
 	expect(b.start).toHaveBeenCalledTimes(1);
 	expect(b.start.mock.calls[0][2]).toContain('Previous sibling order: waiting for first11111');
 	expect(b.start.mock.calls[0][2]).toContain('tracker land second2222');
+});
+
+test('duplicate offline adds converge on one CoS notice naming both live items', async () => {
+	const a = computer(primary, tmpdir());
+	const transport = wire(a.runtime.sync!);
+	const b = computer(secondary, tmpdir(), transport);
+	const add = async (runtime: TrackerNativeRuntimeService) => {
+		const response = await runtime.items.handle(
+			new Request('http://fixture/items', {
+				method: 'POST',
+				body: JSON.stringify({ title: 'Review identical offline goal', agent: 'test' })
+			})
+		);
+		expect(response.ok).toBe(true);
+		return (await response.json()).id as string;
+	};
+	const ids = await Promise.all([add(a.runtime), add(b.runtime)]);
+	expect(ids[0]).not.toBe(ids[1]);
+	const link = new TrackerSpokeSyncService({
+		store: b.runtime.store,
+		transport,
+		secret: fixtureSecret,
+		pullWaitSeconds: 0
+	});
+	await link.push();
+	await link.push();
+	const alerts = JSON.parse(a.runtime.store.getMeta('watchdog_alerts') ?? '{}');
+	const matches = Object.values(alerts).filter(
+		(a) => (a as { kind: string }).kind === 'cos-message'
+	);
+	expect(matches).toHaveLength(1);
+	for (const id of ids) expect((matches[0] as { reason: string }).reason).toContain(id);
 });

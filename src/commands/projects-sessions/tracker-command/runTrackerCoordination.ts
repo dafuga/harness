@@ -1,7 +1,7 @@
 // @harness-uid u_r7qgepnoax
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { createHash } from 'node:crypto';
-import { z } from 'zod';
+import { landingDecision } from '../../../services/projects-sessions/tracker-hub-sync/trackerLandingQueue';
 import type { TrackerNodeConfig } from '../../../services/projects-sessions/tracker-node-service/trackerNodeConfig.types';
 import { fetchNativeTracker } from './fetchNativeTracker';
 import { trackerLandingGit } from './trackerLandingGit';
@@ -35,19 +35,7 @@ async function send(config: TrackerNodeConfig, command: string, body: Record<str
 		{ method: 'POST', path: '/coordination/' + command, body },
 		config.node
 	);
-	const result = z
-		.object({
-			allowed: z.boolean(),
-			reason: z.string(),
-			pinned: z
-				.object({
-					ticket: z.uuid(),
-					head: z.string().regex(/^[0-9a-f]{40}$/),
-					base: z.string().regex(/^[0-9a-f]{40}$/)
-				})
-				.optional()
-		})
-		.safeParse(await reply.json());
+	const result = landingDecision.safeParse(await reply.json());
 	if (!result.success)
 		throw new ExpectedCliError('Tracker coordination is unavailable on this node');
 	return result.data;

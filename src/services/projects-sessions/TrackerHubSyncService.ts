@@ -72,7 +72,7 @@ export class TrackerHubSyncService {
 		const store = this.#options.store;
 		switch (`${method} ${path}`) {
 			case 'POST /sync/push':
-				return receiveJournalPush(store, body);
+				return receiveJournalPush(store, body, this.#options.reviewIncomingAdds);
 			case 'GET /sync/pull':
 				return readJournalPage(
 					this.#options,

@@ -1,4 +1,5 @@
 // @harness-uid u_jkomno4o5u
+import type { LandingDecision, LandingRequest, Entry } from './trackerLandingQueue.types';
 import { z } from 'zod';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerHubInputError } from './TrackerHubInputError';
@@ -16,23 +17,11 @@ export const landingRequest = z.strictObject({
 	base: sha.optional(),
 	head: sha.optional()
 });
-export type LandingRequest = z.infer<typeof landingRequest>;
-export interface LandingDecision {
-	allowed: boolean;
-	reason: string;
-	pinned?: { ticket: string; base: string; head: string };
-}
-interface Entry {
-	ticket: string;
-	id: string;
-	node: string;
-	repo: string;
-	pr: number;
-	phase: string;
-	base: string | null;
-	head: string | null;
-}
-
+export const landingDecision = z.object({
+	allowed: z.boolean(),
+	reason: z.string(),
+	pinned: z.object({ ticket: z.uuid(), base: sha, head: sha }).optional()
+});
 const schema = `CREATE TABLE IF NOT EXISTS tracker_landing_queue (
 position INTEGER PRIMARY KEY AUTOINCREMENT, ticket TEXT NOT NULL UNIQUE, id TEXT NOT NULL,
 node TEXT NOT NULL, repo TEXT NOT NULL, pr INTEGER NOT NULL, phase TEXT NOT NULL,
@@ -63,22 +52,7 @@ function advance(
 	db.prepare("DELETE FROM tracker_landing_queue WHERE phase != 'merging' AND touched < ?").run(
 		time - ticketLifetime
 	);
-	if (req.action === 'inspect') {
-		const pinned = db
-			.prepare(
-				"SELECT ticket,base,head FROM tracker_landing_queue WHERE phase='merging' AND repo=? AND pr=? AND node=? AND id=?"
-			)
-			.get(req.repo, req.pr, node, req.id) as LandingDecision['pinned'];
-		return {
-			result: {
-				allowed: Boolean(pinned),
-				reason: pinned
-					? 'Merge awaiting reconciliation'
-					: 'No pending merge for this item on this computer',
-				pinned
-			}
-		};
-	}
+	if (req.action === 'inspect') return inspectSlot(db, req, node);
 	const entry = db
 		.prepare('SELECT * FROM tracker_landing_queue WHERE ticket = ?')
 		.get(req.ticket) as Entry | undefined;
@@ -88,6 +62,15 @@ function advance(
 		db.prepare('DELETE FROM tracker_landing_queue WHERE ticket = ?').run(req.ticket);
 		return verdict(true, 'landing slot released');
 	}
+	return takePosition(db, req, { node, time }, entry);
+}
+
+function takePosition(
+	db: TrackerPersistenceService['database'],
+	req: LandingRequest,
+	{ node, time }: { node: string; time: number },
+	entry?: Entry
+) {
 	if (!entry && req.action !== 'wait') return verdict(false, 'landing ticket expired');
 	if (!db.prepare('SELECT 1 FROM items WHERE id = ? AND deleted = 0').get(req.id))
 		return verdict(false, 'waiting for the item on the Tracker hub');
@@ -135,4 +118,21 @@ function ownsTicket(entry: Entry, req: LandingRequest, node: string) {
 	return (
 		entry.id === req.id && entry.pr === req.pr && entry.repo === req.repo && entry.node === node
 	);
+}
+
+function inspectSlot(db: TrackerPersistenceService['database'], req: LandingRequest, node: string) {
+	const pinned = db
+		.prepare(
+			"SELECT ticket,base,head FROM tracker_landing_queue WHERE phase='merging' AND repo=? AND pr=? AND node=? AND id=?"
+		)
+		.get(req.repo, req.pr, node, req.id) as LandingDecision['pinned'];
+	return {
+		result: {
+			allowed: Boolean(pinned),
+			reason: pinned
+				? 'Merge awaiting reconciliation'
+				: 'No pending merge for this item on this computer',
+			pinned
+		}
+	};
 }

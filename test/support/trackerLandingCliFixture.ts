@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, realpathSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect } from 'vitest';
 import { withTempDir } from './temporary';
@@ -100,7 +100,8 @@ function prepare(root: string) {
 }
 
 export async function proveTrackerLandingCli() {
-	await withTempDir('hnt-landing-', async (root) => {
+	await withTempDir('hnt-landing-', async (temporary) => {
+		const root = realpathSync(temporary);
 		trackerFixtureFiles(root);
 		const [api, sync] = await freeTrackerPorts(2);
 		const hub = writeTrackerFixture(root, {

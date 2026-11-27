@@ -77,7 +77,10 @@ export class TrackerNativeRuntimeService {
 		this.now = now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
 		const runs = new TrackerRunReadRepository(database, node);
-		this.machines = composeMachines(store, options, this.now);
+		this.machines = new TrackerMachineService(store, {
+			now: this.now,
+			sampler: options.machineSampler
+		});
 		[this.notifications, this.webPush] = composeOutbound(store, options);
 		const recurring = composeTrackerRecurrence(store, options, this.notifications);
 		this.recurring = recurring?.worker;
@@ -124,14 +127,6 @@ export class TrackerNativeRuntimeService {
 			await Promise.allSettled(links);
 		}
 	}
-}
-
-function composeMachines(
-	store: TrackerPersistenceService,
-	{ machineSampler }: TrackerNativeRuntimeOptions,
-	now: () => number
-) {
-	return new TrackerMachineService(store, { now, sampler: machineSampler });
 }
 
 function composeItemApi(

@@ -36,3 +36,38 @@ export async function reportDuplicateAdd(
 	);
 	return result;
 }
+
+/** Two disconnected computers can both accept the same goal. Link their already-created items
+ * after the journals meet, without deleting either computer's work or moving its ownership. */
+export function reviewIncomingAdds(
+	store: TrackerPersistenceService,
+	ids: string[],
+	now: () => number
+) {
+	if (!ids.length) return;
+	const active = store.database.prepare(`SELECT other.id FROM items incoming JOIN items other
+		ON lower(trim(other.title))=lower(trim(incoming.title))
+		WHERE coalesce(lower(other.project),lower(other.agent),'')=coalesce(lower(incoming.project),lower(incoming.agent),'')
+		AND incoming.id=? AND incoming.deleted=0 AND incoming.status IN ('open','in_progress','blocked')
+		AND other.deleted=0 AND other.status IN ('open','in_progress','blocked')
+		ORDER BY coalesce(other.created_at,''),other.id`);
+	for (const id of ids) {
+		const matches = active.all(id) as { id: string }[];
+		if (matches.length < 2) continue;
+		const original = matches[0].id;
+		for (const duplicate of matches.slice(1)) {
+			const reason = `Duplicate goal from concurrent intake. Continue on ${original}. Review linked item ${duplicate.id} before closing it.`;
+			recordWatchdogAlert(
+				store,
+				{
+					itemId: duplicate.id,
+					key: 'duplicate-fleet:' + duplicate.id,
+					kind: 'cos-message',
+					reason,
+					identity: original
+				},
+				now()
+			);
+		}
+	}
+}

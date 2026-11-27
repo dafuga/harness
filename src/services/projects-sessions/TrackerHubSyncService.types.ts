@@ -1,4 +1,5 @@
-import type { AreaDecision } from './tracker-hub-sync/trackerAreaClaim';
+import type { LandingDecision } from './tracker-hub-sync/trackerLandingQueue.types';
+import type { AreaDecision } from './tracker-hub-sync/trackerAreaClaim.types';
 // @harness-uid u_jkomno4o5u
 import type { TrackerSyncAuthService } from '../networking-security/TrackerSyncAuthService';
 
@@ -68,7 +69,8 @@ export interface TrackerHubRunStore {
 }
 
 export interface TrackerHubOptions {
-	landing?: (input: unknown, node: string) => AreaDecision;
+	reviewIncomingAdds?: (ids: string[]) => void;
+	landing?: (input: unknown, node: string) => LandingDecision;
 	claimAreas?: (input: unknown, node: string) => AreaDecision;
 	auth: TrackerSyncAuthService;
 	store: TrackerHubStore;

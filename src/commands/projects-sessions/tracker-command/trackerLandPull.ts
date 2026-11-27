@@ -1,15 +1,11 @@
 // @harness-uid u_r7qgepnoax
+import type { LandingPort, Checkout } from './trackerLandPull.types';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
 import { setInterval, clearInterval } from 'node:timers';
 import { randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
-import type {
-	LandingRequest,
-	LandingDecision
-} from '../../../services/projects-sessions/tracker-hub-sync/trackerLandingQueue';
+import type { LandingDecision } from '../../../services/projects-sessions/tracker-hub-sync/trackerLandingQueue.types';
 import type { trackerLandingGit } from './trackerLandingGit';
-
-export type LandingPort = (request: LandingRequest) => Promise<LandingDecision>;
 
 /** The caller owns its checkout. Only the hub authorizes the final, non-expiring merge slot. */
 export async function trackerLandPull(
@@ -110,7 +106,6 @@ function renewSlot(renew: () => Promise<LandingDecision>) {
 	};
 }
 
-type Checkout = { sha: string; branch: string; repo: string };
 function sameCheckout(a: Checkout, b: Checkout) {
 	return a.sha === b.sha && a.branch === b.branch && a.repo === b.repo;
 }
