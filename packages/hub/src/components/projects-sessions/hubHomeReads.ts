@@ -9,6 +9,24 @@ export type { HubHomeReadOptions, HubHomeReads } from './hubHomeReads.types';
 const followMs = 5 * 60_000;
 const followEveryMs = 3000;
 
+/** While a message is fresh, its receipt and reply are read every few seconds. */
+function freshFollower(closed: () => boolean, read: () => void) {
+	let until = 0;
+	let timer: ReturnType<typeof setInterval> | undefined;
+	function stop() {
+		clearInterval(timer);
+		timer = undefined;
+	}
+	function start() {
+		until = performance.now() + followMs;
+		timer ??= setInterval(() => {
+			if (closed() || performance.now() > until) stop();
+			else read();
+		}, followEveryMs);
+	}
+	return { start, stop };
+}
+
 /**
  * What a change notice reads again: the published Home and the linked computers. Each has one
  * flight at a time, so a burst of notices cannot discard every answer before it lands.
@@ -17,8 +35,6 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 	const { api, actor } = options;
 	let linkedHome: { actor: string; service: LinkedHomeService } | undefined;
 	let closed = false;
-	let followUntil = 0;
-	let follower: ReturnType<typeof setInterval> | undefined;
 	const stored = coalesced(async () => {
 		const reader = actor();
 		const result = await readHome(api);
@@ -34,19 +50,13 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 		const result = await linkedHome.service.read();
 		if (!closed && reader === actor()) options.linked(result);
 	});
-	/** While a message is fresh, its receipt and reply are read every few seconds. */
-	function follow() {
-		followUntil = performance.now() + followMs;
-		follower ??= setInterval(() => {
-			if (closed || performance.now() > followUntil) {
-				clearInterval(follower);
-				follower = undefined;
-			} else {
-				void stored();
-				void linked();
-			}
-		}, followEveryMs);
-	}
+	const follower = freshFollower(
+		() => closed,
+		() => {
+			void stored();
+			void linked();
+		}
+	);
 	return {
 		read() {
 			void stored();
@@ -57,7 +67,8 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 			const receipt =
 				(mine ? await linkedHome?.service.chat(message) : null) ??
 				(await api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message));
-			if (message.kind === 'message' && ['sent', 'queued'].includes(receipt.status)) follow();
+			if (message.kind === 'message' && ['sent', 'queued'].includes(receipt.status))
+				follower.start();
 			return receipt;
 		},
 		computers() {
@@ -65,7 +76,7 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 		},
 		close() {
 			closed = true;
-			clearInterval(follower);
+			follower.stop();
 			linkedHome?.service.close();
 			linkedHome = undefined;
 		}

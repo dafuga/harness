@@ -30,22 +30,25 @@ export function liveRunId(sources: Pick<TrackerSources, 'runs'>, itemId: string 
 	return live.length === 1 ? `${live[0].node}#${live[0].id}` : null;
 }
 
-/**
- * Daniel's Hub messages with their receipts, and each session reply under the message it names.
- * Other notes are progress, not conversation, and are left out; older plain Hub notes stay his.
- */
-export function homeThreadMessages(notes: readonly TrackerNote[] | undefined): HomeMessage[] {
-	const entries: HomeMessage[] = [];
-	for (const [index, note] of (notes ?? []).entries())
-		if (note.text.startsWith(legacyPrefix))
-			entries.push({
+/** Older plain Hub notes stay his. */
+function legacyMessages(notes: readonly TrackerNote[]) {
+	return notes.flatMap((note, index): HomeMessage[] => {
+		if (!note.text.startsWith(legacyPrefix)) return [];
+		return [
+			{
 				id: `note-${note.at}-${index}`,
 				text: homeText(note.text.slice(legacyPrefix.length), 900) ?? '',
 				at: new Date(note.at).toISOString(),
 				from: 'you'
-			});
-	for (const message of hubSessionMessages(notes ?? [])) {
-		entries.push({
+			}
+		];
+	});
+}
+
+/** One Hub message with its receipt, then the replies that name it. */
+function sentMessage(message: ReturnType<typeof hubSessionMessages>[number]): HomeMessage[] {
+	return [
+		{
 			id: `hub-${message.id}`,
 			messageId: message.id,
 			text: homeText(message.text, 900) ?? '',
@@ -53,15 +56,25 @@ export function homeThreadMessages(notes: readonly TrackerNote[] | undefined): H
 			from: 'you',
 			status: message.status,
 			...(message.reason && { reason: homeText(message.reason, 300) ?? '' })
-		});
-		for (const [index, reply] of message.replies.entries())
-			entries.push({
+		},
+		...message.replies.map(
+			(reply, index): HomeMessage => ({
 				id: `reply-${message.id}-${index}`,
 				text: homeText(reply.text, 900) ?? '',
 				at: new Date(reply.at).toISOString(),
 				from: 'agent',
 				replyTo: message.id
-			});
-	}
+			})
+		)
+	];
+}
+
+/**
+ * Daniel's Hub messages with their receipts, and each session reply under the message it names.
+ * Other notes are progress, not conversation, and are left out.
+ */
+export function homeThreadMessages(notes: readonly TrackerNote[] | undefined): HomeMessage[] {
+	const all = notes ?? [];
+	const entries = [...legacyMessages(all), ...hubSessionMessages(all).flatMap(sentMessage)];
 	return entries.sort((left, right) => left.at.localeCompare(right.at)).slice(-threadLimit);
 }

@@ -16,7 +16,9 @@
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalJobResponse.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalMessages.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalPlanning.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalRejection.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerManualLaunch.ts",
@@ -42,8 +44,11 @@
 			"recordTrackerSessionItem",
 			"readItemBody",
 			"itemMutationContext",
+			"trackerJobResponse",
 			"cosChatTitle",
 			"trackerMessageEndpoint",
+			"MessageDependencies",
+			"RequestTarget",
 			"writeTrackerPlanning",
 			"trackerRejectItem",
 			"isTrackerManualLaunch",
@@ -233,6 +238,26 @@
 				"default": false
 			},
 			{
+				"name": "trackerJobResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.items",
+				"type": "TrackerItemReadRepository",
+				"required": true
+			},
+			{
+				"name": "trackerJobResponse.options",
+				"type": "TrackerLocalApiOptions",
+				"required": true
+			},
+			{
 				"name": "trackerMessageEndpoint.request",
 				"type": "Request",
 				"required": true
@@ -386,6 +411,10 @@
 			{
 				"name": "itemMutationContext",
 				"type": "TrackerItemMutationContext"
+			},
+			{
+				"name": "trackerJobResponse",
+				"type": "Promise<Response>"
 			},
 			{
 				"name": "cosChatTitle",
@@ -718,6 +747,39 @@
 					{
 						"name": "itemMutationContext",
 						"type": "TrackerItemMutationContext"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerJobResponse",
+				"inputs": [
+					{
+						"name": "trackerJobResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.parts",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.items",
+						"type": "TrackerItemReadRepository",
+						"required": true
+					},
+					{
+						"name": "trackerJobResponse.options",
+						"type": "TrackerLocalApiOptions",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerJobResponse",
+						"type": "Promise<Response>"
 					}
 				],
 				"errors": [],
