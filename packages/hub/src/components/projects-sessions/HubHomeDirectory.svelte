@@ -3,19 +3,25 @@
 <!-- @harness-uid u_mzioqvigck -->
 <script lang="ts">
 	import { base, resolve } from '$app/paths';
+	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { stateLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
 	import type { HomeTrackerProject } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
+	import { relativeWhen } from './hubHomePresentation';
 	import type { HomeView } from './hubHomeView.types';
 	let { view }: { view: HomeView } = $props();
 	const available = $derived(view.native ? view.native.projects : view.projects);
 	const openable: { id: string; name: string; kind?: string }[] = $derived(available ?? []);
 	const tracker = $derived(view.projectDirectory ?? []);
 	const byName = $derived(Map.groupBy(openable, (project) => key(project.name)));
-	const separate = $derived(tracker.filter(({ name }) => byName.get(key(name))?.length !== 1));
-	const statusByName = $derived(new Map(tracker.map((project) => [key(project.name), project])));
+	const statusByName = $derived(Map.groupBy(tracker, (project) => key(project.name)));
+	const separate = $derived(
+		tracker.filter(
+			({ name }) => byName.get(key(name))?.length !== 1 || statusByName.get(key(name))?.length !== 1
+		)
+	);
 	const notices = $derived(
 		view.native?.notices ?? (view.projectsFailed ? ['Hub projects could not be loaded.'] : [])
 	);
@@ -28,6 +34,7 @@
 		const count = project.needsYou;
 		return `${stateLabel(project.state)} · ${count.toLocaleString()} ${count === 1 ? 'needs' : 'need'} you`;
 	}
+	const noActivity = $derived(view.trackerConnected ? 'No Tracker activity · 0 need you' : '');
 
 	function trackerHref(name: string) {
 		return `${base}${view.native ? '/tracker' : '/tracker-overview'}?${new URLSearchParams({ project: name })}`;
@@ -40,13 +47,20 @@
 {#if openable.length || separate.length}
 	<hx-ul class="po-items hh-project-directory" aria-label="Project directory">
 		{#each openable as project (project.id)}
+			{@const matches = statusByName.get(key(project.name))}
 			{@const own =
-				byName.get(key(project.name))?.length === 1
-					? statusByName.get(key(project.name))
+				byName.get(key(project.name))?.length === 1 && matches?.length === 1
+					? matches[0]
 					: undefined}
 			{@const source = project.kind === 'local' ? 'On this Mac' : 'Hub'}
-			<HubHomeRow title={project.name} meta={own ? `${source} · ${detail(own)}` : source}>
+			{@const change = view.projectSnapshots[project.id]?.commits[0]}
+			{@const status = own ? detail(own) : !matches?.length ? noActivity : ''}
+			<HubHomeRow title={project.name} meta={status ? `${source} · ${status}` : source}>
 				{#snippet trailing()}
+					{#if change}<hx-span class="hh-change"
+							><hx-code>{shortCommit(change.hash)}</hx-code>
+							{relativeWhen(change.authoredAt, view.now)}</hx-span
+						>{/if}
 					{#if view.native}
 						<hx-button
 							type="button"

@@ -15,7 +15,9 @@
 			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-code",
 			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-ul"
 		]
 	},
@@ -84,6 +86,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
@@ -104,7 +111,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-atoms-html-code",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
 			"via": "import",
 			"origin": "derived"
 		},

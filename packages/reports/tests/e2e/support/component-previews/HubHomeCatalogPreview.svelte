@@ -52,6 +52,12 @@
 			reload: noop,
 			close: noop
 		},
+		'home-directory': {
+			view: {
+				...view,
+				projectDirectory: [{ name: 'Atlas', state: 'needs-you', needsYou: 1 }]
+			}
+		},
 		'home-header': { view },
 		'home-live': { reading: view.computers, now: view.now },
 		'home-live-project': { project: catalogWorkProject, now: view.now },

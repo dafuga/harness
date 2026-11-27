@@ -17,7 +17,7 @@
 		link,
 		accountName = '',
 		accountMenu,
-		needsHref,
+		needsHref = resolve('/') + '?view=needs-you',
 		needsOnly = false,
 		notifications
 	}: {
@@ -46,7 +46,7 @@
 	</hx-a>
 	<hx-span class="hh-crumb">{needsOnly ? 'Needs you' : 'Home'}</hx-span>
 	{#if needsHref}
-		<!-- The native renderer supplies its inbox route. -->
+		<!-- Both renderers supply the same query on their home route. -->
 		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 		<hx-a class="po-action hh-inbox-link" href={needsOnly ? resolve('/') : needsHref}>
 			{needsOnly ? 'Home' : 'Needs you'}

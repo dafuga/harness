@@ -3,6 +3,7 @@
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import { page } from '$app/state';
 	import { homeBoard } from './hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
@@ -34,6 +35,7 @@
 	import '../../lib/styles/home-scheme.css';
 	import '../../lib/styles/hub-home/index.css';
 	const { api, session, projects } = browserContext();
+	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
 	provideHubSpecDocuments(api);
 	const cosChat = provideHomeCosChat(() => reads.read());
 	let selected = $state<HomeSection | null>(null);
@@ -154,7 +156,6 @@
 		opener = null;
 		void tick().then(() => target?.focus());
 	}
-
 	function readProject(id: string) {
 		const active = projectFlights.get(id);
 		if (active) return active;
@@ -169,7 +170,6 @@
 		projectFlights.set(id, request);
 		return request;
 	}
-
 	async function changeSession(id: string, add: boolean) {
 		const result = await api.send<{ controlled: string[] }>(
 			add ? 'POST' : 'DELETE',
@@ -187,7 +187,7 @@
 
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
-		<HubHomeHeader {view} {link} accountName={session.actor?.name}>
+		<HubHomeHeader {view} {link} {needsOnly} accountName={session.actor?.name}>
 			{#snippet accountMenu()}<AccountMenu />{/snippet}
 			{#snippet notifications()}<HubHomeNotifications />{/snippet}
 		</HubHomeHeader>
@@ -197,8 +197,8 @@
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} send={reads.send} {receipt} />
-			<HubHomeLive reading={view.computers} now={view.now} />
+			<HubHomeCards {view} {open} send={reads.send} {receipt} {needsOnly} />
+			{#if !needsOnly}<HubHomeLive reading={view.computers} now={view.now} />{/if}
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs

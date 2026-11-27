@@ -70,9 +70,7 @@
 	/>{/if}
 {#if needsOnly}
 	{#if view.agents === null}<HubHomeSkeleton rows={3} />
-	{:else if !view.trackerConnected}{@render empty(
-			'Tracker decisions could not be read on this Mac.'
-		)}
+	{:else if !view.trackerConnected}{@render empty('Tracker decisions could not be read.')}
 	{:else if !view.openAsks.length}{@render empty('Nothing needs you right now.')}{/if}
 {:else}
 	<hx-div class="hh-grid">

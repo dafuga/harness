@@ -65,8 +65,8 @@
 				"name": "HubHomeHeader.needsHref",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
-				"description": "Address of the native Needs you view, when the host offers it."
+			"default": "Home with the view=needs-you query",
+			"description": "Address of the shared Needs you view."
 			},
 			{
 				"name": "HubHomeHeader.needsOnly",

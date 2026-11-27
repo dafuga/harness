@@ -26,12 +26,17 @@
 	);
 	const directory = $derived(view.native || view.projectDirectory !== undefined);
 	const listed = $derived(view.native ? view.native.projects : view.projects);
+	const byName = $derived(Map.groupBy(listed ?? [], ({ name }) => name.trim().toLowerCase()));
+	const tracked = $derived(
+		Map.groupBy(view.projectDirectory ?? [], ({ name }) => name.trim().toLowerCase())
+	);
 	const total = $derived(
 		(listed?.length ?? 0) +
-			(view.projectDirectory ?? []).filter(
-				(project) =>
-					!listed?.some((entry) => entry.name.toLowerCase() === project.name.toLowerCase())
-			).length
+			[...tracked].reduce(
+				(sum, [name, group]) =>
+					sum + (group.length === 1 && byName.get(name)?.length === 1 ? 0 : group.length),
+				0
+			)
 	);
 </script>
 

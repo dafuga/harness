@@ -3411,6 +3411,12 @@
 		},
 		{
 			"from": "packages/hub/src/components/projects-sessions/HubHomeDirectory.svelte",
+			"specifier": "$reports/helpers/strings/shortCommit",
+			"to": "packages/reports/src/helpers/strings/shortCommit.ts",
+			"reason": "Keep shared project commit labels on the Reports display contract."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeDirectory.svelte",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
 			"reason": "Resolve the Reports source used by Home through the workspace build alias."
