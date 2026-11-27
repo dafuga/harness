@@ -92,6 +92,7 @@ export async function verifyBlockedLaunchCli(spoke: TrackerNodeFixture, id: stri
 	const item = await fixtureTrackerJson(spoke, ['block', id, 'Old dependency']);
 	const db = new DatabaseSync(spoke.config.database);
 	try {
+		db.exec('PRAGMA busy_timeout = 5000');
 		const now = Date.now();
 		db.prepare(
 			`INSERT INTO runs(item_id,auto_token,rung,cli,model,state,outcome,failure_reason,queued_at,started_at,ended_at)
