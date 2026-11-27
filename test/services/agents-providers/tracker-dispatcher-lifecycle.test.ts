@@ -126,14 +126,12 @@ async function proveStartupRetry() {
 	expect
 		.soft(second.selection)
 		.toEqual({ provider: 'codex', model: 'gpt-6.1-terra', intelligence: 'medium' });
-	expect
-		.soft(second.run)
-		.toMatchObject({
-			model: 'gpt-6.1-terra',
-			effort: 'medium',
-			attempt: 2,
-			escalated_from: first.run.id
-		});
+	expect.soft(second.run).toMatchObject({
+		model: 'gpt-6.1-terra',
+		effort: 'medium',
+		attempt: 2,
+		escalated_from: first.run.id
+	});
 	expect(second.key).not.toBe(first.key);
 	expect(await service.record(sampleId, second.run, error)).toMatchObject({
 		status: 'recorded',
