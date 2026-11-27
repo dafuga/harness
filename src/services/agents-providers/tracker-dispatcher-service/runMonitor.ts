@@ -22,7 +22,7 @@ export function monitorRun(
 	const { item } = snapshot;
 	if (item?.deleted) return abandon(run, 'item deleted', clock.now);
 	if (item?.status === 'done') return monitorDone(snapshot, run, event, clock);
-	if (event.session === 'lost') return abandon(run, 'Managed tmux session disappeared', clock.now);
+	if (event.session === 'lost') return abandonLost(run, clock.now);
 	if (run.state === 'verifying') {
 		if (!item) return skip('held', 'item missing during verification');
 		return recordRun(reviseRun(run, { state: 'running' }));
@@ -100,7 +100,8 @@ function finishExitedRun(
 	clock: { policy: TrackerDispatchPolicy; now: number }
 ) {
 	const code = event.exitCode;
-	const reason = `session exited without tracker done${code == null ? '' : ` (exit ${code})`}`;
+	const exit = `session exited without tracker done${code == null ? '' : ` (exit ${code})`}`;
+	const reason = event.diagnostic ? `${exit}: ${event.diagnostic}` : exit;
 	const failure = { outcome: 'failed', reason, exitCode: code, usage: event.usage } as const;
 	if (snapshot.item?.status === 'in_progress' && clock.policy.recoverDroppedSessions)
 		return recordRun(finishRun(run, { ...failure, now: clock.now }));
@@ -135,6 +136,18 @@ function activeSince(run: TrackerRunReceipt) {
 
 function pastRunCap(run: TrackerRunReceipt, policy: TrackerDispatchPolicy, now: number) {
 	return now - activeSince(run) > (policy.maxRunMinutes ?? 480) * minute;
+}
+
+function abandonLost(run: TrackerRunReceipt, now: number): TrackerDispatchDecision {
+	const lost = finishRun(run, {
+		outcome: 'abandoned',
+		reason: 'Managed tmux session disappeared',
+		now
+	});
+	return {
+		result: { status: 'recorded', run: lost },
+		writes: { runs: [lost], failedRunId: run.id }
+	};
 }
 
 function abandon(run: TrackerRunReceipt, reason: string, now: number) {

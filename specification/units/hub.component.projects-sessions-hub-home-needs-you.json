@@ -10,7 +10,10 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
+			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-section",
@@ -25,6 +28,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "HubHomeNeedsYou.asks",
@@ -43,6 +47,18 @@
 				"type": "OpenHomeSection",
 				"required": true,
 				"description": "Opens a Home section on the asking agent."
+			},
+			{
+				"name": "HubHomeNeedsYou.send",
+				"type": "SendHomeChat",
+				"required": true,
+				"description": "Sends an answer tapped on a row and returns what became of it."
+			},
+			{
+				"name": "HubHomeNeedsYou.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true,
+				"description": "Reads the later outcome of an answer the Hub queued."
 			}
 		],
 		"outputs": [
@@ -59,12 +75,27 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},

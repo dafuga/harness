@@ -44,7 +44,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "function.projects-sessions-hub-session-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-attachment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -71,7 +71,8 @@ function trackerFetch(deviceId: string, trackerRequests: URL[]) {
 export async function setup(
 	trackerEnabled = false,
 	writeEnabled = false,
-	home?: () => Promise<unknown>
+	home?: () => Promise<unknown>,
+	homeChat?: (input: unknown) => Promise<unknown>
 ) {
 	const f = await remoteFixture(),
 		hostKeys = await remoteKeys(),
@@ -105,7 +106,8 @@ export async function setup(
 			outbox: new CommentOutboxService(),
 			...(trackerEnabled ? { trackerPhone: deviceId, trackerFetcher } : {}),
 			...(writeEnabled ? { trackerWrite: { device: deviceId, token: writeToken } } : {}),
-			...(home ? { home } : {})
+			...(home ? { home } : {}),
+			...(homeChat ? { homeChat } : {})
 		},
 		host: () => ({ id: hostId, name: 'Fixture Mac', keys: hostKeys }),
 		device: (id) => records.get(id) ?? null,

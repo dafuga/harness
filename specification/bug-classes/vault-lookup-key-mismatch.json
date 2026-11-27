@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"revision": "7eabda99c68b4a1409dd647c1591cf68a948f79b",
+	"bugClass": {
+		"id": "vault-lookup-key-mismatch",
+		"title": "Vault lookup omits the site matching key",
+		"cause": "A saved credential lookup uses only the requested service or entry name for equality, while the saved login is associated with a site/domain and the request omits that site identifier. This makes an existing login appear missing and can trigger an unnecessary request to save the password again.",
+		"criteria": "Include a site when credential retrieval matches saved logins against a request using service/entry-name equality alone, with no site/domain/URL matching key supplied or considered. Also include when a broker or adapter drops the site/domain/URL field before forwarding a credential lookup. Either mechanism independently qualifies. Exclude cases where the request and lookup consistently use a canonical site/domain key or the item is absent for a different reason.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "service ===",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "entry.name ===",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "item.name ===",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "serviceName",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "domain",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "hostname",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "siteUrl",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "request.site",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "site:",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "find",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "filter",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "getLogin",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "getCredential",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "lookup",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "send",
+				"weight": 1
+			},
+			{
+				"kind": "construct",
+				"value": "URL",
+				"weight": 2
+			}
+		],
+		"contextTerms": [
+			"vault",
+			"service",
+			"site",
+			"domain",
+			"hostname",
+			"login",
+			"credential",
+			"broker",
+			"entry",
+			"request"
+		],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 5
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 5
+			},
+			{
+				"contains": "packages/relay/",
+				"weight": 4
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "specification/",
+				"weight": -3
+			},
+			{
+				"contains": "test/",
+				"weight": -4
+			},
+			{
+				"contains": "test/services/",
+				"weight": -4
+			},
+			{
+				"contains": "test/support/",
+				"weight": -3
+			}
+		]
+	}
+}

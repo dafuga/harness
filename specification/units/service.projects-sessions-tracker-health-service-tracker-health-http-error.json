@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-health-service-tracker-health-http-error",
+	"uid": "u_xspigflbuy",
+	"kind": "service",
+	"title": "TrackerHealthHttpError",
+	"responsibility": "Owns the TrackerHealthHttpError service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-health-service/TrackerHealthHttpError.ts"],
+		"symbols": ["TrackerHealthHttpError"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-health-service/TrackerHealthHttpError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-health-service/TrackerHealthHttpError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

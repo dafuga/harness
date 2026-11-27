@@ -1,0 +1,156 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-tracker-note",
+	"uid": "u_2d4uqig2pk",
+	"kind": "adapter",
+	"title": "TrackerNoteAdapter",
+	"responsibility": "Owns the TrackerNoteAdapter integration boundary.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/agents-providers/TrackerNoteAdapter.ts",
+			"src/adapters/agents-providers/TrackerNoteAdapter.types.ts"
+		],
+		"symbols": [
+			"TrackerNoteAdapter",
+			"TrackerNoteAdapter.constructor",
+			"TrackerNoteAdapter.openItems",
+			"TrackerNoteAdapter.note",
+			"TrackerNoteAdapterConfig",
+			"TrackerNoteAdapterConfig"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerNoteAdapter.constructor.config",
+				"type": "TrackerNoteAdapterConfig",
+				"required": true
+			},
+			{
+				"name": "TrackerNoteAdapter.note.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerNoteAdapter.note.text",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerNoteAdapter.openItems",
+				"type": "Promise<QaTrackerItem[]>"
+			},
+			{
+				"name": "TrackerNoteAdapter.note",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "QaSyncError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerNoteAdapter.openItems",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerNoteAdapter.openItems",
+						"type": "Promise<QaTrackerItem[]>"
+					}
+				],
+				"errors": [
+					{
+						"name": "QaSyncError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerNoteAdapter.note",
+				"inputs": [
+					{
+						"name": "TrackerNoteAdapter.note.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerNoteAdapter.note.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNoteAdapter.note",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "QaSyncError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerNoteAdapter.constructor",
+				"inputs": [
+					{
+						"name": "TrackerNoteAdapter.constructor.config",
+						"type": "TrackerNoteAdapterConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerNoteAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/TrackerNoteAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/TrackerNoteAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

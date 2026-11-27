@@ -1,0 +1,99 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-sync-service-route-qa-item",
+	"uid": "u_4tnqr7ckfn",
+	"kind": "service",
+	"title": "routeQaItem",
+	"responsibility": "Owns the routeQaItem service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/qa-sync-service/routeQaItem.ts",
+			"src/services/agents-providers/qa-sync-service/routeQaItem.types.ts"
+		],
+		"symbols": ["routeQaItem", "QaRoute"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "routeQaItem.items",
+				"type": "readonly QaTrackerItem[]",
+				"required": true
+			},
+			{
+				"name": "routeQaItem.issue",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "routeQaItem.inboxItem",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "routeQaItem",
+				"type": "QaRoute"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "routeQaItem",
+				"inputs": [
+					{
+						"name": "routeQaItem.items",
+						"type": "readonly QaTrackerItem[]",
+						"required": true
+					},
+					{
+						"name": "routeQaItem.issue",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "routeQaItem.inboxItem",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "routeQaItem",
+						"type": "QaRoute"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/qa-sync-service/routeQaItem.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/qa-sync-service/routeQaItem.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

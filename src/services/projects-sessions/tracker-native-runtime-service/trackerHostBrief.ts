@@ -3,12 +3,14 @@ import type { TrackerItem } from '../../../repositories/projects-sessions/Tracke
 
 import { trackerAskOptionsRule } from './trackerAskOptionsRule';
 import { trackerAutomationBrowserRule } from './trackerAutomationBrowserRule';
+import { trackerDoneProofRule } from './trackerDoneProofRule';
 import { trackerSecretSafetyRule } from './trackerSecretSafetyRule';
+import { trackerCpuBudgetRule } from '../../../utils/projects-sessions/trackerCpuBudget';
 
 export function formatTrackerHostBrief(
 	item: TrackerItem,
 	completion: string,
-	recovery = false
+	{ recovery = false, cpuBudget }: { recovery?: boolean; cpuBudget?: number } = {}
 ): string {
 	const id = item.id.slice(0, 6);
 	const notes = item.notes_log.slice(-10).map(({ at, text }) => `- ${at} ${text.slice(0, 1200)}`);
@@ -23,6 +25,7 @@ export function formatTrackerHostBrief(
 		'',
 		`Tracker item ${id} (full ID ${item.id}).`,
 		'',
+		cpuBudget && trackerCpuBudgetRule(cpuBudget),
 		item.sensitive &&
 			'Keep credentials out of output and obtain approval before any irreversible action.',
 		item.adapter_instructions && `## Source instructions\n\n${item.adapter_instructions}`,
@@ -33,7 +36,9 @@ export function formatTrackerHostBrief(
 		'Keep working through verification. Pause only when the task is done or a true blocker prevents further work.',
 		'At 150,000 active context tokens, leave a short Tracker handoff with the exact worktree, branch, completed work, pending checks and next step.',
 		'',
-		completion
+		completion,
+		'',
+		trackerDoneProofRule
 	]
 		.filter((line) => line !== null && line !== undefined && line !== false)
 		.join('\n');

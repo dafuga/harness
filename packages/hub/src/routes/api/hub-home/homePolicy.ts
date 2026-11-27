@@ -59,12 +59,7 @@ async function dispatchHome(
 
 async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: string) {
 	if (url.pathname === root && request.method === 'GET' && !url.search)
-		return json({
-			granted: true,
-			snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null,
-			controlled: deps.bucket ? await readControlled(deps.bucket, actor) : [],
-			...(deps.accounts && { live: true })
-		});
+		return await browserSnapshot(deps, actor);
 	if (url.pathname === chat) return await browserChat(request, url, deps, actor);
 	if (url.pathname === documentPath && request.method === 'GET') {
 		const found = await browseHomeDocument(url, deps, actor);
@@ -72,6 +67,15 @@ async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: st
 	}
 	if (url.pathname === agentsPath) return await browserAgents(request, url, deps, actor);
 	return json({ error: 'not-found' }, 404);
+}
+
+async function browserSnapshot(deps: HomeDeps, actor: string) {
+	return json({
+		granted: true,
+		snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null,
+		controlled: deps.bucket ? await readControlled(deps.bucket, actor) : [],
+		...(deps.accounts && { live: true })
+	});
 }
 
 async function nativeHome(
@@ -151,10 +155,17 @@ async function postChat(request: Request, deps: HomeDeps, actor: string) {
 }
 
 function matchesCurrentItem(message: HomeChatInput, agent: HomeAgent | undefined) {
+	if (message.kind === 'message') return matchesMessageTarget(message, agent);
 	if (!agent?.itemId || agent.itemId !== message.itemId) return false;
 	if (message.kind === 'note') return true;
 	if (agent.question !== message.question) return false;
 	return message.option === undefined || matchesChosenOption(message, agent);
+}
+
+/** Chief of Staff is always reachable; a session message names the live run it was shown. */
+function matchesMessageTarget(message: HomeChatInput, agent: HomeAgent | undefined) {
+	if (message.agentId === 'cos') return true;
+	return Boolean(agent?.runId) && agent?.itemId === message.itemId && agent.runId === message.runId;
 }
 
 /** A tap must name a real option of the open ask, and a deploy, money or secret ask must be confirmed. */

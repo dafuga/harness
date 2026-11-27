@@ -96,7 +96,10 @@ test('quota stays unknown unless a computer reports it, and a failed overview ne
 test('the headline reflects running sessions even before any agent card exists', () => {
 	expect(homeHeadline([])).toBe('Nothing is running yet');
 	expect(homeHeadline([], 11)).toBe('11 sessions running');
-	expect(homeHeadline([agent('a', 'working', '2026-11-25T10:00:00Z')], 11)).toBe('1 agent working');
+	expect(homeHeadline([agent('a', 'working', '2026-11-25T10:00:00Z')], 11)).toBe(
+		'11 sessions running for 1 agent'
+	);
+	expect(homeHeadline([], 0, 2)).toBe('Nothing is running, 2 need you');
 });
 
 test('an agent with a flag and live runs still counts as working, and sessions are not summed across computers', () => {
@@ -112,7 +115,9 @@ test('an agent with a flag and live runs still counts as working, and sessions a
 	expect(merged?.agents).toHaveLength(1);
 	expect(merged?.agents[0]).toMatchObject({ sessions: 3, state: 'needs-you' });
 	expect(merged?.agents[0].tasks.map((task) => task.title)).toEqual(['a', 'b', 'c', 'd']);
-	expect(homeHeadline(merged?.agents ?? [], 0, 1)).toBe('1 agent working, 1 needs you');
+	expect(homeHeadline(merged?.agents ?? [], 0, 1)).toBe(
+		'3 sessions running for 1 agent, 1 needs you'
+	);
 });
 
 test('sub-agent sessions count once across computers and make their parent agent working', () => {
@@ -135,5 +140,5 @@ test('sub-agent sessions count once across computers and make their parent agent
 	expect(agentActivity(merged!.agents[0])).toBe(
 		'3 sessions running (3 sub-agent sessions) · Synthetic task (+2 more)'
 	);
-	expect(homeHeadline(merged?.agents ?? [])).toBe('1 agent working');
+	expect(homeHeadline(merged?.agents ?? [])).toBe('3 sessions running for 1 agent');
 });

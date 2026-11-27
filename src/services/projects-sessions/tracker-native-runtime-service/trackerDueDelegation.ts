@@ -1,6 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
 import {
-	automaticQuietHour,
 	automaticRequestHold,
 	canonicalNode,
 	dueOwner
@@ -21,7 +20,7 @@ export function grantsDelegation(
 ) {
 	const { item, due, runs } = snapshot;
 	const now = policy.now();
-	if (!item || !due || due.paused || automaticQuietHour(now)) return false;
+	if (!item || !due || due.paused) return false;
 	if (!mayDelegate(item, { due, target }, policy) || automaticRequestHold(item, policy, now))
 		return false;
 	return (

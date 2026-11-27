@@ -27,6 +27,7 @@ const answer = async (response: Response) => {
 	return `${response.status} ${body.error ?? 'ok'}`;
 };
 const random = (size: number) => crypto.getRandomValues(new Uint8Array(size));
+const oversizeTries = 25;
 
 async function scope(): Promise<{ keys: ScopeKeys; id: string }> {
 	const raw = newScopeKeys();
@@ -179,9 +180,11 @@ test('an object write must match its address, and another account sees nothing',
 		await answer(await f.call(A, 'PUT', `objects/${id}/${objectId}`, { body: 'AAAA', headers }))
 	).toBe('400 invalid-input');
 	const huge = await envelope(keys, object, 2n, { text: 'z'.repeat(5_000_000) });
-	expect(
-		await answer(await f.call(A, 'PUT', `objects/${id}/${objectId}`, { body: huge, headers }))
-	).toBe('413 too-large');
+	// One try can pass by luck: the answer must arrive however much is still being uploaded.
+	for (let turn = 0; turn < oversizeTries; turn++)
+		expect(
+			await answer(await f.call(A, 'PUT', `objects/${id}/${objectId}`, { body: huge, headers }))
+		).toBe('413 too-large');
 	expect(
 		await answer(await f.call(A, 'PUT', `objects/${id}/${objectId}`, { body: text, headers }))
 	).toBe('201 ok');

@@ -1,0 +1,89 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-qa-sync-service-match-qa-thread",
+	"uid": "u_4zg3zprxrv",
+	"kind": "service",
+	"title": "matchQaThread",
+	"responsibility": "Owns the matchQaThread service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/qa-sync-service/matchQaThread.ts",
+			"src/services/agents-providers/qa-sync-service/matchQaThread.types.ts"
+		],
+		"symbols": ["matchQaThread", "QaThreadMatch"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "matchQaThread.parent",
+				"type": "QaSlackMessage",
+				"required": true
+			},
+			{
+				"name": "matchQaThread.config",
+				"type": "QaSyncConfig",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "matchQaThread",
+				"type": "QaThreadMatch"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "matchQaThread",
+				"inputs": [
+					{
+						"name": "matchQaThread.parent",
+						"type": "QaSlackMessage",
+						"required": true
+					},
+					{
+						"name": "matchQaThread.config",
+						"type": "QaSyncConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "matchQaThread",
+						"type": "QaThreadMatch"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-qa-sync-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/qa-sync-service/matchQaThread.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/qa-sync-service/matchQaThread.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

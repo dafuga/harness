@@ -4,13 +4,15 @@
 	"uid": "u_pkjntjini6",
 	"kind": "component",
 	"title": "HubHomeHeader",
-	"responsibility": "Shows account navigation, current activity totals and the most urgent subscription warning.",
+	"responsibility": "Shows account navigation, current activity totals, computers and each subscription's quota.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
 			"hub.component.account-menu",
+			"hub.component.projects-sessions-hub-home-notifications",
+			"hub.component.projects-sessions-hub-home-quota-pills",
 			"reports.component.brand-mark",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-a",
@@ -18,7 +20,6 @@
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-header",
-			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
 			"reports.component.shared-primitives-atoms-html-ul"
@@ -43,7 +44,7 @@
 			{
 				"name": "HubHomeHeader",
 				"type": "markup",
-				"description": "Shows account navigation, current activity totals and the most urgent subscription warning."
+				"description": "Shows account navigation, current activity totals, computers and each subscription's quota."
 			}
 		],
 		"errors": [],
@@ -54,6 +55,16 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.account-menu",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-notifications",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-quota-pills",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -104,11 +115,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-header",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-li",
 			"via": "import",
 			"origin": "derived"
 		},

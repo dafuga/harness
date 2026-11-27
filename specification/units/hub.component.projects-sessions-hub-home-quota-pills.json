@@ -1,0 +1,111 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-quota-pills",
+	"uid": "u_l66rhhlnz4",
+	"kind": "component",
+	"title": "HubHomeQuotaPills",
+	"responsibility": "Shows one header quota pill per subscription and explains its limits on hover or tap.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeQuotaPills.svelte"],
+		"symbols": ["HubHomeQuotaPills"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeQuotaPills.subscriptions",
+				"type": "HomeSubscription[]",
+				"required": true,
+				"description": "The owner's subscription readings; Claude and Codex each get a pill even when one has no reading."
+			},
+			{
+				"name": "HubHomeQuotaPills.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in milliseconds since the Unix epoch, for stale readings and reset wording."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeQuotaPills",
+				"type": "markup",
+				"description": "Renders one header pill per subscription and, after a tap, a line that explains its limits."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-quota-pills",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeQuotaPills.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeQuotaPills.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

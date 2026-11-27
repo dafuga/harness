@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-container-viewer-gate-service-viewer-pages",
+	"uid": "u_dbqtdrtrfx",
+	"kind": "service",
+	"title": "viewerPages",
+	"responsibility": "Render the device pairing page and plain refusals.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/execution-runtimes/container-viewer-gate-service/viewerPages.ts"],
+		"symbols": ["sendPairingPage", "refuse"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "sendPairingPage.response",
+				"type": "ServerResponse",
+				"required": true
+			},
+			{
+				"name": "sendPairingPage.code",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "sendPairingPage.cookie",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "refuse.response",
+				"type": "ServerResponse",
+				"required": true
+			},
+			{
+				"name": "refuse.status",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "sendPairingPage",
+				"type": "void"
+			},
+			{
+				"name": "refuse",
+				"type": "void"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "sendPairingPage",
+				"inputs": [
+					{
+						"name": "sendPairingPage.response",
+						"type": "ServerResponse",
+						"required": true
+					},
+					{
+						"name": "sendPairingPage.code",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "sendPairingPage.cookie",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "sendPairingPage",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "refuse",
+				"inputs": [
+					{
+						"name": "refuse.response",
+						"type": "ServerResponse",
+						"required": true
+					},
+					{
+						"name": "refuse.status",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "refuse",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/container-viewer-gate-service/viewerPages.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/container-viewer-gate-service/viewerPages.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

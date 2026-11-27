@@ -11,15 +11,20 @@ import type {
 } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerHostCapacityHold } from './trackerHostAdmission';
+import { trackerProviderHold } from './trackerProviderHolds';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { recoveryPollInterval, sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerWatchdogLaunch } from './trackerSessionHealth.types';
 import type { TrackerRecoveryState } from './trackerSessionRecovery.types';
-import { recoveryRung, resetBudget } from './trackerRecoveryHistory';
+import {
+	emptyRecoveryState,
+	hostWait,
+	maxRecoveryAttempts,
+	recoveryBudget,
+	recoveryRung
+} from './trackerRecoveryHistory';
 
-const maxAttempts = 3;
 const requestTimeout = sessionHealthInterval;
-const emptyState: TrackerRecoveryState = { token: null, requestedAt: 0, retryAt: 0, failures: [] };
 
 export async function recoverTrackerSession(
 	store: TrackerPersistenceService,
@@ -32,6 +37,12 @@ export async function recoverTrackerSession(
 	const latest = history.filter(({ node }) => node === store.node).at(-1);
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = recoveryBudget(store, { key, latest, item });
+	const held = latest && trackerProviderHold(store, latest.cli, now);
+	if (held) {
+		// A hold is not a failed relaunch. The request timeout restarts when it lifts.
+		if (state.token) saveRecovery(store, key, { ...state, requestedAt: now });
+		return `Tracker relaunch is waiting: ${held}.`;
+	}
 	if (state.token) return checkRecovery(store, { item, key, state, latest }, now);
 	if (now < state.retryAt) return null;
 	const rung = recoveryRung(latest, item, store.node);
@@ -43,21 +54,6 @@ export async function recoverTrackerSession(
 			'The prior session has no verified model.'
 		);
 	return submitRecovery(store, { item, key, state, launch }, { now, rung });
-}
-
-function recoveryBudget(
-	store: TrackerPersistenceService,
-	{ key, latest, item }: { key: string; latest?: TrackerListedRun; item: TrackerItem }
-): TrackerRecoveryState {
-	const stored = JSON.parse(store.getMeta(key) ?? 'null') as TrackerRecoveryState | null;
-	const exhausted = stored?.failures.length === maxAttempts;
-	// Unblocking the held item is how Chief of Staff allows another attempt.
-	const cleared = item.status !== 'blocked';
-	if (!stored || (exhausted && cleared) || resetBudget(stored, latest, item)) return emptyState;
-	return {
-		...stored,
-		failures: stored.failures.filter((reason) => reason !== trackerHostCapacityHold)
-	};
 }
 
 async function submitRecovery(
@@ -74,7 +70,7 @@ async function submitRecovery(
 	saveRecovery(store, key, pending);
 	const result = await launch(item, { token: pending.token, rung }).catch(() => undefined);
 	if (result?.status === 'requested' || result?.status === 'existing')
-		return `Tracker requested relaunch ${state.failures.length + 1}/${maxAttempts} on ${store.node}${rung ? ` using ${rung.model}` : ''}.`;
+		return `Tracker requested relaunch ${state.failures.length + 1}/${maxRecoveryAttempts} on ${store.node}${rung ? ` using ${rung.model}` : ''}.`;
 	return rejectRecoverySubmission(store, { item, key, state }, now, result);
 }
 
@@ -90,9 +86,11 @@ function rejectRecoverySubmission(
 	}
 	const reason =
 		result && 'reason' in result ? result.reason : 'Tracker could not submit the launch request.';
-	if (reason === trackerHostCapacityHold) {
+	if (hostWait(reason)) {
 		saveRecovery(store, key, state);
-		return 'Tracker is waiting for a free host session slot.';
+		return reason === trackerHostCapacityHold
+			? 'Tracker is waiting for a free host session slot.'
+			: `Tracker is waiting for host resources. ${reason}.`;
 	}
 	if (
 		/^(?:no approved Tracker repository or platform|no supported Tracker provider|Tracker model cannot be selected|launcher disabled)/.test(
@@ -154,15 +152,15 @@ function recordFailure(
 		failures,
 		retryAt: now + recoveryPollInterval * 2 ** (failures.length - 1)
 	};
-	if (failures.length >= maxAttempts)
+	if (failures.length >= maxRecoveryAttempts)
 		return flagRecovery(
 			store,
 			{ ...context, state },
 			now,
-			`${maxAttempts} relaunch attempts failed. ${failures.join('; ')}.`
+			`${maxRecoveryAttempts} relaunch attempts failed. ${failures.join('; ')}.`
 		);
 	saveRecovery(store, context.key, state);
-	return `Relaunch ${failures.length}/${maxAttempts} failed: ${reason}. Tracker will retry.`;
+	return `Relaunch ${failures.length}/${maxRecoveryAttempts} failed: ${reason}. Tracker will retry.`;
 }
 
 export function flagRecoveryError(
@@ -173,7 +171,7 @@ export function flagRecoveryError(
 ) {
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = JSON.parse(store.getMeta(key) ?? 'null') as TrackerRecoveryState | null;
-	return flagRecovery(store, { item, key, state: state ?? emptyState }, now, detail);
+	return flagRecovery(store, { item, key, state: state ?? emptyRecoveryState }, now, detail);
 }
 
 function flagRecovery(

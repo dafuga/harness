@@ -56,11 +56,12 @@ test('managed sessions count pane output and live background work as activity', 
 	};
 	const tmux = {
 		inventory: async () => panes,
+		windows: async () => [],
 		captured: async (seen: WatchdogPane) => ({ ...seen, screen: footers.get(seen.name) ?? null })
 	} as unknown as TrackerTmuxAdapter;
 	try {
 		const { sessions } = await trackerHostInventory(
-			{ store, driver, tmux, node: primary, keys: names, now: noon },
+			{ store, driver, tmux, node: primary, runs: [], keys: names, now: noon },
 			signal
 		);
 		expect(sessions.map(({ activityAt }) => activityAt)).toEqual([

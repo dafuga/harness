@@ -4,8 +4,6 @@ import { dispatchLaunchSource } from '../../../repositories/projects-sessions/tr
 import { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import { trackerClockMilliseconds } from '../../../utils/projects-sessions/nextTrackerClock';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
-import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
-import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import type { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
 import { watchdogManualPrefix } from '../WatchdogPaneService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
@@ -41,7 +39,6 @@ export async function queueIdleWork(
 	signal: AbortSignal
 ) {
 	const { now } = snapshot;
-	if (isQuietHour(now, { start: '22:00', end: '08:00', tz: trackerTimeZone })) return;
 	const unchangedSince = now - minutes * requestGrace;
 	const runs = new TrackerRunReadRepository(store.database, store.node);
 	const active = new Set<string>();

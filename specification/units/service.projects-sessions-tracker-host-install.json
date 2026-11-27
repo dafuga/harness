@@ -1,0 +1,236 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-host-install",
+	"uid": "u_n2az4s5ol5",
+	"kind": "service",
+	"title": "TrackerHostInstallService",
+	"responsibility": "Owns the TrackerHostInstallService service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerHostInstallService.ts",
+			"src/services/projects-sessions/TrackerHostInstallService.types.ts"
+		],
+		"symbols": [
+			"TrackerHostInstallService",
+			"TrackerHostInstallService.constructor",
+			"TrackerHostInstallService.detect",
+			"TrackerHostInstallService.files",
+			"TrackerHostInstallService.install",
+			"TrackerHostInstallService.uninstall",
+			"TrackerHostKind",
+			"TrackerHostInstallInput",
+			"TrackerHostCommandResult",
+			"TrackerHostInstallPorts",
+			"TrackerHostFile"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "TrackerHostInstallService.constructor.input",
+				"type": "TrackerHostInstallInput",
+				"required": true
+			},
+			{
+				"name": "TrackerHostInstallService.constructor.ports",
+				"type": "TrackerHostInstallPorts",
+				"required": true
+			},
+			{
+				"name": "TrackerHostInstallService.detect.platform",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerHostInstallService.detect.ports",
+				"type": "TrackerHostInstallPorts",
+				"required": true
+			},
+			{
+				"name": "TrackerHostInstallService.files.kind",
+				"type": "TrackerHostKind",
+				"required": true
+			},
+			{
+				"name": "TrackerHostInstallService.install.kind",
+				"type": "TrackerHostKind",
+				"required": true
+			},
+			{
+				"name": "TrackerHostInstallService.uninstall.kind",
+				"type": "TrackerHostKind",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerHostInstallService.detect",
+				"type": "TrackerHostKind"
+			},
+			{
+				"name": "TrackerHostInstallService.files",
+				"type": "unknown"
+			},
+			{
+				"name": "TrackerHostInstallService.install",
+				"type": "string[]"
+			},
+			{
+				"name": "TrackerHostInstallService.uninstall",
+				"type": "string[]"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerHostInstallService.detect",
+				"inputs": [
+					{
+						"name": "TrackerHostInstallService.detect.platform",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerHostInstallService.detect.ports",
+						"type": "TrackerHostInstallPorts",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostInstallService.detect",
+						"type": "TrackerHostKind"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerHostInstallService.files",
+				"inputs": [
+					{
+						"name": "TrackerHostInstallService.files.kind",
+						"type": "TrackerHostKind",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostInstallService.files",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerHostInstallService.install",
+				"inputs": [
+					{
+						"name": "TrackerHostInstallService.install.kind",
+						"type": "TrackerHostKind",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostInstallService.install",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerHostInstallService.uninstall",
+				"inputs": [
+					{
+						"name": "TrackerHostInstallService.uninstall.kind",
+						"type": "TrackerHostKind",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostInstallService.uninstall",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerHostInstallService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerHostInstallService.constructor.input",
+						"type": "TrackerHostInstallInput",
+						"required": true
+					},
+					{
+						"name": "TrackerHostInstallService.constructor.ports",
+						"type": "TrackerHostInstallPorts",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerHostInstallService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-host-service-install-launchd-tracker-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-service-install-shell-tracker-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-host-service-install-systemd-tracker-host",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerHostInstallService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerHostInstallService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

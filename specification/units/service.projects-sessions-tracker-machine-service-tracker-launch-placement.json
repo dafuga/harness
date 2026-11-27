@@ -1,0 +1,109 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-machine-service-tracker-launch-placement",
+	"uid": "u_5hr7siszzq",
+	"kind": "service",
+	"title": "trackerLaunchPlacement",
+	"responsibility": "Owns the trackerLaunchPlacement service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-machine-service/trackerLaunchPlacement.ts",
+			"src/services/projects-sessions/tracker-machine-service/trackerLaunchPlacement.types.ts"
+		],
+		"symbols": ["trackerLaunchPlacement", "TrackerPlacedLaunch", "TrackerFleetView"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "trackerLaunchPlacement.item",
+				"type": "TrackerModelItem & { repo?: string | null }",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchPlacement.view",
+				"type": "TrackerFleetView",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerLaunchPlacement",
+				"type": "TrackerPlacedLaunch | undefined"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerLaunchPlacement",
+				"inputs": [
+					{
+						"name": "trackerLaunchPlacement.item",
+						"type": "TrackerModelItem & { repo?: string | null }",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchPlacement.view",
+						"type": "TrackerFleetView",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLaunchPlacement",
+						"type": "TrackerPlacedLaunch | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-classify-tracker-task",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-sample-schema",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-machine-service/trackerLaunchPlacement.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-machine-service/trackerLaunchPlacement.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

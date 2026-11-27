@@ -1,5 +1,10 @@
 import { z } from 'zod';
 import {
+	chatId,
+	homeChatInput,
+	homeRunId
+} from '$reports/lib/projects-sessions/hub-home/homeChatInput';
+import {
 	homeProviders,
 	homeRunPayload
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
@@ -25,7 +30,12 @@ const message = z.object({
 	id,
 	text: text(2000),
 	at: time,
-	from: z.enum(['agent', 'you'])
+	from: z.enum(['agent', 'you']),
+	// Hub messages and replies; older Macs send plain notes without them.
+	messageId: id.optional(),
+	status: z.enum(['stored', 'delivered', 'acknowledged', 'refused']).optional(),
+	reason: text(300).optional(),
+	replyTo: id.optional()
 });
 
 const askOption = z
@@ -51,6 +61,7 @@ const agent = z.object({
 		.object({ sessions: unsigned.default(0), tasks: z.array(task).max(5).default([]) })
 		.default({ sessions: 0, tasks: [] }),
 	itemId: id.nullable(),
+	runId: homeRunId.nullable().optional(),
 	task: title,
 	machine: short.nullable(),
 	model: short.nullable(),
@@ -109,23 +120,7 @@ export function parseHomePayload(value: unknown) {
 	return { ...result, overview };
 }
 
-export const chatId = z.string().uuid();
-
-export const chatInput = z
-	.object({
-		id: chatId,
-		agentId: id,
-		itemId: id,
-		kind: z.enum(['note', 'answer']),
-		question: text(2000).nullable(),
-		text: text(2000).refine((value) => value.trim().length > 0),
-		option: z.number().int().min(1).max(4).optional(),
-		confirmed: z.literal(true).optional()
-	})
-	.strict()
-	.refine((value) => (value.kind === 'answer') === Boolean(value.question))
-	.refine((value) => value.option === undefined || value.kind === 'answer')
-	.refine((value) => value.confirmed === undefined || value.option !== undefined);
+export { chatId, homeChatInput as chatInput };
 
 export const chatOutcome = z
 	.object({

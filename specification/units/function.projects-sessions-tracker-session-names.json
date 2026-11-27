@@ -1,0 +1,171 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-session-names",
+	"uid": "u_a4rjzqhwpz",
+	"kind": "function",
+	"title": "trackerSessionNames",
+	"responsibility": "Builds the tmux-safe \"Project: title\" session label and recognizes hand-launched sessions named for an item.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/projects-sessions/trackerSessionNames.ts",
+			"src/utils/projects-sessions/trackerSessionNames.types.ts"
+		],
+		"symbols": [
+			"trackerSessionLabel",
+			"trackerSessionNames",
+			"trackerHandSession",
+			"TrackerNamedItem",
+			"TrackerTmuxWindow"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerSessionLabel.item",
+				"type": "TrackerNamedItem",
+				"required": true,
+				"description": "Item title with its project or agent."
+			},
+			{
+				"name": "trackerSessionLabel.fallback",
+				"type": "string",
+				"required": false,
+				"default": "Tracker",
+				"description": "Prefix used when the item has no project or agent."
+			},
+			{
+				"name": "trackerSessionNames.item",
+				"type": "TrackerNamedItem",
+				"required": true,
+				"description": "Item id, title, owner and project or agent."
+			},
+			{
+				"name": "trackerHandSession.windows",
+				"type": "readonly TrackerTmuxWindow[]",
+				"required": true,
+				"description": "Observed tmux session and window name pairs."
+			},
+			{
+				"name": "trackerHandSession.item",
+				"type": "TrackerNamedItem",
+				"required": true,
+				"description": "Item id, title, owner and project or agent."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerSessionLabel",
+				"type": "string",
+				"description": "\"Project: title\", at most 80 characters, safe as a tmux window name."
+			},
+			{
+				"name": "trackerSessionNames",
+				"type": "ReadonlySet<string>",
+				"description": "Normalized names a hand-launched session for the item may carry."
+			},
+			{
+				"name": "trackerHandSession",
+				"type": "boolean",
+				"description": "Whether a session not owned by the launcher is named for the item."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerSessionLabel",
+				"inputs": [
+					{
+						"name": "trackerSessionLabel.item",
+						"type": "TrackerNamedItem",
+						"required": true,
+						"description": "Item title with its project or agent."
+					},
+					{
+						"name": "trackerSessionLabel.fallback",
+						"type": "string",
+						"required": false,
+						"default": "Tracker",
+						"description": "Prefix used when the item has no project or agent."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSessionLabel",
+						"type": "string",
+						"description": "\"Project: title\", at most 80 characters, safe as a tmux window name."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerSessionNames",
+				"inputs": [
+					{
+						"name": "trackerSessionNames.item",
+						"type": "TrackerNamedItem",
+						"required": true,
+						"description": "Item id, title, owner and project or agent."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerSessionNames",
+						"type": "ReadonlySet<string>",
+						"description": "Normalized names a hand-launched session for the item may carry."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHandSession",
+				"inputs": [
+					{
+						"name": "trackerHandSession.windows",
+						"type": "readonly TrackerTmuxWindow[]",
+						"required": true,
+						"description": "Observed tmux session and window name pairs."
+					},
+					{
+						"name": "trackerHandSession.item",
+						"type": "TrackerNamedItem",
+						"required": true,
+						"description": "Item id, title, owner and project or agent."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHandSession",
+						"type": "boolean",
+						"description": "Whether a session not owned by the launcher is named for the item."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerSessionNames.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerSessionNames.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

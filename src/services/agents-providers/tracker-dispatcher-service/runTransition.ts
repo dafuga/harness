@@ -7,9 +7,10 @@ import type {
 	TrackerRunReceipt,
 	TrackerSessionEvidence
 } from '../TrackerDispatcherService.types';
-import { matchesRequest, skip } from './launchEligibility';
+import { skip } from './launchEligibility';
 import { retireUnstartedRun } from './runClaim';
-import { completeRun, monitorRun } from './runMonitor';
+import { monitorRun } from './runMonitor';
+import { recordVerification, rejectRun } from './runReview';
 import { matchesSession, recordFinalReport, reopenAnswered, resumeRun } from './runResume';
 import { etaFor, failRun, recordRun, reviseRun } from './runReceipt';
 
@@ -61,6 +62,9 @@ function adoptSession(
 			session_id: session.id,
 			...(session.tmux && { tmux: session.tmux }),
 			started_at: session.startedAt,
+			...(session.sourceRepo && { source_repo: session.sourceRepo }),
+			...(session.sessionName && { session_name: session.sessionName }),
+			failure_reason: null,
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
 		})
 	);
@@ -75,6 +79,7 @@ function recordStartupFailure(
 	if (run.dispatch_at === undefined || (run.state !== 'queued' && run.state !== 'running')) {
 		return skip('ignored', 'attempt is no longer starting');
 	}
+	if (event.pending) return recordPendingCause(run, event.reason);
 	return failRun(
 		snapshot,
 		run,
@@ -88,61 +93,8 @@ function recordStartupFailure(
 	);
 }
 
-function recordVerification(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	event: Extract<TrackerDispatchEvent, { type: 'verified' }>,
-	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item } = snapshot;
-	if (
-		run.state !== 'verifying' ||
-		item?.status !== 'done' ||
-		item.deleted ||
-		item.closedBySource ||
-		run.verificationFor !== item.completionVersion
-	) {
-		return skip('ignored', 'verification no longer applies to this attempt');
-	}
-	if (event.passed) return completeRun(snapshot, run, { now, usage: event.usage });
-	return failRun(
-		snapshot,
-		run,
-		{
-			outcome: 'failed',
-			reason: event.reason ?? 'verification failed',
-			reopen: true,
-			usage: event.usage
-		},
-		{ policy, now }
-	);
-}
-
-function rejectRun(
-	snapshot: TrackerDispatchSnapshot,
-	run: TrackerRunReceipt,
-	reason: string,
-	clock: { policy: TrackerDispatchPolicy; now: number }
-) {
-	const { item, runs } = snapshot;
-	const latest = !runs.some((later) => later.node === run.node && later.id > run.id);
-	if (
-		run.outcome !== 'done' ||
-		item?.status !== 'done' ||
-		item.deleted ||
-		!latest ||
-		!matchesRequest(item, run, clock.policy)
-	) {
-		return skip('conflict', 'attempt is no longer the current completed launch');
-	}
-	return failRun(
-		snapshot,
-		run,
-		{
-			outcome: 'rejected',
-			reason: reason.trim() || 'rejected by Daniel',
-			reopen: true
-		},
-		clock
-	);
+/** The session may still appear, so the cause waits on the reservation until it expires. */
+function recordPendingCause(run: TrackerRunReceipt, reason: string) {
+	if (run.state !== 'queued') return skip('ignored', 'attempt is no longer starting');
+	return recordRun(reviseRun(run, { failure_reason: reason }));
 }

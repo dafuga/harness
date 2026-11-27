@@ -20,6 +20,7 @@ import {
 	trackerTmuxPane
 } from './tracker-tmux-adapter/trackerTmuxPane';
 
+import { trackerTmuxWindows } from './tracker-tmux-adapter/trackerTmuxWindows';
 import {
 	closePaneCandidate,
 	closePaneNames,
@@ -73,6 +74,10 @@ export class TrackerTmuxAdapter {
 			({ pane: current }) => current.key === pane.key && current.name === pane.name
 		);
 		return layout ? (await this.capture(layout, signal)).pane : pane;
+	}
+
+	windows(signal: AbortSignal) {
+		return trackerTmuxWindows(this.sockets, (socket, args) => this.command(socket, args, signal));
 	}
 
 	async nudge(input: TrackerTmuxNudge, signal: AbortSignal): Promise<boolean> {

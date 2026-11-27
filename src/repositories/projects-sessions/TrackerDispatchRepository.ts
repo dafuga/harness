@@ -1,4 +1,8 @@
 // @harness-uid u_ksy76trvsj
+import {
+	trackerBudgetNode,
+	trackerHomeProject
+} from '../../utils/projects-sessions/trackerCpuBudget';
 import type { SqliteDatabase } from '../../core/development-tooling/sqliteTypes';
 import type {
 	TrackerDispatchDecision,
@@ -19,7 +23,6 @@ import type {
 } from './TrackerDispatchRepository.types';
 import {
 	dispatchItem,
-	dispatchJournalFields,
 	dispatchLaunchSource
 } from './tracker-dispatch-repository/dispatchItemFields';
 import {
@@ -28,13 +31,13 @@ import {
 	dispatchRunRows,
 	legacyDispatchRuns,
 	legacyUnstarted,
-	managedDispatchRuns,
-	persistDispatchRun
+	managedDispatchRuns
 } from './tracker-dispatch-repository/dispatchRunRows';
+import { commitDecision, dueStartKey } from './tracker-dispatch-repository/dispatchCommit';
+import { humanRedoCandidates } from './tracker-dispatch-repository/dispatchHumanRedo';
 import { trackerDispatchControl } from './tracker-dispatch-repository/dispatchLaunchControl';
 import { trackerRunSchema } from './tracker-dispatch-repository/trackerRunSchema';
 
-const dueStartKey = 'due_scheduler_last_grant';
 const previousDueStartKey = 'harness_dispatch_last_due_start';
 
 /** Share legacy run rows and the item journal while serializing native launch decisions. */
@@ -60,14 +63,9 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 		itemId: string,
 		decide: (snapshot: TrackerDispatchSnapshot) => TrackerDispatchDecision
 	): Promise<TrackerDispatchResult> {
-		return this.store.commitLocal(() => {
-			const { result, writes } = decide(this.readSnapshot(itemId));
-			for (const run of writes?.runs ?? []) persistDispatchRun(this.store, run, this.node);
-			if (writes?.lastDueStartAt !== undefined)
-				this.store.writeMeta({ [dueStartKey]: String(writes.lastDueStartAt) });
-			const fields = writes?.item && dispatchJournalFields(writes.item);
-			return { result, operation: fields && { itemId, fields } };
-		});
+		const target = { store: this.store, node: this.node, now: this.options.now };
+		const read = (id: string) => this.readSnapshot(id);
+		return commitDecision(target, { itemId, read }, decide);
 	}
 
 	managedRuns(): TrackerRunReceipt[] {
@@ -114,7 +112,8 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 				NOT EXISTS (SELECT 1 FROM runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
 				AND NOT EXISTS (SELECT 1 FROM remote_runs r WHERE r.item_id = i.id AND r.auto_token = i.auto)
 			))
-			ORDER BY (i.auto IS NULL OR launch_source <> 'manual'),
+			ORDER BY ${trackerBudgetNode(this.node) ? `lower(coalesce(i.project, i.agent, '')) <> '${trackerHomeProject}',` : ''}
+				(i.auto IS NULL OR launch_source <> 'manual'),
 				CASE i.priority WHEN 'urgent' THEN 0 WHEN 'low' THEN 2 ELSE 1 END,
 				(i.adapter_due_owner IS NULL),
 				(due IS NULL), due, created_at, id`
@@ -122,8 +121,13 @@ export class TrackerDispatchRepository implements TrackerDispatchStore {
 			.all() as TrackerDispatchCandidate[];
 	}
 
-	stuckRequests() {
-		return trackerStuckRequests(this.store.database, this.options.now?.() ?? Date.now());
+	humanRedoCandidates() {
+		return humanRedoCandidates(this.store.database);
+	}
+
+	stuckRequests(minimumAge = 300_000) {
+		const now = this.options.now?.() ?? Date.now();
+		return trackerStuckRequests(this.store.database, { now, minimumAge });
 	}
 
 	readSnapshot(itemId: string): TrackerDispatchSnapshot {
@@ -174,7 +178,10 @@ function hasUnmanagedSession(
 	);
 }
 
-function trackerStuckRequests(database: SqliteDatabase, now: number) {
+function trackerStuckRequests(
+	database: SqliteDatabase,
+	{ now, minimumAge }: { now: number; minimumAge: number }
+) {
 	const pending = database
 		.prepare(
 			`SELECT i.id, i.title, i.clocks, (i.needs_daniel = 1 AND i.resolved = 0) AS flagged,
@@ -200,7 +207,7 @@ function trackerStuckRequests(database: SqliteDatabase, now: number) {
 	return pending.flatMap(({ clocks, ...item }) => {
 		const clock = (JSON.parse(clocks) as { auto?: string }).auto;
 		const requested = clock && trackerClockMilliseconds(clock);
-		return requested && now - requested >= 300_000
+		return requested && now - requested >= minimumAge
 			? [{ ...item, requested_at: new Date(requested).toISOString() }]
 			: [];
 	});

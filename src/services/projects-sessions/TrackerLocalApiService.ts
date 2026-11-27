@@ -11,8 +11,21 @@ import {
 	recordTrackerSessionItem,
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
+import { trackerJobResponse } from './tracker-local-api-service/trackerLocalJobResponse';
+import { trackerMessageEndpoint } from './tracker-local-api-service/trackerLocalMessages';
+import {
+	trackerFailureResponse,
+	trackerResponse
+} from './tracker-local-api-service/trackerLocalResponse';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
+import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
+import {
+	isTrackerAlert,
+	trackerAlertResponse
+} from './tracker-local-api-service/trackerLocalAlert';
+import { phoneReplicaResponse } from './tracker-local-api-service/trackerPhoneReplicaResponse';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
@@ -21,7 +34,6 @@ import {
 	readTrackerRunEndpoint
 } from './tracker-local-api-service/readTrackerRunEndpoint';
 import type { TrackerPersistenceService } from './TrackerPersistenceService';
-import type { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import {
 	isTrackerManualLaunch,
 	planTrackerManualLaunch
@@ -39,9 +51,12 @@ export class TrackerLocalApiService {
 		try {
 			const url = new URL(request.url);
 			const parts = url.pathname.split('/').filter(Boolean).map(decodeURIComponent);
-			const phone = phoneReplicaResponse(request, url, this.options.phoneReplica);
+			const phone = phoneReplicaResponse(request, url, {
+				replica: this.options.phoneReplica,
+				respond: trackerResponse
+			});
 			if (phone) return await phone;
-			const special = trackerItemSpecialResponse(request, parts, {
+			const special = trackerSpecialResponse(request, parts, {
 				store: this.store,
 				items: this.items,
 				options: this.options
@@ -58,7 +73,7 @@ export class TrackerLocalApiService {
 			return trackerResponse(404, { error: `no route ${request.method} ${url.pathname}` });
 		} catch (error) {
 			if (error instanceof URIError) return trackerResponse(400, { error: 'invalid item path' });
-			return failureResponse(error);
+			return trackerFailureResponse(error);
 		}
 	}
 
@@ -84,6 +99,8 @@ export class TrackerLocalApiService {
 				return trackerResponse(200, digest);
 			}
 		}
+		const machine = readTrackerMachineEndpoint(parts, query, this.options.machines);
+		if (machine) return trackerResponse(machine.status, machine.body);
 		const run = readTrackerRunEndpoint(parts, query, { ...this.options, items: this.items });
 		return run === undefined ? undefined : trackerResponse(200, run);
 	}
@@ -139,6 +156,25 @@ export class TrackerLocalApiService {
 	}
 }
 
+function trackerSpecialResponse(
+	request: Request,
+	parts: string[],
+	dependencies: Parameters<typeof trackerItemSpecialResponse>[2]
+) {
+	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
+	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
+	if (parts[0] === 'messages')
+		return trackerMessageEndpoint(request, parts, {
+			...dependencies,
+			actor: readActor(request.headers)
+		}).then((result) =>
+			result
+				? trackerResponse(result.status, result.body)
+				: trackerResponse(404, { error: `no route ${request.method} /${parts.join('/')}` })
+		);
+	return trackerItemSpecialResponse(request, parts, dependencies);
+}
+
 function trackerItemSpecialResponse(
 	request: Request,
 	parts: string[],
@@ -148,11 +184,15 @@ function trackerItemSpecialResponse(
 		options: TrackerLocalApiOptions;
 	}
 ): Promise<Response> | undefined {
-	if (!/^items\/[^/]+\/(?:inbox|stage|artifact)$/.test(parts.join('/'))) return undefined;
+	if (!/^items\/[^/]+\/(?:inbox|stage|artifact|reject)$/.test(parts.join('/'))) return undefined;
 	const [, id, verb] = parts;
 	const actor = readActor(request.headers);
 	if (verb === 'inbox')
 		return trackerInboxItem(request, id, { ...dependencies, actor }).then((item) =>
+			trackerResponse(200, item)
+		);
+	if (request.method === 'POST' && verb === 'reject')
+		return trackerRejectItem(request, id, { ...dependencies, actor }).then((item) =>
 			trackerResponse(200, item)
 		);
 	if (request.method !== 'POST' || (verb !== 'stage' && verb !== 'artifact')) return undefined;
@@ -166,26 +206,6 @@ function trackerItemSpecialResponse(
 	).then((item) => trackerResponse(200, item));
 }
 
-function phoneReplicaResponse(request: Request, url: URL, replica?: TrackerPhoneReplicaService) {
-	if (!replica) return undefined;
-	if (request.method === 'GET' && url.pathname === '/phone-replica/v1')
-		return replica.pull(url.searchParams);
-	if (request.method === 'POST' && url.pathname === '/phone-replica/v1/write')
-		return phoneWrite(request, replica);
-	return undefined;
-}
-
-async function phoneWrite(
-	request: Request,
-	replica: TrackerPhoneReplicaService
-): Promise<Response> {
-	const { writer } = replica;
-	const scope = writer?.scope(request.headers);
-	if (!writer || !scope) return trackerResponse(403, { status: 'denied' });
-	const body = await readItemBody(request, 4096);
-	request.signal.throwIfAborted();
-	return trackerResponse(200, writer.push(scope, body));
-}
 function readActor(headers: Headers): string | null {
 	const actor = headers
 		.get('x-tracker-as')
@@ -194,25 +214,4 @@ function readActor(headers: Headers): string | null {
 		.slice(0, 80);
 	if (!actor) return null;
 	return actor;
-}
-function failureResponse(error: unknown): Response {
-	if (
-		error instanceof Error &&
-		'status' in error &&
-		typeof error.status === 'number' &&
-		error.status >= 400 &&
-		error.status < 500
-	) {
-		const extra = 'body' in error && typeof error.body === 'object' ? error.body : {};
-		return trackerResponse(error.status, { error: error.message, ...extra });
-	}
-	return trackerResponse(500, { error: 'internal server error' });
-}
-
-function trackerResponse(status: number, body: unknown): Response {
-	const isText = typeof body === 'string';
-	return new Response(isText ? body + '\n' : JSON.stringify(body, null, 2), {
-		status,
-		headers: { 'content-type': isText ? 'text/plain; charset=utf-8' : 'application/json' }
-	});
 }

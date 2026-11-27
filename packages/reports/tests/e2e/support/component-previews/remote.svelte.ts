@@ -139,6 +139,10 @@ export const previewTracker: PhoneTrackerTools = {
 
 function trackerInboxCases(): PreviewCases {
 	const source = phoneTrackerInboxSource(previewTracker);
+	const answerable = {
+		...trackerDetail,
+		flag: { ...trackerDetail.flag, options: previewAnswerOptions }
+	};
 	const unit = 'desktop.component.development-tooling-tracker-inbox-tracker-inbox';
 	return {
 		[unit]: { source },
@@ -149,7 +153,11 @@ function trackerInboxCases(): PreviewCases {
 		[`${unit}-detail`]: { source, id: trackerItem.id, onchanged: trackerNoop },
 		[`${unit}-record`]: { detail: trackerDetail },
 		[`${unit}-rows`]: {
-			rows: [{ header: trackerItem, bucket: 'needs-you' }],
+			source,
+			mode: 'phone',
+			onchanged: trackerNoop,
+			onnotice: trackerNoop,
+			rows: [{ header: trackerItem, bucket: 'needs-you', review: answerable }],
 			selected: null,
 			label: 'Needs you',
 			empty: 'Nothing here right now.',

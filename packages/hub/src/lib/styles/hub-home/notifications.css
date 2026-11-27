@@ -1,0 +1,84 @@
+/* @harness-uid u_ebd7cnd5tk */
+/* Browser notifications on Home: one quiet row under the heading, and its settings dialog. */
+.hh-home .hh-notify {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--hx-space-8) var(--hx-space-12);
+	margin-top: var(--hx-space-12);
+}
+.hh-home .hh-notify-text {
+	margin: 0;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-notify-action {
+	flex: none;
+}
+.hh-home .hh-notify-error {
+	flex-basis: 100%;
+	margin: 0;
+	color: var(--hx-color-error);
+	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-notify-form {
+	display: grid;
+	gap: var(--hx-space-16);
+	padding: var(--hx-space-16);
+}
+.hh-home .hh-notify-check {
+	display: flex;
+	align-items: center;
+	gap: var(--hx-space-10);
+	min-height: 44px;
+	cursor: pointer;
+}
+.hh-home .hh-notify-check input {
+	width: var(--hx-space-20);
+	height: var(--hx-space-20);
+	margin: 0;
+	accent-color: var(--hx-color-primary);
+}
+.hh-home .hh-notify-times {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--hx-space-12);
+}
+.hh-home .hh-notify-time {
+	display: grid;
+	gap: var(--hx-space-4);
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-sm);
+}
+.hh-home .hh-notify-time input {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 44px;
+	padding: 0 var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-surface);
+	color: var(--hx-color-text);
+	font: inherit;
+}
+.hh-home .hh-notify-time input:disabled {
+	opacity: var(--hx-opacity-disabled);
+}
+.hh-home .hh-notify-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: var(--hx-space-12);
+}
+.hh-home .hh-notify-buttons .po-action {
+	min-height: 44px;
+}
+/* A clicked notification scrolls to the list: it must not sit against the window's edge. */
+.hh-home .hh-needs {
+	scroll-margin-top: var(--hx-space-16);
+}
+@media (max-width: 560px) {
+	.hh-home .hh-notify-action {
+		min-height: 44px;
+	}
+}

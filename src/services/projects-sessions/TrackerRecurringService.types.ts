@@ -5,6 +5,7 @@ import type {
 } from '../../repositories/projects-sessions/TrackerRecurringRepository.types';
 
 export interface TrackerRecurringJobRequest extends TrackerRecurringJob {
+	cmd: string;
 	key: string;
 	occurrence: string;
 }
@@ -16,16 +17,30 @@ export interface TrackerRecurringJobReceipt {
 }
 
 export interface TrackerRecurringJobRunner {
-	/** Start a configured job after its identity has been durably claimed. */
+	/** True while no further job may start. Claimable work stays queued. */
+	busy?(): boolean;
+	/** Start a claimed job. Resolve without a receipt while it is still running. */
 	start(
 		request: TrackerRecurringJobRequest,
 		signal: AbortSignal
-	): Promise<TrackerRecurringJobReceipt>;
+	): Promise<TrackerRecurringJobReceipt | undefined>;
 	/** Return the existing receipt for this exact identity, without starting a process. */
 	observe(
 		request: TrackerRecurringJobRequest,
 		signal: AbortSignal
 	): Promise<TrackerRecurringJobReceipt | undefined>;
+	/** Wait until every started job has stored its receipt. */
+	drain?(): Promise<void>;
+}
+
+/** A runner that can also serve the `tracker job` commands. */
+export interface TrackerBoxJobRunner extends TrackerRecurringJobRunner {
+	running(itemId: string): boolean;
+	/** Run a job now. Nothing is stored. */
+	test(
+		request: Omit<TrackerRecurringJobRequest, 'key'>,
+		signal: AbortSignal
+	): Promise<TrackerRecurringJobReceipt>;
 }
 
 export interface TrackerRecurringOptions {

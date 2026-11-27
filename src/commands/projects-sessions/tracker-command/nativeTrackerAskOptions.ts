@@ -51,7 +51,8 @@ function requireStructuredAsk(values: NativeTrackerAskValues): void {
 	if (values.option !== undefined && values.recommend !== undefined) return;
 	throw new TypeError(
 		'tracker flag needs choices: --option "label=what happens" (2 to 4 times) and --recommend N. ' +
-			'"Other" is added for you. For a dependency or other blocker with no decision, use tracker block.'
+			'"Other" is added for you. For a dependency or other blocker with no decision, use tracker block. ' +
+			'Scripts and monitors use tracker alert <id> "<message>".'
 	);
 }
 
@@ -77,4 +78,13 @@ export function nativeTrackerAnswerBody(answer: string, values: NativeTrackerAsk
 		keep_blocked: values['keep-blocked'],
 		by: values.by
 	};
+}
+
+/** A block never asks Daniel, so the legacy `--no-needs-daniel` is already the behaviour. */
+export function nativeTrackerBlockBody(reason: string, values: NativeTrackerAskValues) {
+	if (values['needs-daniel'] === true)
+		throw new TypeError(
+			'tracker block never asks Daniel; use tracker flag <id> "<question>" with --option and --recommend'
+		);
+	return { reason, force: values.force };
 }

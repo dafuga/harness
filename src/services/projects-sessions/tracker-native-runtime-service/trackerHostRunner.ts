@@ -30,9 +30,14 @@ import type {
 	TrackerHostRunnerOptions,
 	TrackerHostSession
 } from './trackerHostLaunch.types';
+import { trackerHandSession } from '../../../utils/projects-sessions/trackerSessionNames';
+import type { TrackerTmuxWindow } from '../../../utils/projects-sessions/trackerSessionNames.types';
+import { trackerHostVerification } from './trackerHostVerification';
+import { trackerHostReport, trackerRouteSessionName, withLaunchOrigin } from './trackerHostReport';
 import { formatTrackerHostBrief } from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
-import { startTrackerHost, withTrackerRunUsage } from './trackerHostLaunchPort';
+import { startTrackerHost } from './trackerHostLaunchPort';
+import { trackerCpuBudget } from '../../../utils/projects-sessions/trackerCpuBudget';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 
 export function trackerHostRunner(
@@ -45,12 +50,16 @@ export function trackerHostRunner(
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
 	let [sessions, panes]: [TrackerHostSession[], WatchdogPane[]] = [[], []];
+	let windows: TrackerTmuxWindow[] = [];
 	const legacySession = legacySessionReader(legacyRunDirectory, () => sessions);
+	const verify = trackerHostVerification(driver, options.verifyCommand);
+	const report = trackerHostReport({ store, driver, routeFor, now }, verify);
 	return {
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
-				({ sessions, panes } = await trackerHostInventory(
-					{ store, driver, tmux, node, keys: runs.map(attemptKey), now: now() },
+				report.retain(runs);
+				({ sessions, panes, windows } = await trackerHostInventory(
+					{ store, driver, tmux, node, runs, keys: runs.map(attemptKey), now: now() },
 					signal
 				));
 			},
@@ -67,7 +76,7 @@ export function trackerHostRunner(
 					signal
 				);
 				if (result?.type === 'session') sessions.push({ ...result.session, itemId: item.id });
-				return result;
+				return withLaunchOrigin(result, routeFor(item), item);
 			},
 			legacySession,
 			confirmLegacyNeverStarted: legacyTrackerStartupProbe(
@@ -77,16 +86,38 @@ export function trackerHostRunner(
 			),
 			async observe(run: TrackerRunReceipt, key: string, signal: AbortSignal) {
 				const event = recordedHostEvent(run, { key, sessions, items, legacySession, store });
-				return withTrackerRunUsage(event, { driver, run, items, now: now() }, signal);
+				return report(event, run, signal);
 			},
 			overdue: (run: TrackerRunReceipt, reason: string) =>
 				recordOverdueAlert(store, run, { reason, at: now() }),
 			...optionalHostControls(driver)
 		},
-		sessions: (itemId: string) => ({
-			openSession: hasManualTrackerPane(panes, itemId),
-			activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
-		})
+		sessions: (itemId: string) => itemSessions({ store, items, sessions, panes, windows }, itemId)
+	};
+}
+
+/** What the host currently knows about sessions already working on an item. */
+function itemSessions(
+	{
+		store,
+		items,
+		sessions,
+		panes,
+		windows
+	}: {
+		store: TrackerPersistenceService;
+		items: TrackerItemReadRepository;
+		sessions: readonly TrackerHostSession[];
+		panes: readonly WatchdogPane[];
+		windows: readonly TrackerTmuxWindow[];
+	},
+	itemId: string
+) {
+	return {
+		openSession:
+			hasManualTrackerPane(panes, itemId) ||
+			(windows.length > 0 && trackerHandSession(windows, items.getStored(itemId))),
+		activeSessionKeys: activeTrackerSessionKeys(store, sessions, itemId)
 	};
 }
 
@@ -152,17 +183,19 @@ async function launchApprovedItem(
 			type: 'startup-failed',
 			reason: 'Tracker launch no longer has an approved execution directory'
 		};
+	const cpuBudget = trackerCpuBudget(node, item.project ?? item.agent);
 	return startTrackerHost(
 		driver,
 		{
 			node,
 			route,
 			reservation,
-			brief: formatTrackerHostBrief(
-				item,
-				instructions,
-				reservation.run.launch_source === 'recovery'
-			)
+			cpuBudget,
+			sessionName: trackerRouteSessionName(item, route),
+			brief: formatTrackerHostBrief(item, instructions, {
+				recovery: reservation.run.launch_source === 'recovery',
+				cpuBudget
+			})
 		},
 		signal
 	);

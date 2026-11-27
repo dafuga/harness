@@ -1,0 +1,76 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-backup-service-take-tracker-backup-now",
+	"uid": "u_3kyltqmxjm",
+	"kind": "service",
+	"title": "takeTrackerBackupNow",
+	"responsibility": "Owns the takeTrackerBackupNow service workflow.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/projects-sessions/tracker-backup-service/takeTrackerBackupNow.ts"],
+		"symbols": ["takeTrackerBackupNow"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "takeTrackerBackupNow.backups",
+				"type": "TrackerBackups",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "takeTrackerBackupNow",
+				"type": "Promise<Response>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "takeTrackerBackupNow",
+				"inputs": [
+					{
+						"name": "takeTrackerBackupNow.backups",
+						"type": "TrackerBackups",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "takeTrackerBackupNow",
+						"type": "Promise<Response>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-backup-service-compose-tracker-backups",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-backup-service/takeTrackerBackupNow.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-backup-service/takeTrackerBackupNow.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

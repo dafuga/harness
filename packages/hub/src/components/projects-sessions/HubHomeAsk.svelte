@@ -17,12 +17,15 @@
 		ask,
 		send,
 		receipt,
-		submitted
+		submitted,
+		row = false
 	}: {
 		ask: HomeOpenAsk;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
+		/** On a Home row, which already shows who asks and the question. */
+		row?: boolean;
 	} = $props();
 	const load = hubSpecDocuments();
 	let busy = $state(false);
@@ -50,7 +53,10 @@
 			if (result.status === 'queued' || result.status === 'sent') {
 				answered = ask.question;
 				void settle(message.id, result);
-			} else status = 'The Tracker no longer has that question open.';
+			} else if (result.status === 'refused')
+				status =
+					'Not sent: the question changed, or your Mac needs the latest Harness app. Check Tracker.';
+			else status = 'The computer did not confirm the answer. Check Tracker before retrying.';
 		} catch {
 			status = 'Could not queue the answer. Check Tracker before retrying.';
 		} finally {
@@ -86,7 +92,9 @@
 
 {#if open}
 	<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
-		<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
+		{#if !row}
+			<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
+		{/if}
 		{#if ask.attachments?.length}
 			<ViewSpecButtons attachments={ask.attachments} question={ask.question} {load}>
 				{#snippet answers(close: () => void)}

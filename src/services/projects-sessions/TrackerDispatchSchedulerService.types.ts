@@ -42,6 +42,11 @@ export interface TrackerDispatchSchedulerOptions {
 	policy?: TrackerDispatchPolicy;
 	scheduleDue?: boolean;
 	alternateAdapterHost?(item: TrackerDispatchItem, intent: TrackerLaunchIntent): string | undefined;
-	permitAutomatic?(itemId: string, token: string, signal: AbortSignal): Promise<boolean> | boolean;
+	permitAutomatic?(
+		itemId: string,
+		token: string,
+		signal: AbortSignal,
+		source: TrackerLaunchIntent['source']
+	): Promise<boolean> | boolean;
 	grant?(itemId: string, token: string, signal: AbortSignal): Promise<TrackerDueGrant>;
 }

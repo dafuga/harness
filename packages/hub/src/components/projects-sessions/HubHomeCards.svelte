@@ -15,22 +15,37 @@
 		initials,
 		overviewTone,
 		lowestLimit,
+		lowSummary,
 		missingQuotaProviders,
 		providerNames,
 		quotaReset,
 		staleReading,
-		warningFor
+		warningFor,
+		warningLabel
 	} from './hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
-	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
+	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
+	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
+	import HubHomeCosChat from './HubHomeCosChat.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 
-	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
+	let {
+		view,
+		open,
+		send,
+		receipt
+	}: {
+		view: HomeView;
+		open: OpenHomeSection;
+		send: SendHomeChat;
+		receipt: (id: string) => Promise<HomeChatReceipt>;
+	} = $props();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
 	const recipient = $derived(currentAgent([...(view.agents ?? []), ...view.asks]));
 	const working = $derived(view.agents?.filter(isWorking).length ?? 0);
@@ -41,8 +56,6 @@
 			.flatMap((subscription) => subscription.limits.filter((limit) => warningFor(limit.left)))
 	);
 	const level = $derived(warning ? warningFor(warning.limit.left) : null);
-	/** "Needs you" is the length of the very list Home shows. */
-	const attention = $derived(view.openAsks.length);
 	const sessions = $derived(
 		view.agents?.reduce((sum, agent) => sum + agentSessions(agent), 0) ?? 0
 	);
@@ -59,7 +72,13 @@
 	</EmptyState>
 {/snippet}
 
-<HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} />
+<HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} {send} {receipt} />
+{#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
+		agent={view.agents.find((agent) => agent.id === 'cos')}
+		now={new Date(view.now).toISOString()}
+		{send}
+	/>{/if}
+<HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard
 		section="agents"
@@ -113,12 +132,6 @@
 		{:else}
 			{@render empty('Agent activity appears when Tracker data is available.')}
 		{/if}
-		{#snippet badge()}
-			{#if attention}<Pill tone="hh-tone po-state po-needs-you" state="needs-you"
-					><hx-span class="po-mark" aria-hidden="true"></hx-span>{attention}
-					{attention === 1 ? 'needs' : 'need'} you</Pill
-				>{/if}
-		{/snippet}
 		{#snippet footer()}{#if recipient}<hx-button
 					type="button"
 					class="po-action hh-message"
@@ -143,7 +156,7 @@
 			{#if warning}
 				{@const tone = level === 'critical' ? 'blocked' : 'needs-you'}
 				<Pill tone={`hh-tone po-state po-${tone}`} state={tone}
-					><hx-span class="po-mark" aria-hidden="true"></hx-span>{lows.length} running low</Pill
+					><hx-span class="po-mark" aria-hidden="true"></hx-span>{lowSummary(lows)}</Pill
 				>
 			{/if}
 		{/snippet}
@@ -154,7 +167,7 @@
 				{#if warning && level === 'critical'}
 					<hx-div class="po-callout hh-q-callout" data-kind="blocked" data-level="critical">
 						<hx-div class="po-callout-head"
-							><hx-span class="po-callout-label">Almost out</hx-span><hx-span
+							><hx-span class="po-callout-label">{warningLabel(warning.limit)}</hx-span><hx-span
 								class="po-callout-meta">{quotaReset(warning.limit.resetsAt, view.now)}</hx-span
 							></hx-div
 						>

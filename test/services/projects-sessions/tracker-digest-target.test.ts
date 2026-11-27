@@ -118,13 +118,39 @@ test('suggestions rotate per delivered digest and a busy target retries soon', a
 	await f.restart().tick();
 	expect(wire(f.calls[2])).toMatchObject({ suggestion: 'practice Portuguese' });
 
-	// A live node holds only asks overnight; other lines still flow, without a suggestion.
-	f.options.quietHours = null;
+	// Chief of Staff gets digests overnight; only the line meant for Daniel waits.
 	const night = start + 180 * minute;
 	f.at(night);
 	finish(f, 'c', 3, night);
 	await f.restart().tick();
 	f.at(night + 30 * minute);
 	await f.restart().tick();
+	expect(wire(f.calls[3])).toMatchObject({ text: 'DONE: Fixture c' });
 	expect(wire(f.calls[3]).suggestion).toBeUndefined();
+});
+
+test('lines queued while the target is busy arrive as one combined digest once it is idle', async () => {
+	let busy = true;
+	const f = notificationFixture({
+		send: async () =>
+			busy ? { status: 'rejected', error: 'busy', busy: true } : { status: 'sent' }
+	});
+	const noon = start - 8 * 60 * minute;
+	f.at(noon);
+	await f.service.tick();
+	finish(f, 'a', 1, noon);
+	await f.service.tick();
+	f.at(noon + 30 * minute);
+	await f.service.tick();
+	finish(f, 'b', 2, noon + 31 * minute);
+	f.at(noon + 90 * minute);
+	await f.restart().tick();
+	busy = false;
+	f.at(noon + 92 * minute);
+	await f.restart().tick();
+	expect(wire(f.calls.at(-1)!)).toMatchObject({ count: 2 });
+	const delivered = f.calls.length;
+	f.at(noon + 130 * minute);
+	await f.restart().tick();
+	expect(f.calls).toHaveLength(delivered);
 });

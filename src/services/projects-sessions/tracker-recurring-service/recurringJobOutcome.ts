@@ -7,6 +7,7 @@ import {
 	trackerIsoTime,
 	trackerLocalStamp
 } from '../../../utils/projects-sessions/normalizeTrackerDue';
+import { redactTrackerJobOutput } from '../../../utils/projects-sessions/redactTrackerJobOutput';
 import type { TrackerRecurringJobReceipt } from '../TrackerRecurringService.types';
 
 export function recurringJobOutcome(
@@ -18,7 +19,7 @@ export function recurringJobOutcome(
 	const status = jobStatus(receipt);
 	const failed = status === 'failed';
 	const finding = status === 'finding';
-	const output = redactOutput(receipt.output.slice(0, 8192)).trim();
+	const output = redactTrackerJobOutput(receipt.output.slice(0, 8192)).trim();
 	const last =
 		output
 			.split('\n')
@@ -68,14 +69,4 @@ function summarizeJob(
 	if (status === 'finding') return `finding: ${last}`;
 	if (status === 'failed') return `exit ${code}: ${last}`;
 	return last || 'ok';
-}
-
-function redactOutput(value: string): string {
-	return value
-		.replace(
-			/((?:api[_-]?key|token|secret|password|passwd|authorization|bearer)\s*[:=]\s*)\S+/gi,
-			'$1[redacted]'
-		)
-		.replace(/\b(?:sk|rk|pk)_(?:live|test)_[A-Za-z0-9]{8,}\b/g, '[redacted]')
-		.replace(/\bgh[pousr]_[A-Za-z0-9]{20,}\b/g, '[redacted]');
 }

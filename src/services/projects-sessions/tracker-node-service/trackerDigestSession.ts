@@ -30,7 +30,13 @@ export function trackerDigestSession(target: TrackerNodeSessionTarget, node: str
 
 /** One line without control characters; a long digest is cut but keeps its suggestion. */
 function digestMessage({ id, body }: TrackerDeliveryRequest): string {
-	const { text, suggestion } = JSON.parse(body) as { text?: string; suggestion?: string };
+	const { text, suggestion, event } = JSON.parse(body) as {
+		text?: string;
+		suggestion?: string;
+		event?: string;
+	};
+	// A Hub message is already worded for the session, with how to reply.
+	if (event === 'hub_message' && text) return oneLine(text).slice(0, messageLimit);
 	const head = 'Tracker digest (automated, not typed by Daniel): ';
 	const tail = `${suggestion ? ` Until the next digest: ${oneLine(suggestion)}.` : ''} Reference ${id}.`;
 	const lines = (text ?? 'Open the Tracker digest.')

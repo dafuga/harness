@@ -101,6 +101,8 @@ export interface TrackerDispatchPolicy {
 		intent: TrackerLaunchIntent,
 		rung: TrackerLaunchRung | null
 	): string | null;
+	/** Why this computer may not start the provider now. */
+	providerHold?(cli: string): string | null;
 	pickModel(item: TrackerDispatchItem): TrackerLaunchPick | { error: string };
 	retryModel(item: TrackerDispatchItem, run: TrackerRunReceipt): TrackerLaunchRung | null;
 	maxRetries?: number;
@@ -139,9 +141,11 @@ export interface TrackerDispatchSnapshot {
 }
 
 export interface TrackerDispatchWrites {
-	item?: Partial<Omit<TrackerDispatchItem, 'id'>>;
+	item?: Partial<Omit<TrackerDispatchItem, 'id'>> & { appendNote?: string };
 	runs?: readonly TrackerRunReceipt[];
 	lastDueStartAt?: number;
+	/** A run abandoned by a launch failure, rather than a cancellation, which is announced. */
+	failedRunId?: number;
 }
 
 export type TrackerDispatchResult =

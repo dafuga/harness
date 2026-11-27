@@ -1,0 +1,258 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-container-browser",
+	"uid": "u_7uvhgmunfw",
+	"kind": "adapter",
+	"title": "ContainerBrowserAdapter",
+	"responsibility": "Build, start, stop and remove a confined container browser and open private pipes into it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/execution-runtimes/ContainerBrowserAdapter.ts",
+			"src/adapters/execution-runtimes/ContainerBrowserAdapter.types.ts"
+		],
+		"symbols": [
+			"ContainerBrowserAdapter",
+			"ContainerBrowserAdapter.constructor",
+			"ContainerBrowserAdapter.build",
+			"ContainerBrowserAdapter.up",
+			"ContainerBrowserAdapter.status",
+			"ContainerBrowserAdapter.remove",
+			"ContainerBrowserAdapter.pipe",
+			"ContainerBrowserAdapter.copyViewerAssets",
+			"ContainerBrowserConfig",
+			"DockerEndpoint",
+			"ContainerBrowserHost"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "ContainerBrowserAdapter.constructor.config",
+				"type": "ContainerBrowserConfig",
+				"required": true
+			},
+			{
+				"name": "ContainerBrowserAdapter.constructor.host",
+				"type": "ContainerBrowserHost",
+				"required": false
+			},
+			{
+				"name": "ContainerBrowserAdapter.build.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ContainerBrowserAdapter.build.downloadKbps",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "ContainerBrowserAdapter.up.seccompPath",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "ContainerBrowserAdapter.pipe.port",
+				"type": "ContainerBrowserPort",
+				"required": true
+			},
+			{
+				"name": "ContainerBrowserAdapter.copyViewerAssets.directory",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "ContainerBrowserAdapter.build",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "ContainerBrowserAdapter.up",
+				"type": "Promise<ContainerBrowserStatus>"
+			},
+			{
+				"name": "ContainerBrowserAdapter.status",
+				"type": "Promise<ContainerBrowserStatus>"
+			},
+			{
+				"name": "ContainerBrowserAdapter.remove",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "ContainerBrowserAdapter.pipe",
+				"type": "Duplex"
+			},
+			{
+				"name": "ContainerBrowserAdapter.copyViewerAssets",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "ContainerBrowserAdapter.build",
+				"inputs": [
+					{
+						"name": "ContainerBrowserAdapter.build.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "ContainerBrowserAdapter.build.downloadKbps",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerBrowserAdapter.build",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerBrowserAdapter.up",
+				"inputs": [
+					{
+						"name": "ContainerBrowserAdapter.up.seccompPath",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerBrowserAdapter.up",
+						"type": "Promise<ContainerBrowserStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerBrowserAdapter.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ContainerBrowserAdapter.status",
+						"type": "Promise<ContainerBrowserStatus>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerBrowserAdapter.remove",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ContainerBrowserAdapter.remove",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerBrowserAdapter.pipe",
+				"inputs": [
+					{
+						"name": "ContainerBrowserAdapter.pipe.port",
+						"type": "ContainerBrowserPort",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerBrowserAdapter.pipe",
+						"type": "Duplex"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerBrowserAdapter.copyViewerAssets",
+				"inputs": [
+					{
+						"name": "ContainerBrowserAdapter.copyViewerAssets.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerBrowserAdapter.copyViewerAssets",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "ContainerBrowserAdapter.constructor",
+				"inputs": [
+					{
+						"name": "ContainerBrowserAdapter.constructor.config",
+						"type": "ContainerBrowserConfig",
+						"required": true
+					},
+					{
+						"name": "ContainerBrowserAdapter.constructor.host",
+						"type": "ContainerBrowserHost",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerBrowserAdapter.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-browser-adapter-container-browser-args",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-container-browser-adapter-docker-host",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-container-browser-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/ContainerBrowserAdapter.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/ContainerBrowserAdapter.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

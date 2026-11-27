@@ -1,18 +1,24 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerEgressPolicy } from '../../../utils/projects-sessions/trackerEgressPolicy.types';
 import type { TrackerGithubFollowUpPolicy } from '../TrackerAdapterPollService.types';
+import type {
+	TrackerHostResourceLimits,
+	TrackerHostResources
+} from '../../../utils/projects-sessions/trackerHostResources.types';
 
 export type TrackerHostEffectsMode =
 	| { mode: 'held' }
 	| ({ mode: 'active'; checkpoint: string } & Omit<
 			TrackerHostEffects,
-			'adapter' | 'workerClient'
+			'adapter' | 'workerClient' | 'hostResources'
 	  > & {
 				adapter?: TrackerHostAdapterConfig;
 			});
 
 export interface TrackerHostEffects {
 	workerClient?: TrackerWorkerClient;
+	/** Replaces the live readings of this computer used by launch guards. */
+	hostResources?: TrackerHostResources;
 	launch?: TrackerHostLaunchConfig;
 	watchdog?:
 		| (({ driver: string } | { tmux: string }) & {
@@ -24,10 +30,12 @@ export interface TrackerHostEffects {
 	adapter?: TrackerHostAdapterConfig & { leaseFile: string };
 }
 
-export type TrackerHostLaunchConfig = {
+export type TrackerHostLaunchConfig = TrackerHostResourceLimits & {
 	maxConcurrent?: number;
 	legacyRunDirectory?: string;
 	repositories: Record<string, TrackerHostRepository>;
+	/** No Codex starts before this ISO time. */
+	codexPausedUntil?: string;
 	/** Due tasks launch at their time unless this is false. */
 	due?: boolean;
 } & ({ driver: string } | { managed: TrackerManagedLaunchConfig });
@@ -50,6 +58,8 @@ export interface TrackerManagedLaunchConfig {
 export interface TrackerHostRepository {
 	repo: string;
 	platform: 'linux' | 'macos';
+	/** Shell command that must pass after done. Managed macOS routes only. */
+	verify?: string;
 }
 
 export type TrackerHostAdapterBinding =

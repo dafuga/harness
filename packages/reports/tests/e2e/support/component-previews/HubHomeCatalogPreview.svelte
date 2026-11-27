@@ -5,7 +5,7 @@
 	import type { SendHomeChat } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
 	import HubHomeRow from '../../../../../hub/src/components/projects-sessions/HubHomeRow.svelte';
 	import { browserContext } from '../../../../../hub/src/utils/development-tooling/browserContext';
-	import { catalogHomeView } from './hubHomeCatalogData';
+	import { catalogHomeView, catalogWorkProject } from './hubHomeCatalogData';
 	import { previewAnswerOptions } from './shared';
 	import '../../../../../hub/src/lib/styles/home-scheme.css';
 	import '../../../../../hub/src/lib/styles/hub-home/index.css';
@@ -37,6 +37,11 @@
 		'home-cards': { view, open: noop, send },
 		'home-choices': { agent: { options: previewAnswerOptions }, onpick: noop },
 		'home-composer': { agents: view.agents, send },
+		'home-cos-chat': {
+			agent: view.agents?.find((agent) => agent.id === 'cos'),
+			now: new Date(view.now).toISOString(),
+			send
+		},
 		'home-dialogs': {
 			selected: 'plans',
 			view,
@@ -48,6 +53,8 @@
 			close: noop
 		},
 		'home-header': { view },
+		'home-live': { reading: view.computers, now: view.now },
+		'home-live-project': { project: catalogWorkProject, now: view.now },
 		'home-needs-you': {
 			asks: [
 				{
@@ -63,6 +70,16 @@
 			now: view.now,
 			open: noop
 		},
+		'home-notification-settings': {
+			quiet: { enabled: true, start: '22:00', end: '08:00' },
+			deliveredAt: view.now - 900_000,
+			busy: false,
+			failed: '',
+			save: noop,
+			turnOff: noop,
+			close: noop
+		},
+		'home-notifications': {},
 		'home-not-started': {
 			pastDue: [
 				{
@@ -83,6 +100,7 @@
 		'home-project-card': { view, open: noop },
 		'home-projects': { projects: list, snapshots, readProject },
 		'home-quota': { quota: view.quota, now: view.now, connected: true, reload: noop },
+		'home-quota-pills': { subscriptions: view.quota, now: view.now },
 		'home-row': { title: 'Review the export columns', meta: 'Atlas · 2h ago' },
 		'home-schedule': { runs: view.schedule, now: view.now, connected: true },
 		'home-skeleton': { rows: 3 },

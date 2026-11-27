@@ -14,6 +14,24 @@
 	font-size: var(--hx-type-size-xs);
 	margin: 0;
 }
+.inbox .needs {
+	display: grid;
+	gap: var(--hx-space-8);
+}
+.inbox .needs-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--hx-space-8);
+}
+.inbox .needs-count {
+	padding: var(--hx-space-4) var(--hx-space-10);
+	border: var(--hx-border-thin) solid var(--hx-color-warning);
+	border-radius: var(--hx-radius-pill);
+	color: var(--hx-color-warning);
+	font-size: var(--hx-type-size-xs);
+}
 .inbox .needs-title {
 	margin: 0;
 	font-size: var(--hx-type-size-sm);

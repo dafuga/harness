@@ -1,15 +1,34 @@
 // @harness-uid u_r7qgepnoax
 import type { TrackerAdapterPollResult } from '../../../services/projects-sessions/TrackerAdapterPollService.types';
+import type { TrackerPlacement } from '../../../utils/projects-sessions/trackerMachine.types';
+import {
+	formatNativeTrackerMachines,
+	formatNativeTrackerPlacement
+} from './formatNativeTrackerMachines';
+import type { NativeTrackerMachines } from './formatNativeTrackerMachines.types';
 import { formatListedRun, formatNativeTrackerItem } from './formatNativeTrackerItem';
+import { formatNativeTrackerAlert } from './formatNativeTrackerAlert';
 import type {
 	NativeTrackerAdapter,
+	NativeTrackerAdapterChange,
+	NativeTrackerAdapterReply,
+	NativeTrackerAlertReceipt,
 	NativeTrackerBackupList,
 	NativeTrackerInspection,
 	NativeTrackerItemDetail
 } from './nativeTrackerCli.types';
 
+/** Commands whose reply prints as JSON even without --json. */
+export const nativeJsonCommands = new Set(['status', 'autolaunch', 'watchdog', 'needs-attention']);
+
 export function formatNativeTrackerInspection(command: string, data: NativeTrackerInspection) {
 	switch (command) {
+		case 'machines':
+			return formatNativeTrackerMachines(data as unknown as NativeTrackerMachines);
+		case 'place':
+			return formatNativeTrackerPlacement(data as unknown as TrackerPlacement);
+		case 'alert':
+			return formatNativeTrackerAlert(data as unknown as NativeTrackerAlertReceipt);
 		case 'show':
 			return formatItemDetail(data as NativeTrackerItemDetail);
 		case 'adapter':
@@ -112,10 +131,27 @@ function formatBackupList({ status, files }: NativeTrackerBackupList): string {
 		({ kind, name, size, mtime }) =>
 			`  ${kind.padEnd(13)} ${name.padEnd(36)} ${String(size).padStart(9)}  ${mtime}`
 	);
-	return [status.note, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
+	const head = status.enabled
+		? `backups: ${status.schedule}\n  last ok ${status.last_ok ?? 'never'}${status.stale ? ' (STALE)' : ''}` +
+			(status.last_error ? `\n  last error ${status.last_error}` : '')
+		: status.note;
+	return [head, ...(rows.length ? rows : ['  (no backups yet)'])].join('\n');
 }
 
-export function formatNativeTrackerAdapterRun(
+export function formatNativeTrackerAdapterReply(reply: NativeTrackerAdapterReply): string {
+	return 'actions' in reply
+		? formatNativeTrackerAdapterRun(reply)
+		: formatNativeTrackerAdapterChange(reply);
+}
+
+function formatNativeTrackerAdapterChange(change: NativeTrackerAdapterChange): string {
+	if (change.removed) return `Removed ${change.id}`;
+	if (change.enabled_at !== undefined)
+		return `Enabled ${change.id} at ${new Date(change.enabled_at).toISOString()}`;
+	return `${change.id} is ${change.paused ? 'paused' : 'enabled'}`;
+}
+
+function formatNativeTrackerAdapterRun(
 	result: Extract<TrackerAdapterPollResult, { status: 'polled' }>
 ): string {
 	const lines = result.actions.map(({ action, title, url, item_id, auto_launch }) => {

@@ -1,19 +1,22 @@
 // @harness-uid u_4rnjtzp6cn
 import { trackerHostCapacityHold } from './tracker-native-runtime-service/trackerHostAdmission';
 import { randomUUID } from 'node:crypto';
+import { awaitStartEvidence, trackerStartError } from './trackerStartError';
+import {
+	automaticQueueHold,
+	queuedRung
+} from './tracker-native-runtime-service/trackerQueueAdmission';
 import type { TrackerDispatchRepository } from '../../repositories/projects-sessions/TrackerDispatchRepository';
 import type { TrackerDispatchCandidate } from '../../repositories/projects-sessions/TrackerDispatchRepository.types';
 import type {
 	TrackerDispatcherService,
 	TrackerLaunchIntent,
 	TrackerDispatchResult,
-	TrackerDispatchPolicy,
 	TrackerDispatchItem,
+	TrackerLaunchRung,
 	TrackerRunReceipt
 } from '../agents-providers/TrackerDispatcherService';
 import {
-	automaticQuietHour,
-	automaticRequestHold,
 	ownsLaunch,
 	schedulingHold
 } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
@@ -24,7 +27,8 @@ import type {
 } from './TrackerDispatchSchedulerService.types';
 
 export class TrackerDispatchQueue {
-	private automaticSlotHeld = false;
+	/** Refusals are kept apart: during a hub outage only due work can take a local fleet slot. */
+	private readonly refusedSlots = new Set<'due' | 'other'>();
 
 	constructor(
 		private readonly repository: TrackerDispatchRepository,
@@ -40,7 +44,7 @@ export class TrackerDispatchQueue {
 		if (
 			current?.launch?.token === token &&
 			!schedulingHold(current, policyNow(this.options)) &&
-			!(await this.automaticPermission(id, current.launch, signal))
+			!(await this.automaticPermission(id, current.launch, signal, queuedRung(run)))
 		)
 			return false;
 		const decision = await prepareQueuedRun(run, this.dispatcher, this.options, signal);
@@ -55,12 +59,7 @@ export class TrackerDispatchQueue {
 				? launch_source
 				: 'manual';
 		if (auto) return this.claimIntent(id, { token: auto, source, target: launch_target }, signal);
-		if (
-			!this.options.scheduleDue ||
-			this.automaticSlotHeld ||
-			(this.options.permitAutomatic && automaticQuietHour(policyNow(this.options)))
-		)
-			return false;
+		if (!this.options.scheduleDue || this.refusedSlots.has('due')) return false;
 		const request = await this.dispatcher.request(id, { source: 'due', token: randomUUID() });
 		return request.status === 'requested' && this.claimIntent(id, request.intent, signal);
 	}
@@ -84,39 +83,32 @@ export class TrackerDispatchQueue {
 		);
 	}
 
-	private async automaticPermission(id: string, intent: TrackerLaunchIntent, signal: AbortSignal) {
+	private async automaticPermission(
+		id: string,
+		intent: TrackerLaunchIntent,
+		signal: AbortSignal,
+		queued?: TrackerLaunchRung
+	) {
 		const { policy, permitAutomatic } = this.options;
 		if (!permitAutomatic) return true;
 		const now = policyNow(this.options);
 		const item = this.repository.readSnapshot(id).item;
-		const hold = automaticQueueHold(item, { policy, intent, now });
+		const hold = automaticQueueHold(item, { policy, intent, now, queued });
 		if (hold) {
 			const moved =
-				item && hold === trackerHostCapacityHold && !automaticQuietHour(now)
-					? this.delegate(item, intent)
+				item && hold === trackerHostCapacityHold
+					? delegateAdapterIntake(this.repository, this.options, { item, intent })
 					: undefined;
 			this.waits.set(id, { token: intent.token, reason: moved ?? hold });
 			return false;
 		}
-		if (!this.automaticSlotHeld)
-			this.automaticSlotHeld = !(await permitAutomatic(id, intent.token, signal));
-		signal.throwIfAborted();
-		if (this.automaticSlotHeld)
+		const refused = !(await takeFleetSlot(this.refusedSlots, { id, intent }, this.options, signal));
+		if (refused)
 			this.waits.set(id, {
 				token: intent.token,
 				reason: 'automatic launch waiting for a fleet slot'
 			});
-		return !this.automaticSlotHeld;
-	}
-
-	private delegate(item: TrackerDispatchItem, intent: TrackerLaunchIntent) {
-		const alternate = this.options.alternateAdapterHost?.(item, item.launch ?? intent);
-		if (
-			alternate &&
-			this.repository.launches.reassignAdapterLaunch(item.id, intent.token, alternate)
-		)
-			return `tester intake queued on ${alternate}`;
-		return undefined;
+		return !refused;
 	}
 
 	private async release(
@@ -129,32 +121,38 @@ export class TrackerDispatchQueue {
 		if (result.status !== 'start') return false;
 		const { run } = result;
 		const event = await startReservedRun(this.options.runner, result, signal);
-		if (!event) {
-			this.waits.set(run.item_id, {
-				token: run.auto_token,
-				reason: 'waiting for host startup evidence'
-			});
-			return false;
-		}
+		if (!event || (event.type === 'startup-failed' && event.pending))
+			return awaitStartEvidence({ waits: this.waits, dispatcher: this.dispatcher }, run, event);
 		const observed = await this.dispatcher.record(run.item_id, run, event);
 		return event.type === 'session' && observed.status === 'recorded';
 	}
 }
 
-function automaticQueueHold(
-	item: TrackerDispatchItem | null,
-	{
-		policy,
-		intent,
-		now
-	}: { policy?: TrackerDispatchPolicy; intent: TrackerLaunchIntent; now: number }
+async function takeFleetSlot(
+	refusedSlots: Set<'due' | 'other'>,
+	{ id, intent }: { id: string; intent: TrackerLaunchIntent },
+	{ permitAutomatic }: TrackerDispatchSchedulerOptions,
+	signal: AbortSignal
 ) {
-	if (!item || item.launch?.token !== intent.token) return 'launch request changed or is missing';
-	if (!policy) return null;
-	return (
-		automaticRequestHold(item, policy, now) ??
-		(automaticQuietHour(now) ? 'automatic launch night hold' : policy.admit(item, intent, null))
-	);
+	const lane = intent.source === 'due' ? 'due' : 'other';
+	if (
+		!refusedSlots.has(lane) &&
+		!(await permitAutomatic?.(id, intent.token, signal, intent.source))
+	)
+		refusedSlots.add(lane);
+	signal.throwIfAborted();
+	return !refusedSlots.has(lane);
+}
+
+function delegateAdapterIntake(
+	repository: TrackerDispatchRepository,
+	{ alternateAdapterHost }: TrackerDispatchSchedulerOptions,
+	{ item, intent }: { item: TrackerDispatchItem; intent: TrackerLaunchIntent }
+) {
+	const alternate = alternateAdapterHost?.(item, item.launch ?? intent);
+	if (alternate && repository.launches.reassignAdapterLaunch(item.id, intent.token, alternate))
+		return `tester intake queued on ${alternate}`;
+	return undefined;
 }
 
 function policyNow({ policy }: TrackerDispatchSchedulerOptions) {
@@ -185,9 +183,9 @@ async function startReservedRun(
 			signal,
 			launchCompletionInstructions(reservation.run.item_id)
 		);
-	} catch {
+	} catch (error) {
 		// The host might have started the session before losing its reply.
-		return undefined;
+		return trackerStartError(error instanceof Error ? error.message : String(error));
 	} finally {
 		signal.throwIfAborted();
 	}

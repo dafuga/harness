@@ -1,6 +1,8 @@
 import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
 import { soonestWork } from '../../../../../hub/src/components/projects-sessions/hubHomePresentation';
 import type { HomeView } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
+import type { LinkedHome } from '../../../../../hub/src/services/networking-security/LinkedHomeService';
+import type { HomeWorkProject } from '../../../../src/lib/projects-sessions/hub-home/homeLive.types';
 import type { OwnerHomeSnapshot } from '../../../../src/lib/projects-sessions/hub-home/hubHome.types';
 
 const prefix = 'hub.component.projects-sessions-hub-';
@@ -95,7 +97,55 @@ const snapshot: OwnerHomeSnapshot = {
 	}
 };
 
+export const catalogWorkProject: HomeWorkProject = {
+	agent: 'Atlas',
+	running: 1,
+	counts: { open: 2, in_progress: 1, blocked: 1, done: 4 },
+	updatedAt: stamp(-0.1),
+	rows: [
+		{
+			key: 'run:preview-mac:1',
+			itemId: 'ITEM-LIVE',
+			title: 'Prepare the export cutover',
+			state: 'running',
+			outcome: null,
+			status: 'in_progress',
+			stage: 'build',
+			now: 'PR open; full check running, merge follows a pass.',
+			owner: 'Export session',
+			computer: 'preview-mac',
+			model: 'sample-model:high',
+			startedAt: stamp(-0.2),
+			updatedAt: stamp(-0.1)
+		}
+	]
+};
+
+/** One linked computer that answered with the live overview. */
+const catalogComputers: LinkedHome = {
+	linked: 1,
+	answered: 1,
+	snapshot: {
+		...snapshot,
+		liveOverview: {
+			readAt: stamp(0),
+			projects: [catalogWorkProject],
+			machines: [],
+			hiddenRuns: 0,
+			omittedRows: 0
+		}
+	}
+};
+
 export const catalogHome = { granted: true, snapshot };
+
+/** Browser notifications offered, with no browser subscribed yet. */
+export const catalogPush = {
+	available: true,
+	publicKey: 'sample-public-key',
+	quiet: { enabled: true, start: '22:00', end: '08:00' },
+	browsers: []
+};
 
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
@@ -114,6 +164,7 @@ export const catalogHomeView: HomeView = {
 	owner: true,
 	needsMac: false,
 	linkedComputers: 1,
+	computers: catalogComputers,
 	trackerConnected: true,
 	pastDue: [],
 	quotaConnected: true,
