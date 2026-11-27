@@ -161,11 +161,22 @@
 /* Option buttons for an open ask: the recommended choice first, then the rest. */
 .hh-home .hh-choices {
 	display: grid;
+	/* Fit at most four equal tiles and let the chat fit fewer. */
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, max(9rem, 22%)), 1fr));
 	gap: var(--hx-space-8);
+}
+@media (max-width: 560px) {
+	.hh-home .hh-choices {
+		grid-template-columns: minmax(0, 1fr);
+	}
 }
 .hh-home .hh-choice {
 	display: grid;
+	align-content: start;
 	gap: var(--hx-space-4);
+	min-width: 0;
+	min-height: 44px;
+	overflow-wrap: anywhere;
 	text-align: left;
 	font: inherit;
 	padding: var(--hx-space-8) var(--hx-space-12);
@@ -185,7 +196,14 @@
 	color: var(--hx-color-text-muted);
 	font-size: var(--hx-type-size-xs);
 }
+.hh-home .hh-choice-badge {
+	justify-self: start;
+	padding-inline: var(--hx-space-4);
+	border-radius: var(--hx-radius-compact);
+	background: var(--hx-color-primary-soft);
+}
 .hh-home .hh-choice-confirm {
+	grid-column: 1 / -1;
 	display: grid;
 	gap: var(--hx-space-8);
 }

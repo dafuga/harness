@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '../../../../test/support/browserTest';
+import { expect, test, type Locator, type Page } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 import { linkedComputersFixture } from './linked-computers-fixture';
 
@@ -21,6 +21,24 @@ async function shot(page: Page, name: string) {
 		path: `${directory}/${process.env.SCREENSHOT_LABEL ?? 'current'}-${name}.png`,
 		animations: 'disabled'
 	});
+}
+
+async function expectAnswerGrid(choices: Locator, phone: boolean) {
+	const tiles = await choices.evaluateAll((buttons) =>
+		buttons.map((button) => {
+			const { x, y, width } = button.getBoundingClientRect();
+			return { x, y, width: Math.round(width) };
+		})
+	);
+	const [first, second] = tiles;
+	expect.soft(second.y === first.y, 'Answer tiles share a row above phone widths').toBe(!phone);
+	expect.soft(second.x === first.x, 'Phone answer tiles share a column').toBe(phone);
+	expect
+		.soft(
+			tiles.map(({ width }) => width),
+			'Answer tiles have equal widths'
+		)
+		.toEqual(tiles.map(() => first.width));
 }
 
 async function home(page: Page, size: keyof typeof sizes, change: 'two-asks' | 'no-choices') {
@@ -87,6 +105,7 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		]);
 		expect(widths[0]).toBeLessThanOrEqual(widths[1]);
 		await shot(page, `hub-home-needs-you-${size}`);
+		await expectAnswerGrid(choices, size === 'phone');
 		await expect(rowOf(page, 'harbor').getByText('Merges and releases.')).toHaveCount(0);
 		await expect(rowOf(page, 'harbor').getByText('Waits a day.')).toHaveCount(0);
 
@@ -104,6 +123,10 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		await expect(latest.getByRole('button', { name: /Other/ })).toBeVisible();
 		await expect(chat.getByRole('textbox', { name: 'Message Chief of Staff' })).toBeVisible();
 		await shot(page, `hub-chat-ask-${size}`);
+		await expectAnswerGrid(
+			latest.getByRole('group', { name: 'Choose an answer' }).getByRole('button'),
+			size === 'phone'
+		);
 
 		await latest.getByRole('button', { name: /Other/ }).click();
 		const modal = page.getByRole('dialog', { name: 'Other answer' });

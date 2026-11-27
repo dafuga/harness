@@ -44,14 +44,14 @@
 	border-radius: var(--hx-radius-small);
 }
 .hh-home .hh-choices-compact {
-	display: flex;
-	flex-wrap: wrap;
 	gap: var(--hx-space-6);
 }
 .hh-home .hh-choices-compact .hh-choice {
 	display: inline-flex;
+	flex-wrap: wrap;
+	align-content: center;
 	align-items: center;
-	gap: var(--hx-space-6);
+	gap: var(--hx-space-2) var(--hx-space-6);
 	min-width: 0;
 	max-width: 100%;
 	min-height: 44px;
@@ -67,9 +67,6 @@
 }
 .hh-home .hh-choices-compact .hh-choice-badge {
 	flex: none;
-	padding-inline: var(--hx-space-4);
-	border-radius: var(--hx-radius-compact);
-	background: var(--hx-color-primary-soft);
 }
 .hh-home .hh-needs-row {
 	display: grid;
@@ -200,8 +197,6 @@
 }
 
 .hh-home .hh-choices-compact .hh-choice-linked {
-	flex-wrap: wrap;
-	max-width: 100%;
 	white-space: normal;
 }
 
