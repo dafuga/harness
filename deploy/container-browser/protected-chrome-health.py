@@ -48,7 +48,13 @@ def children(node):
 
 
 def browser_app(atspi, pid):
-    return next((app for app in children(atspi.get_desktop(0)) if app.get_process_id() == pid), None)
+    deadline = monotonic() + 4
+    while monotonic() < deadline:
+        for app in children(atspi.get_desktop(0)):
+            if app is not None and app.get_process_id() == pid:
+                return app
+        sleep(0.15)
+    return None
 
 
 def document_location(atspi, frame):
@@ -68,7 +74,11 @@ def wait_for_status(atspi, snapshot, classify, deadline):
         if len(new_frames) > 1:
             break
         if new_frames:
-            location = document_location(atspi, next(iter(new_frames)))
+            try:
+                location = document_location(atspi, next(iter(new_frames)))
+            except (AttributeError, GLib.Error):
+                # A navigation can replace its accessibility document during this read.
+                location = None
             status = classify(location) if location else 'unknown'
             if status != 'unknown':
                 return status
