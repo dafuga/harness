@@ -2,11 +2,9 @@
 	"name": "1tehfb-hub-click-through",
 	"goal": "Prove Plans and All plans open stage artifacts and mockups across Hub web, Mac and iPhone, and each Scheduled item opens Chief of Staff chat with its context.",
 	"createdAt": "2026-11-27T12:33:26.920Z",
-	"updatedAt": "2026-11-27T12:34:02.159Z",
+	"updatedAt": "2026-11-27T13:05:46.799Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -19,7 +17,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T13:05:46.799Z",
+			"evidence": "Plans and All plans use the shared detail, stage artifacts and design links. Scheduled preview and agenda call the existing Chief of Staff context entry point. Installed Mac and iPhone render the same previews and use the local or already-approved device connection."
 		},
 		{
 			"id": "test",
