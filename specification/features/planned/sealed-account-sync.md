@@ -120,6 +120,16 @@ nonce 12 ‖ ciphertext. With every device lost, Daniel enters the recovery secr
 from the Credential Vault on a new device, which acts as the recovery device
 to enroll itself.
 
+On first sign-in the client saves the recovery secret through the independent
+custody adapter before submitting the account's signed genesis, wrapped grants
+and encrypted recovery blob. Hub commits these together for an empty account.
+Only the signing installation and one recovery device are present in genesis.
+Both receive a grant for every initial scope. A competing bootstrap leaves all
+three stores unchanged. The losing installation requests approval through the
+existing-account flow. The recovery blob can be retrieved in the same Google
+account and opened with the independently held recovery secret. The client
+checks that its recovered public keys match the signed genesis before use.
+
 ## Sealed formats (v1)
 
 All headers are authenticated data. Integers are big-endian.
@@ -168,7 +178,9 @@ Scope ids, device ids and object ids are base64url (16, 16 and 32 bytes); envelo
 | Call                          | Body and answer                                                                                                                                                                     |
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `GET chain?after=N`           | `{entries, head, more}`, 200 entries a page, oldest first                                                                                                                           |
-| `POST chain`                  | One signed entry as JSON. 201 `{seq, hash}`; 409 `chain-conflict` unless `seq` is 0 on an empty chain or `prev` is the hash of the stored `seq - 1`                                 |
+| `POST chain`                  | One entry signed by the named device and verified against the account and stored chain. 201 `{seq, hash}`. Existing positions, gaps and mismatched previous hashes return 409.      |
+| `POST bootstrap`              | `{entry, grants, recovery}` on an empty account. 201 `{seq: 0, hash}`; an exact retry returns 200, and a competing or changed request returns 409.                                  |
+| `GET bootstrap`               | `{recovery}` for the signed-in account, or 404 when the account has no stored recovery blob.                                                                                        |
 | `POST grants`                 | A grant or an array of up to 32. First write per scope, epoch and device stays; `account` must be the session's. 201 `{stored}`                                                     |
 | `GET grants?device=ID`        | `{grants}` for that device                                                                                                                                                          |
 | `POST ops/:scope`             | JSON array of up to 64 record envelopes (base64url). Header scope must match; the header object id is the retry key. 201 `{ops: [{opId, seq}], head}`; seq is per scope from 1      |
