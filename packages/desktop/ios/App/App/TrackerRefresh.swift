@@ -4,9 +4,22 @@ import UIKit
 
 /// Delivers system wakeups to the same bounded sync used by the foreground app.
 enum TrackerRefresh {
-    static let session = RemoteSession(account: HarnessAccountPlugin.storedSubject)
+    static let session: RemoteSession = {
+        let session = RemoteSession(account: HarnessAccountPlugin.storedSubject)
+        session.useTrackerDoorbell(doorbell(on: session.queue))
+        return session
+    }()
     private static let identifier = "com.dafuga.harness.tracker-refresh"
     private static let path = NWPathMonitor()
+
+    /// Follows the notices of this phone's own Hub account; without a session it only waits.
+    private static func doorbell(on queue: DispatchQueue) -> TrackerDoorbell {
+        TrackerDoorbell(queue: queue) { done in
+            HarnessAccountPlugin.sharedSession.liveRequest(device: HubAccountSession.syncDevice()) { request in
+                done(request.map(TrackerDoorbellChannel.init))
+            }
+        }
+    }
 
     static func register() {
         session.setTrackerForeground(false)
@@ -23,6 +36,7 @@ enum TrackerRefresh {
     static func foreground() {
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: identifier)
         session.setTrackerForeground(true)
+        session.retryTrackerPush()
     }
 
     static func background() {

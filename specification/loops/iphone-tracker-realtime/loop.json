@@ -1,0 +1,47 @@
+{
+	"name": "iphone-tracker-realtime",
+	"goal": "The open iPhone Tracker inbox re-renders within about 1 s of a tracker change: the phone follows the account live socket, pulls its replica on each notice and reconnect, pushes a native event to the page, and shows Live/Reconnecting honestly",
+	"createdAt": "2026-11-26T08:15:19.389Z",
+	"updatedAt": "2026-11-26T09:08:01.798Z",
+	"template": "feature",
+	"templateLineage": ["feature"],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:07:57.696Z",
+			"evidence": "Scope in specification/features/planned/phone-tracker-replica.md 'Live pushes'. Built on main without PR #340: the inbox is fed by the relay replica; no sealed scope is subscribed."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:07:59.422Z",
+			"evidence": "TrackerDoorbell + URLSession channel, coalesced pull per notice/reconnect, native 'tracker' event, phone TrackerInboxSource.watch, followTrackerSource re-reads on changed while reconnecting."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:08:00.638Z",
+			"evidence": "38 new native checks (dropped-notice mutation fails 2 in Debug and Release), 4 vitest cases, ui-tracker-phone-live browser spec with inspected Live and Reconnecting screenshots."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "complete",
+			"completedAt": "2026-11-26T09:08:01.798Z",
+			"evidence": "iOS native Debug 383/Release 367, sealed, limits 0, simulator build+launch; desktop format/types/lint/audit, unit suite with its one failure fixed and rerun, headless e2e 289 pass 7 skip; root format/types/lint/audit/units/guard checks, 54 unit-graph tests; ios:measure:live publish-to-event p95 16-31 ms over 30. Full root bun run check and Electron specs not run."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

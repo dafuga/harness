@@ -44,17 +44,24 @@ extension RemoteSession {
             trackerDelay = 60
             pullTracker()
             drainTrackerWrites()
-        } else if next != "connecting" {
-            cancelTracker()
-            if trackerBackground != nil { finishTrackerBackground(.failed) }
+        } else {
+            trackerLive.behind = true
+            if next != "connecting" {
+                cancelTracker()
+                if trackerBackground != nil { finishTrackerBackground(.failed) }
+            }
         }
+        reportTracker()
     }
 
     func authorizeTracker() {
         let next = trackerScope
-        if trackerAuthority != next { cancelTracker() }
+        let moved = trackerAuthority != next
+        if moved { cancelTracker() }
         trackerAuthority = next
         trackerStore.enter(next)
+        followTracker()
+        if moved { reportTracker(changed: true) }
         if trackerWriteScope == nil {
             cancelTrackerWrites()
             guard next != nil else { return }
@@ -69,6 +76,7 @@ extension RemoteSession {
         trackerTimer?.cancel()
         trackerTimer = nil
         trackerRequest = nil
+        trackerLive.again = false
         requests.failMethod(Self.trackerMethod, .superseded)
         cancelTrackerWrites()
     }
@@ -131,16 +139,26 @@ extension RemoteSession {
             let more = try trackerStore.apply(page, expected: position, now: trackerStore.now())
             if trackerBackground != nil { return acceptTrackerBackground(page, more: more) }
             trackerDelay = 60
-            if more {
-                queue.async { [weak self] in self?.pullTracker() }
-            } else {
-                drainTrackerWrites()
-                scheduleTracker(60)
-            }
+            continueTracker(page, more: more)
         } catch let failure as RemoteFailure where RemoteFailure.denials.contains(failure.code) {
             removeTrackerGrant()
         } catch {
             postponeTracker()
+        }
+    }
+
+    private func continueTracker(_ page: TrackerReplicaPage, more: Bool) {
+        if page.changesCopy { trackerLive.moved = true }
+        if more {
+            queue.async { [weak self] in self?.pullTracker() }
+            return
+        }
+        trackerCaughtUp()
+        drainTrackerWrites()
+        if takeTrackerNotice() {
+            queue.async { [weak self] in self?.pullTracker() }
+        } else {
+            scheduleTracker(60)
         }
     }
 
@@ -149,11 +167,13 @@ extension RemoteSession {
         record.methods?.removeAll { $0 == Self.trackerMethod }
         keep(record)
         trackerStore.purge()
+        reportTracker(changed: true)
         if trackerBackground != nil { finishTrackerBackground(.failed) }
     }
 
     private func postponeTracker() {
         if trackerBackground != nil { return finishTrackerBackground(.failed) }
+        if takeTrackerNotice() { return scheduleTracker(1) }
         let wait = min(3600, trackerDelay + Double.random(in: 0...(trackerDelay / 5)))
         trackerDelay = min(3600, trackerDelay * 2)
         scheduleTracker(wait)

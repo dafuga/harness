@@ -188,6 +188,24 @@
 			"reason": "Hosted designs show the shared canvas viewer."
 		},
 		{
+			"from": "packages/desktop/src/lib/verification-evidence/select-environment/watchPhoneTracker.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/Environment.types.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/PhoneTracker.types.ts",
+			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
+			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",
+			"reason": "Hub and the Mac app share the realtime reconnect, coalescing and read contracts through the Reports build alias."
+		},
+		{
 			"from": "packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
 			"specifier": "$reports/lib/projects-sessions/realtime/realtime.types",
 			"to": "packages/reports/src/lib/projects-sessions/realtime/realtime.types.ts",

@@ -4,6 +4,7 @@ extension RemoteSession {
     func setTrackerForeground(_ foreground: Bool) {
         queue.async {
             self.trackerForeground = foreground
+            self.followTracker()
             if foreground {
                 if self.trackerBackground != nil { self.finishTrackerBackground(.unchanged) }
                 if self.state == "online" { self.pullTracker() } else { self.resume() }
