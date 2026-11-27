@@ -84,7 +84,7 @@ export function trackerHostRunner(
 				() => panes
 			),
 			async observe(run: TrackerRunReceipt, key: string, signal: AbortSignal) {
-				const event = recordedHostEvent(run, { key, sessions, items, legacySession, store });
+				const event = recordedHostEvent(run, { key, sessions, items, legacySession });
 				return report(event, run, signal);
 			},
 			...optionalHostControls(driver)

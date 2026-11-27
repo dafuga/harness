@@ -13,8 +13,6 @@ const stuckGrace = 10 * 60_000;
 const linkedWorkGrace = 15 * 60_000;
 export const runSessionName = /^auto-([a-z0-9]{6,10})-r([1-9][0-9]*)$/;
 
-export const closedBlockedKey = (runId: number) => 'tracker_closed_blocked_run:' + runId;
-
 /**
  * Close the tmux session of every finished run, whatever its outcome. Only the launcher's own
  * `auto-<item>-r<run>` names qualify, so control and deploy sessions are out of reach.
@@ -62,8 +60,6 @@ async function closeRunSession(
 		signal
 	);
 	if (!closed) return;
-	// Only an answer to a block whose pane the launcher closed may ask for a fresh session.
-	if (run.outcome === 'blocked') store.writeMeta({ [closedBlockedKey(run.id)]: String(now) });
 	const resume = run.cli === 'codex' ? 'codex resume --all' : 'claude --resume';
 	store.appendLocal({
 		itemId: run.itemId,

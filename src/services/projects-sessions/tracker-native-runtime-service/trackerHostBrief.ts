@@ -32,6 +32,7 @@ export function formatTrackerHostBrief(
 		item.notes && `## Task\n\n${item.notes.slice(0, 32000)}`,
 		notes.length > 0 && `## Recent notes\n\n${notes.join('\n')}`,
 		...trackerResumeLines(item, recovery),
+		trackerAnswerBrief(item),
 		`Start by running \`tracker start ${id}\`.`,
 		'Keep working through verification. Pause only when the task is done or a true blocker prevents further work.',
 		'At 150,000 active context tokens, leave a short Tracker handoff with the exact worktree, branch, completed work, pending checks and next step.',
@@ -54,4 +55,9 @@ function trackerResumeLines(item: TrackerItem, recovery: boolean) {
 			!item.resolved &&
 			'An unanswered Tracker question remains open. Continue independent work and preserve any approval gates.'
 	];
+}
+
+function trackerAnswerBrief(item: TrackerItem) {
+	if (!item.resolved || item.needs_daniel || !item.answered_at) return undefined;
+	return 'A Tracker answer is recorded. Read the current answer on the item and continue as directed. Handle credentials through the approved private path.';
 }

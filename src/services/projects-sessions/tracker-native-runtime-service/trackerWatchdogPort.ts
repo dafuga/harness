@@ -100,14 +100,22 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 /** Only one pane of exactly that name, and only while its prompt is empty and waiting. */
 async function deliverToSession(
 	tmux: TrackerTmuxAdapter,
-	{ session, message }: { session: string; message: string },
+	{ session, message, expected }: Parameters<NonNullable<TrackerWatchdogPort['deliver']>>[0],
 	signal: AbortSignal
 ): Promise<'delivered' | 'busy' | 'missing'> {
 	if (!/^[A-Za-z0-9._-]{1,100}$/.test(session)) return 'missing';
 	const names = new RegExp(`^${session.replace(/[.]/g, '\\.')}$`);
 	const found = await tmux.scan(signal, names);
-	if (found.length !== 1) return 'missing';
-	const cli = panes.idlePrompt(found[0]);
-	if (!cli) return 'busy';
-	return (await tmux.nudge({ pane: found[0], cli, message, names }, signal)) ? 'delivered' : 'busy';
+	const [pane] = found;
+	if (
+		found.length !== 1 ||
+		(expected &&
+			(expected.startedAt < pane.createdAt - 1000 ||
+				expected.startedAt > pane.createdAt + 60_000 ||
+				(expected.key && expected.key !== pane.key)))
+	)
+		return 'missing';
+	const cli = panes.idlePrompt(pane);
+	if (!cli || (expected && expected.cli !== cli)) return 'busy';
+	return (await tmux.nudge({ pane, cli, message, names }, signal)) ? 'delivered' : 'busy';
 }

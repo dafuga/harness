@@ -24,6 +24,7 @@ import { trackerWatchdogPort } from './trackerWatchdogPort';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { watchHostSessions } from './trackerWatchHostSessions';
 import { trackerHubMessageDelivery } from './trackerHubMessages';
+import { trackerAnswerDelivery } from './trackerAnswerDelivery';
 import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
 const minute = 60_000;
@@ -51,6 +52,7 @@ export function trackerHostWatchdog(
 		{ ...options, readItems, roots: config.transcriptRoots }
 	);
 	const deliverMessages = trackerHubMessageDelivery({ store, driver, now });
+	const deliverAnswers = trackerAnswerDelivery(store, driver, now, chiefOfStaff);
 	return {
 		alerts,
 		chiefOfStaff,
@@ -71,6 +73,7 @@ export function trackerHostWatchdog(
 				);
 			}
 			// Last, so a pane that cannot be typed into never holds back the checks above.
+			await deliverAnswers(signal);
 			await deliverMessages(signal);
 		}
 	};
