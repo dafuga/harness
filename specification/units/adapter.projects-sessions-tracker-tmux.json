@@ -12,6 +12,7 @@
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.ts",
 			"src/adapters/projects-sessions/TrackerTmuxAdapter.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt.ts",
+			"src/adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/submitClaudeTrackerDraft.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/submitClaudeTrackerDraft.types.ts",
 			"src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedCodexUsage.ts",
@@ -41,6 +42,7 @@
 			"TrackerTmuxNudge",
 			"TrackerTmuxClose",
 			"readClaudeCosReceipts",
+			"CosReceipt",
 			"submitClaudeTrackerDraft",
 			"ClaudeComposer",
 			"trackerManagedCodexUsage",
@@ -169,7 +171,7 @@
 			},
 			{
 				"name": "readClaudeCosReceipts.projects",
-				"type": "unknown",
+				"type": "string",
 				"required": false
 			},
 			{
@@ -854,7 +856,7 @@
 					},
 					{
 						"name": "readClaudeCosReceipts.projects",
-						"type": "unknown",
+						"type": "string",
 						"required": false
 					}
 				],

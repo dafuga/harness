@@ -3,23 +3,17 @@ import { constants } from 'node:fs';
 import { open, readdir, stat } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
+import type { CosReceipt } from './readClaudeCosReceipt.types';
 
 const transcriptName = /^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}\.jsonl$/i;
 const tailBytes = 512 * 1024;
 const heading = 'Tracker watchdog alerts for Chief of Staff. Review these items. ';
 
-interface CosReceipt {
-	id: string;
-	line: string;
-	reference: string;
-	since: number;
-}
-
 /** Claude can accept a prompt without showing the transition in a tmux capture. */
 export async function readClaudeCosReceipts(
 	cwd: string | undefined,
 	receipts: readonly CosReceipt[],
-	projects = join(homedir(), '.claude', 'projects')
+	projects: string = join(homedir(), '.claude', 'projects')
 ): Promise<Set<string>> {
 	const found = new Set<string>();
 	if (!cwd?.startsWith('/') || !receipts.length) return found;
