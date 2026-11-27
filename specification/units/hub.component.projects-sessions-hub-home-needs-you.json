@@ -43,12 +43,6 @@
 				"description": "The current time in milliseconds, used for how long each ask has waited."
 			},
 			{
-				"name": "HubHomeNeedsYou.open",
-				"type": "OpenHomeSection",
-				"required": true,
-				"description": "Opens a Home section on the asking agent."
-			},
-			{
 				"name": "HubHomeNeedsYou.send",
 				"type": "SendHomeChat",
 				"required": true,
@@ -76,6 +70,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
 			"via": "import",
 			"origin": "derived"
 		},

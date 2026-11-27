@@ -107,6 +107,10 @@ async function dialogs(page: Page, position: CapturePosition, fixture: HomeFixtu
 
 async function agentChat(page: Page, position: CapturePosition, fixture: HomeFixture) {
 	const dialog = page.getByRole('dialog'); // titled by the agent once the phone chat opens
+	if (fixture.snapshot.overview.status === 'ready')
+		await expect(dialog.getByText(/live sessions? across Tracker/)).toContainText(
+			String(fixture.snapshot.overview.liveSessions)
+		);
 	await dialog
 		.getByRole('button', { name: /Chief of Staff/ })
 		.first()
@@ -130,9 +134,13 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 	expect(fixture.sent).toMatchObject([
 		{ agentId: 'cos', itemId: 'cos', kind: 'message', text: 'Synthetic Hub message' }
 	]);
-	await optionTap(chat, fixture);
 	await dialog.getByRole('button', { name: 'Back to agents' }).click();
 	await expect(chat).toBeHidden();
+	await page.keyboard.press('Escape');
+	await page.getByRole('button', { name: 'Talk to Chief of Staff', exact: true }).first().click();
+	await optionTap(widget, fixture);
+	await page.keyboard.press('Escape');
+	await page.getByRole('button', { name: 'See all agents' }).click();
 }
 
 /** Option buttons list the recommended choice first; a deploy ask needs its confirm step. */
@@ -152,9 +160,8 @@ async function optionTap(chat: Locator, fixture: HomeFixture) {
 	await expect(confirm).toBeHidden();
 	await buttons.first().click();
 	await confirm.getByRole('button', { name: 'Confirm answer' }).click();
-	const thread = chat.getByRole('list', { name: 'Tracker conversation' });
 	await expect(
-		thread.getByRole('listitem').filter({ hasText: 'Approve Saturday 09:00' })
+		chat.getByRole('status').filter({ hasText: /^Chief of Staff: Answer/ })
 	).toBeVisible();
 	await expect(confirm).toBeHidden();
 	expect(fixture.sent[1]).toMatchObject({

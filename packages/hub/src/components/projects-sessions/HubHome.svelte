@@ -33,7 +33,7 @@
 
 	const { api, session, projects } = browserContext();
 	provideHubSpecDocuments(api);
-	provideHomeCosChat();
+	const cosChat = provideHomeCosChat(() => reads.read());
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
@@ -65,7 +65,6 @@
 	const view: HomeView = $derived({
 		overview,
 		agents: snapshot?.agents ?? (settled ? [] : null),
-		asks: snapshot?.asks ?? [],
 		openAsks: snapshot?.openAsks ?? [],
 		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
@@ -143,7 +142,7 @@
 
 	followNeedsLink(() => {
 		const dialog = selected !== null;
-		return { asks: view.openAsks, open, close, dialog, reload: refresh };
+		return { asks: view.openAsks, openAsk: cosChat.openAsk, close, dialog, reload: refresh };
 	});
 
 	function open(section: HomeSection, id?: string) {

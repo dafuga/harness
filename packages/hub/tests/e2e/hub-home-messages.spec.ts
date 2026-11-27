@@ -73,7 +73,7 @@ async function linkedHome(page: Page, size: keyof typeof sizes) {
 	);
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-	return { fixture, chief, harbor, chats };
+	return { fixture, chief, harbor, chats, snapshot };
 }
 
 const mine = (text: string, status: HomeMessage['status'], reason?: string): HomeMessage => ({
@@ -190,4 +190,20 @@ test("a session's Message button sends to that session's live run, and shows a r
 		{ timeout: 15_000 }
 	);
 	await shot(page, 'hub-session-message-refused');
+});
+
+test('refresh removes a resolved ask from the open widget even if an agent retains old text', async ({
+	page
+}) => {
+	await page.clock.install();
+	const { chief, snapshot } = await linkedHome(page, 'desktop');
+	const needs = page.getByRole('region', { name: 'Blocked - needs you' });
+	await needs.getByRole('button', { name: 'Talk to Chief of Staff', exact: true }).first().click();
+	const widget = page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
+	await expect(widget.getByText(chief.question!, { exact: false })).toBeVisible();
+	snapshot.openAsks = [];
+	await page.clock.runFor(21_000);
+	await expect(widget.getByText('This question is no longer open.')).toBeVisible();
+	await expect(widget.getByText(chief.question!, { exact: false })).toHaveCount(0);
+	await expect(widget.getByRole('group', { name: 'Choose an answer' })).toHaveCount(0);
 });

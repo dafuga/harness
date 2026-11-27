@@ -10,6 +10,7 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
 			"hub.component.projects-sessions-hub-home-composer",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -46,6 +47,17 @@
 				"type": "SendHomeChat",
 				"required": true,
 				"description": "Sends one Home message through a linked computer or the Hub queue."
+			},
+			{
+				"name": "HubHomeCosChat.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true
+			},
+			{
+				"name": "HubHomeCosChat.asks",
+				"type": "HomeOpenAsk[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -61,6 +73,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-composer",
 			"via": "import",

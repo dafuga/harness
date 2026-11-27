@@ -20,8 +20,6 @@ import type { soonestWork } from './hubHomePresentation';
 export interface HomeView {
 	overview: OverviewSnapshot | null;
 	agents: HomeAgent[] | null;
-	/** Other projects' agents that need you now; they are not listed under Agents but their asks show. */
-	asks: HomeAgent[];
 	/** The open structured asks: what "needs you" counts and what the Agents card lists. */
 	openAsks: HomeOpenAsk[];
 	/** Tracker agent values Daniel added as sessions he created himself. */

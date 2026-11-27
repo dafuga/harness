@@ -13,7 +13,13 @@
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "provideHomeCosChat.refreshAsk",
+				"type": "() => void",
+				"required": false
+			}
+		],
 		"outputs": [
 			{
 				"name": "provideHomeCosChat",
@@ -29,7 +35,13 @@
 		"operations": [
 			{
 				"name": "provideHomeCosChat",
-				"inputs": [],
+				"inputs": [
+					{
+						"name": "provideHomeCosChat.refreshAsk",
+						"type": "() => void",
+						"required": false
+					}
+				],
 				"outputs": [
 					{
 						"name": "provideHomeCosChat",
