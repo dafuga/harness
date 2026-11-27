@@ -133,4 +133,6 @@ export interface RemoteMobileControl {
 	status(): Promise<RemoteMobileStatus>;
 	disconnect(): Promise<RemoteMobileStatus>;
 	onStatus(listener: (status: RemoteMobileStatus) => void): () => void;
+	/** Shows the native Vault. Nothing about its requests or entries reaches the page. */
+	openVault?(): Promise<void>;
 }
