@@ -20,5 +20,7 @@ RUN rm -f /etc/apt/sources.list.d/debian.sources \
 
 # The mode is set here because a checkout made under a strict umask is not readable by others.
 COPY --chmod=0755 entrypoint.sh /opt/browser/entrypoint.sh
+RUN install -d -m 0755 /etc/chromium/policies /etc/chromium/policies/managed
+COPY --chmod=0644 managed-browser-policy.json /etc/chromium/policies/managed/harness.json
 USER 10001:10001
 ENTRYPOINT ["/bin/bash", "/opt/browser/entrypoint.sh"]
