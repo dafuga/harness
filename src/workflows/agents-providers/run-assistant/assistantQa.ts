@@ -50,7 +50,12 @@ export function assistantQa(settings: AssistantQaSettings, runtime: AssistantQaR
 	);
 	return async (signal: AbortSignal) => {
 		const { github } = runtime;
-		for (const event of await qaLabelEvents(github, options.label, settings.since)) {
+		for (const event of await qaLabelEvents(
+			github,
+			options.label,
+			settings.since,
+			options.existingThreadIssues
+		)) {
 			if (signal.aborted) return;
 			if (await ledger.hasReservation(event.eventId, event.issue)) continue;
 			const deployedRevision = await qaDeployedRevision(

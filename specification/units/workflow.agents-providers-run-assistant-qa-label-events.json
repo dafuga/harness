@@ -28,6 +28,12 @@
 				"name": "qaLabelEvents.since",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "qaLabelEvents.existingThreadIssues",
+				"type": "readonly number[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -61,6 +67,12 @@
 						"name": "qaLabelEvents.since",
 						"type": "string",
 						"required": true
+					},
+					{
+						"name": "qaLabelEvents.existingThreadIssues",
+						"type": "readonly number[]",
+						"required": false,
+						"default": []
 					}
 				],
 				"outputs": [

@@ -45,6 +45,7 @@ const runner = z.strictObject({
 			checkName: z.string().min(1).max(80),
 			checkApp: z.string().min(1).max(80),
 			healthTarget: z.string().min(1).max(80),
+			existingThreadIssues: z.array(z.number().int().positive()).max(500).optional(),
 			trackerInbox: z
 				.string()
 				.regex(/^[a-z0-9]{6,12}$/)

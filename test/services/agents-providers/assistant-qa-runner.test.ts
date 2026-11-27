@@ -53,7 +53,7 @@ test('requires a successful exact-revision Pages check, target health and a stab
 	await expect(qaDeployedRevision(github, 'staging', config, health)).resolves.toBeUndefined();
 });
 
-test('selects only the current label event on an issue at or after cutover', async () => {
+test('only selects current labels on new QA threads at or after cutover', async () => {
 	const label = { name: config.label };
 	const since = '2026-11-27T10:00:00Z';
 	const event = (id: number, event: string, created_at = since) => ({
@@ -65,7 +65,7 @@ test('selects only the current label event on an issue at or after cutover', asy
 	const responses = new Map([
 		[
 			repoPath + '/issues',
-			[{ number: 1 }, { number: 2 }, { number: 3 }, { number: 4, pull_request: {} }]
+			[{ number: 1 }, { number: 2 }, { number: 3 }, { number: 4, pull_request: {} }, { number: 5 }]
 		],
 		[repoPath + '/issues/1/events', [event(1, 'unlabeled'), event(2, 'labeled')]],
 		[repoPath + '/issues/2/events', [event(3, 'labeled'), event(4, 'unlabeled')]],
@@ -77,7 +77,7 @@ test('selects only the current label event on an issue at or after cutover', asy
 		return response;
 	});
 	const github = { repoPath, read } as unknown as GitHubAppAdapter;
-	await expect(qaLabelEvents(github, label.name, since)).resolves.toEqual([
+	await expect(qaLabelEvents(github, label.name, since, [5])).resolves.toEqual([
 		{ eventId: '2', issue: 1 }
 	]);
 });

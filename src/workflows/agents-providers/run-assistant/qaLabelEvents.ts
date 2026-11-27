@@ -20,7 +20,8 @@ const pageSize = 100;
 export async function qaLabelEvents(
 	github: GitHubAppAdapter,
 	label: string,
-	since: string
+	since: string,
+	existingThreadIssues: readonly number[] = []
 ): Promise<QaLabelEvent[]> {
 	const root = github.repoPath + '/issues';
 	const candidates = await readPages((page) =>
@@ -36,7 +37,7 @@ export async function qaLabelEvents(
 	);
 	const result: QaLabelEvent[] = [];
 	for (const { number, pull_request } of candidates) {
-		if (pull_request) continue;
+		if (pull_request || existingThreadIssues.includes(number)) continue;
 		const changes = await readPages((page) =>
 			github
 				.read(`${root}/${number}/events`, {

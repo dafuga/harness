@@ -41,6 +41,7 @@
 		"checkName": "Cloudflare Pages",
 		"checkApp": "cloudflare-workers-and-pages",
 		"healthTarget": "cloudflare",
+		"existingThreadIssues": [1250, 1562, 1955, 1976, 1978, 1979, 1986],
 		"trackerInbox": "gkzktn"
 	}
 }
