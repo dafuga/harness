@@ -36,8 +36,13 @@ describe('needs-you release canary', () => {
 		expect(hub.state.closed).toBe(true);
 		expect(world.asked()).toHaveLength(3);
 		for (const ask of world.asked()) {
-			expect(ask).toMatchObject({ status: 'done', answered_by: 'daniel', answer_option: '2' });
+			expect(ask).toMatchObject({ status: 'done', answer_option: '2' });
 		}
+		expect(world.asked().map((ask) => ask.answered_by)).toEqual([
+			'Daniel via Hub',
+			'daniel',
+			'Daniel'
+		]);
 		expect(item().notes.join('\n')).toContain('needs-you canary PASSED');
 		expect(item().status).not.toBe('blocked');
 		expect(item().needs_daniel).toBeFalsy();

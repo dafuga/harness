@@ -53,6 +53,9 @@ function command(rows: Map<string, Row>, args: string[]): CanaryItem {
 	return view(row);
 }
 
+/** Each app's `answered_by`, as needs-you-canary-answer-paths.test.ts reads it from the real code. */
+const appWrites: Record<string, string> = { web: 'Daniel via Hub', iphone: 'Daniel' };
+
 /** What a surface's tap sends: an answer by Daniel to the open ask carrying `marker`. */
 function tapAsk(rows: Map<string, Row>, marker: string, label: string, by?: string) {
 	const row = [...rows.values()].find(
@@ -61,7 +64,8 @@ function tapAsk(rows: Map<string, Row>, marker: string, label: string, by?: stri
 	if (!row) return false;
 	const options = trackerAskOptions(row.options as string);
 	const option = options.findIndex((entry) => entry.label === label) + 1;
-	apply(row, 'answer', { option: String(option), by });
+	const app = /-(web|mac|iphone)\]/.exec(marker)?.[1] ?? '';
+	apply(row, 'answer', { option: String(option), by: by ?? appWrites[app] });
 	return true;
 }
 
