@@ -4967,7 +4967,7 @@
 					"unit": "reports.function.entity-shown",
 					"name": "entityShown",
 					"commit": "98ac099cd3dc4f1ba2c472b61d8d44bc25cc50f3",
-					"reason": "Retain main\u2019s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
+					"reason": "Retain main’s focused measurement reuse for identical whole source trees without promoting focused evidence to full verification.",
 					"definition": "bdf720284937bf3ab760a2b6ffea39c5cd81b6d9ee877400ceb929ed1629eb3e"
 				}
 			],
@@ -5597,7 +5597,7 @@
 			"name": "activityDisplay",
 			"commit": "2b750c5dd0f1e8c0a6933ef4dc348ba9cfeca3fb",
 			"definition": "010445fa19c69439c1a3a1d485a73fc8296befffb736991eca733ab66115b1e2",
-			"reason": "Record main\u2019s intentional removal of the repeated agent count from the displayed activity sentence."
+			"reason": "Record main’s intentional removal of the repeated agent count from the displayed activity sentence."
 		},
 		{
 			"unit": "function.unit-identity",
@@ -6739,6 +6739,20 @@
 			"definition": "0db72e2a49862f3859a846b448bab964d5f991bf03d548b80704c4a95ed5aad0",
 			"to": "packages/desktop/src/utils/execution-runtimes/cli-environment/scrubEnvironment.ts",
 			"ownerSource": "packages/desktop/src/utils/execution-runtimes/cli-environment/cliEnvironment.ts"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererPolicy",
+			"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+			"reason": "Allows HTTPS images for plan details when requested by the Tracker route while keeping the existing script, frame and connection sources.",
+			"definition": "83e8d0154a24e7ba1b69c1445c2da86a0930ddefc217f1827854ccf38df7aef4"
+		},
+		{
+			"unit": "desktop.function.renderer-assets",
+			"name": "rendererAssets",
+			"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+			"reason": "Enables HTTPS image previews on the Plans and schedule document by its local route and view.",
+			"definition": "ad1a4063a13a239f1b02f10836accd8ff855c93fbc4b1b1cd900bdff6edf924d"
 		}
 	],
 	"retiredOwners": [

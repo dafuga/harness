@@ -109,3 +109,6 @@ and operations services; the earlier `homeSnapshot` reviews remain present.
 
 The Harness Vault entry retains implementation commit `baa2b466c` for the phone adapter that
 offers the native Vault.
+
+Plan and schedule click-through retains implementation commits `8713ce6311`, `5c2602ebf4` and
+`e5d8b2e82c` for the fixed Home read and chat paths through the Mac preload and paired phone.
