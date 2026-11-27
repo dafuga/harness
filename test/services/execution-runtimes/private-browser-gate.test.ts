@@ -3,7 +3,7 @@ import { PrivateBrowserGateService } from '../../../src/services/execution-runti
 
 const fixture = () => {
 	const revokeInput = vi.fn(async () => undefined);
-	const disposeForm = vi.fn(async () => undefined);
+	const disposeForm = vi.fn<() => Promise<void>>(async () => undefined);
 	const verifyResult = vi.fn(async () => true);
 	const gate = new PrivateBrowserGateService({ revokeInput, disposeForm, verifyResult });
 	return { gate, revokeInput, disposeForm, verifyResult };
