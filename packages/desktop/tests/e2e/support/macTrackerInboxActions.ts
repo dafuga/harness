@@ -1,3 +1,5 @@
+import type { TrackerPersistenceService } from '../../../../../src/services/projects-sessions/TrackerPersistenceService';
+import { canvasUrl, imageUrl, planTitle, scheduledId, scheduledTitle } from './trackerWorkFixture';
 import { createServer } from 'node:http';
 import { _electron, expect } from '../../../../../test/support/browserTest';
 import type { ElectronApplication, Page } from '../../../../../test/support/browserTest';
@@ -55,3 +57,34 @@ export async function writeOther(page: Page, text: string) {
 
 export const confirm = (page: Page) =>
 	page.getByRole('button', { name: 'Confirm and send' }).click();
+
+export async function seedMacPlan(store: TrackerPersistenceService, api: TrackerLocalApiService) {
+	const itemId = 'fixtureplan';
+	store.appendLocal({
+		itemId,
+		fields: { kind: 'plan', title: planTitle, agent: 'Fixture', status: 'open' }
+	});
+	store.appendLocal({
+		itemId: scheduledId,
+		fields: {
+			kind: 'task',
+			title: scheduledTitle,
+			status: 'open',
+			due: new Date(Date.now() + 86_400_000).toISOString()
+		}
+	});
+	expect(
+		(
+			await post(api, `/items/${itemId}/artifact`, {
+				stage: 'design',
+				artifact: {
+					summary: 'Approved fixture design',
+					links: [
+						{ kind: 'image', label: 'Fixture mockup', url: imageUrl },
+						{ kind: 'link', label: 'Fixture design canvas', url: canvasUrl }
+					]
+				}
+			})
+		).status
+	).toBe(200);
+}

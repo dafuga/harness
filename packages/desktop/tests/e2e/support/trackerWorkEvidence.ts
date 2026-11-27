@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from '../../../../../test/support/browserTest';
+import type { TrackerItemReadRepository } from '../../../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import type { HomeChatInput } from '../../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { canvasUrl, planTitle, scheduledId, scheduledTitle } from './trackerWorkFixture';
 
@@ -68,6 +69,34 @@ export async function verifyScheduledChat(page: Page, mode: string, messages: Ho
 		.toMatchObject([
 			{ agentId: 'cos', itemId: 'cos', kind: 'message', text: expect.stringContaining(scheduledId) }
 		]);
+	await page.keyboard.press('Escape');
+	await expect(opener).toBeFocused();
+}
+
+export async function verifyMacSchedule(
+	page: Page,
+	mode: string,
+	items: TrackerItemReadRepository
+) {
+	const opener = page
+		.getByRole('region', { name: 'Scheduled', exact: true })
+		.getByRole('button', { name: scheduledTitle, exact: true });
+	await opener.click();
+	const dialog = page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
+	await expect(dialog.getByLabel('Attached item')).toContainText(scheduledTitle);
+	await capturePlanWork(page, mode, 'schedule-chat');
+	await dialog
+		.getByRole('textbox', { name: 'Message Chief of Staff' })
+		.fill('Can we move the review?');
+	await dialog.getByRole('button', { name: 'Send', exact: true }).click();
+	await expect
+		.poll(() =>
+			items
+				.list({ agent: 'cos', status: 'all' })
+				.flatMap((item) => item.notes_log.map(({ text }) => text))
+				.join(' ')
+		)
+		.toContain(scheduledId);
 	await page.keyboard.press('Escape');
 	await expect(opener).toBeFocused();
 }

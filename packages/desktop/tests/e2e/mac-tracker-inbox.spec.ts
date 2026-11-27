@@ -11,6 +11,9 @@ import { captureMacInbox, verifyMacWireframeOpen } from './support/macTrackerInb
 import { TrackerItemReadRepository } from '../../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../../src/services/projects-sessions/TrackerLocalApiService';
+import { TrackerMachineService } from '../../../../src/services/projects-sessions/TrackerMachineService';
+import { routePlanImage } from './support/trackerWorkFixture';
+import { verifyMacSchedule, verifyPlanWork } from './support/trackerWorkEvidence';
 import { TrackerPersistenceService } from '../../../../src/services/projects-sessions/TrackerPersistenceService';
 import {
 	electronFixtureEnvironment,
@@ -24,7 +27,8 @@ import {
 	redirectTracker,
 	stage,
 	writeOther,
-	confirm
+	confirm,
+	seedMacPlan
 } from './support/macTrackerInboxActions';
 
 const desktopRoot = resolve(import.meta.dirname, '../..');
@@ -49,6 +53,7 @@ for (const viewport of scenario.viewports)
 			const items = new TrackerItemReadRepository(database);
 			const api = new TrackerLocalApiService(store, items, {
 				now,
+				machines: new TrackerMachineService(store, { now }),
 				runs: new TrackerRunReadRepository(database, store.node)
 			});
 			const server = serve(api);
@@ -96,6 +101,12 @@ for (const viewport of scenario.viewports)
 				await page.setViewportSize({ width: viewport.width, height: viewport.height });
 				await exerciseInbox(page, api, items, id);
 				await verifyMacWireframeOpen(app, page);
+				await seedMacPlan(store, api);
+				await routePlanImage(page);
+				await page.getByRole('link', { name: 'Home', exact: true }).click();
+				await page.getByRole('link', { name: 'Plans and schedule', exact: true }).click();
+				await verifyPlanWork(page, `electron-${viewport.id}`);
+				await verifyMacSchedule(page, `electron-${viewport.id}`, items);
 			} finally {
 				await app?.close();
 				await hub.close();

@@ -9,7 +9,7 @@ export const planTitle = 'Fixture release plan';
 export const scheduledTitle = 'Fixture scheduled review';
 export const scheduledId = 'fixture-scheduled-review';
 export const canvasUrl = 'https://design.example.test/canvas';
-const imageUrl = 'https://design.example.test/plan.png';
+export const imageUrl = 'https://design.example.test/plan.png';
 
 export async function trackerWorkFixture(page: Page, kind: 'mac' | 'iphone') {
 	const messages: HomeChatInput[] = [];
@@ -87,11 +87,15 @@ export async function trackerWorkFixture(page: Page, kind: 'mac' | 'iphone') {
 			};
 		}
 	}, kind);
+	await routePlanImage(page);
+	return messages;
+}
+
+export async function routePlanImage(page: Page) {
 	await page.route(imageUrl, (route) =>
 		route.fulfill({
 			contentType: 'image/png',
 			body: readFileSync(new URL('../../../../hub/static/icons/harness-512.png', import.meta.url))
 		})
 	);
-	return messages;
 }
