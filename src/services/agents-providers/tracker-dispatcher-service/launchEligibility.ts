@@ -1,5 +1,4 @@
 // @harness-uid u_rzpjc6wqqy
-import { isQuietHour } from '../../../helpers/attention-timing/isQuietHour';
 import {
 	trackerReminderTitle,
 	trackerUnattendedHold
@@ -28,8 +27,6 @@ export function trackerNodeNames(node: string, hub: boolean): string[] {
 		])
 	];
 }
-
-const quietHours = { start: '22:00', end: '08:00', tz: 'Europe/Lisbon' };
 
 export const minute = 60_000;
 
@@ -130,10 +127,6 @@ export function automaticRequestHold(
 	return (
 		schedulingHold(item, now) ?? (automaticEnabled(policy) ? null : 'automatic launcher disabled')
 	);
-}
-
-export function automaticQuietHour(now: number) {
-	return isQuietHour(now, quietHours);
 }
 
 export function schedulingHold(

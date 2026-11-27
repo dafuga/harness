@@ -166,8 +166,8 @@ operator verifies the stopped database and chooses a rollback.
 
   The native `autolaunch.enabled` setting governs unattended launches.
   When omitted, the node follows the legacy setting in
-  `~/.config/tracker/config.json` if present. Automatic launches hold from
-  22:00 to 08:00 Lisbon time. After the hold, the hub admits up to two
+  `~/.config/tracker/config.json` if present. Automatic launches run at any
+  hour: quiet hours cover only what is for Daniel. The hub admits up to two
   automatic launch reservations in any rolling minute across the fleet.
   Connected spokes wait for a hub slot. If the hub is unreachable, a spoke
   still starts the due tasks it owns, using the same two-per-minute limit on
@@ -176,8 +176,7 @@ operator verifies the stopped database and chooses a rollback.
   error, a redirect, a certificate error or an unreadable reply holds the
   launch. A due pause or local-due opt-out that the spoke has already received
   still applies. Other automatic launches wait for the hub. Explicit launch
-  requests get the first available local slots and bypass the night hold and
-  rate limit.
+  requests get the first available local slots and bypass the rate limit.
   Each adapter can classify intake as urgent, normal or low. The configured
   GitHub tester rule marks issues and comments by its allowed tester logins
   urgent. Urgent items take the next free slot ahead of normal and low
@@ -191,8 +190,7 @@ operator verifies the stopped database and chooses a rollback.
 
   For other open or in-progress tasks, the hub watchdog checks for owner
   activity, pending launches and active runs or panes before requesting
-  dispatch. It checks during 08:00–22:00 Lisbon time after two idle hours
-  by default. Configure `hostEffects.watchdog.idleWorkMinutes` to change
+  dispatch. It checks at any hour, after two idle hours by default. Configure `hostEffects.watchdog.idleWorkMinutes` to change
   that threshold. The dispatcher chooses an approved computer, applies
   normal capacity and retries pending requests. The digest lists queued
   requests and their wait. If the task has no approved placement, the
