@@ -6,6 +6,7 @@ import { PrivateBrowserPhoneService } from '../../../src/services/execution-runt
 import { FakePhone } from '../../support/credential-vault/phone';
 
 const brokerOrigin = 'https://vault.fixture.test';
+const offerPath = '/v1/private-browser/offer';
 const submitPath = '/v1/private-browser/submit';
 const reviewed = {
 	executor: 'mb2-fixture',
@@ -71,6 +72,8 @@ async function fixture() {
 	return {
 		offer,
 		proof,
+		phone,
+		devices,
 		clock,
 		wrongPhone,
 		service,
@@ -104,8 +107,15 @@ test('accepts one enrolled phone submission, never returns the field and clears 
 });
 
 test('rejects signed scope changes, another enrolled phone, the wrong route and expired delivery', async () => {
-	const { offer, proof, clock, wrongPhone, service, gate, request, submitField } = await fixture();
+	const { offer, proof, clock, phone, wrongPhone, devices, service, gate, request, submitField } =
+		await fixture();
 	const offered = offer();
+	const poll = (device: FakePhone) => {
+		const { nonce } = devices.issue(device.deviceId);
+		return device.prove(brokerOrigin, offerPath, nonce);
+	};
+	expect(service.activeOffer(poll(phone))).toEqual(offered);
+	expect(service.activeOffer(poll(wrongPhone))).toBeUndefined();
 	for (const changes of [
 		{ executor: 'other-executor' },
 		{ origin: 'https://different.fixture.test' },
@@ -122,6 +132,7 @@ test('rejects signed scope changes, another enrolled phone, the wrong route and 
 	expect(await service.submit(proof(offered, {}, wrongPhone))).toBe(false);
 	expect(await service.submit(proof(offered, {}, undefined, '/different'))).toBe(false);
 	clock.now = offered.expiresAt;
+	expect(service.activeOffer(poll(phone))).toBeUndefined();
 	expect(await service.submit(proof(offered))).toBe(false);
 	expect(submitField).not.toHaveBeenCalled();
 	expect(await gate.cancel(request.requestId)).toBe(true);

@@ -57,6 +57,9 @@ export class VaultBrokerServerAdapter {
 			'/v1/device/decision': route(vaultProof, (body) => ({ status: broker.decide(body) }))
 		};
 		if (privateBrowser) {
+			this.routes[privateBrowserPhonePaths.challenge] = route(vaultProof, (proof) =>
+				privateBrowser.challenge(proof)
+			);
 			this.routes[privateBrowserPhonePaths.offer] = route(vaultProof, (proof) => ({
 				offer: privateBrowser.activeOffer(proof) ?? null
 			}));

@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest';
 import { VaultSealAdapter } from '../../../src/adapters/accounts-access/VaultSealAdapter';
 import { VaultDeviceRepository } from '../../../src/repositories/accounts-access/VaultDeviceRepository';
-import { FakePhone } from '../../support/credential-vault/phone';
+import { measureWorkload } from '../../support/measureWorkload';
+import { FakePhone, randomNonce } from '../../support/credential-vault/phone';
 
 const origin = 'https://vault.example.test';
 const queuePath = '/v1/device/requests';
@@ -39,6 +40,24 @@ test('expired challenges, other paths and other origins are refused', () => {
 	expect(() =>
 		devices.authenticate(queuePath, phone.prove('https://evil.example.test', queuePath, other))
 	).toThrow();
+});
+
+test('a signed challenge start is short-lived, single-use and scoped to its route', async () => {
+	await measureWorkload('repository.accounts-access-vault-device', 'issue-scoped-challenge', () => {
+		const { phone, devices, advance } = setup();
+		const requestPath = '/v1/private-browser/challenge';
+		const scope = { requestPath, responsePath: queuePath, expiresAt: 1_020_000 };
+		const proof = phone.prove(origin, requestPath, randomNonce());
+		const { nonce } = devices.issueSigned(proof, scope);
+		expect(() => devices.issueSigned(proof, scope)).toThrow('invalid or expired');
+		const unrelated = '/v1/private-browser/submit';
+		expect(() => devices.authenticate(unrelated, phone.prove(origin, unrelated, nonce))).toThrow(
+			'invalid or expired'
+		);
+		const fresh = phone.prove(origin, requestPath, randomNonce());
+		advance(20_000);
+		expect(() => devices.issueSigned(fresh, scope)).toThrow('invalid or expired');
+	});
 });
 
 test('unknown and recovery devices cannot get approval challenges', () => {

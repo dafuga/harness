@@ -12,3 +12,10 @@ export interface VaultChallenge {
 	nonce: string;
 	expiresAt: number;
 }
+
+/** Validated intent for an enrolled device to acquire a route-scoped challenge. */
+export interface VaultSignedChallengeScope {
+	requestPath: string;
+	responsePath: string;
+	expiresAt: number;
+}

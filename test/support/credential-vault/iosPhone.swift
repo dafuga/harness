@@ -8,12 +8,25 @@ private struct Command: Decodable {
     let expiresAt: Int64
     let request: VaultApprovalRequest?
     let decision: String?
+    let privateOffer: PrivateBrowserOffer?
 
     var challenge: VaultDeviceChallenge {
         VaultDeviceChallenge(origin: origin, deviceId: deviceId, nonce: nonce, expiresAt: expiresAt)
     }
 
     func proof(sign: VaultApprovalCrypto.Sign) throws -> VaultDeviceProof {
+        if let privateOffer {
+            let now = Int64(Date().timeIntervalSince1970 * 1_000)
+            let payload = try privateOffer.seal("7", now: now)
+            let proof = BrokerProtocol.signingInput(
+                for: .init(origin: origin, deviceID: deviceId), path: .privateBrowserSubmit,
+                nonce: nonce, payload: payload
+            )
+            return VaultDeviceProof(
+                deviceId: deviceId, nonce: nonce, payload: BrokerProtocol.base64url(payload),
+                signature: BrokerProtocol.base64url(try sign(proof))
+            )
+        }
         guard let request = request else {
             return try VaultApprovalCrypto.queue(challenge, now: Int64(Date().timeIntervalSince1970 * 1000), sign: sign)
         }

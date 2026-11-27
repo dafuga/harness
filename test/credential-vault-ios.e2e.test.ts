@@ -1,10 +1,13 @@
 import { execFileSync, spawn } from 'node:child_process';
 import { once } from 'node:events';
+import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { createInterface } from 'node:readline';
 import { expect, test } from 'vitest';
 import { VaultDeviceRepository } from '../src/repositories/accounts-access/VaultDeviceRepository';
 import { VaultBrokerService } from '../src/services/accounts-access/VaultBrokerService';
+import { PrivateBrowserGateService } from '../src/services/execution-runtimes/PrivateBrowserGateService';
+import { PrivateBrowserPhoneService } from '../src/services/execution-runtimes/PrivateBrowserPhoneService';
 import type { VaultQueueEntry } from '../src/services/accounts-access/VaultBrokerService.types';
 import type {
 	VaultApproval,
@@ -38,6 +41,7 @@ test.skipIf(process.platform !== 'darwin')(
 			await verifyDecision(run, 'api-token', 'token', { token: 'synthetic-ios-api-token' });
 			await verifyDecision(run, 'oauth-device', 'grant', null);
 			await verifyDecision(run, 'browser', 'deny', null);
+			await verifyPrivateField(run);
 		} finally {
 			await phone.close();
 		}
@@ -55,12 +59,15 @@ test.skipIf(process.platform !== 'darwin')(
 );
 
 function compileNativePhone(binary: string): string {
+	const core = `${ios}/Vault/Core`;
+	const vaultSources = readdirSync(core).filter((file) => file.endsWith('.swift'));
 	execFileSync('xcrun', [
 		'swiftc',
 		`${ios}/Remote/RemoteCoding.swift`,
 		`${ios}/Vault/VaultApprovalRequest.swift`,
 		`${ios}/Vault/VaultApprovalCrypto.swift`,
 		`${ios}/Vault/VaultLegacyAdd.swift`,
+		...vaultSources.map((file) => join(core, file)),
 		'test/support/credential-vault/iosPhone.swift',
 		'test/support/credential-vault/iosLegacyAdd.swift',
 		'-o',
@@ -144,4 +151,41 @@ async function verifyNativeRefusals(
 	}
 	const wrongMethod = await run.phone.write({ ...challenge(run), request, decision: 'token' });
 	expect(wrongMethod).toEqual(refused);
+}
+
+async function verifyPrivateField(run: NativeVaultTestRun): Promise<void> {
+	const dispose = async () => undefined;
+	let validField = false;
+	const gate = new PrivateBrowserGateService({
+		revokeInput: dispose,
+		disposeForm: dispose,
+		verifyResult: async () => validField
+	});
+	await gate.recover();
+	const request = await gate.request(deviceId);
+	const delivery = new PrivateBrowserPhoneService({
+		gate,
+		devices: run.devices,
+		submitField: async (_scope, plaintext) => {
+			validField = plaintext.equals(Buffer.from('7'));
+		}
+	});
+	const privateOffer = delivery.offer(request?.requestId ?? '', deviceId, {
+		executor: 'mb2-fixture',
+		origin: 'https://private.fixture.test',
+		tabId: 'fixture-tab',
+		field: 'fixture-code',
+		action: 'submit-code',
+		recipeDigest: 'd'.repeat(64)
+	});
+	if (!privateOffer) throw new Error('The fixture did not prepare a private offer.');
+	const badOffer = { ...privateOffer, runnerFingerprint: 'a'.repeat(64) };
+	expect(await run.phone.write({ ...challenge(run), privateOffer: badOffer })).toEqual(refused);
+	const proof = await run.phone.write<VaultProof>({ ...challenge(run), privateOffer });
+	const payload = JSON.parse(Buffer.from(proof.payload, 'base64url').toString('utf8'));
+	expect(payload).not.toHaveProperty('runnerPublicKey');
+	expect(payload).not.toHaveProperty('plaintext');
+	expect(await delivery.submit(proof)).toBe(true);
+	expect(await delivery.submit(proof)).toBe(false);
+	expect(gate.receipt()).toEqual({ requestId: privateOffer.requestId, outcome: 'completed' });
 }

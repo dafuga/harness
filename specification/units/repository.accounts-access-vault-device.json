@@ -17,12 +17,14 @@
 			"VaultDeviceRepository",
 			"VaultDeviceRepository.constructor",
 			"VaultDeviceRepository.issue",
+			"VaultDeviceRepository.issueSigned",
 			"VaultDeviceRepository.authenticate",
 			"VaultDeviceRepository.authenticateDecision",
 			"VaultChallenge",
 			"VaultDevice",
 			"VaultDevice",
-			"VaultChallenge"
+			"VaultChallenge",
+			"VaultSignedChallengeScope"
 		]
 	},
 	"contract": {
@@ -57,6 +59,18 @@
 				"type": "string",
 				"required": true,
 				"description": "Enrolled approver device id."
+			},
+			{
+				"name": "VaultDeviceRepository.issueSigned.proof",
+				"type": "VaultProof",
+				"required": true,
+				"description": "An enrolled approver signature over a new client nonce and the requested route and deadline."
+			},
+			{
+				"name": "VaultDeviceRepository.issueSigned.scope",
+				"type": "VaultSignedChallengeScope",
+				"required": true,
+				"description": "The trusted challenge route and the response path and expiry parsed from its signed body."
 			},
 			{
 				"name": "VaultDeviceRepository.authenticate.path",
@@ -103,6 +117,11 @@
 				"name": "VaultDeviceRepository.authenticateDecision",
 				"type": "void",
 				"description": "Returns nothing when the V2 proof verifies; the nonce is consumed either way."
+			},
+			{
+				"name": "VaultDeviceRepository.issueSigned",
+				"type": "VaultChallenge",
+				"description": "A fresh server nonce that expires in 30 seconds and can answer only the requested path."
 			}
 		],
 		"errors": [
@@ -166,6 +185,38 @@
 						"name": "VaultBrokerError",
 						"type": "thrown",
 						"description": "429 'Too many device challenges.' when 64 unexpired challenges are outstanding."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "VaultDeviceRepository.issueSigned",
+				"inputs": [
+					{
+						"name": "VaultDeviceRepository.issueSigned.proof",
+						"type": "VaultProof",
+						"required": true,
+						"description": "An enrolled approver signature over a new client nonce and the requested route and deadline."
+					},
+					{
+						"name": "VaultDeviceRepository.issueSigned.scope",
+						"type": "VaultSignedChallengeScope",
+						"required": true,
+						"description": "The trusted challenge route and the response path and expiry parsed from its signed body."
+					}
+				],
+				"outputs": [
+					{
+						"name": "VaultDeviceRepository.issueSigned",
+						"type": "VaultChallenge",
+						"description": "A fresh server nonce that expires in 30 seconds and can answer only the requested path."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "Unknown or ineligible device, invalid signature, expired or repeated challenge start, or full challenge window."
 					}
 				],
 				"errorStatus": "declared"

@@ -17,6 +17,7 @@
 			"PrivateBrowserPhoneService",
 			"PrivateBrowserPhoneService.constructor",
 			"PrivateBrowserPhoneService.offer",
+			"PrivateBrowserPhoneService.challenge",
 			"PrivateBrowserPhoneService.activeOffer",
 			"PrivateBrowserPhoneService.submit",
 			"PrivateBrowserFieldScope",
@@ -53,6 +54,12 @@
 				"description": "Reviewed executor, HTTPS origin, tab, field, recipe digest and action."
 			},
 			{
+				"name": "PrivateBrowserPhoneService.challenge.proof",
+				"type": "VaultProof",
+				"required": true,
+				"description": "A device-signed challenge start for private offer discovery or field submission."
+			},
+			{
 				"name": "PrivateBrowserPhoneService.activeOffer.proof",
 				"type": "VaultProof",
 				"required": true,
@@ -69,7 +76,7 @@
 			{
 				"name": "privateBrowserPhonePaths",
 				"type": "unknown",
-				"description": "Fixed broker paths for signed offer discovery and sealed submission."
+				"description": "Fixed broker paths for signed challenge start, offer discovery and sealed submission."
 			},
 			{
 				"name": "PrivateBrowserPhoneService.offer",
@@ -85,6 +92,11 @@
 				"name": "PrivateBrowserPhoneService.submit",
 				"type": "Promise<boolean>",
 				"description": "True after reviewed submission, private tab disposal and independent result verification. False for refusal or incomplete verification."
+			},
+			{
+				"name": "PrivateBrowserPhoneService.challenge",
+				"type": "VaultChallenge",
+				"description": "A one-time challenge scoped to the proved device and intended private route."
 			}
 		],
 		"errors": [
@@ -127,6 +139,32 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserPhoneService.challenge",
+				"inputs": [
+					{
+						"name": "PrivateBrowserPhoneService.challenge.proof",
+						"type": "VaultProof",
+						"required": true,
+						"description": "A device-signed challenge start for private offer discovery or field submission."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserPhoneService.challenge",
+						"type": "VaultChallenge",
+						"description": "A one-time challenge scoped to the proved device and intended private route."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "Malformed challenge request, unknown or ineligible device, invalid signature, expired or repeated challenge start, or full challenge window."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PrivateBrowserPhoneService.activeOffer",

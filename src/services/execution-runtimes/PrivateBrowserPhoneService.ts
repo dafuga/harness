@@ -2,8 +2,11 @@
 import { z } from 'zod';
 import { ExpectedCliError } from '../../core/development-tooling/errors';
 import { VaultSealAdapter } from '../../adapters/accounts-access/VaultSealAdapter';
+import type { VaultChallenge } from '../../repositories/accounts-access/VaultDeviceRepository.types';
 import {
 	VaultWireValidator,
+	binary,
+	vaultMaxPlaintext,
 	vaultSealed
 } from '../../validators/accounts-access/VaultWireValidator';
 import type {
@@ -18,11 +21,12 @@ import type {
 } from './PrivateBrowserPhoneService.types';
 
 export const privateBrowserPhonePaths = {
+	challenge: '/v1/private-browser/challenge',
 	offer: '/v1/private-browser/offer',
 	submit: '/v1/private-browser/submit'
 } as const;
 const deliveryMs = 60_000;
-const identifier = z.string().min(1).max(128);
+const identifier = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/u);
 const digest = z.string().regex(/^[a-f0-9]{64}$/u);
 const fieldScope = {
 	executor: identifier,
@@ -43,10 +47,14 @@ const submission = z.strictObject({
 	requestId: z.uuid(),
 	runnerFingerprint: digest,
 	expiresAt: z.number().int(),
-	sealed: vaultSealed
+	sealed: vaultSealed.extend({ ciphertext: binary(17, vaultMaxPlaintext + 16) })
 });
 const reviewedScope = z.strictObject(fieldScope);
 const offerQuery = z.strictObject({});
+const challengeRequest = z.strictObject({
+	path: z.enum([privateBrowserPhonePaths.offer, privateBrowserPhonePaths.submit]),
+	expiresAt: z.number().int()
+});
 
 /** Executor-side handoff for a single reviewed field, using the Vault's enrolled device and seal. */
 export class PrivateBrowserPhoneService {
@@ -79,6 +87,19 @@ export class PrivateBrowserPhoneService {
 		};
 		this.pending = { offer, scope: { ...scope }, deviceId, key };
 		return { ...offer };
+	}
+
+	challenge(proof: VaultProof): VaultChallenge {
+		const { path, expiresAt } = this.wire.json(
+			challengeRequest,
+			Buffer.from(proof.payload, 'base64url'),
+			'challenge request'
+		);
+		return this.config.devices.issueSigned(proof, {
+			requestPath: privateBrowserPhonePaths.challenge,
+			responsePath: path,
+			expiresAt
+		});
 	}
 
 	/** An enrolled device can discover only its own currently usable offer. */

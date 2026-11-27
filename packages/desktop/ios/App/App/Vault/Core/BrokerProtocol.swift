@@ -33,6 +33,9 @@ public enum BrokerPath: String, Sendable {
     case importComplete = "/v1/device/import/complete"
     case backupPut = "/v1/device/backup/put"
     case backupGet = "/v1/device/backup/get"
+    case privateBrowserChallenge = "/v1/private-browser/challenge"
+    case privateBrowserOffer = "/v1/private-browser/offer"
+    case privateBrowserSubmit = "/v1/private-browser/submit"
 }
 
 /// The broker origin and device identity that every signed request is bound to.

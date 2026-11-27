@@ -103,6 +103,16 @@ The agent API accepts no request body. It uses `GET /status`, `POST
 reviewed read and a paired device to that admission surface. Device requests
 travel through the enrolled Vault path.
 
+The optional private routes on the executor-owned Vault broker are JSON POSTs
+under `/v1/private-browser/`: `challenge`, `offer`, and `submit`. A signed
+challenge start names the next route and expires in at most 30 seconds. The
+reply nonce answers only that route. The offer request signs an empty JSON
+object. Only the device assigned to the active window receives the offer.
+Submission signs the reviewed scope and sealed field. The broker returns
+`completed` only after tab disposal and result verification. Expose only these
+private routes through the paired native transport. Keep the socket and the
+other Vault routes private to the executor.
+
 After the candidate binds the Unix socket, run these commands inside the
 installed agent job. The job supplies `PRIVATE_BROWSER_AGENT_SOCKET` from its
 operator-owned launch configuration. Record status codes and reviewed

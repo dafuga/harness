@@ -43,11 +43,13 @@ extension BrokerClient {
 
     private func challenge(for path: BrokerPath, sign: Sign) async throws -> Challenge {
         let nonce = try BrokerProtocol.base64url(BrokerProtocol.random32Bytes())
-        let expiresAt = Int64(Date().timeIntervalSince1970 * 1_000) + 30_000
+        let privateBrowser = path == .privateBrowserOffer || path == .privateBrowserSubmit
+        let endpoint: BrokerPath = privateBrowser ? .privateBrowserChallenge : .challenge
+        let expiresAt = Int64(Date().timeIntervalSince1970 * 1_000) + (privateBrowser ? 20_000 : 30_000)
         let payload = try JSONEncoder().encode(ChallengeRequest(path: path.rawValue, expiresAt: expiresAt))
         let challenge: Challenge
         do {
-            challenge = try await signedPost(.challenge, nonce: nonce, payload: payload, sign: sign)
+            challenge = try await signedPost(endpoint, nonce: nonce, payload: payload, sign: sign)
         } catch BrokerError.http(400) where path == .imports {
             // Brokers that predate imports reject its challenge path with 400.
             throw BrokerError.http(404)
