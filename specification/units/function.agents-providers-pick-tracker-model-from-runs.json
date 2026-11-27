@@ -4,41 +4,46 @@
 	"uid": "u_4wqhxvxxau",
 	"kind": "function",
 	"title": "pickTrackerModelFromRuns",
-	"responsibility": "Owns the pickTrackerModelFromRuns shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Choose a Tracker model using outcomes from finished runs of similar work. An explicit model pin bypasses history.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/agents-providers/pickTrackerModelFromRuns.ts"],
 		"symbols": ["pickTrackerModelFromRuns"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "pickTrackerModelFromRuns.item",
 				"type": "TrackerModelItem",
-				"required": true
+				"required": true,
+				"description": "The Tracker item whose task kind, project, eligibility and optional model pin guide selection."
 			},
 			{
 				"name": "pickTrackerModelFromRuns.finished",
 				"type": "() => readonly TrackerRunRow[]",
-				"required": true
+				"required": true,
+				"description": "Reads finished Tracker run rows. It is called only when the item has no explicit model pin."
 			},
 			{
 				"name": "pickTrackerModelFromRuns.cfg",
 				"type": "TrackerLadderConfig",
-				"required": false
+				"required": false,
+				"description": "Optional ladder, routing and minimum sample configuration for learning from prior runs."
 			},
 			{
 				"name": "pickTrackerModelFromRuns.now",
 				"type": "number",
-				"required": false
+				"required": false,
+				"description": "Optional epoch milliseconds used for model eligibility. The selector defaults to the current time."
 			}
 		],
 		"outputs": [
 			{
 				"name": "pickTrackerModelFromRuns",
-				"type": "unknown"
+				"type": "TrackerModelSelection",
+				"description": "The selected model and effort, with the task classification and reason for the choice."
 			}
 		],
 		"errors": [],
@@ -50,28 +55,33 @@
 					{
 						"name": "pickTrackerModelFromRuns.item",
 						"type": "TrackerModelItem",
-						"required": true
+						"required": true,
+						"description": "The Tracker item whose task kind, project, eligibility and optional model pin guide selection."
 					},
 					{
 						"name": "pickTrackerModelFromRuns.finished",
 						"type": "() => readonly TrackerRunRow[]",
-						"required": true
+						"required": true,
+						"description": "Reads finished Tracker run rows. It is called only when the item has no explicit model pin."
 					},
 					{
 						"name": "pickTrackerModelFromRuns.cfg",
 						"type": "TrackerLadderConfig",
-						"required": false
+						"required": false,
+						"description": "Optional ladder, routing and minimum sample configuration for learning from prior runs."
 					},
 					{
 						"name": "pickTrackerModelFromRuns.now",
 						"type": "number",
-						"required": false
+						"required": false,
+						"description": "Optional epoch milliseconds used for model eligibility. The selector defaults to the current time."
 					}
 				],
 				"outputs": [
 					{
 						"name": "pickTrackerModelFromRuns",
-						"type": "unknown"
+						"type": "TrackerModelSelection",
+						"description": "The selected model and effort, with the task classification and reason for the choice."
 					}
 				],
 				"errors": [],

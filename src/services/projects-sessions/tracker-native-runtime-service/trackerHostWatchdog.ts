@@ -24,6 +24,7 @@ import { trackerWatchdogPort } from './trackerWatchdogPort';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { watchHostSessions } from './trackerWatchHostSessions';
 import { trackerHubMessageDelivery } from './trackerHubMessages';
+import { trackerAnswerDelivery } from './trackerAnswerDelivery';
 import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
 const slotAlerts = new Set(['orphan', 'finished', ...slotAlertKinds]);
@@ -56,19 +57,26 @@ export function trackerHostWatchdog(
 		{ ...options, readItems, roots: config.transcriptRoots }
 	);
 	const deliverMessages = trackerHubMessageDelivery({ store, driver, now });
+	const deliverAnswers = trackerAnswerDelivery(store, driver, now, chiefOfStaff);
 	return {
 		alerts,
 		chiefOfStaff,
 		inspect: inspectHostWatchdog({ store, items, driver }, { ...options, readItems }),
 		async tick(signal: AbortSignal) {
 			try {
-				if (config.transcriptRoots?.length) await scanTranscripts(signal);
-				liveSessions = (await pollSessions(signal)) ?? liveSessions;
+				try {
+					if (config.transcriptRoots?.length) await scanTranscripts(signal);
+					liveSessions = (await pollSessions(signal)) ?? liveSessions;
+				} finally {
+					// A broken pane scan must not also silence the alerts or the stuck-delivery ask.
+					const launchAlert =
+						chiefOfStaff &&
+						watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
+					if (chiefOfStaff && !signal.aborted) await cos.run(signal, launchAlert);
+				}
 			} finally {
-				// A broken pane scan must not also silence the alerts or the stuck-delivery ask.
-				const launchAlert =
-					chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
-				if (chiefOfStaff && !signal.aborted) await cos.run(signal, launchAlert);
+				// Answer delivery checks its own pane, even if the wider watchdog scan fails.
+				if (!signal.aborted) await deliverAnswers(signal);
 			}
 			// Last, so a pane that cannot be typed into never holds back the checks above.
 			await deliverMessages(signal);

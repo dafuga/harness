@@ -222,6 +222,12 @@ operator verifies the stopped database and chooses a rollback.
   answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an
   ordinary ask. iPhone push delivery depends on the separate `0wn8nf` rollout.
 
+  A Hub or CLI answer to an assigned task is routed to its current Codex or
+  Claude pane. Tracker waits for an idle composer, records the computer and run
+  once submission is confirmed, and alerts Chief of Staff if delivery stays
+  pending. An answer that releases a finished blocked run allows the watcher to
+  relaunch the task. The answer stays available on the item during recovery.
+
   Chief of Staff files ideas when Daniel raises them and sets the project.
   Use `add --next-step` or `update --next-step` to record a decision. Use
   `done --next-step` when work finishes with a decision outstanding. That
