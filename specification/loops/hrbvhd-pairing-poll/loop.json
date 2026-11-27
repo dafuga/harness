@@ -2,7 +2,7 @@
 	"name": "hrbvhd-pairing-poll",
 	"goal": "A transient relay poll failure leaves the pending browser pairing available for approval within the 20 second window.",
 	"createdAt": "2026-11-27T18:34:55.283Z",
-	"updatedAt": "2026-11-27T18:37:45.747Z",
+	"updatedAt": "2026-11-27T18:41:13.275Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:41:13.275Z",
+			"evidence": "Committed test at 87397fdfb4 failed on the unchanged service: expected the same poll through approval and one exchange, observed only the request and first poll."
 		},
 		{
 			"id": "implement",

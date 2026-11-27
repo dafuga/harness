@@ -6,6 +6,7 @@ import {
 	randomId,
 	remoteLimits,
 	remotePatterns,
+	type PendingPairing,
 	type RemoteGrant,
 	type RemoteKeyPair,
 	type RemoteSocket
@@ -56,6 +57,47 @@ function pairingFetch(
 		const answer = await api.send('POST', `${path}/${pairingId}/${operation}`, body);
 		return Response.json(answer);
 	}) as typeof fetch;
+}
+
+// BrowserApi reports a network failure with status 0. Auth and pairing refusals stay terminal.
+const transientPollStatuses = new Set<unknown>([0, 408, 500, 502, 503, 504]);
+
+function keepPendingOnRelayFailure(error: unknown): 'requested' {
+	if (error instanceof Error && 'status' in error && transientPollStatuses.has(error.status))
+		return 'requested';
+	throw error;
+}
+
+async function exchangeWhenApproved(
+	pairing: DevicePairingService,
+	pending: PendingPairing,
+	signal: AbortSignal
+) {
+	const windowMs = 20_000;
+	const deadline = Date.now() + windowMs;
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	// An in-flight HTTP read can outlast the pairing window. Its late answer cannot start an exchange.
+	const expiry = new Promise<'expired'>((resolve) => {
+		timer = setTimeout(() => resolve('expired'), windowMs);
+	});
+	try {
+		while (Date.now() < deadline) {
+			signal.throwIfAborted();
+			const status = await Promise.race([
+				pairing.poll(pending).catch(keepPendingOnRelayFailure),
+				expiry
+			]);
+			signal.throwIfAborted();
+			const remaining = deadline - Date.now();
+			if (remaining <= 0) break;
+			if (status === 'approved') return pairing.exchange(pending);
+			if (status !== 'requested') break;
+			await new Promise((resolve) => setTimeout(resolve, Math.min(350, remaining)));
+		}
+		throw new RemoteFailure('failed', 'The computer did not accept the connection.');
+	} finally {
+		clearTimeout(timer);
+	}
 }
 
 /** A browser connection to one Mac. The Hub cookie stays out of the wire client and URLs. */
@@ -167,14 +209,6 @@ export class BrowserComputerService {
 			(body) => this.api.send('POST', path, { pairingId, ...body }).then(() => undefined),
 			keys
 		);
-		const deadline = Date.now() + 20_000;
-		do {
-			this.cancel.signal.throwIfAborted();
-			const status = await pairing.poll(pending);
-			if (status === 'approved') return pairing.exchange(pending);
-			if (status !== 'requested') break;
-			await new Promise((resolve) => setTimeout(resolve, 350));
-		} while (Date.now() < deadline);
-		throw new RemoteFailure('failed', 'The computer did not accept the connection.');
+		return exchangeWhenApproved(pairing, pending, this.cancel.signal);
 	}
 }
