@@ -1,7 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { readClaudeCosReceipts } from '../../../src/adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
@@ -9,8 +9,13 @@ import { TrackerLocalApiService } from '../../../src/services/projects-sessions/
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { recordWatchdogAlert } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState';
-import { cosReceiptReference } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostCos';
+import {
+	cosReceiptReference,
+	sendWatchdogAlerts
+} from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostCos';
 import { trackerCosRound } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerCosRound';
+import { trackerWatchdogPort } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerWatchdogPort';
+import { claudePaneFixture } from '../../support/claudePaneFixture';
 import {
 	alarmAsks,
 	cosDeliveryFixture,
@@ -20,6 +25,62 @@ import {
 import { withTempDir } from '../../support/temporary';
 
 const now = Date.UTC(2026, 10, 25, 23);
+
+test(
+	'oversized CoS alerts fit the 80x24 composer and leave room for the next alert',
+	() =>
+		cosDeliveryFixture(({ store }) =>
+			withTempDir('hnt-cos-window-', async (root) => {
+				const executable = join(root, 'tmux-fixture');
+				writeFileSync(executable, `#!${process.execPath}\n${claudePaneFixture}`, { mode: 0o700 });
+				writeFileSync(join(root, 'mode'), 'window-80x24');
+				const queue = recordedDependencyQueue().map((alert, index) => ({
+					...alert,
+					item_id: `alert${index}0000`,
+					reason: index === 7 ? 'Urgent access dependency '.repeat(16) : alert.reason,
+					slots: 'Busy slots. '.repeat(140)
+				}));
+				queue.push({
+					...queue[7],
+					id: 'next-alert',
+					item_id: 'next010000',
+					reason: 'Another item needs review.',
+					at: queue[7].at + 1
+				});
+				const started = performance.now();
+				let clock = Date.UTC(2026, 10, 27, 15);
+				const date = vi
+					.spyOn(Date, 'now')
+					.mockImplementation(() => clock + performance.now() - started);
+				try {
+					const driver = trackerWatchdogPort(
+						{ tmux: executable, chiefOfStaff: true },
+						'daniel-primary-mbp'
+					);
+					const signal = AbortSignal.timeout(22_000);
+					await sendWatchdogAlerts(store, driver, queue, signal);
+					const pane = JSON.parse(readFileSync(join(root, 'state'), 'utf8'));
+					expect(pane.enters, 'the first batch must submit in the 80x24 pane').toBe(1);
+					const firstPrompt = readFileSync(join(root, 'commands'), 'utf8')
+						.trim()
+						.split('\n')
+						.map((line) => JSON.parse(line))[0].text;
+					expect(firstPrompt.length).toBeLessThanOrEqual(720);
+					for (const alert of queue.slice(0, 7))
+						expect(firstPrompt).toContain(
+							`[${alert.item_id.slice(0, 6)}] CoS: credential/access dependency.`
+						);
+					expect(firstPrompt).toContain('[alert7] See the full alert in Tracker.');
+					clock += 6 * minute;
+					await sendWatchdogAlerts(store, driver, queue, signal);
+					expect(JSON.parse(store.getMeta('watchdog_cos_sent') ?? '[]')).toContain('next-alert');
+				} finally {
+					date.mockRestore();
+				}
+			})
+		),
+	25_000
+);
 
 test('Claude transcript receipts prevent another send when tmux misses acceptance', () =>
 	cosDeliveryFixture(async ({ store, items }) => {
