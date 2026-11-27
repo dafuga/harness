@@ -68,7 +68,8 @@
 				"name": "HubHomeRow.activate",
 				"type": "(trigger: HTMLElement) => void",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Opens a row from its accessible detail button while retaining links in the surrounding row text."
 			}
 		],
 		"outputs": [

@@ -15,6 +15,7 @@
 			"hub.component.projects-sessions-hub-home-plannable",
 			"hub.component.projects-sessions-hub-home-plans",
 			"hub.component.projects-sessions-hub-home-schedule",
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -95,6 +96,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
@@ -111,6 +117,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-schedule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -57,6 +57,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.component.projects-sessions-hub-home-composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-skeleton",
 			"via": "import",
 			"origin": "derived"

@@ -13,6 +13,7 @@
 			"hub.component.projects-sessions-hub-home-card",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
@@ -30,6 +31,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomePlannable.view",
@@ -112,6 +114,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.component.projects-sessions-hub-home-composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-row",
 			"via": "import",
 			"origin": "derived"
@@ -133,6 +140,11 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
 			"via": "import",
 			"origin": "derived"
 		},

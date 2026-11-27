@@ -37,6 +37,15 @@ function nativeAccount(): AccountNativePlugin | undefined {
 	return registerPlugin<AccountNativePlugin>(accountPluginName);
 }
 
+function phoneHome(plugin: RemoteNativePlugin): TrackerHomeSource {
+	return {
+		read: async () =>
+			(await plugin.request({ method: 'homeSnapshot', input: {} })).value as OwnerHomeSnapshot,
+		send: async (message) =>
+			(await plugin.request({ method: 'homeChat', input: { ...message } })).value as HomeChatReceipt
+	};
+}
+
 /**
  * The iOS shell. One native plugin gives both the product interface and this phone's connection
  * to a computer; another, where the shell has it, this phone's own Hub account. The page holds
@@ -71,17 +80,11 @@ export class CapacitorEnvironmentAdapter {
 		}
 		offerVault(phone);
 		const tracker = phoneTrackerTools(plugin);
-		const trackerHome: TrackerHomeSource = {
-			read: async () =>
-				(await plugin.request({ method: 'homeSnapshot', input: {} })).value as OwnerHomeSnapshot,
-			send: async (message) =>
-				(await plugin.request({ method: 'homeChat', input: { ...message } }))
-					.value as HomeChatReceipt
-		};
+
 		const local = {
 			kind: 'capacitor',
 			local: false,
-			trackerHome,
+			trackerHome: phoneHome(plugin),
 			phone,
 			...(tracker ? { tracker } : {})
 		} as const;

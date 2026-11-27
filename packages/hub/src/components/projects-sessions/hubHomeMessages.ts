@@ -3,7 +3,8 @@ import type { HomeChatItemContext } from './hubHomeChatContext.types';
 import type {
 	HomeAgent,
 	HomeChatInput,
-	HomeChatReceipt
+	HomeChatReceipt,
+	HomeRun
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 
 /**
@@ -60,4 +61,19 @@ export function homeChatItemSuffix(item?: HomeChatItemContext): string {
 	const id = item.id.trim().slice(0, 200);
 	const details = item.details?.trim().slice(0, 300);
 	return `\n\nAttached Hub item: ${title} (${id})${details ? `\n${details}` : ''}`;
+}
+
+export function scheduledChatItem(run: HomeRun): HomeChatItemContext {
+	return {
+		id: run.id,
+		title: run.title,
+		details: [
+			run.source === 'claude' ? 'Claude routine' : 'Tracker',
+			run.at,
+			run.agent,
+			run.machine
+		]
+			.filter(Boolean)
+			.join(' · ')
+	};
 }

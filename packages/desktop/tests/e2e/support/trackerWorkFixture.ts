@@ -11,9 +11,8 @@ export const scheduledId = 'fixture-scheduled-review';
 export const canvasUrl = 'https://design.example.test/canvas';
 export const imageUrl = 'https://design.example.test/plan.png';
 
-export async function trackerWorkFixture(page: Page, kind: 'mac' | 'iphone') {
-	const messages: HomeChatInput[] = [];
-	const snapshot: OwnerHomeSnapshot = {
+function workSnapshot(): OwnerHomeSnapshot {
+	return {
 		overview: { status: 'ready', projects: [], machines: [], liveSessions: 0 },
 		providers: { quota: null, routines: null },
 		agents: [],
@@ -55,6 +54,11 @@ export async function trackerWorkFixture(page: Page, kind: 'mac' | 'iphone') {
 			}
 		]
 	};
+}
+
+export async function trackerWorkFixture(page: Page, kind: 'mac' | 'iphone') {
+	const messages: HomeChatInput[] = [];
+	const snapshot = workSnapshot();
 	await page.exposeFunction('__trackerWorkRead', () => snapshot);
 	await page.exposeFunction('__trackerWorkSend', (message: HomeChatInput) => {
 		messages.push(message);

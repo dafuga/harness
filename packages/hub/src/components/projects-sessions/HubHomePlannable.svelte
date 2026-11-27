@@ -3,13 +3,8 @@
 <!-- @harness-uid u_axpmgg2n3c -->
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
-	import {
-		planLabels,
-		relativeWhen,
-		runDay,
-		runTime,
-		scheduledChatItem
-	} from './hubHomePresentation';
+	import { planLabels, relativeWhen, runDay, runTime } from './hubHomePresentation';
+	import { scheduledChatItem } from './hubHomeMessages';
 	import { homeCosChat } from './hubHomeChatContext.svelte';
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';

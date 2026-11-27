@@ -51,7 +51,8 @@
 				"name": "HubHomeCosChat.showCard",
 				"type": "boolean",
 				"required": false,
-				"default": true
+				"default": true,
+				"description": "Shows the Chief of Staff summary card alongside the widget. The native work screen only needs the widget."
 			}
 		],
 		"outputs": [

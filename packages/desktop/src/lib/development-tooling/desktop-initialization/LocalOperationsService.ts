@@ -30,6 +30,11 @@ const controls: Record<string, keyof LocalControl> = {
 };
 const withInput: (keyof LocalControl)[] = ['approvePairing', 'denyPairing', 'revokeDevice'];
 
+function assertNoFields(input: Fields) {
+	if (Object.keys(input).length)
+		throw new UnexpectedOverviewFieldsError('This operation takes no fields.');
+}
+
 /**
  * The one fixed overview. It takes no input, so a window cannot name a URL, a fetcher or a path:
  * any field left after the protocol epoch is refused before it is read. A Hub-configured Desktop
@@ -39,8 +44,7 @@ function overview(
 	input: Fields,
 	hubOverview?: () => Promise<OverviewSnapshot>
 ): Promise<OverviewSnapshot> {
-	if (Object.keys(input).length)
-		throw new UnexpectedOverviewFieldsError('This operation takes no fields.');
+	assertNoFields(input);
 	return hubOverview ? hubOverview() : readProjectOverview();
 }
 
@@ -63,8 +67,7 @@ export class LocalOperationsService {
 		delete input.epoch;
 		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
 		if (method === 'homeSnapshot') {
-			if (Object.keys(input).length)
-				throw new UnexpectedOverviewFieldsError('This operation takes no fields.');
+			assertNoFields(input);
 			return this.home();
 		}
 		if (method === 'homeChat') return this.chat(input);

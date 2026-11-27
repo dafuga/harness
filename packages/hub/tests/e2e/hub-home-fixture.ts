@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import type { HomePlan } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import type { Page } from '@playwright/test';
 import { expect } from '../../../../test/support/browserTest';
 import {
@@ -58,20 +59,9 @@ async function projectFixture(page: Page, projects: FixtureProject[], held?: Pro
 	});
 }
 
-export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
-	const state = await hostedFixture(page, { actor: { ...ada, name: 'Daniel' } });
-	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
-		route.fulfill({ json: { computers: [] } })
-	);
-	await page.route('**/downloads/Harness-mac-arm64.zip', (route) =>
-		route.fulfill({ status: 200, contentType: 'text/html', body: '' })
-	);
-	await page.clock.setFixedTime(homeClock);
-	const data = mockup(mode);
-	const snapshot = homeData(data);
-	const firstPlan = snapshot.plans[0];
-	if (firstPlan)
-		Object.assign(firstPlan, {
+async function planArtifacts(page: Page, plan?: HomePlan) {
+	if (plan)
+		Object.assign(plan, {
 			stage: 'design',
 			planning: {
 				promotions: [],
@@ -106,6 +96,20 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 			body: readFileSync(new URL('../../static/icons/harness-512.png', import.meta.url))
 		})
 	);
+}
+
+export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
+	const state = await hostedFixture(page, { actor: { ...ada, name: 'Daniel' } });
+	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
+		route.fulfill({ json: { computers: [] } })
+	);
+	await page.route('**/downloads/Harness-mac-arm64.zip', (route) =>
+		route.fulfill({ status: 200, contentType: 'text/html', body: '' })
+	);
+	await page.clock.setFixedTime(homeClock);
+	const data = mockup(mode);
+	const snapshot = homeData(data);
+	await planArtifacts(page, snapshot.plans[0]);
 	if (mode === 'busy')
 		snapshot.providers.routinesReadAt = new Date(homeClock - 10_800_000).toISOString();
 	if (mode === 'empty') snapshot.providers.quota = null;

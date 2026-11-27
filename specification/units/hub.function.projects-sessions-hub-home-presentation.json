@@ -49,7 +49,6 @@
 			"runDay",
 			"runTime",
 			"when",
-			"scheduledChatItem",
 			"pastDueLabel",
 			"pastDueSummary",
 			"messageStatusText",
@@ -251,11 +250,6 @@
 				"type": "number",
 				"required": true,
 				"description": "Observation time in milliseconds; stale readings are not counted as low."
-			},
-			{
-				"name": "scheduledChatItem.run",
-				"type": "HomeRun",
-				"required": true
 			},
 			{
 				"name": "pastDueLabel.run",
@@ -938,24 +932,6 @@
 						"name": "quotaSummary",
 						"type": "unknown",
 						"description": "Subscription count with how many readable limits are running low, or all OK."
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "scheduledChatItem",
-				"inputs": [
-					{
-						"name": "scheduledChatItem.run",
-						"type": "HomeRun",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "scheduledChatItem",
-						"type": "unknown"
 					}
 				],
 				"errors": [],

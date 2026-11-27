@@ -5,7 +5,6 @@ import type {
 	HomeAgentState,
 	HomeLimit,
 	HomePlanState,
-	HomeRun,
 	HomeSection,
 	HomeSubscription
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -203,18 +202,3 @@ export function quotaSummary(subscriptions: HomeSubscription[], now: number) {
 }
 
 export { quotaReset, runDay, runTime, when } from './hubHomeTime';
-
-export function scheduledChatItem(run: HomeRun) {
-	return {
-		id: run.id,
-		title: run.title,
-		details: [
-			run.source === 'claude' ? 'Claude routine' : 'Tracker',
-			run.at,
-			run.agent,
-			run.machine
-		]
-			.filter(Boolean)
-			.join(' · ')
-	};
-}

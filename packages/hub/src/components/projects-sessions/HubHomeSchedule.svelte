@@ -6,7 +6,8 @@
 	import { SvelteMap } from 'svelte/reactivity';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { HomeRun } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import { runDay, runTime, scheduledChatItem } from './hubHomePresentation';
+	import { runDay, runTime } from './hubHomePresentation';
+	import { scheduledChatItem } from './hubHomeMessages';
 	import { homeCosChat } from './hubHomeChatContext.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 

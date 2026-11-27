@@ -55,7 +55,8 @@
 			{
 				"name": "HubHomePlans.openPlan",
 				"type": "(id: string, trigger: HTMLElement) => void",
-				"required": true
+				"required": true,
+				"description": "Opens the selected plan and retains the activated button for focus restoration."
 			}
 		],
 		"outputs": [

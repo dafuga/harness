@@ -32,7 +32,8 @@
 			"composerFeedback",
 			"isPending",
 			"receiptText",
-			"homeChatItemSuffix"
+			"homeChatItemSuffix",
+			"scheduledChatItem"
 		]
 	},
 	"contract": {
@@ -211,6 +212,24 @@
 					{
 						"name": "homeChatItemSuffix",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "scheduledChatItem",
+				"inputs": [
+					{
+						"name": "scheduledChatItem.run",
+						"type": "HomeRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scheduledChatItem",
+						"type": "HomeChatItemContext"
 					}
 				],
 				"errors": [],

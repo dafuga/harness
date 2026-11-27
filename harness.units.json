@@ -68,6 +68,66 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeSchedule",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeSchedule.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/DesktopBridge.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/desktop/src/models/development-tooling/Environment.types.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte",
+			"specifier": "$reports/components/Modal.svelte",
+			"to": "packages/reports/src/components/Modal.svelte",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte",
+			"specifier": "$reports/components/projects-sessions/TrackerPlanningDetails.svelte",
+			"to": "packages/reports/src/components/projects-sessions/TrackerPlanningDetails.svelte",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomePlannable.svelte",
+			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
+			"reason": "The feature uses the shared component or data contract resolved by the app build."
+		},
+		{
 			"from": "packages/desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/createHomeChatWriter.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/homeTrackerProjection",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeTrackerProjection.ts",
