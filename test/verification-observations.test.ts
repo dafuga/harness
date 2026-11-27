@@ -40,7 +40,7 @@ test.each([
 			scenario: 'desktop-project-runs',
 			file: 'test/backend-boundaries.test.ts',
 			state: 'project-scope',
-			count: 3,
+			count: 4,
 			workspace: 'desktop'
 		}
 	],
