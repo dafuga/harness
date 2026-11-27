@@ -13,12 +13,11 @@ import { DatabaseSync } from 'node:sqlite';
 import { gunzipSync, gzipSync } from 'node:zlib';
 import { expect, test } from 'vitest';
 import { trackerHealthBackupChecks } from '../../../src/services/projects-sessions/tracker-health-service/trackerHealthBackupChecks';
-import { trackerBackupFixture } from '../../support/trackerBackupFixture';
+import { concurrentBackupWinners, trackerBackupFixture } from '../../support/trackerBackupFixture';
 
 const daily = (names: string[]) =>
 	names.filter((name) => /^tracker-\d{4}-\d\d-\d\d\.db\.gz$/.test(name));
 const weekly = (names: string[]) => names.filter((name) => name.startsWith('tracker-weekly-'));
-
 test('the hub takes one verified private snapshot a day from 03:30 Lisbon', async () => {
 	const hub = await trackerBackupFixture('2026-11-27T03:29:00Z');
 	await hub.tick();
@@ -168,7 +167,8 @@ test('another database never replaces or rotates the backups already in a folder
 	expect(hub.files()).toEqual(names);
 	expect(contents()).toEqual(before);
 	expect(await hub.api('POST', '/backup/now')).toMatchObject({ ok: true });
-});
+	expect(await concurrentBackupWinners(hub.root)).toEqual([1]);
+}, 20_000);
 
 test('a same-day file from another database or an unreadable one is never replaced', async () => {
 	const hub = await trackerBackupFixture('2026-11-27T04:00:00Z');
