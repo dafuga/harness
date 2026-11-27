@@ -11,7 +11,13 @@ import { browseHomeDocument, uploadHomeDocument } from './homeDocumentPolicy';
 import { reconcileHomeDocuments } from './homeDocumentStore';
 import { readOverviewText } from '../tracker-overview/trackerOverviewInput';
 import { chatId, chatInput, chatOutcome, controlledChange, parseHomePayload } from './homePayload';
-import { changeControlled, readControlled, readHomeSnapshot, storeHome } from './homeStore';
+import {
+	changeControlled,
+	readControlled,
+	readHomeSnapshot,
+	readPublishedHome,
+	storeHome
+} from './homeStore';
 import { chatReceipt, claimChat, finishChat, queueChat } from './homeChatStore';
 import { ringAccount } from '../sync/syncAccount';
 import type { HomeDeps } from './homePolicy.types';
@@ -63,8 +69,8 @@ async function dispatchHome(
 }
 
 async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: string) {
-	if (url.pathname === root && request.method === 'GET' && !url.search)
-		return await browserSnapshot(deps, actor);
+	if (url.pathname === root && request.method === 'GET')
+		return await browserSnapshot(url, deps, actor);
 	if (url.pathname === chat) return await browserChat(request, url, deps, actor);
 	if (url.pathname === documentPath && request.method === 'GET') {
 		const found = await browseHomeDocument(url, deps, actor);
@@ -74,7 +80,8 @@ async function browserHome(request: Request, url: URL, deps: HomeDeps, actor: st
 	return json({ error: 'not-found' }, 404);
 }
 
-async function browserSnapshot(deps: HomeDeps, actor: string) {
+async function browserSnapshot(url: URL, deps: HomeDeps, actor: string) {
+	if (url.search) return json({ error: 'not-found' }, 404);
 	return json({
 		granted: true,
 		snapshot: deps.bucket ? await readHomeSnapshot(deps.bucket, actor, deps.now) : null,
@@ -148,8 +155,9 @@ async function browserAgents(
 async function postChat(request: Request, deps: HomeDeps, actor: string) {
 	if (!deps.db || !deps.bucket) return json({ error: 'unavailable' }, 503);
 	const message = chatInput.parse(JSON.parse(await readOverviewText(request, 8192)));
-	const snapshot = await readHomeSnapshot(deps.bucket, actor, deps.now);
-	if (!matchesHome(message, snapshot)) return json({ id: message.id, status: 'refused' });
+	const snapshot = await readPublishedHome(deps.bucket, actor, deps.now);
+	if (!snapshot || !matchesHome(message, snapshot))
+		return json({ id: message.id, status: 'refused' });
 	const receipt = await queueChat(deps.db, actor, message, deps.now);
 	if (receipt?.status === 'queued') await ringAccount(deps.accounts, actor, 'chat');
 	return json(
@@ -158,8 +166,8 @@ async function postChat(request: Request, deps: HomeDeps, actor: string) {
 	);
 }
 
-function matchesHome(message: HomeChatInput, snapshot: OwnerHomeSnapshot | null) {
-	if (message.armed) return matchesListedReminder(message, snapshot?.reminders);
+function matchesHome(message: HomeChatInput, snapshot: OwnerHomeSnapshot) {
+	if (message.armed) return matchesListedReminder(message, snapshot.reminders);
 	return matchesCurrentItem(message, snapshot);
 }
 
@@ -168,11 +176,11 @@ function matchesListedReminder(message: HomeChatInput, reminders: HomeReminder[]
 	return reminders.some((entry) => entry.itemId === message.itemId && entry.at === message.armed);
 }
 
-function matchesCurrentItem(message: HomeChatInput, snapshot: OwnerHomeSnapshot | null) {
-	const agent = snapshot?.agents.find((entry) => entry.id === message.agentId);
+function matchesCurrentItem(message: HomeChatInput, snapshot: OwnerHomeSnapshot) {
+	const agent = snapshot.agents.find((entry) => entry.id === message.agentId);
 	if (message.kind === 'message') return matchesMessageTarget(message, agent);
 	if (message.kind === 'note') return agent?.itemId === message.itemId;
-	const ask = answerTarget(message, snapshot?.openAsks, agent);
+	const ask = answerTarget(message, snapshot.openAsks, agent);
 	if (!ask || ask.question !== message.question) return false;
 	return message.option === undefined || matchesChosenOption(message, ask);
 }

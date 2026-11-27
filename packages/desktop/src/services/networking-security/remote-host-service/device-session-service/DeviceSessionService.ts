@@ -19,8 +19,8 @@ export class DeviceSessionService {
 	private readonly projects: ClientProjectsService;
 	private readonly trackerLifetime = new AbortController();
 	constructor(options: DeviceSessionOptions) {
-		const { host, device, grant, epoch, locked, home, homeChat, ...rest } = options,
-			{ trackerPull, trackerPush, ...shared } = rest,
+		const { host, device, grant, epoch, locked, ...rest } = options,
+			{ home, homeChat, homeDocument, trackerPull, trackerPush, ...shared } = rest,
 			{ providers, arbiter } = shared;
 		const projects = new ClientProjectsService({
 			...shared,
@@ -33,6 +33,7 @@ export class DeviceSessionService {
 			grant,
 			home,
 			homeChat,
+			homeDocument,
 			trackerPull,
 			trackerPush: trackerPush && ((input) => trackerPush(input, this.trackerLifetime.signal))
 		});
