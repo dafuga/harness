@@ -59,22 +59,26 @@
 			{
 				"name": "rewrapSealedGrant.grant",
 				"type": "SealedGrant",
-				"required": true
+				"required": true,
+				"description": "A wrapped scope grant addressed to the current approved device."
 			},
 			{
 				"name": "rewrapSealedGrant.self",
 				"type": "SealedDeviceKeys",
-				"required": true
+				"required": true,
+				"description": "The approved device’s own private key-agreement handle and public identity."
 			},
 			{
 				"name": "rewrapSealedGrant.chain",
 				"type": "SealedChainState",
-				"required": true
+				"required": true,
+				"description": "Verified account chain containing the current device, granted scope and epoch commitment."
 			},
 			{
 				"name": "rewrapSealedGrant.recipient",
 				"type": "Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>",
-				"required": true
+				"required": true,
+				"description": "The joining device’s public P-256 key-agreement point and device identifier."
 			}
 		],
 		"outputs": [
@@ -193,28 +197,33 @@
 					{
 						"name": "rewrapSealedGrant.grant",
 						"type": "SealedGrant",
-						"required": true
+						"required": true,
+						"description": "A wrapped scope grant addressed to the current approved device."
 					},
 					{
 						"name": "rewrapSealedGrant.self",
 						"type": "SealedDeviceKeys",
-						"required": true
+						"required": true,
+						"description": "The approved device’s own private key-agreement handle and public identity."
 					},
 					{
 						"name": "rewrapSealedGrant.chain",
 						"type": "SealedChainState",
-						"required": true
+						"required": true,
+						"description": "Verified account chain containing the current device, granted scope and epoch commitment."
 					},
 					{
 						"name": "rewrapSealedGrant.recipient",
 						"type": "Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>",
-						"required": true
+						"required": true,
+						"description": "The joining device’s public P-256 key-agreement point and device identifier."
 					}
 				],
 				"outputs": [
 					{
 						"name": "rewrapSealedGrant",
-						"type": "Promise<SealedGrant>"
+						"type": "Promise<SealedGrant>",
+						"description": "An HPKE grant for the same committed scope and epoch, addressed only to the joining device."
 					}
 				],
 				"errors": [],

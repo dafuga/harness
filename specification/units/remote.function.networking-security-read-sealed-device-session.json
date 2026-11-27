@@ -4,8 +4,8 @@
 	"uid": "u_23yfiktdqa",
 	"kind": "function",
 	"title": "readSealedDeviceSession",
-	"responsibility": "Owns the readSealedDeviceSession shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Reads a signed-in installation’s stage and proves possession of its enrolled signing key to the Hub.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -15,37 +15,42 @@
 		"symbols": ["readSealedDeviceSession", "SealedDeviceSessionState", "SealedSessionRequest"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "readSealedDeviceSession.request",
 				"type": "SealedSessionRequest",
-				"required": true
+				"required": true,
+				"description": "Same-origin transport backed by the current Google session and restricted to the sealed sync API."
 			},
 			{
 				"name": "readSealedDeviceSession.device",
 				"type": "SealedDeviceKeys",
-				"required": true
+				"required": true,
+				"description": "The current installation’s public identity and nonextractable signing key for its Hub challenge."
 			},
 			{
 				"name": "readSealedDeviceSession.signal",
 				"type": "AbortSignal",
-				"required": false
+				"required": false,
+				"description": "Cancels the Hub calls and prevents a proof from being sent for a superseded session."
 			}
 		],
 		"outputs": [
 			{
 				"name": "readSealedDeviceSession",
-				"type": "Promise<SealedDeviceSessionState>"
+				"type": "Promise<SealedDeviceSessionState>",
+				"description": "Returns the first-device, waiting-for-approval or approved stage. Completes the same-session signing challenge when required."
 			}
 		],
 		"errors": [
 			{
 				"name": "SealedError",
-				"type": "thrown"
+				"type": "thrown",
+				"description": "The Hub refused the request, provided an invalid stage or challenge, or did not confirm the signed proof."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "readSealedDeviceSession",
@@ -53,23 +58,27 @@
 					{
 						"name": "readSealedDeviceSession.request",
 						"type": "SealedSessionRequest",
-						"required": true
+						"required": true,
+						"description": "Same-origin transport backed by the current Google session and restricted to the sealed sync API."
 					},
 					{
 						"name": "readSealedDeviceSession.device",
 						"type": "SealedDeviceKeys",
-						"required": true
+						"required": true,
+						"description": "The current installation’s public identity and nonextractable signing key for its Hub challenge."
 					},
 					{
 						"name": "readSealedDeviceSession.signal",
 						"type": "AbortSignal",
-						"required": false
+						"required": false,
+						"description": "Cancels the Hub calls and prevents a proof from being sent for a superseded session."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readSealedDeviceSession",
-						"type": "Promise<SealedDeviceSessionState>"
+						"type": "Promise<SealedDeviceSessionState>",
+						"description": "Returns the first-device, waiting-for-approval or approved stage. Completes the same-session signing challenge when required."
 					}
 				],
 				"errors": [

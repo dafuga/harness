@@ -68,6 +68,18 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte",
+			"specifier": "$shared/explorer-ui/explorer-kit/Card.svelte",
+			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Card.svelte",
+			"reason": "The approval inbox uses the canonical shared Card for each pending sign-in."
+		},
+		{
+			"from": "packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte",
+			"specifier": "$shared/shared-primitives/Modal.svelte",
+			"to": "packages/reports/src/components/shared-primitives/Modal.svelte",
+			"reason": "The approval inbox uses the canonical shared Modal for device comparison."
+		},
+		{
 			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
 			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
 			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
