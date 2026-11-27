@@ -1,4 +1,5 @@
 // @harness-uid u_sbz3zzk4fx
+import { ExpectedCliError } from '../../src/core/errors';
 import { spawnSync } from 'node:child_process';
 import { realpathSync, mkdtempSync, rmdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -19,7 +20,8 @@ export function checkGit(repo: string, args: string[], input?: string): string {
 		}
 	);
 	if (child.error) throw child.error;
-	if (child.status !== 0) throw new Error(`git ${args[0]} exited ${child.status ?? child.signal}`);
+	if (child.status !== 0)
+		throw new ExpectedCliError(`git ${args[0]} exited ${child.status ?? child.signal}`);
 	return child.stdout.trimEnd();
 }
 

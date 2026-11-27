@@ -1,4 +1,5 @@
 // @harness-uid u_sbz3zzk4fx
+import { ExpectedCliError } from '../../src/core/errors';
 import { randomUUID } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
@@ -43,7 +44,7 @@ export async function withLegacyCheckSlot<T>(
 			signal
 		});
 		const [code] = await once(waiter, 'exit');
-		if (code !== 0) throw new Error('Could not acquire the macOS full-check slot.');
+		if (code !== 0) throw new ExpectedCliError('Could not acquire the macOS full-check slot.');
 		signal.throwIfAborted();
 		return await run();
 	} finally {

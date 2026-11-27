@@ -157,7 +157,7 @@
 			},
 			{
 				"name": "SharedCheckCache.constructor.remote",
-				"type": "unknown",
+				"type": "string | undefined",
 				"required": false
 			},
 			{
@@ -401,23 +401,13 @@
 				"required": true
 			},
 			{
-				"name": "CheckQueue.plan.tree",
-				"type": "unknown",
+				"name": "CheckQueue.plan.candidate",
+				"type": "CandidateTree",
 				"required": true
 			},
 			{
-				"name": "CheckQueue.plan.base",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "CheckQueue.storePlan.tree",
-				"type": "unknown",
-				"required": true
-			},
-			{
-				"name": "CheckQueue.storePlan.base",
-				"type": "unknown",
+				"name": "CheckQueue.storePlan.candidate",
+				"type": "CandidateTree",
 				"required": true
 			},
 			{
@@ -652,7 +642,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown"
 					}
 				],
@@ -826,7 +816,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown"
 					}
 				],
@@ -1287,13 +1277,8 @@
 				"name": "CheckQueue.plan",
 				"inputs": [
 					{
-						"name": "CheckQueue.plan.tree",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "CheckQueue.plan.base",
-						"type": "unknown",
+						"name": "CheckQueue.plan.candidate",
+						"type": "CandidateTree",
 						"required": true
 					}
 				],
@@ -1310,13 +1295,8 @@
 				"name": "CheckQueue.storePlan",
 				"inputs": [
 					{
-						"name": "CheckQueue.storePlan.tree",
-						"type": "unknown",
-						"required": true
-					},
-					{
-						"name": "CheckQueue.storePlan.base",
-						"type": "unknown",
+						"name": "CheckQueue.storePlan.candidate",
+						"type": "CandidateTree",
 						"required": true
 					},
 					{
@@ -1421,7 +1401,7 @@
 				],
 				"errors": [
 					{
-						"name": "Error",
+						"name": "ExpectedCliError",
 						"type": "thrown"
 					}
 				],
@@ -1513,7 +1493,7 @@
 					},
 					{
 						"name": "SharedCheckCache.constructor.remote",
-						"type": "unknown",
+						"type": "string | undefined",
 						"required": false
 					}
 				],
@@ -1554,6 +1534,11 @@
 		},
 		{
 			"unit": "function.classify-path",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

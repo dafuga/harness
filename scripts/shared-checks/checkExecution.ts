@@ -1,4 +1,5 @@
 // @harness-uid u_sbz3zzk4fx
+import { ExpectedCliError } from '../../src/core/errors';
 import { randomUUID } from 'node:crypto';
 import { existsSync, unlinkSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
@@ -184,7 +185,7 @@ async function runCheck(snapshot: CheckSnapshot, check: SharedCheck) {
 	const cwd = resolve(snapshot.directory, check.cwd ?? '.');
 	const rel = relative(snapshot.directory, cwd);
 	if (rel === '..' || rel.startsWith('../'))
-		throw new Error('Check working directory escapes its snapshot.');
+		throw new ExpectedCliError('Check working directory escapes its snapshot.');
 	const config =
 		check.command[0] === 'tsc-files'
 			? checkTypeConfig(snapshot.directory, cwd, check.command.slice(1))

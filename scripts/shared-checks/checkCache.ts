@@ -30,7 +30,7 @@ export class SharedCheckCache {
 	constructor(
 		private readonly queue: CheckQueue,
 		private readonly candidate: CandidateTree,
-		remote = defaultCacheRemote(candidate.repo)
+		remote: string | undefined = defaultCacheRemote(candidate.repo)
 	) {
 		this.remote = remote;
 	}

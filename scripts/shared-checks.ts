@@ -1,4 +1,5 @@
 // @harness-uid u_sbz3zzk4fx
+import { ExpectedCliError } from '../src/core/errors';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
@@ -40,7 +41,7 @@ export async function runSharedChecks(
 		}
 	});
 	if (values['ci-base'] && process.env.GITHUB_ACTIONS !== 'true')
-		throw new Error('Only GitHub Actions can submit a hosted check base.');
+		throw new ExpectedCliError('Only GitHub Actions can submit a hosted check base.');
 	if (values.help) {
 		console.log(`${usage}\nRun the foreground host worker with bun run check --serve.`);
 		return 0;
@@ -88,15 +89,16 @@ function submit(
 ): CheckRequest {
 	const repo = checkRepository(process.cwd());
 	const item = values.item ?? process.env.TRACKER_ITEM_ID;
-	if (item && !/^[a-z0-9]{6,12}$/.test(item)) throw new Error('Expected a Tracker item ID.');
+	if (item && !/^[a-z0-9]{6,12}$/.test(item))
+		throw new ExpectedCliError('Expected a Tracker item ID.');
 	const priority = values.priority ?? (values.release ? 'urgent' : 'normal');
 	if (priority !== 'urgent' && priority !== 'normal' && priority !== 'low')
-		throw new Error('Expected urgent, normal, or low check priority.');
+		throw new ExpectedCliError('Expected urgent, normal, or low check priority.');
 	if (
 		!values.commit &&
 		checkGit(process.cwd(), ['status', '--porcelain', '--untracked-files=normal'])
 	)
-		throw new Error(
+		throw new ExpectedCliError(
 			'Commit the changes before submitting, or use --commit to select a committed snapshot.'
 		);
 	const request: CheckRequest = {
@@ -129,7 +131,7 @@ async function trackerNote(item: string, text: string): Promise<void> {
 	});
 	const timeout = setTimeout(() => child.kill(), 10_000);
 	try {
-		if ((await child.exited) !== 0) throw new Error('Tracker note failed.');
+		if ((await child.exited) !== 0) throw new ExpectedCliError('Tracker note failed.');
 	} finally {
 		clearTimeout(timeout);
 	}
@@ -137,7 +139,7 @@ async function trackerNote(item: string, text: string): Promise<void> {
 
 function runCiPart(args: string[]): number {
 	if (process.env.GITHUB_ACTIONS !== 'true' || args.length !== 2)
-		throw new Error(
+		throw new ExpectedCliError(
 			'Check partitions run in GitHub Actions. Submit a combined release with bun run check --release.'
 		);
 	return (

@@ -1,4 +1,5 @@
 // @harness-uid u_sbz3zzk4fx
+import { ExpectedCliError } from '../../src/core/errors';
 import { randomUUID } from 'node:crypto';
 import { checkGit, emptyCheckCommit } from './checkGit';
 import type { CandidateTree, CheckLeaseTarget } from './sharedCheck.types';
@@ -22,7 +23,7 @@ export async function withSharedCheckLease<T>(
 		try {
 			held = writeLease(target, held);
 		} catch {
-			lost.abort(new Error('The shared check lease could not be renewed.'));
+			lost.abort(new ExpectedCliError('The shared check lease could not be renewed.'));
 		}
 	}, renewalMs);
 	try {
@@ -48,7 +49,7 @@ async function claimCheckLease(target: CheckLeaseTarget, signal: AbortSignal): P
 				return writeLease(target, prior);
 			} catch {
 				if (readLease(target) === prior)
-					throw new Error('The shared Git remote did not accept the check lease.');
+					throw new ExpectedCliError('The shared Git remote did not accept the check lease.');
 			}
 		}
 		await Bun.sleep(2_000);
@@ -73,7 +74,8 @@ function leaseExpiry(repo: string, oid: string): number {
 	const message = checkGit(repo, ['show', '-s', '--format=%B', oid]);
 	const match = /^Harness check lease v1\n(\d+)\n[0-9a-f-]+$/.exec(message);
 	const expires = Number(match?.[1]);
-	if (!Number.isSafeInteger(expires)) throw new Error('The shared check lease is invalid.');
+	if (!Number.isSafeInteger(expires))
+		throw new ExpectedCliError('The shared check lease is invalid.');
 	return expires;
 }
 

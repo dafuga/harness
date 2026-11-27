@@ -1,4 +1,5 @@
 // @harness-uid u_sbz3zzk4fx
+import { ExpectedCliError } from '../../src/core/errors';
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -130,6 +131,6 @@ function gh(args: string[]): string {
 		timeout: 10_000,
 		maxBuffer: 4 * 1024 * 1024
 	});
-	if (result.status !== 0) throw new Error('GitHub checks unavailable.');
+	if (result.status !== 0) throw new ExpectedCliError('GitHub checks unavailable.');
 	return result.stdout;
 }

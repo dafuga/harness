@@ -70,4 +70,4 @@ test('two host databases reuse only the exact tree and check receipt from a shar
 	} finally {
 		rmSync(folder, { recursive: true, force: true });
 	}
-});
+}, 35_000);

@@ -81,20 +81,20 @@ export class CheckQueue {
 		this.db.query('INSERT OR IGNORE INTO cache VALUES (?, ?)').run(tree, check);
 	}
 
-	plan({ tree, base }: CandidateTree): CheckPlan | undefined {
+	plan(candidate: CandidateTree): CheckPlan | undefined {
 		const row = this.db
 			.query<
 				{ plan: string },
 				[string, string]
 			>('SELECT plan FROM plans WHERE tree = ? AND base = ? AND version = 1')
-			.get(tree, base);
+			.get(candidate.tree, candidate.base);
 		return row ? JSON.parse(row.plan) : undefined;
 	}
 
-	storePlan({ tree, base }: CandidateTree, plan: CheckPlan): void {
+	storePlan(candidate: CandidateTree, plan: CheckPlan): void {
 		this.db
 			.query('INSERT OR REPLACE INTO plans VALUES (?, ?, 1, ?)')
-			.run(tree, base, JSON.stringify(plan));
+			.run(candidate.tree, candidate.base, JSON.stringify(plan));
 	}
 
 	async work(action: () => Promise<void>): Promise<boolean> {
