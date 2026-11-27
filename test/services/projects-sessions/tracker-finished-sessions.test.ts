@@ -70,6 +70,49 @@ test('a session idle with a final report finishes its run and is not relaunched'
 		expect(hub.runs('report0001')).toEqual([finished('abandoned')]);
 	}));
 
+async function verifyLiveAnswerDelivery(hub: TrackerSlotFixture) {
+	for (const [item, model, prompt] of [
+		['liveclaude', 'claude-sonnet-5-5:high', composer()],
+		['livecodex0', 'gpt-6.2-sol:medium', codexComposer()]
+	]) {
+		hub.queue(item, model);
+		await hub.advance(5_000);
+		await hub.request(`/items/${item}/start`);
+		await hub.request(`/items/${item}/flag`, {
+			question: 'Choose the synthetic region',
+			options: [
+				{ label: 'First region', detail: 'Use the first synthetic region' },
+				{ label: 'Second region', detail: 'Use the second synthetic region' }
+			]
+		});
+		await hub.request(
+			`/items/${item}/answer`,
+			item === 'liveclaude' ? { answer: 'Synthetic free text' } : { option: 1 }
+		);
+		await hub.advance(3 * minute);
+		expect.soft(hub.runtime.watchdog!.alerts()).toContainEqual(
+			expect.objectContaining({
+				item_id: item,
+				kind: 'answer-delivery'
+			})
+		);
+		const name = hub.panes().find((pane) => pane.startsWith(`auto-${item.slice(0, 6)}-`))!;
+		expect(name).toBeDefined();
+		hub.screen(name, prompt);
+		await hub.advance(minute);
+		await hub.advance(minute);
+		expect
+			.soft(hub.tmuxInput().match(new RegExp(`Tracker answer for item ${item}`, 'g')) ?? [])
+			.toHaveLength(1);
+		const notes = hub.database.prepare('SELECT text FROM item_notes WHERE item_id = ?').all(item);
+		expect
+			.soft(notes.map(({ text }) => text))
+			.toContainEqual(expect.stringContaining(`delivered to ${name}`));
+		await hub.request(`/items/${item}/done`);
+		await hub.advance(minute);
+	}
+}
+
 test('a blocked run closes and stays down until its answer allows a relaunch', () =>
 	slotCase('blocked-run-waits-for-answer', async (hub) => {
 		hub.queue('blocked001');
@@ -80,7 +123,7 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		await hub.advance(5_000);
 		await hub.advance(35_000);
 		expect(hub.panes()).toEqual([]);
-		// The provider can exit without the Pane Closer having recorded the exit itself.
+		// Model a finished run with no closer receipt, such as after the provider exits itself.
 		hub.database.exec("DELETE FROM meta WHERE k = 'tracker_closed_blocked_run:1'");
 		await hub.request('/items/blocked001/flag', { question: 'Choose the synthetic region' });
 		for (let poll = 0; poll < 15; poll++) await hub.advance(2 * minute);
@@ -96,46 +139,7 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		expect.soft(hub.runs('blocked001')).toEqual([finished('blocked'), running]);
 		await hub.request('/items/blocked001/done');
 		await hub.advance(minute);
-		for (const [item, model, prompt] of [
-			['liveclaude', 'claude-sonnet-5-5:high', composer()],
-			['livecodex0', 'gpt-6.2-sol:medium', codexComposer()]
-		]) {
-			hub.queue(item, model);
-			await hub.advance(5_000);
-			await hub.request(`/items/${item}/start`);
-			await hub.request(`/items/${item}/flag`, {
-				question: 'Choose the synthetic region',
-				options: [
-					{ label: 'First region', detail: 'Use the first synthetic region' },
-					{ label: 'Second region', detail: 'Use the second synthetic region' }
-				]
-			});
-			await hub.request(
-				`/items/${item}/answer`,
-				item === 'liveclaude' ? { answer: 'Synthetic free text' } : { option: 1 }
-			);
-			await hub.advance(3 * minute);
-			expect.soft(hub.runtime.watchdog!.alerts()).toContainEqual(
-				expect.objectContaining({
-					item_id: item,
-					kind: 'answer-delivery'
-				})
-			);
-			const name = hub.panes().find((pane) => pane.startsWith(`auto-${item.slice(0, 6)}-`))!;
-			expect(name).toBeDefined();
-			hub.screen(name, prompt);
-			await hub.advance(minute);
-			await hub.advance(minute);
-			expect
-				.soft(hub.tmuxInput().match(new RegExp(`Tracker answer for item ${item}`, 'g')) ?? [])
-				.toHaveLength(1);
-			const notes = hub.database.prepare('SELECT text FROM item_notes WHERE item_id = ?').all(item);
-			expect
-				.soft(notes.map(({ text }) => text))
-				.toContainEqual(expect.stringContaining(`delivered to ${name}`));
-			await hub.request(`/items/${item}/done`);
-			await hub.advance(minute);
-		}
+		await verifyLiveAnswerDelivery(hub);
 	}));
 
 test('keeps a live background task until the item closes, then closes the pane', () =>
