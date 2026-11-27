@@ -2,7 +2,7 @@
 	"name": "eq0hnw-canary-answer-actors",
 	"goal": "The needs-you release canary passes each surface only on what that app really writes to the Tracker: Hub web 'Daniel via Hub', Mac app 'daniel', iPhone 'Daniel'",
 	"createdAt": "2026-11-27T08:08:14.930Z",
-	"updatedAt": "2026-11-27T08:24:35.769Z",
+	"updatedAt": "2026-11-27T08:26:02.840Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -32,12 +32,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T08:26:00.038Z",
+			"evidence": "fae5617fae: surfaceAnswerers {web 'Daniel via Hub', mac 'daniel', iphone 'Daniel'} in canaryAsk.ts; judgeAnswer compares against the asked surface. Spec and two unit manifests updated; units check valid."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T08:26:02.840Z",
+			"evidence": "loop record green passed at fae5617fae with tests unchanged since red dceb03193f (same command, 17 tests)."
 		},
 		{
 			"id": "siblings",
