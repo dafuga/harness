@@ -1,3 +1,4 @@
+// @harness-uid u_44o75ivrws
 /** @pure Splits plain text into unchanged text and absolute HTTP(S) links. */
 export function linkSegments(text: string): { text: string; href?: string }[] {
 	const segments: { text: string; href?: string }[] = [];

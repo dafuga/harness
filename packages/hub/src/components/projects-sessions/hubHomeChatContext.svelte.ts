@@ -1,3 +1,4 @@
+// @harness-uid u_7j4igv6rwg
 import { getContext, setContext, tick } from 'svelte';
 import type { HomeChatItemContext, OpenHomeCosChat } from './hubHomeChatContext.types';
 

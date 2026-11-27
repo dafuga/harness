@@ -50,7 +50,7 @@
 </hx-header>
 
 {#if offline.length || systemNotice || link === 'reconnecting'}
-	<hx-div class="po-page hh-system-alert">
+	<hx-div class="po-page hh-page hh-system-alert">
 		<Notice as="div" className="po-notice" role="status" label="System alerts">
 			{#if offline.length}<hx-p>Offline: {offline.join(', ')}</hx-p>{/if}
 			{#if systemNotice}<hx-p>{systemNotice}</hx-p>{/if}

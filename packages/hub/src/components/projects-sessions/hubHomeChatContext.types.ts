@@ -1,3 +1,4 @@
+// @harness-uid u_afmcviqipo
 export interface HomeChatItemContext {
 	id: string;
 	title: string;

@@ -2,7 +2,7 @@
 	"name": "qw2gn5-compact-needs-you-chat",
 	"goal": "Prove Hub Home shows compact choices with details and typing in dialogs, opens Chief of Staff chat in a bottom-right desktop overlay or a full-screen phone sheet, and documents the list-card rule.",
 	"createdAt": "2026-11-27T12:11:15.548Z",
-	"updatedAt": "2026-11-27T12:26:13.061Z",
+	"updatedAt": "2026-11-27T12:44:30.044Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -32,6 +32,13 @@
 			"id": "verify",
 			"title": "Run the relevant project verification commands.",
 			"status": "pending"
+		},
+		{
+			"id": "expanded-acceptance",
+			"title": "Verify clickable links, collapsed Live overview, top alerts and the chat context contract",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:44:30.044Z",
+			"evidence": "Baseline ca74d34d2d: both link cases failed on the item title and both layout cases found four open project groups. f050e49010: 74 Hub browser cases and 17 Mac/paired-iPhone renderer cases passed on harbor-mbp-2. Hub cases use synthetic data and exercise URL targets, links independent of buttons, banners and default collapse. Native Projects uses a separate renderer. Link parsing and item-context payload tests passed."
 		}
 	],
 	"evaluators": [
