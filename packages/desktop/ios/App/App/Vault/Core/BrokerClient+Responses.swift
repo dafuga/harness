@@ -26,6 +26,7 @@ public struct PrivateBrowserOffer: Decodable, Equatable, Sendable {
     public let executor: String
     public let origin: String
     public let field: String
+    public let fields: [String]?
     public let action: String
     public let requestId: String
     public let expiresAt: Int64
@@ -33,6 +34,8 @@ public struct PrivateBrowserOffer: Decodable, Equatable, Sendable {
     let recipeDigest: String
     let runnerPublicKey: String
     let runnerFingerprint: String
+
+    var fieldNames: [String] { fields ?? [field] }
 
     var website: String {
         String(origin.dropFirst("https://".count))
@@ -46,7 +49,8 @@ public struct PrivateBrowserOffer: Decodable, Equatable, Sendable {
         guard expiresAt - now <= 90_000,
               UUID(uuidString: requestId)?.uuidString.lowercased() == requestId,
               recipeDigest.range(of: #"\A[0-9a-f]{64}\z"#, options: .regularExpression) != nil,
-              [executor, action, field, tabId].allSatisfy({
+              fields.map({ (2...8).contains($0.count) && Set($0).count == $0.count }) ?? true,
+              ([executor, action, field, tabId] + (fields ?? [])).allSatisfy({
                   $0.range(of: identifier, options: .regularExpression) != nil
               }),
               BrokerProtocol.fingerprint(key) == runnerFingerprint else { throw BrokerError.invalidRequest }
@@ -54,7 +58,17 @@ public struct PrivateBrowserOffer: Decodable, Equatable, Sendable {
     }
 
     func seal(_ value: String, now: Int64) throws -> Data {
-        var plaintext = Data(value.utf8)
+        try seal([value], now: now)
+    }
+
+    func seal(_ values: [String], now: Int64) throws -> Data {
+        guard values.count == fieldNames.count, values.allSatisfy({ !$0.isEmpty })
+        else { throw BrokerError.invalidCredential }
+        var plaintext = if fields != nil {
+            try JSONEncoder().encode(values)
+        } else {
+            Data(values[0].utf8)
+        }
         defer { plaintext.resetBytes(in: plaintext.startIndex..<plaintext.endIndex) }
         let key = try recipient(now: now)
         let sealed = try SecretEnvelope.seal(
@@ -69,7 +83,7 @@ public struct PrivateBrowserOffer: Decodable, Equatable, Sendable {
         let sealed: SecretEnvelope
 
         enum CodingKeys: String, CodingKey {
-            case executor, origin, field, action, requestId, expiresAt, tabId, recipeDigest, runnerFingerprint, sealed
+            case executor, origin, field, fields, action, requestId, expiresAt, tabId, recipeDigest, runnerFingerprint, sealed
         }
 
         func encode(to encoder: Encoder) throws {
@@ -77,6 +91,7 @@ public struct PrivateBrowserOffer: Decodable, Equatable, Sendable {
             try fields.encode(offer.executor, forKey: .executor)
             try fields.encode(offer.origin, forKey: .origin)
             try fields.encode(offer.field, forKey: .field)
+            try fields.encodeIfPresent(offer.fields, forKey: .fields)
             try fields.encode(offer.action, forKey: .action)
             try fields.encode(offer.requestId, forKey: .requestId)
             try fields.encode(offer.expiresAt, forKey: .expiresAt)

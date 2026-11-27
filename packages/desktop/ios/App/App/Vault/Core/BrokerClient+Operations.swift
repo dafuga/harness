@@ -71,10 +71,10 @@ extension BrokerClient {
     }
 
     /// The native caller confirms locally before providing the field. Only its sealed bytes are sent.
-    public func submitPrivateBrowserField(
-        _ value: String, for offer: PrivateBrowserOffer, sign: Sign
+    public func submitPrivateBrowserFields(
+        _ values: [String], for offer: PrivateBrowserOffer, sign: Sign
     ) async throws -> Bool {
-        let payload = try offer.seal(value, now: Int64(Date().timeIntervalSince1970 * 1_000))
+        let payload = try offer.seal(values, now: Int64(Date().timeIntervalSince1970 * 1_000))
         let reply: PrivateSubmitReply = try await authenticated(.privateBrowserSubmit, payload: payload, sign: sign)
         return reply.status == .completed
     }

@@ -59,8 +59,8 @@ extension VaultModel {
             && connection.pollGeneration == generation && connection.queueRevision == revision
     }
 
-    func submitPrivateField(
-        _ value: String, for offer: PrivateBrowserOffer, at connection: BrokerConnection
+    func submitPrivateFields(
+        _ values: [String], for offer: PrivateBrowserOffer, at connection: BrokerConnection
     ) async -> Bool {
         await perform(at: connection) {
             guard isCurrent(connection), connection.live(offer) else { throw BrokerError.expired }
@@ -70,7 +70,7 @@ extension VaultModel {
             guard isCurrent(connection), connection.live(offer) else { throw BrokerError.expired }
             do {
                 let api = try client(for: connection)
-                let completed = try await api.submitPrivateBrowserField(value, for: offer, sign: signer(for: connection))
+                let completed = try await api.submitPrivateBrowserFields(values, for: offer, sign: signer(for: connection))
                 connection.removePrivateOffer()
                 guard completed else { throw BrokerError.privateEntryUnavailable }
             } catch where Task.isCancelled {

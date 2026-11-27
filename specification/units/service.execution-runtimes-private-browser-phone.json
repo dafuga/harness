@@ -51,7 +51,7 @@
 				"name": "PrivateBrowserPhoneService.offer.scope",
 				"type": "PrivateBrowserFieldScope",
 				"required": true,
-				"description": "Reviewed executor, HTTPS origin, tab, field, recipe digest and action."
+				"description": "Reviewed executor, HTTPS origin, tab, form field or ordered field list, recipe digest and action."
 			},
 			{
 				"name": "PrivateBrowserPhoneService.challenge.proof",
@@ -69,7 +69,7 @@
 				"name": "PrivateBrowserPhoneService.submit.proof",
 				"type": "VaultProof",
 				"required": true,
-				"description": "An enrolled device proof signed for submission with the sealed field and every value bound by the offer."
+				"description": "An enrolled device proof signed for submission with the sealed values and every field and action bound by the offer."
 			}
 		],
 		"outputs": [
@@ -127,7 +127,7 @@
 						"name": "PrivateBrowserPhoneService.offer.scope",
 						"type": "PrivateBrowserFieldScope",
 						"required": true,
-						"description": "Reviewed executor, HTTPS origin, tab, field, recipe digest and action."
+						"description": "Reviewed executor, HTTPS origin, tab, form field or ordered field list, recipe digest and action."
 					}
 				],
 				"outputs": [
@@ -199,7 +199,7 @@
 						"name": "PrivateBrowserPhoneService.submit.proof",
 						"type": "VaultProof",
 						"required": true,
-						"description": "An enrolled device proof signed for submission with the sealed field and every value bound by the offer."
+						"description": "An enrolled device proof signed for submission with the sealed values and every field and action bound by the offer."
 					}
 				],
 				"outputs": [

@@ -39,6 +39,12 @@ const fieldScope = {
 		),
 	tabId: identifier,
 	field: identifier,
+	fields: z
+		.array(identifier)
+		.min(2)
+		.max(8)
+		.refine((names) => new Set(names).size === names.length)
+		.optional(),
 	recipeDigest: digest,
 	action: identifier
 };
@@ -86,7 +92,7 @@ export class PrivateBrowserPhoneService {
 			expiresAt: this.now() + deliveryMs
 		};
 		this.pending = { offer, scope: { ...scope }, deviceId, key };
-		return { ...offer };
+		return copyOffer(offer);
 	}
 
 	challenge(proof: VaultProof): VaultChallenge {
@@ -115,7 +121,7 @@ export class PrivateBrowserPhoneService {
 		) {
 			return undefined;
 		}
-		return { ...offer };
+		return copyOffer(offer);
 	}
 
 	async submit(proof: VaultProof): Promise<boolean> {
@@ -147,6 +153,10 @@ export class PrivateBrowserPhoneService {
 		if (this.now() >= offer.expiresAt) throw new ExpectedCliError('Private delivery expired.');
 		const plaintext = key.open(offer.requestId, sealed);
 		try {
+			if (scope.fields) {
+				const values = z.array(z.string().min(1)).length(scope.fields.length);
+				this.wire.json(values, plaintext, 'private fields');
+			}
 			await this.config.submitField(scope, plaintext, signal);
 		} finally {
 			plaintext.fill(0);
@@ -155,10 +165,17 @@ export class PrivateBrowserPhoneService {
 }
 
 function matchesOffer(
-	{ runnerPublicKey: _key, ...expected }: PrivateBrowserPhoneOffer,
+	{ runnerPublicKey: _key, fields, ...expected }: PrivateBrowserPhoneOffer,
 	actual: Omit<PrivateBrowserPhoneOffer, 'runnerPublicKey'>
 ): boolean {
-	return Object.entries(expected).every(
-		([field, value]) => actual[field as keyof typeof actual] === value
+	return (
+		JSON.stringify(fields) === JSON.stringify(actual.fields) &&
+		Object.entries(expected).every(
+			([field, value]) => actual[field as keyof typeof expected] === value
+		)
 	);
+}
+
+function copyOffer(offer: PrivateBrowserPhoneOffer): PrivateBrowserPhoneOffer {
+	return offer.fields ? { ...offer, fields: [...offer.fields] } : { ...offer };
 }

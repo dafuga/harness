@@ -34,8 +34,8 @@ final class FixtureBroker: DeviceBroker {
             return
         }
         importFixture = nil
-        if args.contains("--private-browser-entry") {
-            privateOffer = Self.browserOffer(publicKey: publicKey, now: now)
+        if args.contains("--private-browser-entry") || args.contains("--private-card-entry") {
+            privateOffer = Self.browserOffer(publicKey: publicKey, now: now, card: args.contains("--private-card-entry"))
             return
         }
         request = Self.releaseRequest(publicKey: publicKey, now: now, arguments: args)
@@ -45,24 +45,27 @@ final class FixtureBroker: DeviceBroker {
         privateOffer
     }
 
-    func submitPrivateBrowserField(
-        _ value: String, for offer: PrivateBrowserOffer, sign: BrokerClient.Sign
+    func submitPrivateBrowserFields(
+        _ values: [String], for offer: PrivateBrowserOffer, sign: BrokerClient.Sign
     ) async throws -> Bool {
         guard privateOffer == offer else { return false }
-        _ = try offer.seal(value, now: Int64(Date().timeIntervalSince1970 * 1_000))
+        _ = try offer.seal(values, now: Int64(Date().timeIntervalSince1970 * 1_000))
         privateOffer = nil
         return true
     }
 
-    private static func browserOffer(publicKey: Data, now: Int64) -> PrivateBrowserOffer {
+    private static func browserOffer(publicKey: Data, now: Int64, card: Bool) -> PrivateBrowserOffer {
+        let field = card ? "payment-details" : "verification-code"
+        let fields = card ? #", "fields": ["card-number", "expiration-date", "security-code"]"# : ""
+        let action = card ? "submit-payment-details" : "verify-account"
         let fixture = """
         {
             "requestId": "a52ed642-f0bf-4706-96f4-0ef87679ebdd",
             "executor": "fixture-executor",
             "origin": "https://accounts.example.test",
             "tabId": "fixture-tab",
-            "field": "verification-code",
-            "action": "verify-account",
+            "field": "\(field)"\(fields),
+            "action": "\(action)",
             "recipeDigest": "\(String(repeating: "a", count: 64))",
             "runnerPublicKey": "\(BrokerProtocol.base64url(publicKey))",
             "runnerFingerprint": "\(BrokerProtocol.fingerprint(publicKey))",

@@ -79,7 +79,9 @@ isolation before use with real cards, passwords or identity documents.
 
 - **Default entry.** The agent requests an approved card or password field.
   Harness on iPhone or Mac shows the website and action in its Credential Vault
-  form. Daniel confirms on the device with biometrics. Reuse the Vault’s enrolled
+  form. A reviewed form can bind several ordered fields such as payment details
+  and seal the complete input together. Daniel confirms on the device with
+  biometrics. Reuse the Vault’s enrolled
   device proof and sealed delivery. Bind the approval to the executor, request,
   tab, exact origin, reviewed field and action, and an expiry. A script in the
   executor fills and submits. Daniel can opt in to saving supported values in

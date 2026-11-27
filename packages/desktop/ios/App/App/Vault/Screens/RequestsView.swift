@@ -66,7 +66,7 @@ private struct PrivateBrowserReviewView: View {
     let connection: BrokerConnection
     let offer: PrivateBrowserOffer
     @Environment(\.dismiss) private var dismiss
-    @State private var value = ""
+    @State private var values: [String: String] = [:]
     @State private var submission: Task<Void, Never>?
     @State private var receipt = false
 
@@ -82,7 +82,7 @@ private struct PrivateBrowserReviewView: View {
                     if receipt {
                         Label("Private entry completed", systemImage: "checkmark.circle")
                     } else if connection.live(offer), model.isCurrent(connection) {
-                        entry.onDisappear { value = "" }
+                        entry.onDisappear { values = [:] }
                     } else {
                         Text("This private entry is no longer available.").foregroundStyle(.secondary)
                     }
@@ -97,29 +97,38 @@ private struct PrivateBrowserReviewView: View {
             }
         }
         .onDisappear {
-            value = ""
+            values = [:]
             submission?.cancel()
         }
     }
 
     private var entry: some View {
         Section("Secure input") {
-            ProtectedField(offer.field.replacingOccurrences(of: "-", with: " ").capitalized, text: $value, secure: true)
-                .frame(minHeight: 28)
-                .accessibilityIdentifier("private-browser-field")
+            ForEach(offer.fieldNames, id: \.self) { name in
+                ProtectedField(name.replacingOccurrences(of: "-", with: " ").capitalized,
+                               text: Binding(get: { values[name] ?? "" }, set: { values[name] = $0 }),
+                               secure: true)
+                    .frame(minHeight: 28)
+                    .accessibilityIdentifier(offer.fields == nil ? "private-browser-field" : "private-browser-field-\(name)")
+            }
             Button("Approve and submit", action: send)
                 .accessibilityIdentifier("submit-private-browser-field")
-                .disabled(value.isEmpty || value.utf8.count > 8_192 || submission != nil)
+                .disabled(!canSubmit || submission != nil)
             if submission != nil { ProgressView("Submitting") }
         }
         .disabled(model.workInProgress)
     }
 
+    private var canSubmit: Bool {
+        offer.fieldNames.allSatisfy { !(values[$0] ?? "").isEmpty }
+            && values.values.reduce(0) { $0 + $1.utf8.count } <= 8_192
+    }
+
     private func send() {
-        let field = value
-        value = ""
+        let submitted = offer.fieldNames.compactMap { values[$0] }
+        values = [:]
         submission = Task {
-            receipt = await model.submitPrivateField(field, for: offer, at: connection)
+            receipt = await model.submitPrivateFields(submitted, for: offer, at: connection)
             submission = nil
         }
     }
