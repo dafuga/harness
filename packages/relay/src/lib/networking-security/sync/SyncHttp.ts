@@ -1,5 +1,6 @@
 // @harness-uid u_7knh6lpstr
 import type {
+	EnrollmentAuthor,
 	EnrollmentDecision,
 	EnrollmentDisplay,
 	EnrollmentView
@@ -61,17 +62,18 @@ export class SyncHttp {
 
 	private async enroll(request: Request, id: string | undefined): Promise<Response> {
 		const now = this.deps.now();
-		if (request.method === 'GET') return this.readEnroll(id, now);
+		if (request.method === 'GET') return this.readEnroll(request, id, now);
 		if (request.method !== 'POST') return failure(405, 'method');
 		const body = await readJsonBody(request, false);
 		const by = body?.by,
 			text = body?.body;
 		if (typeof by !== 'string' || typeof text !== 'string' || text.length > syncLimits.stepBytes)
 			return failure(400, 'invalid');
+		const author = { device: by, owner: typeof body?.owner === 'string' ? body.owner : undefined };
 		if (id === undefined)
-			return this.openEnroll(by, text, now, body?.display as EnrollmentDisplay | undefined);
+			return this.openEnroll(author, text, now, body?.display as EnrollmentDisplay | undefined);
 		if (body?.decision) return this.decide(id, by, body.decision as EnrollmentDecision, now);
-		const appended = this.deps.enrollments.append(id, by, text, now);
+		const appended = this.deps.enrollments.append(id, author, text, now);
 		if (!appended) return failure(409, 'enrollment-unavailable');
 		const { step, created } = appended;
 		if (!created) return json(step);
@@ -86,7 +88,7 @@ export class SyncHttp {
 		return json({ denied: choice.kind === 'deny' }, created ? 201 : 200);
 	}
 
-	private readEnroll(id: string | undefined, now: number): Response {
+	private readEnroll(request: Request, id: string | undefined, now: number): Response {
 		if (id === undefined)
 			return json({
 				requests: this.deps.enrollments.pending(now).map((view) => ({
@@ -95,16 +97,17 @@ export class SyncHttp {
 				}))
 			});
 		const view = this.deps.enrollments.read(id, now);
-		return view ? json(transcript(view)) : failure(404, 'not-found');
+		if (!view || !mayRead(request.headers, view)) return failure(404, 'not-found');
+		return json(transcript(view));
 	}
 
 	private async openEnroll(
-		by: string,
+		author: EnrollmentAuthor,
 		body: string,
 		now: number,
 		display?: EnrollmentDisplay
 	): Promise<Response> {
-		const opened = this.deps.enrollments.open(by, body, now, display);
+		const opened = this.deps.enrollments.open(author, body, now, display);
 		if (!opened) return failure(429, 'too-many-requests');
 		if (!opened.created) return json(transcript(opened.view));
 		await this.deps.sweep();
@@ -115,4 +118,12 @@ export class SyncHttp {
 
 function transcript({ id, createdAt, steps, decision }: EnrollmentView) {
 	return { id, createdAt, steps, ...(decision === 'denied' ? { denied: true } : {}) };
+}
+
+function mayRead(headers: Headers, view: EnrollmentView): boolean {
+	return (
+		!view.owner ||
+		headers.get('X-Harness-Enrollment-Owner') === view.owner ||
+		headers.get('X-Harness-Enrollment-Reviewer') === 'active'
+	);
 }

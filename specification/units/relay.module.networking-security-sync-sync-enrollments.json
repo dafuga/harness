@@ -25,6 +25,7 @@
 			"EnrollStep",
 			"EnrollmentDisplay",
 			"EnrollmentDecision",
+			"EnrollmentAuthor",
 			"EnrollmentView",
 			"EnrollRow"
 		]
@@ -38,8 +39,8 @@
 				"required": true
 			},
 			{
-				"name": "SyncEnrollments.open.by",
-				"type": "string",
+				"name": "SyncEnrollments.open.author",
+				"type": "EnrollmentAuthor",
 				"required": true
 			},
 			{
@@ -98,8 +99,8 @@
 				"required": true
 			},
 			{
-				"name": "SyncEnrollments.append.by",
-				"type": "string",
+				"name": "SyncEnrollments.append.author",
+				"type": "EnrollmentAuthor",
 				"required": true
 			},
 			{
@@ -155,8 +156,8 @@
 				"name": "SyncEnrollments.open",
 				"inputs": [
 					{
-						"name": "SyncEnrollments.open.by",
-						"type": "string",
+						"name": "SyncEnrollments.open.author",
+						"type": "EnrollmentAuthor",
 						"required": true
 					},
 					{
@@ -267,8 +268,8 @@
 						"required": true
 					},
 					{
-						"name": "SyncEnrollments.append.by",
-						"type": "string",
+						"name": "SyncEnrollments.append.author",
+						"type": "EnrollmentAuthor",
 						"required": true
 					},
 					{

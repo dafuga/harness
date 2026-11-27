@@ -2,18 +2,20 @@ import type { EnrollmentDisplay } from '../../../../../relay/src/lib/networking-
 import type { SyncCall } from './syncPolicy.types';
 import { askAccount } from './syncAccount';
 import { requireEnrollmentApprover } from './syncDeviceSession';
-import { fromBase64Url } from './syncBase64';
+import { fromBase64Url, toBase64Url } from './syncBase64';
 import { isRecoverableAccount } from './syncRecovery';
 import { readSyncJson, syncProblem } from './syncHttp';
 
 const stepBytes = 4 * 1024;
+const utf8 = new TextEncoder();
 
 /** Passes the enrollment protocol's public fields to the account mailbox. */
 export async function enroll(call: SyncCall): Promise<Response> {
 	const id = call.parts[1];
 	if (id !== undefined && !isEnrollmentId(id)) return syncProblem(400, 'invalid-input');
 	const path = id === undefined ? '/enroll' : `/enroll/${id}`;
-	if (call.request.method === 'GET') return forward(call, path);
+	if (call.request.method === 'GET')
+		return id === undefined ? forward(call, path) : readOne(call, path);
 	const value = await readSyncJson(call.request, stepBytes);
 	if (!isObject(value)) return syncProblem(400, 'invalid-input');
 	const display = id === undefined ? approvalDisplay(call.request, value.platform) : undefined;
@@ -31,15 +33,38 @@ export async function enroll(call: SyncCall): Promise<Response> {
 			: 'approver' in value
 				? { approver: value.approver, nonce: value.nonce }
 				: value;
+	const recoverable = id === undefined && (await isRecoverableAccount(call));
+	const bound = recoverable || (id !== undefined && typeof value.nonce === 'string');
 	return forward(call, path, {
 		method: 'POST',
 		body: JSON.stringify({
 			by: call.device,
 			body: JSON.stringify(body),
-			display: display && (await isRecoverableAccount(call)) ? display : undefined,
+			display: recoverable ? display : undefined,
+			owner: bound ? await requesterBinding(call) : undefined,
 			decision: value.deny === true ? { kind: 'deny' } : undefined
 		})
 	});
+}
+
+async function readOne(call: SyncCall, path: string): Promise<Response> {
+	const approved = !(await requireEnrollmentApprover(call, true));
+	return forward(call, path, {
+		headers: {
+			'X-Harness-Enrollment-Owner': await requesterBinding(call),
+			'X-Harness-Enrollment-Reviewer': approved ? 'active' : 'none'
+		}
+	});
+}
+
+/** The relay receives a derived requester binding, never a Google credential or session hash. */
+async function requesterBinding(call: SyncCall): Promise<string> {
+	const fields = JSON.stringify([call.account, call.device, call.sessionHash]);
+	const hash = await crypto.subtle.digest(
+		'SHA-256',
+		utf8.encode('harness/enrollment-owner/v1:' + fields)
+	);
+	return toBase64Url(new Uint8Array(hash));
 }
 
 export function isEnrollmentId(value: unknown): value is string {

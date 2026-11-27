@@ -117,7 +117,9 @@ names are sealed after enrollment. Retrying the same opening preserves the
 first display details. Individual mailbox reads and live announcements do
 not include the platform or country.
 On recoverable accounts, claiming and acknowledging require a current
-device-bound admin session. The iPhone keeps polling its account while it
+device-bound admin session. The individual request is readable by its
+opening session and the account's enrolled admins. The reveal belongs to the
+requesting device and session. The iPhone keeps polling its account while it
 shows the comparison code and withholds protected reads until admission.
 The reviewing client pins the opening before claiming it, checks the reveal
 against that commitment, and presents the comparison code. After local user

@@ -104,6 +104,12 @@ async function requestEnrollment(candidate: Awaited<ReturnType<typeof bootstrapC
 		}
 	});
 	expect(claimed.status).toBe(201);
+	const other = 'session-a-secondary';
+	expect((await fixture.call(other, 'GET', path, { headers })).status).toBe(404);
+	const nonceFields = { nonce: toBase64Url(nonce) };
+	expect((await fixture.call(other, 'POST', path, { headers, body: nonceFields })).status).toBe(
+		409
+	);
 	expect(
 		(await fixture.call(requester, 'POST', path, { headers, body: { nonce: toBase64Url(nonce) } }))
 			.status

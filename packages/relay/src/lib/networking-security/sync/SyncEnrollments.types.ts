@@ -16,12 +16,19 @@ export type EnrollmentDecision =
 	| { kind: 'deny' }
 	| { kind: 'publish'; hash: string; recipient: string; kemPublic: string; signingPublic: string };
 
+export interface EnrollmentAuthor {
+	device: string;
+	owner?: string;
+}
+
 export interface EnrollmentView {
 	id: string;
 	createdAt: number;
 	steps: EnrollStep[];
 	display?: EnrollmentDisplay;
 	decision?: string;
+	/** Hub-derived installation and requesting session binding. Never sent to an app. */
+	owner?: string;
 }
 
 export interface EnrollRow extends Record<string, SqlStorageValue> {
@@ -30,4 +37,5 @@ export interface EnrollRow extends Record<string, SqlStorageValue> {
 	steps: string;
 	display: string | null;
 	decision: string | null;
+	owner: string | null;
 }
