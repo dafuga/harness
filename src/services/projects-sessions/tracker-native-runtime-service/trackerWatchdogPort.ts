@@ -54,16 +54,20 @@ const minute = 60_000;
 const cosInterval = 30 * minute;
 const backlogInterval = 5 * minute;
 
-/** The pane input refuses long messages, so the slot lines take only the room that is left. */
-const cosMessageLimit = 5000;
+/** Leave a visible Claude composer in the 80x24 CoS pane, including receipt references. */
+const cosMessageLimit = 720;
+const cosAlertLineLimit = 112;
+const rowSeparator = ' | ';
 
-function cosMessage(message: string, alerts: readonly TrackerWatchdogAlert[]) {
+function cosMessage(alerts: readonly TrackerWatchdogAlert[]) {
+	const message = cosSummary(alerts);
 	const slots = new Map(
 		alerts.flatMap(({ host, slots }) => (slots ? [[host, plain(slots)] as const] : []))
 	);
 	if (!slots.size) return message;
 	const lines = [...slots].map(([host, line]) => `${host}: ${line}`);
-	return `${message} || Slots by computer: ${lines.join(' || ')}`.slice(0, cosMessageLimit);
+	const withSlots = `${message} || Slots by computer: ${lines.join(' || ')}`;
+	return Buffer.byteLength(withSlots) <= cosMessageLimit ? withSlots : message;
 }
 
 function plain(text: string) {
@@ -98,8 +102,7 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 				return false;
 			const panes = await tmux.scan(signal, /^cos$/);
 			if (panes.length !== 1) return false;
-			const summary = cosSummary(alerts);
-			const message = cosMessage(summary, alerts);
+			const message = cosMessage(alerts);
 			const sent = await tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
 			if (sent) nextCosTick = now + (queue?.backlog ? backlogInterval : cosInterval);
 			return sent;
@@ -109,13 +112,25 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 
 function cosSummary(alerts: readonly TrackerWatchdogAlert[]) {
 	const references = alerts.map(cosReceiptReference).join(',');
-	return (
+	const prefix =
 		'Tracker watchdog alerts for Chief of Staff. Review these items. ' +
-		`Watchdog receipts: ${references} || ` +
-		alerts.map(cosAlertLine).join(' | ')
-	);
+		`Watchdog receipts: ${references} || `;
+	const available =
+		cosMessageLimit - Buffer.byteLength(prefix) - (alerts.length - 1) * rowSeparator.length;
+	const lineBudget = Math.min(cosAlertLineLimit, Math.floor(available / alerts.length));
+	return prefix + alerts.map((alert) => cosPromptLine(alert, lineBudget)).join(rowSeparator);
 }
 
+function cosPromptLine(alert: TrackerWatchdogAlert, budget: number) {
+	const full = cosAlertLine(alert);
+	if (Buffer.byteLength(full) <= budget) return full;
+	const id = `[${alert.item_id.slice(0, 6)}] `;
+	const sentence = /^.*?[.!?](?=\s|$)/u.exec(plain(alert.reason).trim())?.[0];
+	if (sentence && Buffer.byteLength(id + sentence) <= budget) return id + sentence;
+	return id + 'See the full alert in Tracker.';
+}
+
+/** Rendered rows from before references and the composer budget are used to recover old receipts. */
 function cosAlertLine({ item_id, host, reason }: TrackerWatchdogAlert) {
 	return `[${item_id.slice(0, 6)}] ${host}: ${plain(reason).slice(0, 500)}`;
 }

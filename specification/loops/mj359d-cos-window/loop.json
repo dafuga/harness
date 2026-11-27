@@ -2,7 +2,7 @@
 	"name": "mj359d-cos-window",
 	"goal": "Fit the recorded oversized watchdog batch into the 80x24 CoS composer and deliver the next alert.",
 	"createdAt": "2026-11-27T16:46:13.334Z",
-	"updatedAt": "2026-11-27T16:46:15.438Z",
+	"updatedAt": "2026-11-27T16:47:40.970Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,12 +25,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T16:47:39.167Z",
+			"evidence": "The committed 80x24 fixture accepts the paste into the scrolled draft, then records zero Enter presses. The unchanged regression requires one."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T16:47:40.970Z",
+			"evidence": "Bound the complete message, including receipt references, to 720 bytes. Render oversized rows as item references and a short sentence, and include only slot detail that fits."
 		},
 		{
 			"id": "green",
