@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/remote/src/utils/networking-security/sealedGrant.ts"],
-		"symbols": ["sealedGrantInfo", "sealedGrant", "openSealedGrant"]
+		"symbols": ["sealedGrantInfo", "sealedGrant", "openSealedGrant", "rewrapSealedGrant"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -55,6 +55,26 @@
 				"type": "SealedChainState",
 				"required": true,
 				"description": "Verified chain state supplying the account, scope grant, and key commitment."
+			},
+			{
+				"name": "rewrapSealedGrant.grant",
+				"type": "SealedGrant",
+				"required": true
+			},
+			{
+				"name": "rewrapSealedGrant.self",
+				"type": "SealedDeviceKeys",
+				"required": true
+			},
+			{
+				"name": "rewrapSealedGrant.chain",
+				"type": "SealedChainState",
+				"required": true
+			},
+			{
+				"name": "rewrapSealedGrant.recipient",
+				"type": "Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -164,12 +184,40 @@
 						"description": "Imported scope keys whose commitment matches the verified chain."
 					}
 				],
-				"errors": [
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "rewrapSealedGrant",
+				"inputs": [
 					{
-						"name": "SealedError",
-						"type": "thrown"
+						"name": "rewrapSealedGrant.grant",
+						"type": "SealedGrant",
+						"required": true
+					},
+					{
+						"name": "rewrapSealedGrant.self",
+						"type": "SealedDeviceKeys",
+						"required": true
+					},
+					{
+						"name": "rewrapSealedGrant.chain",
+						"type": "SealedChainState",
+						"required": true
+					},
+					{
+						"name": "rewrapSealedGrant.recipient",
+						"type": "Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>",
+						"required": true
 					}
 				],
+				"outputs": [
+					{
+						"name": "rewrapSealedGrant",
+						"type": "Promise<SealedGrant>"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			}
 		],

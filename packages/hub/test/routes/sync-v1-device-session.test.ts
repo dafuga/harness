@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
 import { sealedDevice } from '../../../remote/src/utils/networking-security/sealedDevice';
 import { toBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
+import { readSealedDeviceSession } from '../../../remote/src/utils/networking-security/readSealedDeviceSession';
 import { bootstrapCandidate } from '../support/syncBootstrapCandidate';
 import { startSync } from '../support/syncFixture';
 import type { SyncFixture } from '../support/syncFixture.types';
@@ -64,8 +65,15 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	const body = { challenge: challenge.challenge, signature: toBase64Url(new Uint8Array(sig)) };
 	const copied = await fixture.call(otherSession, 'POST', 'device-session', { headers, body });
 	expect(await snapshot(copied)).toEqual({ status: 403, body: { error: 'device-proof-denied' } });
-	const approved = await fixture.call(session, 'POST', 'device-session', { headers, body });
-	expect(await snapshot(approved)).toEqual({ status: 200, body: { state: 'approved' } });
+	const approved = await readSealedDeviceSession(
+		(path, init) =>
+			fetch(fixture.origin + path, {
+				...init,
+				headers: { ...init.headers, 'X-Test-Session': session }
+			}),
+		device
+	);
+	expect(approved).toBe('approved');
 	const held = await fixture.call(session, 'GET', 'device-session', { headers });
 	expect(await snapshot(held)).toEqual({ status: 200, body: { state: 'approved' } });
 	expect((await fixture.call(session, 'GET', path, { headers })).status).toBe(200);

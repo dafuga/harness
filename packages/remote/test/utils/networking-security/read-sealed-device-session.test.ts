@@ -1,7 +1,11 @@
 import { expect, test } from 'vitest';
 import { readSealedDeviceSession } from '../../../src/utils/networking-security/readSealedDeviceSession';
 import { sealedDevice } from '../../../src/utils/networking-security/sealedDevice';
-import { fromBase64Url, toBase64Url } from '../../../src/utils/networking-security/remoteBytes';
+import {
+	cryptoSource,
+	fromBase64Url,
+	toBase64Url
+} from '../../../src/utils/networking-security/remoteBytes';
 
 test('readSealedDeviceSession reports waiting without posting an approval', async () => {
 	const device = await sealedDevice();
@@ -26,7 +30,7 @@ test('readSealedDeviceSession signs a challenge for the same path and returns th
 		const valid = await crypto.subtle.verify(
 			{ name: 'ECDSA', hash: 'SHA-256' },
 			device.signing.publicKey,
-			fromBase64Url(body.signature),
+			cryptoSource(fromBase64Url(body.signature)),
 			new TextEncoder().encode('harness/sealed/v1/session\0' + challenge)
 		);
 		expect(valid).toBe(true);

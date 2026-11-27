@@ -65,7 +65,8 @@
 			"sealedChainEntry",
 			"sealedChain",
 			"sealedSas",
-			"sealedRecovery"
+			"sealedRecovery",
+			"readSealedDeviceSession"
 		]
 	},
 	"contract": {
@@ -78,6 +79,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "remote.function.networking-security-read-sealed-device-session",
+			"via": "reexport",
+			"origin": "derived"
+		},
 		{
 			"unit": "remote.function.networking-security-sealed-chain",
 			"via": "reexport",
