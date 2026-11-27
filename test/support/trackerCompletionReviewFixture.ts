@@ -5,7 +5,6 @@ import { onTestFinished, vi } from 'vitest';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../src/repositories/projects-sessions/TrackerRunReadRepository';
-import * as launchEligibility from '../../src/services/agents-providers/tracker-dispatcher-service/launchEligibility';
 import { idleHostResources } from './trackerHostResourceFixture';
 import { managedFixtureBindings } from './trackerManagedProcessFixture';
 import type { TemporaryRepo } from './temporary.types';
@@ -22,12 +21,9 @@ export function completionReviewFixture({ root, git }: TemporaryRepo, verify?: s
 	const database = new DatabaseSync(':memory:');
 	const platform = Object.getOwnPropertyDescriptor(process, 'platform')!;
 	const lifetimes: AbortController[] = [];
-	// Automatic retries run on the real clock here; the 22:00-08:00 Lisbon launch hold would stall them.
-	const dayHours = vi.spyOn(launchEligibility, 'automaticQuietHour').mockReturnValue(false);
 	onTestFinished(() => {
 		for (const lifetime of lifetimes) lifetime.abort();
 		database.close();
-		dayHours.mockRestore();
 	});
 	const boot = () => {
 		const lifetime = new AbortController();
