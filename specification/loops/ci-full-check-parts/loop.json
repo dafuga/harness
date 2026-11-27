@@ -2,7 +2,7 @@
 	"name": "ci-full-check-parts",
 	"goal": "Harness CI Full check finishes well inside its time limit: it runs as parallel parts that together cover every check step, and one aggregate job fails unless all pass",
 	"createdAt": "2026-11-27T08:41:12.062Z",
-	"updatedAt": "2026-11-27T09:06:06.038Z",
+	"updatedAt": "2026-11-27T09:50:55.884Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -53,7 +53,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T09:50:55.884Z",
+			"evidence": "Completed with HEAD at fix commit 3f5c44094b (its recorded green proof); eff780de07 differs from it only in loop and bug-class metadata. CI pull_request run 45971008506 at eff780de07 (0 behind origin/main): all 6 parts and the 'Full check' gate (job 140425100941) passed, covering all 24 stages. Wall time: static-unit 29m14s, e2e-1 21m31s, e2e-2 30m00s, package 18m13s, desktop 21m00s, apps 16m21s; gate done 30m06s after parts started; each part under its 60m limit. e2e shards 46+45 = 91 files = the 91 unique files in test:e2e; summed 86 files passed/5 skipped, 335 tests passed/24 skipped (359), identical to unsharded passing job 140349985966. This session: ci-native-verify 9/9, units check and audit passed locally. A full local bun run check was not run; CI is the full-check proof. No UI path affected. macOS 'Verify the exact commit' was queued; it is outside this change and the gate."
 		}
 	],
 	"evaluators": [
