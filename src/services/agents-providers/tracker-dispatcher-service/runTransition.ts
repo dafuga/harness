@@ -67,12 +67,18 @@ function adoptSession(
 			failure_reason: null,
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
 		}),
-		run.launch_source === 'recovery' &&
-			snapshot.item?.status === 'open' &&
-			snapshot.item.launch?.token === run.auto_token
-			? { status: 'in_progress' }
-			: undefined
+		recoveryStarted(snapshot.item, run)
 	);
+}
+
+function recoveryStarted(item: TrackerDispatchSnapshot['item'], run: TrackerRunReceipt) {
+	if (
+		run.launch_source === 'recovery' &&
+		item?.status === 'open' &&
+		item.launch?.token === run.auto_token
+	)
+		return { status: 'in_progress' as const };
+	return undefined;
 }
 
 function recordStartupFailure(

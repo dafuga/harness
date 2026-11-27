@@ -14,7 +14,7 @@ import { trackerSessionItemPrefix } from '../tracker-local-api-service/trackerLo
 import { runSessionName } from './trackerFinishedSessions';
 import { readTrackerSlotState } from './trackerSlotInvariants';
 import { trackerProviderHold } from './trackerProviderHolds';
-import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
+import { blockMissingItem, recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from './trackerHostWatchdogState';
 import { trackerSessionHealth } from './trackerSessionHealth';
 import { flagRecoveryError, recoverTrackerSession } from './trackerSessionRecovery';
@@ -105,16 +105,7 @@ async function publishIssue(
 ) {
 	const candidate = items.find(({ id, deleted }) => id === issue.item_id && !deleted);
 	const item = candidate && new TrackerItemReadRepository(store.database).getStored(candidate.id);
-	const stuck = launch && item?.launch_source === 'recovery' && issue.kind === 'launch-stuck';
-	if (item && issue.blockReason) {
-		if (candidate && candidate.auto === item.auto && candidate.updated_at === item.updated_at)
-			blockMissingItem(store, item, issue.blockReason);
-		return;
-	}
-	if (stuck && !recoveryProviderHold(store, item.id, now)) {
-		flagRecoveryError(store, item, now, issue.reason);
-		return;
-	}
+	if (resolveRecoveryHold(store, { item, candidate, launch }, issue, now)) return;
 	const recovery =
 		issue.recover && item && launch
 			? await recoverTrackerSession(store, { item, launch, now })
@@ -123,29 +114,25 @@ async function publishIssue(
 	publishHealthNote(store, issue, { item, recovery, now });
 }
 
-function blockMissingItem(store: TrackerPersistenceService, item: TrackerItem, reason: string) {
-	return store.commitLocal(() => {
-		if (
-			item.status !== 'in_progress' &&
-			!(item.status === 'open' && item.launch_source === 'recovery')
-		)
-			return { result: false };
-		const history = new TrackerRunReadRepository(store.database, store.node).list({
-			itemId: item.id
-		});
-		if (history.some(({ state }) => state !== 'finished')) return { result: false };
-		return {
-			result: true,
-			operation: {
-				itemId: item.id,
-				fields: {
-					status: 'blocked',
-					blocked_reason: reason,
-					'note+': `Tracker recovery held: ${reason}`
-				}
-			}
-		};
-	});
+function resolveRecoveryHold(
+	store: TrackerPersistenceService,
+	{
+		item,
+		candidate,
+		launch
+	}: { item?: TrackerItem; candidate?: TrackerItem; launch?: TrackerWatchdogLaunch },
+	issue: TrackerSessionHealthIssue,
+	now: number
+) {
+	if (!item) return false;
+	if (issue.blockReason) {
+		blockMissingItem(store, { item, candidate, reason: issue.blockReason });
+		return true;
+	}
+	if (!launch || item.launch_source !== 'recovery' || issue.kind !== 'launch-stuck') return false;
+	if (recoveryProviderHold(store, item.id, now)) return false;
+	flagRecoveryError(store, item, now, issue.reason);
+	return true;
 }
 
 /** A relaunch waiting for its provider is held, not stuck. */

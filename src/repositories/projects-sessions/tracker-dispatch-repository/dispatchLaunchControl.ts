@@ -11,6 +11,7 @@ import {
 import { finishRun } from '../../../services/agents-providers/tracker-dispatcher-service/runReceipt';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 import { TrackerItemReadRepository } from '../TrackerItemReadRepository';
+import { canBlockStoppedRun } from './dispatchItemFields';
 import { managedDispatchRuns, persistDispatchRun } from './dispatchRunRows';
 
 const automaticStartsKey = 'harness_automatic_launch_slots';
@@ -100,41 +101,34 @@ function trackerStopControl(
 			return { item: items.getStored(itemId), run };
 		},
 		finishStoppedRun(run: TrackerRunReceipt) {
-			store.commitLocal(() => {
-				const { item, runs, openSession, activeSessionKeys } = snapshot(run.item_id);
-				const current = runs.find(
-					(entry) => entry.id === run.id && entry.node === node && entry.revision === run.revision
-				);
-				if (current && current.revision >= 0 && stoppable(current)) {
-					persistDispatchRun(
-						store,
-						finishRun(current, {
-							outcome: 'abandoned',
-							reason: 'stopped by operator',
-							now: now()
-						}),
-						node
-					);
-					if (
-						item?.status === 'in_progress' &&
-						!item.launch &&
-						item.scheduleOff &&
-						!openSession &&
-						!activeSessionKeys?.length &&
-						!runs.some((entry) => entry !== current && entry.state !== 'finished')
-					)
-						return {
-							result: undefined,
-							operation: {
-								itemId: run.item_id,
-								fields: { status: 'blocked', blocked_reason: 'stopped by operator' }
-							}
-						};
-				}
-				return { result: undefined };
-			});
+			return finishStoppedDispatch(store, () => snapshot(run.item_id), run, { node, now });
 		}
 	};
+}
+
+function finishStoppedDispatch(
+	store: TrackerPersistenceService,
+	read: () => TrackerDispatchSnapshot,
+	run: TrackerRunReceipt,
+	{ node, now }: { node: string; now: () => number }
+) {
+	store.commitLocal(() => {
+		const snapshot = read();
+		const current = snapshot.runs.find(
+			(entry) => entry.id === run.id && entry.node === node && entry.revision === run.revision
+		);
+		if (!current || current.revision < 0 || !stoppable(current)) return { result: undefined };
+		const reason = 'stopped by operator';
+		persistDispatchRun(
+			store,
+			finishRun(current, { outcome: 'abandoned', reason, now: now() }),
+			node
+		);
+		const operation = canBlockStoppedRun(snapshot, current)
+			? { itemId: run.item_id, fields: { status: 'blocked', blocked_reason: reason } }
+			: undefined;
+		return { result: undefined, operation };
+	});
 }
 
 function canDelegate({ item, runs }: TrackerDispatchSnapshot, node: string, token: string) {

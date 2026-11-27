@@ -37,8 +37,8 @@ export async function recoverTrackerSession(
 	const latest = history.filter(({ node }) => node === store.node).at(-1);
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = recoveryBudget(store, { key, latest, item });
-	const held = latest && trackerProviderHold(store, latest.cli, now);
-	if (held && state.token && state.token !== latest?.auto_token) {
+	const held = legacyProviderHold(store, { latest, state, now });
+	if (held) {
 		// A pending legacy request keeps its budget while its provider is unavailable.
 		saveRecovery(store, key, { ...state, requestedAt: now });
 		return `Tracker relaunch is waiting: ${held}.`;
@@ -54,6 +54,14 @@ export async function recoverTrackerSession(
 			'The prior session has no verified model.'
 		);
 	return submitRecovery(store, { item, key, state, launch }, { now, rung });
+}
+
+function legacyProviderHold(
+	store: TrackerPersistenceService,
+	{ latest, state, now }: { latest?: TrackerListedRun; state: TrackerRecoveryState; now: number }
+) {
+	if (!latest || !state.token || latest.auto_token === state.token) return null;
+	return trackerProviderHold(store, latest.cli, now);
 }
 
 async function submitRecovery(

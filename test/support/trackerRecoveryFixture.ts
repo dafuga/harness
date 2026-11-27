@@ -85,8 +85,7 @@ async function proveRecovery(root: string) {
 		writeFileSync(join(root, 'reject-boot'), '');
 		runtime = makeRuntime();
 		await verifyFailureBudget({ id, watchdog, items, database });
-		const rejectBoot = join(root, 'reject-boot');
-		unlinkSync(rejectBoot);
+		unlinkSync(join(root, 'reject-boot'));
 		await verifyStoppedRun(runtime, { dispatch, tmux, watchdog });
 		await verifyKilledReminder(runtime, { dispatch, tmux, watchdog });
 	} finally {
@@ -160,7 +159,7 @@ async function waitForRecoveryCapacity(
 		.toEqual({ state: 'running' });
 	for (let step = 0; step < 4; step++) await watchdog(11 * minute);
 	const waiting = new TrackerItemReadRepository(database).getStored(id);
-	expect(waiting.needs_daniel).toBe(false);
+	expect(waiting).toMatchObject({ status: 'open', needs_daniel: false });
 	expect(waiting.notes_log.some(({ text }) => /Relaunch [0-9]+\/3 failed:/.test(text))).toBe(false);
 	expect(
 		database.prepare('SELECT id, state FROM runs WHERE item_id = ? ORDER BY id').all(id)
@@ -168,7 +167,6 @@ async function waitForRecoveryCapacity(
 		{ id: 1, state: 'finished' },
 		{ id: 3, state: 'queued' }
 	]);
-	expect(waiting.status).toBe('open');
 	expect((await managedTrackerItemRequest(runtime, occupantId, 'done')).ok).toBe(true);
 	tmux('kill-session', '-t', '=auto-occupy-r2');
 }

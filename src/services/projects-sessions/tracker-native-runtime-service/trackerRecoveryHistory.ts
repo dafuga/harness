@@ -100,8 +100,20 @@ export function recoveryHold(
 	if (latest.failure_reason === 'stopped by operator' && item.schedule_off)
 		return latest.failure_reason;
 	if (stored) return stored;
-	const authorized = Math.max(changedAt, Date.parse(item.answered_at ?? '') || 0);
+	return previousRunHold(latest, changedAt, item.answered_at);
+}
+
+function previousRunHold(latest: TrackerListedRun, changedAt: number, answeredAt: string | null) {
+	const authorized = Math.max(changedAt, Date.parse(answeredAt ?? '') || 0);
 	if (latest.outcome === 'blocked' && authorized < (latest.ended_at ?? 0))
 		return latest.failure_reason ?? 'The previous run was blocked';
 	return finalReportHold(latest, authorized);
+}
+
+export function hasRecoveryBrief(item: TrackerItem, latest?: TrackerListedRun) {
+	if (!item.title) return false;
+	return (
+		[item.notes, item.adapter_instructions, latest, item.auto].some(Boolean) ||
+		item.notes_log.some(({ text }) => /^stopped:|\b(?:hand|manually)[ -]launched\b/i.test(text))
+	);
 }

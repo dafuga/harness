@@ -25,19 +25,24 @@ export function recoveryIntent(
 	policy: TrackerDispatchPolicy,
 	now: number
 ): TrackerDispatchDecision {
-	if (item.status !== 'in_progress' && item.launch?.source !== 'recovery')
+	if (!recoveringItem(item))
 		return skip('ignored', 'item or automatic launch policy changed during recovery');
 	const hold = automaticRequestHold(item, policy, now);
 	if (hold) return skip('held', hold);
 	if (item.launch?.token === request.token)
 		return { result: { status: 'existing', intent: item.launch } };
-	if (
-		(item.launch?.token ?? null) !== request.expectedAuto ||
-		hasOpenSession(snapshot, policy, now)
-	)
+	if (!matchesRecoveryIntent(item, request.expectedAuto) || hasOpenSession(snapshot, policy, now))
 		return skip('conflict', 'item or session state changed during recovery');
 	if (pendingIntent(item, snapshot)) return skip('conflict', 'launch is already pending');
 	return queueRecovery(snapshot, { item, request }, policy, now);
+}
+
+function matchesRecoveryIntent(item: TrackerDispatchItem, expected: string | null) {
+	return (item.launch?.token ?? null) === expected;
+}
+
+function recoveringItem(item: TrackerDispatchItem) {
+	return item.status === 'in_progress' || item.launch?.source === 'recovery';
 }
 
 function queueRecovery(
