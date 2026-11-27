@@ -2,7 +2,7 @@
 	"name": "krpaz8-signed-in-projects",
 	"goal": "A signed-in Mac home lists Tracker and Hub projects, retains healthy sources, opens projects directly, and keeps Needs you accessible.",
 	"createdAt": "2026-11-27T18:13:38.879Z",
-	"updatedAt": "2026-11-27T18:16:06.489Z",
+	"updatedAt": "2026-11-27T18:59:16.135Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,7 +27,9 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:59:16.135Z",
+			"evidence": "The unchanged narrowed unit tests reject the 503 owner response, discarded local list and unguarded local Home request on red commit 38bd6dc67c. The unchanged browser regression on harbor-mbp-2 found no Tracker project."
 		},
 		{
 			"id": "implement",
