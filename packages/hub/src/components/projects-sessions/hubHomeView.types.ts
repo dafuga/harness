@@ -61,6 +61,14 @@ export type ChangeSession = (id: string, add: boolean) => Promise<void>;
 export type SendHomeChat = (message: HomeChatInput) => Promise<HomeChatReceipt>;
 export type ReadHomeProject = (projectId: string) => Promise<ProjectSnapshot>;
 
+export interface HomeCardsProps {
+	view: HomeView;
+	open: OpenHomeSection;
+	send: SendHomeChat;
+	receipt: (id: string) => Promise<HomeChatReceipt>;
+	needsOnly?: boolean;
+}
+
 export interface ReadHomeResult {
 	granted: boolean;
 	snapshot: OwnerHomeSnapshot | null;

@@ -128,9 +128,7 @@
 			{/if}
 		</hx-p>
 	</hx-header>
-
 	{#if notice}<hx-p class="meta" role="status">{notice}</hx-p>{/if}
-
 	{#if loadFailure}
 		<hx-p class="meta" role="status">{loadFailure}</hx-p>
 	{:else if overview && selected}

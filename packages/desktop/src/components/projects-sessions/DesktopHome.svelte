@@ -27,7 +27,6 @@
 	import { ProjectSyncService } from '../../services/projects-sessions/ProjectSyncService';
 	import { desktopHomeView } from '../../utils/projects-sessions/desktopHomeView';
 	import GameCreate from '../game-authoring/GameCreate.svelte';
-
 	let {
 		workspace,
 		accountName,
@@ -63,9 +62,7 @@
 			detail?.value?.flag?.attachments?.find(({ id }) => id === attachment.id)?.content ?? null
 		);
 	});
-
 	const view = $derived(desktopHomeView(home, workspace, settled, now));
-
 	async function refresh() {
 		const snapshot = await workspace.bridge?.homeSnapshot?.().catch(() => null);
 		if (!active) return;
@@ -73,7 +70,6 @@
 		settled = true;
 		now = Date.now();
 	}
-
 	const send: SendHomeChat = async (input) => {
 		const result = (await workspace.bridge?.homeChat?.(input)) ?? {
 			id: input.id,

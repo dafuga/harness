@@ -142,14 +142,12 @@
 		const dialog = selected !== null;
 		return { asks: view.openAsks, openAsk: cosChat.openAsk, close, dialog, reload: refresh };
 	});
-
 	function open(section: HomeSection, id?: string) {
 		if (!selected)
 			opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 		agentId = id;
 		selected = section;
 	}
-
 	function close() {
 		const target = opener;
 		selected = null;

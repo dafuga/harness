@@ -2,7 +2,7 @@
 	"name": "krpaz8-signed-in-projects",
 	"goal": "A signed-in Mac home lists Tracker and Hub projects, retains healthy sources, opens projects directly, and keeps Needs you accessible.",
 	"createdAt": "2026-11-27T18:13:38.879Z",
-	"updatedAt": "2026-11-27T18:59:16.135Z",
+	"updatedAt": "2026-11-27T19:02:12.513Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T19:02:07.858Z",
+			"evidence": "Owner-only Hub fallback, independent source reads, the signed-in Mac Home and Needs you use of Hub components, and the admitted native Home transport are implemented. The red source lacked the Home port."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T19:02:12.513Z",
+			"evidence": "Same unit tests, command and captured environment passed at the repair commit. The isolated app browser test on harbor-mbp-2 passed project opening, Needs you navigation, partial-source failure and sign-out."
 		},
 		{
 			"id": "siblings",

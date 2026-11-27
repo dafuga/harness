@@ -24,8 +24,7 @@
 		warningLabel
 	} from './hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
-	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
-	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
+	import type { HomeCardsProps } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import { homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
@@ -34,19 +33,7 @@
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
-	let {
-		view,
-		open,
-		send,
-		receipt,
-		needsOnly = false
-	}: {
-		view: HomeView;
-		open: OpenHomeSection;
-		send: SendHomeChat;
-		receipt: (id: string) => Promise<HomeChatReceipt>;
-		needsOnly?: boolean;
-	} = $props();
+	let { view, open, send, receipt, needsOnly = false }: HomeCardsProps = $props();
 	const cosChat = homeCosChat() ?? provideHomeCosChat();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
 	const recipient = $derived(currentAgent(view.agents ?? []));
