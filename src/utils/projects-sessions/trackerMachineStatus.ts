@@ -21,6 +21,15 @@ export const trackerBusyLoadPerCore = 1;
 
 const overloadLoadPerCore = 1.5;
 
+/** New work waits when the current load breaches the start guard. */
+export function trackerLoadExceedsStartGuard(sample: TrackerResourceSample): boolean {
+	return (sample.load[1] ?? 0) > overloadLoadPerCore * sample.cores || isSevereLoad(sample);
+}
+
+function isSevereLoad(sample: TrackerResourceSample): boolean {
+	return (sample.load[0] ?? 0) > severeLoadPerCore * sample.cores;
+}
+
 const roles = new Map<string, TrackerMachineRole>([
 	['grok-box', 'shared'],
 	['harbor-mbp-2', 'runner'],
@@ -71,10 +80,10 @@ function confirmedLoad(latest: TrackerResourceSample, recent: readonly TrackerRe
 	const oneMinute = latest.load[0] ?? 0;
 	const fiveMinutes = latest.load[1] ?? 0;
 	if (
-		oneMinute > severeLoadPerCore * latest.cores &&
+		isSevereLoad(latest) &&
 		prior &&
 		at - Date.parse(prior.at) <= sampleGap &&
-		(prior.load[0] ?? 0) > severeLoadPerCore * prior.cores
+		isSevereLoad(prior)
 	)
 		return oneMinute;
 	if (isAboveLoadGuard(latest) && hasSustainedLoad(at, readings)) return fiveMinutes;

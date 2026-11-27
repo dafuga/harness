@@ -8,13 +8,12 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": [
-			"src/utils/projects-sessions/trackerMachineStatus.ts"
-		],
+		"source": ["src/utils/projects-sessions/trackerMachineStatus.ts"],
 		"symbols": [
 			"trackerSampleOfflineMs",
 			"trackerDiskAlertFloor",
 			"trackerBusyLoadPerCore",
+			"trackerLoadExceedsStartGuard",
 			"trackerMachineRole",
 			"trackerMachineStatus"
 		]
@@ -27,6 +26,12 @@
 				"type": "string",
 				"required": true,
 				"description": "Platform of the sampled host, such as darwin or linux."
+			},
+			{
+				"name": "trackerLoadExceedsStartGuard.sample",
+				"type": "TrackerResourceSample",
+				"required": true,
+				"description": "Latest load averages and core count of the sampled host."
 			},
 			{
 				"name": "trackerMachineRole.node",
@@ -62,7 +67,12 @@
 			{
 				"name": "trackerBusyLoadPerCore",
 				"type": "unknown",
-				"description": "Five-minute load per core above which a computer is busy."
+				"description": "Load per core above which a computer is busy."
+			},
+			{
+				"name": "trackerLoadExceedsStartGuard",
+				"type": "boolean",
+				"description": "True when the current load is too high to start new work."
 			},
 			{
 				"name": "trackerMachineRole",
@@ -93,6 +103,26 @@
 						"name": "trackerDiskAlertFloor",
 						"type": "number",
 						"description": "Free-space alert floor in GB for the platform. macOS uses 60 GB and other platforms use 20 GB."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerLoadExceedsStartGuard",
+				"inputs": [
+					{
+						"name": "trackerLoadExceedsStartGuard.sample",
+						"type": "TrackerResourceSample",
+						"required": true,
+						"description": "Latest load averages and core count of the sampled host."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLoadExceedsStartGuard",
+						"type": "boolean",
+						"description": "True when the current load is too high to start new work."
 					}
 				],
 				"errors": [],

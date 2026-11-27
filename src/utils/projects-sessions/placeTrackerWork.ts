@@ -1,6 +1,6 @@
 // @harness-uid u_47p4ljwkx5
 import type { TrackerWorkPreference } from './placeTrackerWork.types';
-import { trackerBusyLoadPerCore } from './trackerMachineStatus';
+import { trackerBusyLoadPerCore, trackerLoadExceedsStartGuard } from './trackerMachineStatus';
 import type {
 	TrackerMachineRole,
 	TrackerMachineRow,
@@ -91,6 +91,7 @@ function fitHolds(row: TrackerMachineRow, sample: TrackerResourceSample, need: n
 	const free = sample.ram.available_mb / 1024;
 	const keep = keepFreeGB(row.role);
 	if (row.status === 'overloaded') holds.push(`overloaded: ${row.reasons.join('; ')}`);
+	else if (trackerLoadExceedsStartGuard(sample)) holds.push('load above the start limit');
 	if (free - need < keep)
 		holds.push(`would leave ${round(free - need)} GB free (needs ${need} GB, keeps ${keep} GB)`);
 	if (row.role === 'shared' && (sample.load[1] ?? 0) > trackerBusyLoadPerCore * sample.cores)

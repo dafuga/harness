@@ -72,6 +72,9 @@ function whileOverloaded(
 	const overSince = state.over_since ?? observedAt;
 	const next = { ...state, over_since: overSince, calm_since: null };
 	if (state.flagged_item) return next;
+	// The low-disk scan runs after sampling. Give it the next reading to attach attribution.
+	if (row.sample && diskAttributionPending(row.sample) && observedAt - overSince < minute)
+		return next;
 	const title = trackerOverloadTitle(row.node);
 	const existing = overloadItems(machines.store, title);
 	// An ignored overload item stays ignored.
@@ -176,13 +179,19 @@ function highest(
 	return [...agents, ...system].sort((left, right) => right[metric] - left[metric]).slice(0, 2);
 }
 
+function hasLowDisk(sample: TrackerResourceSample): boolean {
+	return sample.disks.some(({ free_gb }) => free_gb < trackerDiskAlertFloor(sample.platform));
+}
+
+function diskAttributionPending(sample: TrackerResourceSample): boolean {
+	return hasLowDisk(sample) && !sample.disk_users?.length;
+}
+
 function diskUsers(sample: TrackerResourceSample): string {
 	const users = sample.disk_users ?? [];
 	if (users.length)
 		return `Largest sampled disk users: ${users.map(({ label, used_gb }) => `${label} (${used_gb} GB)`).join(', ')}.`;
-	return sample.disks.some(({ free_gb }) => free_gb < trackerDiskAlertFloor(sample.platform))
-		? 'Disk usage breakdown unavailable.'
-		: '';
+	return hasLowDisk(sample) ? 'Disk usage breakdown unavailable.' : '';
 }
 
 function suggestedMove(machines: TrackerMachineService, node: string, group: TrackerProcessGroup) {
