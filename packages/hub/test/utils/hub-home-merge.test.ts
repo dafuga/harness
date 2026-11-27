@@ -1,10 +1,10 @@
 import { expect, test } from 'vitest';
-import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
+import { mergeHomeSnapshots } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 import {
 	agentActivity,
 	homeHeadline,
 	isWorking
-} from '../../src/components/projects-sessions/hubHomePresentation';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 import type {
 	HomeAgent,
 	HomeSubscription,

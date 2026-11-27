@@ -20,7 +20,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeQuota.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeQuota.svelte"],
 		"symbols": ["HubHomeQuota"]
 	},
 	"contract": {
@@ -113,11 +113,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeQuota.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeQuota.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeQuota.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeQuota.svelte"
 			}
 		]
 	},

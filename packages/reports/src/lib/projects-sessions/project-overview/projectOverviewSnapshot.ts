@@ -41,7 +41,11 @@ export function projectOverviewSnapshot(sources: TrackerSources, now: number): O
 			.map((machine) => machine.node)
 	);
 	const machines = sources.machines
-		.map((machine) => ({ name: sanitizeText(machine.node), status: machine.status }))
+		.map(({ node, status, remoteRuns }) => ({
+			name: sanitizeText(node),
+			status,
+			...(remoteRuns !== undefined && { remoteRuns })
+		}))
 		.sort((a, b) => compareText(a.name, b.name));
 	const items = sources.items.filter(isIncludedItem);
 	const liveByItem = countLiveRuns(sources.runs, new Set(items.map((item) => item.id)), offline);

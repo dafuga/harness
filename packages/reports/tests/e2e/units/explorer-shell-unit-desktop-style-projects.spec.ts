@@ -3,7 +3,7 @@ import { catalogViewports } from '../support/component-previews/catalogUnits';
 import { openPreview, readyPreview } from '../support/component-previews/previewPage';
 import { buildShellFixture, captureShell, removeShellFixture } from '../support/shellFixture';
 
-const states = [{ id: 'default', variant: '' }];
+const states = [{ id: 'default', variant: 'recent' }];
 let home = '';
 
 test.beforeAll(() => {
@@ -17,8 +17,8 @@ for (const viewport of catalogViewports) {
 	for (const state of states) {
 		test(`desktop.style.projects:${state.id} at ${viewport.id}`, async ({ page }) => {
 			await page.setViewportSize({ width: viewport.width, height: viewport.height });
-			await openPreview(page, home, 'desktop.page.root', state.variant);
-			await readyPreview(page, 'desktop.page.root', state.variant);
+			await openPreview(page, home, 'desktop.component.project-gate', state.variant);
+			await readyPreview(page, 'desktop.component.project-gate', state.variant);
 			const recentProjects = page.locator('.recent-projects');
 			await expect(
 				page.getByRole('heading', { name: 'Recent projects', exact: true })

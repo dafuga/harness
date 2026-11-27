@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/lib/styles/hub-home/index.css"],
+		"source": ["packages/reports/src/lib/styles/hub-home/index.css"],
 		"symbols": []
 	},
 	"contract": {
@@ -79,11 +79,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/styles/hub-home/index.css",
+		"entry": "packages/reports/src/lib/styles/hub-home/index.css",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/styles/hub-home/index.css"
+				"entry": "packages/reports/src/lib/styles/hub-home/index.css"
 			}
 		]
 	},

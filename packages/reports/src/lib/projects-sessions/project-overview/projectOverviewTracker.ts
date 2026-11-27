@@ -8,6 +8,7 @@ import type { MachineStatus } from './projectOverview.types';
 import type {
 	TrackerItemRecord,
 	TrackerItemStatus,
+	TrackerMachineRecord,
 	TrackerNote,
 	TrackerRunRecord,
 	TrackerSources
@@ -123,6 +124,7 @@ function askFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 
 function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 	return {
+		project: typeof row.project === 'string' ? row.project : null,
 		kind: optionalText(row.kind, 'item kind'),
 		parent: optionalText(row.parent, 'item parent'),
 		computer: optionalText(row.computer, 'item computer'),
@@ -155,9 +157,13 @@ function parseRun(value: unknown, includeHomeFields: boolean): TrackerRunRecord 
 	};
 }
 
-function parseMachine(value: unknown): { node: string; status: MachineStatus } {
+function parseMachine(value: unknown): TrackerMachineRecord {
 	const row = asRecord(value, 'machine');
+	const count = row.remote_runs;
+	const valid =
+		typeof count === 'number' && Number.isSafeInteger(count) && count >= 0 && count <= 1_000_000;
 	return {
+		...(valid && { remoteRuns: count }),
 		node: requiredText(row.node, 'machine node'),
 		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus
 	};

@@ -102,10 +102,12 @@ function milestone(value: unknown) {
 }
 
 function machine(value: unknown) {
-	const body = record(value, ['name', 'status']);
+	const hasRemote = Object.hasOwn(objectOf(value), 'remoteRuns');
+	const body = record(value, hasRemote ? ['name', 'status', 'remoteRuns'] : ['name', 'status']);
 	return {
 		name: identifier(body.name, 200),
-		status: oneOf(body.status, MACHINE_STATUSES)
+		status: oneOf(body.status, MACHINE_STATUSES),
+		...(hasRemote && { remoteRuns: count(body.remoteRuns) })
 	};
 }
 

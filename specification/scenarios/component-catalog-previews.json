@@ -66,6 +66,7 @@
 		"desktop.component.project-agent",
 		"desktop.component.project-gate",
 		"desktop.component.project-switcher",
+		"desktop.component.projects-sessions-desktop-home",
 		"desktop.component.recorded-preview",
 		"desktop.component.reference-text",
 		"desktop.component.relationships-panel",
@@ -124,6 +125,7 @@
 		"hub.component.projects-sessions-hub-home-composer",
 		"hub.component.projects-sessions-hub-home-cos-chat",
 		"hub.component.projects-sessions-hub-home-dialogs",
+		"hub.component.projects-sessions-hub-home-directory",
 		"hub.component.projects-sessions-hub-home-header",
 		"hub.component.projects-sessions-hub-home-live",
 		"hub.component.projects-sessions-hub-home-live-project",
@@ -1676,6 +1678,12 @@
 			"units": ["desktop.component.project-switcher"]
 		},
 		{
+			"id": "desktop-component-projects-sessions-desktop-home",
+			"title": "DesktopHome",
+			"coverage": "required",
+			"units": ["desktop.component.projects-sessions-desktop-home"]
+		},
+		{
 			"id": "desktop-component-recorded-preview",
 			"title": "RecordedPreview",
 			"coverage": "required",
@@ -2238,6 +2246,12 @@
 			"title": "HubHomeDialogs",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-dialogs"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-directory",
+			"title": "HubHomeDirectory",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-directory"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-header",
@@ -8979,6 +8993,7 @@
 				"desktop-component-project-switcher-empty",
 				"desktop-component-project-switcher-busy",
 				"desktop-component-project-switcher-long",
+				"desktop-component-projects-sessions-desktop-home",
 				"desktop-component-recorded-preview",
 				"desktop-component-reference-text",
 				"desktop-component-relationships-panel",
@@ -9073,6 +9088,7 @@
 				"hub-component-projects-sessions-hub-home-cos-chat",
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
+				"hub-component-projects-sessions-hub-home-directory",
 				"hub-component-projects-sessions-hub-home-header",
 				"hub-component-projects-sessions-hub-home-live",
 				"hub-component-projects-sessions-hub-home-live-project",

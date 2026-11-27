@@ -213,6 +213,14 @@ operator verifies the stopped database and chooses a rollback.
   Lisbon quiet hours and the thirty-minute watchdog cadence. The separate
   tick can still read `tracker list --flagged --json` for decisions.
 
+  CoS dependency messages are delivered once per item and message text.
+  When tmux misses an acceptance, Tracker checks Claude's recorded prompt
+  or queue receipt before retrying. Changes to the dependency text can
+  trigger a new alert. Open blockers continue to appear in the daily digest.
+  CoS batches carry up to four alerts within a 450-byte composer budget. A long alert uses its item ID
+  and a short sentence, with full details available in Tracker. The batch
+  includes the slot summary when it fits.
+
   Tracker sends the first ask, follows up two and six hours after the first
   delivery, then repeats at 08:00 Lisbon each morning. These reach Chief of
   Staff at any hour. If both follow-up times have passed, the next repeat
@@ -421,8 +429,8 @@ or recovery attempt. An external driver owns its own host and is not sampled.
 - On the primary Mac, MB2 and the box, the home filesystem needs 30 GB free.
   Disk percentage does not hold a launch.
 - The Macs need at least 25% free memory (unknown holds) and a one-minute load
-  under 15. Other hosts hold when the five-minute load exceeds 1.5 per core or
-  free memory is under 10%.
+  under 15. They also hold when the five-minute load exceeds 1.5 per core. Other
+  hosts use that sustained-load threshold and hold while free memory is under 10%.
 - The shared box also waits while busy: load over 1.0 per core, free memory
   under 15%, or under 100,000 or 3% free inodes.
 
@@ -687,8 +695,30 @@ Sampling is read-only, so it also runs while host effects are held.
 - The hub assigns a queued launch that names no computer to such a peer, with
   a note, and keeps it otherwise.
 - The hub grants a due start to a peer that reports resources only while its
-  sample is at most 135 seconds old and it is not overloaded. A peer that has
-  never reported resources runs an earlier release and keeps its grant.
+  sample is at most 135 seconds old and it is not overloaded. A Mac peer is also
+  held while its latest one-minute load is at least 15. A peer that has never
+  reported resources runs an earlier release and keeps its grant.
+
+### Work sent to another computer
+
+From a managed Tracker run, wrap a foreground remote check or build:
+
+```sh
+tracker host-work ssh mb2 -- ssh harbor-mbp-2 ./run-checks.sh
+tracker host-work colima mb2 -- ssh harbor-mbp-2 ./run-colima-proof.sh
+```
+
+Pass the Tracker computer as the destination. The command can use its usual
+SSH alias. Keep startup, verification, and task-owned teardown inside the
+foreground command for a Colima proof. Raw SSH commands and detached work
+outside its lifetime have no lease.
+
+The local Tracker records the origin run and renews the lease while the
+command runs. The signed fleet exchange carries the destination and expiry.
+The Hub computer chip counts an origin run once per destination even if it
+has multiple leases there. The count clears when the command releases its
+lease or when the run finishes, and expires after 150 seconds without a renewal.
+Launcher admission uses the destination's sampled operating-system load.
 
 ## Health, logs and host supervision
 

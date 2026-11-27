@@ -21,11 +21,17 @@ export function formatTrackerHostBrief(
 		'',
 		trackerAutomationBrowserRule,
 		'',
+		'## Work on another computer',
+		'Wrap remote checks and builds in `tracker host-work ssh <computer> -- ssh <host> <command>` so their load appears on the executing computer.',
+		'Use `tracker host-work colima <computer> -- ssh <host> <proof-script>` for Colima proofs. Keep VM startup, verification and task-owned teardown within the foreground script.',
+		'',
 		`# ${item.title}`,
 		'',
 		`Tracker item ${id} (full ID ${item.id}).`,
 		'',
 		cpuBudget && trackerCpuBudgetRule(cpuBudget),
+		item.agent === 'harness' &&
+			`Submit commits with \`bun run check --item ${id}\` for affected checks. Use the same host queue with \`--release\` for the combined release and never start the full check directly.`,
 		item.sensitive &&
 			'Keep credentials out of output and obtain approval before any irreversible action.',
 		item.adapter_instructions && `## Source instructions\n\n${item.adapter_instructions}`,

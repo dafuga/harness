@@ -23,7 +23,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte"
+		],
 		"symbols": ["HubHomeLiveProject"]
 	},
 	"contract": {
@@ -124,11 +126,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLiveProject.svelte"
 			}
 		]
 	},

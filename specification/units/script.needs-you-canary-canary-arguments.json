@@ -1,0 +1,95 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary-canary-arguments",
+	"uid": "u_yaelw2ot4c",
+	"kind": "script",
+	"title": "canaryArguments",
+	"responsibility": "Owns the canaryArguments build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary/canaryArguments.ts"],
+		"symbols": ["canaryUsage", "canaryArguments"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "canaryArguments.args",
+				"type": "string[]",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "canaryUsage",
+				"type": "unknown"
+			},
+			{
+				"name": "canaryArguments",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "canaryArguments",
+				"inputs": [
+					{
+						"name": "canaryArguments.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "canaryArguments",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.needs-you-canary-canary-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-run-canary",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary/canaryArguments.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary/canaryArguments.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

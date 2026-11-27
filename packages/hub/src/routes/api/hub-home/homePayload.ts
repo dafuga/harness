@@ -105,6 +105,15 @@ const plan = z
 
 const snapshot = z.object({
 	overview: z.unknown(),
+	projectDirectory: z
+		.array(
+			z.object({
+				name: short,
+				state: z.enum(['needs-you', 'blocked', 'active', 'quiet', 'done']),
+				needsYou: unsigned
+			})
+		)
+		.optional(),
 	agents: z.array(agent).max(100),
 	openAsks: z.array(openAsk).max(100).optional(),
 	plans: z.array(plan).max(100),

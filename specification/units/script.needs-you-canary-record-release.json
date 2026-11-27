@@ -1,0 +1,91 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary-record-release",
+	"uid": "u_jy4ju42swm",
+	"kind": "script",
+	"title": "recordRelease",
+	"responsibility": "Owns the recordRelease build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary/recordRelease.ts"],
+		"symbols": ["recordRelease"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "recordRelease.options",
+				"type": "CanaryOptions",
+				"required": true
+			},
+			{
+				"name": "recordRelease.report",
+				"type": "CanaryReport",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "recordRelease",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "recordRelease",
+				"inputs": [
+					{
+						"name": "recordRelease.options",
+						"type": "CanaryOptions",
+						"required": true
+					},
+					{
+						"name": "recordRelease.report",
+						"type": "CanaryReport",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordRelease",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.needs-you-canary-canary-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-release-ask",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary/recordRelease.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary/recordRelease.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

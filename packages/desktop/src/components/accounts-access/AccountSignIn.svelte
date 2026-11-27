@@ -28,10 +28,8 @@
 </script>
 
 <hx-main class="sign-in" data-harness-component="account-sign-in">
-	<hx-section class="sign-in-inner" aria-labelledby="account-title">
-		<hx-span class="sign-in-mark"><BrandMark size={40} /></hx-span>
-		<hx-h1 id="account-title">Harness</hx-h1>
-		<hx-p class="tagline">Understand your project. Design what comes next.</hx-p>
+	<hx-section class="sign-in-inner" aria-label="Sign in to Harness">
+		<hx-span class="sign-in-mark" role="img" aria-label="Harness"><BrandMark size={40} /></hx-span>
 		{#if waiting}
 			{#if code}
 				<hx-p role="status">Enter this code on the Harness Hub.</hx-p>
@@ -84,13 +82,6 @@
 		padding: 22vh var(--hx-space-24) var(--hx-space-40);
 		text-align: center;
 		overflow-wrap: anywhere;
-	}
-	h1 {
-		margin: 0;
-	}
-	.tagline {
-		margin: 0 0 var(--hx-space-12);
-		color: var(--hx-color-text-supporting);
 	}
 	.sign-in-button {
 		border: 0;

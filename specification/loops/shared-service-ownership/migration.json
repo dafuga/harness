@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
+			"definition": "92cb865bf80f1479b16816f6e1d9c230970da5f4b26e51fae70e09c81ac905e0",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
-				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				"definition": "92cb865bf80f1479b16816f6e1d9c230970da5f4b26e51fae70e09c81ac905e0",
+				"reason": "Pass the existing Tracker Home read and chat services to the signed-in local window."
 			},
 			"previousReviews": [
 				{
@@ -1652,6 +1652,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 					"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
 					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				},
+				{
+					"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
+					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 				}
 			]
 		},
@@ -2202,19 +2208,26 @@
 			"unit": "desktop.service.desktop-bridge",
 			"from": "packages/desktop/src/services/DesktopBridgeService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/DesktopBridgeService.ts",
-			"definition": "85580aa8406bf97a489d1d7122e00ad2014549c874e9571c1134568df0b58145"
+			"definition": "3316fee69b35089498d085b38f9ec0e386163a6549349b38cf90e0c1ddd54a66",
+			"relocationDefinition": "85580aa8406bf97a489d1d7122e00ad2014549c874e9571c1134568df0b58145",
+			"review": {
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
+				"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/DesktopBridgeService.ts",
+				"definition": "3316fee69b35089498d085b38f9ec0e386163a6549349b38cf90e0c1ddd54a66",
+				"reason": "Forward local and Hub listing health to the owning window."
+			}
 		},
 		{
 			"unit": "desktop.service.hosted-project",
 			"from": "packages/desktop/src/services/HostedProjectService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-			"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
+			"definition": "ba7f9bdca924b527a8f808aba63f2746b2f85b2d6bdcbd77282fbf78806d4520",
 			"relocationDefinition": "b9917f0449c6e3eb571196e41e9ddf074be9c3abfeedfe0a221bd7e7e496059d",
 			"review": {
-				"commit": "7a370a71ae36914a6274621151a9d0fcef37e518",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-				"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.hosted-project, written by luna); messages and behavior unchanged."
+				"definition": "ba7f9bdca924b527a8f808aba63f2746b2f85b2d6bdcbd77282fbf78806d4520",
+				"reason": "Keep successful project results when either independent source fails."
 			},
 			"previousReviews": [
 				{
@@ -2228,6 +2241,12 @@
 					"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
 					"definition": "d4080b409d5b35aa9aa3d9725c6fe10a6bed4746f65af05fec89bf99ca1e4e1d",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "7a370a71ae36914a6274621151a9d0fcef37e518",
+					"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
+					"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.hosted-project, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -2425,13 +2444,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
+			"definition": "d11e938271fccb670af2f039d3f6630e37bec09b5de424dde1d44e54d8e5f1ec",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
-				"reason": "Adds the authenticated read of a revision’s design canvases behind the project boundary."
+				"definition": "d11e938271fccb670af2f039d3f6630e37bec09b5de424dde1d44e54d8e5f1ec",
+				"reason": "Let the verified Hub owner discover the empty collection when collaboration is disabled."
 			},
 			"previousReviews": [
 				{
@@ -2463,6 +2482,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 					"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
 					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				},
+				{
+					"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
+					"reason": "Adds the authenticated read of a revision’s design canvases behind the project boundary."
 				}
 			]
 		},
@@ -5759,13 +5784,13 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+			"definition": "be6f3dfd585e20feec8f1ef35fa66b10c5c2a6f63ffbedaa4a69369fbbf3b361",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
-				"reason": "Exposes the local design canvas read through the isolated preload bridge."
+				"definition": "be6f3dfd585e20feec8f1ef35fa66b10c5c2a6f63ffbedaa4a69369fbbf3b361",
+				"reason": "Expose the fixed Home read and chat operations over the existing loopback bridge."
 			},
 			"previousReviews": [
 				{
@@ -5827,6 +5852,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
 					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				},
+				{
+					"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+					"reason": "Exposes the local design canvas read through the isolated preload bridge."
 				}
 			]
 		},
@@ -7321,13 +7352,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
+			"definition": "a12bbd4ecfd0e0ae2012498b6d7198988c4cc859d0d9565914347fb5321e1115",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
-				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				"definition": "a12bbd4ecfd0e0ae2012498b6d7198988c4cc859d0d9565914347fb5321e1115",
+				"reason": "Require an admitted account for the Home operations on the local socket."
 			},
 			"previousReviews": [
 				{
@@ -7371,6 +7402,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
 					"reason": "Carry native browser callback and device metadata through desktop initialization."
+				},
+				{
+					"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
+					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 				}
 			]
 		},
@@ -7378,13 +7415,13 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+			"definition": "be6de368744e50a61cec354458a827359174b094d205f3cc391731cb866c691f",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
-				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				"definition": "be6de368744e50a61cec354458a827359174b094d205f3cc391731cb866c691f",
+				"reason": "Dispatch Home reads and writes to the fixed Tracker services with bounded inputs."
 			},
 			"previousReviews": [
 				{
@@ -7422,6 +7459,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
 					"reason": "Dispatches the Mac inbox read and confirmed write over the authenticated local transport."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
 				}
 			]
 		},
