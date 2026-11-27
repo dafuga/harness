@@ -160,7 +160,7 @@ export const catalogDesktopHome: OwnerHomeSnapshot = {
 	agents: [],
 	plans: snapshot.plans,
 	scheduled: [],
-	providers: { routines: [], quota: null }
+	providers: { routines: [], quota: snapshot.providers.quota }
 };
 
 /** Browser notifications offered, with no browser subscribed yet. */
