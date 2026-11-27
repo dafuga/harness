@@ -3,6 +3,7 @@ import { chmodSync, mkdirSync, rmSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { dirname } from 'node:path';
 import type { z } from 'zod';
+import { privateBrowserPhonePaths } from '../../services/execution-runtimes/PrivateBrowserPhoneService';
 import { VaultBrokerError } from '../../validators/accounts-access/VaultBrokerError';
 import {
 	VaultWireValidator,
@@ -30,7 +31,7 @@ export class VaultBrokerServerAdapter {
 	private server: Server | null = null;
 
 	constructor(private readonly config: VaultBrokerServerConfig) {
-		const { broker, keeper, devices } = config;
+		const { broker, keeper, devices, privateBrowser } = config;
 		const route = <T>(schema: z.ZodType<T>, run: (body: T, uid: number | null) => unknown) =>
 			({ schema, run }) as Route;
 		this.routes = {
@@ -55,6 +56,14 @@ export class VaultBrokerServerAdapter {
 			'/v1/device/requests': route(vaultProof, (body) => broker.queue(body)),
 			'/v1/device/decision': route(vaultProof, (body) => ({ status: broker.decide(body) }))
 		};
+		if (privateBrowser) {
+			this.routes[privateBrowserPhonePaths.offer] = route(vaultProof, (proof) => ({
+				offer: privateBrowser.activeOffer(proof) ?? null
+			}));
+			this.routes[privateBrowserPhonePaths.submit] = route(vaultProof, async (proof) => ({
+				status: (await privateBrowser.submit(proof)) ? 'completed' : 'unavailable'
+			}));
+		}
 	}
 
 	async listen(): Promise<string> {
@@ -93,7 +102,7 @@ export class VaultBrokerServerAdapter {
 			}
 			const uid = this.config.peerUid?.(request.socket) ?? null;
 			const body = this.wire.json(route.schema, await this.read(request), 'request');
-			this.send(response, 200, route.run(body as never, uid));
+			this.send(response, 200, await route.run(body as never, uid));
 		} catch (error) {
 			const known = error instanceof VaultBrokerError;
 			this.send(response, known ? error.status : 500, {

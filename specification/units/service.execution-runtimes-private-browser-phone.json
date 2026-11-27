@@ -13,9 +13,11 @@
 			"src/services/execution-runtimes/PrivateBrowserPhoneService.types.ts"
 		],
 		"symbols": [
+			"privateBrowserPhonePaths",
 			"PrivateBrowserPhoneService",
 			"PrivateBrowserPhoneService.constructor",
 			"PrivateBrowserPhoneService.offer",
+			"PrivateBrowserPhoneService.activeOffer",
 			"PrivateBrowserPhoneService.submit",
 			"PrivateBrowserFieldScope",
 			"PrivateBrowserPhoneOffer",
@@ -29,46 +31,70 @@
 			{
 				"name": "PrivateBrowserPhoneService.constructor.config",
 				"type": "PrivateBrowserPhoneConfig",
-				"required": true
+				"required": true,
+				"description": "The executor gate, enrolled device repository, reviewed submit callback and optional clock."
 			},
 			{
 				"name": "PrivateBrowserPhoneService.offer.requestId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Identifier of the active private browser window."
 			},
 			{
 				"name": "PrivateBrowserPhoneService.offer.deviceId",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Enrolled device assigned to that private browser window."
 			},
 			{
 				"name": "PrivateBrowserPhoneService.offer.scope",
 				"type": "PrivateBrowserFieldScope",
-				"required": true
+				"required": true,
+				"description": "Reviewed executor, HTTPS origin, tab, field, recipe digest and action."
+			},
+			{
+				"name": "PrivateBrowserPhoneService.activeOffer.proof",
+				"type": "VaultProof",
+				"required": true,
+				"description": "An enrolled device proof signed for offer discovery with a fresh nonce and an empty JSON object as its payload."
 			},
 			{
 				"name": "PrivateBrowserPhoneService.submit.proof",
 				"type": "VaultProof",
-				"required": true
+				"required": true,
+				"description": "An enrolled device proof signed for submission with the sealed field and every value bound by the offer."
 			}
 		],
 		"outputs": [
 			{
+				"name": "privateBrowserPhonePaths",
+				"type": "unknown",
+				"description": "Fixed broker paths for signed offer discovery and sealed submission."
+			},
+			{
 				"name": "PrivateBrowserPhoneService.offer",
-				"type": "PrivateBrowserPhoneOffer | undefined"
+				"type": "PrivateBrowserPhoneOffer | undefined",
+				"description": "A public offer with an ephemeral recipient key, or undefined when the private window or reviewed scope is unavailable."
+			},
+			{
+				"name": "PrivateBrowserPhoneService.activeOffer",
+				"type": "PrivateBrowserPhoneOffer | undefined",
+				"description": "A copy of the unexpired offer assigned to the proving device while its private window accepts input, or undefined."
 			},
 			{
 				"name": "PrivateBrowserPhoneService.submit",
-				"type": "Promise<boolean>"
+				"type": "Promise<boolean>",
+				"description": "True after reviewed submission, private tab disposal and independent result verification. False for refusal or incomplete verification."
 			}
 		],
 		"errors": [
 			{
-				"name": "ExpectedCliError",
-				"type": "thrown"
+				"name": "VaultBrokerError",
+				"type": "thrown",
+				"description": "An invalid, replayed or expired device proof, an unapproved device role, or a payload that is not an empty JSON object."
 			}
 		],
-		"errorStatus": "unknown",
+		"errorStatus": "declared",
 		"operations": [
 			{
 				"name": "PrivateBrowserPhoneService.offer",
@@ -76,27 +102,57 @@
 					{
 						"name": "PrivateBrowserPhoneService.offer.requestId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Identifier of the active private browser window."
 					},
 					{
 						"name": "PrivateBrowserPhoneService.offer.deviceId",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Enrolled device assigned to that private browser window."
 					},
 					{
 						"name": "PrivateBrowserPhoneService.offer.scope",
 						"type": "PrivateBrowserFieldScope",
-						"required": true
+						"required": true,
+						"description": "Reviewed executor, HTTPS origin, tab, field, recipe digest and action."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PrivateBrowserPhoneService.offer",
-						"type": "PrivateBrowserPhoneOffer | undefined"
+						"type": "PrivateBrowserPhoneOffer | undefined",
+						"description": "A public offer with an ephemeral recipient key, or undefined when the private window or reviewed scope is unavailable."
 					}
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserPhoneService.activeOffer",
+				"inputs": [
+					{
+						"name": "PrivateBrowserPhoneService.activeOffer.proof",
+						"type": "VaultProof",
+						"required": true,
+						"description": "An enrolled device proof signed for offer discovery with a fresh nonce and an empty JSON object as its payload."
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserPhoneService.activeOffer",
+						"type": "PrivateBrowserPhoneOffer | undefined",
+						"description": "A copy of the unexpired offer assigned to the proving device while its private window accepts input, or undefined."
+					}
+				],
+				"errors": [
+					{
+						"name": "VaultBrokerError",
+						"type": "thrown",
+						"description": "An invalid, replayed or expired device proof, an unapproved device role, or a payload that is not an empty JSON object."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "PrivateBrowserPhoneService.submit",
@@ -104,13 +160,15 @@
 					{
 						"name": "PrivateBrowserPhoneService.submit.proof",
 						"type": "VaultProof",
-						"required": true
+						"required": true,
+						"description": "An enrolled device proof signed for submission with the sealed field and every value bound by the offer."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PrivateBrowserPhoneService.submit",
-						"type": "Promise<boolean>"
+						"type": "Promise<boolean>",
+						"description": "True after reviewed submission, private tab disposal and independent result verification. False for refusal or incomplete verification."
 					}
 				],
 				"errors": [],
@@ -124,13 +182,15 @@
 					{
 						"name": "PrivateBrowserPhoneService.constructor.config",
 						"type": "PrivateBrowserPhoneConfig",
-						"required": true
+						"required": true,
+						"description": "The executor gate, enrolled device repository, reviewed submit callback and optional clock."
 					}
 				],
 				"outputs": [
 					{
 						"name": "PrivateBrowserPhoneService.constructor",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "A delivery service sharing the executor gate and device pins, initially holding no pending offer."
 					}
 				],
 				"errors": [],

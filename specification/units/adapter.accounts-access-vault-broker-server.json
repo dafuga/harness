@@ -29,7 +29,7 @@
 				"name": "VaultBrokerServerAdapter.constructor.config",
 				"type": "VaultBrokerServerConfig",
 				"required": true,
-				"description": "Broker, lease keeper, device repository, socket path and an optional kernel peer-uid lookup."
+				"description": "Broker, lease keeper, enrolled device repository, socket path, optional peer UID lookup, and optional private browser delivery sharing the same device repository."
 			}
 		],
 		"outputs": [
@@ -99,14 +99,14 @@
 						"name": "VaultBrokerServerAdapter.constructor.config",
 						"type": "VaultBrokerServerConfig",
 						"required": true,
-						"description": "Broker, lease keeper, device repository, socket path and an optional kernel peer-uid lookup."
+						"description": "Broker, lease keeper, enrolled device repository, socket path, optional peer UID lookup, and optional private browser delivery sharing the same device repository."
 					}
 				],
 				"outputs": [
 					{
 						"name": "VaultBrokerServerAdapter.constructor",
 						"type": "unknown",
-						"description": "An adapter with its session and device routes bound; it does not listen yet."
+						"description": "The adapter with session and device routes bound, plus the private field routes when configured. No socket has been opened."
 					}
 				],
 				"errors": [],
@@ -127,6 +127,11 @@
 		},
 		{
 			"unit": "service.accounts-access-vault-lease-keeper",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-private-browser-phone",
 			"via": "import",
 			"origin": "derived"
 		},

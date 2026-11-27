@@ -4,11 +4,14 @@ import type { z } from 'zod';
 import type { VaultDeviceRepository } from '../../repositories/accounts-access/VaultDeviceRepository';
 import type { VaultBrokerService } from '../../services/accounts-access/VaultBrokerService';
 import type { VaultLeaseKeeperService } from '../../services/accounts-access/VaultLeaseKeeperService';
+import type { PrivateBrowserPhoneService } from '../../services/execution-runtimes/PrivateBrowserPhoneService';
 
 export interface VaultBrokerServerConfig {
 	broker: VaultBrokerService;
 	keeper: VaultLeaseKeeperService;
 	devices: VaultDeviceRepository;
+	/** Enable only on the protected executor, using the same enrolled device repository. */
+	privateBrowser?: PrivateBrowserPhoneService;
 	/** Absolute socket path; its directory is created owner-only. */
 	socketPath: string;
 	/** Kernel-verified peer user of a connection, or null when the platform cannot tell. */

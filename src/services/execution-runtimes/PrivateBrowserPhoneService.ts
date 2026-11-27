@@ -17,7 +17,10 @@ import type {
 	PrivateBrowserPhoneOffer
 } from './PrivateBrowserPhoneService.types';
 
-const submitPath = '/v1/private-browser/submit';
+export const privateBrowserPhonePaths = {
+	offer: '/v1/private-browser/offer',
+	submit: '/v1/private-browser/submit'
+} as const;
 const deliveryMs = 60_000;
 const identifier = z.string().min(1).max(128);
 const digest = z.string().regex(/^[a-f0-9]{64}$/u);
@@ -43,6 +46,7 @@ const submission = z.strictObject({
 	sealed: vaultSealed
 });
 const reviewedScope = z.strictObject(fieldScope);
+const offerQuery = z.strictObject({});
 
 /** Executor-side handoff for a single reviewed field, using the Vault's enrolled device and seal. */
 export class PrivateBrowserPhoneService {
@@ -77,11 +81,27 @@ export class PrivateBrowserPhoneService {
 		return { ...offer };
 	}
 
+	/** An enrolled device can discover only its own currently usable offer. */
+	activeOffer(proof: VaultProof): PrivateBrowserPhoneOffer | undefined {
+		this.config.devices.authenticate(privateBrowserPhonePaths.offer, proof);
+		this.wire.json(offerQuery, Buffer.from(proof.payload, 'base64url'), 'offer query');
+		const pending = this.pending;
+		if (!pending || pending.deviceId !== proof.deviceId) return undefined;
+		const { offer } = pending;
+		if (
+			this.now() >= offer.expiresAt ||
+			!this.config.gate.permitsInput(offer.requestId, proof.deviceId)
+		) {
+			return undefined;
+		}
+		return { ...offer };
+	}
+
 	async submit(proof: VaultProof): Promise<boolean> {
 		const pending = this.pending;
 		if (pending?.deviceId !== proof.deviceId || this.now() >= pending.offer.expiresAt) return false;
 		try {
-			this.config.devices.authenticate(submitPath, proof);
+			this.config.devices.authenticate(privateBrowserPhonePaths.submit, proof);
 			const signed = this.wire.json(
 				submission,
 				Buffer.from(proof.payload, 'base64url'),
