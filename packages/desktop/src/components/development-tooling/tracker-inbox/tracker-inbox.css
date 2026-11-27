@@ -94,17 +94,17 @@
 }
 
 .inbox :global(:is(button:enabled, a[href], summary):active) {
-	filter: brightness(0.83);
+	filter: var(--hx-effect-pressed);
 }
 @media (prefers-reduced-motion: no-preference) {
 	.inbox :global(:is(button:enabled, a[href], summary):active) {
 		translate: 0 1px;
 	}
 	.inbox :global(.rows li) {
-		transition: filter 320ms ease;
+		transition: filter var(--hx-motion-collapse) var(--hx-motion-ease);
 	}
 	.inbox :global(.rows li[inert]) {
-		filter: opacity(0);
+		filter: var(--hx-effect-fade-out);
 	}
 }
 .inbox.home-blockers {

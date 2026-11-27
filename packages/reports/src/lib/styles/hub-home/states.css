@@ -56,7 +56,7 @@
 
 /* Preserve focus and layout while giving pointer and keyboard activation an immediate response. */
 .hh-home :is(button:enabled, a[href], summary):active {
-	filter: brightness(0.83);
+	filter: var(--hx-effect-pressed);
 }
 .hh-home :is(button[disabled], [aria-busy='true']) {
 	cursor: progress;
@@ -64,7 +64,7 @@
 .hh-home .hh-choice[data-chosen] {
 	border-color: var(--hx-color-primary);
 	background: var(--hx-color-primary-soft);
-	opacity: 1;
+	opacity: var(--hx-opacity-full);
 }
 .hh-home .hh-answer-feedback {
 	margin: 0;
@@ -75,7 +75,7 @@
 		translate: 0 1px;
 	}
 	.hh-home .viewer-dialog[open] {
-		animation: hh-open var(--hx-motion-fast) ease-out;
+		animation: hh-open var(--hx-motion-fast) var(--hx-motion-ease-out);
 	}
 	.hh-home details::details-content {
 		interpolate-size: allow-keywords;
@@ -83,19 +83,19 @@
 		block-size: 0;
 		opacity: 0;
 		transition:
-			block-size var(--hx-motion-reveal) ease,
-			opacity var(--hx-motion-fast) ease,
+			block-size var(--hx-motion-reveal) var(--hx-motion-ease),
+			opacity var(--hx-motion-fast) var(--hx-motion-ease),
 			content-visibility var(--hx-motion-reveal) allow-discrete;
 	}
 	.hh-home details[open]::details-content {
 		block-size: auto;
-		opacity: 1;
+		opacity: var(--hx-opacity-full);
 	}
 	.hh-home .hh-needs-item {
-		transition: filter 320ms ease;
+		transition: filter var(--hx-motion-collapse) var(--hx-motion-ease);
 	}
 	.hh-home .hh-needs-item[inert] {
-		filter: opacity(0);
+		filter: var(--hx-effect-fade-out);
 	}
 }
 @keyframes hh-open {
@@ -104,7 +104,7 @@
 		translate: 0 4px;
 	}
 	to {
-		opacity: 1;
+		opacity: var(--hx-opacity-full);
 		translate: 0 0;
 	}
 }
