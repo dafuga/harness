@@ -25,6 +25,7 @@ import type {
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { TrackerReservedStart } from '../TrackerDispatchSchedulerService.types';
 import type {
+	TrackerHostLaunchContext,
 	TrackerHostLaunchPort,
 	TrackerHostRoute,
 	TrackerHostRunnerOptions,
@@ -153,17 +154,7 @@ function activeTrackerSessionKeys(
 }
 
 async function launchApprovedItem(
-	{
-		driver,
-		node,
-		routeFor,
-		store
-	}: {
-		driver: TrackerHostLaunchPort;
-		node: string;
-		routeFor: TrackerHostRoute;
-		store: TrackerPersistenceService;
-	},
+	{ driver, node, routeFor, store }: TrackerHostLaunchContext,
 	{
 		item,
 		reservation,
