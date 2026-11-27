@@ -9,12 +9,12 @@
 	import {
 		count,
 		relativeWhen
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import { projectInventory, inventorySummary } from './hubHomeProjects';
 	import type { HomeView } from './hubHomeView.types';
-	import HubHomeCard from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte';
-	import HubHomeRow from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte';
-	import HubHomeSkeleton from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
+	import HubHomeCard from '$reports/components/projects-sessions/hub-home/HubHomeCard.svelte';
+	import HubHomeRow from '$reports/components/projects-sessions/hub-home/HubHomeRow.svelte';
+	import HubHomeSkeleton from '$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 
 	let { view, open }: { view: HomeView; open: () => void } = $props();
 	const latest = $derived(

@@ -8,8 +8,8 @@ import {
 	staleReading,
 	warningFor,
 	warningLabel
-} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
-import { resetClock } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeTime';
+} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+import { resetClock } from '$reports/components/projects-sessions/hub-home/hubHomeTime';
 
 const shortNames = { claude: 'Claude', codex: 'Codex' } as const;
 const products = {

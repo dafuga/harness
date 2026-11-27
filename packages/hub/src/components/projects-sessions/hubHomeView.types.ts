@@ -12,7 +12,7 @@ import type {
 import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
-import type { soonestWork } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+import type { soonestWork } from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 
 export interface HomeView {
 	overview: OverviewSnapshot | null;

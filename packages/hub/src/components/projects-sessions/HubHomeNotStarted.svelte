@@ -6,8 +6,8 @@
 	import {
 		pastDueLabel,
 		pastDueSummary
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
-	import HubHomeRow from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+	import HubHomeRow from '$reports/components/projects-sessions/hub-home/HubHomeRow.svelte';
 
 	let { pastDue, work, limit }: { pastDue: HomePastDue[]; work: { id: string }[]; limit?: number } =
 		$props();

@@ -16,14 +16,14 @@
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
-	import { provideHubSpecDocuments } from '../../../../reports/src/components/projects-sessions/hub-home/hubSpecDocument';
-	import { provideHomeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
+	import { provideHubSpecDocuments } from '$reports/components/projects-sessions/hub-home/hubSpecDocument';
+	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 	import {
 		soonestWork,
 		staleReading
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
@@ -31,8 +31,8 @@
 	import HubHomeCards from './HubHomeCards.svelte';
 	import HubHomeDialogs from './HubHomeDialogs.svelte';
 	import { followNeedsLink } from './followNeedsLink.svelte';
-	import '../../../../reports/src/lib/styles/home-scheme.css';
-	import '../../../../reports/src/lib/styles/hub-home/index.css';
+	import '$reports/lib/styles/home-scheme.css';
+	import '$reports/lib/styles/hub-home/index.css';
 
 	const { api, session, projects } = browserContext();
 	provideHubSpecDocuments((attachment) => api.get('/api/hub-home/doc', { id: attachment.id }));

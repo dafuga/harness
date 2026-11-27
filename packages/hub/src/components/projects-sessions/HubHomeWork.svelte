@@ -8,11 +8,11 @@
 	import {
 		pastDueLabel,
 		workEta
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
 	import type { HomeView } from './hubHomeView.types';
-	import HubHomeRow from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte';
-	import HubHomeSkeleton from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
+	import HubHomeRow from '$reports/components/projects-sessions/hub-home/HubHomeRow.svelte';
+	import HubHomeSkeleton from '$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 	let { overview, work, pastDue, now }: Pick<HomeView, 'overview' | 'work' | 'pastDue' | 'now'> =
 		$props();
 	let tab = $state<'soonest' | 'projects'>('soonest');

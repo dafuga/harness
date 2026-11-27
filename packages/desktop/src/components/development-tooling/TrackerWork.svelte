@@ -12,18 +12,18 @@
 		OwnerHomeSnapshot,
 		TrackerHomeSource
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import HubHomeCosChat from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte';
-	import HubHomePlannable from '../../../../reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte';
-	import HubHomePlanDetail from '../../../../reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte';
-	import HubHomePlans from '../../../../reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte';
-	import HubHomeSchedule from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte';
-	import { provideHomeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
+	import HubHomeCosChat from '$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte';
+	import HubHomePlannable from '$reports/components/projects-sessions/hub-home/HubHomePlannable.svelte';
+	import HubHomePlanDetail from '$reports/components/projects-sessions/hub-home/HubHomePlanDetail.svelte';
+	import HubHomePlans from '$reports/components/projects-sessions/hub-home/HubHomePlans.svelte';
+	import HubHomeSchedule from '$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte';
+	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import '$reports/lib/styles/project-overview.css';
 	import '$reports/lib/styles/project-overview-cards.css';
 	import '$reports/lib/styles/project-overview-controls.css';
 	import '$reports/lib/styles/project-overview-responsive.css';
-	import '../../../../reports/src/lib/styles/home-scheme.css';
-	import '../../../../reports/src/lib/styles/hub-home/index.css';
+	import '$reports/lib/styles/home-scheme.css';
+	import '$reports/lib/styles/hub-home/index.css';
 
 	let { source, mac }: { source: TrackerHomeSource; mac: boolean } = $props();
 	const chat = provideHomeCosChat();

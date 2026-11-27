@@ -8,14 +8,14 @@
 		pastDueLabel,
 		workSummary,
 		workEta
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
-	import HubHomeCard from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte';
+	import HubHomeCard from '$reports/components/projects-sessions/hub-home/HubHomeCard.svelte';
 	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
-	import HubHomePlannable from '../../../../reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte';
+	import HubHomePlannable from '$reports/components/projects-sessions/hub-home/HubHomePlannable.svelte';
 	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
-	import HubHomeRow from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte';
-	import HubHomeSkeleton from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
+	import HubHomeRow from '$reports/components/projects-sessions/hub-home/HubHomeRow.svelte';
+	import HubHomeSkeleton from '$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 
 	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
 </script>

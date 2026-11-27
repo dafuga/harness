@@ -10,12 +10,9 @@
 	import { resolve } from '$app/paths';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { inventorySummary, projectInventory } from './hubHomeProjects';
-	import {
-		count,
-		when
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	import { count, when } from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import type { ReadHomeProject } from './hubHomeView.types';
-	import HubHomeSkeleton from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
+	import HubHomeSkeleton from '$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 
 	let {
 		projects,

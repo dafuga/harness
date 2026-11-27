@@ -2,7 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_aigdzmrsfg -->
 <script lang="ts">
-	import { homeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
+	import { homeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import { hasWebLink } from '$reports/utils/strings/linkSegments';
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
@@ -21,15 +21,15 @@
 		initials,
 		overviewTone,
 		messageStatusText
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import {
 		isPending,
 		receiptText
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeMessages';
+	} from '$reports/components/projects-sessions/hub-home/hubHomeMessages';
 	import type { ChangeSession, SendHomeChat } from './hubHomeView.types';
 	import HubHomeAddSession from './HubHomeAddSession.svelte';
-	import HubHomeComposer from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte';
-	import HubHomeSkeleton from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
+	import HubHomeComposer from '$reports/components/projects-sessions/hub-home/HubHomeComposer.svelte';
+	import HubHomeSkeleton from '$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 
 	let {
 		agents,

@@ -68,6 +68,390 @@
 	],
 	"references": [
 		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlans.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/home-scheme.css",
+			"to": "packages/reports/src/lib/styles/home-scheme.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/hub-home/index.css",
+			"to": "packages/reports/src/lib/styles/hub-home/index.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubSpecDocument",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/lib/styles/home-scheme.css",
+			"to": "packages/reports/src/lib/styles/home-scheme.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHome.svelte",
+			"specifier": "$reports/lib/styles/hub-home/index.css",
+			"to": "packages/reports/src/lib/styles/hub-home/index.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeComposer.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeMessages",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeMessages.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCard.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlans.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeHeader.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeTime",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeAsk.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNotStarted.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNotStarted.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeNotifications.svelte",
+			"specifier": "$reports/lib/styles/hub-home/notifications.css",
+			"to": "packages/reports/src/lib/styles/hub-home/notifications.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCard.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjectCard.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjects.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeProjects.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeQuota.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeQuota.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeWork.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeCard.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubQuotaSubscription.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubQuotaSubscription.svelte",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeTime",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.types",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.types.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeChatContext.types",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeLive.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeLive.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeTime",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeNotificationText.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeTime",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeProjects.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeView.types.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubQuotaPills.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomePresentation",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubQuotaPills.ts",
+			"specifier": "$reports/components/projects-sessions/hub-home/hubHomeTime",
+			"to": "packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
+			"from": "packages/hub/src/components/public-site/HomePage.svelte",
+			"specifier": "$reports/lib/styles/home-scheme.css",
+			"to": "packages/reports/src/lib/styles/home-scheme.css",
+			"reason": "Resolves portable Home presentation through the Reports build alias."
+		},
+		{
 			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",

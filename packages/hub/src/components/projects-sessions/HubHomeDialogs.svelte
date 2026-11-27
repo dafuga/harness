@@ -18,7 +18,7 @@
 		workSummary,
 		count,
 		quotaSummary
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import { projectInventory } from './hubHomeProjects';
 	import type {
 		HomeView,
@@ -28,9 +28,9 @@
 		SendHomeChat
 	} from './hubHomeView.types';
 	import HubHomeAgents from './HubHomeAgents.svelte';
-	import HubHomePlanDetail from '../../../../reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte';
-	import HubHomePlans from '../../../../reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte';
-	import HubHomeSchedule from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte';
+	import HubHomePlanDetail from '$reports/components/projects-sessions/hub-home/HubHomePlanDetail.svelte';
+	import HubHomePlans from '$reports/components/projects-sessions/hub-home/HubHomePlans.svelte';
+	import HubHomeSchedule from '$reports/components/projects-sessions/hub-home/HubHomeSchedule.svelte';
 	import HubHomeProjects from './HubHomeProjects.svelte';
 	import HubHomeQuota from './HubHomeQuota.svelte';
 	import HubHomeWork from './HubHomeWork.svelte';

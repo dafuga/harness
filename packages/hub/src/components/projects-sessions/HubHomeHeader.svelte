@@ -13,7 +13,7 @@
 	import {
 		homeHeadline,
 		summaryLine
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';

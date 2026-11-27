@@ -6,8 +6,8 @@
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { liveNotice, liveSummary, projectSummary, liveSystemNotice } from './hubHomeLive';
 	import HubHomeLiveProject from './HubHomeLiveProject.svelte';
-	import { count } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
-	import { runTime } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeTime';
+	import { count } from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+	import { runTime } from '$reports/components/projects-sessions/hub-home/hubHomeTime';
 
 	let { reading, now }: { reading: LinkedHome | null; now: number } = $props();
 	const notice = $derived(liveNotice(reading));

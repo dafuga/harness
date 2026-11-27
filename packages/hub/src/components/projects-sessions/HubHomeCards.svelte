@@ -22,20 +22,20 @@
 		staleReading,
 		warningFor,
 		warningLabel
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	} from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
 	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
 	import type { HomeChatReceipt } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import HubHomeCard from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte';
+	import HubHomeCard from '$reports/components/projects-sessions/hub-home/HubHomeCard.svelte';
 	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import {
 		homeCosChat,
 		provideHomeCosChat
-	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
-	import HubHomeCosChat from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte';
-	import HubHomeRow from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte';
-	import HubHomeSkeleton from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
+	} from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
+	import HubHomeCosChat from '$reports/components/projects-sessions/hub-home/HubHomeCosChat.svelte';
+	import HubHomeRow from '$reports/components/projects-sessions/hub-home/HubHomeRow.svelte';
+	import HubHomeSkeleton from '$reports/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 

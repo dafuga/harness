@@ -6,8 +6,8 @@ import type {
 	HomeWorkState
 } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
-import { count } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
-import { runMoment } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeTime';
+import { count } from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+import { runMoment } from '$reports/components/projects-sessions/hub-home/hubHomeTime';
 
 export const stageLabels = {
 	idea: 'Idea',
