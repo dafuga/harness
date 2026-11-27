@@ -1,5 +1,6 @@
+import { execFileSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
-import { existsSync, mkdtempSync, realpathSync, rmSync, statSync } from 'node:fs';
+import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { isAbsolute, join } from 'node:path';
 import { ContainerBrowserAdapter } from '../../src/adapters/execution-runtimes/ContainerBrowserAdapter';
@@ -48,11 +49,25 @@ function fixtureSocket(): string {
 	const live = browserEndpoint().socket;
 	if (!requested || !isAbsolute(requested))
 		throw new Error('Set an isolated browser engine socket.');
-	const socket = realpathSync(requested);
-	if (!statSync(socket).isSocket() || (existsSync(live) && realpathSync(live) === socket)) {
+	const socket = unixSocket(requested);
+	if (!socket || socket === unixSocket(live)) {
 		throw new Error('The private browser fixture requires a separate Unix engine socket.');
 	}
 	return socket;
+}
+
+function unixSocket(path: string): string | undefined {
+	try {
+		// Older Bun cannot resolve a macOS Unix socket through its fs bindings.
+		const resolved = execFileSync('realpath', [path], {
+			encoding: 'utf8',
+			stdio: ['ignore', 'pipe', 'ignore']
+		}).trim();
+		execFileSync('/bin/test', ['-S', resolved], { stdio: 'ignore' });
+		return resolved;
+	} catch {
+		return undefined;
+	}
 }
 
 async function confirmFixtureEngine(): Promise<void> {
