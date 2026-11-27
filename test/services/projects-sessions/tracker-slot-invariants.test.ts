@@ -46,6 +46,13 @@ const outcomes: Record<
 	},
 	async timed_out(hub) {
 		await hub.advance(481 * minute);
+		expect(hub.runs(item)).toEqual([{ state: 'running', outcome: null }]);
+		// Upgraded journals can still contain a legacy timeout while its pane is alive.
+		hub.database
+			.prepare(
+				"UPDATE runs SET state = 'finished', outcome = 'timed_out', ended_at = ? WHERE item_id = ?"
+			)
+			.run(hub.now(), item);
 	}
 };
 

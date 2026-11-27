@@ -38,6 +38,7 @@ import { formatTrackerHostBrief } from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
 import { startTrackerHost } from './trackerHostLaunchPort';
 import { trackerCpuBudget } from '../../../utils/projects-sessions/trackerCpuBudget';
+import { recordOverdueAlert } from './trackerHostWatchdogAlerts';
 
 export function trackerHostRunner(
 	store: TrackerPersistenceService,
@@ -87,6 +88,8 @@ export function trackerHostRunner(
 				const event = recordedHostEvent(run, { key, sessions, items, legacySession, store });
 				return report(event, run, signal);
 			},
+			overdue: (run: TrackerRunReceipt, reason: string) =>
+				recordOverdueAlert(store, run, { reason, at: now() }),
 			...optionalHostControls(driver)
 		},
 		sessions: (itemId: string) => itemSessions({ store, items, sessions, panes, windows }, itemId)
