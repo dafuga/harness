@@ -1,0 +1,136 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-adapter-post-slack-message",
+	"uid": "u_kvckdadbxo",
+	"kind": "adapter",
+	"title": "postSlackMessage",
+	"responsibility": "Sends one Slack message or thread reply and validates the provider receipt against the requested conversation.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/agents-providers/slack-adapter/postSlackMessage.ts"],
+		"symbols": ["slackConversationId", "slackMessageTimestamp", "postSlackMessage"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "postSlackMessage.fetchImpl",
+				"type": "typeof fetch",
+				"required": true
+			},
+			{
+				"name": "postSlackMessage.token",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "postSlackMessage.message",
+				"type": "PlatformMessage",
+				"required": true
+			},
+			{
+				"name": "postSlackMessage.userGrant",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "slackConversationId",
+				"type": "unknown"
+			},
+			{
+				"name": "slackMessageTimestamp",
+				"type": "unknown"
+			},
+			{
+				"name": "postSlackMessage",
+				"type": "Promise<PlatformReceipt>"
+			}
+		],
+		"errors": [
+			{
+				"name": "SlackRequestError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "postSlackMessage",
+				"inputs": [
+					{
+						"name": "postSlackMessage.fetchImpl",
+						"type": "typeof fetch",
+						"required": true
+					},
+					{
+						"name": "postSlackMessage.token",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "postSlackMessage.message",
+						"type": "PlatformMessage",
+						"required": true
+					},
+					{
+						"name": "postSlackMessage.userGrant",
+						"type": "boolean",
+						"required": false,
+						"default": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "postSlackMessage",
+						"type": "Promise<PlatformReceipt>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SlackRequestError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-platform-adapter-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/slack-adapter/postSlackMessage.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/slack-adapter/postSlackMessage.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

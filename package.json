@@ -20,6 +20,10 @@
 			"types": "./dist/types/lib/runtime.d.ts",
 			"default": "./dist/api/runtime.js"
 		},
+		"./slack-user": {
+			"types": "./dist/types/lib/slackUser.d.ts",
+			"default": "./dist/api/slackUser.js"
+		},
 		"./verification": {
 			"types": "./dist/types/lib/verification.d.ts",
 			"default": "./dist/api/verification.js"

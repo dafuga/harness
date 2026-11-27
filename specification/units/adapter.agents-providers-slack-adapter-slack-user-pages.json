@@ -1,0 +1,118 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.agents-providers-slack-adapter-slack-user-pages",
+	"uid": "u_bpuzjjhas3",
+	"kind": "adapter",
+	"title": "slackUserPages",
+	"responsibility": "Decodes selected conversation and message fields from Slack Web API pages and preserves pagination indicators.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/agents-providers/slack-adapter/slackUserPages.ts"],
+		"symbols": ["decodeConversations", "decodeHistory"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "decodeConversations.raw",
+				"type": "UntrustedValue",
+				"required": true
+			},
+			{
+				"name": "decodeHistory.raw",
+				"type": "UntrustedValue",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "decodeConversations",
+				"type": "SlackUserConversationPage"
+			},
+			{
+				"name": "decodeHistory",
+				"type": "SlackUserMessagePage"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "decodeConversations",
+				"inputs": [
+					{
+						"name": "decodeConversations.raw",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "decodeConversations",
+						"type": "SlackUserConversationPage"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "decodeHistory",
+				"inputs": [
+					{
+						"name": "decodeHistory.raw",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "decodeHistory",
+						"type": "SlackUserMessagePage"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-slack-adapter-post-slack-message",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-adapter-slack-request-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.agents-providers-slack-user",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/agents-providers/slack-adapter/slackUserPages.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/agents-providers/slack-adapter/slackUserPages.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

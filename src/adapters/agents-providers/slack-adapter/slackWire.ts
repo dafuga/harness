@@ -17,12 +17,6 @@ export const authReply = z.object({
 	user_id: userId
 });
 
-export const postReply = z.object({
-	ok: z.literal(true),
-	channel: channelId,
-	ts: slackTimestamp
-});
-
 const allowedMessage = z.object({
 	channelId,
 	text: z
