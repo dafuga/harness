@@ -123,9 +123,7 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 		.getByRole('textbox', { name: 'Message Chief of Staff' })
 		.fill('Synthetic Hub message');
 	await widget.getByRole('button', { name: 'Send', exact: true }).click();
-	await expect(
-		widget.getByText('Stored in Tracker; it goes to Chief of Staff through its Tracker channel.')
-	).toBeVisible();
+	await expect(widget.getByRole('status')).toHaveText('Queued for Tracker');
 	await page.keyboard.press('Escape');
 	await expect(opener).toBeFocused();
 	// Chief of Staff messages go to the Tracker channel.
