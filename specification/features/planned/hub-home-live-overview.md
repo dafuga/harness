@@ -32,3 +32,9 @@ With nothing current to show, the section says which of these is true: still rea
 ## Release
 
 The Hub and the Mac app both need this change. A new Hub with an older Mac app asks for the Mac to be updated.
+
+## Home placement
+
+The live overview is the last section on Hub Home. Every project group starts collapsed and can be
+expanded independently. Offline computers and failures reading the live connection appear in a
+compact banner above the Home heading.

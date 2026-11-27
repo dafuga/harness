@@ -281,7 +281,7 @@
 				"outputs": [
 					{
 						"name": "RegressionProofRepository.history",
-						"type": "Promise<import('../../core/verification-evidence/regressionTypes').RegressionView[]>",
+						"type": "Promise<RegressionView[]>",
 						"description": "Promise resolving to flattened regression views for the requested commit and eligible commits with identical source trees. Corrupt or unreadable per-note evidence is retained as a gap in its view.",
 						"examples": [
 							[

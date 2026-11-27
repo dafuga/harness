@@ -14,17 +14,31 @@ import { linkedComputersFixture } from './linked-computers-fixture';
  */
 test.setTimeout(60000);
 
-const sizes = { desktop: { width: 1440, height: 900 }, phone: { width: 390, height: 844 } };
+const sizes = {
+	desktop: { width: 1440, height: 900 },
+	tablet: { width: 820, height: 1180 },
+	phone: { width: 390, height: 844 }
+};
 
 async function shot(page: Page, name: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	const directory = process.env.SCREENSHOT_DIR ?? 'test-results/hub-messages';
-	await page.screenshot({ path: `${directory}/${name}.png`, animations: 'disabled' });
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all(Array.from(document.images, (image) => image.decode()));
+	});
+	await page.screenshot({
+		path: `${directory}/${process.env.SCREENSHOT_LABEL ?? 'current'}-${name}.png`,
+		animations: 'disabled'
+	});
 }
 
 async function linkedHome(page: Page, size: keyof typeof sizes) {
 	await page.setViewportSize(sizes[size]);
-	await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+	await page.emulateMedia({
+		colorScheme: size === 'tablet' ? 'light' : 'dark',
+		reducedMotion: 'reduce'
+	});
 	const fixture = await hubHomeFixture(page, 'default');
 	// Nothing is uploaded to the Hub: Home comes only from the linked Mac.
 	await page.route('**/api/hub-home', (route) =>
@@ -59,7 +73,7 @@ async function linkedHome(page: Page, size: keyof typeof sizes) {
 	);
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-	return { fixture, chief, harbor, chats };
+	return { fixture, chief, harbor, chats, snapshot };
 }
 
 const mine = (text: string, status: HomeMessage['status'], reason?: string): HomeMessage => ({
@@ -72,13 +86,35 @@ const mine = (text: string, status: HomeMessage['status'], reason?: string): Hom
 	...(reason && { reason })
 });
 
-for (const size of ['desktop', 'phone'] as const) {
+for (const size of ['desktop', 'tablet', 'phone'] as const) {
 	test(`Home's chat box reaches Chief of Staff and shows delivery and the reply (${size})`, async ({
 		page
 	}) => {
 		const { fixture, chief, chats } = await linkedHome(page, size);
-		const box = page.getByRole('region', { name: 'Message Chief of Staff' });
+		await shot(page, `hub-cos-home-${size}`);
+		await expect(page.getByRole('textbox', { name: 'Message Chief of Staff' })).toHaveCount(0);
+		const launch = page.getByRole('region', { name: 'Chief of Staff', exact: true });
+		const opener = launch.getByRole('button', { name: 'Open chat', exact: true });
+		await expect(launch.getByRole('button')).toHaveCount(1);
+		await opener.click();
+		const box = page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
 		await expect(box).toBeVisible();
+		const bounds = (await box.boundingBox())!;
+		const { width, height } = sizes[size];
+		if (size === 'phone') expect(bounds).toEqual({ x: 0, y: 0, width, height });
+		else {
+			expect(bounds.x).toBeGreaterThan(width - bounds.x - bounds.width);
+			expect(width - (bounds.x + bounds.width)).toBeLessThanOrEqual(24);
+			expect(height - (bounds.y + bounds.height)).toBeLessThanOrEqual(24);
+		}
+		await box.getByRole('textbox', { name: 'Message Chief of Staff' }).fill('Saved draft');
+		await page.keyboard.press('Escape');
+		await expect(box).toHaveCount(0);
+		await expect(opener).toBeFocused();
+		await opener.click();
+		await expect(box.getByRole('textbox', { name: 'Message Chief of Staff' })).toHaveValue(
+			'Saved draft'
+		);
 		await box.getByRole('textbox', { name: 'Message Chief of Staff' }).fill('Ship the hub release');
 		await box.getByRole('button', { name: 'Send' }).click();
 		await expect.poll(() => chats.length).toBe(1);
@@ -154,4 +190,20 @@ test("a session's Message button sends to that session's live run, and shows a r
 		{ timeout: 15_000 }
 	);
 	await shot(page, 'hub-session-message-refused');
+});
+
+test('refresh removes a resolved ask from the open widget even if an agent retains old text', async ({
+	page
+}) => {
+	await page.clock.install();
+	const { chief, snapshot } = await linkedHome(page, 'desktop');
+	const needs = page.getByRole('region', { name: 'Blocked - needs you' });
+	await needs.getByRole('button', { name: 'Talk to Chief of Staff', exact: true }).first().click();
+	const widget = page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
+	await expect(widget.getByText(chief.question!, { exact: false })).toBeVisible();
+	snapshot.openAsks = [];
+	await page.clock.runFor(21_000);
+	await expect(widget.getByText('This question is no longer open.')).toBeVisible();
+	await expect(widget.getByText(chief.question!, { exact: false })).toHaveCount(0);
+	await expect(widget.getByRole('group', { name: 'Choose an answer' })).toHaveCount(0);
 });

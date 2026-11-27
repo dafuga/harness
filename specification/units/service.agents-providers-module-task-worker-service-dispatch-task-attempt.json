@@ -89,7 +89,7 @@
 				"outputs": [
 					{
 						"name": "dispatchTaskAttempt",
-						"type": "Promise<import('../../../repositories/agents-providers/ModuleTaskRepository.types').TaskRunResult>",
+						"type": "Promise<TaskRunResult & { [moduleCompletionContext]?: ModuleCompletionContext }>",
 						"description": "Provider result fields with the run context used by the module completion stage. The success record is appended before this function returns.",
 						"examples": [
 							{

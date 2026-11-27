@@ -14,7 +14,8 @@
 			"reports.component.explorer-ui-explorer-kit-view-spec-buttons",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -50,11 +51,11 @@
 				"description": "Receives each queued answer and its receipt. Defaults to nothing being notified."
 			},
 			{
-				"name": "HubHomeAsk.row",
-				"type": "boolean",
+				"name": "HubHomeAsk.present",
+				"type": "(content: Snippet | null) => void",
 				"required": false,
-				"default": false,
-				"description": "True on a Home row, which already shows who asks and the question, so the card omits them."
+				"default": "undefined (omitted)",
+				"description": "Renders a choice or written-answer dialog beside the Home list when provided."
 			}
 		],
 		"outputs": [
@@ -140,6 +141,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
 			"via": "import",
 			"origin": "derived"
 		},

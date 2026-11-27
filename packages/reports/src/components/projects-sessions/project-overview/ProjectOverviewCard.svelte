@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_5zc2xsq34f -->
 <script lang="ts">
+	import LinkifiedText from '../../shared-primitives/LinkifiedText.svelte';
 	import Card from '../../explorer-ui/explorer-kit/Card.svelte';
 	import type { OverviewCallout } from '../../../lib/projects-sessions/project-overview/projectOverview.types';
 	import ProjectOverviewItem from './ProjectOverviewItem.svelte';
@@ -31,7 +32,7 @@
 			<hx-span class="po-callout-meta">updated {formatWhen(surfaced.item.updatedAt)}</hx-span>
 			<hx-span class="po-callout-id">{surfaced.item.id}</hx-span>
 		</hx-div>
-		<hx-p class="po-callout-text">{surfaced.text}</hx-p>
+		<hx-p class="po-callout-text"><LinkifiedText text={surfaced.text} /></hx-p>
 		<hx-div class="po-callout-actions">
 			<hx-button type="button" class="po-action" onclick={() => onOpen(surfaced.item)}
 				>Open item</hx-button
@@ -70,7 +71,7 @@
 			<hx-span class="po-note-lead"
 				>{countOf(blockedCount, 'blocked item', 'blocked items')}</hx-span
 			>
-			<hx-span class="po-note-text">{card.blocked.text}</hx-span>
+			<hx-span class="po-note-text"><LinkifiedText text={card.blocked.text} /></hx-span>
 		</hx-p>
 	{/if}
 
@@ -96,7 +97,7 @@
 				<hx-span class="po-label">Last milestone</hx-span>
 				<hx-span class="po-milestone-at">{formatWhen(card.milestone.at)}</hx-span>
 			</hx-div>
-			<hx-p class="po-milestone-text">{card.milestone.text}</hx-p>
+			<hx-p class="po-milestone-text"><LinkifiedText text={card.milestone.text} /></hx-p>
 		</hx-div>
 	{/if}
 </Card>

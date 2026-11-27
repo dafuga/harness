@@ -9,14 +9,30 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"src/services/projects-sessions/tracker-backup-service/trackerBackupFileError.ts",
 			"src/services/projects-sessions/tracker-backup-service/trackerBackupState.ts",
 			"src/services/projects-sessions/tracker-backup-service/trackerBackupState.types.ts"
 		],
-		"symbols": ["readTrackerBackupState", "writeTrackerBackupState", "TrackerBackupState"]
+		"symbols": [
+			"trackerBackupFileError",
+			"readTrackerBackupState",
+			"writeTrackerBackupState",
+			"TrackerBackupState"
+		]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "trackerBackupFileError.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerBackupFileError.state",
+				"type": "TrackerBackupState",
+				"required": true
+			},
 			{
 				"name": "readTrackerBackupState.path",
 				"type": "string",
@@ -35,6 +51,10 @@
 		],
 		"outputs": [
 			{
+				"name": "trackerBackupFileError",
+				"type": "string | null"
+			},
+			{
 				"name": "readTrackerBackupState",
 				"type": "TrackerBackupState"
 			},
@@ -46,6 +66,29 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerBackupFileError",
+				"inputs": [
+					{
+						"name": "trackerBackupFileError.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerBackupFileError.state",
+						"type": "TrackerBackupState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerBackupFileError",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "readTrackerBackupState",
 				"inputs": [
@@ -90,7 +133,13 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/projects-sessions/tracker-backup-service/trackerBackupState.ts",

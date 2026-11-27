@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_jz3ojqls6h -->
 <script lang="ts">
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
@@ -68,7 +69,7 @@
 			<hx-article class={`po-card po-${tone} hh-plan`}>
 				<hx-div class="po-card-head">
 					<hx-div class="po-card-title">
-						<hx-h3 class="po-name">{plan.title}</hx-h3>
+						<hx-h3 class="po-name"><LinkifiedText text={plan.title} /></hx-h3>
 						<hx-p class="po-sessions"
 							>{[plan.project, `updated ${when(plan.updatedAt)}`].filter(Boolean).join(' · ')}</hx-p
 						>
@@ -86,7 +87,9 @@
 				{#if plan.steps.length}
 					<hx-ol class="hh-steps">
 						{#each opened === plan.id ? plan.steps : plan.steps.slice(0, 3) as step (step.id)}
-							<hx-li class="hh-step" data-done={step.done}>{step.title}</hx-li>
+							<hx-li class="hh-step" data-done={step.done}
+								><LinkifiedText text={step.title} /></hx-li
+							>
 						{/each}
 					</hx-ol>
 				{:else}<hx-p class="po-sessions">No steps recorded.</hx-p>{/if}

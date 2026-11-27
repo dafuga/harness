@@ -29,6 +29,7 @@
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
+	import { homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import HubHomeCosChat from './HubHomeCosChat.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -46,8 +47,9 @@
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 	} = $props();
+	const cosChat = homeCosChat() ?? provideHomeCosChat();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
-	const recipient = $derived(currentAgent([...(view.agents ?? []), ...view.asks]));
+	const recipient = $derived(currentAgent(view.agents ?? []));
 	const working = $derived(view.agents?.filter(isWorking).length ?? 0);
 	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
 	const lows = $derived(
@@ -72,13 +74,14 @@
 	</EmptyState>
 {/snippet}
 
-<HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} {send} {receipt} />
+<HubHomeNeedsYou asks={view.openAsks} now={view.now} {send} {receipt} />
 {#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
 		agent={view.agents.find((agent) => agent.id === 'cos')}
 		now={new Date(view.now).toISOString()}
+		asks={view.openAsks}
 		{send}
+		{receipt}
 	/>{/if}
-<HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard
 		section="agents"
@@ -112,8 +115,15 @@
 								<hx-button
 									type="button"
 									class="po-action hh-talk"
-									onclick={() => open('agents', agent.id)}
-									aria-label={`Message ${agent.name}`}>Message</hx-button
+									onclick={(event) => {
+										if (agent.id === 'cos') cosChat.open(event.currentTarget);
+										else open('agents', agent.id);
+									}}
+									aria-haspopup="dialog"
+									aria-label={agent.id === 'cos'
+										? 'Open chat with Chief of Staff'
+										: `Message ${agent.name}`}
+									>{agent.id === 'cos' ? 'Open chat' : 'Message'}</hx-button
 								>
 							</hx-span>
 						{/snippet}
@@ -200,3 +210,4 @@
 
 	<HubHomeWorkCards {view} {open} />
 </hx-div>
+<HubHomeLive reading={view.computers} now={view.now} />

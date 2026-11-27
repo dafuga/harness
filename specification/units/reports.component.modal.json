@@ -14,7 +14,8 @@
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-textarea"
+			"reports.component.shared-primitives-atoms-html-textarea",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -73,6 +74,13 @@
 				"default": "image",
 				"description": "Optional presentation, defaulting to image, which adds neither the text nor the lightbox class. The text value adds the text class, which limits the dialog to at most 760px wide and fits its height to the content, and the lightbox value adds the lightbox class, which makes it a borderless full-viewport canvas.",
 				"examples": ["image", "text", "lightbox"]
+			},
+			{
+				"name": "Modal.modal",
+				"type": "boolean",
+				"required": false,
+				"default": true,
+				"description": "Uses a browser modal when true and a modeless dialog when false."
 			},
 			{
 				"name": "Modal.onClose",
@@ -144,6 +152,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-textarea",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
 			"via": "import",
 			"origin": "derived"
 		},

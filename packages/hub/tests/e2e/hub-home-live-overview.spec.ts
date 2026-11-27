@@ -17,7 +17,6 @@ async function expectNoSidewaysScroll(page: Page, width: number) {
 	expect(wide.right).toBeLessThanOrEqual(width);
 }
 
-/** Stacked on a phone, the heading, the summary and the source line are evenly spaced. */
 async function expectEvenHeaderSpacing(page: Page) {
 	const [heading, summary, source] = await Promise.all(
 		[
@@ -32,6 +31,12 @@ async function expectEvenHeaderSpacing(page: Page) {
 	expect(below).toBeLessThanOrEqual(8);
 }
 
+async function expandProjects(page: Page) {
+	await expect(overview(page).locator('details.hh-live-project > summary').first()).toBeVisible();
+	const summaries = overview(page).locator('details.hh-live-project:not([open]) > summary');
+	while (await summaries.count()) await summaries.first().click();
+}
+
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
 	['phone', 390, 844]
@@ -41,11 +46,33 @@ for (const [device, width, height] of [
 	}) => {
 		const tracker = recordedTracker();
 		await page.setViewportSize({ width, height });
-		const requests = await productionHome(page, await macAnswer(tracker));
+		const answer = await macAnswer(tracker);
+		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
+		const requests = await productionHome(page, answer);
 		await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
 		await page.goto('/');
 
 		const live = tracker.runs.filter((run) => run.ended_at === null);
+		const groups = overview(page).locator('details.hh-live-project');
+		await expect(groups.first()).toBeVisible();
+		await expect(overview(page).locator('details.hh-live-project[open]')).toHaveCount(0);
+		await expect(liveRows(page).first()).toBeHidden();
+		const alert = page.getByRole('status', { name: 'System alerts' });
+		await expect(alert).toContainText('Offline: grok-box');
+		await expect(overview(page)).not.toContainText('Offline: grok-box');
+		const main = page.getByRole('main');
+		await expect(main.locator(':scope > section').last()).toHaveAccessibleName('Live overview');
+		expect((await alert.boundingBox())!.y).toBeLessThan(
+			(await page.getByRole('heading', { level: 1 }).boundingBox())!.y
+		);
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await page.evaluate(() => document.fonts.ready.then(() => {}));
+			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
+			await overview(page).screenshot({
+				path: test.info().outputPath(`live-collapsed-${device}.png`)
+			});
+		}
+		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
 		const projects = new Set(tracker.items.map((item) => item.agent));
 		await expect(overview(page).getByRole('status')).toHaveText(
@@ -75,11 +102,6 @@ for (const [device, width, height] of [
 		if (device === 'phone') await expectEvenHeaderSpacing(page);
 		expect(requests.filter((entry) => entry.path === '/api/tracker-overview')).toEqual([]);
 		expect(requests.filter((entry) => entry.method === 'PUT')).toEqual([]);
-		if (process.env.TAKE_SCREENSHOT)
-			await page.screenshot({
-				path: test.info().outputPath(`live-overview-${device}.png`),
-				fullPage: true
-			});
 	});
 }
 
@@ -93,20 +115,18 @@ test('a paragraph-long title keeps its row short on a phone', async ({ page }) =
 	await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
 	await page.goto('/');
 
+	await expandProjects(page);
 	const title = overview(page).getByTitle(item.title);
 	await expect(title).toBeVisible();
 	const height = async (target: typeof title) => (await target.boundingBox())!.height;
 	const other = tracker.runs.filter((entry) => entry.ended_at === null)[1];
 	const short = tracker.items.find((entry) => entry.id === other.item_id)!;
 	const oneLine = await height(overview(page).getByTitle(short.title, { exact: true }));
-	// The title reads as body text, not as the bold label of a disclosure.
 	const weight = (target: typeof title) =>
 		target.evaluate((node) => getComputedStyle(node).fontWeight);
 	expect(await weight(title)).toBe(await weight(overview(page).getByRole('status')));
-	// Two lines at the most, however long the title is.
 	expect(await height(title)).toBeLessThanOrEqual(oneLine * 2 + 1);
 
-	// A phone has no tooltip: a tap shows the whole title and the exact times in Lisbon.
 	await title.click();
 	expect(await height(title)).toBeGreaterThan(oneLine * 3);
 	const row = overview(page)
@@ -136,7 +156,6 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	await expect(page.getByRole('status', { name: 'Updates' })).toHaveText('Live');
 	const stored = () => requests.filter((entry) => entry.path === '/api/hub-home').length;
 	const storedBefore = stored();
-
 	const finished = live[0];
 	const item = tracker.items.find((entry) => entry.id === finished.item_id)!;
 	finished.ended_at = Date.parse(tracker.recordedAt);
@@ -148,12 +167,11 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	await page.clock.runFor(21_000);
 
 	await expect(liveRows(page)).toHaveCount(live.length - 1);
-	// Resting tasks sit after the live ones, behind a button when a project has many.
 	const group = overview(page)
-		.locator('details')
-		.filter({ has: page.locator('summary', { hasText: item.agent! }) });
+		.locator('details.hh-live-project')
+		.filter({ has: page.locator('summary.hh-live-head', { hasText: item.agent! }) });
 	if (!(await group.evaluate((node) => (node as HTMLDetailsElement).open)))
-		await group.locator('summary').click();
+		await group.locator(':scope > summary').click();
 	const more = group.getByRole('button', { name: /^Show all/ });
 	if (await more.count()) await more.click();
 	const row = overview(page)
@@ -161,14 +179,12 @@ test('a change on the Mac shows within one turn, also while change notices are c
 		.filter({ has: page.getByText(item.title, { exact: true }) });
 	await expect(row).toContainText('Finished: done');
 	await expect(row).toContainText('Stage: Implementation');
-	// The stored Home keeps its slower pace; only the linked computers are asked again.
 	expect(stored()).toBe(storedBefore);
 });
 
 test('with no computer linked the overview says so and shows no rows', async ({ page }) => {
 	await productionHome(page);
 	await page.goto('/');
-
 	await expect(overview(page)).toContainText('No computer is linked to this account.');
 	await expect(overview(page).locator('.hh-live-row')).toHaveCount(0);
 });
@@ -183,7 +199,9 @@ test('a linked Mac that is off is reported as not answering', async ({ page }) =
 	await page.setViewportSize({ width: 390, height: 844 });
 	await page.goto('/');
 
-	await expect(overview(page)).toContainText('No linked computer answered');
+	await expect(page.getByRole('status', { name: 'System alerts' })).toContainText(
+		'No linked computer answered'
+	);
 	await expect(overview(page).locator('.hh-live-row')).toHaveCount(0);
 	await expectNoSidewaysScroll(page, 390);
 	if (process.env.TAKE_SCREENSHOT)
@@ -196,7 +214,6 @@ test('a Mac app without the overview is asked to update instead of showing a par
 	const { liveOverview: _newer, ...older } = await macAnswer(recordedTracker());
 	await productionHome(page, older);
 	await page.goto('/');
-
 	await expect(overview(page)).toContainText('Update Harness on your Mac');
 	await expect(overview(page).locator('.hh-live-row')).toHaveCount(0);
 });

@@ -1,10 +1,11 @@
 // @harness-uid u_5yftwarvsd
 import type {
+	BenchmarkCandidateMetrics,
 	BenchmarkRun,
 	BenchmarkTrial
 } from '../../../core/agents-providers/subagentBenchmarkTypes';
 
-export function benchmarkMetrics(run: BenchmarkRun) {
+export function benchmarkMetrics(run: BenchmarkRun): BenchmarkCandidateMetrics[] {
 	return run.definition.candidates.map((candidate) => {
 		const trials = run.trials.filter((trial) => trial.candidate === candidate.id);
 		const passed = trials.filter((trial) => trial.status === 'passed');

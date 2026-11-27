@@ -9,6 +9,7 @@ import type {
 import { hubHistory } from '../../../../utils/git-source-history/hubHistory';
 import type { Actor } from 'collaboration';
 import type { ThreadMessage } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
+import type { RevisionQuery } from '../../../../../../desktop/src/models/development-tooling/DesktopBridge.types';
 import { hubSource, hubRead } from '../../../../utils/development-tooling/hubSource';
 import type { HubSourceContext } from '../../../../utils/development-tooling/hubSource';
 import {
@@ -27,27 +28,37 @@ import { hubDesignCanvases } from './hubDesignCanvases';
 import { hubEntity } from './hubEntity';
 import { hubProjectionCache } from '../../../../utils/development-tooling/hubProjectionCache';
 import { RemoteProjectResponseValidator } from '../../../../../../desktop/src/validators/RemoteProjectResponseValidator';
+import type {
+	EntityEvidenceResult,
+	EvidenceArtifactResult
+} from '../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
+import type { ProjectSnapshot } from '../../../../../../desktop/src/models/development-tooling/Desktop.types';
+import type { HistoryEvent } from '../../../../../../desktop/src/models/development-tooling/DesktopEntity.types';
 
 export class HubProjectionService {
 	private readonly recorded: HubEvidenceService;
 	constructor(private context: Dependencies) {
 		this.recorded = new HubEvidenceService(context);
 	}
-	evidence(actor: Actor, projectId: string, query: EntityEvidenceQuery) {
+	evidence(
+		actor: Actor,
+		projectId: string,
+		query: EntityEvidenceQuery
+	): Promise<EntityEvidenceResult> {
 		return this.recorded.evidence(actor, projectId, query);
 	}
-	artifact(actor: Actor, projectId: string, query: EvidenceArtifactQuery) {
+	artifact(
+		actor: Actor,
+		projectId: string,
+		query: EvidenceArtifactQuery
+	): Promise<EvidenceArtifactResult> {
 		return this.recorded.artifact(actor, projectId, query);
 	}
 	private async load(actor: Actor, projectId: string, ref: string) {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSource({ ...this.context, actor, project, ref });
 	}
-	async snapshot(
-		actor: Actor,
-		projectId: string,
-		query: { branch: string | null; commit: string | null }
-	) {
+	async snapshot(actor: Actor, projectId: string, query: RevisionQuery): Promise<ProjectSnapshot> {
 		const project = await this.context.api.getProject(actor, projectId);
 		return hubSnapshot({ ...this.context, actor, project }, query);
 	}
@@ -83,7 +94,7 @@ export class HubProjectionService {
 		actor: Actor,
 		projectId: string,
 		query: { entityId: string; commit: string; page: number; branch: string }
-	) {
+	): Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }> {
 		const context = await this.load(actor, projectId, query.commit),
 			data = await hubCatalog(context);
 		const unit = data.units.find((u) => u.id === query.entityId),

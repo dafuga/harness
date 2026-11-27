@@ -4,6 +4,7 @@ import type {
 	AnalyticsFilter,
 	LoopMetric
 } from '../../core/reports-media/analyticsTypes';
+import type { AnalyticsModelMetrics, AnalyticsSnapshot } from './analyticsMetrics.types';
 import { jevMetrics } from './analyticsJevMetrics';
 import { ModuleTaskAnalyticsService } from '../../services/agents-providers/ModuleTaskAnalyticsService';
 import { taskRunRecords } from '../../services/agents-providers/module-task-analytics-service/taskRunRecords';
@@ -13,7 +14,7 @@ export function analyticsSnapshot(
 	events: AnalyticsEvent[],
 	filter: AnalyticsFilter = {},
 	includeTaskRuns = false
-) {
+): AnalyticsSnapshot {
 	const selected = events.filter((event) => matches(event, filter));
 	const loops = loopMetrics(selected);
 	const tasks = new ModuleTaskAnalyticsService().metrics(selected);
@@ -103,7 +104,7 @@ function loopMetrics(events: AnalyticsEvent[]): LoopMetric[] {
 			};
 		});
 }
-function modelMetrics(events: AnalyticsEvent[], model?: string) {
+function modelMetrics(events: AnalyticsEvent[], model?: string): AnalyticsModelMetrics {
 	const checks = events.filter((event) => event.kind === 'jev' && matches(event, { model }));
 	return {
 		authors: counts(checks, (event) => event.agentModel ?? 'unknown'),

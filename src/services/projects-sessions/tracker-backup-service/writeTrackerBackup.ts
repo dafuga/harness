@@ -2,8 +2,11 @@
 import { randomBytes } from 'node:crypto';
 import { chmodSync, mkdirSync, renameSync, rmSync, statSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
+import { openSqlite } from '../../../adapters/development-tooling/openSqlite';
 import type { SqliteDatabase } from '../../../core/development-tooling/sqliteTypes';
 import { readTrackerBackupFiles } from '../tracker-node-service/readTrackerBackupList';
+import { assertTrackerBackupOwner } from './assertTrackerBackupOwner';
 import {
 	assertTrackerBackupIntegrity,
 	copyTrackerBackup,
@@ -29,14 +32,46 @@ export async function writeTrackerBackup(
 		await gzipTrackerBackup(temporary, compressed);
 		const file = `tracker-${date}.db.gz`;
 		const path = join(directory, file);
-		renameSync(compressed, path);
-		if (new Date(`${date}T00:00:00Z`).getUTCDay() === 0)
-			copyTrackerBackup(path, join(directory, `tracker-weekly-${date}.db.gz`));
-		rotateTrackerBackups(directory);
-		return { file, size: statSync(path).size };
+		const sunday = new Date(`${date}T00:00:00Z`).getUTCDay() === 0;
+		const weekly = sunday ? `tracker-weekly-${date}.db.gz` : undefined;
+		// Keep the lock file in place so all writers lock the same inode. SQLite releases
+		// the lock on close or process exit, including when a backup fails.
+		const lock = openSqlite(join(directory, '.tracker-backup.lock'));
+		try {
+			await acquireBackupLock(lock);
+			await assertTrackerBackupOwner(temporary, directory, weekly ? [file, weekly] : [file]);
+			renameSync(compressed, path);
+			if (weekly) copyTrackerBackup(path, join(directory, weekly));
+			rotateTrackerBackups(directory);
+			return { file, size: statSync(path).size };
+		} finally {
+			lock.close();
+		}
 	} finally {
 		for (const path of [temporary, compressed]) rmSync(path, { force: true });
 	}
+}
+
+async function acquireBackupLock(lock: SqliteDatabase): Promise<void> {
+	const deadline = performance.now() + 10_000;
+	for (;;) {
+		try {
+			lock.exec('BEGIN IMMEDIATE');
+			return;
+		} catch (error) {
+			if (!isSqliteBusy(error) || performance.now() >= deadline) throw error;
+		}
+		// Yield so another backup in this process can finish and release its lock.
+		await delay(10);
+	}
+}
+
+function isSqliteBusy(error: unknown): boolean {
+	return (
+		error instanceof Error &&
+		(('code' in error && error.code === 'SQLITE_BUSY') ||
+			('errcode' in error && error.errcode === 5))
+	);
 }
 
 /** A snapshot that fails the check is kept for inspection, and nothing is rotated. */
