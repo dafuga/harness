@@ -172,7 +172,7 @@ const tmuxProgram = `${shared}
 const [,,, socket, command, ...args] = process.argv;
 if (socket !== 'default') process.exit(2);
 const line = (name) => { const pane = panes[name];
-	return [name, pane.created, 71, pane.id, 200, Math.floor(pane.activity), 2, 1, 0, 0, 0,\n\t\tpane.attached ? 1 : 0, 1, 1, 'claude'].join('|'); };
+	return [name, pane.created, 71, pane.id, 200, Math.floor(pane.activity), pane.x ?? 2, 1, 0, 0, 0,\n\t\tpane.attached ? 1 : 0, 1, 1, 'claude'].join('|'); };
 const byId = (id) => Object.keys(panes).find((name) => panes[name].id === id);
 const target = args[args.indexOf('-t') + 1];
 if (command === 'list-panes') process.stdout.write(Object.keys(panes).map(line).join('\\n') + '\\n');
@@ -184,6 +184,24 @@ else if (command === 'if-shell' && args.join(' ').includes('kill-session')) {
 	delete panes[byId(target)];
 	fs.writeFileSync(state, JSON.stringify(panes));
 	process.stdout.write('tracker-session-closed\\n');
+} else if (command === 'if-shell' &&
+	(panes[byId(target)]?.x === 3 || args.at(-1).includes('Tracker answer for item '))) {
+	const pane = panes[byId(target)];
+	const keys = args.at(-1);
+	fs.appendFileSync(path.join(__dirname, 'input.log'), keys + '\\n');
+	if (keys.includes('Tracker answer for item ')) {
+		const draft = keys.split(' -l ')[1].split("' ;")[0].slice(1);
+		if (!keys.includes(' Enter')) {
+			pane.screen = pane.screen.replace('❯ ', '❯ ' + draft);
+			pane.x = 3;
+		}
+	}
+	if (keys.includes(' Enter')) {
+		pane.screen = pane.x === 3 ? pane.screen.replace(/^❯ .*$/m, '❯ ') : 'Working (esc to interrupt)';
+		pane.x = 2;
+	}
+	fs.writeFileSync(state, JSON.stringify(panes));
+	process.stdout.write('tracker-watchdog-sent\\n');
 } else if (command === 'if-shell' || command === 'send-keys')
 	fs.appendFileSync(path.join(__dirname, 'input.log'), args.join(' ') + '\\n');
 else process.exit(2);
