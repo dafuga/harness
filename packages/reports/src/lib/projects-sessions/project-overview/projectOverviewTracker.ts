@@ -123,6 +123,7 @@ function askFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 
 function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 	return {
+		project: typeof row.project === 'string' ? row.project : null,
 		kind: optionalText(row.kind, 'item kind'),
 		parent: optionalText(row.parent, 'item parent'),
 		computer: optionalText(row.computer, 'item computer'),

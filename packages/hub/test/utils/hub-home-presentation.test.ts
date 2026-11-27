@@ -4,8 +4,8 @@ import {
 	quotaReset,
 	quotaSummary,
 	runDay
-} from '../../src/components/projects-sessions/hubHomePresentation';
-import { quotaPills } from '../../src/components/projects-sessions/hubQuotaPills';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+import { quotaPills } from '../../../reports/src/components/projects-sessions/hub-home/hubQuotaPills';
 import type { HomeSubscription } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 
 const now = Date.parse('2026-11-21T22:30:00Z');

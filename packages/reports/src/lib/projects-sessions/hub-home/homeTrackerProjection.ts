@@ -7,12 +7,19 @@ import type {
 	TrackerItemRecord,
 	TrackerSources
 } from '../project-overview/projectOverviewTracker.types';
-import type { HomeAgent, HomePlan, HomeProviderReadings, OwnerHomeSnapshot } from './hubHome.types';
+import type {
+	HomeAgent,
+	HomePlan,
+	HomeProviderReadings,
+	HomeTrackerProject,
+	OwnerHomeSnapshot
+} from './hubHome.types';
 import { buildHomeAgents } from './homeTrackerAgents';
 import { listHomeSchedule } from './homeSchedule';
 import { buildHomeOpenAsks } from './homeOpenAsks';
 import { homeProviderReadingIsStale } from './homeProviderPayload';
 import { cosChatTitle } from './homeTrackerThread';
+import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
 
 export const noProviders: HomeProviderReadings = { routines: null, quota: null };
 
@@ -74,6 +81,7 @@ export function buildHomeSnapshot(
 	const agents: HomeAgent[] = sources ? buildHomeAgents(overview, { ...sources, items }) : [];
 	return {
 		overview,
+		...(sources && { projectDirectory: listTrackerProjects(items) }),
 		agents,
 		openAsks: buildHomeOpenAsks(items),
 		...(sources && { reminders: listHomeReminders(shown) }),
@@ -85,4 +93,28 @@ export function buildHomeSnapshot(
 		),
 		providers
 	};
+}
+
+function listTrackerProjects(items: TrackerItemRecord[]): HomeTrackerProject[] {
+	const groups = new Map<string, TrackerItemRecord[]>();
+	for (const item of items) {
+		const name = homeText(item.project || item.agent, 200);
+		if (!name) continue;
+		const rows = groups.get(name) ?? [];
+		rows.push(item);
+		groups.set(name, rows);
+	}
+	return [...groups]
+		.map(([name, rows]): HomeTrackerProject => {
+			const needsYou = rows.filter(trackerStructuredAsk).length;
+			const state = needsYou ? 'needs-you' : trackerProjectState(rows);
+			return { name, state, needsYou };
+		})
+		.sort((left, right) => right.needsYou - left.needsYou || left.name.localeCompare(right.name));
+}
+
+function trackerProjectState(rows: TrackerItemRecord[]): HomeTrackerProject['state'] {
+	if (rows.some(({ status }) => status === 'blocked')) return 'blocked';
+	if (rows.some(({ status }) => status === 'in_progress')) return 'active';
+	return rows.every(({ status }) => status === 'done') ? 'done' : 'quiet';
 }

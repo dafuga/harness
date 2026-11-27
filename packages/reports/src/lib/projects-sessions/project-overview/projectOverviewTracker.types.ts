@@ -18,6 +18,7 @@ export type TrackerItemRecord = {
 	updated_at: string;
 	due?: string | null;
 	agent?: string | null;
+	project?: string | null;
 	sensitive?: boolean;
 	deleted?: boolean;
 	blocked_reason?: string | null;

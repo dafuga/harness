@@ -10,9 +10,12 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.account-menu",
 			"hub.component.projects-sessions-hub-home-cards",
 			"hub.component.projects-sessions-hub-home-dialogs",
 			"hub.component.projects-sessions-hub-home-header",
+			"hub.component.projects-sessions-hub-home-live",
+			"hub.component.projects-sessions-hub-home-notifications",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-main",
 			"reports.component.shared-primitives-atoms-html-p"
@@ -20,7 +23,7 @@
 	},
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/HubHome.svelte"],
-		"symbols": ["HubHome"]
+		"symbols": ["HubHome", "HubHome.accountMenu", "HubHome.notifications"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -35,11 +38,42 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHome.accountMenu",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHome.accountMenu",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHome.notifications",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHome.notifications",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.account-menu",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -59,7 +93,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.component.projects-sessions-hub-home-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-notifications",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.public-site-home-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.config.public-site-home-download",
 			"via": "import",
 			"origin": "derived"
 		},

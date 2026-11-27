@@ -36,6 +36,14 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		]);
 		expect(widths[0]).toBeLessThanOrEqual(widths[1]);
 		await captureNeedsYou(page, `hub-home-needs-you-${size}`);
+		await page.getByRole('link', { name: 'Needs you', exact: true }).click();
+		await expect(page).toHaveURL(/\?view=needs-you$/);
+		await expect(page.getByRole('heading', { name: 'Needs you', exact: true })).toBeVisible();
+		await expect(agentsCard(page)).toHaveCount(0);
+		await expect(rows).toHaveCount(2);
+		await captureNeedsYou(page, `hub-needs-you-page-${size}`);
+		await page.getByRole('link', { name: 'Home', exact: true }).click();
+		await expect(agentsCard(page)).toBeVisible();
 		await expect(rowOf(page, 'harbor').getByText('Merges and releases.')).toHaveCount(0);
 		await expect(rowOf(page, 'harbor').getByText('Waits a day.')).toHaveCount(0);
 

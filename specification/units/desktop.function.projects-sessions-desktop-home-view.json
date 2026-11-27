@@ -1,0 +1,146 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.function.projects-sessions-desktop-home-view",
+	"uid": "u_xxjw7sfoen",
+	"kind": "function",
+	"title": "desktopHomeView",
+	"responsibility": "Adapt the signed-in Mac workspace and its Tracker snapshot for the shared Hub Home components.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/desktop/src/utils/projects-sessions/desktopHomeView.ts"],
+		"symbols": ["desktopHomeView"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "desktopHomeView.home",
+				"type": "OwnerHomeSnapshot | null",
+				"required": true,
+				"description": "The Tracker projection from the Mac bridge, or null while unresolved or unavailable."
+			},
+			{
+				"name": "desktopHomeView.workspace",
+				"type": "Pick< Workspace, | 'projects' | 'projectListReady' | 'busy' | 'switchProject' | 'hubProjectListStatus' | 'localProjectListFailed' >",
+				"required": true,
+				"description": "The project list, listing statuses and selection operation of the active desktop workspace."
+			},
+			{
+				"name": "desktopHomeView.settled",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether the initial Tracker home read has answered."
+			},
+			{
+				"name": "desktopHomeView.now",
+				"type": "number",
+				"required": true,
+				"description": "Current Unix time in milliseconds, used to classify scheduled and past-due work."
+			}
+		],
+		"outputs": [
+			{
+				"name": "desktopHomeView",
+				"type": "HomeView",
+				"description": "Home presentation data with independent workspace and Tracker states, source notices and project navigation."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "desktopHomeView",
+				"inputs": [
+					{
+						"name": "desktopHomeView.home",
+						"type": "OwnerHomeSnapshot | null",
+						"required": true,
+						"description": "The Tracker projection from the Mac bridge, or null while unresolved or unavailable."
+					},
+					{
+						"name": "desktopHomeView.workspace",
+						"type": "Pick< Workspace, | 'projects' | 'projectListReady' | 'busy' | 'switchProject' | 'hubProjectListStatus' | 'localProjectListFailed' >",
+						"required": true,
+						"description": "The project list, listing statuses and selection operation of the active desktop workspace."
+					},
+					{
+						"name": "desktopHomeView.settled",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether the initial Tracker home read has answered."
+					},
+					{
+						"name": "desktopHomeView.now",
+						"type": "number",
+						"required": true,
+						"description": "Current Unix time in milliseconds, used to classify scheduled and past-due work."
+					}
+				],
+				"outputs": [
+					{
+						"name": "desktopHomeView",
+						"type": "HomeView",
+						"description": "Home presentation data with independent workspace and Tracker states, source notices and project navigation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.store.workspace",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-merge",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/utils/projects-sessions/desktopHomeView.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/utils/projects-sessions/desktopHomeView.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

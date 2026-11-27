@@ -4,12 +4,98 @@
 	"uid": "u_sbz3zzk4fx",
 	"kind": "script",
 	"title": "run-checks",
-	"responsibility": "Defines the broad verification order and the named parts CI runs side by side, plans the whole check or one part, and runs each named package script with elapsed-time reporting, stopping at the first nonzero status.",
+	"responsibility": "Submits committed Harness checks to one host queue. It combines candidate commits, selects their impacted tests, reuses matching checked tree results, and reports each verdict. It also defines the full release order and CI partitions.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/run-checks.ts", "scripts/run-checks.types.ts"],
-		"symbols": ["checkSteps", "runSteps", "checkParts", "planCheck", "CheckPart"]
+		"source": [
+			"scripts/run-checks.ts",
+			"scripts/run-checks.types.ts",
+			"scripts/shared-checks.ts",
+			"scripts/shared-checks/checkCache.ts",
+			"scripts/shared-checks/checkExecution.ts",
+			"scripts/shared-checks/checkExecution.types.ts",
+			"scripts/shared-checks/checkGit.ts",
+			"scripts/shared-checks/checkGitHub.ts",
+			"scripts/shared-checks/checkGitHub.types.ts",
+			"scripts/shared-checks/checkLease.ts",
+			"scripts/shared-checks/checkPlanning.ts",
+			"scripts/shared-checks/checkProof.ts",
+			"scripts/shared-checks/checkQueue.ts",
+			"scripts/shared-checks/checkScheduling.ts",
+			"scripts/shared-checks/checkWorker.ts",
+			"scripts/shared-checks/sharedCheck.types.ts"
+		],
+		"symbols": [
+			"checkSteps",
+			"runSteps",
+			"checkParts",
+			"planCheck",
+			"CheckPart",
+			"runSharedChecks",
+			"trustedCheckRemote",
+			"checkKey",
+			"SharedCheckCache",
+			"SharedCheckCache.constructor",
+			"SharedCheckCache.readShared",
+			"SharedCheckCache.source",
+			"SharedCheckCache.save",
+			"SharedCheckCache.publish",
+			"executeCandidate",
+			"CheckOutcome",
+			"CheckSnapshot",
+			"CandidateConflict",
+			"checkGit",
+			"emptyCheckCommit",
+			"checkRepository",
+			"checkCommit",
+			"checkMain",
+			"pinCandidate",
+			"unpinCandidate",
+			"combineCandidates",
+			"inCheckWorktree",
+			"githubCheckProof",
+			"GitHubJob",
+			"GitHubRun",
+			"GitHubReceipt",
+			"GitHubCheckProof",
+			"withSharedCheckLease",
+			"installCheckDependencies",
+			"checkPlan",
+			"existingProof",
+			"refreshSharedProof",
+			"CheckQueue",
+			"CheckQueue.constructor",
+			"CheckQueue.add",
+			"CheckQueue.pending",
+			"CheckQueue.finish",
+			"CheckQueue.result",
+			"CheckQueue.unreported",
+			"CheckQueue.reported",
+			"CheckQueue.cached",
+			"CheckQueue.cache",
+			"CheckQueue.plan",
+			"CheckQueue.storePlan",
+			"CheckQueue.work",
+			"CheckQueue.close",
+			"allowsE2e",
+			"backgroundArguments",
+			"withLegacyCheckSlot",
+			"checkEnvironment",
+			"checkTypeConfig",
+			"workCheckQueue",
+			"CheckPriority",
+			"CheckRequest",
+			"CandidateTree",
+			"SharedCheck",
+			"CheckPlan",
+			"CheckObservation",
+			"CheckResult",
+			"CheckWorkerDependencies",
+			"CheckLeaseTarget",
+			"CheckCliDependencies",
+			"CandidateRun"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -43,13 +129,353 @@
 				"examples": [
 					["--part", "e2e-1"]
 				]
+			},
+			{
+				"name": "runSharedChecks.deps",
+				"type": "CheckCliDependencies",
+				"required": false
+			},
+			{
+				"name": "trustedCheckRemote.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkKey.check",
+				"type": "SharedCheck",
+				"required": true
+			},
+			{
+				"name": "SharedCheckCache.constructor.queue",
+				"type": "CheckQueue",
+				"required": true
+			},
+			{
+				"name": "SharedCheckCache.constructor.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "SharedCheckCache.constructor.remote",
+				"type": "string | undefined",
+				"required": false
+			},
+			{
+				"name": "SharedCheckCache.readShared.checks",
+				"type": "readonly SharedCheck[]",
+				"required": true
+			},
+			{
+				"name": "SharedCheckCache.source.check",
+				"type": "SharedCheck",
+				"required": true
+			},
+			{
+				"name": "SharedCheckCache.save.check",
+				"type": "SharedCheck",
+				"required": true
+			},
+			{
+				"name": "SharedCheckCache.publish.checks",
+				"type": "readonly SharedCheck[]",
+				"required": true
+			},
+			{
+				"name": "executeCandidate.queue",
+				"type": "CheckQueue",
+				"required": true
+			},
+			{
+				"name": "executeCandidate.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "executeCandidate.release",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "executeCandidate.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "checkGit.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkGit.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "checkGit.input",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "emptyCheckCommit.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "emptyCheckCommit.message",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "emptyCheckCommit.write",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "checkRepository.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkCommit.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkCommit.ref",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkMain.repo",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "pinCandidate.request",
+				"type": "CheckRequest",
+				"required": true
+			},
+			{
+				"name": "unpinCandidate.request",
+				"type": "CheckRequest",
+				"required": true
+			},
+			{
+				"name": "combineCandidates.base",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "combineCandidates.requests",
+				"type": "CheckRequest[]",
+				"required": true
+			},
+			{
+				"name": "inCheckWorktree.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "inCheckWorktree.home",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "inCheckWorktree.run",
+				"type": "(directory: string) => Promise<T>",
+				"required": true
+			},
+			{
+				"name": "githubCheckProof.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "githubCheckProof.plan",
+				"type": "CheckPlan",
+				"required": true
+			},
+			{
+				"name": "withSharedCheckLease.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "withSharedCheckLease.remote",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "withSharedCheckLease.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "withSharedCheckLease.check",
+				"type": "(signal: AbortSignal) => Promise<T>",
+				"required": true
+			},
+			{
+				"name": "checkPlan.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "checkPlan.release",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "existingProof.cache",
+				"type": "SharedCheckCache",
+				"required": true
+			},
+			{
+				"name": "existingProof.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "existingProof.plan",
+				"type": "CheckPlan",
+				"required": true
+			},
+			{
+				"name": "refreshSharedProof.cache",
+				"type": "SharedCheckCache",
+				"required": true
+			},
+			{
+				"name": "refreshSharedProof.checks",
+				"type": "SharedCheck[]",
+				"required": true
+			},
+			{
+				"name": "refreshSharedProof.satisfied",
+				"type": "Map<string, CheckObservation>",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.constructor.home",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.add.request",
+				"type": "CheckRequest",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.finish.results",
+				"type": "ReadonlyMap<string, CheckResult>",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.result.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.reported.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.cached.tree",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.cached.check",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.cache.tree",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.cache.check",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.plan.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.storePlan.candidate",
+				"type": "CandidateTree",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.storePlan.plan",
+				"type": "CheckPlan",
+				"required": true
+			},
+			{
+				"name": "CheckQueue.work.action",
+				"type": "() => Promise<void>",
+				"required": true
+			},
+			{
+				"name": "backgroundArguments.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "withLegacyCheckSlot.full",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "withLegacyCheckSlot.signal",
+				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "withLegacyCheckSlot.run",
+				"type": "() => Promise<T>",
+				"required": true
+			},
+			{
+				"name": "checkEnvironment.env",
+				"type": "Record<string, string | undefined>",
+				"required": true
+			},
+			{
+				"name": "checkTypeConfig.root",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkTypeConfig.cwd",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "checkTypeConfig.files",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "workCheckQueue.queue",
+				"type": "CheckQueue",
+				"required": true
+			},
+			{
+				"name": "workCheckQueue.deps",
+				"type": "CheckWorkerDependencies",
+				"required": true
 			}
 		],
 		"outputs": [
 			{
 				"name": "checkSteps",
 				"type": "string[]",
-				"description": "The fixed list of broad-check script names exported by the module, in the declared order. Without --part the CLI passes all 24 names to runSteps sequentially.",
+				"description": "The fixed list of broad-check script names exported by the module, in the declared order. The shared release service runs all 24 checks sequentially. Hosted release partitions run the declared slices.",
 				"examples": [
 					[
 						"check:verification-forwards",
@@ -198,11 +624,970 @@
 					}
 				],
 				"errorStatus": "declared"
+			},
+			{
+				"name": "runSharedChecks",
+				"inputs": [
+					{
+						"name": "runSharedChecks.deps",
+						"type": "CheckCliDependencies",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "runSharedChecks",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trustedCheckRemote",
+				"inputs": [
+					{
+						"name": "trustedCheckRemote.repo",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trustedCheckRemote",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkKey",
+				"inputs": [
+					{
+						"name": "checkKey.check",
+						"type": "SharedCheck",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkKey",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SharedCheckCache.readShared",
+				"inputs": [
+					{
+						"name": "SharedCheckCache.readShared.checks",
+						"type": "readonly SharedCheck[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SharedCheckCache.readShared",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SharedCheckCache.source",
+				"inputs": [
+					{
+						"name": "SharedCheckCache.source.check",
+						"type": "SharedCheck",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SharedCheckCache.source",
+						"type": "'local-cache' | 'shared-cache' | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SharedCheckCache.save",
+				"inputs": [
+					{
+						"name": "SharedCheckCache.save.check",
+						"type": "SharedCheck",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SharedCheckCache.save",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SharedCheckCache.publish",
+				"inputs": [
+					{
+						"name": "SharedCheckCache.publish.checks",
+						"type": "readonly SharedCheck[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SharedCheckCache.publish",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "executeCandidate",
+				"inputs": [
+					{
+						"name": "executeCandidate.queue",
+						"type": "CheckQueue",
+						"required": true
+					},
+					{
+						"name": "executeCandidate.candidate",
+						"type": "CandidateTree",
+						"required": true
+					},
+					{
+						"name": "executeCandidate.release",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "executeCandidate.signal",
+						"type": "AbortSignal",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "executeCandidate",
+						"type": "Promise<CheckOutcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkGit",
+				"inputs": [
+					{
+						"name": "checkGit.repo",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "checkGit.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "checkGit.input",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkGit",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "emptyCheckCommit",
+				"inputs": [
+					{
+						"name": "emptyCheckCommit.repo",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "emptyCheckCommit.message",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "emptyCheckCommit.write",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "emptyCheckCommit",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkRepository",
+				"inputs": [
+					{
+						"name": "checkRepository.cwd",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkRepository",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkCommit",
+				"inputs": [
+					{
+						"name": "checkCommit.repo",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "checkCommit.ref",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkCommit",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkMain",
+				"inputs": [
+					{
+						"name": "checkMain.repo",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkMain",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pinCandidate",
+				"inputs": [
+					{
+						"name": "pinCandidate.request",
+						"type": "CheckRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pinCandidate",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unpinCandidate",
+				"inputs": [
+					{
+						"name": "unpinCandidate.request",
+						"type": "CheckRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "unpinCandidate",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "combineCandidates",
+				"inputs": [
+					{
+						"name": "combineCandidates.base",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "combineCandidates.requests",
+						"type": "CheckRequest[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "combineCandidates",
+						"type": "CandidateTree"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inCheckWorktree",
+				"inputs": [
+					{
+						"name": "inCheckWorktree.candidate",
+						"type": "CandidateTree",
+						"required": true
+					},
+					{
+						"name": "inCheckWorktree.home",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "inCheckWorktree.run",
+						"type": "(directory: string) => Promise<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "inCheckWorktree",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "githubCheckProof",
+				"inputs": [
+					{
+						"name": "githubCheckProof.candidate",
+						"type": "CandidateTree",
+						"required": true
+					},
+					{
+						"name": "githubCheckProof.plan",
+						"type": "CheckPlan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "githubCheckProof",
+						"type": "GitHubCheckProof | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withSharedCheckLease",
+				"inputs": [
+					{
+						"name": "withSharedCheckLease.candidate",
+						"type": "CandidateTree",
+						"required": true
+					},
+					{
+						"name": "withSharedCheckLease.remote",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "withSharedCheckLease.signal",
+						"type": "AbortSignal",
+						"required": true
+					},
+					{
+						"name": "withSharedCheckLease.check",
+						"type": "(signal: AbortSignal) => Promise<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withSharedCheckLease",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkPlan",
+				"inputs": [
+					{
+						"name": "checkPlan.candidate",
+						"type": "CandidateTree",
+						"required": true
+					},
+					{
+						"name": "checkPlan.release",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkPlan",
+						"type": "Promise<CheckPlan>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "existingProof",
+				"inputs": [
+					{
+						"name": "existingProof.cache",
+						"type": "SharedCheckCache",
+						"required": true
+					},
+					{
+						"name": "existingProof.candidate",
+						"type": "CandidateTree",
+						"required": true
+					},
+					{
+						"name": "existingProof.plan",
+						"type": "CheckPlan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "existingProof",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "refreshSharedProof",
+				"inputs": [
+					{
+						"name": "refreshSharedProof.cache",
+						"type": "SharedCheckCache",
+						"required": true
+					},
+					{
+						"name": "refreshSharedProof.checks",
+						"type": "SharedCheck[]",
+						"required": true
+					},
+					{
+						"name": "refreshSharedProof.satisfied",
+						"type": "Map<string, CheckObservation>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "refreshSharedProof",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.add",
+				"inputs": [
+					{
+						"name": "CheckQueue.add.request",
+						"type": "CheckRequest",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.add",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.pending",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CheckQueue.pending",
+						"type": "CheckRequest[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.finish",
+				"inputs": [
+					{
+						"name": "CheckQueue.finish.results",
+						"type": "ReadonlyMap<string, CheckResult>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.finish",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.result",
+				"inputs": [
+					{
+						"name": "CheckQueue.result.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.result",
+						"type": "CheckResult | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.unreported",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CheckQueue.unreported",
+						"type": "Array<{ request: CheckRequest; result: CheckResult }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.reported",
+				"inputs": [
+					{
+						"name": "CheckQueue.reported.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.reported",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.cached",
+				"inputs": [
+					{
+						"name": "CheckQueue.cached.tree",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CheckQueue.cached.check",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.cached",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.cache",
+				"inputs": [
+					{
+						"name": "CheckQueue.cache.tree",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "CheckQueue.cache.check",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.cache",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.plan",
+				"inputs": [
+					{
+						"name": "CheckQueue.plan.candidate",
+						"type": "CandidateTree",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.plan",
+						"type": "CheckPlan | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.storePlan",
+				"inputs": [
+					{
+						"name": "CheckQueue.storePlan.candidate",
+						"type": "CandidateTree",
+						"required": true
+					},
+					{
+						"name": "CheckQueue.storePlan.plan",
+						"type": "CheckPlan",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.storePlan",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.work",
+				"inputs": [
+					{
+						"name": "CheckQueue.work.action",
+						"type": "() => Promise<void>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.work",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CheckQueue.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "CheckQueue.close",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "allowsE2e",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "allowsE2e",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "backgroundArguments",
+				"inputs": [
+					{
+						"name": "backgroundArguments.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "backgroundArguments",
+						"type": "string[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "withLegacyCheckSlot",
+				"inputs": [
+					{
+						"name": "withLegacyCheckSlot.full",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "withLegacyCheckSlot.signal",
+						"type": "AbortSignal",
+						"required": true
+					},
+					{
+						"name": "withLegacyCheckSlot.run",
+						"type": "() => Promise<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "withLegacyCheckSlot",
+						"type": "Promise<T>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkEnvironment",
+				"inputs": [
+					{
+						"name": "checkEnvironment.env",
+						"type": "Record<string, string | undefined>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkEnvironment",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "checkTypeConfig",
+				"inputs": [
+					{
+						"name": "checkTypeConfig.root",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "checkTypeConfig.cwd",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "checkTypeConfig.files",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "checkTypeConfig",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "workCheckQueue",
+				"inputs": [
+					{
+						"name": "workCheckQueue.queue",
+						"type": "CheckQueue",
+						"required": true
+					},
+					{
+						"name": "workCheckQueue.deps",
+						"type": "CheckWorkerDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "workCheckQueue",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
-		"initialization": []
+		"initialization": [
+			{
+				"name": "SharedCheckCache.constructor",
+				"inputs": [
+					{
+						"name": "SharedCheckCache.constructor.queue",
+						"type": "CheckQueue",
+						"required": true
+					},
+					{
+						"name": "SharedCheckCache.constructor.candidate",
+						"type": "CandidateTree",
+						"required": true
+					},
+					{
+						"name": "SharedCheckCache.constructor.remote",
+						"type": "string | undefined",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "SharedCheckCache.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "CheckQueue.constructor",
+				"inputs": [
+					{
+						"name": "CheckQueue.constructor.home",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CheckQueue.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "adapter.commit-tree",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.classify-path",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.run-isolated",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-plan",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.verify-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.impact",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.resource-queue",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.source-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.unit-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.load-revisions",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.verification-evidence-run-verify-verification-service-build-scope",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "scripts/run-checks.ts",

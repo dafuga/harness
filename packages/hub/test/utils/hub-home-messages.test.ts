@@ -7,11 +7,11 @@ import { listHomeAgents } from '../../../reports/src/lib/projects-sessions/hub-h
 import { homeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/homeChatInput';
 import type { HomeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
-import { messageStatusText } from '../../src/components/projects-sessions/hubHomePresentation';
+import { messageStatusText } from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 import {
 	composerFeedback,
 	homeChatItemSuffix
-} from '../../src/components/projects-sessions/hubHomeMessages';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomeMessages';
 import {
 	formatHubDeliveredNote,
 	formatHubMessageNote,

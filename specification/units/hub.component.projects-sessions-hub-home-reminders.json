@@ -22,7 +22,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeReminders.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeReminders.svelte"
+		],
 		"symbols": ["HubHomeReminders"]
 	},
 	"contract": {
@@ -124,11 +126,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeReminders.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminders.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeReminders.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminders.svelte"
 			}
 		]
 	},

@@ -5,8 +5,8 @@ import {
 	noProviders
 } from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
 import { readTrackerSources } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
-import { liveNotice } from '../../src/components/projects-sessions/hubHomeLive';
-import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
+import { liveNotice } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeLive';
+import { mergeHomeSnapshots } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 import { parseHomePayload } from '../../src/routes/api/hub-home/homePayload';
 import {
 	LinkedHomeService,

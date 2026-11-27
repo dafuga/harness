@@ -11,6 +11,7 @@
 		"level": "page",
 		"uses": [
 			"desktop.component.project-gate",
+			"desktop.component.projects-sessions-desktop-home",
 			"desktop.component.remote-connection",
 			"desktop.component.workspace-shell",
 			"reports.component.shared-primitives-atoms-html-a",
@@ -31,7 +32,7 @@
 			{
 				"name": "+page",
 				"type": "markup",
-				"description": "The route's rendered markup: a document title of 'Harness', with ' · ' and workspace.snapshot.project.name appended once workspace.snapshot is set, and it renders WorkspaceShell when a snapshot is set or ProjectGate otherwise. A phone with a bridge shows RemoteConnection inline. A signed-in unpaired or offline phone separates the account label and Sign out from the computer controls. On the desktop, RemoteConnection opens in the Phone access dialog when a remote host is available. An hx-p with role alert shows workspace.error when it is set and no snapshot is set."
+				"description": "Renders the shared workspace for an open project, Hub Home or Needs you for a signed-in Mac, and ProjectGate for other environments. Phone connection and account actions remain available in the gate. Project operation errors are announced."
 			}
 		],
 		"errors": [],
@@ -56,6 +57,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.project-gate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.projects-sessions-desktop-home",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -1,7 +1,7 @@
 // @harness-uid u_sbz3zzk4fx
 import type { CheckPart } from './run-checks.types';
 
-/** The broad check order. `bun run check` runs every step here, one at a time. */
+/** The release check order. The shared service runs these steps one at a time. */
 export const checkSteps = [
 	'check:verification-forwards',
 	'check:debt-ratchets',
@@ -105,6 +105,10 @@ export function planCheck(args: readonly string[]) {
 }
 
 if (import.meta.main) {
+	if (process.env.GITHUB_ACTIONS !== 'true' || process.argv[2] !== '--part') {
+		console.error('Submit the combined release with bun run check --release.');
+		process.exit(1);
+	}
 	const plan = planCheck(process.argv.slice(2));
 	process.exitCode = await runSteps(plan.steps, async (name) => {
 		return await Bun.spawn(['bun', ...plan.command(name)], {

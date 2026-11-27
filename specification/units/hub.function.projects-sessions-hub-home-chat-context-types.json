@@ -8,7 +8,9 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeChatContext.types.ts"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts"
+		],
 		"symbols": ["HomeChatItemContext", "OpenHomeCosChat", "OpenHomeCosAsk", "HomeCosChatTarget"]
 	},
 	"contract": {
@@ -23,11 +25,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomeChatContext.types.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomeChatContext.types.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.types.ts"
 			}
 		]
 	},

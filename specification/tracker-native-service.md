@@ -213,6 +213,14 @@ operator verifies the stopped database and chooses a rollback.
   Lisbon quiet hours and the thirty-minute watchdog cadence. The separate
   tick can still read `tracker list --flagged --json` for decisions.
 
+  CoS dependency messages are delivered once per item and message text.
+  When tmux misses an acceptance, Tracker checks Claude's recorded prompt
+  or queue receipt before retrying. Changes to the dependency text can
+  trigger a new alert. Open blockers continue to appear in the daily digest.
+  CoS batches carry up to four alerts within a 450-byte composer budget. A long alert uses its item ID
+  and a short sentence, with full details available in Tracker. The batch
+  includes the slot summary when it fits.
+
   Tracker sends the first ask, follows up two and six hours after the first
   delivery, then repeats at 08:00 Lisbon each morning. These reach Chief of
   Staff at any hour. If both follow-up times have passed, the next repeat

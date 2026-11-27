@@ -10,7 +10,7 @@ import {
 } from '../../../reports/src/lib/projects-sessions/hub-home/reminderTimes';
 import type { TrackerItemRecord } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
-import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
+import { mergeHomeSnapshots } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 import { showsHomeChatTarget } from '../../src/services/networking-security/linkedHomeChat';
 import { serveHubHome } from '../../src/routes/api/hub-home/homePolicy';
 import { overviewFixture } from '../support/trackerOverviewFixture';

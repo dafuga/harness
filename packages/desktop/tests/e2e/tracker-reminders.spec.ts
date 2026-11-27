@@ -95,3 +95,19 @@ for (const [size, width] of [
 		});
 	}
 }
+
+test('a project inbox is project status, so it never lists personal reminders', async ({
+	page
+}) => {
+	const tracker = reminderTracker();
+	const restore = await macSpecPage(page, tracker);
+	try {
+		await page.goto('/tracker?project=sample');
+		const filters = page.getByRole('navigation', { name: 'Filter items' });
+		await expect(filters.getByRole('button', { name: /^All 0$/ })).toBeVisible();
+		await expect(filters.getByRole('button', { name: /^Reminders/ })).toHaveCount(0);
+	} finally {
+		restore();
+		tracker.close();
+	}
+});

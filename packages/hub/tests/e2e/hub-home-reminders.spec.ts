@@ -87,3 +87,39 @@ for (const size of ['desktop', 'phone'] as const) {
 		});
 	}
 }
+
+test('the Needs you destination never lists personal reminders', async ({ page }) => {
+	const fixture = await hubHomeFixture(page, 'default');
+	fixture.snapshot.reminders = reminders;
+	await page.goto('/?view=needs-you');
+	await expect(page.getByRole('region', { name: /needs you/i }).first()).toBeVisible();
+	await expect(page.getByRole('region', { name: 'Reminders', exact: true })).toHaveCount(0);
+});
+
+for (const size of ['desktop', 'phone'] as const) {
+	test(`a long reminder is shown whole, in an evenly padded card (${size})`, async ({ page }) => {
+		await page.setViewportSize(sizes[size]);
+		const fixture = await hubHomeFixture(page, 'default');
+		const title = 'Plan the sample weekend away and book every sample ticket. '.repeat(7).trim();
+		fixture.snapshot.reminders = [{ ...reminders[1], title }];
+		await page.goto('/');
+		const section = page.getByRole('region', { name: 'Reminders', exact: true });
+		const text = section.getByText(title, { exact: true });
+		await expect(text).toBeVisible();
+		const hidden = await text.evaluate((node) => {
+			const clipped = node.closest('.hh-reminder-title')!;
+			return clipped.scrollHeight - clipped.clientHeight;
+		});
+		expect(hidden).toBeLessThanOrEqual(1);
+		const card = (await section.boundingBox())!;
+		const heading = (await section.getByRole('heading', { name: 'Reminders' }).boundingBox())!;
+		const content = [
+			...(await section.getByRole('button').all()),
+			section.locator('.hh-reminder-text')
+		];
+		const boxes = await Promise.all(content.map(async (item) => (await item.boundingBox())!));
+		const below = card.y + card.height - Math.max(...boxes.map((box) => box.y + box.height));
+		// The gap under the lowest content matches the gap over the heading.
+		expect(Math.abs(below - (heading.y - card.y))).toBeLessThanOrEqual(2);
+	});
+}

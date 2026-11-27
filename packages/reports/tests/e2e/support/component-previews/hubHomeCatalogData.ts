@@ -1,9 +1,10 @@
 import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
-import { soonestWork } from '../../../../../hub/src/components/projects-sessions/hubHomePresentation';
-import type { HomeView } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
+import { soonestWork } from '../../../../src/components/projects-sessions/hub-home/hubHomePresentation';
+import type { HomeView } from '../../../../src/components/projects-sessions/hub-home/hubHomeView.types';
 import type { LinkedHome } from '../../../../../hub/src/services/networking-security/LinkedHomeService';
 import type { HomeWorkProject } from '../../../../src/lib/projects-sessions/hub-home/homeLive.types';
 import type { OwnerHomeSnapshot } from '../../../../src/lib/projects-sessions/hub-home/hubHome.types';
+import { previewAnswerOptions } from './shared';
 
 const prefix = 'hub.component.projects-sessions-hub-';
 export function isHubHomePreview(id: string) {
@@ -139,6 +140,29 @@ const catalogComputers: LinkedHome = {
 
 export const catalogHome = { granted: true, snapshot };
 
+export const catalogDesktopHome: OwnerHomeSnapshot = {
+	overview: { status: 'ready', projects: [], machines: [], liveSessions: 0 },
+	projectDirectory: [
+		{ name: 'Orders', state: 'needs-you', needsYou: 1 },
+		{ name: 'Atlas', state: 'quiet', needsYou: 0 }
+	],
+	openAsks: [
+		{
+			itemId: 'ITEM-A1',
+			agentId: 'orders',
+			agentName: 'Orders',
+			title: 'Review the export headings',
+			question: 'Which column names should we use?',
+			options: previewAnswerOptions,
+			since: stamp(-1)
+		}
+	],
+	agents: [],
+	plans: snapshot.plans,
+	scheduled: [],
+	providers: { routines: [], quota: snapshot.providers.quota }
+};
+
 /** Browser notifications offered, with no browser subscribed yet. */
 export const catalogPush = {
 	available: true,
@@ -168,7 +192,6 @@ export const catalogReminders = [
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
 	agents: snapshot.agents,
-	asks: [],
 	openAsks: [],
 	reminders: catalogReminders,
 	controlled: [],

@@ -8,7 +8,9 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeChatContext.svelte.ts"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts"
+		],
 		"symbols": ["provideHomeCosChat", "homeCosChat"]
 	},
 	"contract": {
@@ -81,11 +83,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomeChatContext.svelte.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomeChatContext.svelte.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte.ts"
 			}
 		]
 	},
