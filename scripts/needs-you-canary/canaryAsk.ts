@@ -7,6 +7,16 @@ export const surfaceNames: Record<CanarySurface, string> = {
 	iphone: 'the iPhone'
 };
 
+/**
+ * What each app's own answer write records as `answered_by`: Hub web through the linked Mac, the Mac
+ * app's Needs you page (which names no one, as the CLI does too) and the iPhone's intent.
+ */
+export const surfaceAnswerers: Record<CanarySurface, string> = {
+	web: 'Daniel via Hub',
+	mac: 'daniel',
+	iphone: 'Daniel'
+};
+
 const labels = ['Canary A', 'Canary B', 'Canary C'];
 const effect = 'Test answer only. Nothing deploys or changes.';
 

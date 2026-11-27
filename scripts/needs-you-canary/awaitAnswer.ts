@@ -6,6 +6,7 @@ import type {
 	CanaryOutcome as Outcome,
 	CanaryWeb
 } from './canary.types';
+import { surfaceAnswerers } from './canaryAsk';
 
 const pollMs = 3000;
 const appearMs = 120_000;
@@ -17,13 +18,14 @@ const failed = (detail: string): Outcome => ({ state: 'failed', detail });
 /** What the Tracker holds after the answer is what passes or fails a surface. */
 export function judgeAnswer(item: CanaryItem, ask: CanaryAsk): Outcome {
 	const label = ask.labels[ask.expected - 1];
+	const actor = surfaceAnswerers[ask.surface];
 	const read = `answered_by=${item.answered_by}, answer_option=${item.answer_option}`;
 	const right =
-		item.answered_by === 'daniel' &&
+		item.answered_by === actor &&
 		Number(item.answer_option) === ask.expected &&
 		item.answer === label;
 	if (right) return { state: 'passed', detail: `${read}, answered_at=${item.answered_at}` };
-	return failed(`expected daniel and option ${ask.expected}, read ${read}`);
+	return failed(`expected ${actor} and option ${ask.expected}, read ${read}`);
 }
 
 async function readAnswer(
@@ -51,7 +53,7 @@ export async function awaitTap(
 	if (!item)
 		return { state: 'not-seen', detail: `no tap within ${Math.round(timeout / 60_000)} minutes` };
 	const outcome = judgeAnswer(item, ask);
-	const note = 'tapped by hand; the Tracker does not record the device';
+	const note = 'tapped by hand; answered_by names the write path, not the device';
 	return { ...outcome, detail: `${outcome.detail} (${note})` };
 }
 

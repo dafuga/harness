@@ -1,0 +1,61 @@
+{
+	"name": "eq0hnw-canary-answer-actors",
+	"goal": "The needs-you release canary passes each surface only on what that app really writes to the Tracker: Hub web 'Daniel via Hub', Mac app 'daniel', iPhone 'Daniel'",
+	"createdAt": "2026-11-27T08:08:14.930Z",
+	"updatedAt": "2026-11-27T08:24:35.769Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:23:58.627Z",
+			"evidence": "Failing: judgeAnswer requires answered_by 'daniel' for every surface. Real writes (same on release A d9f4d8e430, candidate 64fc542631 and head): Hub web homeTrackerChat sends by 'Daniel via Hub'; iPhone PhoneReplicaWriteService sends by 'Daniel'; Mac app /items/:id/inbox sends none, so 'daniel'. A working release would be failed and its item blocked. Expected: each surface passes only on what its own app writes."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:24:00.316Z",
+			"evidence": "Gap: test/support/needsYouCanaryWorld.ts applied every tap through the item rules with no by, so all three surfaces read 'daniel', and test 1 asserted that. The r871 rehearsal used synthetic answers; the fixture web proof checked the sent option, not answered_by. Reusable change: test/support/needsYouCanaryClients.ts drives deliverHomeChat, MacTrackerInboxService and PhoneReplicaWriteService into a real in-memory Tracker."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:24:35.769Z",
+			"evidence": "loop record red at dceb03193f (test-only commit): bunx vitest run test/needs-you-canary.test.ts test/needs-you-canary-answer-paths.test.ts, 7 failed / 10 passed. All taps accepted by the real Tracker; failures are canary verdicts: real Hub web and iPhone answers judged failed, and web/iPhone asks answered through the Mac app judged passed."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "pending"
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

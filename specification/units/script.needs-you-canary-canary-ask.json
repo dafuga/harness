@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["scripts/needs-you-canary/canaryAsk.ts"],
-		"symbols": ["surfaceNames", "canaryAsk", "addArgs", "flagArgs"]
+		"symbols": ["surfaceNames", "surfaceAnswerers", "canaryAsk", "addArgs", "flagArgs"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -38,6 +38,10 @@
 		"outputs": [
 			{
 				"name": "surfaceNames",
+				"type": "Record<CanarySurface, string>"
+			},
+			{
+				"name": "surfaceAnswerers",
 				"type": "Record<CanarySurface, string>"
 			},
 			{

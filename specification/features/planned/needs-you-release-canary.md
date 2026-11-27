@@ -19,10 +19,15 @@ scripted check to run after it is deployed:
 - Hub web is answered by the script in its own tab of the automation Chrome, on production, by
   pressing that option on the "Blocked - needs you" row. A row without option buttons fails.
 - A surface named in `--tap` is answered by Daniel by hand. This is the only way for the Mac app
-  and the iPhone. The Tracker does not record which device answered, so the report says that the
-  surface rests on the instruction.
-- A surface passes only when the Tracker then reads back `answered_by` daniel, `answer_option` and
-  `answer` equal to the named option, on an ask that was unanswered when the surface was reached.
+  and the iPhone.
+- A surface passes only when the Tracker then reads back its own app's `answered_by`, with
+  `answer_option` and `answer` equal to the named option, on an ask that was unanswered when the
+  surface was reached. `answered_by` is `Daniel via Hub` for Hub web, `daniel` for the Mac app and
+  `Daniel` for the iPhone. `test/needs-you-canary-answer-paths.test.ts` reads each from that app's
+  write code, so a change there fails the test.
+- `answered_by` names the write path, not the device or the person's hands. A Hub tap in a phone
+  browser reads as Hub web, and `daniel` is also what `tracker answer` writes without `--by`, so the
+  Mac result also rests on the instruction.
 - Every test item is closed afterwards, passed or not. A cleanup that fails is not a pass.
 - The result is noted on the release item. Unless all three surfaces pass, the release item is
   flagged with an exact ask for Daniel and blocked. A later pass removes only the canary's own

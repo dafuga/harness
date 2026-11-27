@@ -166,6 +166,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "script.needs-you-canary-canary-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "script.needs-you-canary-canary-types",
 			"via": "import",
 			"origin": "derived"
