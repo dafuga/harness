@@ -7234,15 +7234,21 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "58abe7d8f66580aa71d34ae6894ae660661f893f668edecf91ffa142a9970fc4",
+			"definition": "b8e4551fb63e5f769b042759547b4180707504d96a676d85780c5d667e93737d",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "5c2602ebf47d18da1f91dfb7dfcfdfd0292bed8c",
+				"commit": "748ebb4b5cf50a7bca6ff14023d70d41fb5622d9",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "58abe7d8f66580aa71d34ae6894ae660661f893f668edecf91ffa142a9970fc4",
-				"reason": "Handles fixed Home reads and validates contextual chat writes before delivering them to the local Tracker."
+				"definition": "b8e4551fb63e5f769b042759547b4180707504d96a676d85780c5d667e93737d",
+				"reason": "Resolves the platform fetch function at Home chat delivery so the Mac local and paired-device paths use the active transport with compatible types."
 			},
 			"previousReviews": [
+				{
+					"commit": "5c2602ebf47d18da1f91dfb7dfcfdfd0292bed8c",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "58abe7d8f66580aa71d34ae6894ae660661f893f668edecf91ffa142a9970fc4",
+					"reason": "Handles fixed Home reads and validates contextual chat writes before delivering them to the local Tracker."
+				},
 				{
 					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
