@@ -98,6 +98,9 @@ test('every command named in the canonical block exists natively', async () => {
 		expect(message, verb).not.toContain('unavailable in native mode');
 	}
 	expect(text).toContain('--recommend');
+	expect(text).toContain('plain English');
+	expect(text).toContain('what you want to do and why in one sentence');
+	expect(text).toContain('tool or process questions to Chief of Staff');
 });
 
 test('instructions rejects unknown options', async () => {
