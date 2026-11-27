@@ -59,7 +59,7 @@ function recordMachineSample(
 	machines?.record({ ...sample, node: peer });
 }
 
-function parseBody(body: string): TrackerWireObject {
+export function parseBody(body: string): TrackerWireObject {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(body);

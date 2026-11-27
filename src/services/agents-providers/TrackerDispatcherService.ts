@@ -19,7 +19,11 @@ import { creditHumanRedo, rejectCompletion } from './tracker-dispatcher-service/
 export class TrackerDispatcherService {
 	constructor(
 		private readonly store: TrackerDispatchStore,
-		private readonly policy: TrackerDispatchPolicy
+		private readonly policy: TrackerDispatchPolicy,
+		readonly coordination?: {
+			claim(input: unknown): Promise<{ allowed: boolean; reason: string }>;
+			landing(input: unknown): Promise<{ allowed: boolean; reason: string }>;
+		}
 	) {}
 
 	request(itemId: string, request: TrackerLaunchRequest): Promise<TrackerDispatchResult> {

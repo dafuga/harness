@@ -58,6 +58,7 @@ export function serializeTrackerItem(
 		parent: row.parent,
 		notes: row.notes,
 		...(row.adapter_instructions ? { adapter_instructions: row.adapter_instructions } : {}),
+		...(row.area_claim && { area_claim: row.area_claim }),
 		notes_log: notesLog(row, notes),
 		needs_daniel: Boolean(row.needs_daniel),
 		question: row.question,

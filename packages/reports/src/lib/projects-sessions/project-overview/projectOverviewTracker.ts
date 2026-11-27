@@ -56,6 +56,7 @@ function parseItem(value: unknown, includeHomeFields: boolean): Tracker.TrackerI
 		needs_daniel: optionalBoolean(row.needs_daniel, 'item needs_daniel'),
 		resolved: optionalBoolean(row.resolved, 'item resolved'),
 		question: optionalText(row.question, 'item question'),
+		area_claim: optionalText(row.area_claim, 'item area_claim'),
 		notes_log: optionalNotes(row.notes_log),
 		...askFields(row),
 		...(includeHomeFields ? homeFields(row) : {})

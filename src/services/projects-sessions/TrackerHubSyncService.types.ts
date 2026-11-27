@@ -1,3 +1,4 @@
+import type { AreaDecision } from './tracker-hub-sync/trackerAreaClaim';
 // @harness-uid u_jkomno4o5u
 import type { TrackerSyncAuthService } from '../networking-security/TrackerSyncAuthService';
 
@@ -67,6 +68,8 @@ export interface TrackerHubRunStore {
 }
 
 export interface TrackerHubOptions {
+	landing?: (input: unknown, node: string) => AreaDecision;
+	claimAreas?: (input: unknown, node: string) => AreaDecision;
 	auth: TrackerSyncAuthService;
 	store: TrackerHubStore;
 	machines?: TrackerHubMachineStore;

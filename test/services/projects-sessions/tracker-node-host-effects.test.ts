@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, test, vi } from 'vitest';
@@ -102,12 +102,11 @@ async function verifyResumedHost(
 }
 
 async function verifyNewLaunch(runtime: TrackerNativeRuntimeService, db: DatabaseSync) {
-	db.prepare("UPDATE runs SET state = 'finished', outcome = 'abandoned' WHERE item_id = ?").run(
-		macId
-	);
+	expect((await request(runtime, macId, 'done')).ok).toBe(true);
+	await runtime.scheduler!.tick(signal);
 	for (const id of [dockerId, macId]) {
 		const previous = db.prepare('SELECT auto_token FROM runs WHERE item_id = ?').get(id);
-		if (id === dockerId) expect((await request(runtime, id, 'reopen')).ok).toBe(true);
+		expect((await request(runtime, id, 'reopen')).ok).toBe(true);
 		const relaunched = await (await request(runtime, id, 'launch')).json();
 		expect(relaunched.auto).toEqual(expect.any(String));
 		expect.soft(relaunched.auto).not.toBe(previous?.auto_token);
@@ -136,6 +135,7 @@ function runState(db: DatabaseSync, id: string) {
 }
 
 function hostFixture(root: string) {
+	for (const project of ['harness', 'xcode']) mkdirSync(join(root, project));
 	const driver = join(root, 'driver');
 	const trace = join(root, 'starts.ndjson');
 	writeFileSync(driver, `#!${process.execPath}\n${fixtureDriver}`, { mode: 0o700 });

@@ -18,6 +18,10 @@ describe('where a piece of work really is', () => {
 			{ at, text: 'auto-launch requested on harbor-mbp-2' },
 			{ at, text: 'Hub message: please hurry' }
 		];
+		const area = 'Area claim on dafuga/harness by task (mac): src/launcher';
+		expect(homeWorkNow(item({ notes_log: notes, area_claim: area }))).toBe(
+			area + ' · PR #401 open; full check running.'
+		);
 		expect(homeWorkNow(item({ notes_log: notes }))).toBe('PR #401 open; full check running.');
 	});
 

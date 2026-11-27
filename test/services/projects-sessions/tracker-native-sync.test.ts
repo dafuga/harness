@@ -168,21 +168,7 @@ test('two fleet sessions acquire intersecting paths through one hub before editi
 		for (const id of [first, second]) {
 			hub.store.appendLocal({ itemId: id, fields: { title: id, status: 'open', auto: id } });
 		}
-		const claim = async (node: string, id: string, areas: string[]) => {
-			const request = {
-				method: 'POST' as const,
-				pathAndQuery: '/sync/area-claim',
-				body: JSON.stringify({ id, token: id, repo: 'fixture/project', areas })
-			};
-			return wire(hub.sync!)({
-				...request,
-				timeoutMs: 1000,
-				headers: {
-					authorization: new TrackerSyncAuthService(fixtureSecret).authorizationHeader(request),
-					'x-tracker-node': node
-				}
-			}) as Promise<{ allowed: boolean; reason: string }>;
-		};
+		const claim = claimFrom(hub);
 		const grants = await Promise.all([
 			claim('alpha', first, ['src/launcher']),
 			claim('beta', second, ['src/launcher/start.ts'])
@@ -199,9 +185,9 @@ test('two fleet sessions acquire intersecting paths through one hub before editi
 		expect(await claim('unrelated-host', winner, ['src/launcher'])).toMatchObject({
 			allowed: false
 		});
-		expect(
-			(await (await local(hub.api, '/items/' + winner)).json()).notes_log.at(-1).text
-		).toContain('src/launcher');
+		const owned = await (await local(hub.api, '/items/' + winner)).json();
+		expect(owned.area_claim).toContain('src/launcher');
+		expect(owned.notes_log.at(-1).text).toBe(owned.area_claim);
 		expect(
 			(
 				await local(hub.api, '/items/' + winner + '/block', 'POST', {
@@ -209,6 +195,7 @@ test('two fleet sessions acquire intersecting paths through one hub before editi
 				})
 			).status
 		).toBe(200);
+		expect((await (await local(hub.api, '/items/' + winner)).json()).area_claim).toBeUndefined();
 		expect(await claim(aWon ? 'beta' : 'alpha', loser, ['src/launcher'])).toMatchObject({
 			allowed: true
 		});
@@ -216,3 +203,21 @@ test('two fleet sessions acquire intersecting paths through one hub before editi
 		hub.database.close();
 	}
 });
+
+function claimFrom(hub: ReturnType<typeof nativeStore>) {
+	return async (node: string, id: string, areas: string[]) => {
+		const request = {
+			method: 'POST' as const,
+			pathAndQuery: '/sync/area-claim',
+			body: JSON.stringify({ id, token: id, repo: 'fixture/project', areas })
+		};
+		return wire(hub.sync!)({
+			...request,
+			timeoutMs: 1000,
+			headers: {
+				authorization: new TrackerSyncAuthService(fixtureSecret).authorizationHeader(request),
+				'x-tracker-node': node
+			}
+		}) as Promise<{ allowed: boolean; reason: string }>;
+	};
+}

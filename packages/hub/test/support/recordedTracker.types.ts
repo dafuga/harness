@@ -3,6 +3,8 @@ export interface RecordedTrackerItem {
 	title: string;
 	status: string;
 	stage: string | null;
+	area_claim?: string;
+	notes_log?: { at: string; text: string }[];
 	agent: string | null;
 	owner: string | null;
 	computer: string | null;

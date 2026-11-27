@@ -29,7 +29,8 @@ export function homeWorkNow(item: TrackerItemRecord): string | null {
 	const notes = item.notes_log ?? [];
 	for (let index = notes.length - 1; index >= 0; index -= 1) {
 		const text = notes[index]?.text.trim();
-		if (text && !automatedNote.test(text)) return line(text);
+		if (text && !automatedNote.test(text) && !text.startsWith('Area claim on '))
+			return line([item.area_claim, text].filter(Boolean).join(' · '));
 	}
-	return null;
+	return line(item.area_claim);
 }

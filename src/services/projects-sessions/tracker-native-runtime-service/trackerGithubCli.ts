@@ -20,17 +20,9 @@ export function trackerGithubCli(binding: {
 	executable: string;
 	configDirectory: string;
 }): TrackerGithubAdapterProvider {
-	const executable = controlledTrackerExecutable(binding.executable);
-	const environment = {
-		GH_CONFIG_DIR: privateGithubDirectory(binding.configDirectory),
-		GH_PROMPT_DISABLED: '1',
-		GH_NO_UPDATE_NOTIFIER: '1',
-		GH_NO_EXTENSION_UPDATE_NOTIFIER: '1'
-	};
+	const gh = trackerGithubRequest(binding);
 	const request = (args: string[], signal: AbortSignal) =>
-		runTrackerHostCommand(executable, ['api', '--hostname', githubHost, ...args], signal, {
-			environment
-		});
+		gh(['api', '--hostname', githubHost, ...args], signal);
 	const read = async (endpoint: string, signal: AbortSignal): Promise<unknown[]> => {
 		const reply = await request(['--method', 'GET', '--paginate', '--slurp', endpoint], signal);
 		if (reply.code !== 0) throw new TrackerHostProcessError('Tracker GitHub read failed');
@@ -67,6 +59,20 @@ export function trackerGithubCli(binding: {
 		markTracked: (source, issue, signal) =>
 			markTrackedIssue(request, { target: source.target, issue }, signal)
 	};
+}
+
+export function trackerGithubRequest(binding: { executable: string; configDirectory: string }) {
+	const executable = controlledTrackerExecutable(binding.executable);
+	const environment = {
+		GH_CONFIG_DIR: privateGithubDirectory(binding.configDirectory),
+		GH_PROMPT_DISABLED: '1',
+		GH_NO_UPDATE_NOTIFIER: '1',
+		GH_NO_EXTENSION_UPDATE_NOTIFIER: '1'
+	};
+	return (args: string[], signal: AbortSignal) =>
+		runTrackerHostCommand(executable, args, signal, {
+			environment
+		});
 }
 
 async function readTrackerIssue(

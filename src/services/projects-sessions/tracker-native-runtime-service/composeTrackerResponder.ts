@@ -1,3 +1,5 @@
+import { trackerLandingAuthority } from '../tracker-hub-sync/trackerLandingQueue';
+import { trackerAreaAuthority } from '../tracker-hub-sync/trackerAreaClaim';
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerHubSyncService } from '../TrackerHubSyncService';
@@ -27,6 +29,8 @@ export function composeTrackerResponder(
 		duePolicy,
 		...permits,
 		...syncResponder,
+		landing: role === 'hub' ? trackerLandingAuthority(store, now) : undefined,
+		claimAreas: role === 'hub' ? trackerAreaAuthority(store) : undefined,
 		machines:
 			syncResponder.machines &&
 			trackerHubMachines(syncResponder.machines, runs, options, { machines, scheduler }),

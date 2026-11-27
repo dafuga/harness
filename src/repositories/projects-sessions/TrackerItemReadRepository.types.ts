@@ -23,6 +23,7 @@ export type TrackerItemRow = Omit<
 		id: string;
 		updated_at: string | null;
 		clocks: string;
+		area_claim?: string | null;
 		chased_clock?: string | null;
 		chased_by?: string | null;
 		chased_reason?: string | null;
@@ -102,6 +103,7 @@ export type TrackerItem = Pick<TrackerItemRow, TrackerItemDetailFields> & {
 		last_result: unknown;
 		missed: string | null;
 		adapter_instructions?: string;
+		area_claim?: string;
 		notes_log: TrackerItemNote[];
 		/** When the open ask with choices was raised. */
 		asked_at?: string;

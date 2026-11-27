@@ -1,5 +1,6 @@
 import { chooseTrackerFleetHost } from './composeTrackerFleet';
 import type { PeerStarts, TrackerFleetRuntime } from './nativeTrackerDispatch.types';
+import { areaDispatchServices, trackerAreaDispatch } from './trackerAreaDispatch';
 // @harness-uid u_bl6xl2h4a3
 import { trackerRunSchema } from '../../../repositories/projects-sessions/tracker-dispatch-repository/trackerRunSchema';
 import { adapterFailover } from './trackerAdapterFailover';
@@ -11,7 +12,6 @@ import {
 	mayScheduleHere
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import { previewDueLaunch } from '../../agents-providers/tracker-dispatcher-service/launchIntent';
-import { TrackerDispatcherService } from '../../agents-providers/TrackerDispatcherService';
 import type {
 	TrackerDispatchPolicy,
 	TrackerDuePolicy
@@ -68,7 +68,8 @@ function nativeDispatch(
 		sessions,
 		now
 	});
-	const dispatch = new TrackerDispatcherService(repository, policy);
+	const guard = options.hostEffects?.launch && trackerAreaDispatch(store, options);
+	const guarded = areaDispatchServices(repository, policy, guard, runner);
 	const grant =
 		configuredGrant ??
 		spokeGrant(store, options, (itemId) => {
@@ -82,12 +83,12 @@ function nativeDispatch(
 		machines: fleet?.machines
 	});
 	return {
-		dispatch,
+		dispatch: guarded.dispatch,
 		permitAutomatic: permits.hubAutomatic,
 		permitDue: permits.permitDue,
 		duePreview: configuredDuePreview(repository, policy, { duePolicy, scheduleDue }),
-		scheduler: new TrackerDispatchSchedulerService(repository, dispatch, {
-			runner,
+		scheduler: new TrackerDispatchSchedulerService(repository, guarded.dispatch, {
+			runner: guarded.runner,
 			scheduleDue,
 			policy,
 			grant,
