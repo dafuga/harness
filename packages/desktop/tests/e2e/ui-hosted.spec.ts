@@ -49,6 +49,29 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	});
 	await expect(page).toHaveURL(/\/$/);
 	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toBeVisible();
+	const projects = page.getByRole('region', { name: 'Projects', exact: true });
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(() => document.fonts.ready);
+		await page.screenshot({
+			path: `${process.env.HEADLESS_RUN_ARTIFACTS ?? '/tmp'}/signed-in-home-${process.env.SCREENSHOT_LABEL}.png`
+		});
+	}
+	await expect(projects.getByRole('link', { name: 'Open Tracker Orion' })).toBeVisible();
+	await expect(projects.getByText('2 need you')).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Needs you', exact: true })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Harness', exact: true })).toHaveCount(0);
+	await projects.getByRole('button', { name: 'Open Gamma', exact: true }).click();
+	await expect(page).toHaveURL(new RegExp(`/projects/${gamma}/harness/`));
+	await expect(page.getByRole('link', { name: 'Needs you', exact: true })).toBeVisible();
+	await page.goto('/');
+	await projects.getByRole('link', { name: 'Open Tracker Orion' }).click();
+	await expect(page).toHaveURL(/\/tracker\?project=Tracker\+Orion$/);
+	await expect(page.getByRole('heading', { name: 'Tracker Orion', exact: true })).toBeVisible();
+	await page.evaluate(() => sessionStorage.setItem('fixtureHubUnavailable', 'yes'));
+	await page.goto('/');
+	await expect(projects.getByText('Hub projects could not be loaded.')).toBeVisible();
+	await expect(projects.getByRole('button', { name: 'Open Alpha', exact: true })).toBeVisible();
+	await expect(projects.getByRole('link', { name: 'Open Tracker Orion' })).toBeVisible();
 	await page.getByRole('button', { name: 'Sign out', exact: true }).click();
 	await expect(google).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toHaveCount(0);

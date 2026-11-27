@@ -30,8 +30,30 @@ function installConnection(input: { userCode: string; verificationUrl: string; s
 	Object.assign(host, { __hosted: hosted, __cache: () => {}, __deny: false });
 	Object.assign(host.harness, {
 		/** Shared projects are listed only to a signed-in device. */
-		listProjects: async () =>
-			(await listed()).filter((item) => item.kind !== 'shared' || hosted.state === 'signed-in'),
+		listProjects: async () => {
+			const hubUnavailable = sessionStorage.getItem('fixtureHubUnavailable') === 'yes';
+			if (hubUnavailable) host.__cache({ projectId: '$projects', status: 'unavailable' });
+			return (await listed()).filter(
+				(item) => item.kind !== 'shared' || (!hubUnavailable && hosted.state === 'signed-in')
+			);
+		},
+		homeSnapshot: async () => ({
+			overview: { status: 'ready', projects: [], machines: [], liveSessions: 0 },
+			projectDirectory: [{ name: 'Tracker Orion', state: 'needs-you', needsYou: 2 }],
+			agents: [],
+			openAsks: [],
+			plans: [],
+			schedule: [],
+			pastDue: [],
+			providers: { quota: null, routines: null }
+		}),
+		trackerInbox: {
+			overview: async () => ({
+				freshness: 'current',
+				value: { rows: [], unresolvedFlags: 0, needsYouCapped: false }
+			}),
+			writes: async () => ({ freshness: 'current', value: [] })
+		},
 		onCacheStatus: (listener: HostedHost['__cache']) => {
 			host.__cache = listener;
 			return () => {};
