@@ -19,6 +19,8 @@
 			"TrackerAdapterSourceRepository.list",
 			"TrackerAdapterSourceRepository.dueSourceIds",
 			"TrackerAdapterSourceRepository.source",
+			"TrackerAdapterSourceRepository.add",
+			"TrackerAdapterSourceRepository.change",
 			"TrackerAdapterSourceRepository.advance",
 			"TrackerAdapterSourceRepository.recordRun"
 		]
@@ -54,6 +56,21 @@
 			{
 				"name": "TrackerAdapterSourceRepository.source.id",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.add.source",
+				"type": "TrackerAdapterSource & { enabled_at: number }",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.change.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.change.action",
+				"type": "TrackerAdapterSourceAction",
 				"required": true
 			},
 			{
@@ -110,6 +127,14 @@
 			{
 				"name": "TrackerAdapterSourceRepository.source",
 				"type": "TrackerAdapterSource | undefined"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.add",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.change",
+				"type": "boolean"
 			},
 			{
 				"name": "TrackerAdapterSourceRepository.advance",
@@ -244,6 +269,47 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.add",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.add.source",
+						"type": "TrackerAdapterSource & { enabled_at: number }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.add",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerAdapterSourceRepository.change",
+				"inputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.change.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "TrackerAdapterSourceRepository.change.action",
+						"type": "TrackerAdapterSourceAction",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerAdapterSourceRepository.change",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{

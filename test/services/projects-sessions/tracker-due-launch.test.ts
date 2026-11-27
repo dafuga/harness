@@ -14,13 +14,14 @@ import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
 import { resourceSample } from '../../support/trackerMachineFixture';
 
 const signal = new AbortController().signal;
-const noon = Date.parse('2026-11-25T12:00:00Z');
-const now = () => noon;
+// 02:00 in Lisbon: due work launches through the night.
+const night = Date.parse('2026-11-25T02:00:00Z');
+const now = () => night;
 
 function starter() {
 	return vi.fn<TrackerDispatchRunner['start']>(async ({ run, key }) => ({
 		type: 'session',
-		session: { key, id: run.item_id, state: 'live', startedAt: noon }
+		session: { key, id: run.item_id, state: 'live', startedAt: night }
 	}));
 }
 
@@ -112,7 +113,7 @@ test.each([
 	try {
 		hub.store.appendLocal(task('mbtwo00001', '2026-11-24T09:00:00.000Z', secondary));
 		hub.machines.ingest([
-			{ node: secondary, resources: resourceSample(noon - ageMs, { load: reading }) }
+			{ node: secondary, resources: resourceSample(night - ageMs, { load: reading }) }
 		]);
 		const link = new TrackerSpokeSyncService({ ...links[0], store: peer.store });
 		await link.pull();
@@ -146,12 +147,12 @@ async function expectHubSeenBySpoke(
 	expect(await (await peer.items.handle(request)).json()).toMatchObject({
 		launch_status: { computer: primary, reason: `queued on ${primary}` }
 	});
-	expect(trackerSupervisorStatus(peer, new Date(noon).toISOString()).autolaunch.computers).toEqual(
+	expect(trackerSupervisorStatus(peer, new Date(night).toISOString()).autolaunch.computers).toEqual(
 		expect.arrayContaining([
 			expect.objectContaining({
 				computer: primary,
 				state: 'polling',
-				last_tick_at: new Date(noon).toISOString()
+				last_tick_at: new Date(night).toISOString()
 			})
 		])
 	);

@@ -26,8 +26,12 @@
 	flex-direction: column;
 	gap: var(--hx-space-6);
 }
+.hh-home .hh-q-preview {
+	display: flex;
+	flex-direction: column;
+	gap: var(--hx-space-12);
+}
 .hh-home .hh-q-sub + .hh-q-sub {
-	margin-top: var(--hx-space-10);
 	padding-top: var(--hx-space-12);
 	border-top: var(--hx-border-thin) solid var(--hx-color-border);
 }
@@ -133,6 +137,38 @@
 }
 .hh-home .hh-q-headflag[data-level='critical'] {
 	border-color: var(--hx-color-error-line);
+}
+
+/* Header quota: one pill per subscription. They wrap, so a phone shows the whole reset time. */
+.hh-home .hh-q-pills,
+.hh-home .hh-q-pill-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-8);
+}
+.hh-home .hh-q-pills {
+	flex-direction: column;
+}
+.hh-home .hh-q-pill-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.hh-home .hh-head .po-machine.hh-q-pill {
+	flex-wrap: wrap;
+	min-height: var(--hx-space-44);
+	padding-block: var(--hx-space-6);
+	background: transparent;
+	color: inherit;
+	font-family: inherit;
+	text-align: start;
+	white-space: normal;
+	cursor: pointer;
+}
+.hh-home .hh-q-meaning {
+	margin: 0;
+	color: var(--hx-color-text-supporting);
+	font-size: var(--hx-type-size-compact);
 }
 
 .hh-home .hh-q-identity {

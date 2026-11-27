@@ -41,6 +41,8 @@ export function trackerNodeRuntime(
 		notification,
 		hostEffects: configuredHostEffects(config, writeGuestAuth),
 		hostEffectsHeld,
+		// Held and effect-free rehearsal nodes never notify anyone.
+		webPush: config.hostEffects?.mode === 'active' ? { database: config.database } : undefined,
 		manualLaunch: true,
 		automaticEnabled: trackerAutomaticSetting(config),
 		machineSampler: new TrackerMachineSamplerAdapter(config.node, configuredTmux(config)),

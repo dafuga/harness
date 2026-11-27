@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/lib/projects-sessions/hub-home/homeChatInput.ts"],
-		"symbols": ["chatId", "homeChatInput"]
+		"symbols": ["chatId", "homeRunId", "homeChatInput"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -17,6 +17,10 @@
 		"outputs": [
 			{
 				"name": "chatId",
+				"type": "unknown"
+			},
+			{
+				"name": "homeRunId",
 				"type": "unknown"
 			},
 			{
