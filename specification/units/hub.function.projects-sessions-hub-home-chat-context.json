@@ -4,30 +4,33 @@
 	"uid": "u_7j4igv6rwg",
 	"kind": "function",
 	"title": "hubHomeChatContext",
-	"responsibility": "Owns the hubHomeChatContext shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Lets a Home action open and close the shared Chief of Staff widget, optionally with Tracker context.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubHomeChatContext.svelte.ts"],
 		"symbols": ["provideHomeCosChat", "homeCosChat"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "provideHomeCosChat.refreshAsk",
 				"type": "() => void",
-				"required": false
+				"required": false,
+				"description": "Refreshes the open-ask list on demand when a question is opened."
 			}
 		],
 		"outputs": [
 			{
 				"name": "provideHomeCosChat",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Installs and returns one widget controller for this Home or native work view."
 			},
 			{
 				"name": "homeCosChat",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Returns the nearest widget controller from Svelte context, or undefined outside its provider."
 			}
 		],
 		"errors": [],
@@ -39,13 +42,15 @@
 					{
 						"name": "provideHomeCosChat.refreshAsk",
 						"type": "() => void",
-						"required": false
+						"required": false,
+						"description": "Refreshes the open-ask list on demand when a question is opened."
 					}
 				],
 				"outputs": [
 					{
 						"name": "provideHomeCosChat",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Installs and returns one widget controller for this Home or native work view."
 					}
 				],
 				"errors": [],
@@ -57,7 +62,8 @@
 				"outputs": [
 					{
 						"name": "homeCosChat",
-						"type": "unknown"
+						"type": "unknown",
+						"description": "Returns the nearest widget controller from Svelte context, or undefined outside its provider."
 					}
 				],
 				"errors": [],

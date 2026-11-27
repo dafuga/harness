@@ -29,7 +29,7 @@
 		agent?: HomeAgent;
 		now: string;
 		send: SendHomeChat;
-		receipt: (id: string) => Promise<HomeChatReceipt>;
+		receipt?: (id: string) => Promise<HomeChatReceipt>;
 		asks?: HomeOpenAsk[];
 	} = $props();
 	const chat = homeCosChat() ?? provideHomeCosChat();
@@ -134,7 +134,7 @@
 							>
 						</hx-li>
 					{/each}
-					{#if ask}
+				{#if ask && receipt}
 						<hx-li class="hh-msg hh-msg-ask" data-from="agent">
 							{#key `${ask.itemId}:${ask.question}`}<HubHomeAsk {ask} {send} {receipt} />{/key}
 						</hx-li>
