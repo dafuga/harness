@@ -13,8 +13,31 @@ func accountGoogleChecks() {
           "Google account: the S256 challenge is bound to the iOS callback")
     check(HubAccountSession.browserCode(url, state: "other") == nil,
           "Google account: an unrelated callback is refused")
+    let devicePath = "/api/sync/v1/device-session"
+    bench.hub.routes["GET " + devicePath] = { _ in hubJSON(200, ["state": "waiting-for-approval"]) }
     bench.session.browserReturned(url, state: handoff)
+    wait { bench.vault.credential != nil }
+    let stage = try? bench.status()?.get()
+    check(stage?["state"] as? String == "waiting-for-approval" && stage?["actor"] == nil,
+          "Google account: a new device waits after the native return")
+    let reads = bench.hub.asked("/api/projects").count
+    check(bench.request("/api/projects")?.refusal != nil && bench.hub.asked("/api/projects").count == reads,
+          "Google account: a waiting device cannot read projects")
+    check(awaited(bench.session.computers)?.refusal != nil && bench.hub.asked("/api/remote/hosts").isEmpty,
+          "Google account: a waiting device cannot discover or pair computers")
+    let challenge = RemoteCoding.base64url(Data(repeating: 9, count: 32))
+    bench.hub.routes["GET " + devicePath] = { _ in hubJSON(200, ["state": "proof-required", "challenge": challenge]) }
+    bench.hub.routes["POST " + devicePath] = { request in
+        let body = request.httpBody.flatMap(RemoteCoding.object)
+        let signature = (body?["signature"] as? String).flatMap(RemoteCoding.data(base64url:))
+        let accepted = request.value(forHTTPHeaderField: "X-Harness-Device") != nil
+            && body?["challenge"] as? String == challenge && signature?.count == 64
+        return accepted ? hubJSON(200, ["state": "approved"]) : hubJSON(403, ["error": "device-proof-denied"])
+    }
     wait { (try? bench.status()?.get())?["state"] as? String == "signed-in" }
+    check(bench.hub.asked(devicePath).contains { $0.httpMethod == "POST" } &&
+          bench.hub.bearer(devicePath) == "Bearer " + hubToken,
+          "Google account: an approved installation signs the challenge inside the native session")
     check(bench.hub.body("/api/auth/native/exchange")["callbackCode"] as? String == code &&
           bench.hub.asked("/api/auth/native/poll").isEmpty && bench.vault.credential?.token == hubToken,
           "Google account: native flow exchanges callback code and PKCE once without polling")
