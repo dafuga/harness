@@ -4,8 +4,8 @@
 	"uid": "u_xrklrpg3zi",
 	"kind": "service",
 	"title": "TrackerBundleError",
-	"responsibility": "Owns the TrackerBundleError service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Identifies an installer failure and formats its diagnostic for the Tracker install log.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": [
@@ -14,18 +14,21 @@
 		"symbols": ["TrackerBundleError", "TrackerBundleError.describe"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "TrackerBundleError.describe.error",
 				"type": "unknown",
-				"required": true
+				"required": true,
+				"description": "Value caught while installing or restoring the Tracker service.",
+				"unknownReason": "JavaScript can throw a value of any type. The formatter checks its type before reading error details."
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerBundleError.describe",
-				"type": "string"
+				"type": "string",
+				"description": "Installer diagnostic, runtime error identifier, or a generic message when the thrown value is unrecognized."
 			}
 		],
 		"errors": [],
@@ -37,13 +40,16 @@
 					{
 						"name": "TrackerBundleError.describe.error",
 						"type": "unknown",
-						"required": true
+						"required": true,
+						"description": "Value caught while installing or restoring the Tracker service.",
+						"unknownReason": "JavaScript can throw a value of any type. The formatter checks its type before reading error details."
 					}
 				],
 				"outputs": [
 					{
 						"name": "TrackerBundleError.describe",
-						"type": "string"
+						"type": "string",
+						"description": "Installer diagnostic, runtime error identifier, or a generic message when the thrown value is unrecognized."
 					}
 				],
 				"errors": [],

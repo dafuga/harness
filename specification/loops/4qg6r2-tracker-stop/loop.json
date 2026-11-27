@@ -2,7 +2,7 @@
 	"name": "4qg6r2-tracker-stop",
 	"goal": "Prove a slow hub exits before activation or restoration and packaged startup records its result.",
 	"createdAt": "2026-11-27T18:40:41.237Z",
-	"updatedAt": "2026-11-27T18:44:20.060Z",
+	"updatedAt": "2026-11-27T18:49:31.926Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -41,7 +41,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:49:31.926Z",
+			"evidence": "Recorded red e94758266d (wrong rollback and 9 bootstrap attempts) and green 29ce732a08 through the same packaged entry and frozen tests. All seven passed, including rollback, log records and a stuck PID. Primary read-only launchctl lookup confirmed top-level PID format and absent service exit 113."
 		},
 		{
 			"id": "siblings",
