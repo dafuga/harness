@@ -1,7 +1,9 @@
 import type { HomeSubscription } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import type { MockupHomeData } from './hub-home-fixture.types';
 
-export const homeClock = Date.parse('2026-11-21T22:30:00.000Z');
+import { trackerHomeClock } from '../../test/support/hubHomeTrackerRecording';
+
+export const homeClock = trackerHomeClock;
 export const at = (minutes = 0) => new Date(homeClock + minutes * 60000).toISOString();
 
 export function quotas(data: MockupHomeData): HomeSubscription[] {

@@ -98,7 +98,7 @@ async function planArtifacts(page: Page, plan?: HomePlan) {
 	);
 }
 
-export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
+export async function hubHomeFixture(page: Page, mode: HomeFixtureState, withoutChoices = false) {
 	const state = await hostedFixture(page, { actor: { ...ada, name: 'Daniel' } });
 	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
 		route.fulfill({ json: { computers: [] } })
@@ -108,7 +108,7 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 	);
 	await page.clock.setFixedTime(homeClock);
 	const data = mockup(mode);
-	const snapshot = homeData(data);
+	const snapshot = await homeData(data, mode, withoutChoices);
 	await planArtifacts(page, snapshot.plans[0]);
 	if (mode === 'busy')
 		snapshot.providers.routinesReadAt = new Date(homeClock - 10_800_000).toISOString();
@@ -186,7 +186,7 @@ export async function unavailableHome(
 	if (fixture.snapshot.overview.status !== 'ready')
 		throw new Error('Expected a ready Tracker fixture');
 	const name = fixture.snapshot.overview.projects[0].agent;
-	await expect(dialog.getByRole('heading', { name, exact: true })).toBeVisible();
+	await expect(dialog.getByRole('link', { name: `Open ${name}`, exact: true })).toBeVisible();
 	await expect(dialog.getByRole('link', { name: 'Open Project Overview' })).toHaveAttribute(
 		'href',
 		'/tracker-overview'
@@ -205,47 +205,4 @@ export async function fit(page: Page, width: number) {
 	}));
 	expect(bounds.width).toBeLessThanOrEqual(width);
 	expect(bounds.columns).toBe(width === 390 ? 1 : width === 834 ? 2 : width === 1440 ? 3 : 4);
-}
-
-export const needsYouSizes = {
-	desktop: { width: 1440, height: 900 },
-	tablet: { width: 820, height: 1180 },
-	phone: { width: 390, height: 844 }
-};
-
-export async function needsYouHome(
-	page: Page,
-	size: keyof typeof needsYouSizes,
-	change: 'two-asks' | 'no-choices'
-) {
-	await page.setViewportSize(needsYouSizes[size]);
-	await page.emulateMedia({
-		colorScheme: size === 'tablet' ? 'light' : 'dark',
-		reducedMotion: 'reduce'
-	});
-	const fixture = await hubHomeFixture(page, 'default');
-	const [chief] = fixture.snapshot.agents;
-	if (change === 'two-asks')
-		fixture.snapshot.agents.push({
-			...chief,
-			id: 'harbor',
-			name: 'harbor',
-			itemId: 'item-harbor',
-			question: 'Ship harbor?',
-			confirm: undefined,
-			messages: [],
-			options: [
-				{ label: 'Ship harbor now', effect: 'Merges and releases.', recommended: true },
-				{ label: 'Hold harbor', effect: 'Waits a day.' }
-			]
-		});
-	else
-		for (const agent of fixture.snapshot.agents) {
-			delete agent.options;
-			delete agent.confirm;
-		}
-	await page.goto('/');
-	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-	await expect(page.getByRole('region', { name: 'Agents', exact: true })).toBeVisible();
-	return fixture;
 }

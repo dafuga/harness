@@ -121,7 +121,7 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 		.first()
 		.click();
 	const chat = dialog.getByRole('region', { name: 'Chat with Chief of Staff' });
-	await expect(chat.getByText('Yes, voicemail and carrier-busy passed.')).toBeVisible();
+	await expect(chat.getByText('Does staging include the voicemail path?')).toBeVisible();
 	await capture(page, position, 'agent-chat');
 	const opener = chat.getByRole('button', { name: 'Open chat', exact: true });
 	await opener.click();
@@ -142,7 +142,11 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 	await dialog.getByRole('button', { name: 'Back to agents' }).click();
 	await expect(chat).toBeHidden();
 	await page.keyboard.press('Escape');
-	await page.getByRole('button', { name: 'Talk to Chief of Staff', exact: true }).first().click();
+	await page
+		.getByRole('listitem')
+		.filter({ hasText: 'Approve the Nudge production window' })
+		.getByRole('button', { name: 'Talk to Chief of Staff', exact: true })
+		.click();
 	await optionTap(widget, fixture);
 	await page.keyboard.press('Escape');
 	await page.getByRole('button', { name: 'See all agents' }).click();

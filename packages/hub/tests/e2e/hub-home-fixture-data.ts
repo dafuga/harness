@@ -6,13 +6,13 @@ import type {
 	HomeRun,
 	OwnerHomeSnapshot
 } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
-import type {
-	OverviewCard,
-	OverviewItem
-} from '../../../reports/src/lib/projects-sessions/project-overview/projectOverview.types';
+import {
+	buildHomeSnapshot,
+	noProviders
+} from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
+import { readRecordedHomeTracker } from '../../test/support/hubHomeTrackerRecording';
 import type { HomeFixtureState, MockupHomeData } from './hub-home-fixture.types';
-
-import { at, quotas } from './hub-home-fixture-quota';
+import { at, homeClock, quotas } from './hub-home-fixture-quota';
 export { homeClock } from './hub-home-fixture-quota';
 
 const fixtures = createContext({ window: {} });
@@ -30,59 +30,6 @@ export function mockup(state: HomeFixtureState): MockupHomeData {
 	return fixtures.window.HH.data[
 		state === 'loading' || state === 'unavailable' ? 'default' : state
 	];
-}
-
-function workCards(data: MockupHomeData): OverviewCard[] {
-	const cards = new Map<string, OverviewCard>();
-	data.wip.forEach((item, index) => {
-		const overdue = item.eta.startsWith('overdue');
-		const details: OverviewItem = {
-			id: `work-${index}`,
-			title: item.title,
-			status: item.status === 'Blocked' ? 'blocked' : 'in_progress',
-			due: item.eta === 'no ETA' ? null : at(overdue ? -20 : index * 60 + 25),
-			updatedAt: at(-20),
-			live: !overdue,
-			stale: false
-		};
-		const card = cards.get(item.project) ?? {
-			agent: item.project,
-			state: 'active',
-			liveSessions: 0,
-			counts: { open: 0, in_progress: 0, blocked: 0, done: 0 },
-			items: [],
-			blocked: null,
-			attention: null,
-			milestone: null,
-			updatedAt: at(-20)
-		};
-		card.items.push(details);
-		card.counts[details.status]++;
-		card.liveSessions += Number(details.live);
-		if (item.status === 'Needs you') {
-			card.state = 'needs-you';
-			card.attention = { item: details, text: 'Approve the Nudge production window, Sat 09:00?' };
-		}
-
-		if (item.status === 'Blocked' && card.state !== 'needs-you') {
-			card.state = 'blocked';
-			card.blocked = { item: details, text: 'Waiting for the synthetic signing fixture' };
-		}
-		cards.set(item.project, card);
-	});
-	if (cards.size)
-		cards.set('iOS pairing', {
-			agent: 'iOS pairing',
-			state: 'done',
-			liveSessions: 0,
-			counts: { open: 0, in_progress: 0, blocked: 0, done: 1 },
-			items: [],
-			blocked: null,
-			attention: null,
-			milestone: { text: 'Pairing polish finished.', at: at(-900) },
-			updatedAt: at(-900)
-		});
-	return [...cards.values()];
 }
 
 const planState: Record<string, HomePlanState> = {
@@ -111,72 +58,27 @@ function scheduled(data: MockupHomeData): HomeRun[] {
 	});
 }
 
-function agents(data: MockupHomeData): OwnerHomeSnapshot['agents'] {
-	const all: OwnerHomeSnapshot['agents'] = data.agents.map((agent, index) => ({
-		// The Mac publishes every Tracker project as an agent keyed by its Tracker agent value.
-		id: agent.name === 'Chief of Staff' ? 'cos' : `agent-${index}`,
-		name: agent.name,
-		state: agent.state,
-		sessions: agent.state === 'working' ? 1 : 0,
-		tasks: [],
-		subAgents: { sessions: 0, tasks: [] },
-		since: at(-15),
-		itemId: agent.state === 'offline' ? null : `item-${index}`,
-		task: agent.task,
-		machine: agent.machine,
-		model: agent.model,
-		question:
-			agent.state === 'needs-you' ? 'Approve the Nudge production window, Sat 09:00?' : null,
-		...(agent.state === 'needs-you' && {
-			options: [
-				{
-					label: 'Approve Saturday 09:00',
-					effect: 'Schedules the production deploy for Saturday at 09:00.',
-					recommended: true as const
-				},
-				{ label: 'Move to Monday', effect: 'Holds the deploy until Monday morning.' }
-			],
-			confirm: 'deploy' as const
-		}),
-		messages:
-			agent.state === 'needs-you'
-				? [
-						{
-							id: 'question',
-							from: 'agent',
-							text: 'Staging calls passed. Approve the Nudge production window, Sat 09:00?',
-							at: at(-4)
-						},
-						{
-							id: 'reply',
-							from: 'you',
-							text: 'Does staging include the voicemail path?',
-							at: at(-2)
-						},
-						{
-							id: 'followup',
-							from: 'agent',
-							text: 'Yes, voicemail and carrier-busy passed.',
-							at: at(-1)
-						}
-					]
-				: []
-	}));
-	// Home lists only the sessions Daniel controls; the rest are counted under them or shown as asks.
-	return all;
-}
-
-export function homeData(data: MockupHomeData): OwnerHomeSnapshot {
-	const projects = workCards(data);
+export async function homeData(
+	data: MockupHomeData,
+	mode: HomeFixtureState,
+	withoutChoices: boolean
+): Promise<OwnerHomeSnapshot> {
+	const sources =
+		mode === 'empty' ? { items: [], runs: [], machines: [] } : await readRecordedHomeTracker();
+	if (sources && withoutChoices) {
+		for (const item of sources.items) delete item.options;
+	}
+	const { agents, openAsks, overview, projectDirectory } = buildHomeSnapshot(
+		sources,
+		noProviders,
+		homeClock
+	);
 	const schedule = scheduled(data);
 	return {
-		overview: {
-			status: 'ready',
-			machines: data.machines,
-			projects,
-			liveSessions: projects.reduce((sum, project) => sum + project.liveSessions, 0)
-		},
-		agents: agents(data),
+		overview,
+		agents,
+		openAsks,
+		...(mode !== 'empty' && { projectDirectory }),
 		plans: data.plans.map((plan, index) => ({
 			id: `plan-${index}`,
 			title: plan.title,

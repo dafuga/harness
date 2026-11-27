@@ -1,6 +1,5 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
 import type {
-	HomeAgent,
 	HomeMessage,
 	OwnerHomeSnapshot
 } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
@@ -47,10 +46,8 @@ async function linkedHome(page: Page, size: keyof typeof sizes) {
 	const snapshot: OwnerHomeSnapshot = structuredClone(fixture.snapshot);
 	const chief = snapshot.agents.find((agent) => agent.id === 'cos')!;
 	chief.messages = [];
-	const harbor: HomeAgent = {
-		...chief,
-		id: 'harbor',
-		name: 'harbor',
+	const harbor = snapshot.agents.find((agent) => agent.id === 'harbor')!;
+	Object.assign(harbor, {
 		state: 'working',
 		itemId: 'harborwork',
 		runId: 'mb2#104',
@@ -58,8 +55,8 @@ async function linkedHome(page: Page, size: keyof typeof sizes) {
 		options: undefined,
 		confirm: undefined,
 		messages: []
-	};
-	snapshot.agents.push(harbor);
+	});
+	snapshot.openAsks = snapshot.openAsks?.filter((ask) => ask.agentId !== harbor.id);
 	const chats: { id: string }[] = [];
 	await linkedComputersFixture(
 		page,

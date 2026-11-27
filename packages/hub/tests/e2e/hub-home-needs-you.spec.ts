@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { hubHomeFixture, needsYouHome, needsYouSizes } from './hub-home-fixture';
+import { hubHomeFixture } from './hub-home-fixture';
 import { captureNeedsYou } from './hub-home-capture';
 import { linkedComputersFixture } from './linked-computers-fixture';
 
@@ -15,9 +15,26 @@ const rowOf = (page: Page, project: string) =>
 	needsYou(page).getByRole('listitem').filter({ hasText: project });
 const agentsCard = (page: Page) => page.getByRole('region', { name: 'Agents', exact: true });
 
+const needsYouSizes = {
+	desktop: { width: 1440, height: 900 },
+	tablet: { width: 820, height: 1180 },
+	phone: { width: 390, height: 844 }
+};
+
+async function needsYouHome(page: Page, size: keyof typeof needsYouSizes, withoutChoices = false) {
+	await page.setViewportSize(needsYouSizes[size]);
+	await page.emulateMedia({
+		colorScheme: size === 'tablet' ? 'light' : 'dark',
+		reducedMotion: 'reduce'
+	});
+	const fixture = await hubHomeFixture(page, 'default', withoutChoices);
+	await page.goto('/');
+	await expect(agentsCard(page)).toBeVisible();
+	return fixture;
+}
 for (const size of ['desktop', 'tablet', 'phone'] as const) {
 	test(`Home asks go to Chief of Staff without an Agents modal (${size})`, async ({ page }) => {
-		const fixture = await needsYouHome(page, size, 'two-asks');
+		const fixture = await needsYouHome(page, size);
 		const rows = openers(page);
 		await expect(rows).toHaveCount(2);
 		await expect(needsYou(page).getByText('2 need you', { exact: true })).toBeVisible();
@@ -80,7 +97,7 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 			.toMatchObject({
 				agentId: 'cos',
 				kind: 'message',
-				text: expect.stringMatching(/What are the risks\?.*[\s\S]*item-harbor[\s\S]*Ship harbor\?/)
+				text: expect.stringMatching(/What are the risks\?.*[\s\S]*harbor-ask[\s\S]*Ship harbor\?/)
 			});
 		await latest.getByRole('button', { name: /Other/ }).click();
 		await field.fill('Ship it Friday,\nafter the freeze.');
@@ -88,7 +105,7 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 		await expect.poll(() => fixture.sent.length).toBe(2);
 		expect(fixture.sent[1]).toMatchObject({
 			agentId: 'harbor',
-			itemId: 'item-harbor',
+			itemId: 'harbor-ask',
 			kind: 'answer',
 			question: 'Ship harbor?',
 			text: 'Ship it Friday,\nafter the freeze.'
@@ -98,7 +115,7 @@ for (const size of ['desktop', 'tablet', 'phone'] as const) {
 }
 
 test('a tapped choice in the chat is sent as that option', async ({ page }) => {
-	const fixture = await needsYouHome(page, 'desktop', 'two-asks');
+	const fixture = await needsYouHome(page, 'desktop');
 	await talk(page, 'harbor').click();
 	await widget(page)
 		.getByRole('button', { name: /Hold harbor/ })
@@ -108,7 +125,7 @@ test('a tapped choice in the chat is sent as that option', async ({ page }) => {
 });
 
 test('a choice tapped on a row answers that ask without opening the chat', async ({ page }) => {
-	const fixture = await needsYouHome(page, 'phone', 'two-asks');
+	const fixture = await needsYouHome(page, 'phone');
 	let result = 'refused';
 	let release = () => {};
 	const pending = new Promise<void>((resolve) => (release = resolve));
@@ -129,7 +146,7 @@ test('a choice tapped on a row answers that ask without opening the chat', async
 	release();
 	await expect.poll(() => fixture.sent.length).toBe(1);
 	expect(fixture.sent[0]).toMatchObject({
-		itemId: 'item-harbor',
+		itemId: 'harbor-ask',
 		kind: 'answer',
 		question: 'Ship harbor?',
 		text: 'Hold harbor',
@@ -146,7 +163,7 @@ test('a choice tapped on a row answers that ask without opening the chat', async
 	result = 'sent';
 	await hold.click();
 	await expect(harbor.getByRole('status')).toContainText('Answer sent');
-	const reflagged = fixture.snapshot.agents.find((agent) => agent.id === 'harbor')!;
+	const reflagged = fixture.snapshot.openAsks!.find((ask) => ask.agentId === 'harbor')!;
 	reflagged.since = new Date(Date.parse(reflagged.since) + 1000).toISOString();
 	await expect(hold).toBeEnabled();
 	await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -179,7 +196,7 @@ test('with nothing stored on the Hub, a row tap goes to the linked Mac over its 
 	await page.route('**/api/hub-home', (route) =>
 		route.fulfill({ json: { granted: false, snapshot: null } })
 	);
-	const asked = fixture.snapshot.agents.find((agent) => agent.options);
+	const asked = fixture.snapshot.openAsks?.find((ask) => ask.agentId === 'harbor');
 	if (!asked?.options) throw new Error('Expected a fixture ask with choices');
 	delete asked.confirm;
 	const chats: unknown[] = [];
@@ -191,12 +208,11 @@ test('with nothing stored on the Hub, a row tap goes to the linked Mac over its 
 	await expect.poll(() => chats.length).toBe(1);
 	expect(chats[0]).toMatchObject({ itemId: asked.itemId, kind: 'answer', option: 2 });
 	await expect(needsYou(page).getByRole('status')).toContainText('Answer sent');
-	// The Hub never sees the answer: nothing is queued there.
 	expect(fixture.sent).toHaveLength(0);
 });
 
 test('a flag without choices is not counted, listed or answerable', async ({ page }) => {
-	await needsYouHome(page, 'desktop', 'no-choices');
+	await needsYouHome(page, 'desktop', true);
 	await expect(needsYou(page)).toHaveCount(0);
 	await expect(page.getByText(/\d+ needs? you/)).toHaveCount(0);
 	await expect(page.getByRole('heading', { level: 1 })).not.toContainText('you');

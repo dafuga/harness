@@ -3,14 +3,24 @@ import {
 	buildHomeSnapshot,
 	noProviders
 } from '../../../reports/src/lib/projects-sessions/hub-home/homeTrackerProjection';
-import { listHomeAgents } from '../../../reports/src/lib/projects-sessions/hub-home/homeDirectAgents';
+import {
+	listedHomeSnapshot,
+	listHomeAgents
+} from '../../../reports/src/lib/projects-sessions/hub-home/homeDirectAgents';
 import { readTrackerSources } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
 import type { TrackerItemRecord } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
 import {
+	agentSessions,
+	isWorking,
 	soonestWork,
 	warningFor
 } from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+import {
+	readRecordedHomeTracker,
+	trackerHomeClock,
+	trackerHomeRecording
+} from '../support/hubHomeTrackerRecording';
 
 const now = Date.parse('2026-11-21T22:30:00Z');
 const updated_at = new Date(now).toISOString();
@@ -46,7 +56,7 @@ test('Tracker plan artifacts, children, due items, current question and privacy 
 	};
 	const work = { ...base, parent: plan.id, ...flaggedAsk };
 	const completed = { ...base, id: 'step-two', parent: plan.id, status: 'done' as const };
-	const sensitive = { ...base, id: 'hidden', parent: plan.id, sensitive: true };
+	const sensitive = { ...completed, id: 'hidden', project: 'Private project', sensitive: true };
 	const routine = {
 		id: 'routine',
 		title: 'Synthetic routine',
@@ -84,6 +94,7 @@ test('Tracker plan artifacts, children, due items, current question and privacy 
 	]);
 	expect(soonestWork(home.overview)).toMatchObject([{ id: base.id }]);
 	expect(JSON.stringify(home)).not.toContain('"hidden"');
+	expect(home.projectDirectory?.some(({ name }) => name === 'Private project')).toBe(false);
 	expect([9, 10, 24, 25].map(warningFor)).toEqual(['critical', 'low', 'low', null]);
 });
 
@@ -117,62 +128,46 @@ test('native chat refuses an outdated question and calls only the fixed Tracker 
 	);
 });
 
-test('only Chief of Staff is an agent: every other project is a sub-agent counted under it', () => {
-	const run = (id: number, item_id: string, node: string) => ({
-		id,
-		node,
-		item_id,
-		state: 'running',
-		ended_at: null
-	});
-	const chief = { ...base, id: 'chief', agent: 'cos' };
-	const flagged = { ...base, id: 'flagged', agent: 'flagged', ...flaggedAsk };
-	const live = { ...base, id: 'live', agent: 'flagged' };
-	const touched = { ...base, id: 'touched', agent: 'touched' };
-	const away = { ...base, id: 'away', agent: 'away' };
-	const archived = {
-		...base,
-		id: 'archived',
-		agent: 'archived-agent',
-		project: 'Archived project',
-		status: 'done' as const,
-		updated_at: '2020-01-01T00:00:00.000Z'
-	};
-	const privateItem = { ...archived, id: 'private', project: 'Private project', sensitive: true };
-	const home = buildHomeSnapshot(
+test('Home working sessions match live Tracker runs even when their projects have open asks', async () => {
+	const sources = await readRecordedHomeTracker();
+	const home = buildHomeSnapshot(sources, noProviders, trackerHomeClock);
+	const listed = listedHomeSnapshot(home);
+
+	const responses = trackerHomeRecording.responses;
+	const offline = new Set(
+		responses['/machines']
+			.filter((machine) => machine.status === 'offline')
+			.map((machine) => machine.node)
+	);
+	const liveRuns = responses['/runs?limit=500'].filter(
+		(run) => run.state === 'running' && run.ended_at === null && !offline.has(run.node)
+	);
+	expect(liveRuns).toHaveLength(3);
+	const workingSessions = listed.agents
+		.filter(isWorking)
+		.reduce((total, agent) => total + agentSessions(agent), 0);
+	expect(workingSessions).toBe(liveRuns.length);
+	expect(home.overview).toMatchObject({ liveSessions: liveRuns.length });
+	expect(home.openAsks?.map(({ itemId }) => itemId).sort()).toEqual(['harbor-ask', 'item-0']);
+	expect(home.projectDirectory).toContainEqual({ name: 'harbor', state: 'needs-you', needsYou: 1 });
+	expect(soonestWork(home.overview).map(({ id }) => id)).toContain('quiet-history');
+	expect(listed.agents).toMatchObject([
 		{
-			items: [chief, flagged, live, touched, away, archived, privateItem],
-			runs: [
-				run(1, 'live', 'primary'),
-				run(2, 'flagged', 'second'),
-				{ ...run(3, 'touched', 'primary'), state: 'finished', ended_at: 5 },
-				run(4, 'away', 'gone')
-			],
-			machines: [{ node: 'gone', status: 'offline' }]
-		},
-		noProviders,
-		now
-	);
-	const listed = listHomeAgents(home.agents);
-	expect(home.projectDirectory).toEqual(
-		expect.arrayContaining([
-			{ name: 'flagged', state: 'needs-you', needsYou: 1 },
-			{ name: 'Archived project', state: 'done', needsYou: 0 }
-		])
-	);
-	expect(home.projectDirectory?.some(({ name }) => name === 'Private project')).toBe(false);
-	expect(listed.agents.map((agent) => agent.name)).toEqual(['Chief of Staff']);
-	// Another project that needs Daniel is not listed, but its ask is kept with its question.
-	expect(listed.asks).toMatchObject([{ id: 'flagged', state: 'needs-you', question }]);
-	const [chiefOfStaff] = listed.agents;
-	expect(chiefOfStaff).toMatchObject({ id: 'cos', sessions: 0, state: 'working' });
-	expect(chiefOfStaff.subAgents.sessions).toBe(2);
-	expect(chiefOfStaff.subAgents.tasks.map((task) => task.itemId).sort()).toEqual([
-		'flagged',
-		'live'
+			id: 'cos',
+			name: 'Chief of Staff',
+			itemId: 'item-0',
+			state: 'needs-you',
+			sessions: 2,
+			tasks: [{ itemId: 'cos-live' }],
+			subAgents: { sessions: 1, tasks: [{ itemId: 'harbor-live' }] }
+		}
 	]);
-	expect(JSON.stringify(listed)).not.toContain('touched');
-	expect(soonestWork(home.overview).map((item) => item.id)).toContain('touched');
+	expect(home.overview).toMatchObject({
+		projects: expect.arrayContaining([
+			expect.objectContaining({ agent: 'mine', state: 'quiet', liveSessions: 0 }),
+			expect.objectContaining({ agent: 'iOS pairing', state: 'done', liveSessions: 0 })
+		])
+	});
 });
 
 test('no sub-agent sessions and no Chief of Staff gives no agents, and an idle Chief stays idle', () => {
