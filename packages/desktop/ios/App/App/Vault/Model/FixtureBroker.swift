@@ -5,6 +5,7 @@ import Foundation
 @available(iOS 17.0, *)
 final class FixtureBroker: DeviceBroker {
     var request: BrokerRequest?
+    var privateOffer: PrivateBrowserOffer?
     let receiver = Curve25519.KeyAgreement.PrivateKey()
     let importFixture: PasswordImportFixture?
     let addFixture: VaultAddFixture?
@@ -33,7 +34,42 @@ final class FixtureBroker: DeviceBroker {
             return
         }
         importFixture = nil
+        if args.contains("--private-browser-entry") {
+            privateOffer = Self.browserOffer(publicKey: publicKey, now: now)
+            return
+        }
         request = Self.releaseRequest(publicKey: publicKey, now: now, arguments: args)
+    }
+
+    func privateBrowserOffer(sign: BrokerClient.Sign) async throws -> PrivateBrowserOffer? {
+        privateOffer
+    }
+
+    func submitPrivateBrowserField(
+        _ value: String, for offer: PrivateBrowserOffer, sign: BrokerClient.Sign
+    ) async throws -> Bool {
+        guard privateOffer == offer else { return false }
+        _ = try offer.seal(value, now: Int64(Date().timeIntervalSince1970 * 1_000))
+        privateOffer = nil
+        return true
+    }
+
+    private static func browserOffer(publicKey: Data, now: Int64) -> PrivateBrowserOffer {
+        let fixture = """
+        {
+            "requestId": "a52ed642-f0bf-4706-96f4-0ef87679ebdd",
+            "executor": "fixture-executor",
+            "origin": "https://accounts.example.test",
+            "tabId": "fixture-tab",
+            "field": "verification-code",
+            "action": "verify-account",
+            "recipeDigest": "\(String(repeating: "a", count: 64))",
+            "runnerPublicKey": "\(BrokerProtocol.base64url(publicKey))",
+            "runnerFingerprint": "\(BrokerProtocol.fingerprint(publicKey))",
+            "expiresAt": \(now + 60_000)
+        }
+        """
+        return try! JSONDecoder().decode(PrivateBrowserOffer.self, from: Data(fixture.utf8))
     }
 
     private static func releaseRequest(publicKey: Data, now: Int64, arguments: [String]) -> BrokerRequest {

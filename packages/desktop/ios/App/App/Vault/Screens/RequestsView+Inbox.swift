@@ -38,7 +38,10 @@ extension RequestsView {
             let imports = connection.imports.filter(connection.live).map {
                 InboxItem(connection: connection, kind: .passwordImport($0))
             }
-            return releases + adds + imports
+            let privateEntry = connection.privateOffer.flatMap { offer in
+                connection.live(offer) ? InboxItem(connection: connection, kind: .privateBrowser(offer)) : nil
+            }
+            return releases + adds + imports + [privateEntry].compactMap { $0 }
         }.sorted { $0.milliseconds < $1.milliseconds }
     }
 

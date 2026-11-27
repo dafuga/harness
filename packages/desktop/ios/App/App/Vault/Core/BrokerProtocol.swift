@@ -8,6 +8,7 @@ public enum BrokerError: LocalizedError {
     case invalidRequest
     case invalidCredential
     case expired
+    case privateEntryUnavailable
     case transport
     case routeProtected
     case serverUnreachable

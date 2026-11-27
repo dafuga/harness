@@ -7,7 +7,10 @@ extension VaultRootView {
         while !Task.isCancelled {
             notifications.retryRegistrationIfNeeded()
             let target = requestToOpen
-            let fresh = await model.poll(connection, includeReleaseAlerts: !connection.hasRemoteAlerts)
+            async let privateFresh = model.pollPrivateOffer(connection)
+            let legacyFresh = await model.poll(connection, includeReleaseAlerts: !connection.hasRemoteAlerts)
+            let privateOfferFresh = await privateFresh
+            let fresh = legacyFresh || privateOfferFresh
             guard !Task.isCancelled else { return }
             let openedFromNotification = resolveNotification(target, at: connection)
             if alertsEnabled, fresh, !openedFromNotification {

@@ -37,6 +37,8 @@ final class BrokerConnection: Identifiable {
 
     var configuration: BrokerConfiguration { stored.configuration }
     var requests: [BrokerRequest] = []
+    var privateOffer: PrivateBrowserOffer?
+    var privateProbeAfter = ContinuousClock.now
     var adds: [VaultAddSummary] = []
     var attemptedAdds: [String: Int64] = [:]
     var publishImportKeyAfter = ContinuousClock.now
@@ -96,8 +98,14 @@ final class BrokerConnection: Identifiable {
         queueRevision &+= 1
     }
 
+    func removePrivateOffer() {
+        privateOffer = nil
+        queueRevision &+= 1
+    }
+
     func retryPoll() {
         if pollState == .ready { pollState = .checking }
+        privateProbeAfter = .now
         importProbeAfter = .now
         publishImportKeyAfter = .now
         pollGeneration &+= 1

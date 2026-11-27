@@ -34,6 +34,51 @@ extension VaultModel {
         }
     }
 
+    func pollPrivateOffer(_ connection: BrokerConnection) async -> Bool {
+        guard isCurrent(connection), connection.configuration.role == .approver, !workInProgress,
+              ContinuousClock.now >= connection.privateProbeAfter else { return false }
+        let generation = connection.pollGeneration
+        let revision = connection.queueRevision
+        do {
+            let offer = try await client(for: connection).privateBrowserOffer(sign: signer(for: connection))
+            guard acceptsPrivatePoll(connection, generation: generation, revision: revision) else { return false }
+            connection.privateOffer = offer
+            guard let offer else { return false }
+            return connection.remember("private-browser:\(offer.requestId)", until: offer.expiresAt,
+                                       now: Int64(Date().timeIntervalSince1970 * 1_000))
+        } catch {
+            guard acceptsPrivatePoll(connection, generation: generation, revision: revision) else { return false }
+            connection.privateOffer = nil
+            connection.privateProbeAfter = .now.advanced(by: .seconds(30))
+            return false
+        }
+    }
+
+    private func acceptsPrivatePoll(_ connection: BrokerConnection, generation: Int, revision: Int) -> Bool {
+        !Task.isCancelled && !workInProgress && isCurrent(connection)
+            && connection.pollGeneration == generation && connection.queueRevision == revision
+    }
+
+    func submitPrivateField(
+        _ value: String, for offer: PrivateBrowserOffer, at connection: BrokerConnection
+    ) async -> Bool {
+        await perform(at: connection) {
+            guard isCurrent(connection), connection.live(offer) else { throw BrokerError.expired }
+            let context = try await authenticate("Approve this private browser entry")
+            defer { context.invalidate() }
+            guard !Task.isCancelled else { throw LAError(.appCancel) }
+            guard isCurrent(connection), connection.live(offer) else { throw BrokerError.expired }
+            do {
+                let api = try client(for: connection)
+                let completed = try await api.submitPrivateBrowserField(value, for: offer, sign: signer(for: connection))
+                connection.removePrivateOffer()
+                guard completed else { throw BrokerError.privateEntryUnavailable }
+            } catch where Task.isCancelled {
+                throw LAError(.appCancel)
+            }
+        }
+    }
+
     /// Everything that can be checked before the biometric prompt.
     private func checkedLogin(for release: VaultRelease, answer: RequestAnswer) throws -> EntryLabel? {
         guard answer.approved else { return nil }
@@ -62,5 +107,16 @@ extension VaultModel {
             connection.remove(request)
             throw BrokerError.expired
         }
+    }
+}
+
+@available(iOS 17.0, *)
+extension BrokerConnection {
+    func remaining(_ offer: PrivateBrowserOffer) -> Int64 {
+        max(0, offer.expiresAt - Int64(Date().timeIntervalSince1970 * 1_000))
+    }
+
+    func live(_ offer: PrivateBrowserOffer) -> Bool {
+        privateOffer == offer && remaining(offer) > 0
     }
 }

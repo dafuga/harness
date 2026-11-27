@@ -9,6 +9,10 @@ protocol DeviceBroker {
     func pending(publishing key: VaultAddKeyPublication?, sign: BrokerClient.Sign) async throws -> BrokerClient.Pending
     func decide(_ decision: BrokerClient.Decision, sign: BrokerClient.Sign) async throws
     func decideVaultAdd(_ decision: VaultAddDecision, sign: BrokerClient.Sign) async throws -> VaultAddDelivery?
+    func privateBrowserOffer(sign: BrokerClient.Sign) async throws -> PrivateBrowserOffer?
+    func submitPrivateBrowserField(
+        _ value: String, for offer: PrivateBrowserOffer, sign: BrokerClient.Sign
+    ) async throws -> Bool
     func pendingImports(sign: BrokerClient.Sign) async throws -> BrokerClient.PendingImports
     func decideImport(_ decision: PasswordImportDecision, sign: BrokerClient.Sign) async throws -> PasswordImportDelivery?
     func completeImport(_ completion: PasswordImportCompletion, sign: BrokerClient.Sign) async throws

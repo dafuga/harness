@@ -34,6 +34,10 @@ public struct PrivateBrowserOffer: Decodable, Equatable, Sendable {
     let runnerPublicKey: String
     let runnerFingerprint: String
 
+    var website: String {
+        String(origin.dropFirst("https://".count))
+    }
+
     func recipient(now: Int64) throws -> Curve25519.KeyAgreement.PublicKey {
         guard now < expiresAt else { throw BrokerError.expired }
         _ = try BrokerProtocol.origin(origin)

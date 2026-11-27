@@ -46,6 +46,8 @@ extension VaultModel {
             return "Check the device ID and public-key fingerprint."
         case BrokerError.invalidCredential, VaultError.invalidEntry:
             return "Check the required fields and shorten any oversized values."
+        case BrokerError.privateEntryUnavailable:
+            return "The browser could not verify completion. Open a fresh request to try again."
         case BrokerError.expired, BrokerError.http(409):
             return "This request is no longer pending. Ask the session to request again."
         case BrokerError.routeProtected, BrokerError.http(301...399):
