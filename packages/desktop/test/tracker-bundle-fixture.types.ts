@@ -5,6 +5,8 @@ export interface FakeLaunchd {
 	host: TrackerBundleHost;
 	calls: string[];
 	loaded: boolean;
+	/** Simulated time between bootout and removal of a loaded job. */
+	stopDelayMs: number;
 	/** Whether `tracker ensure` succeeds for the executable the service runs. */
 	ready: (executable: string) => boolean;
 }

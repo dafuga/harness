@@ -11,6 +11,7 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { installBundledTracker } from '../src/services/development-tooling/tracker-bundle/installBundledTracker';
+import { startBundledTracker } from '../src/services/development-tooling/tracker-bundle/startBundledTracker';
 import { trackerBundleLayout } from '../src/services/development-tooling/tracker-bundle/trackerBundleLayout';
 import {
 	existingAgent,
@@ -27,13 +28,23 @@ afterEach(() => {
 function fixture(text?: string) {
 	const made = trackerFixture(text);
 	fixtures.push(made.root);
-	return { ...made, layout: trackerBundleLayout(made.home) };
+	const appPath = join(made.app, 'Contents/Resources/app');
+	mkdirSync(appPath);
+	writeFileSync(join(appPath, 'package.json'), JSON.stringify({ revision }));
+	return { ...made, appPath, layout: trackerBundleLayout(made.home) };
 }
 function agentJson(agent: string): Record<string, unknown> {
 	const result = spawnSync('/usr/bin/plutil', ['-convert', 'json', '-o', '-', agent], {
 		encoding: 'utf8'
 	});
 	return JSON.parse(result.stdout);
+}
+
+function readInstallLog(directory: string) {
+	return readFileSync(join(directory, 'tracker-install.log'), 'utf8')
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line));
 }
 
 const darwin = test.runIf(process.platform === 'darwin');
@@ -68,7 +79,7 @@ darwin(
 darwin(
 	'an update repoints only the executable and keeps config, role, database and environment',
 	async () => {
-		const { app, home, layout } = fixture();
+		const { appPath, home, layout } = fixture();
 		const config = writeTrackerConfig(home, 'hub');
 		const database = join(home, '.local/state/harness/tracker.sqlite');
 		mkdirSync(join(database, '..'), { recursive: true });
@@ -78,7 +89,8 @@ darwin(
 		const before = agentJson(agent);
 		const launchd = fakeLaunchd();
 		launchd.loaded = true;
-		const outcome = await installBundledTracker({ app, revision, home, host: launchd.host });
+		launchd.stopDelayMs = 5250;
+		const outcome = await startBundledTracker(appPath, home, launchd.host);
 		expect(outcome).toMatchObject({ status: 'installed', restarted: true });
 		const after = agentJson(agent);
 		const program = after.ProgramArguments as string[];
@@ -88,7 +100,8 @@ darwin(
 		expect({ ...after, ProgramArguments: null }).toEqual({ ...before, ProgramArguments: null });
 		expect(readFileSync(database, 'utf8')).toBe('journal');
 		expect(readFileSync(config, 'utf8')).toContain('"role":"hub"');
-		expect(launchd.calls.filter((call) => call !== 'ensure')).toEqual(['bootout', 'bootstrap']);
+		expect(launchd.calls.filter((call) => ['bootout', 'bootstrap'].includes(call))).toEqual(['bootout', 'bootstrap']);
+		expect(readInstallLog(layout.logs).at(-1)).toMatchObject({ revision, ...outcome });
 	}
 );
 
@@ -104,26 +117,29 @@ darwin('running the same app again changes nothing and does not restart the serv
 });
 
 darwin('a release that never becomes ready is replaced by the one that was running', async () => {
-	const { app, home, layout } = fixture();
+	const { appPath, home, layout } = fixture();
 	writeTrackerConfig(home, 'hub');
 	const old = join(layout.releases, 'oldrelease0', 'harness');
 	const agent = existingAgent(home, old);
 	mkdirSync(join(home, '.local/libexec/harness'), { recursive: true });
 	const launchd = fakeLaunchd();
+	launchd.loaded = true;
+	launchd.stopDelayMs = 6500;
 	launchd.ready = (executable) => executable === old;
-	const outcome = await installBundledTracker({
-		app,
-		revision,
-		home,
-		host: launchd.host,
-		readyAttempts: 2
-	});
+	const outcome = await startBundledTracker(appPath, home, launchd.host);
 	expect(outcome.status).toBe('rolled-back');
 	expect(agentJson(agent).ProgramArguments).toHaveLength(7);
 	expect((agentJson(agent).ProgramArguments as string[])[0]).toBe(old);
 	expect(existsSync(layout.launcher)).toBe(false);
 	expect(existsSync(layout.entry)).toBe(false);
 	expect(launchd.loaded).toBe(true);
+	expect(launchd.calls.filter((call) => call === 'bootstrap')).toHaveLength(2);
+	expect(readInstallLog(layout.logs).at(-1)).toMatchObject({ revision, ...outcome });
+	launchd.stopDelayMs = Infinity;
+	launchd.calls.length = 0;
+	await expect(startBundledTracker(appPath, home, launchd.host)).rejects.toThrow(/stop/i);
+	expect(launchd.calls).not.toContain('bootstrap');
+	expect(readInstallLog(layout.logs).at(-1)).toMatchObject({ revision, status: 'failed' });
 });
 
 darwin('without a Tracker configuration it installs the command line only', async () => {

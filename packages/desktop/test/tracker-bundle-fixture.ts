@@ -8,13 +8,18 @@ import type { TrackerBundleRun } from '../src/services/development-tooling/track
 
 /** A host that runs the real `plutil` on temporary files and pretends to be launchd. */
 export function fakeLaunchd(): FakeLaunchd {
+	let elapsed = 0;
+	let stopsAt: number | undefined;
 	const state: FakeLaunchd = {
 		calls: [],
 		loaded: false,
+		stopDelayMs: 0,
 		ready: () => true,
 		host: {
 			uid: 501,
-			sleep: async () => undefined,
+			sleep: async (milliseconds) => {
+				elapsed += milliseconds;
+			},
 			run: async (file, args): Promise<TrackerBundleRun> => {
 				if (file === '/usr/bin/plutil') {
 					const result = spawnSync(file, args, { encoding: 'utf8' });
@@ -22,8 +27,15 @@ export function fakeLaunchd(): FakeLaunchd {
 				}
 				if (file === '/bin/launchctl') {
 					state.calls.push(args[0]);
-					if (args[0] === 'bootout') state.loaded = false;
-					if (args[0] === 'bootstrap') state.loaded = true;
+					if (stopsAt !== undefined && elapsed >= stopsAt) {
+						state.loaded = false;
+						stopsAt = undefined;
+					}
+					if (args[0] === 'bootout' && state.loaded) stopsAt ??= elapsed + state.stopDelayMs;
+					if (args[0] === 'bootstrap') {
+						if (state.loaded) return { status: 5, stdout: '' };
+						state.loaded = true;
+					}
 					return { status: args[0] === 'print' && !state.loaded ? 113 : 0, stdout: '' };
 				}
 				state.calls.push('ensure');
