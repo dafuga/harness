@@ -11,6 +11,7 @@ import {
 import { isAbsolute } from 'node:path';
 import { z } from 'zod';
 import { trackerHostEffectsSchema } from '../tracker-native-runtime-service/trackerHostEffectsSchema';
+import { trackerRoutingSchema } from './trackerRoutingSchema';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
 
 const absolutePath = z.string().refine(isAbsolute);
@@ -28,6 +29,7 @@ const configFields = {
 	backupDirectory: absolutePath.optional(),
 	hostEffects: trackerHostEffectsSchema.optional(),
 	autolaunch: z.strictObject({ enabled: z.boolean() }).optional(),
+	routing: trackerRoutingSchema.optional(),
 	notifications: z
 		.strictObject({
 			targets: z.record(

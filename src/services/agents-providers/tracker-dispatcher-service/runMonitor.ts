@@ -86,16 +86,12 @@ function monitorRunning(
 	}
 	if (event.session === 'exited' || event.exitCode != null)
 		return finishExitedRun(snapshot, run, event, clock);
-	const timeout = timeoutReason(run, item, event, clock);
-	if (timeout)
-		return failRun(
-			snapshot,
-			run,
-			{ outcome: 'timed_out', reason: timeout, usage: event.usage },
-			clock
-		);
-	return skip('held', 'run still active');
+	// The session is still alive here, so ending the run could start a second one beside it.
+	const overdue = overdueReason(run, item, event, clock);
+	return skip('held', overdue ? overdue + liveOverdueSuffix : 'run still active');
 }
+
+export const liveOverdueSuffix = '; its session is still alive';
 
 function finishExitedRun(
 	snapshot: TrackerDispatchSnapshot,
@@ -112,7 +108,7 @@ function finishExitedRun(
 	return failRun(snapshot, run, failure, clock);
 }
 
-function timeoutReason(
+function overdueReason(
 	run: TrackerRunReceipt,
 	item: TrackerDispatchItem,
 	event: Extract<TrackerDispatchEvent, { type: 'monitor' }>,
@@ -127,7 +123,7 @@ function timeoutReason(
 		now - activity <= (policy.stallMinutes ?? 45) * minute
 	)
 		return null;
-	return `stalled past its ETA (no activity for ${Math.round((now - activity) / minute)} min)`;
+	return `stalled past its ETA (no activity for over ${policy.stallMinutes ?? 45} min)`;
 }
 
 function lastActivity(run: TrackerRunReceipt, item: TrackerDispatchItem, activityAt = 0) {

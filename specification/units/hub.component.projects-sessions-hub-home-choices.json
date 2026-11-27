@@ -15,12 +15,20 @@
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"],
-		"symbols": ["HubHomeChoices"]
+		"symbols": [
+			"HubHomeChoices",
+			"HubHomeChoices.badge",
+			"HubHomeChoices.choiceButton",
+			"HubHomeChoices.otherDialog",
+			"HubHomeChoices.confirmDialog",
+			"HubHomeChoices.confirmation"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -49,6 +57,13 @@
 				"type": "(text: string) => void",
 				"required": true,
 				"description": "Receives the answer written in the Other modal."
+			},
+			{
+				"name": "HubHomeChoices.present",
+				"type": "(content: Snippet | null) => void",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Places a choice detail or written-answer dialog in the caller’s dialog outlet when supplied."
 			}
 		],
 		"outputs": [
@@ -61,7 +76,96 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeChoices.badge",
+				"inputs": [
+					{
+						"name": "HubHomeChoices.badge.recommended",
+						"type": "boolean",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.badge",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.choiceButton",
+				"inputs": [
+					{
+						"name": "HubHomeChoices.choiceButton.number",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.option",
+						"type": "HomeChoice['option']",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.linkedLabel",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.linkedEffect",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.choiceButton",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.otherDialog",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.otherDialog",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.confirmDialog",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.confirmDialog",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.confirmation",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.confirmation",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
@@ -96,6 +200,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.strings-link-segments",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -12,4 +12,17 @@ export class NavigationValidator {
 			return false;
 		}
 	}
+
+	allowsTrackerTextLink(source: string, href: string, frame: string): boolean {
+		if (frame !== '_blank' && frame !== '') return false;
+		if (!this.validate(source) || !/^\/(?:projects|tracker)\/?$/.test(new URL(source).pathname))
+			return false;
+		try {
+			const url = new URL(href);
+			const web = url.protocol === 'http:' || url.protocol === 'https:';
+			return web && Boolean(url.hostname) && !url.username && !url.password;
+		} catch {
+			return false;
+		}
+	}
 }

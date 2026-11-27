@@ -17,6 +17,7 @@
 	import { homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
 	import { provideHubSpecDocuments } from './hubSpecDocument';
+	import { provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 	import { soonestWork, staleReading } from './hubHomePresentation';
@@ -32,6 +33,7 @@
 
 	const { api, session, projects } = browserContext();
 	provideHubSpecDocuments(api);
+	const cosChat = provideHomeCosChat(() => reads.read());
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
@@ -49,7 +51,6 @@
 	const controlled = $derived(home?.controlled ?? []);
 	const raw = $derived(live?.snapshot ?? homeSnapshot(home));
 	const snapshot = $derived(raw ? listedHomeSnapshot(raw, controlled) : null);
-	/** Loading ends once both reads answered or one already supplied data. */
 	const settled = $derived(Boolean(snapshot) || (home !== null && live !== null));
 	const routinesConnected = $derived(
 		Array.isArray(snapshot?.providers.routines) &&
@@ -64,7 +65,6 @@
 	const view: HomeView = $derived({
 		overview,
 		agents: snapshot?.agents ?? (settled ? [] : null),
-		asks: snapshot?.asks ?? [],
 		openAsks: snapshot?.openAsks ?? [],
 		reminders: snapshot?.reminders ?? null,
 		controlled,
@@ -143,7 +143,7 @@
 
 	followNeedsLink(() => {
 		const dialog = selected !== null;
-		return { asks: view.openAsks, open, close, dialog, reload: refresh };
+		return { asks: view.openAsks, openAsk: cosChat.openAsk, close, dialog, reload: refresh };
 	});
 
 	function open(section: HomeSection, id?: string) {
@@ -192,10 +192,10 @@
 
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
-		<HubHomeHeader {view} />
-		{#if link}
+		<HubHomeHeader {view} {link} />
+		{#if link === 'live'}
 			<hx-p class="po-page hh-page hh-live" role="status" aria-label="Updates" data-state={link}>
-				{link === 'live' ? 'Live' : 'Reconnecting'}
+				Live
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">

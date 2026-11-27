@@ -95,8 +95,7 @@ async function chatWithSpec(page: Page, size: keyof typeof sizes) {
 	await page.goto('/');
 	await page
 		.getByRole('region', { name: /^Blocked - needs you/ })
-		.getByRole('button')
-		.filter({ hasText: 'service spec' })
+		.getByRole('button', { name: 'Talk to Chief of Staff', exact: true })
 		.click();
 	return { fixture, outside, proof };
 }
@@ -105,7 +104,7 @@ for (const size of ['desktop', 'phone'] as const) {
 	test(`View spec reads the document beside the answer choices (${size})`, async ({ page }) => {
 		const { fixture, outside, proof } = await chatWithSpec(page, size);
 		const open = page
-			.getByRole('list', { name: 'Tracker conversation' })
+			.getByRole('dialog', { name: 'Chief of Staff', exact: true })
 			.getByRole('button', { name: /View spec/ });
 		await expect(open).toContainText(`PR ${attachment.pr}`);
 		await shot(page, `hub-chat-view-spec-${size}`);

@@ -1,0 +1,139 @@
+{
+	"schemaVersion": 1,
+	"id": "workflow.agents-providers-run-xdigest",
+	"uid": "u_cjwknh5i63",
+	"kind": "workflow",
+	"title": "runXDigest",
+	"responsibility": "Wire the container browser to one collection run.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/workflows/agents-providers/runXDigest.ts",
+			"src/workflows/agents-providers/runXDigest.types.ts"
+		],
+		"symbols": ["runXDigest", "XDigestRunInput"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runXDigest.input",
+				"type": "XDigestRunInput",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "runXDigest",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runXDigest",
+				"inputs": [
+					{
+						"name": "runXDigest.input",
+						"type": "XDigestRunInput",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runXDigest",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-browser",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-container-browser-adapter-colima-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-container-cdp",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-xdigest-outbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.agents-providers-xdigest-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-viewer-device",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-xdigest",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-xfeed-reader",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.agents-providers-xdigest-config",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-x-digest-x-digest-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.agents-providers-run-x-digest-x-digest-home",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "workflow.execution-runtimes-run-container-browser-container-browser-paths",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/workflows/agents-providers/runXDigest.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/workflows/agents-providers/runXDigest.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

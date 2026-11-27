@@ -14,6 +14,7 @@
 			"hub.component.projects-sessions-hub-home-notifications",
 			"hub.component.projects-sessions-hub-home-quota-pills",
 			"reports.component.brand-mark",
+			"reports.component.explorer-ui-explorer-kit-notice",
 			"reports.component.explorer-ui-explorer-kit-pill",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
@@ -31,13 +32,22 @@
 	},
 	"contract": {
 		"origin": "declared",
-		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
+		"primitives": [
+			"reports.component.explorer-ui-explorer-kit-notice",
+			"reports.component.explorer-ui-explorer-kit-pill"
+		],
 		"inputs": [
 			{
 				"name": "HubHomeHeader.view",
 				"type": "HomeView",
 				"required": true,
 				"description": "Home data, project snapshots, source availability and clock used for presentation."
+			},
+			{
+				"name": "HubHomeHeader.link",
+				"type": "RealtimeState | null",
+				"required": true,
+				"description": "Provides the linked computer data and connection notices for the banner."
 			}
 		],
 		"outputs": [
@@ -74,6 +84,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "hub.function.projects-sessions-hub-home-live",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
 			"via": "import",
 			"origin": "derived"
@@ -85,6 +100,11 @@
 		},
 		{
 			"unit": "reports.component.brand-mark",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-notice",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -130,6 +150,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
 			"via": "import",
 			"origin": "derived"
 		}

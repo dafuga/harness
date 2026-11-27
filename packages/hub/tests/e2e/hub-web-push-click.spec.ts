@@ -7,10 +7,10 @@ test.setTimeout(60000);
 // The headless shell has no notification permission; the full headless Chromium does.
 test.use({ channel: 'chromium' });
 
-test('a link naming a decision opens it in its session chat, once', async ({ page }) => {
+test('a link naming a decision opens it in Chief of Staff chat, once', async ({ page }) => {
 	await webPushFixture(page, { permission: 'granted' });
 	await open(page, 'desktop', '/?needs=item-harbor');
-	const chat = page.getByRole('region', { name: 'Chat with harbor' });
+	const chat = page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
 	await expect(chat.getByText('Ship harbor?')).toBeVisible();
 	await expect(page).toHaveURL(/\/$/);
 	await shot(page, 'notification-click-ask-desktop');
@@ -21,7 +21,9 @@ for (const size of ['desktop', 'phone'] as const) {
 		await webPushFixture(page, { permission: 'granted' });
 		await open(page, size, '/?needs=all');
 		const list = page.getByRole('region', { name: /^Blocked - needs you/ });
-		await expect(list.locator('.hh-needs-row').first()).toBeFocused();
+		await expect(
+			list.getByRole('button', { name: 'Talk to Chief of Staff', exact: true }).first()
+		).toBeFocused();
 		await expect(page.getByRole('dialog')).toHaveCount(0);
 		await expect(page).toHaveURL(/\/$/);
 		await shot(page, `notification-click-list-${size}`);
@@ -76,7 +78,7 @@ test('the service worker shows one replacing notification and a click opens the 
 		scope.dispatchEvent(click);
 	});
 	await expect(
-		page.getByRole('region', { name: 'Chat with harbor' }).getByText('Ship harbor?')
+		page.getByRole('dialog', { name: 'Chief of Staff', exact: true }).getByText('Ship harbor?')
 	).toBeVisible();
 	await expect.poll(() => shown(page)).toEqual([]);
 	expect(fixture.writes).toHaveLength(1);
