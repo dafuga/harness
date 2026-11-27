@@ -44,16 +44,10 @@ async function confirmTrackerLaunch(
 			.list({ itemId: item.id })
 			.filter((candidate) => candidate.auto_token === request.auto && candidate.node === node)
 			.at(-1);
-		const itemReason = itemHold(item);
-		if (run?.outcome === 'blocked' && item.auto === request.auto && itemReason)
-			return Response.json(
-				{ error: `${itemReason} on ${node}. Review with tracker show ${item.id}.` },
-				{ status: 409 }
-			);
 		if (run) return launchRunResponse(item, run);
 		if (item.deleted || item.auto !== request.auto)
 			return Response.json({ error: 'launch request was withdrawn or replaced' }, { status: 409 });
-		const hold = itemReason ?? launchHold(runtime, item, node);
+		const hold = itemHold(item) ?? launchHold(runtime, item, node);
 		if (hold) return pendingResponse(hold, node, item.id, 409);
 		await delay(250, undefined, { signal });
 	}
@@ -70,12 +64,11 @@ function launchRunResponse(
 	run: ReturnType<TrackerRunReadRepository['list']>[number]
 ) {
 	if (run.state !== 'finished' || run.outcome === 'done') return Response.json({ ...item, run });
-	const reason = run.failure_reason ?? run.outcome ?? 'run finished before confirmation';
+	const hold = run.outcome === 'blocked' && item.auto === run.auto_token ? itemHold(item) : null;
+	const failure = run.failure_reason ?? run.outcome ?? 'run finished before confirmation';
+	const reason = hold ? `${hold} on ${run.node}` : `run #${run.id} on ${run.node}: ${failure}`;
 	return Response.json(
-		{
-			error: `run #${run.id} on ${run.node}: ${reason}. Review with tracker show ${item.id}.`,
-			run
-		},
+		{ error: `${reason}. Review with tracker show ${item.id}.`, run },
 		{ status: 409 }
 	);
 }

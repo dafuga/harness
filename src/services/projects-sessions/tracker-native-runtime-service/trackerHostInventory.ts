@@ -99,7 +99,8 @@ function legacyTmuxSession(pane: WatchdogPane): TrackerHostSession | undefined {
 	};
 }
 
-export function finishedTrackerSession(
+/** A blocked receipt can still have a working pane. */
+export function retiredTrackerSession(
 	store: TrackerPersistenceService,
 	session: TrackerHostSession
 ): boolean {
@@ -110,7 +111,8 @@ export function finishedTrackerSession(
 			? database
 					.prepare(
 						`SELECT 1 FROM runs WHERE item_id = ? AND session_id = ?
-			AND json_array(item_id, auto_token, attempt) = ? AND state = 'finished'`
+			AND json_array(item_id, auto_token, attempt) = ? AND state = 'finished'
+			AND outcome IS NOT 'blocked'`
 					)
 					.get(itemId, id, key)
 			: database
