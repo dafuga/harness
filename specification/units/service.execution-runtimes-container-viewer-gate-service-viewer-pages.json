@@ -4,12 +4,12 @@
 	"uid": "u_dbqtdrtrfx",
 	"kind": "service",
 	"title": "viewerPages",
-	"responsibility": "Render the device pairing page and plain refusals.",
+	"responsibility": "Render device pairing, viewer navigation retries, and plain refusals.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/execution-runtimes/container-viewer-gate-service/viewerPages.ts"],
-		"symbols": ["sendPairingPage", "refuse"]
+		"symbols": ["sendPairingPage", "retryViewerNavigation", "refuse"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,6 +30,11 @@
 				"required": false
 			},
 			{
+				"name": "retryViewerNavigation.response",
+				"type": "ServerResponse",
+				"required": true
+			},
+			{
 				"name": "refuse.response",
 				"type": "ServerResponse",
 				"required": true
@@ -43,6 +48,10 @@
 		"outputs": [
 			{
 				"name": "sendPairingPage",
+				"type": "void"
+			},
+			{
+				"name": "retryViewerNavigation",
 				"type": "void"
 			},
 			{
@@ -75,6 +84,24 @@
 				"outputs": [
 					{
 						"name": "sendPairingPage",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "retryViewerNavigation",
+				"inputs": [
+					{
+						"name": "retryViewerNavigation.response",
+						"type": "ServerResponse",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "retryViewerNavigation",
 						"type": "void"
 					}
 				],

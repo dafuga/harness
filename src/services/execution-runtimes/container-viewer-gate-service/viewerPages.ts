@@ -22,6 +22,14 @@ export function sendPairingPage(response: ServerResponse, code: string, cookie?:
 </body></html>`);
 }
 
+/** Starts a new navigation from the viewer origin so existing Strict cookies can be sent. */
+export function retryViewerNavigation(response: ServerResponse): void {
+	response.writeHead(200, headers);
+	response.end(`<!doctype html><html lang="en"><meta charset="utf-8">
+<meta http-equiv="refresh" content="0;url=/"><title>Open viewer</title>
+<a href="/">Open viewer</a></html>`);
+}
+
 export function refuse(response: ServerResponse, status: number): void {
 	response.writeHead(status, { 'cache-control': 'no-store', 'content-type': 'text/plain' });
 	response.end(status === 404 ? 'Not found.' : 'Not allowed.');
