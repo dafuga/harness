@@ -78,7 +78,7 @@ On the browser's Mac, `~/.config/harness-x-digest/config.json`:
 ```
 
 ```sh
-bun run dev -- container-browser setup --profile x
+harness container-browser setup --profile x
 deploy/x-digest/install.sh <tailnet name> <tailnet ip>
 ```
 

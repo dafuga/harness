@@ -1,0 +1,69 @@
+{
+	"name": "ci-full-check-parts",
+	"goal": "Harness CI Full check finishes well inside its time limit: it runs as parallel parts that together cover every check step, and one aggregate job fails unless all pass",
+	"createdAt": "2026-11-27T08:41:12.062Z",
+	"updatedAt": "2026-11-27T09:50:55.884Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:41:41.497Z",
+			"evidence": "Linux 'Full check' runs 24 stages serially in one job with timeout-minutes: 120. Passing runs took 87-117 min (jobs 140349985966=110, 140282751215=111, 140196878633=117); jobs 140339573776, 140317562796, 140284900292 and 140178726202 were cancelled at 120. Stage times: test:unit 21-27, test:e2e 38-47, build+test:package 14-17, check:desktop 17-18, reports 5-6, hub 6.5. Expected: the check finishes well inside its limit and still runs every stage."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:41:45.178Z",
+			"evidence": "test/ci-native-verify.test.ts pinned timeout-minutes: 120 and the single 'bun run check' command, so it fixed the limit but said nothing about headroom or how stages are divided. The strengthened test pins parallel parts with a 60 minute limit each, matrix == checkParts, an always() gate named Full check, full stage coverage and part selection."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T09:04:02.029Z",
+			"evidence": "loop record --phase red at cbf4278198: 'bun x vitest run test/ci-native-verify.test.ts' failed, including 'a part missing from the matrix would never run'. Recorded again after CI showed the first gate condition (always()) turned the cancelled twin run red (run 45969468416: only job 'Full check' concluded failure, with needs.result=cancelled); the test now requires !cancelled()."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T09:04:03.850Z",
+			"evidence": "3f5c44094b: scripts/run-checks.ts checkParts/planCheck (CheckPart in run-checks.types.ts); harness-verify.yml matrix of 6 parts, 60 min each, plus a 'Full check' gate with needs: check-part and if: !cancelled(); README and unit contract updated. Run 45970177719 (cancelled twin) shows the gate concluded cancelled."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T09:04:07.304Z",
+			"evidence": "loop record --phase green passed at 3f5c44094b with the unchanged test. The guard asserts every checkSteps entry is in a part, the matrix equals checkParts and e2e shards are complete."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-27T09:06:06.038Z",
+			"evidence": "siblings-c6f7eeb0-0829-4e92-89ab-716ea036ea78.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-11-27T09:50:55.884Z",
+			"evidence": "Completed with HEAD at fix commit 3f5c44094b (its recorded green proof); eff780de07 differs from it only in loop and bug-class metadata. CI pull_request run 45971008506 at eff780de07 (0 behind origin/main): all 6 parts and the 'Full check' gate (job 140425100941) passed, covering all 24 stages. Wall time: static-unit 29m14s, e2e-1 21m31s, e2e-2 30m00s, package 18m13s, desktop 21m00s, apps 16m21s; gate done 30m06s after parts started; each part under its 60m limit. e2e shards 46+45 = 91 files = the 91 unique files in test:e2e; summed 86 files passed/5 skipped, 335 tests passed/24 skipped (359), identical to unsharded passing job 140349985966. This session: ci-native-verify 9/9, units check and audit passed locally. A full local bun run check was not run; CI is the full-check proof. No UI path affected. macOS 'Verify the exact commit' was queued; it is outside this change and the gate."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
