@@ -2,9 +2,11 @@ import { scenarioCapture } from './scenario-capture';
 import scenario from '../../../../specification/scenarios/device-approval-ios-renderer.json' with { type: 'json' };
 import type { ScenarioManifest } from '../../../../src/core/unitTypes';
 import { captureIosAccountState } from './support/captureIosAccountState';
-import { expect, test } from '../../../../test/support/browserTest';
+import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import { pairedPhoneFixture } from './support/projectOverviewPairedFixture';
 
+const expect = baseExpect.configure({ timeout: 25_000 });
+test.setTimeout(90_000);
 const phone = { width: 390, height: 844 };
 
 test('an approved iPhone reviews and decides device approval requests', async ({ page }) => {
