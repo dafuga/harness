@@ -4,8 +4,8 @@
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { HomeSubscription } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import { missingQuotaProviders } from './hubHomePresentation';
-	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
+	import { missingQuotaProviders } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	import HubHomeSkeleton from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
 	let {
 		quota,

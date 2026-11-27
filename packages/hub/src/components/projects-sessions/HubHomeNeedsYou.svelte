@@ -3,7 +3,7 @@
 <!-- @harness-uid u_kncvbfcpto -->
 <script lang="ts">
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
-	import { homeCosChat } from './hubHomeChatContext.svelte';
+	import { homeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import type { Snippet } from 'svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
@@ -12,7 +12,7 @@
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
 	import type { SendHomeChat } from './hubHomeView.types';
-	import HubHomeAsk from './HubHomeAsk.svelte';
+	import HubHomeAsk from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte';
 
 	let {
 		asks,

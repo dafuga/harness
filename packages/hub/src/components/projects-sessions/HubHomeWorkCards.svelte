@@ -4,14 +4,18 @@
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { statusLabel } from '$reports/components/projects-sessions/project-overview/projectOverviewPresentation';
-	import { pastDueLabel, workSummary, workEta } from './hubHomePresentation';
+	import {
+		pastDueLabel,
+		workSummary,
+		workEta
+	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
-	import HubHomeCard from './HubHomeCard.svelte';
+	import HubHomeCard from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte';
 	import HubHomeNotStarted from './HubHomeNotStarted.svelte';
-	import HubHomePlannable from './HubHomePlannable.svelte';
+	import HubHomePlannable from '../../../../reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte';
 	import HubHomeProjectCard from './HubHomeProjectCard.svelte';
-	import HubHomeRow from './HubHomeRow.svelte';
-	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
+	import HubHomeRow from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte';
+	import HubHomeSkeleton from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte';
 
 	let { view, open }: { view: HomeView; open: OpenHomeSection } = $props();
 </script>

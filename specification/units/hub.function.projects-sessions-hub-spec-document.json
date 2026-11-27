@@ -8,17 +8,17 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubSpecDocument.ts"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"],
 		"symbols": ["provideHubSpecDocuments", "hubSpecDocuments"]
 	},
 	"contract": {
 		"origin": "declared",
 		"inputs": [
 			{
-				"name": "provideHubSpecDocuments.api",
-				"type": "BrowserApi",
+				"name": "provideHubSpecDocuments.load",
+				"type": "LoadSpecDocument",
 				"required": true,
-				"description": "The Hub browser API of the signed-in owner, used to request documents."
+				"description": "The host callback that loads an attachment through its approved transport."
 			}
 		],
 		"outputs": [
@@ -37,7 +37,7 @@
 			{
 				"name": "BrowserApiRequestError",
 				"type": "thrown",
-				"description": "The returned loader rejects when the Hub request fails, such as for a document not yet uploaded."
+				"description": "The host callback may reject an unavailable attachment."
 			}
 		],
 		"errorStatus": "declared",
@@ -46,10 +46,10 @@
 				"name": "provideHubSpecDocuments",
 				"inputs": [
 					{
-						"name": "provideHubSpecDocuments.api",
-						"type": "BrowserApi",
+						"name": "provideHubSpecDocuments.load",
+						"type": "LoadSpecDocument",
 						"required": true,
-						"description": "The Hub browser API of the signed-in owner, used to request documents."
+						"description": "The host callback that loads an attachment through its approved transport."
 					}
 				],
 				"outputs": [
@@ -76,7 +76,7 @@
 					{
 						"name": "BrowserApiRequestError",
 						"type": "thrown",
-						"description": "The returned loader rejects when the Hub request fails, such as for a document not yet uploaded."
+						"description": "The host callback may reject an unavailable attachment."
 					}
 				],
 				"errorStatus": "declared"
@@ -86,16 +86,6 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.projects-sessions-tracker-attachment-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.browser-api",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
 			"via": "import",
 			"origin": "derived"
@@ -103,11 +93,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubSpecDocument.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubSpecDocument.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"
 			}
 		]
 	},

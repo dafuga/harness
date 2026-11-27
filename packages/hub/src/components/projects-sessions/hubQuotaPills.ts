@@ -3,8 +3,13 @@ import type {
 	HomeLimit,
 	HomeSubscription
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-import { providerNames, staleReading, warningFor, warningLabel } from './hubHomePresentation';
-import { resetClock } from './hubHomeTime';
+import {
+	providerNames,
+	staleReading,
+	warningFor,
+	warningLabel
+} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+import { resetClock } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeTime';
 
 const shortNames = { claude: 'Claude', codex: 'Codex' } as const;
 const products = {

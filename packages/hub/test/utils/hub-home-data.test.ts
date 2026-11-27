@@ -10,7 +10,7 @@ import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/de
 import {
 	soonestWork,
 	warningFor
-} from '../../src/components/projects-sessions/hubHomePresentation';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 
 const now = Date.parse('2026-11-21T22:30:00Z');
 const updated_at = new Date(now).toISOString();

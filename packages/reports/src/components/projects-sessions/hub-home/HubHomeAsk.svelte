@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_5hn7c2wq8d -->
 <!-- @harness-uid u_gnhmm7tirz -->
 <script lang="ts">
@@ -8,9 +8,9 @@
 	import type {
 		HomeChatInput,
 		HomeChatReceipt,
-		HomeOpenAsk
+		HomeOpenAsk,
+		SendHomeChat
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeChoices from './HubHomeChoices.svelte';
 	import ViewSpecButtons from '$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte';
 	import { hubSpecDocuments } from './hubSpecDocument';

@@ -1,5 +1,5 @@
 <!-- @harness-tier molecule -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_veojwq4m3c -->
 <script lang="ts">
 	let { rows = 4 }: { rows?: number } = $props();

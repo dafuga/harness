@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/lib/styles/hub-home/quota-modal.css"],
+		"source": ["packages/reports/src/lib/styles/hub-home/quota-modal.css"],
 		"symbols": []
 	},
 	"contract": {
@@ -23,11 +23,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/styles/hub-home/quota-modal.css",
+		"entry": "packages/reports/src/lib/styles/hub-home/quota-modal.css",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/styles/hub-home/quota-modal.css"
+				"entry": "packages/reports/src/lib/styles/hub-home/quota-modal.css"
 			}
 		]
 	},

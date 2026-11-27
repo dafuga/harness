@@ -200,3 +200,14 @@ export interface TrackerHomeSource {
 	read(): Promise<OwnerHomeSnapshot>;
 	send(message: HomeChatInput): Promise<HomeChatReceipt>;
 }
+
+export type OpenHomeSection = (section: HomeSection, itemId?: string) => void;
+export type SendHomeChat = TrackerHomeSource['send'];
+
+export interface HomePlannableView {
+	plans: HomePlan[] | null;
+	schedule: HomeRun[] | null;
+	agents: HomeAgent[] | null;
+	needsMac: boolean;
+	now: number;
+}

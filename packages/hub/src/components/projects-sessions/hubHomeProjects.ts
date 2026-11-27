@@ -1,6 +1,6 @@
 // @harness-uid u_xdo57l4rk2
 import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
-import { count } from './hubHomePresentation';
+import { count } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 
 export function projectInventory(snapshot: ProjectSnapshot) {
 	const pages = snapshot.entities.filter((entity) => entity.category === 'pages');

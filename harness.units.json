@@ -68,6 +68,12 @@
 	],
 	"references": [
 		{
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Resolves the shared Home rendering dependency through the Reports build alias."
+		},
+		{
 			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
 			"specifier": "$reports/lib/styles/project-overview.css",
 			"to": "packages/reports/src/lib/styles/project-overview.css",
@@ -128,25 +134,25 @@
 			"reason": "The feature uses the shared component or data contract resolved by the app build."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
 			"specifier": "$reports/components/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
 			"reason": "The feature uses the shared component or data contract resolved by the app build."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
 			"specifier": "$reports/components/projects-sessions/TrackerPlanningDetails.svelte",
 			"to": "packages/reports/src/components/projects-sessions/TrackerPlanningDetails.svelte",
 			"reason": "The feature uses the shared component or data contract resolved by the app build."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomePlanDetail.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "The feature uses the shared component or data contract resolved by the app build."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomePlannable.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
 			"reason": "The feature uses the shared component or data contract resolved by the app build."
@@ -410,7 +416,7 @@
 			"reason": "The Desktop artifact-query tests use the Reports evidence, record and scope contracts through the build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/homeProviderPayload",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeProviderPayload.ts",
 			"reason": "Apply the same freshness boundary to owner-host data and the Hub display."
@@ -452,13 +458,13 @@
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeCard.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte",
 			"specifier": "$reports/components/explorer-ui/HarnessIcon.svelte",
 			"to": "packages/reports/src/components/explorer-ui/HarnessIcon.svelte",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeCard.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCard.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
@@ -476,13 +482,13 @@
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeComposer.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
 			"specifier": "$reports/components/explorer-ui/HarnessIcon.svelte",
 			"to": "packages/reports/src/components/explorer-ui/HarnessIcon.svelte",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeComposer.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
@@ -560,25 +566,25 @@
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomePlans.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomePlans.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/Pill.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomePlans.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomePlans.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlans.svelte",
 			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
 			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
@@ -608,19 +614,19 @@
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/EmptyState.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/EmptyState.svelte",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
 			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
 			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
@@ -692,19 +698,19 @@
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/hubHomeStatusText.ts",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
 			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
@@ -3128,13 +3134,13 @@
 			"reason": "Linked Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "The Hub choices reuse the Reports Home type through the build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/hubHomeChoices.ts",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "The Hub choices reuse the Reports Home type through the build alias."
@@ -3158,7 +3164,7 @@
 			"reason": "The Hub builds this Home projection with the shared Reports alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/hubHomeChoices.types.ts",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.types.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "The Hub choices reuse the Reports Home type through the build alias."
@@ -3194,7 +3200,7 @@
 			"reason": "Hub Home uses the Reports Home contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports Home contract through the app build alias."
@@ -3230,25 +3236,25 @@
 			"reason": "Uses the shared Reports module through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte",
 			"reason": "Uses the shared Reports module through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte",
 			"specifier": "$reports/components/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte",
 			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
 			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeChoices.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeChoices.svelte",
 			"specifier": "$reports/utils/strings/linkSegments",
 			"to": "packages/reports/src/utils/strings/linkSegments.ts",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
@@ -3308,19 +3314,19 @@
 			"reason": "The spec view on asks is shared Reports code used through the build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/ViewSpecButtons.svelte",
 			"reason": "The spec view on asks is shared Reports code used through the build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte",
 			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
 			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/hubSpecDocument.ts",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/SpecDocumentView.types",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/SpecDocumentView.types.ts",
 			"reason": "The spec view on asks is shared Reports code used through the build alias."
@@ -3344,31 +3350,31 @@
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
 			"specifier": "$reports/components/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
 			"specifier": "$reports/components/explorer-ui/explorer-kit/Pill.svelte",
 			"to": "packages/reports/src/components/explorer-ui/explorer-kit/Pill.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
 			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
 			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/hubHomeMessages.ts",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/hubHomeMessages.ts",
 			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
 			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
 			"reason": "Hub Home uses the Reports display contract through the app build alias."
@@ -3422,7 +3428,7 @@
 			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
 		},
 		{
-			"from": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte",
+			"from": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte",
 			"specifier": "$reports/components/shared-primitives/LinkifiedText.svelte",
 			"to": "packages/reports/src/components/shared-primitives/LinkifiedText.svelte",
 			"reason": "Connects Hub Home to the Reports component or contract used by this view."

@@ -3,8 +3,11 @@
 <!-- @harness-uid u_ufkzhmhxgn -->
 <script lang="ts">
 	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import { pastDueLabel, pastDueSummary } from './hubHomePresentation';
-	import HubHomeRow from './HubHomeRow.svelte';
+	import {
+		pastDueLabel,
+		pastDueSummary
+	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+	import HubHomeRow from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte';
 
 	let { pastDue, work, limit }: { pastDue: HomePastDue[]; work: { id: string }[]; limit?: number } =
 		$props();

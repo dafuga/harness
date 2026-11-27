@@ -1,5 +1,5 @@
 import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
-import { soonestWork } from '../../../../../hub/src/components/projects-sessions/hubHomePresentation';
+import { soonestWork } from '../../../../src/components/projects-sessions/hub-home/hubHomePresentation';
 import type { HomeView } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
 import type { LinkedHome } from '../../../../../hub/src/services/networking-security/LinkedHomeService';
 import type { HomeWorkProject } from '../../../../src/lib/projects-sessions/hub-home/homeLive.types';

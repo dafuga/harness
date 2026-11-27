@@ -1,12 +1,12 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_axpmgg2n3c -->
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { planLabels, relativeWhen, runDay, runTime } from './hubHomePresentation';
 	import { scheduledChatItem } from './hubHomeMessages';
 	import { homeCosChat } from './hubHomeChatContext.svelte';
-	import type { HomeView, OpenHomeSection } from './hubHomeView.types';
+	import type { HomePlannableView, OpenHomeSection } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -15,7 +15,7 @@
 		view,
 		open
 	}: {
-		view: Pick<HomeView, 'plans' | 'schedule' | 'agents' | 'now' | 'needsMac'>;
+		view: HomePlannableView;
 		open: OpenHomeSection;
 	} = $props();
 	const chat = homeCosChat();

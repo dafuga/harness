@@ -16,7 +16,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeSkeleton.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte"],
 		"symbols": ["HubHomeSkeleton"]
 	},
 	"contract": {
@@ -61,11 +61,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeSkeleton.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeSkeleton.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSkeleton.svelte"
 			}
 		]
 	},

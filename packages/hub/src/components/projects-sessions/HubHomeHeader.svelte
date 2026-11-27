@@ -10,7 +10,10 @@
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import HubHomeNotifications from './HubHomeNotifications.svelte';
 	import { browserContext } from '../../utils/development-tooling/browserContext';
-	import { homeHeadline, summaryLine } from './hubHomePresentation';
+	import {
+		homeHeadline,
+		summaryLine
+	} from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 	import HubHomeQuotaPills from './HubHomeQuotaPills.svelte';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import type { HomeView } from './hubHomeView.types';
