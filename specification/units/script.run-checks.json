@@ -4,12 +4,12 @@
 	"uid": "u_sbz3zzk4fx",
 	"kind": "script",
 	"title": "run-checks",
-	"responsibility": "Defines the established sequential verification order and runs each named package script with elapsed-time reporting, stopping at the first nonzero status.",
+	"responsibility": "Defines the broad verification order and the named parts CI runs side by side, plans the whole check or one part, and runs each named package script with elapsed-time reporting, stopping at the first nonzero status.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["scripts/run-checks.ts"],
-		"symbols": ["checkSteps", "runSteps"]
+		"source": ["scripts/run-checks.ts", "scripts/run-checks.types.ts"],
+		"symbols": ["checkSteps", "runSteps", "checkParts", "planCheck", "CheckPart"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -34,13 +34,22 @@
 				"type": "(line: string) => void",
 				"required": false,
 				"description": "The reporter receives a start line and a completion line with elapsed milliseconds for each attempted step. Defaults to console.log; a thrown reporter error rejects runSteps."
+			},
+			{
+				"name": "planCheck.args",
+				"type": "readonly string[]",
+				"required": true,
+				"description": "The command-line arguments. A leading --part and a name in checkParts selects that part; otherwise every step in checkSteps is planned. The remaining arguments are appended to check:game only.",
+				"examples": [
+					["--part", "e2e-1"]
+				]
 			}
 		],
 		"outputs": [
 			{
 				"name": "checkSteps",
 				"type": "string[]",
-				"description": "The fixed list of broad-check script names exported by the module, in the declared order. The CLI passes all 24 names to runSteps sequentially.",
+				"description": "The fixed list of broad-check script names exported by the module, in the declared order. Without --part the CLI passes all 24 names to runSteps sequentially.",
 				"examples": [
 					[
 						"check:verification-forwards",
@@ -75,6 +84,29 @@
 				"type": "Promise<number>",
 				"description": "Resolves to 0 when every supplied step succeeds, or to the first nonzero status and stops there. A thrown report callback rejects the promise.",
 				"examples": [0, 1, 2]
+			},
+			{
+				"name": "checkParts",
+				"type": "Record<string, CheckPart>",
+				"description": "The CI parts by name. Each lists its steps in checkSteps order and, for a slice of test:e2e, its vitest shard. Together they include every step.",
+				"examples": [
+					{
+						"e2e-1": {
+							"steps": ["build:kernel", "test:e2e"],
+							"vitestShard": "1/2"
+						}
+					}
+				]
+			},
+			{
+				"name": "planCheck",
+				"type": "{ steps: readonly string[]; command(step: string): string[] }",
+				"description": "The steps to run in order, and a function giving the bun arguments for a step, including the test:e2e shard of a sharded part.",
+				"examples": [
+					{
+						"steps": ["build:kernel", "test:e2e"]
+					}
+				]
 			}
 		],
 		"errors": [
@@ -82,6 +114,11 @@
 				"name": "Check runner callback or launcher failure",
 				"type": "thrown",
 				"description": "A throw from report is uncaught and rejects runSteps; throws or rejections from run are caught and converted to status 1."
+			},
+			{
+				"name": "Unknown check part",
+				"type": "thrown",
+				"description": "planCheck throws when --part has no name or a name that checkParts does not define, so a mistyped part never passes without running anything."
 			}
 		],
 		"errorStatus": "declared",
@@ -124,6 +161,40 @@
 						"name": "Check runner callback or launcher failure",
 						"type": "thrown",
 						"description": "A throw or rejection from run is caught and converted to status 1; a throw from report is uncaught and rejects runSteps."
+					}
+				],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "planCheck",
+				"inputs": [
+					{
+						"name": "planCheck.args",
+						"type": "readonly string[]",
+						"required": true,
+						"description": "The command-line arguments. A leading --part and a name in checkParts selects that part; otherwise every step in checkSteps is planned. The remaining arguments are appended to check:game only.",
+						"examples": [
+							["--part", "e2e-1"]
+						]
+					}
+				],
+				"outputs": [
+					{
+						"name": "planCheck",
+						"type": "{ steps: readonly string[]; command(step: string): string[] }",
+						"description": "The steps to run in order, and a function giving the bun arguments for a step, including the test:e2e shard of a sharded part.",
+						"examples": [
+							{
+								"steps": ["build:kernel", "test:e2e"]
+							}
+						]
+					}
+				],
+				"errors": [
+					{
+						"name": "Unknown check part",
+						"type": "thrown",
+						"description": "planCheck throws when --part has no name or a name that checkParts does not define, so a mistyped part never passes without running anything."
 					}
 				],
 				"errorStatus": "declared"
