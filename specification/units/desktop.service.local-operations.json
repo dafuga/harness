@@ -229,7 +229,8 @@
 								"data": "YWJj"
 							},
 							true
-						]
+						],
+						"unknownReason": "Wire dispatcher: the result shape depends on the request method."
 					}
 				],
 				"errors": [
@@ -292,22 +293,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-create-home-chat-writer",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "desktop.module.development-tooling-desktop-initialization-tracker-overview-publisher-create-home-snapshot-reader",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "desktop.validator.ipc-request",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
 			"via": "import",
 			"origin": "derived"
 		},

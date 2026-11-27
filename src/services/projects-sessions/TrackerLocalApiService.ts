@@ -11,6 +11,7 @@ import {
 	recordTrackerSessionItem,
 	trackerMutationBody
 } from './tracker-local-api-service/trackerLocalItemMutation';
+import { trackerHostWorkEndpoint } from './tracker-local-api-service/trackerHostWorkEndpoint';
 import { readTrackerMachineEndpoint } from './tracker-local-api-service/readTrackerMachineEndpoint';
 import { readTrackerAttachmentEndpoint } from './tracker-local-api-service/readTrackerAttachmentEndpoint';
 import { trackerJobResponse } from './tracker-local-api-service/trackerLocalJobResponse';
@@ -28,7 +29,10 @@ import {
 import { phoneReplicaResponse } from './tracker-local-api-service/trackerPhoneReplicaResponse';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
-import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
+import type {
+	TrackerLocalApiDependencies,
+	TrackerLocalApiOptions
+} from './TrackerLocalApiService.types';
 import {
 	readTrackerItemDetail,
 	readTrackerRunEndpoint
@@ -159,8 +163,10 @@ export class TrackerLocalApiService {
 function trackerSpecialResponse(
 	request: Request,
 	parts: string[],
-	dependencies: Parameters<typeof trackerItemSpecialResponse>[2]
+	dependencies: TrackerLocalApiDependencies
 ) {
+	if (parts.length === 1 && parts[0] === 'host-work' && dependencies.options.machines)
+		return trackerHostWorkEndpoint(request, dependencies.options.machines);
 	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
 	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
 	if (parts[0] === 'messages')
@@ -178,11 +184,7 @@ function trackerSpecialResponse(
 function trackerItemSpecialResponse(
 	request: Request,
 	parts: string[],
-	dependencies: {
-		store: TrackerPersistenceService;
-		items: TrackerItemReadRepository;
-		options: TrackerLocalApiOptions;
-	}
+	dependencies: TrackerLocalApiDependencies
 ): Promise<Response> | undefined {
 	if (!/^items\/[^/]+\/(?:inbox|stage|artifact|reject)$/.test(parts.join('/'))) return undefined;
 	const [, id, verb] = parts;

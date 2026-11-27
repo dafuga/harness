@@ -24,7 +24,7 @@ import {
 import {
 	post,
 	serve,
-	redirectTracker,
+	isolateMacTrackerFixture,
 	stage,
 	writeOther,
 	confirm,
@@ -92,10 +92,15 @@ for (const viewport of scenario.viewports)
 					throw new Error('Fixture Tracker failed to bind');
 				app = await _electron.launch({
 					executablePath: createRequire(import.meta.url)('electron') as string,
-					args: [await makeTemporaryDesktopEntry(temp, desktopRoot)],
+					args: [
+						await makeTemporaryDesktopEntry(
+							temp,
+							desktopRoot,
+							isolateMacTrackerFixture(address.port)
+						)
+					],
 					env: { ...electronFixtureEnvironment(), HARNESS_HUB_ORIGIN: hub.origin }
 				});
-				await redirectTracker(app, address.port);
 				browserErrors.watch(app.context());
 				const page = await seedHostedPage(app, join(temp, 'profile'), hub);
 				await page.setViewportSize({ width: viewport.width, height: viewport.height });
@@ -104,7 +109,6 @@ for (const viewport of scenario.viewports)
 				await seedMacPlan(store, api);
 				await routePlanImage(page);
 				await page.getByRole('link', { name: 'Home', exact: true }).click();
-				await page.getByRole('link', { name: 'Plans and schedule', exact: true }).click();
 				await verifyPlanWork(page, `electron-${viewport.id}`);
 				await verifyMacSchedule(page, `electron-${viewport.id}`, items);
 			} finally {
@@ -123,22 +127,16 @@ async function exerciseInbox(
 	items: TrackerItemReadRepository,
 	id: string
 ) {
-	const homeLink = page.getByRole('link', { name: 'Needs you', exact: true });
-	const hasLink = (await homeLink.count()) === 1;
-	if (hasLink) await homeLink.click();
-	else await page.evaluate(() => (location.pathname = '/tracker'));
+	await page.getByRole('link', { name: 'Needs you', exact: true }).click();
+	await page.getByRole('link', { name: 'All Tracker items', exact: true }).click();
 	await expect(page).toHaveURL(/\/tracker$/);
 	await page.reload();
-	await expect(
-		page
-			.getByRole('heading', { name: 'Needs you', exact: true })
-			.or(page.getByRole('status').filter({ hasText: 'paired iPhone' }))
-	).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Needs you', exact: true })).toBeVisible();
 	// The overview shows one row per ask with its choices: recommended first, then Other.
 	const row = page
 		.getByRole('list', { name: 'Needs you' })
 		.getByRole('button', { name: /Fixture.*waiting/s });
-	if (hasLink) await expect(row).toContainText(firstQuestion);
+	await expect(row).toContainText(firstQuestion);
 	await expect(page.getByRole('heading', { name: 'Blocked - needs you' })).toBeVisible();
 	await expect(page.getByRole('list', { name: 'Needs you' }).locator('button.choice')).toHaveText([
 		/Proceed.*Recommended/s,
@@ -147,7 +145,6 @@ async function exerciseInbox(
 	]);
 	await expect(page.getByRole('textbox')).toHaveCount(0);
 	await captureMacInbox(page, 'list');
-	expect(hasLink).toBe(true);
 	await row.click();
 	const asked = page.locator('.flag[data-flag-state="open"]');
 	await expect(asked.getByText(firstQuestion, { exact: true })).toBeVisible();

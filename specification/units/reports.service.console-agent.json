@@ -132,7 +132,7 @@
 				"outputs": [
 					{
 						"name": "ConsoleAgentService.open",
-						"type": "Promise<import('../../../../../desktop/src/models/development-tooling/Desktop.types').ProjectSnapshot>",
+						"type": "Promise<ProjectSnapshot>",
 						"description": "The local project snapshot returned by opening reportSite().root, used to initialize the chat session. Its value is forwarded from ProjectSessionService.open without reshaping."
 					}
 				],
@@ -229,7 +229,8 @@
 								"replay": {},
 								"sequence": 0
 							}
-						]
+						],
+						"unknownReason": "Dispatcher: the result shape depends on the agent method name."
 					}
 				],
 				"errors": [
@@ -262,7 +263,8 @@
 						"name": "consoleAgent",
 						"type": "Promise<unknown>",
 						"description": "Resolves to the connect token and initial snapshot, null after disconnect, or the selected session operation result. Tokens are kept in the in-memory session map.",
-						"examples": [null]
+						"examples": [null],
+						"unknownReason": "Dispatcher: the result shape depends on input.method."
 					}
 				],
 				"errors": [
@@ -290,6 +292,11 @@
 		},
 		{
 			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
 		},

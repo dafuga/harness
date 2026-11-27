@@ -46,6 +46,12 @@ export interface EvidenceArtifactQuery extends EntityEvidenceQuery {
 	evidenceRevision: string | null;
 }
 
+/** A stored file with the media type its server attested, before its bytes are checked. */
+export interface AttestedMedia {
+	bytes: Uint8Array;
+	mediaType: string;
+}
+
 export interface EvidenceArtifactResult {
 	bytes: Uint8Array;
 	mediaType: string;

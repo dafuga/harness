@@ -129,11 +129,15 @@ as it is back that day) into `~/backups/tracker/native`, keeping 14 daily and 8 
 failed backup, or none for 36 hours, raises one "Tracker backups need attention" ask. `tracker status`
 and `tracker backup list` report the result (the list also shows hourly copies kept in
 `~/backups/tracker`), and `tracker backup now` takes one. These copies stay on the hub's disk.
+A backup folder belongs to the database that wrote its newest daily copy: another database is
+refused before it replaces or rotates anything. Status also checks that the last good file is still
+on disk at its recorded size. A rehearsal hub with active host effects should set its own
+`backupDirectory`.
 
 `tracker backup verify <file>` and `tracker backup restore <file> --to <new path>` run without the
 service. Restore never changes the live database: it writes a checked copy that keeps this computer's
 current run and delivery records and has a new database identity, so spokes send their journals again,
-then prints the steps to swap it in. Add `--without-local-state` if the live database is unreadable.
+then prints the steps to swap it in, including moving the old identity's backups into a subfolder. Add `--without-local-state` if the live database is unreadable.
 
 Compare quiesced SQLite backup copies before changing a Tracker service.
 `--node` is the spoke's configured name. Add `--hub-relay-ops` when the spoke
@@ -729,7 +733,7 @@ keeps what it generates in `packages/reports/.svelte-kit`, writes all of it agai
 starts, and every other development server of the checkout then tells its open pages to load
 again, which undoes whatever a test had opened on them. A development server you start
 yourself in a checkout is still reloaded by a build there. Builds themselves are not isolated:
-`bun run build` and `bun run check` write `dist`, `target` and `packages/reports/build` of the
+`bun run build` writes `dist`, `target` and `packages/reports/build` of the
 checkout, two of them at once both exit 0 and leave whatever was written last, and nothing
 reports the conflict. Run one build or full check per checkout at a time, and use another
 worktree or a verification snapshot for a second: a snapshot is its own directory with its own
@@ -850,13 +854,27 @@ The same command adds a commit-msg hook that measures a commit message. Each sta
 into on its own, so a worktree that asked an earlier Harness for pushes only is never handed a
 stage that was offered later; run `harness hooks install` there again to adopt it.
 
-**CI.** `.github/workflows/harness-verify.yml` runs the full check and verifies the exact
-commit with read-only access and no secrets. The full check runs as parallel parts
-(`bun run check --part <name>`, defined in `scripts/run-checks.ts`); the `Full check` job passes
-only when every part does, and a new check step must be added to one part. `harness-evidence.yml` runs trusted code from the
-default branch, validates the uploaded record as data and publishes it; it never runs the
-commit that was verified. A runner whose machine profile has no reviewed baseline fails the
-performance gate; CI never establishes or approves one.
+**Shared checks.** From a committed Harness worktree, run `bun run check --item <tracker-id>`.
+Tracker runs supply their item via `TRACKER_ITEM_ID`. Use `--commit <sha>` to pin an explicit
+revision and `--priority urgent|normal|low` to order waiting requests. Use `--exact` when a landing gate requires proof of only that candidate on current `main`. One worker per host
+batches compatible waiting commits on a refreshed `main`, checks the combined tree in a
+disposable worktree, and splits a failed batch to identify the failing candidates. The normal
+plan runs dependency-selected tests and scenarios, smoke and type/lint checks on touched files.
+Unknown impact requires broad proof from the combined release or matching CI. Automated E2E on Daniel's Macs runs on harbor-mbp-2.
+Submit the combined release with `bun run check --release`, through the same queue.
+
+The queue elects one active worker even across worktrees. A foreground `bun run check --serve`
+worker can keep serving the host and retry Tracker delivery after submitters leave. Results report
+the exact tested tree, check IDs, cache sources, logs and elapsed time. Matching successful GitHub
+checks can satisfy a request. The Macs share compatible successful check receipts through
+`refs/harness/check-cache/v1/`; the objects contain result keys and carry no source tree. A short renewable Git lease lets one Mac check an uncached tree while the other waits for its proof.
+
+**CI.** `.github/workflows/harness-verify.yml` runs the relevant check plan for pull requests
+and pushes to `main`. Dispatch it with `release` for the complete matrix
+(`bun run check --part <name>`, defined in `scripts/run-checks.ts`).
+The `Full check` job passes only when every part does. The separate exact-commit verification
+job runs with read-only access. `harness-evidence.yml` validates and publishes its data from
+trusted code on the default branch. Performance budgets still require a reviewed machine profile.
 
 ## The console, its installer and the edge runtime
 
@@ -1187,7 +1205,7 @@ bun run test:reports
 bun run check:reports
 ```
 
-`bun run check` verifies both Harness and reporting. See
+`bun run check` selects affected Harness and reporting checks. See
 [the reporting guide](packages/reports/README.md) for the CLI and configuration.
 
 ```sh

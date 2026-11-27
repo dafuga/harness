@@ -12,6 +12,7 @@ import type { ReportRepository } from '../../repositories/reports-media/report-r
 import { audioAsset } from '../../utils/reports-media/audio-asset/audioAsset';
 import { writeImageAsset } from '../../utils/reports-media/reportAssets';
 import { sanitize } from '../../utils/development-tooling/sanitize';
+import type { Report } from '../../models/reports-media/Report.types';
 function inputDetails(input: AudioDetails) {
 	const title = sanitize(input.title.trim());
 	if (!title || title.length > 120)
@@ -33,7 +34,7 @@ async function readAudio(audio: File) {
 }
 export class AudioUploadService {
 	constructor(private readonly repository: ReportRepository) {}
-	async upload(reportId: string, input: AudioUploadInput) {
+	async upload(reportId: string, input: AudioUploadInput): Promise<Report> {
 		const details = inputDetails(input);
 		const { bytes, file, metadata } = await readAudio(input.audio);
 		return this.repository.mutateActive(reportId, async (report, directory) => {
@@ -49,7 +50,7 @@ export class AudioUploadService {
 			report.updatedAt = new Date().toISOString();
 		});
 	}
-	async uploadComparison(reportId: string, input: AudioComparisonInput) {
+	async uploadComparison(reportId: string, input: AudioComparisonInput): Promise<Report> {
 		const details = inputDetails(input);
 		// Validate both original files before writing either or changing the manifest.
 		const files = await Promise.all([readAudio(input.before), readAudio(input.after)]);

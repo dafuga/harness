@@ -86,7 +86,7 @@
 				"outputs": [
 					{
 						"name": "ScreenshotUploadService.upload",
-						"type": "Promise<import('../../../models/reports-media/Report.types').Report>",
+						"type": "Promise<Report>",
 						"description": "The resolved value returned by repository.mutateActive after its callback completes; the callback stores both image buffers, writes their assets to the report directory, appends a before/after evidence pair, and updates report.updatedAt. The service does not inspect or reshape the repository return value."
 					}
 				],

@@ -1,0 +1,65 @@
+{
+	"name": "mj359d-cos-window",
+	"goal": "Fit the recorded oversized watchdog batch into the 80x24 CoS composer and deliver the next alert.",
+	"createdAt": "2026-11-27T16:46:13.334Z",
+	"updatedAt": "2026-11-27T16:48:22.748Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:46:14.460Z",
+			"evidence": "8b9716 confirmed the recorded 3100-character prompt scrolls the 80x24 composer, hiding its prompt marker and preventing Enter."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:46:15.438Z",
+			"evidence": "Existing tmux fixtures do not reproduce composer overflow. Replay the recorded queue through the authentic watchdog port and a fixture that hides the prompt for oversized drafts."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:47:39.167Z",
+			"evidence": "The committed 80x24 fixture accepts the paste into the scrolled draft, then records zero Enter presses. The unchanged regression requires one."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:47:40.970Z",
+			"evidence": "Bound the complete message, including receipt references, to 720 bytes. Render oversized rows as item references and a short sentence, and include only slot detail that fits."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T16:48:22.748Z",
+			"evidence": "The same frozen test command failed at d4548a51ce without Enter, then passed at a53d022680. The bounded prompt included all eight pointers and a ninth alert was delivered in the next round."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

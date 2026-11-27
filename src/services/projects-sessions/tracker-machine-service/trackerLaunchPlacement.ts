@@ -8,6 +8,8 @@ import type {
 	TrackerPlacementCandidate,
 	TrackerWorkKind
 } from '../../../utils/projects-sessions/trackerMachine.types';
+import { trackerMacLaunchLoad } from '../../../utils/projects-sessions/trackerMachineStatus';
+import { trackerCpuBudget } from '../../../utils/projects-sessions/trackerCpuBudget';
 import { trackerMachineSample } from '../tracker-native-runtime-service/trackerFleetSampleSchema';
 
 const runnerAge = 120_000;
@@ -36,7 +38,10 @@ export function trackerLaunchPlacement(
 	});
 	const rows = new Map(view.machines.rows().map((row) => [row.node, row]));
 	const [best] = placement.ranked
-		.filter((entry) => entry.fits && eligible.has(entry.node) && macHeadroom(rows.get(entry.node)))
+		.filter(
+			(entry) =>
+				entry.fits && eligible.has(entry.node) && macHeadroom(rows.get(entry.node), project)
+		)
 		.map((entry) => ({ entry, score: (entry.score ?? 0) + bonus(entry, work) }))
 		.sort((left, right) => right.score - left.score);
 	if (!best) return undefined;
@@ -102,9 +107,10 @@ function bonus(entry: TrackerPlacementCandidate, work: { heavy: boolean; light: 
 }
 
 /** A Mac needs 25% free memory and a one-minute load under 15 to take new work. */
-function macHeadroom(row?: TrackerMachineRow): boolean {
+function macHeadroom(row: TrackerMachineRow | undefined, project: string): boolean {
 	if (row?.role !== 'primary' && row?.role !== 'runner') return true;
 	if (!row.sample) return false;
 	const { ram, load } = row.sample;
-	return (ram.pressure_free_pct ?? ram.available_pct) >= 25 && load[0] < 15;
+	const limit = trackerCpuBudget(row.node, project) ?? trackerMacLaunchLoad;
+	return (ram.pressure_free_pct ?? ram.available_pct) >= 25 && load[0] < limit;
 }

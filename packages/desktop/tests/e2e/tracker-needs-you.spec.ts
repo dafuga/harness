@@ -40,10 +40,8 @@ for (const name of ['mac', 'iphone'] as const)
 			await blockedSection(page, name);
 			await page.goto('/');
 			await capturePlanWork(page, name, 'home');
-			await expect(page.getByRole('link', { name: 'Plans and schedule', exact: true })).toBeVisible(
-				{ timeout: 3000 }
-			);
-			await page.getByRole('link', { name: 'Plans and schedule', exact: true }).click();
+			if (name === 'iphone')
+				await page.getByRole('link', { name: 'Plans and schedule', exact: true }).click();
 			await verifyPlanWork(page, name);
 			await verifyScheduledChat(page, name, messages);
 		} finally {

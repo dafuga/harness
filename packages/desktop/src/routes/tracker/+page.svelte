@@ -2,8 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_hy4wyfdeiv -->
 <script lang="ts">
-	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import { getContext } from 'svelte';
 	import TrackerWork from '../../components/development-tooling/TrackerWork.svelte';
 	import TrackerInbox from '../../components/development-tooling/tracker-inbox/TrackerInbox.svelte';
@@ -20,18 +20,20 @@
 	const local = $derived(
 		environment?.kind === 'electron' ? environment.bridge?.trackerInbox : undefined
 	);
+	const project = $derived(page.url.searchParams.get('project') || undefined);
 </script>
 
 <svelte:head><title>{work ? 'Plans and schedule' : 'Needs you'} · Harness</title></svelte:head>
 
 {#if !work || !environment?.trackerHome}
-	<hx-a class="project-overview-link" href={resolve('/')}>Home</hx-a>
+	<hx-a class="project-overview-link" href={resolve('/')} data-sveltekit-reload>Home</hx-a>
 {/if}
 
 {#if work && environment?.trackerHome}
 	<TrackerWork source={environment.trackerHome} mac={environment.kind === 'electron'} />
 {:else if local}
-	<TrackerInbox source={local} mode="mac" />
+	{#if project}<hx-a class="project-overview-link" href={resolve('/tracker')}>Needs you</hx-a>{/if}
+	{#key project}<TrackerInbox source={local} mode="mac" {project} />{/key}
 {:else if phone}
 	<TrackerInbox source={phone} />
 {:else}

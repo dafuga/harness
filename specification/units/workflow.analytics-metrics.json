@@ -8,8 +8,14 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/cli/program/analyticsMetrics.ts"],
-		"symbols": ["analyticsSnapshot", "counts"]
+		"source": ["src/cli/program/analyticsMetrics.ts", "src/cli/program/analyticsMetrics.types.ts"],
+		"symbols": [
+			"analyticsSnapshot",
+			"counts",
+			"AnalyticsSummary",
+			"AnalyticsModelMetrics",
+			"AnalyticsSnapshot"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -192,7 +198,7 @@
 				"outputs": [
 					{
 						"name": "analyticsSnapshot",
-						"type": "ReturnType<typeof analyticsSnapshot>",
+						"type": "AnalyticsSnapshot",
 						"description": "A snapshot record containing schemaVersion, generatedAt, filters, summary, loops, jev, models, tasks, benchmarks and events. JEV and task metric details come from imported implementations, so their nested schemas are not defined in this workflow.",
 						"examples": [
 							{

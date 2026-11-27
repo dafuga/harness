@@ -97,6 +97,9 @@
 		get signedIn() {
 			return signedIn;
 		},
+		get accountName() {
+			return status?.actor?.name;
+		},
 		signOut
 	});
 

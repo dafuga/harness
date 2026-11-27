@@ -18,7 +18,7 @@ const types: Record<string, string> = {
 /**
  * `connect` names the one address beside the app itself that a page may open: its own socket.
  * A picture or a recorded clip may come from an object URL the page made of bytes it checked;
- * no script, frame or object may. The Plans and schedule document also displays HTTPS mockups.
+ * no script, frame or object may. Home and Plans and schedule also display HTTPS mockups.
  */
 export function rendererPolicy(html: string, connect = '', planningImages = false): string {
 	const hashes = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(
@@ -63,7 +63,8 @@ export async function rendererAssets(root: string, url: string, connect = ''): P
 	const bytes = await readFile(actual),
 		html = extname(actual) === '.html';
 	const request = new URL(url);
-	const planningImages = html && path === '/tracker' && request.searchParams.get('view') === 'work';
+	const planningImages =
+		html && (path === '/' || (path === '/tracker' && request.searchParams.get('view') === 'work'));
 	return new Response(bytes, {
 		headers: {
 			'Content-Type': types[extname(actual)] ?? 'application/octet-stream',

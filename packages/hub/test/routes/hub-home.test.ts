@@ -75,7 +75,23 @@ test('a tapped option must name a real option of the open ask, and a confirm ask
 			{ label: 'Wait', effect: 'Holds until tomorrow.' }
 		];
 		const asked = { ...agent, options, confirm: 'deploy' };
-		const sent = await serve(homeRequest('PUT', { bearer }, '', { ...payload, agents: [asked] }));
+		const published = {
+			...payload,
+			agents: [{ ...asked, itemId: 'a-different-item' }],
+			openAsks: [
+				{
+					itemId: asked.itemId,
+					agentId: asked.id,
+					agentName: asked.name,
+					title: asked.task,
+					question: asked.question,
+					options,
+					confirm: asked.confirm,
+					since: asked.since
+				}
+			]
+		};
+		const sent = await serve(homeRequest('PUT', { bearer }, '', published));
 		expect(sent.status).toBe(200);
 		const tap = { ...message, text: 'Ship it', option: 1 };
 		const refuse = async (body: unknown) => {
@@ -85,11 +101,10 @@ test('a tapped option must name a real option of the open ask, and a confirm ask
 		await refuse(tap);
 		await refuse({ ...tap, confirmed: true, text: 'Something else' });
 		await refuse({ ...tap, confirmed: true, option: 3, text: 'Ship it' });
+		await refuse({ ...tap, confirmed: true, question: 'The previous flag' });
 		const confirmed = { ...tap, confirmed: true };
 		expect((await serve(homeRequest('POST', { cookie }, '/chat', confirmed))).status).toBe(202);
-		const claimed = await serve(
-			homeRequest('PUT', { bearer }, '', { ...payload, agents: [asked] })
-		);
+		const claimed = await serve(homeRequest('PUT', { bearer }, '', published));
 		expect(((await claimed.json()) as { messages: HomeChatInput[] }).messages).toEqual([confirmed]);
 		const invalid = { ...message, kind: 'note', question: null, option: 1 };
 		expect((await serve(homeRequest('POST', { cookie }, '/chat', invalid))).status).toBe(400);

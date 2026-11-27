@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-agents",
+			"hub.component.projects-sessions-hub-home-directory",
 			"hub.component.projects-sessions-hub-home-plan-detail",
 			"hub.component.projects-sessions-hub-home-plans",
 			"hub.component.projects-sessions-hub-home-projects",
@@ -28,7 +29,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte"],
 		"symbols": ["HubHomeDialogs", "HubHomeDialogs.actions"]
 	},
 	"contract": {
@@ -69,7 +70,8 @@
 			{
 				"name": "HubHomeDialogs.changeSession",
 				"type": "ChangeSession",
-				"required": true,
+				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
 			},
 			{
@@ -81,7 +83,8 @@
 			{
 				"name": "HubHomeDialogs.readProject",
 				"type": "ReadHomeProject",
-				"required": true,
+				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Retrieves a hosted project snapshot by its identifier."
 			},
 			{
@@ -126,6 +129,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-directory",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -222,11 +230,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte"
 			}
 		]
 	},

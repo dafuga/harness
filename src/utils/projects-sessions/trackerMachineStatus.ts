@@ -12,8 +12,15 @@ export const trackerSampleOfflineMs = 5 * minute;
 const swapWindow = 10 * minute;
 
 export const trackerBusyLoadPerCore = 1;
+export const trackerOverloadedLoadPerCore = 1.5;
+export const trackerMacLaunchLoad = 15;
 
-const overloaded = { loadPerCore: 1.5, ramPct: 10, swapGrowthMB: 512, diskFreeGB: 20 };
+const overloaded = {
+	loadPerCore: trackerOverloadedLoadPerCore,
+	ramPct: 10,
+	swapGrowthMB: 512,
+	diskFreeGB: 20
+};
 const busy = { loadPerCore: trackerBusyLoadPerCore, ramPct: 15, swapGrowthMB: 256, diskFreeGB: 30 };
 
 const roles = new Map<string, TrackerMachineRole>([

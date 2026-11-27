@@ -1,4 +1,5 @@
 // @harness-uid u_6zwkttqb3g
+import type { BenchmarkCandidateMetrics } from '../../../core/agents-providers/subagentBenchmarkTypes';
 import type { BenchmarkOptions } from './BenchmarkService.types';
 export type { BenchmarkOptions } from './BenchmarkService.types';
 import { BenchmarkRepository } from '../../../repositories/agents-providers/BenchmarkRepository';
@@ -62,7 +63,7 @@ export class BenchmarkService {
 }
 function renderBenchmark(result: {
 	run: BenchmarkRun;
-	comparison: ReturnType<typeof benchmarkMetrics>;
+	comparison: BenchmarkCandidateMetrics[];
 }): string {
 	return [
 		`Benchmark: ${result.run.definition.name}`,

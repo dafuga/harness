@@ -24,7 +24,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeNeedsYou.svelte"],
 		"symbols": ["HubHomeNeedsYou"]
 	},
 	"contract": {
@@ -147,11 +147,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeNeedsYou.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeNeedsYou.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeNeedsYou.svelte"
 			}
 		]
 	},

@@ -18,7 +18,17 @@ test('every session brief tells the agent to flag with 2 to 4 options and one re
 	expect(brief).toContain('--option "<label>=<what happens if chosen>"');
 	expect(brief).toContain('--recommend');
 	expect(brief).toContain('--confirm deploy|money|secret');
+	expect(brief).toContain('plain English');
+	expect(brief).toContain('what you want to do and why in one sentence');
+	expect(brief).toContain('tool or process questions to Chief of Staff');
 	expect(brief.indexOf('## Secret-safe computer use')).toBeLessThan(brief.indexOf('## Asking'));
+	expect(brief).not.toContain('combined release');
+	const harness = formatTrackerHostBrief(
+		{ ...item, agent: 'harness' },
+		'Finish by running tracker done.'
+	);
+	expect(harness).toContain('bun run check --item abcdef');
+	expect(harness).toContain('host queue with `--release` for the combined release');
 });
 
 test('every session brief points browser work at the automation Chrome, not the main profile', () => {

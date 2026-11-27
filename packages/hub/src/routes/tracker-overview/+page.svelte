@@ -3,6 +3,7 @@
 <!-- @harness-uid u_yd5wcp6sz3 -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import { page } from '$app/state';
 	import ProjectOverview from '$shared/projects-sessions/project-overview/ProjectOverview.svelte';
 	import Notice from '$shared/explorer-ui/explorer-kit/Notice.svelte';
 	import HubFrame from '../../components/shared-primitives/HubFrame.svelte';
@@ -14,6 +15,7 @@
 	/** Who the server names now; a change to another account clears what was read for the last. */
 	const actor = $derived(session.actor?.id ?? null);
 	let outcome = $state<OverviewOutcome | null>(null);
+	const project = $derived(page.url.searchParams.get('project') || undefined);
 	/** Counts reads; an answer to an earlier read, or one for another account, is dropped. */
 	let asked = 0;
 	let controller: AbortController | undefined;
@@ -62,6 +64,7 @@
 	{:else}
 		<ProjectOverview
 			snapshot={outcome?.kind === 'owner' ? outcome.snapshot : null}
+			{project}
 			standalone={false}
 		/>
 	{/if}

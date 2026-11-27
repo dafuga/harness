@@ -76,7 +76,7 @@
 				"outputs": [
 					{
 						"name": "readTrackerSources",
-						"type": "Promise<TrackerSources>",
+						"type": "Promise<Tracker.TrackerSources>",
 						"description": "Validated item, run, and machine records from the local tracker."
 					}
 				],

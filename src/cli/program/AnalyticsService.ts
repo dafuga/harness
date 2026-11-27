@@ -1,4 +1,5 @@
 // @harness-uid u_2uvstowd5m
+import type { AnalyticsSnapshot } from './analyticsMetrics.types';
 import type { AnalyticsOptions } from './AnalyticsService.types';
 import { ExpectedCliError } from '../../core/errors';
 import { projectIdentity } from '../../workflows/reports-media/analyticsRecord';
@@ -27,7 +28,7 @@ export class AnalyticsService {
 		await new ModuleTaskAnalyticsService().sync(options.site ?? options.project ?? process.cwd());
 		const repository = await AnalyticsRepository.open();
 		// A site sees its own repository and nothing else, whatever other filter is asked for.
-		let snapshot: ReturnType<typeof analyticsSnapshot>;
+		let snapshot: AnalyticsSnapshot;
 		try {
 			const events = options.site
 				? repository.events().filter((event) => sameSite(options.site ?? '', event.project))
@@ -66,7 +67,7 @@ export async function normalizeFilter(options: AnalyticsFilter): Promise<Analyti
 async function renderResult(
 	operation: string,
 	options: AnalyticsOptions,
-	snapshot: ReturnType<typeof analyticsSnapshot>
+	snapshot: AnalyticsSnapshot
 ): Promise<void> {
 	const values: Record<string, unknown> = {
 		summary: snapshot.summary,

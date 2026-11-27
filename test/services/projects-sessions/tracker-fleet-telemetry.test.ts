@@ -1,11 +1,57 @@
 import { expect, test } from 'vitest';
+import { randomUUID } from 'node:crypto';
 import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
-import { TrackerSpokeSyncService } from '../../../src/services/projects-sessions/TrackerSpokeSyncService';
-import type { TrackerWireValue } from '../../../src/services/projects-sessions/TrackerHubSyncService.types';
 import { assignTrackerLaunches } from '../../../src/services/projects-sessions/tracker-machine-service/assignTrackerLaunches';
-import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
-import { resourceSample, runnerReport } from '../../support/trackerMachineFixture';
-import { call, fleet, hubNode, minute, peerNode } from '../../support/trackerFleetFixture';
+import {
+	call,
+	exchangeFleetReport,
+	fleet,
+	fleetReport,
+	hostLease,
+	hubNode,
+	minute,
+	originRun,
+	peerNode
+} from '../../support/trackerFleetFixture';
+
+async function expectRemoteRuns(nodes: ReturnType<typeof fleet>, count: number) {
+	for (const runtime of [nodes.hub, nodes.peer]) {
+		const machine = (await call(runtime, ['machines', 'mb2'])).data;
+		expect(machine.remote_runs).toBe(count);
+	}
+}
+
+async function checkRemoteWork(nodes: ReturnType<typeof fleet>) {
+	const run = originRun(nodes.hub);
+	const ssh = { run, lease: randomUUID(), host: peerNode, kind: 'ssh' };
+	const colima = { ...ssh, lease: randomUUID(), kind: 'colima' };
+	expect((await hostLease(nodes.hub, 'POST', { ...ssh, host: hubNode })).status).toBe(400);
+	expect((await hostLease(nodes.hub, 'POST', { ...ssh, run: run + 100 })).status).toBe(409);
+	expect((await hostLease(nodes.hub, 'POST', ssh)).status).toBe(200);
+	expect((await hostLease(nodes.hub, 'POST', colima)).status).toBe(200);
+	nodes.clock.at += minute;
+	await nodes.tick();
+	await expectRemoteRuns(nodes, 1);
+	expect((await hostLease(nodes.hub, 'DELETE', ssh)).status).toBe(200);
+	nodes.clock.at += minute;
+	await nodes.tick();
+	await expectRemoteRuns(nodes, 1);
+	nodes.hub.store.database
+		.prepare("UPDATE runs SET state = 'finished', ended_at = ? WHERE id = ?")
+		.run(nodes.clock.at, run);
+	nodes.clock.at += minute;
+	await nodes.tick();
+	await expectRemoteRuns(nodes, 0);
+	expect((await hostLease(nodes.hub, 'POST', colima)).status).toBe(409);
+
+	const expired = { ...ssh, lease: randomUUID(), run: originRun(nodes.hub) };
+	expect((await hostLease(nodes.hub, 'POST', expired)).status).toBe(200);
+	nodes.clock.at += minute;
+	await nodes.tick();
+	await expectRemoteRuns(nodes, 1);
+	nodes.clock.at += 3 * minute;
+	await expectRemoteRuns(nodes, 0);
+}
 
 test('both computers see each other in machines, place and status', async () => {
 	const nodes = fleet();
@@ -33,6 +79,7 @@ test('both computers see each other in machines, place and status', async () => 
 		expect((await call(nodes.hub, ['machines', 'nowhere'])).status).toBe(404);
 		expect((await call(nodes.hub, ['place', '--kind', 'gpu'])).status).toBe(400);
 		expect(() => nativeTrackerArgs(['machines', '--hours', '2'])).toThrow('usage');
+		await checkRemoteWork(nodes);
 	} finally {
 		nodes.close();
 	}
@@ -99,35 +146,22 @@ test('a peer that stops reporting or is overloaded loses its due-start grant', a
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBeNull();
 		await nodes.tick();
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBeNull();
+		const claim = { run: originRun(nodes.peer), lease: randomUUID(), host: hubNode, kind: 'ssh' };
+		expect((await hostLease(nodes.peer, 'POST', claim)).status).toBe(200);
+		await nodes.tick();
+		expect((await call(nodes.hub, ['machines', 'mac'])).data.remote_runs).toBe(1);
+		expect((await hostLease(nodes.peer, 'DELETE', claim)).status).toBe(200);
+		await nodes.tick();
+		expect((await call(nodes.hub, ['machines', 'mac'])).data.remote_runs).toBe(0);
 		nodes.clock.at += 3 * minute;
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBe('no fresh machine sample');
-		nodes.readings[peerNode] = { load: [30, 30, 30] };
+		nodes.readings[peerNode] = { load: [23, 6, 5] };
 		await nodes.tick();
-		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('is overloaded');
+		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('1-min load 23');
 	} finally {
 		nodes.close();
 	}
 });
-
-function report(nodes: ReturnType<typeof fleet>, node: string, projects: string[]) {
-	const at = nodes.clock.at;
-	return {
-		node,
-		at: new Date(at).toISOString(),
-		runner: runnerReport(at, projects),
-		resources: resourceSample(at)
-	};
-}
-
-/** Send one launcher report to the hub as the peer would. */
-async function exchange(nodes: ReturnType<typeof fleet>, sample: ReturnType<typeof report>) {
-	const client = new TrackerSpokeSyncService({
-		store: nodes.peer.store,
-		secret: fixtureSecret,
-		transport: wire(nodes.hub.sync!)
-	});
-	await client.exchangeMachine(sample as unknown as TrackerWireValue, []);
-}
 
 test('--computer auto picks the computer whose launcher maps the project', async () => {
 	const nodes = fleet({
@@ -142,7 +176,7 @@ test('--computer auto picks the computer whose launcher maps the project', async
 		const add = async (...extra: string[]) =>
 			(await call(nodes.hub, ['add', `Fixture ${extra.join(' ')}`, '--auto', '--force', ...extra]))
 				.data;
-		await exchange(nodes, report(nodes, peerNode, ['harbor']));
+		await exchangeFleetReport(nodes, fleetReport(nodes, peerNode, ['harbor']));
 		expect(await add('--agent', 'harbor', '--computer', 'auto')).toMatchObject({
 			computer: peerNode
 		});
@@ -164,7 +198,7 @@ test('the hub assigns a launch with no computer to the peer that can run it', as
 		const view = {
 			machines: nodes.hub.machines,
 			now: () => nodes.clock.at,
-			samples: () => [report(nodes, peerNode, ['harbor'])]
+			samples: () => [fleetReport(nodes, peerNode, ['harbor'])]
 		};
 		assignTrackerLaunches(view);
 		const shown = (await call(nodes.hub, ['show', id])).data;

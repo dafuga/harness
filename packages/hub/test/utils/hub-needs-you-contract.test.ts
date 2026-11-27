@@ -10,7 +10,7 @@ import type { InboxOverview } from '../../../desktop/src/models/development-tool
 import { phoneReplicaRows } from '../../../../src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaRows';
 import type { TrackerDigest } from '../../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import { parseHomePayload } from '../../src/routes/api/hub-home/homePayload';
-import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
+import { mergeHomeSnapshots } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 import {
 	recordedAt,
 	snapshotTracker,

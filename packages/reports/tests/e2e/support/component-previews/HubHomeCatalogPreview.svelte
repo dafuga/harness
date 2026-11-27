@@ -2,7 +2,7 @@
 	import type { Component as SvelteComponent } from 'svelte';
 	import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 	import type { ProjectSummary } from 'collaboration';
-	import type { SendHomeChat } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
+	import type { SendHomeChat } from '../../../../src/components/projects-sessions/hub-home/hubHomeView.types';
 	import HubHomeRow from '../../../../src/components/projects-sessions/hub-home/HubHomeRow.svelte';
 	import { browserContext } from '../../../../../hub/src/utils/development-tooling/browserContext';
 	import { catalogHomeView, catalogWorkProject } from './hubHomeCatalogData';
@@ -51,6 +51,12 @@
 			readProject,
 			reload: noop,
 			close: noop
+		},
+		'home-directory': {
+			view: {
+				...view,
+				projectDirectory: [{ name: 'Atlas', state: 'needs-you', needsYou: 1 }]
+			}
 		},
 		'home-header': { view },
 		'home-live': { reading: view.computers, now: view.now },

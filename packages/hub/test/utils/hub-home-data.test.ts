@@ -130,9 +130,18 @@ test('only Chief of Staff is an agent: every other project is a sub-agent counte
 	const live = { ...base, id: 'live', agent: 'flagged' };
 	const touched = { ...base, id: 'touched', agent: 'touched' };
 	const away = { ...base, id: 'away', agent: 'away' };
+	const archived = {
+		...base,
+		id: 'archived',
+		agent: 'archived-agent',
+		project: 'Archived project',
+		status: 'done' as const,
+		updated_at: '2020-01-01T00:00:00.000Z'
+	};
+	const privateItem = { ...archived, id: 'private', project: 'Private project', sensitive: true };
 	const home = buildHomeSnapshot(
 		{
-			items: [chief, flagged, live, touched, away],
+			items: [chief, flagged, live, touched, away, archived, privateItem],
 			runs: [
 				run(1, 'live', 'primary'),
 				run(2, 'flagged', 'second'),
@@ -145,6 +154,13 @@ test('only Chief of Staff is an agent: every other project is a sub-agent counte
 		now
 	);
 	const listed = listHomeAgents(home.agents);
+	expect(home.projectDirectory).toEqual(
+		expect.arrayContaining([
+			{ name: 'flagged', state: 'needs-you', needsYou: 1 },
+			{ name: 'Archived project', state: 'done', needsYou: 0 }
+		])
+	);
+	expect(home.projectDirectory?.some(({ name }) => name === 'Private project')).toBe(false);
 	expect(listed.agents.map((agent) => agent.name)).toEqual(['Chief of Staff']);
 	// Another project that needs Daniel is not listed, but its ask is kept with its question.
 	expect(listed.asks).toMatchObject([{ id: 'flagged', state: 'needs-you', question }]);

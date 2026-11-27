@@ -1,7 +1,8 @@
-import { spawnSync } from 'node:child_process';
+import { execFile, spawnSync } from 'node:child_process';
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
+import { promisify } from 'node:util';
 import { DatabaseSync } from 'node:sqlite';
 import { onTestFinished, vi } from 'vitest';
 import { TrackerCommand } from '../../src/commands/projects-sessions/TrackerCommand';
@@ -12,12 +13,15 @@ import { createTempDirectory } from './temporary';
 
 const node = 'daniel-primary-mbp';
 
-/** A file-backed hub with an explicit clock and its own backup folders. */
-export async function trackerBackupFixture(start: string) {
+/**
+ * A file-backed hub with an explicit clock and its own backup folders. `sharing` makes a
+ * second hub, with another database, that writes into the first hub's backup folders.
+ */
+export async function trackerBackupFixture(start: string, sharing?: { external: string }) {
 	const root = await createTempDirectory('tracker-backup-');
-	const external = join(root, 'backups');
+	const external = sharing?.external ?? join(root, 'backups');
 	const directory = join(external, 'native');
-	mkdirSync(external, { mode: 0o700 });
+	mkdirSync(external, { recursive: true, mode: 0o700 });
 	const path = join(root, 'tracker.db');
 	const database = openFixtureDatabase(root, path);
 	let clock = Date.parse(start);
@@ -84,7 +88,9 @@ function openFixtureDatabase(root: string, path: string): DatabaseSync {
 
 function listFiles(directory: string): string[] {
 	try {
-		return readdirSync(directory).sort();
+		return readdirSync(directory)
+			.filter((name) => name.startsWith('tracker-'))
+			.sort();
 	} catch {
 		return [];
 	}
@@ -133,4 +139,52 @@ async function runCli(root: string, database: string, args: string[]) {
 		error.mockRestore();
 		vi.unstubAllEnvs();
 	}
+}
+
+// Each child opens its own database and joins the next attempt only when its peer is ready.
+const concurrentBackupWriter = `
+import { existsSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { openSqlite } from './src/adapters/development-tooling/openSqlite';
+import { writeTrackerBackup } from './src/services/projects-sessions/tracker-backup-service/writeTrackerBackup';
+
+const [root, id, peer, count] = process.argv.slice(1);
+const database = openSqlite(join(root, id + '.db'));
+database.exec('CREATE TABLE meta(k TEXT PRIMARY KEY, v TEXT)');
+database.prepare('INSERT INTO meta VALUES (?, ?)').run('db_id', id);
+const writes = [];
+for (let index = 0; index < Number(count); index++) {
+  writeFileSync(join(root, id + '-' + index), '');
+  const ready = join(root, peer + '-' + index);
+  while (!existsSync(ready)) await Bun.sleep(1);
+  try {
+    await writeTrackerBackup(database, join(root, 'shared-' + index), '2026-11-27');
+    writes.push(index);
+  } catch (error) {
+    if (!String(error).includes('belongs to another database')) throw error;
+  }
+}
+database.close();
+console.log(JSON.stringify(writes));
+`;
+
+/** Distinct winner counts across fresh shared folders, one count per observed outcome. */
+export async function concurrentBackupWinners(root: string): Promise<number[]> {
+	const attempts = 256;
+	const run = promisify(execFile);
+	const writers = await Promise.all(
+		[
+			['first', 'second'],
+			['second', 'first']
+		].map(async (ids) => {
+			const args = ['-e', concurrentBackupWriter, root, ...ids, String(attempts)];
+			const { stdout } = await run('bun', args, { timeout: 15_000 });
+			return new Set(JSON.parse(stdout) as number[]);
+		})
+	);
+	const counts = Array.from(
+		{ length: attempts },
+		(_, index) => writers.filter((writer) => writer.has(index)).length
+	);
+	return [...new Set(counts)].sort();
 }

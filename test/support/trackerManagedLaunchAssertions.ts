@@ -1,3 +1,4 @@
+import { verifyBlockedLaunchCli } from './trackerObservedRunFixture';
 import { mkdirSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
@@ -173,6 +174,7 @@ export async function verifyLaunchCliOptions(spoke: TrackerNodeFixture, id: stri
 		effort: 'high',
 		pinned: true
 	});
+	await verifyBlockedLaunchCli(spoke, short, launched.auto);
 	expect((await trackerProcess(spoke, ['launch', short, '--model', 'sol:low']).exited).code).toBe(
 		1
 	);

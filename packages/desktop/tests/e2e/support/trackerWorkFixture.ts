@@ -74,10 +74,13 @@ export async function trackerWorkFixture(page: Page, kind: 'mac' | 'iphone') {
 			};
 		};
 		if (mode === 'mac') {
-			host.harness.trackerHome = {
-				read: host.__trackerWorkRead,
-				send: host.__trackerWorkSend
-			};
+			host.harness.hostedStatus = async () => ({
+				configured: true,
+				state: 'signed-in',
+				actor: { id: 'google:fixture-owner', name: 'Fixture Owner' }
+			});
+			host.harness.homeSnapshot = host.__trackerWorkRead;
+			host.harness.homeChat = host.__trackerWorkSend;
 		} else {
 			const native = host.Capacitor.nativePromise;
 			host.Capacitor.nativePromise = async (plugin, method, input) => {

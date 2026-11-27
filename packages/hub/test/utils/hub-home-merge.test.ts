@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
+import { mergeHomeSnapshots } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 import {
 	agentActivity,
 	homeHeadline,

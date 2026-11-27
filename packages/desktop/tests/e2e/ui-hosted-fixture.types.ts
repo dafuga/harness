@@ -1,5 +1,15 @@
 export type Input = Record<string, unknown> & { projectId?: string; page?: number };
 
+export interface HostedConnectionFixture {
+	userCode: string;
+	verificationUrl: string;
+	expiresAt: string;
+	interval: number;
+	state: string;
+	home: unknown;
+	tracker: unknown;
+}
+
 export interface HostedHost {
 	harness: Record<string, unknown>;
 	__cache: (event: { projectId: string; status: string; cachedAt?: string }) => void;

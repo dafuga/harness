@@ -1,4 +1,5 @@
 // @harness-uid u_bl6xl2h4a3
+import type { TrackerHostWork } from '../../../utils/projects-sessions/trackerHostWork.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerDispatchSchedulerService } from '../TrackerDispatchSchedulerService';
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
@@ -7,6 +8,7 @@ import type { TrackerMachineService } from '../TrackerMachineService';
 import type { TrackerFleetReport } from '../TrackerMachineService.types';
 import { hubTelemetryTick } from './trackerFleetTelemetry';
 import { spokeReport } from './trackerSpokeTelemetry';
+import type { TrackerWireValue } from '../TrackerHubSyncService.types';
 import type { TrackerTelemetryParts } from './nativeTrackerTelemetry.types';
 import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
 import { localRunnerStatus, machineReport } from './nativeTrackerLinks';
@@ -69,7 +71,8 @@ function telemetryExchange(
 	return async (signal: AbortSignal) => {
 		const active = runs.activeLocal();
 		const runner = localRunnerStatus(scheduler);
-		const launchState = launchSampleRevision(runner, active, runs.latestLocalRunId());
+		const hostWork = machines.localHostWork();
+		const launchState = launchSampleRevision(runner, active, runs.latestLocalRunId(), hostWork);
 		if (now() < nextPoll && launchState === previousLaunchState) return;
 		nextPoll = now() + 60_000;
 		const client = new TrackerSpokeSyncService({
@@ -80,7 +83,8 @@ function telemetryExchange(
 		const sample =
 			options.dispatch?.telemetry?.sample() ??
 			(await spokeReport(machines, machineReport(runner, active, now())));
-		const received = await client.exchangeMachine(sample, runs.exportLocal());
+		const report = { ...(sample as object), host_work: hostWork } as unknown as TrackerWireValue;
+		const received = await client.exchangeMachine(report, runs.exportLocal());
 		signal.throwIfAborted();
 		if (received.run_history) runs.importLinkHistory(received.run_history);
 		previousLaunchState = launchState;
@@ -98,7 +102,8 @@ function launchSampleRevision(
 		waiting_tokens?: unknown;
 	},
 	active: ReturnType<TrackerRunReadRepository['activeLocal']>,
-	latestId: number | undefined
+	latestId: number | undefined,
+	hostWork: TrackerHostWork[]
 ) {
 	return JSON.stringify([
 		runner.enabled,
@@ -108,6 +113,7 @@ function launchSampleRevision(
 		runner.waiting,
 		runner.waiting_tokens,
 		latestId,
-		active.map(({ id, state }) => [id, state])
+		active.map(({ id, state }) => [id, state]),
+		hostWork.map(({ run, host }) => [run, host])
 	]);
 }

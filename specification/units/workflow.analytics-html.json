@@ -16,7 +16,7 @@
 		"inputs": [
 			{
 				"name": "analyticsHtml.snapshot",
-				"type": "ReturnType<typeof analyticsSnapshot>",
+				"type": "AnalyticsSnapshot",
 				"required": true,
 				"description": "The analytics snapshot, serialized in full into the page's data block: its generatedAt is printed in the 'Generated' line, and the page shows its summary, loops, jev and models fields as indented JSON. The function does no validation, so a circular reference or BigInt value makes JSON.stringify throw, and a null or undefined snapshot throws a TypeError.",
 				"examples": [
@@ -120,7 +120,7 @@
 				"inputs": [
 					{
 						"name": "analyticsHtml.snapshot",
-						"type": "ReturnType<typeof analyticsSnapshot>",
+						"type": "AnalyticsSnapshot",
 						"required": true,
 						"description": "The analytics snapshot, serialized in full into the page's data block: its generatedAt is printed in the 'Generated' line, and the page shows its summary, loops, jev and models fields as indented JSON. The function does no validation, so a circular reference or BigInt value makes JSON.stringify throw, and a null or undefined snapshot throws a TypeError.",
 						"examples": [

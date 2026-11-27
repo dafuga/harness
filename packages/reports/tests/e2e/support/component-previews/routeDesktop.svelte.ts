@@ -7,6 +7,7 @@ import type { DesktopData } from './desktopData.svelte';
 import { desktopData } from './sealedData';
 import { designPreviewPage } from './designCanvasPreviews';
 import { openRoute, page } from './router.svelte';
+import { catalogDesktopHome } from './hubHomeCatalogData';
 import type { PreviewProps } from './shared';
 const project = encodeURIComponent(desktopData.project.id);
 /** The tip of the orders branch at Pages, where the workspace opens; then under its project. */
@@ -14,7 +15,7 @@ const tip = `/harness/branch/${encodeURIComponent(desktopData.branch)}/pages`;
 const workspace = `/projects/${project}${tip}`;
 /** The SvelteKit route a Desktop page module is served under, and the address it is opened at. */
 export const desktopRoutes: Record<string, { route: string; path: string }> = {
-	// No project is chosen yet: the gate lists the one the bridge remembers.
+	// No project is chosen yet: the signed-in Home lists the one the bridge remembers.
 	'desktop.page.root': { route: '/', path: '/' },
 	'desktop.page.projects': { route: '/projects', path: '/projects' },
 	'desktop.page.designs': {
@@ -56,6 +57,7 @@ function routeBridge(desktop: DesktopData): DesktopBridge {
 	};
 	return {
 		...desktop.bridge,
+		homeSnapshot: async () => catalogDesktopHome,
 		projectOverview: async () => allStatesSnapshot(),
 		designCanvases: async () => designPreviewPage,
 		listProjects: async () => [{ id, name, kind: 'local', root }],

@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubSpecDocument.ts"],
-		"symbols": ["provideHubSpecDocuments", "hubSpecDocuments"]
+		"symbols": ["hubSpecDocumentKey", "provideHubSpecDocuments", "hubSpecDocuments"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -18,7 +18,7 @@
 				"name": "provideHubSpecDocuments.load",
 				"type": "LoadSpecDocument",
 				"required": true,
-				"description": "The host callback that loads an attachment through its approved transport."
+				"description": "Loads the requested attachment for the signed-in account through the host app."
 			}
 		],
 		"outputs": [
@@ -33,13 +33,7 @@
 				"description": "The loader set by an ancestor; it requests a document by attachment id."
 			}
 		],
-		"errors": [
-			{
-				"name": "BrowserApiRequestError",
-				"type": "thrown",
-				"description": "The host callback may reject an unavailable attachment."
-			}
-		],
+		"errors": [],
 		"errorStatus": "declared",
 		"operations": [
 			{
@@ -49,7 +43,7 @@
 						"name": "provideHubSpecDocuments.load",
 						"type": "LoadSpecDocument",
 						"required": true,
-						"description": "The host callback that loads an attachment through its approved transport."
+						"description": "Loads the requested attachment for the signed-in account through the host app."
 					}
 				],
 				"outputs": [
@@ -72,13 +66,7 @@
 						"description": "The loader set by an ancestor; it requests a document by attachment id."
 					}
 				],
-				"errors": [
-					{
-						"name": "BrowserApiRequestError",
-						"type": "thrown",
-						"description": "The host callback may reject an unavailable attachment."
-					}
-				],
+				"errors": [],
 				"errorStatus": "declared"
 			}
 		],

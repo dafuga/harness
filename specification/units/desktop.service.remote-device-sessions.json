@@ -426,7 +426,8 @@
 					{
 						"name": "phoneTrackerPull",
 						"type": "(input: Record<string, unknown>) => Promise<unknown>",
-						"description": "Returns an async reader for the bound device scope. The reader accepts version 1 and at most one cursor or continuation, and resolves to the hub's decoded JSON response of at most 128 KiB."
+						"description": "Returns an async reader for the bound device scope. The reader accepts version 1 and at most one cursor or continuation, and resolves to the hub's decoded JSON response of at most 128 KiB.",
+						"unknownReason": "Parsed Tracker projection JSON forwarded to the device without interpretation."
 					}
 				],
 				"errors": [
@@ -474,7 +475,8 @@
 					{
 						"name": "phoneTrackerPush",
 						"type": "(input: Record<string, unknown>, signal: AbortSignal) => Promise<unknown>",
-						"description": "Returns an async sender that strips the wire epoch, forwards the intent over loopback and decodes its receipt. Closing the device session cancels the request."
+						"description": "Returns an async sender that strips the wire epoch, forwards the intent over loopback and decodes its receipt. Closing the device session cancels the request.",
+						"unknownReason": "Parsed Tracker write answer forwarded to the device without interpretation."
 					}
 				],
 				"errors": [

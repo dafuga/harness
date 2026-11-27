@@ -155,7 +155,8 @@ export function buildHomeLiveOverview(sources: TrackerSources, now: number): Hom
 		projects: projects.slice(0, homeLiveLimits.projects),
 		machines: sources.machines.map((entry) => ({
 			name: homeText(entry.node, 200) ?? '',
-			status: entry.status
+			status: entry.status,
+			...(entry.remoteRuns !== undefined && { remoteRuns: entry.remoteRuns })
 		})),
 		hiddenRuns,
 		omittedRows:

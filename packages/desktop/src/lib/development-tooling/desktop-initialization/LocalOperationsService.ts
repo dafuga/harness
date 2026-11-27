@@ -8,6 +8,7 @@ import {
 	type Operation
 } from './LocalOperationsService.types';
 import { remoteMethods } from '../../../../../remote/src/index';
+import { homeMethods } from '../../../../../remote/src/models/networking-security/RemoteValues';
 import type { RemoteMethod, WireRequest } from '../../../../../remote/src/index';
 import { readProjectOverview } from '$reports/lib/projects-sessions/project-overview/readProjectOverview';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
@@ -17,9 +18,6 @@ import { binaryAnswer } from '../../../utils/reports-media/binaryAnswer';
 import { IpcRequestValidator } from '../../../validators/development-tooling/IpcRequestValidator';
 import { MacTrackerInboxService } from './MacTrackerInboxService';
 import { UnexpectedOverviewFieldsError } from './UnexpectedOverviewFieldsError';
-import { createHomeSnapshotReader } from './tracker-overview-publisher/createHomeSnapshotReader';
-import { createHomeChatWriter } from './tracker-overview-publisher/createHomeChatWriter';
-
 const controls: Record<string, keyof LocalControl> = {
 	'remote.status': 'status',
 	'remote.enable': 'enable',
@@ -30,11 +28,6 @@ const controls: Record<string, keyof LocalControl> = {
 };
 const withInput: (keyof LocalControl)[] = ['approvePairing', 'denyPairing', 'revokeDevice'];
 
-function assertNoFields(input: Fields) {
-	if (Object.keys(input).length)
-		throw new UnexpectedOverviewFieldsError('This operation takes no fields.');
-}
-
 /**
  * The one fixed overview. It takes no input, so a window cannot name a URL, a fetcher or a path:
  * any field left after the protocol epoch is refused before it is read. A Hub-configured Desktop
@@ -44,7 +37,8 @@ function overview(
 	input: Fields,
 	hubOverview?: () => Promise<OverviewSnapshot>
 ): Promise<OverviewSnapshot> {
-	assertNoFields(input);
+	if (Object.keys(input).length)
+		throw new UnexpectedOverviewFieldsError('This operation takes no fields.');
 	return hubOverview ? hubOverview() : readProjectOverview();
 }
 
@@ -55,8 +49,6 @@ function overview(
 export class LocalOperationsService {
 	private readonly payloads = new IpcRequestValidator();
 	private readonly tracker = new MacTrackerInboxService();
-	private readonly home = createHomeSnapshotReader(process.env.HARNESS_HUB_HOME_PROVIDER_FILE);
-	private readonly chat = createHomeChatWriter();
 	constructor(private readonly options: LocalOperationsOptions) {}
 	methods(): RemoteMethod[] {
 		return [...remoteMethods];
@@ -66,11 +58,7 @@ export class LocalOperationsService {
 			input: Fields = { ...request.input };
 		delete input.epoch;
 		if (method === 'projectOverview') return overview(input, this.options.hubOverview);
-		if (method === 'homeSnapshot') {
-			assertNoFields(input);
-			return this.home();
-		}
-		if (method === 'homeChat') return this.chat(input);
+		if (homeMethods.some((name) => name === method)) return this.home(method, input);
 		if (method === 'trackerInboxRead') return this.tracker.read(input);
 		if (method === 'trackerInboxWrite') return this.tracker.write(input);
 		if (Object.hasOwn(controls, method)) return this.control(controls[method], input);
@@ -82,6 +70,12 @@ export class LocalOperationsService {
 		if (method === 'artifact')
 			return binaryAnswer((value as Artifact).bytes, (value as Artifact).mediaType);
 		return method === 'image' ? binaryAnswer(value as Uint8Array) : value;
+	}
+	private home(method: RemoteMethod, input: Fields) {
+		if (method === 'homeChat' && this.options.homeChat) return this.options.homeChat(input);
+		if (method === 'homeSnapshot' && this.options.home && !Object.keys(input).length)
+			return this.options.home();
+		throw new DesktopOperationUnavailableError('Desktop Home operation unavailable.');
 	}
 	/** The services behind the control port validate what they are given. */
 	private control(name: keyof LocalControl, input: Fields): Promise<unknown> {

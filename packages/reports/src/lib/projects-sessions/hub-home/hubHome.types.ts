@@ -1,9 +1,6 @@
 // @harness-uid u_kda7xezayo
-import type { OverviewSnapshot } from '../project-overview/projectOverview.types';
-import type {
-	TrackerPlanning,
-	TrackerStage
-} from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
+import type { OverviewSnapshot, ProjectState } from '../project-overview/projectOverview.types';
+import type * as Planning from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 import type { HomeLiveOverview } from './homeLive.types';
 
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
@@ -93,8 +90,8 @@ export interface HomePlan {
 	project: string | null;
 	state: HomePlanState;
 	/** Older Home publishers omit stage and artifacts. */
-	stage?: TrackerStage;
-	planning?: TrackerPlanning;
+	stage?: Planning.TrackerStage;
+	planning?: Planning.TrackerPlanning;
 	updatedAt: string;
 	total: number;
 	done: number;
@@ -155,8 +152,16 @@ export interface HomeProviderReadings {
 	quota: HomeSubscription[] | null;
 }
 
+/** A visible Tracker project, including projects whose last task finished long ago. */
+export interface HomeTrackerProject {
+	name: string;
+	state: ProjectState;
+	needsYou: number;
+}
+
 export interface OwnerHomeSnapshot {
 	overview: OverviewSnapshot;
+	projectDirectory?: HomeTrackerProject[];
 	agents: HomeAgent[];
 	/** Every open structured ask, oldest first. Older Mac apps omit it. */
 	openAsks?: HomeOpenAsk[];

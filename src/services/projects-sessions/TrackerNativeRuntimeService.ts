@@ -94,7 +94,7 @@ export class TrackerNativeRuntimeService {
 		({ tick: this.telemetry, samples: this.fleetSamples } = fleet);
 		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring);
 		this.backups = composeTrackerBackups(this, options);
-		this.sync = composeTrackerResponder(store, runs, fleet.syncOptions, composed);
+		this.sync = composeTrackerResponder(this, runs, fleet.syncOptions, composed);
 	}
 
 	get admin() {

@@ -4,7 +4,8 @@ import { hubRead } from './hubSource';
 import type { HubSourceContext } from './hubSource';
 import { hubJson, hubFail } from './hubJson';
 import { hubMetadata } from './hub-metadata/hubMetadata';
-export async function hubRecords(context: HubSourceContext) {
+import type { ComponentManifest } from '../../../../../src/core/development-tooling/unitTypes.types';
+export async function hubRecords(context: HubSourceContext): Promise<ComponentManifest[]> {
 	await hubMetadata(context);
 	const entries = context.entries.filter((e) => /^specification\/units\/[^/]+\.json$/.test(e.path));
 	const units = await Promise.all(
