@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
+import { checkParts, checkSteps, planCheck } from '../scripts/run-checks';
 
 const workflow = readFileSync('.github/workflows/harness-verify.yml', 'utf8');
 /** The text of one job: from its key to the next job, or to the end of the file. */
@@ -8,15 +9,16 @@ function job(name: string): string {
 	const next = workflow.slice(start + 1).search(/\n {2}[\w-]+:\n/);
 	return start < 0 ? '' : workflow.slice(start, next < 0 ? undefined : start + 1 + next);
 }
-const check = job('check');
+const check = job('check-part');
+const gate = job('check');
 const verify = job('verify');
 const xcode = '/Applications/Xcode_26.3.app/Contents/Developer';
 /** Where a line of the verify job stands, to compare the order of its steps. */
 const at = (text: string): number => verify.indexOf(text);
 
 test('the full check stays on Linux with its display and dependency setup', () => {
-	expect(check, 'The full check must have time to finish every required stage').toContain(
-		'name: Full check\n    runs-on: ubuntu-latest\n    timeout-minutes: 120'
+	expect(check).toContain(
+		'name: Full check part (${{ matrix.part }})\n    runs-on: ubuntu-latest\n    timeout-minutes: 60\n'
 	);
 	const checkout = check.slice(check.indexOf('actions/checkout@'), check.indexOf('- name:'));
 	expect(checkout).toContain('ref: ${{ env.COMMIT }}');
@@ -30,9 +32,60 @@ test('the full check stays on Linux with its display and dependency setup', () =
 	expect(check, 'squash landing must retain immutable source review commits').toContain(
 		archiveRead
 	);
-	expect(check.indexOf(archiveRead)).toBeLessThan(check.indexOf('xvfb-run -a bun run check'));
-	expect(check).toContain('run: xvfb-run -a bun run check');
+	const run = 'run: xvfb-run -a bun run check --part "${{ matrix.part }}"\n';
+	expect(check.indexOf(archiveRead)).toBeLessThan(check.indexOf(run));
+	expect(check).toContain(run);
 	expect(check).not.toMatch(/macos|xcode|DEVELOPER_DIR/i);
+});
+
+test('CI runs every part, and one Full check job fails unless all of them pass', () => {
+	const matrix = check.match(/\n {8}part: \[([^\]]+)\]\n/)?.[1].split(', ');
+	expect(matrix, 'a part missing from the matrix would never run').toEqual(
+		Object.keys(checkParts ?? {})
+	);
+	expect(check).toContain('fail-fast: false\n');
+	expect(gate).toContain('name: Full check\n');
+	expect(gate).toContain('needs: check-part\n');
+	// A failed or timed out part must reach the gate. A run replaced by its twin must not turn it red.
+	expect(gate, 'a cancelled run must not report a failed full check').toContain(
+		'if: ${{ !cancelled() }}\n'
+	);
+	expect(gate).toContain("run: test '${{ needs.check-part.result }}' = success");
+});
+
+test('the parts together keep every step of the full check, in order', () => {
+	const parts = Object.values(checkParts);
+	expect(new Set(parts.flatMap((part) => part.steps))).toEqual(new Set(checkSteps));
+	for (const { steps } of parts) {
+		const positions = steps.map((step) => checkSteps.indexOf(step));
+		expect(positions).toEqual([...positions].sort((left, right) => left - right));
+		expect(steps, 'every part starts clean and needs its own kernel').toContain('build:kernel');
+	}
+	// Only the builds a later step reads may run twice. Each shard of test:e2e is its own slice.
+	for (const step of checkSteps.filter((name) => !['build:kernel', 'build'].includes(name))) {
+		const owners = parts.filter((part) => part.steps.includes(step));
+		if (step !== 'test:e2e') expect(owners, step).toHaveLength(1);
+		else
+			expect(owners.map((part) => part.vitestShard)).toEqual(
+				owners.map((_, index) => `${index + 1}/${owners.length}`)
+			);
+	}
+	for (const name of ['test:package', 'check:desktop', 'check:game'])
+		expect(parts.find((part) => part.steps.includes(name))?.steps).toContain('build');
+});
+
+test('a selected part runs its own steps and an unknown part runs nothing', () => {
+	const whole = planCheck(['--extra']);
+	expect(whole.steps).toEqual(checkSteps);
+	expect(whole.command('test:e2e')).toEqual(['run', 'test:e2e']);
+	expect(whole.command('check:game')).toEqual(['run', 'check:game', '--extra']);
+	expect(whole.command('units:check')).toEqual(['src/cli/index.ts', 'units', 'check']);
+	const shard = planCheck(['--part', 'e2e-2']);
+	expect(shard.steps).toEqual(checkParts['e2e-2'].steps);
+	expect(shard.command('test:e2e')).toEqual(['run', 'test:e2e', '--shard=2/2']);
+	expect(shard.command('build:kernel')).toEqual(['run', 'build:kernel']);
+	for (const args of [['--part'], ['--part', 'nope'], ['--part', 'toString']])
+		expect(() => planCheck(args)).toThrow('Unknown check part');
 });
 
 test('the exact commit is verified on Apple silicon macOS, where native evidence exists', () => {
@@ -109,5 +162,5 @@ test('nothing is relaxed, mapped to a deployment or added as another workflow', 
 	expect(workflow).not.toMatch(/\|\| true|environment:|deploy|secrets\.|SKIP|allow[-_]failure/i);
 	expect(workflow).not.toMatch(/budget (establish|approve)|HARNESS_PROFILE_LABEL/);
 	expect(workflow).toMatch(/^permissions:\n {2}contents: read\n/m);
-	expect(workflow.match(/^ {2}[\w-]+:\n {4}name:/gm)).toHaveLength(2);
+	expect(workflow.match(/^ {2}[\w-]+:\n {4}name:/gm)).toHaveLength(3);
 });
