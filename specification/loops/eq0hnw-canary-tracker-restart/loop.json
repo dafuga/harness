@@ -2,7 +2,7 @@
 	"name": "eq0hnw-canary-tracker-restart",
 	"goal": "The needs-you release canary rides out a Tracker daemon restart: a command the service did not answer is repeated, so a restart does not abort a tap wait, leave a test ask open or lose the release record",
 	"createdAt": "2026-11-27T12:21:00.948Z",
-	"updatedAt": "2026-11-27T12:23:57.630Z",
+	"updatedAt": "2026-11-27T17:16:25.786Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -53,7 +53,9 @@
 		{
 			"id": "verify",
 			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T17:16:25.786Z",
+			"evidence": "Ticked with this loop's green commit 64b0c8aa58 checked out, because the loop tool binds verify to the commit of the green record. The project checks ran on the LATER head 46321a0682, which contains 64b0c8aa58: GitHub run 46006933300, parts static-unit, e2e-1, e2e-2, package, desktop and apps all succeeded in one run (Linux, 2026-11-27 16:27-17:10Z); together they are every step of bun run check (checkParts), incl. audit:root, units check and check:hub with its browser tests. A green record cannot be re-taken at that head: later fixes and main merges changed frozen test/config files. When recorded, the 'Full check' job, which only asserts the six results, was still queued. NOT run: macOS job 'Verify the exact commit' (no runner yet). No UI flow is changed (only UI-package file in the PR is packages/hub/README.md), so no new screenshots; the spec forbids screenshots of the live Hub. The 6 restart tests (test/needs-you-canary-restart.test.ts) are in that run. No tracker restart happened during the later live run, so riding one out live is unseen."
 		}
 	],
 	"evaluators": [
