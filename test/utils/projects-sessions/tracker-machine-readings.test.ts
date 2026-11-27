@@ -8,6 +8,7 @@ import {
 } from '../../../src/adapters/projects-sessions/tracker-machine-sampler-adapter/trackerMemoryParsers';
 import {
 	groupTrackerProcesses,
+	groupTrackerSystemProcesses,
 	parseTrackerProcesses
 } from '../../../src/utils/projects-sessions/groupTrackerProcesses';
 import { TrackerMachineSamplerAdapter } from '../../../src/adapters/projects-sessions/TrackerMachineSamplerAdapter';
@@ -47,13 +48,20 @@ test('groups agent sessions without keeping any command line', () => {
 			'11 10 2048 5.5 /Users/x/Library/Application Support/bin/claude',
 			'12 11 1024 90.0 node',
 			'20 1 4096 50,0 node',
-			'30 1 512 1.0 node'
+			'30 1 512 1.0 node',
+			'50 1 1024 210.0 /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator',
+			'51 50 4096 50.0 /Library/Developer/CoreSimulator/Volumes/iOS/launchd_sim',
+			'60 1 4096 23.0 node',
+			'61 60 2048 12.0 node',
+			'62 1 4096 22.0 node'
 		].join('\n')
 	);
 	const args = new Map([
 		[12, 'node node_modules/.bin/vitest run --token=fixture-secret'],
 		[20, 'node node_modules/.bin/vitest run'],
-		[30, 'node server.js']
+		[30, 'node server.js'],
+		[60, 'node /tmp/harness-services-aa/helper.mjs --token=fixture-secret'],
+		[62, 'node /tmp/harness-services-bb/helper.mjs']
 	]);
 	const groups = groupTrackerProcesses(rows, args, new Map([[10, 'auto-abc123-r4']]));
 	expect(groups).toEqual([
@@ -67,7 +75,19 @@ test('groups agent sessions without keeping any command line', () => {
 		},
 		{ kind: 'test-runner', pid: 20, label: 'test-runner pid 20', procs: 1, cpu: 50, rss_mb: 4 }
 	]);
-	expect(JSON.stringify(groups)).not.toContain('fixture-secret');
+	const system = groupTrackerSystemProcesses(rows, args, groups);
+	expect(system).toEqual(
+		expect.arrayContaining([
+			expect.objectContaining({ label: 'iOS Simulator', procs: 2, cpu: 260, rss_mb: 5 }),
+			expect.objectContaining({
+				label: 'Orphaned Harness test helpers',
+				procs: 3,
+				cpu: 57,
+				rss_mb: 10
+			})
+		])
+	);
+	expect(JSON.stringify([...groups, ...system])).not.toContain('fixture-secret');
 });
 
 test('a sample of this computer passes the fleet schema', async () => {

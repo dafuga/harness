@@ -52,11 +52,19 @@ describe('how the browser receives it', () => {
 	test('the overview arrives from the linked computer, with credentials redacted', async () => {
 		const secret = 'ghp_' + 'a'.repeat(36);
 		itemOf(liveRuns()[0].item_id).title = `Use ${secret}`;
+		const reason = '5-min load 42.9 > 15 (1.5x 10 cores)';
+		const machine = { node: 'harbor-mbp-2', status: 'overloaded', reasons: [reason] };
+		tracker.machines.push(machine);
 		const answer = await recordedMacAnswer(tracker);
 		answer.liveOverview.projects[0].rows[0].title = `Again ${secret}`;
 		const { snapshot } = await linked(answer);
 
 		expect(snapshot?.liveOverview?.projects).toHaveLength(answer.liveOverview.projects.length);
+		expect(snapshot?.liveOverview?.machines).toContainEqual({
+			name: machine.node,
+			status: machine.status,
+			reason
+		});
 		expect(JSON.stringify(snapshot)).not.toContain(secret);
 	});
 

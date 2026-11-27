@@ -44,7 +44,10 @@ test('judges a computer as ok, busy, overloaded or offline', () => {
 test('absolute free space protects a disk; a low percentage alone does not', () => {
 	const disk = { mount: '/', total_gb: 1000, free_gb: 60, free_pct: 6 };
 	expect(status({ disks: [disk] }).status).toBe('ok');
-	expect(status({ disks: [{ ...disk, free_gb: 25 }] }).status).toBe('busy');
+	expect(status({ platform: 'linux', disks: [{ ...disk, free_gb: 25 }] }).status).toBe('busy');
+	expect(status({ disks: [{ ...disk, free_gb: 59 }] }).status).toBe('overloaded');
+	expect(status({ disks: [{ ...disk, free_gb: 60 }] }).status).toBe('ok');
+	expect(status({ platform: 'linux', disks: [{ ...disk, free_gb: 59 }] }).status).toBe('ok');
 	expect(status({ disks: [{ ...disk, free_gb: 19 }] }).status).toBe('overloaded');
 });
 

@@ -1,41 +1,16 @@
-import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
 import { recordedTracker } from '../../test/support/recordedTracker';
-import { liveRows, macAnswer, overview, productionHome } from './hub-home-live-fixture';
+import {
+	expandProjects,
+	expectEvenHeaderSpacing,
+	expectNoSidewaysScroll,
+	liveRows,
+	macAnswer,
+	overview,
+	productionHome
+} from './hub-home-live-fixture';
 
 test.setTimeout(90000);
-
-async function expectNoSidewaysScroll(page: Page, width: number) {
-	const wide = await page.evaluate(() => {
-		const rows = [...document.querySelectorAll('.hh-live-overview *')];
-		return {
-			page: document.documentElement.scrollWidth,
-			right: Math.max(...rows.map((node) => node.getBoundingClientRect().right))
-		};
-	});
-	expect(wide.page).toBeLessThanOrEqual(width);
-	expect(wide.right).toBeLessThanOrEqual(width);
-}
-
-async function expectEvenHeaderSpacing(page: Page) {
-	const [heading, summary, source] = await Promise.all(
-		[
-			overview(page).getByRole('heading', { name: 'Live overview' }),
-			overview(page).getByRole('status'),
-			overview(page).getByText(/^From \d+ of /)
-		].map(async (line) => (await line.boundingBox())!)
-	);
-	const above = summary.y - (heading.y + heading.height);
-	const below = source.y - (summary.y + summary.height);
-	expect(Math.abs(below - above)).toBeLessThanOrEqual(2);
-	expect(below).toBeLessThanOrEqual(8);
-}
-
-async function expandProjects(page: Page) {
-	await expect(overview(page).locator('details.hh-live-project > summary').first()).toBeVisible();
-	const summaries = overview(page).locator('details.hh-live-project:not([open]) > summary');
-	while (await summaries.count()) await summaries.first().click();
-}
 
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
@@ -46,6 +21,9 @@ for (const [device, width, height] of [
 	}) => {
 		const tracker = recordedTracker();
 		await page.setViewportSize({ width, height });
+		const overload = '5-min load 42.9 > 15 (1.5x 10 cores)';
+		const machineReading = { node: 'harbor-mbp-2', status: 'overloaded', reasons: [overload] };
+		tracker.machines.push(machineReading);
 		const answer = await macAnswer(tracker);
 		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
 		const requests = await productionHome(page, answer);
@@ -72,6 +50,18 @@ for (const [device, width, height] of [
 				path: test.info().outputPath(`live-collapsed-${device}.png`)
 			});
 		}
+		const machine = page
+			.getByRole('list', { name: 'Computers' })
+			.getByRole('listitem')
+			.filter({ hasText: 'harbor-mbp-2' });
+		if (device === 'desktop' && process.env.TAKE_SCREENSHOT === 'true') {
+			await page.setViewportSize({ width: 768, height: 1024 });
+			await page.screenshot({ path: test.info().outputPath('home-top-tablet.png') });
+			await expectNoSidewaysScroll(page, 768);
+			await page.setViewportSize({ width, height });
+		}
+		await expect(machine).toContainText('overloaded');
+		await expect(machine).toContainText(overload);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
 		const projects = new Set(tracker.items.map((item) => item.agent));

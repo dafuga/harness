@@ -2,12 +2,15 @@ import { DatabaseSync } from 'node:sqlite';
 import { nativeTrackerArgs } from '../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
 import { formatNativeTrackerInspection } from '../../src/commands/projects-sessions/tracker-command/formatNativeTrackerInspection';
 import { TrackerSyncAuthService } from '../../src/services/networking-security/TrackerSyncAuthService';
+import { TrackerPersistenceService } from '../../src/services/projects-sessions/TrackerPersistenceService';
+import { TrackerSpokeSyncService } from '../../src/services/projects-sessions/TrackerSpokeSyncService';
+import type { TrackerWireValue } from '../../src/services/projects-sessions/TrackerHubSyncService.types';
 import { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
 import type { TrackerNativeRuntimeOptions } from '../../src/services/projects-sessions/TrackerNativeRuntimeService.types';
 import { trackerFleetMachineStore } from '../../src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks';
 import type { Reading } from './trackerFleetFixture.types';
 import { fixtureSecret, wire } from './trackerDispatchQueueFixture';
-import { resourceSample } from './trackerMachineFixture';
+import { resourceSample, runnerReport } from './trackerMachineFixture';
 
 export const hubNode = 'daniel-primary-mbp';
 export const peerNode = 'harbor-mbp-2';
@@ -67,4 +70,29 @@ export async function call(runtime: TrackerNativeRuntimeService, args: string[])
 		data,
 		text: response.ok ? (formatNativeTrackerInspection(command, data) ?? '') : ''
 	};
+}
+
+export function report(nodes: ReturnType<typeof fleet>, node: string, projects: string[]) {
+	const at = nodes.clock.at;
+	return {
+		node,
+		at: new Date(at).toISOString(),
+		runner: runnerReport(at, projects),
+		resources: resourceSample(at)
+	};
+}
+
+/** Send one launcher report to the hub as the peer would. */
+export async function exchange(nodes: ReturnType<typeof fleet>, sample: ReturnType<typeof report>) {
+	const db = new DatabaseSync(':memory:');
+	try {
+		const client = new TrackerSpokeSyncService({
+			store: new TrackerPersistenceService(db, sample.node),
+			secret: fixtureSecret,
+			transport: wire(nodes.hub.sync!)
+		});
+		await client.exchangeMachine(sample as unknown as TrackerWireValue, []);
+	} finally {
+		db.close();
+	}
 }

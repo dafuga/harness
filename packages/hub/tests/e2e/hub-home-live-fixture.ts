@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import { expect, type Page } from '../../../../test/support/browserTest';
 import { buildHomeLiveOverview } from '../../../reports/src/lib/projects-sessions/hub-home/homeLiveOverview';
 import {
 	buildHomeSnapshot,
@@ -37,3 +37,35 @@ export const overview = (page: Page) =>
 	page.getByRole('region', { name: 'Live overview', exact: true });
 export const liveRows = (page: Page) =>
 	overview(page).locator('.hh-live-row[data-state="running"]');
+
+export async function expectNoSidewaysScroll(page: Page, width: number) {
+	const wide = await page.evaluate(() => {
+		const rows = [...document.querySelectorAll('.hh-live-overview *')];
+		return {
+			page: document.documentElement.scrollWidth,
+			right: Math.max(...rows.map((node) => node.getBoundingClientRect().right))
+		};
+	});
+	expect(wide.page).toBeLessThanOrEqual(width);
+	expect(wide.right).toBeLessThanOrEqual(width);
+}
+
+export async function expandProjects(page: Page) {
+	await expect(overview(page).locator('details.hh-live-project > summary').first()).toBeVisible();
+	const summaries = overview(page).locator('details.hh-live-project:not([open]) > summary');
+	while (await summaries.count()) await summaries.first().click();
+}
+
+export async function expectEvenHeaderSpacing(page: Page) {
+	const [heading, summary, source] = await Promise.all(
+		[
+			overview(page).getByRole('heading', { name: 'Live overview' }),
+			overview(page).getByRole('status'),
+			overview(page).getByText(/^From \d+ of /)
+		].map(async (line) => (await line.boundingBox())!)
+	);
+	const above = summary.y - (heading.y + heading.height);
+	const below = source.y - (summary.y + summary.height);
+	expect(Math.abs(below - above)).toBeLessThanOrEqual(2);
+	expect(below).toBeLessThanOrEqual(8);
+}
