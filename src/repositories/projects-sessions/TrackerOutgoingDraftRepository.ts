@@ -66,13 +66,13 @@ export class TrackerOutgoingDraftRepository {
 		return row ? readDraft(row as TrackerOutgoingDraftRow) : undefined;
 	}
 
-	list(conversationId: string, limit = 100): TrackerOutgoingDraft[] {
+	list(conversationId: string, limit = 100, by?: string): TrackerOutgoingDraft[] {
 		const rows = this.database
 			.prepare(
-				`SELECT ${fields} FROM outgoing_drafts WHERE conversationId = ?
+				`SELECT ${fields} FROM outgoing_drafts WHERE conversationId = ? AND (? IS NULL OR by = ?)
 				ORDER BY at DESC, id DESC LIMIT ?`
 			)
-			.all(conversationId, limit) as TrackerOutgoingDraftRow[];
+			.all(conversationId, by ?? null, by ?? null, limit) as TrackerOutgoingDraftRow[];
 		return rows.map(readDraft);
 	}
 
@@ -80,52 +80,49 @@ export class TrackerOutgoingDraftRepository {
 		return this.change(
 			version,
 			"message = ?, revision = revision + 1, delivery = 'idle', attempt = NULL",
-			actionable,
 			[JSON.stringify(message)]
 		);
 	}
 
 	discard(version: TrackerOutgoingRevision) {
-		return this.change(
-			version,
-			"status = 'discarded', delivery = 'idle', attempt = NULL",
-			actionable,
-			[]
-		);
+		return this.change(version, "status = 'discarded', delivery = 'idle', attempt = NULL", []);
 	}
 
 	reserve(version: TrackerOutgoingRevision, attempt: string) {
-		return this.change(version, "delivery = 'sending', attempt = ?", actionable, [attempt]);
+		return this.change(version, "delivery = 'sending', attempt = ?", [attempt]);
 	}
 
 	finish(version: TrackerOutgoingAttempt, result: TrackerOutgoingResult) {
 		const delivered = result.kind === 'sent';
 		return this.change(
 			version,
-			'status = ?, delivery = ?, receipt = ?',
-			"status = 'draft' AND delivery IN ('sending', 'unconfirmed') AND attempt = ?",
+			'status = ?, delivery = ?, receipt = ?, revision = revision + ?',
 			[
 				delivered ? 'sent' : 'draft',
 				delivered ? 'idle' : result.kind,
 				delivered ? JSON.stringify(result.receipt) : null,
-				version.attempt
-			]
+				result.kind === 'failed' ? 1 : 0
+			],
+			version.attempt
 		);
 	}
 
 	private change(
 		{ id, revision, by, at }: TrackerOutgoingRevision,
 		updates: string,
-		where: string,
-		bindings: SqliteValue[]
+		bindings: SqliteValue[],
+		attempt?: string
 	): TrackerOutgoingDraft | undefined {
-		const fieldCount = updates.split('?').length - 1;
+		const where =
+			attempt === undefined
+				? actionable
+				: "status = 'draft' AND delivery IN ('sending', 'unconfirmed') AND attempt = ?";
 		const row = this.database
 			.prepare(
 				`UPDATE outgoing_drafts SET ${updates}, updatedBy = ?, updatedAt = ?
 			WHERE id = ? AND revision = ? AND ${where} RETURNING ${fields}`
 			)
-			.get(...bindings.slice(0, fieldCount), by, at, id, revision, ...bindings.slice(fieldCount));
+			.get(...bindings, by, at, id, revision, ...(attempt === undefined ? [] : [attempt]));
 		return row ? readDraft(row as TrackerOutgoingDraftRow) : undefined;
 	}
 }

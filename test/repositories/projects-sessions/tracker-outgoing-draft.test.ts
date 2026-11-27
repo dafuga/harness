@@ -84,7 +84,8 @@ test('blocks uncertain delivery and admits a new attempt after confirmed non-del
 	expect(repo.finish(first, { kind: 'unconfirmed' })?.delivery).toBe('unconfirmed');
 	expect(reopen().reserve(version, 'attempt-b')).toBeUndefined();
 	expect(repo.discard(version)).toBeUndefined();
-	expect(repo.finish(first, { kind: 'failed' })?.delivery).toBe('failed');
-	expect(repo.reserve(version, 'attempt-b')?.delivery).toBe('sending');
+	expect(repo.finish(first, { kind: 'failed' })).toMatchObject({ delivery: 'failed', revision: 2 });
+	expect(repo.reserve(version, 'replayed-tap')).toBeUndefined();
+	expect(repo.reserve({ ...version, revision: 2 }, 'attempt-b')?.delivery).toBe('sending');
 	expect(repo.finish(first, { kind: 'unconfirmed' })).toBeUndefined();
 });
