@@ -12,7 +12,7 @@ const live = process.env.HARNESS_TEST_CONTAINER_BROWSER === '1';
  * against a real container with its own throwaway profile.
  */
 test.skipIf(!live)(
-	'a real container browser is read over docker exec and publishes no port',
+	'a real container browser is read and navigated over private Docker pipes',
 	{ timeout: 180_000 },
 	async () => {
 		const script = resolve(import.meta.dirname, 'support/containerBrowserLive.ts');
@@ -25,7 +25,8 @@ test.skipIf(!live)(
 			webdriver: false,
 			headless: false,
 			posts: [{ id: '12345', author: 'fixture', text: 'Hello from a fixture', likes: 1204 }],
-			tab: 'clicked'
+			tab: 'clicked',
+			navigation: 'Back, Forward, Reload, Home and URL acted on the popup'
 		});
 	}
 );
