@@ -6922,6 +6922,15 @@
 			"definition": "ae33aafa7296de2b03252581b006603800be4ef0d6eb07d3f7a53d59d0da24e0",
 			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
 			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "hub.function.hub-runtime",
+			"name": "hubRuntime",
+			"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
+			"to": "packages/hub/src/routes/api/[...path]/hubRuntime.ts",
+			"ownerSource": "packages/hub/src/routes/api/[...path]/+server.ts",
+			"definition": "0221e29418ba511059ec27966139419a15b970acd2326e591d37843f82b51036",
+			"reason": "Expose the configured verified owner identity for the read-only projects fallback."
 		}
 	],
 	"retiredOwners": [
