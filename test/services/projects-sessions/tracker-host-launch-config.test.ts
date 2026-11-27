@@ -50,6 +50,27 @@ test('configured learning, ladder, Claude window and default ETA reach the launc
 		}
 	}));
 
+test('an explicit provider in the native config reaches the actual launcher and its receipt', () =>
+	withTempDir('hnt-provider-', async (root) => {
+		const fixture = configuredLaunchRuntime(root, {
+			routing: { preferredProvider: { provider: 'codex' } }
+		});
+		try {
+			expect(await launchFixtureItem(fixture, 'next200004')).toMatchObject({
+				model: 'gpt-6.2-sol',
+				effort: 'medium',
+				reason: expect.stringContaining('Codex preferred')
+			});
+			expect(() =>
+				configuredLaunchRuntime(root, {
+					routing: { preferredProvider: { provider: 'claude', until: 'tomorrow' } }
+				})
+			).toThrow();
+		} finally {
+			fixture.database.close();
+		}
+	}));
+
 test('configured run limits reach the dispatch policy', () =>
 	withTempDir('hnt-limit-', async (root) => {
 		const { database, runtime } = configuredLaunchRuntime(root);
