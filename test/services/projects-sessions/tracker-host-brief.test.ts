@@ -42,7 +42,18 @@ test('every session brief points browser work at the automation Chrome, not the 
 test('every session brief requires per-requirement, per-computer proof before tracker done', () => {
 	const completion = '## Completion and worktree cleanup\nRun tracker done.';
 	for (const recovery of [false, true]) {
-		const brief = formatTrackerHostBrief(item, completion, { recovery });
+		const brief = formatTrackerHostBrief(
+			{ ...item, title: 'Review database migration' },
+			completion,
+			{ recovery }
+		);
+		expect(brief).toContain('Never merge into a Greymass repository');
+		expect(brief).toContain('standing authorization for Harness PRs');
+		expect(brief).toMatch(/production.{0,100}explicit approval/i);
+		expect(brief).toMatch(/database change.*approval before.*irreversible/i);
+		expect(brief).toContain('tracker check "<topic>"');
+		expect(brief).toMatch(/ignored.{0,80}do not raise/i);
+		expect(brief).toMatch(/update.*tests.*run them/i);
 		expect(brief).toContain('reread every note with `tracker show <id> --json`');
 		expect(brief).toContain('including appended ones) to evidence for each named computer');
 		expect(brief).toContain('wait out any grace period');
@@ -78,6 +89,7 @@ test('a truncated Docker brief keeps the done proof rule within its 15,900 byte 
 			brief: formatTrackerHostBrief(long, completion)
 		} as Parameters<typeof managedBrief>[0]);
 		expect(brief).toContain(trackerDoneProofRule);
+		expect(brief).toContain('Never merge into a Greymass repository');
 		expect(brief).toContain('Read the full task with `tracker show abcdef1234567890`.');
 		expect(brief).not.toContain('�');
 		expect(Buffer.byteLength(brief)).toBeLessThanOrEqual(15_900);

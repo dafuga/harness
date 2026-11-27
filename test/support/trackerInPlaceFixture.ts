@@ -1,4 +1,5 @@
-import { mkdirSync, readdirSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, realpathSync } from 'node:fs';
+import { expect } from 'vitest';
 import { join } from 'node:path';
 import { trackerManagedHostLauncher } from '../../src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedHostLauncher';
 import type { TrackerRunReceipt } from '../../src/services/agents-providers/TrackerDispatcherService.types';
@@ -41,4 +42,19 @@ export function inPlaceRun({ runId }: TrackerHostStartRequest) {
 		auto_token: 'reserved-fixture',
 		attempt: 1
 	} as unknown as TrackerRunReceipt;
+}
+
+export function verifyInPlaceBrief(
+	config: ReturnType<typeof managedFixtureBindings>['config'],
+	ops: string
+) {
+	const invocation = JSON.parse(
+		readFileSync(join(config.native.profile, 'invoked.ndjson'), 'utf8')
+	);
+	expect(invocation.cwd).toBe(realpathSync(ops));
+	const [attempt] = readdirSync(config.stateDirectory);
+	const brief = readFileSync(join(config.stateDirectory, attempt, 'brief.md'), 'utf8');
+	expect(brief).toContain('in place');
+	expect(brief).toContain(invocation.cwd);
+	expect(brief).not.toContain('private git worktree');
 }
