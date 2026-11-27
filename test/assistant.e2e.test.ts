@@ -61,9 +61,10 @@ test('harness assistant run refuses a different bot identity before any live act
 			'--credentials',
 			root
 		];
-		await expect(
-			promisify(execFile)('bun', command, { env: { ...process.env, HOME: root } })
-		).rejects.toMatchObject({ code: 1, stderr: expect.stringContaining('identity-mismatch') });
+		await expect(promisify(execFile)('bun', command)).rejects.toMatchObject({
+			code: 1,
+			stderr: expect.stringContaining('identity-mismatch')
+		});
 		expect((await readFile(calls, 'utf8')).trim()).toBe('/api/auth.test');
 	});
 });

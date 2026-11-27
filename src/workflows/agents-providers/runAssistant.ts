@@ -31,14 +31,14 @@ import { ProjectAssistantError } from '../../core/agents-providers/ProjectAssist
 export async function runAssistant(input: AssistantCommandOptions): Promise<void> {
 	const settings = await readAssistantConfig(input.config);
 	const config = settings.assistant;
+	const runtime = createRuntime(input, settings);
+	await runtime.slack.identity();
 	const plan = await qaRecipe(input);
 	if (plan && !settings.qa) throw new ProjectAssistantError('QA configuration is required.');
 	const root = join(homedir(), '.harness', 'assistant', config.project);
 	const lock = new QaSyncStateRepository(join(root, 'assistant.json'));
 	await lock.exclusive(async () => {
-		const runtime = createRuntime(input, settings);
 		const { github, model, slack, media, trackerRun } = runtime;
-		await slack.identity();
 		const tracker = new TrackerCliAdapter({ ...config.tracker, run: trackerRun });
 		const canvas =
 			settings.canvas && assistantCanvas(settings.canvas, github, media, join(root, 'canvas.json'));
