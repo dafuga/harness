@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.strings-link-segments",
+	"kind": "function",
+	"title": "linkSegments",
+	"responsibility": "Owns the linkSegments shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/strings/linkSegments.ts"],
+		"symbols": ["linkSegments", "hasWebLink"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "linkSegments.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "hasWebLink.text",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "linkSegments",
+				"type": "{ text: string; href?: string }[]"
+			},
+			{
+				"name": "hasWebLink",
+				"type": "boolean"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "linkSegments",
+				"inputs": [
+					{
+						"name": "linkSegments.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "linkSegments",
+						"type": "{ text: string; href?: string }[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasWebLink",
+				"inputs": [
+					{
+						"name": "hasWebLink.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasWebLink",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/strings/linkSegments.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/strings/linkSegments.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -13,6 +13,8 @@ Daniel, 26 Nov 2026 (esqhv8, part of dzmj43). Hub Home layout updated 27 Nov (qw
 - The Chief of Staff card shows its status and one action, Open chat. The conversation and
   composer open in a bottom-right overlay on desktop and a full-screen sheet on phone.
   Chief of Staff is reachable with or without a current Tracker item.
+- Home callers can open the Chief of Staff overlay with an attached item. The overlay displays the
+  item title and sends its title, ID and optional details in the next user-submitted message.
 - Each session's "Message" button opens its chat, which sends to that session's one live run,
   named as `<computer>#<run>`. A session without a live run can only take a Tracker note.
 - The Hub hands a message to a linked Mac over the end-to-end encrypted device connection

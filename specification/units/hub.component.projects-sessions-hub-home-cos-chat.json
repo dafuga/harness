@@ -46,12 +46,6 @@
 				"type": "SendHomeChat",
 				"required": true,
 				"description": "Sends one Home message through a linked computer or the Hub queue."
-			},
-			{
-				"name": "HubHomeCosChat.trigger",
-				"type": "HTMLElement | null",
-				"required": false,
-				"default": null
 			}
 		],
 		"outputs": [
@@ -69,6 +63,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
 			"via": "import",
 			"origin": "derived"
 		},

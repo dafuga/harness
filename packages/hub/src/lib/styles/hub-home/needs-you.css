@@ -174,3 +174,44 @@
 .hh-home .hh-msg[data-status='refused'] .hh-msg-at {
 	color: var(--hx-color-error);
 }
+
+.hh-home .hh-needs-linked {
+	grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) auto auto;
+	cursor: auto;
+}
+
+.hh-home .hh-needs-linked .po-action,
+.hh-home .hh-linked-pick {
+	min-height: 44px;
+}
+
+.hh-home .hh-choice-linked {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.hh-home .hh-choices-compact .hh-choice-linked {
+	flex-wrap: wrap;
+	max-width: 100%;
+	white-space: normal;
+}
+
+.hh-home .hh-choices-compact .hh-choice-linked strong {
+	min-width: 0;
+	overflow: visible;
+}
+
+.hh-home .hh-cos-context {
+	padding-block-end: var(--hx-space-8);
+	border-bottom: var(--hx-border-thin) solid var(--hx-color-border);
+}
+
+@media (max-width: 560px) {
+	.hh-home .hh-needs-linked {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.hh-home .hh-needs-linked .po-action {
+		justify-self: start;
+	}
+}

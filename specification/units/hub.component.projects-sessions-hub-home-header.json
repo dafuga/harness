@@ -38,6 +38,11 @@
 				"type": "HomeView",
 				"required": true,
 				"description": "Home data, project snapshots, source availability and clock used for presentation."
+			},
+			{
+				"name": "HubHomeHeader.link",
+				"type": "RealtimeState | null",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -70,6 +75,11 @@
 		},
 		{
 			"unit": "hub.function.browser-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-live",
 			"via": "import",
 			"origin": "derived"
 		},

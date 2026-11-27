@@ -9,7 +9,12 @@
 		HomeChatReceipt
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { currentAgent } from './hubHomePresentation';
-	import { composerFeedback, composedMessage as composed } from './hubHomeMessages';
+	import {
+		composerFeedback,
+		composedMessage as composed,
+		homeChatItemSuffix
+	} from './hubHomeMessages';
+	import type { HomeChatItemContext } from './hubHomeChatContext.types';
 	import type { SendHomeChat } from './hubHomeView.types';
 
 	let {
@@ -20,7 +25,8 @@
 		label = 'Message',
 		draft = $bindable(''),
 		pending = $bindable(false),
-		feedback = $bindable('')
+		feedback = $bindable(''),
+		itemContext
 	}: {
 		agents: HomeAgent[];
 		agentId?: string;
@@ -29,10 +35,13 @@
 		draft?: string;
 		pending?: boolean;
 		feedback?: string;
+		itemContext?: HomeChatItemContext;
 		send: SendHomeChat;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 	} = $props();
 	let recipient = $state('');
+	const suffix = $derived(homeChatItemSuffix(itemContext));
+	const maxLength = $derived(2000 - suffix.length);
 	/** Chief of Staff is always reachable; another session needs a Tracker item to write to. */
 	const options = $derived(agents.filter((agent) => agent.itemId || agent.id === 'cos'));
 	const active = $derived(
@@ -42,8 +51,8 @@
 	async function post(event: SubmitEvent) {
 		event.preventDefault();
 		const text = draft.trim();
-		if (!active || !text || pending) return;
-		const message = composed(active, text);
+		if (!active || !text || pending || text.length > maxLength) return;
+		const message = composed(active, text + suffix);
 		if (!message) return;
 		pending = true;
 		feedback = '';
@@ -81,10 +90,15 @@
 			class="hh-composer-input"
 			placeholder={`Message ${active.name}…`}
 			aria-label={label}
-			maxlength={2000}
+			maxlength={maxLength}
 			bind:value={draft}
 		/>
-		<hx-button class="hh-send" type="submit" aria-label="Send" disabled={pending || !draft.trim()}>
+		<hx-button
+			class="hh-send"
+			type="submit"
+			aria-label="Send"
+			disabled={pending || !draft.trim() || draft.trim().length > maxLength}
+		>
 			<HarnessIcon name="arrow-right" size={18} />
 		</hx-button>
 	</hx-form>

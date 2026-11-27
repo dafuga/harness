@@ -45,6 +45,45 @@ async function above(action: Locator, list: Locator) {
 	expect(button.y + button.height).toBeLessThanOrEqual(top.y);
 }
 
+const itemLinks = {
+	question: `https://example.invalid/decision/${'long-'.repeat(32)}end?view=full#top`,
+	title: 'https://example.invalid/item',
+	label: 'https://example.invalid/option',
+	effect: 'http://example.invalid/explanation',
+	note: 'https://example.invalid/note'
+};
+
+async function checkLink(scope: Page | Locator, url: string) {
+	const link = scope.getByRole('link', { name: url, exact: true }).first();
+	await expect(link).toBeVisible();
+	await expect(link).toHaveAttribute('href', url);
+	await expect(link).toHaveAttribute('target', '_blank');
+	await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+	return link;
+}
+
+async function homeWithLinks(page: Page) {
+	const fixture = await hubHomeFixture(page, 'default');
+	const chief = fixture.snapshot.agents.find((agent) => agent.id === 'cos')!;
+	chief.question = `Review (${itemLinks.question}).`;
+	chief.options![0] = {
+		label: `Approve ${itemLinks.label}`,
+		recommended: true,
+		effect: `See ${itemLinks.effect}.`
+	};
+	chief.messages.push({
+		id: 'link-note',
+		from: 'agent',
+		text: `See ${itemLinks.note}. Leave javascript:alert(1) and ftp://example.invalid/file as text.`,
+		at: new Date().toISOString()
+	});
+	if (fixture.snapshot.overview.status !== 'ready') throw new Error('Expected Tracker work');
+	for (const project of fixture.snapshot.overview.projects)
+		for (const item of project.items) item.title = `Review ${itemLinks.title}`;
+	await page.goto('/');
+	return fixture;
+}
+
 for (const size of sizes) {
 	test(`shared projects keep New project in a dialog at ${size.id}`, async ({ page }) => {
 		await page.setViewportSize(size);
@@ -92,6 +131,45 @@ for (const size of sizes) {
 		await expect(remove).toBeVisible();
 		expect((await box(remove)).height).toBeGreaterThanOrEqual(44);
 		await overview(page);
+	});
+
+	test(`Hub links open apart from Tracker actions at ${size.id}`, async ({ page }) => {
+		await page.setViewportSize(size);
+		const fixture = await homeWithLinks(page);
+		const needs = page.getByRole('region', { name: 'Blocked - needs you' });
+		const work = page.getByRole('region', { name: 'Work in progress', exact: true });
+		await checkLink(work, itemLinks.title);
+		const question = await checkLink(needs, itemLinks.question);
+		await checkLink(needs, itemLinks.label);
+		await expect(needs.locator('button a, a button')).toHaveCount(0);
+		if (process.env.TAKE_SCREENSHOT === 'true') {
+			await page.evaluate(() => document.fonts.ready.then(() => {}));
+			await needs.screenshot({ path: test.info().outputPath(`home-links-${size.id}.png`) });
+		}
+		await overview(page);
+		const bounds = await box(question);
+		expect(bounds.x + bounds.width).toBeLessThanOrEqual(size.width);
+		expect(bounds.height).toBeGreaterThan(18);
+		await page
+			.context()
+			.route(itemLinks.label, (route) => route.fulfill({ body: 'Choice source' }));
+		const popup = page.waitForEvent('popup');
+		await needs.getByRole('link', { name: itemLinks.label, exact: true }).click();
+		const source = await popup;
+		await expect(source.getByText('Choice source')).toBeVisible();
+		await source.close();
+		expect(fixture.sent).toHaveLength(0);
+		await expect(page.getByRole('dialog')).toHaveCount(0);
+
+		await needs.getByRole('button', { name: /View details/ }).click();
+		const detail = page.getByRole('region', { name: 'Chat with Chief of Staff' });
+		await checkLink(detail, itemLinks.question);
+		await checkLink(detail, itemLinks.label);
+		await checkLink(detail, itemLinks.effect);
+		await checkLink(detail, itemLinks.note);
+		await expect(detail.getByText(/javascript:alert/)).toBeVisible();
+		await expect(detail.locator('a[href^="javascript:"], a[href^="ftp:"]')).toHaveCount(0);
+		await expect(detail.locator('button a, a button')).toHaveCount(0);
 	});
 
 	test(`Hub home opens the agent chat from a button at ${size.id}`, async ({ page }) => {

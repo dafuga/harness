@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_gtrdllvpk7 -->
 <script lang="ts">
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { HomeRun } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -54,7 +55,7 @@
 							<hx-div class="hh-row">
 								<hx-time class="hh-agenda-time" datetime={run.at}>{runTime(run.at)}</hx-time>
 								<hx-span class="po-item-text">
-									<hx-span class="po-item-title">{run.title}</hx-span>
+									<hx-span class="po-item-title"><LinkifiedText text={run.title} /></hx-span>
 									<hx-span class="po-item-meta"
 										>{[run.agent, run.machine].filter(Boolean).join(' · ')}</hx-span
 									>

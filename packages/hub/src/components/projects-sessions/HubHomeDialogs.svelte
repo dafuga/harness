@@ -34,7 +34,6 @@
 		open,
 		send,
 		changeSession,
-		openCosChat,
 		receipt,
 		readProject,
 		reload,
@@ -46,7 +45,6 @@
 		open: OpenHomeSection;
 		send: SendHomeChat;
 		changeSession: ChangeSession;
-		openCosChat?: (trigger: HTMLElement) => void;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 		readProject: ReadHomeProject;
 		reload: () => void;
@@ -124,7 +122,6 @@
 				openAsks={view.openAsks}
 				added={view.controlled}
 				{changeSession}
-				{openCosChat}
 				{agentId}
 				{send}
 				{receipt}

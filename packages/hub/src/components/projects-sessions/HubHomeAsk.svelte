@@ -3,6 +3,7 @@
 <!-- @harness-uid u_5hn7c2wq8d -->
 <!-- @harness-uid u_gnhmm7tirz -->
 <script lang="ts">
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import type { Snippet } from 'svelte';
 	import type {
 		HomeChatInput,
@@ -97,7 +98,9 @@
 		{@render choices()}
 	{:else}
 		<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
-			<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
+			<hx-p class="hh-ask-question"
+				><hx-strong>{ask.agentName}</hx-strong> · <LinkifiedText text={ask.question} /></hx-p
+			>
 			{#if ask.attachments?.length}
 				<ViewSpecButtons attachments={ask.attachments} question={ask.question} {load}>
 					{#snippet answers(close: () => void)}

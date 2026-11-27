@@ -14,7 +14,8 @@
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-textarea"
+			"reports.component.shared-primitives-atoms-html-textarea",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -144,6 +145,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-textarea",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
 			"via": "import",
 			"origin": "derived"
 		},

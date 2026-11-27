@@ -17,6 +17,7 @@
 	import { homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
 	import { provideHubSpecDocuments } from './hubSpecDocument';
+	import { provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 	import { soonestWork, staleReading } from './hubHomePresentation';
@@ -32,7 +33,7 @@
 
 	const { api, session, projects } = browserContext();
 	provideHubSpecDocuments(api);
-	let cosChatTrigger = $state<HTMLElement | null>(null);
+	provideHomeCosChat();
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
@@ -191,14 +192,14 @@
 
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
-		<HubHomeHeader {view} />
-		{#if link}
+		<HubHomeHeader {view} {link} />
+		{#if link === 'live'}
 			<hx-p class="po-page hh-page hh-live" role="status" aria-label="Updates" data-state={link}>
-				{link === 'live' ? 'Live' : 'Reconnecting'}
+				Live
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} send={reads.send} {receipt} bind:cosChatTrigger />
+			<HubHomeCards {view} {open} send={reads.send} {receipt} />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs
@@ -207,7 +208,6 @@
 				{agentId}
 				{open}
 				send={reads.send}
-				openCosChat={(trigger) => (cosChatTrigger = trigger)}
 				{changeSession}
 				{receipt}
 				{readProject}

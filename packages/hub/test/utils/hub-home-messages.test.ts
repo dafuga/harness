@@ -8,7 +8,10 @@ import { homeChatInput } from '../../../reports/src/lib/projects-sessions/hub-ho
 import type { HomeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
 import { messageStatusText } from '../../src/components/projects-sessions/hubHomePresentation';
-import { composerFeedback } from '../../src/components/projects-sessions/hubHomeMessages';
+import {
+	composerFeedback,
+	homeChatItemSuffix
+} from '../../src/components/projects-sessions/hubHomeMessages';
 import {
 	formatHubDeliveredNote,
 	formatHubMessageNote,
@@ -178,4 +181,15 @@ test('a Hub message is stored by the Tracker for Chief of Staff or for one exact
 	expect(stale.calls).toEqual([]);
 	const ended = recorder(409, { status: 'refused' });
 	expect((await deliverHomeChat(session, home(), ended.fetcher)).status).toBe('refused');
+});
+
+test('attaches bounded item context without changing ordinary messages', () => {
+	expect(homeChatItemSuffix()).toBe('');
+	expect(homeChatItemSuffix({ id: 'routine-42', title: 'Deploy check', details: 'Saturday' })).toBe(
+		'\n\nAttached Hub item: Deploy check (routine-42)\nSaturday'
+	);
+	expect(
+		homeChatItemSuffix({ id: 'i'.repeat(500), title: 't'.repeat(500), details: 'd'.repeat(500) })
+			.length
+	).toBeLessThan(850);
 });

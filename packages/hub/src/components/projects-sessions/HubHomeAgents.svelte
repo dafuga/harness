@@ -2,6 +2,9 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_aigdzmrsfg -->
 <script lang="ts">
+	import { homeCosChat } from './hubHomeChatContext.svelte';
+	import { hasWebLink } from '$reports/utils/strings/linkSegments';
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
@@ -33,7 +36,6 @@
 		openAsks = [],
 		added = [],
 		changeSession,
-		openCosChat,
 		agentId,
 		send,
 		receipt,
@@ -46,13 +48,13 @@
 		openAsks?: HomeOpenAsk[];
 		added?: string[];
 		changeSession: ChangeSession;
-		openCosChat?: (trigger: HTMLElement) => void;
 		agentId?: string;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 		chatOpen?: boolean;
 		chatName?: string;
 	} = $props();
+	const cosChat = homeCosChat();
 	const agents = $derived(listed === null ? null : [...listed, ...asks]);
 	let selected = $state<string>();
 	let pending = $state<{ message: HomeChatInput; receipt: HomeChatReceipt }[]>([]);
@@ -111,6 +113,8 @@
 						>
 						<hx-ul class="po-items">
 							{#each members as agent (agent.id)}
+								{@const activity = agentActivity(agent)}
+								{@const linkedActivity = hasWebLink(activity)}
 								<hx-li
 									class="po-item hh-agent-row"
 									aria-current={active.id === agent.id ? 'true' : undefined}
@@ -125,7 +129,7 @@
 										>
 										<hx-span class="po-item-text">
 											<hx-span class="po-item-title">{agent.name}</hx-span>
-											<hx-span class="po-item-meta">{agentActivity(agent)}</hx-span>
+											{#if !linkedActivity}<hx-span class="po-item-meta">{activity}</hx-span>{/if}
 											<hx-span class="po-item-meta hh-agent-where"
 												>{[agent.machine, agent.model].filter(Boolean).join(' · ')}</hx-span
 											>
@@ -138,6 +142,9 @@
 											]}</Pill
 										>
 									</hx-button>
+									{#if linkedActivity}<hx-p class="po-item-meta hh-agent-linked-meta"
+											><LinkifiedText text={activity} /></hx-p
+										>{/if}
 								</hx-li>
 							{/each}
 						</hx-ul>
@@ -167,15 +174,16 @@
 				{#each active.messages.filter((message) => message.id !== 'question') as message (message.id)}
 					{@const status = messageStatusText(message, active.name)}
 					<hx-li class="hh-msg" data-from={message.from} data-status={message.status}>
-						<hx-p>{message.text}</hx-p><hx-span class="hh-msg-at"
+						<hx-p><LinkifiedText text={message.text} /></hx-p><hx-span class="hh-msg-at"
 							>{status ? `${status} · ${runTime(message.at)}` : runTime(message.at)}</hx-span
 						>
 					</hx-li>
 				{/each}
 				{#each pending.filter((entry) => isPending(entry, active)) as entry (entry.message.id)}
 					<hx-li class="hh-msg" data-from="you">
-						<hx-p>{entry.message.text}</hx-p><hx-span class="hh-msg-at" role="status"
-							>{receiptText(entry.receipt)}</hx-span
+						<hx-p><LinkifiedText text={entry.message.text} /></hx-p><hx-span
+							class="hh-msg-at"
+							role="status">{receiptText(entry.receipt)}</hx-span
 						>
 					</hx-li>
 				{/each}
@@ -186,12 +194,12 @@
 				{/each}
 			</hx-ol>
 			{#if active.id === 'cos'}
-				{#if openCosChat}
+				{#if cosChat}
 					<hx-button
 						type="button"
 						class="po-action"
 						aria-haspopup="dialog"
-						onclick={(event) => openCosChat(event.currentTarget)}>Open chat</hx-button
+						onclick={(event) => cosChat.open(event.currentTarget)}>Open chat</hx-button
 					>
 				{/if}
 			{:else if active.itemId}

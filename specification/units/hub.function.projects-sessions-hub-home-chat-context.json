@@ -1,0 +1,79 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-chat-context",
+	"kind": "function",
+	"title": "hubHomeChatContext",
+	"responsibility": "Owns the hubHomeChatContext shared function.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/hubHomeChatContext.svelte.ts"],
+		"symbols": ["provideHomeCosChat", "homeCosChat"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "provideHomeCosChat",
+				"type": "unknown"
+			},
+			{
+				"name": "homeCosChat",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "provideHomeCosChat",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "provideHomeCosChat",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "homeCosChat",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "homeCosChat",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeChatContext.svelte.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeChatContext.svelte.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

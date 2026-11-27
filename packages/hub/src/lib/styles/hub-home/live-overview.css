@@ -137,3 +137,29 @@
 		justify-content: flex-start;
 	}
 }
+
+.hh-home .hh-system-alert > .po-notice {
+	margin: var(--hx-space-12) 0 0;
+	padding: var(--hx-space-8) var(--hx-space-12);
+}
+
+.hh-home .hh-system-alert p + p {
+	margin-top: var(--hx-space-4);
+}
+
+.hh-home .hh-live-overview {
+	margin-top: var(--hx-space-16);
+}
+
+.hh-home .hh-live-item-text {
+	min-width: 0;
+}
+
+.hh-home .hh-live-linked {
+	margin-bottom: var(--hx-space-4);
+	font-size: var(--hx-type-size-sm);
+}
+
+.hh-home .hh-live-now:has(.hx-text-link) {
+	display: block;
+}

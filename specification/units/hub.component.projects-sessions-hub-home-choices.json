@@ -22,6 +22,8 @@
 		"source": ["packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"],
 		"symbols": [
 			"HubHomeChoices",
+			"HubHomeChoices.badge",
+			"HubHomeChoices.choiceButton",
 			"HubHomeChoices.otherDialog",
 			"HubHomeChoices.confirmDialog",
 			"HubHomeChoices.confirmation"
@@ -74,6 +76,57 @@
 		"operations": [],
 		"initialization": [],
 		"snippets": [
+			{
+				"name": "HubHomeChoices.badge",
+				"inputs": [
+					{
+						"name": "HubHomeChoices.badge.recommended",
+						"type": "boolean",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.badge",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.choiceButton",
+				"inputs": [
+					{
+						"name": "HubHomeChoices.choiceButton.number",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.option",
+						"type": "HomeChoice['option']",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.linkedLabel",
+						"type": "boolean",
+						"required": true
+					},
+					{
+						"name": "HubHomeChoices.choiceButton.linkedEffect",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.choiceButton",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
 			{
 				"name": "HubHomeChoices.otherDialog",
 				"inputs": [],

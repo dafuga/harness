@@ -2,7 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_suxmf5vsuw -->
 <script lang="ts">
-	import { tick } from 'svelte';
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
+	import { homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import Modal from '$reports/components/Modal.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
@@ -15,27 +16,21 @@
 	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 
-	let {
-		agent,
-		now,
-		send,
-		trigger = $bindable<HTMLElement | null>(null)
-	}: {
-		agent?: HomeAgent;
-		now: string;
-		send: SendHomeChat;
-		trigger?: HTMLElement | null;
-	} = $props();
+	let { agent, now, send }: { agent?: HomeAgent; now: string; send: SendHomeChat } = $props();
+	const chat = homeCosChat() ?? provideHomeCosChat();
 	const name = 'Chief of Staff';
+	const item = $derived(chat.target?.item);
 	let draft = $state('');
 	let pending = $state(false);
 	let feedback = $state('');
+	let draftItem = $state<string>();
 
-	function close() {
-		const opener = trigger;
-		trigger = null;
-		void tick().then(() => opener?.focus());
-	}
+	$effect(() => {
+		if (!chat.target || draftItem === item?.id) return;
+		draftItem = item?.id;
+		draft = '';
+		feedback = '';
+	});
 	/** Chief of Staff is always reachable, even before the Tracker reports anything for it. */
 	const chief = $derived<HomeAgent>(
 		agent ?? {
@@ -91,19 +86,22 @@
 		type="button"
 		class="po-action"
 		aria-haspopup="dialog"
-		onclick={(event) => (trigger = event.currentTarget)}>Open chat</hx-button
+		onclick={(event) => chat.open(event.currentTarget)}>Open chat</hx-button
 	>
 </hx-section>
 
-<Modal isOpen={Boolean(trigger)} title={name} variant="section" onClose={close}>
+<Modal isOpen={Boolean(chat.target)} title={name} variant="section" onClose={chat.close}>
 	<hx-div class="hh-cos-widget">
+		{#if item}<hx-p class="po-sessions hh-cos-context" aria-label="Attached item">
+				About <LinkifiedText text={item.title} />
+			</hx-p>{/if}
 		{#if shown.length}
 			<hx-div class="hh-cos-history">
 				<hx-ol class="hh-thread hh-cos-thread" aria-label="Chief of Staff conversation">
 					{#each shown as entry (entry.id)}
 						{@const status = messageStatusText(entry, name)}
 						<hx-li class="hh-msg" data-from={entry.from} data-status={entry.status}>
-							<hx-p>{entry.text}</hx-p>
+							<hx-p><LinkifiedText text={entry.text} /></hx-p>
 							<hx-span class="hh-msg-at"
 								>{status ? `${status} · ${runTime(entry.at)}` : runTime(entry.at)}</hx-span
 							>
@@ -122,6 +120,7 @@
 			bind:draft
 			bind:pending
 			bind:feedback
+			itemContext={item}
 			label="Message {name}"
 		/>
 	</hx-div>

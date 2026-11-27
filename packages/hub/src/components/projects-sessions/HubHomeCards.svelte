@@ -29,6 +29,7 @@
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
+	import { homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import HubHomeCosChat from './HubHomeCosChat.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
@@ -39,15 +40,14 @@
 		view,
 		open,
 		send,
-		receipt,
-		cosChatTrigger = $bindable<HTMLElement | null>(null)
+		receipt
 	}: {
 		view: HomeView;
 		open: OpenHomeSection;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
-		cosChatTrigger?: HTMLElement | null;
 	} = $props();
+	const cosChat = homeCosChat() ?? provideHomeCosChat();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
 	const recipient = $derived(currentAgent([...(view.agents ?? []), ...view.asks]));
 	const working = $derived(view.agents?.filter(isWorking).length ?? 0);
@@ -79,9 +79,7 @@
 		agent={view.agents.find((agent) => agent.id === 'cos')}
 		now={new Date(view.now).toISOString()}
 		{send}
-		bind:trigger={cosChatTrigger}
 	/>{/if}
-<HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard
 		section="agents"
@@ -116,7 +114,7 @@
 									type="button"
 									class="po-action hh-talk"
 									onclick={(event) => {
-										if (agent.id === 'cos') cosChatTrigger = event.currentTarget;
+										if (agent.id === 'cos') cosChat.open(event.currentTarget);
 										else open('agents', agent.id);
 									}}
 									aria-haspopup="dialog"
@@ -210,3 +208,4 @@
 
 	<HubHomeWorkCards {view} {open} />
 </hx-div>
+<HubHomeLive reading={view.computers} now={view.now} />

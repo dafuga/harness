@@ -16,6 +16,9 @@ Daniel, 26 Nov 2026. Replaces the 25 Nov layout rule that kept answer controls o
 - Hub Home uses one-line option chips with a small Recommended badge. Explanations and
   attachments are available in the asking session’s detail. Other opens the answer dialog.
   Confirmation opens a dialog with the selected option and its explanation.
+- HTTP and HTTPS addresses in Hub item titles, questions, options, and notes open as links in a
+  new tab. Long URLs wrap. A link in a question or choice is independent of the item and answer
+  actions, with the same behavior in shared detail views.
 - A tap is a Tracker answer by Daniel, so the owner is notified as for any answer. Deploy, money
   and secret asks keep their confirm step (Face ID on the iPhone).
 - Mac and iPhone rows answer the revision they show. A replaced question is refused.

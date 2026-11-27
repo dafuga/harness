@@ -31,7 +31,8 @@
 			"composedMessage",
 			"composerFeedback",
 			"isPending",
-			"receiptText"
+			"receiptText",
+			"homeChatItemSuffix"
 		]
 	},
 	"contract": {
@@ -74,6 +75,12 @@
 				"type": "string",
 				"required": false,
 				"default": ""
+			},
+			{
+				"name": "HubHomeComposer.itemContext",
+				"type": "HomeChatItemContext",
+				"required": false,
+				"default": "undefined (omitted)"
 			},
 			{
 				"name": "HubHomeComposer.send",
@@ -190,11 +197,34 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "homeChatItemSuffix",
+				"inputs": [
+					{
+						"name": "homeChatItemSuffix.item",
+						"type": "HomeChatItemContext",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "homeChatItemSuffix",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
 			"via": "import",

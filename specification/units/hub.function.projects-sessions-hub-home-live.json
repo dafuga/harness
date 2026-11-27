@@ -21,7 +21,8 @@
 			"workFacts",
 			"liveSummary",
 			"projectSummary",
-			"liveNotice"
+			"liveNotice",
+			"liveSystemNotice"
 		]
 	},
 	"contract": {
@@ -92,6 +93,11 @@
 				"type": "LinkedHome | null",
 				"required": true,
 				"description": "What the linked computers last answered, or null before the first answer."
+			},
+			{
+				"name": "liveSystemNotice.reading",
+				"type": "LinkedHome | null",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -344,6 +350,24 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
+			},
+			{
+				"name": "liveSystemNotice",
+				"inputs": [
+					{
+						"name": "liveSystemNotice.reading",
+						"type": "LinkedHome | null",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "liveSystemNotice",
+						"type": "string | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []

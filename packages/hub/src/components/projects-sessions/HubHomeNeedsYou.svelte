@@ -2,6 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_kncvbfcpto -->
 <script lang="ts">
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
+	import { hasWebLink } from '$reports/utils/strings/linkSegments';
 	import type { Snippet } from 'svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
@@ -45,16 +47,31 @@
 		<hx-ul class="hh-needs-list">
 			{#each asks as ask (ask.itemId)}
 				<hx-li class="hh-needs-item">
-					<hx-button
-						type="button"
-						class="hh-needs-row"
-						aria-haspopup="dialog"
-						onclick={() => open('agents', ask.agentId)}
-					>
-						<hx-strong class="hh-needs-project">{ask.agentName}</hx-strong>
-						<hx-span class="hh-needs-question">{ask.question}</hx-span>
-						<hx-span class="hh-needs-age">waiting {waitAge(ask.since, now)}</hx-span>
-					</hx-button>
+					{#if hasWebLink(ask.question)}
+						<hx-div class="hh-needs-row hh-needs-linked">
+							<hx-strong class="hh-needs-project">{ask.agentName}</hx-strong>
+							<hx-span class="hh-needs-question"><LinkifiedText text={ask.question} /></hx-span>
+							<hx-span class="hh-needs-age">waiting {waitAge(ask.since, now)}</hx-span>
+							<hx-button
+								type="button"
+								class="po-action"
+								aria-haspopup="dialog"
+								aria-label={`View details for ${ask.agentName}`}
+								onclick={() => open('agents', ask.agentId)}>View details</hx-button
+							>
+						</hx-div>
+					{:else}
+						<hx-button
+							type="button"
+							class="hh-needs-row"
+							aria-haspopup="dialog"
+							onclick={() => open('agents', ask.agentId)}
+						>
+							<hx-strong class="hh-needs-project">{ask.agentName}</hx-strong>
+							<hx-span class="hh-needs-question">{ask.question}</hx-span>
+							<hx-span class="hh-needs-age">waiting {waitAge(ask.since, now)}</hx-span>
+						</hx-button>
+					{/if}
 					<HubHomeAsk
 						{ask}
 						{send}

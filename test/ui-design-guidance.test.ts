@@ -7,6 +7,8 @@ import {
 const rules = [
 	'List cards never contain forms',
 	'one-line option chips',
+	'Render explicit HTTP and HTTPS URLs',
+	'rel="noopener noreferrer"',
 	'bottom-right overlay on desktop',
 	'A floating button never covers content or another control',
 	'Absence is not failure',
