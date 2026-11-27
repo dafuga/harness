@@ -36,6 +36,9 @@
 	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 }
+.hh-home .hh-projects-toggle {
+	justify-self: start;
+}
 .hh-home .hh-live-head {
 	display: list-item;
 	min-height: 44px;

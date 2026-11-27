@@ -38,3 +38,9 @@ The Hub and the Mac app both need this change. A new Hub with an older Mac app a
 The live overview is the last section on Hub Home. Every project group starts collapsed and can be
 expanded independently. Offline computers and failures reading the live connection appear in a
 compact banner above the Home heading.
+
+By default, the overview lists only projects with a running session. “See all projects (N)”
+shows the remaining projects in two groups, “Blocked or open” followed by “Nothing in motion”.
+N is the total number of projects in the snapshot. Each project header shows its Running,
+Blocked and Not running counts. Opening a project lists running jobs first. Its own “See all”
+control reveals blocked and other jobs.

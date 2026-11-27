@@ -25,7 +25,23 @@
 	const notice = $derived(native ? null : liveNotice(reading));
 	const overview = $derived(native ?? (notice ? null : reading?.snapshot?.liveOverview));
 	const dueById = $derived(new Map(pastDue.map((run) => [run.id, run])));
+	let allProjects = $state(false);
+	const projects = $derived(overview?.projects ?? []);
+	const running = $derived(projects.filter((project) => project.running > 0));
+	const others = $derived(projects.filter((project) => project.running === 0));
+	const waiting = $derived(
+		others.filter(({ counts }) => counts.blocked || counts.open || counts.in_progress)
+	);
+	const idle = $derived(
+		others.filter(({ counts }) => !counts.blocked && !counts.open && !counts.in_progress)
+	);
 </script>
+
+{#snippet list(items: HomeLiveOverview['projects'])}
+	{#each items as project (project.agent)}
+		<HubHomeLiveProject {project} {now} {dueById} />
+	{/each}
+{/snippet}
 
 <hx-section class="hh-live-overview" aria-labelledby="hh-live-title">
 	<hx-div class="hh-live-top">
@@ -48,9 +64,26 @@
 			><hx-p>Tracker has no projects yet.</hx-p></EmptyState
 		>
 	{:else if overview}
-		{#each overview.projects as project (project.agent)}
-			<HubHomeLiveProject {project} {now} {dueById} />
-		{/each}
+		{#if running.length}{@render list(running)}
+		{:else}<hx-p class="po-sessions">No projects have a running session.</hx-p>{/if}
+		{#if others.length}
+			<hx-button
+				type="button"
+				class="po-action hh-projects-toggle"
+				aria-expanded={allProjects}
+				onclick={() => (allProjects = !allProjects)}
+			>
+				{allProjects ? 'Show running projects only' : `See all projects (${projects.length})`}
+			</hx-button>
+			{#if allProjects}
+				{#if waiting.length}<hx-h3 class="po-band-title">Blocked or open</hx-h3>{@render list(
+						waiting
+					)}{/if}
+				{#if idle.length}<hx-h3 class="po-band-title">Nothing in motion</hx-h3>{@render list(
+						idle
+					)}{/if}
+			{/if}
+		{/if}
 		{#if overview.hiddenRuns}
 			<hx-p class="po-sessions"
 				>{count(overview.hiddenRuns, 'live run')} of private items counted by Tracker and not shown.</hx-p

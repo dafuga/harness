@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import type { HomeWorkProject } from '../../../reports/src/lib/projects-sessions/hub-home/homeLive.types';
 import { expect, test } from '../../../../test/support/browserTest';
 import { recordedTracker } from '../../test/support/recordedTracker';
 import { liveRows, macAnswer, overview, productionHome } from './hub-home-live-fixture';
@@ -37,10 +38,7 @@ async function expandProjects(page: Page) {
 	while (await summaries.count()) await summaries.first().click();
 }
 
-async function checkProjectDisclosure(
-	page: Page,
-	projects: NonNullable<Awaited<ReturnType<typeof macAnswer>>['liveOverview']>['projects']
-) {
+async function checkProjectDisclosure(page: Page, projects: HomeWorkProject[], device: string) {
 	const region = overview(page);
 	const names = region.locator('.hh-live-name');
 	const active = projects.filter((p) => p.running > 0);
@@ -55,6 +53,13 @@ async function checkProjectDisclosure(
 		name: `See all projects (${projects.length})`,
 		exact: true
 	});
+	if (process.env.TAKE_SCREENSHOT === 'true') {
+		await page.evaluate(() => document.fonts.ready.then(() => {}));
+		await region.screenshot({
+			path: test.info().outputPath(`projects-running-${device}.png`),
+			animations: 'disabled'
+		});
+	}
 	await toggle.click();
 	await expect(region.getByRole('heading', { name: 'Blocked or open' })).toBeVisible();
 	await expect(region.getByRole('heading', { name: 'Nothing in motion' })).toBeVisible();
@@ -62,6 +67,11 @@ async function checkProjectDisclosure(
 	await expect(region.locator('summary.hh-live-head').last()).toContainText(
 		/Running 0 · Blocked 0 · Not running \d+/
 	);
+	if (process.env.TAKE_SCREENSHOT === 'true')
+		await region.screenshot({
+			path: test.info().outputPath(`projects-all-${device}.png`),
+			animations: 'disabled'
+		});
 	await region.getByRole('button', { name: 'Show running projects only' }).click();
 	await expect(names).toHaveText(active.map((p) => p.agent));
 }
@@ -117,7 +127,7 @@ for (const [device, width, height] of [
 				path: test.info().outputPath(`live-collapsed-${device}.png`)
 			});
 		}
-		await checkProjectDisclosure(page, answer.liveOverview!.projects);
+		await checkProjectDisclosure(page, answer.liveOverview!.projects, device);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
 		await expect(
