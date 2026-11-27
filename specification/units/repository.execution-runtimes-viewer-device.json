@@ -42,6 +42,11 @@
 				"required": false
 			},
 			{
+				"name": "ViewerDeviceRepository.constructor.lifetimeMs",
+				"type": "number",
+				"required": false
+			},
+			{
 				"name": "ViewerDeviceRepository.access.token",
 				"type": "string | undefined",
 				"required": true
@@ -205,6 +210,11 @@
 					{
 						"name": "ViewerDeviceRepository.constructor.now",
 						"type": "() => number",
+						"required": false
+					},
+					{
+						"name": "ViewerDeviceRepository.constructor.lifetimeMs",
+						"type": "number",
 						"required": false
 					}
 				],

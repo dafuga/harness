@@ -6,6 +6,8 @@ export interface ContainerPageTarget {
 	url: string;
 }
 
+export type ContainerHistoryAction = 'back' | 'forward' | 'reload';
+
 /** One tab, reached over DevTools. */
 export interface ContainerPage {
 	evaluate(expression: string): Promise<UntrustedValue>;

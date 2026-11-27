@@ -2,17 +2,18 @@ import { expect, test, type Page } from '../../../../test/support/browserTest';
 import { hubHomeFixture } from './hub-home-fixture';
 import { linkedComputersFixture } from './linked-computers-fixture';
 
-/**
- * "Needs you" on Home: each row carries its choices (recommended first) and Other, and opens the
- * asking session's chat, which offers the same. TAKE_SCREENSHOT=true keeps the pictures in
- * SCREENSHOT_DIR.
- */
 test.setTimeout(60000);
 
-const sizes = { desktop: { width: 1440, height: 900 }, phone: { width: 390, height: 844 } };
+const sizes = {
+	desktop: { width: 1440, height: 900 },
+	tablet: { width: 768, height: 1024 },
+	phone: { width: 390, height: 844 }
+};
+const viewerUrl = 'https://browser-viewer.novaylo.com/';
 
 async function shot(page: Page, name: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	await page.evaluate(() => document.fonts.ready.then(() => undefined));
 	const directory = process.env.SCREENSHOT_DIR ?? 'test-results/needs-you';
 	await page.screenshot({ path: `${directory}/${name}.png`, animations: 'disabled' });
 }
@@ -22,7 +23,13 @@ async function home(page: Page, size: keyof typeof sizes, change: 'two-asks' | '
 	await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
 	const fixture = await hubHomeFixture(page, 'default');
 	const [chief] = fixture.snapshot.agents;
-	if (change === 'two-asks')
+	if (change === 'two-asks') {
+		chief.question = `Take over the MB2 browser? ${viewerUrl}`;
+		chief.options = [
+			{ label: 'Use the viewer', effect: 'Continue to device approval.', recommended: true },
+			{ label: 'Hold', effect: 'Keep the browser unattended.' }
+		];
+		delete chief.confirm;
 		fixture.snapshot.agents.push({
 			...chief,
 			id: 'harbor',
@@ -36,7 +43,7 @@ async function home(page: Page, size: keyof typeof sizes, change: 'two-asks' | '
 				{ label: 'Hold harbor', effect: 'Waits a day.' }
 			]
 		});
-	else
+	} else
 		for (const agent of fixture.snapshot.agents) {
 			delete agent.options;
 			delete agent.confirm;
@@ -54,7 +61,7 @@ const rowOf = (page: Page, project: string) =>
 	needsYou(page).getByRole('listitem').filter({ hasText: project });
 const agentsCard = (page: Page) => page.getByRole('region', { name: 'Agents', exact: true });
 
-for (const size of ['desktop', 'phone'] as const) {
+for (const size of ['desktop', 'tablet', 'phone'] as const) {
 	test(`Home rows offer their choices and open the session chat (${size})`, async ({ page }) => {
 		const fixture = await home(page, size, 'two-asks');
 		const rows = openers(page);
@@ -66,8 +73,7 @@ for (const size of ['desktop', 'phone'] as const) {
 		await expect(rows.filter({ hasText: 'harbor' })).toContainText(
 			/Ship harbor\?.*waiting \d+[mhd]/s
 		);
-		// Every row has its buttons: the recommended choice first, Other last, no inline field.
-		await expect(needsYou(page).getByRole('group', { name: 'Choose an answer' })).toHaveCount(2);
+		// Ordinary rows keep the recommended choice first, Other last, and no inline field.
 		const choices = rowOf(page, 'harbor')
 			.getByRole('group', { name: 'Choose an answer' })
 			.getByRole('button');
@@ -79,6 +85,7 @@ for (const size of ['desktop', 'phone'] as const) {
 		]);
 		expect(widths[0]).toBeLessThanOrEqual(widths[1]);
 		await shot(page, `hub-home-needs-you-${size}`);
+		await openViewer(page, size);
 
 		await rows.filter({ hasText: 'harbor' }).click();
 		const chat = page.getByRole('region', { name: 'Chat with harbor' });
@@ -120,6 +127,36 @@ for (const size of ['desktop', 'phone'] as const) {
 		});
 		expect(fixture.sent[0]).not.toHaveProperty('option');
 	});
+}
+
+async function openViewer(page: Page, size: keyof typeof sizes) {
+	const open = needsYou(page).getByRole('button', { name: 'Open browser viewer' });
+	await expect(open).toHaveCount(1);
+	await expect(needsYou(page).getByRole('group', { name: 'Choose an answer' })).toHaveCount(1);
+	await expect(
+		rowOf(page, 'harbor').getByRole('button', { name: 'Open browser viewer' })
+	).toHaveCount(0);
+	await open.click();
+	const detail = page.getByRole('dialog', { name: 'Browser viewer' });
+	await expect(detail).toBeVisible();
+	await expect(detail).toContainText('Take over the MB2 browser?');
+	await expect(detail.getByRole('button', { name: /Use the viewer/ })).toBeVisible();
+	await shot(page, `hub-browser-viewer-${size}`);
+	const link = detail.getByRole('link', { name: 'Continue to browser viewer' });
+	await expect(link).toHaveAttribute('href', viewerUrl);
+	await expect(link).toHaveAttribute('target', '_blank');
+	await page
+		.context()
+		.route(viewerUrl, (route) => route.fulfill({ body: 'Synthetic viewer origin' }));
+	const opened = page.context().waitForEvent('page');
+	await link.click();
+	const viewer = await opened;
+	await expect(viewer).toHaveURL(viewerUrl);
+	await expect(viewer.locator('body')).toContainText('Synthetic viewer origin');
+	await viewer.close();
+	await page.keyboard.press('Escape');
+	await expect(detail).toBeHidden();
+	await expect(open).toBeFocused();
 }
 
 test('a tapped choice in the chat is sent as that option', async ({ page }) => {

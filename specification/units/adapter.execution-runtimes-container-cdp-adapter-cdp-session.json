@@ -17,6 +17,7 @@
 			"CdpSession.open",
 			"CdpSession.evaluate",
 			"CdpSession.navigate",
+			"CdpSession.history",
 			"CdpSession.closeBrowser",
 			"CdpSession.close",
 			"CdpPending"
@@ -44,6 +45,11 @@
 				"name": "CdpSession.navigate.url",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "CdpSession.history.action",
+				"type": "ContainerHistoryAction",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -57,6 +63,10 @@
 			},
 			{
 				"name": "CdpSession.navigate",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "CdpSession.history",
 				"type": "Promise<void>"
 			},
 			{
@@ -143,6 +153,24 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "CdpSession.history",
+				"inputs": [
+					{
+						"name": "CdpSession.history.action",
+						"type": "ContainerHistoryAction",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "CdpSession.history",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{

@@ -7,6 +7,7 @@ import {
 	selectHomeTabScript
 } from '../../src/services/agents-providers/x-feed-reader-service/xPageScripts';
 import { containerBrowserSources } from '../../src/workflows/execution-runtimes/run-container-browser/containerBrowserPaths';
+import { checkContainerViewer } from './containerBrowserNavigation';
 
 /** A page shaped like the parts of X the reader relies on. */
 const fixture = `<main><div role="tablist"><div role="tab" aria-selected="true">For you</div>
@@ -39,7 +40,8 @@ try {
 		webdriver: await page.evaluate('navigator.webdriver'),
 		headless: await page.evaluate('navigator.userAgent.includes("Headless")'),
 		posts,
-		tab: await page.evaluate(selectHomeTabScript(1))
+		tab: await page.evaluate(selectHomeTabScript(1)),
+		navigation: await checkContainerViewer(browser, profile)
 	};
 	page.close();
 	console.log(JSON.stringify(result));

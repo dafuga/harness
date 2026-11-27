@@ -1,4 +1,6 @@
 // @harness-uid u_7uvhgmunfw
+import { writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { Duplex } from 'node:stream';
 import type {
 	ContainerBrowserPipes,
@@ -71,5 +73,15 @@ export class ContainerBrowserAdapter implements ContainerBrowserPipes {
 		await this.host.docker(['exec', this.name, 'rm', '-rf', '/tmp/viewer']);
 		await this.host.docker(['exec', this.name, 'cp', '-rL', '/usr/share/novnc', '/tmp/viewer']);
 		await this.host.docker(['cp', `${this.name}:/tmp/viewer/.`, directory]);
+		// Debian strips the upstream package.json, but the shipped noVNC client requests it.
+		const version = await this.host.docker([
+			'exec',
+			this.name,
+			'dpkg-query',
+			'-W',
+			'-f=${Version}',
+			'novnc'
+		]);
+		await writeFile(join(directory, 'package.json'), JSON.stringify({ version }), { mode: 0o600 });
 	}
 }

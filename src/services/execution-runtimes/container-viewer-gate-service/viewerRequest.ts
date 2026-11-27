@@ -1,25 +1,47 @@
 // @harness-uid u_lubgl4qne6
 import type { IncomingMessage } from 'node:http';
+import type {
+	ContainerViewerGateConfig,
+	ViewerAdmission
+} from '../ContainerViewerGateService.types';
 
-export const viewerCookie = 'harness_viewer';
-
-/** Only the names this viewer is published under are served, which stops DNS rebinding. */
-export function allowedHost(request: IncomingMessage, hosts: ReadonlySet<string>): boolean {
-	const host = request.headers.host?.toLowerCase().replace(/:\d+$/u, '');
-	return host !== undefined && hosts.has(host);
+export function viewerCookie(secure: boolean): string {
+	return secure ? '__Host-harness_viewer' : 'harness_viewer';
 }
 
-/** A socket must come from the viewer's own page. */
-export function sameOrigin(request: IncomingMessage): boolean {
-	const origin = request.headers.origin;
-	return origin !== undefined && URL.parse(origin)?.host === request.headers.host;
+/** The public hostname always requires a verified Access assertion, including on socket upgrades. */
+export async function admitViewer(
+	request: IncomingMessage,
+	config: ContainerViewerGateConfig,
+	hosts: ReadonlySet<string>
+): Promise<ViewerAdmission | undefined> {
+	const authority = request.headers.host?.toLowerCase();
+	const host = authority?.replace(/:\d+$/u, '');
+	if (!host) return undefined;
+	const remote = config.remote;
+	if (remote?.host === host) return admitRemoteViewer(request, authority, remote);
+	if (hosts.has(host)) return { devices: config.devices, origin: `http://${authority}` };
+	return undefined;
 }
 
-export function viewerToken(request: IncomingMessage): string | undefined {
+async function admitRemoteViewer(
+	request: IncomingMessage,
+	authority: string | undefined,
+	remote: NonNullable<ContainerViewerGateConfig['remote']>
+): Promise<ViewerAdmission | undefined> {
+	const assertion = request.headers['cf-access-jwt-assertion'];
+	if (authority !== remote.host || typeof assertion !== 'string') return undefined;
+	const expiresAt = await remote.authorize(assertion);
+	if (expiresAt === undefined || expiresAt <= Date.now()) return undefined;
+	return { devices: remote.devices, origin: `https://${remote.host}`, expiresAt };
+}
+
+export function viewerToken(request: IncomingMessage, secure: boolean): string | undefined {
+	const cookieName = viewerCookie(secure);
 	const cookies = request.headers.cookie?.split(';') ?? [];
 	for (const cookie of cookies) {
 		const [name, value] = cookie.trim().split('=');
-		if (name === viewerCookie && /^[A-Za-z0-9_-]{43}$/u.test(value ?? '')) return value;
+		if (name === cookieName && /^[A-Za-z0-9_-]{43}$/u.test(value ?? '')) return value;
 	}
 	return undefined;
 }

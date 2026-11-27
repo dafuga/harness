@@ -1,0 +1,60 @@
+{
+	"name": "qs1qgx-container-viewer",
+	"goal": "Prove the viewer can navigate a focused popup, and an eligible Hub ask opens the MB2 viewer only through Cloudflare identity and device approval.",
+	"createdAt": "2026-11-27T12:15:43.296Z",
+	"updatedAt": "2026-11-27T12:44:24.012Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:17:45.907Z",
+			"evidence": "Stock popup lacks browser chrome. Viewer delegates navigation to focused Chromium tab. Hub opens a protected top-level viewer from the corresponding ask. The origin preserves device approval after Cloudflare authentication."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:17:47.308Z",
+			"evidence": "The preexisting gate checks pairing and VNC only. Its approved-device test now checks the navigation surface. Existing desktop and phone Needs You row tests now open the per-item viewer detail and follow the exact protected origin."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:43:45.517Z",
+			"evidence": "Real paired Chromium popup timed out waiting for Back on harbor-mbp-2. Hub link red at desktop, tablet and phone widths."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:43:46.972Z",
+			"evidence": "Implemented paired popup navigation, 15-minute Access and device approvals, and a shared Hub ask detail."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:44:24.012Z",
+			"evidence": "The unchanged Chromium popup test passed on harbor-mbp-2."
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

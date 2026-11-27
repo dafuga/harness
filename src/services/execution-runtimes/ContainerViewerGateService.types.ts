@@ -9,4 +9,19 @@ export interface ContainerViewerGateConfig {
 	assets: string;
 	/** Host names and addresses the viewer is opened by. */
 	hosts: readonly string[];
+	remote?: {
+		host: string;
+		devices: ViewerDeviceRepository;
+		authorize: (assertion: string) => Promise<number | undefined>;
+	};
+}
+
+export interface ViewerAdmission {
+	devices: ViewerDeviceRepository;
+	origin: string;
+	expiresAt?: number;
+}
+
+export interface ViewerConnection extends ViewerAdmission {
+	token: string;
 }

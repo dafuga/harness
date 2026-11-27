@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/services/execution-runtimes/container-viewer-gate-service/viewerPages.ts"],
-		"symbols": ["sendPairingPage", "refuse"]
+		"symbols": ["sendPairingPage", "sendViewerPairing", "sendViewerControls", "refuse"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -30,6 +30,31 @@
 				"required": false
 			},
 			{
+				"name": "sendViewerPairing.response",
+				"type": "ServerResponse",
+				"required": true
+			},
+			{
+				"name": "sendViewerPairing.devices",
+				"type": "ViewerDeviceRepository",
+				"required": true
+			},
+			{
+				"name": "sendViewerPairing.access",
+				"type": "Exclude<ViewerAccess, { status: 'approved' }>",
+				"required": true
+			},
+			{
+				"name": "sendViewerPairing.secure",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "sendViewerControls.response",
+				"type": "ServerResponse",
+				"required": true
+			},
+			{
 				"name": "refuse.response",
 				"type": "ServerResponse",
 				"required": true
@@ -43,6 +68,14 @@
 		"outputs": [
 			{
 				"name": "sendPairingPage",
+				"type": "void"
+			},
+			{
+				"name": "sendViewerPairing",
+				"type": "void"
+			},
+			{
+				"name": "sendViewerControls",
 				"type": "void"
 			},
 			{
@@ -82,6 +115,57 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "sendViewerPairing",
+				"inputs": [
+					{
+						"name": "sendViewerPairing.response",
+						"type": "ServerResponse",
+						"required": true
+					},
+					{
+						"name": "sendViewerPairing.devices",
+						"type": "ViewerDeviceRepository",
+						"required": true
+					},
+					{
+						"name": "sendViewerPairing.access",
+						"type": "Exclude<ViewerAccess, { status: 'approved' }>",
+						"required": true
+					},
+					{
+						"name": "sendViewerPairing.secure",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sendViewerPairing",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "sendViewerControls",
+				"inputs": [
+					{
+						"name": "sendViewerControls.response",
+						"type": "ServerResponse",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "sendViewerControls",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "refuse",
 				"inputs": [
 					{
@@ -107,7 +191,23 @@
 		],
 		"initialization": []
 	},
-	"dependencies": [],
+	"dependencies": [
+		{
+			"unit": "function.execution-runtimes-create-viewer-access",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.execution-runtimes-viewer-device",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-container-viewer-gate-service-viewer-request",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
 	"runtime": {
 		"kind": "module",
 		"entry": "src/services/execution-runtimes/container-viewer-gate-service/viewerPages.ts",

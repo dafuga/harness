@@ -2,15 +2,14 @@
 import type { Duplex } from 'node:stream';
 import type { UntrustedValue } from '../../../core/agents-providers/projectAssistant.types';
 import { ExpectedCliError } from '../../../core/development-tooling/errors';
-import type { ContainerPage } from '../ContainerCdpAdapter.types';
+import type { ContainerHistoryAction, ContainerPage } from '../ContainerCdpAdapter.types';
 import { pipeWebSocket } from './pipeWebSocket';
 import type { CdpPending } from './CdpSession.types';
 
 const callTimeoutMs = 30_000;
 
 /**
- * Sends only Page.navigate, Runtime.evaluate and Browser.close. No domain is enabled and nothing is
- * overridden.
+ * Sends page navigation and runtime evaluation commands without overriding browser behavior.
  */
 export class CdpSession implements ContainerPage {
 	private sequence = 0;
@@ -42,6 +41,19 @@ export class CdpSession implements ContainerPage {
 		const reply = (await this.call('Page.navigate', { url })) as { errorText?: string };
 		if (reply.errorText)
 			throw new ExpectedCliError(`The page did not load: ${reply.errorText.slice(0, 80)}`);
+	}
+
+	async history(action: ContainerHistoryAction): Promise<void> {
+		if (action === 'reload') {
+			await this.call('Page.reload', {});
+			return;
+		}
+		const { currentIndex, entries } = (await this.call('Page.getNavigationHistory', {})) as {
+			currentIndex: number;
+			entries: { id: number }[];
+		};
+		const entry = entries[currentIndex + (action === 'back' ? -1 : 1)];
+		if (entry) await this.call('Page.navigateToHistoryEntry', { entryId: entry.id });
 	}
 
 	async closeBrowser(): Promise<void> {

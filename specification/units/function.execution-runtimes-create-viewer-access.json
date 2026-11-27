@@ -1,0 +1,94 @@
+{
+	"schemaVersion": 1,
+	"id": "function.execution-runtimes-create-viewer-access",
+	"uid": "u_tdevrsly3c",
+	"kind": "function",
+	"title": "createViewerAccess",
+	"responsibility": "Verify Cloudflare Access assertions for the protected browser viewer.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/execution-runtimes/createViewerAccess.ts"],
+		"symbols": ["viewerSessionMs", "createViewerAccess"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "createViewerAccess.team",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "createViewerAccess.audience",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "createViewerAccess.email",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "viewerSessionMs",
+				"type": "unknown"
+			},
+			{
+				"name": "createViewerAccess",
+				"type": "(assertion: string)"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "createViewerAccess",
+				"inputs": [
+					{
+						"name": "createViewerAccess.team",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "createViewerAccess.audience",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "createViewerAccess.email",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "createViewerAccess",
+						"type": "(assertion: string)"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/execution-runtimes/createViewerAccess.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/execution-runtimes/createViewerAccess.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

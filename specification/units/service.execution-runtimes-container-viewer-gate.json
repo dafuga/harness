@@ -17,7 +17,9 @@
 			"ContainerViewerGateService.constructor",
 			"ContainerViewerGateService.listen",
 			"ContainerViewerGateService.close",
-			"ContainerViewerGateConfig"
+			"ContainerViewerGateConfig",
+			"ViewerAdmission",
+			"ViewerConnection"
 		]
 	},
 	"contract": {
@@ -101,6 +103,11 @@
 	},
 	"dependencies": [
 		{
+			"unit": "adapter.execution-runtimes-container-cdp",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.execution-runtimes-container-browser-types",
 			"via": "import",
 			"origin": "derived"
@@ -112,6 +119,11 @@
 		},
 		{
 			"unit": "service.execution-runtimes-container-viewer-gate-service-bridge-screen",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-container-viewer-gate-service-navigate-viewer",
 			"via": "import",
 			"origin": "derived"
 		},
