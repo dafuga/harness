@@ -1,0 +1,107 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-hub-home-needs-target",
+	"uid": "u_qqw5gi3hpk",
+	"kind": "function",
+	"title": "hubHomeNeedsTarget",
+	"responsibility": "Decides where a clicked notification lands as Home's asks arrive.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/components/projects-sessions/hubHomeNeedsTarget.ts",
+			"packages/hub/src/components/projects-sessions/hubHomeNeedsTarget.types.ts"
+		],
+		"symbols": ["needsTarget", "NeedsTarget"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "needsTarget.needs",
+				"type": "string | null",
+				"required": true,
+				"description": "The item id or \"all\" named by the click, or null."
+			},
+			{
+				"name": "needsTarget.asks",
+				"type": "readonly HomeOpenAsk[]",
+				"required": true,
+				"description": "The open asks Home currently lists."
+			},
+			{
+				"name": "needsTarget.waited",
+				"type": "boolean",
+				"required": true,
+				"description": "True once Home has had long enough to read them."
+			}
+		],
+		"outputs": [
+			{
+				"name": "needsTarget",
+				"type": "NeedsTarget",
+				"description": "Wait, one ask's session, the list, or nothing."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "needsTarget",
+				"inputs": [
+					{
+						"name": "needsTarget.needs",
+						"type": "string | null",
+						"required": true,
+						"description": "The item id or \"all\" named by the click, or null."
+					},
+					{
+						"name": "needsTarget.asks",
+						"type": "readonly HomeOpenAsk[]",
+						"required": true,
+						"description": "The open asks Home currently lists."
+					},
+					{
+						"name": "needsTarget.waited",
+						"type": "boolean",
+						"required": true,
+						"description": "True once Home has had long enough to read them."
+					}
+				],
+				"outputs": [
+					{
+						"name": "needsTarget",
+						"type": "NeedsTarget",
+						"description": "Wait, one ask's session, the list, or nothing."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/hubHomeNeedsTarget.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/hubHomeNeedsTarget.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

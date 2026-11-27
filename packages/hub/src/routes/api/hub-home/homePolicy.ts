@@ -167,10 +167,17 @@ function matchesListedReminder(message: HomeChatInput, reminders: HomeReminder[]
 }
 
 function matchesCurrentItem(message: HomeChatInput, agent: HomeAgent | undefined) {
+	if (message.kind === 'message') return matchesMessageTarget(message, agent);
 	if (!agent?.itemId || agent.itemId !== message.itemId) return false;
 	if (message.kind === 'note') return true;
 	if (agent.question !== message.question) return false;
 	return message.option === undefined || matchesChosenOption(message, agent);
+}
+
+/** Chief of Staff is always reachable; a session message names the live run it was shown. */
+function matchesMessageTarget(message: HomeChatInput, agent: HomeAgent | undefined) {
+	if (message.agentId === 'cos') return true;
+	return Boolean(agent?.runId) && agent?.itemId === message.itemId && agent.runId === message.runId;
 }
 
 /** A tap must name a real option of the open ask, and a deploy, money or secret ask must be confirmed. */

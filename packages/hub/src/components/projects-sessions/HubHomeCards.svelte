@@ -15,11 +15,13 @@
 		initials,
 		overviewTone,
 		lowestLimit,
+		lowSummary,
 		missingQuotaProviders,
 		providerNames,
 		quotaReset,
 		staleReading,
-		warningFor
+		warningFor,
+		warningLabel
 	} from './hubHomePresentation';
 	import HubHomeWorkCards from './HubHomeWorkCards.svelte';
 	import type { HomeView, OpenHomeSection, SendHomeChat } from './hubHomeView.types';
@@ -28,6 +30,7 @@
 	import HubHomeLive from './HubHomeLive.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
 	import HubHomeReminders from './HubHomeReminders.svelte';
+	import HubHomeCosChat from './HubHomeCosChat.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
@@ -74,6 +77,11 @@
 {#if view.reminders}
 	<HubHomeReminders reminders={view.reminders} now={view.now} {send} {receipt} />
 {/if}
+{#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
+		agent={view.agents.find((agent) => agent.id === 'cos')}
+		now={new Date(view.now).toISOString()}
+		{send}
+	/>{/if}
 <HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
 	<HubHomeCard
@@ -152,7 +160,7 @@
 			{#if warning}
 				{@const tone = level === 'critical' ? 'blocked' : 'needs-you'}
 				<Pill tone={`hh-tone po-state po-${tone}`} state={tone}
-					><hx-span class="po-mark" aria-hidden="true"></hx-span>{lows.length} running low</Pill
+					><hx-span class="po-mark" aria-hidden="true"></hx-span>{lowSummary(lows)}</Pill
 				>
 			{/if}
 		{/snippet}
@@ -163,7 +171,7 @@
 				{#if warning && level === 'critical'}
 					<hx-div class="po-callout hh-q-callout" data-kind="blocked" data-level="critical">
 						<hx-div class="po-callout-head"
-							><hx-span class="po-callout-label">Almost out</hx-span><hx-span
+							><hx-span class="po-callout-label">{warningLabel(warning.limit)}</hx-span><hx-span
 								class="po-callout-meta">{quotaReset(warning.limit.resetsAt, view.now)}</hx-span
 							></hx-div
 						>

@@ -3,6 +3,7 @@ import type { OverviewSnapshot } from '../project-overview/projectOverview.types
 import type { HomeLiveOverview } from './homeLive.types';
 
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
+import type { HubMessageStatus } from '../../../../../../src/utils/projects-sessions/hubSessionMessages.types';
 
 export type HomeAgentState = 'needs-you' | 'working' | 'idle' | 'offline';
 export type HomePlanState = 'draft' | 'in-review' | 'approved' | 'in-progress' | 'done';
@@ -13,6 +14,14 @@ export interface HomeMessage {
 	text: string;
 	at: string;
 	from: 'agent' | 'you';
+	/** A Hub message's Tracker id; its receipt and replies are keyed to it. */
+	messageId?: string;
+	/** Where a Hub message got to: stored, typed into the session, answered, or refused. */
+	status?: HubMessageStatus;
+	/** Why a refused message was not delivered. */
+	reason?: string;
+	/** The Hub message a session's reply answers. */
+	replyTo?: string;
 }
 
 /** One task an agent has a live run on right now. */
@@ -46,6 +55,8 @@ export interface HomeAgent {
 	/** Live sessions and tasks of the sub-agents working under this agent, never listed as agents themselves. */
 	subAgents: { sessions: number; tasks: HomeAgentTask[] };
 	itemId: string | null;
+	/** The live run Hub messages go to, as `<computer>#<run>`; none without a live session. */
+	runId?: string | null;
 	task: string;
 	machine: string | null;
 	model: string | null;
@@ -170,9 +181,12 @@ export interface HomeChatInput {
 	id: string;
 	agentId: string;
 	itemId: string;
-	kind: 'note' | 'answer' | 'reminder-done' | 'reminder-snooze';
+	/** `message` is typed into Chief of Staff's or one live run's prompt; a note is only stored. */
+	kind: 'note' | 'answer' | 'message' | 'reminder-done' | 'reminder-snooze';
 	question: string | null;
 	text: string;
+	/** The exact live run a session message is for; Chief of Staff's need none. */
+	runId?: string;
 	/** A tapped option's 1-based number. The text then carries that option's label. */
 	option?: number;
 	confirmed?: boolean;
@@ -186,4 +200,6 @@ export type HomeChatStatus = 'queued' | 'sent' | 'refused' | 'unconfirmed';
 export interface HomeChatReceipt {
 	id: string;
 	status: HomeChatStatus;
+	/** The Tracker id of a stored Hub message. */
+	messageId?: string;
 }

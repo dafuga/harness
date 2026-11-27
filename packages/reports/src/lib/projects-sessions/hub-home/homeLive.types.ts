@@ -24,6 +24,8 @@ export interface HomeWorkRow {
 	status: OverviewItem['status'];
 	/** The item's planning stage; null when this computer's Tracker reports none. */
 	stage: TrackerStage | null;
+	/** Where the work really is: why it is blocked, or the latest milestone its owner noted. */
+	now: string | null;
 	owner: string | null;
 	computer: string | null;
 	model: string | null;

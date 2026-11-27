@@ -11,6 +11,7 @@ import {
 import type { TrackerItemRecord } from '../../../reports/src/lib/projects-sessions/project-overview/projectOverviewTracker.types';
 import { deliverHomeChat } from '../../../desktop/src/lib/development-tooling/desktop-initialization/tracker-overview-publisher/homeTrackerChat';
 import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
+import { showsHomeChatTarget } from '../../src/services/networking-security/linkedHomeChat';
 import { serveHubHome } from '../../src/routes/api/hub-home/homePolicy';
 import { overviewFixture } from '../support/trackerOverviewFixture';
 import { homeRequest, id, payload, sheets } from '../support/hubHomeFixture';
@@ -145,6 +146,21 @@ test('a reminder two computers list shows once, as its newest copy', () => {
 	expect(mergeHomeSnapshots([older, newer])?.reminders).toEqual(newer.reminders);
 	const silent = { ...older, reminders: undefined };
 	expect(mergeHomeSnapshots([silent, silent])?.reminders).toBeUndefined();
+});
+
+test('a linked computer takes a tap only for a reminder it shows at that time', () => {
+	const tap = {
+		id,
+		agentId: 'personal',
+		itemId: 'plant-1',
+		kind: 'reminder-done' as const,
+		question: null,
+		text: 'Done',
+		armed: at
+	};
+	expect(showsHomeChatTarget(home(), tap)).toBe(true);
+	expect(showsHomeChatTarget(home(), { ...tap, armed: '2026-11-22T10:00:00.000Z' })).toBe(false);
+	expect(showsHomeChatTarget({ ...home(), reminders: undefined }, tap)).toBe(false);
 });
 
 test('next times name the day, mark a passed one due and offer three snoozes', () => {

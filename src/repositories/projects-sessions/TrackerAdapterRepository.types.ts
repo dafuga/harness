@@ -15,6 +15,8 @@ export interface TrackerAdapterSource extends GithubIssueIntakeSource {
 	paused: boolean;
 }
 
+export type TrackerAdapterSourceAction = 'pause' | 'resume' | 'remove';
+
 export type TrackerAdapterRemoteState = 'open' | 'closed';
 
 export interface TrackerAdapterLink {

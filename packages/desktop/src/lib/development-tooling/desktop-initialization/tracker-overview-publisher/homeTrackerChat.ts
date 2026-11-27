@@ -8,6 +8,7 @@ import type {
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import { deliverHomeMessage } from './homeTrackerMessage';
 
 const trackerOrigin = 'http://127.0.0.1:7701';
 
@@ -17,6 +18,7 @@ export async function deliverHomeChat(
 	home: Pick<OwnerHomeSnapshot, 'agents' | 'openAsks' | 'reminders'>,
 	fetcher: typeof fetch = fetch
 ): Promise<HomeChatReceipt> {
+	if (input.kind === 'message') return deliverHomeMessage(input, home, fetcher);
 	const id = input.id;
 	const write = input.armed ? reminderWrite(input, home.reminders) : chatWrite(input, home);
 	if (!write) return { id, status: 'refused' };

@@ -15,7 +15,8 @@ import { seedCompletedRetainedRun } from '../../support/trackerManagedProcessFix
 import { retainedTrackerTmuxFixture } from '../../support/trackerObservedRunFixture';
 
 const node = 'daniel-primary-mbp';
-const now = Date.parse('2026-11-25T12:00:00Z');
+// 23:00 in Lisbon: launches and idle-work queueing run through the night.
+const now = Date.parse('2026-11-25T23:00:00Z');
 
 test('honors the host cap while retaining finished panes and reporting a flagged request', () =>
 	measureWorkload(

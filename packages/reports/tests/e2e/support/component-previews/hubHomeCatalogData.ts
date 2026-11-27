@@ -111,6 +111,7 @@ export const catalogWorkProject: HomeWorkProject = {
 			outcome: null,
 			status: 'in_progress',
 			stage: 'build',
+			now: 'PR open; full check running, merge follows a pass.',
 			owner: 'Export session',
 			computer: 'preview-mac',
 			model: 'sample-model:high',
@@ -137,6 +138,14 @@ const catalogComputers: LinkedHome = {
 };
 
 export const catalogHome = { granted: true, snapshot };
+
+/** Browser notifications offered, with no browser subscribed yet. */
+export const catalogPush = {
+	available: true,
+	publicKey: 'sample-public-key',
+	quiet: { enabled: true, start: '22:00', end: '08:00' },
+	browsers: []
+};
 
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,

@@ -1,4 +1,4 @@
-import { catalogHome, isHubHomePreview } from './hubHomeCatalogData';
+import { catalogHome, catalogPush, isHubHomePreview } from './hubHomeCatalogData';
 import { designPreviewPage, hubDesignCases } from './designCanvasPreviews';
 import { children, done, stamp } from './shared';
 import type { PreviewCases } from './shared';
@@ -65,6 +65,7 @@ export function hubPreview(id: string, shown: ProjectSnapshot) {
 			if (path === '/api/account/devices') return signedInDevices;
 			if (path === '/api/remote/hosts') return linkedComputers;
 			if (path === '/api/hub-home') return catalogHome;
+			if (path === '/api/push') return catalogPush;
 			if (path.endsWith('/designs')) return designPreviewPage;
 			if (path === `/api/projects/${project.id}/snapshot`) return hostedSnapshot(shown);
 			return hosted.read(path) ?? request;

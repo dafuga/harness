@@ -199,7 +199,8 @@
 			"TrackerDispatchRepository",
 			"TrackerDispatchSchedulerService",
 			"TrackerSupervisorService",
-			"trackerStructuredAsk"
+			"trackerStructuredAsk",
+			"hubSessionMessages"
 		]
 	},
 	"contract": {
@@ -524,6 +525,11 @@
 		},
 		{
 			"unit": "function.preview-binding",
+			"via": "reexport",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-hub-session-messages",
 			"via": "reexport",
 			"origin": "derived"
 		},

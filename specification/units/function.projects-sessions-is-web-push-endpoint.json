@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-is-web-push-endpoint",
+	"uid": "u_73fwfvcdca",
+	"kind": "function",
+	"title": "isWebPushEndpoint",
+	"responsibility": "Accepts only an HTTPS address on a known browser push service, so nothing else is stored or contacted.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/isWebPushEndpoint.ts"],
+		"symbols": ["isWebPushEndpoint"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "isWebPushEndpoint.value",
+				"type": "string",
+				"required": true,
+				"description": "A push subscription address."
+			}
+		],
+		"outputs": [
+			{
+				"name": "isWebPushEndpoint",
+				"type": "boolean",
+				"description": "True for a Google, Apple, Mozilla or Microsoft push host on the default port without credentials or fragment."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "isWebPushEndpoint",
+				"inputs": [
+					{
+						"name": "isWebPushEndpoint.value",
+						"type": "string",
+						"required": true,
+						"description": "A push subscription address."
+					}
+				],
+				"outputs": [
+					{
+						"name": "isWebPushEndpoint",
+						"type": "boolean",
+						"description": "True for a Google, Apple, Mozilla or Microsoft push host on the default port without credentials or fragment."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/isWebPushEndpoint.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/isWebPushEndpoint.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -42,6 +42,20 @@ test('every session brief requires per-requirement, per-computer proof before tr
 	}
 });
 
+test('every session brief rejects substitutes for live proof and partial releases', () => {
+	for (const recovery of [false, true]) {
+		const brief = formatTrackerHostBrief(item, 'Finish by running tracker done.', { recovery });
+		expect(brief).toContain('A mocked route, a direct call that skips a hop');
+		expect(brief).toContain('a setting the installed app lacks is not proof of a live path');
+		expect(brief).toContain('name any such substitute');
+		expect(brief).toContain("every component in Daniel's approval wording and the brief");
+		expect(brief).toContain('including iPhone');
+		expect(brief).toContain('reads back each installed version');
+		expect(brief).toContain('a required live check is `not seen`');
+		expect(brief).toContain('stays open or blocked');
+	}
+});
+
 test('a truncated Docker brief keeps the done proof rule within its 15,900 byte budget', () => {
 	// The dispatcher's real completion section is about this long.
 	const completion = `## Completion and worktree cleanup\n${'Run tracker done. '.repeat(30)}`;

@@ -1,0 +1,127 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-web-push-service-deliver-needs-you",
+	"uid": "u_5x35b7bzsf",
+	"kind": "service",
+	"title": "deliverNeedsYou",
+	"responsibility": "Sends one summary to every subscribed browser and decides what to remember.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/tracker-web-push-service/deliverNeedsYou.ts",
+			"src/services/projects-sessions/tracker-web-push-service/deliverNeedsYou.types.ts"
+		],
+		"symbols": ["deliverNeedsYou", "PushAttempt", "PushDeliveryAttempt"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "deliverNeedsYou.config",
+				"type": "WebPushConfig",
+				"required": true,
+				"description": "The application server key pair and the Hub origin from web-push.json."
+			},
+			{
+				"name": "deliverNeedsYou.ports",
+				"type": "PushPorts",
+				"required": true,
+				"description": "Fetch and the send time."
+			},
+			{
+				"name": "deliverNeedsYou.attempt",
+				"type": "PushDeliveryAttempt",
+				"required": true,
+				"description": "Open asks, their keys, the state and the Hub's subscriptions."
+			}
+		],
+		"outputs": [
+			{
+				"name": "deliverNeedsYou",
+				"type": "Promise<PushState>",
+				"description": "Announced after any delivery; a back-off after failures; a short hold with no browser."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "deliverNeedsYou",
+				"inputs": [
+					{
+						"name": "deliverNeedsYou.config",
+						"type": "WebPushConfig",
+						"required": true,
+						"description": "The application server key pair and the Hub origin from web-push.json."
+					},
+					{
+						"name": "deliverNeedsYou.ports",
+						"type": "PushPorts",
+						"required": true,
+						"description": "Fetch and the send time."
+					},
+					{
+						"name": "deliverNeedsYou.attempt",
+						"type": "PushDeliveryAttempt",
+						"required": true,
+						"description": "Open asks, their keys, the state and the Hub's subscriptions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deliverNeedsYou",
+						"type": "Promise<PushState>",
+						"description": "Announced after any delivery; a back-off after failures; a short hold with no browser."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.projects-sessions-web-push-contract",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-needs-you-push-message",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-plan-needs-you-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-transport",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/tracker-web-push-service/deliverNeedsYou.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/tracker-web-push-service/deliverNeedsYou.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

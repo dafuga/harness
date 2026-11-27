@@ -17,8 +17,10 @@
 		currentAgent,
 		runTime,
 		initials,
-		overviewTone
+		overviewTone,
+		messageStatusText
 	} from './hubHomePresentation';
+	import { isPending, receiptText } from './hubHomeMessages';
 	import type { ChangeSession, SendHomeChat } from './hubHomeView.types';
 	import HubHomeAddSession from './HubHomeAddSession.svelte';
 	import HubHomeAsk from './HubHomeAsk.svelte';
@@ -161,14 +163,17 @@
 			</hx-header>
 			<hx-ol class="hh-thread" aria-label="Tracker conversation">
 				{#each active.messages.filter((message) => message.id !== 'question') as message (message.id)}
-					<hx-li class="hh-msg" data-from={message.from}>
-						<hx-p>{message.text}</hx-p><hx-span class="hh-msg-at">{runTime(message.at)}</hx-span>
+					{@const status = messageStatusText(message, active.name)}
+					<hx-li class="hh-msg" data-from={message.from} data-status={message.status}>
+						<hx-p>{message.text}</hx-p><hx-span class="hh-msg-at"
+							>{status ? `${status} · ${runTime(message.at)}` : runTime(message.at)}</hx-span
+						>
 					</hx-li>
 				{/each}
-				{#each pending.filter((entry) => entry.message.agentId === active?.id && entry.message.itemId === active.itemId && !active.messages.some((message) => message.from === 'you' && message.text === entry.message.text)) as entry (entry.message.id)}
+				{#each pending.filter((entry) => isPending(entry, active)) as entry (entry.message.id)}
 					<hx-li class="hh-msg" data-from="you">
 						<hx-p>{entry.message.text}</hx-p><hx-span class="hh-msg-at" role="status"
-							>{entry.receipt.status}</hx-span
+							>{receiptText(entry.receipt)}</hx-span
 						>
 					</hx-li>
 				{/each}
@@ -178,7 +183,7 @@
 					</hx-li>
 				{/each}
 			</hx-ol>
-			{#if active.itemId}
+			{#if active.itemId || active.id === 'cos'}
 				{#key active.id}<HubHomeComposer {agents} agentId={active.id} {send} {submitted} />{/key}
 			{:else}
 				<hx-p class="po-sessions">This agent has no current Tracker item.</hx-p>
