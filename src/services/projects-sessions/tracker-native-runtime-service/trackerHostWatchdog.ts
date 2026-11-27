@@ -127,7 +127,7 @@ function stillApplies(
 	if (slotAlerts.has(kind)) return true;
 	const item = activeWatchdogItem(items, item_id);
 	if (sessionAlerts.has(kind))
-		return item?.status === 'in_progress' && liveSessions.has(session ?? '');
+		return item?.status === 'in_progress' && liveSessions.has(String(session));
 	const rotation = exposureRotationId(kind, identity);
 	if (rotation) {
 		// The scanner uses the first ten hex digits of its event hash as the rotation item ID.
