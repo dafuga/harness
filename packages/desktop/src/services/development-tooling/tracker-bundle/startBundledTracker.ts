@@ -11,6 +11,15 @@ import { installBundledTracker } from './installBundledTracker';
 export function systemTrackerHost(): TrackerBundleHost {
 	return {
 		uid: process.getuid?.() ?? 0,
+		isProcessRunning: (pid) => {
+			try {
+				process.kill(pid, 0);
+				return true;
+			} catch (error) {
+				if ((error as NodeJS.ErrnoException).code === 'ESRCH') return false;
+				throw error;
+			}
+		},
 		sleep: (milliseconds) => new Promise((done) => setTimeout(done, milliseconds)),
 		run: (file, args, env) =>
 			new Promise((done) => {
@@ -55,27 +64,25 @@ export async function startBundledTracker(
 ): Promise<TrackerBundleOutcome> {
 	let revision: string | null = null;
 	try {
-		const manifest = JSON.parse(await readFile(join(appPath, 'package.json'), 'utf8'));
+		const manifest: { revision?: unknown } = JSON.parse(
+			await readFile(join(appPath, 'package.json'), 'utf8')
+		);
 		if (typeof manifest.revision !== 'string' || !/^[0-9a-f]{40}$/.test(manifest.revision))
 			return { status: 'not-bundled' };
-		const build: string = manifest.revision;
-		revision = build;
+		revision = manifest.revision;
 		const outcome = await installBundledTracker({
 			app: resolve(appPath, '../../..'),
-			revision: build,
+			revision,
 			home,
 			host
 		});
 		await logInstall(home, revision, outcome);
 		return outcome;
 	} catch (error) {
-		const reason =
-			error instanceof TrackerBundleError
-				? error.message
-				: error instanceof Error
-					? error.name
-					: 'Unknown install error';
-		await logInstall(home, revision, { status: 'failed', reason });
+		await logInstall(home, revision, {
+			status: 'failed',
+			reason: TrackerBundleError.describe(error)
+		});
 		throw error;
 	}
 }

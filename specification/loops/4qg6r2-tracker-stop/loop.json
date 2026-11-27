@@ -2,7 +2,7 @@
 	"name": "4qg6r2-tracker-stop",
 	"goal": "Prove a slow hub exits before activation or restoration and packaged startup records its result.",
 	"createdAt": "2026-11-27T18:40:41.237Z",
-	"updatedAt": "2026-11-27T18:44:07.337Z",
+	"updatedAt": "2026-11-27T18:44:20.060Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,7 +34,9 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:44:20.060Z",
+			"evidence": "Installer commit adds a bounded launchd removal check for activation and rollback, propagates failed unload-only rollback and writes packaged-start results to the private Tracker logs directory."
 		},
 		{
 			"id": "green",

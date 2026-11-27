@@ -52,7 +52,12 @@
 						"type": "Promise<Activation>"
 					}
 				],
-				"errors": [],
+				"errors": [
+					{
+						"name": "TrackerBundleError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			}
 		],

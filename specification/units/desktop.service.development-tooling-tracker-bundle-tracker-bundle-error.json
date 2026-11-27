@@ -11,15 +11,45 @@
 		"source": [
 			"packages/desktop/src/services/development-tooling/tracker-bundle/TrackerBundleError.ts"
 		],
-		"symbols": ["TrackerBundleError"]
+		"symbols": ["TrackerBundleError", "TrackerBundleError.describe"]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
-		"outputs": [],
+		"inputs": [
+			{
+				"name": "TrackerBundleError.describe.error",
+				"type": "unknown",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerBundleError.describe",
+				"type": "string"
+			}
+		],
 		"errors": [],
 		"errorStatus": "none-found",
-		"operations": [],
+		"operations": [
+			{
+				"name": "TrackerBundleError.describe",
+				"inputs": [
+					{
+						"name": "TrackerBundleError.describe.error",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerBundleError.describe",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
 		"initialization": []
 	},
 	"dependencies": [],

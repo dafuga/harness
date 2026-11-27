@@ -39,21 +39,29 @@ async function restoreLink(path: string, state: LinkState): Promise<void> {
 	else if (state.kind === 'absent') await rm(path, { force: true });
 }
 
-async function rollBack(a: ActivateInput, reason: string): Promise<Activation> {
+async function rollBack(
+	a: ActivateInput,
+	reason: string,
+	stopping: Set<number>
+): Promise<Activation> {
 	const { host } = a.input;
 	await restoreLink(a.layout.launcher, a.before.launcher);
 	await restoreLink(a.layout.entry, a.before.entry);
 	if (a.program === null) {
 		await rm(a.layout.agent, { force: true });
-		await reloadAgent(a.layout.agent, host, 0);
+		await reloadAgent(a.layout.agent, host, 0, stopping);
 	} else {
 		await setAgentExecutable(a.layout.agent, a.program[0], host);
-		await reloadAgent(a.layout.agent, host);
+		await reloadAgent(a.layout.agent, host, undefined, stopping);
 	}
 	return { status: 'rolled-back', reason };
 }
 
-async function installAgent(a: ActivateInput, role: 'hub' | 'spoke' | null): Promise<void> {
+async function installAgent(
+	a: ActivateInput,
+	role: 'hub' | 'spoke' | null,
+	stopping: Set<number>
+): Promise<void> {
 	const { layout, executable } = a;
 	const { host, home } = a.input;
 	if (a.program === null && role !== null)
@@ -62,7 +70,7 @@ async function installAgent(a: ActivateInput, role: 'hub' | 'spoke' | null): Pro
 			host
 		);
 	else await setAgentExecutable(layout.agent, executable, host);
-	await reloadAgent(layout.agent, host);
+	await reloadAgent(layout.agent, host, undefined, stopping);
 	await waitReady(a);
 }
 
@@ -79,10 +87,19 @@ export async function activateService(a: ActivateInput): Promise<Activation> {
 		return done('current', false);
 	const role = a.program === null ? await configuredRole(a.layout.config) : null;
 	if (a.program === null && role === null) return done('cli-only', false);
+	// A timed-out bootout may already have removed the label when rollback starts.
+	const stopping = new Set<number>();
 	try {
-		await installAgent(a, role);
+		await installAgent(a, role, stopping);
 	} catch (error) {
-		return rollBack(a, error instanceof Error ? error.message : 'The update failed.');
+		const reason = TrackerBundleError.describe(error);
+		try {
+			return await rollBack(a, reason, stopping);
+		} catch (restoreError) {
+			throw new TrackerBundleError(
+				`Update failed: ${reason} Rollback failed: ${TrackerBundleError.describe(restoreError)}`
+			);
+		}
 	}
 	return done('installed', true);
 }
