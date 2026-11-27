@@ -16,6 +16,7 @@ import {
 import { withTempDir } from '../../support/temporary';
 import { provePriorityAndPacing } from '../../support/trackerDispatchQueueFixture';
 import { managedRunner } from '../../support/trackerObservedRunFixture';
+import { proveRetryAdmission } from '../../support/trackerHostResourceFixture';
 import { measureWorkload } from '../../support/measureWorkload';
 
 const now = () => 1780000000000;
@@ -44,50 +45,6 @@ test('adopts an uncertain start after restart without releasing the attempt twic
 			await proveTickRecovery();
 		})
 	));
-
-async function proveRetryAdmission() {
-	const { store, database, repo, dispatcher } = openDispatcher(':memory:');
-	const original = 'claude-haiku-5-5';
-	const current = 'gpt-6.2-sol';
-	const retryPolicy = fixturePolicy(now, {
-		pickModel: (item) =>
-			item.model === current
-				? {
-						rung: { id: 'sol', cli: 'codex', model: current, pinned: true },
-						kind: 'coding',
-						reason: 'current pin'
-					}
-				: policy.pickModel(item),
-		admit: (_item, _intent, rung) => (rung?.model === original ? 'fixture provider held' : null)
-	});
-	const start = vi.fn<TrackerDispatchRunner['start']>(async ({ key }) => ({
-		type: 'session',
-		session: { key, id: 'current-model', state: 'live', startedAt: now() }
-	}));
-	try {
-		queueFixtureItem(store);
-		const first = await dispatcher.claim(sampleId, sampleToken);
-		if (first.status !== 'start') throw new Error('fixture failed to reserve a run');
-		await dispatcher.record(sampleId, first.run, { type: 'startup-failed', reason: 'fixture' });
-		store.appendLocal({ itemId: sampleId, fields: { model: current } });
-		const scheduler = new TrackerDispatchSchedulerService(
-			repo,
-			new TrackerDispatcherService(repo, retryPolicy),
-			{
-				policy: retryPolicy,
-				permitAutomatic: async () => true,
-				runner: { start, observe: async () => undefined }
-			}
-		);
-		await scheduler.tick(signal);
-		expect(repo.readSnapshot(sampleId).runs).toMatchObject([
-			{ model: original, state: 'finished' },
-			{ model: current, state: 'running', escalated_from: first.run.id }
-		]);
-	} finally {
-		database.close();
-	}
-}
 
 async function proveTickRecovery() {
 	const { store, database, repo, dispatcher } = openDispatcher(':memory:');

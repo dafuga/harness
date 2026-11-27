@@ -1,3 +1,10 @@
+import { expect } from 'vitest';
+import { TrackerDispatchRepository } from '../../src/repositories/projects-sessions/TrackerDispatchRepository';
+import { TrackerDispatcherService } from '../../src/services/agents-providers/TrackerDispatcherService';
+import { TrackerDispatchSchedulerService } from '../../src/services/projects-sessions/TrackerDispatchSchedulerService';
+import { TrackerPersistenceService } from '../../src/services/projects-sessions/TrackerPersistenceService';
+import { pickTrackerModel } from '../../src/utils/agents-providers/pickTrackerModel';
+import { fixturePolicy, primary, sampleId, sampleToken, started } from './trackerDispatcherFixture';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -141,3 +148,48 @@ else {
 	process.stdout.write(JSON.stringify({ status: 'started', session }));
 }
 `;
+
+export async function proveRetryAdmission() {
+	const database = new DatabaseSync(':memory:');
+	const clock = () => Date.parse('2026-11-27T21:01Z');
+	const store = new TrackerPersistenceService(database, primary, { now: clock });
+	const repo = new TrackerDispatchRepository(store);
+	const original = 'claude-sonnet-5-5';
+	const model = 'gpt-6.2-sol';
+	let providerHeld = false;
+	const policy = fixturePolicy(clock, {
+		pickModel: (item) => pickTrackerModel(item, { now: clock() }),
+		admit: (_item, _intent, rung) =>
+			providerHeld && rung?.model === original ? 'fixture provider held' : null
+	});
+	const dispatcher = new TrackerDispatcherService(repo, policy);
+	const scheduler = new TrackerDispatchSchedulerService(repo, dispatcher, {
+		policy,
+		permitAutomatic: async () => true,
+		runner: {
+			observe: async () => undefined,
+			start: async ({ key }) => ({
+				type: 'session',
+				session: { key, id: 'current-model', state: 'live', startedAt: clock() }
+			})
+		}
+	});
+	try {
+		store.appendLocal({
+			itemId: sampleId,
+			fields: { title: 'Retry fixture', kind: 'task', status: 'open', model: original }
+		});
+		await dispatcher.request(sampleId, { source: 'manual', token: sampleToken });
+		const first = started(await dispatcher.claim(sampleId, sampleToken));
+		await dispatcher.record(sampleId, first.run, { type: 'startup-failed', reason: 'fixture' });
+		store.appendLocal({ itemId: sampleId, fields: { model } });
+		providerHeld = true;
+		await scheduler.tick(new AbortController().signal);
+		expect(repo.readSnapshot(sampleId).runs).toMatchObject([
+			{ model: original, state: 'finished' },
+			{ model, state: 'running', escalated_from: first.run.id }
+		]);
+	} finally {
+		database.close();
+	}
+}

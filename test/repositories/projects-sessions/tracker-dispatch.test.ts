@@ -137,12 +137,8 @@ async function expectRetryCompletion(
 		await dispatcher.record(itemId, next.run, { type: 'session', session: liveEvidence(next) })
 	).run;
 	store.appendLocal({ itemId, fields: { status: 'done' } });
-	expect(
-		await dispatcher.record(itemId, retry, { type: 'monitor', session: 'exited' })
-	).toMatchObject({
-		status: 'recorded',
-		run: { state: 'finished', outcome: 'done' }
-	});
+	const completed = await dispatcher.record(itemId, retry, { type: 'monitor', session: 'exited' });
+	expect(recorded(completed).run).toMatchObject({ state: 'finished', outcome: 'done' });
 	expect(repo.readSnapshot(itemId).runs).toMatchObject([
 		{ id: first.id, revision: failed.run.revision + 1, outcome: 'failed', redone_by: retry.rung },
 		{ revision: -1, outcome: 'failed', redone_by: null },
