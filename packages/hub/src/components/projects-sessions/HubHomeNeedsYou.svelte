@@ -37,7 +37,7 @@
 	}
 
 	function displayQuestion(ask: HomeOpenAsk): string {
-		return hasViewer(ask) ? ask.question.replace(viewerUrl, '').trim() : ask.question;
+		return hasViewer(ask) ? ask.question.replace(viewerUrl, '').trim() || ask.title : ask.question;
 	}
 
 	async function closeViewer() {
@@ -79,8 +79,9 @@
 								viewerItem = ask.itemId;
 							}}>Open browser viewer</hx-button
 						>
+					{:else}
+						<HubHomeAsk {ask} {send} {receipt} row />
 					{/if}
-					<HubHomeAsk {ask} {send} {receipt} row />
 				</hx-li>
 			{/each}
 		</hx-ul>
@@ -95,6 +96,7 @@
 			<hx-a class="po-action hh-primary" href={viewerUrl} target="_blank" rel="noopener noreferrer"
 				>Continue to browser viewer</hx-a
 			>
+			<HubHomeAsk ask={viewerAsk} {send} {receipt} row />
 		</hx-div>
 	</Modal>
 {/if}
