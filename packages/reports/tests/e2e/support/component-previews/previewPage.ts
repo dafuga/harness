@@ -88,6 +88,8 @@ async function freezeCalendar(page: Page, id: string) {
 export async function readyPreview(page: Page, id: string, variant = '') {
 	const content = page.locator(`[data-preview-unit="${id}"]`);
 	await expect(content).toBeAttached();
+	if (['desktop.page.root', 'desktop.component.projects-sessions-desktop-home'].includes(id))
+		await expect(content.getByRole('list', { name: 'Project directory' })).toBeVisible();
 	if (id === 'hub.component.projects-sessions-hub-home-dialogs')
 		await expect(content.getByRole('dialog', { name: 'Plans' })).toBeVisible();
 	if (isBrokenPreviewImage(id, variant))
@@ -115,12 +117,6 @@ export async function readyPreview(page: Page, id: string, variant = '') {
 }
 /** Wait for the real route store, rather than its earlier gate or loading frame. */
 async function readyRoute(page: Page, id: string) {
-	if (id === 'desktop.page.root' || id === 'desktop.component.projects-sessions-desktop-home')
-		await expect(
-			page
-				.getByRole('region', { name: 'Projects', exact: true })
-				.getByRole('list', { name: 'Project directory' })
-		).toBeVisible();
 	if (overviewPreviews.has(id))
 		await expect(page.getByText('Atlas', { exact: true })).toBeVisible();
 	if (publicDownloadPreview.has(id))

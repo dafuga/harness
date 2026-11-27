@@ -183,7 +183,6 @@
 		if (home) home = { ...home, controlled: result.controlled };
 		refresh();
 	}
-
 	const receipt = (id: string) => api.get<HomeChatReceipt>('/api/hub-home/chat', { id });
 </script>
 

@@ -1,6 +1,15 @@
 import type { Call, Event } from './ui-hosted.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { alpha, gamma, hostedFixture, tip, userCode, verificationUrl } from './ui-hosted-fixture';
+import {
+	alpha,
+	captureHostedSignIn,
+	captureSignedInHome,
+	gamma,
+	hostedFixture,
+	tip,
+	userCode,
+	verificationUrl
+} from './ui-hosted-fixture';
 const calls = (page: Page) =>
 	page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls);
 const made = async (page: Page, op: string) => (await calls(page)).filter((call) => call.op === op);
@@ -25,19 +34,7 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	await expect(google).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Settings' })).toHaveCount(0);
 	expect(await made(page, 'listProjects')).toEqual([]);
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await page.evaluate(async () => {
-			await document.fonts.ready;
-			await Promise.all(
-				[...document.querySelectorAll('main img')].map((image) =>
-					(image as HTMLImageElement).decode()
-				)
-			);
-		});
-		await page.screenshot({
-			path: `/tmp/harness-desktop-account-${process.env.SCREENSHOT_LABEL}.png`
-		});
-	}
+	await captureHostedSignIn(page);
 	await google.click();
 	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
 	await expect(page.getByText(userCode, { exact: true })).toHaveCount(0);
@@ -51,21 +48,7 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	await expect(page).toHaveURL(/\/$/, { timeout: 15000 });
 	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toBeVisible();
 	const projects = page.getByRole('region', { name: 'Projects', exact: true });
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await page.evaluate(() => document.fonts.ready);
-		for (const [name, width, height] of [
-			['desktop', 1440, 900],
-			['tablet', 920, 800],
-			['phone', 390, 844]
-		] as const) {
-			await page.setViewportSize({ width, height });
-			await page.screenshot({
-				path: `${process.env.HEADLESS_RUN_ARTIFACTS ?? '/tmp'}/signed-in-home-${process.env.SCREENSHOT_LABEL}-${name}.png`
-			});
-		}
-		await page.setViewportSize({ width: 1440, height: 900 });
-	}
-	await expect(projects.getByRole('link', { name: 'Open Tracker Orion' })).toBeVisible();
+	await captureSignedInHome(page);
 	await expect(projects.getByText('2 need you')).toBeVisible();
 	await expect(
 		page.getByRole('region', { name: 'Blocked - needs you' }).getByText('Review the launch plan')

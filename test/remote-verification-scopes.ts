@@ -91,8 +91,6 @@ export const remoteVerificationScopes: Record<string, VerificationScope> = {
 			},
 			'test/local-transport.test.ts': {
 				'the bridge works over a socket that only this machine can reach': 'local-socket',
-				'the local Home port requires a current account and carries only its declared requests':
-					'local-socket',
 				'an image of more than a mebibyte crosses the socket in bounded frames and arrives intact':
 					'local-socket',
 				'two large answers take turns on the socket and a small one does not wait for them':

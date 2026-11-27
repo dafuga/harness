@@ -1,3 +1,6 @@
+import type { NativeAuthService } from '../src/lib/development-tooling/desktop-initialization/NativeAuthService';
+import type { OwnerHomeSnapshot } from '../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
+import { expect } from '../../../test/verificationExpect';
 import type { Attempt } from './local-transport-fixture.types';
 import { afterEach } from 'vitest';
 import { randomFillSync } from 'node:crypto';
@@ -166,3 +169,30 @@ export async function localFixture(
 }
 
 export type { Attempt } from './local-transport-fixture.types';
+
+export async function expectHomePort() {
+	const f = await localFixture();
+	let admitted = false;
+	const auth = {
+		get admitted() {
+			return admitted;
+		}
+	} as NativeAuthService;
+	const home: OwnerHomeSnapshot = {
+		overview: { status: 'unavailable' },
+		agents: [],
+		plans: [],
+		scheduled: [],
+		providers: { quota: null, routines: null }
+	};
+	const client = f.connect(f.window({ shared: { auth, home: async () => home } }));
+	await expect(client.request('homeSnapshot')).rejects.toThrow('Sign in to Harness');
+	await expect(client.request('homeChat')).rejects.toThrow('Sign in to Harness');
+	admitted = true;
+	await expect(
+		client.request('homeSnapshot', { source: 'https://example.invalid' })
+	).rejects.toThrow('Desktop Home operation unavailable');
+	await expect(client.request('homeSnapshot')).resolves.toEqual(home);
+	admitted = false;
+	await expect(client.request('homeSnapshot')).rejects.toThrow('Sign in to Harness');
+}
