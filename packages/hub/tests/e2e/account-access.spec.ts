@@ -31,7 +31,8 @@ test('the Hub opens at Google sign-in and shows Home only after authentication',
 });
 
 test('the account menu lists signed-in devices and reaches the linked Macs', async ({
-	page
+	page,
+	browserErrors
 }, testInfo) => {
 	await hostedFixture(page);
 	await linkedComputersFixture(page);
@@ -65,11 +66,28 @@ test('the account menu lists signed-in devices and reaches the linked Macs', asy
 	await expect(page.getByText('Office Mac')).toBeVisible();
 	const linked = page.getByRole('list', { name: 'Linked computers' });
 	await expect(linked.getByText('Studio Mac')).toBeVisible();
+	let failedPoll = '';
+	await page.route(
+		'**/pairing/*/poll',
+		async (route) => {
+			failedPoll = route.request().url();
+			browserErrors.expectError({
+				type: 'console',
+				message:
+					'Failed to load resource: the server responded with a status of 503 (Service Unavailable)',
+				source: failedPoll,
+				reason: 'The first pairing poll deliberately returns a temporary relay failure.'
+			});
+			await route.fulfill({ status: 503, json: { error: 'unavailable' } });
+		},
+		{ times: 1 }
+	);
 	await linked.getByRole('button', { name: 'Connect to Desk Mac' }).click();
 	const desk = page.getByRole('dialog', { name: 'Desk Mac' });
 	await expect(desk.getByRole('list', { name: 'Projects on this Mac' })).toContainText(
 		'Desk project'
 	);
+	expect(failedPoll).toBeTruthy();
 	await expect(page).toHaveURL(/\/devices$/);
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		for (const width of [1440, 820, 390]) {
