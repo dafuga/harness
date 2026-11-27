@@ -10,12 +10,20 @@ import { hubEvidenceRegistry } from './hubEvidenceRegistry';
 import { hubEvidenceViews } from './hubEvidenceViews';
 import { hubFail } from '../../development-tooling/hubJson';
 import { regressionHistory } from '../../../../../../src/utils/regressionHistory';
+import type { SourceCommitFacts } from '../../../../../collaboration/src/models/git-source-history/SourceHistory.types';
+import type { RevisionRegistry } from '../../../../../../src/utils/verification-evidence/revision-registry/revisionRegistry.types';
+import type { RevisionRecords } from '../../../../../../src/utils/development-tooling/revisionSummary.types';
 
 export async function hubEvidenceRevision(
 	base: HubSourceContext,
 	history: HubRecordStatusService,
 	commit: string
-) {
+): Promise<{
+	facts: SourceCommitFacts;
+	detail: HarnessRevision | (Omit<HarnessRevision, 'registry'> & { registry: RevisionRegistry });
+	judged: RevisionRecords;
+	legacy: string[];
+}> {
 	const facts = await base.source.facts?.(base.repository, commit);
 	if (!facts || facts.commit !== commit) return hubFail('evidence-unreadable');
 	const context = commit === base.commit ? base : await hubPinnedSource(base, commit);

@@ -15,8 +15,17 @@ import {
 } from '../../../../utils/projects-sessions/planning-reads/planRecord';
 import { approvalInfo, threadInfo } from '../../../../utils/projects-sessions/planningConvert';
 import { PlanningWriteError } from './planningWrites.types';
+import type { PlanRecord } from '../../../../models/planning-collaboration/PlanningPort.types';
+import type { DesignVersion } from '../../../../models/planning-collaboration/DesignVersion.types';
+import type {
+	ThreadInfo,
+	ApprovalInfo
+} from '../../../../models/development-tooling/Desktop.types';
 
-export async function planningWrites(context: PlanningContext, draft: PlanDraft) {
+export async function planningWrites(
+	context: PlanningContext,
+	draft: PlanDraft
+): Promise<PlanRecord> {
 	const slug = draft.title
 		.toLowerCase()
 		.replace(/[^a-z0-9]+/g, '-')
@@ -43,7 +52,10 @@ export async function planningWrites(context: PlanningContext, draft: PlanDraft)
 	return planRecord(context, result.value, result.commit);
 }
 
-export async function ensurePlan(context: PlanningContext, unit: ComponentManifest) {
+export async function ensurePlan(
+	context: PlanningContext,
+	unit: ComponentManifest
+): Promise<PlanRecord> {
 	const existing = (await context.api.listPlans()).find((p) => p.unitId === unit.id);
 	if (existing) return planRecord(context, await context.api.readPlan({ unitId: unit.id }), 'HEAD');
 	const category =
@@ -67,7 +79,10 @@ export async function ensurePlan(context: PlanningContext, unit: ComponentManife
 	return planRecord(context, result.value, result.commit);
 }
 
-export async function addPlanDesign(context: PlanningContext, draft: DesignDraft) {
+export async function addPlanDesign(
+	context: PlanningContext,
+	draft: DesignDraft
+): Promise<DesignVersion> {
 	const plan = await context.api.readPlan({ unitId: draft.entityId });
 	const revised = plan.versions.find((v) => v.version === draft.revises?.version);
 	const anchor = revised?.images.find((i) => i.sha256 === draft.revises?.imageSha256);
@@ -93,7 +108,10 @@ export async function addPlanDesign(context: PlanningContext, draft: DesignDraft
 	});
 }
 
-export async function openPlanThread(context: PlanningContext, draft: ThreadDraft) {
+export async function openPlanThread(
+	context: PlanningContext,
+	draft: ThreadDraft
+): Promise<ThreadInfo> {
 	const plan = await context.api.readPlan({ unitId: draft.entityId });
 	const image = plan.versions
 		.find((v) => v.version === draft.version)
@@ -117,7 +135,10 @@ export async function openPlanThread(context: PlanningContext, draft: ThreadDraf
 	);
 }
 
-export async function approvePlanDesign(context: PlanningContext, draft: ApprovalDraft) {
+export async function approvePlanDesign(
+	context: PlanningContext,
+	draft: ApprovalDraft
+): Promise<ApprovalInfo> {
 	const plan = await context.api.readPlan({ unitId: draft.entityId }),
 		version = plan.versions.find((v) => v.version === draft.version);
 	if (!version) throw new PlanningWriteError('Unknown design version.');

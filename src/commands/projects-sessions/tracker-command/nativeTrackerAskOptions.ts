@@ -39,11 +39,28 @@ export function nativeTrackerFlagBody(
 ): Record<string, unknown> {
 	const question = text.length ? text : values.question;
 	const body = nativeTrackerAskBody(values);
-	if (!isTrackerCosMessage(String(question ?? ''))) {
+	const message = String(question ?? '');
+	if (!isTrackerCosMessage(message)) {
+		requirePlainLanguageAsk(message);
 		requireStructuredAsk(values);
-		requireSpec(String(question ?? ''), values);
+		requireSpec(message, values);
 	}
 	return { question, force: values.force, ...body };
+}
+
+/** Refusals use the existing Chief of Staff inbox before a flag can reach Daniel. */
+function requirePlainLanguageAsk(question: string): void {
+	const toolQuestion =
+		/\b(?:which|what) (?:tracker |cli )?command (?:should|do|can|would)\b|\bhow (?:do|should|can) (?:i|we) use (?:the )?(?:tracker|cli)\b/i;
+	const jargon =
+		/\b(?:move-on|launched run|next[- ]step record|needs_daniel|session_run|auto_token|tracker (?:flag|unflag|ignore|unignore|block|unblock|park|done|launch|note))\b|\brun\s+#\d+\b/i;
+	const term = jargon.exec(question)?.[0];
+	if (term)
+		throw new TypeError(
+			`use plain English for Daniel's decision. Replace "${term}" and say what you want to do and why in one sentence.`
+		);
+	if (toolQuestion.test(question))
+		throw new TypeError('send tool or process questions to Chief of Staff with tracker alert.');
 }
 
 /** A flag is a question Daniel answers by tapping, so it must carry choices and a recommendation. */

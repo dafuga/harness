@@ -1,12 +1,13 @@
 import { expect, test } from 'vitest';
-import { mergeHomeSnapshots } from '../../src/components/projects-sessions/hubHomeMerge';
+import { mergeHomeSnapshots } from '../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 import {
 	agentActivity,
 	homeHeadline,
 	isWorking
-} from '../../src/components/projects-sessions/hubHomePresentation';
+} from '../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
 import type {
 	HomeAgent,
+	HomePlan,
 	HomeSubscription,
 	OwnerHomeSnapshot
 } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
@@ -55,7 +56,7 @@ test('no computer answering gives no Home view, and one computer is shown unchan
 	expect(mergeHomeSnapshots([only])).toBe(only);
 });
 
-test('work synced between computers appears once, most urgent and most recent first', () => {
+test('work synced between computers appears once, preserving artifacts at the same revision', () => {
 	const primary = snapshot(
 		[
 			agent('shared', 'idle', '2026-11-25T10:00:00Z'),
@@ -72,7 +73,28 @@ test('work synced between computers appears once, most urgent and most recent fi
 		[quota('claude-a', '2026-11-25T11:00:00Z'), quota('codex-b', '2026-11-25T11:00:00Z')],
 		5
 	);
+	const plan: HomePlan = {
+		id: 'plan',
+		title: 'Fixture plan',
+		project: null,
+		state: 'draft',
+		updatedAt: '2026-11-25T10:00:00Z',
+		total: 0,
+		done: 0,
+		steps: []
+	};
+	primary.plans = [plan];
+	const withDesign: HomePlan = {
+		...plan,
+		stage: 'design',
+		planning: { promotions: [], artifacts: { design: { summary: 'Fixture design' } } }
+	};
+	second.plans = [withDesign];
 	const merged = mergeHomeSnapshots([primary, second]);
+	expect(merged?.plans).toEqual([withDesign]);
+	const later = { ...plan, updatedAt: '2026-11-25T11:00:00Z' };
+	primary.plans = [later];
+	expect(mergeHomeSnapshots([second, primary])?.plans).toEqual([later]);
 	expect(merged?.agents.map((entry) => [entry.id, entry.state])).toEqual([
 		['shared', 'needs-you'],
 		['only-primary', 'working'],

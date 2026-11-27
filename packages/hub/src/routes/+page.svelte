@@ -13,11 +13,10 @@
 {#if session.actor}
 	{#key session.actor.id}<HubHome />{/key}
 {:else if session.status || session.error}
-	<hx-main class="sign-in">
+	<hx-main class="sign-in" aria-label="Sign in to Harness">
 		<hx-div class="sign-in-inner">
-			<hx-span class="sign-in-mark"><BrandMark size={40} /></hx-span>
-			<hx-h1>Harness</hx-h1>
-			<hx-p class="muted">Understand your project. Design what comes next.</hx-p>
+			<hx-span class="sign-in-mark" role="img" aria-label="Harness"><BrandMark size={40} /></hx-span
+			>
 			<LoginPanel compact />
 			<hx-p class="note">Use the same Google account on your phone and computer.</hx-p>
 		</hx-div>
@@ -42,7 +41,6 @@
 		padding: 22vh var(--hx-space-24) var(--hx-space-40);
 		text-align: center;
 	}
-	.sign-in-inner h1,
 	.note {
 		margin: 0;
 	}

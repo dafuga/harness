@@ -1572,13 +1572,13 @@
 			"unit": "desktop.initializer.initialize-desktop",
 			"from": "packages/desktop/src/lib/initialize-desktop/initializeDesktop.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-			"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
+			"definition": "92cb865bf80f1479b16816f6e1d9c230970da5f4b26e51fae70e09c81ac905e0",
 			"relocationDefinition": "ad6779f744c3301ed9c076ccd555033b60565ddb328f789f7efeff9f93b08d6b",
 			"review": {
-				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
-				"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
-				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				"definition": "92cb865bf80f1479b16816f6e1d9c230970da5f4b26e51fae70e09c81ac905e0",
+				"reason": "Pass the existing Tracker Home read and chat services to the signed-in local window."
 			},
 			"previousReviews": [
 				{
@@ -1652,6 +1652,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
 					"definition": "1559cbae8e29818bfc65058faf896ee98d34e2ad378e002a3ab6d3f1f19c28ad",
 					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				},
+				{
+					"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/initializeDesktop.ts",
+					"definition": "63b9b0f3eec6864d368081bbc5e4177e42b78d882cc51baa0a2ce960016b54a8",
+					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 				}
 			]
 		},
@@ -1989,15 +1995,21 @@
 			"unit": "service.analytics",
 			"from": "src/services/AnalyticsService.ts",
 			"to": "src/cli/program/AnalyticsService.ts",
-			"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
+			"definition": "a3c46c8c0cac2df97918d8e725bf07fbadcf19b58c034609ed8e604556e7337e",
 			"relocationDefinition": "1a76ce9bc1eb2d33dcb0f216fd0f9861ee67e8a243fc3e8964142c3cb50fb086",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "src/cli/program/AnalyticsService.ts",
-				"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
-				"reason": "Retains typed command errors and limits task registry records to task analytics."
+				"definition": "a3c46c8c0cac2df97918d8e725bf07fbadcf19b58c034609ed8e604556e7337e",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "src/cli/program/AnalyticsService.ts",
+					"definition": "4abf8d2bbc284cab704efcd97b00193b913f511b786d138bab725f773258b25e",
+					"reason": "Retains typed command errors and limits task registry records to task analytics."
+				},
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
 					"path": "src/cli/program/AnalyticsService.ts",
@@ -2046,8 +2058,14 @@
 			"unit": "workflow.analytics-metrics",
 			"from": "src/workflows/analyticsMetrics.ts",
 			"to": "src/cli/program/analyticsMetrics.ts",
-			"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
+			"definition": "fb620494c87eb88bcef8f68cc9807b44cab460e0716a35959cd0621a845b826d",
 			"previousReviews": [
+				{
+					"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
+					"path": "src/cli/program/analyticsMetrics.ts",
+					"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
+					"reason": "Join reviews to provider runs and add task difficulty, cost and model-choice metrics."
+				},
 				{
 					"commit": "9425223b3263c3adbfd268eb67d49a2e01ad2f46",
 					"path": "src/cli/program/analyticsMetrics.ts",
@@ -2068,10 +2086,10 @@
 				}
 			],
 			"review": {
-				"commit": "106cce18c1586a977ebf54dca9e42c52901937b3",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "src/cli/program/analyticsMetrics.ts",
-				"definition": "f92d3831ea48a7773152fb293f66f0365d51d7b35749870b09044dc4926bb983",
-				"reason": "Join reviews to provider runs and add task difficulty, cost and model-choice metrics."
+				"definition": "fb620494c87eb88bcef8f68cc9807b44cab460e0716a35959cd0621a845b826d",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"relocationDefinition": "ec2621dc9a41ead5584d56839f61c0d5c65a534d0c6e915a8b59c4b2f2d9d044"
 		},
@@ -2190,19 +2208,26 @@
 			"unit": "desktop.service.desktop-bridge",
 			"from": "packages/desktop/src/services/DesktopBridgeService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/DesktopBridgeService.ts",
-			"definition": "85580aa8406bf97a489d1d7122e00ad2014549c874e9571c1134568df0b58145"
+			"definition": "3316fee69b35089498d085b38f9ec0e386163a6549349b38cf90e0c1ddd54a66",
+			"relocationDefinition": "85580aa8406bf97a489d1d7122e00ad2014549c874e9571c1134568df0b58145",
+			"review": {
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
+				"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/DesktopBridgeService.ts",
+				"definition": "3316fee69b35089498d085b38f9ec0e386163a6549349b38cf90e0c1ddd54a66",
+				"reason": "Forward local and Hub listing health to the owning window."
+			}
 		},
 		{
 			"unit": "desktop.service.hosted-project",
 			"from": "packages/desktop/src/services/HostedProjectService.ts",
 			"to": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-			"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
+			"definition": "ba7f9bdca924b527a8f808aba63f2746b2f85b2d6bdcbd77282fbf78806d4520",
 			"relocationDefinition": "b9917f0449c6e3eb571196e41e9ddf074be9c3abfeedfe0a221bd7e7e496059d",
 			"review": {
-				"commit": "7a370a71ae36914a6274621151a9d0fcef37e518",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
-				"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.hosted-project, written by luna); messages and behavior unchanged."
+				"definition": "ba7f9bdca924b527a8f808aba63f2746b2f85b2d6bdcbd77282fbf78806d4520",
+				"reason": "Keep successful project results when either independent source fails."
 			},
 			"previousReviews": [
 				{
@@ -2216,6 +2241,12 @@
 					"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
 					"definition": "d4080b409d5b35aa9aa3d9725c6fe10a6bed4746f65af05fec89bf99ca1e4e1d",
 					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				},
+				{
+					"commit": "7a370a71ae36914a6274621151a9d0fcef37e518",
+					"path": "packages/desktop/src/services/development-tooling/desktop-bridge-service/HostedProjectService.ts",
+					"definition": "fc2c288b4be9cc433ccc193e61060c5abff69cea783550f12b3f810a802fb4de",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.service.hosted-project, written by luna); messages and behavior unchanged."
 				}
 			]
 		},
@@ -2413,13 +2444,13 @@
 			"unit": "hub.controller.hub-api",
 			"from": "packages/hub/src/controllers/hub-api-controller/HubApiController.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-			"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
+			"definition": "d11e938271fccb670af2f039d3f6630e37bec09b5de424dde1d44e54d8e5f1ec",
 			"relocationDefinition": "9110e98fa4d5b30d509362ae7a3da4433467c345dd97c1179a0d205d3625ddb0",
 			"review": {
-				"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
-				"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
-				"reason": "Adds the authenticated read of a revision’s design canvases behind the project boundary."
+				"definition": "d11e938271fccb670af2f039d3f6630e37bec09b5de424dde1d44e54d8e5f1ec",
+				"reason": "Let the verified Hub owner discover the empty collection when collaboration is disabled."
 			},
 			"previousReviews": [
 				{
@@ -2451,6 +2482,12 @@
 					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
 					"definition": "2ad24503f433feb3473dc1b938a84a38f860fed8d9afb33fecc8c4e23124bee7",
 					"reason": "Link devices under a verified Google session and retain encrypted relay access, unlink and revocation."
+				},
+				{
+					"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
+					"path": "packages/hub/src/routes/api/[...path]/hub-api-controller/HubApiController.ts",
+					"definition": "4a8a0a9180b998371222496404d1673bb38ce6db474bf578cdd21f4b13d2235c",
+					"reason": "Adds the authenticated read of a revision’s design canvases behind the project boundary."
 				}
 			]
 		},
@@ -2662,15 +2699,27 @@
 			"unit": "desktop.adapter.electron-environment",
 			"from": "packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-			"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
+			"definition": "b6e8709201c6fb7079be4112819f711ad44c97affe48d13d2d95621adb53f5dd",
 			"relocationDefinition": "da0290089728366cb117aeb9d8c013df801f3ad2bdc391ed95872f71b3af03ce",
 			"review": {
-				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+				"commit": "a834c24e86afe2206ce7435350b59d0f5d7c739a",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-				"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
-				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				"definition": "b6e8709201c6fb7079be4112819f711ad44c97affe48d13d2d95621adb53f5dd",
+				"reason": "Exposes the local Home reader and message writer together through the Electron environment."
 			},
 			"previousReviews": [
+				{
+					"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"definition": "52bf1aec33561c92aa67f56253d4ed3170b3129b461fc4531f30c38b15db1bac",
+					"reason": "Exposes the local Tracker Home reader and writer through the existing Electron environment."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
@@ -2822,15 +2871,21 @@
 			"unit": "hub.service.hub-projection",
 			"from": "packages/hub/src/services/hub-projection-service/HubProjectionService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-			"definition": "4616832b0b2db4403c5992af0dec0b06903052248b44d2473ff9e54e87fcaa3a",
+			"definition": "3170b74d1391ba919bb9d945fb40d7df348ded7da013f4575119d95dab6d639c",
 			"relocationDefinition": "84da7c7af64f93f2bd137180aebff1745bde5b7c5e57f33231705205f8710ea4",
 			"review": {
-				"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
-				"definition": "4616832b0b2db4403c5992af0dec0b06903052248b44d2473ff9e54e87fcaa3a",
-				"reason": "Reads committed design canvases after the membership check; thread messages moved to a module function."
+				"definition": "3170b74d1391ba919bb9d945fb40d7df348ded7da013f4575119d95dab6d639c",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "4b571087fde4c7cdb9740a0d3e200cc72aba821f",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
+					"definition": "4616832b0b2db4403c5992af0dec0b06903052248b44d2473ff9e54e87fcaa3a",
+					"reason": "Reads committed design canvases after the membership check; thread messages moved to a module function."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/HubProjectionService.ts",
@@ -2897,7 +2952,14 @@
 			"unit": "hub.function.hub-snapshot",
 			"from": "packages/hub/src/services/hub-projection-service/hubSnapshot.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
-			"definition": "3db9a1e79c45309976d0889bf6fdc9c5a489c37362d54ab8b87f518085678a6a"
+			"definition": "ca3c37f942b11914dbd1d82edd30cc27282ba186025b3045f37c0f96a9213399",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
+				"definition": "ca3c37f942b11914dbd1d82edd30cc27282ba186025b3045f37c0f96a9213399",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "3db9a1e79c45309976d0889bf6fdc9c5a489c37362d54ab8b87f518085678a6a"
 		},
 		{
 			"unit": "hub.function.hub-threads",
@@ -3013,14 +3075,28 @@
 			"unit": "desktop.adapter.remote-http-project",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"definition": "730683f6700bea18354561f796af8ee23a08cf57cfde91d43a4ee0529fe0ef01",
+			"definition": "abe86d2da7026c6c5e3021458319f91650c18a3a60f972a689c858156d303b00",
 			"relocationDefinition": "56523dcc7e317b6acacd6394fa67dd5a8ab6fcd02336c1e564b9f5ad972c41fa",
 			"review": {
-				"commit": "b8d18e06358ab516eb0c5af4062a424e1df2a524",
+				"commit": "3f638101fe3cfedaa0bd481767c9cf5b86948e83",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-				"definition": "730683f6700bea18354561f796af8ee23a08cf57cfde91d43a4ee0529fe0ef01",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-http-project, written by luna); messages and behavior unchanged."
-			}
+				"definition": "abe86d2da7026c6c5e3021458319f91650c18a3a60f972a689c858156d303b00",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
+			},
+			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+					"definition": "d28df1770b6cc54d871a01c538728317890df1c0ebbb532c5acfcb5c9df3efbe",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
+				{
+					"commit": "b8d18e06358ab516eb0c5af4062a424e1df2a524",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+					"definition": "730683f6700bea18354561f796af8ee23a08cf57cfde91d43a4ee0529fe0ef01",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.remote-http-project, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.hosted-image",
@@ -3039,15 +3115,21 @@
 			"unit": "desktop.service.hosted-evidence",
 			"from": "packages/desktop/src/services/HostedEvidenceService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
-			"definition": "8bd4a100b7da2ea584c90cde6af9d5a9f170eb8499bd126894b8dac15de0be5e",
+			"definition": "98b5a43610ede43e46c02564793793fc6d2d939fc36f0346c07b3092ed391313",
 			"relocationDefinition": "3e00646f73cc3637b2bfe2472711b4aadc2854340bd792eee4568d195b083fec",
 			"review": {
-				"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
-				"definition": "8bd4a100b7da2ea584c90cde6af9d5a9f170eb8499bd126894b8dac15de0be5e",
-				"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
+				"definition": "98b5a43610ede43e46c02564793793fc6d2d939fc36f0346c07b3092ed391313",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "6c9252a516e5ba6ea7cf6457ad646fd1d2f6bda0",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
+					"definition": "8bd4a100b7da2ea584c90cde6af9d5a9f170eb8499bd126894b8dac15de0be5e",
+					"reason": "Names a duplicate type from its one shared owner (deferred plan wave 3, qjv47y); type references and imports only, no runtime change."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/HostedEvidenceService.ts",
@@ -3773,15 +3855,21 @@
 			"unit": "desktop.service.project-session",
 			"from": "packages/desktop/src/services/ProjectSessionService.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-			"definition": "bb297bdc3d467bd12e175b4a4c33da49fc6c702871a14b50da7cc742fe16395f",
+			"definition": "60e1c8625c7b0bc5748ec9c6d410e1523b893953003b54f85f3d112bd3c2faca",
 			"relocationDefinition": "0d0e15a7a7474cac77d924f1b80a3a0198d40d983f1f6f4db3086dec6a43609e",
 			"review": {
-				"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
-				"definition": "bb297bdc3d467bd12e175b4a4c33da49fc6c702871a14b50da7cc742fe16395f",
-				"reason": "Share the existing writable-tip predicate between the snapshot and the session mutation gate."
+				"definition": "60e1c8625c7b0bc5748ec9c6d410e1523b893953003b54f85f3d112bd3c2faca",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "ee5852641dfefcb95b89ab374e93a6d033d2cae6",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/ProjectSessionService.ts",
+					"definition": "bb297bdc3d467bd12e175b4a4c33da49fc6c702871a14b50da7cc742fe16395f",
+					"reason": "Share the existing writable-tip predicate between the snapshot and the session mutation gate."
+				},
 				{
 					"commit": "0f968c6c98050fb14bf7f7a29d174352755a87d2",
 					"path": "packages/desktop/src/services/ProjectSessionService.ts",
@@ -3800,7 +3888,14 @@
 			"unit": "desktop.service.catalog",
 			"from": "packages/desktop/src/services/catalog-service/CatalogService.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts",
-			"definition": "3df627190d28e960cd8ca1480b90cab4f6913ad08b0ef9ae7500bd8920b29b97"
+			"definition": "ae6dca66847336ec80f2b94caa275480379ab3497beb5d50352824f9dd723d93",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts",
+				"definition": "ae6dca66847336ec80f2b94caa275480379ab3497beb5d50352824f9dd723d93",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "3df627190d28e960cd8ca1480b90cab4f6913ad08b0ef9ae7500bd8920b29b97"
 		},
 		{
 			"unit": "desktop.function.catalog-detail",
@@ -4256,27 +4351,49 @@
 			"unit": "hub.service.hub-evidence",
 			"from": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
-			"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
+			"definition": "01746d96178828c67eaae0f5364635e24bc1c750bd657f75011572579b0b4f12",
 			"relocationDefinition": "b8b70551bd974df12b8d8bc33ada984bf1caa9395a519226df7aa5865651a69f",
 			"review": {
-				"commit": "0816efe0e469ca8c3963f583590289d253961a79",
-				"path": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
-				"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
-				"reason": "Retain main’s focused screenshot evidence reads."
-			}
+				"commit": "269686f1db6350c0a6583aa1e8162e3a0a7b59b0",
+				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
+				"definition": "01746d96178828c67eaae0f5364635e24bc1c750bd657f75011572579b0b4f12",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
+			},
+			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
+					"definition": "7d99ab9e0e7ecd8be89402dbc8a6e2e2edcfd3d62b74d685597b6403717255f9",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
+				{
+					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
+					"path": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
+					"definition": "eafd716cc1f661e23d7d16bb94afe2aa70bcfd9feceb040d7267803f29ddeb27",
+					"reason": "Retain main’s focused screenshot evidence reads."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.hub-evidence-scope",
 			"from": "packages/hub/src/services/hub-evidence-service/hubEvidenceScope.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
-			"definition": "ec114305e153af3e9d6899c121b5f5128fa7b0df7a9aef2059d0f01dfda056f6",
+			"definition": "21c9b49426e8a93976c07fb776d80e1912e89d49d98a1c60d806c55cd0fe7622",
 			"relocationDefinition": "6ca680340adfdaf2b2b0cf008429abbb7d040c4a3919aceb8c31594b888a1f0b",
 			"review": {
-				"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
-				"definition": "ec114305e153af3e9d6899c121b5f5128fa7b0df7a9aef2059d0f01dfda056f6",
-				"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
-			}
+				"definition": "21c9b49426e8a93976c07fb776d80e1912e89d49d98a1c60d806c55cd0fe7622",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/hubEvidenceScope.ts",
+					"definition": "ec114305e153af3e9d6899c121b5f5128fa7b0df7a9aef2059d0f01dfda056f6",
+					"reason": "Separates named types into a sibling companion while preserving runtime JavaScript and public imports."
+				}
+			]
 		},
 		{
 			"unit": "hub.function.hub-notes",
@@ -4288,15 +4405,21 @@
 			"unit": "hub.service.hub-attached",
 			"from": "packages/hub/src/services/hub-attached-service/HubAttachedService.ts",
 			"to": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
-			"definition": "fd5a2ff5e9f21cbc47cd79f401193e8f08ea173b4ed7d310c18976cc689bcdfb",
+			"definition": "5f3025b09b54bcf5dee60d32a7716890d7464013380afb1e6aef51020e15dd6b",
 			"relocationDefinition": "74a581a9942c2de9e8539b9e6b0805da00738aea18fcc599b6ad93c366407a66",
 			"review": {
-				"commit": "f29b931cb13cc0bf1867dcbf03f6bccfcfec9329",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
-				"definition": "fd5a2ff5e9f21cbc47cd79f401193e8f08ea173b4ed7d310c18976cc689bcdfb",
-				"reason": "Use the canonical commit formatter while preserving the service operations and their original reviews."
+				"definition": "5f3025b09b54bcf5dee60d32a7716890d7464013380afb1e6aef51020e15dd6b",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "f29b931cb13cc0bf1867dcbf03f6bccfcfec9329",
+					"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
+					"definition": "fd5a2ff5e9f21cbc47cd79f401193e8f08ea173b4ed7d310c18976cc689bcdfb",
+					"reason": "Use the canonical commit formatter while preserving the service operations and their original reviews."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/hub/src/services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService.ts",
@@ -4341,15 +4464,21 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "d6fb0ad223bb2b23164c34dad8f3692f6848f080ed26ab32a9c7e127f9e938d8",
+			"definition": "0f7d724ac9ead0302768c7f4142342f7c346de569e5f6d3878b27ee4c379ce9d",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "baa2b466cabe1faec79b19112b0bde7b6cb40cc9",
+				"commit": "e5d8b2e82ca0d521f40127e94e074203e6c0a0fa",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "d6fb0ad223bb2b23164c34dad8f3692f6848f080ed26ab32a9c7e127f9e938d8",
-				"reason": "Offers the native Vault to the phone page only where the shell ships its HarnessVault plugin."
+				"definition": "0f7d724ac9ead0302768c7f4142342f7c346de569e5f6d3878b27ee4c379ce9d",
+				"reason": "Reads Tracker Home and sends contextual Chief of Staff messages through the paired Mac connection."
 			},
 			"previousReviews": [
+				{
+					"commit": "baa2b466cabe1faec79b19112b0bde7b6cb40cc9",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "d6fb0ad223bb2b23164c34dad8f3692f6848f080ed26ab32a9c7e127f9e938d8",
+					"reason": "Offers the native Vault to the phone page only where the shell ships its HarnessVault plugin."
+				},
 				{
 					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
@@ -4969,15 +5098,27 @@
 			"unit": "desktop.adapter.git-source",
 			"from": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"definition": "71f9745718eab0c3bc0eba541ed44628bdbbc6c5eaf4b3779d1caa64fd7fa277",
+			"definition": "5ba735e78352af00edf0fa390787fe2e62390fd7e900738197555aeee1298dd6",
 			"relocationDefinition": "01decde5581e75ca571d6f0156881dd2b9e059ef55127d28b366b3b64713cf90",
 			"review": {
-				"commit": "856fccb0aecf758bed1250f6a20c54ff31348e7c",
+				"commit": "3f638101fe3cfedaa0bd481767c9cf5b86948e83",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-				"definition": "71f9745718eab0c3bc0eba541ed44628bdbbc6c5eaf4b3779d1caa64fd7fa277",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.git-source, written by haiku); messages and behavior unchanged."
+				"definition": "5ba735e78352af00edf0fa390787fe2e62390fd7e900738197555aeee1298dd6",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
 			},
 			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+					"definition": "c8bcd4e129cd8d5b7d2a9ab40075867e690336de8918bcd4069062cf23178a23",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
+				{
+					"commit": "856fccb0aecf758bed1250f6a20c54ff31348e7c",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+					"definition": "71f9745718eab0c3bc0eba541ed44628bdbbc6c5eaf4b3779d1caa64fd7fa277",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.adapter.git-source, written by haiku); messages and behavior unchanged."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
@@ -5368,7 +5509,14 @@
 			"unit": "workflow.analytics-html",
 			"from": "src/workflows/analyticsHtml.ts",
 			"to": "src/cli/program/analyticsHtml.ts",
-			"definition": "13caf2eac7315dde69296bd9702bad39c7546c2413f0d2f074c90ed43d6c490a"
+			"definition": "aed2eca6d037cc965726b832e5a11dd9d33a4c1f9f66f2fe9a60b28013f93776",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "src/cli/program/analyticsHtml.ts",
+				"definition": "aed2eca6d037cc965726b832e5a11dd9d33a4c1f9f66f2fe9a60b28013f93776",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "13caf2eac7315dde69296bd9702bad39c7546c2413f0d2f074c90ed43d6c490a"
 		},
 		{
 			"unit": "hub.controller.hub-agent",
@@ -5500,54 +5648,84 @@
 			"unit": "desktop.adapter.planning-facade",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/PlanningFacadeAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
-			"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a",
+			"definition": "4c477080c37f7c7ed47bc954462b23b27a51842421b342d90686ca0adc9b3577",
 			"relocationDefinition": "afff4002416783534f5046ec92099d8a29b37ef726ad3bfdef6e4529d145b47b",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
-				"reason": "Resolve the approved option’s screenshots together under one pinned version read.",
-				"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a"
-			}
+				"definition": "4c477080c37f7c7ed47bc954462b23b27a51842421b342d90686ca0adc9b3577",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/PlanningFacadeAdapter.ts",
+					"reason": "Resolve the approved option’s screenshots together under one pinned version read.",
+					"definition": "9ac0c7c803504e36b3f86bdf38c2d192a6076e8e10429f7141a96e6014aa031a"
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.planning-message",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningMessage.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
-			"definition": "46ddbce8632bb178ef27ce80cae44433f455b7e6385c4b4bb74e10b990a2c985",
+			"definition": "957d5cd563e8cdc3e1086720bab677798917022d5bb19b5db9d1fca4cffc644b",
 			"relocationDefinition": "be9626e715b55eb2dfb7159373284e12e01f21a0933995ac5316380d0fc7cb7b",
 			"review": {
-				"commit": "ea98a0daf1790475bd214f53387e2b8c81e26288",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
-				"definition": "46ddbce8632bb178ef27ce80cae44433f455b7e6385c4b4bb74e10b990a2c985",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-message, written by luna); messages and behavior unchanged."
-			}
+				"definition": "957d5cd563e8cdc3e1086720bab677798917022d5bb19b5db9d1fca4cffc644b",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "ea98a0daf1790475bd214f53387e2b8c81e26288",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningMessage.ts",
+					"definition": "46ddbce8632bb178ef27ce80cae44433f455b7e6385c4b4bb74e10b990a2c985",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-message, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.planning-reads",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningReads.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
-			"definition": "0c069ab1501e5199088f670db9e4af61c2c97b8c319384e8a3df445054759c9b",
+			"definition": "9cd93befc66ee1c19033857b467b513c7034734d0ed94f6fc559bff49630c633",
 			"relocationDefinition": "0fdd6df349103602a1edd9fc62dc32ffe1a41fecf315c0de75a532bef0aae255",
 			"review": {
-				"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
-				"definition": "0c069ab1501e5199088f670db9e4af61c2c97b8c319384e8a3df445054759c9b",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged."
-			}
+				"definition": "9cd93befc66ee1c19033857b467b513c7034734d0ed94f6fc559bff49630c633",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "9e877aacd0ee365f1c643321e119a78de3b22545",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningReads.ts",
+					"definition": "0c069ab1501e5199088f670db9e4af61c2c97b8c319384e8a3df445054759c9b",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-desktop.function.planning-reads, written by luna); messages and behavior unchanged."
+				}
+			]
 		},
 		{
 			"unit": "desktop.function.planning-writes",
 			"from": "packages/desktop/src/adapters/planning-facade-adapter/planningWrites.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-			"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
+			"definition": "ef00e9dd75e70be92fa6dbf5589d263581804b74a84029d125f97eb45fe8c345",
 			"relocationDefinition": "26c1fa6ed92d6361d09e0804f6eff2b034e8b9315c575142fe22f0a0d30933ac",
 			"review": {
-				"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
-				"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
-				"reason": "Preserves named planning errors while storing responsive mockup versions together."
+				"definition": "ef00e9dd75e70be92fa6dbf5589d263581804b74a84029d125f97eb45fe8c345",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "97d9334b4a4f4e337e90bb09ba7e7af08ea2830d",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
+					"definition": "e68d409bd479c7b619f875b249b78f903d282d1d24c3ec74773655562dd7dbd6",
+					"reason": "Preserves named planning errors while storing responsive mockup versions together."
+				},
 				{
 					"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
 					"path": "packages/desktop/src/services/projects-sessions/project-session-service/planning-facade-adapter/planningWrites.ts",
@@ -5624,15 +5802,21 @@
 			"unit": "desktop.initializer.initialize-preload",
 			"from": "packages/desktop/src/initializers/initializePreload.ts",
 			"to": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-			"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+			"definition": "be6f3dfd585e20feec8f1ef35fa66b10c5c2a6f63ffbedaa4a69369fbbf3b361",
 			"relocationDefinition": "08214b461596bde436cdaf61401f5479b220cfc1005d35c0e99af4faec53aea5",
 			"review": {
-				"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
-				"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
-				"reason": "Exposes the local design canvas read through the isolated preload bridge."
+				"definition": "be6f3dfd585e20feec8f1ef35fa66b10c5c2a6f63ffbedaa4a69369fbbf3b361",
+				"reason": "Expose the fixed Home read and chat operations over the existing loopback bridge."
 			},
 			"previousReviews": [
+				{
+					"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+					"reason": "Exposes the local design canvas read through the isolated preload bridge."
+				},
 				{
 					"commit": "caea83354142413dd97edae29bdd055924c9847b",
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
@@ -5692,6 +5876,18 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "6d524a94c1507162a776534c85e2e8c0e26232971a57721679b533594a07f135",
 					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				},
+				{
+					"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+					"reason": "Exposes the local design canvas read through the isolated preload bridge."
+				},
+				{
+					"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4dea83f1f6823d4ce73d4541049d46eaa76004274441e6fedb65c86821cd6df5",
+					"reason": "Exposes the two fixed Home operations over the isolated Mac preload bridge."
 				}
 			]
 		},
@@ -6392,15 +6588,21 @@
 			"unit": "reports.service.console-agent",
 			"from": "packages/reports/src/services/ConsoleAgentService.ts",
 			"to": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-			"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
+			"definition": "13da4d4e03ac9b99ca144231296ef0adfe7a14a9e4cb4e87f81712f74b5b8a68",
 			"relocationDefinition": "2a0274757c369262eb9cc7098eb14483461e21fd95c40fc82cb6b5371dcd1695",
 			"review": {
-				"commit": "92086cbaa5061cec445e557889b28a4578bdd30e",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
-				"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
-				"reason": "Use the integrated Desktop run event callback and its default visual mockup renderer."
+				"definition": "13da4d4e03ac9b99ca144231296ef0adfe7a14a9e4cb4e87f81712f74b5b8a68",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "92086cbaa5061cec445e557889b28a4578bdd30e",
+					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
+					"definition": "990ebaf94ffcdfdccf44a497662eb6c965450877dd190387b0c40540676ab707",
+					"reason": "Use the integrated Desktop run event callback and its default visual mockup renderer."
+				},
 				{
 					"commit": "1c1dcda3a2eb571c83c291ce370c2b9cec4f2f64",
 					"path": "packages/reports/src/lib/development-tooling/server-hooks/ConsoleAgentService.ts",
@@ -6518,15 +6720,21 @@
 			"unit": "planning.function.plan-design",
 			"from": "packages/planning/src/services/planning-service/planDesign.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-			"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7",
+			"definition": "9da5324be14b75b99d9ab72550233648572274dd01c8adae4feea4028996e82d",
 			"relocationDefinition": "802e22cb4d88e4925e9f496afe4ff18f479eed8f2ae40f0d9b7f300b164ae1fe",
 			"review": {
-				"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
-				"reason": "Validate sized captures and require all the bytes an exact design approval binds.",
-				"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7"
+				"definition": "9da5324be14b75b99d9ab72550233648572274dd01c8adae4feea4028996e82d",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "661b8dae213472873f5e9246bf10ef339c6377b3",
+					"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
+					"reason": "Validate sized captures and require all the bytes an exact design approval binds.",
+					"definition": "a54e042d79b4fe604bb06c59a4c0ce2026d9850bc167ed8ddd9e176df6a402b7"
+				},
 				{
 					"commit": "ae9e653255f830ee4d47f84bab200245efa52b8f",
 					"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planDesign.ts",
@@ -6539,7 +6747,14 @@
 			"unit": "planning.function.plan-history",
 			"from": "packages/planning/src/services/planning-service/planHistory.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planHistory.ts",
-			"definition": "1d1338613341131dbdefec2c2324370a11a401e3f7b889f9ff1eff2b7b55b4cf"
+			"definition": "cba9de0ca8016e2e4889bcadccfdda23b20464c1f534a6ec3b4426503f3d08b2",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planHistory.ts",
+				"definition": "cba9de0ca8016e2e4889bcadccfdda23b20464c1f534a6ec3b4426503f3d08b2",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "1d1338613341131dbdefec2c2324370a11a401e3f7b889f9ff1eff2b7b55b4cf"
 		},
 		{
 			"unit": "planning.function.plan-options",
@@ -6570,14 +6785,22 @@
 			"unit": "planning.function.plan-thread",
 			"from": "packages/planning/src/services/planning-service/planThread.ts",
 			"to": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
-			"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c",
+			"definition": "e3694f21d63269961822c489c1c65943061b83ba09bf0f04b9dc244f0ab61bb1",
 			"relocationDefinition": "0a13f3b5a49de66de9dbc81704035afa1b07304ce676f8c71965b29da872292f",
 			"review": {
-				"commit": "f99a4dd918922d2644a677644ded1398a4136627",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
-				"reason": "Retain the planning thread validation and reference binding already committed on main.",
-				"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c"
-			}
+				"definition": "e3694f21d63269961822c489c1c65943061b83ba09bf0f04b9dc244f0ab61bb1",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"previousReviews": [
+				{
+					"commit": "f99a4dd918922d2644a677644ded1398a4136627",
+					"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planThread.ts",
+					"reason": "Retain the planning thread validation and reference binding already committed on main.",
+					"definition": "474f9d9504da5422268d9a072524b5d8612ad6526c6bc3cb102b411d21ec0e0c"
+				}
+			]
 		},
 		{
 			"unit": "planning.function.plan-write",
@@ -7159,13 +7382,13 @@
 			"unit": "desktop.service.local-client",
 			"from": "packages/desktop/src/services/LocalClientService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-			"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
+			"definition": "a12bbd4ecfd0e0ae2012498b6d7198988c4cc859d0d9565914347fb5321e1115",
 			"relocationDefinition": "db0ec4b62e6922c297169687608d262d5d27c0fbea6e3b27da2a52def20bb765",
 			"review": {
-				"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
-				"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
-				"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
+				"definition": "a12bbd4ecfd0e0ae2012498b6d7198988c4cc859d0d9565914347fb5321e1115",
+				"reason": "Require an admitted account for the Home operations on the local socket."
 			},
 			"previousReviews": [
 				{
@@ -7209,6 +7432,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
 					"definition": "9c46fd95a53ae5910c6017d453ca4764a90885f30398cb650df394509fab8563",
 					"reason": "Carry native browser callback and device metadata through desktop initialization."
+				},
+				{
+					"commit": "68fcb43a67da0c8915f70f20b4758bc937cebb09",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalClientService.ts",
+					"definition": "9eed54fcd36a86a4b63fe78b70ea46765b3610e53725ea1c319dae650add1746",
+					"reason": "Push tracker changes to the window as they happen: the tracker wire channel, the inbox watch bridge and the realtime lifecycle."
 				}
 			]
 		},
@@ -7216,15 +7445,27 @@
 			"unit": "desktop.service.local-operations",
 			"from": "packages/desktop/src/services/LocalOperationsService.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-			"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+			"definition": "be6de368744e50a61cec354458a827359174b094d205f3cc391731cb866c691f",
 			"relocationDefinition": "6c93c210df9a0612e8b374298b009646d8cc776940b82b610c6aa2edf7a6f2b4",
 			"review": {
-				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+				"commit": "a69176ea006aab257af58ae59ebae18a510fb812",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
-				"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
-				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				"definition": "be6de368744e50a61cec354458a827359174b094d205f3cc391731cb866c691f",
+				"reason": "Dispatch Home reads and writes to the fixed Tracker services with bounded inputs."
 			},
 			"previousReviews": [
+				{
+					"commit": "5c2602ebf47d18da1f91dfb7dfcfdfd0292bed8c",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "58abe7d8f66580aa71d34ae6894ae660661f893f668edecf91ffa142a9970fc4",
+					"reason": "Handles fixed Home reads and validates contextual chat writes before delivering them to the local Tracker."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
 				{
 					"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
@@ -7260,6 +7501,18 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "9a008bdaf9829a21478c0d7ed710d34201077f1630a455a178adf8739131994f",
 					"reason": "Dispatches the Mac inbox read and confirmed write over the authenticated local transport."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
+				{
+					"commit": "748ebb4b5cf50a7bca6ff14023d70d41fb5622d9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "b8e4551fb63e5f769b042759547b4180707504d96a676d85780c5d667e93737d",
+					"reason": "Resolves the platform fetch function at Home chat delivery so the Mac local and paired-device paths use the active transport with compatible types."
 				}
 			]
 		},
@@ -7439,15 +7692,21 @@
 			"unit": "reports.service.screenshot-upload",
 			"from": "packages/reports/src/services/ScreenshotUploadService.ts",
 			"to": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-			"definition": "e02315d7aaff38f9024ac43318fa24b717d5ba1c0c91c95e84bc306f9d4c29dd",
+			"definition": "e93a441d73ceca8be489f3b79137b68cc5c1fc482fc3e00b93c538970f3adb3f",
 			"relocationDefinition": "e19472c2cbf4000653bedf229be0e2df9fa8a390db23a9ba052e446cc5648ac8",
 			"review": {
-				"commit": "4715ce5a9e2775c1728d3e89beba2fd144ec6c0c",
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 				"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
-				"definition": "e02315d7aaff38f9024ac43318fa24b717d5ba1c0c91c95e84bc306f9d4c29dd",
-				"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.screenshot-upload, written by haiku); messages and behavior unchanged."
+				"definition": "e93a441d73ceca8be489f3b79137b68cc5c1fc482fc3e00b93c538970f3adb3f",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
 			},
 			"previousReviews": [
+				{
+					"commit": "4715ce5a9e2775c1728d3e89beba2fd144ec6c0c",
+					"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
+					"definition": "e02315d7aaff38f9024ac43318fa24b717d5ba1c0c91c95e84bc306f9d4c29dd",
+					"reason": "Throws named error classes instead of a bare Error (code phase p2b-bare-error-reports.service.screenshot-upload, written by haiku); messages and behavior unchanged."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/reports/src/routes/api/report-screenshot-upload/ScreenshotUploadService.ts",
@@ -7672,7 +7931,14 @@
 			"unit": "desktop.store.agent-settings",
 			"from": "packages/desktop/src/lib/stores/agentSettings.svelte.ts",
 			"to": "packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
-			"definition": "65a81c6bf1c85d67a516fa0dcb2f2f43db09b926430a2dab676c45d00fa99403"
+			"definition": "8cf06ee3d3d73f28e272b296fafeb4612af50df3fd704a96e4f1b9c113c75b1e",
+			"review": {
+				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"path": "packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
+				"definition": "8cf06ee3d3d73f28e272b296fafeb4612af50df3fd704a96e4f1b9c113c75b1e",
+				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+			},
+			"relocationDefinition": "65a81c6bf1c85d67a516fa0dcb2f2f43db09b926430a2dab676c45d00fa99403"
 		}
 	],
 	"services": [

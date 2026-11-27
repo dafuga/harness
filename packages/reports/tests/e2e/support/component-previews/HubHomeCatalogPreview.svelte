@@ -2,13 +2,14 @@
 	import type { Component as SvelteComponent } from 'svelte';
 	import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
 	import type { ProjectSummary } from 'collaboration';
-	import type { SendHomeChat } from '../../../../../hub/src/components/projects-sessions/hubHomeView.types';
-	import HubHomeRow from '../../../../../hub/src/components/projects-sessions/HubHomeRow.svelte';
+	import type { SendHomeChat } from '../../../../src/components/projects-sessions/hub-home/hubHomeView.types';
+	import HubHomeRow from '../../../../src/components/projects-sessions/hub-home/HubHomeRow.svelte';
 	import { browserContext } from '../../../../../hub/src/utils/development-tooling/browserContext';
 	import { catalogHomeView, catalogWorkProject } from './hubHomeCatalogData';
+	import { catalogReminders } from './hubHomeReminderData';
 	import { previewAnswerOptions } from './shared';
-	import '../../../../../hub/src/lib/styles/home-scheme.css';
-	import '../../../../../hub/src/lib/styles/hub-home/index.css';
+	import '../../../../src/lib/styles/home-scheme.css';
+	import '../../../../src/lib/styles/hub-home/index.css';
 
 	let { id, Component }: { id: string; Component: SvelteComponent<Record<string, unknown>> } =
 		$props();
@@ -51,6 +52,12 @@
 			readProject,
 			reload: noop,
 			close: noop
+		},
+		'home-directory': {
+			view: {
+				...view,
+				projectDirectory: [{ name: 'Atlas', state: 'needs-you', needsYou: 1 }]
+			}
 		},
 		'home-header': { view },
 		'home-live': { reading: view.computers, now: view.now },
@@ -96,11 +103,15 @@
 			],
 			work: []
 		},
-		'home-plans': { plans: view.plans, agents: view.agents, discuss: noop },
+		'home-plan-detail': { plan: view.plans?.[0], close: noop },
+		'home-plannable': { view, open: noop },
+		'home-plans': { plans: view.plans, agents: view.agents, discuss: noop, openPlan: noop },
 		'home-project-card': { view, open: noop },
 		'home-projects': { projects: list, snapshots, readProject },
 		'home-quota': { quota: view.quota, now: view.now, connected: true, reload: noop },
 		'home-quota-pills': { subscriptions: view.quota, now: view.now },
+		'home-reminder': { reminder: catalogReminders[0], now: view.now, send, receipt },
+		'home-reminders': { reminders: catalogReminders, now: view.now, send, receipt },
 		'home-row': { title: 'Review the export columns', meta: 'Atlas · 2h ago' },
 		'home-schedule': { runs: view.schedule, now: view.now, connected: true },
 		'home-skeleton': { rows: 3 },

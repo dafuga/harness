@@ -1,11 +1,12 @@
 // @harness-uid u_7l2fel4x2m
 import { AgentSettingsAdapter } from './AgentSettingsAdapter';
+import type { AgentSettingsStore } from './agentSettings.types';
 import { defaultDesignCount, designCounts } from '../../../utils/explorer-ui/composeModes';
 
 /** One reactive device preference serves project and thread composers alike. */
 export function createAgentSettingsStore(
 	adapter: Pick<AgentSettingsAdapter, 'read' | 'write'> = new AgentSettingsAdapter()
-) {
+): AgentSettingsStore {
 	let designOptions = $state(defaultDesignCount);
 	let saved = $state(true);
 	let loaded = false;
@@ -31,4 +32,4 @@ export function createAgentSettingsStore(
 	};
 }
 
-export const agentSettings = createAgentSettingsStore();
+export const agentSettings: AgentSettingsStore = createAgentSettingsStore();

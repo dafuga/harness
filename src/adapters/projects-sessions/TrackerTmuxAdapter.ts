@@ -35,6 +35,8 @@ const noServer =
 	/^(?:no server running on |no sessions|error connecting to .+ \(No such file or directory\))/i;
 const unsafeInput = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u;
 const decisions = new WatchdogPaneService();
+const shouldReadCwd = (names: RegExp, { pane }: TrackerTmuxPane) =>
+	names === trackerSessionName || pane.name === 'cos';
 
 function closableScreen(
 	{ cli, force, keepBackground }: TrackerTmuxClose,
@@ -59,7 +61,7 @@ export class TrackerTmuxAdapter {
 		const captured = [];
 		for (const [index, layout] of layouts.entries())
 			captured.push(
-				index < 100 ? await this.capture(layout, signal, names === trackerSessionName) : layout
+				index < 100 ? await this.capture(layout, signal, shouldReadCwd(names, layout)) : layout
 			);
 		return captured.map(({ pane }) => pane);
 	}

@@ -30,7 +30,8 @@ export const inboxFilters: readonly InboxFilter[] = [
 	'blocked',
 	'active',
 	'quiet',
-	'done'
+	'done',
+	'reminders'
 ];
 
 export const bucketLabels: Record<InboxBucket, string> = {
@@ -43,6 +44,11 @@ export const bucketLabels: Record<InboxBucket, string> = {
 
 const MAX_TEXT_BYTES = 512;
 
+export function filterLabel(filter: InboxFilter): string {
+	if (filter === 'all') return 'All';
+	return filter === 'reminders' ? 'Reminders' : bucketLabels[filter];
+}
+
 /** An open structured ask puts the item in Needs you. Otherwise the item status decides. */
 export function itemBucket(status: string, flagOpen: boolean): InboxBucket {
 	if (flagOpen) return 'needs-you';
@@ -52,14 +58,18 @@ export function itemBucket(status: string, flagOpen: boolean): InboxBucket {
 	return 'quiet';
 }
 
-export function countBuckets(rows: readonly InboxRow[]): Record<InboxFilter, number> {
+export function countBuckets(
+	rows: readonly InboxRow[],
+	reminders = 0
+): Record<InboxFilter, number> {
 	const counts: Record<InboxFilter, number> = {
 		all: rows.length,
 		'needs-you': 0,
 		blocked: 0,
 		active: 0,
 		quiet: 0,
-		done: 0
+		done: 0,
+		reminders
 	};
 	for (const row of rows) counts[row.bucket] += 1;
 	return counts;

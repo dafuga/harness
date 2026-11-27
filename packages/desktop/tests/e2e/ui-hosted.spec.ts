@@ -1,6 +1,15 @@
 import type { Call, Event } from './ui-hosted.spec.types';
 import { expect, test, type Page } from '../../../../test/support/browserTest';
-import { alpha, gamma, hostedFixture, tip, userCode, verificationUrl } from './ui-hosted-fixture';
+import {
+	alpha,
+	captureHostedSignIn,
+	captureSignedInHome,
+	gamma,
+	hostedFixture,
+	tip,
+	userCode,
+	verificationUrl
+} from './ui-hosted-fixture';
 const calls = (page: Page) =>
 	page.evaluate(() => (window as unknown as { __calls: Call[] }).__calls);
 const made = async (page: Page, op: string) => (await calls(page)).filter((call) => call.op === op);
@@ -25,33 +34,59 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	await expect(google).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Settings' })).toHaveCount(0);
 	expect(await made(page, 'listProjects')).toEqual([]);
-	if (process.env.TAKE_SCREENSHOT === 'true') {
-		await page.evaluate(async () => {
-			await document.fonts.ready;
-			await Promise.all(
-				[...document.querySelectorAll('main img')].map((image) =>
-					(image as HTMLImageElement).decode()
-				)
-			);
-		});
-		await page.screenshot({
-			path: `/tmp/harness-desktop-account-${process.env.SCREENSHOT_LABEL}.png`
-		});
-	}
+	await captureHostedSignIn(page);
 	await google.click();
 	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
 	await expect(page.getByText(userCode, { exact: true })).toHaveCount(0);
 	await page.getByRole('button', { name: 'Cancel', exact: true }).click();
 	await expect(google).toBeVisible();
 	await google.click();
+	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
 	await page.evaluate(() => {
 		(window as unknown as { __hosted: { state: string } }).__hosted.state = 'signed-in';
 	});
-	await expect(page).toHaveURL(/\/$/);
+	await expect(page).toHaveURL(/\/$/, { timeout: 15000 });
 	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toBeVisible();
+	const projects = page.getByRole('region', { name: 'Projects', exact: true });
+	await captureSignedInHome(page);
+	await expect(projects.getByText('2 need you')).toBeVisible();
+	await expect(
+		page.getByRole('region', { name: 'Blocked - needs you' }).getByText('Review the launch plan')
+	).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Needs you', exact: true })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Harness', exact: true })).toHaveCount(0);
+	await projects.getByRole('button', { name: 'Open Gamma', exact: true }).click();
+	await expect(page).toHaveURL(new RegExp(`/projects/${gamma}/harness/`));
+	await page.getByRole('link', { name: 'Needs you', exact: true }).click();
+	await expect(page).toHaveURL(/\?view=needs-you$/);
+	await expect(page.getByRole('heading', { name: 'Needs you', exact: true })).toBeVisible();
+	await expect(page.getByText('Review the launch plan')).toBeVisible();
+	await expect(projects).toHaveCount(0);
+	await page.getByRole('link', { name: 'Home', exact: true }).click();
+	await projects.getByRole('link', { name: 'Open Tracker Orion' }).click();
+	await expect(page).toHaveURL(/\/tracker\?project=Tracker\+Orion$/);
+	await expect(page.getByRole('heading', { name: 'Tracker Orion', exact: true })).toBeVisible();
+	await expect(page.getByText('Orion task')).toBeVisible();
+	await expect(page.getByText('Unrelated task')).toHaveCount(0);
+	await page.evaluate(() => sessionStorage.setItem('fixtureHubUnavailable', 'yes'));
+	await page.goto('/');
+	await expect(projects.getByText('Hub projects could not be loaded.')).toBeVisible();
+	await expect(projects.getByRole('button', { name: 'Open Alpha', exact: true })).toBeVisible();
+	await expect(projects.getByRole('link', { name: 'Open Tracker Orion' })).toBeVisible();
+	await page.getByRole('button', { name: 'Account', exact: true }).click();
 	await page.getByRole('button', { name: 'Sign out', exact: true }).click();
 	await expect(google).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toHaveCount(0);
+});
+
+test('signed-in Home lists personal reminders and Needs you leaves them out', async ({ page }) => {
+	await hostedFixture(page);
+	await page.goto('/');
+	const reminders = page.getByRole('region', { name: 'Reminders', exact: true });
+	await expect(reminders.getByRole('listitem')).toContainText(/Water the sample plant\s*Due now/);
+	await page.getByRole('link', { name: 'Needs you', exact: true }).click();
+	await expect(page.getByText('Review the launch plan')).toBeVisible();
+	await expect(reminders).toHaveCount(0);
 });
 
 test('typed-code recovery displays the code and polls at the Hub interval', async ({ page }) => {

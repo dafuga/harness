@@ -71,6 +71,10 @@ running sessions. Quota stays Unknown until a computer reports it. `Connect a co
 appears only when the account has no linked computer. The owner snapshot below remains a
 fallback.
 
+While Home is visible and the account remains signed in, it re-reads the stored Home,
+linked computers and Hub projects every 20 seconds, including when the live socket
+stays connected without a Home change notice.
+
 ### Scheduled shows only the future
 
 Scheduled lists only runs whose time is still ahead. Work whose time has passed is Running,

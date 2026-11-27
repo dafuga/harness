@@ -1,6 +1,8 @@
 // @harness-uid u_bl6xl2h4a3
 import { attemptKey } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
 import type { TrackerRunReceipt } from '../../agents-providers/TrackerDispatcherService.types';
+import { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
+import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type { WatchdogStartupService } from '../WatchdogStartupService';
 import type { WatchdogScan } from '../WatchdogPaneService.types';
@@ -139,4 +141,33 @@ export function recordOverdueAlert(
 		},
 		at
 	);
+}
+
+export function blockMissingItem(
+	store: TrackerPersistenceService,
+	{ item, candidate, reason }: { item: TrackerItem; candidate?: TrackerItem; reason: string }
+) {
+	if (candidate?.auto !== item.auto || candidate?.updated_at !== item.updated_at) return;
+	store.commitLocal(() => {
+		if (
+			item.status !== 'in_progress' &&
+			!(item.status === 'open' && item.launch_source === 'recovery')
+		)
+			return { result: false };
+		const history = new TrackerRunReadRepository(store.database, store.node).list({
+			itemId: item.id
+		});
+		if (history.some(({ state }) => state !== 'finished')) return { result: false };
+		return {
+			result: true,
+			operation: {
+				itemId: item.id,
+				fields: {
+					status: 'blocked',
+					blocked_reason: reason,
+					'note+': `Tracker recovery held: ${reason}`
+				}
+			}
+		};
+	});
 }

@@ -12,6 +12,8 @@ import { planRead } from '../plan-read/planRead';
 import { fail, hash } from '../planData';
 import { filename } from '../planValidate';
 import { version } from './version';
+import type { ImageContent } from '../../../models/planning-collaboration/PlanningView.types';
+import type { DesignImage } from '../../../models/planning-collaboration/Planning.types';
 
 async function imageVersion(git: Git, input: Omit<ReadImageInput, 'file'>) {
 	version(input.version);
@@ -52,7 +54,10 @@ async function fromVersion(
 	};
 }
 
-export async function readImage(git: Git, input: ReadImageInput) {
+export async function readImage(
+	git: Git,
+	input: ReadImageInput
+): Promise<ImageContent & Pick<DesignImage, 'content'>> {
 	version(input.version);
 	filename(input.file);
 	return fromVersion(git, await imageVersion(git, input), input);

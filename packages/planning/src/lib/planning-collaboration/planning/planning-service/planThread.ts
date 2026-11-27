@@ -29,6 +29,7 @@ import {
 } from '../../../../utils/planning-collaboration/plan-write/clean';
 import { fail, hash, json, now, planData } from '../../../../utils/planning-collaboration/planData';
 import { author, filename, region, text } from '../../../../utils/planValidate';
+import type { Committed } from '../../../../models/planning-collaboration/PlanningView.types';
 function messageValue(
 	input: MessageDraft,
 	plan: PlanDetail,
@@ -144,7 +145,7 @@ async function anchor(
 	};
 }
 
-export async function planThread(git: Git, input: OpenThreadInput) {
+export async function planThread(git: Git, input: OpenThreadInput): Promise<Committed<PlanThread>> {
 	const path = await planIdentity(git, await revision(git), input.unitId);
 	await clean(git, path);
 	const rev = await revision(git);
@@ -186,7 +187,10 @@ export async function planThread(git: Git, input: OpenThreadInput) {
 	};
 }
 
-export async function append(git: Git, input: AppendMessageInput) {
+export async function append(
+	git: Git,
+	input: AppendMessageInput
+): Promise<Committed<ThreadMessage>> {
 	const path = await planIdentity(git, await revision(git), input.unitId);
 	filename(input.threadId);
 	await clean(git, path);

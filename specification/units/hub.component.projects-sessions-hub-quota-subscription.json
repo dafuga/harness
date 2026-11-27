@@ -27,7 +27,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubQuotaSubscription.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubQuotaSubscription.svelte"
+		],
 		"symbols": ["HubQuotaSubscription"]
 	},
 	"contract": {
@@ -157,11 +159,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubQuotaSubscription.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubQuotaSubscription.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubQuotaSubscription.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubQuotaSubscription.svelte"
 			}
 		]
 	},

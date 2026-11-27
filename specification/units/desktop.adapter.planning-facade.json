@@ -470,7 +470,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.plans",
-						"type": "Promise<import('../../../../models/planning-collaboration/PlanningPort.types').PlanRecord[]>",
+						"type": "Promise<PlanRecord[]>",
 						"description": "PlanRecord array read from the requested snapshot, with converted contracts, design versions and threads.",
 						"examples": [
 							[
@@ -523,7 +523,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.createPlan",
-						"type": "Promise<import('../../../../models/planning-collaboration/PlanningPort.types').PlanRecord>",
+						"type": "Promise<PlanRecord>",
 						"description": "PlanRecord created from the draft; a new record begins with no design versions or threads.",
 						"examples": [
 							{
@@ -608,7 +608,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.ensurePlan",
-						"type": "Promise<import('../../../../models/planning-collaboration/PlanningPort.types').PlanRecord>",
+						"type": "Promise<PlanRecord>",
 						"description": "PlanRecord for the canonical manifest id, either read from HEAD when it exists or newly created from the manifest.",
 						"examples": [
 							{
@@ -667,7 +667,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.addDesign",
-						"type": "Promise<import('../../../../models/planning-collaboration/DesignVersion.types').DesignVersion>",
+						"type": "Promise<DesignVersion>",
 						"description": "DesignVersion committed for the requested design, with its stored prompt, optional notes and images.",
 						"examples": [
 							{
@@ -716,7 +716,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.openThread",
-						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadInfo>",
+						"type": "Promise<ThreadInfo>",
 						"description": "ThreadInfo for the committed thread, including its generated id and pin; unanchored threads have null version and image fields.",
 						"examples": [
 							{
@@ -769,7 +769,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.messages",
-						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadMessage[]>",
+						"type": "Promise<ThreadMessage[]>",
 						"description": "ThreadMessage array converted from the selected entity thread at the requested revision; the operation rejects if the thread is not part of that entity.",
 						"examples": [
 							[
@@ -823,7 +823,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.appendMessage",
-						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ThreadMessage>",
+						"type": "Promise<ThreadMessage>",
 						"description": "ThreadMessage converted from the committed message, including its resolved author, mode and artifact reference.",
 						"examples": [
 							{
@@ -870,7 +870,7 @@
 				"outputs": [
 					{
 						"name": "PlanningFacadeAdapter.approve",
-						"type": "Promise<import('../../../../models/development-tooling/Desktop.types').ApprovalInfo>",
+						"type": "Promise<ApprovalInfo>",
 						"description": "ApprovalInfo for the committed approval, with its version, image hashes, contract hash, timestamp and current flag.",
 						"examples": [
 							{
@@ -1012,7 +1012,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.design-version-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
 		},

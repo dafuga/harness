@@ -108,7 +108,8 @@
 					{
 						"name": "readContractJson",
 						"type": "Promise<unknown>",
-						"description": "The parsed JSON value, including objects, arrays, primitives or null; it is intentionally unvalidated until the caller applies its schema."
+						"description": "The parsed JSON value, including objects, arrays, primitives or null; it is intentionally unvalidated until the caller applies its schema.",
+						"unknownReason": "Parsed JSON of a user-supplied contract file; callers validate it against their schema."
 					}
 				],
 				"errors": [

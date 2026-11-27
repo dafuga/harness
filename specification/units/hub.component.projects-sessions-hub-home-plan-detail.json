@@ -1,0 +1,120 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-plan-detail",
+	"uid": "u_rwyjhp4g5i",
+	"kind": "component",
+	"title": "HubHomePlanDetail",
+	"responsibility": "Open one plan and display its stages, designs, artifact links and recorded steps.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.modal",
+			"reports.component.projects-sessions-tracker-planning-details",
+			"reports.component.shared-primitives-atoms-html-h3",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-ol",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte"
+		],
+		"symbols": ["HubHomePlanDetail"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomePlanDetail.plan",
+				"type": "HomePlan",
+				"required": true,
+				"description": "The selected plan, with the stage, artifact links and steps reported by Tracker."
+			},
+			{
+				"name": "HubHomePlanDetail.close",
+				"type": "() => void",
+				"required": true,
+				"description": "Closes the detail and restores focus to its entry point."
+			},
+			{
+				"name": "HubHomePlanDetail.mac",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Uses the native Mac handler for design links."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomePlanDetail",
+				"type": "markup",
+				"description": "Displays one plan in the shared section dialog."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.projects-sessions-tracker-planning-details",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h3",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ol",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlanDetail.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

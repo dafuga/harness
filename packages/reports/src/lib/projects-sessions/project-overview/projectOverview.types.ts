@@ -32,12 +32,15 @@ export type OverviewCard = {
 	updatedAt: string;
 };
 
+/** A computer chip. Older Trackers omit the remote work count. */
+export type OverviewMachine = { name: string; status: MachineStatus; remoteRuns?: number };
+
 /** Confirmed overview data, or unavailable when the local tracker cannot be read. */
 export type OverviewSnapshot =
 	| {
 			status: 'ready';
 			projects: OverviewCard[];
-			machines: { name: string; status: MachineStatus }[];
+			machines: OverviewMachine[];
 			liveSessions: number;
 	  }
 	| { status: 'unavailable' };

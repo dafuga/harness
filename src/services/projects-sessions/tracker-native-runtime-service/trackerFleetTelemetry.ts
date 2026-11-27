@@ -52,6 +52,7 @@ export function hubTelemetryTick({
 			node: options.node,
 			at: new Date(now()).toISOString(),
 			runner: { ...runner, active },
+			host_work: machines.localHostWork(),
 			resources
 		});
 		if (raiseAlerts) checkTrackerOverloads(machines, now());

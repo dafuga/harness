@@ -26,7 +26,7 @@
 		"inputs": [
 			{
 				"name": "hostedArtifact.media",
-				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"type": "AttestedMedia",
 				"required": true,
 				"description": "The hosted artifact bytes and server-declared media type used to choose the capture kind. The base type is trimmed, lowercased and stripped of parameters before matching image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json or text/plain; its bytes must pass the corresponding content check, match the requested SHA-256 and stay at or below 11 MiB.",
 				"examples": [
@@ -65,7 +65,7 @@
 				"inputs": [
 					{
 						"name": "hostedArtifact.media",
-						"type": "{ bytes: Uint8Array; mediaType: string }",
+						"type": "AttestedMedia",
 						"required": true,
 						"description": "The hosted artifact bytes and server-declared media type used to choose the capture kind. The base type is trimmed, lowercased and stripped of parameters before matching image/png, image/jpeg, audio/wav, audio/mpeg, audio/mp4, audio/ogg, application/json or text/plain; its bytes must pass the corresponding content check, match the requested SHA-256 and stay at or below 11 MiB.",
 						"examples": [

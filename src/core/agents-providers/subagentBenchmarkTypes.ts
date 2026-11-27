@@ -61,6 +61,27 @@ export interface BenchmarkTrial {
 	repairs: number;
 	error?: string;
 }
+/** One candidate's totals across its trials; null marks a value that is not fully known. */
+export interface BenchmarkCandidateMetrics {
+	candidate: string;
+	configuration: BenchmarkCandidate;
+	trials: number;
+	firstSubmissionSuccesses: number;
+	firstSubmissionSuccessRate: number | null;
+	successes: number;
+	successRate: number | null;
+	medianSuccessfulDurationMs: number | null;
+	totalDurationMs: number;
+	totalRepairs: number;
+	outcomes: Record<string, number>;
+	usage: {
+		inputTokens: number | null;
+		outputTokens: number | null;
+		cacheReadTokens: number | null;
+	};
+	reportedCostUsd: number | null;
+}
+
 export interface BenchmarkRun {
 	version: 1;
 	id: string;

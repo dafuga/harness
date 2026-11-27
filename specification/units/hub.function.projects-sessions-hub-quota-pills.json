@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubQuotaPills.ts"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubQuotaPills.ts"],
 		"symbols": ["quotaPills"]
 	},
 	"contract": {
@@ -80,11 +80,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubQuotaPills.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubQuotaPills.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubQuotaPills.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubQuotaPills.ts"
 			}
 		]
 	},

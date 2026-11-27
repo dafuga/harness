@@ -1,0 +1,195 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary-await-answer",
+	"uid": "u_ev64zvzg5l",
+	"kind": "script",
+	"title": "awaitAnswer",
+	"responsibility": "Owns the awaitAnswer build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary/awaitAnswer.ts"],
+		"symbols": ["judgeAnswer", "awaitTap", "answerOnWeb"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "judgeAnswer.item",
+				"type": "CanaryItem",
+				"required": true
+			},
+			{
+				"name": "judgeAnswer.ask",
+				"type": "CanaryAsk",
+				"required": true
+			},
+			{
+				"name": "awaitTap.options",
+				"type": "CanaryOptions",
+				"required": true
+			},
+			{
+				"name": "awaitTap.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "awaitTap.ask",
+				"type": "CanaryAsk",
+				"required": true
+			},
+			{
+				"name": "answerOnWeb.options",
+				"type": "CanaryOptions",
+				"required": true
+			},
+			{
+				"name": "answerOnWeb.web",
+				"type": "CanaryWeb",
+				"required": true
+			},
+			{
+				"name": "answerOnWeb.id",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "answerOnWeb.ask",
+				"type": "CanaryAsk",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "judgeAnswer",
+				"type": "Outcome"
+			},
+			{
+				"name": "awaitTap",
+				"type": "Promise<Outcome>"
+			},
+			{
+				"name": "answerOnWeb",
+				"type": "Promise<Outcome>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "judgeAnswer",
+				"inputs": [
+					{
+						"name": "judgeAnswer.item",
+						"type": "CanaryItem",
+						"required": true
+					},
+					{
+						"name": "judgeAnswer.ask",
+						"type": "CanaryAsk",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "judgeAnswer",
+						"type": "Outcome"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "awaitTap",
+				"inputs": [
+					{
+						"name": "awaitTap.options",
+						"type": "CanaryOptions",
+						"required": true
+					},
+					{
+						"name": "awaitTap.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "awaitTap.ask",
+						"type": "CanaryAsk",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "awaitTap",
+						"type": "Promise<Outcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "answerOnWeb",
+				"inputs": [
+					{
+						"name": "answerOnWeb.options",
+						"type": "CanaryOptions",
+						"required": true
+					},
+					{
+						"name": "answerOnWeb.web",
+						"type": "CanaryWeb",
+						"required": true
+					},
+					{
+						"name": "answerOnWeb.id",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "answerOnWeb.ask",
+						"type": "CanaryAsk",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "answerOnWeb",
+						"type": "Promise<Outcome>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.needs-you-canary-canary-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-canary-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary/awaitAnswer.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary/awaitAnswer.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

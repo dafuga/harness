@@ -1,3 +1,5 @@
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
 import type { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { expect } from 'vitest';
@@ -23,6 +25,7 @@ export async function verifyStoppedRun(
 	seedTask(runtime, Date.now(), itemId);
 	expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
 	await dispatch();
+	expect((await managedTrackerItemRequest(runtime, itemId, 'start')).ok).toBe(true);
 	const row = runtime.store.database
 		.prepare("SELECT id, tmux FROM runs WHERE item_id = ? AND state = 'running'")
 		.get(itemId) as { id: number; tmux: string };
@@ -35,6 +38,14 @@ export async function verifyStoppedRun(
 	});
 	expect(() => tmux('has-session', '-t', '=' + row.tmux)).toThrow();
 	await watchdog(11 * minute);
+	expect(
+		runtime.store.database
+			.prepare('SELECT status, blocked_reason FROM items WHERE id = ?')
+			.get(itemId)
+	).toMatchObject({
+		status: 'blocked',
+		blocked_reason: expect.stringContaining('stopped by operator')
+	});
 	expect(
 		runtime.store.database
 			.prepare('SELECT state, failure_reason FROM runs WHERE id = ?')
@@ -123,4 +134,20 @@ export async function verifyFailureBudget({
 	expect(
 		items.getStored(id).notes_log.filter(({ text }) => text.includes('watchdog recovery-failed'))
 	).toHaveLength(1);
+}
+
+export function verifyResumeBrief(directory: string, run: number) {
+	const brief = readBrief(directory, run);
+	expect(brief).toContain('Resume the synthetic task');
+	expect(brief).toContain('Progress note 11');
+	expect(brief).toContain('resume from: checkpoint commit');
+}
+
+function readBrief(state: string, run: number) {
+	for (const attempt of readdirSync(state)) {
+		const receipt = join(state, attempt, 'receipt.json');
+		if (existsSync(receipt) && JSON.parse(readFileSync(receipt, 'utf8')).runId === run)
+			return readFileSync(join(state, attempt, 'brief.md'), 'utf8');
+	}
+	return '';
 }

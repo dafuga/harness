@@ -1,6 +1,9 @@
 // @harness-uid u_si33ircueg
 import { errorMessage } from '$reports/helpers/strings/errorMessage';
-import type { EvidenceArtifactResult } from '../../../models/verification-evidence/DesktopEvidence.types';
+import type {
+	AttestedMedia,
+	EvidenceArtifactResult
+} from '../../../models/verification-evidence/DesktopEvidence.types';
 import { artifactAnswer } from '../../../utils/verification-evidence/artifact-answer/artifactAnswer';
 import { HostedArtifactRefusedError } from './hostedArtifact.types';
 
@@ -13,7 +16,7 @@ const shown: Array<[kind: string, types: string[]]> = [
 
 /** A server-attested MIME must itself belong to the supported list before byte sniffing. */
 export async function hostedArtifact(
-	media: { bytes: Uint8Array; mediaType: string },
+	media: AttestedMedia,
 	sha256: string
 ): Promise<EvidenceArtifactResult> {
 	const type = media.mediaType.split(';')[0].trim().toLowerCase();

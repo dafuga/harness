@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "script.needs-you-canary",
+	"uid": "u_av6woivt3a",
+	"kind": "script",
+	"title": "needs-you-canary",
+	"responsibility": "Owns the needs-you-canary build or maintenance script.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["scripts/needs-you-canary.ts"],
+		"symbols": []
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "script.needs-you-canary-automation-chrome-tab",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-canary-arguments",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-run-canary",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "script.needs-you-canary-tracker-cli",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "scripts/needs-you-canary.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "scripts/needs-you-canary.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

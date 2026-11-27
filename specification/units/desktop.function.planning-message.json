@@ -133,7 +133,7 @@
 				"outputs": [
 					{
 						"name": "planningMessage",
-						"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ThreadMessage>",
+						"type": "Promise<ThreadMessage>",
 						"description": "Resolves to the display message created from the appended record, with its generated UUID, timestamp, and normalized author/provider fields. Its version comes from a matched image or notes reference or the Change target, and its image hash is set only for an image reference.",
 						"examples": [
 							{
@@ -175,6 +175,11 @@
 		},
 		{
 			"unit": "desktop.function.planning-writes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.desktop-types",
 			"via": "import",
 			"origin": "derived"
 		},

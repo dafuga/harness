@@ -4,8 +4,13 @@ import { planRecord } from '../../../../utils/projects-sessions/planning-reads/p
 import type { PlanImageQuery } from '../../../../models/planning-collaboration/PlanningPort.types';
 import { messageInfo } from '../../../../utils/projects-sessions/planningConvert';
 import { PlanningReadError } from './planningReads.types';
+import type { PlanRecord } from '../../../../models/planning-collaboration/PlanningPort.types';
+import type { ThreadMessage } from '../../../../models/development-tooling/Desktop.types';
 
-export async function planningReads(context: PlanningContext, revision: string) {
+export async function planningReads(
+	context: PlanningContext,
+	revision: string
+): Promise<PlanRecord[]> {
 	const snapshot = await context.api.snapshot({ revision });
 	if (snapshot.rejected.length)
 		throw new PlanningReadError(snapshot.rejected.map((p) => p.path + ': ' + p.message).join('\n'));
@@ -15,7 +20,7 @@ export async function planningReads(context: PlanningContext, revision: string) 
 export async function readPlanMessages(
 	context: PlanningContext,
 	data: { entityId: string; threadId: string; revision: string }
-) {
+): Promise<ThreadMessage[]> {
 	const plan = await context.api.readPlan({ unitId: data.entityId, revision: data.revision }),
 		thread = plan.threads.find((t) => t.id === data.threadId);
 	if (!thread) throw new PlanningReadError('Thread does not belong to this entity.');

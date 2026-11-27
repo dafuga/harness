@@ -16,12 +16,15 @@ import { hubEvidenceRevision } from '../../../../../utils/verification-evidence/
 import { hubFail } from '../../../../../utils/development-tooling/hubJson';
 import { HubAttachedService } from '../../../../../services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService';
 import { HubRecordStatusService } from '../../../../../services/verification-evidence/hub-evidence-service/HubRecordStatusService';
+import type { RepositoryIdentity } from '../../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
+import type { ExplorerScope } from '$reports/models/explorer-ui/Explorer.types';
+import type { HarnessRevision } from '$reports/models/explorer-ui/HarnessRevision.types';
 
 export async function hubEvidenceContext(
 	deps: HubEvidenceDependencies,
 	actor: Actor,
 	query: EntityEvidenceQuery
-) {
+): Promise<{ base: HubSourceContext; tip: string; repository: RepositoryIdentity }> {
 	if (!query.projectId) return hubFail('forbidden');
 	const project = structuredClone(await deps.api.getProject(actor, query.projectId));
 	const base = await hubSource({ ...deps, actor, project, ref: query.commit });
@@ -90,7 +93,11 @@ export async function hubEvidenceScope(
 	base: HubSourceContext,
 	query: EntityEvidenceQuery,
 	tip: string
-) {
+): Promise<{
+	scope: ExplorerScope;
+	revisions: { head: HarnessRevision; parent: HarnessRevision | null };
+	history: HubRecordStatusService;
+}> {
 	const reaches: Reaches = (tip, commit) =>
 		base.source.reaches?.(base.repository, { tip, commit }) ?? Promise.resolve(false);
 	if (query.commit !== tip && !(await reaches(tip, query.commit)))

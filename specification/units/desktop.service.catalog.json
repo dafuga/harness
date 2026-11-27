@@ -198,7 +198,7 @@
 				"outputs": [
 					{
 						"name": "CatalogService.entity",
-						"type": "Promise<import(\"../../../../models/development-tooling/DesktopEntity.types\").EntityDetail>",
+						"type": "Promise<EntityDetail>",
 						"description": "Resolves to the detail record for the matching catalog id and revision, including its contract, relationships, versions, threads, history, source information, and measurements. It throws Error when no assembled catalog row has the requested id.",
 						"examples": [
 							{
@@ -297,6 +297,11 @@
 		},
 		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.development-tooling-desktop-entity-types",
 			"via": "import",
 			"origin": "derived"
 		},

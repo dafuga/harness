@@ -43,10 +43,15 @@
 	class:with-account={!!account}
 	class:with-activity={activity && !account}
 >
-	<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand"
-		><hx-span class="brand-mark"><BrandMark /></hx-span>
-		<hx-span class="brand-word">Harness</hx-span></WorkspaceLink
-	>
+	{#if workspace.bridge?.homeSnapshot}
+		<hx-a class="brand" href={resolve('/')} aria-label="Harness" data-sveltekit-reload
+			><hx-span class="brand-mark"><BrandMark /></hx-span></hx-a
+		>
+	{:else}
+		<WorkspaceLink {workspace} to={workspace.path('pages')} class="brand" label="Harness"
+			><hx-span class="brand-mark"><BrandMark /></hx-span></WorkspaceLink
+		>
+	{/if}
 	<ProjectSwitcher {workspace} />
 	<hx-div class="topbar-context">
 		<EnvironmentPicker {workspace}><DeploymentDialog {workspace} /></EnvironmentPicker>
@@ -87,6 +92,12 @@
 			>{/if}
 		{#if designs}<hx-a href={resolve(designs as '/')}><hx-span>Designs</hx-span></hx-a>{/if}
 		{#if overview}<hx-a href={resolve('/projects' as '/')}><hx-span>Projects</hx-span></hx-a>{/if}
+		{#if workspace.bridge?.trackerInbox}<hx-a
+				data-sveltekit-reload
+				href={workspace.bridge.homeSnapshot
+					? resolve('/') + '?view=needs-you'
+					: resolve('/tracker' as '/')}><hx-span>Needs you</hx-span></hx-a
+			>{/if}
 	</hx-nav>
 
 	{#if account}<hx-div class="account">

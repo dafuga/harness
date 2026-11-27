@@ -4,7 +4,7 @@
 	"uid": "u_akqlhtaphm",
 	"kind": "component",
 	"title": "Project gate",
-	"responsibility": "The home: Open project and New project buttons above the Recent projects card, with quiet status below; the New project form and phone access settings open in dialogs.",
+	"responsibility": "Offer local workspace actions and the paired-phone project list, with an accessible logo and optional device settings.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -16,7 +16,6 @@
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-h1",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-header",
 			"reports.component.shared-primitives-atoms-html-main",
@@ -132,7 +131,7 @@
 			{
 				"name": "ProjectGate",
 				"type": "markup",
-				"description": "Home markup: a header with the brand mark, the Harness heading and the tagline; while local is true, an action row with the primary Open project button (disabled while available is false or busy is true, reading Opening project… while busy) and, while available is true, a New project button that opens a dialog holding the GameCreate form; the read-only browser-preview hint when local is true and available is false; a Recent projects card whose header holds the Project Overview link when offered and whose rows open each project (disabled while busy), or an empty-state line ('Projects you open or create appear here.' on this device, 'The projects of your computer appear here once this phone is connected.' on a phone); the phone hint with its Phone access dialog when phone is given; then the children snippet."
+				"description": "A logo labelled Harness, local Open project and New project actions when applicable, and recent projects that can be selected directly. The Project Overview and linked-device actions appear when their runtime supplies them."
 			}
 		],
 		"errors": [
@@ -189,11 +188,6 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-h1",
 			"via": "import",
 			"origin": "derived"
 		},

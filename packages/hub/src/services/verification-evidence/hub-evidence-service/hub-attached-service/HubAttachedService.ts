@@ -20,6 +20,7 @@ import {
 } from '../../../../utils/verification-evidence/hubAttachedRecord';
 import { readRegression } from '../../../../../../../src/utils/regressionHistory';
 import type { RegressionNote } from '../../../../../../../src/repositories/RegressionProofRepository';
+import type { RegressionRecord } from '../../../../../../../src/core/verification-evidence/regressionTypes.types';
 
 /** All file hashes, sizes, seal and manifest identity are checked, including unselected captures. */
 export class HubAttachedService {
@@ -34,7 +35,9 @@ export class HubAttachedService {
 		return pending;
 	}
 	/** Focused regression evidence follows the same authorized, pinned repository boundary. */
-	async regression(note: RegressionNote) {
+	async regression(
+		note: RegressionNote
+	): Promise<{ record: RegressionRecord; output: string; files: Map<string, Buffer> }> {
 		const { within, reaches, base } = this.context;
 		if (!within || !(await reaches(within, note.evidence.commit)))
 			return hubFail('evidence-unreadable');

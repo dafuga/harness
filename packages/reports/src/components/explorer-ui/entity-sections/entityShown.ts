@@ -5,6 +5,7 @@ import type { ExplorerEntity } from '../../../models/explorer-ui/Explorer.types'
 import { entityContract } from './entityContract';
 import { entityMeasure } from './entityMeasure';
 import { verdictRecord } from '../../../utils/explorer-ui/explorer-verdict/explorerVerdict';
+import type { ModelTable } from '../../../../../../src/utils/explorer-ui/unitMetadata.types';
 
 /**
  * Describe one entity using the selected revision's contract and recorded observations.
@@ -29,7 +30,10 @@ export function entityShown(host: Shown, entity: ExplorerEntity): EntityShown {
 }
 
 /** Project the selected declaration's source tables and unresolved gaps for its owner's Table pane. */
-export function modelTableView(unit: HarnessUnit) {
+export function modelTableView(unit: HarnessUnit): {
+	tables: { name: string; source: string; table: ModelTable }[];
+	gaps: { name: string; gap: string }[];
+} {
 	const all = unit.modelDefinitions ?? [];
 	const named = all.filter((item) => item.name === unit.title);
 	const definitions = named.length > 0 ? named : all;

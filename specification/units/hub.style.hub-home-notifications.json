@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/lib/styles/hub-home/notifications.css"],
+		"source": ["packages/reports/src/lib/styles/hub-home/notifications.css"],
 		"symbols": []
 	},
 	"contract": {
@@ -23,11 +23,11 @@
 	"dependencies": [],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/lib/styles/hub-home/notifications.css",
+		"entry": "packages/reports/src/lib/styles/hub-home/notifications.css",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/lib/styles/hub-home/notifications.css"
+				"entry": "packages/reports/src/lib/styles/hub-home/notifications.css"
 			}
 		]
 	},

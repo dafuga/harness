@@ -217,7 +217,7 @@
 				"outputs": [
 					{
 						"name": "HubAttachedService.regression",
-						"type": "Promise<{ record: import('../../../../../../../src/core/verification-evidence/regressionTypes').RegressionRecord; output: string; files: Map<string, Buffer> }>",
+						"type": "Promise<{ record: RegressionRecord; output: string; files: Map<string, Buffer> }>",
 						"description": "The readRegression result for the note: the parsed regression record, its output text, and a Map of focused capture bytes keyed by path. regression throws evidence-unreadable when within is null or note.evidence.commit is not reachable from it, or when the tree that base.source.facts reports for note.commit is missing or differs from the record's source tree, and readRegression throws its own refusal when the record, its hashes, identity, phase or captures do not match."
 					}
 				],
@@ -317,6 +317,11 @@
 		},
 		{
 			"unit": "function.regression-history",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.regression-types",
 			"via": "import",
 			"origin": "derived"
 		},

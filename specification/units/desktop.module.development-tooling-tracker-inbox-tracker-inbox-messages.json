@@ -11,7 +11,12 @@
 		"source": [
 			"packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
 		],
-		"symbols": ["loadFailureMessage", "writeSentMessage", "writeFailureMessage"]
+		"symbols": [
+			"loadFailureMessage",
+			"overviewFailureMessage",
+			"writeSentMessage",
+			"writeFailureMessage"
+		]
 	},
 	"contract": {
 		"origin": "derived",
@@ -23,6 +28,16 @@
 			},
 			{
 				"name": "loadFailureMessage.mode",
+				"type": "'phone' | 'mac'",
+				"required": true
+			},
+			{
+				"name": "overviewFailureMessage.code",
+				"type": "string | undefined",
+				"required": true
+			},
+			{
+				"name": "overviewFailureMessage.mode",
 				"type": "'phone' | 'mac'",
 				"required": true
 			},
@@ -55,6 +70,10 @@
 				"type": "string"
 			},
 			{
+				"name": "overviewFailureMessage",
+				"type": "string"
+			},
+			{
 				"name": "writeSentMessage",
 				"type": "string"
 			},
@@ -83,6 +102,29 @@
 				"outputs": [
 					{
 						"name": "loadFailureMessage",
+						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "overviewFailureMessage",
+				"inputs": [
+					{
+						"name": "overviewFailureMessage.code",
+						"type": "string | undefined",
+						"required": true
+					},
+					{
+						"name": "overviewFailureMessage.mode",
+						"type": "'phone' | 'mac'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "overviewFailureMessage",
 						"type": "string"
 					}
 				],

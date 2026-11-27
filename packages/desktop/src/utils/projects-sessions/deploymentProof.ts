@@ -12,6 +12,7 @@ import type {
 import { gitRead } from './gitRead';
 import { deploymentState } from './deploymentState';
 import { DeploymentNotCurrentError } from './deploymentProof.types';
+import type { DeploymentReceipt } from '../../models/development-tooling/Deployment.types';
 export function deploymentProof(config: DeploymentConfig): string {
 	return createHash('sha256').update(JSON.stringify(config)).digest('hex');
 }
@@ -19,7 +20,18 @@ export async function deploymentBlockers(
 	root: string,
 	query: { commit: string; environment: DeploymentEnvironment },
 	config: DeploymentConfig
-) {
+): Promise<
+	| {
+			blockers: string[];
+			branch: string;
+			promotion: {
+				preprod: DeploymentReceipt | null;
+				production: DeploymentReceipt | null;
+				commitsBehind: number | null;
+			};
+	  }
+	| { blockers: string[]; branch: string; promotion: undefined }
+> {
 	if (query.environment === 'prod')
 		return productionPromotion(root, config, deploymentProof(config));
 	const blockers: string[] = [];

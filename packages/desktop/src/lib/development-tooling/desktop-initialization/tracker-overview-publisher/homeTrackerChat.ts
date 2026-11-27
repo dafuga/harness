@@ -4,6 +4,7 @@ import type {
 	HomeChatReceipt,
 	HomeAgent,
 	HomeOpenAsk,
+	HomeReminder,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
@@ -14,19 +15,14 @@ const trackerOrigin = 'http://127.0.0.1:7701';
 /** Checks the fresh projected item, including the question, before one fixed Tracker write. */
 export async function deliverHomeChat(
 	input: HomeChatInput,
-	home: Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>,
+	home: Pick<OwnerHomeSnapshot, 'agents' | 'openAsks' | 'reminders'>,
 	fetcher: typeof fetch = fetch
 ): Promise<HomeChatReceipt> {
 	if (input.kind === 'message') return deliverHomeMessage(input, home, fetcher);
-	const ask = home.openAsks?.find(
-		(entry) => entry.itemId === input.itemId && entry.agentId === input.agentId
-	);
-	const path = chatPath(input, home.agents, ask);
 	const id = input.id;
-	if (!path) return { id, status: 'refused' };
-	const text = deliverableText(input, ask);
-	if (text === null) return { id, status: 'refused' };
-	const body = chatBody(input, text);
+	const write = input.armed ? reminderWrite(input, home.reminders) : chatWrite(input, home);
+	if (!write) return { id, status: 'refused' };
+	const { path, body } = write;
 	try {
 		const response = await fetcher(trackerOrigin + path, {
 			method: 'POST',
@@ -43,6 +39,28 @@ export async function deliverHomeChat(
 	}
 }
 
+function chatWrite(input: HomeChatInput, home: Pick<OwnerHomeSnapshot, 'agents' | 'openAsks'>) {
+	const ask = home.openAsks?.find(
+		(entry) => entry.itemId === input.itemId && entry.agentId === input.agentId
+	);
+	const path = chatPath(input, home.agents, ask);
+	const text = path ? deliverableText(input, ask) : null;
+	return path && text !== null ? { path, body: chatBody(input, text, ask) } : null;
+}
+
+/** Done and snooze go only to a listed personal reminder still armed for the time shown. */
+function reminderWrite(input: HomeChatInput, reminders: HomeReminder[] = []) {
+	const listed = reminders.some(
+		(entry) => entry.itemId === input.itemId && entry.at === input.armed
+	);
+	if (!listed || !/^[a-z0-9-]+$/i.test(input.itemId)) return null;
+	const path = `/items/${input.itemId}`;
+	const by = 'Daniel via Hub';
+	return input.kind === 'reminder-snooze'
+		? { path: path + '/remind', body: { at: input.until, by } }
+		: { path: path + '/done', body: { occurrence: input.armed, by } };
+}
+
 /** The sanitized text to write, or null when it or the tapped option does not fit the ask. */
 function deliverableText(input: HomeChatInput, ask: HomeOpenAsk | undefined): string | null {
 	const text = sanitizeText(input.text).trim();
@@ -56,9 +74,10 @@ function deliveryStatus(response: Response): HomeChatReceipt['status'] {
 	return response.status < 500 ? 'refused' : 'unconfirmed';
 }
 
-function chatBody(input: HomeChatInput, text: string) {
+function chatBody(input: HomeChatInput, text: string, ask: HomeOpenAsk | undefined) {
 	if (input.kind !== 'answer') return { text: 'Hub message: ' + text };
-	const by = 'Daniel via Hub';
+	// Only the fresh Tracker item can mark a disposable question as automation-owned.
+	const by = ask?.title.startsWith('[QA automation] ') ? 'QA automation via Hub' : 'Daniel via Hub';
 	return input.option === undefined
 		? { answer: text, by }
 		: { option: input.option, confirmed: input.confirmed === true, by };

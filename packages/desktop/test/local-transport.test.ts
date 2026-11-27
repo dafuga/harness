@@ -12,7 +12,7 @@ import type {
 } from '../src/models/development-tooling/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
 import { remoteBinary } from '../src/utils/networking-security/remoteBinary';
-import { largeGame, largeImage, localFixture } from './local-transport-fixture';
+import { expectHomePort, largeGame, largeImage, localFixture } from './local-transport-fixture';
 import { deferred } from './remote-fixture';
 import { git } from './run-fixture';
 const settle = { timeout: 15000 },
@@ -68,6 +68,7 @@ test('the bridge works over a socket that only this machine can reach', async ()
 		code: 'unknown-method'
 	});
 	expect(f.transport.connections).toBe(1);
+	await expectHomePort();
 }, 40000);
 
 test('an image of more than a mebibyte crosses the socket in bounded frames and arrives intact', async () => {

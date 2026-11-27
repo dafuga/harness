@@ -1,0 +1,75 @@
+/* @harness-uid u_x6knq6fa2b */
+/* The Reminders view of the Mac and phone inbox: one Personal group with Done and Snooze. */
+.reminders {
+	display: grid;
+	gap: var(--hx-space-8);
+}
+.reminders-group {
+	margin: 0;
+	font-size: var(--hx-type-size-base);
+}
+.reminders-list {
+	display: grid;
+	gap: var(--hx-space-16);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.reminder {
+	display: grid;
+	gap: var(--hx-space-8);
+	min-width: 0;
+	padding: var(--hx-space-12);
+	border: var(--hx-border-thin) solid var(--hx-color-border);
+	border-radius: var(--hx-radius-small);
+	background: var(--hx-color-surface);
+}
+.reminder-text {
+	display: grid;
+	gap: var(--hx-space-4);
+	min-width: 0;
+}
+.reminder .reminder-open {
+	display: grid;
+	gap: var(--hx-space-4);
+	width: 100%;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--hx-color-text);
+	font: inherit;
+	text-align: left;
+}
+.reminder-title {
+	margin: 0;
+	line-height: var(--hx-style-leading-normal);
+	overflow-wrap: anywhere;
+}
+.reminder-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-4) var(--hx-space-12);
+	margin: 0;
+	color: var(--hx-color-text-muted);
+	font-size: var(--hx-type-size-xs);
+}
+.reminder[data-due='true'] .reminder-when {
+	color: var(--hx-color-text);
+	font-weight: var(--hx-style-weight-semibold);
+}
+.reminder-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hx-space-8);
+}
+.reminder .reminder-action {
+	min-height: var(--hx-space-40);
+	padding: 0 var(--hx-space-14);
+	border: var(--hx-border-thin) solid var(--hx-color-border-strong);
+	border-radius: var(--hx-radius-compact);
+	background: transparent;
+	color: var(--hx-color-text);
+	font: inherit;
+	font-size: var(--hx-type-size-sm);
+	cursor: pointer;
+}

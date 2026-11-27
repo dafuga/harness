@@ -7,25 +7,67 @@ name: Harness verify
 on:
   pull_request:
   push:
-    branches-ignore:
-      - harness-evidence
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Run the complete check for the combined release
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
-  group: harness-verify-${{ github.event.pull_request.head.sha || github.sha }}
+  group: harness-verify-${{ github.event.pull_request.head.sha || github.sha }}-${{ inputs.release == true && 'release' || 'focused' }}
   cancel-in-progress: true
 
 env:
   COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+  BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
   HARNESS_DEBT_RATCHET_BASE: ${{ github.event.before || '' }}
 
 jobs:
+  focused:
+    name: Relevant checks
+    if: ${{ github.event_name != 'workflow_dispatch' || !inputs.release }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.COMMIT }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Read archived source commits
+        run: git fetch --no-tags origin '+refs/harness/source/*:refs/harness/source/*'
+      - name: Install the pinned Bun
+        run: npm install --global bun@1.2.18
+      - name: Install dependencies exactly as locked
+        run: bun install --frozen-lockfile
+      - name: Install the pinned Rust toolchain
+        run: rustup show
+      - name: Install browser and Linux display dependencies
+        run: |
+          node node_modules/@playwright/test/cli.js install --with-deps chromium
+          sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg
+      - name: Run selected checks
+        run: |
+          BASE="${BASE:-$(git rev-parse HEAD^)}"
+          xvfb-run -a bun run check --commit "$COMMIT" --ci-base "$BASE" --json > shared-check-result.json
+      - name: Keep the exact-tree check receipt
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: shared-check-result
+          path: shared-check-result.json
+          if-no-files-found: ignore
+
   check-part:
     name: Full check part (${{ matrix.part }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.release }}
     # The check runs the CLI, package and browser suites. As one job it took 87 to 117 minutes
     # and was cancelled at its 120 minute limit, so its parts now run side by side. The parts
     # are defined in scripts/run-checks.ts; `bun run check` still runs all of them in order.
@@ -112,7 +154,7 @@ jobs:
     needs: check-part
     # Runs when a part fails or times out, so this one result stands for all of them. Not in a
     # cancelled run: the push and pull request runs of one commit cancel each other.
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.release }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

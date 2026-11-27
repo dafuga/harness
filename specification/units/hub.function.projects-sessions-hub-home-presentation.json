@@ -9,9 +9,9 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
-			"packages/hub/src/components/projects-sessions/hubHomeStatusText.ts",
-			"packages/hub/src/components/projects-sessions/hubHomeTime.ts"
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeStatusText.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeTime.ts"
 		],
 		"symbols": [
 			"sections",
@@ -1158,11 +1158,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomePresentation.ts"
 			}
 		]
 	},

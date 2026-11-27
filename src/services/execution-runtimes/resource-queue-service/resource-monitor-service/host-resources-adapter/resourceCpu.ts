@@ -4,8 +4,16 @@ import { performance } from 'node:perf_hooks';
 import { hostResourceLimits } from './hostResourceLimits';
 import type { Counters } from './resourceCpu.types';
 import { CpuIntervalError } from './resourceCpu.types';
+import type { HostLimits } from './hostResourceLimits.types';
 export type { Counters } from './resourceCpu.types';
-export function hostCpuCounters() {
+export function hostCpuCounters(): {
+	at: number;
+	limits: HostLimits;
+	cores: number;
+	affinity: number;
+	idle: number;
+	total: number;
+} {
 	const all = cpus();
 	return {
 		at: performance.now(),

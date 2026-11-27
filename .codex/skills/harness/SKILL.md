@@ -29,7 +29,7 @@ Choose component colors from Styles → Colors, defined in `appStyleTokensConfig
 4. Prefer adding or updating generators over manually duplicating scaffold behavior.
 5. Add or update unit and temp-workspace E2E tests for generator, audit, and CLI behavior changes.
 6. Keep generated and hand-edited files inside the configured Harness rule limits.
-7. Verify with `bun run check` before handing work back.
+7. Verify the committed candidate with `bun run check --item <tracker-id>`. Use the shared host queue for the combined release check with `--release`.
 8. Git answer caches: establish the object format first; hex shape is not immutability. Test refs named like the other width and unknown formats.
 9. Config changes: name owned helpers from the owning config file; update generator output and public SDK export plans together, then run the standard every-scaffold export-to-emission guard. Run root and every inheriting workspace's test entrypoint before a full check.
 10. Shared browser fixtures must preserve lazy setup: when their dependencies change, run an API-only case with an unavailable browser executable alongside actual browser cases. Characterize diagnostics before page announcement and overlapping context/page delivery without duplicates.

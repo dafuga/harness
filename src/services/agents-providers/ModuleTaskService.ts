@@ -70,7 +70,7 @@ export class ModuleTaskService {
 			commit: snapshot.commit
 		};
 	}
-	schema() {
+	schema(): Record<string, unknown> {
 		return z.toJSONSchema(taskInputSchema);
 	}
 	async show(id: string) {

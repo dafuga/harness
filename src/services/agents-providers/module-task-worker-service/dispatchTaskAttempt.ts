@@ -8,12 +8,14 @@ import type {
 } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 import { ModuleTaskAnalyticsService } from '../ModuleTaskAnalyticsService';
 import { moduleCompletionContext } from '../completion-hooks/moduleCompletion';
+import type { ModuleCompletionContext } from '../completion-hooks/moduleCompletion.types';
+import type { TaskRunResult } from '../../../repositories/agents-providers/ModuleTaskRepository.types';
 /** Keep every provider call, including failed or quota-rejected calls before fallback. */
 export async function dispatchTaskAttempt(
 	runner: TaskRunner,
 	input: TaskRunInput,
 	executions: TaskExecution[]
-) {
+): Promise<TaskRunResult & { [moduleCompletionContext]?: ModuleCompletionContext }> {
 	const startedAt = new Date().toISOString();
 	const base = {
 		provider: input.provider,

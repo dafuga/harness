@@ -1,0 +1,69 @@
+{
+	"name": "tracker-backup-overwrite",
+	"goal": "A backup written by another database never replaces or rotates the hub's backups, and backup status checks the newest file on disk",
+	"createdAt": "2026-11-27T08:07:24.712Z",
+	"updatedAt": "2026-11-27T12:11:39.663Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:08:05.492Z",
+			"evidence": "Repro: a second hub (other db, active host effects, same HOME) writes tracker-<date>.db.gz into the default ~/backups/tracker/native and renames over the live hub's file; live status keeps reporting last_ok from its state file. Writer proven: esqhv8 rig state file last_ok 2026-11-26T17:02:24.871Z size 3094. Expected: another db id never replaces or rotates backups; status checks the file on disk."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:08:06.719Z",
+			"evidence": "tracker-backup.test.ts and trackerBackupFixture only ran one database per backup folder, and status was only read straight after a successful write, never after the file changed. Reusable change: fixture 'sharing' option for a second hub on the same folders; three scenarios in the standard backup test."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:12:01.713Z",
+			"evidence": "loop record red at 191a9d60: bunx vitest run test/services/projects-sessions/tracker-backup.test.ts, 3 failed 6 passed; a foreign db replaced a same-day file (ok:true) and status had no file check."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:12:04.555Z",
+			"evidence": "assertTrackerBackupOwner: newest daily and every file about to be replaced must carry this db id (unreadable fails closed), before rename. status.file_error checks last_ok_file presence and size; stale and health fail; one alert."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T08:12:08.435Z",
+			"evidence": "loop record green at 28cc91a7: same unchanged command and files, 9/9 passed."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "complete",
+			"completedAt": "2026-11-27T10:45:06.168Z",
+			"evidence": "siblings-0aa3dc9f-8663-4214-8e29-81d3d5850442.json"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:11:39.663Z",
+			"evidence": "Local on 28af4c5d (same product code and tests as green e653e9f8): every check stage passed except check:desktop unit tests, run twice at 1606 passed / 1 failed with a different failure each run (remote-replay poll timeout; game-image workerd DNS crash), each passing alone, packages/desktop untouched; desktop build, audit and ios:check:limits passed separately. build and test:package passed on e84af14eec, which differs only by one test comment. CI run 45976515403 on 28af4c5d passed stages 1-12 incl unit and e2e, then hit the 120 min job limit (1hfdx4); no full green CI run. Siblings: 2 confirmed, both dismissed on review (trackerNodeRuntime default folder is the incident config whose only writer is now guarded; reports atomicJson writes per-run-ID folders). No UI change. Live check after rollout still pending."
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

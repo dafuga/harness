@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import type { HomePlan } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import type { Page } from '@playwright/test';
 import { expect } from '../../../../test/support/browserTest';
 import {
@@ -57,6 +59,45 @@ async function projectFixture(page: Page, projects: FixtureProject[], held?: Pro
 	});
 }
 
+async function planArtifacts(page: Page, plan?: HomePlan) {
+	if (plan)
+		Object.assign(plan, {
+			stage: 'design',
+			planning: {
+				promotions: [],
+				artifacts: {
+					design: {
+						summary: 'Approved designs for the dashboard.',
+						pages: [
+							{
+								name: 'Dashboard',
+								states: { ready: 'Shows the latest plan activity.' },
+								links: [
+									{
+										kind: 'image',
+										label: 'Dashboard mockup',
+										url: 'https://design.example.test/dashboard.png'
+									},
+									{
+										kind: 'link',
+										label: 'Dashboard design canvas',
+										url: 'https://design.example.test/canvas'
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		});
+	await page.route('https://design.example.test/dashboard.png', (route) =>
+		route.fulfill({
+			contentType: 'image/png',
+			body: readFileSync(new URL('../../static/icons/harness-512.png', import.meta.url))
+		})
+	);
+}
+
 export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 	const state = await hostedFixture(page, { actor: { ...ada, name: 'Daniel' } });
 	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
@@ -68,6 +109,7 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 	await page.clock.setFixedTime(homeClock);
 	const data = mockup(mode);
 	const snapshot = homeData(data);
+	await planArtifacts(page, snapshot.plans[0]);
 	if (mode === 'busy')
 		snapshot.providers.routinesReadAt = new Date(homeClock - 10_800_000).toISOString();
 	if (mode === 'empty') snapshot.providers.quota = null;
@@ -163,4 +205,47 @@ export async function fit(page: Page, width: number) {
 	}));
 	expect(bounds.width).toBeLessThanOrEqual(width);
 	expect(bounds.columns).toBe(width === 390 ? 1 : width === 834 ? 2 : width === 1440 ? 3 : 4);
+}
+
+export const needsYouSizes = {
+	desktop: { width: 1440, height: 900 },
+	tablet: { width: 820, height: 1180 },
+	phone: { width: 390, height: 844 }
+};
+
+export async function needsYouHome(
+	page: Page,
+	size: keyof typeof needsYouSizes,
+	change: 'two-asks' | 'no-choices'
+) {
+	await page.setViewportSize(needsYouSizes[size]);
+	await page.emulateMedia({
+		colorScheme: size === 'tablet' ? 'light' : 'dark',
+		reducedMotion: 'reduce'
+	});
+	const fixture = await hubHomeFixture(page, 'default');
+	const [chief] = fixture.snapshot.agents;
+	if (change === 'two-asks')
+		fixture.snapshot.agents.push({
+			...chief,
+			id: 'harbor',
+			name: 'harbor',
+			itemId: 'item-harbor',
+			question: 'Ship harbor?',
+			confirm: undefined,
+			messages: [],
+			options: [
+				{ label: 'Ship harbor now', effect: 'Merges and releases.', recommended: true },
+				{ label: 'Hold harbor', effect: 'Waits a day.' }
+			]
+		});
+	else
+		for (const agent of fixture.snapshot.agents) {
+			delete agent.options;
+			delete agent.confirm;
+		}
+	await page.goto('/');
+	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+	await expect(page.getByRole('region', { name: 'Agents', exact: true })).toBeVisible();
+	return fixture;
 }

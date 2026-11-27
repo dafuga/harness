@@ -40,7 +40,7 @@ export async function runLocalTrackerBackup(
 		const to = resolve(values.to);
 		const live = values['without-local-state'] ? undefined : config.database;
 		const { items, ops } = await restoreTrackerBackup({ backup, live, to });
-		console.log(restoreSteps(config.database, to, `${items} items, ${ops} ops`));
+		console.log(restoreSteps(config, to, `${items} items, ${ops} ops`));
 		return 0;
 	} catch (error) {
 		console.error(`tracker: ${error instanceof Error ? error.message : 'backup command failed'}`);
@@ -55,16 +55,22 @@ export function renderTrackerBackup(result: TrackerBackupResult, json: boolean):
 	return result.ok ? 0 : 1;
 }
 
-function findBackup(name: string, { backupDirectory }: TrackerNodeConfig): string {
+function backupDirectories({ backupDirectory }: TrackerNodeConfig): [string, string] {
 	const shared = join(homedir(), 'backups', 'tracker');
-	const directories = [backupDirectory ?? join(shared, 'native'), shared];
+	return [backupDirectory ?? join(shared, 'native'), shared];
+}
+
+function findBackup(name: string, config: TrackerNodeConfig): string {
+	const directories = backupDirectories(config);
 	const candidates = [resolve(name), ...directories.map((dir) => join(dir, basename(name)))];
 	const found = candidates.find((path) => existsSync(path));
 	if (!found) throw new TypeError(`no such backup file: ${name}`);
 	return found;
 }
 
-function restoreSteps(live: string, to: string, summary: string): string {
+function restoreSteps(config: TrackerNodeConfig, to: string, summary: string): string {
+	const live = config.database;
+	const [native] = backupDirectories(config);
 	return [
 		`restored copy ready: ${to} (integrity ok, ${summary}); the live database is unchanged`,
 		'To use it:',
@@ -72,6 +78,8 @@ function restoreSteps(live: string, to: string, summary: string): string {
 		'  2. Run this restore again to a new path, so run and delivery records are current.',
 		`  3. Move ${live}, ${live}-wal and ${live}-shm aside; keep them.`,
 		`  4. Move the restored file to ${live} (mode 600) and start the service.`,
+		`  5. Move the tracker-*.db.gz files in ${native} into a subfolder, keeping them: the`,
+		'     new database identity never replaces or rotates backups taken under the old one.',
 		'Each spoke sees the new database identity and sends its whole journal again.'
 	].join('\n');
 }

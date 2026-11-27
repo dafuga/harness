@@ -401,7 +401,7 @@
 				"outputs": [
 					{
 						"name": "planningReads",
-						"type": "Promise<import(\"../../../../models/planning-collaboration/PlanningPort.types\").PlanRecord[]>",
+						"type": "Promise<PlanRecord[]>",
 						"description": "Resolves to one converted PlanRecord for each plan in the snapshot at the requested revision. A nonempty rejected list throws an Error containing the rejected paths and messages; API or Git read failures also reject.",
 						"examples": [
 							[]
@@ -443,7 +443,7 @@
 				"outputs": [
 					{
 						"name": "readPlanMessages",
-						"type": "Promise<import(\"../../../../models/development-tooling/Desktop.types\").ThreadMessage[]>",
+						"type": "Promise<ThreadMessage[]>",
 						"description": "Resolves to the selected thread's messages converted to desktop ThreadMessage records. The requested thread must belong to the entity at the requested revision.",
 						"examples": [
 							[

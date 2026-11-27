@@ -192,7 +192,7 @@
 				"outputs": [
 					{
 						"name": "CloudflareDeployAdapter.discover",
-						"type": "Promise<import('../../models/development-tooling/Deployment.types').DeploymentConfig>",
+						"type": "Promise<DeploymentConfig>",
 						"description": "Resolved DeploymentConfig for root: sourceBranch comes from harness.deploy.json or the current git branch (empty when git fails), and targets maps each configured environment to a CloudflareTarget. fingerprint is the hex SHA-256 digest of the harness.deploy.json text and the Wrangler configuration text.",
 						"examples": [
 							{

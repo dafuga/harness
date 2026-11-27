@@ -8,7 +8,7 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/hubHomeLive.ts"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/hubHomeLive.ts"],
 		"symbols": [
 			"stageLabels",
 			"workStateLabels",
@@ -199,7 +199,7 @@
 					}
 				],
 				"errors": [],
-				"errorStatus": "none-found"
+				"errorStatus": "unknown"
 			},
 			{
 				"name": "span",
@@ -381,7 +381,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.service.networking-security-linked-home",
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -393,11 +393,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomeLive.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeLive.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomeLive.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeLive.ts"
 			}
 		]
 	},

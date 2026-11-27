@@ -1646,7 +1646,7 @@
 				"outputs": [
 					{
 						"name": "modelTableView",
-						"type": "{ tables: { name: string; source: string; table: import('../../../../../../src/utils/explorer-ui/unitMetadata.types').ModelTable; }[]; gaps: { name: string; gap: string; }[]; }",
+						"type": "{ tables: { name: string; source: string; table: ModelTable }[]; gaps: { name: string; gap: string }[]; }",
 						"description": "The projection of the selected model definitions: tables holds an entry of name, source and table for each selected definition that declares a table, and gaps holds an entry of name and gap for each selected definition with a tableGap.",
 						"examples": [
 							{
@@ -2410,6 +2410,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.unit-metadata",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "reports.function.entity-contract",
 			"via": "import",

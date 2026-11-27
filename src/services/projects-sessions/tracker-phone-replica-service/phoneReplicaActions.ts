@@ -20,6 +20,7 @@ export const phoneReplicaActions: Readonly<
 	unblock: { field: 'note', required: false },
 	done: { field: 'note', required: false },
 	unignore: { field: 'note', required: false },
+	remind: { field: 'at', required: true },
 	resolve: { field: 'answer', required: false }
 };
 
@@ -37,6 +38,7 @@ export const statusGuarded: ReadonlySet<PhoneReplicaAction> = new Set([
 	'unblock',
 	'resolve',
 	'done',
+	'remind',
 	'ignore',
 	'unignore'
 ]);

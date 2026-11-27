@@ -9,7 +9,12 @@
 	"status": "active",
 	"owns": {
 		"source": ["src/utils/projects-sessions/trackerUnattendedHold.ts"],
-		"symbols": ["trackerNonWorkAgent", "trackerReminderTitle", "trackerUnattendedHold"]
+		"symbols": [
+			"trackerNonWorkAgent",
+			"trackerPersonalAgent",
+			"trackerReminderTitle",
+			"trackerUnattendedHold"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -19,6 +24,12 @@
 				"type": "string | null | undefined",
 				"required": true,
 				"description": "The agent value of an item, or nothing."
+			},
+			{
+				"name": "trackerPersonalAgent.agent",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "The Tracker item agent value."
 			},
 			{
 				"name": "trackerReminderTitle.title",
@@ -80,6 +91,26 @@
 						"name": "trackerNonWorkAgent",
 						"type": "boolean",
 						"description": "True for personal, family, brainstorming and Chief of Staff agents."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerPersonalAgent",
+				"inputs": [
+					{
+						"name": "trackerPersonalAgent.agent",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "The Tracker item agent value."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerPersonalAgent",
+						"type": "boolean",
+						"description": "True for personal and family agents, whose items show only as reminders."
 					}
 				],
 				"errors": [],

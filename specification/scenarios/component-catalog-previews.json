@@ -28,8 +28,10 @@
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-choices",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-record",
+		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 		"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
+		"desktop.component.development-tooling-tracker-work",
 		"desktop.component.entity-card",
 		"desktop.component.entity-view",
 		"desktop.component.environment-picker",
@@ -66,6 +68,7 @@
 		"desktop.component.project-agent",
 		"desktop.component.project-gate",
 		"desktop.component.project-switcher",
+		"desktop.component.projects-sessions-desktop-home",
 		"desktop.component.recorded-preview",
 		"desktop.component.reference-text",
 		"desktop.component.relationships-panel",
@@ -124,6 +127,7 @@
 		"hub.component.projects-sessions-hub-home-composer",
 		"hub.component.projects-sessions-hub-home-cos-chat",
 		"hub.component.projects-sessions-hub-home-dialogs",
+		"hub.component.projects-sessions-hub-home-directory",
 		"hub.component.projects-sessions-hub-home-header",
 		"hub.component.projects-sessions-hub-home-live",
 		"hub.component.projects-sessions-hub-home-live-project",
@@ -131,11 +135,15 @@
 		"hub.component.projects-sessions-hub-home-not-started",
 		"hub.component.projects-sessions-hub-home-notification-settings",
 		"hub.component.projects-sessions-hub-home-notifications",
+		"hub.component.projects-sessions-hub-home-plan-detail",
+		"hub.component.projects-sessions-hub-home-plannable",
 		"hub.component.projects-sessions-hub-home-plans",
 		"hub.component.projects-sessions-hub-home-project-card",
 		"hub.component.projects-sessions-hub-home-projects",
 		"hub.component.projects-sessions-hub-home-quota",
 		"hub.component.projects-sessions-hub-home-quota-pills",
+		"hub.component.projects-sessions-hub-home-reminder",
+		"hub.component.projects-sessions-hub-home-reminders",
 		"hub.component.projects-sessions-hub-home-row",
 		"hub.component.projects-sessions-hub-home-schedule",
 		"hub.component.projects-sessions-hub-home-skeleton",
@@ -258,6 +266,7 @@
 		"reports.component.projects-sessions-project-overview-project-overview-card",
 		"reports.component.projects-sessions-project-overview-project-overview-item",
 		"reports.component.projects-sessions-project-overview-project-overview-state",
+		"reports.component.projects-sessions-tracker-planning-details",
 		"reports.component.provider-picker",
 		"reports.component.provider-picker-cards",
 		"reports.component.recorded-value",
@@ -866,6 +875,12 @@
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-record"]
 		},
 		{
+			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-reminders",
+			"title": "TrackerInboxReminders",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders"]
+		},
+		{
 			"id": "desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
 			"title": "Tracker item rows",
 			"coverage": "required",
@@ -876,6 +891,12 @@
 			"title": "Tracker write states",
 			"coverage": "required",
 			"units": ["desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes"]
+		},
+		{
+			"id": "desktop-component-development-tooling-tracker-work",
+			"title": "Tracker work",
+			"coverage": "required",
+			"units": ["desktop.component.development-tooling-tracker-work"]
 		},
 		{
 			"id": "desktop-component-entity-card",
@@ -1676,6 +1697,12 @@
 			"units": ["desktop.component.project-switcher"]
 		},
 		{
+			"id": "desktop-component-projects-sessions-desktop-home",
+			"title": "DesktopHome",
+			"coverage": "required",
+			"units": ["desktop.component.projects-sessions-desktop-home"]
+		},
+		{
 			"id": "desktop-component-recorded-preview",
 			"title": "RecordedPreview",
 			"coverage": "required",
@@ -2240,6 +2267,12 @@
 			"units": ["hub.component.projects-sessions-hub-home-dialogs"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-directory",
+			"title": "HubHomeDirectory",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-directory"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-header",
 			"title": "HubHomeHeader",
 			"coverage": "required",
@@ -2282,6 +2315,18 @@
 			"units": ["hub.component.projects-sessions-hub-home-notifications"]
 		},
 		{
+			"id": "hub-component-projects-sessions-hub-home-plan-detail",
+			"title": "Hub plan detail",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-plan-detail"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-plannable",
+			"title": "Hub plans and schedule",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-plannable"]
+		},
+		{
 			"id": "hub-component-projects-sessions-hub-home-plans",
 			"title": "HubHomePlans",
 			"coverage": "required",
@@ -2310,6 +2355,18 @@
 			"title": "HubHomeQuotaPills",
 			"coverage": "required",
 			"units": ["hub.component.projects-sessions-hub-home-quota-pills"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-reminder",
+			"title": "HubHomeReminder",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-reminder"]
+		},
+		{
+			"id": "hub-component-projects-sessions-hub-home-reminders",
+			"title": "HubHomeReminders",
+			"coverage": "required",
+			"units": ["hub.component.projects-sessions-hub-home-reminders"]
 		},
 		{
 			"id": "hub-component-projects-sessions-hub-home-row",
@@ -6680,6 +6737,12 @@
 			"units": ["reports.component.projects-sessions-project-overview-project-overview-state"]
 		},
 		{
+			"id": "reports-component-projects-sessions-tracker-planning-details",
+			"title": "Tracker planning details",
+			"coverage": "required",
+			"units": ["reports.component.projects-sessions-tracker-planning-details"]
+		},
+		{
 			"id": "reports-component-provider-picker",
 			"title": "Session model picker",
 			"coverage": "required",
@@ -8864,8 +8927,10 @@
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-choices",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-detail",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-record",
+				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-reminders",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-rows",
 				"desktop-component-development-tooling-tracker-inbox-tracker-inbox-writes",
+				"desktop-component-development-tooling-tracker-work",
 				"desktop-component-entity-card",
 				"desktop-component-entity-view",
 				"desktop-component-entity-view-source",
@@ -8979,6 +9044,7 @@
 				"desktop-component-project-switcher-empty",
 				"desktop-component-project-switcher-busy",
 				"desktop-component-project-switcher-long",
+				"desktop-component-projects-sessions-desktop-home",
 				"desktop-component-recorded-preview",
 				"desktop-component-reference-text",
 				"desktop-component-relationships-panel",
@@ -9073,6 +9139,7 @@
 				"hub-component-projects-sessions-hub-home-cos-chat",
 				"hub-component-projects-sessions-hub-home-composer",
 				"hub-component-projects-sessions-hub-home-dialogs",
+				"hub-component-projects-sessions-hub-home-directory",
 				"hub-component-projects-sessions-hub-home-header",
 				"hub-component-projects-sessions-hub-home-live",
 				"hub-component-projects-sessions-hub-home-live-project",
@@ -9080,11 +9147,15 @@
 				"hub-component-projects-sessions-hub-home-not-started",
 				"hub-component-projects-sessions-hub-home-notification-settings",
 				"hub-component-projects-sessions-hub-home-notifications",
+				"hub-component-projects-sessions-hub-home-plan-detail",
+				"hub-component-projects-sessions-hub-home-plannable",
 				"hub-component-projects-sessions-hub-home-plans",
 				"hub-component-projects-sessions-hub-home-project-card",
 				"hub-component-projects-sessions-hub-home-projects",
 				"hub-component-projects-sessions-hub-home-quota",
 				"hub-component-projects-sessions-hub-home-quota-pills",
+				"hub-component-projects-sessions-hub-home-reminder",
+				"hub-component-projects-sessions-hub-home-reminders",
 				"hub-component-projects-sessions-hub-home-row",
 				"hub-component-projects-sessions-hub-home-schedule",
 				"hub-component-projects-sessions-hub-home-skeleton",
@@ -9813,6 +9884,7 @@
 				"reports-component-projects-sessions-project-overview-project-overview-card",
 				"reports-component-projects-sessions-project-overview-project-overview-item",
 				"reports-component-projects-sessions-project-overview-project-overview-state",
+				"reports-component-projects-sessions-tracker-planning-details",
 				"reports-component-provider-picker",
 				"reports-component-provider-picker-loading",
 				"reports-component-provider-picker-connection-error",

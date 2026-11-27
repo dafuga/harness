@@ -58,6 +58,7 @@ export function writeTrackerFence(config: TrackerNodeConfig): void {
 	privateFixture(config.legacyFenceFile, {
 		version: 1,
 		checkpoint: 'fixture-migration-01',
+		hostEffects: config.hostEffects?.mode === 'active' ? true : undefined,
 		legacyAutostart: 'disabled',
 		node: config.node,
 		role: config.role,

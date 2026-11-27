@@ -48,6 +48,13 @@
 				"examples": ["", "ws://localhost:4312"]
 			},
 			{
+				"name": "rendererPolicy.planningImages",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Allows HTTPS images in the Plans and schedule document while retaining the existing script, frame and connection policy."
+			},
+			{
 				"name": "rendererAssets.root",
 				"type": "string",
 				"required": true,
@@ -121,6 +128,13 @@
 						"default": "",
 						"description": "Optional CSP source text appended verbatim to connect-src after 'self' when nonempty; this function does not parse or validate it. Defaults to the empty string.",
 						"examples": ["", "ws://localhost:4312"]
+					},
+					{
+						"name": "rendererPolicy.planningImages",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "Allows HTTPS images in the Plans and schedule document while retaining the existing script, frame and connection policy."
 					}
 				],
 				"outputs": [

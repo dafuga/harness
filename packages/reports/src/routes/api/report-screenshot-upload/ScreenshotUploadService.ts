@@ -7,6 +7,7 @@ import type { ReportRepository } from '../../../repositories/reports-media/repor
 import { imageAsset, writeImageAsset } from '../../../utils/reports-media/reportAssets';
 import { sanitize } from '../../../utils/development-tooling/sanitize';
 import type { R2ScreenshotStoreAdapter } from '../../../adapters/reports-media/R2ScreenshotStoreAdapter';
+import type { Report } from '../../../models/reports-media/Report.types';
 
 const viewports: Record<string, string> = {
 	'': '',
@@ -43,7 +44,7 @@ export class ScreenshotUploadService {
 		private readonly repository: ReportRepository,
 		private readonly storage: Pick<R2ScreenshotStoreAdapter, 'put'>
 	) {}
-	async upload(reportId: string, input: ScreenshotUploadInput) {
+	async upload(reportId: string, input: ScreenshotUploadInput): Promise<Report> {
 		const title = sanitize(input.title.trim());
 		if (!title || title.length > 120)
 			throw new InvalidUploadInputError('Comparison title must be 1–120 characters');

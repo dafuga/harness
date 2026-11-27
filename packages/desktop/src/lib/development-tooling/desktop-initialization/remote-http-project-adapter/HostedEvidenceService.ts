@@ -7,6 +7,10 @@ import {
 	type HostedReadOptions
 } from '../../../../services/development-tooling/HostedReadService';
 import { RemoteArtifactCacheService } from './RemoteArtifactCacheService';
+import type {
+	EntityEvidenceResult,
+	EvidenceArtifactResult
+} from '../../../../models/verification-evidence/DesktopEvidence.types';
 export class HostedEvidenceService {
 	private reads: HostedReadService;
 	private artifacts: RemoteArtifactCacheService;
@@ -18,7 +22,7 @@ export class HostedEvidenceService {
 		this.reads = new HostedReadService(options);
 		this.artifacts = new RemoteArtifactCacheService(this.reads);
 	}
-	async evidence(input: HostedEntityEvidenceQuery) {
+	async evidence(input: HostedEntityEvidenceQuery): Promise<EntityEvidenceResult> {
 		input = { ...input };
 		const key = this.transport.path('evidence', input);
 		const validate = (value: unknown) => this.validator.evidence(value, input);
@@ -33,7 +37,7 @@ export class HostedEvidenceService {
 		this.artifacts.pin(result.value.identity);
 		return result.value;
 	}
-	artifact(input: EvidenceArtifactQuery & { projectId: string }) {
+	artifact(input: EvidenceArtifactQuery & { projectId: string }): Promise<EvidenceArtifactResult> {
 		const query = { ...input };
 		return this.artifacts.read({ key: this.transport.path('artifact', query), query }, () =>
 			this.transport.artifact(query)

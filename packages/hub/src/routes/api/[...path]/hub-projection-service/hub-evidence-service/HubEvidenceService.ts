@@ -3,7 +3,8 @@ import type { Actor } from 'collaboration';
 import type {
 	EntityEvidenceQuery,
 	EntityEvidenceResult,
-	EvidenceArtifactQuery
+	EvidenceArtifactQuery as ArtifactQuery,
+	EvidenceArtifactResult as ArtifactResult
 } from '../../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types';
 import { evidencePayload } from '../../../../../../../desktop/src/utils/verification-evidence/evidencePayload';
 import { artifactAnswer } from '../../../../../../../desktop/src/utils/verification-evidence/artifact-answer/artifactAnswer';
@@ -41,11 +42,11 @@ export class HubEvidenceService {
 		await this.authorize(actor, projectId, context.repository);
 		return structuredClone(answer);
 	}
-	async artifact(actor: Actor, projectId: string, input: EvidenceArtifactQuery) {
+	async artifact(actor: Actor, projectId: string, input: ArtifactQuery): Promise<ArtifactResult> {
 		const query = {
 			...evidencePayload('evidence:artifact', input as unknown as Record<string, unknown>),
 			projectId
-		} as EvidenceArtifactQuery;
+		} as ArtifactQuery;
 		const context = await hubEvidenceContext(this.deps, actor, query);
 		const { repository } = context;
 		await hubEvidencePins(context.base, query);

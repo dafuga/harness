@@ -102,7 +102,12 @@ function sources(directory: string): string[] {
 test('portable workspace sources must not depend on the Hub app', () => {
 	const desktop = resolve(import.meta.dirname, '..');
 	const hub = resolve(desktop, '../hub');
-	const dependencies = sources(resolve(desktop, 'src')).flatMap((path) => {
+	const reports = resolve(desktop, '../reports');
+	const portable = [
+		...sources(resolve(desktop, 'src')),
+		...sources(resolve(reports, 'src/components/projects-sessions/hub-home'))
+	];
+	const dependencies = portable.flatMap((path) => {
 		const imports = [
 			...readFileSync(path, 'utf8').matchAll(
 				/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"]([^'"]+)['"]/g
@@ -113,9 +118,11 @@ test('portable workspace sources must not depend on the Hub app', () => {
 				const target = resolve(dirname(path), specifier);
 				return target === hub || target.startsWith(`${hub}/`) || /^hub(?:\/|$)/.test(specifier);
 			})
-			.map(([, specifier]) => `${path.slice(desktop.length + 1)} -> ${specifier}`);
+			.map(([, specifier]) => `${path.slice(dirname(desktop).length + 1)} -> ${specifier}`);
 	});
-	const aliases = readFileSync(resolve(desktop, 'svelte.config.js'), 'utf8');
+	const aliases = [desktop, reports]
+		.map((root) => readFileSync(resolve(root, 'svelte.config.js'), 'utf8'))
+		.join('\n');
 	const upwardAliases = [...aliases.matchAll(/['"]([^'"]*\.\.\/hub(?:\/[^'"]*)?)['"]/g)].map(
 		([, target]) => `Svelte alias -> ${target}`
 	);

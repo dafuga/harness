@@ -14,6 +14,7 @@ import {
 	hasOpenSession,
 	skip
 } from './launchEligibility';
+import { queueRun } from './runReceipt';
 
 export function recoveryIntent(
 	snapshot: TrackerDispatchSnapshot,
@@ -24,24 +25,34 @@ export function recoveryIntent(
 	policy: TrackerDispatchPolicy,
 	now: number
 ): TrackerDispatchDecision {
-	if (automaticRequestHold(item, policy, now) || item.status !== 'in_progress')
+	if (!recoveringItem(item))
 		return skip('ignored', 'item or automatic launch policy changed during recovery');
+	const hold = automaticRequestHold(item, policy, now);
+	if (hold) return skip('held', hold);
 	if (item.launch?.token === request.token)
 		return { result: { status: 'existing', intent: item.launch } };
-	if (
-		(item.launch?.token ?? null) !== request.expectedAuto ||
-		hasOpenSession(snapshot, policy, now)
-	)
+	if (!matchesRecoveryIntent(item, request.expectedAuto) || hasOpenSession(snapshot, policy, now))
 		return skip('conflict', 'item or session state changed during recovery');
-	if (hasPendingManualLaunch(item, snapshot))
-		return skip('conflict', 'explicit launch is already pending');
-	return admitRecovery(item, request, policy);
+	if (pendingIntent(item, snapshot)) return skip('conflict', 'launch is already pending');
+	return queueRecovery(snapshot, { item, request }, policy, now);
 }
 
-function admitRecovery(
-	item: TrackerDispatchItem,
-	request: Extract<TrackerLaunchRequest, { source: 'recovery' }>,
-	policy: TrackerDispatchPolicy
+function matchesRecoveryIntent(item: TrackerDispatchItem, expected: string | null) {
+	return (item.launch?.token ?? null) === expected;
+}
+
+function recoveringItem(item: TrackerDispatchItem) {
+	return item.status === 'in_progress' || item.launch?.source === 'recovery';
+}
+
+function queueRecovery(
+	snapshot: TrackerDispatchSnapshot,
+	{
+		item,
+		request
+	}: { item: TrackerDispatchItem; request: Extract<TrackerLaunchRequest, { source: 'recovery' }> },
+	policy: TrackerDispatchPolicy,
+	now: number
 ): TrackerDispatchDecision {
 	const target = canonicalNode(policy.node, policy);
 	const pick = request.rung
@@ -50,17 +61,24 @@ function admitRecovery(
 	if ('error' in pick) return skip('held', 'Tracker model cannot be selected for recovery');
 	const intent = { source: 'recovery', target, token: request.token, scheduledPick: pick } as const;
 	const hold = policy.admit(item, intent, pick.rung);
-	return hold
-		? skip('held', hold)
-		: {
-				result: { status: 'requested', intent },
-				writes: { item: { launch: intent } }
-			};
-}
-
-function hasPendingManualLaunch(item: TrackerDispatchItem, { runs }: TrackerDispatchSnapshot) {
-	const intent = item.launch;
-	return intent?.source === 'manual' && !runs.some((run) => run.auto_token === intent.token);
+	if (
+		hold &&
+		/^(no approved Tracker repository or platform|no supported Tracker provider)/.test(hold)
+	)
+		return skip('held', hold);
+	const run = queueRun(
+		snapshot,
+		{ item: { ...item, launch: intent }, token: intent.token, pick },
+		policy,
+		now
+	);
+	return {
+		result: { status: 'requested', intent },
+		writes: {
+			item: { launch: intent, status: 'open' },
+			runs: [{ ...run, failure_reason: hold }]
+		}
+	};
 }
 
 function pendingIntent(item: TrackerDispatchItem, { runs }: TrackerDispatchSnapshot) {

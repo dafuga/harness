@@ -253,7 +253,7 @@
 				"outputs": [
 					{
 						"name": "addComment",
-						"type": "Promise<import('../../../models/planning-collaboration/Collaboration.types').CommittedThread>",
+						"type": "Promise<CommittedThread>",
 						"description": "The thread that holds the comment, with every comment in it, plus collaborationCommit set to the collaboration revision that the transaction read or committed. A repeat that matches the stored comment returns the existing thread with the current revision and appends nothing, and any other repeat throws request-conflict.",
 						"examples": [
 							{

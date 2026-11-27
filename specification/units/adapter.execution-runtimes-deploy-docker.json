@@ -90,7 +90,8 @@
 					{
 						"name": "DeployDockerAdapter.run",
 						"type": "Promise<unknown>",
-						"description": "Runs one reviewed deployment phase in an isolated, task-labeled Docker container and removes that container when the phase ends."
+						"description": "Runs one reviewed deployment phase in an isolated, task-labeled Docker container and removes that container when the phase ends.",
+						"unknownReason": "Parsed JSON printed by the project deploy script; each phase caller validates its own shape."
 					}
 				],
 				"errors": [],

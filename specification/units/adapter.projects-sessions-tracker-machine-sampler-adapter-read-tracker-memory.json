@@ -11,15 +11,30 @@
 		"source": [
 			"src/adapters/projects-sessions/tracker-machine-sampler-adapter/readTrackerMemory.ts"
 		],
-		"symbols": ["readTrackerMemory"]
+		"symbols": ["readTrackerMemory", "readTrackerMetricsCommand"]
 	},
 	"contract": {
 		"origin": "derived",
-		"inputs": [],
+		"inputs": [
+			{
+				"name": "readTrackerMetricsCommand.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "readTrackerMetricsCommand.args",
+				"type": "string[]",
+				"required": true
+			}
+		],
 		"outputs": [
 			{
 				"name": "readTrackerMemory",
 				"type": "Promise<Pick<TrackerResourceSample, 'ram' | 'swap'>>"
+			},
+			{
+				"name": "readTrackerMetricsCommand",
+				"type": "Promise<string>"
 			}
 		],
 		"errors": [],
@@ -36,11 +51,39 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "readTrackerMetricsCommand",
+				"inputs": [
+					{
+						"name": "readTrackerMetricsCommand.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "readTrackerMetricsCommand.args",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readTrackerMetricsCommand",
+						"type": "Promise<string>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.projects-sessions-tracker-host-process",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "adapter.projects-sessions-tracker-machine-sampler-adapter-tracker-memory-parsers",
 			"via": "import",

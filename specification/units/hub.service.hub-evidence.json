@@ -103,7 +103,7 @@
 			},
 			{
 				"name": "HubEvidenceService.artifact.input",
-				"type": "EvidenceArtifactQuery",
+				"type": "ArtifactQuery",
 				"required": true,
 				"description": "The one capture to return, named only by its binding: the entity, commit, branch, mode and side, the record, scenario, state, evidence id, viewport (null where there is none) and SHA-256 that the evidence listed, and the notes and evidence revisions it was pinned to (null where the repository has none). A path or address in the request is dropped.",
 				"examples": [
@@ -444,7 +444,7 @@
 					},
 					{
 						"name": "HubEvidenceService.artifact.input",
-						"type": "EvidenceArtifactQuery",
+						"type": "ArtifactQuery",
 						"required": true,
 						"description": "The one capture to return, named only by its binding: the entity, commit, branch, mode and side, the record, scenario, state, evidence id, viewport (null where there is none) and SHA-256 that the evidence listed, and the notes and evidence revisions it was pinned to (null where the repository has none). A path or address in the request is dropped.",
 						"examples": [
@@ -484,7 +484,7 @@
 				"outputs": [
 					{
 						"name": "HubEvidenceService.artifact",
-						"type": "Promise<import('../../../../../../../desktop/src/models/verification-evidence/DesktopEvidence.types').EvidenceArtifactResult>",
+						"type": "Promise<ArtifactResult>",
 						"description": "The resolved EvidenceArtifactResult for one listed capture: `bytes` (the stored bytes as a Uint8Array), `mediaType` (what the capture is served as, decided from its kind and bytes) and `sha256` (the hash the capture states)."
 					}
 				],

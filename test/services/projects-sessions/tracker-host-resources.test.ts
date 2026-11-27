@@ -129,8 +129,12 @@ async function proveMb2Budget(root: string) {
 		await fixture.tick();
 		expect(fixture.running()).toEqual(['other00001']);
 		expect(fixture.waiting()).toMatch(/1\/1 non-Harbor sessions running/);
-		fixture.host.load = [6, 1];
+		fixture.host.load = [6, 23];
 		fixture.queue('harbor0001', 'Harbor');
+		await fixture.tick();
+		expect(fixture.running()).toEqual(['other00001']);
+		expect(fixture.waiting()).toMatch(/5-min load 23\.00/);
+		fixture.host.load = [6, 1];
 		await fixture.tick();
 		expect(fixture.running()).toEqual(['other00001', 'harbor0001']);
 		expect(fixture.started()).not.toHaveProperty('cpuBudget');

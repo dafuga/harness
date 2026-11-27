@@ -8,12 +8,30 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/projects-sessions/tracker-backup-service/writeTrackerBackup.ts"],
-		"symbols": ["writeTrackerBackup"]
+		"source": [
+			"src/services/projects-sessions/tracker-backup-service/assertTrackerBackupOwner.ts",
+			"src/services/projects-sessions/tracker-backup-service/writeTrackerBackup.ts"
+		],
+		"symbols": ["assertTrackerBackupOwner", "writeTrackerBackup"]
 	},
 	"contract": {
 		"origin": "derived",
 		"inputs": [
+			{
+				"name": "assertTrackerBackupOwner.snapshot",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assertTrackerBackupOwner.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "assertTrackerBackupOwner.targets",
+				"type": "string[]",
+				"required": true
+			},
 			{
 				"name": "writeTrackerBackup.database",
 				"type": "SqliteDatabase",
@@ -32,13 +50,55 @@
 		],
 		"outputs": [
 			{
+				"name": "assertTrackerBackupOwner",
+				"type": "Promise<void>"
+			},
+			{
 				"name": "writeTrackerBackup",
 				"type": "unknown"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "assertTrackerBackupOwner",
+				"inputs": [
+					{
+						"name": "assertTrackerBackupOwner.snapshot",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "assertTrackerBackupOwner.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "assertTrackerBackupOwner.targets",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "assertTrackerBackupOwner",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "writeTrackerBackup",
 				"inputs": [
@@ -71,6 +131,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "adapter.open-sqlite",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.sqlite-types",
 			"via": "import",

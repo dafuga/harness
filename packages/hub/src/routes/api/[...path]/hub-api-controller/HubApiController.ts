@@ -37,11 +37,29 @@ export class HubApiController {
 	private async projects(request: Request, actor: Actor) {
 		const parts = requestParts(request);
 		if (!isProjectsRoute(parts)) return hubHttp({ error: 'not-found' }, 404);
-		const { api, projection } = this.runtime.connect(),
-			projectId = parts[2] ?? '';
+		const projectId = parts[2] ?? '';
+		if (!projectId && request.method === 'GET') return this.listProjects(actor);
+		const { api, projection } = this.runtime.connect();
 		if (!projectId) return collection({ api, request, actor });
 		const context = { api, projection, actor, request, projectId, executor: this.runtime.agent };
 		return this.project(context, parts);
+	}
+	private async listProjects(actor: Actor): Promise<Response> {
+		let connection: ReturnType<HubApiRuntime['connect']>;
+		try {
+			connection = this.runtime.connect();
+		} catch (error) {
+			if (
+				actor.id === this.runtime.projectOwnerId &&
+				error &&
+				typeof error === 'object' &&
+				'code' in error &&
+				error.code === 'collaboration-disabled'
+			)
+				return hubHttp([]);
+			throw error;
+		}
+		return hubHttp(await connection.api.listProjects(actor));
 	}
 	private async project(context: Context, parts: string[]) {
 		if (!/^[a-f0-9-]{36}$/.test(context.projectId)) return hubFail('invalid-input');
@@ -54,7 +72,6 @@ export class HubApiController {
 }
 
 async function collection(c: Pick<Context, 'api' | 'request' | 'actor'>) {
-	if (c.request.method === 'GET') return hubHttp(await c.api.listProjects(c.actor));
 	if (c.request.method !== 'POST') return hubHttp({ error: 'method-denied' }, 405);
 	const body = await hubBody(c.request);
 	return hubHttp(

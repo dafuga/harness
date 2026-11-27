@@ -1,0 +1,47 @@
+{
+	"name": "shared-check-service",
+	"goal": "Two independent sessions share one low-priority candidate batch, run only impacted checks, and reuse exact-tree proof without rerunning checks.",
+	"createdAt": "2026-11-27T19:56:24.348Z",
+	"updatedAt": "2026-11-27T20:20:45.352Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:56:47.486Z",
+			"evidence": "Tracker tzd4cwp6ss plan records shared host queue, isolated current-main batch, dependency-selected normal checks, explicit release checks, exact-tree reuse and per-item evidence. Sibling items bxd6cn and x9b4rr received ownership notes."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-27T20:07:51.979Z",
+			"evidence": "Implemented host queue and primary Mac test guard, candidate batch and failure split, existing graph selection, exact-tree local and shared result receipts, GitHub receipt admission, and Tracker notes."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "complete",
+			"completedAt": "2026-11-27T20:20:45.352Z",
+			"evidence": "Primary Mac focused integration suite passes. Independent processes submit overlapping commits, one tree selects 3 checks and excludes the unrelated test, warm rerun executes 0 checks, bisection isolates the failure, exact landing reuses the matching result, and a separate bare Git remote serializes two cache misses and publishes one source-free receipt."
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

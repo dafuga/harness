@@ -24,7 +24,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeLive.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte"],
 		"symbols": ["HubHomeLive"]
 	},
 	"contract": {
@@ -42,6 +42,13 @@
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds, used for run ages."
+			},
+			{
+				"name": "HubHomeLive.local",
+				"type": "HomeLiveOverview",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "An optional live Tracker overview read directly by the native host."
 			}
 		],
 		"outputs": [
@@ -73,7 +80,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.service.networking-security-linked-home",
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -126,15 +133,20 @@
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
+			"via": "import",
+			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte"
 			}
 		]
 	},

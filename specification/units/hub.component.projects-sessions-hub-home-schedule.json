@@ -24,7 +24,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte"],
 		"symbols": ["HubHomeSchedule"]
 	},
 	"contract": {
@@ -58,7 +58,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.component.projects-sessions-hub-home-composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-skeleton",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -125,11 +135,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeSchedule.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeSchedule.svelte"
 			}
 		]
 	},

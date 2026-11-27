@@ -13,7 +13,7 @@
 	import { browserContext } from '../../utils/development-tooling/browserContext';
 	import { deviceHints, onSummary } from './hubHomeNotificationText';
 	import HubHomeNotificationSettings from './HubHomeNotificationSettings.svelte';
-	import '../../lib/styles/hub-home/notifications.css';
+	import '$reports/lib/styles/hub-home/notifications.css';
 
 	const { api } = browserContext();
 	let push = $state<HubPushReading | null>(null);

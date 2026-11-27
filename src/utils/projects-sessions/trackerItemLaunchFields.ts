@@ -4,7 +4,8 @@ import type {
 	TrackerItemMutationContext,
 	TrackerItemSnapshot
 } from './planTrackerItemMutation.types';
-import { requestsTrackerLaunch } from './normalizeTrackerItemFields';
+import { clearsTrackerRecurrence, requestsTrackerLaunch } from './normalizeTrackerItemFields';
+import { nextTrackerReminder } from './finishTrackerOccurrence';
 import { normalizeTrackerReminder } from './normalizeTrackerDue';
 import { trackerItemError } from './trackerItemError';
 
@@ -22,16 +23,36 @@ function reminderInput(
 	now: number
 ) {
 	if (requestsTrackerLaunch(fields.auto)) throw trackerItemError('reminders cannot launch');
-	if (fields.every || (fields.every === undefined && current?.every))
-		throw trackerItemError('a reminder uses a scheduled time');
-	const at = current
-		? fields.remind_at
-		: normalizeTrackerReminder(fields.remind_at ?? fields.due, now);
+	const at = reminderTime(fields, current, now);
 	return {
 		...fields,
 		remind_at: at,
 		...(fields.kind === 'reminder' && trackerReminderLaunchFields)
 	};
+}
+
+/** A repeating reminder with no given time is armed at its next scheduled one. */
+function reminderTime(
+	fields: TrackerItemInput,
+	current: TrackerItemSnapshot | undefined,
+	now: number
+) {
+	const given = current ? fields.remind_at : (fields.remind_at ?? fields.due);
+	const next = given === undefined ? scheduledTime(fields, current, now) : undefined;
+	if (next) return next;
+	return current ? fields.remind_at : normalizeTrackerReminder(given, now);
+}
+
+/** The next time to arm, when a new schedule or an unarmed repeating item needs one. */
+function scheduledTime(
+	fields: TrackerItemInput,
+	current: TrackerItemSnapshot | undefined,
+	now: number
+) {
+	if (fields.every === undefined && current?.remind_at) return undefined;
+	const every = fields.every === undefined ? current?.every : fields.every;
+	if (!every || clearsTrackerRecurrence(every)) return undefined;
+	return nextTrackerReminder(every, fields.every_tz ?? current?.every_tz, now);
 }
 
 export function trackerItemLaunchFields(

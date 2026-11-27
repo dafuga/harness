@@ -233,7 +233,8 @@
 								"enabled": true
 							},
 							["first", "second"]
-						]
+						],
+						"unknownReason": "Parsed JSON from the hosted service, validated by the caller."
 					}
 				],
 				"errors": [
@@ -286,7 +287,8 @@
 								"enabled": true
 							},
 							["first", "second"]
-						]
+						],
+						"unknownReason": "Parsed JSON from the hosted service; the shape depends on the requested path."
 					}
 				],
 				"errors": [
@@ -381,7 +383,8 @@
 								"enabled": true
 							},
 							["first", "second"]
-						]
+						],
+						"unknownReason": "Parsed JSON from the hosted service; the shape depends on the requested path."
 					}
 				],
 				"errors": [

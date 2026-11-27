@@ -23,8 +23,8 @@
 	},
 	"owns": {
 		"source": [
-			"packages/hub/src/components/projects-sessions/HubHomeComposer.svelte",
-			"packages/hub/src/components/projects-sessions/hubHomeMessages.ts"
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeMessages.ts"
 		],
 		"symbols": [
 			"HubHomeComposer",
@@ -32,7 +32,8 @@
 			"composerFeedback",
 			"isPending",
 			"receiptText",
-			"homeChatItemSuffix"
+			"homeChatItemSuffix",
+			"scheduledChatItem"
 		]
 	},
 	"contract": {
@@ -219,6 +220,24 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "scheduledChatItem",
+				"inputs": [
+					{
+						"name": "scheduledChatItem.run",
+						"type": "HomeRun",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "scheduledChatItem",
+						"type": "HomeChatItemContext"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": []
@@ -231,11 +250,6 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-presentation",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.projects-sessions-hub-home-view-types",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -292,11 +306,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeComposer.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeComposer.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeComposer.svelte"
 			}
 		]
 	},

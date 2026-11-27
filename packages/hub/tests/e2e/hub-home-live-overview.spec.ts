@@ -1,41 +1,19 @@
-import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
 import { recordedTracker } from '../../test/support/recordedTracker';
-import { liveRows, macAnswer, overview, productionHome } from './hub-home-live-fixture';
+import {
+	expandProjects,
+	expectEvenHeaderSpacing,
+	expectLiveDisposition,
+	expectNoSidewaysScroll,
+	liveRows,
+	macAnswer,
+	overview,
+	productionHome,
+	seedLiveDisposition
+} from './hub-home-live-fixture';
+import { captureNeedsYou } from './hub-home-capture';
 
 test.setTimeout(90000);
-
-async function expectNoSidewaysScroll(page: Page, width: number) {
-	const wide = await page.evaluate(() => {
-		const rows = [...document.querySelectorAll('.hh-live-overview *')];
-		return {
-			page: document.documentElement.scrollWidth,
-			right: Math.max(...rows.map((node) => node.getBoundingClientRect().right))
-		};
-	});
-	expect(wide.page).toBeLessThanOrEqual(width);
-	expect(wide.right).toBeLessThanOrEqual(width);
-}
-
-async function expectEvenHeaderSpacing(page: Page) {
-	const [heading, summary, source] = await Promise.all(
-		[
-			overview(page).getByRole('heading', { name: 'Live overview' }),
-			overview(page).getByRole('status'),
-			overview(page).getByText(/^From \d+ of /)
-		].map(async (line) => (await line.boundingBox())!)
-	);
-	const above = summary.y - (heading.y + heading.height);
-	const below = source.y - (summary.y + summary.height);
-	expect(Math.abs(below - above)).toBeLessThanOrEqual(2);
-	expect(below).toBeLessThanOrEqual(8);
-}
-
-async function expandProjects(page: Page) {
-	await expect(overview(page).locator('details.hh-live-project > summary').first()).toBeVisible();
-	const summaries = overview(page).locator('details.hh-live-project:not([open]) > summary');
-	while (await summaries.count()) await summaries.first().click();
-}
 
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
@@ -46,13 +24,17 @@ for (const [device, width, height] of [
 	}) => {
 		const tracker = recordedTracker();
 		await page.setViewportSize({ width, height });
+		tracker.machines.push(
+			Object.assign({ node: 'harbor-mbp-2', status: 'overloaded' }, { remote_runs: 2 })
+		);
+		seedLiveDisposition(tracker);
 		const answer = await macAnswer(tracker);
 		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
 		const requests = await productionHome(page, answer);
 		await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
 		await page.goto('/');
 
-		const live = tracker.runs.filter((run) => run.ended_at === null);
+		const live = tracker.runs.filter((run) => run.state === 'running' && run.ended_at === null);
 		const groups = overview(page).locator('details.hh-live-project');
 		await expect(groups.first()).toBeVisible();
 		await expect(overview(page).locator('details.hh-live-project[open]')).toHaveCount(0);
@@ -68,12 +50,18 @@ for (const [device, width, height] of [
 		if (process.env.TAKE_SCREENSHOT === 'true') {
 			await page.evaluate(() => document.fonts.ready.then(() => {}));
 			await page.screenshot({ path: test.info().outputPath(`home-top-${device}.png`) });
-			await overview(page).screenshot({
-				path: test.info().outputPath(`live-collapsed-${device}.png`)
-			});
 		}
+		const computer = page
+			.getByRole('list', { name: 'Computers' })
+			.getByRole('listitem')
+			.filter({ hasText: 'harbor-mbp-2' });
+		await expect(computer).toBeVisible();
+		await page.evaluate(() => window.scrollTo(0, 0));
+		await captureNeedsYou(page, `host-work-${device}`);
+		await expect(computer).toContainText('2 remote runs');
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
+		await expectLiveDisposition(page, test.info().outputPath(`live-disposition-${device}.png`));
 		const projects = new Set(tracker.items.map((item) => item.agent));
 		await expect(overview(page).getByRole('status')).toHaveText(
 			`${live.length} runs live on 2 computers · ${projects.size} projects`
@@ -149,13 +137,17 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	const answer = await macAnswer(tracker);
 	await page.routeWebSocket('**/api/sync/v1/live', () => {});
 	const requests = await productionHome(page, answer, true);
-	await page.clock.install({ time: Date.parse(tracker.recordedAt) });
+	await page.clock.install();
+	// The shared Home fixture freezes the date. This case needs time to advance with the timer.
+	await page.clock.setSystemTime(Date.parse(tracker.recordedAt));
 	await page.goto('/');
 	const live = tracker.runs.filter((run) => run.ended_at === null);
 	await expect(liveRows(page)).toHaveCount(live.length);
 	await expect(page.getByRole('status', { name: 'Updates' })).toHaveText('Live');
 	const stored = () => requests.filter((entry) => entry.path === '/api/hub-home').length;
+	const projects = () => requests.filter((entry) => entry.path === '/api/projects').length;
 	const storedBefore = stored();
+	const projectsBefore = projects();
 	const finished = live[0];
 	const item = tracker.items.find((entry) => entry.id === finished.item_id)!;
 	finished.ended_at = Date.parse(tracker.recordedAt);
@@ -164,7 +156,7 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	item.status = 'done';
 	item.stage = 'build';
 	Object.assign(answer, await macAnswer(tracker));
-	await page.clock.runFor(21_000);
+	await page.clock.runFor(20_000);
 
 	await expect(liveRows(page)).toHaveCount(live.length - 1);
 	const group = overview(page)
@@ -179,7 +171,10 @@ test('a change on the Mac shows within one turn, also while change notices are c
 		.filter({ has: page.getByText(item.title, { exact: true }) });
 	await expect(row).toContainText('Finished: done');
 	await expect(row).toContainText('Stage: Implementation');
-	expect(stored()).toBe(storedBefore);
+	await expect(page.getByRole('status', { name: 'Updates' })).toHaveText('Live');
+	await captureNeedsYou(page, 'live-home-fallback');
+	expect(stored(), 'stored Home is re-read on the first quiet live turn').toBe(storedBefore + 1);
+	expect(projects(), 'projects are re-read on the first quiet live turn').toBe(projectsBefore + 1);
 });
 
 test('with no computer linked the overview says so and shows no rows', async ({ page }) => {

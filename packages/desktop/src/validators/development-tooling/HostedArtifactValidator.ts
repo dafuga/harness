@@ -2,7 +2,10 @@
 import { createHash } from 'node:crypto';
 import { artifactLimit } from '../../utils/reports-media/artifactMedia';
 import { artifactMedia } from '../../utils/verification-evidence/artifact-answer/artifactMedia';
-import type { EvidenceArtifactResult } from '../../models/verification-evidence/DesktopEvidence.types';
+import type {
+	AttestedMedia,
+	EvidenceArtifactResult
+} from '../../models/verification-evidence/DesktopEvidence.types';
 import {
 	hostedAttestation,
 	unshownHostedArtifact as unshown
@@ -10,10 +13,7 @@ import {
 import { HostedArtifactRejectedError } from './HostedArtifactValidator.types';
 /** Rehash every online or saved artifact and require an exactly supported MIME attestation. */
 export class HostedArtifactValidator {
-	artifact(
-		media: { bytes: Uint8Array; mediaType: string },
-		sha256: string
-	): EvidenceArtifactResult {
+	artifact(media: AttestedMedia, sha256: string): EvidenceArtifactResult {
 		if (media.bytes.length > artifactLimit)
 			throw new HostedArtifactRejectedError('The capture exceeds 11 MiB.');
 		if (

@@ -10,7 +10,8 @@ import type {
 import type {
 	TrackerItemAction,
 	TrackerItemMutationContext,
-	TrackerItemMutation
+	TrackerItemMutation,
+	TrackerItemSnapshot
 } from '../../../utils/projects-sessions/planTrackerItemMutation.types';
 import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
@@ -160,20 +161,28 @@ export function itemMutationContext(
 			((fields, current) =>
 				planLaunch(
 					fields,
-					current?.auto &&
-						(runs?.launchConsumed(current.id, current.auto) ||
-							(explicitLaunch &&
-								!runs
-									?.list({ itemId: current.id })
-									.some(({ auto_token }) => auto_token === current.auto) &&
-								(
-									store.database
-										.prepare(`SELECT ${dispatchLaunchSource} AS source FROM items i WHERE i.id = ?`)
-										.get(current.id) as { source: string }
-								).source !== 'manual'))
+					current && canReplaceLaunch(store, current, runs, explicitLaunch)
 						? { ...current, auto: null }
 						: current,
 					explicitLaunch ? 'manual' : 'automatic'
 				))
 	};
+}
+
+function canReplaceLaunch(
+	store: TrackerPersistenceService,
+	item: TrackerItemSnapshot,
+	runs: TrackerLocalApiOptions['runs'],
+	explicitLaunch: boolean
+): boolean {
+	const { id, auto } = item;
+	if (!auto) return false;
+	const replaceBlocked = explicitLaunch && (Boolean(item.resolved) || !item.needs_daniel);
+	if (runs?.launchConsumed(id, auto, replaceBlocked)) return true;
+	if (!explicitLaunch || runs?.list({ itemId: id }).some(({ auto_token }) => auto_token === auto))
+		return false;
+	const origin = store.database
+		.prepare(`SELECT ${dispatchLaunchSource} AS source FROM items i WHERE i.id = ?`)
+		.get(id) as { source: string };
+	return origin.source !== 'manual';
 }

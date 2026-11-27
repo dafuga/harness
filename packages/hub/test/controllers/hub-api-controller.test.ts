@@ -1,5 +1,7 @@
 import { measureWorkload } from '../../../../test/support/measureWorkload';
 import { expect, test } from 'vitest';
+import { HubApiController } from '../../src/routes/api/[...path]/hub-api-controller/HubApiController';
+import { hubRuntime } from '../../src/routes/api/[...path]/hubRuntime';
 import {
 	actor,
 	outsider,
@@ -25,6 +27,21 @@ test('hosted routes refuse execution even for the owner and return safe auth err
 		expect((await f.controller.handle(new Request(base))).status).toBe(401);
 		f.setActor(outsider);
 		expect((await f.controller.handle(new Request(base + project.id))).status).toBe(403);
+		const runtime = hubRuntime({
+			HARNESS_ENVIRONMENT: 'local',
+			HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID: actor.id
+		});
+		let signedIn = actor;
+		const unconfigured = new HubApiController({
+			...runtime,
+			auth: { handle: async () => null, actor: async () => signedIn }
+		});
+		const collection = await unconfigured.handle(new Request(base));
+		expect(collection.status).toBe(200);
+		expect(await collection.json()).toEqual([]);
+		expect((await unconfigured.handle(new Request(base, { method: 'POST' }))).status).toBe(503);
+		signedIn = outsider;
+		expect((await unconfigured.handle(new Request(base))).status).toBe(503);
 	}));
 test('comments use verified server identity, actual GitHub acknowledgment and exact project', async () => {
 	const f = projectionFixture(),

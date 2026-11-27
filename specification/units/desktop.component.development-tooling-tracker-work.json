@@ -1,0 +1,182 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.component.development-tooling-tracker-work",
+	"uid": "u_qvuoo5oeav",
+	"kind": "component",
+	"title": "TrackerWork",
+	"responsibility": "Present Tracker plans and scheduled work in the Mac and iPhone app, using the shared detail and Chief of Staff views.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-cos-chat",
+			"hub.component.projects-sessions-hub-home-plan-detail",
+			"hub.component.projects-sessions-hub-home-plannable",
+			"hub.component.projects-sessions-hub-home-plans",
+			"hub.component.projects-sessions-hub-home-schedule",
+			"reports.component.modal",
+			"reports.component.shared-primitives-atoms-html-a",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-h1",
+			"reports.component.shared-primitives-atoms-html-header",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-section"
+		]
+	},
+	"owns": {
+		"source": ["packages/desktop/src/components/development-tooling/TrackerWork.svelte"],
+		"symbols": ["TrackerWork"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerWork.source",
+				"type": "TrackerHomeSource",
+				"required": true,
+				"description": "Reads the current Tracker Home snapshot and sends messages through the approved device connection."
+			},
+			{
+				"name": "TrackerWork.mac",
+				"type": "boolean",
+				"required": true,
+				"description": "Uses the Mac link target for external design artifacts and shows local connection status."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerWork",
+				"type": "markup",
+				"description": "Renders the plan and schedule previews, their full lists, a selected plan and the contextual chat."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-cos-chat",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-plan-detail",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-plannable",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-plans",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-schedule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.public-site-home-page",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.style.hub-home-index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-a",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-h1",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-header",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-section",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-schedule",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-cards",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-controls",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.style.project-overview-responsive",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/components/development-tooling/TrackerWork.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

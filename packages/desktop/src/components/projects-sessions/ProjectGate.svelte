@@ -54,9 +54,9 @@
 
 <hx-main class="project-gate">
 	<hx-header class="gate-head">
-		<hx-div class="brand-mark"><BrandMark size={local ? undefined : 64} /></hx-div>
-		<hx-h1>Harness</hx-h1>
-		{#if local}<hx-p class="tagline">Understand your project. Design what comes next.</hx-p>{/if}
+		<hx-div class="brand-mark" role="img" aria-label="Harness"
+			><BrandMark size={local ? undefined : 64} /></hx-div
+		>
 	</hx-header>
 	{#if local}<hx-div class="gate-actions">
 			<hx-button class="primary" disabled={!available || busy} aria-busy={busy} onclick={open}
@@ -129,13 +129,6 @@
 		justify-items: center;
 		gap: var(--hx-space-8);
 		text-align: center;
-	}
-	.gate-head h1,
-	.tagline {
-		margin: 0;
-	}
-	.tagline {
-		color: var(--hx-color-text-supporting);
 	}
 	.gate-actions {
 		display: flex;

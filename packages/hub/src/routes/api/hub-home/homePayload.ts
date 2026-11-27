@@ -10,6 +10,11 @@ import {
 } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { controlledIdPattern } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 import { sanitizeText } from '$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy';
+import {
+	trackerArtifactMaxBytes,
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { trackerAttachmentLimits } from '../../../../../../src/utils/projects-sessions/trackerAttachmentLimits';
 import { trackerAttachmentSchema } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
 import { parseOverviewPayload } from '../tracker-overview/trackerOverviewInput';
@@ -90,12 +95,31 @@ const openAsk = z.object({
 	since: time
 });
 
+const reminder = z.object({
+	itemId: id,
+	title,
+	at: time,
+	repeats: short.nullable(),
+	updatedAt: time
+});
+
+const planning = trackerPlanningSchema.refine(
+	({ artifacts }) =>
+		Object.values(artifacts).every(
+			(artifact) =>
+				new TextEncoder().encode(JSON.stringify(artifact)).byteLength <= trackerArtifactMaxBytes
+		),
+	'Each stage artifact must fit the Tracker limit'
+);
+
 const plan = z
 	.object({
 		id,
 		title,
 		project: short.nullable(),
 		state: z.enum(['draft', 'in-review', 'approved', 'in-progress', 'done']),
+		stage: trackerStageSchema.optional(),
+		planning: planning.optional(),
 		updatedAt: time,
 		total: unsigned,
 		done: unsigned,
@@ -105,8 +129,18 @@ const plan = z
 
 const snapshot = z.object({
 	overview: z.unknown(),
+	projectDirectory: z
+		.array(
+			z.object({
+				name: short,
+				state: z.enum(['needs-you', 'blocked', 'active', 'quiet', 'done']),
+				needsYou: unsigned
+			})
+		)
+		.optional(),
 	agents: z.array(agent).max(100),
 	openAsks: z.array(openAsk).max(100).optional(),
+	reminders: z.array(reminder).max(100).optional(),
 	plans: z.array(plan).max(100),
 	scheduled: z.array(homeRunPayload).max(200),
 	overdue: z.array(homeRunPayload).max(200).optional(),

@@ -22,7 +22,7 @@
 			},
 			{
 				"name": "hubSnapshot.query",
-				"type": "{ branch: string | null; commit: string | null }",
+				"type": "RevisionQuery",
 				"required": true,
 				"description": "The branch to read: null or an empty string selects main if it is listed, otherwise the first listed branch, and a non-empty name that no listed branch has fails with not-found. The commit: null selects the branch tip, and any other value must already be the full commit id (a value that the source resolves to a different id, such as a ref name, fails with revision-mismatch).",
 				"examples": [
@@ -225,7 +225,7 @@
 					},
 					{
 						"name": "hubSnapshot.query",
-						"type": "{ branch: string | null; commit: string | null }",
+						"type": "RevisionQuery",
 						"required": true,
 						"description": "The branch to read: null or an empty string selects main if it is listed, otherwise the first listed branch, and a non-empty name that no listed branch has fails with not-found. The commit: null selects the branch tip, and any other value must already be the full commit id (a value that the source resolves to a different id, such as a ref name, fails with revision-mismatch).",
 						"examples": [
@@ -421,6 +421,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "desktop.model.desktop-types",
 			"via": "import",

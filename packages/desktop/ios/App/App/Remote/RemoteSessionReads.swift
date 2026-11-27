@@ -17,7 +17,9 @@ extension RemoteSession {
             var sent = input
             if RemoteMethods.changes.contains(method) { sent["epoch"] = self.record?.epoch }
             let answered: RemoteRequests.Done = { [weak self] result in
-                if case .success(let value) = result { self?.store(asked, method, input, value) }
+                if method != "homeSnapshot", case .success(let value) = result {
+                    self?.store(asked, method, input, value)
+                }
                 done(result.map { RemoteAnswer(value: $0, cachedAt: nil) })
             }
             switch self.requests.add(method: method, input: sent, done: answered) {
@@ -28,7 +30,7 @@ extension RemoteSession {
     }
 
     private func kept(_ method: String, _ input: [String: Any]) -> Result<RemoteAnswer, RemoteFailure> {
-        guard RemoteMethods.reads.contains(method), let scope = scope,
+        guard method != "homeSnapshot", RemoteMethods.reads.contains(method), let scope = scope,
             let answer = cache.read(scope: scope, method: method, input: input)
         else { return .failure(.offline) }
         return .success(answer)

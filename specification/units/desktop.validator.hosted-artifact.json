@@ -25,7 +25,7 @@
 		"inputs": [
 			{
 				"name": "HostedArtifactValidator.artifact.media",
-				"type": "{ bytes: Uint8Array; mediaType: string }",
+				"type": "AttestedMedia",
 				"required": true,
 				"description": "The artifact bytes and the MIME type stated by their source, which are checked before the artifact is returned for hosted serving. Supported content is PNG or JPEG screenshots, supported audio, and JSON or plain-text results; bytes over 11 MiB or bytes that do not match the attested kind are rejected."
 			},
@@ -58,7 +58,7 @@
 				"inputs": [
 					{
 						"name": "HostedArtifactValidator.artifact.media",
-						"type": "{ bytes: Uint8Array; mediaType: string }",
+						"type": "AttestedMedia",
 						"required": true,
 						"description": "The artifact bytes and the MIME type stated by their source, which are checked before the artifact is returned for hosted serving. Supported content is PNG or JPEG screenshots, supported audio, and JSON or plain-text results; bytes over 11 MiB or bytes that do not match the attested kind are rejected."
 					},

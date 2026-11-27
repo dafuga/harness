@@ -1,3 +1,4 @@
+import { seedBlockedLaunch } from './trackerObservedRunFixture';
 import type { DatabaseSync } from 'node:sqlite';
 import { expect } from 'vitest';
 import type { TrackerNativeRuntimeService } from '../../src/services/projects-sessions/TrackerNativeRuntimeService';
@@ -81,6 +82,8 @@ export async function verifyHostLaunchOutcomes(
 			['recurring1', 'recurring item'],
 			['plan123456', 'item is a plan; only tasks can launch']
 		]) {
+			if (id === 'next100002' || id === 'next100003')
+				await seedBlockedLaunch(runtime, database, id);
 			const held = await launchReply(runtime, id);
 			expect.soft(held.status).toBe(409);
 			expect.soft(await held.json()).toMatchObject({ error: expect.stringContaining(reason) });
@@ -92,6 +95,7 @@ export async function verifyHostLaunchOutcomes(
 		}
 	}
 }
+
 function seedUnlaunchableItems(runtime: TrackerNativeRuntimeService, database: DatabaseSync) {
 	const computer = runtime.store.node;
 	for (const [id, overrides] of [

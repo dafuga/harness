@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
 			"reports.component.shared-primitives-atoms-html-button",
@@ -48,6 +49,13 @@
 				"required": false,
 				"default": "phone",
 				"description": "Chooses direct Mac status or phone sync and outbox status."
+			},
+			{
+				"name": "TrackerInbox.project",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "When supplied in the Mac project view, restricts the inbox and search to this exact Tracker project and initially shows all of its items."
 			}
 		],
 		"outputs": [
@@ -107,6 +115,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 			"via": "import",
 			"origin": "derived"
@@ -128,6 +141,11 @@
 		},
 		{
 			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox-messages",
 			"via": "import",
 			"origin": "derived"
 		},

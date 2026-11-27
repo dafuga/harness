@@ -3,6 +3,7 @@ import { revisionInfo, commits } from '../../../../utils/planning-collaboration/
 import type { Git } from '../../../../utils/planning-collaboration/planGit';
 import { planIdentity } from '../../../../utils/planning-collaboration/planIdentity';
 import type { HistoryEvent } from '../../../../models/planning-collaboration/PlanningView.types';
+import type { EntityHistory } from '../../../../models/planning-collaboration/PlanningView.types';
 
 function event(path: string): HistoryEvent {
 	if (path === 'plan.json') return { kind: 'plan-created' };
@@ -22,7 +23,7 @@ function event(path: string): HistoryEvent {
 export async function planHistory(
 	git: Git,
 	input: { unitId: string; revision?: string; limit?: number }
-) {
+): Promise<EntityHistory> {
 	const rev = await revisionInfo(git, input.revision);
 	const path = await planIdentity(git, rev.commit, input.unitId);
 	const history = await commits(git, rev.commit, input.limit ?? 100, path);

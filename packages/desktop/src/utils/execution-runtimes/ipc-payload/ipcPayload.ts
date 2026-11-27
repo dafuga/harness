@@ -14,7 +14,12 @@ import {
 } from './ipcFields';
 import { regionField } from './regionField';
 import { planPayload } from './planPayload';
-import { InvalidPayloadError } from './ipcPayload.types';
+import { InvalidPayloadError, type ThreadPayload } from './ipcPayload.types';
+import type {
+	ProjectRunRequest,
+	RunRequest
+} from '../../../models/development-tooling/DesktopBridge.types';
+import type { ProjectTaskRequest } from '../../../models/projects-sessions/ProjectTask.types';
 
 export function approvalPayload(value: unknown) {
 	const x = ipcFields(value);
@@ -28,7 +33,7 @@ export function approvalPayload(value: unknown) {
 	};
 }
 
-export function threadPayload(x: Record<string, unknown>) {
+export function threadPayload(x: Record<string, unknown>): ThreadPayload {
 	const version = nullableText(x.version, versionPattern);
 	const imageSha256 = nullableText(x.imageSha256, hashPattern);
 	const state = nullableText(x.state);
@@ -112,7 +117,9 @@ function taskPayload(x: Record<string, unknown>) {
 	};
 }
 
-export function runPayload(x: Record<string, unknown>) {
+export function runPayload(
+	x: Record<string, unknown>
+): RunRequest | ProjectRunRequest | ProjectTaskRequest {
 	if (x.intent === 'task') return taskPayload(x);
 	if (x.intent !== undefined) return creationPayload(x);
 	const mode = enumField(x.mode, ['plan', 'change']);

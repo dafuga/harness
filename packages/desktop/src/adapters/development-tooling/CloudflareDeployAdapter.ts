@@ -11,10 +11,11 @@ import type {
 	CloudflareTarget,
 	DeploymentPlugin
 } from '../../models/development-tooling/Deployment.types';
+import type { DeploymentConfig } from '../../models/development-tooling/Deployment.types';
 export class CloudflareDeployAdapter implements DeploymentPlugin {
 	readonly id = 'cloudflare';
 	constructor(private options: Options = {}) {}
-	discover(root: string) {
+	discover(root: string): Promise<DeploymentConfig> {
 		return deploymentConfig(root);
 	}
 	async deploy(target: CloudflareTarget, source: { root: string; commit: string }) {

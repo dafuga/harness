@@ -1006,7 +1006,7 @@
 				"outputs": [
 					{
 						"name": "profileSelection",
-						"type": "{ root: string; directory: string; units: import('../../../core/development-tooling/unitTypes').ComponentManifest[] } | null",
+						"type": "{ root: string; directory: string; units: ComponentManifest[] } | null",
 						"description": "Canonical project root, selected profile directory and validated unit registry, or null outside an eligible evidence run or inside an explicit benchmark boundary. Each registry file is parsed with componentManifestSchema before it is returned.",
 						"examples": [
 							null,

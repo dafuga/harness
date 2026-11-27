@@ -193,7 +193,7 @@
 				"outputs": [
 					{
 						"name": "HostedEvidenceService.evidence",
-						"type": "Promise<import('../../../../models/verification-evidence/DesktopEvidence.types').EntityEvidenceResult>",
+						"type": "Promise<EntityEvidenceResult>",
 						"description": "Returns the evidence result after the validator checks its shape and binds it to the asked project, entity, branch, mode, and commit. The read may be fresh or use a revalidated offline cache, and its identity is pinned for later artifact reads.",
 						"examples": [
 							{
@@ -311,7 +311,7 @@
 				"outputs": [
 					{
 						"name": "HostedEvidenceService.artifact",
-						"type": "Promise<import('../../../../models/verification-evidence/DesktopEvidence.types').EvidenceArtifactResult>",
+						"type": "Promise<EvidenceArtifactResult>",
 						"description": "Returns validated artifact bytes as a Uint8Array with the served media type and requested SHA-256. The validator enforces the 11 MiB limit, hash, and supported media attestation, and a Uint8Array has no exact JSON representation."
 					}
 				],

@@ -1,4 +1,10 @@
 import { expect, test, type Page } from '../../../../test/support/browserTest';
+import {
+	capturePlanWork,
+	verifyPlanWork,
+	verifyScheduledChat
+} from './support/trackerWorkEvidence';
+import { trackerWorkFixture } from './support/trackerWorkFixture';
 import { macSpecPage, phoneSpecPage, specTracker } from './support/viewSpecInboxFixture';
 
 /**
@@ -30,7 +36,14 @@ for (const name of ['mac', 'iphone'] as const)
 		const restore = name === 'mac' ? await macSpecPage(page, tracker) : undefined;
 		try {
 			if (name === 'iphone') await phoneSpecPage(page, tracker, []);
+			const messages = await trackerWorkFixture(page, name);
 			await blockedSection(page, name);
+			await page.goto('/');
+			await capturePlanWork(page, name, 'home');
+			if (name === 'iphone')
+				await page.getByRole('link', { name: 'Plans and schedule', exact: true }).click();
+			await verifyPlanWork(page, name);
+			await verifyScheduledChat(page, name, messages);
 		} finally {
 			restore?.();
 			tracker.close();

@@ -881,7 +881,7 @@
 				"outputs": [
 					{
 						"name": "ProjectSessionService.mutable",
-						"type": "Promise<{ revision: import(\"../../../models/development-tooling/Desktop.types\").Revision; root: string; source: GitSourceAdapter; planning: PlanningFacadeAdapter; catalog: CatalogService; }>",
+						"type": "Promise<{ revision: Revision; root: string; source: GitSourceAdapter; planning: PlanningFacadeAdapter; catalog: CatalogService; }>",
 						"description": "The object requireProject returns plus the revision for the stored query, which the last open() or snapshot() call set. It is returned only when that query names no commit, its branch is the checked-out one, the revision is at that branch's tip, and the branch is not harness-evidence."
 					}
 				],

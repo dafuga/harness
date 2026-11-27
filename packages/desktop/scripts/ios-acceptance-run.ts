@@ -12,7 +12,7 @@ import { launch, screenshot } from './ios-acceptance-simulator';
 export const computerName = 'Harness fixture computer';
 export const panelText = 'return panel();';
 export const footerText = 'return footer();';
-export const pause = (milliseconds: number) =>
+export const pause = (milliseconds: number): Promise<void> =>
 	new Promise((done) => setTimeout(done, milliseconds));
 
 /** One operation of the fixture's control. Refused unless that control is on this machine. */

@@ -9,8 +9,12 @@ import { ApprovalVersionMismatchError } from './ApprovalVersionMismatchError';
 import { DesignApprovalRequiredError } from './DesignApprovalRequiredError';
 import { messageInfo } from '../../../../utils/projects-sessions/planningConvert';
 import { reviewer } from '../../../../utils/projects-sessions/planningWrites';
+import type { ThreadMessage } from '../../../../models/development-tooling/Desktop.types';
 
-export async function planningMessage(context: PlanningContext, draft: MessageDraft) {
+export async function planningMessage(
+	context: PlanningContext,
+	draft: MessageDraft
+): Promise<ThreadMessage> {
 	const plan = await context.api.readPlan({ unitId: draft.entityId });
 	const input: AppendMessageInput = {
 		unitId: draft.entityId,

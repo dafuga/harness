@@ -35,6 +35,7 @@ import {
 	slug,
 	text
 } from '../../../../utils/planning-collaboration/planValidate';
+import type { Committed } from '../../../../models/planning-collaboration/PlanningView.types';
 
 function imageFiles(
 	images: DesignImageInput[],
@@ -78,7 +79,10 @@ function validateContent(
 	if (input.notes !== undefined) text(input.notes);
 }
 
-export async function planDesign(git: Git, input: AddDesignInput) {
+export async function planDesign(
+	git: Git,
+	input: AddDesignInput
+): Promise<Committed<DesignVersion>> {
 	const path = await planIdentity(git, await revision(git), input.unitId);
 	await clean(git, path);
 	const rev = await revision(git);
@@ -152,7 +156,10 @@ async function validateSource(git: Git, input: AddDesignInput): Promise<void> {
 	}
 }
 
-export async function approve(git: Git, input: ApproveDesignInput) {
+export async function approve(
+	git: Git,
+	input: ApproveDesignInput
+): Promise<Committed<ApprovalRecord>> {
 	const path = await planIdentity(git, await revision(git), input.unitId);
 	await clean(git, path);
 	const plan = await planRead(git, await revision(git), input.unitId);

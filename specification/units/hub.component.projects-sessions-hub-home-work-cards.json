@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
 			"hub.component.projects-sessions-hub-home-not-started",
+			"hub.component.projects-sessions-hub-home-plannable",
 			"hub.component.projects-sessions-hub-home-project-card",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
@@ -23,14 +24,10 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte"],
-		"symbols": [
-			"HubHomeWorkCards",
-			"HubHomeWorkCards.empty",
-			"HubHomeWorkCards.trailing",
-			"HubHomeWorkCards.lead",
-			"HubHomeWorkCards.trailing"
-		]
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte"
+		],
+		"symbols": ["HubHomeWorkCards", "HubHomeWorkCards.empty", "HubHomeWorkCards.trailing"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -95,30 +92,6 @@
 				],
 				"errors": [],
 				"errorStatus": "none-found"
-			},
-			{
-				"name": "HubHomeWorkCards.lead",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HubHomeWorkCards.lead",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
-			{
-				"name": "HubHomeWorkCards.trailing",
-				"inputs": [],
-				"outputs": [
-					{
-						"name": "HubHomeWorkCards.trailing",
-						"type": "markup"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
 			}
 		]
 	},
@@ -130,6 +103,11 @@
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-not-started",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-plannable",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -191,11 +169,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeWorkCards.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeWorkCards.svelte"
 			}
 		]
 	},

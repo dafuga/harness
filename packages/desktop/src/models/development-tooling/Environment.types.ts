@@ -6,6 +6,7 @@ import type {
 	RemoteMobileControl
 } from '../../../../remote/src/models/networking-security/RemoteControl.types';
 import type { RemoteMobileStatus } from '../../../../remote/src/models/networking-security/RemoteControl.types';
+import type { TrackerHomeSource } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { DesktopBridge } from './DesktopBridge.types';
 import type { RemoteMethod } from '../../../../remote/src/models/Remote.types';
 import type { WireChannel } from '../../../../remote/src/models/Remote.types';
@@ -18,6 +19,7 @@ export { nativeAccountContext } from './EnvironmentValues';
 export interface NativeAccountContext {
 	readonly environment?: Environment;
 	readonly signedIn: boolean;
+	readonly accountName?: string;
 	signOut(): void;
 }
 
@@ -42,6 +44,7 @@ export interface Environment extends RemotePorts {
 	account?: boolean;
 	/** Capacitor only: local Tracker reads and an independent app refresh control. */
 	tracker?: PhoneTrackerTools;
+	trackerHome?: TrackerHomeSource;
 }
 
 /** What a page can see of its host besides the document. */

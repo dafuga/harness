@@ -12,8 +12,8 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
 			"hub.component.projects-sessions-hub-home-cos-chat",
-			"hub.component.projects-sessions-hub-home-live",
 			"hub.component.projects-sessions-hub-home-needs-you",
+			"hub.component.projects-sessions-hub-home-reminders",
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"hub.component.projects-sessions-hub-home-work-cards",
@@ -29,7 +29,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeCards.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte"],
 		"symbols": [
 			"HubHomeCards",
 			"HubHomeCards.empty",
@@ -69,6 +69,13 @@
 				"type": "(id: string) => Promise<HomeChatReceipt>",
 				"required": true,
 				"description": "Reads the latest receipt for a sent answer or message by its id."
+			},
+			{
+				"name": "HubHomeCards.needsOnly",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Render the shared decisions and chat without the project, plan, quota and schedule cards."
 			}
 		],
 		"outputs": [
@@ -173,12 +180,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.component.projects-sessions-hub-home-live",
+			"unit": "hub.component.projects-sessions-hub-home-needs-you",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.component.projects-sessions-hub-home-needs-you",
+			"unit": "hub.component.projects-sessions-hub-home-reminders",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -199,11 +206,6 @@
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-quota-subscription",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.config.public-site-home-download",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -261,20 +263,15 @@
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
 			"via": "import",
 			"origin": "derived"
-		},
-		{
-			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
-			"via": "import",
-			"origin": "derived"
 		}
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeCards.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte"
 			}
 		]
 	},

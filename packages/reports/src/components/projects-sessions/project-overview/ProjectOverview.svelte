@@ -33,9 +33,16 @@
 	import '../../../lib/styles/project-overview-cards.css';
 	import '../../../lib/styles/project-overview-controls.css';
 	import '../../../lib/styles/project-overview-responsive.css';
-	let { snapshot, homeHref = '/harness', standalone = true }: ProjectOverviewProps = $props();
+	let {
+		snapshot,
+		homeHref = '/harness',
+		standalone = true,
+		project
+	}: ProjectOverviewProps = $props();
 	const ready = $derived(snapshot !== null && snapshot.status === 'ready' ? snapshot : null);
-	const cards = $derived(ready?.projects ?? []);
+	const cards = $derived(
+		ready?.projects.filter(({ agent }) => !project || project === agent) ?? []
+	);
 	const chips = $derived(filterChips(cards));
 	let filter = $state<OverviewFilter>('all');
 	const visible = $derived(visibleCards(cards, filter));
@@ -74,18 +81,25 @@
 	<hx-header class="po-head">
 		{#if standalone}
 			<hx-a class="po-home" href={homeHref} aria-label="Back to Harness"
-				><BrandMark size={24} />Harness</hx-a
+				><BrandMark size={24} /></hx-a
 			>
 		{/if}
 		<hx-p class="po-kicker">Projects</hx-p>
-		{#if ready}
+		{#if project}
+			<hx-h1 id="po-title" class="po-title">{project}</hx-h1>
+		{:else if ready}
 			<hx-h1 id="po-title" class="po-title">{headline(cards)}</hx-h1>
 			<hx-p class="po-totals">{totalsLine(cards.length, ready.liveSessions)}</hx-p>
 			<hx-ul class="po-machines" aria-label="Computers">
 				{#each ready.machines as machine (machine)}
 					<Pill as="li" tone="po-machine" state={machine.status}>
 						<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
-						{machine.name} <hx-span class="po-machine-status">{machine.status}</hx-span>
+						{machine.name}
+						<hx-span class="po-machine-status"
+							>{machine.status}{machine.remoteRuns
+								? ` · ${machine.remoteRuns} remote ${machine.remoteRuns === 1 ? 'run' : 'runs'}`
+								: ''}</hx-span
+						>
 					</Pill>
 				{/each}
 			</hx-ul>
@@ -102,7 +116,9 @@
 		>
 	{:else if cards.length === 0}
 		<EmptyState as="div" className="po-empty" role="status"
-			>No projects are in the tracker yet.</EmptyState
+			>{project
+				? 'No recent work for this project.'
+				: 'No projects are in the tracker yet.'}</EmptyState
 		>
 	{:else}
 		<hx-div class="po-filters" role="group" aria-label="Filter projects by state">

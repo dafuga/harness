@@ -44,7 +44,7 @@ export interface DesktopProject {
 }
 export interface CacheStatus {
 	projectId: string;
-	status: 'fresh' | 'offline' | 'denied';
+	status: 'fresh' | 'offline' | 'denied' | 'unavailable';
 	cachedAt?: string;
 }
 export interface CacheProvenance {
@@ -66,17 +66,19 @@ export type HumanCommentResult =
 			reason: string;
 	  }
 	| { kind: 'shared'; projectId: string; thread: CommittedThread };
+export type HostedHistoryQuery = EntityQuery & { projectId: string; page: number; branch?: string };
+export interface HostedHistoryPage {
+	entries: HistoryEvent[];
+	complete: boolean;
+	nextPage: number | null;
+}
 /** Main-process injected transport. It owns verified Google session handling; no renderer Actor. */
 export interface RemoteProjectPort {
 	agent?(method: string, input: unknown, projectId: string): Promise<unknown>;
 	onRunEvent?(listener: Parameters<DesktopBridge['onRunEvent']>[0]): () => void;
 	evidence?(input: EntityEvidenceQuery & { projectId: string }): Promise<EntityEvidenceResult>;
 	artifact?(input: EvidenceArtifactQuery & { projectId: string }): Promise<EvidenceArtifactResult>;
-	history?(input: EntityQuery & { projectId: string; page: number; branch?: string }): Promise<{
-		entries: HistoryEvent[];
-		complete: boolean;
-		nextPage: number | null;
-	}>;
+	history?(input: HostedHistoryQuery): Promise<HostedHistoryPage>;
 	available?(): Promise<boolean>;
 	listProjects(): Promise<DesktopProject[]>;
 	entity(input: EntityQuery & { projectId: string }): Promise<EntityDetail>;

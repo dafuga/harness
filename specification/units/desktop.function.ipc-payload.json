@@ -22,6 +22,7 @@
 			"creationPayload",
 			"runPayload",
 			"ipcPayload",
+			"ThreadPayload",
 			"InvalidPayloadError",
 			"approvalPayload",
 			"threadPayload",
@@ -337,7 +338,7 @@
 				"outputs": [
 					{
 						"name": "threadPayload",
-						"type": "{ option?: undefined; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: import('../../models/development-tooling/Desktop.types').Region | null; } | { option: string; entityId: string; version: string | null; imageSha256: string | null; state: string | null; viewport: string | null; region: import('../../models/development-tooling/Desktop.types').Region | null; }",
+						"type": "ThreadPayload",
 						"description": "Returns entityId, version, imageSha256, state, viewport, and region, adding option only when supplied. Image-anchor fields are either all non-null or all null, and a null version requires a null region.",
 						"examples": [
 							{
@@ -483,7 +484,7 @@
 				"outputs": [
 					{
 						"name": "runPayload",
-						"type": "unknown",
+						"type": "RunRequest | ProjectRunRequest | ProjectTaskRequest",
 						"description": "Returns one validated existing-entity run, creation request, or task request shape. Omitted optional fields stay omitted; an omitted task conversation becomes an empty array, with at most 20 entries and 4,000 characters of text per entry.",
 						"examples": [
 							{
@@ -591,7 +592,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.desktop-bridge-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.desktop-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-task-types",
 			"via": "import",
 			"origin": "derived"
 		}

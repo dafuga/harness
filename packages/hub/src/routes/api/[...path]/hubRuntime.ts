@@ -15,6 +15,7 @@ export function hubRuntime(env: HubEnv): HubApiRuntime {
 	const auth = createHubAuth(env, env.DB ? createD1AuthStore(env.DB) : null);
 	return {
 		auth,
+		projectOwnerId: env.HARNESS_TRACKER_OVERVIEW_OWNER_ACTOR_ID,
 		remote: hubRemote(env),
 		connect: () => {
 			const repository = {

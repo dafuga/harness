@@ -19,7 +19,9 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeQuotaPills.svelte"],
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomeQuotaPills.svelte"
+		],
 		"symbols": ["HubHomeQuotaPills"]
 	},
 	"contract": {
@@ -94,11 +96,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeQuotaPills.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeQuotaPills.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeQuotaPills.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeQuotaPills.svelte"
 			}
 		]
 	},

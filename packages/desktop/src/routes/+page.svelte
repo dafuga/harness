@@ -3,6 +3,7 @@
 <!-- @harness-uid u_gp2k2ksjwv -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import { getContext, onMount, setContext } from 'svelte';
 	import { createRemoteHostStore } from '../lib/stores/networking-security/remoteHost.svelte';
 	import { createRemotePhoneStore } from '../lib/stores/networking-security/remotePhone.svelte';
@@ -19,6 +20,7 @@
 	import { ProjectSyncService } from '../services/projects-sessions/ProjectSyncService';
 	import { isWorkspacePath } from '../utils/projects-sessions/workspaceRoute';
 	import ProjectGate from '../components/projects-sessions/ProjectGate.svelte';
+	import DesktopHome from '../components/projects-sessions/DesktopHome.svelte';
 	import RemoteConnection from '../components/networking-security/RemoteConnection.svelte';
 	import WorkspaceShell from '../components/projects-sessions/WorkspaceShell.svelte';
 	import '../lib/styles/workspace.css';
@@ -33,6 +35,7 @@
 	let available = $state(false);
 	let kind = $state<EnvironmentKind>('web');
 	const local = $derived(kind !== 'capacitor');
+	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
 	/** The phone offers Project Overview after the Hub confirms this account may read it. */
 	let overview = $state(false);
 	onMount(() => {
@@ -92,10 +95,25 @@
 </script>
 
 <svelte:head
-	><title>Harness{workspace.snapshot ? ' · ' + workspace.snapshot.project.name : ''}</title
+	><title
+		>Harness{workspace.snapshot
+			? ' · ' + workspace.snapshot.project.name
+			: needsOnly
+				? ' · Needs you'
+				: ''}</title
 	></svelte:head
 >
-{#if workspace.snapshot}<WorkspaceShell {workspace} />{:else}<ProjectGate
+{#if workspace.snapshot}<WorkspaceShell {workspace} />
+{:else if kind === 'electron' && account.signedIn}
+	<DesktopHome
+		{workspace}
+		{needsOnly}
+		accountName={account.accountName}
+		signOut={account.signOut}
+		phone={workspace.remote.host ? phoneAccess : undefined}
+	/>
+	{#if workspace.error}<hx-p class="error" role="alert">{workspace.error}</hx-p>{/if}
+{:else}<ProjectGate
 		{available}
 		{local}
 		{overview}
@@ -107,6 +125,13 @@
 	>
 		{#if account.environment?.tracker || account.environment?.bridge?.trackerInbox}
 			<hx-a class="project-overview-link" href={resolve('/tracker' as '/')}>Needs you</hx-a>
+		{/if}
+		{#if account.environment?.trackerHome}
+			<hx-a
+				class="project-overview-link"
+				href={resolve('/tracker' as '/') + '?view=work'}
+				data-sveltekit-reload>Plans and schedule</hx-a
+			>
 		{/if}
 		{#if available && !local}<RemoteConnection {workspace} />{/if}
 		{#if account.signedIn && (local || remote.phone.status?.state !== 'online')}

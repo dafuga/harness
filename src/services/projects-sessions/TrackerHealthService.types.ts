@@ -58,5 +58,10 @@ export interface TrackerHealthStatus {
 		paused?: unknown;
 		routes?: { name: string; ready: boolean }[];
 	};
-	backup?: { enabled?: boolean; stale?: boolean; last_error?: string | null };
+	backup?: {
+		enabled?: boolean;
+		stale?: boolean;
+		last_error?: string | null;
+		file_error?: string | null;
+	};
 }

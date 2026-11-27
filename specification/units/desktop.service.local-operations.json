@@ -229,7 +229,8 @@
 								"data": "YWJj"
 							},
 							true
-						]
+						],
+						"unknownReason": "Wire dispatcher: the result shape depends on the request method."
 					}
 				],
 				"errors": [
@@ -298,6 +299,11 @@
 		},
 		{
 			"unit": "remote.entry.index",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "remote.model.remote-types",
 			"via": "import",
 			"origin": "derived"
 		},

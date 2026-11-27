@@ -18,7 +18,24 @@ test('every session brief tells the agent to flag with 2 to 4 options and one re
 	expect(brief).toContain('--option "<label>=<what happens if chosen>"');
 	expect(brief).toContain('--recommend');
 	expect(brief).toContain('--confirm deploy|money|secret');
+	expect(brief).toContain('plain English');
+	expect(brief).toContain('what you want to do and why in one sentence');
+	expect(brief).toContain('tool or process questions to Chief of Staff');
 	expect(brief.indexOf('## Secret-safe computer use')).toBeLessThan(brief.indexOf('## Asking'));
+	expect(brief).not.toContain('bun run check --item');
+	expect(brief).toContain('Run only the tests relevant to your change');
+	expect(brief).toContain('Reuse GitHub CI results when available');
+	expect(brief).toContain('once per combined release');
+	expect(brief).toContain('focused unit and E2E tests for changed modules and their dependents');
+	expect(brief).toContain('typecheck and lint the changed files');
+	expect(brief).toContain('deliver a screen recording of the real app');
+	expect(brief).toContain('list the timestamp of each extracted frame');
+	const harness = formatTrackerHostBrief(
+		{ ...item, agent: 'harness' },
+		'Finish by running tracker done.'
+	);
+	expect(harness).toContain('bun run check --item abcdef');
+	expect(harness).toContain('host queue with `--release` for the combined release');
 });
 
 test('every session brief points browser work at the automation Chrome, not the main profile', () => {
@@ -32,7 +49,18 @@ test('every session brief points browser work at the automation Chrome, not the 
 test('every session brief requires per-requirement, per-computer proof before tracker done', () => {
 	const completion = '## Completion and worktree cleanup\nRun tracker done.';
 	for (const recovery of [false, true]) {
-		const brief = formatTrackerHostBrief(item, completion, { recovery });
+		const brief = formatTrackerHostBrief(
+			{ ...item, title: 'Review database migration' },
+			completion,
+			{ recovery }
+		);
+		expect(brief).toContain('Never merge into a Greymass repository');
+		expect(brief).toContain('standing authorization for Harness PRs');
+		expect(brief).toMatch(/production.{0,100}explicit approval/i);
+		expect(brief).toMatch(/database change.*approval before.*irreversible/i);
+		expect(brief).toContain('tracker check "<topic>"');
+		expect(brief).toMatch(/ignored.{0,80}do not raise/i);
+		expect(brief).toMatch(/update.*tests.*run them/i);
 		expect(brief).toContain('reread every note with `tracker show <id> --json`');
 		expect(brief).toContain('including appended ones) to evidence for each named computer');
 		expect(brief).toContain('wait out any grace period');
@@ -68,6 +96,8 @@ test('a truncated Docker brief keeps the done proof rule within its 15,900 byte 
 			brief: formatTrackerHostBrief(long, completion)
 		} as Parameters<typeof managedBrief>[0]);
 		expect(brief).toContain(trackerDoneProofRule);
+		expect(brief).toContain('Run only the tests relevant to your change');
+		expect(brief).toContain('Never merge into a Greymass repository');
 		expect(brief).toContain('Read the full task with `tracker show abcdef1234567890`.');
 		expect(brief).not.toContain('�');
 		expect(Buffer.byteLength(brief)).toBeLessThanOrEqual(15_900);

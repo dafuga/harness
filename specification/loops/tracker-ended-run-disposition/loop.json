@@ -1,0 +1,63 @@
+{
+	"name": "tracker-ended-run-disposition",
+	"goal": "After a Tracker run ends, keep live attempts intact and move the item to a durable retry or a real block. Show Running, Queued or Blocked in Hub.",
+	"createdAt": "2026-11-27T19:58:37.241Z",
+	"updatedAt": "2026-11-27T20:08:14.646Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:59:27.497Z",
+			"evidence": "Daniel confirmed lifecycle, Hub, and both Macs. Recovery admission currently reports a capacity hold before writing a run; opted-out or blocked work can stay in progress after the run ends."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T19:59:28.566Z",
+			"evidence": "The existing managed tmux recovery E2E expects zero durable retries while capacity is full, and does not assert the item status after stop. The linked-Mac overview test explicitly expects the legacy no-run label. Strengthen these existing scenarios."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T20:08:13.528Z",
+			"evidence": "The committed isolated tmux regression fails at 8c9bb6d3c7: expected blocked with a real opt-out reason, received in_progress with no blocked reason."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T20:08:14.646Z",
+			"evidence": "Journal the queued recovery before admission, use observed session startup to restore active state, block ended runs for preserved reasons, retain guarded answer and live-work behavior, and show the new states in Hub."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "pending"
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

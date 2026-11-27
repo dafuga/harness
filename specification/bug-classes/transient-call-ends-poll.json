@@ -1,0 +1,136 @@
+{
+	"schemaVersion": 1,
+	"revision": "64b0c8aa5863ed063c642d03095d0ca0a511d56c",
+	"bugClass": {
+		"id": "transient-call-ends-poll",
+		"title": "Transient service failures end polling prematurely",
+		"cause": "Polling treats a failed service call caused by temporary unavailability or no response as a terminal result instead of retrying within a bounded wait. A refusal or other definitive response may still terminate polling.",
+		"criteria": "Include a site when a polling or wait loop can end, fail cleanup, skip subsequent checks, or lose a result after a transient service-call failure without bounded retry. Each mechanism qualifies independently: a call that the service never answered is treated as terminal, or a refusal is treated as retryable when it should be terminal.",
+		"patterns": [
+			{
+				"kind": "text",
+				"value": "native service unavailable",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "ECONNRESET",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "ECONNREFUSED",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "AbortError",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "setInterval",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "retry",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "poll",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "for (;;)",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "while (",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "catch (",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "try {",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "onMount",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "on:",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "{#each",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"poll",
+			"retry",
+			"timeout",
+			"transient",
+			"unavailable",
+			"refusal",
+			"daemon",
+			"service",
+			"result",
+			"cleanup"
+		],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 5
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 4
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 4
+			},
+			{
+				"contains": "src/cli/",
+				"weight": 3
+			},
+			{
+				"contains": "src/utils/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 1
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "specification/",
+				"weight": -3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -2
+			}
+		]
+	}
+}

@@ -129,7 +129,7 @@ export async function startHubSpy(overview?: OverviewSnapshot): Promise<HubSpy> 
 }
 
 /** Sets the profile before loading the compiled main. Electron can ignore --user-data-dir. */
-export async function makeTemporaryDesktopEntry(temp: string, desktopRoot: string) {
+export async function makeTemporaryDesktopEntry(temp: string, desktopRoot: string, setup = '') {
 	const entry = join(temp, 'entry');
 	const profile = join(temp, 'profile');
 	await mkdir(entry);
@@ -144,6 +144,7 @@ export async function makeTemporaryDesktopEntry(temp: string, desktopRoot: strin
 		const { app } = require('electron');
 		app.setPath('userData', ${JSON.stringify(profile)});
 		app.setAppPath(${JSON.stringify(desktopRoot)});
+		${setup}
 		require(${JSON.stringify(join(desktopRoot, 'dist/main.cjs'))});
 	`
 	);
@@ -186,7 +187,11 @@ export async function seedHostedPage(
 	await expect(page.getByRole('button', { name: 'Sign in with Google' })).toBeVisible();
 	await seedHostedSession(app, profile, OWNER, hub.origin);
 	await page.evaluate(() => window.dispatchEvent(new Event('focus')));
-	await expect(page.getByRole('button', { name: 'Sign out', exact: true })).toBeVisible();
+	await expect(
+		page
+			.getByRole('button', { name: 'Account', exact: true })
+			.or(page.getByRole('button', { name: 'Sign out', exact: true }))
+	).toBeVisible();
 	return page;
 }
 

@@ -39,7 +39,7 @@
 			{
 				"name": "HubApiController.handle",
 				"type": "Promise<Response>",
-				"description": "The Response that handle resolves with: the result of runtime.auth.handle when that result is truthy, a 401 hubHttp({ error: 'session-required' }) when runtime.auth.actor returns a falsy value, and otherwise the Response of the matched route, such as a 404 hubHttp({ error: 'not-found' }) or a 405 hubHttp({ error: 'method-denied' }). Errors raised while routing are caught and returned through hubHttpFailure rather than thrown out of handle."
+				"description": "Returns the response from authentication or the applicable collaboration or remote route. Authenticated owner discovery returns an empty collection if collaboration is disabled. Other missing settings, denials and routing failures keep their coded HTTP status."
 			}
 		],
 		"errors": [],

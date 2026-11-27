@@ -45,6 +45,11 @@ test('foreground hub and spoke converge over signed loopback and route compatibi
 			...fixtureConfig(root, 'synthetic-spoke', spokeApi),
 			role: 'spoke',
 			upstream: { url: loopback(hubSync) },
+			hostEffects: {
+				mode: 'active',
+				checkpoint: 'fixture-migration-01',
+				watchdog: { transcriptRoots: [join(root, 'fixture-transcripts')] }
+			},
 			notifications: {
 				targets: { callback: { url: sink.base + '/callback' } },
 				itemCallbacks: ['callback']

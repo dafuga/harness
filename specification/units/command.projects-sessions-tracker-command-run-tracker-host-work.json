@@ -1,0 +1,106 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-command-run-tracker-host-work",
+	"uid": "u_jlfurqdczj",
+	"kind": "command",
+	"title": "runTrackerHostWork",
+	"responsibility": "Owns the runTrackerHostWork command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-command/runTrackerHostWork.ts"],
+		"symbols": ["runTrackerHostWork"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "runTrackerHostWork.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "runTrackerHostWork.config",
+				"type": "TrackerNodeConfig",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "runTrackerHostWork",
+				"type": "Promise<number>"
+			}
+		],
+		"errors": [
+			{
+				"name": "DOMException",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "runTrackerHostWork",
+				"inputs": [
+					{
+						"name": "runTrackerHostWork.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "runTrackerHostWork.config",
+						"type": "TrackerNodeConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "runTrackerHostWork",
+						"type": "Promise<number>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-host-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-host-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-node",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-command/runTrackerHostWork.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-command/runTrackerHostWork.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

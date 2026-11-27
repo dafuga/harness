@@ -310,7 +310,7 @@
 				"outputs": [
 					{
 						"name": "deploymentBlockers",
-						"type": "Promise<{ blockers: string[]; branch: string; promotion: { preprod: import(\"../../models/development-tooling/Deployment.types\").DeploymentReceipt | null; production: import(\"../../models/development-tooling/Deployment.types\").DeploymentReceipt | null; commitsBehind: number | null; }; } | { blockers: string[]; branch: string; promotion: undefined; }>",
+						"type": "Promise< |",
 						"description": "For non-prod, returns blocker strings, the current branch, and promotion as undefined; for prod, forwards blockers, branch, and the preprod/production comparison. It reports state and target issues but does not perform a deployment.",
 						"examples": [
 							{
