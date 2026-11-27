@@ -21,7 +21,7 @@ When several linked computers answer, the overview holding the newest Tracker ch
 - Each row: title, run state and recorded outcome, planning stage, task status, owner, computer, model and effort, run age and last change.
 - The planning stage is the one Tracker records (see Tracker planning stages). It is never derived from status. A Tracker that reports none reads "Stage not reported".
 - Private and ignored items are never described. Their live runs are counted in one line.
-- Open and blocked tasks with nothing in motion appear in their project's counts, not as rows. A project lists up to 100 rows and says how many were left out.
+- Open and blocked tasks without a running session appear under their project’s job disclosure. A project lists up to 100 rows and says how many were left out.
 
 ## Freshness and empty states
 
