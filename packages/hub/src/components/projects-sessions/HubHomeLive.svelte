@@ -2,6 +2,8 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_z35itvtg7u -->
 <script lang="ts">
+	import { MediaQuery } from 'svelte/reactivity';
+	import { slide } from 'svelte/transition';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { HomeLiveOverview } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
@@ -26,6 +28,7 @@
 	const overview = $derived(native ?? (notice ? null : reading?.snapshot?.liveOverview));
 	const dueById = $derived(new Map(pastDue.map((run) => [run.id, run])));
 	let allProjects = $state(false);
+	const reduceMotion = new MediaQuery('(prefers-reduced-motion: reduce)');
 	const projects = $derived(overview?.projects ?? []);
 	const running = $derived(projects.filter((project) => project.running > 0));
 	const others = $derived(projects.filter((project) => project.running === 0));
@@ -76,12 +79,17 @@
 				{allProjects ? 'Show running projects only' : `See all projects (${projects.length})`}
 			</hx-button>
 			{#if allProjects}
-				{#if waiting.length}<hx-h3 class="po-band-title">Blocked or open</hx-h3>{@render list(
-						waiting
-					)}{/if}
-				{#if idle.length}<hx-h3 class="po-band-title">Nothing in motion</hx-h3>{@render list(
-						idle
-					)}{/if}
+				<hx-div
+					class="hh-live-more-projects"
+					transition:slide={{ duration: reduceMotion.current ? 0 : 200 }}
+				>
+					{#if waiting.length}<hx-h3 class="po-band-title">Blocked or open</hx-h3>{@render list(
+							waiting
+						)}{/if}
+					{#if idle.length}<hx-h3 class="po-band-title">Nothing in motion</hx-h3>{@render list(
+							idle
+						)}{/if}
+				</hx-div>
 			{/if}
 		{/if}
 		{#if overview.hiddenRuns}

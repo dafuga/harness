@@ -16,7 +16,7 @@ When several linked computers answer, the overview holding the newest Tracker ch
 
 ## What is shown
 
-- Every project, with its running, in progress, blocked, open and done counts. Projects with nothing in motion are folded into one list.
+- Each listed project shows Running, Blocked and Not running counts in its collapsed header.
 - One row for each live run, and one for each task in motion without a live run: in progress, waiting to start, or ended within the last day.
 - Each row: title, run state and recorded outcome, planning stage, task status, owner, computer, model and effort, run age and last change.
 - The planning stage is the one Tracker records (see Tracker planning stages). It is never derived from status. A Tracker that reports none reads "Stage not reported".

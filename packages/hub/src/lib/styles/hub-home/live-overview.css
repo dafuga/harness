@@ -36,6 +36,10 @@
 	border: var(--hx-border-thin) solid var(--hx-color-border);
 	border-radius: var(--hx-radius-small);
 }
+.hh-home .hh-live-more-projects {
+	display: grid;
+	gap: inherit;
+}
 .hh-home .hh-projects-toggle {
 	justify-self: start;
 }
