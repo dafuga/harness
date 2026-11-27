@@ -4,6 +4,8 @@ import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerHostCapacityHold } from './trackerHostAdmission';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
+import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
+import { pickTrackerModel } from '../../../utils/agents-providers/pickTrackerModel';
 import type { TrackerLaunchRung } from '../../agents-providers/TrackerDispatcherService.types';
 import { handLaunchNode, handLaunchSelection } from './trackerHandLaunchSelection';
 import { sessionHealthInterval } from './trackerSessionHealth';
@@ -72,6 +74,25 @@ export function recoveryRung(
 	if (fallback && handLaunchNode(item, run?.started_at ?? 0) === node) return fallback;
 	const recorded = run && recordedRung(run);
 	return recorded ?? compatibleFallback(run, fallback);
+}
+
+/** A relaunch can select a new provider; keeping a live session does not call this path. */
+export function recoverySelection(
+	run: TrackerListedRun | undefined,
+	item: TrackerItem,
+	node: string,
+	{ cfg, now }: { cfg?: TrackerLadderConfig; now: number }
+) {
+	if (cfg?.autolaunch?.preferredProvider) {
+		try {
+			return { cli: pickTrackerModel(item, { cfg, now }).rung.cli };
+		} catch {
+			// Let dispatcher admission report an invalid item model through the normal recovery path.
+			return {};
+		}
+	}
+	const rung = recoveryRung(run, item, node);
+	return { cli: run?.cli, rung, unverified: Boolean(run && run.cli !== 'none' && !rung) };
 }
 
 function compatibleFallback(run?: TrackerListedRun, fallback?: TrackerLaunchRung) {

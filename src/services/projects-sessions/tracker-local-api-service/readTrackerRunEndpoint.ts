@@ -67,7 +67,7 @@ export function readTrackerRunEndpoint(
 			return undefined;
 		case 'items':
 			if (parts.length === 3 && parts[2] === 'pick') {
-				return itemPick(items.get(parts[1]), runs, ladderConfig);
+				return itemPick(items.get(parts[1]), runs, { cfg: ladderConfig, now: options.now?.() });
 			}
 			return undefined;
 		default:
@@ -75,8 +75,12 @@ export function readTrackerRunEndpoint(
 	}
 }
 
-function itemPick(item: TrackerItem, runs: TrackerRunReadRepository, cfg?: TrackerLadderConfig) {
-	const { rung, kind, reason } = pickTrackerModelFromRuns(item, () => runs.finished(), { cfg });
+function itemPick(
+	item: TrackerItem,
+	runs: TrackerRunReadRepository,
+	selection: { cfg?: TrackerLadderConfig; now?: number }
+) {
+	const { rung, kind, reason } = pickTrackerModelFromRuns(item, () => runs.finished(), selection);
 	return {
 		item_id: item.id,
 		rung: rung.id,

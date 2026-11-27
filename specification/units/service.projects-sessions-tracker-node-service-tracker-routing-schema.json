@@ -4,20 +4,31 @@
 	"uid": "u_57drtxvxop",
 	"kind": "service",
 	"title": "trackerRoutingSchema",
-	"responsibility": "Owns the trackerRoutingSchema service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Validate configured Tracker provider switches, model ladder and historical routing rules.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
-		"source": ["src/services/projects-sessions/tracker-node-service/trackerRoutingSchema.ts"],
-		"symbols": ["trackerRoutingSchema"]
+		"source": [
+			"src/services/projects-sessions/tracker-node-service/trackerRoutingSchema.ts"
+		],
+		"symbols": [
+			"trackerPreferredProviderSchema",
+			"trackerRoutingSchema"
+		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [],
 		"outputs": [
 			{
+				"name": "trackerPreferredProviderSchema",
+				"type": "unknown",
+				"description": "Claude or Codex with an optional timezone-qualified transition."
+			},
+			{
 				"name": "trackerRoutingSchema",
-				"type": "unknown"
+				"type": "unknown",
+				"description": "Validated Tracker node model routing, learning and provider preference."
 			}
 		],
 		"errors": [],

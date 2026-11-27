@@ -26,7 +26,7 @@ export function trackerLaunchPlacement(
 ): TrackerPlacedLaunch | undefined {
 	if (item.repo) return undefined;
 	const project = (item.project ?? item.agent)?.toLowerCase();
-	const cli = pickedCli(item, view.now());
+	const cli = pickedCli(item, view);
 	if (!project || !cli) return undefined;
 	const eligible = launcherNodes(view, project);
 	const work = workShape(item, cli);
@@ -44,9 +44,12 @@ export function trackerLaunchPlacement(
 	return { node: best.entry.node, why: `${work.label} work; ${reasons}` };
 }
 
-function pickedCli(item: TrackerModelItem, now: number): string | undefined {
+function pickedCli(
+	item: TrackerModelItem,
+	{ now, ladderConfig }: TrackerFleetView
+): string | undefined {
 	try {
-		return pickTrackerModel(item, { now }).rung.cli;
+		return pickTrackerModel(item, { now: now(), cfg: ladderConfig }).rung.cli;
 	} catch {
 		return undefined;
 	}

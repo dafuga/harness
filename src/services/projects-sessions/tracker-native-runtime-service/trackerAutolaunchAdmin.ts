@@ -1,6 +1,8 @@
 // @harness-uid u_bl6xl2h4a3
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
+import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
+import { trackerPreferredProviderAdmin } from './trackerPreferredProviderSetting';
 import {
 	clearTrackerQuotaHold,
 	trackerProviderHold,
@@ -12,9 +14,11 @@ export const duePauseKey = 'due_scheduler_paused';
 /** The operator's launch switches for this computer. */
 export function trackerAutolaunchAdmin(
 	store: TrackerPersistenceService,
-	{ role, now }: { role: 'hub' | 'spoke'; now: () => number }
+	runtime: Pick<TrackerNativeRuntimeService, 'role' | 'now' | 'ladderConfig'>
 ) {
+	const { role, now } = runtime;
 	return {
+		provider: trackerPreferredProviderAdmin(store, runtime),
 		pauseDue(paused: boolean) {
 			if (role !== 'hub')
 				throw trackerItemError('run tracker autolaunch pause or resume on the hub', 409);

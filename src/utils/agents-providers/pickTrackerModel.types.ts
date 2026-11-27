@@ -36,4 +36,8 @@ export interface PinContext {
 	claude: boolean;
 }
 
-export type SelectionContext = PinContext & { kind: TrackerTaskKind; size: TrackerTaskSize };
+export type SelectionContext = PinContext & {
+	kind: TrackerTaskKind;
+	size: TrackerTaskSize;
+	preferenceReason?: string;
+};

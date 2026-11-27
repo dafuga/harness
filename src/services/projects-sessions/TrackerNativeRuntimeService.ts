@@ -22,6 +22,7 @@ import { TrackerPersistenceService } from './TrackerPersistenceService';
 import type { TrackerSpokeLoopService } from './TrackerSpokeLoopService';
 import { TrackerRecurringService } from './TrackerRecurringService';
 import { trackerAutolaunchAdmin } from './tracker-native-runtime-service/trackerAutolaunchAdmin';
+import { trackerRoutingWithPreference } from './tracker-native-runtime-service/trackerPreferredProviderSetting';
 import { composeTrackerResponder } from './tracker-native-runtime-service/composeTrackerResponder';
 import { composeTrackerRecurrence } from './tracker-native-runtime-service/composeTrackerRecurrence';
 import { composeTrackerWebPush } from './tracker-native-runtime-service/composeTrackerWebPush';
@@ -71,7 +72,8 @@ export class TrackerNativeRuntimeService {
 		const store = new TrackerPersistenceService(database, node, { ...storage, now });
 		this.store = store;
 		this.role = role;
-		this.ladderConfig = options.ladderConfig;
+		this.ladderConfig = trackerRoutingWithPreference(store, options.ladderConfig);
+		const routing = { ...options, ladderConfig: this.ladderConfig, now };
 		this.now = now;
 		this.hostEffectsHeld = options.hostEffectsHeld === true;
 		const runs = new TrackerRunReadRepository(database, node);
@@ -81,8 +83,7 @@ export class TrackerNativeRuntimeService {
 		this.recurring = recurring?.worker;
 		this.links = composeTrackerLinks(store, options);
 		this.adapter = configuredHostAdapter(store, runs, options, this.now);
-		const dispatch =
-			options.dispatch ?? configuredHostDispatch(store, hostEffects, { ...options, now: this.now });
+		const dispatch = options.dispatch ?? configuredHostDispatch(store, hostEffects, routing);
 		const composed = composeTrackerDispatch(store, { ...options, dispatch }, this.machines);
 		({
 			dispatch: this.dispatch,
@@ -90,9 +91,9 @@ export class TrackerNativeRuntimeService {
 			duePreview: this.duePreview
 		} = composed);
 		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
-		const fleet = composeTrackerFleet(runs, { ...options, dispatch }, this);
+		const fleet = composeTrackerFleet(runs, { ...routing, dispatch }, this);
 		({ tick: this.telemetry, samples: this.fleetSamples } = fleet);
-		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring);
+		this.items = composeItemApi(this, runs, fleet.apiOptions(routing), recurring);
 		this.backups = composeTrackerBackups(this, options);
 		this.sync = composeTrackerResponder(store, runs, fleet.syncOptions, composed);
 	}

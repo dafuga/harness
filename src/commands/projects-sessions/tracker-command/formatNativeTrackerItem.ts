@@ -135,11 +135,18 @@ export function formatListedRun(run: NativeTrackerListedRun): string {
 		run.outcome ? `/${run.outcome}` : '',
 		`  ${stamp(run.started_at)} → ${stamp(run.ended_at)}`,
 		run.cost_usd == null ? '' : ` $${run.cost_usd.toFixed(2)}`,
-		run.failure_reason ? ` - ${run.failure_reason}` : '',
-		run.redone_by ? ` (redone by ${run.redone_by})` : '',
+		runDetails(run),
 		session,
 		claudeResumeHint(run),
 		run.idle_nudges ? `  idle nudges: ${run.idle_nudges}` : ''
+	].join('');
+}
+
+function runDetails({ reason, failure_reason, redone_by }: NativeTrackerListedRun): string {
+	return [
+		reason && `  (${reason})`,
+		failure_reason && ` - ${failure_reason}`,
+		redone_by && ` (redone by ${redone_by})`
 	].join('');
 }
 

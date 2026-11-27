@@ -137,6 +137,7 @@ export interface NativeTrackerListedRun extends TrackerListedRun {
 	session_id?: string | null;
 	tmux?: string | null;
 	failure_reason?: string | null;
+	reason?: string | null;
 }
 
 export interface NativeTrackerRunReport {

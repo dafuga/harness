@@ -1,0 +1,129 @@
+{
+	"schemaVersion": 1,
+	"id": "function.agents-providers-adjust-tracker-model-by-history",
+	"uid": "u_wz3242lk7p",
+	"kind": "function",
+	"title": "adjustTrackerModelByHistory",
+	"responsibility": "Advance along the eligible Tracker model ladder when similar attempts fall below the success threshold.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/utils/agents-providers/adjustTrackerModelByHistory.ts"
+		],
+		"symbols": [
+			"adjustTrackerModelByHistory"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "adjustTrackerModelByHistory.ladder",
+				"type": "readonly TrackerModelRung[]",
+				"required": true,
+				"description": "Eligible models in ascending capability order."
+			},
+			{
+				"name": "adjustTrackerModelByHistory.history",
+				"type": "TrackerModelHistory",
+				"required": false,
+				"description": "Successes and failures on similar tasks, by model rung."
+			},
+			{
+				"name": "adjustTrackerModelByHistory.minSamples",
+				"type": "number",
+				"required": false,
+				"default": 3,
+				"description": "Minimum comparable attempts required before escalation."
+			},
+			{
+				"name": "adjustTrackerModelByHistory.upBelow",
+				"type": "number",
+				"required": false,
+				"default": 0.5,
+				"description": "Success-rate threshold below which Tracker tries the next rung."
+			}
+		],
+		"outputs": [
+			{
+				"name": "adjustTrackerModelByHistory",
+				"type": "unknown",
+				"description": "Index of the selected rung and the historical reasons for escalating."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "adjustTrackerModelByHistory",
+				"inputs": [
+					{
+						"name": "adjustTrackerModelByHistory.ladder",
+						"type": "readonly TrackerModelRung[]",
+						"required": true,
+						"description": "Eligible models in ascending capability order."
+					},
+					{
+						"name": "adjustTrackerModelByHistory.history",
+						"type": "TrackerModelHistory",
+						"required": false,
+						"description": "Successes and failures on similar tasks, by model rung."
+					},
+					{
+						"name": "adjustTrackerModelByHistory.minSamples",
+						"type": "number",
+						"required": false,
+						"default": 3,
+						"description": "Minimum comparable attempts required before escalation."
+					},
+					{
+						"name": "adjustTrackerModelByHistory.upBelow",
+						"type": "number",
+						"required": false,
+						"default": 0.5,
+						"description": "Success-rate threshold below which Tracker tries the next rung."
+					}
+				],
+				"outputs": [
+					{
+						"name": "adjustTrackerModelByHistory",
+						"type": "unknown",
+						"description": "Index of the selected rung and the historical reasons for escalating."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-parse-tracker-model-spec",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-pick-tracker-model",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/agents-providers/adjustTrackerModelByHistory.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/agents-providers/adjustTrackerModelByHistory.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

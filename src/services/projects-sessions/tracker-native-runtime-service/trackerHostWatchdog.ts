@@ -36,7 +36,7 @@ export function trackerHostWatchdog(
 	config: NonNullable<TrackerHostEffects['watchdog']>,
 	options: Pick<
 		WatchdogSessionScan,
-		'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap'
+		'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' | 'ladderConfig'
 	>
 ) {
 	const { now, automaticEnabled } = options;
@@ -85,18 +85,22 @@ export function trackerHostWatchdog(
 }
 
 export function configuredHostWatchdog(
-	runtime: Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>,
+	runtime: Pick<
+		TrackerNativeRuntimeService,
+		'store' | 'now' | 'dispatch' | 'role' | 'ladderConfig'
+	>,
 	hostEffects?: Pick<TrackerHostEffects, 'watchdog' | 'launch'>,
 	automaticEnabled?: () => boolean
 ) {
 	const watchdog = hostEffects?.watchdog;
 	if (!watchdog) return undefined;
 	const { launch } = hostEffects;
-	const { store, now, dispatch, role } = runtime;
+	const { store, now, dispatch, role, ladderConfig } = runtime;
 	const idleWork =
 		role === 'hub' && dispatch ? { dispatch, minutes: watchdog.idleWorkMinutes ?? 120 } : undefined;
 	return trackerHostWatchdog(store, watchdog, {
 		now,
+		ladderConfig,
 		launch: trackerRecoveryLaunch(dispatch),
 		settle: dispatch,
 		automaticEnabled,

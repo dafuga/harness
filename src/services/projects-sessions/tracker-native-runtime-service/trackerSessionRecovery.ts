@@ -15,29 +15,33 @@ import { trackerProviderHold } from './trackerProviderHolds';
 import { recordWatchdogAlert } from './trackerHostWatchdogAlerts';
 import { recoveryPollInterval, sessionHealthInterval } from './trackerSessionHealth';
 import type { TrackerWatchdogLaunch } from './trackerSessionHealth.types';
-import type { TrackerRecoveryState } from './trackerSessionRecovery.types';
+import type { TrackerRecoveryInput, TrackerRecoveryState } from './trackerSessionRecovery.types';
 import {
 	emptyRecoveryState,
 	hostWait,
 	maxRecoveryAttempts,
 	recoveryBudget,
-	recoveryRung
+	recoverySelection
 } from './trackerRecoveryHistory';
 
 const requestTimeout = sessionHealthInterval;
 
 export async function recoverTrackerSession(
 	store: TrackerPersistenceService,
-	input: { item: TrackerItem; launch: TrackerWatchdogLaunch; now: number }
+	input: TrackerRecoveryInput
 ): Promise<string | null> {
-	const { item, launch, now } = input;
+	const { item, launch, now, ladderConfig } = input;
 	const history = new TrackerRunReadRepository(store.database, store.node).list({
 		itemId: item.id
 	});
 	const latest = history.filter(({ node }) => node === store.node).at(-1);
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = recoveryBudget(store, { key, latest, item });
-	const held = latest && trackerProviderHold(store, latest.cli, now);
+	const { cli, rung, unverified } = recoverySelection(latest, item, store.node, {
+		cfg: ladderConfig,
+		now
+	});
+	const held = cli && trackerProviderHold(store, cli, now);
 	if (held) {
 		// A hold is not a failed relaunch. The request timeout restarts when it lifts.
 		if (state.token) saveRecovery(store, key, { ...state, requestedAt: now });
@@ -45,8 +49,7 @@ export async function recoverTrackerSession(
 	}
 	if (state.token) return checkRecovery(store, { item, key, state, latest }, now);
 	if (now < state.retryAt) return null;
-	const rung = recoveryRung(latest, item, store.node);
-	if (latest && latest.cli !== 'none' && !rung)
+	if (unverified)
 		return flagRecovery(
 			store,
 			{ item, key, state },
@@ -69,8 +72,10 @@ async function submitRecovery(
 	const pending = { ...state, token: randomUUID(), requestedAt: now };
 	saveRecovery(store, key, pending);
 	const result = await launch(item, { token: pending.token, rung }).catch(() => undefined);
-	if (result?.status === 'requested' || result?.status === 'existing')
-		return `Tracker requested relaunch ${state.failures.length + 1}/${maxRecoveryAttempts} on ${store.node}${rung ? ` using ${rung.model}` : ''}.`;
+	if (result?.status === 'requested' || result?.status === 'existing') {
+		const model = result.intent.scheduledPick?.rung.model ?? rung?.model;
+		return `Tracker requested relaunch ${state.failures.length + 1}/${maxRecoveryAttempts} on ${store.node}${model ? ` using ${model}` : ''}.`;
+	}
 	return rejectRecoverySubmission(store, { item, key, state }, now, result);
 }
 
