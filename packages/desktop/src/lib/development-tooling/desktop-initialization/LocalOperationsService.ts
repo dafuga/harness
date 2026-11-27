@@ -56,7 +56,7 @@ export class LocalOperationsService {
 	private readonly payloads = new IpcRequestValidator();
 	private readonly tracker = new MacTrackerInboxService();
 	private readonly home = createHomeSnapshotReader(process.env.HARNESS_HUB_HOME_PROVIDER_FILE);
-	private readonly chat = createHomeChatWriter((input, init) => fetch(input, init));
+	private readonly chat = createHomeChatWriter();
 	constructor(private readonly options: LocalOperationsOptions) {}
 	methods(): RemoteMethod[] {
 		return [...remoteMethods];
