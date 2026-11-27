@@ -15,7 +15,7 @@ import { PrivateBrowserGateService } from '../../../src/services/execution-runti
 import { PrivateBrowserPhoneService } from '../../../src/services/execution-runtimes/PrivateBrowserPhoneService';
 import type { PrivateBrowserPhoneOffer } from '../../../src/services/execution-runtimes/PrivateBrowserPhoneService.types';
 import { measureWorkload } from '../../support/measureWorkload';
-import { canary } from '../../support/credential-vault/phone';
+import { canary, randomNonce } from '../../support/credential-vault/phone';
 
 const open: VaultBrokerServerAdapter[] = [];
 afterEach(async () => {
@@ -160,14 +160,28 @@ test('serves a scoped private entry offer and verifies sealed completion over th
 				recipeDigest: 'b'.repeat(64)
 			});
 			if (!offer) throw new Error('Synthetic private offer was rejected');
+			const challengePath = '/v1/private-browser/challenge';
 			const signRoute = async (path: string, body?: object) => {
-				const { nonce } = await run.client.call<{ nonce: string }>('/v1/device/challenge', {
-					deviceId: run.phone.deviceId
+				const start = run.phone.prove(origin, challengePath, randomNonce(), {
+					path,
+					expiresAt: run.clock.now + 30_000
 				});
+				const { nonce } = await run.client.call<{ nonce: string }>(challengePath, start);
+				await expect(run.client.call(challengePath, start)).rejects.toMatchObject({ status: 401 });
 				return run.phone.prove(origin, path, nonce, body);
 			};
 			const offerPath = '/v1/private-browser/offer';
 			const submitPath = '/v1/private-browser/submit';
+			await expect(
+				run.client.call(challengePath, { deviceId: run.phone.deviceId })
+			).rejects.toMatchObject({ status: 400 });
+			const unrelated = run.phone.prove(origin, challengePath, randomNonce(), {
+				path: '/v1/device/decision',
+				expiresAt: run.clock.now + 30_000
+			});
+			await expect(run.client.call(challengePath, unrelated)).rejects.toMatchObject({
+				status: 400
+			});
 			await expect(run.client.call(offerPath, {})).rejects.toMatchObject({ status: 400 });
 			const poll = await signRoute(offerPath);
 			const response = await run.client.call<{ offer: PrivateBrowserPhoneOffer }>(offerPath, poll);
