@@ -1,0 +1,65 @@
+{
+	"name": "tracker-backup-writer-race",
+	"goal": "Two Tracker databases competing for the same backup directory cannot both publish a backup for the same day.",
+	"createdAt": "2026-11-27T14:25:44.902Z",
+	"updatedAt": "2026-11-27T14:31:04.742Z",
+	"template": "bug-fix",
+	"templateLineage": ["bug-fix"],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:25:46.480Z",
+			"evidence": "Two independent Bun writers with distinct fixture database IDs wrote the same date to a fresh shared directory; both succeeded 6/150 and 12/150 in two runs on 1c759f8dd9. The owner check and replacement are separate operations."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:25:47.640Z",
+			"evidence": "The existing foreign-database standardized case only exercises writers one after the other. Extend the same case with concurrent independent Bun processes sharing an initially empty directory in each attempt, retaining the prior assertions."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:28:03.909Z",
+			"evidence": "0778fb8b70 clean snapshot: existing ownership test failed with expected [ 1, 2 ] to deeply equal [ 1 ], proving some attempts allowed both database writers."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:28:06.077Z",
+			"evidence": "A persistent per-folder SQLite lock file serializes owner check, daily publish, weekly copy and rotation. The OS releases the transaction lock on process exit. Snapshot packing stays outside the lock."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T14:31:04.742Z",
+			"evidence": "Unchanged test: clean a9e989b843 failed with both writers succeeding; clean 876cf1e636 passed with exactly one winner in each of 256 attempts. 22 focused backup and health tests also passed on primary Mac."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
