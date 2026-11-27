@@ -21,6 +21,7 @@ export async function serveCredentialBroker(options: CredentialBrokerOptions) {
 		broker,
 		keeper,
 		devices,
+		privateBrowser: options.privateBrowser?.(devices),
 		socketPath: options.socket
 	});
 	await server.listen();
