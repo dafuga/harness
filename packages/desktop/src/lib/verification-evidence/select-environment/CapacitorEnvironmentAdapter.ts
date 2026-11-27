@@ -37,6 +37,18 @@ function nativeAccount(): AccountNativePlugin | undefined {
 	return registerPlugin<AccountNativePlugin>(accountPluginName);
 }
 
+function offerAccountComputers(
+	phone: RemoteMobileControl,
+	plugin: RemoteNativePlugin,
+	note: (status: RemoteNativeStatus) => RemoteNativeStatus
+) {
+	if (!plugin.computers || !plugin.connectAccountComputer) return;
+	const list = plugin.computers.bind(plugin);
+	const connect = plugin.connectAccountComputer.bind(plugin);
+	phone.computers = async () => (await list()).computers;
+	phone.connectAccountComputer = async (input) => note(await connect(input));
+}
+
 function phoneHome(plugin: RemoteNativePlugin): TrackerHomeSource {
 	return {
 		read: async () =>
@@ -72,12 +84,7 @@ export class CapacitorEnvironmentAdapter {
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
 		const mac = computer.connect();
-		if (this.account && plugin.computers && plugin.connectAccountComputer) {
-			const list = plugin.computers.bind(plugin);
-			const connect = plugin.connectAccountComputer.bind(plugin);
-			phone.computers = async () => (await list()).computers;
-			phone.connectAccountComputer = async (input) => note(await connect(input));
-		}
+		if (this.account) offerAccountComputers(phone, plugin, note);
 		offerVault(phone);
 		const tracker = phoneTrackerTools(plugin);
 
