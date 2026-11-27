@@ -62,18 +62,20 @@ test(
 					await sendWatchdogAlerts(store, driver, queue, signal);
 					const pane = JSON.parse(readFileSync(join(root, 'state'), 'utf8'));
 					expect(pane.enters, 'the first batch must submit in the 80x24 pane').toBe(1);
-					const firstPrompt = readFileSync(join(root, 'commands'), 'utf8')
-						.trim()
-						.split('\n')
-						.map((line) => JSON.parse(line))[0].text;
-					expect(firstPrompt.length).toBeLessThanOrEqual(720);
+					for (let round = 0; round < 2; round++) {
+						clock += 6 * minute;
+						await sendWatchdogAlerts(store, driver, queue, signal);
+					}
+					const prompts = readCosPrompts(root);
+					expect(prompts).toHaveLength(3);
+					expect(
+						Math.max(...prompts.map((prompt) => Buffer.byteLength(prompt)))
+					).toBeLessThanOrEqual(450);
 					for (const alert of queue.slice(0, 7))
-						expect(firstPrompt).toContain(
+						expect(prompts.join(' | ')).toContain(
 							`[${alert.item_id.slice(0, 6)}] CoS: credential/access dependency.`
 						);
-					expect(firstPrompt).toContain('[alert7] See the full alert in Tracker.');
-					clock += 6 * minute;
-					await sendWatchdogAlerts(store, driver, queue, signal);
+					expect(prompts[1]).toContain('[alert7] See the full alert in Tracker.');
 					expect(JSON.parse(store.getMeta('watchdog_cos_sent') ?? '[]')).toContain('next-alert');
 				} finally {
 					date.mockRestore();
@@ -82,6 +84,14 @@ test(
 		),
 	25_000
 );
+
+function readCosPrompts(root: string): string[] {
+	return readFileSync(join(root, 'commands'), 'utf8')
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line).text)
+		.filter((text): text is string => typeof text === 'string');
+}
 
 test('Claude transcript receipts prevent another send when tmux misses acceptance', () =>
 	cosDeliveryFixture(async ({ store, items }) => {

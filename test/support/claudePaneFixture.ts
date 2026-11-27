@@ -30,7 +30,7 @@ function type(command) {
 		// A very long message arrives as several pastes, sometimes with a short typed remainder.
 		if (text.length >= 4000) shown = '[Pasted text #1][Pasted text #2]' + text.slice(-24);
 		state.draft = mode === 'foreign' ? 'half a sentence from a person' : shown;
-		state.scrolled = mode === 'window-80x24' && text.length >= 1024;
+		state.scrolled = mode === 'window-80x24' && Buffer.byteLength(text) >= 500;
 		return;
 	}
 	state.enters += 1;
