@@ -3,7 +3,7 @@ import type { SyncCall, SyncDeps } from './syncPolicy.types';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
 import { bootstrap, readRecovery } from './syncBootstrap';
 import { changeDevices } from './syncDevices';
-import { bindDeviceSession, readDeviceSession, requireApprovedScope } from './syncDeviceSession';
+import { bindDeviceSession, readDeviceSession, requireApprovedAccess } from './syncDeviceSession';
 import { appendChain, readChain } from './syncChain';
 import { enroll } from './syncEnroll';
 import { putGrants, readGrants } from './syncGrants';
@@ -86,9 +86,7 @@ async function dispatch(request: Request, deps: SyncDeps): Promise<Response> {
 		deps: { ...deps, db: deps.db },
 		parts
 	};
-	if (parts[0] === 'ops' || parts[0] === 'objects') {
-		const denial = await requireApprovedScope(call);
-		if (denial) return denial;
-	}
+	const denial = await requireApprovedAccess(call);
+	if (denial) return denial;
 	return route.handler(call);
 }

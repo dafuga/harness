@@ -65,16 +65,21 @@ async function sessionMatchesDevice(call: SyncCall): Promise<boolean> {
 	return bound === call.device;
 }
 
-/** Older accounts keep their existing sealed HTTP behavior until the recoverable cutover. */
-export async function requireApprovedScope(call: SyncCall): Promise<Response | undefined> {
+/** Recoverable accounts reserve the approval inbox, live connection and scoped data for enrolled devices. */
+export async function requireApprovedAccess(call: SyncCall): Promise<Response | undefined> {
+	const [area, scope] = call.parts;
+	const scoped = area === 'ops' || area === 'objects';
+	const inbox = area === 'enroll' && call.parts.length === 1 && call.request.method === 'GET';
+	if (!scoped && !inbox && area !== 'live') return;
 	if (!(await isRecoverableAccount(call))) return;
-	const scope = call.parts[1];
-	if (!isScopeId(scope)) return syncProblem(400, 'invalid-input');
+	if (scoped && !isScopeId(scope)) return syncProblem(400, 'invalid-input');
 	if (!(await sessionMatchesDevice(call))) return syncProblem(403, 'device-approval-required');
 	const chain = await activeChain(call);
 	if (chain instanceof Response) return chain;
 	const device = chain?.devices[call.device];
-	if (!device?.active) return syncProblem(403, 'device-approval-required');
+	if (!device?.active || device.role !== 'admin')
+		return syncProblem(403, 'device-approval-required');
+	if (!scoped) return;
 	if (!device.scopes.includes(scope)) return syncProblem(403, 'scope-denied');
 	if (call.request.method !== 'GET' && chain?.scopes[scope].stale)
 		return syncProblem(409, 'scope-key-rotation-required');

@@ -201,7 +201,7 @@ base64url challenge using its P-256 signing key. The server binds the challenge
 to the account, device, Google session and a short time window. Standalone
 legacy chain and grant writes are disabled after recoverable bootstrap. The
 sealed HTTP log and object routes then require the matching approved session
-and an active grant for the requested scope.
+and an active grant for the requested scope. The recoverable account also requires an active, session-bound admin device to list all pending approvals or open its live WebSocket. A waiting device can still submit its opening and poll the individual mailbox.
 
 Revisions are limited to 2^53 - 1. Live socket: the client sends `{"t":"subscribe","scopes":[...],
 "after":ring}`; the server answers `{"t":"subscribed","ring":n}` and then sends text
