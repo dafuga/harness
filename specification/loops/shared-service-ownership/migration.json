@@ -2921,7 +2921,8 @@
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hubSnapshot.ts",
 				"definition": "ca3c37f942b11914dbd1d82edd30cc27282ba186025b3045f37c0f96a9213399",
 				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
-			}
+			},
+			"relocationDefinition": "3db9a1e79c45309976d0889bf6fdc9c5a489c37362d54ab8b87f518085678a6a"
 		},
 		{
 			"unit": "hub.function.hub-threads",
@@ -3037,15 +3038,21 @@
 			"unit": "desktop.adapter.remote-http-project",
 			"from": "packages/desktop/src/adapters/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
 			"to": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-			"definition": "d28df1770b6cc54d871a01c538728317890df1c0ebbb532c5acfcb5c9df3efbe",
+			"definition": "abe86d2da7026c6c5e3021458319f91650c18a3a60f972a689c858156d303b00",
 			"relocationDefinition": "56523dcc7e317b6acacd6394fa67dd5a8ab6fcd02336c1e564b9f5ad972c41fa",
 			"review": {
-				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"commit": "3f638101fe3cfedaa0bd481767c9cf5b86948e83",
 				"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
-				"definition": "d28df1770b6cc54d871a01c538728317890df1c0ebbb532c5acfcb5c9df3efbe",
-				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				"definition": "abe86d2da7026c6c5e3021458319f91650c18a3a60f972a689c858156d303b00",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
 			},
 			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
+					"definition": "d28df1770b6cc54d871a01c538728317890df1c0ebbb532c5acfcb5c9df3efbe",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
 				{
 					"commit": "b8d18e06358ab516eb0c5af4062a424e1df2a524",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/remote-http-project-adapter/RemoteHttpProjectAdapter.ts",
@@ -3850,7 +3857,8 @@
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/catalog-service/CatalogService.ts",
 				"definition": "ae6dca66847336ec80f2b94caa275480379ab3497beb5d50352824f9dd723d93",
 				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
-			}
+			},
+			"relocationDefinition": "3df627190d28e960cd8ca1480b90cab4f6913ad08b0ef9ae7500bd8920b29b97"
 		},
 		{
 			"unit": "desktop.function.catalog-detail",
@@ -5041,15 +5049,21 @@
 			"unit": "desktop.adapter.git-source",
 			"from": "packages/desktop/src/adapters/git-source-adapter/GitSourceAdapter.ts",
 			"to": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-			"definition": "c8bcd4e129cd8d5b7d2a9ab40075867e690336de8918bcd4069062cf23178a23",
+			"definition": "5ba735e78352af00edf0fa390787fe2e62390fd7e900738197555aeee1298dd6",
 			"relocationDefinition": "01decde5581e75ca571d6f0156881dd2b9e059ef55127d28b366b3b64713cf90",
 			"review": {
-				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"commit": "3f638101fe3cfedaa0bd481767c9cf5b86948e83",
 				"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
-				"definition": "c8bcd4e129cd8d5b7d2a9ab40075867e690336de8918bcd4069062cf23178a23",
-				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				"definition": "5ba735e78352af00edf0fa390787fe2e62390fd7e900738197555aeee1298dd6",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
 			},
 			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
+					"definition": "c8bcd4e129cd8d5b7d2a9ab40075867e690336de8918bcd4069062cf23178a23",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
 				{
 					"commit": "856fccb0aecf758bed1250f6a20c54ff31348e7c",
 					"path": "packages/desktop/src/services/projects-sessions/project-session-service/git-source-adapter/GitSourceAdapter.ts",
@@ -5452,7 +5466,8 @@
 				"path": "src/cli/program/analyticsHtml.ts",
 				"definition": "aed2eca6d037cc965726b832e5a11dd9d33a4c1f9f66f2fe9a60b28013f93776",
 				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
-			}
+			},
+			"relocationDefinition": "13caf2eac7315dde69296bd9702bad39c7546c2413f0d2f074c90ed43d6c490a"
 		},
 		{
 			"unit": "hub.controller.hub-agent",
@@ -6671,7 +6686,8 @@
 				"path": "packages/planning/src/lib/planning-collaboration/planning/planning-service/planHistory.ts",
 				"definition": "cba9de0ca8016e2e4889bcadccfdda23b20464c1f534a6ec3b4426503f3d08b2",
 				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
-			}
+			},
+			"relocationDefinition": "1d1338613341131dbdefec2c2324370a11a401e3f7b889f9ff1eff2b7b55b4cf"
 		},
 		{
 			"unit": "planning.function.plan-options",
@@ -7824,7 +7840,8 @@
 				"path": "packages/desktop/src/lib/agents-providers/agent-settings/agentSettings.svelte.ts",
 				"definition": "8cf06ee3d3d73f28e272b296fafeb4612af50df3fd704a96e4f1b9c113c75b1e",
 				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
-			}
+			},
+			"relocationDefinition": "65a81c6bf1c85d67a516fa0dcb2f2f43db09b926430a2dab676c45d00fa99403"
 		}
 	],
 	"services": [

@@ -6913,6 +6913,15 @@
 			"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
 			"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change.",
 			"definition": "295d60710ebf241cd574ff31348237ef687eb07d5632cfc1d9bf758162c10b39"
+		},
+		{
+			"unit": "desktop.function.ipc-payload",
+			"name": "threadPayload",
+			"commit": "3f638101fe3cfedaa0bd481767c9cf5b86948e83",
+			"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output.",
+			"definition": "ae33aafa7296de2b03252581b006603800be4ef0d6eb07d3f7a53d59d0da24e0",
+			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
+			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
 		}
 	],
 	"retiredOwners": [
