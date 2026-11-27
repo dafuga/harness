@@ -75,6 +75,14 @@ async function proveWatchdog(root: string) {
 			{ operation: 'watchdog-cos', alerts: [{ item_id: requestId, host: 'harbor-mbp-2' }] },
 			{ operation: 'watchdog-cos', alerts: [{ item_id: itemId, host: node }] }
 		]);
+		runtime.store.appendLocal({ itemId, fields: { status: 'blocked' } });
+		const idle = () => restarted.watchdog!.alerts().filter(({ kind }) => kind === 'idle');
+		expect(idle()).toEqual([]);
+		runtime.store.appendLocal({ itemId, fields: { status: 'in_progress' } });
+		writeFileSync(join(root, 'hand-session'), '');
+		clock += 10 * minute;
+		await restarted.watchdog!.tick(signal);
+		expect(idle()).toEqual([]);
 	} finally {
 		db.close();
 	}
