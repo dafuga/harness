@@ -112,9 +112,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Canonical component name used to qualify each public input.",
-				"examples": [
-					"Button"
-				]
+				"examples": ["Button"]
 			},
 			{
 				"name": "boundProps.allowBareUndefined",
@@ -128,18 +126,14 @@
 				"type": "string",
 				"required": true,
 				"description": "Svelte source whose authored markup snippets are scanned separately from props and script exports.",
-				"examples": [
-					"{#snippet row(item: string)}<span>{item}</span>{/snippet}"
-				]
+				"examples": ["{#snippet row(item: string)}<span>{item}</span>{/snippet}"]
 			},
 			{
 				"name": "componentSnippets.owner",
 				"type": "string",
 				"required": true,
 				"description": "Canonical component name used to qualify each snippet and its parameters.",
-				"examples": [
-					"DataTable"
-				]
+				"examples": ["DataTable"]
 			},
 			{
 				"name": "scanComponent.code",
@@ -155,9 +149,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Component symbol name used to prefix prop inputs.",
-				"examples": [
-					"Button"
-				]
+				"examples": ["Button"]
 			}
 		],
 		"outputs": [
@@ -207,9 +199,7 @@
 						"name": "instanceScript",
 						"type": "string",
 						"description": "The first non-module script body after HTML comments are removed, or an empty string when no instance script exists. Module scripts are excluded because only instance code declares component props.",
-						"examples": [
-							"const count = 1;"
-						]
+						"examples": ["const count = 1;"]
 					}
 				],
 				"errors": [],
@@ -392,9 +382,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Canonical component name used to qualify each public input.",
-						"examples": [
-							"Button"
-						]
+						"examples": ["Button"]
 					},
 					{
 						"name": "boundProps.allowBareUndefined",
@@ -437,18 +425,14 @@
 						"type": "string",
 						"required": true,
 						"description": "Svelte source whose authored markup snippets are scanned separately from props and script exports.",
-						"examples": [
-							"{#snippet row(item: string)}<span>{item}</span>{/snippet}"
-						]
+						"examples": ["{#snippet row(item: string)}<span>{item}</span>{/snippet}"]
 					},
 					{
 						"name": "componentSnippets.owner",
 						"type": "string",
 						"required": true,
 						"description": "Canonical component name used to qualify each snippet and its parameters.",
-						"examples": [
-							"DataTable"
-						]
+						"examples": ["DataTable"]
 					}
 				],
 				"outputs": [
@@ -494,9 +478,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Component symbol name used to prefix prop inputs.",
-						"examples": [
-							"Button"
-						]
+						"examples": ["Button"]
 					}
 				],
 				"outputs": [

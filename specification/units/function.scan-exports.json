@@ -177,9 +177,7 @@
 						"name": "callsCliFail",
 						"type": "boolean",
 						"description": "True when the source calls the CLI `fail` through its import binding, so file-level errors include ExpectedCliError; false for unbound, shadowed, member or other-module `fail` calls.",
-						"examples": [
-							true
-						]
+						"examples": [true]
 					}
 				],
 				"errors": [],

@@ -70,36 +70,28 @@
 				"type": "string",
 				"required": true,
 				"description": "Masked text whose top-level separator positions should be found.",
-				"examples": [
-					"fn(a, b), next"
-				]
+				"examples": ["fn(a, b), next"]
 			},
 			{
 				"name": "splitTopLevel.separators",
 				"type": "string",
 				"required": true,
 				"description": "String of individual separator characters to recognize at nesting depth zero.",
-				"examples": [
-					","
-				]
+				"examples": [","]
 			},
 			{
 				"name": "parseParameters.code",
 				"type": "string",
 				"required": true,
 				"description": "Original parameter-list or object-type text containing the type spellings to retain.",
-				"examples": [
-					"url: string, retries = 3, label?: string"
-				]
+				"examples": ["url: string, retries = 3, label?: string"]
 			},
 			{
 				"name": "parseParameters._masked",
 				"type": "string",
 				"required": true,
 				"description": "Compatibility argument containing masked source; the AST parser currently reads code directly.",
-				"examples": [
-					"url: string, retries = 3, label?: string"
-				]
+				"examples": ["url: string, retries = 3, label?: string"]
 			},
 			{
 				"name": "parseParameters.options",
@@ -117,9 +109,7 @@
 				"type": "string",
 				"required": true,
 				"description": "Raw type text to normalize.",
-				"examples": [
-					"  Promise < string > ; "
-				]
+				"examples": ["  Promise < string > ; "]
 			}
 		],
 		"outputs": [
@@ -128,9 +118,7 @@
 				"type": "number[]",
 				"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed.",
 				"examples": [
-					[
-						8
-					]
+					[8]
 				]
 			},
 			{
@@ -162,9 +150,7 @@
 				"name": "normalizeType",
 				"type": "string",
 				"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text.",
-				"examples": [
-					"Promise < string >"
-				]
+				"examples": ["Promise < string >"]
 			}
 		],
 		"errors": [],
@@ -266,11 +252,7 @@
 						"name": "parameterType",
 						"type": "string",
 						"description": "The inferred type label for a readable literal initializer: the primitive typeof result, null for null, unknown[] for arrays, object for objects, or unknown when no supported literal default is available.",
-						"examples": [
-							"number",
-							"null",
-							"unknown"
-						]
+						"examples": ["number", "null", "unknown"]
 					}
 				],
 				"errors": [],
@@ -284,18 +266,14 @@
 						"type": "string",
 						"required": true,
 						"description": "Masked text whose top-level separator positions should be found.",
-						"examples": [
-							"fn(a, b), next"
-						]
+						"examples": ["fn(a, b), next"]
 					},
 					{
 						"name": "splitTopLevel.separators",
 						"type": "string",
 						"required": true,
 						"description": "String of individual separator characters to recognize at nesting depth zero.",
-						"examples": [
-							","
-						]
+						"examples": [","]
 					}
 				],
 				"outputs": [
@@ -304,9 +282,7 @@
 						"type": "number[]",
 						"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed.",
 						"examples": [
-							[
-								8
-							]
+							[8]
 						]
 					}
 				],
@@ -321,18 +297,14 @@
 						"type": "string",
 						"required": true,
 						"description": "Original parameter-list or object-type text containing the type spellings to retain.",
-						"examples": [
-							"url: string, retries = 3, label?: string"
-						]
+						"examples": ["url: string, retries = 3, label?: string"]
 					},
 					{
 						"name": "parseParameters._masked",
 						"type": "string",
 						"required": true,
 						"description": "Compatibility argument containing masked source; the AST parser currently reads code directly.",
-						"examples": [
-							"url: string, retries = 3, label?: string"
-						]
+						"examples": ["url: string, retries = 3, label?: string"]
 					},
 					{
 						"name": "parseParameters.options",
@@ -384,9 +356,7 @@
 						"type": "string",
 						"required": true,
 						"description": "Raw type text to normalize.",
-						"examples": [
-							"  Promise < string > ; "
-						]
+						"examples": ["  Promise < string > ; "]
 					}
 				],
 				"outputs": [
@@ -394,9 +364,7 @@
 						"name": "normalizeType",
 						"type": "string",
 						"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text.",
-						"examples": [
-							"Promise < string >"
-						]
+						"examples": ["Promise < string >"]
 					}
 				],
 				"errors": [],
