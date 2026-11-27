@@ -4,6 +4,7 @@ import { buildHomeSnapshot } from '../../packages/reports/src/lib/projects-sessi
 import { readTrackerSources } from '../../packages/reports/src/lib/projects-sessions/project-overview/projectOverviewTracker';
 import type { TrackerItem } from '../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import { phoneReplicaRows } from '../../src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaRows';
+import { openPushAsks } from '../../src/services/projects-sessions/tracker-web-push-service/openPushAsks';
 import { finishedTrackerProcess, fixtureTrackerJson, loopback } from './trackerNodeProcess';
 import type { TrackerNodeFixture } from './trackerNodeProcess.types';
 
@@ -11,10 +12,12 @@ import type { TrackerNodeFixture } from './trackerNodeProcess.types';
 export async function trackerNeedsYouViews(hub: TrackerNodeFixture, id: string) {
 	const digest = await fixtureTrackerJson(hub, ['digest']);
 	const text = (await finishedTrackerProcess(hub, ['digest'])).stdout;
-	const flagged: { id: string }[] = await fixtureTrackerJson(hub, ['list', '--flagged']);
+	const flagged: TrackerItem[] = await fixtureTrackerJson(hub, ['list', '--flagged']);
 	const has = (rows: { id: string }[]) => rows.some((row) => row.id === id);
 	return {
 		listFlagged: has(flagged),
+		// The web push sender announces from this same flagged list.
+		webPush: openPushAsks(flagged).some((ask) => ask.itemId === id),
 		digestDecisions: has(digest.daniel_decisions),
 		digestToUnblock: has(digest.to_unblock),
 		digestText: text.includes(`[${id.slice(0, 6)}]`),
