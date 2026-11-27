@@ -39,7 +39,13 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerContextHandoff.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosAlertKinds.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosDelivery.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosDelivery.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosDeliveryAsk.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosInbox.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosRound.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerCosWindow.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerDueDelegation.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerFinalReports.types.ts",
@@ -157,8 +163,16 @@
 			"trackerAutolaunchAdmin",
 			"trackerHubDuePolicy",
 			"trackerContextHandoffs",
+			"isOutageAlert",
+			"watchCosDelivery",
+			"TrackerCosDeliveryAlarm",
+			"TrackerCosRoundPorts",
+			"cosDeliveryDelivered",
+			"cosDeliveryAsk",
 			"trackerCosInboxKinds",
 			"trackerCosInboxRetention",
+			"trackerCosRound",
+			"cosSendWindowStart",
 			"grantsDelegation",
 			"finishReportedRuns",
 			"TrackerReportSession",
@@ -183,6 +197,7 @@
 			"occupiedHostRuns",
 			"TrackerOccupiedRun",
 			"formatTrackerHostBrief",
+			"unsentCosAlerts",
 			"sendWatchdogAlerts",
 			"trackerHostEffectsSchema",
 			"trackerHostInventory",
@@ -566,6 +581,66 @@
 				"required": true
 			},
 			{
+				"name": "isOutageAlert.kind",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "watchCosDelivery.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "watchCosDelivery.pending",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
+			},
+			{
+				"name": "watchCosDelivery.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "cosDeliveryAsk.pending",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
+			},
+			{
+				"name": "cosDeliveryAsk.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "cosDeliveryAsk.node",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "cosDeliveryAsk.created",
+				"type": "boolean",
+				"required": true
+			},
+			{
+				"name": "trackerCosRound.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerCosRound.driver",
+				"type": "TrackerWatchdogPort",
+				"required": true
+			},
+			{
+				"name": "trackerCosRound.ports",
+				"type": "TrackerCosRoundPorts",
+				"required": true
+			},
+			{
+				"name": "cosSendWindowStart.now",
+				"type": "number",
+				"required": true
+			},
+			{
 				"name": "grantsDelegation.snapshot",
 				"type": "TrackerDispatchSnapshot",
 				"required": true
@@ -776,6 +851,16 @@
 				"name": "formatTrackerHostBrief.cpuBudget",
 				"type": "number",
 				"required": false
+			},
+			{
+				"name": "unsentCosAlerts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "unsentCosAlerts.alerts",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
 			},
 			{
 				"name": "sendWatchdogAlerts.store",
@@ -2784,6 +2869,131 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "isOutageAlert",
+				"inputs": [
+					{
+						"name": "isOutageAlert.kind",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isOutageAlert",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchCosDelivery",
+				"inputs": [
+					{
+						"name": "watchCosDelivery.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "watchCosDelivery.pending",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					},
+					{
+						"name": "watchCosDelivery.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchCosDelivery",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cosDeliveryAsk",
+				"inputs": [
+					{
+						"name": "cosDeliveryAsk.pending",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					},
+					{
+						"name": "cosDeliveryAsk.now",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "cosDeliveryAsk.node",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "cosDeliveryAsk.created",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosDeliveryAsk",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerCosRound",
+				"inputs": [
+					{
+						"name": "trackerCosRound.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerCosRound.driver",
+						"type": "TrackerWatchdogPort",
+						"required": true
+					},
+					{
+						"name": "trackerCosRound.ports",
+						"type": "TrackerCosRoundPorts",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerCosRound",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "cosSendWindowStart",
+				"inputs": [
+					{
+						"name": "cosSendWindowStart.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosSendWindowStart",
+						"type": "number | null"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "grantsDelegation",
 				"inputs": [
 					{
@@ -3172,6 +3382,29 @@
 					{
 						"name": "formatTrackerHostBrief",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "unsentCosAlerts",
+				"inputs": [
+					{
+						"name": "unsentCosAlerts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "unsentCosAlerts.alerts",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "unsentCosAlerts",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
