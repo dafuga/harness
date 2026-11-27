@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import type { Page } from '@playwright/test';
 import { expect } from '../../../../test/support/browserTest';
 import {
@@ -68,6 +69,48 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 	await page.clock.setFixedTime(homeClock);
 	const data = mockup(mode);
 	const snapshot = homeData(data);
+	const firstPlan = snapshot.plans[0];
+	if (firstPlan)
+		Object.assign(firstPlan, {
+			stage: 'design',
+			planning: {
+				promotions: [],
+				artifacts: {
+					design: {
+						summary: 'Approved designs for the dashboard.',
+						pages: [
+							{
+								name: 'Dashboard',
+								states: { ready: 'Shows the latest plan activity.' },
+								links: [
+									{
+										kind: 'image',
+										label: 'Dashboard mockup',
+										url: 'https://design.example.test/dashboard.png'
+									},
+									{
+										kind: 'link',
+										label: 'Dashboard design canvas',
+										url: 'https://design.example.test/canvas'
+									}
+								]
+							}
+						]
+					}
+				}
+			}
+		});
+	await page.route('https://design.example.test/dashboard.png', (route) =>
+		route.fulfill({
+			contentType: 'image/png',
+			body: readFileSync(
+				new URL(
+					'../../../../specification/designs/desktop-screens/screens/after--project-pages--phone.png',
+					import.meta.url
+				)
+			)
+		})
+	);
 	if (mode === 'busy')
 		snapshot.providers.routinesReadAt = new Date(homeClock - 10_800_000).toISOString();
 	if (mode === 'empty') snapshot.providers.quota = null;
