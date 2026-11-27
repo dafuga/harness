@@ -108,6 +108,32 @@ func revocationChecks() {
     check(told.events.isEmpty, "a revocation is not handed on as an ordinary event")
 }
 
+func homeWorkChecks() {
+    let bench = Bench()
+    bench.start()
+    check(bench.ask("homeSnapshot", [:]).failure?.code == "method-denied",
+          "the phone asks for Home work only after the paired Mac grants it")
+    let methods = Bench.methods + ["homeSnapshot", "homeChat"]
+    bench.attach(Bench.Answer(methods: methods))
+    let link = bench.link
+    let snapshot = bench.ask("homeSnapshot", [:])
+    bench.answer(link, "homeSnapshot", value: ["plans": ["Fixture plan"]])
+    check(snapshot.answer?.cachedAt == nil && snapshot.answer != nil, "Home work is read live")
+    check(entries(bench.root) == 0, "the phone does not keep the Home work snapshot on disk")
+
+    let message = ["id": "fixture-send", "itemId": "cos", "text": "Attached Tracker schedule: fixture"]
+    let chat = bench.ask("homeChat", message)
+    let input = link.asked("homeChat").last?["input"] as? [String: Any]
+    check(input?["epoch"] as? String == "epoch-1" && input?["text"] as? String == message["text"],
+          "contextual chat carries the attachment and current connection epoch")
+    bench.close(link, .lost)
+    check(chat.failure?.message == RemoteFailure.uncertain.message, "an interrupted chat send is uncertain")
+    check(bench.ask("homeSnapshot", [:]).failure?.code == "offline", "offline Home work has no saved copy")
+    bench.reconnect()
+    bench.attach(Bench.Answer(epoch: "epoch-2", methods: methods))
+    check(bench.link.asked("homeChat").isEmpty, "reconnecting never submits a context message again")
+}
+
 func mutationChecks() {
     let bench = Bench()
     bench.online()
