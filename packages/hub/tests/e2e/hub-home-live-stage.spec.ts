@@ -30,6 +30,7 @@ function trackerWithProgress() {
 
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
+	['tablet', 820, 1180],
 	['phone', 390, 844]
 ] as const) {
 	test(`${device}: a job card opens its latest milestone and proof link`, async ({ page }) => {

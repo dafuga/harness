@@ -46,7 +46,7 @@ import {writeFileSync} from 'node:fs';
 const git=(...args)=>execFileSync('/usr/bin/git',args,{encoding:'utf8'}).trim();
 const [itemFlag,item,commitFlag,sha,exact,json]=process.argv.slice(2);
 if (itemFlag!=='--item'||!item||commitFlag!=='--commit'||sha!==git('rev-parse','HEAD')||exact!=='--exact'||json!=='--json') process.exit(3);
-const result={schemaVersion:1,status:'passed',commit:sha,testedCommit:sha,base:git('rev-parse','origin/main'),tree:git('rev-parse','HEAD^{tree}')};
+const result={schemaVersion:1,status:'passed',mode:'focused',checks:[{id:'fixture'}],commit:sha,testedCommit:sha,base:git('rev-parse','origin/main'),tree:git('rev-parse','HEAD^{tree}')};
 writeFileSync(process.env.FIXTURE_REPO+'/check.json',JSON.stringify(result));
 console.log(JSON.stringify(result));`;
 

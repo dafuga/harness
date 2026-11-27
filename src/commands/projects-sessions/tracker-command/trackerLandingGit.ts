@@ -153,6 +153,8 @@ function verifyReceipt(output: string, head: string, base: string, expectedTree:
 		.object({
 			schemaVersion: z.literal(1),
 			status: z.literal('passed'),
+			mode: z.literal('focused'),
+			checks: z.array(z.object({ id: z.string().min(1) })).min(1),
 			base: oid,
 			commit: oid,
 			testedCommit: oid,
