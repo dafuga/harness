@@ -210,8 +210,12 @@ operator verifies the stopped database and chooses a rollback.
   decisions without taking action. Set `watchdog.chiefOfStaff` on the
   primary Mac to deliver alerts to its idle CoS tmux pane and include MB2
   alerts over the existing host-key-verified SSH link. Delivery observes
-  Lisbon quiet hours and the thirty-minute watchdog cadence. The separate
-  tick can still read `tracker list --flagged --json` for decisions.
+  Lisbon quiet hours and the thirty-minute cadence for routine alerts. The hub
+  checks each enabled launcher's last completed tick about once a minute.
+  A heartbeat more than three minutes old prompts a Chief of Staff alert
+  outside the routine cadence during delivery hours. Tracker sends one alert
+  per missed heartbeat and clears it from the active list when polling resumes.
+  The separate tick can still read `tracker list --flagged --json` for decisions.
 
   CoS dependency messages are delivered once per item and message text.
   When tmux misses an acceptance, Tracker checks Claude's recorded prompt
@@ -256,6 +260,12 @@ operator verifies the stopped database and chooses a rollback.
   GitHub sources. It uses the existing source owner, cursor, and
   `adapter-runner.lock` beside the journal. The GitHub CLI binding uses an
   explicit, private account directory and the existing `tracked` label.
+- **Dispatch watchdog.** A dispatch tick has two minutes to finish.
+  On timeout the scheduler cancels that tick and resumes polling. The
+  next tick reconciles reservations for which a host start may have
+  happened before the reply was lost. Host commands have a separate
+  deadline and settle on child close, with an exit-event fallback when
+  close does not arrive. A partial response is discarded.
 - **Fleet telemetry.** Each node samples itself; see
   [Computers and placement](#computers-and-placement).
 - **Box jobs.** A recurring item on the hub can run a shell command at each
@@ -582,6 +592,10 @@ The native CLI confirms a manual launch against the run for that exact request.
 It reports the run number, state and computer, or exits non-zero with the
 admission reason. If the target has not reported an outcome within 20 seconds,
 the CLI reports the timeout. A hold or timeout leaves the request pending.
+After an answer, reopen, or unblock releases an item with only finished attempts,
+an explicit launch starts a fresh request and keeps the blocked run in history.
+The CLI points to `tracker show ITEM` for the current outcome and to
+`tracker unlaunch ITEM` if the new request is still pending and should be cancelled.
 `tracker launch on` and `tracker launch off` still set the due-scheduling preference.
 
 The primary watchdog alerts CoS when a request has no matching run after

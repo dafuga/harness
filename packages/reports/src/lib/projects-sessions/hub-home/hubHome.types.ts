@@ -1,5 +1,6 @@
 // @harness-uid u_kda7xezayo
 import type { OverviewSnapshot, ProjectState } from '../project-overview/projectOverview.types';
+import type * as Planning from '../../../../../../src/utils/projects-sessions/trackerPlanning.types';
 import type { HomeLiveOverview } from './homeLive.types';
 
 import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
@@ -88,6 +89,9 @@ export interface HomePlan {
 	title: string;
 	project: string | null;
 	state: HomePlanState;
+	/** Older Home publishers omit stage and artifacts. */
+	stage?: Planning.TrackerStage;
+	planning?: Planning.TrackerPlanning;
 	updatedAt: string;
 	total: number;
 	done: number;
@@ -194,4 +198,21 @@ export interface HomeChatReceipt {
 	status: HomeChatStatus;
 	/** The Tracker id of a stored Hub message. */
 	messageId?: string;
+}
+
+/** The active local Mac or approved connection used by the installed apps. */
+export interface TrackerHomeSource {
+	read(): Promise<OwnerHomeSnapshot>;
+	send(message: HomeChatInput): Promise<HomeChatReceipt>;
+}
+
+export type OpenHomeSection = (section: HomeSection, itemId?: string) => void;
+export type SendHomeChat = TrackerHomeSource['send'];
+
+export interface HomePlannableView {
+	plans: HomePlan[] | null;
+	schedule: HomeRun[] | null;
+	agents: HomeAgent[] | null;
+	needsMac: boolean;
+	now: number;
 }

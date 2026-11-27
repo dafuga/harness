@@ -2,16 +2,16 @@
 import type { ProjectSummary } from 'collaboration';
 import type {
 	HomeAgent,
-	HomeChatInput,
 	HomeChatReceipt,
 	HomeOpenAsk,
 	HomePlan,
 	HomeRun,
 	HomePastDue,
-	HomeSection,
 	HomeSubscription,
 	HomeTrackerProject,
-	OwnerHomeSnapshot
+	OwnerHomeSnapshot,
+	OpenHomeSection,
+	SendHomeChat
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
 import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -65,10 +65,8 @@ export interface HomeView {
 	now: number;
 }
 
-export type OpenHomeSection = (section: HomeSection, agentId?: string) => void;
 /** Adds or removes a session Daniel created himself, so it is listed under Agents. */
 export type ChangeSession = (id: string, add: boolean) => Promise<void>;
-export type SendHomeChat = (message: HomeChatInput) => Promise<HomeChatReceipt>;
 export type ReadHomeProject = (projectId: string) => Promise<ProjectSnapshot>;
 
 export interface HomeCardsProps {
@@ -86,3 +84,8 @@ export interface ReadHomeResult {
 	/** The Hub pushes change notices to this account. */
 	live?: boolean;
 }
+
+export type {
+	OpenHomeSection,
+	SendHomeChat
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';

@@ -1,0 +1,190 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-plannable",
+	"uid": "u_axpmgg2n3c",
+	"kind": "component",
+	"title": "HubHomePlannable",
+	"responsibility": "Show Plans and Scheduled previews and open the selected detail, complete list or contextual chat.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"hub.component.projects-sessions-hub-home-card",
+			"hub.component.projects-sessions-hub-home-row",
+			"hub.component.projects-sessions-hub-home-skeleton",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-atoms-html-ul"
+		]
+	},
+	"owns": {
+		"source": [
+			"packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte"
+		],
+		"symbols": [
+			"HubHomePlannable",
+			"HubHomePlannable.empty",
+			"HubHomePlannable.trailing",
+			"HubHomePlannable.lead"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
+		"inputs": [
+			{
+				"name": "HubHomePlannable.view",
+				"type": "HomePlannableView",
+				"required": true,
+				"description": "The current plans, schedule, connection state, clock and available agents."
+			},
+			{
+				"name": "HubHomePlannable.open",
+				"type": "OpenHomeSection",
+				"required": true,
+				"description": "Opens a complete list or the plan with the given ID."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomePlannable",
+				"type": "markup",
+				"description": "Renders compact Plans and Scheduled previews with selectable rows."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomePlannable.empty",
+				"inputs": [
+					{
+						"name": "HubHomePlannable.empty.text",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "HubHomePlannable.empty.action",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "HubHomePlannable.empty",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomePlannable.trailing",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomePlannable.trailing",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomePlannable.lead",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomePlannable.lead",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-row",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-skeleton",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomePlannable.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -16,8 +16,14 @@
 	let {
 		plans,
 		agents,
-		discuss
-	}: { plans: HomePlan[] | null; agents: HomeAgent[]; discuss: (id: string) => void } = $props();
+		discuss,
+		openPlan
+	}: {
+		plans: HomePlan[] | null;
+		agents: HomeAgent[];
+		discuss: (id: string) => void;
+		openPlan: (id: string, trigger: HTMLElement) => void;
+	} = $props();
 	const planTones: Record<HomePlanState, string> = {
 		draft: 'quiet',
 		'in-review': 'needs-you',
@@ -66,10 +72,20 @@
 		{#each visible as plan (plan.id)}
 			{@const agent = agents.find((agent) => agent.name === plan.project && agent.itemId)}
 			{@const tone = planTones[plan.state]}
-			<hx-article class={`po-card po-${tone} hh-plan`}>
+			<hx-article class={`po-card po-${tone} hh-plan hh-row-target`}>
 				<hx-div class="po-card-head">
 					<hx-div class="po-card-title">
-						<hx-h3 class="po-name"><LinkifiedText text={plan.title} /></hx-h3>
+						<hx-h3 class="po-name">
+							<LinkifiedText text={plan.title} />
+							<hx-button
+								type="button"
+								class="hh-open-row"
+								aria-label={plan.title}
+								aria-haspopup="dialog"
+								onclick={(event) => openPlan(plan.id, event.currentTarget)}
+							>
+							</hx-button>
+						</hx-h3>
 						<hx-p class="po-sessions"
 							>{[plan.project, `updated ${when(plan.updatedAt)}`].filter(Boolean).join(' · ')}</hx-p
 						>

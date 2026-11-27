@@ -52,6 +52,12 @@
 				"type": "(id: string) => void",
 				"required": true,
 				"description": "Opens the conversation for the agent associated with the selected plan."
+			},
+			{
+				"name": "HubHomePlans.openPlan",
+				"type": "(id: string, trigger: HTMLElement) => void",
+				"required": true,
+				"description": "Opens the selected plan and retains the activated button for focus restoration."
 			}
 		],
 		"outputs": [

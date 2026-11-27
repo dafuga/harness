@@ -6,7 +6,8 @@
 	import type {
 		HomeAgent,
 		HomeChatInput,
-		HomeChatReceipt
+		HomeChatReceipt,
+		SendHomeChat
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { currentAgent } from './hubHomePresentation';
 	import {
@@ -15,7 +16,6 @@
 		homeChatItemSuffix
 	} from './hubHomeMessages';
 	import type { HomeChatItemContext } from './hubHomeChatContext.types';
-	import type { SendHomeChat } from './hubHomeView.types';
 
 	let {
 		agents,

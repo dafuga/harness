@@ -19,8 +19,8 @@ export const stageLabels = {
 export const workStateLabels: Record<HomeWorkState, string> = {
 	running: 'Running',
 	offline: 'Computer offline',
-	queued: 'Waiting to start',
-	'no-run': 'No live run',
+	queued: 'Queued',
+	blocked: 'Blocked',
 	finished: 'Finished'
 };
 
@@ -46,11 +46,9 @@ export function stageLabel(stage: HomeWorkRow['stage']) {
 /** @pure The run state in words, with the recorded outcome of the latest run when it has one. */
 export function workStateLabel(row: HomeWorkRow) {
 	const { state, outcome } = row;
-	const ended = outcome && (outcomes[outcome] ?? outcome);
-	if (!ended) return workStateLabels[state];
-	return state === 'no-run'
-		? `No live run · last run ${ended}`
-		: `${workStateLabels[state]}: ${ended}`;
+	if (state === 'queued' && row.runId) return `Queued #${row.runId.toLocaleString('en-US')}`;
+	const ended = state === 'finished' && outcome && (outcomes[outcome] ?? outcome);
+	return ended ? `Finished: ${ended}` : workStateLabels[state];
 }
 
 /** @pure A length of time in its largest whole unit. */

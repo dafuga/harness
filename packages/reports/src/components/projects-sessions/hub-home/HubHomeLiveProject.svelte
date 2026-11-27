@@ -25,12 +25,12 @@
 		running: 'active',
 		offline: 'blocked',
 		queued: 'needs-you',
-		'no-run': 'quiet',
+		blocked: 'blocked',
 		finished: 'quiet'
 	};
 	/** Every live and waiting run shows; resting tasks past the first few are behind a button. */
 	const first = $derived(
-		Math.max(5, project.rows.filter((row) => !['no-run', 'finished'].includes(row.state)).length)
+		Math.max(5, project.rows.filter((row) => row.state !== 'finished').length)
 	);
 	const rows = $derived(all ? project.rows : project.rows.slice(0, first));
 </script>
@@ -61,7 +61,9 @@
 					>
 					{#if stageLabel(row.stage)}<hx-span class="hh-live-stage">{stageLabel(row.stage)}</hx-span
 						>{/if}
-					<hx-span class="hh-live-status">{statusWords[row.status]}</hx-span>
+					{#if row.state !== 'blocked' && row.state !== 'queued'}
+						<hx-span class="hh-live-status">{statusWords[row.status]}</hx-span>
+					{/if}
 				</hx-span>
 				{#if row.now}<hx-span class="hh-live-now" title={row.now}
 						><LinkifiedText text={row.now} /></hx-span

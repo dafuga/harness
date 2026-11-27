@@ -3,7 +3,10 @@
 <!-- @harness-uid u_ufkzhmhxgn -->
 <script lang="ts">
 	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-	import { pastDueLabel, pastDueSummary } from './hubHomePresentation';
+	import {
+		pastDueLabel,
+		pastDueSummary
+	} from './hubHomePresentation';
 	import HubHomeRow from './HubHomeRow.svelte';
 
 	let { pastDue, work, limit }: { pastDue: HomePastDue[]; work: { id: string }[]; limit?: number } =
