@@ -16,7 +16,10 @@ import type { TrackerHostLaunchConfig } from './nativeTrackerHostEffects.types';
  */
 export function trackerHostModelPolicy(
 	store: TrackerPersistenceService,
-	config: TrackerHostLaunchConfig,
+	config: Pick<
+		TrackerHostLaunchConfig,
+		'maxRetries' | 'defaultEtaMinutes' | 'stallMinutes' | 'maxRunMinutes'
+	>,
 	{ ladderConfig, now }: { ladderConfig?: TrackerLadderConfig; now?: () => number }
 ) {
 	const history = new TrackerRunReadRepository(store.database, store.node);

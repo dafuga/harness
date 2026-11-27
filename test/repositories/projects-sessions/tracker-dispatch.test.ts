@@ -6,6 +6,7 @@ import { TrackerRunReadRepository } from '../../../src/repositories/projects-ses
 import type { TrackerRunReceipt } from '../../../src/services/agents-providers/TrackerDispatcherService.types';
 import { TrackerDispatcherService } from '../../../src/services/agents-providers/TrackerDispatcherService';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
+import { trackerHostModelPolicy } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostModelPick';
 import {
 	fixturePolicy,
 	liveEvidence,
@@ -67,7 +68,7 @@ test('commits one local claim and atomically rolls back an item transition with 
 	expect(() => repo.assertLegacyRollbackSafe()).not.toThrow();
 
 	await measureWorkload('service.agents-providers-tracker-dispatcher', 'retry-completion', () =>
-		expectRetryCompletion(database, store, repo, dispatcher)
+		expectRetryCompletion(database, store, repo)
 	);
 });
 
@@ -94,15 +95,23 @@ async function expectAtomicRollback(
 async function expectRetryCompletion(
 	database: DatabaseSync,
 	store: TrackerPersistenceService,
-	repo: TrackerDispatchRepository,
-	dispatcher: TrackerDispatcherService
+	repo: TrackerDispatchRepository
 ) {
 	database.exec('DROP TRIGGER reject_item_update');
 	const itemId = 'retry-fixture';
 	const token = 'first-native-request';
-	store.appendLocal({ itemId, fields: { title: 'Retry fixture', kind: 'task', status: 'open' } });
+	const now = () => Date.parse('2026-11-27T21:01Z');
+	const dispatcher = new TrackerDispatcherService(
+		repo,
+		fixturePolicy(now, trackerHostModelPolicy(store, {}, { now }))
+	);
+	store.appendLocal({
+		itemId,
+		fields: { title: 'Retry fixture', kind: 'task', status: 'open', model: 'gpt-6.2-astra:high' }
+	});
 	await dispatcher.request(itemId, { source: 'manual', token });
 	const initial = started(await dispatcher.claim(itemId, token));
+	expect(initial.selection).toMatchObject({ model: 'gpt-6.2-astra', intelligence: 'high' });
 	const first = recorded(
 		await dispatcher.record(itemId, initial.run, {
 			type: 'session',
@@ -115,21 +124,21 @@ async function expectRetryCompletion(
 			VALUES (?, 'retained-request', 'haiku', 'claude', 'claude-haiku-5-5', 'finished', 'failed', ?)`
 		)
 		.run(itemId, first.queued_at - 1);
+	store.appendLocal({ itemId, fields: { model: 'gpt-6.2-sol:medium' } });
 	const failed = recorded(
 		await dispatcher.record(itemId, first, { type: 'monitor', session: 'exited', exitCode: 0 })
 	);
 	expect(failed.run).toMatchObject({ state: 'finished', outcome: 'failed' });
+	expect(failed.retry).toMatchObject({ model: 'gpt-6.2-sol', effort: 'medium', pinned: true });
+	store.appendLocal({ itemId, fields: { model: 'gpt-6.2-sol:low' } });
 	const next = started(await dispatcher.prepare(itemId, failed.retry!));
+	expect(next.selection).toMatchObject({ model: 'gpt-6.2-sol', intelligence: 'low' });
 	const retry = recorded(
 		await dispatcher.record(itemId, next.run, { type: 'session', session: liveEvidence(next) })
 	).run;
 	store.appendLocal({ itemId, fields: { status: 'done' } });
-	expect(
-		await dispatcher.record(itemId, retry, { type: 'monitor', session: 'exited' })
-	).toMatchObject({
-		status: 'recorded',
-		run: { state: 'finished', outcome: 'done' }
-	});
+	const completed = await dispatcher.record(itemId, retry, { type: 'monitor', session: 'exited' });
+	expect(recorded(completed).run).toMatchObject({ state: 'finished', outcome: 'done' });
 	expect(repo.readSnapshot(itemId).runs).toMatchObject([
 		{ id: first.id, revision: failed.run.revision + 1, outcome: 'failed', redone_by: retry.rung },
 		{ revision: -1, outcome: 'failed', redone_by: null },

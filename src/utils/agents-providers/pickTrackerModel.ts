@@ -148,9 +148,7 @@ export function retryTrackerModel(
 	cfg?: TrackerLadderConfig,
 	now?: number
 ): TrackerModelRung {
-	if (run.pinned)
-		return pickTrackerModel({ ...item, model: `${run.model}:${run.effort ?? ''}` }, { cfg, now })
-			.rung;
+	if (item.model || run.pinned) return pickTrackerModel(item, { cfg, now }).rung;
 	const restricted = floorReasons(item).length > 0;
 	const ladder = ladderFrom(cfg);
 	if (claudeOnly({ cfg, now })) return nextClaudeRung(claudeRoute(item, ladder, restricted), run);

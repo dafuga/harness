@@ -16,6 +16,7 @@ import {
 import { withTempDir } from '../../support/temporary';
 import { provePriorityAndPacing } from '../../support/trackerDispatchQueueFixture';
 import { managedRunner } from '../../support/trackerObservedRunFixture';
+import { proveRetryAdmission } from '../../support/trackerHostResourceFixture';
 import { measureWorkload } from '../../support/measureWorkload';
 
 const now = () => 1780000000000;
@@ -40,6 +41,7 @@ test('adopts an uncertain start after restart without releasing the attempt twic
 			);
 			await proveManagedAdoption(root);
 			await provePriorityAndPacing();
+			await proveRetryAdmission();
 			await proveTickRecovery();
 		})
 	));

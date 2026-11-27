@@ -304,12 +304,10 @@
 			"watchTrackerQuota",
 			"observeTrackerQuota",
 			"automaticQueueHold",
-			"queuedRung",
 			"maxRecoveryAttempts",
 			"emptyRecoveryState",
 			"recoveryBudget",
 			"hostWait",
-			"recoveryRung",
 			"recoveryHold",
 			"hasRecoveryBrief",
 			"trackerSecretSafetyRule",
@@ -326,6 +324,7 @@
 			"trackerRecoveryLaunch",
 			"recheckTrackerRecovery",
 			"recoverTrackerSession",
+			"recoveryProviderHold",
 			"flagRecoveryError",
 			"TrackerRecoveryState",
 			"publishTrackerSlotAlerts",
@@ -1740,8 +1739,8 @@
 				"required": true
 			},
 			{
-				"name": "automaticQueueHold.item",
-				"type": "TrackerDispatchItem | null",
+				"name": "automaticQueueHold.snapshot",
+				"type": "TrackerDispatchSnapshot",
 				"required": true
 			},
 			{
@@ -1761,13 +1760,8 @@
 			},
 			{
 				"name": "automaticQueueHold.queued",
-				"type": "TrackerLaunchRung",
-				"required": false
-			},
-			{
-				"name": "queuedRung.run",
 				"type": "TrackerRunReceipt",
-				"required": true
+				"required": false
 			},
 			{
 				"name": "recoveryBudget.store",
@@ -1791,21 +1785,6 @@
 			},
 			{
 				"name": "hostWait.reason",
-				"type": "string",
-				"required": true
-			},
-			{
-				"name": "recoveryRung.run",
-				"type": "TrackerListedRun | undefined",
-				"required": true
-			},
-			{
-				"name": "recoveryRung.item",
-				"type": "TrackerItem",
-				"required": true
-			},
-			{
-				"name": "recoveryRung.node",
 				"type": "string",
 				"required": true
 			},
@@ -1957,6 +1936,21 @@
 			{
 				"name": "recoverTrackerSession.input",
 				"type": "{ item: TrackerItem; launch: TrackerWatchdogLaunch; now: number }",
+				"required": true
+			},
+			{
+				"name": "recoveryProviderHold.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recoveryProviderHold.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "recoveryProviderHold.now",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -5196,8 +5190,8 @@
 				"name": "automaticQueueHold",
 				"inputs": [
 					{
-						"name": "automaticQueueHold.item",
-						"type": "TrackerDispatchItem | null",
+						"name": "automaticQueueHold.snapshot",
+						"type": "TrackerDispatchSnapshot",
 						"required": true
 					},
 					{
@@ -5217,7 +5211,7 @@
 					},
 					{
 						"name": "automaticQueueHold.queued",
-						"type": "TrackerLaunchRung",
+						"type": "TrackerRunReceipt",
 						"required": false
 					}
 				],
@@ -5229,24 +5223,6 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
-			},
-			{
-				"name": "queuedRung",
-				"inputs": [
-					{
-						"name": "queuedRung.run",
-						"type": "TrackerRunReceipt",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "queuedRung",
-						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
 			},
 			{
 				"name": "recoveryBudget",
@@ -5294,34 +5270,6 @@
 					{
 						"name": "hostWait",
 						"type": "unknown"
-					}
-				],
-				"errors": [],
-				"errorStatus": "unknown"
-			},
-			{
-				"name": "recoveryRung",
-				"inputs": [
-					{
-						"name": "recoveryRung.run",
-						"type": "TrackerListedRun | undefined",
-						"required": true
-					},
-					{
-						"name": "recoveryRung.item",
-						"type": "TrackerItem",
-						"required": true
-					},
-					{
-						"name": "recoveryRung.node",
-						"type": "string",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "recoveryRung",
-						"type": "TrackerLaunchRung | undefined"
 					}
 				],
 				"errors": [],
@@ -5602,6 +5550,34 @@
 					{
 						"name": "recoverTrackerSession",
 						"type": "Promise<string | null>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoveryProviderHold",
+				"inputs": [
+					{
+						"name": "recoveryProviderHold.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recoveryProviderHold.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "recoveryProviderHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoveryProviderHold",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

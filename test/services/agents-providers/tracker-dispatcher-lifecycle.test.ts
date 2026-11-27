@@ -1,6 +1,8 @@
 import { test } from 'vitest';
 import { expect } from '../../verificationExpect';
 import { TrackerDispatcherService } from '../../../src/services/agents-providers/TrackerDispatcherService';
+import { pickTrackerModel } from '../../../src/utils/agents-providers/pickTrackerModel';
+import { measureWorkload } from '../../support/measureWorkload';
 import {
 	dispatcherFixture,
 	liveEvidence,
@@ -91,21 +93,45 @@ test('claim and retry results are released only after the receipt transaction co
 	expect(item()).toMatchObject({ status: 'open', launch: null });
 });
 
-test('startup retries keep the rung and exhaust atomically when start keeps failing', async () => {
-	const fixture = dispatcherFixture();
+test('startup retries use current routing and exhaust atomically when start keeps failing', () =>
+	measureWorkload(
+		'service.agents-providers-tracker-dispatcher',
+		'startup-retry',
+		proveStartupRetry
+	));
+
+async function proveStartupRetry() {
+	const fixture = dispatcherFixture({
+		item: { model: 'gpt-6.2-astra:high' },
+		policy: {
+			pickModel: (item) => pickTrackerModel(item, { now: Date.parse('2026-11-27T21:01Z') })
+		}
+	});
 	const first = await reserveFixture(fixture);
-	const { service, item, runs } = fixture;
+	const { service, item, runs, changeItem } = fixture;
+	expect(first.selection).toMatchObject({ model: 'gpt-6.2-astra', intelligence: 'high' });
+	changeItem({ model: 'gpt-6.2-sol:medium' });
 	const error = { type: 'startup-failed', reason: 'synthetic bad startup', exitCode: 127 } as const;
 	const receipt = recorded(await service.record(sampleId, first.run, error));
 	expect(receipt.run).toMatchObject({ outcome: 'abandoned', exit_code: 127, started_at: null });
 	const retry = receipt.retry!;
+	expect.soft(retry).toMatchObject({ model: 'gpt-6.2-sol', effort: 'medium', pinned: true });
+	changeItem({ model: 'gpt-6.1-terra:medium' });
 	const competing = await Promise.all([
 		service.prepare(sampleId, retry),
 		service.prepare(sampleId, retry)
 	]);
 	expect(competing.map(({ status }) => status).sort()).toEqual(['ignored', 'start']);
 	const second = started(competing.find(({ status }) => status === 'start')!);
-	expect(second.selection).toEqual(first.selection);
+	expect
+		.soft(second.selection)
+		.toEqual({ provider: 'codex', model: 'gpt-6.1-terra', intelligence: 'medium' });
+	expect.soft(second.run).toMatchObject({
+		model: 'gpt-6.1-terra',
+		effort: 'medium',
+		attempt: 2,
+		escalated_from: first.run.id
+	});
 	expect(second.key).not.toBe(first.key);
 	expect(await service.record(sampleId, second.run, error)).toMatchObject({
 		status: 'recorded',
@@ -117,7 +143,7 @@ test('startup retries keep the rung and exhaust atomically when start keeps fail
 		blockedReason: expect.stringContaining('gave up after 2')
 	});
 	expect(runs()).toHaveLength(2);
-});
+}
 
 test('invalid model selections persist an abandoned claim and a block without reserving a runner', async () => {
 	const { service, item, policy, runs } = dispatcherFixture({

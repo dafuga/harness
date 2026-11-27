@@ -56,12 +56,20 @@ test('a quota hold does not use up watchdog relaunch attempts', async () => {
 			.run();
 		store.writeMeta({ autolaunch_quota_claude: '2026-11-25T12:00:00Z' });
 		const item = new TrackerItemReadRepository(database).getStored('held000001');
-		const launch = vi.fn();
+		const launch = vi.fn().mockResolvedValue({
+			status: 'held',
+			reason: 'claude quota exhausted on daniel-primary-mbp'
+		});
 		for (const now of [1_000_000, 90_000_000])
 			await expect(recoverTrackerSession(store, { item, launch, now })).resolves.toBe(
 				'Tracker relaunch is waiting: claude quota exhausted on daniel-primary-mbp.'
 			);
-		expect(launch).not.toHaveBeenCalled();
+		store.appendLocal({ itemId: item.id, fields: { model: 'sol:medium' } });
+		const current = new TrackerItemReadRepository(database).getStored(item.id);
+		launch.mockResolvedValueOnce({ status: 'requested' });
+		await expect(
+			recoverTrackerSession(store, { item: current, launch, now: 91_000_000 })
+		).resolves.toContain('requested relaunch 1/3');
 	} finally {
 		database.close();
 	}

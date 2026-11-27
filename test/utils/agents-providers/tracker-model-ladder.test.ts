@@ -110,14 +110,19 @@ test('learns within each activity’s eligible models', () => {
 });
 
 test('retries a pin on its named effort and advances Sol effort to its ceiling', () => {
-	expect(
-		retryTrackerModel(visualModule, {
-			rung: 'opus',
-			model: 'claude-opus-5-5',
-			effort: 'xhigh',
-			pinned: 1
-		})
-	).toMatchObject({ id: 'opus', effort: 'xhigh', pinned: true });
+	const automaticRun = { rung: 'gpt-6.2-astra', model: 'gpt-6.2-astra', effort: 'high' };
+	const oldPin = { ...automaticRun, pinned: 1 };
+	expect
+		.soft(retryTrackerModel({ ...visualModule, model: 'gpt-6.2-sol:medium' }, oldPin))
+		.toMatchObject({ id: 'sol', model: 'gpt-6.2-sol', effort: 'medium', pinned: true });
+	expect.soft(retryTrackerModel(visualModule, oldPin)).toMatchObject({
+		id: 'sol',
+		model: 'gpt-6.2-sol',
+		effort: 'medium'
+	});
+	expect
+		.soft(retryTrackerModel({ ...visualModule, model: 'sol:low' }, automaticRun))
+		.toMatchObject({ id: 'sol', effort: 'low', pinned: true });
 	expect(
 		retryTrackerModel(visualModule, { rung: 'haiku', model: 'claude-haiku-5-5' })
 	).toMatchObject({ id: 'sol', effort: 'medium' });

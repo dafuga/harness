@@ -125,7 +125,7 @@ async function verifyEligibleRecovery(
 			await dispatch();
 			return database.prepare('SELECT state,cli,model,effort FROM runs WHERE id = 3').get();
 		})
-		.toEqual({ state: 'running', cli: 'codex', model: 'gpt-6.1-terra', effort: 'high' });
+		.toEqual({ state: 'running', cli: 'codex', model: 'gpt-6.2-sol', effort: 'low' });
 	verifyResumeBrief(directory, 3);
 	expect(items.getStored(id)).toMatchObject({ schedule_off: false, needs_daniel: false });
 }

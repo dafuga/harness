@@ -181,7 +181,7 @@ export type TrackerLaunchRequest =
 	  }
 	| { source: 'automatic'; token: string; unchangedSince: number }
 	| { source: 'due'; token: string }
-	| { source: 'recovery'; token: string; expectedAuto: string | null; rung?: TrackerLaunchRung };
+	| { source: 'recovery'; token: string; expectedAuto: string | null };
 
 export interface TrackerAttemptVersion {
 	id: number;
