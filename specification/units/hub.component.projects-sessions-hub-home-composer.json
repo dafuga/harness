@@ -63,25 +63,29 @@
 				"name": "HubHomeComposer.draft",
 				"type": "string",
 				"required": false,
-				"default": ""
+				"default": "",
+				"description": "The message draft, bound to the conversation that owns the composer."
 			},
 			{
 				"name": "HubHomeComposer.pending",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Whether the composer is waiting for the current send to finish."
 			},
 			{
 				"name": "HubHomeComposer.feedback",
 				"type": "string",
 				"required": false,
-				"default": ""
+				"default": "",
+				"description": "The latest delivery or error text displayed under the composer."
 			},
 			{
 				"name": "HubHomeComposer.itemContext",
 				"type": "HomeChatItemContext",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional Tracker item attached to a message for Chief of Staff."
 			},
 			{
 				"name": "HubHomeComposer.send",

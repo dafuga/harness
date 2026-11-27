@@ -15,7 +15,8 @@
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -61,7 +62,8 @@
 				"name": "HubHomeChoices.present",
 				"type": "(content: Snippet | null) => void",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Places a choice detail or written-answer dialog in the caller’s dialog outlet when supplied."
 			}
 		],
 		"outputs": [
@@ -198,6 +200,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.strings-link-segments",
 			"via": "import",
 			"origin": "derived"
 		},

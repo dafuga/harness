@@ -2,7 +2,7 @@
 	"name": "qw2gn5-compact-needs-you-chat",
 	"goal": "Prove Hub Home shows compact choices with details and typing in dialogs, opens Chief of Staff chat in a bottom-right desktop overlay or a full-screen phone sheet, and documents the list-card rule.",
 	"createdAt": "2026-11-27T12:11:15.548Z",
-	"updatedAt": "2026-11-27T12:44:30.044Z",
+	"updatedAt": "2026-11-27T13:13:34.697Z",
 	"template": "feature",
 	"templateLineage": ["feature"],
 	"enforceOrder": false,
@@ -39,6 +39,13 @@
 			"status": "complete",
 			"completedAt": "2026-11-27T12:44:30.044Z",
 			"evidence": "Baseline ca74d34d2d: both link cases failed on the item title and both layout cases found four open project groups. f050e49010: 74 Hub browser cases and 17 Mac/paired-iPhone renderer cases passed on harbor-mbp-2. Hub cases use synthetic data and exercise URL targets, links independent of buttons, banners and default collapse. Native Projects uses a separate renderer. Link parsing and item-context payload tests passed."
+		},
+		{
+			"id": "chief-of-staff-ask",
+			"title": "Prove needs-you questions open in Chief of Staff chat, with current contextual choices and no Agents modal.",
+			"status": "complete",
+			"completedAt": "2026-11-27T13:13:34.697Z",
+			"evidence": "Build cb57e6047e with the new test only failed desktop, tablet and phone on the missing Talk to Chief of Staff control. All 77 affected browser cases passed at a51b6b5911 on harbor-mbp-2, including selective answer delivery, typed contextual chat, linked notifications and removal of an answered ask when an agent retains stale question text. Tracker independently showed 26vq3c resolved."
 		}
 	],
 	"evaluators": [

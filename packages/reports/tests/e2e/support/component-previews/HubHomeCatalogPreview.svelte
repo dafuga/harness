@@ -96,7 +96,9 @@
 			],
 			work: []
 		},
-		'home-plans': { plans: view.plans, agents: view.agents, discuss: noop },
+		'home-plan-detail': { plan: view.plans?.[0], close: noop },
+		'home-plannable': { view, open: noop },
+		'home-plans': { plans: view.plans, agents: view.agents, discuss: noop, openPlan: noop },
 		'home-project-card': { view, open: noop },
 		'home-projects': { projects: list, snapshots, readProject },
 		'home-quota': { quota: view.quota, now: view.now, connected: true, reload: noop },

@@ -4,35 +4,39 @@
 	"uid": "u_44o75ivrws",
 	"kind": "function",
 	"title": "linkSegments",
-	"responsibility": "Owns the linkSegments shared function.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Finds explicit HTTP and HTTPS URLs in plain text and preserves the surrounding text.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["packages/reports/src/utils/strings/linkSegments.ts"],
 		"symbols": ["linkSegments", "hasWebLink"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "linkSegments.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Plain text to scan for HTTP and HTTPS URLs."
 			},
 			{
 				"name": "hasWebLink.text",
 				"type": "string",
-				"required": true
+				"required": true,
+				"description": "Plain text to check for at least one HTTP or HTTPS URL."
 			}
 		],
 		"outputs": [
 			{
 				"name": "linkSegments",
-				"type": "{ text: string; href?: string }[]"
+				"type": "{ text: string; href?: string }[]",
+				"description": "Returns ordered text and URL segments without losing adjacent punctuation."
 			},
 			{
 				"name": "hasWebLink",
-				"type": "boolean"
+				"type": "boolean",
+				"description": "Returns true when at least one supported URL can be linked."
 			}
 		],
 		"errors": [],
@@ -44,13 +48,15 @@
 					{
 						"name": "linkSegments.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Plain text to scan for HTTP and HTTPS URLs."
 					}
 				],
 				"outputs": [
 					{
 						"name": "linkSegments",
-						"type": "{ text: string; href?: string }[]"
+						"type": "{ text: string; href?: string }[]",
+						"description": "Returns ordered text and URL segments without losing adjacent punctuation."
 					}
 				],
 				"errors": [],
@@ -62,13 +68,15 @@
 					{
 						"name": "hasWebLink.text",
 						"type": "string",
-						"required": true
+						"required": true,
+						"description": "Plain text to check for at least one HTTP or HTTPS URL."
 					}
 				],
 				"outputs": [
 					{
 						"name": "hasWebLink",
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Returns true when at least one supported URL can be linked."
 					}
 				],
 				"errors": [],

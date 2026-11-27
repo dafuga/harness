@@ -14,7 +14,8 @@
 			"reports.component.explorer-ui-explorer-kit-view-spec-buttons",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-strong"
+			"reports.component.shared-primitives-atoms-html-strong",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -53,7 +54,8 @@
 				"name": "HubHomeAsk.present",
 				"type": "(content: Snippet | null) => void",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Renders a choice or written-answer dialog beside the Home list when provided."
 			}
 		],
 		"outputs": [
@@ -139,6 +141,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-strong",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
 			"via": "import",
 			"origin": "derived"
 		},
