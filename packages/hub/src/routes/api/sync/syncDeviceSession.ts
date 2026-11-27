@@ -4,6 +4,8 @@ import { sealedChain } from '../../../../../remote/src/utils/networking-security
 import { cryptoSource } from '../../../../../remote/src/utils/networking-security/remoteBytes';
 import { fromBase64Url, toBase64Url } from './syncBase64';
 import { readSyncJson, syncJson, syncProblem } from './syncHttp';
+import { isRecoverableAccount } from './syncRecovery';
+import { isScopeId } from './syncScope';
 
 const windowMs = 30_000;
 const maxEntries = 2048;
@@ -48,12 +50,34 @@ export async function readDeviceSession(call: SyncCall): Promise<Response> {
 	const device = chain.devices[call.device];
 	if (device?.role !== 'admin' || !device.active)
 		return syncJson({ state: 'waiting-for-approval' });
-	const bound = await call.deps.db
-		.prepare('SELECT sealed_device_id FROM auth_sessions WHERE id_hash = ? AND actor_id = ?')
-		.bind(call.sessionHash, call.account)
-		.first<string>('sealed_device_id');
-	if (bound === call.device) return syncJson({ state: 'approved' });
+	if (await sessionMatchesDevice(call)) return syncJson({ state: 'approved' });
 	return syncJson({ state: 'proof-required', challenge: await challengeFor(call, windowOf(call)) });
+}
+
+async function sessionMatchesDevice(call: SyncCall): Promise<boolean> {
+	const bound = await call.deps.db
+		.prepare(
+			`SELECT sealed_device_id FROM auth_sessions
+			WHERE id_hash = ? AND actor_id = ? AND expires_at > ? AND revoked_at IS NULL`
+		)
+		.bind(call.sessionHash, call.account, call.deps.now)
+		.first<string>('sealed_device_id');
+	return bound === call.device;
+}
+
+/** Older accounts keep their existing sealed HTTP behavior until the recoverable cutover. */
+export async function requireApprovedScope(call: SyncCall): Promise<Response | undefined> {
+	if (!(await isRecoverableAccount(call))) return;
+	const scope = call.parts[1];
+	if (!isScopeId(scope)) return syncProblem(400, 'invalid-input');
+	if (!(await sessionMatchesDevice(call))) return syncProblem(403, 'device-approval-required');
+	const chain = await activeChain(call);
+	if (chain instanceof Response) return chain;
+	const device = chain?.devices[call.device];
+	if (!device?.active) return syncProblem(403, 'device-approval-required');
+	if (!device.scopes.includes(scope)) return syncProblem(403, 'scope-denied');
+	if (call.request.method !== 'GET' && chain?.scopes[scope].stale)
+		return syncProblem(409, 'scope-key-rotation-required');
 }
 
 /** Bind the session only while the chain still matches the one that approved the signing key. */

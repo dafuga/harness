@@ -10,10 +10,14 @@ export function recoveryBlob(call: SyncCall) {
 
 /** Legacy writes that affect zero rows are refused when a newer account uses atomic writes. */
 export async function deviceWriteConflict(call: SyncCall, legacyError?: string): Promise<Response> {
-	const atomic = await call.deps.db
+	if (await isRecoverableAccount(call)) return syncProblem(409, 'atomic-device-change-required');
+	return legacyError ? syncProblem(409, legacyError) : syncJson({ stored: 0 }, 201);
+}
+
+export async function isRecoverableAccount(call: SyncCall): Promise<boolean> {
+	const present = await call.deps.db
 		.prepare('SELECT 1 AS present FROM sealed_recoveries WHERE account = ?')
 		.bind(call.account)
 		.first<number>('present');
-	if (atomic === 1) return syncProblem(409, 'atomic-device-change-required');
-	return legacyError ? syncProblem(409, legacyError) : syncJson({ stored: 0 }, 201);
+	return present === 1;
 }

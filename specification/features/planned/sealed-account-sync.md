@@ -161,7 +161,7 @@ seen per object and reject an older one.
 | Push                                  | Generic "Harness has updates"; the app fetches and decrypts                                                                        |
 
 API, under the Hub (`/api/sync/v1`, Google session plus device id):
-`GET chain?after`, `POST chain` (append, server checks `seq`/`prev` only),
+`GET chain?after`, `POST chain` (append a verified legacy entry),
 `GET grants?device`, `POST grants`, `POST ops/:scope` (batch), `GET
 ops/:scope?after&limit`, `PUT|GET objects/:scope/:id`, `GET live`
 (WebSocket to the account object), `POST enroll`, `GET enroll/:id`. The
@@ -181,6 +181,9 @@ Scope ids, device ids and object ids are base64url (16, 16 and 32 bytes); envelo
 | `POST chain`                  | One entry signed by the named device and verified against the account and stored chain. 201 `{seq, hash}`. Existing positions, gaps and mismatched previous hashes return 409.      |
 | `POST bootstrap`              | `{entry, grants, recovery}` on an empty account. 201 `{seq: 0, hash}`; an exact retry returns 200, and a competing or changed request returns 409.                                  |
 | `GET bootstrap`               | `{recovery}` for the signed-in account, or 404 when the account has no stored recovery blob.                                                                                        |
+| `GET device-session`          | A stage from `first-device`, `waiting-for-approval`, `proof-required`, or `approved`. Only the proof stage carries a challenge.                                                     |
+| `POST device-session`         | `{challenge, signature}` proves the enrolled device's signing key for the current Google session. On success the session records the approved device.                               |
+| `POST devices`                | `{entries, grants}` commits verified enrollment or revocation and its wrapped grants together. 201 on creation, 200 on exact retry.                                                 |
 | `POST grants`                 | A grant or an array of up to 32. First write per scope, epoch and device stays; `account` must be the session's. 201 `{stored}`                                                     |
 | `GET grants?device=ID`        | `{grants}` for that device                                                                                                                                                          |
 | `POST ops/:scope`             | JSON array of up to 64 record envelopes (base64url). Header scope must match; the header object id is the retry key. 201 `{ops: [{opId, seq}], head}`; seq is per scope from 1      |
@@ -192,6 +195,13 @@ Scope ids, device ids and object ids are base64url (16, 16 and 32 bytes); envelo
 | `GET enroll`, `GET enroll/ID` | Pending requests, or one request with its steps; requests expire after 10 minutes                                                                                                   |
 | `POST enroll/ID`              | Appends a step (claim, reveal, approval) as a JSON object. At most 8 steps. Steps are opaque to the server                                                                          |
 | `GET live` (WebSocket)        | Upgrade to the account's `AccountSyncObject`                                                                                                                                        |
+
+The device signs `harness/sealed/v1/session` followed by a zero byte and the
+base64url challenge using its P-256 signing key. The server binds the challenge
+to the account, device, Google session and a short time window. Standalone
+legacy chain and grant writes are disabled after recoverable bootstrap. The
+sealed HTTP log and object routes then require the matching approved session
+and an active grant for the requested scope.
 
 Revisions are limited to 2^53 - 1. Live socket: the client sends `{"t":"subscribe","scopes":[...],
 "after":ring}`; the server answers `{"t":"subscribed","ring":n}` and then sends text
