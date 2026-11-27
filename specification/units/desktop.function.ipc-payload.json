@@ -22,6 +22,7 @@
 			"creationPayload",
 			"runPayload",
 			"ipcPayload",
+			"ThreadPayload",
 			"InvalidPayloadError",
 			"approvalPayload",
 			"threadPayload",
@@ -337,7 +338,7 @@
 				"outputs": [
 					{
 						"name": "threadPayload",
-						"type": "|",
+						"type": "ThreadPayload",
 						"description": "Returns entityId, version, imageSha256, state, viewport, and region, adding option only when supplied. Image-anchor fields are either all non-null or all null, and a null version requires a null region.",
 						"examples": [
 							{

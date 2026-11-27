@@ -14,8 +14,7 @@ import {
 } from './ipcFields';
 import { regionField } from './regionField';
 import { planPayload } from './planPayload';
-import { InvalidPayloadError } from './ipcPayload.types';
-import type { Region } from '../../../models/development-tooling/Desktop.types';
+import { InvalidPayloadError, type ThreadPayload } from './ipcPayload.types';
 import type {
 	ProjectRunRequest,
 	RunRequest
@@ -34,25 +33,7 @@ export function approvalPayload(value: unknown) {
 	};
 }
 
-export function threadPayload(x: Record<string, unknown>):
-	| {
-			option?: undefined;
-			entityId: string;
-			version: string | null;
-			imageSha256: string | null;
-			state: string | null;
-			viewport: string | null;
-			region: Region | null;
-	  }
-	| {
-			option: string;
-			entityId: string;
-			version: string | null;
-			imageSha256: string | null;
-			state: string | null;
-			viewport: string | null;
-			region: Region | null;
-	  } {
+export function threadPayload(x: Record<string, unknown>): ThreadPayload {
 	const version = nullableText(x.version, versionPattern);
 	const imageSha256 = nullableText(x.imageSha256, hashPattern);
 	const state = nullableText(x.state);

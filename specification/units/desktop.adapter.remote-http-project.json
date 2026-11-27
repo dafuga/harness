@@ -126,7 +126,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.snapshot.input",
-				"type": "{ projectId: string; branch: string | null; commit: string | null; }",
+				"type": "RevisionQuery & { projectId: string }",
 				"required": true,
 				"description": "Selects a hosted project snapshot at the requested branch and commit; null branch or commit values are omitted from the request query. A commit-pinned or non-tip snapshot is not writable by this adapter.",
 				"examples": [
@@ -195,7 +195,7 @@
 			},
 			{
 				"name": "RemoteHttpProjectAdapter.history.input",
-				"type": "EntityQuery & { projectId: string; page: number; branch?: string }",
+				"type": "HostedHistoryQuery",
 				"required": true,
 				"description": "Selects one history page for an entity at a source commit; page is required and branch optionally scopes the request. The response must contain valid history entries and a consistent completion cursor.",
 				"examples": [
@@ -832,7 +832,7 @@
 				"inputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.snapshot.input",
-						"type": "{ projectId: string; branch: string | null; commit: string | null; }",
+						"type": "RevisionQuery & { projectId: string }",
 						"required": true,
 						"description": "Selects a hosted project snapshot at the requested branch and commit; null branch or commit values are omitted from the request query. A commit-pinned or non-tip snapshot is not writable by this adapter.",
 						"examples": [
@@ -1090,7 +1090,7 @@
 				"inputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.history.input",
-						"type": "EntityQuery & { projectId: string; page: number; branch?: string }",
+						"type": "HostedHistoryQuery",
 						"required": true,
 						"description": "Selects one history page for an entity at a source commit; page is required and branch optionally scopes the request. The response must contain valid history entries and a consistent completion cursor.",
 						"examples": [
@@ -1107,7 +1107,7 @@
 				"outputs": [
 					{
 						"name": "RemoteHttpProjectAdapter.history",
-						"type": "Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }>",
+						"type": "Promise<HostedHistoryPage>",
 						"description": "Returns a validated history page with entries, completion state, and the next page number or null. Each entry is checked for string id and title; its other fields pass through.",
 						"examples": [
 							{

@@ -11,10 +11,9 @@ import type {
 } from '../../../../models/development-tooling/Desktop.types';
 import type { RevisionQuery } from '../../../../models/development-tooling/DesktopBridge.types';
 import { gitFiles } from './gitRead';
-import { GitSourceError } from './GitSourceAdapter.types';
+import { GitSourceError, type DocumentationResult } from './GitSourceAdapter.types';
 import { gitRead, gitRevision, gitText } from '../../../../utils/projects-sessions/gitRead';
 import { readUnitDocumentation } from '../../../../../../../src/utils/unit-documentation/unitDocumentation';
-import type { UnitDocumentation } from '../../../../../../../src/utils/explorer-ui/unit-documentation/unitDocumentation.types';
 
 export class GitSourceAdapter {
 	constructor(readonly root: string) {}
@@ -113,10 +112,7 @@ export class GitSourceAdapter {
 			throw new GitSourceError('This file is outside the selected entity source contract.');
 		return { path, text: await gitText(this.root, revision, path) };
 	}
-	async documentation(
-		unit: ComponentManifest | undefined,
-		revision: string
-	): Promise<UnitDocumentation | undefined> {
+	async documentation(unit: ComponentManifest | undefined, revision: string): DocumentationResult {
 		if (!unit?.documentation) return undefined;
 		const commit = await gitRevision(this.root, revision);
 		return readUnitDocumentation({ read: (path) => gitText(this.root, commit, path) }, unit);

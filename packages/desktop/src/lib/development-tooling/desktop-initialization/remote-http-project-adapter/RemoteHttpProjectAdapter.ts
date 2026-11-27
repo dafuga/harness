@@ -8,13 +8,19 @@ import type {
 	EntityEvidenceQuery,
 	EvidenceArtifactQuery
 } from '../../../../models/verification-evidence/DesktopEvidence.types';
-import type { AddCommentInput } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
 import type {
+	AddCommentInput,
+	CommittedThread
+} from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
+import type {
+	HostedHistoryPage,
+	HostedHistoryQuery,
 	RemoteProjectPort,
 	ProjectCapabilities
 } from '../../../../models/projects-sessions/ProjectContext.types';
 import type {
 	EntityQuery,
+	RevisionQuery,
 	SourceQuery,
 	ImageQuery,
 	ThreadQuery
@@ -32,11 +38,7 @@ import type {
 	ProjectSnapshot,
 	ThreadMessage
 } from '../../../../models/development-tooling/Desktop.types';
-import type {
-	EntityDetail,
-	HistoryEvent
-} from '../../../../models/development-tooling/DesktopEntity.types';
-import type { CommittedThread } from '../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
+import type { EntityDetail } from '../../../../models/development-tooling/DesktopEntity.types';
 
 export { type NativeHostedCredential } from '../../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 
@@ -83,11 +85,7 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 		return Boolean(await this.options.credentials());
 	}
 	listProjects = () => this.projections.projects();
-	async snapshot(input: {
-		projectId: string;
-		branch: string | null;
-		commit: string | null;
-	}): Promise<ProjectSnapshot> {
+	async snapshot(input: RevisionQuery & { projectId: string }): Promise<ProjectSnapshot> {
 		const snapshot = await this.projections.snapshot(input);
 		if (snapshot.cache?.status === 'offline') return snapshot;
 		const capabilities = await this.capabilities(input.projectId);
@@ -138,9 +136,7 @@ export class RemoteHttpProjectAdapter implements RemoteProjectPort {
 	async messages(input: ThreadQuery & { projectId: string }): Promise<ThreadMessage[]> {
 		return this.projections.read(input, 'messages', (value) => this.validator.messages(value));
 	}
-	async history(
-		input: EntityQuery & { projectId: string; page: number; branch?: string }
-	): Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }> {
+	async history(input: HostedHistoryQuery): Promise<HostedHistoryPage> {
 		return this.projections.read(input, 'history', (value) => this.validator.history(value));
 	}
 	async capabilities(projectId: string): Promise<ProjectCapabilities> {
