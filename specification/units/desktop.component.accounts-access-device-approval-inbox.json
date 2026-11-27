@@ -21,8 +21,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte"],
-		"symbols": ["DeviceApprovalInbox"]
+		"source": [
+			"packages/desktop/src/components/accounts-access/DeviceApprovalInbox.svelte"
+		],
+		"symbols": [
+			"DeviceApprovalInbox"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -41,13 +45,8 @@
 				"description": "Shows each request with a platform label, place and time when known. Review opens a modal and requires a code before the approve action. A successful decision confirms the result and removes the row."
 			}
 		],
-		"errors": [
-			{
-				"name": "Error",
-				"type": "thrown"
-			}
-		],
-		"errorStatus": "found",
+		"errors": [],
+		"errorStatus": "none-found",
 		"operations": [],
 		"initialization": []
 	},
@@ -108,7 +107,9 @@
 			}
 		]
 	},
-	"scenarios": ["device-approval-ios-renderer"],
+	"scenarios": [
+		"device-approval-ios-renderer"
+	],
 	"budgets": {
 		"size": "frozen",
 		"complexity": "frozen",

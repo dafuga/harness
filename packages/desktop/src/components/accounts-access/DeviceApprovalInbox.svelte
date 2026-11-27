@@ -40,7 +40,6 @@
 		const country = item.country ? regions.of(item.country) : undefined;
 		return [country, time.format(item.createdAt)].filter(Boolean).join(' · ');
 	}
-
 	async function refresh() {
 		if (!active || reading || busy) return;
 		reading = true;
@@ -54,7 +53,6 @@
 			reading = false;
 		}
 	}
-
 	async function compare(item: DeviceApprovalRequest) {
 		if (!active || comparing || busy) return;
 		comparing = true;
@@ -93,8 +91,10 @@
 				action === 'approve' ? { action, id: item.id, code } : { action, id: item.id }
 			);
 			if (!active) return;
-			if (!('state' in answer) || answer.state !== (action === 'approve' ? 'approved' : 'denied'))
-				throw new Error('Unconfirmed decision.');
+			if (!('state' in answer) || answer.state !== (action === 'approve' ? 'approved' : 'denied')) {
+				error = 'Could not complete this decision. Try again.';
+				return;
+			}
 			notice = action === 'approve' ? 'Device approved.' : 'Device denied.';
 			requests = requests.filter(({ id }) => id !== item.id);
 			selected = undefined;
