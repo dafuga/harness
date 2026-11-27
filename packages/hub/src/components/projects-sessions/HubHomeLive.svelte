@@ -4,7 +4,7 @@
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
-	import { liveNotice, liveSummary, projectSummary, liveSystemNotice } from './hubHomeLive';
+	import { liveNotice, liveSummary, liveSystemNotice } from './hubHomeLive';
 	import HubHomeLiveProject from './HubHomeLiveProject.svelte';
 	import { count } from './hubHomePresentation';
 	import { runTime } from './hubHomeTime';
@@ -12,8 +12,6 @@
 	let { reading, now }: { reading: LinkedHome | null; now: number } = $props();
 	const notice = $derived(liveNotice(reading));
 	const overview = $derived(notice ? null : (reading?.snapshot?.liveOverview ?? null));
-	const moving = $derived(overview?.projects.filter((project) => project.rows.length) ?? []);
-	const quiet = $derived(overview?.projects.filter((project) => !project.rows.length) ?? []);
 </script>
 
 <hx-section class="hh-live-overview" aria-labelledby="hh-live-title">
@@ -37,26 +35,9 @@
 			><hx-p>Tracker has no projects yet.</hx-p></EmptyState
 		>
 	{:else if overview}
-		{#each moving as project (project.agent)}
+		{#each overview.projects as project (project.agent)}
 			<HubHomeLiveProject {project} {now} />
 		{/each}
-		{#if quiet.length}
-			<hx-details class="hh-live-project">
-				<hx-summary class="hh-live-head">
-					<hx-span class="hh-live-name"
-						>{count(quiet.length, 'project')} with nothing in motion</hx-span
-					>
-				</hx-summary>
-				<hx-ul class="hh-live-rows" aria-label="Projects with nothing in motion">
-					{#each quiet as project (project.agent)}
-						<hx-li class="hh-live-quiet"
-							><hx-span class="hh-live-name">{project.agent}</hx-span>
-							<hx-span class="hh-live-counts">{projectSummary(project)}</hx-span></hx-li
-						>
-					{/each}
-				</hx-ul>
-			</hx-details>
-		{/if}
 		{#if overview.hiddenRuns}
 			<hx-p class="po-sessions"
 				>{count(overview.hiddenRuns, 'live run')} of private items counted by Tracker and not shown.</hx-p

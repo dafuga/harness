@@ -20,11 +20,13 @@
 		send,
 		receipt,
 		submitted,
+		finished,
 		present
 	}: {
 		ask: HomeOpenAsk;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
+		finished?: (sent: boolean) => void;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 		/** A Home row presents its dialogs beside the list. */
 		present?: (content: Snippet | null) => void;
@@ -48,13 +50,13 @@
 			...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
 		};
 		busy = true;
-		status = '';
+		status = `Sending · ${message.text}`;
 		try {
 			const result = await send(message);
 			submitted?.(message, result);
 			if (result.status === 'queued' || result.status === 'sent') {
 				answered = message.question;
-				void settle(message.id, result);
+				void settle(message, result);
 			} else if (result.status === 'refused')
 				status =
 					'Not sent: the question changed, or your Mac needs the latest Harness app. Check Tracker.';
@@ -66,12 +68,19 @@
 		}
 	}
 
-	async function settle(id: string, first: HomeChatReceipt) {
-		status = `Answer ${first.status}`;
+	async function settle(message: HomeChatInput, first: HomeChatReceipt) {
+		status = `Answer ${first.status} · ${message.text}`;
 		for (let attempt = 0; attempt < 15 && first.status === 'queued'; attempt++) {
 			await new Promise((done) => setTimeout(done, 2000));
-			first = await receipt(id).catch(() => first);
-			status = `Answer ${first.status}`;
+			first = await receipt(message.id).catch(() => first);
+			status = `Answer ${first.status} · ${message.text}`;
+		}
+		if (first.status === 'sent') {
+			await new Promise((done) => setTimeout(done, 900));
+			finished?.(true);
+		} else {
+			if (first.status === 'refused') answered = null;
+			finished?.(false);
 		}
 	}
 </script>

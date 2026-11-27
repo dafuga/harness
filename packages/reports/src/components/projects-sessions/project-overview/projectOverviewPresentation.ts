@@ -100,10 +100,20 @@ export function bandsFor(cards: OverviewCard[]): OverviewBand[] {
 }
 
 /** @pure The ETA shown for an item, judged against the time given in milliseconds. */
-export function etaFor(due: string | null, now: number): OverviewEta {
+export function etaFor(item: OverviewItem, now: number): OverviewEta {
+	const { due } = item;
 	const at = due === null ? Number.NaN : Date.parse(due);
 	if (Number.isNaN(at)) return { text: 'No ETA', tone: 'none' };
-	if (at < now) return { text: 'Overdue', tone: 'overdue' };
+	if (at <= now) {
+		const fallback = item.live
+			? 'Running'
+			: item.status === 'blocked'
+				? 'Blocked'
+				: item.status === 'done'
+					? 'Done'
+					: 'Due now';
+		return { text: item.workLabel ?? fallback, tone: 'current' };
+	}
 	return { text: `Due ${dayFormat.format(at)}`, tone: 'scheduled' };
 }
 

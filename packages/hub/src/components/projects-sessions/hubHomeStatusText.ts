@@ -10,6 +10,11 @@ export function pastDueLabel(run: Pick<HomePastDue, 'state' | 'position'>) {
 	return run.position ? `Queued #${run.position}` : pastDueLabels[run.state];
 }
 
+/** A current work badge on Home, including the reported blocker. */
+export function currentWorkLabel(run: HomePastDue) {
+	return [pastDueLabel(run), run.state === 'blocked' && run.reason].filter(Boolean).join(' · ');
+}
+
 export function pastDueSummary(runs: HomePastDue[]) {
 	return (Object.keys(pastDueLabels) as HomePastDue['state'][])
 		.map((state) => ({ state, total: runs.filter((run) => run.state === state).length }))

@@ -10,7 +10,7 @@
 		HomeWorkState
 	} from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 	import {
-		projectSummary,
+		projectWorkCounts,
 		stageLabel,
 		statusWords,
 		workAge,
@@ -28,19 +28,18 @@
 		'no-run': 'quiet',
 		finished: 'quiet'
 	};
-	/** Every live and waiting run shows; resting tasks past the first few are behind a button. */
-	const first = $derived(
-		Math.max(5, project.rows.filter((row) => !['no-run', 'finished'].includes(row.state)).length)
+	const counts = $derived(projectWorkCounts(project));
+	const running = $derived(project.rows.filter((row) => row.state === 'running'));
+	const blocked = $derived(
+		project.rows.filter((row) => row.state !== 'running' && row.status === 'blocked')
 	);
-	const rows = $derived(all ? project.rows : project.rows.slice(0, first));
+	const resting = $derived(
+		project.rows.filter((row) => row.state !== 'running' && row.status !== 'blocked')
+	);
 </script>
 
-<hx-details class="hh-live-project">
-	<hx-summary class="hh-live-head">
-		<hx-span class="hh-live-name">{project.agent}</hx-span>
-		<hx-span class="hh-live-counts">{projectSummary(project)}</hx-span>
-	</hx-summary>
-	<hx-ul class="hh-live-rows" aria-label={`${project.agent} sessions and runs`}>
+{#snippet list(rows: HomeWorkProject['rows'], label: string)}
+	<hx-ul class="hh-live-rows" aria-label={label}>
 		{#each rows as row (row.key)}
 			{@const linked = hasWebLink(row.title)}
 			<hx-li class="hh-live-row" data-state={row.state}>
@@ -73,9 +72,45 @@
 			</hx-li>
 		{/each}
 	</hx-ul>
-	{#if project.rows.length > first}
-		<hx-button type="button" class="po-action hh-live-more" onclick={() => (all = !all)}
-			>{all ? 'Show fewer' : `Show all ${project.rows.length}`}</hx-button
+{/snippet}
+
+<hx-details
+	class="hh-live-project"
+	ontoggle={(event) => {
+		if (!event.currentTarget.open) all = false;
+	}}
+>
+	<hx-summary class="hh-live-head">
+		<hx-span class="hh-live-name">{project.agent}</hx-span>
+		<hx-span class="hh-live-counts"
+			>Running {counts.running} · Blocked {counts.blocked} · Not running {counts.resting}</hx-span
 		>
+	</hx-summary>
+	{#if running.length}{@render list(running, `${project.agent} running jobs`)}
+	{:else}<hx-p class="po-sessions hh-live-more">No running jobs</hx-p>{/if}
+	{#if counts.blocked || counts.resting}
+		<hx-button
+			type="button"
+			class="po-action hh-live-more"
+			aria-expanded={all}
+			onclick={() => (all = !all)}
+		>
+			{all ? 'Show fewer' : 'See all'} · Blocked {counts.blocked} · Not running {counts.resting}
+		</hx-button>
+		{#if all}
+			{#if blocked.length}<hx-h3 class="po-band-title">Blocked</hx-h3>{@render list(
+					blocked,
+					'Blocked jobs'
+				)}{/if}
+			{#if resting.length}<hx-h3 class="po-band-title">Not running</hx-h3>{@render list(
+					resting,
+					'Not running jobs'
+				)}{/if}
+			{#if counts.blocked + counts.resting > blocked.length + resting.length}
+				<hx-p class="po-sessions"
+					>Additional jobs were counted but their details were not reported by this computer.</hx-p
+				>
+			{/if}
+		{/if}
 	{/if}
 </hx-details>

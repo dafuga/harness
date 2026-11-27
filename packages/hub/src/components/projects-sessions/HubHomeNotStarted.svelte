@@ -20,7 +20,7 @@
 			{#each unlisted.slice(0, limit) as run (run.id)}
 				<HubHomeRow title={run.title} meta={[run.agent, run.reason].filter(Boolean).join(' · ')}>
 					{#snippet trailing()}
-						<hx-span class="po-eta" data-tone={run.state === 'blocked' ? 'overdue' : 'soon'}
+						<hx-span class="po-eta" data-tone={run.state === 'blocked' ? 'blocked' : 'current'}
 							>{pastDueLabel(run)}</hx-span
 						>
 					{/snippet}

@@ -38,6 +38,10 @@ export interface HomeWorkProject {
 	agent: string;
 	/** Live runs on computers that are not offline. */
 	running: number;
+	/** Total run and task rows before the response size limit. Absent on older Macs. */
+	totalRows?: number;
+	/** Blocked rows without a running job, before the response size limit. */
+	blockedRows?: number;
 	counts: Record<OverviewItem['status'], number>;
 	rows: HomeWorkRow[];
 	/** The newest change to any of the project's items. */
