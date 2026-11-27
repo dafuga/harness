@@ -56,21 +56,21 @@ the item open until both applicable checks below pass on that release.
 
 1. For changes to Home counts or their data sources, [verify Hub Home live counts](#verify-hub-home-live-counts).
 2. After every Hub, Mac or iPhone release, run the Needs you answer canary from the repository
-   root on the computer with automation Chrome. Record its Hub web, Mac app and iPhone results
-   and cleanup on the release item.
+   root on the computer with automation Chrome. Set `RELEASE_ITEM_ID` to the release's Tracker
+   ID. Record the Hub web, Mac app and iPhone results and cleanup on that item.
 
    ```sh
-   bun scripts/needs-you-canary.ts --release <release item id> --tap mac,iphone
+   bun scripts/needs-you-canary.ts --release "$RELEASE_ITEM_ID" --tap mac,iphone
    ```
 
    Follow the [Needs-you release canary](../../specification/features/planned/needs-you-release-canary.md).
 
 ### Verify Hub Home live counts
 
-Run this check after deploying a release that affects Home counts or the data feeding them,
-including Hub, Mac publisher, relay and Tracker changes. Open the release URL in the existing
-browser session for the intended account. Verify the deployed revision and identify its online
-linked Macs on `/devices`. Include a synced Mac when its runs are part of that account's Home
+Run this check after the deployed release has settled. It applies to changes in Home counts or
+their data sources, including Hub, the Mac publisher, relay and Tracker. Open the release URL
+in the existing signed-in browser session for the intended account. Verify the deployed revision
+and identify its online linked Macs on `/devices`. Include a synced Mac when its runs are part of that account's Home
 feed. Use the exact Tracker node names and a Tracker host whose loopback service has current run
 and item data for every Mac in scope.
 
@@ -91,8 +91,9 @@ working agent. If the live run set changes, repeat the check. A missing session 
 unavailable or empty Tracker sample, a zero working count or a count mismatch leaves the release
 check open.
 
-Record the deployed URL, revision, deployment ID, command result and the observed Agents summary
-in the release's Tracker note. Preserve any inspected image evidence privately. Use the real
+Record the deployed URL, revision, deployment ID, command result (including the sample timestamps
+and per-Mac counts) and the observed Agents summary in the release's Tracker note. Preserve any
+inspected image evidence privately. Use the real
 signed-in Home and live Tracker for this gate. Health probes, fixture runs and screenshots of
 injected data can support verification of other release requirements.
 
