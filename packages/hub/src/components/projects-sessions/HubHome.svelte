@@ -32,6 +32,7 @@
 
 	const { api, session, projects } = browserContext();
 	provideHubSpecDocuments(api);
+	let cosChatTrigger = $state<HTMLElement | null>(null);
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
 	let list = $state<ProjectSummary[] | null>(null);
@@ -49,7 +50,6 @@
 	const controlled = $derived(home?.controlled ?? []);
 	const raw = $derived(live?.snapshot ?? homeSnapshot(home));
 	const snapshot = $derived(raw ? listedHomeSnapshot(raw, controlled) : null);
-	/** Loading ends once both reads answered or one already supplied data. */
 	const settled = $derived(Boolean(snapshot) || (home !== null && live !== null));
 	const routinesConnected = $derived(
 		Array.isArray(snapshot?.providers.routines) &&
@@ -198,7 +198,7 @@
 			</hx-p>
 		{/if}
 		<hx-main class="po-page hh-page" data-harness-component="hub-home" aria-labelledby="hh-title">
-			<HubHomeCards {view} {open} send={reads.send} {receipt} />
+			<HubHomeCards {view} {open} send={reads.send} {receipt} bind:cosChatTrigger />
 		</hx-main>
 		{#if selected}
 			<HubHomeDialogs
@@ -207,6 +207,7 @@
 				{agentId}
 				{open}
 				send={reads.send}
+				openCosChat={(trigger) => (cosChatTrigger = trigger)}
 				{changeSession}
 				{receipt}
 				{readProject}

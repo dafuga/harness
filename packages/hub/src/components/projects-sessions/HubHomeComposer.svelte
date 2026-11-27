@@ -17,19 +17,22 @@
 		agentId,
 		send,
 		submitted,
-		label = 'Message'
+		label = 'Message',
+		draft = $bindable(''),
+		pending = $bindable(false),
+		feedback = $bindable('')
 	}: {
 		agents: HomeAgent[];
 		agentId?: string;
 		/** The field's accessible name. */
 		label?: string;
+		draft?: string;
+		pending?: boolean;
+		feedback?: string;
 		send: SendHomeChat;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
 	} = $props();
 	let recipient = $state('');
-	let draft = $state('');
-	let pending = $state(false);
-	let feedback = $state('');
 	/** Chief of Staff is always reachable; another session needs a Tracker item to write to. */
 	const options = $derived(agents.filter((agent) => agent.itemId || agent.id === 'cos'));
 	const active = $derived(
@@ -47,7 +50,8 @@
 		try {
 			const receipt = await send(message);
 			submitted?.(message, receipt);
-			if (receipt.status === 'queued' || receipt.status === 'sent') draft = '';
+			if ((receipt.status === 'queued' || receipt.status === 'sent') && draft.trim() === text)
+				draft = '';
 			feedback = composerFeedback(message, receipt, active.name);
 		} catch {
 			feedback = 'Could not queue the message. Check Tracker before retrying.';

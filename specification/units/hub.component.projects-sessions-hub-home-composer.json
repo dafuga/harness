@@ -58,6 +58,24 @@
 				"description": "The accessible name of the message field."
 			},
 			{
+				"name": "HubHomeComposer.draft",
+				"type": "string",
+				"required": false,
+				"default": ""
+			},
+			{
+				"name": "HubHomeComposer.pending",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
+				"name": "HubHomeComposer.feedback",
+				"type": "string",
+				"required": false,
+				"default": ""
+			},
+			{
 				"name": "HubHomeComposer.send",
 				"type": "SendHomeChat",
 				"required": true,

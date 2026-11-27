@@ -33,6 +33,7 @@
 		openAsks = [],
 		added = [],
 		changeSession,
+		openCosChat,
 		agentId,
 		send,
 		receipt,
@@ -45,6 +46,7 @@
 		openAsks?: HomeOpenAsk[];
 		added?: string[];
 		changeSession: ChangeSession;
+		openCosChat?: (trigger: HTMLElement) => void;
 		agentId?: string;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
@@ -183,7 +185,16 @@
 					</hx-li>
 				{/each}
 			</hx-ol>
-			{#if active.itemId || active.id === 'cos'}
+			{#if active.id === 'cos'}
+				{#if openCosChat}
+					<hx-button
+						type="button"
+						class="po-action"
+						aria-haspopup="dialog"
+						onclick={(event) => openCosChat(event.currentTarget)}>Open chat</hx-button
+					>
+				{/if}
+			{:else if active.itemId}
 				{#key active.id}<HubHomeComposer {agents} agentId={active.id} {send} {submitted} />{/key}
 			{:else}
 				<hx-p class="po-sessions">This agent has no current Tracker item.</hx-p>

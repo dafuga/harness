@@ -8,11 +8,11 @@ reviewedAt: null
 
 # Hub messages reach the session
 
-Daniel, 26 Nov 2026 (esqhv8, part of dzmj43). Replaces the overview rule that kept every input off
-Home for one field: the Chief of Staff chat box.
+Daniel, 26 Nov 2026 (esqhv8, part of dzmj43). Hub Home layout updated 27 Nov (qw2gn5).
 
-- Hub Home has a "Message Chief of Staff" box: the latest messages with their receipts and replies,
-  and one field. Chief of Staff is always reachable, with or without a current Tracker item.
+- The Chief of Staff card shows its status and one action, Open chat. The conversation and
+  composer open in a bottom-right overlay on desktop and a full-screen sheet on phone.
+  Chief of Staff is reachable with or without a current Tracker item.
 - Each session's "Message" button opens its chat, which sends to that session's one live run,
   named as `<computer>#<run>`. A session without a live run can only take a Tracker note.
 - The Hub hands a message to a linked Mac over the end-to-end encrypted device connection

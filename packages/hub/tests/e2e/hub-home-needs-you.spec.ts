@@ -9,17 +9,31 @@ import { linkedComputersFixture } from './linked-computers-fixture';
  */
 test.setTimeout(60000);
 
-const sizes = { desktop: { width: 1440, height: 900 }, phone: { width: 390, height: 844 } };
+const sizes = {
+	desktop: { width: 1440, height: 900 },
+	tablet: { width: 820, height: 1180 },
+	phone: { width: 390, height: 844 }
+};
 
 async function shot(page: Page, name: string) {
 	if (process.env.TAKE_SCREENSHOT !== 'true') return;
 	const directory = process.env.SCREENSHOT_DIR ?? 'test-results/needs-you';
-	await page.screenshot({ path: `${directory}/${name}.png`, animations: 'disabled' });
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all(Array.from(document.images, (image) => image.decode()));
+	});
+	await page.screenshot({
+		path: `${directory}/${process.env.SCREENSHOT_LABEL ?? 'current'}-${name}.png`,
+		animations: 'disabled'
+	});
 }
 
 async function home(page: Page, size: keyof typeof sizes, change: 'two-asks' | 'no-choices') {
 	await page.setViewportSize(sizes[size]);
-	await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+	await page.emulateMedia({
+		colorScheme: size === 'tablet' ? 'light' : 'dark',
+		reducedMotion: 'reduce'
+	});
 	const fixture = await hubHomeFixture(page, 'default');
 	const [chief] = fixture.snapshot.agents;
 	if (change === 'two-asks')
@@ -54,7 +68,7 @@ const rowOf = (page: Page, project: string) =>
 	needsYou(page).getByRole('listitem').filter({ hasText: project });
 const agentsCard = (page: Page) => page.getByRole('region', { name: 'Agents', exact: true });
 
-for (const size of ['desktop', 'phone'] as const) {
+for (const size of ['desktop', 'tablet', 'phone'] as const) {
 	test(`Home rows offer their choices and open the session chat (${size})`, async ({ page }) => {
 		const fixture = await home(page, size, 'two-asks');
 		const rows = openers(page);
@@ -79,6 +93,8 @@ for (const size of ['desktop', 'phone'] as const) {
 		]);
 		expect(widths[0]).toBeLessThanOrEqual(widths[1]);
 		await shot(page, `hub-home-needs-you-${size}`);
+		await expect(rowOf(page, 'harbor').getByText('Merges and releases.')).toHaveCount(0);
+		await expect(rowOf(page, 'harbor').getByText('Waits a day.')).toHaveCount(0);
 
 		await rows.filter({ hasText: 'harbor' }).click();
 		const chat = page.getByRole('region', { name: 'Chat with harbor' });
@@ -87,6 +103,7 @@ for (const size of ['desktop', 'phone'] as const) {
 			.getByRole('listitem')
 			.last();
 		await expect(latest.getByText('Ship harbor?')).toBeVisible();
+		await expect(latest.getByText('Merges and releases.')).toBeVisible();
 		await expect(
 			latest.getByRole('button', { name: /Ship harbor now.*Recommended/s })
 		).toBeVisible();
@@ -147,6 +164,25 @@ test('a choice tapped on a row answers that ask without opening the chat', async
 		option: 2
 	});
 	await expect(page.getByRole('dialog')).toHaveCount(0);
+	const deploy = rowOf(page, 'Chief of Staff');
+	await deploy.getByRole('button', { name: /Approve Saturday/ }).click();
+	const confirmation = page.getByRole('dialog', { name: 'Confirm answer' });
+	await expect(confirmation.getByText('Approve Saturday 09:00', { exact: true })).toBeVisible();
+	await expect(deploy.getByRole('group', { name: /Confirm this deploy answer/ })).toHaveCount(0);
+	await shot(page, 'hub-home-confirm-phone');
+	await page.keyboard.press('Escape');
+	await expect(confirmation).toHaveCount(0);
+	await expect(deploy.getByRole('button', { name: /Approve Saturday/ })).toBeFocused();
+	const other = deploy.getByRole('button', { name: 'Other…', exact: true });
+	await other.click();
+	const answer = page.getByRole('dialog', { name: 'Other answer' });
+	await expect(answer.getByRole('textbox', { name: 'Your answer' })).toBeFocused();
+	await expect(deploy.locator('input, textarea, select, form')).toHaveCount(0);
+	await shot(page, 'hub-home-other-phone');
+	await page.keyboard.press('Escape');
+	await expect(answer).toHaveCount(0);
+	await expect(other).toBeFocused();
+	expect(fixture.sent).toHaveLength(1);
 	await expect(rowOf(page, 'harbor').getByRole('status')).toContainText('Answer sent');
 });
 

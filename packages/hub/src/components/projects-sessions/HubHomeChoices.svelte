@@ -3,6 +3,8 @@
 <!-- @harness-uid u_hh0ch01c3s -->
 <!-- @harness-uid u_qoahc5zxzf -->
 <script lang="ts">
+	import { tick, type Snippet } from 'svelte';
+	import Modal from '$reports/components/Modal.svelte';
 	import type { HomeAgent } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import OtherAnswerModal from '$reports/components/explorer-ui/explorer-kit/OtherAnswerModal.svelte';
 	import { orderedChoices } from './hubHomeChoices';
@@ -11,7 +13,8 @@
 		agent,
 		busy = false,
 		onpick,
-		onother
+		onother,
+		present
 	}: {
 		agent: Pick<HomeAgent, 'options' | 'confirm' | 'question'>;
 		busy?: boolean;
@@ -19,6 +22,8 @@
 		onpick: (number: number, confirmed: boolean) => void;
 		/** Called with the answer written in the Other modal. */
 		onother: (text: string) => void;
+		/** When supplied, show compact chips and present their dialogs outside the list. */
+		present?: (content: Snippet | null) => void;
 	} = $props();
 	let writing = $state(false);
 
@@ -26,33 +31,60 @@
 	let pending = $state<number | null>(null);
 	const pendingChoice = $derived(choices.find((entry) => entry.number === pending) ?? null);
 
-	function tap(number: number) {
-		// Deploy, money and secret asks stop at a confirm step; other asks are answered by the tap.
-		if (agent.confirm) pending = number;
-		else onpick(number, false);
+	let opener: HTMLElement | null = null;
+
+	function openDetail(content: Snippet, trigger: HTMLElement) {
+		opener = trigger;
+		present?.(content);
+	}
+
+	function closeDetail() {
+		pending = null;
+		writing = false;
+		if (!present) return;
+		present(null);
+		const target = opener;
+		opener = null;
+		void tick().then(() => target?.focus());
+	}
+
+	function tap(number: number, trigger: HTMLElement) {
+		if (!agent.confirm) {
+			onpick(number, false);
+			return;
+		}
+		pending = number;
+		if (present) openDetail(confirmDialog, trigger);
 	}
 
 	function confirm() {
 		if (pending === null) return;
 		const number = pending;
-		pending = null;
+		closeDetail();
 		onpick(number, true);
 	}
 </script>
 
 {#if choices.length >= 2}
-	<hx-div class="hh-choices" role="group" aria-label="Choose an answer">
+	<hx-div
+		class="hh-choices"
+		class:hh-choices-compact={present}
+		role="group"
+		aria-label="Choose an answer"
+	>
 		{#each choices as { number, option } (number)}
 			<hx-button
 				type="button"
 				class="hh-choice"
 				data-recommended={option.recommended ? 'true' : undefined}
 				disabled={busy}
-				onclick={() => tap(number)}
+				aria-haspopup={present && agent.confirm ? 'dialog' : undefined}
+				onclick={(event) => tap(number, event.currentTarget)}
 			>
-				<hx-strong>{option.label}</hx-strong>
+				<hx-strong title={present ? option.label : undefined}>{option.label}</hx-strong>
 				{#if option.recommended}<hx-span class="hh-choice-badge">Recommended</hx-span>{/if}
-				{#if option.effect}<hx-span class="hh-choice-effect">{option.effect}</hx-span>{/if}
+				{#if !present && option.effect}<hx-span class="hh-choice-effect">{option.effect}</hx-span
+					>{/if}
 			</hx-button>
 		{/each}
 		<hx-button
@@ -60,39 +92,53 @@
 			class="hh-choice hh-choice-other"
 			aria-haspopup="dialog"
 			disabled={busy}
-			onclick={() => (writing = true)}
+			onclick={(event) => {
+				if (present) openDetail(otherDialog, event.currentTarget);
+				else writing = true;
+			}}
 		>
 			<hx-strong>Other…</hx-strong>
-			<hx-span class="hh-choice-effect">Write a different answer.</hx-span>
+			{#if !present}<hx-span class="hh-choice-effect">Write a different answer.</hx-span>{/if}
 		</hx-button>
-		{#if writing}
-			<OtherAnswerModal
-				question={agent.question ?? ''}
-				maxlength={2000}
-				{busy}
-				onsend={onother}
-				onclose={() => (writing = false)}
-			/>
-		{/if}
-		{#if pendingChoice && agent.confirm}
-			<hx-div
-				class="hh-choice-confirm"
-				role="group"
-				aria-label={`Confirm this ${agent.confirm} answer`}
-			>
-				<hx-p>
-					This is a <hx-strong>{agent.confirm}</hx-strong> decision. Answer
-					<hx-strong>{pendingChoice.option.label}</hx-strong>?
-				</hx-p>
-				<hx-div class="hh-quick-replies">
-					<hx-button type="button" class="po-action hh-primary" disabled={busy} onclick={confirm}
-						>Confirm answer</hx-button
-					>
-					<hx-button type="button" class="po-action" onclick={() => (pending = null)}
-						>Cancel</hx-button
-					>
-				</hx-div>
-			</hx-div>
-		{/if}
+		{#if writing}{@render otherDialog()}{/if}
+		{#if !present}{@render confirmation()}{/if}
 	</hx-div>
 {/if}
+
+{#snippet otherDialog()}
+	<OtherAnswerModal
+		question={agent.question ?? ''}
+		maxlength={2000}
+		{busy}
+		onsend={onother}
+		onclose={closeDetail}
+	/>
+{/snippet}
+
+{#snippet confirmDialog()}
+	<Modal isOpen title="Confirm answer" variant="text" onClose={closeDetail}>
+		{@render confirmation()}
+	</Modal>
+{/snippet}
+
+{#snippet confirmation()}
+	{#if pendingChoice && agent.confirm}
+		<hx-div
+			class="hh-choice-confirm"
+			role="group"
+			aria-label={`Confirm this ${agent.confirm} answer`}
+		>
+			<hx-p>
+				This is a <hx-strong>{agent.confirm}</hx-strong> decision. Answer
+				<hx-strong>{pendingChoice.option.label}</hx-strong>?
+			</hx-p>
+			{#if present && pendingChoice.option.effect}<hx-p>{pendingChoice.option.effect}</hx-p>{/if}
+			<hx-div class="hh-quick-replies">
+				<hx-button type="button" class="po-action hh-primary" disabled={busy} onclick={confirm}
+					>Confirm answer</hx-button
+				>
+				<hx-button type="button" class="po-action" onclick={closeDetail}>Cancel</hx-button>
+			</hx-div>
+		</hx-div>
+	{/if}
+{/snippet}

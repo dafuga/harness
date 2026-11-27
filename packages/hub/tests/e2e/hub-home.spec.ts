@@ -114,10 +114,19 @@ async function agentChat(page: Page, position: CapturePosition, fixture: HomeFix
 	const chat = dialog.getByRole('region', { name: 'Chat with Chief of Staff' });
 	await expect(chat.getByText('Yes, voicemail and carrier-busy passed.')).toBeVisible();
 	await capture(page, position, 'agent-chat');
-	await chat.getByRole('textbox', { name: 'Message', exact: true }).fill('Synthetic Hub message');
-	await chat.getByRole('button', { name: 'Send', exact: true }).click();
-	await expect(chat.getByText('Sent to Tracker', { exact: true })).toBeVisible();
-	// Chief of Staff is messaged in its own pane, not through a note on its current item.
+	const opener = chat.getByRole('button', { name: 'Open chat', exact: true });
+	await opener.click();
+	const widget = page.getByRole('dialog', { name: 'Chief of Staff', exact: true }).last();
+	await widget
+		.getByRole('textbox', { name: 'Message Chief of Staff' })
+		.fill('Synthetic Hub message');
+	await widget.getByRole('button', { name: 'Send', exact: true }).click();
+	await expect(
+		widget.getByText('Stored in Tracker; it goes to Chief of Staff through its Tracker channel.')
+	).toBeVisible();
+	await page.keyboard.press('Escape');
+	await expect(opener).toBeFocused();
+	// Chief of Staff messages go to the Tracker channel.
 	expect(fixture.sent).toMatchObject([
 		{ agentId: 'cos', itemId: 'cos', kind: 'message', text: 'Synthetic Hub message' }
 	]);

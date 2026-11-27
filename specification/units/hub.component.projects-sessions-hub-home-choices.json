@@ -20,7 +20,12 @@
 	},
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/HubHomeChoices.svelte"],
-		"symbols": ["HubHomeChoices"]
+		"symbols": [
+			"HubHomeChoices",
+			"HubHomeChoices.otherDialog",
+			"HubHomeChoices.confirmDialog",
+			"HubHomeChoices.confirmation"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -49,6 +54,12 @@
 				"type": "(text: string) => void",
 				"required": true,
 				"description": "Receives the answer written in the Other modal."
+			},
+			{
+				"name": "HubHomeChoices.present",
+				"type": "(content: Snippet | null) => void",
+				"required": false,
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [
@@ -61,7 +72,45 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "HubHomeChoices.otherDialog",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.otherDialog",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.confirmDialog",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.confirmDialog",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "HubHomeChoices.confirmation",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "HubHomeChoices.confirmation",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{

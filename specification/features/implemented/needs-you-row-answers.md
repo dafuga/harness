@@ -13,6 +13,9 @@ Daniel, 26 Nov 2026. Replaces the 25 Nov layout rule that kept answer controls o
 - Hub Home, the Mac app and the iPhone app: every "Blocked - needs you" row shows its 2-4 options
   (recommended first) and "Other". "Other" opens a modal; no reply field sits in a row. The rest of
   the row still opens the asking session's chat, which offers the same choices.
+- Hub Home uses one-line option chips with a small Recommended badge. Explanations and
+  attachments are available in the asking session’s detail. Other opens the answer dialog.
+  Confirmation opens a dialog with the selected option and its explanation.
 - A tap is a Tracker answer by Daniel, so the owner is notified as for any answer. Deploy, money
   and secret asks keep their confirm step (Face ID on the iPhone).
 - Mac and iPhone rows answer the revision they show. A replaced question is refused.

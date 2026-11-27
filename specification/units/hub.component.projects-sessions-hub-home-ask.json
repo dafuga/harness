@@ -50,11 +50,10 @@
 				"description": "Receives each queued answer and its receipt. Defaults to nothing being notified."
 			},
 			{
-				"name": "HubHomeAsk.row",
-				"type": "boolean",
+				"name": "HubHomeAsk.present",
+				"type": "(content: Snippet | null) => void",
 				"required": false,
-				"default": false,
-				"description": "True on a Home row, which already shows who asks and the question, so the card omits them."
+				"default": "undefined (omitted)"
 			}
 		],
 		"outputs": [

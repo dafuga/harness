@@ -16,16 +16,9 @@ async function box(locator: Locator) {
 	return found;
 }
 
-/**
- * Nothing on the overview asks for input until a dialog is opened, and nothing scrolls sideways.
- * The one exception is Home's chat box to Chief of Staff (Daniel, 26 Nov): a single field.
- */
+/** Nothing on an overview asks for input until a dialog opens. */
 async function overview(page: Page) {
-	const chat = '[aria-label="Message Chief of Staff"]';
-	await expect(page.locator(`:is(form, input, select, textarea):not(${chat} *)`)).toHaveCount(0);
-	await expect(page.locator(`${chat} :is(input, select, textarea)`)).toHaveCount(
-		(await page.locator(chat).count()) ? 1 : 0
-	);
+	await expect(page.locator('form, input, select, textarea')).toHaveCount(0);
 	const overflow = await page.evaluate(
 		() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 	);
@@ -111,6 +104,8 @@ for (const size of sizes) {
 		await overview(page);
 		await agents.getByRole('button', { name: 'Message an agent', exact: true }).click();
 		const chat = page.getByRole('dialog').getByRole('region', { name: 'Chat with Chief of Staff' });
-		await expect(chat.getByRole('textbox', { name: 'Message', exact: true })).toBeVisible();
+		await expect(chat.getByRole('textbox')).toHaveCount(0);
+		await chat.getByRole('button', { name: 'Open chat', exact: true }).click();
+		await expect(page.getByRole('textbox', { name: 'Message Chief of Staff' })).toBeVisible();
 	});
 }

@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_kncvbfcpto -->
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
 		HomeChatReceipt,
@@ -24,6 +25,12 @@
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 	} = $props();
+	let detail = $state<{ itemId: string; question: string; content: Snippet } | null>(null);
+	const activeDetail = $derived(
+		asks.some((ask) => ask.itemId === detail?.itemId && ask.question === detail.question)
+			? detail?.content
+			: undefined
+	);
 </script>
 
 {#if asks.length}
@@ -48,9 +55,16 @@
 						<hx-span class="hh-needs-question">{ask.question}</hx-span>
 						<hx-span class="hh-needs-age">waiting {waitAge(ask.since, now)}</hx-span>
 					</hx-button>
-					<HubHomeAsk {ask} {send} {receipt} row />
+					<HubHomeAsk
+						{ask}
+						{send}
+						{receipt}
+						present={(content) =>
+							(detail = content ? { itemId: ask.itemId, question: ask.question, content } : null)}
+					/>
 				</hx-li>
 			{/each}
 		</hx-ul>
+		{@render activeDetail?.()}
 	</hx-section>
 {/if}

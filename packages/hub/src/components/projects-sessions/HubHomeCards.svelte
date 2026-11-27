@@ -39,12 +39,14 @@
 		view,
 		open,
 		send,
-		receipt
+		receipt,
+		cosChatTrigger = $bindable<HTMLElement | null>(null)
 	}: {
 		view: HomeView;
 		open: OpenHomeSection;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
+		cosChatTrigger?: HTMLElement | null;
 	} = $props();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
 	const recipient = $derived(currentAgent([...(view.agents ?? []), ...view.asks]));
@@ -77,6 +79,7 @@
 		agent={view.agents.find((agent) => agent.id === 'cos')}
 		now={new Date(view.now).toISOString()}
 		{send}
+		bind:trigger={cosChatTrigger}
 	/>{/if}
 <HubHomeLive reading={view.computers} now={view.now} />
 <hx-div class="hh-grid">
@@ -112,8 +115,15 @@
 								<hx-button
 									type="button"
 									class="po-action hh-talk"
-									onclick={() => open('agents', agent.id)}
-									aria-label={`Message ${agent.name}`}>Message</hx-button
+									onclick={(event) => {
+										if (agent.id === 'cos') cosChatTrigger = event.currentTarget;
+										else open('agents', agent.id);
+									}}
+									aria-haspopup="dialog"
+									aria-label={agent.id === 'cos'
+										? 'Open chat with Chief of Staff'
+										: `Message ${agent.name}`}
+									>{agent.id === 'cos' ? 'Open chat' : 'Message'}</hx-button
 								>
 							</hx-span>
 						{/snippet}

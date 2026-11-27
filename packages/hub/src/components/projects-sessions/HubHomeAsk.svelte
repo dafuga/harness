@@ -3,6 +3,7 @@
 <!-- @harness-uid u_5hn7c2wq8d -->
 <!-- @harness-uid u_gnhmm7tirz -->
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import type {
 		HomeChatInput,
 		HomeChatReceipt,
@@ -18,14 +19,14 @@
 		send,
 		receipt,
 		submitted,
-		row = false
+		present
 	}: {
 		ask: HomeOpenAsk;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 		submitted?: (message: HomeChatInput, receipt: HomeChatReceipt) => void;
-		/** On a Home row, which already shows who asks and the question. */
-		row?: boolean;
+		/** A Home row presents its dialogs beside the list. */
+		present?: (content: Snippet | null) => void;
 	} = $props();
 	const load = hubSpecDocuments();
 	let busy = $state(false);
@@ -51,7 +52,7 @@
 			const result = await send(message);
 			submitted?.(message, result);
 			if (result.status === 'queued' || result.status === 'sent') {
-				answered = ask.question;
+				answered = message.question;
 				void settle(message.id, result);
 			} else if (result.status === 'refused')
 				status =
@@ -78,6 +79,7 @@
 	<HubHomeChoices
 		agent={ask}
 		{busy}
+		{present}
 		onpick={(number, confirmed) => {
 			const option = ask.options[number - 1];
 			done?.();
@@ -91,19 +93,21 @@
 {/snippet}
 
 {#if open}
-	<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
-		{#if !row}
-			<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
-		{/if}
-		{#if ask.attachments?.length}
-			<ViewSpecButtons attachments={ask.attachments} question={ask.question} {load}>
-				{#snippet answers(close: () => void)}
-					{@render choices(close)}
-				{/snippet}
-			</ViewSpecButtons>
-		{/if}
+	{#if present}
 		{@render choices()}
-	</hx-section>
+	{:else}
+		<hx-section class="hh-ask" aria-label={`${ask.agentName} needs you`}>
+			<hx-p class="hh-ask-question"><hx-strong>{ask.agentName}</hx-strong> · {ask.question}</hx-p>
+			{#if ask.attachments?.length}
+				<ViewSpecButtons attachments={ask.attachments} question={ask.question} {load}>
+					{#snippet answers(close: () => void)}
+						{@render choices(close)}
+					{/snippet}
+				</ViewSpecButtons>
+			{/if}
+			{@render choices()}
+		</hx-section>
+	{/if}
 {:else if status}
 	<hx-p class="po-sessions" role="status">{ask.agentName}: {status}</hx-p>
 {/if}

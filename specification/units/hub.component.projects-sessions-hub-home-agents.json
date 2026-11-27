@@ -73,6 +73,12 @@
 				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
 			},
 			{
+				"name": "HubHomeAgents.openCosChat",
+				"type": "(trigger: HTMLElement) => void",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
 				"name": "HubHomeAgents.agentId",
 				"type": "string",
 				"required": false,
