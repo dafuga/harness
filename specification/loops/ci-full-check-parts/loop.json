@@ -2,11 +2,9 @@
 	"name": "ci-full-check-parts",
 	"goal": "Harness CI Full check finishes well inside its time limit: it runs as parallel parts that together cover every check step, and one aggregate job fails unless all pass",
 	"createdAt": "2026-11-27T08:41:12.062Z",
-	"updatedAt": "2026-11-27T09:04:07.304Z",
+	"updatedAt": "2026-11-27T09:06:06.038Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -48,7 +46,9 @@
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T09:06:06.038Z",
+			"evidence": "siblings-c6f7eeb0-0829-4e92-89ab-716ea036ea78.json"
 		},
 		{
 			"id": "verify",
