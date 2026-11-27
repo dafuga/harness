@@ -2,10 +2,7 @@
 import { trackerHostCapacityHold } from './tracker-native-runtime-service/trackerHostAdmission';
 import { randomUUID } from 'node:crypto';
 import { awaitStartEvidence, trackerStartError } from './trackerStartError';
-import {
-	automaticQueueHold,
-	queuedRung
-} from './tracker-native-runtime-service/trackerQueueAdmission';
+import { automaticQueueHold } from './tracker-native-runtime-service/trackerQueueAdmission';
 import type { TrackerDispatchRepository } from '../../repositories/projects-sessions/TrackerDispatchRepository';
 import type { TrackerDispatchCandidate } from '../../repositories/projects-sessions/TrackerDispatchRepository.types';
 import type {
@@ -13,7 +10,6 @@ import type {
 	TrackerLaunchIntent,
 	TrackerDispatchResult,
 	TrackerDispatchItem,
-	TrackerLaunchRung,
 	TrackerRunReceipt
 } from '../agents-providers/TrackerDispatcherService';
 import {
@@ -45,7 +41,7 @@ export class TrackerDispatchQueue {
 		if (
 			current?.launch?.token === token &&
 			!schedulingHold(current, policyNow(this.options)) &&
-			!(await this.automaticPermission(id, current.launch, signal, queuedRung(run)))
+			!(await this.automaticPermission(id, current.launch, signal, run))
 		)
 			return false;
 		const decision = await prepareQueuedRun(run, this.dispatcher, this.options, signal);
@@ -90,13 +86,14 @@ export class TrackerDispatchQueue {
 		id: string,
 		intent: TrackerLaunchIntent,
 		signal: AbortSignal,
-		queued?: TrackerLaunchRung
+		queued?: TrackerRunReceipt
 	) {
 		const { policy, permitAutomatic } = this.options;
 		if (!permitAutomatic) return true;
 		const now = policyNow(this.options);
-		const item = this.repository.readSnapshot(id).item;
-		const hold = automaticQueueHold(item, { policy, intent, now, queued });
+		const snapshot = this.repository.readSnapshot(id);
+		const { item } = snapshot;
+		const hold = automaticQueueHold(snapshot, { policy, intent, now, queued });
 		if (hold) {
 			const moved =
 				item && hold === trackerHostCapacityHold

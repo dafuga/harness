@@ -17,7 +17,7 @@ import {
 	matchesRequest,
 	minute
 } from './launchEligibility';
-import { giveUp, retryRung } from './runGiveUp';
+import { giveUp, pickRetryModel } from './runGiveUp';
 
 export function etaFor(
 	item: TrackerDispatchItem | null,
@@ -49,7 +49,7 @@ export function queueRun(
 		launch_source: item.launch!.source,
 		attempt: (previous?.attempt ?? 0) + 1,
 		escalated_from: previous?.id ?? null,
-		...modelFields(item, pick, previous),
+		...modelFields(item, pick),
 		state: 'queued',
 		outcome: null,
 		failure_reason: null,
@@ -61,10 +61,9 @@ export function queueRun(
 	};
 }
 
-function modelFields(
+export function modelFields(
 	item: TrackerDispatchItem,
-	pick: TrackerLaunchPick | { error: string },
-	previous?: TrackerRunReceipt
+	pick: TrackerLaunchPick | { error: string }
 ) {
 	const project = item.project ?? item.agent ?? null;
 	if ('error' in pick)
@@ -84,7 +83,7 @@ function modelFields(
 		cli: rung.cli,
 		model: rung.model,
 		effort: rung.effort ?? null,
-		pinned: previous?.pinned ?? Boolean(rung.pinned),
+		pinned: Boolean(rung.pinned),
 		kind: pick.kind,
 		project,
 		reason: pick.reason
@@ -150,7 +149,6 @@ export function failRun(
 		outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned';
 		reason: string;
 		exitCode?: number | null;
-		startup?: boolean;
 		reopen?: boolean;
 		note?: string;
 		usage?: TrackerReceiptUsage;
@@ -170,16 +168,30 @@ export function failRun(
 		automaticRequestHold({ ...item, ...reopen }, policy, now)
 	)
 		return recordFailedRun(finished, reopen);
-	const choice = retryRung(item, run, policy, failure.startup);
-	if (!choice) return recordFailedRun(finished, giveUp(snapshot, finished, reopen));
-	const pick = {
-		rung: choice,
-		kind: run.kind ?? item.kind,
-		reason: `retry after ${run.rung} ${failure.outcome}`
-	};
+	return retryFailedRun(snapshot, { item, finished, reopen }, { policy, now });
+}
+
+function retryFailedRun(
+	snapshot: TrackerDispatchSnapshot,
+	{
+		item,
+		finished,
+		reopen
+	}: {
+		item: TrackerDispatchItem;
+		finished: TrackerRunReceipt;
+		reopen?: TrackerDispatchWrites['item'];
+	},
+	{ policy, now }: { policy: TrackerDispatchPolicy; now: number }
+): TrackerDispatchDecision {
+	if (finished.attempt > (policy.maxRetries ?? 1) || finished.cli === 'none')
+		return recordFailedRun(finished, giveUp(snapshot, finished, reopen));
+	const pick = pickRetryModel(item, finished, policy);
+	if ('error' in pick)
+		return recordFailedRun(finished, giveUp(snapshot, finished, reopen, pick.error));
 	const retry = queueRun(
 		snapshot,
-		{ item, token: run.auto_token, pick, previous: run },
+		{ item, token: finished.auto_token, pick, previous: finished },
 		policy,
 		now
 	);

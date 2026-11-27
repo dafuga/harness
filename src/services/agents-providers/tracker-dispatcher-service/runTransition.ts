@@ -97,8 +97,7 @@ function recordStartupFailure(
 		{
 			outcome: 'abandoned',
 			reason: event.reason,
-			exitCode: event.exitCode,
-			startup: true
+			exitCode: event.exitCode
 		},
 		clock
 	);

@@ -814,7 +814,10 @@ supervise`, and install starts it at once. The supervisor holds one lock per
   Launch, retry and `tracker pick` share it; run reports list the same ladder.
 - **Learning.** A first launch reads finished runs on similar tasks, local and
   replicated, as `tracker pick` does. History only moves a task to a stronger
-  rung. Pinned items ignore it, and retries step up the route without it.
+  rung. Pinned items ignore it. Retries resolve the current item pin or
+  routing policy when queued and again before admission and dispatch.
+  Unpinned execution failures can step up the current route. Failed
+  startups and watchdog recovery use the current launch policy.
 - **In place.** On a managed macOS route, a directory outside git runs in place,
   as does a route with `"worktree": false`. Sessions there share the directory,
   and `verify` runs in it. A git failure other than "not a git repository" still

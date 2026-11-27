@@ -4,8 +4,6 @@ import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerHostCapacityHold } from './trackerHostAdmission';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
-import type { TrackerLaunchRung } from '../../agents-providers/TrackerDispatcherService.types';
-import { handLaunchNode, handLaunchSelection } from './trackerHandLaunchSelection';
 import { recoveryGrace } from '../watchdog-recovery-service/watchdogRecoverySessions';
 import {
 	finalReportHold,
@@ -68,26 +66,6 @@ function settledRecoveryRun(run: TrackerListedRun, item: TrackerItem) {
 	);
 }
 
-export function recoveryRung(
-	run: TrackerListedRun | undefined,
-	item: TrackerItem,
-	node: string
-): TrackerLaunchRung | undefined {
-	const fallback = handLaunchSelection(item, node);
-	if (fallback && handLaunchNode(item, run?.started_at ?? 0) === node) return fallback;
-	const recorded = run && recordedRung(run);
-	return recorded ?? compatibleFallback(run, fallback);
-}
-
-function compatibleFallback(run?: TrackerListedRun, fallback?: TrackerLaunchRung) {
-	return !run || run.cli === 'none' || fallback?.cli === run.cli ? fallback : undefined;
-}
-
-function recordedRung(run: TrackerListedRun): TrackerLaunchRung | undefined {
-	if (run.cli !== 'codex' && run.cli !== 'claude') return undefined;
-	if (!/^[a-z0-9][a-z0-9._-]{1,79}$/i.test(run.model) || run.model === 'unknown') return undefined;
-	return { id: run.rung, cli: run.cli, model: run.model, effort: run.effort, pinned: true };
-}
 export function recoveryHold(
 	item: TrackerItem,
 	latest: TrackerListedRun | undefined,

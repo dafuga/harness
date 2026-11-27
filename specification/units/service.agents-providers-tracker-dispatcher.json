@@ -108,7 +108,9 @@
 			"claimLaunch",
 			"prepareRetry",
 			"retireUnstartedRun",
-			"retryRung",
+			"pickRetryModel",
+			"pickQueuedRetryModel",
+			"pickLaunchModel",
 			"giveUp",
 			"activeRun",
 			"hasOpenSession",
@@ -119,6 +121,7 @@
 			"completeRun",
 			"etaFor",
 			"queueRun",
+			"modelFields",
 			"reviseRun",
 			"recordRun",
 			"finishRun",
@@ -583,25 +586,49 @@
 				"required": true
 			},
 			{
-				"name": "retryRung.item",
+				"name": "pickRetryModel.item",
 				"type": "TrackerDispatchItem",
 				"required": true
 			},
 			{
-				"name": "retryRung.run",
+				"name": "pickRetryModel.run",
 				"type": "TrackerRunReceipt",
 				"required": true
 			},
 			{
-				"name": "retryRung.policy",
+				"name": "pickRetryModel.policy",
 				"type": "TrackerDispatchPolicy",
 				"required": true
 			},
 			{
-				"name": "retryRung.startup",
-				"type": "boolean",
-				"required": false,
-				"default": false
+				"name": "pickQueuedRetryModel.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "pickQueuedRetryModel.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "pickQueuedRetryModel.runs",
+				"type": "readonly TrackerRunReceipt[]",
+				"required": true
+			},
+			{
+				"name": "pickQueuedRetryModel.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
+			},
+			{
+				"name": "pickLaunchModel.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "pickLaunchModel.policy",
+				"type": "TrackerDispatchPolicy",
+				"required": true
 			},
 			{
 				"name": "giveUp.snapshot",
@@ -616,6 +643,11 @@
 			{
 				"name": "giveUp.reopen",
 				"type": "TrackerDispatchWrites['item']",
+				"required": false
+			},
+			{
+				"name": "giveUp.pickError",
+				"type": "string",
 				"required": false
 			},
 			{
@@ -749,6 +781,16 @@
 				"required": true
 			},
 			{
+				"name": "modelFields.item",
+				"type": "TrackerDispatchItem",
+				"required": true
+			},
+			{
+				"name": "modelFields.pick",
+				"type": "TrackerLaunchPick | { error: string }",
+				"required": true
+			},
+			{
 				"name": "reviseRun.run",
 				"type": "TrackerRunReceipt",
 				"required": true
@@ -810,7 +852,7 @@
 			},
 			{
 				"name": "failRun.failure",
-				"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; startup?: boolean; reopen?: boolean; note?: string; usage?: TrackerReceiptUsage; }",
+				"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; reopen?: boolean; note?: string; usage?: TrackerReceiptUsage; }",
 				"required": true
 			},
 			{
@@ -1846,33 +1888,83 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "retryRung",
+				"name": "pickRetryModel",
 				"inputs": [
 					{
-						"name": "retryRung.item",
+						"name": "pickRetryModel.item",
 						"type": "TrackerDispatchItem",
 						"required": true
 					},
 					{
-						"name": "retryRung.run",
+						"name": "pickRetryModel.run",
 						"type": "TrackerRunReceipt",
 						"required": true
 					},
 					{
-						"name": "retryRung.policy",
+						"name": "pickRetryModel.policy",
 						"type": "TrackerDispatchPolicy",
 						"required": true
-					},
-					{
-						"name": "retryRung.startup",
-						"type": "boolean",
-						"required": false,
-						"default": false
 					}
 				],
 				"outputs": [
 					{
-						"name": "retryRung",
+						"name": "pickRetryModel",
+						"type": "TrackerLaunchPick | { error: string }"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pickQueuedRetryModel",
+				"inputs": [
+					{
+						"name": "pickQueuedRetryModel.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "pickQueuedRetryModel.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "pickQueuedRetryModel.runs",
+						"type": "readonly TrackerRunReceipt[]",
+						"required": true
+					},
+					{
+						"name": "pickQueuedRetryModel.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pickQueuedRetryModel",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "pickLaunchModel",
+				"inputs": [
+					{
+						"name": "pickLaunchModel.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "pickLaunchModel.policy",
+						"type": "TrackerDispatchPolicy",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pickLaunchModel",
 						"type": "unknown"
 					}
 				],
@@ -1895,6 +1987,11 @@
 					{
 						"name": "giveUp.reopen",
 						"type": "TrackerDispatchWrites['item']",
+						"required": false
+					},
+					{
+						"name": "giveUp.pickError",
+						"type": "string",
 						"required": false
 					}
 				],
@@ -2142,6 +2239,29 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "modelFields",
+				"inputs": [
+					{
+						"name": "modelFields.item",
+						"type": "TrackerDispatchItem",
+						"required": true
+					},
+					{
+						"name": "modelFields.pick",
+						"type": "TrackerLaunchPick | { error: string }",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "modelFields",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
 				"name": "reviseRun",
 				"inputs": [
 					{
@@ -2245,7 +2365,7 @@
 					},
 					{
 						"name": "failRun.failure",
-						"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; startup?: boolean; reopen?: boolean; note?: string; usage?: TrackerReceiptUsage; }",
+						"type": "{ outcome: 'failed' | 'rejected' | 'timed_out' | 'abandoned'; reason: string; exitCode?: number | null; reopen?: boolean; note?: string; usage?: TrackerReceiptUsage; }",
 						"required": true
 					},
 					{

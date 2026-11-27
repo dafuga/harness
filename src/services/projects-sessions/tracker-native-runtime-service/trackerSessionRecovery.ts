@@ -5,10 +5,7 @@ import { TrackerRunReadRepository } from '../../../repositories/projects-session
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
 import { trackerFlagBlocksRecovery } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
-import type {
-	TrackerDispatchResult,
-	TrackerLaunchRung
-} from '../../agents-providers/TrackerDispatcherService.types';
+import type { TrackerDispatchResult } from '../../agents-providers/TrackerDispatcherService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { trackerHostCapacityHold } from './trackerHostAdmission';
 import { trackerProviderHold } from './trackerProviderHolds';
@@ -20,8 +17,7 @@ import {
 	emptyRecoveryState,
 	hostWait,
 	maxRecoveryAttempts,
-	recoveryBudget,
-	recoveryRung
+	recoveryBudget
 } from './trackerRecoveryHistory';
 
 const requestTimeout = sessionHealthInterval;
@@ -37,31 +33,26 @@ export async function recoverTrackerSession(
 	const latest = history.filter(({ node }) => node === store.node).at(-1);
 	const key = `tracker_session_recovery:${item.id}`;
 	const state = recoveryBudget(store, { key, latest, item });
-	const held = legacyProviderHold(store, { latest, state, now });
+	const held = state.token && recoveryProviderHold(store, item, now);
 	if (held) {
-		// A pending legacy request keeps its budget while its provider is unavailable.
+		// A hold is not a failed relaunch. The request timeout restarts when it lifts.
 		saveRecovery(store, key, { ...state, requestedAt: now });
 		return `Tracker relaunch is waiting: ${held}.`;
 	}
 	if (state.token) return checkRecovery(store, { item, key, state, latest }, now);
 	if (now < state.retryAt) return null;
-	const rung = recoveryRung(latest, item, store.node);
-	if (latest && latest.cli !== 'none' && !rung)
-		return flagRecovery(
-			store,
-			{ item, key, state },
-			now,
-			'The prior session has no verified model.'
-		);
-	return submitRecovery(store, { item, key, state, launch }, { now, rung });
+	return submitRecovery(store, { item, key, state, launch }, now);
 }
 
-function legacyProviderHold(
+/** Only the provider selected for the pending relaunch can hold its timeout. */
+export function recoveryProviderHold(
 	store: TrackerPersistenceService,
-	{ latest, state, now }: { latest?: TrackerListedRun; state: TrackerRecoveryState; now: number }
+	item: TrackerItem,
+	now: number
 ) {
-	if (!latest || !state.token || latest.auto_token === state.token) return null;
-	return trackerProviderHold(store, latest.cli, now);
+	if (item.launch_source !== 'recovery' || !item.launch_pick) return null;
+	const cli = JSON.parse(item.launch_pick)?.rung?.cli;
+	return cli === 'claude' || cli === 'codex' ? trackerProviderHold(store, cli, now) : null;
 }
 
 async function submitRecovery(
@@ -72,13 +63,15 @@ async function submitRecovery(
 		state,
 		launch
 	}: { item: TrackerItem; key: string; state: TrackerRecoveryState; launch: TrackerWatchdogLaunch },
-	{ now, rung }: { now: number; rung?: TrackerLaunchRung }
+	now: number
 ) {
 	const pending = { ...state, token: randomUUID(), requestedAt: now };
 	saveRecovery(store, key, pending);
-	const result = await launch(item, { token: pending.token, rung }).catch(() => undefined);
-	if (result?.status === 'requested' || result?.status === 'existing')
-		return `Tracker requested relaunch ${state.failures.length + 1}/${maxRecoveryAttempts} on ${store.node}${rung ? ` using ${rung.model}` : ''}.`;
+	const result = await launch(item, { token: pending.token }).catch(() => undefined);
+	if (result?.status === 'requested' || result?.status === 'existing') {
+		const model = result.intent?.scheduledPick?.rung.model;
+		return `Tracker requested relaunch ${state.failures.length + 1}/${maxRecoveryAttempts} on ${store.node}${model ? ` using ${model}` : ''}.`;
+	}
 	return rejectRecoverySubmission(store, { item, key, state }, now, result);
 }
 
@@ -94,6 +87,13 @@ function rejectRecoverySubmission(
 	}
 	const reason =
 		result && 'reason' in result ? result.reason : 'Tracker could not submit the launch request.';
+	if (
+		result?.status === 'held' &&
+		/^(?:(?:claude|codex) quota exhausted|Codex paused until)/.test(reason)
+	) {
+		saveRecovery(store, key, state);
+		return `Tracker relaunch is waiting: ${reason}.`;
+	}
 	if (hostWait(reason)) {
 		saveRecovery(store, key, state);
 		return reason === trackerHostCapacityHold
