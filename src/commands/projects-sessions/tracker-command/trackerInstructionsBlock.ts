@@ -1,4 +1,5 @@
 // @harness-uid u_r7qgepnoax
+import { trackerQuestionRoutingRule } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerAskOptionsRule';
 import type { TrackerInstructionsRepair } from './runTrackerInstructions.types';
 
 const start = '<!-- tracker:start -->';
@@ -11,11 +12,11 @@ export const trackerInstructionsBlock = `${start}
 
 Daniel's work is tracked in the shared \`tracker\` CLI, which runs and syncs on every computer (the box, the primary Mac and MB2). On the Macs the CLI is \`~/.local/bin/tracker\` (add \`~/.local/bin\` to PATH if \`tracker\` isn't found). Run \`tracker help\` for all commands.
 
-**The tracker is how you reach Daniel.** Chief of Staff watches it and tells Daniel. Nobody watches your terminal, so a question or blocker that is only in your terminal will not be seen.
+${trackerQuestionRoutingRule}
 
 - **Starting work:** \`tracker start <id>\`. Ask your bot or brief for the id. If there isn't one, create it: \`tracker add "<task>" --owner "<your session name>" --agent <project>\`. Record your ETA as a due time (\`tracker update <id> --due <ISO time>\`) and update it if it slips.
 - **At each meaningful milestone:** \`tracker note <id> "..."\`.
-- **Any question for Daniel, any approval you need, or any decision blocker:** run \`tracker flag <id> "<the exact question>" --option "<label>=<what happens>" --option "<label>=<what happens>" --recommend <number>\` (2 to 4 options; add \`--confirm deploy|money|secret\` when a tap would deploy, spend money or touch a secret) at the moment you ask, in addition to writing it in your terminal.
+- **A decision only Daniel can make:** run \`tracker flag <id> "<the exact question>" --option "<label>=<what happens>" --option "<label>=<what happens>" --recommend <number>\` (2 to 4 options; add \`--confirm deploy|money|secret\` when a tap would deploy, spend money or touch a secret) at the moment you ask, in addition to writing it in your terminal.
 - **Waiting on another item, computer or session** is not a question: \`tracker block <id> "waiting on <item>"\`.
 - **Stopping, pausing, handing off, or out of quota:** before you stop, \`tracker note <id> "stopped: <why>; resume from: <state, branch, files>"\`.
 - **When finished:** \`tracker done <id> --note "<result, PR link, tests run, deploy and rollback IDs>"\`.
