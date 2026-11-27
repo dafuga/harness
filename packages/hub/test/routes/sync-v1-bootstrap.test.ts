@@ -14,15 +14,8 @@ import {
 	rewrapSealedGrant,
 	sealedGrant
 } from '../../../remote/src/utils/networking-security/sealedGrant';
-import {
-	newRecoverySecret,
-	openSealedRecovery,
-	sealedRecovery
-} from '../../../remote/src/utils/networking-security/sealedRecovery';
-import {
-	newScopeKeys,
-	scopeCommitment
-} from '../../../remote/src/utils/networking-security/sealedScopeKeys';
+import { openSealedRecovery } from '../../../remote/src/utils/networking-security/sealedRecovery';
+import { bootstrapCandidate } from '../support/syncBootstrapCandidate';
 import { startSync } from '../support/syncFixture';
 import type { SyncFixture } from '../support/syncFixture.types';
 
@@ -35,35 +28,15 @@ afterAll(async () => {
 	await fixture?.stop();
 });
 
-async function candidate() {
-	const [admin, backup] = await Promise.all([sealedDevice(), sealedDevice({ extractable: true })]);
-	const key = newScopeKeys();
-	const secret = newRecoverySecret();
-	const scope = toBase64Url(key.scopeId);
-	const commitment = toBase64Url(await scopeCommitment(key));
-	const devices = [
-		sealedDevicePublic(admin, 'admin', [scope]),
-		sealedDevicePublic(backup, 'recovery', [scope])
-	];
-	const entry = await sealedChainEntry(admin, {
-		seq: 0,
-		prev: '',
-		at: 1,
-		by: admin.deviceId,
-		body: { type: 'genesis', account, devices, scopes: [{ scope, epoch: 0, commitment }] }
-	});
-	const grants = await Promise.all(devices.map((device) => sealedGrant(account, key, device)));
-	const recovery = await sealedRecovery(secret, backup);
-	const headers = { 'X-Harness-Device': admin.deviceId };
-	return { body: { entry, grants, recovery }, headers, secret, commitment, admin, key };
-}
-
 async function snapshot(response: Response) {
 	return { status: response.status, body: (await response.json()) as unknown };
 }
 
 test('first sign-ins compete for one atomic and recoverable account bootstrap', async () => {
-	const [first, second] = await Promise.all([candidate(), candidate()]);
+	const [first, second] = await Promise.all([
+		bootstrapCandidate(account),
+		bootstrapCandidate(account)
+	]);
 	const invalid = { ...first.body, grants: first.body.grants.slice(0, 1) };
 	const malformed = await fixture.call('session-a', 'POST', 'bootstrap', {
 		body: invalid,
@@ -94,8 +67,8 @@ test('first sign-ins compete for one atomic and recoverable account bootstrap', 
 }, 60_000);
 
 async function verifyWriters(
-	winner: Awaited<ReturnType<typeof candidate>>,
-	rejected: Awaited<ReturnType<typeof candidate>>,
+	winner: Awaited<ReturnType<typeof bootstrapCandidate>>,
+	rejected: Awaited<ReturnType<typeof bootstrapCandidate>>,
 	prev: string
 ) {
 	const admin = winner.admin;
@@ -136,7 +109,7 @@ async function verifyWriters(
 	).toEqual({ status: 200, body: saved });
 }
 
-async function verifyRecovery(winner: Awaited<ReturnType<typeof candidate>>) {
+async function verifyRecovery(winner: Awaited<ReturnType<typeof bootstrapCandidate>>) {
 	for (const [session, status, error] of [
 		[null, 401, 'session-required'],
 		['session-b', 404, 'not-found']

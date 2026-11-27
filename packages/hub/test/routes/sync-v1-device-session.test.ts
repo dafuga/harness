@@ -1,10 +1,7 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import {
-	sealedDevice,
-	sealedDevicePublic
-} from '../../../remote/src/utils/networking-security/sealedDevice';
-import { sealedChainEntry } from '../../../remote/src/utils/networking-security/sealedChainEntry';
+import { sealedDevice } from '../../../remote/src/utils/networking-security/sealedDevice';
 import { toBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
+import { bootstrapCandidate } from '../support/syncBootstrapCandidate';
 import { startSync } from '../support/syncFixture';
 import type { SyncFixture } from '../support/syncFixture.types';
 
@@ -34,27 +31,23 @@ async function snapshot(response: Response) {
 }
 
 async function signedIn() {
-	const device = await sealedDevice();
-	const headers = { 'X-Harness-Device': device.deviceId };
-	const entry = await sealedChainEntry(device, {
-		seq: 0,
-		prev: '',
-		at: 1,
-		by: device.deviceId,
-		body: {
-			type: 'genesis',
-			account,
-			scopes: [],
-			devices: [sealedDevicePublic(device, 'admin', [])]
-		}
-	});
-	const response = await fixture.call(session, 'POST', 'chain', { headers, body: entry });
+	const candidate = await bootstrapCandidate(account);
+	const { headers, admin, body } = candidate;
+	const first = await fixture.call(session, 'GET', 'device-session', { headers });
+	expect(await snapshot(first)).toEqual({ status: 200, body: { state: 'first-device' } });
+	const response = await fixture.call(session, 'POST', 'bootstrap', candidate);
 	expect(response.status).toBe(201);
-	return { device, headers };
+	return { device: admin, headers, scope: body.grants[0].scope };
 }
 
 test('an enrolled identifier cannot approve another Google session', async () => {
-	const { device, headers } = await signedIn();
+	const { device, headers, scope } = await signedIn();
+	const path = `ops/${scope}`;
+	const hold = await fixture.call(session, 'GET', path, { headers });
+	expect(await snapshot(hold)).toEqual({
+		status: 403,
+		body: { error: 'device-approval-required' }
+	});
 	const start = await fixture.call(session, 'GET', 'device-session', { headers });
 	expect(start.status).toBe(200);
 	const challenge = (await start.json()) as { state: string; challenge: string };
@@ -75,6 +68,15 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	expect(await snapshot(approved)).toEqual({ status: 200, body: { state: 'approved' } });
 	const held = await fixture.call(session, 'GET', 'device-session', { headers });
 	expect(await snapshot(held)).toEqual({ status: 200, body: { state: 'approved' } });
+	expect((await fixture.call(session, 'GET', path, { headers })).status).toBe(200);
+	const wrongScope = toBase64Url(crypto.getRandomValues(new Uint8Array(16)));
+	const forbidden = await fixture.call(session, 'GET', `objects/${wrongScope}`, { headers });
+	expect(await snapshot(forbidden)).toEqual({ status: 403, body: { error: 'scope-denied' } });
+	const bypass = await fixture.call(otherSession, 'GET', path, { headers });
+	expect(await snapshot(bypass)).toEqual({
+		status: 403,
+		body: { error: 'device-approval-required' }
+	});
 	const pending = await sealedDevice();
 	const unrelated = await fixture.call(otherSession, 'GET', 'device-session', {
 		headers: { 'X-Harness-Device': pending.deviceId }
