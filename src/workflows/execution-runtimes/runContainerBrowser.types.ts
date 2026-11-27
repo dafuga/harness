@@ -16,6 +16,10 @@ export interface ContainerBrowserRunInput {
 	value?: string;
 	port: number;
 	host?: string[];
+	accessHost?: string;
+	accessTeam?: string;
+	accessAudience?: string;
+	accessEmail?: string;
 	diskImage?: string;
 	downloadKbps: number;
 	directory?: string;

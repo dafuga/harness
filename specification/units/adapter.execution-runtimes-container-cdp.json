@@ -17,8 +17,10 @@
 			"ContainerCdpAdapter.constructor",
 			"ContainerCdpAdapter.pages",
 			"ContainerCdpAdapter.attach",
+			"ContainerCdpAdapter.navigateFocused",
 			"ContainerCdpAdapter.quit",
 			"ContainerPageTarget",
+			"ContainerHistoryAction",
 			"ContainerPage"
 		]
 	},
@@ -34,6 +36,16 @@
 				"name": "ContainerCdpAdapter.attach.target",
 				"type": "ContainerPageTarget",
 				"required": true
+			},
+			{
+				"name": "ContainerCdpAdapter.navigateFocused.action",
+				"type": "ContainerHistoryAction | 'open'",
+				"required": true
+			},
+			{
+				"name": "ContainerCdpAdapter.navigateFocused.address",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -46,11 +58,20 @@
 				"type": "Promise<ContainerPage>"
 			},
 			{
+				"name": "ContainerCdpAdapter.navigateFocused",
+				"type": "Promise<void>"
+			},
+			{
 				"name": "ContainerCdpAdapter.quit",
 				"type": "Promise<void>"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
 			{
@@ -81,6 +102,34 @@
 					}
 				],
 				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerCdpAdapter.navigateFocused",
+				"inputs": [
+					{
+						"name": "ContainerCdpAdapter.navigateFocused.action",
+						"type": "ContainerHistoryAction | 'open'",
+						"required": true
+					},
+					{
+						"name": "ContainerCdpAdapter.navigateFocused.address",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerCdpAdapter.navigateFocused",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
 				"errorStatus": "unknown"
 			},
 			{
@@ -130,6 +179,11 @@
 		},
 		{
 			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -38,6 +38,19 @@
 	width: 100%;
 	box-sizing: border-box;
 }
+.hh-home .hh-viewer-action,
+.hh-home .hh-viewer-detail .po-action {
+	justify-self: start;
+	min-height: 44px;
+}
+.hh-home .hh-viewer-detail {
+	display: grid;
+	gap: var(--hx-space-12);
+}
+.hh-home .hh-viewer-detail p {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
 .hh-home .hh-needs-row {
 	display: grid;
 	grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) auto;

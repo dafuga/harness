@@ -15,7 +15,8 @@ const attendedMs = 45_000;
 export class ViewerDeviceRepository {
 	constructor(
 		private readonly directory: string,
-		private readonly now: () => number = Date.now
+		private readonly now: () => number = Date.now,
+		private readonly lifetimeMs?: number
 	) {}
 
 	access(token: string | undefined): ViewerAccess {
@@ -33,7 +34,11 @@ export class ViewerDeviceRepository {
 		let code: string;
 		do code = String(randomInt(0, 1_000_000)).padStart(6, '0');
 		while (state.pending.some((pairing) => pairing.code === code));
-		const pairing = { hash: digest(token), code, expiresAt: this.now() + pairingMs };
+		const pairing = {
+			hash: digest(token),
+			code,
+			expiresAt: this.now() + (this.lifetimeMs ?? pairingMs)
+		};
 		state.pending = [...state.pending, pairing].slice(-maxPending);
 		this.save(state);
 		return { token, code };
@@ -86,7 +91,13 @@ export class ViewerDeviceRepository {
 			return { version: 1, devices: [], pending: [] };
 		}
 		const state = JSON.parse(raw) as ViewerDevices;
-		state.pending = state.pending.filter((pairing) => pairing.expiresAt > this.now());
+		const now = this.now();
+		state.pending = state.pending.filter((pairing) => pairing.expiresAt > now);
+		const lifetime = this.lifetimeMs;
+		if (lifetime)
+			state.devices = state.devices.filter(
+				(device) => Date.parse(device.approvedAt) + lifetime > now
+			);
 		return state;
 	}
 

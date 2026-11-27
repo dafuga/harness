@@ -1,7 +1,12 @@
 // @harness-uid u_qqfbrdf4z2
 import { z } from 'zod';
 import type { ContainerBrowserPipes } from '../../core/execution-runtimes/containerBrowser.types';
-import type { ContainerPage, ContainerPageTarget } from './ContainerCdpAdapter.types';
+import { ExpectedCliError } from '../../core/development-tooling/errors';
+import type {
+	ContainerHistoryAction,
+	ContainerPage,
+	ContainerPageTarget
+} from './ContainerCdpAdapter.types';
 import { CdpSession } from './container-cdp-adapter/CdpSession';
 import { pipeHttpJson } from './container-cdp-adapter/pipeHttpJson';
 
@@ -23,6 +28,25 @@ export class ContainerCdpAdapter {
 
 	attach(target: ContainerPageTarget): Promise<ContainerPage> {
 		return this.session(target);
+	}
+
+	/** Navigate the page with keyboard focus, even if it's an address-bar-less popup. */
+	async navigateFocused(action: ContainerHistoryAction | 'open', address: string): Promise<void> {
+		const targets = await this.pages();
+		for (const target of targets) {
+			const page = await this.session(target).catch(() => undefined);
+			if (!page) continue;
+			try {
+				const focused = await page.evaluate('document.hasFocus()').catch(() => false);
+				if (targets.length > 1 && focused !== true) continue;
+				if (action === 'open') await page.navigate(address);
+				else await page.history(action);
+				return;
+			} finally {
+				page.close();
+			}
+		}
+		throw new ExpectedCliError('The container browser needs a focused page.');
 	}
 
 	/**

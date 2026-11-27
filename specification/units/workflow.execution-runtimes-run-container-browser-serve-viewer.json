@@ -36,7 +36,12 @@
 				"type": "Promise<void>"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
 			{
@@ -73,6 +78,16 @@
 	"dependencies": [
 		{
 			"unit": "adapter.execution-runtimes-container-browser",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.execution-runtimes-create-viewer-access",
 			"via": "import",
 			"origin": "derived"
 		},

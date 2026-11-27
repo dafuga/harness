@@ -34,9 +34,10 @@ export async function sendViewerAsset(
 		}
 		response.writeHead(200, {
 			'content-type': types[extname(path)] ?? 'application/octet-stream',
-			'cache-control': 'private, no-cache',
+			'cache-control': 'no-store',
+			'referrer-policy': 'no-referrer',
 			'x-content-type-options': 'nosniff',
-			'x-frame-options': 'DENY'
+			'x-frame-options': pathname === '/vnc.html' ? 'SAMEORIGIN' : 'DENY'
 		});
 		createReadStream(path).pipe(response);
 	} catch {
