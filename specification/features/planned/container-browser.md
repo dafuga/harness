@@ -82,6 +82,11 @@ engine socket, display, and profile under the executor identity. The legacy
 viewer is unsuitable for sensitive entry because its host user can access
 the display and Docker socket.
 
+Keep the dedicated Colima disks on the executor Mac's FileVault-enabled Data
+volume under the private executor home. Verify the actual disk paths and
+FileVault state before enabling admission. A Docker volume persists the profile
+and relies on host disk encryption for protection at rest.
+
 For initial sign-in and reauthentication, the executor drains agent work
 before opening the private viewer and requires Daniel's paired device.
 Daniel signs in to the Google website and completes any Google challenge on
@@ -91,6 +96,14 @@ actions in the virtual display. If Google asks for reauthentication during
 Slack's Sign in with Google, return to private takeover. Preserve the dedicated
 volume through restarts. A rollback stops the separate Chrome container and
 revokes its viewer session while retaining the volume.
+
+The Google session check runs in the executor with other browser work and
+viewer input excluded. It opens the Google Account security page in a separate
+Chrome window in the same profile and reads only the destination via Linux
+accessibility. It closes the window before returning `ready`, `reauth-required`,
+or `unknown`. No account contents, cookies, full URLs, or WebDriver or DevTools
+traffic are part of the check. An unrecognized page or unavailable network is
+`unknown` and holds admission until a safe result is verified.
 
 For acceptance, confirm the actual Google sign-in succeeds through the phone
 viewer, then use Slack's Sign in with Google in the same virtual desktop.
@@ -109,5 +122,6 @@ Build `deploy/container-browser` with
 `--target protected-chrome --tag harness-protected-chrome:test`, then set
 `HARNESS_TEST_PROTECTED_CHROME_SOCKET` to that engine's Unix socket and run
 `bunx vitest run test/container-browser.e2e.test.ts`. The test disables
-networking and checks the virtual screen, absence of a debug listener,
-and the profile surviving container recreation.
+networking and checks the virtual screen and absence of a debug listener. An
+in-container HTTP fixture verifies a website session is retained after container
+recreation and distinguishes an expired session from a network failure.

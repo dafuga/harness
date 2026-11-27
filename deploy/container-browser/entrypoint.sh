@@ -11,6 +11,7 @@ case "$#" in
   0|1) ;;
   *) echo 'Expected one browser mode.' >&2; exit 1 ;;
 esac
+bus=
 case "${1-chromium}" in
   chromium)
     profile=/profile/chromium
@@ -19,7 +20,16 @@ case "${1-chromium}" in
     ;;
   protected-chrome)
     profile=/profile/google-chrome
-    launch=(/usr/bin/google-chrome-stable)
+    launch=(/usr/bin/google-chrome-stable --force-renderer-accessibility)
+    install -d -m 700 /tmp/harness-chrome-session
+    rm -f /tmp/harness-chrome-session/bus
+    dbus-daemon --session --address="$DBUS_SESSION_BUS_ADDRESS" --nofork >/dev/null 2>&1 &
+    bus=$!
+    for _ in $(seq 1 40); do
+      [ -S /tmp/harness-chrome-session/bus ] && break
+      sleep 0.05
+    done
+    [ -S /tmp/harness-chrome-session/bus ] || { echo 'The Chrome session bus did not start.' >&2; exit 1; }
     ;;
   *) echo 'Unrecognized browser mode.' >&2; exit 1 ;;
 esac
@@ -43,8 +53,14 @@ openbox >/dev/null 2>&1 &
   --window-position=0,0 --window-size="${size/x/,}" --start-maximized about:blank >/dev/null 2>&1 &
 browser=$!
 
-stop() { kill -TERM "$browser" 2>/dev/null; wait "$browser" 2>/dev/null; kill "$display" 2>/dev/null; exit 0; }
+stop() {
+  kill -TERM "$browser" 2>/dev/null || true
+  wait "$browser" 2>/dev/null || true
+  kill "$display" 2>/dev/null || true
+  if [[ -n "$bus" ]]; then kill "$bus" 2>/dev/null || true; fi
+  exit 0
+}
 trap stop TERM INT
 # Either one exiting ends the container, and Docker's restart policy brings both back.
-wait -n "$browser" "$display"
+wait -n "$browser" "$display" ${bus:+"$bus"}
 exit 1

@@ -26,7 +26,8 @@ FROM desktop AS protected-chrome
 RUN test "$(dpkg --print-architecture)" = arm64 \
  && apt-get -o Acquire::Retries=3 -o Acquire::http::Dl-Limit="$DOWNLOAD_KBPS" update \
  && apt-get -o Acquire::Retries=3 -o Acquire::http::Dl-Limit="$DOWNLOAD_KBPS" \
-      install --yes --no-install-recommends wget \
+      install --yes --no-install-recommends \
+      at-spi2-core dbus gir1.2-atspi-2.0 python3-gi wget wmctrl x11-utils \
  && wget --quiet --timeout=30 --tries=3 --limit-rate="${DOWNLOAD_KBPS}k" -O /tmp/google-chrome.deb \
       https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_158.0.8127.88-1_arm64.deb \
  && printf '%s  %s\n' '6c7439981240ba7fb05c3534b4aa3ea3104ce388f300c2bbdf66884f8c554098' /tmp/google-chrome.deb | sha256sum --check \
@@ -35,6 +36,9 @@ RUN test "$(dpkg --print-architecture)" = arm64 \
  && rm -f /tmp/google-chrome.deb /etc/apt/sources.list.d/google-chrome.list \
  && rm -rf /var/lib/apt/lists/*
 COPY --chmod=0644 protected-chrome-policy.json /etc/opt/chrome/policies/managed/harness.json
+COPY --chmod=0644 protected-chrome-health.py /opt/browser/protected-chrome-health.py
+ENV HOME=/profile XDG_CONFIG_HOME=/profile/.config XDG_CACHE_HOME=/tmp/cache DISPLAY=:99 \
+    DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/harness-chrome-session/bus
 USER 10001:10001
 ENTRYPOINT ["/bin/bash", "/opt/browser/entrypoint.sh", "protected-chrome"]
 
