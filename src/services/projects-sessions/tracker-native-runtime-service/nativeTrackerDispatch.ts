@@ -6,7 +6,6 @@ import { TrackerDispatchRepository } from '../../../repositories/projects-sessio
 import { trackerTimeZone } from '../../../utils/projects-sessions/normalizeTrackerDue';
 import {
 	automaticEnabled,
-	automaticQuietHour,
 	canonicalNode,
 	mayScheduleHere
 } from '../../agents-providers/tracker-dispatcher-service/launchEligibility';
@@ -120,14 +119,8 @@ function dispatchPermits(
 		machines?: PeerStarts;
 	}
 ) {
-	const localPermit = () => {
-		const at = policy.now();
-		return (
-			automaticEnabled(policy) &&
-			!automaticQuietHour(at) &&
-			repository.launches.reserveAutomaticSlot(at)
-		);
-	};
+	const localPermit = () =>
+		automaticEnabled(policy) && repository.launches.reserveAutomaticSlot(policy.now());
 	if (options.role === 'spoke')
 		return { automatic: spokeAutomaticPermit(store, options, localPermit) ?? localPermit };
 	return {

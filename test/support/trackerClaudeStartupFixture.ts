@@ -160,8 +160,8 @@ async function withClaudeLaunch(
 	writeFileSync(join(profiles.accountHome, '.claude-session-fixture'), mode);
 	const database = new DatabaseSync(':memory:');
 	vi.stubEnv('HOME', profiles.accountHome);
-	// Automatic retries are held overnight in Lisbon, so the dispatcher's day is fixed at midday.
-	vi.useFakeTimers({ toFake: ['Date'], now: Date.UTC(2026, 10, 26, 12), shouldAdvanceTime: true });
+	// Automatic retries run through the night: the clock is fixed at 02:00 in Lisbon.
+	vi.useFakeTimers({ toFake: ['Date'], now: Date.UTC(2026, 10, 26, 2), shouldAdvanceTime: true });
 	try {
 		const runtime = new TrackerNativeRuntimeService(
 			database,
