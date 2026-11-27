@@ -2,7 +2,7 @@
 	"name": "tracker-astra-default",
 	"goal": "Select Astra 6.2 high for unpinned non-deploy picks, launches and retries while preserving eligible pins and existing Claude deploy routing.",
 	"createdAt": "2026-11-27T18:21:54.641Z",
-	"updatedAt": "2026-11-27T18:21:54.641Z",
+	"updatedAt": "2026-11-27T18:28:13.893Z",
 	"template": "feature",
 	"templateLineage": [
 		"feature"
@@ -12,17 +12,23 @@
 		{
 			"id": "spec",
 			"title": "Confirm scope, success criteria, constraints, and proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:28:12.016Z",
+			"evidence": "Confirmed t8rd9x, both installed release 75a57c4d4b, main b943184422, model-status.md and existing Claude deploy preview g6gcbe."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest complete feature slice.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:28:12.968Z",
+			"evidence": "Astra high on unpinned picks and task retries, same provider and effort on both synthetic driver starts. Prior pin and deploy policies retained."
 		},
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T18:28:13.893Z",
+			"evidence": "Red 0e32891053: 10 assertions failed. On product fix 2912c1e4ac the identical five suites passed 22 cases; full-process compatibility assertion updated separately."
 		},
 		{
 			"id": "verify",
