@@ -6,6 +6,7 @@
 	import { resolve } from '$app/paths';
 	import { onMount, setContext, type Snippet } from 'svelte';
 	import AccountSignIn from '../components/accounts-access/AccountSignIn.svelte';
+	import DeviceApprovalInbox from '../components/accounts-access/DeviceApprovalInbox.svelte';
 	import type { NativeHostedStatus } from '../models/projects-sessions/ProjectContext.types';
 	import { nativeAccountContext } from '../models/development-tooling/Environment.types';
 	import type {
@@ -151,6 +152,9 @@
 
 {#if environment && (!required || signedIn)}
 	{#key status?.actor?.id}
+		{#if signedIn && environment.deviceApproval}
+			<DeviceApprovalInbox request={environment.deviceApproval} />
+		{/if}
 		{@render children()}
 	{/key}
 {:else if environment}

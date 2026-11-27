@@ -97,11 +97,13 @@ export class CapacitorEnvironmentAdapter {
 		} as const;
 		if (!this.account) return { ...local, bridge: mac };
 		const cloud = new CapacitorAccountAdapter({ plugin: this.account }).connect();
-		const bridge = new CapacitorProjectsService({
-			cloud,
-			mac
-		}).connect();
-		return { ...local, bridge, account: true };
+		const bridge = new CapacitorProjectsService({ cloud, mac }).connect();
+		return {
+			...local,
+			bridge,
+			account: true,
+			deviceApproval: this.account.deviceApproval?.bind(this.account)
+		};
 	}
 
 	private listen<K extends keyof RemoteNativeEvents>(

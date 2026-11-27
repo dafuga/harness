@@ -1,7 +1,7 @@
+import { captureIosAccountState } from './support/captureIosAccountState';
 import { expect as baseExpect, test } from '../../../../test/support/browserTest';
 import type { Page } from '@playwright/test';
 import {
-	captureSignInGate,
 	setLoginStage,
 	pairedAccountCalls,
 	pairedPhoneFixture,
@@ -91,7 +91,7 @@ test('iOS opens at Google sign-in before it reads Tracker or projects', async ({
 	const google = page.getByRole('button', { name: 'Sign in with Google' });
 	await expect(google).toBeVisible();
 	expect(await pairedAccountCalls(page)).toEqual([]);
-	await captureSignInGate(page, 'sign-in');
+	await captureIosAccountState(page, 'sign-in');
 	await google.click();
 	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
 	await page.getByRole('button', { name: 'Cancel' }).click();
@@ -103,11 +103,11 @@ test('iOS opens at Google sign-in before it reads Tracker or projects', async ({
 
 	await expect(page.getByText('Waiting for approval', { exact: true })).toBeVisible();
 	await expect(page.getByText('018427', { exact: true })).toBeVisible();
-	await captureSignInGate(page, 'waiting');
+	await captureIosAccountState(page, 'waiting');
 	await setLoginStage(page, 'approval-denied');
 	const alert = page.getByRole('alert');
 	await expect(alert).toBeVisible();
-	await captureSignInGate(page, 'denied');
+	await captureIosAccountState(page, 'denied');
 	await expect(alert).toHaveText('Device approval was denied.');
 	await expect(page.getByText('018427', { exact: true })).toHaveCount(0);
 	const back = page.getByRole('button', { name: 'Back to sign in' });
@@ -118,33 +118,13 @@ test('iOS opens at Google sign-in before it reads Tracker or projects', async ({
 	await google.click();
 	await setLoginStage(page, 'approval-expired');
 	await expect(alert).toHaveText('Device approval expired.');
-	await captureSignInGate(page, 'expired');
+	await captureIosAccountState(page, 'expired');
 	await page.getByRole('button', { name: 'Back to sign in' }).click();
 	await google.click();
 	await setLoginStage(page, 'signed-in');
 	await expect(page).toHaveURL(/\/$/);
 	await overviewLink(page).click();
 	await expect(page.getByText('fixture-needs', { exact: true }).first()).toBeVisible();
-});
-
-test('an approved iPhone reviews and decides device approval requests', async ({ page }) => {
-	await page.setViewportSize(phone);
-	await pairedPhoneFixture(page, 'approve');
-	await page.goto('/');
-	const requests = page.getByRole('region', { name: 'Device approvals' });
-	await expect(requests).toBeVisible();
-	await expect(requests.getByText('Harness Mac')).toBeVisible();
-	await expect(requests.getByText(/Portugal/)).toBeVisible();
-	await requests.getByRole('button', { name: 'Review Harness Mac' }).click();
-	const review = page.getByRole('dialog', { name: 'Approve Harness Mac' });
-	await expect(review.getByText('053817', { exact: true })).toBeVisible();
-	await captureSignInGate(page, 'approve-review');
-	await review.getByRole('button', { name: 'Approve device' }).click();
-	await expect(page.getByText('Device approved.', { exact: true })).toBeVisible();
-	await expect(requests.getByText('Harness Mac')).toHaveCount(0);
-	await requests.getByRole('button', { name: 'Deny Harness Hub' }).click();
-	await expect(page.getByText('Device denied.', { exact: true })).toBeVisible();
-	await expect(requests).toHaveCount(0);
 });
 
 test('a signed-in non-owner is denied on confirmation, so the landing page offers no overview', async ({

@@ -31,10 +31,6 @@ export function pairedAccount(
 		state: 'signed-in',
 		actor: { id: 'google:fixture-owner', name: 'Fixture Owner', email: 'owner@example.invalid' }
 	};
-	const approvals = [
-		{ id: 'a'.repeat(32), platform: 'mac', country: 'PT', createdAt: Date.UTC(2026, 10, 27, 18) },
-		{ id: 'b'.repeat(32), platform: 'web', createdAt: Date.UTC(2026, 10, 27, 19) }
-	];
 	const accountStatus = () =>
 		shell.account === 'signed-in'
 			? owner
@@ -53,20 +49,7 @@ export function pairedAccount(
 							: undefined
 				};
 	return {
-		...(input.mode === 'approve'
-			? {
-					deviceApproval: async (call: { action: string; id?: string; code?: string }) => {
-						if (shell.account !== 'signed-in') throw new Error('Sign in to review devices.');
-						if (call.action === 'list') return { requests: approvals.slice() };
-						const index = approvals.findIndex((item) => item.id === call.id);
-						if (index < 0) throw new Error('Unknown request.');
-						if (call.action === 'review') return { state: 'compare', code: '053817' };
-						if (call.action === 'approve' && call.code !== '053817') throw new Error('Wrong code.');
-						approvals.splice(index, 1);
-						return { state: call.action === 'deny' ? 'denied' : 'approved' };
-					}
-				}
-			: {}),
+		...(input.mode === 'approve' ? { deviceApproval: pairedApproval(shell) } : {}),
 		status: async () => {
 			if (shell.account === 'approval-denied' || shell.account === 'approval-expired')
 				throw Object.assign(new Error(shell.account), { code: shell.account });
@@ -89,5 +72,31 @@ export function pairedAccount(
 				return pairedOverviewReply(input.mode, input.snapshot, ++shell.reads);
 			return pairedReply(200, []);
 		}
+	};
+}
+
+/** Synthetic bridge results for renderer-only testing of the approval dialog. */
+export function pairedApproval(shell: PairedShell) {
+	const approvals = [
+		{ id: 'a'.repeat(32), platform: 'mac', country: 'PT', createdAt: Date.UTC(2026, 10, 27, 18) },
+		{ id: 'b'.repeat(32), platform: 'web', createdAt: Date.UTC(2026, 10, 27, 19) }
+	];
+
+	let firstReview = true;
+	return async (call: { action: string; id?: string; code?: string }) => {
+		if (shell.account !== 'signed-in') throw new Error('Sign in to review devices.');
+		if (call.action === 'list') return { requests: approvals.slice() };
+		const index = approvals.findIndex((item) => item.id === call.id);
+		if (index < 0) throw new Error('Unknown request.');
+		if (call.action === 'review') {
+			if (firstReview) {
+				firstReview = false;
+				return { state: 'waiting' };
+			}
+			return { state: 'compare', code: '053817' };
+		}
+		if (call.action === 'approve' && call.code !== '053817') throw new Error('Wrong code.');
+		approvals.splice(index, 1);
+		return { state: call.action === 'deny' ? 'denied' : 'approved' };
 	};
 }

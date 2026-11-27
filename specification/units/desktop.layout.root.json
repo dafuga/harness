@@ -11,6 +11,7 @@
 		"level": "layout",
 		"uses": [
 			"desktop.component.accounts-access-account-sign-in",
+			"desktop.component.accounts-access-device-approval-inbox",
 			"reports.component.shared-primitives-atoms-html-main"
 		]
 	},
@@ -46,6 +47,11 @@
 	"dependencies": [
 		{
 			"unit": "desktop.component.accounts-access-account-sign-in",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.component.accounts-access-device-approval-inbox",
 			"via": "import",
 			"origin": "derived"
 		},
