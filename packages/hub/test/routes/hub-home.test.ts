@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 import type { HomeChatInput } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { serveHubHome } from '../../src/routes/api/hub-home/homePolicy';
 import { OTHER, OWNER, overviewFixture } from '../support/trackerOverviewFixture';
-import { agent, homeRequest, id, message, payload, sheets } from '../support/hubHomeFixture';
+import { agent, homeRequest, id, message, payload, plan, sheets } from '../support/hubHomeFixture';
 
 test('the browser owner queues one scoped message, only native claims it, and a receipt is private', async () => {
 	const { db, close } = await sheets();
@@ -15,8 +15,13 @@ test('the browser owner queues one scoped message, only native claims it, and a 
 		const scoped = await fixture.native(OWNER, 'project:synthetic');
 		expect((await serve(homeRequest('PUT', { cookie }, '', payload))).status).toBe(404);
 		expect((await serve(homeRequest('PUT', { bearer: scoped }, '', payload))).status).toBe(404);
-		const first = await serve(homeRequest('PUT', { bearer }, '', payload));
+		const published = { ...payload, plans: [plan] };
+		const first = await serve(homeRequest('PUT', { bearer }, '', published));
 		expect(await first.json()).toEqual({ messages: [] });
+		expect(await (await serve(homeRequest('GET', { cookie }))).json()).toMatchObject({
+			granted: true,
+			snapshot: { plans: [plan] }
+		});
 		const denied = await serve(homeRequest('GET', { cookie: other }));
 		expect(await denied.json()).toEqual({ granted: false, snapshot: null });
 		expect(denied.headers.get('cache-control')).toBe('private, no-store');

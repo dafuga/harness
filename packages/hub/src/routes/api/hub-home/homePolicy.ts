@@ -22,6 +22,8 @@ const documentPath = root + '/doc';
 const headers = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' };
 
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers });
+// Up to 65 plans with four 24 KiB stage artifacts, plus the existing Home snapshot.
+const maxHomeBytes = 8 * 1024 * 1024;
 const unreadable = { granted: false, snapshot: null };
 
 async function verifiedOwner(request: Request, deps: HomeDeps) {
@@ -93,7 +95,7 @@ async function nativeHome(
 		return json(stored.body, stored.status);
 	}
 	const body: unknown = JSON.parse(
-		await readOverviewText(request, url.pathname === root ? 1024 * 1024 : 8192)
+		await readOverviewText(request, url.pathname === root ? maxHomeBytes : 8192)
 	);
 	if (url.pathname === root) {
 		const snapshot = parseHomePayload(body);

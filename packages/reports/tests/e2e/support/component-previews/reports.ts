@@ -1,4 +1,5 @@
 import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
+import { catalogHomeView, catalogTrackerHomeSource } from './hubHomeCatalogData';
 import { children, noop, text, example, picker } from './shared';
 import type { PreviewCases } from './shared';
 import {
@@ -25,6 +26,14 @@ const overview = allStatesSnapshot();
 if (overview.status !== 'ready') throw new Error('The catalog needs a ready overview fixture.');
 const card = overview.projects[0];
 export const reportCases: PreviewCases = {
+	'desktop.component.development-tooling-tracker-work': {
+		source: catalogTrackerHomeSource,
+		mac: true
+	},
+	'reports.component.projects-sessions-tracker-planning-details': {
+		stage: 'design',
+		planning: catalogHomeView.plans?.[0]?.planning
+	},
 	'reports.component.verification-evidence-video-evidence': videoEvidenceProps,
 	'reports.component.verification-evidence-video-graph-navigation': videoGraphNavigationProps,
 	'reports.component.projects-sessions-project-overview-project-overview': {

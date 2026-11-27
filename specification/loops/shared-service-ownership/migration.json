@@ -2699,15 +2699,27 @@
 			"unit": "desktop.adapter.electron-environment",
 			"from": "packages/desktop/src/adapters/ElectronEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-			"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
+			"definition": "b6e8709201c6fb7079be4112819f711ad44c97affe48d13d2d95621adb53f5dd",
 			"relocationDefinition": "da0290089728366cb117aeb9d8c013df801f3ad2bdc391ed95872f71b3af03ce",
 			"review": {
-				"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+				"commit": "a834c24e86afe2206ce7435350b59d0f5d7c739a",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
-				"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
-				"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				"definition": "b6e8709201c6fb7079be4112819f711ad44c97affe48d13d2d95621adb53f5dd",
+				"reason": "Exposes the local Home reader and message writer together through the Electron environment."
 			},
 			"previousReviews": [
+				{
+					"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"definition": "52bf1aec33561c92aa67f56253d4ed3170b3129b461fc4531f30c38b15db1bac",
+					"reason": "Exposes the local Tracker Home reader and writer through the existing Electron environment."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
+					"definition": "0149130bfc1ac68ce8ab3b8ec84ed48e7a2182a0737765b560e98ce7219d5dca",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
 				{
 					"commit": "a99f5d168c7d69d28d9ee38382ab8b1f056f1db2",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/ElectronEnvironmentAdapter.ts",
@@ -4452,15 +4464,21 @@
 			"unit": "desktop.adapter.capacitor-environment",
 			"from": "packages/desktop/src/adapters/CapacitorEnvironmentAdapter.ts",
 			"to": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-			"definition": "d6fb0ad223bb2b23164c34dad8f3692f6848f080ed26ab32a9c7e127f9e938d8",
+			"definition": "0f7d724ac9ead0302768c7f4142342f7c346de569e5f6d3878b27ee4c379ce9d",
 			"relocationDefinition": "a8686e0c6a99b21cf67d3b48283b7791fe3c0230f56e99b01fb0a072a81d2c94",
 			"review": {
-				"commit": "baa2b466cabe1faec79b19112b0bde7b6cb40cc9",
+				"commit": "e5d8b2e82ca0d521f40127e94e074203e6c0a0fa",
 				"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
-				"definition": "d6fb0ad223bb2b23164c34dad8f3692f6848f080ed26ab32a9c7e127f9e938d8",
-				"reason": "Offers the native Vault to the phone page only where the shell ships its HarnessVault plugin."
+				"definition": "0f7d724ac9ead0302768c7f4142342f7c346de569e5f6d3878b27ee4c379ce9d",
+				"reason": "Reads Tracker Home and sends contextual Chief of Staff messages through the paired Mac connection."
 			},
 			"previousReviews": [
+				{
+					"commit": "baa2b466cabe1faec79b19112b0bde7b6cb40cc9",
+					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
+					"definition": "d6fb0ad223bb2b23164c34dad8f3692f6848f080ed26ab32a9c7e127f9e938d8",
+					"reason": "Offers the native Vault to the phone page only where the shell ships its HarnessVault plugin."
+				},
 				{
 					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
 					"path": "packages/desktop/src/lib/verification-evidence/select-environment/CapacitorEnvironmentAdapter.ts",
@@ -5794,6 +5812,12 @@
 			},
 			"previousReviews": [
 				{
+					"commit": "fb1cb346cdef500b9df0e604cde58a67b7cfb806",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
+					"reason": "Exposes the local design canvas read through the isolated preload bridge."
+				},
+				{
 					"commit": "caea83354142413dd97edae29bdd055924c9847b",
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "795fd28ae7e4feffe99c57fea4a02ed05dca03049b0dd37e70b752647da05988",
@@ -5858,6 +5882,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
 					"definition": "4fa517693068ce8f49040a2f1211abf9fbf66df87a6047a9ab3ea9dc4dcf3607",
 					"reason": "Exposes the local design canvas read through the isolated preload bridge."
+				},
+				{
+					"commit": "8713ce6311ac98bab14b3837d03b0668a69fee6c",
+					"path": "packages/desktop/src/lib/development-tooling/preload-initialization/initializePreload.ts",
+					"definition": "4dea83f1f6823d4ce73d4541049d46eaa76004274441e6fedb65c86821cd6df5",
+					"reason": "Exposes the two fixed Home operations over the isolated Mac preload bridge."
 				}
 			]
 		},
@@ -7425,6 +7455,18 @@
 			},
 			"previousReviews": [
 				{
+					"commit": "5c2602ebf47d18da1f91dfb7dfcfdfd0292bed8c",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "58abe7d8f66580aa71d34ae6894ae660661f893f668edecf91ffa142a9970fc4",
+					"reason": "Handles fixed Home reads and validates contextual chat writes before delivering them to the local Tracker."
+				},
+				{
+					"commit": "5a8b539b4547a66290b0f8d78b5e2518e31ca7a3",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
+					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
+				{
 					"commit": "46be4288fc3844395376ec289b249c1efd41cf46",
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "b76b28a3eb27eb9146a788217e397fdbfec9bdcfe6a8bf5b22ba9c2d0be4c70d",
@@ -7465,6 +7507,12 @@
 					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
 					"definition": "aea92b23effa45f68ee82890e5fab5919be68fb18d07f1c2e071027ef7f5d8c0",
 					"reason": "Removes the QR pairing offer and scan path; devices link through Google sign-in only (pbwpzd)."
+				},
+				{
+					"commit": "748ebb4b5cf50a7bca6ff14023d70d41fb5622d9",
+					"path": "packages/desktop/src/lib/development-tooling/desktop-initialization/LocalOperationsService.ts",
+					"definition": "b8e4551fb63e5f769b042759547b4180707504d96a676d85780c5d667e93737d",
+					"reason": "Resolves the platform fetch function at Home chat delivery so the Mac local and paired-device paths use the active transport with compatible types."
 				}
 			]
 		},

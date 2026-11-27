@@ -4,6 +4,11 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
 import { CapacitorAccountAdapter } from './capacitor-account-adapter/CapacitorAccountAdapter';
 import { CapacitorBridgeAdapter } from './capacitor-bridge-adapter/CapacitorBridgeAdapter';
 import { CapacitorProjectsService } from './CapacitorProjectsService';
+import type {
+	OwnerHomeSnapshot,
+	HomeChatReceipt,
+	TrackerHomeSource
+} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { phoneTrackerTools } from './phoneTrackerTools';
 import type {
 	AccountNativePlugin,
@@ -32,6 +37,27 @@ function nativeAccount(): AccountNativePlugin | undefined {
 	return registerPlugin<AccountNativePlugin>(accountPluginName);
 }
 
+function offerAccountComputers(
+	phone: RemoteMobileControl,
+	plugin: RemoteNativePlugin,
+	note: (status: RemoteNativeStatus) => RemoteNativeStatus
+) {
+	if (!plugin.computers || !plugin.connectAccountComputer) return;
+	const list = plugin.computers.bind(plugin);
+	const connect = plugin.connectAccountComputer.bind(plugin);
+	phone.computers = async () => (await list()).computers;
+	phone.connectAccountComputer = async (input) => note(await connect(input));
+}
+
+function phoneHome(plugin: RemoteNativePlugin): TrackerHomeSource {
+	return {
+		read: async () =>
+			(await plugin.request({ method: 'homeSnapshot', input: {} })).value as OwnerHomeSnapshot,
+		send: async (message) =>
+			(await plugin.request({ method: 'homeChat', input: { ...message } })).value as HomeChatReceipt
+	};
+}
+
 /**
  * The iOS shell. One native plugin gives both the product interface and this phone's connection
  * to a computer; another, where the shell has it, this phone's own Hub account. The page holds
@@ -58,17 +84,14 @@ export class CapacitorEnvironmentAdapter {
 			onStatus: (listener) => this.listen('status', (status) => listener(note(status)))
 		};
 		const mac = computer.connect();
-		if (this.account && plugin.computers && plugin.connectAccountComputer) {
-			const list = plugin.computers.bind(plugin);
-			const connect = plugin.connectAccountComputer.bind(plugin);
-			phone.computers = async () => (await list()).computers;
-			phone.connectAccountComputer = async (input) => note(await connect(input));
-		}
+		if (this.account) offerAccountComputers(phone, plugin, note);
 		offerVault(phone);
 		const tracker = phoneTrackerTools(plugin);
+
 		const local = {
 			kind: 'capacitor',
 			local: false,
+			trackerHome: phoneHome(plugin),
 			phone,
 			...(tracker ? { tracker } : {})
 		} as const;

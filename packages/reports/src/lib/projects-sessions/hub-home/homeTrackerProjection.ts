@@ -47,6 +47,8 @@ function listPlans(items: TrackerItemRecord[]): HomePlan[] {
 					title: homeText(plan.title, 500) ?? 'Untitled plan',
 					project: homeText(plan.agent, 200),
 					state: planState(plan),
+					stage: plan.stage ?? undefined,
+					planning: plan.planning,
 					updatedAt: new Date(plan.updated_at).toISOString(),
 					total: steps.length,
 					done: steps.filter((step) => step.done).length,

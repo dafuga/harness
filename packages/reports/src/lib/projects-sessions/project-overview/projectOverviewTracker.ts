@@ -1,18 +1,14 @@
 // @harness-uid u_nves237tvx
 import type { TrackerAttachmentListingSource } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 import { trackerAttachmentFields } from '../../../../../../src/utils/projects-sessions/trackerAttachments';
-import { trackerStageSchema } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
+import {
+	trackerPlanningSchema,
+	trackerStageSchema
+} from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptions';
 import type { HomeAskInput } from '../hub-home/hubHome.types';
 import type { MachineStatus } from './projectOverview.types';
-import type {
-	TrackerItemRecord,
-	TrackerItemStatus,
-	TrackerMachineRecord,
-	TrackerNote,
-	TrackerRunRecord,
-	TrackerSources
-} from './projectOverviewTracker.types';
+import type * as Tracker from './projectOverviewTracker.types';
 import {
 	TRACKER_GET_URLS,
 	ITEM_STATUSES,
@@ -25,7 +21,7 @@ import { trackerRunDetail } from './projectOverviewRunDetail';
 export async function readTrackerSources(
 	fetcher: typeof fetch,
 	includeHomeFields = false
-): Promise<TrackerSources> {
+): Promise<Tracker.TrackerSources> {
 	const [items, runs, machines] = await Promise.all([
 		getTrackerJson(fetcher, TRACKER_GET_URLS.items),
 		getTrackerJson(fetcher, TRACKER_GET_URLS.runs),
@@ -89,12 +85,12 @@ async function closeBody(response: Response): Promise<void> {
 	}
 }
 
-function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecord {
+function parseItem(value: unknown, includeHomeFields: boolean): Tracker.TrackerItemRecord {
 	const row = asRecord(value, 'item');
 	return {
 		id: requiredText(row.id, 'item id'),
 		title: requiredText(row.title, 'item title'),
-		status: oneOf(row.status, ITEM_STATUSES, 'item status') as TrackerItemStatus,
+		status: oneOf(row.status, ITEM_STATUSES, 'item status') as Tracker.TrackerItemRecord['status'],
 		updated_at: requiredTime(row.updated_at, 'item updated_at'),
 		due: optionalTime(row.due, 'item due'),
 		agent: optionalText(row.agent, 'item agent'),
@@ -110,7 +106,7 @@ function parseItem(value: unknown, includeHomeFields: boolean): TrackerItemRecor
 	};
 }
 
-function askFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
+function askFields(row: Record<string, unknown>): Partial<Tracker.TrackerItemRecord> {
 	const options = readHomeAskOptions(row.options as HomeAskInput);
 	const confirm = readHomeAskConfirm(row.confirm as HomeAskInput);
 	const askedAt = optionalTime(row.asked_at, 'item asked_at');
@@ -122,7 +118,7 @@ function askFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 	};
 }
 
-function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
+function homeFields(row: Record<string, unknown>): Partial<Tracker.TrackerItemRecord> {
 	return {
 		project: typeof row.project === 'string' ? row.project : null,
 		kind: optionalText(row.kind, 'item kind'),
@@ -137,11 +133,12 @@ function homeFields(row: Record<string, unknown>): Partial<TrackerItemRecord> {
 		launchRequested: Boolean(row.auto),
 		answer: typeof row.answer === 'string' ? row.answer : null,
 		answeredAt: optionalTime(row.answered_at, 'item answered_at'),
-		stage: trackerStageSchema.safeParse(row.stage).data ?? null
+		stage: trackerStageSchema.safeParse(row.stage).data ?? null,
+		planning: trackerPlanningSchema.safeParse(row.planning).data
 	};
 }
 
-function parseRun(value: unknown, includeHomeFields: boolean): TrackerRunRecord {
+function parseRun(value: unknown, includeHomeFields: boolean): Tracker.TrackerRunRecord {
 	const row = asRecord(value, 'run');
 	const ended = row.ended_at ?? null;
 	if (ended !== null && (typeof ended !== 'number' || !Number.isFinite(ended)))
@@ -157,19 +154,18 @@ function parseRun(value: unknown, includeHomeFields: boolean): TrackerRunRecord 
 	};
 }
 
-function parseMachine(value: unknown): TrackerMachineRecord {
+function parseMachine(value: unknown): Tracker.TrackerSources['machines'][number] {
 	const row = asRecord(value, 'machine');
 	const count = row.remote_runs;
-	const valid =
-		typeof count === 'number' && Number.isSafeInteger(count) && count >= 0 && count <= 1_000_000;
+	const whole = typeof count === 'number' && Number.isSafeInteger(count);
 	return {
-		...(valid && { remoteRuns: count }),
+		...(whole && count >= 0 && count <= 1_000_000 && { remoteRuns: count }),
 		node: requiredText(row.node, 'machine node'),
 		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus
 	};
 }
 
-function optionalNotes(value: unknown): TrackerNote[] | undefined {
+function optionalNotes(value: unknown): Tracker.TrackerItemRecord['notes_log'] {
 	if (value === undefined || value === null) return undefined;
 	return asList(value, 'notes_log').map((note) => {
 		const row = asRecord(note, 'note');

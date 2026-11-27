@@ -188,3 +188,27 @@
 	padding: 0 var(--hx-space-12) var(--hx-space-8);
 	overflow-wrap: anywhere;
 }
+
+.hh-home .hh-row-target {
+	position: relative;
+}
+.hh-home .hh-row-target .hx-text-link {
+	position: relative;
+	z-index: 1;
+}
+.hh-home .hh-plan .po-callout-actions > button {
+	position: relative;
+	z-index: 1;
+}
+.hh-home .hh-open-row {
+	position: absolute;
+	inset: 0;
+	border: 0;
+	border-radius: var(--hx-radius-small);
+	background: transparent;
+	cursor: pointer;
+}
+.hh-home .hh-row-target:has(.hh-open-row:hover) .po-item-title,
+.hh-home .hh-plan:has(.hh-open-row:hover) .po-name {
+	text-decoration: underline;
+}
