@@ -11,7 +11,8 @@ func verifyLoginComparison(_ bench: AccountBench) {
         let actor = bench.vault.credential?.subject else { return check(false, "comparison: fixture has an opening") }
     do {
         let admin = try SealedDevice.create(enclave: false)
-        let genesis = try comparisonGenesis(admin, actor: actor)
+        let scope = SealedRawScopeKeys.make()
+        let genesis = try comparisonGenesis(admin, actor: actor, scope: scope)
         bench.hub.routes["GET /api/sync/v1/chain"] = { _ in
             HubAccountReply(status: 200, contentType: "application/json",
                             data: Data(SealedJson.object(["entries": .array([genesis.json]), "more": .bool(false)]).canonical.utf8))
@@ -43,12 +44,15 @@ func verifyLoginComparison(_ bench: AccountBench) {
               "comparison: polling a revealed transcript keeps the code and sends no second reveal")
         claim = RemoteCoding.json(["approver": admin.deviceId, "nonce": RemoteCoding.base64url(RemoteCoding.random(32))])!
         check(bench.status()?.refusal != nil, "comparison: a changed claim cannot replace the locked transcript")
+        if #available(iOS 17.0, macOS 14.0, *) {
+            try verifyLoginGrants(bench, admin: admin, genesis: genesis, scope: scope)
+        }
     } catch { check(false, "comparison: the synthetic approval transcript completes") }
 }
 
-private func comparisonGenesis(_ admin: SealedDevice, actor: String) throws -> SealedChainEntry {
+func comparisonGenesis(_ admin: SealedDevice, actor: String, scope: SealedRawScopeKeys) throws -> SealedChainEntry {
     let recovery = try SealedDevice.create(enclave: false)
-    let scope = SealedRawScopeKeys.make(), id = RemoteCoding.base64url(scope.scopeId)
+    let id = RemoteCoding.base64url(scope.scopeId)
     let body = SealedJson.object(["type": .string("genesis"), "account": .string(actor),
         "devices": .array([SealedChainDevice(admin, role: "admin", scopes: [id]).json,
                            SealedChainDevice(recovery, role: "recovery", scopes: [id]).json]),
