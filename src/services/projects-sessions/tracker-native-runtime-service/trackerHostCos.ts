@@ -36,7 +36,7 @@ export async function sendWatchdogAlerts(
 	const unsent = unsentCosAlerts(store, alerts).sort(
 		(a, b) => alertRank(a.kind) - alertRank(b.kind) || a.at - b.at
 	);
-	const batch = unsent.slice(0, batchSize);
+	const batch = unsent.slice(0, driver.batchLimit ?? batchSize);
 	if (!batch.length) return;
 	if (!(await driver.send(batch, signal, { backlog: unsent.length > batch.length }))) return;
 	recordCosReceipts(store, batch);

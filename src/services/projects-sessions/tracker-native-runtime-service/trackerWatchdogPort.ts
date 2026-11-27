@@ -54,8 +54,9 @@ const minute = 60_000;
 const cosInterval = 30 * minute;
 const backlogInterval = 5 * minute;
 
-/** Leave a visible Claude composer in the 80x24 CoS pane, including receipt references. */
-const cosMessageLimit = 720;
+/** The 80x24 CoS pane showed about 500 bytes before scrolling. Leave room for wrapping. */
+const cosMessageLimit = 450;
+const cosBatchLimit = 4;
 const cosAlertLineLimit = 112;
 const rowSeparator = ' | ';
 
@@ -77,6 +78,7 @@ function plain(text: string) {
 function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatchdogPort {
 	let nextCosTick = 0;
 	return {
+		batchLimit: cosBatchLimit,
 		...(chiefOfStaff && { peers: readTrackerWatchdogPeer }),
 		close: (input, signal) => tmux.closeIdle(input, signal),
 		scan: (signal) => tmux.scan(signal),

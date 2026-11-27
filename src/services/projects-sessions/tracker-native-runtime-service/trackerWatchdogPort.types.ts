@@ -7,6 +7,8 @@ import type { WatchdogCli, WatchdogPane } from '../WatchdogPaneService.types';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 
 export interface TrackerWatchdogPort {
+	/** Maximum batch size supported by a destination with a bounded composer. */
+	batchLimit?: number;
 	peers?(signal: AbortSignal): Promise<TrackerWatchdogAlert[] | undefined>;
 	close?(input: TrackerTmuxClose, signal: AbortSignal): Promise<boolean>;
 	inventory?(signal: AbortSignal): Promise<WatchdogPane[]>;

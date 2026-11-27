@@ -217,7 +217,7 @@ operator verifies the stopped database and chooses a rollback.
   When tmux misses an acceptance, Tracker checks Claude's recorded prompt
   or queue receipt before retrying. Changes to the dependency text can
   trigger a new alert. Open blockers continue to appear in the daily digest.
-  CoS batches keep a 720-byte composer budget. A long alert uses its item ID
+  CoS batches carry up to four alerts within a 450-byte composer budget. A long alert uses its item ID
   and a short sentence, with full details available in Tracker. The batch
   includes the slot summary when it fits.
 
