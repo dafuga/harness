@@ -190,7 +190,30 @@ func accountRequestChecks() {
     check(bench.hub.bearer("/api/auth/logout") == "Bearer \(hubToken)" && bench.request("/api/projects")?.refusal == .signedOut, "account: Disconnect ends the session at the Hub, and nothing is signed after it")
 }
 
+private func accountInstallationChecks() {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let item = MemoryAccountVault(hubKept)
+    let vault = HubAccountKeychain(item: item, directory: directory)
+    check(vault.load() == nil, "account installation: a session without an installation binding requires login")
+    do {
+        try vault.save(hubKept)
+        let relaunched = HubAccountKeychain(item: item, directory: directory)
+        check(relaunched.load()?.subject == hubKept.subject, "account installation: relaunch keeps the login")
+        if FileManager.default.fileExists(atPath: directory.path) {
+            try FileManager.default.removeItem(at: directory)
+        }
+        let reinstalled = HubAccountKeychain(item: item, directory: directory)
+        check(reinstalled.load() == nil && item.credential != nil,
+              "account installation: reinstall with the former keychain item requires login")
+        try reinstalled.save(hubKept)
+        reinstalled.wipe()
+        check(reinstalled.load() == nil, "account installation: explicit sign-out clears the login")
+    } catch { check(false, "account installation: disposable session storage works") }
+}
+
 func accountReuseChecks() {
+    accountInstallationChecks()
     let denied = AccountBench(vault: MemoryAccountVault(hubKept))
     denied.hub.routes["GET /api/projects"] = { _ in hubJSON(401, ["error": "session-required"]) }
     check((try? denied.request("/api/projects")?.get())?.status == 401 && denied.vault.credential == nil, "account: a 401 reaches the page as one and ends the session here")

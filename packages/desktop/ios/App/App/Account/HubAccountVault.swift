@@ -12,7 +12,7 @@ protocol HubAccountVault {
 /// The Keychain item of the Hub session: a service of its own, apart from any pairing, never
 /// synchronised to another device or to iCloud, and readable on this device after its first
 /// unlock only.
-struct HubAccountKeychain: HubAccountVault {
+private struct HubAccountKeychainItem: HubAccountVault {
     private let service = "com.dafuga.harness.hub"
     private let account = "session"
 
@@ -48,4 +48,20 @@ struct HubAccountKeychain: HubAccountVault {
     func wipe() {
         SecItemDelete(query as CFDictionary)
     }
+}
+
+/// The session vault used by every foreground and background account reader.
+struct HubAccountKeychain: HubAccountVault {
+    private let item: HubAccountVault
+    private let directory: URL
+
+    init(item: HubAccountVault? = nil, directory: URL? = nil) {
+        self.item = item ?? HubAccountKeychainItem()
+        self.directory = directory ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("HarnessAccount", isDirectory: true)
+    }
+
+    func load() -> HubAccountCredential? { item.load() }
+    func save(_ credential: HubAccountCredential) throws { try item.save(credential) }
+    func wipe() { item.wipe() }
 }
