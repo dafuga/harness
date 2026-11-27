@@ -20,7 +20,8 @@ test('preserves canonical model identities and allows only matching rung customi
 		['sonnet', 'claude-sonnet-5-5', 'claude', 'medium'],
 		['terra', 'gpt-6.1-terra', 'codex', 'high'],
 		['sol', 'gpt-6.2-sol', 'codex', 'medium'],
-		['opus', 'claude-opus-5-5', 'claude', 'high']
+		['opus', 'claude-opus-5-5', 'claude', 'high'],
+		['astra', 'gpt-6.2-astra', 'codex', 'high']
 	]);
 });
 
@@ -35,6 +36,11 @@ test('resolves rung names, the Sol alias, and explicit provider models', () => {
 	expect(parseTrackerModelSpec('sol-xhigh', ladder)).toMatchObject({
 		id: 'sol',
 		model: 'gpt-6.2-sol',
+		effort: 'xhigh',
+		pinned: true
+	});
+	expect(parseTrackerModelSpec('gpt-6.2-astra', ladder)).toMatchObject({
+		model: 'gpt-6.2-astra',
 		effort: 'xhigh',
 		pinned: true
 	});

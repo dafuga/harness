@@ -68,21 +68,21 @@ test('reports persisted run history and selects a model through the native item 
 	]);
 	const report = await request('/models/report');
 	expect(await report.json()).toMatchObject({
-		ladder: ['haiku', 'sonnet', 'terra', 'sol', 'opus'],
+		ladder: ['haiku', 'sonnet', 'terra', 'sol', 'opus', 'astra'],
 		rows: expect.arrayContaining([
 			expect.objectContaining({ rung: 'sol', kind: '*', runs: 2, done: 1, blocked: 1 })
 		])
 	});
-	// Codex resets 27 Nov 2026 10:39 Lisbon: Claude only before, the Sol default after.
-	for (const [at, rung, cli] of [
-		['2026-11-27T10:38:59Z', 'sonnet', 'claude'],
-		['2026-11-27T10:39:00Z', 'sol', 'codex']
+	// Codex resets 27 Nov 2026 10:39 Lisbon: Claude only before, the Astra default after.
+	for (const [at, rung, cli, effort] of [
+		['2026-11-27T10:38:59Z', 'sonnet', 'claude', 'medium'],
+		['2026-11-27T10:39:00Z', 'astra', 'codex', 'high']
 	]) {
 		vi.useFakeTimers({ toFake: ['Date'] });
 		vi.setSystemTime(Date.parse(at));
 		const pick = await request(`/items/${id.slice(0, 6)}/pick`);
 		vi.useRealTimers();
-		expect(await pick.json()).toMatchObject({ item_id: id, rung, cli, auto: false });
+		expect(await pick.json()).toMatchObject({ item_id: id, rung, cli, effort, auto: false });
 	}
 	expect(store.maxSeq()).toBe(1);
 });

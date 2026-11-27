@@ -57,13 +57,13 @@ test('switches to the post-reset table at 10:39 Lisbon on 27 November', () => {
 	const item = { title: 'Add CSV export to the report' };
 	expect(pickTrackerModel(item, { now: reset - 1 }).rung.id).toBe('sonnet');
 	expect(pickTrackerModel(item, { now: reset }).rung).toMatchObject({
-		id: 'sol',
-		effort: 'medium'
+		id: 'astra',
+		effort: 'high'
 	});
-	expect(pickTrackerModel({ title: 'Update the README' }, { now: reset }).rung.id).toBe('sol');
+	expect(pickTrackerModel({ title: 'Update the README' }, { now: reset }).rung.id).toBe('astra');
 	expect(pickTrackerModel({ title: 'Deploy to preprod' }, { now: reset }).rung.id).toBe('opus');
 	expect(pickTrackerModel({ title: 'Open the dashboard in Chrome' }, { now: reset }).rung.id).toBe(
-		'terra'
+		'astra'
 	);
 });
 
@@ -72,7 +72,7 @@ test('lets the config move the reset time', () => {
 	const item = { title: 'Add CSV export' };
 	expect(pickTrackerModel(item, { cfg, now: reset + 1 }).rung.id).toBe('sonnet');
 	expect(pickTrackerModel(item, { cfg, now: Date.parse('2026-11-28T00:00:00Z') }).rung.id).toBe(
-		'sol'
+		'astra'
 	);
 });
 
@@ -135,5 +135,5 @@ test('retries after the reset use the post-reset table', () => {
 			undefined,
 			reset
 		)
-	).toMatchObject({ id: 'sol', effort: 'medium' });
+	).toMatchObject({ id: 'astra', effort: 'high' });
 });

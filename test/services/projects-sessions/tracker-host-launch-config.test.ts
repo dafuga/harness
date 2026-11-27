@@ -1,3 +1,5 @@
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { expect, test } from 'vitest';
 import { trackerHostLaunch } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch';
 import {
@@ -37,11 +39,32 @@ test('configured learning, ladder, Claude window and default ETA reach the launc
 		try {
 			seedFailedRuns(fixture.database, 'sol');
 			expect(await launchFixtureItem(fixture, 'next200002')).toMatchObject({
-				rung: 'sol',
-				model: 'gpt-6.2-sol',
+				rung: 'astra',
+				model: 'gpt-6.2-astra',
+				effort: 'high',
 				reason: expect.not.stringContaining('succeeded'),
 				eta_at: fixtureNow + 30 * minute
 			});
+			const receipt = join(root, 'started');
+			const [first] = JSON.parse(readFileSync(receipt, 'utf8'));
+			const selection = { provider: 'codex', model: 'gpt-6.2-astra', intelligence: 'high' };
+			expect(first.selection).toEqual(selection);
+			writeFileSync(receipt, JSON.stringify([{ ...first, state: 'exited', exitCode: 1 }]));
+			await fixture.runtime.scheduler!.tick(new AbortController().signal);
+			await fixture.runtime.scheduler!.tick(new AbortController().signal);
+			const retry = fixture.database
+				.prepare('SELECT * FROM runs WHERE item_id = ? AND attempt = 2')
+				.get('next200002');
+			expect(retry).toMatchObject({
+				rung: 'astra',
+				model: 'gpt-6.2-astra',
+				effort: 'high',
+				pinned: 0,
+				state: 'running'
+			});
+			const sessions = JSON.parse(readFileSync(receipt, 'utf8'));
+			expect(sessions).toHaveLength(2);
+			expect(sessions[1].selection).toEqual(selection);
 			expect(fixture.options.ladderConfig).toMatchObject({
 				autolaunch: { claudeOnlyUntil: '2026-01-01T00:00:00Z' }
 			});
