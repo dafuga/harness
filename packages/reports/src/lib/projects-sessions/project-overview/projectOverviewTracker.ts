@@ -131,6 +131,7 @@ function homeFields(row: Record<string, unknown>): Partial<Tracker.TrackerItemRe
 		priority: optionalText(row.priority, 'item priority'),
 		owner: typeof row.owner === 'string' ? row.owner : null,
 		launchRequested: Boolean(row.auto),
+		launchToken: typeof row.auto === 'string' ? row.auto : null,
 		answer: typeof row.answer === 'string' ? row.answer : null,
 		answeredAt: optionalTime(row.answered_at, 'item answered_at'),
 		stage: trackerStageSchema.safeParse(row.stage).data ?? null,

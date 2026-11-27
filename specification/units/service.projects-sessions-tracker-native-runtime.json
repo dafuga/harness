@@ -309,6 +309,7 @@
 			"recoveryBudget",
 			"hostWait",
 			"recoveryRung",
+			"recoveryHold",
 			"trackerSecretSafetyRule",
 			"sessionHealthInterval",
 			"recoveryPollInterval",
@@ -1784,6 +1785,26 @@
 			{
 				"name": "recoveryRung.node",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.latest",
+				"type": "TrackerListedRun | undefined",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.changedAt",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recoveryHold.now",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -5236,6 +5257,39 @@
 					{
 						"name": "recoveryRung",
 						"type": "TrackerLaunchRung | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recoveryHold",
+				"inputs": [
+					{
+						"name": "recoveryHold.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.latest",
+						"type": "TrackerListedRun | undefined",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.changedAt",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "recoveryHold.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recoveryHold",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

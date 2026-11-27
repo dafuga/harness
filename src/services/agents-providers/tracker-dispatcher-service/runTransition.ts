@@ -66,7 +66,12 @@ function adoptSession(
 			...(session.sessionName && { session_name: session.sessionName }),
 			failure_reason: null,
 			eta_at: run.eta_at ?? etaFor(snapshot.item, policy, now)
-		})
+		}),
+		run.launch_source === 'recovery' &&
+			snapshot.item?.status === 'open' &&
+			snapshot.item.launch?.token === run.auto_token
+			? { status: 'in_progress' }
+			: undefined
 	);
 }
 

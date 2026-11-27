@@ -2,7 +2,7 @@
 	"name": "tracker-ended-run-disposition",
 	"goal": "After a Tracker run ends, keep live attempts intact and move the item to a durable retry or a real block. Show Running, Queued or Blocked in Hub.",
 	"createdAt": "2026-11-27T19:58:37.241Z",
-	"updatedAt": "2026-11-27T19:59:28.566Z",
+	"updatedAt": "2026-11-27T20:08:14.646Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -27,12 +27,16 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T20:08:13.528Z",
+			"evidence": "The committed isolated tmux regression fails at 8c9bb6d3c7: expected blocked with a real opt-out reason, received in_progress with no blocked reason."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T20:08:14.646Z",
+			"evidence": "Journal the queued recovery before admission, use observed session startup to restore active state, block ended runs for preserved reasons, retain guarded answer and live-work behavior, and show the new states in Hub."
 		},
 		{
 			"id": "green",

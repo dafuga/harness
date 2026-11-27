@@ -101,7 +101,8 @@ function trackerStopControl(
 		},
 		finishStoppedRun(run: TrackerRunReceipt) {
 			store.commitLocal(() => {
-				const current = snapshot(run.item_id).runs.find(
+				const { item, runs, openSession, activeSessionKeys } = snapshot(run.item_id);
+				const current = runs.find(
 					(entry) => entry.id === run.id && entry.node === node && entry.revision === run.revision
 				);
 				if (current && current.revision >= 0 && stoppable(current)) {
@@ -114,6 +115,21 @@ function trackerStopControl(
 						}),
 						node
 					);
+					if (
+						item?.status === 'in_progress' &&
+						!item.launch &&
+						item.scheduleOff &&
+						!openSession &&
+						!activeSessionKeys?.length &&
+						!runs.some((entry) => entry !== current && entry.state !== 'finished')
+					)
+						return {
+							result: undefined,
+							operation: {
+								itemId: run.item_id,
+								fields: { status: 'blocked', blocked_reason: 'stopped by operator' }
+							}
+						};
 				}
 				return { result: undefined };
 			});
