@@ -203,7 +203,7 @@ export const commandHelp = [
 		'Run a private browser in a local container.',
 		'container-browser [options] <action> [value]'
 	),
-	plainHelp('x-digest', 'Send a read-only X digest.', 'x-digest [options]'),
+	plainHelp('x-digest', 'Send a read-only X digest.', 'x-digest [options] [action]'),
 	plainHelp(
 		'response-check',
 		'Check whether an LLM answer follows a user request using JEV.',
