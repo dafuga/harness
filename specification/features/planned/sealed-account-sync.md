@@ -128,7 +128,8 @@ can deny an undecided mailbox. The claimant's publication reserves that same
 mailbox for the exact signed entry before the chain transaction. Denial and
 publication reservation exclude each other. Neither can replace the other's
 decision. A denied request leaves the inbox. The waiting installation sees
-that outcome when it polls. A lost publication reply retries the same signed
+that outcome when it polls. A denied or expired sign-in clears the comparison
+code, stops polling and offers a return to sign-in. A lost publication reply retries the same signed
 entry and grant bytes.
 
 No QR code exists in any flow, and a QR code is not an optional shortcut. Devices link only

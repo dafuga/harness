@@ -49,7 +49,11 @@ export function pairedAccount(
 							: undefined
 				};
 	return {
-		status: async () => accountStatus(),
+		status: async () => {
+			if (shell.account === 'approval-denied' || shell.account === 'approval-expired')
+				throw Object.assign(new Error(shell.account), { code: shell.account });
+			return accountStatus();
+		},
 		connect: async (input: { google?: boolean }) => {
 			if (!input.google) throw new Error('Expected Google sign-in.');
 			shell.account = 'pending';

@@ -11,6 +11,7 @@
 		status,
 		error,
 		busy,
+		approvalEnded = false,
 		connect,
 		cancel,
 		retry
@@ -18,6 +19,7 @@
 		status?: NativeHostedStatus;
 		error: string;
 		busy: boolean;
+		approvalEnded?: boolean;
 		connect: (google: boolean) => void;
 		cancel: () => void;
 		retry: () => void;
@@ -38,7 +40,12 @@
 <hx-main class="sign-in" data-harness-component="account-sign-in">
 	<hx-section class="sign-in-inner" aria-label="Sign in to Harness">
 		<hx-span class="sign-in-mark" role="img" aria-label="Harness"><BrandMark size={40} /></hx-span>
-		{#if waiting || deviceStep}
+		{#if approvalEnded}
+			<hx-p class="error" role="alert">{error}</hx-p>
+			<hx-button type="button" class="back-to-sign-in" disabled={busy} onclick={cancel}>
+				Back to sign in
+			</hx-button>
+		{:else if waiting || deviceStep}
 			{#if deviceStep}
 				<hx-section class="sign-in-step" role="status">
 					{#if stage === 'checking-device'}
@@ -89,7 +96,7 @@
 		{:else}
 			<hx-p role="status">Checking sign-in…</hx-p>
 		{/if}
-		{#if error}<hx-p class="error" role="alert">{error}</hx-p>{/if}
+		{#if error && !approvalEnded}<hx-p class="error" role="alert">{error}</hx-p>{/if}
 	</hx-section>
 </hx-main>
 
@@ -141,7 +148,11 @@
 		background: var(--hx-color-surface-raised);
 	}
 	.error {
+		padding: var(--hx-space-12);
 		background: var(--hx-color-error-soft);
+	}
+	.back-to-sign-in {
+		min-height: var(--hx-space-44);
 	}
 	.code {
 		font: var(--hx-type-size-heading) var(--hx-font-family-code);

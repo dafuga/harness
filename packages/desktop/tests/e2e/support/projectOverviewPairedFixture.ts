@@ -186,8 +186,33 @@ export async function pairedAccountCalls(page: Page): Promise<PairedAccountCall[
 	return page.evaluate(() => (window as unknown as PairedPhoneHost).__pairedAccountCalls);
 }
 
-export async function setLoginStage(page: Page, state: 'waiting-for-approval' | 'signed-in') {
+export async function setLoginStage(
+	page: Page,
+	state: 'waiting-for-approval' | 'approval-denied' | 'approval-expired' | 'signed-in'
+) {
 	await page.evaluate((next) => {
 		(window as unknown as PairedPhoneHost).__pairedPhone.setAccount(next);
 	}, state);
+}
+
+/** Captures the settled sign-in gate at each supported width when evidence is requested. */
+export async function captureSignInGate(page: Page, state: string) {
+	if (process.env.TAKE_SCREENSHOT !== 'true') return;
+	const initial = page.viewportSize();
+	for (const [width, height] of [
+		[390, 844],
+		[768, 1024],
+		[1440, 900]
+	]) {
+		await page.setViewportSize({ width, height });
+		await page.evaluate(async () => {
+			await document.fonts.ready;
+			for (const img of document.querySelectorAll<HTMLImageElement>('main img')) await img.decode();
+		});
+		const folder = process.env.HEADLESS_RUN_ARTIFACTS ?? '/tmp';
+		await page.screenshot({
+			path: folder + '/zgfvhk-' + state + '-' + width + '-' + process.env.SCREENSHOT_LABEL + '.png'
+		});
+	}
+	if (initial) await page.setViewportSize(initial);
 }

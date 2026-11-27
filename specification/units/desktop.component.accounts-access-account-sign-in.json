@@ -46,6 +46,12 @@
 				"description": "Disables sign-in, retry and cancel actions while an account request is in progress."
 			},
 			{
+				"name": "AccountSignIn.approvalEnded",
+				"type": "boolean",
+				"required": false,
+				"default": false
+			},
+			{
 				"name": "AccountSignIn.connect",
 				"type": "(google: boolean) => void",
 				"required": true,
