@@ -45,7 +45,7 @@ function table(): Promise<Map<number, IosServiceProcess> | null> {
 		execFile(
 			'ps',
 			['-A', '-o', 'pid=,lstart=,comm='],
-			{ maxBuffer: 16_000_000, timeout: 5000 },
+			{ maxBuffer: 16_000_000, timeout: 5000, env: { ...process.env, LC_ALL: 'C' } },
 			(error, out) => {
 				const rows = new Map<number, IosServiceProcess>();
 				for (const found of (error ? '' : out).split('\n').map((line) => row.exec(line)))
