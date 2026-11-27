@@ -219,3 +219,4 @@ export { trackerStructuredAsk } from './utils/projects-sessions/trackerStructure
 export { hubSessionMessages } from './utils/projects-sessions/hubSessionMessages';
 export { TrackerOutgoingDraftRepository } from './repositories/projects-sessions/TrackerOutgoingDraftRepository';
 export { TrackerOutgoingDraftService } from './services/projects-sessions/TrackerOutgoingDraftService';
+export { TrackerGmailSendAdapter } from './adapters/projects-sessions/TrackerGmailSendAdapter';
