@@ -55,7 +55,8 @@
 			{
 				"name": "HubHomeAgents.changeSession",
 				"type": "ChangeSession",
-				"required": true,
+				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
 			},
 			{

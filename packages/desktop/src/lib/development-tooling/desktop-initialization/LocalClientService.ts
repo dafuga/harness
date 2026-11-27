@@ -7,11 +7,18 @@ import {
 	WireFramingService,
 	WireSessionService
 } from '../../../../../remote/src/index';
+import { homeMethods } from '../../../../../remote/src/models/networking-security/RemoteValues';
 import { localTransport } from '../../../../../remote/src/index';
-import type { RemoteConnectionEvent, WireChannel, WireLink } from '../../../../../remote/src/index';
+import type {
+	RemoteConnectionEvent,
+	RemoteMethod,
+	WireChannel,
+	WireLink
+} from '../../../../../remote/src/index';
 import { DesktopBridgeService } from '../../../services/development-tooling/desktop-bridge-service/DesktopBridgeService';
 import { DesktopRunService } from '../../../services/agents-providers/desktop-run-service/DesktopRunService';
 import { LocalOperationsService } from './LocalOperationsService';
+import type { LocalOperationsOptions } from './LocalOperationsService.types';
 import type { LocalSocket } from '../../../services/LocalTransportService';
 import { ProjectSessionService } from '../../../services/projects-sessions/project-session-service/ProjectSessionService';
 import type { CacheStatus } from '../../../models/projects-sessions/ProjectContext.types';
@@ -30,6 +37,23 @@ const accountMethods = new Set(['hostedStatus', 'connectHosted', 'disconnectHost
 const soon = (step: () => void) => void setImmediate(step);
 const words = (error: unknown) =>
 	error instanceof Error && error.message ? error.message : 'The operation failed.';
+
+function localOperations(bridge: LocalOperationsOptions['bridge'], options: LocalClientOptions) {
+	const { auth, home, homeChat } = options.shared;
+	return new LocalOperationsService({
+		bridge,
+		control: options.control,
+		hubOverview: auth && (() => auth.overview()),
+		home,
+		homeChat
+	});
+}
+
+function authorizeLocal(method: RemoteMethod, options: LocalClientOptions) {
+	const requiresAccount = options.accountRequired || homeMethods.some((name) => name === method);
+	if (requiresAccount && !options.shared.auth?.admitted && !accountMethods.has(method))
+		throw new Error('Sign in to Harness to continue.');
+}
 
 /**
  * The client of one window: its own project session and runs, served over the loopback socket.
@@ -52,13 +76,10 @@ export class LocalClientService {
 			renderMockups
 		);
 		const { session, runs } = this,
-			bridge = new DesktopBridgeService(session, providers, runs, options.choose).bridge(),
-			auth = options.shared.auth,
-			operations = new LocalOperationsService({
-				bridge,
-				control: options.control,
-				hubOverview: auth && (() => auth.overview())
-			}),
+			bridge = new DesktopBridgeService(session, providers, runs, options.choose).bridge((event) =>
+				this.wire.emit('cache', event)
+			),
+			operations = localOperations(bridge, options),
 			host = { id: null, name: hostname(), platform: process.platform };
 		this.wire = new WireSessionService({
 			role: 'local',
@@ -66,8 +87,7 @@ export class LocalClientService {
 			methods: () => operations.methods(),
 			describe: () => ({ host, device: null, grant: null }),
 			handle: (request) => {
-				if (options.accountRequired && !auth?.admitted && !accountMethods.has(request.method))
-					throw new Error('Sign in to Harness to continue.');
+				authorizeLocal(request.method, options);
 				return operations.handle(request);
 			},
 			explain: (error) => ({ code: 'failed', message: words(error) })

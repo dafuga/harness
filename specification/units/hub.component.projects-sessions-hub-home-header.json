@@ -10,8 +10,6 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
-			"hub.component.account-menu",
-			"hub.component.projects-sessions-hub-home-notifications",
 			"hub.component.projects-sessions-hub-home-quota-pills",
 			"reports.component.brand-mark",
 			"reports.component.explorer-ui-explorer-kit-notice",
@@ -48,13 +46,48 @@
 				"type": "RealtimeState | null",
 				"required": true,
 				"description": "Provides the linked computer data and connection notices for the banner."
+			},
+			{
+				"name": "HubHomeHeader.accountName",
+				"type": "string",
+				"required": false,
+				"default": "",
+				"description": "Display name of the signed-in account shown with its initial."
+			},
+			{
+				"name": "HubHomeHeader.accountMenu",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Account actions supplied by the web or native host."
+			},
+			{
+				"name": "HubHomeHeader.needsHref",
+				"type": "string",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Address of the native Needs you view, when the host offers it."
+			},
+			{
+				"name": "HubHomeHeader.needsOnly",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Shows the Needs you heading and a link back to Home."
+			},
+			{
+				"name": "HubHomeHeader.notifications",
+				"type": "Snippet",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Optional notification controls supplied by the web host."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeHeader",
 				"type": "markup",
-				"description": "Shows account navigation, current activity totals, computers and each subscription's quota."
+				"description": "The shared Home header with the Harness logo, account controls, activity, machine and quota summaries, and optional Home and Needs you navigation."
 			}
 		],
 		"errors": [],
@@ -64,22 +97,7 @@
 	},
 	"dependencies": [
 		{
-			"unit": "hub.component.account-menu",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-notifications",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.component.projects-sessions-hub-home-quota-pills",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.browser-context",
 			"via": "import",
 			"origin": "derived"
 		},

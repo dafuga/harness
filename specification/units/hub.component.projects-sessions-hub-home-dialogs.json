@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-agents",
+			"hub.component.projects-sessions-hub-home-directory",
 			"hub.component.projects-sessions-hub-home-plans",
 			"hub.component.projects-sessions-hub-home-projects",
 			"hub.component.projects-sessions-hub-home-quota",
@@ -68,7 +69,8 @@
 			{
 				"name": "HubHomeDialogs.changeSession",
 				"type": "ChangeSession",
-				"required": true,
+				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Adds or removes a session Daniel created himself so it is listed under Agents."
 			},
 			{
@@ -80,7 +82,8 @@
 			{
 				"name": "HubHomeDialogs.readProject",
 				"type": "ReadHomeProject",
-				"required": true,
+				"required": false,
+				"default": "undefined (omitted)",
 				"description": "Retrieves a hosted project snapshot by its identifier."
 			},
 			{
@@ -125,6 +128,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-directory",
 			"via": "import",
 			"origin": "derived"
 		},

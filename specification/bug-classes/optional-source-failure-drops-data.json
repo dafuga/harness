@@ -1,0 +1,175 @@
+{
+	"schemaVersion": 1,
+	"revision": "cfff4a92395a62e0814b327fb8efe8980019193a",
+	"bugClass": {
+		"id": "optional-source-failure-drops-data",
+		"title": "Optional data-source failure discards successful results",
+		"cause": "Independent local and hosted reads are coupled into a single failure path, so an optional hosted request rejection discards usable local data and surfaces a generic error. The same cause occurs when independent requests run sequentially but any refusal aborts aggregation before successful results are returned; optional collaboration or configuration gates can trigger the refusal.",
+		"criteria": "A site exhibits this cause if it combines independent data sources and treats failure of an optional source as failure of the whole result, losing data from successful sources. This includes parallel aggregation with fail-fast rejection and sequential aggregation that aborts on one source error. It also includes an authenticated collection whose optional configuration gate can reject or suppress a request, with that failure then emptying otherwise usable data.",
+		"patterns": [
+			{
+				"kind": "call",
+				"value": "Promise.all",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "Promise.allSettled",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "Promise.all(",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "Promise.allSettled(",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "await",
+				"weight": 1
+			},
+			{
+				"kind": "call",
+				"value": "catch",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "throw",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "throw new Error",
+				"weight": 2
+			},
+			{
+				"kind": "call",
+				"value": "getProjects",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "listProjects",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "fetchProjects",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "getLocalProjects",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "getRemoteProjects",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "isCollaborationEnabled",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "getCollaborationConfig",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "collaborationEnabled",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "remoteProjects",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "localProjects",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "Promise.reject(",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "onMount(",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "{#await",
+				"weight": 2
+			},
+			{
+				"kind": "text",
+				"value": "{#each",
+				"weight": 2
+			}
+		],
+		"contextTerms": [
+			"projects",
+			"collaboration",
+			"local",
+			"remote",
+			"authenticated",
+			"optional",
+			"config",
+			"error",
+			"svelte"
+		],
+		"pathHints": [
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/repositories/",
+				"weight": 4
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/desktop/",
+				"weight": 3
+			},
+			{
+				"contains": "packages/hub/",
+				"weight": 2
+			},
+			{
+				"contains": "packages/collaboration/",
+				"weight": 3
+			},
+			{
+				"contains": "specification/",
+				"weight": -2
+			},
+			{
+				"contains": "test/",
+				"weight": -3
+			},
+			{
+				"contains": "test/services/",
+				"weight": -3
+			},
+			{
+				"contains": "packages/remote/",
+				"weight": -1
+			}
+		]
+	}
+}

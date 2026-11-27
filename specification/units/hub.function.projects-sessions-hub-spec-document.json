@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubSpecDocument.ts"],
-		"symbols": ["provideHubSpecDocuments", "hubSpecDocuments"]
+		"symbols": ["hubSpecDocumentKey", "provideHubSpecDocuments", "hubSpecDocuments"]
 	},
 	"contract": {
 		"origin": "declared",

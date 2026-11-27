@@ -40,7 +40,7 @@
 	}: {
 		agents: HomeAgent[] | null;
 		added?: string[];
-		changeSession: ChangeSession;
+		changeSession?: ChangeSession;
 		agentId?: string;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
@@ -84,7 +84,7 @@
 	<HubHomeSkeleton rows={6} />
 {:else if !agents.length || !active}
 	<EmptyState as="div" className="po-empty hh-empty">No agents are available.</EmptyState>
-	<HubHomeAddSession {added} change={changeSession} />
+	{#if changeSession}<HubHomeAddSession {added} change={changeSession} />{/if}
 {:else}
 	<hx-div class="hh-split hh-split-agents" class:hh-show-detail={chatOpen}>
 		<hx-div class="hh-split-list">
@@ -135,7 +135,7 @@
 					</hx-section>
 				{/if}
 			{/each}
-			<HubHomeAddSession {added} change={changeSession} />
+			{#if changeSession}<HubHomeAddSession {added} change={changeSession} />{/if}
 		</hx-div>
 		<hx-section class="hh-chat" aria-label={`Chat with ${active.name}`}>
 			<hx-header class="hh-chat-head">

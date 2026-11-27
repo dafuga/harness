@@ -82,7 +82,7 @@ function desktopBackend() {
 	const codex = new CodexAppServerAdapter(),
 		providers = new ProviderDiscoveryService({ codex, claude: new ClaudeCliAdapter() }),
 		stores = { registry, outbox, arbiter, providers, cache };
-	const { remote, lifecycle } = desktopRemote({
+	const { remote, lifecycle, home, homeChat } = desktopRemote({
 		directory,
 		origin,
 		sessionFile,
@@ -116,7 +116,7 @@ function desktopBackend() {
 	refreshAccount();
 	const accountTimer = connection.auth ? setInterval(refreshAccount, 60_000).unref() : undefined;
 	return {
-		shared: { ...stores, ...connection },
+		shared: { ...stores, ...connection, home, homeChat },
 		remote,
 		lifecycle,
 		transport,
