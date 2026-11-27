@@ -173,3 +173,26 @@ export function seedCompletedRetainedRun(
 		fields: { title: 'Finished fixture', kind: 'task', status: 'done' }
 	});
 }
+
+export function seedManagedBriefItems(runtime: TrackerNativeRuntimeService, itemId: string) {
+	runtime.store.appendLocal({
+		itemId: 'parent0001',
+		fields: {
+			title: 'Parent assignment',
+			notes: 'Inspect the pending sibling.',
+			kind: 'task',
+			status: 'open'
+		}
+	});
+	runtime.store.appendLocal({
+		itemId,
+		fields: {
+			title: 'Synthetic Docker work',
+			status: 'open',
+			kind: 'task',
+			project: 'Harness',
+			parent: 'parent',
+			due: '2099-03-04'
+		}
+	});
+}
