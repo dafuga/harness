@@ -4,8 +4,10 @@ import type { TrackerDispatchRepository } from '../../repositories/projects-sess
 import type { TrackerDispatchCandidate } from '../../repositories/projects-sessions/TrackerDispatchRepository.types';
 import type {
 	TrackerDispatcherService,
+	TrackerDispatchResult,
 	TrackerRunReceipt
 } from '../agents-providers/TrackerDispatcherService';
+import { liveOverdueSuffix } from '../agents-providers/tracker-dispatcher-service/runMonitor';
 import { automaticEnabled } from '../agents-providers/tracker-dispatcher-service/launchEligibility';
 import {
 	observeReservedRun,
@@ -125,7 +127,8 @@ export class TrackerDispatchSchedulerService {
 				continue;
 			}
 			const event = await observeReservedRun(run, this.options, signal);
-			if (event) await this.dispatcher.record(run.item_id, run, event);
+			if (event)
+				reportOverdue(run, await this.dispatcher.record(run.item_id, run, event), this.options);
 			else if (run.state === 'queued' && !this.waits.has(run.item_id))
 				this.waits.set(run.item_id, {
 					token: run.auto_token,
@@ -134,6 +137,15 @@ export class TrackerDispatchSchedulerService {
 		}
 		return queued;
 	}
+}
+
+function reportOverdue(
+	run: TrackerRunReceipt,
+	result: TrackerDispatchResult,
+	{ runner }: TrackerDispatchSchedulerOptions
+) {
+	if (result.status === 'held' && result.reason.endsWith(liveOverdueSuffix))
+		runner.overdue?.(run, result.reason);
 }
 
 async function serveQueue(

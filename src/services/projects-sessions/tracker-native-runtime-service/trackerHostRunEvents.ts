@@ -4,8 +4,6 @@ import type {
 	TrackerDispatchEvent,
 	TrackerRunReceipt
 } from '../../agents-providers/TrackerDispatcherService.types';
-import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import { closedBlockedKey } from './trackerFinishedSessions';
 import type { TrackerHostSession } from './trackerHostLaunch.types';
 import { trackerHostStartupEvent, trackerItemStatus } from './trackerHostLaunchPort';
 
@@ -15,10 +13,8 @@ export function recordedHostEvent(
 		key,
 		sessions,
 		items,
-		legacySession,
-		store
+		legacySession
 	}: {
-		store: TrackerPersistenceService;
 		key: string;
 		sessions: readonly TrackerHostSession[];
 		items: TrackerItemReadRepository;
@@ -33,10 +29,10 @@ export function recordedHostEvent(
 	if (run.state === 'queued') return trackerHostStartupEvent(session);
 	if (!session || session.id !== (run.host_session_id ?? run.session_id))
 		return run.outcome === 'blocked'
-			? answeredClosedBlock(run, items, store)
+			? answeredClosedBlock(run, items)
 			: missingSessionEvent(run, items);
 	if (run.outcome === 'blocked' && session.state === 'live') return { type: 'resume', session };
-	if (run.outcome === 'blocked') return answeredClosedBlock(run, items, store);
+	if (run.outcome === 'blocked') return answeredClosedBlock(run, items);
 	return {
 		type: 'monitor',
 		session: session.state,
@@ -55,16 +51,15 @@ function missingSessionEvent(
 		: undefined;
 }
 
-/** Older blocks and answers given before their run ended never reopen anything. */
+/** A current answer can reopen a started blocked run after its original session has gone. */
 function answeredClosedBlock(
 	run: TrackerRunReceipt,
-	items: TrackerItemReadRepository,
-	store: TrackerPersistenceService
+	items: TrackerItemReadRepository
 ): TrackerDispatchEvent | undefined {
-	if (store.getMeta(closedBlockedKey(run.id)) === null) return undefined;
+	if (run.started_at === null || run.ended_at === null) return undefined;
 	const item = items.getStored(run.item_id);
 	const answeredAt = Date.parse(item.answered_at ?? '');
-	return item.status === 'blocked' && item.resolved && answeredAt > (run.ended_at ?? 0)
+	return item.status === 'blocked' && item.resolved && answeredAt >= run.started_at
 		? { type: 'answered-without-session' }
 		: undefined;
 }

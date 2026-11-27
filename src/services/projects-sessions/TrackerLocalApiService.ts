@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import { cancelQueuedDispatchRuns } from '../../repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
@@ -141,10 +142,12 @@ export class TrackerLocalApiService {
 		const plan = action
 			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)
 			: planTrackerManualLaunch(verb, this.items.resolve(id), body, context);
-		const persist =
-			action === 'start'
-				? () => recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run)
-				: undefined;
+		const persist = () => {
+			if (action === 'start')
+				recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run);
+			if (manual && verb === 'unlaunch')
+				cancelQueuedDispatchRuns(this.store, plan.itemId, context.now);
+		};
 		if (plan.fields)
 			this.store.appendLocal({ itemId: plan.itemId, fields: plan.fields, actor }, persist);
 		const flag = { itemId: plan.itemId, action, question: body.question };

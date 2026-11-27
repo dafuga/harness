@@ -4,17 +4,10 @@ import type { TrackerItemReadRepository } from '../../../repositories/projects-s
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
 import type { TrackerRunReadRepository } from '../../../repositories/projects-sessions/TrackerRunReadRepository';
 import type { TrackerListedRun } from '../../../repositories/projects-sessions/TrackerRunReadRepository.types';
-import {
-	classifyTrackerTask,
-	projectOf
-} from '../../../utils/agents-providers/classifyTrackerTask';
 import { ladderFrom } from '../../../utils/agents-providers/parseTrackerModelSpec';
 import type { TrackerLadderConfig } from '../../../utils/agents-providers/parseTrackerModelSpec.types';
-import { pickTrackerModel } from '../../../utils/agents-providers/pickTrackerModel';
-import {
-	trackerModelHistory,
-	trackerRunReport
-} from '../../../utils/agents-providers/trackerRunReport';
+import { pickTrackerModelFromRuns } from '../../../utils/agents-providers/pickTrackerModelFromRuns';
+import { trackerRunReport } from '../../../utils/agents-providers/trackerRunReport';
 import type { TrackerLocalApiOptions } from '../TrackerLocalApiService.types';
 
 export function readTrackerItemDetail(item: TrackerItem, options: TrackerLocalApiOptions) {
@@ -83,12 +76,7 @@ export function readTrackerRunEndpoint(
 }
 
 function itemPick(item: TrackerItem, runs: TrackerRunReadRepository, cfg?: TrackerLadderConfig) {
-	const history = trackerModelHistory(
-		runs.finished(),
-		{ kind: classifyTrackerTask(item), project: projectOf(item) },
-		cfg?.autolaunch?.learning?.minSamples
-	);
-	const { rung, kind, reason } = pickTrackerModel(item, { cfg, history });
+	const { rung, kind, reason } = pickTrackerModelFromRuns(item, () => runs.finished(), { cfg });
 	return {
 		item_id: item.id,
 		rung: rung.id,

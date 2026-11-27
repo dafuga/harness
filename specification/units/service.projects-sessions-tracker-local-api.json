@@ -1092,17 +1092,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.agents-providers-classify-tracker-task",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.agents-providers-parse-tracker-model-spec",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "function.agents-providers-pick-tracker-model",
+			"unit": "function.agents-providers-pick-tracker-model-from-runs",
 			"via": "import",
 			"origin": "derived"
 		},
