@@ -1,8 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
-import { mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { isAbsolute, join } from 'node:path';
+import { rmSync } from 'node:fs';
+import { isAbsolute } from 'node:path';
 import { ContainerBrowserAdapter } from '../../src/adapters/execution-runtimes/ContainerBrowserAdapter';
 import { ContainerCdpAdapter } from '../../src/adapters/execution-runtimes/ContainerCdpAdapter';
 import type { ContainerPageTarget } from '../../src/adapters/execution-runtimes/ContainerCdpAdapter.types';
@@ -12,9 +11,10 @@ import {
 } from '../../src/adapters/execution-runtimes/container-browser-adapter/dockerHost';
 import { PrivateBrowserGateService } from '../../src/services/execution-runtimes/PrivateBrowserGateService';
 import { containerBrowserSources } from '../../src/workflows/execution-runtimes/run-container-browser/containerBrowserPaths';
+import { createTempDirectory } from './temporary';
 
 const socket = fixtureSocket();
-const config = mkdtempSync(join(tmpdir(), 'harness-private-docker-'));
+const config = await createTempDirectory('harness-private-docker-');
 const profile = `private-e2e-${randomUUID().slice(0, 12)}`;
 const container = `harness-browser-${profile}`;
 const docker = dockerHost({ socket, config });
