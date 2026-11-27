@@ -86,11 +86,8 @@ function pinnedSelection(
 	const raised = raisedPinReason(item, rung, context);
 	if (!raised) return { rung, kind, reason: `named on the item (${item.model})` };
 	const [, , , sol, opus] = ladder;
-	const replacement = claude
-		? claudeRoute(item, ladder, true).steps[0]
-		: route === 'live-deploy'
-			? opus
-			: sol;
+	const floor = route === 'live-deploy' ? opus : sol;
+	const replacement = claude ? claudeRoute(item, ladder, true).steps[0] : floor;
 	const name = { opus: 'Opus', sonnet: 'Sonnet' }[replacement.id] ?? 'Sol';
 	const effort = replacement.id === 'sol' ? solEffort(kind, size) : replacement.effort;
 	return {
