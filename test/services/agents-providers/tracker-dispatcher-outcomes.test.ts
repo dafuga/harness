@@ -170,6 +170,7 @@ test('missing items preserve active sessions until recovery; closing the linked 
 
 test('a pinned model stays pinned when a completed result is rejected', async () => {
 	const fixture = dispatcherFixture({
+		item: { model: 'gpt-6.2-sol:high' },
 		policy: {
 			pickModel: () => ({
 				rung: { id: 'sol', cli: 'codex', model: 'gpt-6.2-sol', effort: 'high', pinned: true },
