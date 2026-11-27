@@ -370,16 +370,6 @@
 			"unit": "hub.service.hub-record-status",
 			"via": "import",
 			"origin": "derived"
-		},
-		{
-			"unit": "reports.model.explorer-types",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.model.harness-types",
-			"via": "import",
-			"origin": "derived"
 		}
 	],
 	"runtime": {

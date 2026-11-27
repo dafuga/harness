@@ -17,8 +17,8 @@ import { hubFail } from '../../../../../utils/development-tooling/hubJson';
 import { HubAttachedService } from '../../../../../services/verification-evidence/hub-evidence-service/hub-attached-service/HubAttachedService';
 import { HubRecordStatusService } from '../../../../../services/verification-evidence/hub-evidence-service/HubRecordStatusService';
 import type { RepositoryIdentity } from '../../../../../../../collaboration/src/models/planning-collaboration/Collaboration.types';
-import type { ExplorerScope } from '../../../../../../../reports/src/models/explorer-ui/Explorer.types';
-import type { HarnessRevision } from '../../../../../../../reports/src/models/explorer-ui/HarnessRevision.types';
+import type { ExplorerScope } from '$reports/models/explorer-ui/Explorer.types';
+import type { HarnessRevision } from '$reports/models/explorer-ui/HarnessRevision.types';
 
 export async function hubEvidenceContext(
 	deps: HubEvidenceDependencies,
