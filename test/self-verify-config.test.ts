@@ -108,7 +108,7 @@ test('standalone evidence fixtures load outside the test runner', () => {
 
 const wrappers = under('specification/scenarios').flatMap((path) => {
 	const scenario = scenarioManifestSchema.parse(JSON.parse(readFileSync(path, 'utf8')));
-	return scenario.kind === 'headless'
+	return scenario.kind === 'headless' || scenario.id === 'vault-local-setup'
 		? scenario.tests
 				.filter((check) => check.target.includes('test/verification-output.ts'))
 				.map((check) => ({
