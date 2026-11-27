@@ -10,7 +10,11 @@ export const verificationUrl = 'https://hub.example.invalid/native/handoff-1';
 function installConnection(input: { userCode: string; verificationUrl: string; state: string }) {
 	const host = window as unknown as HostedHost;
 	const { state: initial, ...shown } = input;
-	const hosted = { state: initial, polls: 0, google: false };
+	const hosted = {
+		state: sessionStorage.getItem('fixtureHostedState') ?? initial,
+		polls: 0,
+		google: false
+	};
 	const listed = host.harness.listProjects as () => Promise<{ kind: string }[]>;
 	const actor = { id: 'google:ada', name: 'Ada Example', email: 'ada@example.invalid' };
 	const status = () => ({
@@ -30,14 +34,62 @@ function installConnection(input: { userCode: string; verificationUrl: string; s
 	Object.assign(host, { __hosted: hosted, __cache: () => {}, __deny: false });
 	Object.assign(host.harness, {
 		/** Shared projects are listed only to a signed-in device. */
-		listProjects: async () =>
-			(await listed()).filter((item) => item.kind !== 'shared' || hosted.state === 'signed-in'),
+		listProjects: async () => {
+			const hubUnavailable = sessionStorage.getItem('fixtureHubUnavailable') === 'yes';
+			if (hubUnavailable) host.__cache({ projectId: '$projects', status: 'unavailable' });
+			return (await listed()).filter(
+				(item) => item.kind !== 'shared' || (!hubUnavailable && hosted.state === 'signed-in')
+			);
+		},
+		homeSnapshot: async () => ({
+			overview: { status: 'ready', projects: [], machines: [], liveSessions: 0 },
+			projectDirectory: [{ name: 'Tracker Orion', state: 'needs-you', needsYou: 2 }],
+			agents: [],
+			openAsks: ['Review the launch plan', 'Approve the design'].map((question, index) => ({
+				itemId: `fixture-orion-${index}`,
+				agentId: 'orion',
+				agentName: 'Tracker Orion',
+				title: question,
+				question,
+				options: [
+					{ label: 'Approve', effect: 'Continue.', recommended: true },
+					{ label: 'Hold', effect: 'Wait for review.' }
+				],
+				since: new Date(Date.now() - 3600000).toISOString()
+			})),
+			plans: [],
+			scheduled: [],
+			pastDue: [],
+			providers: { quota: null, routines: null }
+		}),
+		trackerInbox: {
+			overview: async () => ({
+				freshness: 'current',
+				value: {
+					rows: ['Tracker Orion', 'Other Tracker project'].map((project, index) => ({
+						header: {
+							id: `fixture-task-${index}`,
+							title: index === 0 ? 'Orion task' : 'Unrelated task',
+							project,
+							status: 'open',
+							updatedAt: null,
+							dueAt: null
+						},
+						bucket: 'quiet'
+					})),
+					unresolvedFlags: 0,
+					needsYouCapped: false
+				}
+			}),
+			writes: async () => ({ freshness: 'current', value: [] })
+		},
 		onCacheStatus: (listener: HostedHost['__cache']) => {
 			host.__cache = listener;
 			return () => {};
 		},
 		hostedStatus: async () => {
 			hosted.polls++;
+			if (hosted.state === 'signed-in') sessionStorage.setItem('fixtureHostedState', 'signed-in');
 			return status();
 		},
 		connectHosted: async (input?: { google?: boolean }) => {
@@ -48,6 +100,7 @@ function installConnection(input: { userCode: string; verificationUrl: string; s
 		disconnectHosted: async (input?: { google?: boolean }) => {
 			hosted.google = input?.google === true;
 			hosted.state = 'signed-out';
+			sessionStorage.removeItem('fixtureHostedState');
 			host.__cache({ projectId: '$projects', status: 'denied' });
 			return status();
 		}
