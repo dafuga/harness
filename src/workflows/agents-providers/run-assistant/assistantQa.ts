@@ -21,14 +21,14 @@ import { qaLabelEvents } from './qaLabelEvents';
 
 export function assistantQa(settings: AssistantQaSettings, runtime: AssistantQaRuntime) {
 	const { options, stagingBranch, root, plan } = settings;
+	const deployed = () =>
+		qaDeployedRevision(runtime.github, stagingBranch, options, settings.healthUrl);
 	const ledger = new QaLedgerRepository(join(root, 'qa-threads.jsonl'));
 	const service = new QaThreadService(
 		new QaEligibilityService(runtime.github, options.label, stagingBranch),
 		ledger,
 		{
-			stillLive: async (event) =>
-				event.deployedRevision ===
-				(await qaDeployedRevision(runtime.github, stagingBranch, options, settings.healthUrl)),
+			stillLive: async (event) => event.deployedRevision === (await deployed()),
 			writeSteps: (task) => writeSteps(runtime.model, task),
 			record: (task, steps, sha) => {
 				if (!sha) throw new ProjectAssistantError('A verified staging revision is required.');
@@ -58,12 +58,7 @@ export function assistantQa(settings: AssistantQaSettings, runtime: AssistantQaR
 		)) {
 			if (signal.aborted) return;
 			if (await ledger.hasReservation(event.eventId, event.issue)) continue;
-			const deployedRevision = await qaDeployedRevision(
-				github,
-				stagingBranch,
-				options,
-				settings.healthUrl
-			);
+			const deployedRevision = await deployed();
 			if (!deployedRevision) return;
 			try {
 				const result = await service.handleLabel({ ...event, deployedRevision });
