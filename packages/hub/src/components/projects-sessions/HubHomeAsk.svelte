@@ -8,6 +8,7 @@
 	import type {
 		HomeChatInput,
 		HomeChatReceipt,
+		HomeChatStatus,
 		HomeOpenAsk
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { SendHomeChat } from './hubHomeView.types';
@@ -30,11 +31,18 @@
 		present?: (content: Snippet | null) => void;
 	} = $props();
 	const load = hubSpecDocuments();
-	let busy = $state(false);
-	let status = $state('');
-	/** The question this card already answered, so it hides until the Tracker shows a new one. */
-	let answered = $state<string | null>(null);
-	const open = $derived(answered !== ask.question);
+	const feedback: Record<HomeChatStatus | 'sending', string> = {
+		sending: 'Sending answer…',
+		queued: 'Answer queued',
+		sent: 'Answer sent',
+		refused: 'Answer not sent. Check the latest question and try again.',
+		unconfirmed: 'Tracker did not confirm the answer. Check Tracker before retrying.'
+	};
+	const version = $derived(JSON.stringify([ask.itemId, ask.question, ask.since]));
+	let submission = $state<{ version: string; phase: keyof typeof feedback } | null>(null);
+	const phase = $derived(submission?.version === version ? submission.phase : null);
+	const busy = $derived(phase === 'sending' || phase === 'queued');
+	const open = $derived(phase !== 'sent');
 
 	async function answerWith(text: string, tap?: { number: number; confirmed: boolean }) {
 		if (!text.trim() || busy) return;
@@ -47,50 +55,48 @@
 			text: text.trim(),
 			...(tap && { option: tap.number, ...(tap.confirmed && { confirmed: true as const }) })
 		};
-		busy = true;
-		status = '';
+		const reviewed = version;
+		submission = { version: reviewed, phase: 'sending' };
 		try {
 			const result = await send(message);
+			if (version !== reviewed) return;
 			submitted?.(message, result);
-			if (result.status === 'queued' || result.status === 'sent') {
-				answered = message.question;
-				void settle(message.id, result);
-			} else if (result.status === 'refused')
-				status =
-					'Not sent: the question changed, or your Mac needs the latest Harness app. Check Tracker.';
-			else status = 'The computer did not confirm the answer. Check Tracker before retrying.';
+			await settle(reviewed, result);
 		} catch {
-			status = 'Could not queue the answer. Check Tracker before retrying.';
-		} finally {
-			busy = false;
+			if (version === reviewed) submission = { version: reviewed, phase: 'unconfirmed' };
 		}
 	}
 
-	async function settle(id: string, first: HomeChatReceipt) {
-		status = `Answer ${first.status}`;
-		for (let attempt = 0; attempt < 15 && first.status === 'queued'; attempt++) {
+	async function settle(reviewed: string, result: HomeChatReceipt) {
+		submission = { version: reviewed, phase: result.status };
+		for (let attempt = 0; attempt < 15 && result.status === 'queued'; attempt++) {
 			await new Promise((done) => setTimeout(done, 2000));
-			first = await receipt(id).catch(() => first);
-			status = `Answer ${first.status}`;
+			if (version !== reviewed) return;
+			result = await receipt(result.id).catch(() => result);
+			if (version !== reviewed) return;
+			submission = { version: reviewed, phase: result.status };
 		}
+		if (result.status === 'queued') submission = { version: reviewed, phase: 'unconfirmed' };
 	}
 </script>
 
 {#snippet choices(done?: () => void)}
-	<HubHomeChoices
-		agent={ask}
-		{busy}
-		{present}
-		onpick={(number, confirmed) => {
-			const option = ask.options[number - 1];
-			done?.();
-			if (option) void answerWith(option.label, { number, confirmed });
-		}}
-		onother={(text) => {
-			done?.();
-			void answerWith(text);
-		}}
-	/>
+	{#key version}
+		<HubHomeChoices
+			agent={ask}
+			{busy}
+			{present}
+			onpick={(number, confirmed) => {
+				const option = ask.options[number - 1];
+				done?.();
+				if (option) void answerWith(option.label, { number, confirmed });
+			}}
+			onother={(text) => {
+				done?.();
+				void answerWith(text);
+			}}
+		/>
+	{/key}
 {/snippet}
 
 {#if open}
@@ -111,7 +117,5 @@
 			{@render choices()}
 		</hx-section>
 	{/if}
-{:else if status}
-	<hx-p class="po-sessions" role="status">{ask.agentName}: {status}</hx-p>
 {/if}
-{#if open && status}<hx-p role="status">{status}</hx-p>{/if}
+{#if phase}<hx-p class="po-sessions" role="status">{ask.agentName}: {feedback[phase]}</hx-p>{/if}
