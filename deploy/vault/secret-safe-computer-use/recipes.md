@@ -143,6 +143,37 @@ requires the approved private Admin API or Slack OAuth inputs described above.
 [Slack OAuth exchange](https://docs.slack.dev/reference/methods/oauth.v2.access/)
 · [auth.test](https://docs.slack.dev/reference/methods/auth.test/)
 
+## Harbor Google Calendar Desktop test client
+
+The one-off primary Mac recipe is pinned to Daniel's signed-in Chrome and the
+unbilled `harbor-calendar-oauth-test` project. Verify Testing consent, Daniel as
+the only test user, and the Calendar scopes before running it. Check the client
+list for an existing registration and check that the final destination is absent.
+The Desktop application uses Google's loopback redirect.
+
+Run `python3 -B deploy/vault/harbor_google_oauth_download.py live`. After READY,
+launch `harbor_google_oauth_capture.js` as a bookmarklet from the exact project
+client list in a task-owned tab. Strip JavaScript line comments before flattening
+the source for the bookmarklet. Verify the address field before triggering it.
+The runner obscures the document and hides it from accessibility before opening
+the form. It selects Desktop, fills the pinned name and clicks Create at most
+once. The observer clicks only the documented Download JSON control in the
+success dialog. Keep captures disabled and close the masked task tab after the
+watcher finishes, including on failure. Read back the live Clients list in a
+separate safe tab and reconcile the registration before any retry.
+
+The watcher requires Chrome's current download folder `~/Downloads` to be
+owner-only, validates the new export against the pinned project, Desktop type,
+client ID and endpoints, then atomically installs it in owner-only mode
+`0600` at `~/.secrets/harbor-google-oauth-test.json`. It removes the download
+after storage. If the transfer fails, check metadata in Downloads and the
+provider list before retrying. Receipt fields are project ID, public client ID
+and outcome. Apple Events and Chrome download settings stay as configured.
+Use `canary` with a dummy browser download to prove the transfer before any live
+action. Run `node --test deploy/vault/harbor_google_oauth_capture.test.cjs` to
+check mask ordering and origin guards without a live provider action.
+[Google desktop OAuth and PKCE](https://developers.google.com/identity/protocols/oauth2/native-app)
+
 ## Bind the destination
 
 - Run the reviewed producer and writer through `deploy/vault/secret_pipe.py` from the
