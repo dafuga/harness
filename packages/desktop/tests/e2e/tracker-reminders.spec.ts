@@ -72,7 +72,7 @@ for (const [size, width] of [
 				await expect(snooze.getByRole('button')).toHaveCount(3);
 				if (process.env.TAKE_SCREENSHOT === 'true')
 					await page.screenshot({
-						path: `${process.env.SCREENSHOT_DIR}/mac-${size}-${scheme}.png`,
+						path: `${process.env.SCREENSHOT_DIR ?? 'test-results/reminders'}/mac-${size}-${scheme}.png`,
 						animations: 'disabled'
 					});
 				const scroll = await page.evaluate(() => document.documentElement.scrollWidth);
