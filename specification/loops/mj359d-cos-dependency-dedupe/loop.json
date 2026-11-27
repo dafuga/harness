@@ -2,11 +2,9 @@
 	"name": "mj359d-cos-dependency-dedupe",
 	"goal": "Replay the recorded CoS queue and deliver a dependency update once per item and text change.",
 	"createdAt": "2026-11-27T16:07:26.454Z",
-	"updatedAt": "2026-11-27T16:19:14.642Z",
+	"updatedAt": "2026-11-27T16:26:12.906Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -41,7 +39,9 @@
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T16:26:12.906Z",
+			"evidence": "Frozen test corpus and one command failed at 98193e2938 and passed at ea99e155f1. The PR also exercises transcript receipt recovery in a second test."
 		},
 		{
 			"id": "siblings",
