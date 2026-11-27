@@ -9,7 +9,7 @@ import type { CdpPending } from './CdpSession.types';
 const callTimeoutMs = 30_000;
 
 /**
- * Sends only Page.navigate, Runtime.evaluate and Browser.close. No domain is enabled and nothing is
+ * Sends page navigation, evaluation and scoped close commands. No domain is enabled and nothing is
  * overridden.
  */
 export class CdpSession implements ContainerPage {
@@ -42,6 +42,10 @@ export class CdpSession implements ContainerPage {
 		const reply = (await this.call('Page.navigate', { url })) as { errorText?: string };
 		if (reply.errorText)
 			throw new ExpectedCliError(`The page did not load: ${reply.errorText.slice(0, 80)}`);
+	}
+
+	async closeTarget(targetId: string): Promise<void> {
+		await this.call('Target.closeTarget', { targetId });
 	}
 
 	async closeBrowser(): Promise<void> {

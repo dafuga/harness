@@ -17,13 +17,14 @@
 			"CdpSession.open",
 			"CdpSession.evaluate",
 			"CdpSession.navigate",
+			"CdpSession.closeTarget",
 			"CdpSession.closeBrowser",
 			"CdpSession.close",
 			"CdpPending"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "CdpSession.open.stream",
@@ -44,6 +45,12 @@
 				"name": "CdpSession.navigate.url",
 				"type": "string",
 				"required": true
+			},
+			{
+				"name": "CdpSession.closeTarget.targetId",
+				"type": "string",
+				"required": true,
+				"description": "The DevTools identifier of the reviewed target to close."
 			}
 		],
 		"outputs": [
@@ -58,6 +65,11 @@
 			{
 				"name": "CdpSession.navigate",
 				"type": "Promise<void>"
+			},
+			{
+				"name": "CdpSession.closeTarget",
+				"type": "Promise<void>",
+				"description": "The close command was acknowledged. The browser adapter verifies the tab has actually disappeared."
 			},
 			{
 				"name": "CdpSession.closeBrowser",
@@ -144,6 +156,32 @@
 					}
 				],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "CdpSession.closeTarget",
+				"inputs": [
+					{
+						"name": "CdpSession.closeTarget.targetId",
+						"type": "string",
+						"required": true,
+						"description": "The DevTools identifier of the reviewed target to close."
+					}
+				],
+				"outputs": [
+					{
+						"name": "CdpSession.closeTarget",
+						"type": "Promise<void>",
+						"description": "The close command was acknowledged. The browser adapter verifies the tab has actually disappeared."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "The browser refused the command, its pipe closed or it did not answer in time."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "CdpSession.closeBrowser",

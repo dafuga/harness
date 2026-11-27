@@ -17,13 +17,14 @@
 			"ContainerCdpAdapter.constructor",
 			"ContainerCdpAdapter.pages",
 			"ContainerCdpAdapter.attach",
+			"ContainerCdpAdapter.closePage",
 			"ContainerCdpAdapter.quit",
 			"ContainerPageTarget",
 			"ContainerPage"
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "ContainerCdpAdapter.constructor.pipes",
@@ -34,6 +35,12 @@
 				"name": "ContainerCdpAdapter.attach.target",
 				"type": "ContainerPageTarget",
 				"required": true
+			},
+			{
+				"name": "ContainerCdpAdapter.closePage.id",
+				"type": "string",
+				"required": true,
+				"description": "The checked DevTools identifier of one reviewed tab."
 			}
 		],
 		"outputs": [
@@ -46,11 +53,21 @@
 				"type": "Promise<ContainerPage>"
 			},
 			{
+				"name": "ContainerCdpAdapter.closePage",
+				"type": "Promise<void>",
+				"description": "Resolves only after DevTools reports the target absent. A previously closed tab is safe to retry."
+			},
+			{
 				"name": "ContainerCdpAdapter.quit",
 				"type": "Promise<void>"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
 			{
@@ -82,6 +99,32 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "ContainerCdpAdapter.closePage",
+				"inputs": [
+					{
+						"name": "ContainerCdpAdapter.closePage.id",
+						"type": "string",
+						"required": true,
+						"description": "The checked DevTools identifier of one reviewed tab."
+					}
+				],
+				"outputs": [
+					{
+						"name": "ContainerCdpAdapter.closePage",
+						"type": "Promise<void>",
+						"description": "Resolves only after DevTools reports the target absent. A previously closed tab is safe to retry."
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown",
+						"description": "An invalid tab identifier or a tab that remains open after the verification window. Pipe or list errors can also prevent verification."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "ContainerCdpAdapter.quit",
@@ -130,6 +173,11 @@
 		},
 		{
 			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
 			"via": "import",
 			"origin": "derived"
 		},
