@@ -41,6 +41,10 @@ test.skipIf(!process.env.HARNESS_TEST_PROTECTED_CHROME_SOCKET)(
 	'stock Chrome keeps a website session across container recreation without DevTools',
 	{ timeout: 180_000 },
 	async () => {
+		await exec('python3', [
+			resolve(import.meta.dirname, 'support/protectedChromeExecutor.py'),
+			resolve(import.meta.dirname, '../deploy/container-browser/protected-chrome-executor.py')
+		]);
 		await withTempDir('protected-chrome-', async (config) => {
 			const socket = process.env.HARNESS_TEST_PROTECTED_CHROME_SOCKET!;
 			const docker = dockerHost({ socket, config }).docker;
@@ -90,8 +94,9 @@ async function chromeSessionFixture(
 
 async function waitForChrome(inside: (...command: string[]) => Promise<string>): Promise<string> {
 	const readScreen =
-		'test -f "/profile/google-chrome/Local State" && ' +
-		'grep -zaqFx -- "--user-data-dir=/profile/google-chrome" /proc/[0-9]*/cmdline 2>/dev/null || exit 1';
+		'lock=$(readlink /profile/google-chrome/SingletonLock) && ' +
+		'test "$(cat "/proc/${lock##*-}/comm")" = chrome && ' +
+		'xprop -root _NET_CLIENT_LIST | grep -q "window id # 0x" || exit 1';
 	for (let attempt = 0; attempt < 40; attempt++) {
 		const version = await inside(
 			'bash',

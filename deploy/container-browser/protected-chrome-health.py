@@ -56,7 +56,8 @@ def document_location(atspi, frame):
     return None
 
 
-def wait_for_status(atspi, app, previous, classify, deadline):
+def wait_for_status(atspi, snapshot, classify, deadline):
+    app, previous = snapshot
     while monotonic() < deadline:
         new_frames = set(children(app)) - previous
         if len(new_frames) > 1:
@@ -109,7 +110,7 @@ def probe(url, classify, timeout=12):
                 return 'unknown'
             previous = set(children(app))
             with probe_window(pid, url):
-                return wait_for_status(Atspi, app, previous, classify, monotonic() + timeout)
+                return wait_for_status(Atspi, (app, previous), classify, monotonic() + timeout)
     except Exception:
         # D-Bus, window manager and navigation failures reveal neither URLs nor page contents.
         return 'unknown'

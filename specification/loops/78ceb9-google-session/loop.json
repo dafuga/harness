@@ -2,7 +2,7 @@
 	"name": "78ceb9-google-session",
 	"goal": "Prove a stock Chrome website session survives container recreation, detect ended Google sessions without DevTools and notify Chief of Staff only on confirmed expiry.",
 	"createdAt": "2026-11-27T19:48:06.038Z",
-	"updatedAt": "2026-11-27T19:52:11.866Z",
+	"updatedAt": "2026-11-27T19:57:44.139Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T19:52:23.655Z",
+			"evidence": "b716bd6e9b installs an executor-only fixed-site Chrome probe, opens and closes a separate window, uses Linux accessibility only for the top-level destination, and retains the existing X browser target."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T19:57:44.139Z",
+			"evidence": "The unchanged focused test passed at b716bd6e9b under the same environment and command as failed f455091690. Real Docker browser startup and full session lifecycle are verified separately."
 		},
 		{
 			"id": "siblings",

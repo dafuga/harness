@@ -21,6 +21,9 @@ case "${1-chromium}" in
   protected-chrome)
     profile=/profile/google-chrome
     launch=(/usr/bin/google-chrome-stable --force-renderer-accessibility)
+    install -d -m 700 "$profile"
+    exec 9>"$profile/.harness-profile.lock"
+    flock -n 9 || { echo 'The protected Chrome profile is already in use.' >&2; exit 1; }
     install -d -m 700 /tmp/harness-chrome-session
     rm -f /tmp/harness-chrome-session/bus
     dbus-daemon --session --address="$DBUS_SESSION_BUS_ADDRESS" --nofork >/dev/null 2>&1 &

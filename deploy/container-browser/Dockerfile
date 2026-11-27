@@ -38,7 +38,7 @@ RUN test "$(dpkg --print-architecture)" = arm64 \
 COPY --chmod=0644 protected-chrome-policy.json /etc/opt/chrome/policies/managed/harness.json
 COPY --chmod=0644 protected-chrome-health.py /opt/browser/protected-chrome-health.py
 ENV HOME=/profile XDG_CONFIG_HOME=/profile/.config XDG_CACHE_HOME=/tmp/cache DISPLAY=:99 \
-    DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/harness-chrome-session/bus
+    DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/harness-chrome-session/bus ACCESSIBILITY_ENABLED=1
 USER 10001:10001
 ENTRYPOINT ["/bin/bash", "/opt/browser/entrypoint.sh", "protected-chrome"]
 

@@ -87,6 +87,12 @@ volume under the private executor home. Verify the actual disk paths and
 FileVault state before enabling admission. A Docker volume persists the profile
 and relies on host disk encryption for protection at rest.
 
+The private executor uses the `harness-google-chrome` Colima profile with VZ,
+no host mounts, and no shared Docker context. Name the container
+`harness-browser-google-slack` and its volume `harness-browser-google-slack-profile`.
+`protected-chrome-executor.py verify-storage` validates the actual VZ disk files
+and owner-only home and socket. This runs under `harness-browser-executor`.
+
 For initial sign-in and reauthentication, the executor drains agent work
 before opening the private viewer and requires Daniel's paired device.
 Daniel signs in to the Google website and completes any Google challenge on
@@ -104,6 +110,16 @@ accessibility. It closes the window before returning `ready`, `reauth-required`,
 or `unknown`. No account contents, cookies, full URLs, or WebDriver or DevTools
 traffic are part of the check. An unrecognized page or unavailable network is
 `unknown` and holds admission until a safe result is verified.
+
+Run `protected-chrome-executor.py health` inside the executor's exclusive
+reviewed operation after private input is closed. Also run it before queued
+Google-dependent work to detect an expired session. Route verified outcomes to
+`protected-chrome-executor.py report STATUS TRACKER_EXECUTABLE TRACKER_ITEM`
+using the installed Tracker binary and the operator-selected monitoring item.
+The reporter alerts Chief of Staff once after an observed healthy session
+expires. It retries delivery on failure and waits for a new healthy session
+before alerting again. The executor should leave work paused until the private
+viewer completes reauthentication and the check returns `ready`.
 
 For acceptance, confirm the actual Google sign-in succeeds through the phone
 viewer, then use Slack's Sign in with Google in the same virtual desktop.
