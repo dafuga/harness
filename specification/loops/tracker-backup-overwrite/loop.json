@@ -2,7 +2,7 @@
 	"name": "tracker-backup-overwrite",
 	"goal": "A backup written by another database never replaces or rotates the hub's backups, and backup status checks the newest file on disk",
 	"createdAt": "2026-11-27T08:07:24.712Z",
-	"updatedAt": "2026-11-27T08:08:06.719Z",
+	"updatedAt": "2026-11-27T08:12:08.435Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -25,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T08:12:01.713Z",
+			"evidence": "loop record red at 191a9d60: bunx vitest run test/services/projects-sessions/tracker-backup.test.ts, 3 failed 6 passed; a foreign db replaced a same-day file (ok:true) and status had no file check."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T08:12:04.555Z",
+			"evidence": "assertTrackerBackupOwner: newest daily and every file about to be replaced must carry this db id (unreadable fails closed), before rename. status.file_error checks last_ok_file presence and size; stale and health fail; one alert."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T08:12:08.435Z",
+			"evidence": "loop record green at 28cc91a7: same unchanged command and files, 9/9 passed."
 		},
 		{
 			"id": "siblings",
