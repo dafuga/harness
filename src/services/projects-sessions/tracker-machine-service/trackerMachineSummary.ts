@@ -3,13 +3,14 @@ import type { TrackerMachineRow } from '../../../utils/projects-sessions/tracker
 
 /** One computer without its process groups, for lists and service status. */
 export function trackerMachineSummary(row: TrackerMachineRow) {
-	const { node, role, status, reasons, age_s, sample } = row;
+	const { node, role, status, reasons, age_s, remote_runs, sample } = row;
 	return {
 		node,
 		role,
 		status,
 		reasons,
 		age_s,
+		remote_runs,
 		...(sample && {
 			cores: sample.cores,
 			load: sample.load,

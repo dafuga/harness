@@ -94,7 +94,12 @@
 				{#each ready.machines as machine (machine)}
 					<Pill as="li" tone="po-machine" state={machine.status}>
 						<hx-span class="po-machine-mark" aria-hidden="true"></hx-span>
-						{machine.name} <hx-span class="po-machine-status">{machine.status}</hx-span>
+						{machine.name}
+						<hx-span class="po-machine-status"
+							>{machine.status}{machine.remoteRuns
+								? ` · ${machine.remoteRuns} remote ${machine.remoteRuns === 1 ? 'run' : 'runs'}`
+								: ''}</hx-span
+						>
 					</Pill>
 				{/each}
 			</hx-ul>

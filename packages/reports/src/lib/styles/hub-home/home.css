@@ -143,10 +143,6 @@
 		font-size: var(--hx-type-size-2xl);
 		line-height: var(--hx-space-32);
 	}
-	.hh-home .hh-head .po-machines {
-		flex-wrap: nowrap;
-		overflow-x: auto;
-	}
 	.hh-home .hh-section.po-card {
 		padding: var(--hx-space-16);
 		gap: var(--hx-space-12);

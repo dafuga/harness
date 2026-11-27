@@ -43,7 +43,13 @@ const liveOverview = z.object({
 	readAt: time,
 	projects: z.array(project).max(200),
 	machines: z
-		.array(z.object({ name: short, status: z.enum(['ok', 'busy', 'overloaded', 'offline']) }))
+		.array(
+			z.object({
+				name: short,
+				status: z.enum(['ok', 'busy', 'overloaded', 'offline']),
+				remoteRuns: count.optional()
+			})
+		)
 		.max(200),
 	hiddenRuns: count,
 	omittedRows: count

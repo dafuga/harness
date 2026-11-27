@@ -17,6 +17,8 @@
 			"TrackerMachineService.constructor",
 			"TrackerMachineService.sampleLocal",
 			"TrackerMachineService.ingest",
+			"TrackerMachineService.updateHostWork",
+			"TrackerMachineService.localHostWork",
 			"TrackerMachineService.rows",
 			"TrackerMachineService.history",
 			"TrackerMachineService.place",
@@ -42,6 +44,16 @@
 			{
 				"name": "TrackerMachineService.ingest.samples",
 				"type": "readonly TrackerFleetReport[]",
+				"required": true
+			},
+			{
+				"name": "TrackerMachineService.updateHostWork.claim",
+				"type": "TrackerHostWorkClaim",
+				"required": true
+			},
+			{
+				"name": "TrackerMachineService.updateHostWork.release",
+				"type": "boolean",
 				"required": true
 			},
 			{
@@ -73,6 +85,14 @@
 			{
 				"name": "TrackerMachineService.ingest",
 				"type": "void"
+			},
+			{
+				"name": "TrackerMachineService.updateHostWork",
+				"type": "boolean"
+			},
+			{
+				"name": "TrackerMachineService.localHostWork",
+				"type": "unknown"
 			},
 			{
 				"name": "TrackerMachineService.rows",
@@ -119,6 +139,41 @@
 					{
 						"name": "TrackerMachineService.ingest",
 						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerMachineService.updateHostWork",
+				"inputs": [
+					{
+						"name": "TrackerMachineService.updateHostWork.claim",
+						"type": "TrackerHostWorkClaim",
+						"required": true
+					},
+					{
+						"name": "TrackerMachineService.updateHostWork.release",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerMachineService.updateHostWork",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "TrackerMachineService.localHostWork",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerMachineService.localHostWork",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -229,12 +284,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-host-work",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-tracker-machine-status",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "function.projects-sessions-tracker-machine-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.projects-sessions-tracker-host-work",
 			"via": "import",
 			"origin": "derived"
 		},
