@@ -134,7 +134,6 @@ function owner(item: TrackerItem, history: readonly TrackerListedRun[], pending:
 	const node = choices.find((value) => value && value !== 'auto');
 	return node ? canonicalNode(node, {}) : '';
 }
-
 function stalledIssue(
 	host: string,
 	item: TrackerItem,

@@ -1,12 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import {
-	existsSync,
-	readFileSync,
-	readdirSync,
-	realpathSync,
-	unlinkSync,
-	writeFileSync
-} from 'node:fs';
+import { existsSync, realpathSync, unlinkSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { expect, vi } from 'vitest';
@@ -22,6 +15,7 @@ import {
 	seedTask,
 	verifyFailureBudget,
 	verifyKilledReminder,
+	verifyResumeBrief,
 	verifyStoppedRun
 } from './trackerRecoveryAssertions';
 import { measureWorkload } from './measureWorkload';
@@ -197,22 +191,6 @@ async function startAndDrop(
 		state: 'finished',
 		outcome: 'abandoned'
 	});
-}
-
-function verifyResumeBrief(directory: string, run: number) {
-	const brief = readBrief(directory, run);
-	expect(brief).toContain('Resume the synthetic task');
-	expect(brief).toContain('Progress note 11');
-	expect(brief).toContain('resume from: checkpoint commit');
-}
-
-function readBrief(state: string, run: number) {
-	for (const attempt of readdirSync(state)) {
-		const receipt = join(state, attempt, 'receipt.json');
-		if (existsSync(receipt) && JSON.parse(readFileSync(receipt, 'utf8')).runId === run)
-			return readFileSync(join(state, attempt, 'brief.md'), 'utf8');
-	}
-	return '';
 }
 
 function isolatedTmux(socket: string) {

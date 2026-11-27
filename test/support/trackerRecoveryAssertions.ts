@@ -1,3 +1,5 @@
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
 import type { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { expect } from 'vitest';
@@ -132,4 +134,20 @@ export async function verifyFailureBudget({
 	expect(
 		items.getStored(id).notes_log.filter(({ text }) => text.includes('watchdog recovery-failed'))
 	).toHaveLength(1);
+}
+
+export function verifyResumeBrief(directory: string, run: number) {
+	const brief = readBrief(directory, run);
+	expect(brief).toContain('Resume the synthetic task');
+	expect(brief).toContain('Progress note 11');
+	expect(brief).toContain('resume from: checkpoint commit');
+}
+
+function readBrief(state: string, run: number) {
+	for (const attempt of readdirSync(state)) {
+		const receipt = join(state, attempt, 'receipt.json');
+		if (existsSync(receipt) && JSON.parse(readFileSync(receipt, 'utf8')).runId === run)
+			return readFileSync(join(state, attempt, 'brief.md'), 'utf8');
+	}
+	return '';
 }
