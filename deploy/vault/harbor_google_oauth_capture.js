@@ -1,3 +1,4 @@
+/* global document, location, URL, URLSearchParams, CSSStyleSheet, MutationObserver, Event, getComputedStyle, setTimeout, clearTimeout */
 // Run as a bookmarklet from the Harbor test project's client list, after the watcher is READY.
 (() => {
 	const project = 'harbor-calendar-oauth-test';

@@ -1,3 +1,4 @@
+/* global __dirname, URL, URLSearchParams, Event */
 const { readFileSync } = require('node:fs');
 const { join } = require('node:path');
 const assert = require('node:assert/strict');
