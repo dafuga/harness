@@ -1,4 +1,5 @@
 import { expect, test } from '../../../../test/support/browserTest';
+import { captureNeedsYou } from './hub-home-capture';
 import { recordedTracker } from '../../test/support/recordedTracker';
 import {
 	checkProjectDisclosure,

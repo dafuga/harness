@@ -50,7 +50,7 @@
 			{@const linked = hasWebLink(row.title)}
 			{@const due = dueById?.get(row.itemId)}
 			{@const label =
-				due && !['offline', 'finished', 'running'].includes(row.state)
+				due && row.state === 'queued' && !row.runId
 					? pastDueLabel(due)
 					: workStateLabel(row)}
 			<hx-li class="hh-live-row" data-state={row.state}>

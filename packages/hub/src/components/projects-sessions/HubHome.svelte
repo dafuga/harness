@@ -1,11 +1,11 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms $reports/components/shared-primitives/atoms -->
 <!-- @harness-uid u_mqkhzvyhou -->
 <!-- @harness-view overview -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import { workOverview } from '$reports/components/projects-sessions/hub-home/hubHomeStatusText';
-	import { homeBoard } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
+	import { homeBoard } from '$reports/components/projects-sessions/hub-home/hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -18,24 +18,24 @@
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
-	import { provideHubSpecDocuments } from '../../../../reports/src/components/projects-sessions/hub-home/hubSpecDocument';
-	import { provideHomeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
+	import { provideHubSpecDocuments } from '$reports/components/projects-sessions/hub-home/hubSpecDocument';
+	import { provideHomeCosChat } from '$reports/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
 	import * as presentation from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
 	import type * as Home from '$reports/components/projects-sessions/hub-home/hubHomeView.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
-	import HubHomeHeader from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte';
+	import HubHomeHeader from '$reports/components/projects-sessions/hub-home/HubHomeHeader.svelte';
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import HubHomeNotifications from './HubHomeNotifications.svelte';
-	import HubHomeCards from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte';
-	import HubHomeLive from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte';
-	import HubHomeDialogs from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
+	import HubHomeCards from '$reports/components/projects-sessions/hub-home/HubHomeCards.svelte';
+	import HubHomeLive from '$reports/components/projects-sessions/hub-home/HubHomeLive.svelte';
+	import HubHomeDialogs from '$reports/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
 	import { followNeedsLink } from './followNeedsLink.svelte';
 	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
-	import '../../../../reports/src/lib/styles/home-scheme.css';
-	import '../../../../reports/src/lib/styles/hub-home/index.css';
+	import '$reports/lib/styles/home-scheme.css';
+	import '$reports/lib/styles/hub-home/index.css';
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
 	provideHubSpecDocuments(({ id }) => api.get('/api/hub-home/doc', { id }));

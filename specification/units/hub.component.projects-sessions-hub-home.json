@@ -9,17 +9,7 @@
 	"status": "active",
 	"composition": {
 		"level": "organism",
-		"uses": [
-			"hub.component.account-menu",
-			"hub.component.projects-sessions-hub-home-cards",
-			"hub.component.projects-sessions-hub-home-dialogs",
-			"hub.component.projects-sessions-hub-home-header",
-			"hub.component.projects-sessions-hub-home-live",
-			"hub.component.projects-sessions-hub-home-notifications",
-			"reports.component.shared-primitives-atoms-html-div",
-			"reports.component.shared-primitives-atoms-html-main",
-			"reports.component.shared-primitives-atoms-html-p"
-		]
+		"uses": ["hub.component.account-menu", "hub.component.projects-sessions-hub-home-notifications"]
 	},
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/HubHome.svelte"],
@@ -78,32 +68,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.component.projects-sessions-hub-home-cards",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-dialogs",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-header",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-live",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.component.projects-sessions-hub-home-notifications",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.public-site-home-page",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -123,17 +88,7 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-home-chat-context",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.function.projects-sessions-hub-home-client",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.function.projects-sessions-hub-home-merge",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -153,11 +108,6 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.function.projects-sessions-hub-spec-document",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.module.realtime-hub-live-updates",
 			"via": "import",
 			"origin": "derived"
@@ -169,26 +119,6 @@
 		},
 		{
 			"unit": "hub.service.networking-security-linked-home",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.style.hub-home-index",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-div",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-main",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-p",
 			"via": "import",
 			"origin": "derived"
 		},
