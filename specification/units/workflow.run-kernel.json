@@ -94,7 +94,7 @@
 				"name": "kernelDefault.measurements",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Path to a kernel benchmark file, resolved from the working directory, whose recorded run replaces the one for this machine profile. When omitted, the run for this profile is read from the repository first and then from the shipped measurements.",
 				"examples": [
 					"specification/measurements/impact-kernel/9c4e1a7f03b2d6e8.json",
@@ -607,7 +607,7 @@
 						"name": "kernelDefault.measurements",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Path to a kernel benchmark file, resolved from the working directory, whose recorded run replaces the one for this machine profile. When omitted, the run for this profile is read from the repository first and then from the shipped measurements.",
 						"examples": [
 							"specification/measurements/impact-kernel/9c4e1a7f03b2d6e8.json",

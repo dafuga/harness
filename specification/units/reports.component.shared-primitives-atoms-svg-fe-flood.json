@@ -26,7 +26,7 @@
 				"name": "SvgFeFlood.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet that supplies child content for the feFlood element, which matters only when the caller needs content inside it. The template renders it with {@render children()} only when it is provided, so an omitted value adds no child content, and because the template calls it as a function the value must be a snippet rather than a string."
 			}
 		],

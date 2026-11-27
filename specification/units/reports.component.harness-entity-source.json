@@ -75,7 +75,7 @@
 				"name": "EntitySource.repository",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Defaults to JavaScript undefined when omitted. It is accepted only for an HTTPS GitHub URL whose owner matches [A-Za-z0-9_-]+ and repository matches [A-Za-z0-9_.-]+, with no trailing slash; links also require a valid commit.",
 				"examples": ["https://github.com/greymass/wharfkit"]
 			},
@@ -83,7 +83,7 @@
 				"name": "EntitySource.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Defaults to JavaScript undefined when omitted. It is used only when it is a 40- or 64-character lowercase hexadecimal hash; sourceLink also requires a valid repository URL.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
@@ -91,7 +91,7 @@
 				"name": "EntitySource.entity",
 				"type": "ExplorerEntity",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Defaults to JavaScript undefined when omitted. It is forwarded to SourceCodeAction only when nav is also present, and a services category sets the implementation list relativeTo value to src/services/.",
 				"examples": [
 					{
@@ -152,7 +152,7 @@
 				"name": "EntitySource.nav",
 				"type": "EntityNav",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Defaults to JavaScript undefined when omitted. It is forwarded with entity to each SourceCodeAction, which is rendered only when both values are present."
 			}
 		],

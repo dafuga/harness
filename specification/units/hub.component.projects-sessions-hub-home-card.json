@@ -59,14 +59,14 @@
 				"name": "HubHomeCard.footer",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional action content below the card preview."
 			},
 			{
 				"name": "HubHomeCard.badge",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional status element displayed beside the heading."
 			}
 		],

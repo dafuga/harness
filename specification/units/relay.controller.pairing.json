@@ -76,7 +76,8 @@
 			{
 				"name": "PairingController.handle.holder",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -130,7 +131,8 @@
 					{
 						"name": "PairingController.handle.holder",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

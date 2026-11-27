@@ -29,7 +29,8 @@
 			{
 				"name": "BrowserComputerService.constructor.keys",
 				"type": "(hostId: string) => Promise<RemoteKeyPair>",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "BrowserComputerService.connect.hostId",
@@ -177,7 +178,8 @@
 					{
 						"name": "BrowserComputerService.constructor.keys",
 						"type": "(hostId: string) => Promise<RemoteKeyPair>",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

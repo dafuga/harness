@@ -110,21 +110,21 @@
 				"name": "ProjectGate.choose",
 				"type": "(projectId: string) => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional callback receiving a selected recent-project identifier. Defaults to JavaScript undefined (omitted); activating a listed project does nothing when no callback is supplied."
 			},
 			{
 				"name": "ProjectGate.phone",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional phone access settings. When given, a quiet hint says to connect a phone by signing in with the same Google account, and its Phone access button opens this snippet in a dialog titled Phone access. Defaults to JavaScript undefined (omitted): no hint and no dialog."
 			},
 			{
 				"name": "ProjectGate.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional quiet status (a Svelte snippet) rendered after the phone hint: centered and muted on this device, inline when local is false. Defaults to JavaScript undefined (omitted), in which case nothing is rendered."
 			}
 		],

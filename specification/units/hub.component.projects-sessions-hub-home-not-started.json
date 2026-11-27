@@ -41,7 +41,7 @@
 				"name": "HubHomeNotStarted.limit",
 				"type": "number",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The most rows to show. Defaults to showing all of them."
 			}
 		],

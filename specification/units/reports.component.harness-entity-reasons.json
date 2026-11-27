@@ -96,7 +96,7 @@
 				"name": "EntityReasons.id",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional HTML `id` forwarded to the `<hx-details>` element. When omitted, the component supplies no id.",
 				"examples": ["entity-reasons-review-17", "entity-reasons-commit-a1b2"]
 			}

@@ -26,7 +26,7 @@
 				"name": "SvgFeSpotLight.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet rendered inside the native feSpotLight element when supplied. The component calls it with no arguments, and no child block is rendered when it is omitted."
 			}
 		],

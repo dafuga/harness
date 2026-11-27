@@ -189,6 +189,7 @@
 				"name": "trackerItemPriority.fallback",
 				"type": "TrackerItemPriority",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Priority returned for absent or unrecognized legacy data when the caller supplies a default."
 			},
 			{
@@ -543,6 +544,7 @@
 						"name": "trackerItemPriority.fallback",
 						"type": "TrackerItemPriority",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Priority returned for absent or unrecognized legacy data when the caller supplies a default."
 					}
 				],

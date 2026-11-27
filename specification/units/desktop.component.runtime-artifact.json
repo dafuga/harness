@@ -128,7 +128,7 @@
 				"name": "RuntimeArtifact.refusal",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The backend's refusal message for this cell's bytes, shown first when the cell is not verified, before the read problem and the generic hash-check message. Defaults to JavaScript undefined (omitted), not the literal string.",
 				"examples": [
 					"The recorded file is too large for this page.",
@@ -140,7 +140,7 @@
 				"name": "RuntimeArtifact.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The unit id of the function this result is shown for, passed to EntityCases with callable set to true whenever it is defined, so that only that function's own calls become rows. Defaults to JavaScript undefined (omitted), not the literal string, which leaves callable false.",
 				"examples": ["reports.function.entity-behavior", "reports.function.explorer-artifact"]
 			}

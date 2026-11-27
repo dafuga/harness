@@ -43,7 +43,7 @@
 				"name": "CodeLine.action",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet rendered after the code in an adjacent action span when supplied. It is undefined when omitted; the caller owns its behavior and focus return."
 			},
 			{

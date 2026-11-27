@@ -46,7 +46,7 @@
 				"name": "Pill.state",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Styling state written to the data-state attribute of the rendered element; the type accepts any string. It defaults to JavaScript undefined, so data-state is omitted when no state is given.",
 				"examples": ["active", "loading"]
 			},
@@ -54,7 +54,7 @@
 				"name": "Pill.role",
 				"type": "'img' | 'status'",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Semantic role written to the role attribute of the rendered element; the type accepts only 'img' or 'status'. It defaults to JavaScript undefined, so role is omitted when no role is given.",
 				"examples": ["img", "status"]
 			},
@@ -62,7 +62,7 @@
 				"name": "Pill.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Accessible name written to the aria-label attribute of the rendered element; the type accepts any string. It defaults to JavaScript undefined, so aria-label is omitted when no label is given.",
 				"examples": ["3 open reports", "Status: ready"]
 			},
@@ -70,7 +70,7 @@
 				"name": "Pill.title",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Native tooltip text written to the title attribute of the rendered element; the type accepts any string. It defaults to JavaScript undefined, so title is omitted when no title is given.",
 				"examples": ["Open reports in the last 7 days", "Last refreshed 5 minutes ago"]
 			},

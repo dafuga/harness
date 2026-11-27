@@ -47,7 +47,7 @@
 				"name": "WorkspaceLink.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The accessible name passed as aria-label, meant for a link whose visible children do not say what it does. It is undefined when omitted.",
 				"examples": ["Open Evidence grid", "Show at commit 9d2f4c1"]
 			},
@@ -55,7 +55,7 @@
 				"name": "WorkspaceLink.title",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The value passed as the title attribute, which the browser shows as a tooltip on hover; it is meant as short hover text for an icon-only link. It is undefined when omitted.",
 				"examples": ["Open the Pages category", "Show the Components category", "Evidence grid"]
 			},

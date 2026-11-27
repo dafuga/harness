@@ -26,7 +26,7 @@
 				"name": "SvgFeGaussianBlur.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "A Svelte Snippet rendered as child content of the feGaussianBlur element, and only when the value is truthy; omitting it renders no snippet content. The component adds no validation and no wrapper around what the snippet renders."
 			}
 		],

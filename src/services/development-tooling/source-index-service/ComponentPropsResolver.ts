@@ -3,6 +3,8 @@ import ts from 'typescript';
 import type { SourceFile, SourceTree } from '../../../core/development-tooling/sourceTypes';
 import type { ContractItem } from '../../../core/development-tooling/unitTypes';
 import { scanImports } from './scanImports';
+import { svelteScripts } from './svelteScripts';
+import { sourceAllowsUndefined } from '../../../utils/development-tooling/parameterDefault';
 import {
 	boundProps,
 	componentSource,
@@ -25,7 +27,12 @@ export class ComponentPropsResolver {
 		const file = await this.source(path);
 		const node = propsDeclaration(file);
 		if (!node) return [];
-		return boundProps(await this.members(path, propsType(node), seen), node, owner);
+		return boundProps(
+			await this.members(path, propsType(node), seen),
+			node,
+			owner,
+			svelteScripts(this.texts.get(path) ?? '').every(sourceAllowsUndefined)
+		);
 	}
 
 	private async source(path: string): Promise<ts.SourceFile> {

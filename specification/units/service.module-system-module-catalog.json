@@ -48,7 +48,7 @@
 				"name": "ModuleCatalogService.state.gaps",
 				"type": "string[]",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional array where recoverable installation-state read or parse problems are appended. When omitted, invalid state and non-missing read failures reject instead.",
 				"examples": [
 					["Invalid module installation state."]
@@ -371,7 +371,7 @@
 						"name": "ModuleCatalogService.state.gaps",
 						"type": "string[]",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional array where recoverable installation-state read or parse problems are appended. When omitted, invalid state and non-missing read failures reject instead.",
 						"examples": [
 							["Invalid module installation state."]

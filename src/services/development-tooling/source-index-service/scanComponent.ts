@@ -1,6 +1,7 @@
 // @harness-uid u_pv45ayumau
 import type { ExportedSymbol } from '../../../core/development-tooling/sourceTypes';
 import { scanExports, type ExportScan } from '../../../utils/development-tooling/scanExports';
+import { sourceAllowsUndefined } from '../../../utils/development-tooling/parameterDefault';
 import { svelteScripts } from '../../../utils/development-tooling/scanImports';
 import {
 	boundProps,
@@ -13,10 +14,14 @@ import {
 
 /** Describes instance props independently of module exports and locally declared snippets. */
 export function scanComponent(code: string, name: string): ExportScan {
-	const nested = svelteScripts(code).map((script) => scanExports(script));
+	const scripts = svelteScripts(code);
+	const allowBareUndefined = scripts.every(sourceAllowsUndefined);
+	const nested = scripts.map((script) => scanExports(script, allowBareUndefined));
 	const file = componentSource(code);
 	const props = propsDeclaration(file);
-	const inputs = props ? boundProps(localProps(propsType(props), file), props, name) : [];
+	const inputs = props
+		? boundProps(localProps(propsType(props), file), props, name, allowBareUndefined)
+		: [];
 	const component: ExportedSymbol = {
 		name,
 		kind: 'component',

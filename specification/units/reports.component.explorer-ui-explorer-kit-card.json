@@ -50,7 +50,7 @@
 				"name": "Card.id",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Native id set on the rendered element; undefined omits the attribute. The component does not check the value's format or uniqueness.",
 				"examples": ["kit-summary-card", "kit-metrics-card-2"]
 			},
@@ -58,7 +58,7 @@
 				"name": "Card.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Sets aria-label on the rendered element, giving it an accessible name; undefined omits the attribute. The component does not validate the value.",
 				"examples": ["Kit summary", "Export settings"]
 			},
@@ -66,7 +66,7 @@
 				"name": "Card.labelledby",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Sets aria-labelledby on the rendered element, and undefined omits it. The value is the id of the heading that names the region, and the component does not check that such an element exists.",
 				"examples": ["kit-summary-heading", "export-settings-heading"]
 			},
@@ -74,7 +74,7 @@
 				"name": "Card.component",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Owning component attribution written unchanged to data-harness-component on the rendered element; undefined omits the attribute. The component does not validate the value.",
 				"examples": ["reports.component.evidence-grid"]
 			},

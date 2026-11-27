@@ -53,7 +53,7 @@
 				"name": "assessResponse.evaluate",
 				"type": "Evaluate",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional evaluator that receives a JevRequest and resolves to a JevEvaluation. When supplied it replaces credentialed JEV evaluation; blank responses bypass evaluation."
 			},
 			{
@@ -168,7 +168,7 @@
 						"name": "assessResponse.evaluate",
 						"type": "Evaluate",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional evaluator that receives a JevRequest and resolves to a JevEvaluation. When supplied it replaces credentialed JEV evaluation; blank responses bypass evaluation."
 					}
 				],

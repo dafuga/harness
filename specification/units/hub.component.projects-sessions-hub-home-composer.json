@@ -48,7 +48,7 @@
 				"name": "HubHomeComposer.agentId",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional identifier of the initially selected agent."
 			},
 			{
@@ -83,7 +83,7 @@
 				"name": "HubHomeComposer.itemContext",
 				"type": "HomeChatItemContext",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Tracker item attached to a message for Chief of Staff."
 			},
 			{
@@ -96,7 +96,7 @@
 				"name": "HubHomeComposer.submitted",
 				"type": "(message: HomeChatInput, receipt: HomeChatReceipt) => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional callback after the queue accepts a message."
 			}
 		],
@@ -208,7 +208,8 @@
 					{
 						"name": "homeChatItemSuffix.item",
 						"type": "HomeChatItemContext",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

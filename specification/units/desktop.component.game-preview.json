@@ -45,7 +45,7 @@
 				"name": "GamePreview.initialRun",
 				"type": "GameRun",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional run snapshot used when the derived view scope initializes and to restore progress at that view's spawn. Defaults to undefined; when absent the component creates createRun(1, view) before calling atSpawn.",
 				"examples": [
 					{
@@ -83,7 +83,7 @@
 				"name": "GamePreview.bridge",
 				"type": "DesktopBridge",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional desktop bridge supplying gameRender for AI video sessions; without the bridge or method, AI video is unavailable. Defaults to undefined."
 			}
 		],

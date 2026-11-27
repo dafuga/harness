@@ -46,7 +46,7 @@
 				"name": "CodexAppServerAdapter.constructor.queue",
 				"type": "ResourceQueueService",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional resource queue forwarded to codexTurn by run and generateImage. It defaults to undefined when omitted."
 			},
 			{
@@ -172,7 +172,7 @@
 						"name": "CodexAppServerAdapter.constructor.queue",
 						"type": "ResourceQueueService",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "An optional resource queue forwarded to codexTurn by run and generateImage. It defaults to undefined when omitted."
 					}
 				],

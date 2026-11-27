@@ -31,7 +31,7 @@
 				"name": "reportFiles.root",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional report-store root override; when omitted, its value is undefined. A truthy value is returned directly, while an empty string falls through to PROJECT_REPORTS_HOME and then join(homedir(), '.codex', 'project-reports').",
 				"examples": ["/srv/project-reports", ""]
 			},
@@ -140,7 +140,7 @@
 						"name": "reportFiles.root",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional report-store root override; when omitted, its value is undefined. A truthy value is returned directly, while an empty string falls through to PROJECT_REPORTS_HOME and then join(homedir(), '.codex', 'project-reports').",
 						"examples": ["/srv/project-reports", ""]
 					}

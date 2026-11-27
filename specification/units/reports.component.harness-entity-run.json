@@ -91,7 +91,7 @@
 				"name": "EntityRun.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional function unit id forwarded to artifact rows; when supplied, those rows are treated as callable and show only that unit's calls. When omitted, its value is undefined.",
 				"examples": ["reports.function.entity-behavior"]
 			}

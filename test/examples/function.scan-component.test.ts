@@ -28,7 +28,7 @@ test('Scans component props and markup snippets', () => {
 						name: 'Button.disabled',
 						type: 'boolean',
 						required: false,
-						default: 'undefined (omitted)'
+						defaultKind: 'omitted'
 					}
 				],
 				output: 'markup'

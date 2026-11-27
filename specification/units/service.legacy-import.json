@@ -41,7 +41,7 @@
 				"name": "LegacyImportService.import.project",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional project name or id that must equal the id or the name recorded on a run's project, compared exactly. When it is omitted (undefined) or an empty string, a run belongs here only if its recorded project path resolves to one of the repository's working trees; a given value skips that check, so it can also match runs recorded in other working trees.",
 				"examples": ["billing-api", "web-storefront"]
 			}
@@ -123,7 +123,7 @@
 						"name": "LegacyImportService.import.project",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "An optional project name or id that must equal the id or the name recorded on a run's project, compared exactly. When it is omitted (undefined) or an empty string, a run belongs here only if its recorded project path resolves to one of the repository's working trees; a given value skips that check, so it can also match runs recorded in other working trees.",
 						"examples": ["billing-api", "web-storefront"]
 					}

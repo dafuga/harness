@@ -179,7 +179,7 @@
 				"name": "GameCheckpointImage.projectId",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The identity of the local project the panel is bound to: 'local-' followed by 64 lowercase hex characters, and it must be the project currently selected on the host. When it is null or omitted, no image is previewed and generation is blocked with 'The demo is not saved, so it cannot generate images.'",
 				"examples": ["local-3c9e1f7a0b4d2e8c6f15a9d3b7e0c4f82a6d1b9e5c3f7a0d4b8e2c6f1a9d3b75", null]
 			},
@@ -187,7 +187,7 @@
 				"name": "GameCheckpointImage.revision",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The SHA-256 hex digest of the saved game.json, 64 lowercase characters, that generation is based on. When it is missing, generation is blocked with 'Reload the game to generate images.'; the host rejects a request whose digest no longer matches the saved game, and a change to it discards any unused candidate.",
 				"examples": [
 					"5f2c9a1e7b04d83c6a95e2f1b7d40c8e3a69f5d2b1c07e48a3d9f6b2c1e5a704",
@@ -198,7 +198,7 @@
 				"name": "GameCheckpointImage.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "A full 40-character lowercase Git commit SHA at which the current image is read; setting it also turns generation off and hides Remove image reference. An abbreviated SHA makes the read fail, and the panel then shows 'Unable to read this checkpoint image.'",
 				"examples": [
 					"7d1c3a9e0b5f24688c13d7e2a4b9f0165c8e2d3a",
@@ -217,7 +217,7 @@
 				"name": "GameCheckpointImage.bridge",
 				"type": "DesktopBridge",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Desktop host operations: generation is offered only when bridge.gameImageGenerate exists, and the current image is read only when bridge.gameImageRead exists. When it is omitted, no image is previewed and, once no earlier reason applies, the status line reads 'This app cannot generate images.'"
 			},
 			{

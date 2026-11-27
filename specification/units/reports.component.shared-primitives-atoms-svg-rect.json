@@ -23,7 +23,7 @@
 				"name": "SvgRect.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet; when supplied, it is invoked and rendered inside the <rect>, and when absent no child content is rendered. It is removed from the remaining props, so it is not spread onto the element as an attribute."
 			}
 		],

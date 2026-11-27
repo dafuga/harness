@@ -54,7 +54,8 @@
 			{
 				"name": "TrackerDispatchSchedulerService.status.minimumAge",
 				"type": "number",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerDispatchSchedulerService.runnerStatus.limit",
@@ -205,7 +206,8 @@
 					{
 						"name": "TrackerDispatchSchedulerService.status.minimumAge",
 						"type": "number",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

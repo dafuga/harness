@@ -46,7 +46,7 @@
 				"name": "harnessBudget.finding",
 				"type": "Finding",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional budget finding whose baseline takes priority over the ledger limit; an unavailable status marks review as not measurable. Defaults to undefined; an exceeded finding adds a growth note only when its baseline is present.",
 				"examples": [
 					{
@@ -145,7 +145,7 @@
 						"name": "harnessBudget.finding",
 						"type": "Finding",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "An optional budget finding whose baseline takes priority over the ledger limit; an unavailable status marks review as not measurable. Defaults to undefined; an exceeded finding adds a growth note only when its baseline is present.",
 						"examples": [
 							{

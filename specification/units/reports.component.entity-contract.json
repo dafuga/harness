@@ -284,7 +284,7 @@
 				"name": "EntityContract.last",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The parent commit an entity removed at the shown commit was last held at; undefined (the default) or an empty string keeps the heading Contract. A nonempty commit's first seven characters follow Last contract in the heading, and a note says the shown commit removed the entity.",
 				"examples": [
 					"4f2a9c1e7b3d608a5f1c2e9b7d4a6f80c3e12b5d",

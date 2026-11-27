@@ -32,14 +32,14 @@
 				"name": "GameCreate.bridge",
 				"type": "DesktopBridge",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional `DesktopBridge` whose `gameCreate` method enables project submission and takes precedence over the window host. When omitted, the component reads `window.harness` on mount; without a `gameCreate` function, the form remains disabled."
 			},
 			{
 				"name": "GameCreate.created",
 				"type": "(snapshot: ProjectSnapshot) => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional callback invoked with the returned project snapshot after `gameCreate` succeeds. If omitted, the component performs a full-page navigation to `/harness` for apps or `/game?projectId=...` for games; callback exceptions are caught and shown in the form alert."
 			}
 		],

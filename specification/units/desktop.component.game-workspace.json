@@ -56,7 +56,7 @@
 				"name": "GameWorkspace.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Commit that bridge.gameRead loads instead of the current document; the component sends it only when truthy, and the desktop game request validator accepts only a 40-character lowercase hex SHA. Any truthy commit locks the workspace (no edits and no Save), including in demo mode, where it is not read.",
 				"examples": [
 					"3c1f9a0e5b7d2c4861f0e9a3b5d7c2e1f4a6b8d0",
@@ -75,7 +75,7 @@
 				"name": "GameWorkspace.bridge",
 				"type": "DesktopBridge",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Native DesktopBridge object: gameRead({ projectId, commit? }) must resolve to { document, revision }, and gameSave({ projectId, document, expectedRevision }) must resolve to { revision }. When it is omitted or lacks gameRead, or projectId is null or empty, the workspace runs in demo mode; with a projectId and gameRead but no gameSave, it is locked."
 			}
 		],

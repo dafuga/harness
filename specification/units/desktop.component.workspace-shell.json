@@ -36,7 +36,7 @@
 				"name": "WorkspaceShell.account",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet of host-account content that the shell passes unchanged to NavBar as its account prop and never renders itself. When omitted it is undefined, so NavBar receives undefined for account."
 			}
 		],

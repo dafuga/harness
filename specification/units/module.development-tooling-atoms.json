@@ -18,7 +18,7 @@
 				"name": "atomicComponents.options",
 				"type": "{ aliases?: Record<string, string>; }",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Supply it when calling the wrapper with preprocessor options; the wrapper forwards it unchanged to the imported atomic preprocessor. The only declared field is optional aliases, a record of string keys and values.",
 				"examples": [
 					{}
@@ -45,7 +45,7 @@
 						"name": "atomicComponents.options",
 						"type": "{ aliases?: Record<string, string>; }",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Supply it when calling the wrapper with preprocessor options; the wrapper forwards it unchanged to the imported atomic preprocessor. The only declared field is optional aliases, a record of string keys and values.",
 						"examples": [
 							{}

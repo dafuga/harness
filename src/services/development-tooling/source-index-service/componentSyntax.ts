@@ -2,7 +2,7 @@
 import ts from 'typescript';
 import type { ContractItem } from '../../../core/development-tooling/unitTypes';
 import { parseParameters } from '../../../utils/development-tooling/parseParameters';
-import { parameterDefault } from '../../../utils/development-tooling/parameterDefault';
+import { inputDefault } from '../../../utils/development-tooling/parameterDefault';
 
 /** Module scripts may export functions, but only the instance script declares props. */
 export function instanceScript(code: string): string {
@@ -82,7 +82,8 @@ export function propMembers(members: ts.NodeArray<ts.TypeElement>): ContractItem
 export function boundProps(
 	items: ContractItem[],
 	node: ts.VariableDeclaration,
-	owner: string
+	owner: string,
+	allowBareUndefined = false
 ): ContractItem[] {
 	const bindings = ts.isObjectBindingPattern(node.name) ? node.name.elements : [];
 	return items.map((item) => {
@@ -91,9 +92,11 @@ export function boundProps(
 		);
 		const fallback = binding?.initializer ? bindableValue(binding.initializer) : undefined;
 		const named = { ...item, name: `${owner}.${item.name}` };
-		if (fallback) return { ...named, required: false, ...parameterDefault(fallback) };
-		if (item.required === false) return { ...named, default: 'undefined (omitted)' };
-		return named;
+		return {
+			...named,
+			...(fallback ? { required: false } : {}),
+			...inputDefault(fallback, item.required === false, allowBareUndefined)
+		};
 	});
 }
 

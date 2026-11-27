@@ -22,7 +22,7 @@
 				"name": "recordedBuilds.observed",
 				"type": "RecordedBuild[]",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The builds a run identified; each entry keeps only its id, directory, buildId and files, so a stamp or any other extra field is dropped. Undefined, which a run passes when the project declares no build, leaves out the builds key, and an explicitly empty array is kept as builds: [].",
 				"examples": [
 					[
@@ -66,7 +66,7 @@
 				"name": "recordedBuilds.skipped",
 				"type": "string[]",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The ids of the declared builds that an entity-scoped run skipped because it did not need them. When given, even as an empty array, it is copied into skippedBuilds; when undefined, the result has no skippedBuilds key.",
 				"examples": [
 					["docs.site"],
@@ -134,7 +134,7 @@
 						"name": "recordedBuilds.observed",
 						"type": "RecordedBuild[]",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The builds a run identified; each entry keeps only its id, directory, buildId and files, so a stamp or any other extra field is dropped. Undefined, which a run passes when the project declares no build, leaves out the builds key, and an explicitly empty array is kept as builds: [].",
 						"examples": [
 							[
@@ -178,7 +178,7 @@
 						"name": "recordedBuilds.skipped",
 						"type": "string[]",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The ids of the declared builds that an entity-scoped run skipped because it did not need them. When given, even as an empty array, it is copied into skippedBuilds; when undefined, the result has no skippedBuilds key.",
 						"examples": [
 							["docs.site"],

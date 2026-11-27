@@ -34,7 +34,7 @@
 				"name": "GameDocumentRepository.read.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional full lowercase hexadecimal commit SHA used to read <commit>:game.json; a truthy value must be exactly 40 hex characters, while omitted or empty values select the working-tree file. Defaults to undefined.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
@@ -123,7 +123,7 @@
 						"name": "GameDocumentRepository.read.commit",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "An optional full lowercase hexadecimal commit SHA used to read <commit>:game.json; a truthy value must be exactly 40 hex characters, while omitted or empty values select the working-tree file. Defaults to undefined.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}

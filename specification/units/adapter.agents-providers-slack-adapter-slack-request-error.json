@@ -22,7 +22,8 @@
 			{
 				"name": "SlackRequestError.constructor.retryAfterMs",
 				"type": "number",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [],
@@ -41,7 +42,8 @@
 					{
 						"name": "SlackRequestError.constructor.retryAfterMs",
 						"type": "number",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

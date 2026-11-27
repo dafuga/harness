@@ -23,7 +23,7 @@
 				"name": "HtmlInputRange.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte Snippet prop separated from the remaining props before they are spread onto the input. It defaults to undefined when omitted and is not rendered by this void input element."
 			}
 		],

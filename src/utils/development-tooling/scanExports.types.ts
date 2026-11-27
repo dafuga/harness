@@ -11,6 +11,7 @@ export interface Source {
 	code: string;
 	masked: string;
 	nesting: SourceNesting;
+	allowBareUndefined: boolean;
 }
 
 export interface Located extends ExportedSymbol {

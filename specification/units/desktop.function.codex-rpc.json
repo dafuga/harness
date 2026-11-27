@@ -46,7 +46,7 @@
 				"name": "codexRpc.resources",
 				"type": "ResourceContext",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional resource context for the child process: its env (treated as {} when absent) passes through resourceEnvironment and is merged over cliEnvironment(), and its track function receives the child PID when spawn assigns one. Omitting it (undefined) merges resourceEnvironment({}) over cliEnvironment() and tracks no PID."
 			}
 		],
@@ -127,7 +127,7 @@
 						"name": "codexRpc.resources",
 						"type": "ResourceContext",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional resource context for the child process: its env (treated as {} when absent) passes through resourceEnvironment and is merged over cliEnvironment(), and its track function receives the child PID when spawn assigns one. Omitting it (undefined) merges resourceEnvironment({}) over cliEnvironment() and tracks no PID."
 					}
 				],

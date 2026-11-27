@@ -438,7 +438,7 @@
 				"name": "EntityStates.resolveImage",
 				"type": "(item: Evidence) => Promise<string>",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional bridge callback, undefined by default, that receives each recorded capture and resolves to the file to show in its place; when it is omitted, mediaBase resolves image paths. A rejected promise becomes a missing-capture note showing the error message, or 'Capture could not be loaded.' when the rejection is not an Error."
 			}
 		],

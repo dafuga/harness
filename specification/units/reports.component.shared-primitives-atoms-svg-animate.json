@@ -26,7 +26,7 @@
 				"name": "SvgAnimate.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet rendered inside the animate element; it matters only when supplied, because the `{#if children}` guard renders nothing when it is omitted. The component performs no runtime check on the snippet, so only the Snippet type annotation constrains it."
 			}
 		],

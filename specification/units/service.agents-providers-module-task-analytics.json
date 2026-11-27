@@ -44,7 +44,7 @@
 				"name": "ModuleTaskAnalyticsService.quote.usage",
 				"type": "TaskUsage",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "CLI token usage for one run: a finite, non-negative reportedCostUsd is returned as the exact cost, and otherwise inputTokens and outputTokens must both be non-null. Omitted usage, cacheReadTokens (alone or with cacheWriteTokens) above inputTokens, or cacheWriteLongTokens above cacheWriteTokens make the quote unavailable, while null cache counts widen the range rather than counting as zero.",
 				"examples": [
 					{
@@ -353,7 +353,7 @@
 						"name": "ModuleTaskAnalyticsService.quote.usage",
 						"type": "TaskUsage",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "CLI token usage for one run: a finite, non-negative reportedCostUsd is returned as the exact cost, and otherwise inputTokens and outputTokens must both be non-null. Omitted usage, cacheReadTokens (alone or with cacheWriteTokens) above inputTokens, or cacheWriteLongTokens above cacheWriteTokens make the quote unavailable, while null cache counts widen the range rather than counting as zero.",
 						"examples": [
 							{

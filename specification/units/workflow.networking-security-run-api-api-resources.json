@@ -31,7 +31,7 @@
 				"name": "apiResource.id",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The id that addresses the resource: registry, units, contracts, and apis pass it to the registry lookup, and other names that read the server send it as entityId. A missing or empty id makes apiResource throw for names outside the direct, projects, registry, and catalog groups.",
 				"examples": [
 					"reports.component.evidence-grid",
@@ -138,7 +138,7 @@
 						"name": "apiResource.id",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The id that addresses the resource: registry, units, contracts, and apis pass it to the registry lookup, and other names that read the server send it as entityId. A missing or empty id makes apiResource throw for names outside the direct, projects, registry, and catalog groups.",
 						"examples": [
 							"reports.component.evidence-grid",

@@ -51,7 +51,7 @@
 				"name": "apiRegistry.id",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional id for saved-entity or backend-unit lookup. For contracts, it is sent as entityId; after a saved-plan miss (or for other resource values), it is matched exactly against backend unit ids, and a missing unit throws ExpectedCliError.",
 				"examples": ["reports.component.evidence-grid"]
 			}
@@ -119,7 +119,7 @@
 						"name": "apiRegistry.id",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional id for saved-entity or backend-unit lookup. For contracts, it is sent as entityId; after a saved-plan miss (or for other resource values), it is matched exactly against backend unit ids, and a missing unit throws ExpectedCliError.",
 						"examples": ["reports.component.evidence-grid"]
 					}

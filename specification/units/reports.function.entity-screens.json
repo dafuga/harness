@@ -726,7 +726,7 @@
 				"name": "catalogShot.preview",
 				"type": "ScreenPick",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The exact scenario, state and viewport the catalog image must show; when it is absent, any usable screenshot with media qualifies, preferring a capture of the shown commit's build. When it is set and no usable screenshot matches it, the result is null unless allowFocusedDefault permits a focused capture.",
 				"examples": [
 					{
@@ -2312,7 +2312,7 @@
 						"name": "catalogShot.preview",
 						"type": "ScreenPick",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The exact scenario, state and viewport the catalog image must show; when it is absent, any usable screenshot with media qualifies, preferring a capture of the shown commit's build. When it is set and no usable screenshot matches it, the result is null unless allowFocusedDefault permits a focused capture.",
 						"examples": [
 							{

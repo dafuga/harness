@@ -72,7 +72,7 @@
 				"name": "VideoReferenceService.constructor.pinned",
 				"type": "VideoReferenceContext['pinned']",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission reads current evidence and notes tips when the reference scope is established; explicit null snapshot bounds are never widened."
 			},
 			{
@@ -101,7 +101,7 @@
 				"name": "VideoReferenceService.materialize.physical",
 				"type": "string[]",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission derives physical capture paths from recordFiles(record); this list is only used to reject conflicts with virtual referenced media."
 			},
 			{
@@ -458,7 +458,7 @@
 						"name": "VideoReferenceService.materialize.physical",
 						"type": "string[]",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission derives physical capture paths from recordFiles(record); this list is only used to reject conflicts with virtual referenced media."
 					}
 				],
@@ -1056,7 +1056,7 @@
 						"name": "VideoReferenceService.constructor.pinned",
 						"type": "VideoReferenceContext['pinned']",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission reads current evidence and notes tips when the reference scope is established; explicit null snapshot bounds are never widened."
 					},
 					{

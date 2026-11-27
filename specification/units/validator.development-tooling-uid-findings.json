@@ -33,6 +33,7 @@
 				"name": "uidFindings.scope",
 				"type": "ReadonlySet<string> | undefined",
 				"required": false,
+				"defaultKind": "undefined",
 				"description": "The unit ids to review; every active unit when omitted."
 			}
 		],
@@ -65,6 +66,7 @@
 						"name": "uidFindings.scope",
 						"type": "ReadonlySet<string> | undefined",
 						"required": false,
+						"defaultKind": "undefined",
 						"description": "The unit ids to review; every active unit when omitted."
 					}
 				],

@@ -47,7 +47,7 @@
 				"name": "DataTable.empty",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet rendered inside the tbody when isEmpty is true. It defaults to undefined; if omitted, the component shows No rows to display. beneath the table."
 			},
 			{

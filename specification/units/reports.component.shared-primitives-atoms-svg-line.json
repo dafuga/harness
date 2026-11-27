@@ -23,7 +23,7 @@
 				"name": "SvgLine.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet, rendered inside the native SVG <line> element when it is truthy. The component calls it with no arguments and does not otherwise validate or transform its output."
 			}
 		],

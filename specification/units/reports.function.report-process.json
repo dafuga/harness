@@ -34,7 +34,7 @@
 				"name": "reportProcess.cwd",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
 				"examples": ["/workspace/project"]
 			},
@@ -42,6 +42,7 @@
 				"name": "reportProcess.environment",
 				"type": "NodeJS.ProcessEnv",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional environment passed to spawn. When omitted or null at runtime, the child inherits process.env; an explicit object is passed through without merging.",
 				"examples": [
 					{
@@ -102,7 +103,7 @@
 						"name": "reportProcess.cwd",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional working directory for the child process. When omitted, the code passes no cwd override and spawn uses the current working directory.",
 						"examples": ["/workspace/project"]
 					},
@@ -110,6 +111,7 @@
 						"name": "reportProcess.environment",
 						"type": "NodeJS.ProcessEnv",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional environment passed to spawn. When omitted or null at runtime, the child inherits process.env; an explicit object is passed through without merging.",
 						"examples": [
 							{

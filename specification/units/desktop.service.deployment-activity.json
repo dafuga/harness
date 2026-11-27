@@ -121,7 +121,7 @@
 				"name": "DeploymentActivityService.schedule.dependency",
 				"type": "Promise<DeploymentReceipt>",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional promise for a required lower-environment receipt that schedule awaits before invoking work. It has no source default; a rejection becomes Error('A required lower-environment deployment failed.').",
 				"examples": [
 					{
@@ -624,7 +624,7 @@
 						"name": "DeploymentActivityService.schedule.dependency",
 						"type": "Promise<DeploymentReceipt>",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional promise for a required lower-environment receipt that schedule awaits before invoking work. It has no source default; a rejection becomes Error('A required lower-environment deployment failed.').",
 						"examples": [
 							{

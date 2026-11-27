@@ -110,7 +110,7 @@
 				"name": "harnessImpact.compared",
 				"type": "ComparedSides | null",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional comparedSides result for the same two revisions, where null or undefined means none was precomputed. Its impact replaces head's source impact only when its base and head commits equal base's and head's commits, and otherwise head's source impact is used.",
 				"examples": [
 					null,
@@ -347,7 +347,7 @@
 						"name": "harnessImpact.compared",
 						"type": "ComparedSides | null",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional comparedSides result for the same two revisions, where null or undefined means none was precomputed. Its impact replaces head's source impact only when its base and head commits equal base's and head's commits, and otherwise head's source impact is used.",
 						"examples": [
 							null,

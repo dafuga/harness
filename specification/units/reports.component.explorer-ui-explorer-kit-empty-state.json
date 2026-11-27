@@ -38,7 +38,7 @@
 				"name": "EmptyState.role",
 				"type": "'note' | 'status' | 'alert'",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "undefined",
 				"description": "Sets the optional semantic role on the rendered element. Defaults to JavaScript `undefined`, which omits the role; accepted values are `note`, `status`, and `alert`.",
 				"examples": ["note", "status", "alert"]
 			},
@@ -46,7 +46,7 @@
 				"name": "EmptyState.id",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Sets the rendered element's native `id`. Defaults to JavaScript `undefined` (omitted).",
 				"examples": ["reports-empty-state"]
 			},
@@ -54,7 +54,7 @@
 				"name": "EmptyState.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Sets the rendered element's `aria-label`. Defaults to JavaScript `undefined`, which omits the attribute.",
 				"examples": ["No reports available"]
 			},
@@ -62,7 +62,7 @@
 				"name": "EmptyState.component",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Sets the rendered element's `data-harness-component` owner attribution. Defaults to JavaScript `undefined`.",
 				"examples": ["ReportList"]
 			},

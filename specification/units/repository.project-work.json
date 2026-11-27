@@ -63,7 +63,7 @@
 				"name": "ProjectWorkRepository.loops.commit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The commit to read loops from: Git lists every loop.json below specification/loops at that commit, at any depth, and shows each one. When it is omitted or empty, the loops are read from the working tree's specification/loops/<name>/loop.json files and Git is not run.",
 				"examples": [
 					"9b1d4e72a0c53f86d1e2b7a94c0f3e58d6a21b47",
@@ -420,7 +420,7 @@
 						"name": "ProjectWorkRepository.loops.commit",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The commit to read loops from: Git lists every loop.json below specification/loops at that commit, at any depth, and shows each one. When it is omitted or empty, the loops are read from the working tree's specification/loops/<name>/loop.json files and Git is not run.",
 						"examples": [
 							"9b1d4e72a0c53f86d1e2b7a94c0f3e58d6a21b47",

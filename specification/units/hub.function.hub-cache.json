@@ -18,7 +18,7 @@
 				"name": "hubCache.bucket",
 				"type": "R2Bucket",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional R2 bucket holding projection entries under the 'projections/' key prefix. Omitting it (or passing a falsy value) selects an in-memory cache whose Map is created fresh for each hubCache call, so nothing is shared between calls; R2 is a disposable projection store, and authority always comes from GitHub before use."
 			}
 		],
@@ -50,7 +50,7 @@
 						"name": "hubCache.bucket",
 						"type": "R2Bucket",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional R2 bucket holding projection entries under the 'projections/' key prefix. Omitting it (or passing a falsy value) selects an in-memory cache whose Map is created fresh for each hubCache call, so nothing is shared between calls; R2 is a disposable projection store, and authority always comes from GitHub before use."
 					}
 				],

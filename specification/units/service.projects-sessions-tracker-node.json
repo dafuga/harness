@@ -91,7 +91,8 @@
 			{
 				"name": "TrackerNodeTransportError.constructor.status",
 				"type": "number",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerLaunchAwareItemResponse.request",
@@ -126,7 +127,8 @@
 			{
 				"name": "readTrackerBackupList.backups",
 				"type": "{ status: object; externalDirectory?: string }",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "readTrackerBackupFiles.dir",
@@ -286,7 +288,8 @@
 			{
 				"name": "trackerNodeRuntime.writeGuestAuth",
 				"type": "TrackerGuestAuthWriter",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerUpstreamLink.input",
@@ -534,7 +537,8 @@
 					{
 						"name": "readTrackerBackupList.backups",
 						"type": "{ status: object; externalDirectory?: string }",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -952,7 +956,8 @@
 					{
 						"name": "trackerNodeRuntime.writeGuestAuth",
 						"type": "TrackerGuestAuthWriter",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -1033,7 +1038,8 @@
 					{
 						"name": "TrackerNodeTransportError.constructor.status",
 						"type": "number",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

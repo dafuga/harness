@@ -36,12 +36,14 @@
 				"name": "trackerUnattendedHold.owner",
 				"type": "string | null",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "The item owner; Daniel as owner holds the launch. May be omitted or null."
 			},
 			{
 				"name": "trackerUnattendedHold.agent",
 				"type": "string | null",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "The agent value; personal and Chief of Staff agents are held. May be omitted or null."
 			}
 		],
@@ -118,12 +120,14 @@
 						"name": "trackerUnattendedHold.owner",
 						"type": "string | null",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "The item owner; Daniel as owner holds the launch. May be omitted or null."
 					},
 					{
 						"name": "trackerUnattendedHold.agent",
 						"type": "string | null",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "The agent value; personal and Chief of Staff agents are held. May be omitted or null."
 					}
 				],

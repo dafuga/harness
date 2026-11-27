@@ -30,7 +30,8 @@
 			{
 				"name": "trackerHealthRequest.body",
 				"type": "object",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerHealthApiCheck.config",
@@ -72,7 +73,8 @@
 					{
 						"name": "trackerHealthRequest.body",
 						"type": "object",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

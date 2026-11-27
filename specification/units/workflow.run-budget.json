@@ -45,7 +45,7 @@
 				"name": "budgetMeasure.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Exact manifest id used to restrict measurements to one active unit. Defaults to undefined, which includes every active unit.",
 				"examples": ["workflow.run-budget"]
 			},
@@ -53,6 +53,7 @@
 				"name": "budgetMeasure.root",
 				"type": "string",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Working-tree root used to load manifests and their measurement index. Defaults to process.cwd().",
 				"examples": ["/workspace/project"]
 			},
@@ -60,7 +61,7 @@
 				"name": "budgetHistory.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Exact event.unit value used to filter ledger history. Defaults to undefined, which returns all events.",
 				"examples": ["workflow.run-budget"]
 			},
@@ -68,6 +69,7 @@
 				"name": "budgetHistory.root",
 				"type": "string",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Working-tree root used to load manifests and the budget ledger. Defaults to process.cwd() through loadBudgets.",
 				"examples": ["/workspace/project"]
 			},
@@ -75,6 +77,7 @@
 				"name": "budgetStatus.root",
 				"type": "string",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Working-tree root used to load active manifests and calculated baselines. Defaults to process.cwd() through loadBudgets.",
 				"examples": ["/workspace/project"]
 			},
@@ -194,7 +197,7 @@
 						"name": "budgetMeasure.unit",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Exact manifest id used to restrict measurements to one active unit. Defaults to undefined, which includes every active unit.",
 						"examples": ["workflow.run-budget"]
 					},
@@ -202,6 +205,7 @@
 						"name": "budgetMeasure.root",
 						"type": "string",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Working-tree root used to load manifests and their measurement index. Defaults to process.cwd().",
 						"examples": ["/workspace/project"]
 					}
@@ -226,7 +230,7 @@
 						"name": "budgetHistory.unit",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Exact event.unit value used to filter ledger history. Defaults to undefined, which returns all events.",
 						"examples": ["workflow.run-budget"]
 					},
@@ -234,6 +238,7 @@
 						"name": "budgetHistory.root",
 						"type": "string",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Working-tree root used to load manifests and the budget ledger. Defaults to process.cwd() through loadBudgets.",
 						"examples": ["/workspace/project"]
 					}
@@ -264,6 +269,7 @@
 						"name": "budgetStatus.root",
 						"type": "string",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Working-tree root used to load active manifests and calculated baselines. Defaults to process.cwd() through loadBudgets.",
 						"examples": ["/workspace/project"]
 					}

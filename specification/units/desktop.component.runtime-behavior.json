@@ -122,7 +122,7 @@
 				"name": "RuntimeBehavior.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional unit identifier forwarded to both run panels. Defaults to JavaScript undefined (omitted), not the literal string.",
 				"examples": ["desktop.component.runtime-behavior"]
 			}

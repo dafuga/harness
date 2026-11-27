@@ -40,7 +40,7 @@
 				"name": "Select.id",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional id passed to the native select when supplied; the component does not transform or validate it.",
 				"examples": ["report-status", "report-period"]
 			},
@@ -48,7 +48,7 @@
 				"name": "Select.name",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional native form field name passed through when supplied; the component does not transform it.",
 				"examples": ["status", "report-period"]
 			},
@@ -56,7 +56,7 @@
 				"name": "Select.required",
 				"type": "boolean",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional required flag passed to the native select. When omitted, the component forwards undefined and does not set the required attribute.",
 				"examples": [true, false]
 			},
@@ -88,7 +88,7 @@
 				"name": "Select.display",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional text overlaid on the closed select when not expanded; strings longer than 16 characters are shortened to the first and last six characters with an ellipsis. When title is omitted, this value also supplies the native title.",
 				"examples": ["All reports", "A longer report category label"]
 			},
@@ -96,7 +96,7 @@
 				"name": "Select.title",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional native title text. When omitted, the display value is used; if both are undefined, the native title is omitted.",
 				"examples": ["Choose a report", "Select a reporting period"]
 			},

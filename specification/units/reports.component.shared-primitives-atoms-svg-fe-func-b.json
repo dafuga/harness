@@ -26,7 +26,7 @@
 				"name": "SvgFeFuncB.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The Svelte snippet that supplies the content of the feFuncB element, rendered with `{@render children()}` only when it is truthy, so nothing is rendered inside the element when it is omitted. The component does not validate it and calls it directly, so the value must be a `Snippet` (typed `children?: Snippet`)."
 			}
 		],

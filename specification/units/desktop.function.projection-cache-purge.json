@@ -34,7 +34,7 @@
 				"name": "projectionCachePurge.projectId",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional project identity: when it is omitted (undefined) or an empty string, every cache file of the matching principal is removed; otherwise only files whose identity.projectId equals this value or is '$projects' (the shared project-list entry) are removed.",
 				"examples": ["project-7a1d3e90", "project-c4e08b15"]
 			}
@@ -81,7 +81,7 @@
 						"name": "projectionCachePurge.projectId",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional project identity: when it is omitted (undefined) or an empty string, every cache file of the matching principal is removed; otherwise only files whose identity.projectId equals this value or is '$projects' (the shared project-list entry) are removed.",
 						"examples": ["project-7a1d3e90", "project-c4e08b15"]
 					}

@@ -59,7 +59,8 @@
 			{
 				"name": "ModuleTaskWorkerService.constructor.tracker",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "ModuleTaskWorkerService.once.worker",
@@ -134,7 +135,8 @@
 			{
 				"name": "recordCooldown.resetsAt",
 				"type": "number",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "recordCooldown.now",
@@ -983,7 +985,8 @@
 					{
 						"name": "recordCooldown.resetsAt",
 						"type": "number",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "recordCooldown.now",
@@ -1672,7 +1675,8 @@
 					{
 						"name": "ModuleTaskWorkerService.constructor.tracker",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

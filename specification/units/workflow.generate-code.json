@@ -92,6 +92,7 @@
 				"name": "saveGenerationGroup.selection",
 				"type": "Selection",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Selected category and taxonomy owner; omitted selection or an existing category returns no writes."
 			},
 			{
@@ -104,6 +105,7 @@
 				"name": "groupedFiles.group",
 				"type": "string",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional category ID; omission preserves original paths and contents."
 			},
 			{
@@ -383,6 +385,7 @@
 						"name": "saveGenerationGroup.selection",
 						"type": "Selection",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Selected category and taxonomy owner; omitted selection or an existing category returns no writes."
 					}
 				],
@@ -415,6 +418,7 @@
 						"name": "groupedFiles.group",
 						"type": "string",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional category ID; omission preserves original paths and contents."
 					}
 				],

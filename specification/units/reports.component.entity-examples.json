@@ -26,7 +26,7 @@
 				"name": "EntityExamples.documentation",
 				"type": "UnitDocumentation",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The documentation read from this entity at the selected commit, supplying its examples, optional setup and optional gap reason. Without documentation, only the 'No usage examples are documented at this commit.' notice shows; the gap reason shows beneath that notice only when there are no examples, and the Markdown text and path are never rendered.",
 				"examples": [
 					{
@@ -76,7 +76,7 @@
 				"name": "EntityExamples.setupTitle",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Heading shown once above the documented setup code, instead of repeating that code before each example; it matters only when examples are documented, and an empty string counts as absent. When setupTitle is given without a documented setup, the note 'How to create it is not documented at this commit.' shows instead of a heading.",
 				"examples": ["Create the service", "Create the formatter"]
 			}

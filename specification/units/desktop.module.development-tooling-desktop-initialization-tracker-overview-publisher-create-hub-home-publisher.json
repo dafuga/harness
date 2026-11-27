@@ -20,12 +20,14 @@
 			{
 				"name": "createHubHomePublisher.file",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "createHubHomePublisher.sources",
 				"type": "QuotaSource[]",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -43,12 +45,14 @@
 					{
 						"name": "createHubHomePublisher.file",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "createHubHomePublisher.sources",
 						"type": "QuotaSource[]",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

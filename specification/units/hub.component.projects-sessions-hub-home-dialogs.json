@@ -50,7 +50,7 @@
 				"name": "HubHomeDialogs.agentId",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional identifier of the initially selected agent."
 			},
 			{

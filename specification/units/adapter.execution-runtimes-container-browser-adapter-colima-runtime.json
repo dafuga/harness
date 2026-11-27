@@ -20,7 +20,8 @@
 			{
 				"name": "colimaStartArgs.diskImage",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "ensureColima.options",
@@ -57,7 +58,8 @@
 					{
 						"name": "colimaStartArgs.diskImage",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

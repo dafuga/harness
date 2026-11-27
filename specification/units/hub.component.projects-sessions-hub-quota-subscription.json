@@ -57,7 +57,7 @@
 				"name": "HubQuotaSubscription.reload",
 				"type": "() => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Requests fresh home data from the connected sources."
 			}
 		],

@@ -29,7 +29,8 @@
 			{
 				"name": "trackerHealthAgentPlist.service",
 				"type": "{ path: string; logs: string[] }",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -57,7 +58,8 @@
 					{
 						"name": "trackerHealthAgentPlist.service",
 						"type": "{ path: string; logs: string[] }",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

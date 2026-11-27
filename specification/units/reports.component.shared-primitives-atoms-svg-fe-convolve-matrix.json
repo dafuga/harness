@@ -28,7 +28,7 @@
 				"name": "SvgFeConvolveMatrix.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The Snippet passed as the children prop, rendered with {@render children()} inside the feConvolveMatrix element only when the value is truthy. The component performs no validation and calls the snippet with no arguments, so when the prop is omitted the element has no child content."
 			}
 		],

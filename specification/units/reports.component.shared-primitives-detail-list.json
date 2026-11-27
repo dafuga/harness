@@ -75,7 +75,7 @@
 				"name": "DetailList.empty",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional snippet rendered in place of the list when rows is empty; it defaults to undefined, which renders an hx-p paragraph reading No details to display. A supplied snippet replaces that paragraph entirely, so className is not applied to the empty state."
 			},
 			{
@@ -98,21 +98,21 @@
 				"name": "DetailList.termTitle",
 				"type": "(row: Row) => string | undefined",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional callback called as termTitle(row) for each rendered row; its return value becomes the title attribute of the hx-dt term element, and an undefined return omits the attribute. It defaults to undefined, which omits the attribute, and errors thrown by the callback propagate."
 			},
 			{
 				"name": "DetailList.valueTitle",
 				"type": "(row: Row) => string | undefined",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional callback called as valueTitle(row) for each rendered row; its return value becomes the title attribute of the hx-dd description element, and an undefined return omits the attribute. It defaults to undefined, which omits the attribute, and errors thrown by the callback propagate."
 			},
 			{
 				"name": "DetailList.valueClass",
 				"type": "(row: Row) => string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional callback called as valueClass(row) for each rendered row; its return value becomes the class attribute of the hx-dd description element, and an undefined return omits the attribute. It defaults to undefined, which omits the attribute, and errors thrown by the callback propagate."
 			}
 		],

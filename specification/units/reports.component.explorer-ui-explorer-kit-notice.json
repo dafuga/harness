@@ -46,7 +46,7 @@
 				"name": "Notice.id",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Sets the rendered element's native id attribute when supplied; it defaults to JavaScript undefined and is omitted otherwise.",
 				"examples": ["explorer-notice"]
 			},
@@ -54,7 +54,7 @@
 				"name": "Notice.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Sets aria-label on the rendered element when supplied; it defaults to JavaScript undefined and is omitted otherwise.",
 				"examples": ["Reading may be incomplete"]
 			},
@@ -62,7 +62,7 @@
 				"name": "Notice.component",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Passes the owner attribution to data-harness-component; its default is JavaScript undefined.",
 				"examples": ["reports.component.explorer-ui-explorer-kit-notice"]
 			},

@@ -55,7 +55,7 @@
 				"name": "r2ScreenshotConfig.localFile",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional file path whose matching R2 account, bucket, and credential assignments supply fallback values; a missing file is ignored only for ENOENT, while other read errors propagate. Defaults to undefined, which skips file reading.",
 				"examples": ["packages/reports/.env"]
 			},
@@ -92,7 +92,7 @@
 				"name": "R2ScreenshotStoreAdapter.constructor.client",
 				"type": "S3Client",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional S3Client used to send screenshot requests. Defaults to undefined, which creates a client with region auto, path-style requests, the configured or account-derived endpoint, and the supplied credentials."
 			},
 			{
@@ -238,7 +238,7 @@
 						"name": "r2ScreenshotConfig.localFile",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional file path whose matching R2 account, bucket, and credential assignments supply fallback values; a missing file is ignored only for ENOENT, while other read errors propagate. Defaults to undefined, which skips file reading.",
 						"examples": ["packages/reports/.env"]
 					}
@@ -449,7 +449,7 @@
 						"name": "R2ScreenshotStoreAdapter.constructor.client",
 						"type": "S3Client",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional S3Client used to send screenshot requests. Defaults to undefined, which creates a client with region auto, path-style requests, the configured or account-derived endpoint, and the supplied credentials."
 					}
 				],

@@ -385,7 +385,8 @@
 			{
 				"name": "phoneReplicaResponse.replica",
 				"type": "TrackerPhoneReplicaService",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "phoneReplicaResponse.respond",
@@ -1040,7 +1041,8 @@
 					{
 						"name": "phoneReplicaResponse.replica",
 						"type": "TrackerPhoneReplicaService",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "phoneReplicaResponse.respond",

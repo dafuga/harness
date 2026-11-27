@@ -26,7 +26,7 @@
 				"name": "AccountMenu.projectId",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional project UUID used as the Members route parameter; it defaults to undefined when omitted. When a session actor exists and the value is truthy, the component renders a Members link for that project; otherwise it omits that link.",
 				"examples": ["550e8400-e29b-41d4-a716-446655440000"]
 			}

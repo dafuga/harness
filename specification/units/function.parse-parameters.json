@@ -14,6 +14,8 @@
 			"src/utils/parseParameters.ts"
 		],
 		"symbols": [
+			"sourceAllowsUndefined",
+			"inputDefault",
 			"parameterDefault",
 			"parameterType",
 			"splitTopLevel",
@@ -27,6 +29,30 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "sourceAllowsUndefined.code",
+				"type": "string",
+				"required": true,
+				"description": "The complete TypeScript or JavaScript source used to check for bindings named undefined."
+			},
+			{
+				"name": "inputDefault.node",
+				"type": "ts.Expression | undefined",
+				"required": true,
+				"description": "The source initializer expression, when a declaration provides one."
+			},
+			{
+				"name": "inputDefault.omitted",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether an optional input has no initializer in the source."
+			},
+			{
+				"name": "inputDefault.allowBareUndefined",
+				"type": "boolean",
+				"required": true,
+				"description": "Whether the surrounding source establishes that bare undefined is unshadowed."
+			},
 			{
 				"name": "parameterDefault.node",
 				"type": "ts.Expression | undefined",
@@ -44,32 +70,40 @@
 				"type": "string",
 				"required": true,
 				"description": "Masked text whose top-level separator positions should be found.",
-				"examples": ["fn(a, b), next"]
+				"examples": [
+					"fn(a, b), next"
+				]
 			},
 			{
 				"name": "splitTopLevel.separators",
 				"type": "string",
 				"required": true,
 				"description": "String of individual separator characters to recognize at nesting depth zero.",
-				"examples": [","]
+				"examples": [
+					","
+				]
 			},
 			{
 				"name": "parseParameters.code",
 				"type": "string",
 				"required": true,
 				"description": "Original parameter-list or object-type text containing the type spellings to retain.",
-				"examples": ["url: string, retries = 3, label?: string"]
+				"examples": [
+					"url: string, retries = 3, label?: string"
+				]
 			},
 			{
 				"name": "parseParameters._masked",
 				"type": "string",
 				"required": true,
 				"description": "Compatibility argument containing masked source; the AST parser currently reads code directly.",
-				"examples": ["url: string, retries = 3, label?: string"]
+				"examples": [
+					"url: string, retries = 3, label?: string"
+				]
 			},
 			{
 				"name": "parseParameters.options",
-				"type": "{ owner: string; separators?: string }",
+				"type": "{ owner: string; separators?: string; allowBareUndefined?: boolean }",
 				"required": true,
 				"description": "Owner prefix for field names and optional separator characters, default comma.",
 				"examples": [
@@ -83,7 +117,9 @@
 				"type": "string",
 				"required": true,
 				"description": "Raw type text to normalize.",
-				"examples": ["  Promise < string > ; "]
+				"examples": [
+					"  Promise < string > ; "
+				]
 			}
 		],
 		"outputs": [
@@ -92,7 +128,9 @@
 				"type": "number[]",
 				"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed.",
 				"examples": [
-					[8]
+					[
+						8
+					]
 				]
 			},
 			{
@@ -124,12 +162,64 @@
 				"name": "normalizeType",
 				"type": "string",
 				"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text.",
-				"examples": ["Promise < string >"]
+				"examples": [
+					"Promise < string >"
+				]
 			}
 		],
 		"errors": [],
 		"errorStatus": "declared",
 		"operations": [
+			{
+				"name": "sourceAllowsUndefined",
+				"inputs": [
+					{
+						"name": "sourceAllowsUndefined.code",
+						"type": "string",
+						"required": true,
+						"description": "The complete TypeScript or JavaScript source used to check for bindings named undefined."
+					}
+				],
+				"outputs": [
+					{
+						"name": "sourceAllowsUndefined",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "inputDefault",
+				"inputs": [
+					{
+						"name": "inputDefault.node",
+						"type": "ts.Expression | undefined",
+						"required": true,
+						"description": "The source initializer expression, when a declaration provides one."
+					},
+					{
+						"name": "inputDefault.omitted",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether an optional input has no initializer in the source."
+					},
+					{
+						"name": "inputDefault.allowBareUndefined",
+						"type": "boolean",
+						"required": true,
+						"description": "Whether the surrounding source establishes that bare undefined is unshadowed."
+					}
+				],
+				"outputs": [
+					{
+						"name": "inputDefault",
+						"type": "Pick<ContractItem, 'default' | 'defaultKind'>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "parameterDefault",
 				"inputs": [
@@ -176,7 +266,11 @@
 						"name": "parameterType",
 						"type": "string",
 						"description": "The inferred type label for a readable literal initializer: the primitive typeof result, null for null, unknown[] for arrays, object for objects, or unknown when no supported literal default is available.",
-						"examples": ["number", "null", "unknown"]
+						"examples": [
+							"number",
+							"null",
+							"unknown"
+						]
 					}
 				],
 				"errors": [],
@@ -190,14 +284,18 @@
 						"type": "string",
 						"required": true,
 						"description": "Masked text whose top-level separator positions should be found.",
-						"examples": ["fn(a, b), next"]
+						"examples": [
+							"fn(a, b), next"
+						]
 					},
 					{
 						"name": "splitTopLevel.separators",
 						"type": "string",
 						"required": true,
 						"description": "String of individual separator characters to recognize at nesting depth zero.",
-						"examples": [","]
+						"examples": [
+							","
+						]
 					}
 				],
 				"outputs": [
@@ -206,7 +304,9 @@
 						"type": "number[]",
 						"description": "Indexes of separator characters outside tracked brackets/generics; text itself is not split or changed.",
 						"examples": [
-							[8]
+							[
+								8
+							]
 						]
 					}
 				],
@@ -221,18 +321,22 @@
 						"type": "string",
 						"required": true,
 						"description": "Original parameter-list or object-type text containing the type spellings to retain.",
-						"examples": ["url: string, retries = 3, label?: string"]
+						"examples": [
+							"url: string, retries = 3, label?: string"
+						]
 					},
 					{
 						"name": "parseParameters._masked",
 						"type": "string",
 						"required": true,
 						"description": "Compatibility argument containing masked source; the AST parser currently reads code directly.",
-						"examples": ["url: string, retries = 3, label?: string"]
+						"examples": [
+							"url: string, retries = 3, label?: string"
+						]
 					},
 					{
 						"name": "parseParameters.options",
-						"type": "{ owner: string; separators?: string }",
+						"type": "{ owner: string; separators?: string; allowBareUndefined?: boolean }",
 						"required": true,
 						"description": "Owner prefix for field names and optional separator characters, default comma.",
 						"examples": [
@@ -280,7 +384,9 @@
 						"type": "string",
 						"required": true,
 						"description": "Raw type text to normalize.",
-						"examples": ["  Promise < string > ; "]
+						"examples": [
+							"  Promise < string > ; "
+						]
 					}
 				],
 				"outputs": [
@@ -288,7 +394,9 @@
 						"name": "normalizeType",
 						"type": "string",
 						"description": "Whitespace-collapsed type text with trailing comma/semicolon removed, or unknown for empty text.",
-						"examples": ["Promise < string >"]
+						"examples": [
+							"Promise < string >"
+						]
 					}
 				],
 				"errors": [],

@@ -32,7 +32,8 @@
 			{
 				"name": "trackerJobEndpoint.jobs",
 				"type": "TrackerBoxJobAdmin",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -65,7 +66,8 @@
 					{
 						"name": "trackerJobEndpoint.jobs",
 						"type": "TrackerBoxJobAdmin",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

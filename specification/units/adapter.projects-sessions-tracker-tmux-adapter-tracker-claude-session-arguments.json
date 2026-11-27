@@ -29,7 +29,8 @@
 			{
 				"name": "claudeSessionArguments.egress",
 				"type": "TrackerEgressPolicy",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -57,7 +58,8 @@
 					{
 						"name": "claudeSessionArguments.egress",
 						"type": "TrackerEgressPolicy",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

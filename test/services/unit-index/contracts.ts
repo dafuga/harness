@@ -6,9 +6,11 @@ import { measureWorkload } from '../../support/measureWorkload';
 import { assertContractDocumentation } from './contractDocumentation';
 
 const declarations = {
-	'src/utils/call.ts': `export function call(name: string, size = 16, flag?: boolean,
+	'src/utils/call.ts': `export function call(name: string, size = 16, flag?: boolean, exact: string | undefined = void 0,
+		computed = resolveValue(), literal = "undefined (omitted)",
 		{ enabled = true }: { enabled?: boolean } = {}): string { return name; }
 export function reject(input: string): never { throw new RangeError(input); }
+export function shadowed(undefined: number, value: number = undefined): number { return value; }
 export function relay(error: Error): never { throw error; }`,
 	'src/services/StoreService.ts': `export class StoreService {
 		constructor(readonly root: string = '/tmp') {}
@@ -18,14 +20,14 @@ export function relay(error: Error): never { throw error; }`,
 	'src/components/Panel.svelte': `<script module lang="ts">
 		export function describe(node: string): string { return node; }
 	</script><script lang="ts">
-		type Props = { title: string; size?: number; children?: Snippet; value: string; current: string; optional?: string; fallback?: string };
-		let { title, size = 16, children, value = $bindable(), current: aliased = $bindable(), optional = $bindable(), fallback = $bindable('ready') }: Props = $props();
+		type Props = { title: string; size?: number; children?: Snippet; value: string; current: string; optional?: string; fallback?: string; exact?: string };
+		let { title, size = 16, children, value = $bindable(), current: aliased = $bindable(), optional = $bindable(), fallback = $bindable('ready'), exact = $bindable(undefined) }: Props = $props();
 		function inside() { let { wrong }: { wrong: string } = $props(); }
 	</script>{#snippet row(node: string, text?: string)}{node}{/snippet}`,
 	'src/components/Wrapper.svelte': `<script lang="ts">
 		import type { ComponentProps } from 'svelte';
 		import Panel from './Panel.svelte';
-		let { title, size = 16, children, value = $bindable(), current: aliased = $bindable(), optional = $bindable(), fallback = $bindable('ready') }: ComponentProps<typeof Panel> = $props();
+		let { title, size = 16, children, value = $bindable(), current: aliased = $bindable(), optional = $bindable(), fallback = $bindable('ready'), exact = $bindable(undefined) }: ComponentProps<typeof Panel> = $props();
 	</script>`,
 	'src/models/Entry.ts': `export class Entry {
 		static definition = { table: 'entries', primaryKey: 'id', fields: {
@@ -57,14 +59,25 @@ function assertCallContract(call: ComponentManifest['contract']): void {
 		expect.arrayContaining([
 			{ name: 'call.name', type: 'string', required: true },
 			{ name: 'call.size', type: 'number', required: false, default: 16 },
-			{ name: 'call.flag', type: 'boolean', required: false },
+			{ name: 'call.flag', type: 'boolean', required: false, defaultKind: 'omitted' },
+			{ name: 'call.exact', type: 'string | undefined', required: false, defaultKind: 'undefined' },
+			{ name: 'call.computed', type: 'unknown', required: false },
+			{ name: 'call.literal', type: 'string', required: false, default: 'undefined (omitted)' },
+			{ name: 'shadowed.value', type: 'number', required: false },
 			{ name: 'call.enabled', type: 'boolean', required: false, default: true }
 		])
 	);
-	expect(call.operations?.map((operation) => operation.name)).toEqual(['call', 'reject', 'relay']);
+	expect(call.operations?.map((operation) => operation.name)).toEqual([
+		'call',
+		'reject',
+		'shadowed',
+		'relay'
+	]);
 	expect(call.operations?.[0]).toMatchObject({ errors: [], errorStatus: 'none-found' });
 	expect(call.operations?.[1]).toMatchObject({ errors: [{ name: 'RangeError', type: 'thrown' }] });
-	expect(call.operations?.[2]).toMatchObject({ errorStatus: 'unknown' });
+	expect(call.operations?.find(({ name }) => name === 'relay')).toMatchObject({
+		errorStatus: 'unknown'
+	});
 }
 
 function assertComponentContracts(indexed: Indexed): void {
@@ -72,17 +85,18 @@ function assertComponentContracts(indexed: Indexed): void {
 	expect(panel.inputs, 'No-fallback bindable props retain source requiredness').toEqual([
 		{ name: 'Panel.title', type: 'string', required: true },
 		{ name: 'Panel.size', type: 'number', required: false, default: 16 },
-		{ name: 'Panel.children', type: 'Snippet', required: false, default: 'undefined (omitted)' },
+		{ name: 'Panel.children', type: 'Snippet', required: false, defaultKind: 'omitted' },
 		{ name: 'Panel.value', type: 'string', required: true },
 		{ name: 'Panel.current', type: 'string', required: true },
-		{ name: 'Panel.optional', type: 'string', required: false, default: 'undefined (omitted)' },
-		{ name: 'Panel.fallback', type: 'string', required: false, default: 'ready' }
+		{ name: 'Panel.optional', type: 'string', required: false, defaultKind: 'omitted' },
+		{ name: 'Panel.fallback', type: 'string', required: false, default: 'ready' },
+		{ name: 'Panel.exact', type: 'string', required: false, defaultKind: 'undefined' }
 	]);
 	expect(panel.snippets?.[0]).toMatchObject({
 		name: 'Panel.row',
 		inputs: [
 			{ name: 'Panel.row.node', type: 'string', required: true },
-			{ name: 'Panel.row.text', type: 'string', required: false }
+			{ name: 'Panel.row.text', type: 'string', required: false, defaultKind: 'omitted' }
 		]
 	});
 	expect(unitOf(indexed, 'component.wrapper').contract.inputs).toEqual(

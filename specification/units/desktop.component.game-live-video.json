@@ -26,7 +26,7 @@
 				"name": "GameLiveVideo.stream",
 				"type": "MediaStream",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional MediaStream assigned to the video element's srcObject; when omitted, the component assigns null. FPS is measured only from requestVideoFrameCallback callbacks, so the status stays “waiting for video frames” until those callbacks arrive."
 			}
 		],

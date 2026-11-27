@@ -60,7 +60,7 @@
 				"name": "control.body",
 				"type": "object",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
 				"examples": [
 					{}
@@ -233,7 +233,7 @@
 						"name": "control.body",
 						"type": "object",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional object JSON-encoded as the request body, with an application/json content-type header. Its fields are not validated by this function.",
 						"examples": [
 							{}

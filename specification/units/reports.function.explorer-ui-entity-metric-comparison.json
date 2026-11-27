@@ -322,7 +322,7 @@
 				"name": "entityMetricComparison.helper",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The name of a selected helper, or undefined for the whole Page. Any nonempty helper makes the function return null, since only whole-Page measurement is compared; an empty string does not.",
 				"examples": ["explorerVerdict", "entityMeasure"]
 			}
@@ -704,7 +704,7 @@
 						"name": "entityMetricComparison.helper",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The name of a selected helper, or undefined for the whole Page. Any nonempty helper makes the function return null, since only whole-Page measurement is compared; an empty string does not.",
 						"examples": ["explorerVerdict", "entityMeasure"]
 					}

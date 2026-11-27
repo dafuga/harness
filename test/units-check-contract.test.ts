@@ -103,7 +103,7 @@ test('native element atoms skip guesses but retain explicitly required state gap
 	const root = await project();
 	const unit = widgetManifest();
 	unit.contract.inputs = [
-		{ name: 'Widget.children', type: 'Snippet', required: false, default: 'undefined (omitted)' }
+		{ name: 'Widget.children', type: 'Snippet', required: false, defaultKind: 'omitted' }
 	];
 	unit.contract.errors = [{ name: 'Caller content error', type: 'propagated' }];
 	for (const element of ['div', 'svg', undefined]) {

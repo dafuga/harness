@@ -23,7 +23,7 @@
 				"name": "HtmlInputEmail.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet prop accepted when callers pass children; the component does not render it because the native <input> is a void element."
 			}
 		],

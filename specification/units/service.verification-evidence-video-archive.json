@@ -107,7 +107,7 @@
 				"name": "VideoArchiveService.read.within",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 			},
 			{
@@ -119,7 +119,7 @@
 				"name": "VideoArchiveService.describe.within",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 			},
 			{
@@ -136,7 +136,7 @@
 				"name": "VideoArchiveService.readClip.within",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 			},
 			{
@@ -158,7 +158,7 @@
 				"name": "VideoArchiveService.current.within",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 			},
 			{
@@ -175,7 +175,7 @@
 				"name": "VideoArchiveService.restore.within",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 			},
 			{
@@ -282,7 +282,7 @@
 				"name": "readVideoBatch.within",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 			},
 			{
@@ -304,7 +304,7 @@
 				"name": "readVideoBatchClip.within",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 			},
 			{
@@ -321,7 +321,7 @@
 				"name": "readVideoBatchDescriptor.within",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 			},
 			{
@@ -621,7 +621,7 @@
 						"name": "VideoArchiveService.read.within",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 					}
 				],
@@ -672,7 +672,7 @@
 						"name": "VideoArchiveService.describe.within",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 					}
 				],
@@ -723,7 +723,7 @@
 						"name": "VideoArchiveService.readClip.within",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 					}
 				],
@@ -784,7 +784,7 @@
 						"name": "VideoArchiveService.current.within",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 					}
 				],
@@ -820,7 +820,7 @@
 						"name": "VideoArchiveService.restore.within",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 					}
 				],
@@ -1244,7 +1244,7 @@
 						"name": "readVideoBatch.within",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 					}
 				],
@@ -1305,7 +1305,7 @@
 						"name": "readVideoBatchClip.within",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 					}
 				],
@@ -1361,7 +1361,7 @@
 						"name": "readVideoBatchDescriptor.within",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The optional snapshot/root binding for this operation. Omission selects the current evidence tip as the archive ancestry bound; a supplied bound is never widened."
 					}
 				],

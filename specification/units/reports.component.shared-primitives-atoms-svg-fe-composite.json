@@ -26,7 +26,7 @@
 				"name": "SvgFeComposite.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet content rendered inside the native feComposite element when truthy. The implementation does not validate or transform the snippet; when omitted or falsy, it renders no child content."
 			}
 		],

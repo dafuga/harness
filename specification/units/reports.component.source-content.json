@@ -45,7 +45,7 @@
 				"name": "SourceContent.empty",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional text for the note shown only when no file is listed and nothing is loading or has failed. When it is omitted (undefined), SourceViewer shows its default message 'No source files recorded at this revision.'",
 				"examples": [
 					"Source contents are not recorded for this revision.",

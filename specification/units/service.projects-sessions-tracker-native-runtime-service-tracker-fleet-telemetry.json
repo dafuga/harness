@@ -44,7 +44,8 @@
 			{
 				"name": "hubTelemetryTick.scheduler",
 				"type": "TrackerDispatchSchedulerService",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "hubTelemetryTick.options",
@@ -109,7 +110,8 @@
 					{
 						"name": "hubTelemetryTick.scheduler",
 						"type": "TrackerDispatchSchedulerService",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "hubTelemetryTick.options",
