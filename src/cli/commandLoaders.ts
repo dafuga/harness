@@ -144,6 +144,14 @@ export const commandLoaders = {
 		const m = await import('../commands/agents-providers/QaSyncCommand');
 		new m.QaSyncCommand().register(program);
 	},
+	'container-browser': async (program: Command) => {
+		const m = await import('../commands/execution-runtimes/ContainerBrowserCommand');
+		new m.ContainerBrowserCommand().register(program);
+	},
+	'x-digest': async (program: Command) => {
+		const m = await import('../commands/agents-providers/XDigestCommand');
+		new m.XDigestCommand().register(program);
+	},
 	'response-check': async (program: Command) => {
 		const m = await import('./program/ResponseCheckCommand');
 		m.registerResponseCheckCommand(program);

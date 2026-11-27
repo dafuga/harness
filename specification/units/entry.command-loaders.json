@@ -54,6 +54,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "command.agents-providers-xdigest",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
 			"unit": "command.analytics",
 			"via": "dynamic-import",
 			"origin": "derived"
@@ -85,6 +90,11 @@
 		},
 		{
 			"unit": "command.development-tooling-contracts",
+			"via": "dynamic-import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.execution-runtimes-container-browser",
 			"via": "dynamic-import",
 			"origin": "derived"
 		},

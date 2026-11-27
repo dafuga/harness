@@ -179,3 +179,11 @@ test('halts before unaudited sends and retains a receipt if result audit fails',
 		auditRecorded: false
 	});
 });
+
+test('a send-only binding needs no app id and cannot receive', async () => {
+	const { config } = slackFixture();
+	const withoutApp = { ...config.installation, appId: undefined };
+	expect(() => new SlackAdapter({ ...config, installation: withoutApp })).toThrow();
+	const adapter = new SlackAdapter({ ...config, installation: withoutApp, receive: 'none' });
+	await expect(adapter.subscribe(async () => {}, new AbortController().signal)).rejects.toThrow();
+});

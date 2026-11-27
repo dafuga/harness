@@ -1,0 +1,143 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-container-cdp-adapter-web-socket-frames",
+	"uid": "u_qavdfa3unc",
+	"kind": "adapter",
+	"title": "webSocketFrames",
+	"responsibility": "Encode masked client frames and decode bounded, fragmented server frames.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/execution-runtimes/container-cdp-adapter/webSocketFrames.ts"],
+		"symbols": ["clientFrame", "readFrames"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "clientFrame.opcode",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "clientFrame.payload",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "readFrames.buffer",
+				"type": "Buffer",
+				"required": true
+			},
+			{
+				"name": "readFrames.stream",
+				"type": "Duplex",
+				"required": true
+			},
+			{
+				"name": "readFrames.handlers",
+				"type": "PipeWebSocketHandlers",
+				"required": true
+			},
+			{
+				"name": "readFrames.closed",
+				"type": "() => void",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "clientFrame",
+				"type": "Buffer"
+			},
+			{
+				"name": "readFrames",
+				"type": "Buffer"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "clientFrame",
+				"inputs": [
+					{
+						"name": "clientFrame.opcode",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "clientFrame.payload",
+						"type": "Buffer",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "clientFrame",
+						"type": "Buffer"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readFrames",
+				"inputs": [
+					{
+						"name": "readFrames.buffer",
+						"type": "Buffer",
+						"required": true
+					},
+					{
+						"name": "readFrames.stream",
+						"type": "Duplex",
+						"required": true
+					},
+					{
+						"name": "readFrames.handlers",
+						"type": "PipeWebSocketHandlers",
+						"required": true
+					},
+					{
+						"name": "readFrames.closed",
+						"type": "() => void",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readFrames",
+						"type": "Buffer"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-cdp-adapter-pipe-web-socket",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/container-cdp-adapter/webSocketFrames.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/container-cdp-adapter/webSocketFrames.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -75,6 +75,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['goal', itemOptions],
 	['update', { ...itemOptions, note: text, 'remind-at': text }],
 	['note', {}],
+	['alert', {}],
 	['progress', {}],
 	[
 		'flag',
@@ -157,6 +158,7 @@ export const nativeTrackerIdVerbs = new Set([
 	'reopen',
 	'reject',
 	'note',
+	'alert',
 	'progress',
 	'flag',
 	'chase',

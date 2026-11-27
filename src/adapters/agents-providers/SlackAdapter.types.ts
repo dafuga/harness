@@ -8,7 +8,8 @@ export interface SlackInstallation extends PlatformIdentity {
 	installationId: string;
 	project: string;
 	environment: string;
-	appId: string;
+	/** Needed to receive events; a send-only binding may leave it out. */
+	appId?: string;
 }
 
 export interface SlackCredentialScope extends SlackInstallation {
@@ -26,7 +27,7 @@ export interface SlackVaultAccess {
 export interface SlackAdapterConfig {
 	installation: SlackInstallation;
 	channels: readonly string[];
-	receive: 'messages' | 'mentions';
+	receive: 'messages' | 'mentions' | 'none';
 	vault: SlackVaultAccess;
 	audit(event: PlatformAuditEvent): Promise<void>;
 }

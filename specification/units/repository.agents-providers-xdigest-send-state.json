@@ -1,0 +1,145 @@
+{
+	"schemaVersion": 1,
+	"id": "repository.agents-providers-xdigest-send-state",
+	"uid": "u_nivrvbu66a",
+	"kind": "repository",
+	"title": "XDigestSendStateRepository",
+	"responsibility": "Persist delivery progress for the current day, owner-only.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/repositories/agents-providers/XDigestSendStateRepository.ts"],
+		"symbols": [
+			"XDigestSendStateRepository",
+			"XDigestSendStateRepository.constructor",
+			"XDigestSendStateRepository.load",
+			"XDigestSendStateRepository.save"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XDigestSendStateRepository.constructor.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "XDigestSendStateRepository.save.state",
+				"type": "XDigestSendState",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "XDigestSendStateRepository.load",
+				"type": "Promise<XDigestSendState>"
+			},
+			{
+				"name": "XDigestSendStateRepository.save",
+				"type": "Promise<void>"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			},
+			{
+				"name": "TypeError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XDigestSendStateRepository.load",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "XDigestSendStateRepository.load",
+						"type": "Promise<XDigestSendState>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "XDigestSendStateRepository.save",
+				"inputs": [
+					{
+						"name": "XDigestSendStateRepository.save.state",
+						"type": "XDigestSendState",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestSendStateRepository.save",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "XDigestSendStateRepository.constructor",
+				"inputs": [
+					{
+						"name": "XDigestSendStateRepository.constructor.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestSendStateRepository.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "TypeError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-x-digest-send-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/repositories/agents-providers/XDigestSendStateRepository.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/repositories/agents-providers/XDigestSendStateRepository.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

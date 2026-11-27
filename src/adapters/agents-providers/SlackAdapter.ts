@@ -73,6 +73,7 @@ export class SlackAdapter implements PlatformAdapter {
 	}
 
 	subscribe(handler: PlatformEventHandler, signal: AbortSignal): Promise<void> {
+		if (this.config.receive === 'none') return Promise.reject(new SlackRequestError('denied'));
 		return this.subscription.run(handler, signal);
 	}
 
@@ -101,12 +102,17 @@ function validateBinding({ installation, channels, receive }: SlackAdapterConfig
 		!teamId.safeParse(installation.workspaceId).success ||
 		!botId.safeParse(installation.botId).success ||
 		!userId.safeParse(installation.botUserId).success ||
-		!appId.safeParse(installation.appId).success ||
-		(receive !== 'mentions' && receive !== 'messages') ||
+		!validAppId(installation.appId, receive) ||
+		!['mentions', 'messages', 'none'].includes(receive) ||
 		channels.length === 0 ||
 		channels.some((id) => !channelId.safeParse(id).success)
 	)
 		throw new SlackRequestError('denied');
+}
+
+function validAppId(value: string | undefined, receive: SlackAdapterConfig['receive']): boolean {
+	if (value === undefined) return receive === 'none';
+	return appId.safeParse(value).success;
 }
 
 export type {
