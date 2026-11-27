@@ -44,7 +44,12 @@
 				"type": "Promise<string>"
 			}
 		],
-		"errors": [],
+		"errors": [
+			{
+				"name": "ProjectAssistantError",
+				"type": "thrown"
+			}
+		],
 		"errorStatus": "unknown",
 		"operations": [
 			{
@@ -79,6 +84,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-error",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "function.agents-providers-qa-thread-types",
 			"via": "import",
