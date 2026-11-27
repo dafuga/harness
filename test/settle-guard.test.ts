@@ -115,11 +115,8 @@ test.skipIf(!mac)(
 					.poll(() => existsSync(ready) && existsSync(join(home, '.processes')))
 					.toBe(true);
 				const pids = readFileSync(ready, 'utf8').split(' ').map(Number);
-				const known = pids.map((pid) => {
-					const [row] = fixtureProcessTable(pid);
-					expect(row.group).toBe(pids[0]);
-					return row;
-				});
+				const known = pids.map((pid) => fixtureProcessTable(pid)[0]);
+				expect(known.map((row) => row.group)).toEqual([pids[0], pids[0]]);
 				worker.kill('SIGKILL');
 				await expect
 					.poll(() => [existsSync(home), ...known.map(alive)])
