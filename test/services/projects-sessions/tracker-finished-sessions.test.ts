@@ -5,7 +5,8 @@ import {
 	codexComposer,
 	composer,
 	protectedPanes,
-	trackerSlotFixture
+	trackerSlotFixture,
+	verifyManualLaunchWithBlockedPane
 } from '../../support/trackerSlotFixture';
 import type { TrackerSlotFixture } from '../../support/trackerSlotFixture.types';
 
@@ -14,7 +15,6 @@ const minute = 60_000;
 vi.setConfig({ testTimeout: 90_000 });
 const running = { state: 'running', outcome: null };
 const finished = (outcome: string) => ({ state: 'finished', outcome });
-
 const slotCase = (name: string, prove: (fixture: TrackerSlotFixture) => Promise<void>) =>
 	measureWorkload('service.projects-sessions-tracker-native-runtime', name, () =>
 		withTempDir('hnt-slot-', async (root) => {
@@ -161,6 +161,7 @@ test('a blocked run closes and stays down until its answer allows a relaunch', (
 		await hub.advance(minute);
 		await verifyLiveAnswerDelivery(hub);
 		await verifyAnsweredPaneRetained(hub);
+		await verifyManualLaunchWithBlockedPane(hub);
 	}));
 
 test('keeps a live background task until the item closes, then closes the pane', () =>
