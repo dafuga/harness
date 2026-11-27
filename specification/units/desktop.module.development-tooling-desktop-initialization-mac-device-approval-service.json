@@ -1,0 +1,209 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-service",
+	"uid": "u_n2zqdgcimk",
+	"kind": "module",
+	"title": "MacDeviceApprovalService",
+	"responsibility": "Binds Mac device admission and approval actions to the current encrypted Hub login, keeping keys in the native helper.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalService.ts",
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalService.types.ts"
+		],
+		"symbols": [
+			"MacDeviceApprovalService",
+			"MacDeviceApprovalService.constructor",
+			"MacDeviceApprovalService.status",
+			"MacDeviceApprovalService.action",
+			"MacDeviceApprovalService.close",
+			"Actor",
+			"Command"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "MacDeviceApprovalService.constructor.binary",
+				"type": "string",
+				"required": true,
+				"description": "Absolute path to the bundled macOS helper."
+			},
+			{
+				"name": "MacDeviceApprovalService.status.credential",
+				"type": "NativeHostedCredential",
+				"required": true,
+				"description": "Current main-process credential for the exact Hub and Google subject."
+			},
+			{
+				"name": "MacDeviceApprovalService.status.actor",
+				"type": "Actor",
+				"required": true,
+				"description": "The Google actor already verified by the Hub."
+			},
+			{
+				"name": "MacDeviceApprovalService.action.action",
+				"type": "DeviceApprovalAction",
+				"required": true,
+				"description": "One validated list, review, approve or deny request for the admitted device."
+			}
+		],
+		"outputs": [
+			{
+				"name": "MacDeviceApprovalService.status",
+				"type": "Promise<NativeHostedStatus>",
+				"description": "Public login stage and verified actor or comparison code where appropriate."
+			},
+			{
+				"name": "MacDeviceApprovalService.action",
+				"type": "Promise<DeviceApprovalResult>",
+				"description": "Approval inbox display or decision state. No session or key material is returned."
+			},
+			{
+				"name": "MacDeviceApprovalService.close",
+				"type": "void",
+				"description": "Invalidates queued work and ends the current helper without signing out the Hub account."
+			}
+		],
+		"errors": [
+			{
+				"name": "MacDeviceApprovalError",
+				"type": "thrown",
+				"description": "A public, bounded failure code reports a refusal or an unavailable helper without including request contents."
+			}
+		],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "MacDeviceApprovalService.status",
+				"inputs": [
+					{
+						"name": "MacDeviceApprovalService.status.credential",
+						"type": "NativeHostedCredential",
+						"required": true,
+						"description": "Current main-process credential for the exact Hub and Google subject."
+					},
+					{
+						"name": "MacDeviceApprovalService.status.actor",
+						"type": "Actor",
+						"required": true,
+						"description": "The Google actor already verified by the Hub."
+					}
+				],
+				"outputs": [
+					{
+						"name": "MacDeviceApprovalService.status",
+						"type": "Promise<NativeHostedStatus>",
+						"description": "Public login stage and verified actor or comparison code where appropriate."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "MacDeviceApprovalService.action",
+				"inputs": [
+					{
+						"name": "MacDeviceApprovalService.action.action",
+						"type": "DeviceApprovalAction",
+						"required": true,
+						"description": "One validated list, review, approve or deny request for the admitted device."
+					}
+				],
+				"outputs": [
+					{
+						"name": "MacDeviceApprovalService.action",
+						"type": "Promise<DeviceApprovalResult>",
+						"description": "Approval inbox display or decision state. No session or key material is returned."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "MacDeviceApprovalService.close",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "MacDeviceApprovalService.close",
+						"type": "void",
+						"description": "Invalidates queued work and ends the current helper without signing out the Hub account."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "MacDeviceApprovalService.constructor",
+				"inputs": [
+					{
+						"name": "MacDeviceApprovalService.constructor.binary",
+						"type": "string",
+						"required": true,
+						"description": "Absolute path to the bundled macOS helper."
+					}
+				],
+				"outputs": [
+					{
+						"name": "MacDeviceApprovalService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.adapter.capacitor-account",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.adapter.hosted-http",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-pipe",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

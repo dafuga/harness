@@ -1,6 +1,6 @@
 // @harness-uid u_gxxwi43nxg
 import { execFileSync } from 'node:child_process';
-import { lstatSync } from 'node:fs';
+import { lstatSync, readdirSync } from 'node:fs';
 import { cp, mkdir, rename, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
@@ -13,6 +13,7 @@ export const bundleId = 'dev.harness.desktop';
 /** Electron reports `isPackaged=false` for an executable named `electron`, so it is renamed. */
 const executableName = 'Harness';
 export const migrationBinary = 'Contents/Helpers/HarnessKeychainMigration';
+export const deviceApprovalBinary = 'Contents/Helpers/HarnessDeviceApproval';
 
 async function copyProject(output: string, sources: MacAppSources): Promise<void> {
 	const project = resolve(output, 'Contents/Resources/app');
@@ -66,6 +67,33 @@ function compileMigrationHelper(helper: string): void {
 	]);
 }
 
+/** Reuses the native account and sealed-key code. UIKit and the phone computer bridge stay in iOS. */
+function compileDeviceApproval(helper: string): void {
+	const app = resolve(import.meta.dirname, '../ios/App/App');
+	const swift = (folder: string) =>
+		readdirSync(join(app, folder))
+			.filter(
+				(file) =>
+					file.endsWith('.swift') &&
+					!['HarnessAccountPlugin.swift', 'HubAccountComputers.swift'].includes(file)
+			)
+			.sort()
+			.map((file) => join(app, folder, file));
+	const arch = process.arch === 'arm64' ? 'arm64' : 'x86_64';
+	execFileSync('/usr/bin/xcrun', [
+		'swiftc',
+		'-O',
+		'-target',
+		`${arch}-apple-macosx13.0`,
+		join(import.meta.dirname, 'mac-device-approval.swift'),
+		join(app, 'Remote/RemoteCoding.swift'),
+		...swift('Account'),
+		...swift('Sealed'),
+		'-o',
+		helper
+	]);
+}
+
 /** Builds the unsigned Harness.app at `output` from the installed Electron distribution. */
 export async function assembleMacApp(output: string, sources: MacAppSources): Promise<void> {
 	const { default: electron } = await import('electron');
@@ -77,6 +105,7 @@ export async function assembleMacApp(output: string, sources: MacAppSources): Pr
 	const helper = join(output, migrationBinary);
 	await mkdir(dirname(helper), { recursive: true });
 	compileMigrationHelper(helper);
+	compileDeviceApproval(join(output, deviceApprovalBinary));
 	await stageTrackerBundle(output);
 	restrictBundleModes(output);
 }

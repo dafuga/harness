@@ -1,5 +1,7 @@
 import Foundation
 
+enum HubEnrollmentPlatform: String { case iphone, mac }
+
 /// Kept before the first POST so a lost reply or process restart reopens the same mailbox.
 struct LoginEnrollmentNonce: Codable {
     let value: Data
@@ -39,7 +41,7 @@ final class HubAccountEnrollment {
             let prior = mailbox?.id
             let path = "/api/sync/v1/enroll" + (prior.map { "/" + $0 } ?? "")
             var fields = request.opening.fields
-            fields["platform"] = "iphone"
+            fields["platform"] = session.enrollmentPlatform.rawValue
             var call = HubAccountCall(method: prior == nil ? "POST" : "GET", path: path,
                                       body: prior == nil ? RemoteCoding.json(fields) : nil)
             call.device = device.deviceId

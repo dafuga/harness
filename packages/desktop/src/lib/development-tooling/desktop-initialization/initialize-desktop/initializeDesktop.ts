@@ -20,6 +20,9 @@ import { desktopRemote } from './desktopRemote';
 import { chooseProject } from './chooseProject';
 import { confirmUnload } from './confirmUnload';
 import { desktopIpc } from './desktopIpc';
+import { deviceApprovalChannel } from '../../../../utils/agents-providers/desktopIpc';
+import { deviceApprovalInput } from './deviceApprovalInput';
+import { UntrustedRendererError } from './desktopIpc.types';
 import { remoteControl } from './remoteControl';
 import { rendererAssets } from './rendererAssets';
 import { trustedSender } from './trustedSender';
@@ -55,6 +58,13 @@ export async function initializeDesktop(): Promise<BrowserWindow | null> {
 		rendererAssets(assets, request.url, `ws://127.0.0.1:${port}`)
 	);
 	desktopIpc(ipcMain, (event) => bootstrap(backend, event));
+	ipcMain.handle(deviceApprovalChannel, (event, input: unknown) => {
+		const open = windows.current;
+		const approved = deviceApprovalInput(input);
+		if (!open || !trustedSender(event, open.window) || !approved || !backend.shared.auth)
+			throw new UntrustedRendererError('Device approval is not available.');
+		return backend.shared.auth.deviceApproval(approved);
+	});
 	appLifecycle(backend);
 
 	return openWindow(backend);
@@ -71,6 +81,11 @@ function bootstrap(backend: Backend, event: unknown): LocalBootstrap | null {
  * Everything that outlives a window: the loopback transport, remote access with the sessions of
  * approved phones, and what every client shares: registry, outbox, cache and repository locks.
  */
+function packagedApprovalHelper(): string | undefined {
+	if (app.isPackaged && process.platform === 'darwin')
+		return resolve(process.resourcesPath, '../Helpers/HarnessDeviceApproval');
+}
+
 function desktopBackend() {
 	const directory = app.getPath('userData'),
 		origin = process.env.HARNESS_HUB_ORIGIN,
@@ -94,6 +109,7 @@ function desktopBackend() {
 	const { authority, ...connection } = new NativeConnectionService().create(
 		{
 			origin,
+			deviceApprovalBinary: packagedApprovalHelper(),
 			onSignIn: (ownerId) => remote.linkAccount(ownerId),
 			onDisconnect: () => remote.account.end(),
 			onCacheStatus: (status) => windows.current?.client.emit('cache', status),
@@ -145,6 +161,7 @@ function appLifecycle(backend: Backend): void {
 		backend.publisher?.stop();
 		backend.stopRealtime();
 		clearInterval(backend.accountTimer);
+		backend.shared.auth?.closeDeviceApproval();
 		void backend.lifecycle
 			.quit()
 			.then(() => backend.transport.close())

@@ -1,4 +1,5 @@
 // @harness-uid u_7pcvf7nfhp
+import type { AccountNativePlugin } from './Environment.types';
 import type { LiveActivity } from '../../../../../src/core/activityTypes';
 import type { ProjectContext } from '../projects-sessions/ProjectContext.types';
 import type { CacheStatus } from '../projects-sessions/ProjectContext.types';
@@ -152,6 +153,7 @@ export interface DesktopBridge extends GameDesktopBridge, DeploymentBridge {
 		input: EntityQuery & { page: number; branch?: string }
 	): Promise<{ entries: HistoryEvent[]; complete: boolean; nextPage: number | null }>;
 	hostedStatus?(): Promise<NativeHostedStatus>;
+	deviceApproval?: AccountNativePlugin['deviceApproval'];
 	connectHosted?(input?: { google?: boolean }): Promise<NativeHostedStatus>;
 	disconnectHosted?(): Promise<NativeHostedStatus>;
 	/** The design canvases of this computer's checkout; absent for hosted and paired projects. */

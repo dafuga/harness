@@ -49,3 +49,46 @@ test('an approved iPhone reviews and decides device approval requests', async ({
 		note: 'Denial is confirmed and the inbox no longer has requests.'
 	});
 });
+
+test('the Mac renderer waits before showing the shared approval inbox', async ({ page }) => {
+	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.addInitScript(() => {
+		let approved = false;
+		const item = {
+			id: 'a'.repeat(32),
+			platform: 'iphone',
+			country: 'PT',
+			createdAt: Date.UTC(2026, 10, 27, 19)
+		};
+		const host = window as unknown as { harness: Record<string, unknown>; approveMac: () => void };
+		host.approveMac = () => {
+			approved = true;
+			window.dispatchEvent(new Event('focus'));
+		};
+		host.harness = {
+			hostedStatus: async () =>
+				approved
+					? {
+							configured: true,
+							state: 'signed-in',
+							actor: { id: 'google:fixture-owner', name: 'Fixture Owner' }
+						}
+					: { configured: true, state: 'waiting-for-approval', verificationCode: '038192' },
+			deviceApproval: async ({ action }: { action: string }) => {
+				if (!approved) throw new Error('Mac not admitted.');
+				if (action === 'list') return { requests: [item] };
+				return { state: 'compare', code: '037752' };
+			},
+			listProjects: async () => []
+		};
+	});
+	await page.goto('/tracker');
+	await expect(page.getByText('Waiting for approval', { exact: true })).toBeVisible();
+	const requests = page.getByRole('region', { name: 'Device approvals' });
+	await expect(requests).toHaveCount(0);
+	await page.evaluate(() => (window as unknown as { approveMac: () => void }).approveMac());
+	await requests.getByRole('button', { name: 'Review Harness iPhone' }).click();
+	const review = page.getByRole('dialog', { name: 'Approve Harness iPhone' });
+	await expect(review.getByText('037752', { exact: true })).toBeVisible();
+	await captureIosAccountState(page, 'mac-approve-review');
+});

@@ -1,0 +1,82 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-initialize-desktop-device-approval-input",
+	"uid": "u_jmiv5hvdhb",
+	"kind": "module",
+	"title": "deviceApprovalInput",
+	"responsibility": "Validates and reconstructs the four device approval commands from an untrusted Electron renderer payload.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/deviceApprovalInput.ts"
+		],
+		"symbols": ["deviceApprovalInput"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "deviceApprovalInput.value",
+				"type": "IPC payload",
+				"required": true,
+				"description": "Untrusted IPC message. A mailbox must be a 32-digit lowercase hexadecimal ID; an approval also requires the six-digit comparison code."
+			}
+		],
+		"outputs": [
+			{
+				"name": "deviceApprovalInput",
+				"type": "DeviceApprovalAction | undefined",
+				"description": "A listed, reviewed, approved or denied request command, or undefined if the input is invalid."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "deviceApprovalInput",
+				"inputs": [
+					{
+						"name": "deviceApprovalInput.value",
+						"type": "IPC payload",
+						"required": true,
+						"description": "Untrusted IPC message. A mailbox must be a 32-digit lowercase hexadecimal ID; an approval also requires the six-digit comparison code."
+					}
+				],
+				"outputs": [
+					{
+						"name": "deviceApprovalInput",
+						"type": "DeviceApprovalAction | undefined",
+						"description": "A listed, reviewed, approved or denied request command, or undefined if the input is invalid."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/deviceApprovalInput.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/initialize-desktop/deviceApprovalInput.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

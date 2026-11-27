@@ -18,10 +18,14 @@ struct SealedKeychain: SealedSecretStore {
     private let service = "com.dafuga.harness.sealed"
 
     private func query(_ name: String) -> [String: Any] {
-        [
+        var result: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service,
             kSecAttrAccount as String: name, kSecAttrSynchronizable as String: false
         ]
+        #if os(macOS)
+        result[kSecUseDataProtectionKeychain as String] = true
+        #endif
+        return result
     }
 
     func load(_ name: String) -> Data? {

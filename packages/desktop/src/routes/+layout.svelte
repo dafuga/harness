@@ -63,6 +63,7 @@
 		try {
 			const answer = await call();
 			if (!active || asked !== turn) return;
+			if (answer.approvalFailure) return showSignInFailure({ code: answer.approvalFailure });
 			await accept(answer, asked);
 		} catch (cause) {
 			if (active && asked === turn) showSignInFailure(cause);

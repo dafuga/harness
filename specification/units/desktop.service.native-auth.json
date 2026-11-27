@@ -20,6 +20,8 @@
 			"NativeAuthService.status",
 			"NativeAuthService.disconnect",
 			"NativeAuthService.overview",
+			"NativeAuthService.closeDeviceApproval",
+			"NativeAuthService.deviceApproval",
 			"AuthOptions",
 			"Pending",
 			"NativeSignInError"
@@ -39,6 +41,12 @@
 				"type": "boolean",
 				"required": false,
 				"default": false
+			},
+			{
+				"name": "NativeAuthService.deviceApproval.action",
+				"type": "DeviceApprovalAction",
+				"required": true,
+				"description": "Validated review action for the currently admitted Mac device."
 			}
 		],
 		"outputs": [
@@ -72,7 +80,7 @@
 			{
 				"name": "NativeAuthService.status",
 				"type": "Promise<NativeHostedStatus>",
-				"description": "While a handoff is pending, status() resolves signed-out once it has expired, returns the cached pending status until the next poll is due, and resolves signed-in with the actor once an approved handoff is exchanged and its credential is saved. With no pending handoff and no stored credential it resolves signed-out, with configured true only when the public status (http.publicStatus) says configured: true; with a stored credential it resolves with the NativeAccountStatusService reading of that credential.",
+				"description": "While a handoff is pending, status() resolves signed-out once it has expired, returns the cached pending status until the next poll is due, and resolves signed-in with the actor once an approved handoff is exchanged and its credential is saved. With no pending handoff and no stored credential it resolves signed-out, with configured true only when the public status (http.publicStatus) says configured: true; with a stored credential it resolves with the NativeAccountStatusService reading of that credential. The packaged Mac also verifies device admission before returning signed-in and before it enables project or approval actions.",
 				"examples": [
 					{
 						"configured": true,
@@ -182,7 +190,7 @@
 					{
 						"name": "NativeAuthService.status",
 						"type": "Promise<NativeHostedStatus>",
-						"description": "While a handoff is pending, status() resolves signed-out once it has expired, returns the cached pending status until the next poll is due, and resolves signed-in with the actor once an approved handoff is exchanged and its credential is saved. With no pending handoff and no stored credential it resolves signed-out, with configured true only when the public status (http.publicStatus) says configured: true; with a stored credential it resolves with the NativeAccountStatusService reading of that credential.",
+						"description": "While a handoff is pending, status() resolves signed-out once it has expired, returns the cached pending status until the next poll is due, and resolves signed-in with the actor once an approved handoff is exchanged and its credential is saved. With no pending handoff and no stored credential it resolves signed-out, with configured true only when the public status (http.publicStatus) says configured: true; with a stored credential it resolves with the NativeAccountStatusService reading of that credential. The packaged Mac also verifies device admission before returning signed-in and before it enables project or approval actions.",
 						"examples": [
 							{
 								"configured": true,
@@ -244,6 +252,44 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeAuthService.closeDeviceApproval",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "NativeAuthService.closeDeviceApproval",
+						"type": "void",
+						"description": "Stops the Mac approval helper and invalidates queued work without revoking the Google login."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "NativeAuthService.deviceApproval",
+				"inputs": [
+					{
+						"name": "NativeAuthService.deviceApproval.action",
+						"type": "DeviceApprovalAction",
+						"required": true,
+						"description": "Validated review action for the currently admitted Mac device."
+					}
+				],
+				"outputs": [
+					{
+						"name": "NativeAuthService.deviceApproval",
+						"type": "Promise<DeviceApprovalResult>",
+						"description": "Returns only the public approval inbox or decision state from the admitted Mac device."
+					}
+				],
+				"errors": [
+					{
+						"name": "MacDeviceApprovalError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
 			}
 		],
 		"initialization": [
@@ -281,7 +327,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.model.environment-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.model.project-context-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-service",
 			"via": "import",
 			"origin": "derived"
 		},

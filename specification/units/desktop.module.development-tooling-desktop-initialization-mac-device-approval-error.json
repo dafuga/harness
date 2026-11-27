@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "desktop.module.development-tooling-desktop-initialization-mac-device-approval-error",
+	"uid": "u_4xkioha7wi",
+	"kind": "module",
+	"title": "MacDeviceApprovalError",
+	"responsibility": "Reports Mac device approval failures with a public error code and a fixed message.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalError.ts"
+		],
+		"symbols": ["MacDeviceApprovalError", "MacDeviceApprovalError.constructor"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "MacDeviceApprovalError.constructor.code",
+				"type": "string",
+				"required": true,
+				"description": "Public failure code for the admission or device approval action."
+			}
+		],
+		"outputs": [],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": [
+			{
+				"name": "MacDeviceApprovalError.constructor",
+				"inputs": [
+					{
+						"name": "MacDeviceApprovalError.constructor.code",
+						"type": "string",
+						"required": true,
+						"description": "Public failure code for the admission or device approval action."
+					}
+				],
+				"outputs": [
+					{
+						"name": "MacDeviceApprovalError.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalError.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/desktop/src/lib/development-tooling/desktop-initialization/MacDeviceApprovalError.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

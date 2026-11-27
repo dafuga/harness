@@ -1,4 +1,6 @@
 // @harness-uid u_fnvtwr6rqr
+import { MacDeviceApprovalError } from './MacDeviceApprovalError';
+import type { AuthOptions } from './NativeAuthService.types';
 import type { StatusOptions } from './NativeAccountStatusService.types';
 import type { NativeHostedCredential } from '../../../adapters/networking-security/hosted-http-adapter/HostedHttpAdapter';
 import type { NativeHostedStatus } from '../../../models/projects-sessions/ProjectContext.types';
@@ -32,5 +34,28 @@ export class NativeAccountStatusService {
 			await this.options.clearCache?.();
 			return { configured: true, state: 'signed-out' };
 		}
+	}
+}
+
+export async function admitMacDevice(
+	status: NativeHostedStatus,
+	options: Pick<AuthOptions, 'deviceApproval' | 'store'>
+): Promise<NativeHostedStatus> {
+	const deviceApproval = options.deviceApproval;
+	if (!deviceApproval) return status;
+	if (status.state === 'signed-out') deviceApproval.close();
+	if (status.state !== 'signed-in' || !status.actor) return status;
+	const credential = await options.store.read();
+	if (!credential || credential.principalId !== status.actor.id)
+		return { configured: true, state: 'signed-out' };
+	try {
+		return await deviceApproval.status(credential, status.actor);
+	} catch (error) {
+		if (
+			error instanceof MacDeviceApprovalError &&
+			(error.code === 'approval-denied' || error.code === 'approval-expired')
+		)
+			return { configured: true, state: 'signed-out', approvalFailure: error.code };
+		throw error;
 	}
 }

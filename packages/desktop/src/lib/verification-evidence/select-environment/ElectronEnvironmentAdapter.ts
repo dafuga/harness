@@ -29,6 +29,7 @@ export class ElectronEnvironmentAdapter {
 		return {
 			kind: 'electron',
 			bridge: harness,
+			deviceApproval: harness?.deviceApproval,
 			trackerHome:
 				harness?.homeSnapshot && harness.homeChat
 					? { read: harness.homeSnapshot, send: harness.homeChat }

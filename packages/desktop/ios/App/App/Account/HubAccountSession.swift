@@ -13,12 +13,12 @@ final class HubAccountSession {
     let origin: URL?
     let vault: HubAccountVault
     let transport: HubAccountTransport
-    /// Opens an address in the system browser; the plugin hands in the one of iOS.
     var open: (URL) -> Void = { _ in }
     var authenticate: (URL, String) -> Void = { _, _ in }
     var cancelAuthentication: () -> Void = {}
     var accountEnded: () -> Void = {}
     var deviceName = "Harness iPhone"
+    var enrollmentPlatform = HubEnrollmentPlatform.iphone
     var now: () -> Date = { Date() }
     var credential: HubAccountCredential?
     var handoff: HubAccountHandoff?
