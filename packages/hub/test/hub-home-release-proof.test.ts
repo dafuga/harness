@@ -11,7 +11,8 @@ const current = [
 	{ ...first, id: 13, node: 'unlinked-mac' },
 	{ ...first, id: 14, state: 'queued' },
 	{ ...first, id: 15, ended_at: 1000 },
-	{ ...first, id: 16, item_id: 'private' }
+	{ ...first, id: 16, item_id: 'private' },
+	{ ...first, id: 17, item_id: 'family-reminder' }
 ];
 
 function tracker(before = current, after = before) {
@@ -25,7 +26,8 @@ function tracker(before = current, after = before) {
 		if (url === 'http://127.0.0.1:7701/items?status=all&limit=-1') {
 			return Response.json([
 				{ id: 'working', agent: 'project', status: 'in_progress', needs_daniel: true },
-				{ id: 'private', agent: 'project', status: 'in_progress', sensitive: true }
+				{ id: 'private', agent: 'project', status: 'in_progress', sensitive: true },
+				{ id: 'family-reminder', agent: 'family', status: 'in_progress' }
 			]);
 		}
 		return new Response(null, { status: 404 });
