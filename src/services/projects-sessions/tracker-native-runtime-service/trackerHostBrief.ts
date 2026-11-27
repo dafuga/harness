@@ -26,6 +26,8 @@ export function formatTrackerHostBrief(
 		`Tracker item ${id} (full ID ${item.id}).`,
 		'',
 		cpuBudget && trackerCpuBudgetRule(cpuBudget),
+		item.agent === 'harness' &&
+			`Submit commits with \`bun run check --item ${id}\` for affected checks. Use the same host queue with \`--release\` for the combined release and never start the full check directly.`,
 		item.sensitive &&
 			'Keep credentials out of output and obtain approval before any irreversible action.',
 		item.adapter_instructions && `## Source instructions\n\n${item.adapter_instructions}`,
