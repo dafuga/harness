@@ -13,6 +13,7 @@ export interface RecordedTrackerItem {
 	auto: string | null;
 	sensitive: boolean;
 	deleted: boolean;
+	blocked_reason?: string | null;
 }
 
 export interface RecordedTrackerRun {
@@ -21,6 +22,7 @@ export interface RecordedTrackerRun {
 	item_id: string;
 	state: string;
 	outcome: string | null;
+	failure_reason?: string | null;
 	model: string;
 	effort: string | null;
 	queued_at: number | null;

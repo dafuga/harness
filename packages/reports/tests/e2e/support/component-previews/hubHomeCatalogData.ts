@@ -3,7 +3,10 @@ import { soonestWork } from '../../../../src/components/projects-sessions/hub-ho
 import type { HomeView } from '../../../../src/components/projects-sessions/hub-home/hubHomeView.types';
 import type { LinkedHome } from '../../../../../hub/src/services/networking-security/LinkedHomeService';
 import type { HomeWorkProject } from '../../../../src/lib/projects-sessions/hub-home/homeLive.types';
-import type { OwnerHomeSnapshot, TrackerHomeSource } from '../../../../src/lib/projects-sessions/hub-home/hubHome.types';
+import type {
+	OwnerHomeSnapshot,
+	TrackerHomeSource
+} from '../../../../src/lib/projects-sessions/hub-home/hubHome.types';
 import { previewAnswerOptions } from './shared';
 
 const prefix = 'hub.component.projects-sessions-hub-';

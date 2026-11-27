@@ -1,3 +1,9 @@
+import { spawn } from 'node:child_process';
+import { once } from 'node:events';
+import { readFile } from 'node:fs/promises';
+import { vi } from 'vitest';
+import type { TrackerDispatchRepository } from '../../src/repositories/projects-sessions/TrackerDispatchRepository';
+import type { TrackerDispatchRunner } from '../../src/services/projects-sessions/TrackerDispatchSchedulerService.types';
 import { fixtureTrackerJson, trackerProcess } from './trackerNodeProcess';
 import type { TrackerNodeFixture } from './trackerNodeProcess.types';
 import { unlinkSync, writeFileSync } from 'node:fs';
@@ -41,15 +47,11 @@ export async function verifyAdoption(
 	expect(rows()).toEqual([
 		{ state: 'finished', model: 'gpt-6.1-terra', effort: 'high', tmux: 'man123-recovery' }
 	]);
-	expect((await runtime.watchdog!.inspect(manual, signal)).recovery).toMatchObject([
-		{
-			item_id: manual,
-			host: runtime.store.node,
-			kind: 'missing',
-			recover: false,
-			reason: expect.stringContaining('automatic launch opted out')
-		}
-	]);
+	expect(db.prepare('SELECT status, blocked_reason FROM items WHERE id = ?').get(manual)).toEqual({
+		status: 'blocked',
+		blocked_reason: 'automatic launch opted out'
+	});
+	expect((await runtime.watchdog!.inspect(manual, signal)).recovery).toEqual([]);
 }
 
 export const retainedTrackerTmuxFixture = (at: number) => `
@@ -150,4 +152,59 @@ export async function seedBlockedLaunch(
 		new Request(`http://tracker-fixture.invalid/items/${id}/launch`, { method: 'POST' })
 	);
 	await runtime.scheduler!.tick(new AbortController().signal);
+}
+
+const childProgram = `
+const { writeFileSync } = require('node:fs');
+const [path, key, startedAt] = process.argv.slice(1);
+writeFileSync(path, JSON.stringify({ pid: process.pid, key, startedAt: Number(startedAt) }), { mode: 0o600 });
+process.stdout.write('ready');
+setInterval(() => {}, 60000);
+`;
+
+export function managedRunner(
+	root: string,
+	current: () => { repo: TrackerDispatchRepository },
+	startedAt: number
+) {
+	const receiptPath = join(root, 'receipt.json');
+	const fixture: {
+		child?: ReturnType<typeof spawn>;
+		exited?: Promise<unknown>;
+		startedKey: string;
+	} = { startedKey: '' };
+	const start = vi.fn<TrackerDispatchRunner['start']>(async (reservation) => {
+		expect(current().repo.managedRuns()).toMatchObject([
+			{ state: 'queued', dispatch_at: startedAt }
+		]);
+		fixture.startedKey = reservation.key;
+		const child = spawn(
+			process.execPath,
+			['-e', childProgram, receiptPath, fixture.startedKey, String(startedAt)],
+			{
+				stdio: ['ignore', 'pipe', 'ignore'],
+				env: {}
+			}
+		);
+		fixture.child = child;
+		const exited = once(child, 'close');
+		fixture.exited = exited;
+		await Promise.race([
+			once(child.stdout, 'data'),
+			exited.then(() => {
+				throw new Error('fixture child exited before receipt');
+			})
+		]);
+		throw new Error('lost start reply');
+	});
+	const observe = vi.fn<TrackerDispatchRunner['observe']>(async (_run, key) => {
+		const receipt = JSON.parse(await readFile(receiptPath, 'utf8'));
+		if (receipt.key !== key || receipt.pid !== fixture.child?.pid) return undefined;
+		process.kill(receipt.pid, 0);
+		return {
+			type: 'session',
+			session: { key, id: `fixture-${receipt.pid}`, startedAt: receipt.startedAt, state: 'live' }
+		};
+	});
+	return Object.assign(fixture, { runner: { start, observe } });
 }

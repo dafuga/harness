@@ -8,15 +8,16 @@ import type { TrackerStage } from '../../../../../../src/utils/projects-sessions
 
 /**
  * What a piece of work is doing now. `running` and `offline` are live Tracker runs (the second on
- * a computer Tracker reports offline), `queued` waits to start, `no-run` is in progress with no
- * live run, and `finished` ended within the last day.
+ * a computer Tracker reports offline), `queued` waits to start, `blocked` awaits a resolution, and `finished` ended within the last day.
  */
-export type HomeWorkState = 'running' | 'offline' | 'queued' | 'no-run' | 'finished';
+export type HomeWorkState = 'running' | 'offline' | 'queued' | 'blocked' | 'finished';
 
 /** One live run, or one task that is in motion without one. */
 export interface HomeWorkRow {
 	key: string;
 	itemId: string;
+	/** Local Tracker run number, when reported by the linked computer. */
+	runId?: number;
 	title: string;
 	state: HomeWorkState;
 	/** How the latest run ended, as Tracker records it. */

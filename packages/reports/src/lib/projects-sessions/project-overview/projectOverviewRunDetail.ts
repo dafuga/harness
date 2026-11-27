@@ -16,6 +16,8 @@ export function trackerRunDetail(row: TrackerRunDetailInput): Partial<TrackerRun
 		started_at: time(row.started_at),
 		outcome: word(row.outcome),
 		model: word(row.model),
-		effort: word(row.effort)
+		effort: word(row.effort),
+		auto_token: word(row.auto_token),
+		failure_reason: word(row.failure_reason)
 	};
 }

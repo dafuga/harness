@@ -13,6 +13,7 @@ import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import {
 	activeWatchdogItem,
 	readWatchdogAlerts,
+	staleDispatchAlerts,
 	watchdogSnapshot
 } from './trackerHostWatchdogState';
 import { readTrackerSessionHealth, trackerRecoveryLaunch } from './trackerSessionHealthRuntime';
@@ -36,7 +37,7 @@ export function trackerHostWatchdog(
 	config: NonNullable<TrackerHostEffects['watchdog']>,
 	options: Pick<
 		WatchdogSessionScan,
-		'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap'
+		'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' | 'dispatchAlerts'
 	>
 ) {
 	const { now, automaticEnabled } = options;
@@ -49,7 +50,10 @@ export function trackerHostWatchdog(
 	let liveSessions = new Set<string>();
 	const cos = trackerCosRound(store, driver, {
 		now,
-		local: () => localAlerts(store, items, now(), liveSessions)
+		local: () => [
+			...localAlerts(store, items, now(), liveSessions),
+			...(options.dispatchAlerts?.() ?? [])
+		]
 	});
 	const alerts = cos.alerts;
 	const pollSessions = watchHostSessions(
@@ -85,7 +89,10 @@ export function trackerHostWatchdog(
 }
 
 export function configuredHostWatchdog(
-	runtime: Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>,
+	runtime: Pick<
+		TrackerNativeRuntimeService,
+		'store' | 'now' | 'dispatch' | 'role' | 'scheduler' | 'fleetSamples'
+	>,
 	hostEffects?: Pick<TrackerHostEffects, 'watchdog' | 'launch'>,
 	automaticEnabled?: () => boolean
 ) {
@@ -100,6 +107,7 @@ export function configuredHostWatchdog(
 		launch: trackerRecoveryLaunch(dispatch),
 		settle: dispatch,
 		automaticEnabled,
+		dispatchAlerts: role === 'hub' ? () => staleDispatchAlerts(runtime) : undefined,
 		idleWork,
 		slotCap: launch ? (launch.maxConcurrent ?? 2) : null
 	});
