@@ -103,12 +103,7 @@ export async function hubHomeFixture(page: Page, mode: HomeFixtureState) {
 	await page.route('https://design.example.test/dashboard.png', (route) =>
 		route.fulfill({
 			contentType: 'image/png',
-			body: readFileSync(
-				new URL(
-					'../../../../specification/designs/desktop-screens/screens/after--project-pages--phone.png',
-					import.meta.url
-				)
-			)
+			body: readFileSync(new URL('../../static/icons/harness-512.png', import.meta.url))
 		})
 	);
 	if (mode === 'busy')

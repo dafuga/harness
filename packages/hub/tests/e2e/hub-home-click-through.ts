@@ -67,7 +67,7 @@ export async function scheduledClickThrough(
 	await expect(opener).toBeVisible({ timeout: 3000 });
 	await opener.click();
 	const chat = page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
-	await expect(chat.getByText(run.title, { exact: true })).toBeVisible();
+	await expect(chat.getByLabel('Attached item')).toContainText(run.title);
 	await capture(page, position, 'scheduled-chat');
 	await chat.getByRole('textbox', { name: 'Message Chief of Staff' }).fill('Can we move this?');
 	await chat.getByRole('button', { name: 'Send', exact: true }).click();
@@ -86,7 +86,7 @@ export async function scheduledClickThrough(
 	const list = page.getByRole('dialog', { name: 'Scheduled', exact: true });
 	const scheduled = list.getByRole('button', { name: run.title, exact: true });
 	await scheduled.click();
-	await expect(chat.getByText(run.title, { exact: true })).toBeVisible();
+	await expect(chat.getByLabel('Attached item')).toContainText(run.title);
 	await page.keyboard.press('Escape');
 	await expect(scheduled).toBeFocused();
 	await page.keyboard.press('Escape');
