@@ -5,11 +5,8 @@
 	import type { SendHomeChat } from '../../../../src/components/projects-sessions/hub-home/hubHomeView.types';
 	import HubHomeRow from '../../../../src/components/projects-sessions/hub-home/HubHomeRow.svelte';
 	import { browserContext } from '../../../../../hub/src/utils/development-tooling/browserContext';
-	import {
-		catalogHomeView,
-		catalogReminders,
-		catalogWorkProject
-	} from './hubHomeCatalogData';
+	import { catalogHomeView, catalogWorkProject } from './hubHomeCatalogData';
+	import { catalogReminders } from './hubHomeReminderData';
 	import { previewAnswerOptions } from './shared';
 	import '../../../../src/lib/styles/home-scheme.css';
 	import '../../../../src/lib/styles/hub-home/index.css';

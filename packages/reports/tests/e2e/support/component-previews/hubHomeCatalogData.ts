@@ -1,4 +1,5 @@
 import { allStatesSnapshot, NOW } from '../projectOverviewFixture';
+import { catalogReminders, catalogStamp as stamp } from './hubHomeReminderData';
 import { soonestWork } from '../../../../src/components/projects-sessions/hub-home/hubHomePresentation';
 import type { HomeView } from '../../../../src/components/projects-sessions/hub-home/hubHomeView.types';
 import type { LinkedHome } from '../../../../../hub/src/services/networking-security/LinkedHomeService';
@@ -12,10 +13,6 @@ import { previewAnswerOptions } from './shared';
 const prefix = 'hub.component.projects-sessions-hub-';
 export function isHubHomePreview(id: string) {
 	return id.startsWith(prefix + 'home') || id === prefix + 'quota-subscription';
-}
-
-function stamp(hours: number) {
-	return new Date(NOW + hours * 3_600_000).toISOString();
 }
 
 const snapshot: OwnerHomeSnapshot = {
@@ -183,24 +180,6 @@ export const catalogPush = {
 	quiet: { enabled: true, start: '22:00', end: '08:00' },
 	browsers: []
 };
-
-/** One reminder already due and one that repeats. */
-export const catalogReminders = [
-	{
-		itemId: 'preview-snacks',
-		title: 'Buy snacks for the sample picnic',
-		at: stamp(-2),
-		repeats: null,
-		updatedAt: stamp(-3)
-	},
-	{
-		itemId: 'preview-plant',
-		title: 'Water the sample plant',
-		at: stamp(52),
-		repeats: 'Weekly',
-		updatedAt: stamp(-3)
-	}
-];
 
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,

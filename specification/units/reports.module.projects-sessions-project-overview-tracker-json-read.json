@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.module.projects-sessions-project-overview-tracker-json-read",
+	"uid": "u_3spz5aua5q",
+	"kind": "module",
+	"title": "trackerJsonRead",
+	"responsibility": "Reads one fixed loopback Tracker address under a single deadline without redirects or credentials, falling back to the status report when the machines address is missing.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/lib/projects-sessions/project-overview/trackerJsonRead.ts"],
+		"symbols": ["getTrackerJson"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "getTrackerJson.fetcher",
+				"type": "typeof fetch",
+				"required": true
+			},
+			{
+				"name": "getTrackerJson.url",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "getTrackerJson",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": [
+			{
+				"name": "TrackerReadError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "getTrackerJson",
+				"inputs": [
+					{
+						"name": "getTrackerJson.fetcher",
+						"type": "typeof fetch",
+						"required": true
+					},
+					{
+						"name": "getTrackerJson.url",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "getTrackerJson",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "reports.module.projects-sessions-project-overview-tracker-read-error",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-project-overview-tracker-read-targets",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/lib/projects-sessions/project-overview/trackerJsonRead.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/lib/projects-sessions/project-overview/trackerJsonRead.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
