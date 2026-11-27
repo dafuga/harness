@@ -6,7 +6,8 @@ export type PairedMode =
 	| 'denied'
 	| 'unavailable'
 	| 'non-owner'
-	| 'sign-in';
+	| 'sign-in'
+	| 'approve';
 
 /** One account request the SYNTHETIC native account double saw. */
 export type PairedAccountCall = { method: string; path: string };
