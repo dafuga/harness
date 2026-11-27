@@ -28,28 +28,16 @@ export function desktopHomeView(
 	settled: boolean,
 	now: number
 ): HomeView {
-	const overview = home?.overview ?? (settled ? { status: 'unavailable' as const } : null);
-	const listed = home ? listedHomeSnapshot(home) : null;
-	const routines =
-		Array.isArray(home?.providers.routines) &&
-		!homeProviderReadingIsStale(home.providers.routinesReadAt, now);
-	const board = home && homeBoard(home, routines, now);
+	const tracker = trackerHome(home, settled, now);
 	const notices = [
 		hubNotices[workspace.hubProjectListStatus],
 		workspace.localProjectListFailed ? 'Projects on this Mac could not be read.' : ''
 	].filter(Boolean);
 	return {
-		overview,
-		agents: listed?.agents ?? (settled ? [] : null),
-		openAsks: listed?.openAsks ?? [],
+		...tracker,
 		controlled: [],
-		plans: home?.plans ?? (settled ? [] : null),
-		schedule: board?.upcoming ?? (settled ? [] : null),
-		pastDue: board?.pastDue ?? [],
-		quota: home?.providers.quota ?? (settled ? [] : null),
 		projects: [],
 		projectsFailed: false,
-		projectDirectory: home?.projectDirectory ?? [],
 		native: {
 			projects: workspace.projectListReady ? workspace.projects : null,
 			projectBusy: workspace.busy,
@@ -58,13 +46,46 @@ export function desktopHomeView(
 		},
 		trackerProjects: null,
 		projectSnapshots: {},
-		work: soonestWork(overview),
+		work: soonestWork(tracker.overview),
 		owner: true,
 		needsMac: false,
 		linkedComputers: 0,
 		computers: null,
-		trackerConnected: overview?.status === 'ready',
-		quotaConnected: Array.isArray(home?.providers.quota),
 		now
+	};
+}
+
+function trackerHome(home: OwnerHomeSnapshot | null, settled: boolean, now: number) {
+	if (!home) {
+		const rows = settled ? [] : null;
+		return {
+			overview: settled ? { status: 'unavailable' as const } : null,
+			agents: rows,
+			openAsks: [],
+			plans: rows,
+			schedule: rows,
+			pastDue: [],
+			quota: rows,
+			projectDirectory: [],
+			trackerConnected: false,
+			quotaConnected: false
+		};
+	}
+	const { agents, openAsks } = listedHomeSnapshot(home);
+	const { overview, plans, providers } = home;
+	const routines =
+		Array.isArray(providers.routines) && !homeProviderReadingIsStale(providers.routinesReadAt, now);
+	const { upcoming, pastDue } = homeBoard(home, routines, now);
+	return {
+		overview,
+		agents,
+		openAsks,
+		plans,
+		schedule: upcoming,
+		pastDue,
+		quota: providers.quota ?? [],
+		projectDirectory: home.projectDirectory ?? [],
+		trackerConnected: overview.status === 'ready',
+		quotaConnected: Array.isArray(providers.quota)
 	};
 }

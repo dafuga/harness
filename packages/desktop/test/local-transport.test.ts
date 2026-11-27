@@ -11,6 +11,8 @@ import type {
 	ProjectSnapshot
 } from '../src/models/development-tooling/Desktop.types';
 import type { RunEvent } from '../src/models/DesktopBridge.types';
+import type { NativeAuthService } from '../src/lib/development-tooling/desktop-initialization/NativeAuthService';
+import type { OwnerHomeSnapshot } from '../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import { remoteBinary } from '../src/utils/networking-security/remoteBinary';
 import { largeGame, largeImage, localFixture } from './local-transport-fixture';
 import { deferred } from './remote-fixture';
@@ -69,6 +71,33 @@ test('the bridge works over a socket that only this machine can reach', async ()
 	});
 	expect(f.transport.connections).toBe(1);
 }, 40000);
+
+test('the local Home port requires a current account and carries only its declared requests', async () => {
+	const f = await localFixture();
+	let admitted = false;
+	const auth = {
+		get admitted() {
+			return admitted;
+		}
+	} as NativeAuthService;
+	const home: OwnerHomeSnapshot = {
+		overview: { status: 'unavailable' },
+		agents: [],
+		plans: [],
+		scheduled: [],
+		providers: { quota: null, routines: null }
+	};
+	const client = f.connect(f.window({ shared: { auth, home: async () => home } }));
+	await expect(client.request('homeSnapshot')).rejects.toThrow('Sign in to Harness');
+	await expect(client.request('homeChat')).rejects.toThrow('Sign in to Harness');
+	admitted = true;
+	await expect(
+		client.request('homeSnapshot', { source: 'https://example.invalid' })
+	).rejects.toThrow('Desktop Home operation unavailable');
+	await expect(client.request('homeSnapshot')).resolves.toEqual(home);
+	admitted = false;
+	await expect(client.request('homeSnapshot')).rejects.toThrow('Sign in to Harness');
+});
 
 test('an image of more than a mebibyte crosses the socket in bounded frames and arrives intact', async () => {
 	const f = await localFixture(),

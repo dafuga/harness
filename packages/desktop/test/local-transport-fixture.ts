@@ -130,9 +130,17 @@ export async function localFixture(
 	const { registry, arbiter, providers, renderMockups } = f,
 		shared = { registry, arbiter, providers, renderMockups, outbox: new CommentOutboxService() };
 	/** What the main process keeps for one window. */
-	function window(extra: Partial<LocalClientOptions> = {}) {
+	function window(
+		extra: Omit<Partial<LocalClientOptions>, 'shared'> & {
+			shared?: Partial<LocalClientOptions['shared']>;
+		} = {}
+	) {
 		const base = { shared, choose: async () => f.root, control: control.port };
-		const client = new LocalClientService({ ...base, ...extra });
+		const client = new LocalClientService({
+			...base,
+			...extra,
+			shared: { ...shared, ...extra.shared }
+		});
 		closing.push(() => client.end());
 		return client;
 	}

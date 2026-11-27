@@ -139,26 +139,23 @@ class WorkspaceState {
 	openProject = () => openProject(this);
 	/** Keeps the category; entity, branch and commit belong to the project that is left. */
 	switchProject = (projectId: string) => switchProject(this, projectId);
-	async loadProjects() {
-		if (!this.bridge) return;
+	loadProjects() {
 		const listing = ++this.listing;
-		try {
-			const listed = await listedProjects(this.bridge);
-			if (listing === this.listing) {
-				this.projectListReady = true;
-				reconcile(this, listed);
-			}
-		} catch {
-			if (listing === this.listing) {
-				this.projectListReady = true;
-				this.localProjectListFailed = true;
-			}
-		}
+		return loadProjectList(this, () => listing === this.listing);
 	}
 	refresh = () => this.navigate(globalThis.location.pathname, false);
 }
 export function createWorkspaceStore() {
 	return new WorkspaceState();
+}
+
+async function loadProjectList(workspace: WorkspaceState, isCurrent: () => boolean) {
+	if (!workspace.bridge) return;
+	const listed = await listedProjects(workspace.bridge).catch(() => null);
+	if (!isCurrent()) return;
+	workspace.projectListReady = true;
+	if (listed) reconcile(workspace, listed);
+	else workspace.localProjectListFailed = true;
 }
 /** A discovery event says whether the list it precedes is current; every event is applied. */
 function heard(workspace: WorkspaceState, event: CacheStatus) {

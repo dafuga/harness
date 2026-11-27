@@ -4,6 +4,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { onMount, setContext, tick, type Snippet } from 'svelte';
+	import { SvelteMap } from 'svelte/reactivity';
 	import Modal from '$shared/Modal.svelte';
 	import type { LoadSpecDocument } from '$shared/explorer-ui/explorer-kit/SpecDocumentView.types';
 	import type {
@@ -49,7 +50,7 @@
 	let dialog = $state<'create' | 'devices' | null>(null);
 	let opener: HTMLElement | null = null;
 	let active = true;
-	const receipts = new Map<string, HomeChatReceipt>();
+	const receipts = new SvelteMap<string, HomeChatReceipt>();
 	const sync = new ProjectSyncService({ refresh });
 	provideHomeCosChat(() => void sync.sync());
 	setContext<LoadSpecDocument>(hubSpecDocumentKey, async (attachment) => {
