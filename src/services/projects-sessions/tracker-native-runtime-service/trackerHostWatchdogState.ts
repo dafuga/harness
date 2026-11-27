@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import type { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
 import type { TrackerItem } from '../../../repositories/projects-sessions/TrackerItemReadRepository.types';
+import type { TrackerNativeRuntimeService } from '../TrackerNativeRuntimeService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type {
 	WatchdogItem,
@@ -147,18 +148,20 @@ const dispatchHeartbeatGrace = 3 * 60_000;
 
 /** One stable alert identity per computer and missed heartbeat, until the launcher recovers. */
 export function staleDispatchAlerts(
-	samples: readonly unknown[],
-	local: { node: string; runner?: { enabled?: boolean; last_tick_at?: string | null }; now: number }
+	runtime: Pick<TrackerNativeRuntimeService, 'store' | 'scheduler' | 'fleetSamples' | 'now'>
 ) {
-	const reports = samples.flatMap((sample) => {
+	const { store, scheduler, fleetSamples, now } = runtime;
+	const reports = (fleetSamples?.() ?? []).flatMap((sample) => {
 		const report = trackerMachineSample.safeParse(sample).data;
-		return report && report.node !== local.node ? [report] : [];
+		return report && report.node !== store.node ? [report] : [];
 	});
+	const local = { node: store.node, runner: scheduler?.runnerStatus() };
+	const checkedAt = now();
 	return [...reports, local].flatMap(({ node, runner }) => {
 		if (!runner?.enabled || !/^[a-z0-9][a-z0-9._-]*$/i.test(node)) return [];
 		const lastTick = Date.parse(runner.last_tick_at ?? '');
 		const at = lastTick + dispatchHeartbeatGrace;
-		if (!(local.now > at)) return [];
+		if (!(checkedAt > at)) return [];
 		return [
 			{
 				id: `${node}:${staleDispatchHeartbeatKind}:${at}`,

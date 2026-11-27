@@ -1,5 +1,6 @@
 // @harness-uid u_ucbos7kmyv
 import { spawn } from 'node:child_process';
+import type { Readable } from 'node:stream';
 import { realpathSync, statSync } from 'node:fs';
 import { isAbsolute } from 'node:path';
 import { TrackerHostProcessError } from './TrackerHostProcessError';
@@ -41,9 +42,11 @@ export function runTrackerHostCommand(
 
 		function finish(code: number | null) {
 			if (settled) return;
-			if (code === null) return interrupt();
-			cleanup();
-			resolve({ code, stdout: stdout(), stderr: stderr() });
+			if (code === null) interrupt();
+			else {
+				cleanup();
+				resolve({ code, stdout: stdout(), stderr: stderr() });
+			}
 		}
 		function cleanup() {
 			settled = true;
@@ -64,27 +67,29 @@ export function runTrackerHostCommand(
 		child.on('error', interrupt);
 		child.once('close', finish);
 		child.once('exit', (code) => {
-			// The runtime has reaped the child. Allow its pipes to drain, even if close never arrives.
 			exited = true;
-			if (settled) return;
-			drainDeadline = setTimeout(() => {
-				if (child.stdout?.readableEnded === false || child.stderr?.readableEnded === false)
-					interrupt();
-				else finish(code);
-			}, 250);
+			if (!settled) drainDeadline = drainAfterExit(child, () => finish(code), interrupt);
 		});
 		signal.addEventListener('abort', interrupt, { once: true });
-		if (signal.aborted) return interrupt();
 		child.stdin?.on('error', interrupt);
-		child.stdin?.end(options.input);
+		if (signal.aborted) interrupt();
+		else child.stdin?.end(options.input);
 	});
 }
 
-function captureHostOutput(
-	stream: NodeJS.ReadableStream | null,
-	limit: number,
+// An exit event means the runtime reaped the child. Let its pipes finish if close is missing.
+function drainAfterExit(
+	{ stdout, stderr }: { stdout: Readable | null; stderr: Readable | null },
+	finish: () => void,
 	interrupt: () => void
 ) {
+	return setTimeout(() => {
+		if (stdout?.readableEnded === false || stderr?.readableEnded === false) interrupt();
+		else finish();
+	}, 250);
+}
+
+function captureHostOutput(stream: Readable | null, limit: number, interrupt: () => void) {
 	const chunks: Buffer[] = [];
 	let bytes = 0;
 	stream?.on('data', (chunk: Buffer) => {

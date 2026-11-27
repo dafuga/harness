@@ -81,25 +81,15 @@ export class TrackerDispatchSchedulerService {
 
 	async tick(signal: AbortSignal): Promise<void> {
 		if (signal.aborted || this.stopping || this.currentTick) return;
-		const deadline = new AbortController();
-		const lifetime = AbortSignal.any([signal, deadline.signal]);
-		const error = new Error(tickTimeoutMessage);
-		const timer = setTimeout(() => deadline.abort(error), tickTimeout);
-		let cancel!: () => void;
-		const aborted = new Promise<never>((_, reject) => {
-			cancel = () => reject(lifetime.reason);
-			lifetime.addEventListener('abort', cancel, { once: true });
-		});
-		this.currentTick = Promise.race([this.poll(lifetime), aborted]);
+		const watchdog = dispatchWatchdog(signal, (lifetime) => this.poll(lifetime));
+		this.currentTick = watchdog.poll;
 		try {
 			await this.currentTick;
 		} catch (failure) {
-			if (deadline.signal.aborted) this.lastError = tickTimeoutMessage;
+			if (watchdog.timedOut()) this.lastError = tickTimeoutMessage;
 			else if (!signal.aborted) this.lastError = 'dispatch tick failed';
 			throw failure;
 		} finally {
-			clearTimeout(timer);
-			lifetime.removeEventListener('abort', cancel);
 			this.currentTick = undefined;
 		}
 	}
@@ -111,7 +101,7 @@ export class TrackerDispatchSchedulerService {
 		await reconcileLegacyRuns(this.repository, this.options.runner, signal);
 		signal.throwIfAborted();
 		const queued = await this.reconcile(signal);
-		await this.creditHumanRedos(signal);
+		await creditHumanRedos(this.repository, this.dispatcher, signal);
 		signal.throwIfAborted();
 		const queue = new TrackerDispatchQueue(
 			this.repository,
@@ -124,13 +114,6 @@ export class TrackerDispatchSchedulerService {
 		signal.throwIfAborted();
 		this.lastTickAt = new Date((this.options.policy?.now ?? Date.now)()).toISOString();
 		this.lastError = null;
-	}
-
-	private async creditHumanRedos(signal: AbortSignal) {
-		for (const [itemId, runIds] of this.repository.humanRedoCandidates()) {
-			signal.throwIfAborted();
-			await this.dispatcher.creditHumanRedo(itemId, runIds);
-		}
 	}
 
 	private async reconcile(signal: AbortSignal): Promise<TrackerRunReceipt[]> {
@@ -155,6 +138,33 @@ export class TrackerDispatchSchedulerService {
 		}
 		return queued;
 	}
+}
+
+async function creditHumanRedos(
+	repository: TrackerDispatchRepository,
+	dispatcher: TrackerDispatcherService,
+	signal: AbortSignal
+) {
+	for (const [itemId, runIds] of repository.humanRedoCandidates()) {
+		signal.throwIfAborted();
+		await dispatcher.creditHumanRedo(itemId, runIds);
+	}
+}
+
+function dispatchWatchdog(signal: AbortSignal, poll: (signal: AbortSignal) => Promise<void>) {
+	const deadline = new AbortController();
+	const lifetime = AbortSignal.any([signal, deadline.signal]);
+	const timer = setTimeout(() => deadline.abort(new Error(tickTimeoutMessage)), tickTimeout);
+	let cancel!: () => void;
+	const aborted = new Promise<never>((_, reject) => {
+		cancel = () => reject(lifetime.reason);
+		lifetime.addEventListener('abort', cancel, { once: true });
+	});
+	const completed = Promise.race([poll(lifetime), aborted]).finally(() => {
+		clearTimeout(timer);
+		lifetime.removeEventListener('abort', cancel);
+	});
+	return { poll: completed, timedOut: () => deadline.signal.aborted };
 }
 
 function reportOverdue(

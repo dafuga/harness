@@ -1114,9 +1114,9 @@
 				"required": true
 			},
 			{
-				"name": "trackerHostReport.verification",
-				"type": "ReturnType<typeof trackerHostVerification>",
-				"required": true
+				"name": "trackerHostReport.verifyCommand",
+				"type": "TrackerHostVerifyCommand",
+				"required": false
 			},
 			{
 				"name": "withLaunchOrigin.event",
@@ -1441,13 +1441,8 @@
 				"required": true
 			},
 			{
-				"name": "staleDispatchAlerts.samples",
-				"type": "readonly unknown[]",
-				"required": true
-			},
-			{
-				"name": "staleDispatchAlerts.local",
-				"type": "{ node: string; runner?: { enabled?: boolean; last_tick_at?: string | null }; now: number }",
+				"name": "staleDispatchAlerts.runtime",
+				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'scheduler' | 'fleetSamples' | 'now'>",
 				"required": true
 			},
 			{
@@ -3883,9 +3878,9 @@
 						"required": true
 					},
 					{
-						"name": "trackerHostReport.verification",
-						"type": "ReturnType<typeof trackerHostVerification>",
-						"required": true
+						"name": "trackerHostReport.verifyCommand",
+						"type": "TrackerHostVerifyCommand",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -4496,13 +4491,8 @@
 				"name": "staleDispatchAlerts",
 				"inputs": [
 					{
-						"name": "staleDispatchAlerts.samples",
-						"type": "readonly unknown[]",
-						"required": true
-					},
-					{
-						"name": "staleDispatchAlerts.local",
-						"type": "{ node: string; runner?: { enabled?: boolean; last_tick_at?: string | null }; now: number }",
+						"name": "staleDispatchAlerts.runtime",
+						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'scheduler' | 'fleetSamples' | 'now'>",
 						"required": true
 					}
 				],

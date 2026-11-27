@@ -11,10 +11,11 @@ import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import type {
 	TrackerHostLaunchPort,
 	TrackerHostRoute,
-	TrackerHostTarget
+	TrackerHostTarget,
+	TrackerHostVerifyCommand
 } from './trackerHostLaunch.types';
 import { withTrackerRunUsage } from './trackerHostLaunchPort';
-import type { trackerHostVerification } from './trackerHostVerification';
+import { trackerHostVerification } from './trackerHostVerification';
 
 /** Add a starting run's checkout, final usage and verification to what the host observed. */
 export function trackerHostReport(
@@ -29,9 +30,10 @@ export function trackerHostReport(
 		routeFor: TrackerHostRoute;
 		now: () => number;
 	},
-	verification: ReturnType<typeof trackerHostVerification>
+	verifyCommand?: TrackerHostVerifyCommand
 ) {
 	const items = new TrackerItemReadRepository(store.database);
+	const verification = trackerHostVerification(driver, verifyCommand);
 	const report = async (
 		event: TrackerDispatchEvent | undefined,
 		run: TrackerRunReceipt,

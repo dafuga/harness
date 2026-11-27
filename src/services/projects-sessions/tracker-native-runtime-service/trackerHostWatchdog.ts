@@ -99,7 +99,7 @@ export function configuredHostWatchdog(
 	const watchdog = hostEffects?.watchdog;
 	if (!watchdog) return undefined;
 	const { launch } = hostEffects;
-	const { store, now, dispatch, role, scheduler, fleetSamples } = runtime;
+	const { store, now, dispatch, role } = runtime;
 	const idleWork =
 		role === 'hub' && dispatch ? { dispatch, minutes: watchdog.idleWorkMinutes ?? 120 } : undefined;
 	return trackerHostWatchdog(store, watchdog, {
@@ -107,15 +107,7 @@ export function configuredHostWatchdog(
 		launch: trackerRecoveryLaunch(dispatch),
 		settle: dispatch,
 		automaticEnabled,
-		dispatchAlerts:
-			role === 'hub'
-				? () =>
-						staleDispatchAlerts(fleetSamples?.() ?? [], {
-							node: store.node,
-							runner: scheduler?.runnerStatus(),
-							now: now()
-						})
-				: undefined,
+		dispatchAlerts: role === 'hub' ? () => staleDispatchAlerts(runtime) : undefined,
 		idleWork,
 		slotCap: launch ? (launch.maxConcurrent ?? 2) : null
 	});
