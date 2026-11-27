@@ -54,7 +54,7 @@ async function candidate() {
 	const grants = await Promise.all(devices.map((device) => sealedGrant(account, key, device)));
 	const recovery = await sealedRecovery(secret, backup);
 	const headers = { 'X-Harness-Device': admin.deviceId };
-	return { body: { entry, grants, recovery }, headers, secret, commitment };
+	return { body: { entry, grants, recovery }, headers, secret, commitment, admin, key };
 }
 
 async function snapshot(response: Response) {
@@ -88,8 +88,52 @@ test('first sign-ins compete for one atomic and recoverable account bootstrap', 
 		status: 200,
 		body: expected
 	});
+	await verifyWriters(winner, rejected, expected.hash);
 	await verifyRecovery(winner);
 }, 60_000);
+
+async function verifyWriters(
+	winner: Awaited<ReturnType<typeof candidate>>,
+	rejected: Awaited<ReturnType<typeof candidate>>,
+	prev: string
+) {
+	const admin = winner.admin;
+	const signingDevice = rejected.body.entry.body;
+	if (signingDevice.type !== 'genesis') throw new Error('Expected a genesis fixture');
+	const scope = winner.body.grants[0].scope;
+	const device = { ...signingDevice.devices[0], scopes: [scope] };
+	const entry = await sealedChainEntry(admin, {
+		seq: 1,
+		prev,
+		at: 2,
+		by: admin.deviceId,
+		body: { type: 'enroll', device }
+	});
+	const grant = await sealedGrant(account, winner.key, device);
+	const headers = winner.headers;
+	const expected = { status: 409, body: { error: 'atomic-device-change-required' } };
+	expect(
+		await snapshot(await fixture.call('session-a', 'POST', 'chain', { headers, body: entry }))
+	).toEqual(expected);
+	expect(
+		await snapshot(await fixture.call('session-a', 'POST', 'grants', { headers, body: grant }))
+	).toEqual(expected);
+	const body = { entries: [entry], grants: [grant] };
+	const invalid = { entries: body.entries, grants: [] };
+	expect(
+		await snapshot(await fixture.call('session-a', 'POST', 'devices', { headers, body: invalid }))
+	).toEqual({
+		status: 400,
+		body: { error: 'invalid-change' }
+	});
+	const saved = { seq: 1, hash: await chainEntryHash(entry) };
+	expect(
+		await snapshot(await fixture.call('session-a', 'POST', 'devices', { headers, body }))
+	).toEqual({ status: 201, body: saved });
+	expect(
+		await snapshot(await fixture.call('session-a', 'POST', 'devices', { headers, body }))
+	).toEqual({ status: 200, body: saved });
+}
 
 async function verifyRecovery(winner: Awaited<ReturnType<typeof candidate>>) {
 	for (const [session, status, error] of [
