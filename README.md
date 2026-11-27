@@ -851,7 +851,9 @@ into on its own, so a worktree that asked an earlier Harness for pushes only is 
 stage that was offered later; run `harness hooks install` there again to adopt it.
 
 **CI.** `.github/workflows/harness-verify.yml` runs the full check and verifies the exact
-commit with read-only access and no secrets. `harness-evidence.yml` runs trusted code from the
+commit with read-only access and no secrets. The full check runs as parallel parts
+(`bun run check --part <name>`, defined in `scripts/run-checks.ts`); the `Full check` job passes
+only when every part does, and a new check step must be added to one part. `harness-evidence.yml` runs trusted code from the
 default branch, validates the uploaded record as data and publishes it; it never runs the
 commit that was verified. A runner whose machine profile has no reviewed baseline fails the
 performance gate; CI never establishes or approves one.
