@@ -1,12 +1,12 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_yclqwrgobq -->
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { shortCommit } from '$reports/helpers/strings/shortCommit';
 	import type { ProjectSummary } from 'collaboration';
-	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
-	import type { CatalogEntity } from '../../../../desktop/src/models/development-tooling/DesktopEntity.types';
+	import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
+	import type { CatalogEntity } from '../../../../../desktop/src/models/development-tooling/DesktopEntity.types';
 	import { resolve } from '$app/paths';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import { inventorySummary, projectInventory } from './hubHomeProjects';
@@ -75,7 +75,8 @@
 	<HubHomeSkeleton rows={5} />
 {:else if !projects.length || !current}
 	<EmptyState as="div" className="po-empty hh-empty"
-		>No shared projects yet. <hx-a href={resolve('/projects')}>Open projects</hx-a></EmptyState
+		>No shared projects yet. <hx-a href={resolve('/projects' as '/')}>Open projects</hx-a
+		></EmptyState
 	>
 {:else}
 	<hx-div class="hh-split hh-split-projects">
@@ -108,10 +109,8 @@
 				{#if inventory}<hx-p class="po-sessions">{inventorySummary(inventory)}</hx-p>{/if}
 				<hx-a
 					class="po-action"
-					href={resolve('/projects/[projectId]/harness/[...path]', {
-						projectId: current.id,
-						path: 'pages'
-					})}>Open project</hx-a
+					href={resolve(`/projects/${encodeURIComponent(current.id)}/harness/pages` as '/')}
+					>Open project</hx-a
 				>
 			</hx-div>
 			{#if failed}<hx-p class="po-notice" role="status">The project catalog could not be read.</hx-p

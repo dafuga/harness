@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_ufkzhmhxgn -->
 <script lang="ts">
 	import type { HomePastDue } from '$reports/lib/projects-sessions/hub-home/hubHome.types';

@@ -9,8 +9,8 @@
 	"status": "active",
 	"owns": {
 		"source": [
-			"packages/hub/src/components/projects-sessions/hubHomeChoices.ts",
-			"packages/hub/src/components/projects-sessions/hubHomeChoices.types.ts"
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.ts",
+			"packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.types.ts"
 		],
 		"symbols": ["orderedChoices", "HomeChoice"]
 	},
@@ -66,11 +66,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/hubHomeChoices.ts",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.ts",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/hubHomeChoices.ts"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/hubHomeChoices.ts"
 			}
 		]
 	},

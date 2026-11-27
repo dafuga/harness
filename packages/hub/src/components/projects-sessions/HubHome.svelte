@@ -4,7 +4,7 @@
 <!-- @harness-view overview -->
 <script lang="ts">
 	import { page } from '$app/state';
-	import { homeBoard } from './hubHomeMerge';
+	import { homeBoard } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { ProjectSummary } from 'collaboration';
 	import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
@@ -17,26 +17,27 @@
 	import { watchWhileVisible } from '../../routes/tracker-overview/overviewClient';
 	import { homeSnapshot } from './hubHomeClient';
 	import { hubHomeReads } from './hubHomeReads';
-	import { provideHubSpecDocuments } from './hubSpecDocument';
-	import { provideHomeCosChat } from './hubHomeChatContext.svelte';
+	import { provideHubSpecDocuments } from '../../../../reports/src/components/projects-sessions/hub-home/hubSpecDocument';
+	import { provideHomeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
 	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 	import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
-	import { soonestWork, staleReading } from './hubHomePresentation';
-	import type { HomeView, ReadHomeResult } from './hubHomeView.types';
+	import * as presentation from '$reports/components/projects-sessions/hub-home/hubHomePresentation';
+	import type * as Home from '$reports/components/projects-sessions/hub-home/hubHomeView.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
 	import { followHubUpdates, liveReadMs } from '../../lib/networking-security/hubLiveUpdates';
-	import HubHomeHeader from './HubHomeHeader.svelte';
+	import HubHomeHeader from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte';
 	import AccountMenu from '../accounts-access/AccountMenu.svelte';
 	import HubHomeNotifications from './HubHomeNotifications.svelte';
-	import HubHomeCards from './HubHomeCards.svelte';
-	import HubHomeLive from './HubHomeLive.svelte';
-	import HubHomeDialogs from './HubHomeDialogs.svelte';
+	import HubHomeCards from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte';
+	import HubHomeLive from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte';
+	import HubHomeDialogs from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
 	import { followNeedsLink } from './followNeedsLink.svelte';
-	import '../../lib/styles/home-scheme.css';
-	import '../../lib/styles/hub-home/index.css';
+	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
+	import '../../../../reports/src/lib/styles/home-scheme.css';
+	import '../../../../reports/src/lib/styles/hub-home/index.css';
 	const { api, session, projects } = browserContext();
 	const needsOnly = $derived(page.url.searchParams.get('view') === 'needs-you');
-	provideHubSpecDocuments(api);
+	provideHubSpecDocuments(({ id }) => api.get('/api/hub-home/doc', { id }));
 	const cosChat = provideHomeCosChat(() => reads.read());
 	let selected = $state<HomeSection | null>(null);
 	let agentId = $state<string | undefined>();
@@ -44,7 +45,7 @@
 	let projectSnapshots = $state<Record<string, ProjectSnapshot>>({});
 	const projectFlights = new SvelteMap<string, Promise<ProjectSnapshot>>();
 	let projectError = $state(false);
-	let home = $state<ReadHomeResult | null>(null);
+	let home = $state<Home.ReadHomeResult | null>(null);
 	let live = $state<LinkedHome | null>(null);
 	let now = $state(Date.now());
 	let flight = 0;
@@ -58,7 +59,7 @@
 	const settled = $derived(Boolean(snapshot) || (home !== null && live !== null));
 	const routinesConnected = $derived(
 		Array.isArray(snapshot?.providers.routines) &&
-			!staleReading(snapshot.providers.routinesReadAt, now)
+			!presentation.staleReading(snapshot.providers.routinesReadAt, now)
 	);
 	const board = $derived(snapshot ? homeBoard(snapshot, routinesConnected, now) : null);
 	const overview = $derived(
@@ -66,7 +67,7 @@
 	);
 	const linkedComputers = $derived(live?.linked ?? 0);
 	const projectsFailed = $derived(projectError && !list?.length);
-	const view: HomeView = $derived({
+	const view: Home.HomeView = $derived({
 		overview,
 		agents: snapshot?.agents ?? (settled ? [] : null),
 		openAsks: snapshot?.openAsks ?? [],
@@ -80,10 +81,11 @@
 		projectDirectory: snapshot?.projectDirectory ?? homeSnapshot(home)?.projectDirectory,
 		trackerProjects: projectsFailed && overview?.status === 'ready' ? overview : null,
 		projectSnapshots,
-		work: soonestWork(overview),
+		work: presentation.soonestWork(overview),
 		owner: home?.granted ?? false,
 		needsMac: settled && !snapshot && !linkedComputers,
 		linkedComputers,
+		connectMacHref: homeDownloadConfig.mac.path,
 		computers: live,
 		trackerConnected: overview?.status === 'ready',
 		quotaConnected: Array.isArray(snapshot?.providers.quota),

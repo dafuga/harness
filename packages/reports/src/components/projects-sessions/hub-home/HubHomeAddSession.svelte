@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_8vq2nd5c1h -->
 <!-- @harness-uid u_ebjbhjawbq -->
 <script lang="ts">

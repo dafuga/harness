@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_koj2sfjf7g -->
 <!-- @harness-view overview -->
 <script lang="ts">
@@ -32,7 +32,6 @@
 	import HubHomeRow from './HubHomeRow.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 	import HubQuotaSubscription from './HubQuotaSubscription.svelte';
-	import { homeDownloadConfig } from '../../configs/public-site/homeDownloadConfig';
 	let { view, open, send, receipt, needsOnly = false }: HomeCardsProps = $props();
 	const cosChat = homeCosChat() ?? provideHomeCosChat();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
@@ -127,8 +126,8 @@
 				<EmptyState as="div" className="po-empty hh-empty"
 					><hx-p>No agents are connected. Start a session on any computer and it appears here.</hx-p
 					>
-					{#if !view.linkedComputers && !view.native}
-						<hx-a class="po-action" href={homeDownloadConfig.mac.path} data-sveltekit-reload
+					{#if !view.linkedComputers && view.connectMacHref}
+						<hx-a class="po-action" href={view.connectMacHref} data-sveltekit-reload
 							>Connect a computer</hx-a
 						>
 					{/if}

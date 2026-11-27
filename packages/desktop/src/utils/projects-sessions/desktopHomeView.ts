@@ -2,9 +2,9 @@
 import type { OwnerHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 import { homeProviderReadingIsStale } from '$reports/lib/projects-sessions/hub-home/homeProviderPayload';
 import { listedHomeSnapshot } from '$reports/lib/projects-sessions/hub-home/homeDirectAgents';
-import { homeBoard } from '../../../../hub/src/components/projects-sessions/hubHomeMerge';
-import { soonestWork } from '../../../../hub/src/components/projects-sessions/hubHomePresentation';
-import type { HomeView } from '../../../../hub/src/components/projects-sessions/hubHomeView.types';
+import { homeBoard } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeMerge';
+import { soonestWork } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomePresentation';
+import type { HomeView } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeView.types';
 import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 
 const hubNotices = {

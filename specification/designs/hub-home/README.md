@@ -15,7 +15,7 @@ Every name, task, hash and time in these screens is a synthetic example.
 - `packages/reports/src/lib/styles/app-tokens.css`: the shared token catalog
 - `packages/reports/src/lib/styles/project-overview*.css`: the approved n79x63 cards, chips,
   bands, rows, ETA chips and state pills
-- `packages/hub/src/lib/styles/home-scheme.css`: the Hub homepage's light scheme
+- `packages/reports/src/lib/styles/home-scheme.css`: the Hub homepage's light scheme
 
 The mockup's own CSS (`mockup/*.css`) only lays things out. It uses `--hx-*` tokens and no literal
 colours, so it can carry over to Svelte components as written.

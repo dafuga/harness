@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_6kpzjxqlbp -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
@@ -116,7 +116,7 @@
 			<hx-a class="po-action" href={resolve('/tracker-overview' as '/')}>Open Project Overview</hx-a
 			>
 		{:else if selected === 'projects' && !view.projectsFailed && !view.native}
-			<hx-a class="po-action hh-primary" href={resolve('/projects')}>Manage projects</hx-a>
+			<hx-a class="po-action hh-primary" href={resolve('/projects' as '/')}>Manage projects</hx-a>
 		{/if}
 	{/snippet}
 	{#key selected}

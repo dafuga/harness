@@ -29,7 +29,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeAgents.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeAgents.svelte"],
 		"symbols": ["HubHomeAgents"]
 	},
 	"contract": {
@@ -214,11 +214,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAgents.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeAgents.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAgents.svelte"
 			}
 		]
 	},

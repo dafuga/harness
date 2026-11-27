@@ -13,15 +13,15 @@
 		OwnerHomeSnapshot
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import type { RealtimeState } from '$reports/lib/projects-sessions/realtime/realtime.types';
-	import HubHomeHeader from '../../../../hub/src/components/projects-sessions/HubHomeHeader.svelte';
-	import HubHomeCards from '../../../../hub/src/components/projects-sessions/HubHomeCards.svelte';
-	import HubHomeLive from '../../../../hub/src/components/projects-sessions/HubHomeLive.svelte';
-	import HubHomeDialogs from '../../../../hub/src/components/projects-sessions/HubHomeDialogs.svelte';
-	import { provideHomeCosChat } from '../../../../hub/src/components/projects-sessions/hubHomeChatContext.svelte';
-	import { hubSpecDocumentKey } from '../../../../hub/src/components/projects-sessions/hubSpecDocument';
-	import type { SendHomeChat } from '../../../../hub/src/components/projects-sessions/hubHomeView.types';
-	import '../../../../hub/src/lib/styles/home-scheme.css';
-	import '../../../../hub/src/lib/styles/hub-home/index.css';
+	import HubHomeHeader from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeHeader.svelte';
+	import HubHomeCards from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeCards.svelte';
+	import HubHomeLive from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeLive.svelte';
+	import HubHomeDialogs from '../../../../reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte';
+	import { provideHomeCosChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeChatContext.svelte';
+	import { hubSpecDocumentKey } from '../../../../reports/src/components/projects-sessions/hub-home/hubSpecDocument';
+	import type { SendHomeChat } from '../../../../reports/src/components/projects-sessions/hub-home/hubHomeView.types';
+	import '../../../../reports/src/lib/styles/home-scheme.css';
+	import '../../../../reports/src/lib/styles/hub-home/index.css';
 	import type { Workspace } from '../../lib/stores/projects-sessions/workspace.svelte';
 	import { followTrackerSource } from '../../lib/development-tooling/tracker-inbox/followTrackerSource';
 	import { ProjectSyncService } from '../../services/projects-sessions/ProjectSyncService';

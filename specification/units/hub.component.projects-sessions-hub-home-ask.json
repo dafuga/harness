@@ -19,7 +19,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeAsk.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte"],
 		"symbols": ["HubHomeAsk", "HubHomeAsk.choices", "HubHomeAsk.answers"]
 	},
 	"contract": {
@@ -157,11 +157,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeAsk.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeAsk.svelte"
 			}
 		]
 	},

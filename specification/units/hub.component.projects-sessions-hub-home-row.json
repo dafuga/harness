@@ -17,7 +17,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeRow.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte"],
 		"symbols": ["HubHomeRow"]
 	},
 	"contract": {
@@ -101,11 +101,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeRow.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeRow.svelte"
 			}
 		]
 	},

@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_yynkdbd66b -->
 <script lang="ts">
 	import HarnessIcon from '$reports/components/explorer-ui/HarnessIcon.svelte';

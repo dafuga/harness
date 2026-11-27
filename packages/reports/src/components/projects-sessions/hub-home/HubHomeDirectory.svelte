@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_mzioqvigck -->
 <script lang="ts">
 	import { base, resolve } from '$app/paths';
@@ -73,10 +73,8 @@
 						<hx-a
 							class="po-action"
 							aria-label={`Open ${project.name}`}
-							href={resolve('/projects/[projectId]/harness/[...path]', {
-								projectId: project.id,
-								path: 'pages'
-							})}>Open</hx-a
+							href={resolve(`/projects/${encodeURIComponent(project.id)}/harness/pages` as '/')}
+							>Open</hx-a
 						>
 					{/if}
 				{/snippet}

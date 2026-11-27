@@ -26,7 +26,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte"],
 		"symbols": ["HubHomeCosChat"]
 	},
 	"contract": {
@@ -168,11 +168,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeCosChat.svelte"
 			}
 		]
 	},

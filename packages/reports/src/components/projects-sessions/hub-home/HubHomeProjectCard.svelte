@@ -1,5 +1,5 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_7oq44aedep -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
@@ -25,7 +25,9 @@
 			.sort((a, b) => Date.parse(b.commit!.authoredAt) - Date.parse(a.commit!.authoredAt))[0]
 	);
 	const directory = $derived(view.native || view.projectDirectory !== undefined);
-	const listed = $derived(view.native ? view.native.projects : view.projects);
+	const listed: { name: string }[] | null = $derived(
+		view.native ? view.native.projects : view.projects
+	);
 	const byName = $derived(Map.groupBy(listed ?? [], ({ name }) => name.trim().toLowerCase()));
 	const tracked = $derived(
 		Map.groupBy(view.projectDirectory ?? [], ({ name }) => name.trim().toLowerCase())
@@ -108,7 +110,7 @@
 	{:else}
 		<EmptyState as="div" className="po-empty hh-empty"
 			><hx-p>No projects yet. Add a repository to see its apps, pages and components.</hx-p>
-			<hx-a href={resolve('/projects')} class="po-action">Add a project</hx-a>
+			<hx-a href={resolve('/projects' as '/')} class="po-action">Add a project</hx-a>
 		</EmptyState>
 	{/if}
 </HubHomeCard>

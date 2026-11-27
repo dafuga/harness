@@ -28,7 +28,7 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"],
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte"],
 		"symbols": ["HubHomeDialogs", "HubHomeDialogs.actions"]
 	},
 	"contract": {
@@ -224,11 +224,11 @@
 	],
 	"runtime": {
 		"kind": "module",
-		"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte",
 		"targets": [
 			{
 				"kind": "module",
-				"entry": "packages/hub/src/components/projects-sessions/HubHomeDialogs.svelte"
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeDialogs.svelte"
 			}
 		]
 	},

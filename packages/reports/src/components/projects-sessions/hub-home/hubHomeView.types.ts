@@ -13,11 +13,20 @@ import type {
 	HomeTrackerProject,
 	OwnerHomeSnapshot
 } from '$reports/lib/projects-sessions/hub-home/hubHome.types';
-import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
 import type { OverviewSnapshot } from '$reports/lib/projects-sessions/project-overview/projectOverview.types';
-import type { ProjectSnapshot } from '../../../../desktop/src/models/development-tooling/Desktop.types';
-import type { DesktopProject } from '../../../../desktop/src/models/projects-sessions/ProjectContext.types';
+import type { ProjectSnapshot } from '../../../../../desktop/src/models/development-tooling/Desktop.types';
+import type { DesktopProject } from '../../../../../desktop/src/models/projects-sessions/ProjectContext.types';
 import type { soonestWork } from './hubHomePresentation';
+
+export interface LinkedHome {
+	/** Computers linked to the signed-in account, online or not. */
+	linked: number;
+	/** How many of them answered this read. */
+	answered: number;
+	snapshot: OwnerHomeSnapshot | null;
+	/** The list of linked computers itself could not be read, so zero linked means unknown. */
+	unlisted?: true;
+}
 
 export interface HomeView {
 	overview: OverviewSnapshot | null;
@@ -48,6 +57,7 @@ export interface HomeView {
 	needsMac: boolean;
 	/** Computers linked to this account, online or not. */
 	linkedComputers: number;
+	connectMacHref?: string;
 	/** The last answer of the linked computers; null until the first one arrives. */
 	computers: LinkedHome | null;
 	trackerConnected: boolean;

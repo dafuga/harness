@@ -1,9 +1,9 @@
 <!-- @harness-tier organism -->
-<!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
+<!-- @harness-atoms ../../shared-primitives/atoms -->
 <!-- @harness-uid u_z35itvtg7u -->
 <script lang="ts">
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
-	import type { LinkedHome } from '../../services/networking-security/LinkedHomeService';
+	import type { LinkedHome } from './hubHomeView.types';
 	import type { HomeLiveOverview } from '$reports/lib/projects-sessions/hub-home/homeLive.types';
 	import { liveNotice, liveSummary, projectSummary, liveSystemNotice } from './hubHomeLive';
 	import HubHomeLiveProject from './HubHomeLiveProject.svelte';
