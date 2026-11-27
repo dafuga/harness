@@ -113,3 +113,5 @@ offers the native Vault.
 Deferred plan wave 5 retains implementation commit `2d80b045b7` for the moved sources whose operations now name their return and parameter types.
 
 The Wave 5 desktop audit follow-up retains commit `3f638101fe` for the compact source signatures.
+
+The Wave 5 Hub lint follow-up retains commit `269686f1db` for the compact source signatures.

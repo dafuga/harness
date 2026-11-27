@@ -4314,15 +4314,21 @@
 			"unit": "hub.service.hub-evidence",
 			"from": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
 			"to": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
-			"definition": "7d99ab9e0e7ecd8be89402dbc8a6e2e2edcfd3d62b74d685597b6403717255f9",
+			"definition": "01746d96178828c67eaae0f5364635e24bc1c750bd657f75011572579b0b4f12",
 			"relocationDefinition": "b8b70551bd974df12b8d8bc33ada984bf1caa9395a519226df7aa5865651a69f",
 			"review": {
-				"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+				"commit": "269686f1db6350c0a6583aa1e8162e3a0a7b59b0",
 				"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
-				"definition": "7d99ab9e0e7ecd8be89402dbc8a6e2e2edcfd3d62b74d685597b6403717255f9",
-				"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				"definition": "01746d96178828c67eaae0f5364635e24bc1c750bd657f75011572579b0b4f12",
+				"reason": "Names the Wave 5 contract types within existing file and class limits, preserving JavaScript output."
 			},
 			"previousReviews": [
+				{
+					"commit": "2d80b045b73e6ac50989390e7a87c70f782e74ed",
+					"path": "packages/hub/src/routes/api/[...path]/hub-projection-service/hub-evidence-service/HubEvidenceService.ts",
+					"definition": "7d99ab9e0e7ecd8be89402dbc8a6e2e2edcfd3d62b74d685597b6403717255f9",
+					"reason": "Names operation return and parameter types (deferred plan wave 5, qjv47y); type annotations and type imports only, no runtime change."
+				},
 				{
 					"commit": "0816efe0e469ca8c3963f583590289d253961a79",
 					"path": "packages/hub/src/services/hub-evidence-service/HubEvidenceService.ts",
