@@ -12,12 +12,15 @@ import { createTempDirectory } from './temporary';
 
 const node = 'daniel-primary-mbp';
 
-/** A file-backed hub with an explicit clock and its own backup folders. */
-export async function trackerBackupFixture(start: string) {
+/**
+ * A file-backed hub with an explicit clock and its own backup folders. `sharing` makes a
+ * second hub, with another database, that writes into the first hub's backup folders.
+ */
+export async function trackerBackupFixture(start: string, sharing?: { external: string }) {
 	const root = await createTempDirectory('tracker-backup-');
-	const external = join(root, 'backups');
+	const external = sharing?.external ?? join(root, 'backups');
 	const directory = join(external, 'native');
-	mkdirSync(external, { mode: 0o700 });
+	mkdirSync(external, { recursive: true, mode: 0o700 });
 	const path = join(root, 'tracker.db');
 	const database = openFixtureDatabase(root, path);
 	let clock = Date.parse(start);
