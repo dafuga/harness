@@ -93,7 +93,7 @@
 		"outputs": [
 			{
 				"name": "SyncEnrollments.open",
-				"type": "EnrollmentView | null"
+				"type": "unknown"
 			},
 			{
 				"name": "SyncEnrollments.read",
@@ -141,7 +141,7 @@
 				"outputs": [
 					{
 						"name": "SyncEnrollments.open",
-						"type": "EnrollmentView | null"
+						"type": "unknown"
 					}
 				],
 				"errors": [],

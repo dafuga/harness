@@ -19,10 +19,11 @@ export class SyncEnrollments {
 	}
 
 	/** Null when too many requests are already waiting. */
-	open(by: string, body: string, now: number): EnrollmentView | null {
-		this.expire(now);
-		const count = this.sql.exec<{ c: number }>('SELECT COUNT(*) AS c FROM enrollments').one().c;
-		if (count >= syncLimits.openEnrollments) return null;
+	open(by: string, body: string, now: number) {
+		const pending = this.pending(now);
+		const existing = pending.find(({ steps }) => steps[0].by === by && steps[0].body === body);
+		if (existing) return { view: existing, created: false };
+		if (pending.length >= syncLimits.openEnrollments) return null;
 		const id = randomId();
 		const steps = [{ n: 0, by, body }];
 		this.sql.exec(
@@ -31,7 +32,7 @@ export class SyncEnrollments {
 			now,
 			JSON.stringify(steps)
 		);
-		return { id, createdAt: now, steps };
+		return { view: { id, createdAt: now, steps }, created: true };
 	}
 
 	read(id: string, now: number): EnrollmentView | null {

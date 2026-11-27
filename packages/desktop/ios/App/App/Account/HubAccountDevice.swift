@@ -50,7 +50,18 @@ extension HubAccountSession {
             let body = RemoteCoding.object(reply.data)
             if reply.status == 200, body?["state"] as? String == "proof-required" {
                 self.proveDevice(device, challenge: body?["challenge"], credential: credential, done)
+            } else if reply.status == 200, body?["state"] as? String == "waiting-for-approval" {
+                self.waitForApproval(device, attempt: attempt, done)
             } else { self.finishDevice(reply, done) }
+        }
+    }
+
+    private func waitForApproval(_ device: SealedDevice, attempt: Int, _ done: @escaping Status) {
+        deviceStage = .checking
+        enrollment.open(self, device: device) { result in
+            guard attempt == self.deviceCheck else { return done(.failure(.superseded)) }
+            if case .success = result { self.deviceStage = .waiting }
+            done(result.map { self.snapshot })
         }
     }
 

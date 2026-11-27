@@ -77,10 +77,11 @@ export class SyncHttp {
 	}
 
 	private async openEnroll(by: string, body: string, now: number): Promise<Response> {
-		const view = this.deps.enrollments.open(by, body, now);
-		if (!view) return failure(429, 'too-many-requests');
+		const opened = this.deps.enrollments.open(by, body, now);
+		if (!opened) return failure(429, 'too-many-requests');
+		if (!opened.created) return json(opened.view);
 		await this.deps.sweep();
-		this.deps.sockets.announce({ id: view.id, n: 0 });
-		return json(view, 201);
+		this.deps.sockets.announce({ id: opened.view.id, n: 0 });
+		return json(opened.view, 201);
 	}
 }

@@ -27,6 +27,7 @@ final class HubAccountSession {
     private var loaded = false
     var deviceStage = HubDeviceStage.checking
     var deviceCheck = 0
+    var enrollment = HubAccountEnrollment()
     var loginKeys: SealedSecretStore = SealedKeychain(insertOnly: true)
     var makeLoginDevice: () throws -> SealedDevice = { try SealedDevice.create(enclave: true) }
 
@@ -100,8 +101,10 @@ final class HubAccountSession {
     /// still awaited is refused when it arrives.
     func erase() {
         if let credential, let store = try? HubLoginDeviceStore(credential, base: loginKeys) {
+            enrollment.forget(store)
             store.remove(SealedDeviceStore.name)
         }
+        enrollment = HubAccountEnrollment()
         deviceCheck += 1
         deviceStage = .checking
         vault.wipe()

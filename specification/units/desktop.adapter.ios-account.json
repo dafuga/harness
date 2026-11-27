@@ -9,8 +9,11 @@
 	"status": "active",
 	"owns": {
 		"source": [
+			"packages/desktop/ios/App/App/Account/EnrollMailbox.swift",
+			"packages/desktop/ios/App/App/Account/EnrollRequest.swift",
 			"packages/desktop/ios/App/App/Account/HarnessAccountPlugin.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountDevice.swift",
+			"packages/desktop/ios/App/App/Account/HubAccountEnrollment.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountHandoff.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountHttp.swift",
 			"packages/desktop/ios/App/App/Account/HubAccountModels.swift",
