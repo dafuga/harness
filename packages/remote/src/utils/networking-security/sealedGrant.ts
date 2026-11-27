@@ -90,7 +90,39 @@ export async function openSealedGrant(
 	self: SealedDeviceKeys,
 	chain: SealedChainState
 ): Promise<ScopeKeys> {
+	return withGrantKeys(grant, self, chain, async (_raw, keys) => keys);
+}
+
+/** Wraps a verified grant for a new device without exporting either installation's private key. */
+export async function rewrapSealedGrant(
+	grant: SealedGrant,
+	self: SealedDeviceKeys,
+	chain: SealedChainState,
+	recipient: Pick<SealedDevicePublic, 'deviceId' | 'kemPublic'>
+): Promise<SealedGrant> {
+	return withGrantKeys(grant, self, chain, (raw) => sealedGrant(chain.account, raw, recipient));
+}
+
+async function withGrantKeys<T>(
+	grant: SealedGrant,
+	self: SealedDeviceKeys,
+	chain: SealedChainState,
+	use: (raw: RawScopeKeys, keys: ScopeKeys) => Promise<T>
+): Promise<T> {
 	const commitment = grantedEpoch(grant, self, chain);
+	const raw = await decryptGrant(grant, self);
+	try {
+		const keys = await sealedScopeKeys(raw);
+		if (toBase64Url(keys.commitment) !== commitment)
+			throw new SealedError('Grant keys do not match the chain.');
+		return await use(raw, keys);
+	} finally {
+		raw.dataKey.fill(0);
+		raw.indexKey.fill(0);
+	}
+}
+
+async function decryptGrant(grant: SealedGrant, self: SealedDeviceKeys): Promise<RawScopeKeys> {
 	let plain: Uint8Array;
 	try {
 		const opened = await suite().open(
@@ -105,18 +137,15 @@ export async function openSealedGrant(
 	} catch {
 		throw new SealedError('Grant failed authentication.');
 	}
-	if (plain.length !== 64) throw new SealedError('Grant holds the wrong key size.');
-	const raw = {
-		scopeId: fromBase64Url(grant.scope),
-		epoch: grant.epoch,
-		dataKey: plain.slice(0, 32),
-		indexKey: plain.slice(32)
-	};
-	plain.fill(0);
-	const keys = await sealedScopeKeys(raw);
-	raw.dataKey.fill(0);
-	raw.indexKey.fill(0);
-	if (toBase64Url(keys.commitment) !== commitment)
-		throw new SealedError('Grant keys do not match the chain.');
-	return keys;
+	try {
+		if (plain.length !== 64) throw new SealedError('Grant holds the wrong key size.');
+		return {
+			scopeId: fromBase64Url(grant.scope),
+			epoch: grant.epoch,
+			dataKey: plain.slice(0, 32),
+			indexKey: plain.slice(32)
+		};
+	} finally {
+		plain.fill(0);
+	}
 }
