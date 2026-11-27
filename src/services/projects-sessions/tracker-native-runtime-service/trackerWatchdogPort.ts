@@ -132,7 +132,7 @@ function cosSummary(alerts: readonly TrackerWatchdogAlert[]) {
 function cosPromptLine(alert: TrackerWatchdogAlert, budget: number) {
 	const full = cosAlertLine(alert);
 	if (Buffer.byteLength(full) <= budget) return full;
-	const id = `[${cosAlertLabel(alert)}] `;
+	const id = cosAlertPrefix(alert);
 	const sentence = /^.*?[.!?](?=\s|$)/u.exec(plain(alert.reason).trim())?.[0];
 	if (sentence && Buffer.byteLength(id + sentence) <= budget) return id + sentence;
 	return id + 'See the full alert in Tracker.';
@@ -140,11 +140,13 @@ function cosPromptLine(alert: TrackerWatchdogAlert, budget: number) {
 
 /** Rendered rows from before references and the composer budget are used to recover old receipts. */
 function cosAlertLine(alert: TrackerWatchdogAlert) {
-	return `[${cosAlertLabel(alert)}] ${alert.host}: ${plain(alert.reason).slice(0, 500)}`;
+	return `${cosAlertPrefix(alert, true)}${plain(alert.reason).slice(0, 500)}`;
 }
 
-function cosAlertLabel({ item_id, kind }: TrackerWatchdogAlert) {
-	return kind === staleDispatchHeartbeatKind ? 'scheduler' : item_id.slice(0, 6);
+function cosAlertPrefix({ item_id, kind, host }: TrackerWatchdogAlert, includeHost = false) {
+	const scheduler = kind === staleDispatchHeartbeatKind;
+	const label = scheduler ? 'scheduler' : item_id.slice(0, 6);
+	return `[${label}] ${scheduler || includeHost ? `${host}: ` : ''}`;
 }
 
 /** Only one pane of exactly that name, and only while its prompt is empty and waiting. */
