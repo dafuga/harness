@@ -202,6 +202,7 @@
 			"occupiedHostRuns",
 			"TrackerOccupiedRun",
 			"formatTrackerHostBrief",
+			"trackerLaunchContext",
 			"unsentCosAlerts",
 			"sendWatchdogAlerts",
 			"recordCosReceipts",
@@ -884,6 +885,31 @@
 				"name": "formatTrackerHostBrief.cpuBudget",
 				"type": "number",
 				"required": false
+			},
+			{
+				"name": "formatTrackerHostBrief.launch",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "trackerLaunchContext.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchContext.item",
+				"type": "TrackerItem",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchContext.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "trackerLaunchContext.route",
+				"type": "TrackerHostTarget",
+				"required": true
 			},
 			{
 				"name": "unsentCosAlerts.store",
@@ -3490,12 +3516,50 @@
 						"name": "formatTrackerHostBrief.cpuBudget",
 						"type": "number",
 						"required": false
+					},
+					{
+						"name": "formatTrackerHostBrief.launch",
+						"type": "string",
+						"required": false
 					}
 				],
 				"outputs": [
 					{
 						"name": "formatTrackerHostBrief",
 						"type": "string"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerLaunchContext",
+				"inputs": [
+					{
+						"name": "trackerLaunchContext.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchContext.item",
+						"type": "TrackerItem",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchContext.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "trackerLaunchContext.route",
+						"type": "TrackerHostTarget",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLaunchContext",
+						"type": "unknown"
 					}
 				],
 				"errors": [],
@@ -6089,6 +6153,11 @@
 		},
 		{
 			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-sanitize-tracker-text",
 			"via": "import",
 			"origin": "derived"
 		},

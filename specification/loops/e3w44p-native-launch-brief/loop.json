@@ -2,7 +2,7 @@
 	"name": "e3w44p-native-launch-brief",
 	"goal": "Generated briefs retain safety rules, run and checkout identity, parent context and earlier attempts.",
 	"createdAt": "2026-11-27T19:11:37.698Z",
-	"updatedAt": "2026-11-27T19:21:56.173Z",
+	"updatedAt": "2026-11-27T19:23:41.077Z",
 	"template": "bug-fix",
 	"templateLineage": [
 		"bug-fix"
@@ -34,12 +34,16 @@
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T19:22:30.175Z",
+			"evidence": "cbd04fff9a restores merge, release, risk, testing and ignored-topic rules. The runner reads the actual reservation, approved route, parent and finished runs. Managed preparation describes the directory it created and labels Greymass remotes without printing remote URLs."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T19:23:41.077Z",
+			"evidence": "cbd04fff9a: the unchanged six cases passed in the same clean snapshot environment as red a80bb268b0. The recorded launch uses SQLite, a temporary git repo and worktree, file-backed brief, and fixture tmux/provider binaries."
 		},
 		{
 			"id": "siblings",
