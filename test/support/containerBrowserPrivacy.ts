@@ -32,11 +32,9 @@ async function mainTab(): Promise<ContainerPageTarget> {
 	throw new Error('The disposable browser did not start.');
 }
 
-async function devtoolsRequest(method: 'GET' | 'PUT', path: string): Promise<string> {
-	if (!/^\/json\/(?:new\?about:blank|close\/[A-Za-z0-9-]{1,128})$/u.test(path)) {
-		throw new Error('Unexpected fixture-only DevTools request.');
-	}
-	const request = `${method} ${path} HTTP/1.1\r\nHost: 127.0.0.1:9222\r\nConnection: close\r\n\r\n`;
+async function openBlankFixtureTab(): Promise<string> {
+	const request =
+		'PUT /json/new?about:blank HTTP/1.1\r\nHost: 127.0.0.1:9222\r\nConnection: close\r\n\r\n';
 	return docker.docker([
 		'exec',
 		container,
@@ -56,12 +54,7 @@ async function exercisePrivacy(ordinary: ContainerPageTarget) {
 		revokeInput: async () => undefined,
 		disposeForm: async () => {
 			if (!formId) return;
-			await devtoolsRequest('GET', `/json/close/${formId}`);
-			for (let attempt = 0; attempt < 40; attempt++) {
-				if (!(await cdp.pages()).some(({ id }) => id === formId)) return;
-				await Bun.sleep(100);
-			}
-			throw new Error('The private tab did not close.');
+			await cdp.closePage(formId);
 		},
 		verifyResult: async () => (await ordinaryPage.evaluate('document.body.dataset.result')) === 'ok'
 	});
@@ -70,7 +63,7 @@ async function exercisePrivacy(ordinary: ContainerPageTarget) {
 		const before = await gate.read(() => ordinaryPage.evaluate('document.title'));
 		const admitted = await gate.request(device);
 		if (!admitted) throw new Error('The private fixture was not admitted.');
-		await devtoolsRequest('PUT', '/json/new?about:blank');
+		await openBlankFixtureTab();
 		const target = (await cdp.pages()).find(({ id }) => id !== ordinary.id);
 		if (!target) throw new Error('The private tab did not open.');
 		formId = target.id;

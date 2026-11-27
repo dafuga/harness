@@ -11,12 +11,13 @@ afterEach(() => {
 });
 
 /** A DevTools stand-in speaking real HTTP and WebSocket over TCP sockets used as pipes. */
-async function devtools() {
+async function devtools(keepTab = false) {
 	const seen: { method: string; params: { expression?: string } }[] = [];
+	let tabPresent = true;
 	const sockets = new WebSocketServer({ noServer: true });
 	server = createServer((_request, response) => {
 		const body = JSON.stringify([
-			{ id: 'TAB1', type: 'page', url: 'https://x.com/home' },
+			...(tabPresent ? [{ id: 'TAB1', type: 'page', url: 'https://x.com/home' }] : []),
 			{ id: 'W1', type: 'service_worker', url: 'https://x.com/sw.js' }
 		]);
 		response.writeHead(200, { 'content-length': Buffer.byteLength(body) }).end(body);
@@ -27,6 +28,7 @@ async function devtools() {
 			client.on('message', (data) => {
 				const { id, method, params } = JSON.parse(data.toString());
 				seen.push({ method, params });
+				if (method === 'Target.closeTarget' && !keepTab) tabPresent = false;
 				const value = params.expression === 'big' ? 'y'.repeat(200_000) : params.expression;
 				const reply = JSON.stringify({ id, result: { result: { value } } });
 				client.send(reply.slice(0, 10), { fin: false });
@@ -55,4 +57,20 @@ test('lists only tabs, then evaluates and navigates over the private pipe', asyn
 	await expect(page.evaluate('after')).rejects.toThrow('pipe closed');
 	await adapter.quit();
 	expect(seen.at(-1)?.method).toBe('Browser.close');
+});
+
+test('closes one valid tab and confirms its disappearance without closing the browser', async () => {
+	const { adapter, seen } = await devtools();
+	await expect(adapter.closePage('TAB1/other')).rejects.toThrow('Invalid browser tab');
+	await expect(adapter.closePage('TAB1')).resolves.toBeUndefined();
+	expect(seen).toEqual([{ method: 'Target.closeTarget', params: { targetId: 'TAB1' } }]);
+	expect(await adapter.pages()).toEqual([]);
+	await expect(adapter.closePage('TAB1')).resolves.toBeUndefined();
+	expect(seen).toHaveLength(1);
+});
+
+test('a close command cannot clear the private gate while the observed tab remains', async () => {
+	const { adapter } = await devtools(true);
+	await expect(adapter.closePage('TAB1')).rejects.toThrow('The private browser tab is still open.');
+	expect(await adapter.pages()).toHaveLength(1);
 });
