@@ -42,6 +42,17 @@ opened from a project), the title, and one card in the list style: the Agents ti
 hairline, then each setting on a row with its name on the left and its control on the right, and
 its note muted beneath. On a phone the control wraps under its name.
 
+## Designs and linked devices
+
+The Mac and Hub use the same Designs header and canvas. Canvas selectors show the title,
+artboard count and active canvas. On Mac they read the current checkout through the native
+bridge, including local edits. Hub selection uses the hosted branch URL.
+
+The linked-device dialog uses the Hub Devices row presentation. Its rows show clients connected
+to this computer, with project grants, access level, connection status and Revoke. Link and
+Unlink this Mac remain host controls. The Hub Devices page manages account sessions and linked
+computers.
+
 | Screen                   | Before                                                                                                                                                                     | After                                                                                                                                                                   |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Components               | [laptop](screens/before--project-components--laptop.png), [tablet](screens/before--project-components--tablet.png), [phone](screens/before--project-components--phone.png) | [laptop](screens/after--project-components--laptop.png), [tablet](screens/after--project-components--tablet.png), [phone](screens/after--project-components--phone.png) |
