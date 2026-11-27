@@ -6,6 +6,9 @@ unitIds:
   - adapter.execution-runtimes-container-browser
   - adapter.execution-runtimes-container-cdp
   - service.execution-runtimes-container-viewer-gate
+  - service.execution-runtimes-private-browser-gate
+  - service.execution-runtimes-private-browser-phone
+  - adapter.execution-runtimes-private-browser-agent
 owner: null
 reviewedAt: null
 ---
@@ -102,6 +105,12 @@ isolation before use with real cards, passwords or identity documents.
   installs mandatory password saving and autofill restrictions for contact,
   payment, and identity data. Verify the effective policies in each installed
   browser before enabling private entry.
+
+Executor source now provides admission, read draining, a Unix agent API and
+scoped Vault delivery. The protected browser, paired-viewer transport and
+native app clients require integration and installed acceptance. The
+[two-Mac cutover runbook](../../../deploy/container-browser/private-entry-cutover.md)
+defines the identity, qualification and rollback checks.
 
 ### Acceptance for private entry
 

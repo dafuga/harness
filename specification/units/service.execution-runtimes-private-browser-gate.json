@@ -1,0 +1,318 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-private-browser-gate",
+	"uid": "u_uhsrsey7pi",
+	"kind": "service",
+	"title": "PrivateBrowserGateService",
+	"responsibility": "Block browser reads before private input and keep admission closed through form disposal and result verification.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/PrivateBrowserGateService.ts",
+			"src/services/execution-runtimes/PrivateBrowserGateService.types.ts"
+		],
+		"symbols": [
+			"PrivateBrowserGateService",
+			"PrivateBrowserGateService.constructor",
+			"PrivateBrowserGateService.status",
+			"PrivateBrowserGateService.recover",
+			"PrivateBrowserGateService.read",
+			"PrivateBrowserGateService.request",
+			"PrivateBrowserGateService.permitsInput",
+			"PrivateBrowserGateService.nativeInput",
+			"PrivateBrowserGateService.finish",
+			"PrivateBrowserGateService.cancel",
+			"PrivateBrowserPhase",
+			"PrivateBrowserCleanup",
+			"PrivateBrowserRequest"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "PrivateBrowserGateService.constructor.cleanup",
+				"type": "PrivateBrowserCleanup",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.read.operation",
+				"type": "(signal: AbortSignal) => Promise<T>",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.request.deviceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.permitsInput.requestId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.permitsInput.deviceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.nativeInput.requestId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.nativeInput.deviceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.nativeInput.operation",
+				"type": "(signal: AbortSignal) => Promise<void>",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.finish.requestId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.finish.deviceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserGateService.cancel.requestId",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "PrivateBrowserGateService.status",
+				"type": "PrivateBrowserPhase"
+			},
+			{
+				"name": "PrivateBrowserGateService.recover",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "PrivateBrowserGateService.read",
+				"type": "Promise<T | undefined>"
+			},
+			{
+				"name": "PrivateBrowserGateService.request",
+				"type": "Promise<{ requestId: string } | undefined>"
+			},
+			{
+				"name": "PrivateBrowserGateService.permitsInput",
+				"type": "boolean"
+			},
+			{
+				"name": "PrivateBrowserGateService.nativeInput",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "PrivateBrowserGateService.finish",
+				"type": "Promise<boolean>"
+			},
+			{
+				"name": "PrivateBrowserGateService.cancel",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PrivateBrowserGateService.status",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.status",
+						"type": "PrivateBrowserPhase"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "PrivateBrowserGateService.recover",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.recover",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserGateService.read",
+				"inputs": [
+					{
+						"name": "PrivateBrowserGateService.read.operation",
+						"type": "(signal: AbortSignal) => Promise<T>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.read",
+						"type": "Promise<T | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserGateService.request",
+				"inputs": [
+					{
+						"name": "PrivateBrowserGateService.request.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.request",
+						"type": "Promise<{ requestId: string } | undefined>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserGateService.permitsInput",
+				"inputs": [
+					{
+						"name": "PrivateBrowserGateService.permitsInput.requestId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PrivateBrowserGateService.permitsInput.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.permitsInput",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserGateService.nativeInput",
+				"inputs": [
+					{
+						"name": "PrivateBrowserGateService.nativeInput.requestId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PrivateBrowserGateService.nativeInput.deviceId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PrivateBrowserGateService.nativeInput.operation",
+						"type": "(signal: AbortSignal) => Promise<void>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.nativeInput",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserGateService.finish",
+				"inputs": [
+					{
+						"name": "PrivateBrowserGateService.finish.requestId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PrivateBrowserGateService.finish.deviceId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.finish",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserGateService.cancel",
+				"inputs": [
+					{
+						"name": "PrivateBrowserGateService.cancel.requestId",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.cancel",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PrivateBrowserGateService.constructor",
+				"inputs": [
+					{
+						"name": "PrivateBrowserGateService.constructor.cleanup",
+						"type": "PrivateBrowserCleanup",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserGateService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/PrivateBrowserGateService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/PrivateBrowserGateService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

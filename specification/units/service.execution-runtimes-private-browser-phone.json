@@ -1,0 +1,179 @@
+{
+	"schemaVersion": 1,
+	"id": "service.execution-runtimes-private-browser-phone",
+	"uid": "u_xwkimz47da",
+	"kind": "service",
+	"title": "PrivateBrowserPhoneService",
+	"responsibility": "Accept an enrolled device’s sealed field only for the reviewed browser request and clear the plaintext after submission.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/execution-runtimes/PrivateBrowserPhoneService.ts",
+			"src/services/execution-runtimes/PrivateBrowserPhoneService.types.ts"
+		],
+		"symbols": [
+			"PrivateBrowserPhoneService",
+			"PrivateBrowserPhoneService.constructor",
+			"PrivateBrowserPhoneService.offer",
+			"PrivateBrowserPhoneService.submit",
+			"PrivateBrowserFieldScope",
+			"PrivateBrowserPhoneOffer",
+			"PrivateBrowserPhoneConfig",
+			"PendingPhoneOffer"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "PrivateBrowserPhoneService.constructor.config",
+				"type": "PrivateBrowserPhoneConfig",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserPhoneService.offer.requestId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserPhoneService.offer.deviceId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserPhoneService.offer.scope",
+				"type": "PrivateBrowserFieldScope",
+				"required": true
+			},
+			{
+				"name": "PrivateBrowserPhoneService.submit.proof",
+				"type": "VaultProof",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "PrivateBrowserPhoneService.offer",
+				"type": "PrivateBrowserPhoneOffer | undefined"
+			},
+			{
+				"name": "PrivateBrowserPhoneService.submit",
+				"type": "Promise<boolean>"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "PrivateBrowserPhoneService.offer",
+				"inputs": [
+					{
+						"name": "PrivateBrowserPhoneService.offer.requestId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PrivateBrowserPhoneService.offer.deviceId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "PrivateBrowserPhoneService.offer.scope",
+						"type": "PrivateBrowserFieldScope",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserPhoneService.offer",
+						"type": "PrivateBrowserPhoneOffer | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "PrivateBrowserPhoneService.submit",
+				"inputs": [
+					{
+						"name": "PrivateBrowserPhoneService.submit.proof",
+						"type": "VaultProof",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserPhoneService.submit",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "PrivateBrowserPhoneService.constructor",
+				"inputs": [
+					{
+						"name": "PrivateBrowserPhoneService.constructor.config",
+						"type": "PrivateBrowserPhoneConfig",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "PrivateBrowserPhoneService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.accounts-access-vault-seal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "repository.accounts-access-vault-device",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.execution-runtimes-private-browser-gate",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "validator.accounts-access-vault-wire",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/execution-runtimes/PrivateBrowserPhoneService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/execution-runtimes/PrivateBrowserPhoneService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}
