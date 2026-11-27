@@ -162,17 +162,21 @@
 			{
 				"name": "readClaudeCosReceipts.cwd",
 				"type": "string | undefined",
-				"required": true
+				"required": true,
+				"description": "The working directory of the selected Chief of Staff pane."
 			},
 			{
 				"name": "readClaudeCosReceipts.receipts",
 				"type": "readonly CosReceipt[]",
-				"required": true
+				"required": true,
+				"description": "Outstanding alert IDs, references and legacy text to match."
 			},
 			{
 				"name": "readClaudeCosReceipts.projects",
 				"type": "string",
-				"required": false
+				"required": false,
+				"default": "~/.claude/projects",
+				"description": "The local Claude transcript directory."
 			},
 			{
 				"name": "submitClaudeTrackerDraft.message",
@@ -847,27 +851,38 @@
 					{
 						"name": "readClaudeCosReceipts.cwd",
 						"type": "string | undefined",
-						"required": true
+						"required": true,
+						"description": "The working directory of the selected Chief of Staff pane."
 					},
 					{
 						"name": "readClaudeCosReceipts.receipts",
 						"type": "readonly CosReceipt[]",
-						"required": true
+						"required": true,
+						"description": "Outstanding alert IDs, references and legacy text to match."
 					},
 					{
 						"name": "readClaudeCosReceipts.projects",
 						"type": "string",
-						"required": false
+						"required": false,
+						"default": "~/.claude/projects",
+						"description": "The local Claude transcript directory."
 					}
 				],
 				"outputs": [
 					{
 						"name": "readClaudeCosReceipts",
-						"type": "Promise<Set<string>>"
+						"type": "Promise<Set<string>>",
+						"description": "Only IDs whose delivery was recorded by Claude."
 					}
 				],
-				"errors": [],
-				"errorStatus": "unknown"
+				"errors": [
+					{
+						"name": "NodeJS.ErrnoException",
+						"type": "thrown",
+						"description": "An I/O failure while closing a transcript can reject the read."
+					}
+				],
+				"errorStatus": "declared"
 			},
 			{
 				"name": "submitClaudeTrackerDraft",
