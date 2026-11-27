@@ -147,11 +147,30 @@ export const catalogPush = {
 	browsers: []
 };
 
+/** One reminder already due and one that repeats. */
+export const catalogReminders = [
+	{
+		itemId: 'preview-snacks',
+		title: 'Buy snacks for the sample picnic',
+		at: stamp(-2),
+		repeats: null,
+		updatedAt: stamp(-3)
+	},
+	{
+		itemId: 'preview-plant',
+		title: 'Water the sample plant',
+		at: stamp(52),
+		repeats: 'Weekly',
+		updatedAt: stamp(-3)
+	}
+];
+
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
 	agents: snapshot.agents,
 	asks: [],
 	openAsks: [],
+	reminders: catalogReminders,
 	controlled: [],
 	plans: snapshot.plans,
 	schedule: snapshot.scheduled,
