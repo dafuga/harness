@@ -238,5 +238,8 @@ test('a flag without choices is not counted, listed or answerable', async ({ pag
 	await expect(needsYou(page).getByText('0', { exact: true })).toBeVisible();
 	await expect(needsYou(page).getByRole('button')).toHaveCount(0);
 	await shot(page, 'blockers-empty-desktop');
+	await page.setViewportSize(sizes.phone);
+	await expect(needsYou(page).getByText('Nothing needs you right now')).toBeVisible();
+	await shot(page, 'blockers-empty-phone');
 	await expect(page.getByRole('heading', { level: 1 })).not.toContainText('you');
 });

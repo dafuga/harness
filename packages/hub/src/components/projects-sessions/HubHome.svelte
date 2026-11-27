@@ -197,13 +197,17 @@
 <hx-div class="home-scheme">
 	<hx-div class="home-page hh-home">
 		<HubHomeHeader {view} {link}>
-			<hx-div class="po-page hh-page">
+			<hx-div class="po-page hh-page hh-blockers-first">
 				<HubHomeNeedsYou
 					asks={view.openAsks}
 					now={view.now}
 					send={reads.send}
 					{receipt}
-					reading={snapshot ? 'ready' : settled ? 'unavailable' : 'loading'}
+					reading={view.trackerConnected || view.openAsks.length
+						? 'ready'
+						: settled
+							? 'unavailable'
+							: 'loading'}
 				/>
 			</hx-div>
 		</HubHomeHeader>

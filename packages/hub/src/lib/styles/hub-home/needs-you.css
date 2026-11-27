@@ -9,6 +9,12 @@
 	border-radius: var(--hx-radius-large);
 	background: var(--hx-color-surface);
 }
+.hh-home .hh-blockers-first {
+	padding-bottom: 0;
+}
+.hh-home .hh-blockers-first .hh-needs {
+	margin-bottom: 0;
+}
 .hh-home .hh-needs-head {
 	display: flex;
 	flex-wrap: wrap;

@@ -182,7 +182,11 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	if (!(await group.evaluate((node) => (node as HTMLDetailsElement).open)))
 		await group.locator(':scope > summary').click();
 	const more = group.getByRole('button', { name: /^See all/ });
-	if (await more.count()) await more.click();
+	await more.click();
+	await expect(more.or(group.getByRole('button', { name: /^Show fewer/ }))).toHaveAttribute(
+		'aria-expanded',
+		'true'
+	);
 	const row = overview(page)
 		.locator('.hh-live-row')
 		.filter({ has: page.getByText(item.title, { exact: true }) });

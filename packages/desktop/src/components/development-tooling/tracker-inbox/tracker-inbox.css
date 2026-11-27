@@ -93,17 +93,17 @@
 	background: var(--hx-color-success);
 }
 
-.inbox :is(button:enabled, a[href], summary):active {
+.inbox :global(:is(button:enabled, a[href], summary):active) {
 	filter: brightness(0.83);
 }
 @media (prefers-reduced-motion: no-preference) {
-	.inbox :is(button:enabled, a[href], summary):active {
+	.inbox :global(:is(button:enabled, a[href], summary):active) {
 		translate: 0 1px;
 	}
-	.inbox .rows li {
+	.inbox :global(.rows li) {
 		transition: filter 320ms ease;
 	}
-	.inbox .rows li[inert] {
+	.inbox :global(.rows li[inert]) {
 		filter: opacity(0);
 	}
 }
