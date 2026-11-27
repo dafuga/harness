@@ -156,8 +156,8 @@ export function staleDispatchAlerts(
 	});
 	return [...reports, local].flatMap(({ node, runner }) => {
 		if (!runner?.enabled || !/^[a-z0-9][a-z0-9._-]*$/i.test(node)) return [];
-		const stamp = runner.last_tick_at;
-		const at = Date.parse(stamp ?? '') + dispatchHeartbeatGrace;
+		const lastTick = Date.parse(runner.last_tick_at ?? '');
+		const at = lastTick + dispatchHeartbeatGrace;
 		if (!(local.now > at)) return [];
 		return [
 			{
@@ -165,8 +165,8 @@ export function staleDispatchAlerts(
 				item_id: 'scheduler',
 				host: node,
 				kind: staleDispatchHeartbeatKind,
-				identity: String(stamp),
-				reason: `Tracker launch scheduler last completed a tick at ${stamp}. Check the dispatch worker and host commands on this computer.`,
+				identity: String(lastTick),
+				reason: `Tracker launch scheduler last completed a tick at ${new Date(lastTick).toISOString()}. Check the dispatch worker and host commands on this computer.`,
 				at
 			}
 		];

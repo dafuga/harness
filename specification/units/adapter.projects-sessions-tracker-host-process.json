@@ -77,7 +77,7 @@
 			},
 			{
 				"name": "runTrackerHostCommand.options",
-				"type": "{ input?: string; environment?: Record<string, string> }",
+				"type": "{ input?: string; environment?: Record<string, string>; maxBuffer?: number }",
 				"required": false,
 				"default": {},
 				"description": "Optional stdin and explicit, command-owned environment variables."
@@ -196,7 +196,7 @@
 					},
 					{
 						"name": "runTrackerHostCommand.options",
-						"type": "{ input?: string; environment?: Record<string, string> }",
+						"type": "{ input?: string; environment?: Record<string, string>; maxBuffer?: number }",
 						"required": false,
 						"default": {},
 						"description": "Optional stdin and explicit, command-owned environment variables."
