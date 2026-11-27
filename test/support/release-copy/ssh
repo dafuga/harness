@@ -1,0 +1,21 @@
+#!/bin/bash
+# Fake ssh for release copy tests: "hosts" are directories under $FAKE_SSH_ROOT/hosts.
+# With a drop-next marker, one rsync connection dies and leaves its remote receiver
+# (orphan.pl) running; every other connection runs the real command.
+while [[ "$1" == -* ]]; do
+	[[ "$1" == -o ]] && shift
+	shift
+done
+host=$1
+shift
+export HOME="$FAKE_SSH_ROOT/hosts/$host"
+[[ -d "$HOME" ]] || exit 255
+export PATH="$HOME/bin:$PATH"
+cd "$HOME"
+[[ "$1 $2" == 'rsync --server' ]] && echo "$*" >>"$FAKE_SSH_ROOT/receivers.log"
+if [[ "$1 $2" == 'rsync --server' ]] && rm "$FAKE_SSH_ROOT/drop-next" 2>/dev/null; then
+	perl "$FAKE_SSH_ROOT/orphan.pl" "$FAKE_SSH_ROOT" "$@" </dev/null >/dev/null 2>&1 &
+	while [[ ! -e "$FAKE_SSH_ROOT/orphaned" ]]; do sleep 0.1; done
+	exit 255
+fi
+exec sh -c "$*"
