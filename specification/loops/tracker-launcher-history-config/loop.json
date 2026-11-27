@@ -2,7 +2,7 @@
 	"name": "tracker-launcher-history-config",
 	"goal": "Native Tracker launches honor run history, routing and run-limit config, in-place projects and the retired gpt-6.1-sol model (7rd5ap)",
 	"createdAt": "2026-11-26T12:21:22.454Z",
-	"updatedAt": "2026-11-26T12:21:22.454Z",
+	"updatedAt": "2026-11-27T12:48:33.946Z",
 	"template": "bug-fix",
 	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
@@ -11,32 +11,44 @@
 		{
 			"id": "spec",
 			"title": "Identify the failing behavior, expected behavior, and reproduction.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T12:43:55.410Z",
+			"evidence": "Native dispatch ignored the configured ladder, run history, run limits and in-place project routes. Reserved Sol rows retained the retired model. See specification/tracker-native-service.md."
 		},
 		{
 			"id": "coverage",
 			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T12:43:57.152Z",
+			"evidence": "Existing isolated picker and host tests missed dispatch composition. The host launch configuration, in-place launcher and queued Sol tests exercise the affected boundaries."
 		},
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T12:45:52.171Z",
+			"evidence": "Recorded failing regression at 2781bcda8a."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T12:45:55.518Z",
+			"evidence": "Product commit f5d0abf71d applied routing history, host config and working-directory behavior."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T12:45:59.139Z",
+			"evidence": "Same nine recorded regressions passed on product fix commit f5d0abf71d."
 		},
 		{
 			"id": "siblings",
 			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T12:48:33.946Z",
+			"evidence": "siblings-a1e367be-96e4-4b6d-8261-1f9d2631a349.json"
 		},
 		{
 			"id": "verify",

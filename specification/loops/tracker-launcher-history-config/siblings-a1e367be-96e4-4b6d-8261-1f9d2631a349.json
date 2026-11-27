@@ -1,0 +1,1800 @@
+{
+	"schemaVersion": 1,
+	"revision": "69f1538c677ceb2f88c790e04374f7f5179c7698",
+	"bugClass": {
+		"id": "launch-policy-drift",
+		"title": "Native launch or retry rebuilds the preview policy and loses effective settings",
+		"cause": "A native entry point independently assembles the policy used to start a run. That assembly can omit routing settings, configured limits or finished-run history, or apply different rules for choosing the project working directory or resolving a retired model.",
+		"criteria": "Trace the same project settings and run history through preview and through a native launch or retry to the execution boundary. Classify a site if its separate policy assembly causes any one difference: routing configuration is lost, a configured run limit is replaced or omitted, finished runs are missing from a history-dependent decision, the working directory violates project policy, or a retired model identifier reaches execution without the normalization used by preview. A difference on either launch or retry is sufficient.",
+		"patterns": [
+			{
+				"kind": "call",
+				"value": "buildLaunchPolicy",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "resolveRunPolicy",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "...defaultRunPolicy",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "launchRun",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "retryRun",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "routingConfig:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "routing: {}",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "runLimits:",
+				"weight": 3
+			},
+			{
+				"kind": "text",
+				"value": "maxRuns ??",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "loadFinishedRuns",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "finishedRuns: []",
+				"weight": 5
+			},
+			{
+				"kind": "text",
+				"value": "runHistory: []",
+				"weight": 5
+			},
+			{
+				"kind": "call",
+				"value": "resolveWorkingDirectory",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "cwd: process.cwd()",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": ".currentDirectoryURL =",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "normalizeModelId",
+				"weight": 4
+			},
+			{
+				"kind": "call",
+				"value": "resolveModelAlias",
+				"weight": 4
+			},
+			{
+				"kind": "text",
+				"value": "model: request.model",
+				"weight": 3
+			},
+			{
+				"kind": "call",
+				"value": "spawn",
+				"weight": 1
+			},
+			{
+				"kind": "text",
+				"value": "Process()",
+				"weight": 1
+			}
+		],
+		"contextTerms": [
+			"launch",
+			"retry",
+			"preview",
+			"policy",
+			"routing",
+			"limits",
+			"history",
+			"finished",
+			"project",
+			"cwd",
+			"model",
+			"retired",
+			"alias"
+		],
+		"pathHints": [
+			{
+				"contains": "packages/desktop/",
+				"weight": 10
+			},
+			{
+				"contains": "src/adapters/",
+				"weight": 6
+			},
+			{
+				"contains": "src/workflows/",
+				"weight": 5
+			},
+			{
+				"contains": "src/services/",
+				"weight": 4
+			},
+			{
+				"contains": "src/core/",
+				"weight": 3
+			},
+			{
+				"contains": "specification/",
+				"weight": -6
+			},
+			{
+				"contains": "test/",
+				"weight": -7
+			},
+			{
+				"contains": "packages/reports/",
+				"weight": -5
+			}
+		]
+	},
+	"model": "gpt-6.2-astra",
+	"scannedFiles": 9599,
+	"skipped": [],
+	"candidates": [
+		{
+			"id": "3f4eee5f3fff6abb73d2",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/PlanRunService.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 26,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 3,
+			"evidence": "PlanRunService.ts lines 10–23 send request.model to runner.run for a nonvisual plan. Visual plans return through planDesign first. The excerpt shows neither how RunContext acquired the model nor how preview resolves it, so it cannot establish that a retired identifier survives native launch or retry."
+		},
+		{
+			"id": "a4d53d13485d71f3e0c4",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-run-service/ProjectRunService.ts",
+			"line": 112,
+			"lastLine": 112,
+			"score": 26,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 3,
+			"evidence": "ProjectRunService.ts lines 105–118 pass request.model and the context root to runner.run for a read-only proposal. The excerpt starts with an existing ProjectRunContext. Its construction and preview's alias handling are missing, so the model passed here could already be normalized."
+		},
+		{
+			"id": "966cb9175cc0592dce3e",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/project-task-service/ProjectTaskService.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": 26,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 3,
+			"evidence": "ProjectTaskService.ts lines 36–49 pass request.model and root from the task context to runner.run. Ask mode selects read-only access, and other modes select write access. The excerpt does not trace the model from project settings through preview and native launch or retry, leaving any alias mismatch unverified."
+		},
+		{
+			"id": "7a17ae8fa44fc51d94e0",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
+			"line": 63,
+			"lastLine": 63,
+			"score": 25,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 3,
+			"evidence": "changeExecute.ts lines 56–75 pass request.model to the write-enabled runner during change implementation. The mockup branch selects prompt notes. Neither the source of request.model nor preview's handling of the same identifier is visible, so the call alone cannot establish retired-model drift."
+		},
+		{
+			"id": "9d1ac495f71e4be39daa",
+			"path": "packages/desktop/src/utils/agents-providers/cliProcess.ts",
+			"line": 23,
+			"lastLine": 23,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "unconfirmed",
+			"impact": 2,
+			"evidence": "cliProcess.ts lines 22–34 pass options.cwd directly to spawn. cliProcess permits an empty options object, so a caller could omit cwd. The excerpt shows neither a native launch or retry that does so nor the project directory preview would choose for that run."
+		},
+		{
+			"id": "d62000cea2ffdde4165b",
+			"path": "packages/desktop/src/services/agents-providers/desktop-run-service/change-run-service/changeExecute.ts",
+			"line": 129,
+			"lastLine": 129,
+			"score": 25,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "14d175a3809de3d73091",
+			"path": "packages/desktop/test/utils/promote-change.test.ts",
+			"line": 46,
+			"lastLine": 46,
+			"score": 15,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9704afb555596ff52dc0",
+			"path": "packages/desktop/scripts/ios-build-processes.ts",
+			"line": 161,
+			"lastLine": 161,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c05e0c1a98fcee210651",
+			"path": "packages/desktop/scripts/start-electron.ts",
+			"line": 4,
+			"lastLine": 4,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9d40fd9198fa37625e63",
+			"path": "packages/desktop/src/utils/agents-providers/codex-rpc/codexRpc.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "409cb63646bea04f825b",
+			"path": "packages/desktop/src/utils/projects-sessions/repositoryLease.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": 14,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ead156aed18364e0d26c",
+			"path": "src/cli/program/benchmark-service/benchmark-definition/ClaudeBenchmarkAdapter.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "259492dc1b98371db6ba",
+			"path": "src/cli/program/benchmark-service/benchmark-definition/CodexBenchmarkAdapter.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6586ffae4f870270f554",
+			"path": "src/utils/execution-runtimes/resourceCommand.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 13,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7c1457c8e26422af964d",
+			"path": "src/adapters/agents-providers/ManagedProviderDockerAdapter.ts",
+			"line": 144,
+			"lastLine": 144,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8baee08d76baad5f063c",
+			"path": "src/adapters/execution-runtimes/BoundedCommandAdapter.ts",
+			"line": 153,
+			"lastLine": 153,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "91b653421426bcb5f496",
+			"path": "src/adapters/projects-sessions/tracker-job-process-adapter/runTrackerJobCommand.ts",
+			"line": 33,
+			"lastLine": 33,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9eccf9a694352a7cbb96",
+			"path": "src/adapters/projects-sessions/tracker-tmux-adapter/trackerManagedVerification.ts",
+			"line": 38,
+			"lastLine": 38,
+			"score": 11,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "47aec0ebb89884fd1e94",
+			"path": "src/adapters/agents-providers/module-task-runner-adapter/taskProcess.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": 10,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ddb62d558120222a6aac",
+			"path": "src/adapters/accounts-access/VaultBrowserDockerAdapter.ts",
+			"line": 114,
+			"lastLine": 114,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d9e0c16a6ebbbcb238dc",
+			"path": "src/adapters/agents-providers/managed-provider-docker-adapter/dockerWorkspace.ts",
+			"line": 95,
+			"lastLine": 97,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "619ca86d943e033bd87e",
+			"path": "src/adapters/execution-runtimes/container-browser-adapter/dockerHost.ts",
+			"line": 71,
+			"lastLine": 71,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "19c27b1965d02b17690f",
+			"path": "src/adapters/execution-runtimes/process-runtime-adapter/lineProcess.ts",
+			"line": 29,
+			"lastLine": 29,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "87bf8d4235a6324a2a5f",
+			"path": "src/adapters/execution-runtimes/process-runtime-adapter/ProcessRuntimeAdapter.ts",
+			"line": 65,
+			"lastLine": 65,
+			"score": 9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "72c0353f5b4c3d69295b",
+			"path": "src/services/projects-sessions/tracker-host-supervisor-service/appendingTrackerChild.ts",
+			"line": 18,
+			"lastLine": 18,
+			"score": 8,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "14a77138ae92b408d334",
+			"path": "packages/desktop/test/utils/repository-lease.test.ts",
+			"line": 20,
+			"lastLine": 20,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "fad3171d81d9e318ea36",
+			"path": "test/services/trusted-base.test.ts",
+			"line": 189,
+			"lastLine": 189,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "138977cc99a3e94c99b7",
+			"path": "test/support/noteHistoryFixture.ts",
+			"line": 96,
+			"lastLine": 96,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "494bbb4c31637ba36aef",
+			"path": "test/support/trackerManagedProviderProgram.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cd3842f12f42581b0461",
+			"path": "packages/desktop/test/cli-integration.test.ts",
+			"line": 99,
+			"lastLine": 99,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4cb408f743654038e257",
+			"path": "packages/desktop/test/examples/desktop.script.remote-fixture.test.ts",
+			"line": 60,
+			"lastLine": 60,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "Process()",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ae68af08b5ec6f40d073",
+			"path": "packages/desktop/test/examples/desktop.script.remote-fixture.test.ts",
+			"line": 84,
+			"lastLine": 84,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "Process()",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0e0c33e72ff4825ab33d",
+			"path": "packages/desktop/test/examples/desktop.script.remote-fixture.test.ts",
+			"line": 105,
+			"lastLine": 105,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "Process()",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ccd96f997888a2dfac67",
+			"path": "packages/desktop/test/examples/desktop.script.remote-fixture.test.ts",
+			"line": 126,
+			"lastLine": 126,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "Process()",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1a1e35e9b97751b40527",
+			"path": "packages/desktop/test/ios-build-processes.test.ts",
+			"line": 165,
+			"lastLine": 165,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "be8e94cd5d0b9270a2a8",
+			"path": "packages/desktop/test/ios-build-processes.test.ts",
+			"line": 183,
+			"lastLine": 183,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b15d6f52a741e57df5cf",
+			"path": "packages/desktop/test/ios-build-shared-daemons.test.ts",
+			"line": 84,
+			"lastLine": 84,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6dc8953dddcef8f4d817",
+			"path": "test/resource-queue.e2e.test.ts",
+			"line": 165,
+			"lastLine": 165,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "da0942b58fc29866e0da",
+			"path": "test/services/performance-profile-scopes.test.ts",
+			"line": 81,
+			"lastLine": 81,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9bc237766e94b4e77c4d",
+			"path": "test/support/taskProfiles.ts",
+			"line": 123,
+			"lastLine": 123,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "cfbad494c3344af99fc6",
+			"path": "test/verification-output.ts",
+			"line": 125,
+			"lastLine": 125,
+			"score": 6,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f7eae390159e24ebceaf",
+			"path": "src/commands/projects-sessions/TrackerServiceCommand.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": 5,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "57701b861de0eedc12a9",
+			"path": "packages/planning/src/lib/planning-collaboration/planning/planGit.ts",
+			"line": 13,
+			"lastLine": 13,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "feb41928e479317dc5b5",
+			"path": "packages/reports/src/services/reports-media/report-command-service/report-server-service/ReportServerService.ts",
+			"line": 87,
+			"lastLine": 87,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c3b1e549620895a4fd76",
+			"path": "scripts/desktop-experiment-launcher.ts",
+			"line": 7,
+			"lastLine": 7,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0acc8b2cbabff5b61d9f",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 70,
+			"lastLine": 70,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "7271b723bc9a15236275",
+			"path": "scripts/run-checks.ts",
+			"line": 110,
+			"lastLine": 110,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "757e8638a72fc280e22c",
+			"path": "src/commands/agents-providers/ProviderSignInCommand.ts",
+			"line": 117,
+			"lastLine": 117,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "0a7634721b9f01dfeed8",
+			"path": "src/commands/projects-sessions/registerHarborAppTools.ts",
+			"line": 62,
+			"lastLine": 62,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "63d33f1842b6b70266d3",
+			"path": "src/utils/reports-media/run-isolated/isolatedChild.ts",
+			"line": 6,
+			"lastLine": 6,
+			"score": 4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b55be5e8a4358d372a20",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3ea305b39e561bd9b370",
+			"path": "scripts/prepare-desktop-experiment.ts",
+			"line": 56,
+			"lastLine": 56,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "88c04cb6ca217887d6de",
+			"path": "src/cli/program/run-kernel-bench/kernel-benchmark-service/KernelBenchmarkService.ts",
+			"line": 185,
+			"lastLine": 185,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "dda34645d15191ed26c8",
+			"path": "src/cli/program/run-report/runReport.ts",
+			"line": 15,
+			"lastLine": 15,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "9b9886d95c78ff210785",
+			"path": "test/support/jevPreload.ts",
+			"line": 31,
+			"lastLine": 31,
+			"score": 3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d565b172a0066c1812ca",
+			"path": "packages/reports/src/lib/development-tooling/preview-node/preview-worker-service/PreviewWorkerService.ts",
+			"line": 39,
+			"lastLine": 39,
+			"score": 0,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1db65e3ab1b95b02b1c7",
+			"path": "packages/reports/src/utils/reports-media/reportProcess.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": -1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "59aa0c1c4739c5d47d74",
+			"path": "test/cli.e2e.test.ts",
+			"line": 64,
+			"lastLine": 64,
+			"score": -1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e82239c6d28270403997",
+			"path": "test/support/browserRun.ts",
+			"line": 76,
+			"lastLine": 76,
+			"score": -1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6f561fd8436692bfba01",
+			"path": "test/support/playableGame.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": -1,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c17f718e8b0d04acc52d",
+			"path": "test/history-fresh-viewer.e2e.test.ts",
+			"line": 113,
+			"lastLine": 113,
+			"score": -2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6b8b5cf097f5f377e840",
+			"path": "test/reports-frozen-build.e2e.test.ts",
+			"line": 36,
+			"lastLine": 36,
+			"score": -2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "c2824d51cc9a0c21777d",
+			"path": "test/support/managedProviderDockerFixtureState.ts",
+			"line": 25,
+			"lastLine": 25,
+			"score": -2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "4305dc84b3260dcda306",
+			"path": "test/support/rustModuleScenario.ts",
+			"line": 52,
+			"lastLine": 52,
+			"score": -2,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "29a51aa8b528009f09ee",
+			"path": "test/activity-agents.e2e.test.ts",
+			"line": 140,
+			"lastLine": 140,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "eb847b9e81eb0191f85c",
+			"path": "test/adapters/projects-sessions/tracker-host-process.test.ts",
+			"line": 43,
+			"lastLine": 43,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "Process()",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "77ac69d044b48ef626bb",
+			"path": "test/examples/script.desktop-experiment-launcher.test.ts",
+			"line": 21,
+			"lastLine": 21,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8967f10b41f402b31552",
+			"path": "test/kernel.e2e.test.ts",
+			"line": 121,
+			"lastLine": 121,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ee2ad82ef1c7781796f4",
+			"path": "test/services/projects-sessions/tracker-dispatch-scheduler.test.ts",
+			"line": 183,
+			"lastLine": 183,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ffe34a3d9b8e34778770",
+			"path": "test/support/cli.ts",
+			"line": 51,
+			"lastLine": 51,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2148166daa463ee023c6",
+			"path": "test/support/credential-vault/crashFixture.ts",
+			"line": 34,
+			"lastLine": 34,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "abfae2258659ea76b3f0",
+			"path": "test/support/gatedRuns.ts",
+			"line": 59,
+			"lastLine": 59,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e7ab8d220f4d95e3fe1c",
+			"path": "test/support/jevCli.ts",
+			"line": 10,
+			"lastLine": 10,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "8404e49089ad769eb941",
+			"path": "test/support/managedProviderProcessFixture.ts",
+			"line": 120,
+			"lastLine": 120,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5430bcffb5f03793ca73",
+			"path": "test/support/proveTrackerRehearsal.ts",
+			"line": 16,
+			"lastLine": 16,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1e1bc6388b59cde1fc8d",
+			"path": "test/support/syntheticServices.ts",
+			"line": 128,
+			"lastLine": 128,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "d5f7091803a03d3e7638",
+			"path": "test/support/workers.ts",
+			"line": 44,
+			"lastLine": 44,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "62eff21bc02d3e108e37",
+			"path": "test/utils/development-tooling/harborMcpFixture.ts",
+			"line": 49,
+			"lastLine": 49,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "6ce18cc319dafd02afbc",
+			"path": "test/verify-snapshot.e2e.test.ts",
+			"line": 140,
+			"lastLine": 140,
+			"score": -3,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "ea2250c6120e6e59c471",
+			"path": "test/adapters/execution-runtimes/bounded-command.test.ts",
+			"line": 114,
+			"lastLine": 114,
+			"score": -4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "42777c2866c6a12e55b9",
+			"path": "test/credential-vault-ios.e2e.test.ts",
+			"line": 73,
+			"lastLine": 73,
+			"score": -4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "b724b59b0b1d17b9a3ac",
+			"path": "test/resource-queue.e2e.test.ts",
+			"line": 91,
+			"lastLine": 91,
+			"score": -4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "461b108b9043a89ef9af",
+			"path": "test/run-gate-cleanup.test.ts",
+			"line": 79,
+			"lastLine": 79,
+			"score": -4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "57ff142c6e3e4c3c7a58",
+			"path": "test/run-gate-cleanup.test.ts",
+			"line": 88,
+			"lastLine": 88,
+			"score": -4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "f9916c622d32959fe156",
+			"path": "test/support/gatedRuns.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": -4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "5510c23fb0e4fcc1a434",
+			"path": "test/support/trackerNodeProcess.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": -4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "e75306d4c79a9c3bc4ea",
+			"path": "test/utils/process-descendants.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": -4,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "3719cb6cc2d4931078cb",
+			"path": "packages/reports/test/support/previewFixture.ts",
+			"line": 106,
+			"lastLine": 106,
+			"score": -6,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "1df1b9ff9ea0b6477523",
+			"path": "packages/reports/test/utils/report-server-record.test.ts",
+			"line": 24,
+			"lastLine": 24,
+			"score": -9,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "not-reviewed",
+			"impact": 0,
+			"evidence": "Literal or syntax evidence only. This site has no evaluator verdict."
+		},
+		{
+			"id": "2f1b272f7a2df579ef52",
+			"path": "packages/desktop/src/components/explorer-ui/thread-panel/commentEntries.ts",
+			"line": 67,
+			"lastLine": 67,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "commentEntries.ts lines 55–71 copy request.model from a RunDraft into a ThreadEntry when constructing the user's thread entry. The value is recorded alongside the provider and version. This function returns the entry without invoking a runner or selecting execution policy."
+		},
+		{
+			"id": "c72b5384c65e2c8425c1",
+			"path": "packages/desktop/src/utils/agents-providers/prepareRun.ts",
+			"line": 19,
+			"lastLine": 19,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "prepareRun.ts lines 9–22 copy request.model into a returned record alongside author, text and approval metadata. The visible use occurs when constructing that record. The excerpt shows no model selection for execution."
+		},
+		{
+			"id": "4ac1b8f3241c38c5b97e",
+			"path": "packages/desktop/src/utils/planning-collaboration/plan-design/planDesign.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 20,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "model: request.model",
+					"weight": 3
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "planDesign.ts lines 21–38 copy request.model into DesignDraft.generator only when visualPlan is false. The visual branch calls mockupPlan. The matched assignment records draft metadata and does not select a model for launch or retry."
+		},
+		{
+			"id": "4eafb7df236d81b4f3d5",
+			"path": "packages/desktop/test/utils/deployment-command.test.ts",
+			"line": 12,
+			"lastLine": 18,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "deployment-command.test.ts lines 3–20 pass cwd: process.cwd() explicitly to two deployment commands. The test exercises literal argument handling and failure reporting. Its working directory is a test input, and neither call exercises native run launch or retry."
+		},
+		{
+			"id": "7352410d262e2f06d0a9",
+			"path": "packages/desktop/test/utils/deployment-config.test.ts",
+			"line": 77,
+			"lastLine": 77,
+			"score": 17,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "cwd: process.cwd()",
+					"weight": 4
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "deployment-config.test.ts lines 65–78 use process.cwd() for the Bun subprocess that bundles deploymentConfig.ts during the test. Lines 79–86 pass root explicitly to the configuration check. The matched working directory applies to the test build."
+		},
+		{
+			"id": "325ad028705c2d69d48f",
+			"path": "packages/desktop/src/utils/projects-sessions/deploymentCommand.ts",
+			"line": 11,
+			"lastLine": 11,
+			"score": 16,
+			"matches": [
+				{
+					"kind": "call",
+					"value": "spawn",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "deploymentCommand.ts lines 8–16 pass command.cwd directly to spawn when executing a DeployCommand. The caller supplies the directory. This helper makes no independent choice of project working directory and assembles no run policy."
+		},
+		{
+			"id": "aa7ce2b2f3c5572bb44d",
+			"path": "packages/desktop/test/examples/desktop.script.remote-fixture.test.ts",
+			"line": 27,
+			"lastLine": 27,
+			"score": 7,
+			"matches": [
+				{
+					"kind": "text",
+					"value": "Process()",
+					"weight": 1
+				}
+			],
+			"verdict": "dismissed",
+			"impact": 0,
+			"evidence": "desktop.script.remote-fixture.test.ts lines 27–39 define spyProcess() and restore(). Calling spyProcess() installs test spies on process and console methods. The matched name refers to a fixture helper that neither starts a process nor builds a launch policy."
+		}
+	],
+	"errors": [],
+	"classPath": "specification/bug-classes/launch-policy-drift.json"
+}
