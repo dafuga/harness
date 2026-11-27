@@ -1,0 +1,67 @@
+{
+	"name": "tracker-launch-host-command-deadline",
+	"goal": "Keep Tracker dispatch moving when a host command stops producing child-process completion callbacks.",
+	"createdAt": "2026-11-27T12:07:39.863Z",
+	"updatedAt": "2026-11-27T12:11:55.530Z",
+	"template": "bug-fix",
+	"templateLineage": [
+		"bug-fix"
+	],
+	"enforceOrder": true,
+	"regressionCommits": 1,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Identify the failing behavior, expected behavior, and reproduction.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:07:41.059Z",
+			"evidence": "Primary launcher stalled after #953 wrote its startup receipt. The parent retained an unreaped child while HTTP and peer ticks continued. The host command Promise relies on the child callback even on timeout or cancellation; restarting the same binary restored dispatch."
+		},
+		{
+			"id": "coverage",
+			"title": "Explain why existing standardized tests missed the bug; name the scenario, fixture, lifecycle or assertion gap and reusable test change.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:07:42.061Z",
+			"evidence": "The existing host process contract covered normal exit, rejected binaries and pre-abort, but omitted an in-flight command with a missing completion callback. Strengthen that case for both timeout and cancellation."
+		},
+		{
+			"id": "red",
+			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:09:15.458Z",
+			"evidence": "14bdaf0583 failed as expected: 'host command still pending' on in-flight abort without a completion callback."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest repair without weakening the regression test.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:09:18.066Z",
+			"evidence": "Expire or cancel the host command independently of child completion, release streams and signal listeners, and keep the existing dispatch reservation and receipt checks."
+		},
+		{
+			"id": "green",
+			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T12:11:55.530Z",
+			"evidence": "The same case passes at a27aa5716b using the identical fixture, command and environment. Timeout and abort both reject without a child callback."
+		},
+		{
+			"id": "siblings",
+			"title": "Run harness loop siblings to record the root cause and evaluate the same pattern across committed source.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run relevant project checks and affected UI browser flows with fresh inspected screenshots and no unexpected browser errors; preserve diagnostics and keep pending until proof passes.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}
