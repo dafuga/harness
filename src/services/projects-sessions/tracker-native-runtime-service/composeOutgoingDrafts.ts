@@ -2,12 +2,13 @@
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { TrackerOutgoingDraftService } from '../TrackerOutgoingDraftService';
-import { TrackerSpokeSyncService } from '../TrackerSpokeSyncService';
+import { TrackerSyncAuthService } from '../../networking-security/TrackerSyncAuthService';
 import { readItemBody } from '../tracker-local-api-service/trackerLocalItemMutation';
 import { trackerFailureResponse } from '../tracker-local-api-service/trackerLocalResponse';
 import {
 	outgoingDraftAgentApi,
-	outgoingDraftBodyLimit
+	outgoingDraftBodyLimit,
+	outgoingDraftSyncPath
 } from '../tracker-outgoing-draft-service/outgoingDraftAgentApi';
 
 export function composeOutgoingDrafts(
@@ -16,7 +17,10 @@ export function composeOutgoingDrafts(
 ) {
 	const service =
 		options.role === 'hub'
-			? new TrackerOutgoingDraftService(store, { now: options.now })
+			? new TrackerOutgoingDraftService(store, {
+					now: options.now,
+					provider: options.outgoingProvider
+				})
 			: undefined;
 	const link = options.links?.find(({ link }) => (link ?? 'hub') === 'hub');
 	const route = async (request: Request) => {
@@ -46,12 +50,24 @@ async function relayDraftRequest(
 	}: { link?: NonNullable<TrackerNativeRuntimeOptions['links']>[number]; body?: object }
 ) {
 	if (!link) return Response.json({ error: 'draft hub unavailable' }, { status: 503 });
-	const client = new TrackerSpokeSyncService({
-		...link,
-		store,
-		transport: (outgoing) => link.transport(outgoing, request.signal)
-	});
-	const data = await client.outgoingDraft(body);
+	const outgoing = {
+		method: body === undefined ? ('GET' as const) : ('POST' as const),
+		pathAndQuery: outgoingDraftSyncPath,
+		body: body === undefined ? undefined : JSON.stringify(body)
+	};
+	const auth = new TrackerSyncAuthService(link.secret);
+	const data = await link.transport(
+		{
+			...outgoing,
+			headers: {
+				authorization: auth.authorizationHeader(outgoing),
+				'content-type': 'application/json',
+				'x-tracker-node': store.node
+			},
+			timeoutMs: 6000
+		},
+		request.signal
+	);
 	return Response.json(data, {
 		status: body === undefined ? 200 : 201,
 		headers: { 'cache-control': 'private, no-store' }

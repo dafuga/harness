@@ -28,7 +28,7 @@ const draftFields = z.strictObject({
 		.min(1)
 		.max(16000)
 		.regex(/\S/u)
-		.regex(/^[^\x00-\x08\x0b\x0c\x0e-\x1f\x7f]*$/u)
+		.refine((value) => !/\p{Cc}/u.test(value.replace(/[\t\n\r]/g, '')))
 });
 const draftMessage = draftFields.extend({
 	channel,

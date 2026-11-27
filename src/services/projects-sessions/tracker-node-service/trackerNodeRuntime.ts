@@ -104,8 +104,13 @@ function trackerAutomaticSetting(config: TrackerNodeConfig): () => boolean {
 
 function configuredSyncResponder(config: TrackerNodeConfig, secret: string) {
 	if (config.role === 'spoke' && !config.peer) return undefined;
+	const ownerKeyPath = config.role === 'hub' && process.env.HARNESS_TRACKER_OUTGOING_OWNER_KEY_FILE;
+	const ownerKey = ownerKeyPath ? readPrivateText(ownerKeyPath).trim() : '';
+	if (ownerKeyPath && (ownerKey.length < 32 || ownerKey === secret))
+		throw new TypeError('Tracker outgoing owner key requires a distinct private grant');
 	return {
 		auth: new TrackerSyncAuthService(secret),
+		outgoingOwnerAuth: ownerKey ? new TrackerSyncAuthService(ownerKey) : undefined,
 		...(config.role === 'hub' && { machines: trackerFleetMachineStore() })
 	};
 }

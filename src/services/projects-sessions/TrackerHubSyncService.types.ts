@@ -70,6 +70,7 @@ export interface TrackerHubRunStore {
 export interface TrackerHubOptions {
 	auth: TrackerSyncAuthService;
 	outgoingDrafts?: TrackerOutgoingDraftService;
+	outgoingOwnerAuth?: TrackerSyncAuthService;
 	store: TrackerHubStore;
 	machines?: TrackerHubMachineStore;
 	runs?: () => TrackerHubRunStore | null | undefined;

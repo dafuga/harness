@@ -9,6 +9,7 @@ import type { TrackerDispatchSchedulerOptions } from './TrackerDispatchScheduler
 import type { TrackerSchemaAdapterConfig } from '../../adapters/projects-sessions/TrackerSchemaAdapter.types';
 import type { TrackerNotificationSourceOptions } from '../../repositories/projects-sessions/TrackerNotificationSourceRepository.types';
 import type { TrackerAdapterPollDependencies } from './TrackerAdapterPollService.types';
+import type { TrackerOutgoingDraftServiceOptions } from './TrackerOutgoingDraftService.types';
 import type { TrackerHubOptions, TrackerWireValue } from './TrackerHubSyncService.types';
 import type { TrackerLocalApiOptions } from './TrackerLocalApiService.types';
 import type { TrackerMachineSampler } from './TrackerMachineService.types';
@@ -67,6 +68,7 @@ export interface TrackerNativeRuntimeOptions extends Omit<
 				onMachines?(machines: readonly unknown[]): void;
 			};
 		};
+	outgoingProvider?: TrackerOutgoingDraftServiceOptions['provider'];
 	syncResponder?: Omit<TrackerHubOptions, 'store'>;
 	links?: readonly Omit<TrackerSpokeLoopOptions, 'store'>[];
 }

@@ -2,14 +2,26 @@ import { randomUUID } from 'node:crypto';
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { expect } from 'vitest';
-import { fixtureTrackerJson, loopback, trackerProcess } from './trackerNodeProcess';
+import {
+	fixtureTrackerJson,
+	loopback,
+	trackerProcess,
+	verifyDefaultPickup,
+	verifyTrackerWire
+} from './trackerNodeProcess';
 import type { TrackerNodeFixture } from './trackerNodeProcess.types';
 
-export async function verifyDraftCli(
+export async function verifyDraftAndTrackerWire(
 	hub: TrackerNodeFixture,
 	spoke: TrackerNodeFixture,
-	itemId: string
+	{ id, syncPort }: { id: string; syncPort: number }
 ) {
+	await verifyDraftCli(hub, spoke, id);
+	await verifyDefaultPickup(hub);
+	await verifyTrackerWire(syncPort, id);
+}
+
+async function verifyDraftCli(hub: TrackerNodeFixture, spoke: TrackerNodeFixture, itemId: string) {
 	const id = randomUUID();
 	const file = join(dirname(spoke.path), 'outgoing-draft.json');
 	writeFileSync(

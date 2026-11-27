@@ -1,5 +1,4 @@
 // @harness-uid u_657a3wmun2
-import { outgoingDraftSyncPath } from './tracker-outgoing-draft-service/outgoingDraftAgentApi';
 import { z } from 'zod';
 import type { TrackerWireValue } from './TrackerHubSyncService.types';
 import { TrackerSyncAuthService } from '../networking-security/TrackerSyncAuthService';
@@ -81,17 +80,6 @@ export class TrackerSpokeSyncService {
 	async permitDue(id: string, token: string, scope: 'due' | 'automatic' = 'due'): Promise<boolean> {
 		const response = await this.#post('/sync/permit-' + scope, { id, token });
 		return duePermit.parse(response).allowed;
-	}
-
-	async outgoingDraft(input?: object) {
-		return this.#request(
-			{
-				method: input === undefined ? 'GET' : 'POST',
-				pathAndQuery: outgoingDraftSyncPath,
-				...(input === undefined ? {} : { body: JSON.stringify(input) })
-			},
-			6000
-		);
 	}
 
 	async exchangeMachine(sample: TrackerWireValue | undefined, runs: readonly TrackerWireValue[]) {

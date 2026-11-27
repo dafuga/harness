@@ -101,8 +101,7 @@ export class TrackerOutgoingDraftService {
 	private current({ id, revision }: TrackerOutgoingRevision) {
 		const current = this.drafts.find(id);
 		if (
-			!current ||
-			current.revision !== revision ||
+			current?.revision !== revision ||
 			current.status !== 'draft' ||
 			current.delivery === 'sending' ||
 			current.delivery === 'unconfirmed'

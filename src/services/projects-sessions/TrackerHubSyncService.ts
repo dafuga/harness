@@ -1,5 +1,12 @@
 // @harness-uid u_jkomno4o5u
-import { outgoingDraftSyncPath } from './tracker-outgoing-draft-service/outgoingDraftAgentApi';
+import {
+	outgoingDraftOwnerApi,
+	outgoingDraftOwnerPath
+} from './tracker-outgoing-draft-service/outgoingDraftOwnerApi';
+import {
+	outgoingDraftBodyLimit,
+	outgoingDraftSyncPath
+} from './tracker-outgoing-draft-service/outgoingDraftAgentApi';
 import { serveSyncedDraft } from './tracker-hub-sync/serveSyncedDraft';
 import type { TrackerHubOptions, TrackerHubRequest } from './TrackerHubSyncService.types';
 import { readTrackerHubBody, trackerHubResponse } from './tracker-hub-sync/hubHttp';
@@ -28,7 +35,13 @@ export class TrackerHubSyncService {
 		const { method, signal } = request;
 		try {
 			signal?.throwIfAborted();
-			const body = method === 'POST' ? await readTrackerHubBody(request) : '';
+			const draft =
+				request.pathAndQuery === outgoingDraftOwnerPath ||
+				request.pathAndQuery === outgoingDraftSyncPath;
+			const body =
+				method === 'POST'
+					? await readTrackerHubBody(request, draft ? outgoingDraftBodyLimit : undefined)
+					: '';
 			signal?.throwIfAborted();
 			return await this.authenticateAndRoute(request, body);
 		} catch (error) {
@@ -51,6 +64,7 @@ export class TrackerHubSyncService {
 	): Response | Promise<Response> {
 		const { method, pathAndQuery, headers } = request;
 		const now = this.#options.now?.() ?? Date.now();
+		if (pathAndQuery === outgoingDraftOwnerPath) return this.ownerRoute(request, body, now);
 		const authorization = headers.get('authorization') ?? undefined;
 		if (!this.#options.auth.verify({ method, pathAndQuery, body }, authorization, now)) {
 			return trackerHubResponse(401, { error: 'unauthorized' });
@@ -59,7 +73,21 @@ export class TrackerHubSyncService {
 		const label = headers.get('x-tracker-node') ?? '';
 		const peer = label.length === 0 ? '?' : label;
 		this.#seen.set(peer, new Date(now).toISOString());
-		return this.route(request, body, peer);
+		return this.fleetRoute(request, body, peer) ?? this.route(request, body, peer);
+	}
+
+	private ownerRoute(request: TrackerHubRequest, body: string, now: number) {
+		const { outgoingDrafts: service, outgoingOwnerAuth: auth } = this.#options;
+		return service && auth
+			? outgoingDraftOwnerApi({ service, auth }, request, body, now)
+			: trackerHubResponse(404, { error: 'not found' });
+	}
+
+	private fleetRoute(request: TrackerHubRequest, body: string, peer: string) {
+		const service = this.#options.outgoingDrafts;
+		if (service && request.pathAndQuery === outgoingDraftSyncPath)
+			return serveSyncedDraft(service, request.method, body, peer);
+		return undefined;
 	}
 
 	private route(
@@ -71,8 +99,6 @@ export class TrackerHubSyncService {
 		const queryStart = pathAndQuery.indexOf('?');
 		const path = queryStart < 0 ? pathAndQuery : pathAndQuery.slice(0, queryStart);
 		const store = this.#options.store;
-		if (path === outgoingDraftSyncPath && queryStart === -1 && this.#options.outgoingDrafts)
-			return serveSyncedDraft(this.#options.outgoingDrafts, request.method, body, peer);
 		switch (`${method} ${path}`) {
 			case 'POST /sync/push':
 				return receiveJournalPush(store, body);
