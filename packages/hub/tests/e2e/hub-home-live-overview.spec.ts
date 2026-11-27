@@ -62,6 +62,9 @@ for (const [device, width, height] of [
 		await expect(liveRows(page).first()).toBeHidden();
 		const alert = page.getByRole('status', { name: 'System alerts' });
 		await expect(alert).toContainText('Offline: grok-box');
+		await expect(
+			page.locator('.hh-system-alert + *').getByRole('heading', { name: 'Blocked - needs you' })
+		).toBeVisible();
 		await expect(overview(page)).not.toContainText('Offline: grok-box');
 		const main = page.getByRole('main');
 		await expect(main.locator(':scope > section').last()).toHaveAccessibleName('Live overview');

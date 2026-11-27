@@ -231,7 +231,12 @@ test('with nothing stored on the Hub, a row tap goes to the linked Mac over its 
 
 test('a flag without choices is not counted, listed or answerable', async ({ page }) => {
 	await home(page, 'desktop', 'no-choices');
-	await expect(needsYou(page)).toHaveCount(0);
-	await expect(page.getByText(/\d+ needs? you/)).toHaveCount(0);
+	await expect(page.locator('.hh-home section').first()).toHaveAccessibleName(
+		'Blocked - needs you'
+	);
+	await expect(needsYou(page)).toContainText('Nothing needs you right now');
+	await expect(needsYou(page).getByText('0', { exact: true })).toBeVisible();
+	await expect(needsYou(page).getByRole('button')).toHaveCount(0);
+	await shot(page, 'blockers-empty-desktop');
 	await expect(page.getByRole('heading', { level: 1 })).not.toContainText('you');
 });
