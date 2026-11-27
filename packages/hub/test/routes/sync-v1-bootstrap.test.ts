@@ -11,6 +11,7 @@ import {
 } from '../../../remote/src/utils/networking-security/sealedDevice';
 import {
 	openSealedGrant,
+	rewrapSealedGrant,
 	sealedGrant
 } from '../../../remote/src/utils/networking-security/sealedGrant';
 import {
@@ -162,4 +163,51 @@ async function verifyRecovery(winner: Awaited<ReturnType<typeof candidate>>) {
 	expect(stored.grants).toEqual([winner.body.grants[1]]);
 	const keys = await openSealedGrant(stored.grants[0], freshDevice, verified);
 	expect(toBase64Url(keys.commitment)).toBe(winner.commitment);
+	await recoverInstallation(stored.grants[0], freshDevice, verified);
+}
+
+async function recoverInstallation(
+	grant: Parameters<typeof openSealedGrant>[0],
+	recovery: Parameters<typeof openSealedGrant>[1],
+	chain: Parameters<typeof openSealedGrant>[2]
+) {
+	const replacement = await sealedDevice();
+	const device = sealedDevicePublic(replacement, 'admin', [grant.scope]);
+	const entry = await sealedChainEntry(recovery, {
+		seq: chain.seq + 1,
+		prev: chain.head,
+		at: 3,
+		by: recovery.deviceId,
+		body: { type: 'enroll', device }
+	});
+	expect(rewrapSealedGrant).toBeTypeOf('function');
+	const wrapped = await rewrapSealedGrant(grant, recovery, chain, device);
+	const headers = { 'X-Harness-Device': recovery.deviceId };
+	const response = await fixture.call('session-a', 'POST', 'devices', {
+		headers,
+		body: { entries: [entry], grants: [wrapped] }
+	});
+	expect(await snapshot(response)).toEqual({
+		status: 201,
+		body: { seq: entry.seq, hash: await chainEntryHash(entry) }
+	});
+	await readReplacementGrant(grant, replacement, headers);
+}
+
+async function readReplacementGrant(
+	original: Parameters<typeof openSealedGrant>[0],
+	replacement: Parameters<typeof openSealedGrant>[1],
+	headers: { 'X-Harness-Device': string }
+) {
+	const path = `grants?device=${replacement.deviceId}`;
+	const reply = await fixture.call('session-a', 'GET', path, { headers });
+	const { grants } = (await reply.json()) as { grants: (typeof original)[] };
+	expect(grants).toHaveLength(1);
+	const history = await fixture.call('session-a', 'GET', 'chain', { headers });
+	const { entries } = (await history.json()) as {
+		entries: Awaited<ReturnType<typeof sealedChainEntry>>[];
+	};
+	const state = await sealedChain(entries, { account });
+	const opened = await openSealedGrant(grants[0], replacement, state);
+	expect(toBase64Url(opened.commitment)).toBe(state.scopes[original.scope].commitments[0]);
 }
