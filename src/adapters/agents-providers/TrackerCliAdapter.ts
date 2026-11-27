@@ -84,8 +84,16 @@ function view(row: Record<string, unknown>): TrackerItemView {
 		priority: text(row.priority, 20),
 		due: typeof row.due === 'string' ? row.due : null,
 		owner: text(row.owner, 80),
-		notes: notes.map((note) => note.slice(0, 300))
+		notes: notes.map((note) => note.slice(0, 300)),
+		runs: rows(row.runs).slice(-5).map(runSummary)
 	};
+}
+
+function runSummary(run: Record<string, unknown>): string {
+	return [run.state, run.outcome, run.started_at, run.ended_at]
+		.map((field) => text(field, 25))
+		.filter(Boolean)
+		.join(' ');
 }
 
 export type {

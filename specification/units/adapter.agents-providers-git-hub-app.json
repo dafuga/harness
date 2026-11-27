@@ -19,6 +19,7 @@
 			"GitHubAppAdapter.repoQualifier",
 			"GitHubAppAdapter.read",
 			"GitHubAppAdapter.createIssue",
+			"GitHubAppAdapter.commentOnIssue",
 			"GitHubAppAdapterConfig",
 			"GitHubIssueInput",
 			"GitHubKeyAccess",
@@ -52,6 +53,16 @@
 				"name": "GitHubAppAdapter.createIssue.input",
 				"type": "GitHubIssueInput",
 				"required": true
+			},
+			{
+				"name": "GitHubAppAdapter.commentOnIssue.issue",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "GitHubAppAdapter.commentOnIssue.body",
+				"type": "string",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -70,6 +81,10 @@
 			{
 				"name": "GitHubAppAdapter.createIssue",
 				"type": "Promise<{ number: number; url: string }>"
+			},
+			{
+				"name": "GitHubAppAdapter.commentOnIssue",
+				"type": "Promise<void>"
 			}
 		],
 		"errors": [
@@ -146,6 +161,34 @@
 					{
 						"name": "GitHubAppAdapter.createIssue",
 						"type": "Promise<{ number: number; url: string }>"
+					}
+				],
+				"errors": [
+					{
+						"name": "ProjectAssistantError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "GitHubAppAdapter.commentOnIssue",
+				"inputs": [
+					{
+						"name": "GitHubAppAdapter.commentOnIssue.issue",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "GitHubAppAdapter.commentOnIssue.body",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "GitHubAppAdapter.commentOnIssue",
+						"type": "Promise<void>"
 					}
 				],
 				"errors": [

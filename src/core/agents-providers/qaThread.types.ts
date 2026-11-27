@@ -5,13 +5,14 @@ import type { UntrustedValue } from './projectAssistant.types';
 export type QaGitHubRow = Record<string, UntrustedValue>;
 
 export type QaThreadOutcome =
-	| { status: 'posted'; channelId: string; parentTs: string }
+	| { status: 'posted'; channelId: string; parentTs: string; linkBackFailed?: true }
 	| { status: 'skipped'; reason: string }
 	| { status: 'unknown'; reason: 'post-failed-after-reservation' };
 export interface QaLabelEvent {
 	/** GitHub label event id; the ledger key. */
 	eventId: string;
 	issue: number;
+	deployedRevision?: string;
 }
 
 export interface QaTask {
@@ -44,9 +45,10 @@ export interface QaRunbookStep {
 }
 
 export interface QaThreadPorts {
+	stillLive?(event: QaLabelEvent): Promise<boolean>;
 	writeSteps(task: QaTask): Promise<readonly QaRunbookStep[]>;
 	/** Records a short walkthrough on the target environment and returns the local MP4 path. */
-	record(task: QaTask, steps: readonly QaRunbookStep[]): Promise<string>;
+	record(task: QaTask, steps: readonly QaRunbookStep[], deployedRevision?: string): Promise<string>;
 	post(thread: QaThreadPost): Promise<{ channelId: string; parentTs: string }>;
 	linkBack(task: QaTask, permalink: string): Promise<void>;
 }

@@ -10,6 +10,8 @@ import type { SlackAdapterConfig } from '../SlackAdapter.types';
 import { SlackRequestError } from './SlackRequestError';
 import { authReply, postReply, socketAddress } from './slackWire';
 
+import type { SlackAssistantMethod } from './SlackWebApi.types';
+
 const endpoint = 'https://slack.com/api/';
 const defaultRetryMs = 1000;
 const ambiguousErrors = new Set([
@@ -44,6 +46,13 @@ export class SlackWebApi {
 			if (!posted.success || posted.data.channel !== message.channelId)
 				throw new SlackRequestError('delivery-unknown');
 			return { channelId: posted.data.channel, messageId: posted.data.ts };
+		});
+	}
+
+	assistantCommand(method: SlackAssistantMethod, body: object): Promise<unknown> {
+		return this.use('bot', async (token) => {
+			await this.verify(token);
+			return this.request(method, token, body);
 		});
 	}
 
@@ -90,7 +99,7 @@ export class SlackWebApi {
 	}
 
 	private async request(
-		method: 'auth.test' | 'chat.postMessage' | 'apps.connections.open',
+		method: 'auth.test' | 'chat.postMessage' | 'apps.connections.open' | SlackAssistantMethod,
 		token: string,
 		body?: object
 	): Promise<unknown> {

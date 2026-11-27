@@ -10,7 +10,10 @@ const repoPart = z.string().regex(/^[A-Za-z0-9_.-]{1,100}$/);
 const digits = z.string().regex(/^[0-9]{1,20}$/);
 const channel = z.string().regex(/^[CG][A-Z0-9]{1,63}$/);
 const user = z.string().regex(/^[UW][A-Z0-9]{1,63}$/);
-const httpsUrl = z.string().refine((value) => URL.parse(value)?.protocol === 'https:');
+const httpsUrl = z.string().refine((value) => {
+	const url = URL.parse(value);
+	return url?.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash;
+});
 
 const schema = z.strictObject({
 	project: slug,

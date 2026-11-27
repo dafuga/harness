@@ -58,7 +58,7 @@ export class SlackAdapter implements PlatformAdapter {
 
 		let result: PlatformSendResult;
 		if (!parsed) result = refusedSend(requestId, new SlackRequestError('invalid-message'));
-		else if (!this.channels.has(parsed.channelId))
+		else if (!this.channels.has(parsed.channelId) && !this.subscription.allowsDirectReply(parsed))
 			result = refusedSend(requestId, new SlackRequestError('denied'));
 		else result = await this.posts.send(parsed, requestId);
 

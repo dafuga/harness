@@ -19,4 +19,5 @@ export interface TrackerItemView {
 	due: string | null;
 	owner: string;
 	notes: readonly string[];
+	runs: readonly string[];
 }

@@ -26,10 +26,12 @@ export class RunbookCanvasService {
 		if (state?.digest === digest) return { status: 'unchanged', canvasId: state.canvasId };
 		if (state) {
 			await this.ports.replace(state.canvasId, markdown);
+			if (!state.digest) await this.ports.share(state.canvasId, this.options.channels);
 			await this.ports.saveState({ canvasId: state.canvasId, digest });
 			return { status: 'updated', canvasId: state.canvasId };
 		}
 		const canvasId = await this.ports.create(this.options.title, markdown);
+		await this.ports.saveState({ canvasId, digest: '' });
 		await this.ports.share(canvasId, this.options.channels);
 		await this.ports.saveState({ canvasId, digest });
 		return { status: 'created', canvasId };

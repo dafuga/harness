@@ -5,11 +5,23 @@ import { redactSecrets } from '../../../utils/agents-providers/redactSecrets';
 const qaVideoBlock = /^```qa-video[\s\S]*?^```[^\S\r\n]*$/gm;
 
 function cleanLinks(markdown: string, allowedOrigins: readonly string[]): string {
-	return markdown.replace(/\[([^\]\n]+)\]\(([^)\s]+)\)/g, (_all, label: string, target: string) => {
-		const url = URL.parse(target);
-		const allowed = url && !url.username && !url.password && allowedOrigins.includes(url.origin);
-		return allowed ? `[${label}](${url.href})` : label;
-	});
+	return markdown
+		.replace(/<[^>]*>/g, '')
+		.replace(/!?\[([^\]\n]*)\]\(([^)\n]*)\)/g, (_all, label: string, target: string) => {
+			const safe = cleanUrl(target, allowedOrigins);
+			return safe ? `[${label}](${safe})` : label;
+		})
+		.replace(
+			/https?:\/\/[^\s<>)\]]+/gi,
+			(target) => cleanUrl(target, allowedOrigins) ?? '[link removed]'
+		);
+}
+
+function cleanUrl(target: string, allowedOrigins: readonly string[]): string | undefined {
+	const url = URL.parse(target);
+	if (url && !url.username && !url.password && allowedOrigins.includes(url.origin))
+		return url.origin + url.pathname;
+	return undefined;
 }
 
 /** One canvas: a contents list, then each runbook as its own section. Secrets and foreign links removed. */

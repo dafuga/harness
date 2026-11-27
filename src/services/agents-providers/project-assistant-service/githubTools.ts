@@ -41,7 +41,7 @@ export function githubReadTools(github: GitHubAppAdapter): AssistantToolDefiniti
 		const text = list
 			.map((r) => {
 				const state = `${str(r.status, 20)}/${str(r.conclusion, 20)}`;
-				return `${str(r.name, 60)} ${str(r.head_branch, 60)} ${state} ${str(r.head_sha, 10)} ${str(r.created_at, 25)}`;
+				return `run ${String(r.id ?? '')} ${str(r.name, 60)} ${str(r.head_branch, 60)} ${state} ${str(r.head_sha, 10)} ${str(r.created_at, 25)}`;
 			})
 			.join('\n');
 		return { text, sources: list.slice(0, 3).flatMap((r) => sourceOf(r, str(r.name, 40))) };
@@ -59,6 +59,31 @@ export function githubReadTools(github: GitHubAppAdapter): AssistantToolDefiniti
 			'List recent GitHub Actions runs, optionally for one branch.',
 			{ fields: { branch: 'string' } },
 			runs
+		),
+		assistantToolDefinition(
+			'github_run_jobs',
+			'Read job states for a GitHub Actions run and link to the jobs with their logs.',
+			{ fields: { id: 'string' }, required: ['id'] },
+			(input) => readRunJobs(github, input)
 		)
 	];
+}
+
+async function readRunJobs(
+	github: GitHubAppAdapter,
+	input: ToolInput
+): Promise<AssistantToolResult> {
+	const id = String(input.id ?? '');
+	if (!/^[1-9]\d{0,17}$/.test(id))
+		throw new ProjectAssistantError('A numeric GitHub Actions run id is required.');
+	const result = (await github.read(`${github.repoPath}/actions/runs/${id}/jobs`, {
+		per_page: '20'
+	})) as ToolInput;
+	const list = arr(result.jobs);
+	return {
+		text: list
+			.map((job) => `${str(job.name, 80)} ${str(job.status, 20)}/${str(job.conclusion, 20)}`)
+			.join('\n'),
+		sources: list.slice(0, 4).flatMap((job) => sourceOf(job, str(job.name, 50)))
+	};
 }

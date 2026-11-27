@@ -13,10 +13,10 @@ const api = 'https://api.github.com';
 const segment = '[A-Za-z0-9._~%:-]+';
 const readPaths = [
 	/^\/search\/(issues|code)$/,
-	/^\/repos\/[^/]+\/[^/]+\/issues(\/\d+(\/comments)?)?$/,
+	/^\/repos\/[^/]+\/[^/]+\/issues(\/\d+(\/(comments|events))?)?$/,
 	/^\/repos\/[^/]+\/[^/]+\/pulls(\/\d+(\/files)?)?$/,
-	/^\/repos\/[^/]+\/[^/]+\/actions\/runs(\/\d+)?$/,
-	/^\/repos\/[^/]+\/[^/]+\/commits(\/[0-9a-f]{7,40})?$/,
+	/^\/repos\/[^/]+\/[^/]+\/actions\/runs(\/\d+(\/jobs)?)?$/,
+	/^\/repos\/[^/]+\/[^/]+\/commits(\/[0-9a-f]{7,40}(\/check-runs)?)?$/,
 	new RegExp(`^/repos/[^/]+/[^/]+/(branches|compare|releases)(/${segment})?$`),
 	/^\/repos\/[^/]+\/[^/]+\/contents(\/[A-Za-z0-9._~%@+-]+)*$/
 ];
@@ -64,6 +64,14 @@ export class GitHubAppAdapter {
 		if (typeof reply.number !== 'number' || typeof reply.html_url !== 'string')
 			throw new ProjectAssistantError('GitHub issue creation returned an unexpected reply.');
 		return { number: reply.number, url: reply.html_url };
+	}
+
+	async commentOnIssue(issue: number, body: string): Promise<void> {
+		if (!Number.isSafeInteger(issue) || issue <= 0 || !body.trim())
+			throw new ProjectAssistantError('Invalid QA issue comment.');
+		await this.send('POST', new URL(`${api}${this.repoPath}/issues/${issue}/comments`), 'issues', {
+			body
+		});
 	}
 
 	private async send(

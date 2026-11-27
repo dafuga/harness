@@ -15,6 +15,7 @@
 		"symbols": [
 			"QaLedgerRepository",
 			"QaLedgerRepository.constructor",
+			"QaLedgerRepository.hasReservation",
 			"QaLedgerRepository.reserve",
 			"QaLedgerRepository.recordPost",
 			"QaLedgerRepository.unresolved",
@@ -27,6 +28,16 @@
 			{
 				"name": "QaLedgerRepository.constructor.path",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaLedgerRepository.hasReservation.eventId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "QaLedgerRepository.hasReservation.issue",
+				"type": "number",
 				"required": true
 			},
 			{
@@ -62,6 +73,10 @@
 		],
 		"outputs": [
 			{
+				"name": "QaLedgerRepository.hasReservation",
+				"type": "Promise<boolean>"
+			},
+			{
 				"name": "QaLedgerRepository.reserve",
 				"type": "Promise<'new' | 'duplicate'>"
 			},
@@ -82,6 +97,29 @@
 		],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "QaLedgerRepository.hasReservation",
+				"inputs": [
+					{
+						"name": "QaLedgerRepository.hasReservation.eventId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "QaLedgerRepository.hasReservation.issue",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "QaLedgerRepository.hasReservation",
+						"type": "Promise<boolean>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
 			{
 				"name": "QaLedgerRepository.reserve",
 				"inputs": [

@@ -8,13 +8,18 @@
 	"responsibilityOrigin": "derived",
 	"status": "active",
 	"owns": {
-		"source": ["src/adapters/agents-providers/slack-adapter/SlackWebApi.ts"],
+		"source": [
+			"src/adapters/agents-providers/slack-adapter/SlackWebApi.ts",
+			"src/adapters/agents-providers/slack-adapter/SlackWebApi.types.ts"
+		],
 		"symbols": [
 			"SlackWebApi",
 			"SlackWebApi.constructor",
 			"SlackWebApi.identity",
 			"SlackWebApi.post",
-			"SlackWebApi.openSocket"
+			"SlackWebApi.assistantCommand",
+			"SlackWebApi.openSocket",
+			"SlackAssistantMethod"
 		]
 	},
 	"contract": {
@@ -29,6 +34,16 @@
 				"name": "SlackWebApi.post.message",
 				"type": "PlatformMessage",
 				"required": true
+			},
+			{
+				"name": "SlackWebApi.assistantCommand.method",
+				"type": "SlackAssistantMethod",
+				"required": true
+			},
+			{
+				"name": "SlackWebApi.assistantCommand.body",
+				"type": "object",
+				"required": true
 			}
 		],
 		"outputs": [
@@ -39,6 +54,10 @@
 			{
 				"name": "SlackWebApi.post",
 				"type": "Promise<PlatformReceipt>"
+			},
+			{
+				"name": "SlackWebApi.assistantCommand",
+				"type": "Promise<unknown>"
 			},
 			{
 				"name": "SlackWebApi.openSocket",
@@ -78,6 +97,29 @@
 					{
 						"name": "SlackWebApi.post",
 						"type": "Promise<PlatformReceipt>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SlackWebApi.assistantCommand",
+				"inputs": [
+					{
+						"name": "SlackWebApi.assistantCommand.method",
+						"type": "SlackAssistantMethod",
+						"required": true
+					},
+					{
+						"name": "SlackWebApi.assistantCommand.body",
+						"type": "object",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "SlackWebApi.assistantCommand",
+						"type": "Promise<unknown>"
 					}
 				],
 				"errors": [],
