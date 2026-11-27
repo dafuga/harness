@@ -118,7 +118,8 @@ function readFinishedPaneRun(
 		AND (r.item_id = ? OR substr(r.item_id, 1, 6) = ?)
 		AND r.state = 'finished' AND r.ended_at <= ? AND r.cli IN ('codex', 'claude')
 		AND NOT (
-			r.outcome = 'blocked' AND i.status = 'blocked' AND i.auto = r.auto_token
+			coalesce(r.outcome,'') = 'blocked' AND coalesce(i.status,'') = 'blocked'
+			AND coalesce(i.auto = r.auto_token, 0)
 			AND i.resolved = 1 AND i.needs_daniel = 0
 			AND coalesce(json_extract(i.clocks,'$.answer'),'') > coalesce(json_extract(i.clocks,'$.question'),'')
 			AND coalesce(json_extract(i.clocks,'$.answer'),'') > coalesce(json_extract(i.clocks,'$.status'),'')
