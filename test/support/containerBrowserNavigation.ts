@@ -1,6 +1,5 @@
 import { once } from 'node:events';
-import { mkdtemp, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium, expect, type Page } from '@playwright/test';
 import type { ContainerBrowserAdapter } from '../../src/adapters/execution-runtimes/ContainerBrowserAdapter';
@@ -10,13 +9,14 @@ import { pipeWebSocket } from '../../src/adapters/execution-runtimes/container-c
 import { ViewerDeviceRepository } from '../../src/repositories/execution-runtimes/ViewerDeviceRepository';
 import { ContainerViewerGateService } from '../../src/services/execution-runtimes/ContainerViewerGateService';
 import { browserErrorCollector } from './browserTest';
+import { createTempDirectory } from './temporary';
 
 const url = 'http://127.0.0.1:18703';
 const sizes = { desktop: [1440, 900], tablet: [768, 1024], phone: [390, 844] } as const;
 
 /** Drives the real paired viewer and a headed Chromium popup in a disposable profile. */
 export async function checkContainerViewer(browser: ContainerBrowserAdapter, profile: string) {
-	const directory = await mkdtemp(join(tmpdir(), 'container-viewer-e2e-'));
+	const directory = await createTempDirectory('container-viewer-e2e-');
 	const cdp = new ContainerCdpAdapter(browser);
 	const [parent] = await cdp.pages();
 	const devices = new ViewerDeviceRepository(join(directory, 'devices'));
@@ -63,8 +63,8 @@ export async function checkContainerViewer(browser: ContainerBrowserAdapter, pro
 		await client.close();
 		await gate.close().catch(() => undefined);
 		await rm(directory, { recursive: true, force: true });
-		await errors.finish();
 	}
+	await errors.finish();
 	return 'Back, Forward, Reload, Home and URL acted on the popup';
 }
 
