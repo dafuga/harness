@@ -18,7 +18,7 @@ function isEpoch(value: unknown): boolean {
 	return Number.isSafeInteger(value) && (value as number) >= 0 && (value as number) <= 0xffffffff;
 }
 
-function asGrant(value: unknown, account: string): Grant | null {
+export function asGrant(value: unknown, account: string): Grant | null {
 	if (!value || typeof value !== 'object') return null;
 	const grant = value as Record<string, unknown>;
 	const named = grant.account === account && isScopeId(grant.scope) && isDeviceId(grant.device);

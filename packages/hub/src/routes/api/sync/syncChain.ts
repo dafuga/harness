@@ -18,7 +18,7 @@ function isLink(entry: Record<string, unknown>): boolean {
 	);
 }
 
-function isEntry(value: unknown): value is SealedChainEntry {
+export function isEntry(value: unknown): value is SealedChainEntry {
 	if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
 	const entry = value as Record<string, unknown>;
 	const signed = typeof entry.by === 'string' && typeof entry.sig === 'string';
