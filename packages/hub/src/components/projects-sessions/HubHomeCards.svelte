@@ -49,7 +49,7 @@
 	} = $props();
 	const cosChat = homeCosChat() ?? provideHomeCosChat();
 	/** The chat opens in the Agents dialog on whoever needs you, as the old inline composer did. */
-	const recipient = $derived(currentAgent([...(view.agents ?? []), ...view.asks]));
+	const recipient = $derived(currentAgent(view.agents ?? []));
 	const working = $derived(view.agents?.filter(isWorking).length ?? 0);
 	const warning = $derived(lowestLimit(view.quota ?? [], view.now));
 	const lows = $derived(
@@ -74,11 +74,13 @@
 	</EmptyState>
 {/snippet}
 
-<HubHomeNeedsYou asks={view.openAsks} now={view.now} {open} {send} {receipt} />
+<HubHomeNeedsYou asks={view.openAsks} now={view.now} {send} {receipt} />
 {#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
 		agent={view.agents.find((agent) => agent.id === 'cos')}
 		now={new Date(view.now).toISOString()}
+		asks={view.openAsks}
 		{send}
+		{receipt}
 	/>{/if}
 <hx-div class="hh-grid">
 	<HubHomeCard

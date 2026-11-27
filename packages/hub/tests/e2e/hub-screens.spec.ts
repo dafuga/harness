@@ -73,6 +73,7 @@ async function homeWithLinks(page: Page) {
 	};
 	chief.messages.push({
 		id: 'link-note',
+		replyTo: 'prior-message',
 		from: 'agent',
 		text: `See ${itemLinks.note}. Leave javascript:alert(1) and ftp://example.invalid/file as text.`,
 		at: new Date().toISOString()
@@ -161,8 +162,8 @@ for (const size of sizes) {
 		expect(fixture.sent).toHaveLength(0);
 		await expect(page.getByRole('dialog')).toHaveCount(0);
 
-		await needs.getByRole('button', { name: /View details/ }).click();
-		const detail = page.getByRole('region', { name: 'Chat with Chief of Staff' });
+		await needs.getByRole('button', { name: 'Talk to Chief of Staff', exact: true }).click();
+		const detail = page.getByRole('dialog', { name: 'Chief of Staff', exact: true });
 		await checkLink(detail, itemLinks.question);
 		await checkLink(detail, itemLinks.label);
 		await checkLink(detail, itemLinks.effect);

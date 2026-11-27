@@ -4,12 +4,13 @@
 	"uid": "u_suxmf5vsuw",
 	"kind": "component",
 	"title": "HubHomeCosChat",
-	"responsibility": "Shows Daniel's latest messages to Chief of Staff on Home with their receipts and replies, and sends a new one.",
+	"responsibility": "Shows the Chief of Staff conversation and the selected item or open question in a single chat overlay.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
 			"hub.component.projects-sessions-hub-home-composer",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -22,8 +23,12 @@
 		]
 	},
 	"owns": {
-		"source": ["packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte"],
-		"symbols": ["HubHomeCosChat"]
+		"source": [
+			"packages/hub/src/components/projects-sessions/HubHomeCosChat.svelte"
+		],
+		"symbols": [
+			"HubHomeCosChat"
+		]
 	},
 	"contract": {
 		"origin": "declared",
@@ -48,11 +53,25 @@
 				"description": "Sends one Home message through a linked computer or the Hub queue."
 			},
 			{
+				"name": "HubHomeCosChat.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Reads an existing Tracker answer receipt when the web widget shows an open question."
+			},
+			{
+				"name": "HubHomeCosChat.asks",
+				"type": "HomeOpenAsk[]",
+				"required": false,
+				"default": [],
+				"description": "Provides the current open questions. A resolved question loses its answer options."
+			},
+			{
 				"name": "HubHomeCosChat.showCard",
 				"type": "boolean",
 				"required": false,
 				"default": true,
-				"description": "Shows the Chief of Staff summary card alongside the widget. The native work screen only needs the widget."
+				"description": "Shows the summary card on Hub Home. The installed work screen uses the overlay alone."
 			}
 		],
 		"outputs": [
@@ -68,6 +87,11 @@
 		"initialization": []
 	},
 	"dependencies": [
+		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-composer",
 			"via": "import",

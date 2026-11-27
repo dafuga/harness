@@ -9,7 +9,7 @@
 	"status": "active",
 	"owns": {
 		"source": ["packages/hub/src/components/projects-sessions/hubHomeChatContext.types.ts"],
-		"symbols": ["HomeChatItemContext", "OpenHomeCosChat"]
+		"symbols": ["HomeChatItemContext", "OpenHomeCosChat", "OpenHomeCosAsk", "HomeCosChatTarget"]
 	},
 	"contract": {
 		"origin": "derived",

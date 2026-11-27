@@ -69,6 +69,30 @@
 	"references": [
 		{
 			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/project-overview.css",
+			"to": "packages/reports/src/lib/styles/project-overview.css",
+			"reason": "The installed plan and schedule use the same card and dialog tokens as Hub."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/project-overview-cards.css",
+			"to": "packages/reports/src/lib/styles/project-overview-cards.css",
+			"reason": "The installed plan and schedule use the same card and dialog tokens as Hub."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/project-overview-controls.css",
+			"to": "packages/reports/src/lib/styles/project-overview-controls.css",
+			"reason": "The installed plan and schedule use the same card and dialog tokens as Hub."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
+			"specifier": "$reports/lib/styles/project-overview-responsive.css",
+			"to": "packages/reports/src/lib/styles/project-overview-responsive.css",
+			"reason": "The installed plan and schedule use the same card and dialog tokens as Hub."
+		},
+		{
+			"from": "packages/desktop/src/components/development-tooling/TrackerWork.svelte",
 			"specifier": "$reports/components/Modal.svelte",
 			"to": "packages/reports/src/components/Modal.svelte",
 			"reason": "The feature uses the shared component or data contract resolved by the app build."

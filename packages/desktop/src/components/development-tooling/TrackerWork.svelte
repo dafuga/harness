@@ -2,6 +2,7 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_qvuoo5oeav -->
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount, tick } from 'svelte';
 	import Modal from '$reports/components/Modal.svelte';
 	import { splitHomeSchedule } from '$reports/lib/projects-sessions/hub-home/homeSchedule';
@@ -17,6 +18,10 @@
 	import HubHomePlans from '../../../../hub/src/components/projects-sessions/HubHomePlans.svelte';
 	import HubHomeSchedule from '../../../../hub/src/components/projects-sessions/HubHomeSchedule.svelte';
 	import { provideHomeCosChat } from '../../../../hub/src/components/projects-sessions/hubHomeChatContext.svelte';
+	import '$reports/lib/styles/project-overview.css';
+	import '$reports/lib/styles/project-overview-cards.css';
+	import '$reports/lib/styles/project-overview-controls.css';
+	import '$reports/lib/styles/project-overview-responsive.css';
 	import '../../../../hub/src/lib/styles/home-scheme.css';
 	import '../../../../hub/src/lib/styles/hub-home/index.css';
 
@@ -90,49 +95,54 @@
 	}
 </script>
 
-<hx-section
-	class="home-scheme hh-home"
-	data-harness-component="tracker-work"
-	aria-label="Tracker plans and schedule"
->
-	<hx-div class="po-page hh-page">
-		<hx-h1 class="hh-title">Plans and schedule</hx-h1>
-		{#if unavailable}
-			<hx-p role="status" class="po-sessions">
-				{mac
-					? 'Tracker could not be reached on this Mac.'
-					: 'Connect to your Mac to read its latest plans and schedule.'}
-			</hx-p>
-		{/if}
-		<hx-div class="hh-grid">
-			<HubHomePlannable {view} {open} />
-		</hx-div>
-	</hx-div>
-
-	{#if list}
-		<Modal
-			isOpen
-			title={list === 'plans' ? 'Plans' : 'Scheduled'}
-			variant="section"
-			onClose={closeList}
-		>
-			{#if list === 'plans'}
-				<HubHomePlans
-					plans={view.plans}
-					agents={[]}
-					discuss={() => {}}
-					openPlan={(id, opener) => (selection = { id, opener })}
-				/>
-			{:else}
-				<HubHomeSchedule runs={view.schedule} {now} />
+<hx-div class="home-scheme">
+	<hx-section
+		class="home-page hh-home"
+		data-harness-component="tracker-work"
+		aria-label="Tracker plans and schedule"
+	>
+		<hx-div class="po-page hh-page">
+			<hx-header class="po-head hh-head">
+				<hx-a class="po-home" href={resolve('/')}>Home</hx-a>
+				<hx-h1 class="po-title">Plans and schedule</hx-h1>
+			</hx-header>
+			{#if unavailable}
+				<hx-p role="status" class="po-sessions">
+					{mac
+						? 'Tracker could not be reached on this Mac.'
+						: 'Connect to your Mac to read its latest plans and schedule.'}
+				</hx-p>
 			{/if}
-		</Modal>
-	{/if}
-	{#if activePlan}<HubHomePlanDetail plan={activePlan} close={closePlan} {mac} />{/if}
-	<HubHomeCosChat
-		agent={snapshot?.agents.find((agent) => agent.id === 'cos')}
-		now={new Date(now).toISOString()}
-		{send}
-		showCard={false}
-	/>
-</hx-section>
+			<hx-div class="hh-grid">
+				<HubHomePlannable {view} {open} />
+			</hx-div>
+		</hx-div>
+
+		{#if list}
+			<Modal
+				isOpen
+				title={list === 'plans' ? 'Plans' : 'Scheduled'}
+				variant="section"
+				onClose={closeList}
+			>
+				{#if list === 'plans'}
+					<HubHomePlans
+						plans={view.plans}
+						agents={[]}
+						discuss={() => {}}
+						openPlan={(id, opener) => (selection = { id, opener })}
+					/>
+				{:else}
+					<HubHomeSchedule runs={view.schedule} {now} />
+				{/if}
+			</Modal>
+		{/if}
+		{#if activePlan}<HubHomePlanDetail plan={activePlan} close={closePlan} {mac} />{/if}
+		<HubHomeCosChat
+			agent={snapshot?.agents.find((agent) => agent.id === 'cos')}
+			now={new Date(now).toISOString()}
+			{send}
+			showCard={false}
+		/>
+	</hx-section>
+</hx-div>

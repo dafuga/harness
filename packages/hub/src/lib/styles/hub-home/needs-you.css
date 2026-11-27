@@ -160,6 +160,7 @@
 @media (min-width: 561px) {
 	.hh-home dialog.hh-dialog:has(.hh-cos-widget) {
 		position: fixed;
+		z-index: var(--hx-layer-overlay);
 		inset: auto var(--hx-space-16) var(--hx-space-16) auto;
 		width: min(30rem, calc(100vw - var(--hx-space-32)));
 		height: min(34rem, calc(100dvh - var(--hx-space-32)));

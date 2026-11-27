@@ -196,6 +196,10 @@
 	position: relative;
 	z-index: 1;
 }
+.hh-home .hh-plan .po-callout-actions > button {
+	position: relative;
+	z-index: 1;
+}
 .hh-home .hh-open-row {
 	position: absolute;
 	inset: 0;
@@ -205,6 +209,6 @@
 	cursor: pointer;
 }
 .hh-home .hh-row-target:has(.hh-open-row:hover) .po-item-title,
-.hh-home .po-name:has(> .hh-open-row:hover) {
+.hh-home .hh-plan:has(.hh-open-row:hover) .po-name {
 	text-decoration: underline;
 }

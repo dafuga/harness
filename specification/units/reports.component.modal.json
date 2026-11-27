@@ -76,6 +76,12 @@
 				"examples": ["image", "text", "lightbox"]
 			},
 			{
+				"name": "Modal.modal",
+				"type": "boolean",
+				"required": false,
+				"default": true
+			},
+			{
 				"name": "Modal.onClose",
 				"type": "() => void",
 				"required": false,

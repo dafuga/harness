@@ -11,7 +11,6 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-add-session",
-			"hub.component.projects-sessions-hub-home-ask",
 			"hub.component.projects-sessions-hub-home-composer",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
@@ -44,20 +43,6 @@
 				"type": "HomeAgent[] | null",
 				"required": true,
 				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
-			},
-			{
-				"name": "HubHomeAgents.asks",
-				"type": "HomeAgent[]",
-				"required": false,
-				"default": [],
-				"description": "Other projects' agents that need Daniel. They are not listed sessions but their questions and option buttons still show."
-			},
-			{
-				"name": "HubHomeAgents.openAsks",
-				"type": "HomeOpenAsk[]",
-				"required": false,
-				"default": [],
-				"description": "Open structured asks to show on their agents. Defaults to an empty list."
 			},
 			{
 				"name": "HubHomeAgents.added",
@@ -121,11 +106,6 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-add-session",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "hub.component.projects-sessions-hub-home-ask",
 			"via": "import",
 			"origin": "derived"
 		},

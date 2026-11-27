@@ -10,29 +10,47 @@
 		HomeAgent,
 		HomeChatInput,
 		HomeChatReceipt,
-		HomeMessage
+		HomeMessage,
+		HomeOpenAsk
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { agentLabels, messageStatusText, overviewTone, runTime } from './hubHomePresentation';
 	import type { SendHomeChat } from './hubHomeView.types';
+	import { MediaQuery } from 'svelte/reactivity';
+	import HubHomeAsk from './HubHomeAsk.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 
 	let {
 		agent,
 		now,
 		send,
+		receipt,
+		asks = [],
 		showCard = true
-	}: { agent?: HomeAgent; now: string; send: SendHomeChat; showCard?: boolean } = $props();
+	}: {
+		agent?: HomeAgent;
+		now: string;
+		send: SendHomeChat;
+		receipt?: (id: string) => Promise<HomeChatReceipt>;
+		asks?: HomeOpenAsk[];
+		showCard?: boolean;
+	} = $props();
 	const chat = homeCosChat() ?? provideHomeCosChat();
 	const name = 'Chief of Staff';
-	const item = $derived(chat.target?.item);
+	const phone = new MediaQuery('max-width: 560px');
+	const askId = $derived(chat.target?.askId);
+	const ask = $derived(asks.find((entry) => entry.itemId === askId));
+	const item = $derived(
+		ask ? { id: ask.itemId, title: ask.title, details: ask.question } : chat.target?.item
+	);
+	const draftKey = $derived(askId ?? item?.id);
 	let draft = $state('');
 	let pending = $state(false);
 	let feedback = $state('');
 	let draftItem = $state<string>();
 
 	$effect(() => {
-		if (!chat.target || draftItem === item?.id) return;
-		draftItem = item?.id;
+		if (!chat.target || draftItem === draftKey) return;
+		draftItem = draftKey;
 		draft = '';
 		feedback = '';
 	});
@@ -97,12 +115,18 @@
 	</hx-section>
 {/if}
 
-<Modal isOpen={Boolean(chat.target)} title={name} variant="section" onClose={chat.close}>
+<Modal
+	isOpen={Boolean(chat.target)}
+	title={name}
+	variant="section"
+	modal={!askId || phone.current}
+	onClose={chat.close}
+>
 	<hx-div class="hh-cos-widget">
-		{#if item}<hx-p class="po-sessions hh-cos-context" aria-label="Attached item">
+		{#if item && !askId}<hx-p class="po-sessions hh-cos-context" aria-label="Attached item">
 				About <LinkifiedText text={item.title} />
 			</hx-p>{/if}
-		{#if shown.length}
+		{#if shown.length || ask || askId}
 			<hx-div class="hh-cos-history">
 				<hx-ol class="hh-thread hh-cos-thread" aria-label="Chief of Staff conversation">
 					{#each shown as entry (entry.id)}
@@ -114,6 +138,13 @@
 							>
 						</hx-li>
 					{/each}
+					{#if ask && receipt}
+						<hx-li class="hh-msg hh-msg-ask" data-from="agent">
+							{#key `${ask.itemId}:${ask.question}`}<HubHomeAsk {ask} {send} {receipt} />{/key}
+						</hx-li>
+					{:else if askId}
+						<hx-li class="po-sessions" role="status">This question is no longer open.</hx-li>
+					{/if}
 				</hx-ol>
 			</hx-div>
 		{:else}

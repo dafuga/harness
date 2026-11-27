@@ -24,7 +24,7 @@ function freshFollower(closed: () => boolean, read: () => void) {
 			else read();
 		}, followEveryMs);
 	}
-	return { start, stop };
+	return { start, stop, read };
 }
 
 /**
@@ -67,8 +67,8 @@ export function hubHomeReads(options: HubHomeReadOptions): HubHomeReads {
 			const receipt =
 				(mine ? await linkedHome?.service.chat(message) : null) ??
 				(await api.send<HomeChatReceipt>('POST', '/api/hub-home/chat', message));
-			if (message.kind === 'message' && ['sent', 'queued'].includes(receipt.status))
-				follower.start();
+			if (message.kind !== 'note' && ['sent', 'queued'].includes(receipt.status)) follower.start();
+			if (message.kind === 'answer') follower.read();
 			return receipt;
 		},
 		computers() {

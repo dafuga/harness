@@ -3,7 +3,7 @@
 <!-- @harness-uid u_kncvbfcpto -->
 <script lang="ts">
 	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
-	import { hasWebLink } from '$reports/utils/strings/linkSegments';
+	import { homeCosChat } from './hubHomeChatContext.svelte';
 	import type { Snippet } from 'svelte';
 	import { MediaQuery, SvelteMap, SvelteSet } from 'svelte/reactivity';
 	import { slide } from 'svelte/transition';
@@ -13,22 +13,21 @@
 		HomeOpenAsk
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import { waitAge } from '$reports/lib/projects-sessions/hub-home/waitAge';
-	import type { OpenHomeSection, SendHomeChat } from './hubHomeView.types';
+	import type { SendHomeChat } from './hubHomeView.types';
 	import HubHomeAsk from './HubHomeAsk.svelte';
 
 	let {
 		asks,
 		now,
-		open,
 		send,
 		receipt
 	}: {
 		asks: HomeOpenAsk[];
 		now: number;
-		open: OpenHomeSection;
 		send: SendHomeChat;
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 	} = $props();
+	const chat = homeCosChat();
 	let detail = $state<{ itemId: string; question: string; content: Snippet } | null>(null);
 	const reduceMotion = new MediaQuery('(prefers-reduced-motion: reduce)');
 	const pinned = new SvelteMap<string, { ask: HomeOpenAsk; index: number }>();
@@ -87,31 +86,19 @@
 					class="hh-needs-item"
 					out:slide|global={{ duration: reduceMotion.current ? 0 : 320 }}
 				>
-					{#if hasWebLink(ask.question)}
-						<hx-div class="hh-needs-row hh-needs-linked">
-							<hx-strong class="hh-needs-project">{ask.agentName}</hx-strong>
-							<hx-span class="hh-needs-question"><LinkifiedText text={ask.question} /></hx-span>
-							<hx-span class="hh-needs-age">waiting {waitAge(ask.since, now)}</hx-span>
-							<hx-button
-								type="button"
-								class="po-action"
-								aria-haspopup="dialog"
-								aria-label={`View details for ${ask.agentName}`}
-								onclick={() => open('agents', ask.agentId)}>View details</hx-button
-							>
-						</hx-div>
-					{:else}
+					<hx-div class="hh-needs-row hh-needs-linked">
+						<hx-strong class="hh-needs-project">{ask.agentName}</hx-strong>
+						<hx-span class="hh-needs-question"><LinkifiedText text={ask.question} /></hx-span>
+						<hx-span class="hh-needs-age">waiting {waitAge(ask.since, now)}</hx-span>
 						<hx-button
+							id={`hh-ask-${ask.itemId}`}
 							type="button"
-							class="hh-needs-row"
+							class="po-action hh-needs-talk"
 							aria-haspopup="dialog"
-							onclick={() => open('agents', ask.agentId)}
+							onclick={(event) => chat?.openAsk(event.currentTarget, ask.itemId)}
+							>Talk to Chief of Staff</hx-button
 						>
-							<hx-strong class="hh-needs-project">{ask.agentName}</hx-strong>
-							<hx-span class="hh-needs-question">{ask.question}</hx-span>
-							<hx-span class="hh-needs-age">waiting {waitAge(ask.since, now)}</hx-span>
-						</hx-button>
-					{/if}
+					</hx-div>
 					<HubHomeAsk
 						{ask}
 						send={sendAnswer(ask)}
