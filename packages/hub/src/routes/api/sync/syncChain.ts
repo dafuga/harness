@@ -3,6 +3,7 @@ import type { SyncCall } from './syncPolicy.types';
 import type { SealedChainEntry } from '../../../../../remote/src/models/networking-security/Sealed.types';
 import { sealedChain } from '../../../../../remote/src/utils/networking-security/sealedChain';
 import { queryNumber, readSyncJson, syncJson, syncProblem } from './syncHttp';
+import { deviceWriteConflict } from './syncRecovery';
 
 const entryBytes = 16 * 1024;
 const pageSize = 200;
@@ -66,14 +67,15 @@ export async function appendChain(call: SyncCall): Promise<Response> {
 			.prepare(
 				`INSERT INTO sealed_chain (account, seq, hash, entry, created_at)
 				 SELECT ?1, ?2, ?3, ?4, ?5
-				 WHERE (?2 = 0 AND NOT EXISTS (SELECT 1 FROM sealed_chain WHERE account = ?1))
-				    OR EXISTS (SELECT 1 FROM sealed_chain WHERE account = ?1 AND seq = ?2 - 1 AND hash = ?6)`
+			 WHERE NOT EXISTS (SELECT 1 FROM sealed_recoveries WHERE account = ?1)
+			   AND ((?2 = 0 AND NOT EXISTS (SELECT 1 FROM sealed_chain WHERE account = ?1))
+			    OR EXISTS (SELECT 1 FROM sealed_chain WHERE account = ?1 AND seq = ?2 - 1 AND hash = ?6))`
 			)
 			.bind(call.account, seq, hash, JSON.stringify(entry), call.deps.now, entry.prev)
 			.run();
-		if (result.meta.changes !== 1) return syncProblem(409, 'chain-conflict');
+		if (result.meta.changes !== 1) return deviceWriteConflict(call, 'chain-conflict');
 	} catch {
-		return syncProblem(409, 'chain-conflict');
+		return deviceWriteConflict(call, 'chain-conflict');
 	}
 	return syncJson({ seq, hash }, 201);
 }

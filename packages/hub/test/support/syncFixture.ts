@@ -99,7 +99,7 @@ export async function startSync(options: SyncStart = {}): Promise<SyncFixture> {
 	});
 	const origin = (await miniflare.ready).origin;
 	const db = (await miniflare.getD1Database('DB', 'hub-sync')) as unknown as D1Database;
-	for (const name of ['0008-sealed-sync', ...(options.migrations ?? [])])
+	for (const name of ['0008-sealed-sync', '0010-sealed-recoveries', ...(options.migrations ?? [])])
 		for (const sql of statements(name)) await db.prepare(sql).run();
 	const sent: (string | Uint8Array)[] = [];
 	const bucket = (await miniflare.getR2Bucket('CACHE', 'hub-sync')) as unknown as R2Bucket;

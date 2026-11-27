@@ -10,6 +10,7 @@ import { fromBase64Url } from './syncBase64';
 import { isEntry } from './syncChain';
 import { asGrant } from './syncGrants';
 import { isDeviceId, readSyncJson, syncJson, syncProblem } from './syncHttp';
+import { recoveryBlob } from './syncRecovery';
 import { isScopeId } from './syncScope';
 
 const grantLimit = 32;
@@ -31,13 +32,6 @@ export async function bootstrap(call: SyncCall): Promise<Response> {
 export async function readRecovery(call: SyncCall): Promise<Response> {
 	const recovery = await recoveryBlob(call);
 	return recovery === null ? syncProblem(404, 'not-found') : syncJson({ recovery });
-}
-
-function recoveryBlob(call: SyncCall) {
-	return call.deps.db
-		.prepare('SELECT recovery FROM sealed_recoveries WHERE account = ?')
-		.bind(call.account)
-		.first<string>('recovery');
 }
 
 async function parseBootstrap(call: SyncCall, value: unknown): Promise<BootstrapState | null> {

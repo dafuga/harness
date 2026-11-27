@@ -28,7 +28,7 @@ import type { SyncFixture } from '../support/syncFixture.types';
 const account = 'google:fixture-a';
 let fixture: SyncFixture;
 beforeAll(async () => {
-	fixture = await startSync({ migrations: ['0010-sealed-recoveries'] });
+	fixture = await startSync();
 }, 120_000);
 afterAll(async () => {
 	await fixture?.stop();

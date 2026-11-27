@@ -2,6 +2,7 @@ import type { Handler } from './syncRoutes.types';
 import type { SyncCall, SyncDeps } from './syncPolicy.types';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
 import { bootstrap, readRecovery } from './syncBootstrap';
+import { changeDevices } from './syncDevices';
 import { appendChain, readChain } from './syncChain';
 import { enroll } from './syncEnroll';
 import { putGrants, readGrants } from './syncGrants';
@@ -15,6 +16,7 @@ const routes: Record<string, Record<string, { handler: Handler; parts: number[] 
 		GET: { handler: readRecovery, parts: [1] },
 		POST: { handler: bootstrap, parts: [1] }
 	},
+	devices: { POST: { handler: changeDevices, parts: [1] } },
 	chain: { GET: { handler: readChain, parts: [1] }, POST: { handler: appendChain, parts: [1] } },
 	grants: { GET: { handler: readGrants, parts: [1] }, POST: { handler: putGrants, parts: [1] } },
 	ops: { GET: { handler: readOps, parts: [2] }, POST: { handler: postOps, parts: [2] } },
