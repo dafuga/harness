@@ -6,7 +6,7 @@ import type { BrowserApi } from '../../../src/utils/browserApi';
 const unavailable = Object.assign(new Error('Relay unavailable'), { status: 503 });
 const forbidden = Object.assign(new Error('Forbidden'), { status: 403 });
 
-async function startPairing(poll: () => { state: string }) {
+async function startPairing(poll: () => { state: string } | Promise<{ state: string }>) {
 	const hostKey = toBase64Url((await remoteKeys()).publicKey);
 	const hostId = await remoteIdentity(hostKey);
 	const path = `/api/remote/hosts/${hostId}/pairing`;
@@ -60,6 +60,15 @@ async function checkPairingPolls() {
 	expect(await refused.outcome).toBe(forbidden);
 	expect(refused.paths).toHaveLength(2);
 
+	const denied = await startPairing(() => ({ state: 'denied' }));
+	expect(await denied.outcome).toHaveProperty(
+		'message',
+		'The computer did not accept the connection.'
+	);
+	expect(denied.paths).toHaveLength(2);
+}
+
+async function checkPairingDeadline() {
 	const expired = await startPairing(() => {
 		throw unavailable;
 	});
@@ -72,6 +81,22 @@ async function checkPairingPolls() {
 	expect(count).toBeGreaterThan(2);
 	await vi.advanceTimersByTimeAsync(350);
 	expect(expired.paths).toHaveLength(count);
+
+	let approve!: (state: { state: string }) => void;
+	const delayed = await startPairing(
+		() =>
+			new Promise((resolve) => {
+				approve = resolve;
+			})
+	);
+	await vi.advanceTimersByTimeAsync(20_000);
+	expect(await delayed.outcome).toHaveProperty(
+		'message',
+		'The computer did not accept the connection.'
+	);
+	approve({ state: 'approved' });
+	await vi.advanceTimersByTimeAsync(350);
+	expect(delayed.paths).toHaveLength(2);
 
 	const cancelled = await startPairing(() => {
 		throw unavailable;
@@ -98,6 +123,7 @@ test('computer connection observes host identity, pairing approval, cancellation
 	vi.useFakeTimers();
 	try {
 		await checkPairingPolls();
+		await checkPairingDeadline();
 	} finally {
 		vi.useRealTimers();
 	}
