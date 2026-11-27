@@ -23,6 +23,24 @@ export function alert(kind: string, at: number): TrackerWatchdogAlert {
 	};
 }
 
+/** Nov 27 primary Mac queue, in recorded order. Item IDs and message text are replaced. */
+export function recordedDependencyQueue(): TrackerWatchdogAlert[] {
+	const lengths = [259, 204, 261, 222, 252, 244, 592, 325];
+	const times = [1311, 3632, 6040, 6673, 9927, 13050, 15454, 15699];
+	return lengths.map((length, index) => {
+		const at = 1795783170000 + times[index];
+		const item_id = `recorded0${index}`;
+		const reason = 'CoS: credential/access dependency. '.padEnd(length, 'x');
+		return {
+			...alert('cos-message', at),
+			id: `primary:${item_id}:cos-message:${at}`,
+			item_id,
+			reason,
+			identity: reason
+		};
+	});
+}
+
 export async function cosDeliveryFixture(
 	prove: (ports: {
 		store: TrackerPersistenceService;
