@@ -1,3 +1,5 @@
+import { render } from 'svelte/server';
+import HubHomeLive from '../../src/components/projects-sessions/HubHomeLive.svelte';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import type { OwnerHomeSnapshot } from '../../../reports/src/lib/projects-sessions/hub-home/hubHome.types';
 import {
@@ -58,6 +60,17 @@ describe('how the browser receives it', () => {
 
 		expect(snapshot?.liveOverview?.projects).toHaveLength(answer.liveOverview.projects.length);
 		expect(JSON.stringify(snapshot)).not.toContain(secret);
+		const overview = snapshot!.liveOverview!;
+		const html = render(HubHomeLive, { props: { native: overview, now: now() } }).body;
+		expect(html).toContain(`See all projects (${overview.projects.length})`);
+		for (const project of overview.projects) {
+			if (project.running) expect(html).toContain(`>${project.agent}<`);
+			else expect(html).not.toContain(`>${project.agent}<`);
+		}
+		const stopped = { ...overview, projects: overview.projects.map((p) => ({ ...p, running: 0 })) };
+		const quiet = render(HubHomeLive, { props: { native: stopped, now: now() } }).body;
+		expect(quiet).toContain('No projects have a running session.');
+		expect(quiet).not.toContain('class="hh-live-head"');
 	});
 
 	test('an overview this Hub cannot read leaves the rest of Home in place', async () => {

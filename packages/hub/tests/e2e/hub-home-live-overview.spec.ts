@@ -37,6 +37,35 @@ async function expandProjects(page: Page) {
 	while (await summaries.count()) await summaries.first().click();
 }
 
+async function checkProjectDisclosure(
+	page: Page,
+	projects: NonNullable<Awaited<ReturnType<typeof macAnswer>>['liveOverview']>['projects']
+) {
+	const region = overview(page);
+	const names = region.locator('.hh-live-name');
+	const active = projects.filter((p) => p.running > 0);
+	const waiting = projects.filter(
+		(p) => !p.running && (p.counts.open || p.counts.in_progress || p.counts.blocked)
+	);
+	const idle = projects.filter((p) => !p.running && !waiting.includes(p));
+	expect(waiting.length).toBeGreaterThan(0);
+	expect(idle.length).toBeGreaterThan(0);
+	await expect(names).toHaveText(active.map((p) => p.agent));
+	const toggle = region.getByRole('button', {
+		name: `See all projects (${projects.length})`,
+		exact: true
+	});
+	await toggle.click();
+	await expect(region.getByRole('heading', { name: 'Blocked or open' })).toBeVisible();
+	await expect(region.getByRole('heading', { name: 'Nothing in motion' })).toBeVisible();
+	await expect(names).toHaveText([...active, ...waiting, ...idle].map((p) => p.agent));
+	await expect(region.locator('summary.hh-live-head').last()).toContainText(
+		/Running 0 · Blocked 0 · Not running \d+/
+	);
+	await region.getByRole('button', { name: 'Show running projects only' }).click();
+	await expect(names).toHaveText(active.map((p) => p.agent));
+}
+
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
 	['phone', 390, 844]
@@ -48,6 +77,16 @@ for (const [device, width, height] of [
 		await page.setViewportSize({ width, height });
 		const answer = await macAnswer(tracker);
 		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
+		const sample = answer.liveOverview!.projects[0];
+		answer.liveOverview!.projects.push({
+			...sample,
+			agent: 'completed-only',
+			running: 0,
+			blockedRows: 0,
+			totalRows: 1,
+			counts: { open: 0, in_progress: 0, blocked: 0, done: 1 },
+			rows: []
+		});
 		const requests = await productionHome(page, answer);
 		await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
 		await page.goto('/');
@@ -78,6 +117,7 @@ for (const [device, width, height] of [
 				path: test.info().outputPath(`live-collapsed-${device}.png`)
 			});
 		}
+		await checkProjectDisclosure(page, answer.liveOverview!.projects);
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
 		await expect(
@@ -85,7 +125,7 @@ for (const [device, width, height] of [
 		).toHaveCount(0);
 		const projects = new Set(tracker.items.map((item) => item.agent));
 		await expect(overview(page).getByRole('status')).toHaveText(
-			`${live.length} runs live on 2 computers · ${projects.size} projects`
+			`${live.length} runs live on 2 computers · ${answer.liveOverview!.projects.length} projects`
 		);
 		for (const run of live) {
 			const item = tracker.items.find((entry) => entry.id === run.item_id)!;
@@ -102,6 +142,9 @@ for (const [device, width, height] of [
 			])
 				await expect(row).toContainText(fact);
 		}
+		await overview(page)
+			.getByRole('button', { name: /^See all projects/ })
+			.click();
 		for (const agent of projects)
 			await expect(
 				overview(page).locator('.hh-live-name', { hasText: agent! }).first()
