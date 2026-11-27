@@ -22,12 +22,17 @@ env:
   HARNESS_DEBT_RATCHET_BASE: ${{ github.event.before || '' }}
 
 jobs:
-  check:
-    name: Full check
+  check-part:
+    name: Full check part (${{ matrix.part }})
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    # The serialized command includes CLI, package and browser suites. Run 39681371806
-    # (job 119505032796) was cancelled at the former 45-minute limit; allow it to finish.
+    timeout-minutes: 60
+    # The check runs the CLI, package and browser suites. As one job it took 87 to 117 minutes
+    # and was cancelled at its 120 minute limit, so its parts now run side by side. The parts
+    # are defined in scripts/run-checks.ts; `bun run check` still runs all of them in order.
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [static-unit, e2e-1, e2e-2, package, desktop, apps]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -77,7 +82,7 @@ jobs:
       - name: Install native display, Git LFS and video dependencies
         run: sudo apt-get install --yes git-lfs xauth libgtk-3-0t64 ffmpeg
       - name: Format, types, lint, Rust native and Wasm, tests, build, package and audits
-        run: xvfb-run -a bun run check
+        run: xvfb-run -a bun run check --part "${{ matrix.part }}"
 
       - name: Save bun cache after a completed attempt
         if: ${{ !cancelled() && steps.cache-bun.outputs.cache-hit != 'true' }}
@@ -101,6 +106,18 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: ${{ steps.cache-playwright.outputs.cache-primary-key }}
+
+  check:
+    name: Full check
+    needs: check-part
+    # Runs when a part fails or times out, so this one result stands for all of them. Not in a
+    # cancelled run: the push and pull request runs of one commit cancel each other.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every part of the full check to pass
+        run: test '${{ needs.check-part.result }}' = success
 
   verify:
     name: Verify the exact commit
