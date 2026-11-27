@@ -2,11 +2,9 @@
 	"name": "gba52m-computer-hygiene",
 	"goal": "Built-in skills and every managed launch brief guide run-owned resource creation, and exit, stop and timeout reap only that run’s resources and report anything remaining.",
 	"createdAt": "2026-11-27T15:37:32.645Z",
-	"updatedAt": "2026-11-27T15:48:16.934Z",
+	"updatedAt": "2026-11-27T16:12:10.986Z",
 	"template": "feature",
-	"templateLineage": [
-		"feature"
-	],
+	"templateLineage": ["feature"],
 	"enforceOrder": false,
 	"steps": [
 		{
@@ -26,7 +24,9 @@
 		{
 			"id": "test",
 			"title": "Add or update focused automated coverage.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T16:12:10.986Z",
+			"evidence": "Source 39cadc5c0f on harbor-mbp-2 passed 9 tests across Tracker Node and computer hygiene, including managed worker exit, stop, timeout, and preservation of unrelated resources. The primary Mac smoke used a disposable Docker engine and confirmed the owned container was removed, an independent control remained running, and cleanup.json was empty."
 		},
 		{
 			"id": "verify",
