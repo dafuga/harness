@@ -77,6 +77,7 @@ final class HubAccountSession {
             status["handoff"] = handoff.object
         } else if let credential = credential {
             status["state"] = deviceStage == .approved ? "signed-in" : deviceStage.rawValue
+            if deviceStage == .waiting { status["verificationCode"] = enrollment.verificationCode }
             if deviceStage == .approved {
                 status["actor"] = ["id": credential.subject, "name": credential.name, "email": credential.email]
             }

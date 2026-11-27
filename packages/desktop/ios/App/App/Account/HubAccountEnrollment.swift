@@ -25,6 +25,7 @@ private struct LoginEnrollmentNonce: Codable {
 final class HubAccountEnrollment {
     typealias Completion = (Result<Void, HubAccountFailure>) -> Void
     private var waiters: [Completion] = []
+    private(set) var verificationCode: String?
     private(set) var mailbox: EnrollMailbox?
 
     func open(_ session: HubAccountSession, device: SealedDevice, _ done: @escaping Completion) {
@@ -32,32 +33,42 @@ final class HubAccountEnrollment {
         do {
             let store = try HubLoginDeviceStore(credential, base: session.loginKeys)
             let nonce = try LoginEnrollmentNonce.current(store, now: session.now())
-            if mailbox != nil { return done(.success(())) }
             let request = try EnrollRequest(device: device, nonce: nonce.value)
             waiters.append(done)
             guard waiters.count == 1 else { return }
-            var call = HubAccountCall(method: "POST", path: "/api/sync/v1/enroll",
-                                      body: RemoteCoding.json(request.opening.fields))
+            let prior = mailbox?.id
+            let path = "/api/sync/v1/enroll" + (prior.map { "/" + $0 } ?? "")
+            var call = HubAccountCall(method: prior == nil ? "POST" : "GET", path: path,
+                                      body: prior == nil ? RemoteCoding.json(request.opening.fields) : nil)
             call.device = device.deviceId
             session.send(call, origin, credential.token) { result in
-                let outcome = result.flatMap { self.accept($0, opening: request.opening) }
-                let callbacks = self.waiters
-                self.waiters.removeAll()
-                callbacks.forEach { $0(outcome) }
+                do {
+                    let received = try self.accept(result.get(), opening: request.opening, prior: prior)
+                    self.mailbox = received
+                    let comparison = HubLoginComparison(session: session, request: request, credential: credential, mailbox: received)
+                    comparison.advance(self.finish)
+                } catch { self.finish(.failure(error as? HubAccountFailure ?? .failed)) }
             }
         } catch let failure as HubAccountFailure { done(.failure(failure)) }
         catch { done(.failure(.unkept)) }
     }
 
-    private func accept(_ reply: HubAccountReply, opening: EnrollOpening) -> Result<Void, HubAccountFailure> {
-        guard reply.status == 200 || reply.status == 201 else { return .failure(.hub(reply)) }
-        do {
-            let received = try EnrollMailbox(SealedJson.parse(reply.data))
-            guard try received.opening() == opening else { return .failure(.failed) }
-            mailbox = received
-            return .success(())
-        } catch { return .failure(.failed) }
+    private func accept(_ reply: HubAccountReply, opening: EnrollOpening, prior: String?) throws -> EnrollMailbox {
+        guard reply.status == 200 || (prior == nil && reply.status == 201) else { throw HubAccountFailure.hub(reply) }
+        let received = try EnrollMailbox(SealedJson.parse(reply.data))
+        guard prior == nil || received.id == prior, try received.opening() == opening else { throw HubAccountFailure.failed }
+        return received
     }
 
-    func forget(_ store: HubLoginDeviceStore) { store.remove(LoginEnrollmentNonce.name) }
+    private func finish(_ result: Result<String?, HubAccountFailure>) {
+        verificationCode = try? result.get()
+        let callbacks = waiters
+        waiters.removeAll()
+        callbacks.forEach { $0(result.map { _ in () }) }
+    }
+
+    func forget(_ store: HubLoginDeviceStore) {
+        store.remove(LoginEnrollmentNonce.name)
+        HubLoginComparison.forget(store)
+    }
 }
