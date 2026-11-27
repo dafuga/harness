@@ -163,7 +163,6 @@ export const catalogPush = {
 export const catalogHomeView: HomeView = {
 	overview: snapshot.overview,
 	agents: snapshot.agents,
-	asks: [],
 	openAsks: [],
 	controlled: [],
 	plans: snapshot.plans,
