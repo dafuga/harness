@@ -9,13 +9,17 @@ import { asGrant } from './syncGrants';
 import { fromBase64Url } from './syncBase64';
 import { readSyncJson, syncJson, syncProblem } from './syncHttp';
 import { matchesDeviceChange } from './syncDeviceGrants';
+import { askAccount } from './syncAccount';
+import { requireEnrollmentApprover } from './syncDeviceSession';
+import { isEnrollmentId } from './syncEnroll';
 
 const maxHistory = 2048;
 const maxStatements = 96;
 
 function readChange(value: unknown, call: SyncCall): DeviceChange | null {
 	if (!value || typeof value !== 'object') return null;
-	const { entries, grants } = value as Record<string, unknown>;
+	const { entries, grants, enrollment } = value as Record<string, unknown>;
+	if (enrollment !== undefined && !isEnrollmentId(enrollment)) return null;
 	if (!Array.isArray(entries) || !entries.length || !Array.isArray(grants)) return null;
 	if (entries.length + grants.length > maxStatements) return null;
 	if (
@@ -32,7 +36,11 @@ function readChange(value: unknown, call: SyncCall): DeviceChange | null {
 		)
 	)
 		return null;
-	return { entries: entries as SealedChainEntry[], grants: wrapped as DeviceChange['grants'] };
+	return {
+		entries: entries as SealedChainEntry[],
+		grants: wrapped as DeviceChange['grants'],
+		enrollment
+	};
 }
 
 /** Publishes an existing admin's signed change and HPKE grants in a single D1 transaction. */
@@ -61,8 +69,32 @@ export async function changeDevices(call: SyncCall): Promise<Response> {
 		return syncProblem(400, 'invalid-change');
 	}
 	const head = { seq: after.seq, hash: after.head };
+	if (change.enrollment) {
+		const denied = await reserveEnrollment(call, change, head.hash);
+		if (denied) return denied;
+	}
 	if (start < stored.length) return retry(call, change, stored, head);
 	return publish(call, change, head);
+}
+
+async function reserveEnrollment(call: SyncCall, change: DeviceChange, hash: string) {
+	const [entry] = change.entries;
+	if (change.entries.length !== 1 || entry.body.type !== 'enroll')
+		return syncProblem(400, 'invalid-change');
+	const refusal = await requireEnrollmentApprover(call, true);
+	if (refusal) return refusal;
+	const { deviceId: recipient, kemPublic, signingPublic } = entry.body.device;
+	const reserved = await askAccount(call, '/enroll/' + change.enrollment, {
+		method: 'POST',
+		body: JSON.stringify({
+			by: call.device,
+			body: '{}',
+			decision: { kind: 'publish', hash, recipient, kemPublic, signingPublic }
+		})
+	});
+	if (!reserved) return syncProblem(503, 'unavailable');
+	await reserved.body?.cancel();
+	if (!reserved.ok) return syncProblem(409, 'enrollment-unavailable');
 }
 
 async function retry(

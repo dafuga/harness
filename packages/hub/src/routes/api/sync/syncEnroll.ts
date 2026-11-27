@@ -11,7 +11,7 @@ const stepBytes = 4 * 1024;
 /** Passes the enrollment protocol's public fields to the account mailbox. */
 export async function enroll(call: SyncCall): Promise<Response> {
 	const id = call.parts[1];
-	if (id !== undefined && !/^[0-9a-f]{32}$/.test(id)) return syncProblem(400, 'invalid-input');
+	if (id !== undefined && !isEnrollmentId(id)) return syncProblem(400, 'invalid-input');
 	const path = id === undefined ? '/enroll' : `/enroll/${id}`;
 	if (call.request.method === 'GET') return forward(call, path);
 	const value = await readSyncJson(call.request, stepBytes);
@@ -19,8 +19,8 @@ export async function enroll(call: SyncCall): Promise<Response> {
 	const display = id === undefined ? approvalDisplay(call.request, value.platform) : undefined;
 	const valid = id === undefined ? isOpening(value, display) : isStep(value, call.device);
 	if (!valid) return syncProblem(400, 'invalid-input');
-	if (id !== undefined && ('approver' in value || 'entryHash' in value)) {
-		const refusal = await requireEnrollmentApprover(call);
+	if (id !== undefined && ('approver' in value || 'entryHash' in value || value.deny === true)) {
+		const refusal = await requireEnrollmentApprover(call, value.deny === true);
 		if (refusal) return refusal;
 	}
 	// Give retried openings and claims the same wire representation.
@@ -36,9 +36,14 @@ export async function enroll(call: SyncCall): Promise<Response> {
 		body: JSON.stringify({
 			by: call.device,
 			body: JSON.stringify(body),
-			display: display && (await isRecoverableAccount(call)) ? display : undefined
+			display: display && (await isRecoverableAccount(call)) ? display : undefined,
+			decision: value.deny === true ? { kind: 'deny' } : undefined
 		})
 	});
+}
+
+export function isEnrollmentId(value: unknown): value is string {
+	return typeof value === 'string' && value.length === 32 && /^[0-9a-f]+$/.test(value);
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -69,7 +74,7 @@ function approvalDisplay(request: Request, platform: unknown): EnrollmentDisplay
 function isStep(value: Record<string, unknown>, device: string): boolean {
 	const fieldCount = Object.keys(value).length;
 	const nonce = decode(value.nonce)?.length === 32;
-	if (fieldCount === 1) return nonce || isHash(value.entryHash);
+	if (fieldCount === 1) return value.deny === true || nonce || isHash(value.entryHash);
 	return fieldCount === 2 && nonce && value.approver === device;
 }
 

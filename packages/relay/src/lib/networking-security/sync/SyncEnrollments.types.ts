@@ -12,11 +12,16 @@ export interface EnrollmentDisplay {
 	country?: string;
 }
 
+export type EnrollmentDecision =
+	| { kind: 'deny' }
+	| { kind: 'publish'; hash: string; recipient: string; kemPublic: string; signingPublic: string };
+
 export interface EnrollmentView {
 	id: string;
 	createdAt: number;
 	steps: EnrollStep[];
 	display?: EnrollmentDisplay;
+	decision?: string;
 }
 
 export interface EnrollRow extends Record<string, SqlStorageValue> {
@@ -24,4 +29,5 @@ export interface EnrollRow extends Record<string, SqlStorageValue> {
 	created_at: number;
 	steps: string;
 	display: string | null;
+	decision: string | null;
 }

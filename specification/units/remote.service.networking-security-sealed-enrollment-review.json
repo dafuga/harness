@@ -18,6 +18,7 @@
 			"SealedEnrollmentReviewService.claim",
 			"SealedEnrollmentReviewService.comparison",
 			"SealedEnrollmentReviewService.approve",
+			"SealedEnrollmentReviewService.deny",
 			"EnrollmentReviewOptions",
 			"MailboxStep",
 			"EnrollmentMailbox",
@@ -62,6 +63,10 @@
 			{
 				"name": "SealedEnrollmentReviewService.approve",
 				"type": "Promise<SealedChainPin | null>"
+			},
+			{
+				"name": "SealedEnrollmentReviewService.deny",
+				"type": "Promise<void>"
 			}
 		],
 		"errors": [
@@ -124,6 +129,23 @@
 					{
 						"name": "SealedEnrollmentReviewService.approve",
 						"type": "Promise<SealedChainPin | null>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "SealedEnrollmentReviewService.deny",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "SealedEnrollmentReviewService.deny",
+						"type": "Promise<void>"
 					}
 				],
 				"errors": [

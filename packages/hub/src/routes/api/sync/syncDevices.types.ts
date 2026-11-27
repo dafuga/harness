@@ -4,4 +4,5 @@ import type { Grant } from './syncGrants.types';
 export interface DeviceChange {
 	entries: SealedChainEntry[];
 	grants: Grant[];
+	enrollment?: string;
 }

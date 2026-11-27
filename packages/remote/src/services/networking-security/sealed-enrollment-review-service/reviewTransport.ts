@@ -40,6 +40,7 @@ export class ReviewTransport {
 
 	async mailbox(): Promise<MailboxStep[]> {
 		const view = await this.call<EnrollmentMailbox>('enroll/' + this.id);
+		if (view.denied === true) throw new SealedError('The device approval was denied.');
 		if (
 			view.id !== this.id ||
 			!Array.isArray(view.steps) ||
@@ -51,6 +52,19 @@ export class ReviewTransport {
 		)
 			throw new SealedError('Invalid enrollment mailbox.');
 		return view.steps;
+	}
+
+	async deny(): Promise<void> {
+		const response = await this.call<{ denied: boolean }>('enroll/' + this.id, { deny: true });
+		if (response.denied !== true) throw new SealedError('The Hub did not confirm denial.');
+	}
+
+	publish(entry: SealedChainEntry, grants: SealedGrant[]) {
+		return this.call<{ seq: number; hash: string }>('devices', {
+			entries: [entry],
+			grants,
+			enrollment: this.id
+		});
 	}
 
 	async append(n: number, fields: Record<string, string>): Promise<void> {

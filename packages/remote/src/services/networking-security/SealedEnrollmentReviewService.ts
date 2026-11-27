@@ -89,14 +89,22 @@ export class SealedEnrollmentReviewService {
 				this.publication = await preparePublication(this.hub, this.options, this.opening);
 			}
 			const { entry, grants, pin } = this.publication;
-			const result = await this.hub.call<{ seq: number; hash: string }>('devices', {
-				entries: [entry],
-				grants
-			});
+			const result = await this.hub.publish(entry, grants);
 			if (result.seq !== pin.seq || result.hash !== pin.head)
 				throw new SealedError('The published enrollment does not match.');
 			await this.hub.append(3, { entryHash: pin.head });
 			return { ...pin };
+		} finally {
+			this.deciding = false;
+		}
+	}
+
+	async deny(): Promise<void> {
+		if (this.deciding || this.publication)
+			throw new SealedError('Approval is already in progress.');
+		this.deciding = true;
+		try {
+			await this.hub.deny();
 		} finally {
 			this.deciding = false;
 		}

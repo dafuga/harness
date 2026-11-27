@@ -3,6 +3,7 @@ import type {
 	EnrollRow,
 	EnrollStep,
 	EnrollmentDisplay,
+	EnrollmentDecision,
 	EnrollmentView
 } from './SyncEnrollments.types';
 import { randomId } from '../../../../../remote/src/index';
@@ -24,6 +25,8 @@ export class SyncEnrollments {
 		const columns = sql.exec<{ name: string }>('PRAGMA table_info(enrollments)').toArray();
 		if (!columns.some(({ name }) => name === 'display'))
 			sql.exec('ALTER TABLE enrollments ADD COLUMN display TEXT');
+		if (!columns.some(({ name }) => name === 'decision'))
+			sql.exec('ALTER TABLE enrollments ADD COLUMN decision TEXT');
 	}
 
 	/** Null when too many requests are already waiting. */
@@ -46,7 +49,10 @@ export class SyncEnrollments {
 
 	read(id: string, now: number): EnrollmentView | null {
 		const row = this.sql
-			.exec<EnrollRow>('SELECT id, created_at, steps, display FROM enrollments WHERE id = ?', id)
+			.exec<EnrollRow>(
+				'SELECT id, created_at, steps, display, decision FROM enrollments WHERE id = ?',
+				id
+			)
 			.toArray()[0];
 		if (!row || row.created_at < now - syncLimits.enrollmentMs) return null;
 		return readView(row);
@@ -59,16 +65,31 @@ export class SyncEnrollments {
 	private unexpired(now: number): EnrollmentView[] {
 		this.expire(now);
 		const rows = this.sql
-			.exec<EnrollRow>('SELECT id, created_at, steps, display FROM enrollments ORDER BY created_at')
+			.exec<EnrollRow>(
+				'SELECT id, created_at, steps, display, decision FROM enrollments ORDER BY created_at'
+			)
 			.toArray();
 		return rows.map(readView);
+	}
+
+	/** The account object serializes denial and publication reservation without an await. */
+	decide(id: string, by: string, choice: EnrollmentDecision, now: number): boolean | null {
+		const view = this.read(id, now);
+		if (!view || by === view.steps[0].by) return null;
+		if (choice.kind === 'publish' && !matchesPublication(view, by, choice)) return null;
+		const next = choice.kind === 'deny' ? 'denied' : choice.hash;
+		if (view.decision) return view.decision === next ? false : null;
+		if (!isPending(view)) return null;
+		this.sql.exec('UPDATE enrollments SET decision = ? WHERE id = ?', next, id);
+		return true;
 	}
 
 	/** Only the first claim wins. Replaying an accepted step returns its original position. */
 	append(id: string, by: string, body: string, now: number) {
 		const view = this.read(id, now);
-		if (!view) return null;
+		if (!view || view.decision === 'denied') return null;
 		const fields = JSON.parse(body);
+		if ('entryHash' in fields && view.decision && view.decision !== fields.entryHash) return null;
 		const n = 'approver' in fields ? 1 : 'entryHash' in fields ? 3 : 2;
 		const existing = view.steps[n];
 		if (existing) {
@@ -101,8 +122,20 @@ function readView(row: EnrollRow): EnrollmentView {
 		id: row.id,
 		createdAt: row.created_at,
 		steps: JSON.parse(row.steps) as EnrollStep[],
-		display: row.display ? (JSON.parse(row.display) as EnrollmentDisplay) : undefined
+		display: row.display ? (JSON.parse(row.display) as EnrollmentDisplay) : undefined,
+		decision: row.decision ?? undefined
 	};
+}
+
+function matchesPublication(
+	view: EnrollmentView,
+	by: string,
+	choice: Extract<EnrollmentDecision, { kind: 'publish' }>
+): boolean {
+	const [opening, claim, reveal] = view.steps;
+	if (!reveal || claim.by !== by || opening.by !== choice.recipient) return false;
+	const keys = JSON.parse(opening.body);
+	return keys.kemPublic === choice.kemPublic && keys.signingPublic === choice.signingPublic;
 }
 
 function expectedWriter(view: EnrollmentView, n: number, by: string): boolean {
@@ -113,7 +146,7 @@ function expectedWriter(view: EnrollmentView, n: number, by: string): boolean {
 }
 
 function isPending(view: EnrollmentView): boolean {
-	return view.steps.length < 4;
+	return !view.decision && view.steps.length < 4;
 }
 
 function sameStep(previous: string, fields: Record<string, string>): boolean {

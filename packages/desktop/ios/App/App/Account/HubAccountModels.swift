@@ -21,6 +21,10 @@ struct HubAccountFailure: Error, Equatable {
         code: "superseded", message: "The account on this phone changed. Reload and try again.")
     static let expired = HubAccountFailure(
         code: "handoff-expired", message: "This sign-in expired or was refused. Connect again.")
+    static let approvalDenied = HubAccountFailure(
+        code: "approval-denied", message: "Device approval was denied. Cancel and sign in again.")
+    static let approvalExpired = HubAccountFailure(
+        code: "approval-expired", message: "Device approval expired. Cancel and sign in again.")
     static let mismatch = HubAccountFailure(
         code: "account-mismatch", message: "The Hub did not confirm this Google account. Sign in again.")
     static let unkept = HubAccountFailure(

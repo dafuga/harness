@@ -11,7 +11,7 @@ struct LoginEnrollmentNonce: Codable {
         if let data = store.load(name) {
             let kept = try JSONDecoder().decode(Self.self, from: data)
             let age = now.timeIntervalSince(kept.issued)
-            guard kept.value.count == 32, (0..<600).contains(age) else { throw HubAccountFailure.expired }
+            guard kept.value.count == 32, (0..<600).contains(age) else { throw HubAccountFailure.approvalExpired }
             return kept
         }
         let fresh = Self(value: RemoteCoding.random(32), issued: now)
@@ -56,9 +56,12 @@ final class HubAccountEnrollment {
     }
 
     private func accept(_ reply: HubAccountReply, opening: EnrollOpening, prior: String?) throws -> EnrollMailbox {
+        if prior != nil, reply.status == 404 { throw HubAccountFailure.approvalExpired }
         guard reply.status == 200 || (prior == nil && reply.status == 201) else { throw HubAccountFailure.hub(reply) }
-        let received = try EnrollMailbox(SealedJson.parse(reply.data))
+        let json = try SealedJson.parse(reply.data)
+        let received = try EnrollMailbox(json)
         guard prior == nil || received.id == prior, try received.opening() == opening else { throw HubAccountFailure.failed }
+        if case .bool(true) = json["denied"] { throw HubAccountFailure.approvalDenied }
         return received
     }
 

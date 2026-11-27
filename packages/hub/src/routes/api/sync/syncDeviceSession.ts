@@ -77,8 +77,11 @@ export async function requireApprovedAccess(call: SyncCall): Promise<Response | 
 }
 
 /** A mailbox claim or receipt requires the same approved Google session as the inbox. */
-export async function requireEnrollmentApprover(call: SyncCall): Promise<Response | undefined> {
-	if (await isRecoverableAccount(call)) return approvedDeviceAccess(call);
+export async function requireEnrollmentApprover(
+	call: SyncCall,
+	requireBinding = false
+): Promise<Response | undefined> {
+	if (requireBinding || (await isRecoverableAccount(call))) return approvedDeviceAccess(call);
 }
 
 async function approvedDeviceAccess(call: SyncCall, scope?: string): Promise<Response | undefined> {

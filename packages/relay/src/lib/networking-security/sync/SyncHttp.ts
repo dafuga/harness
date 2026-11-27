@@ -1,5 +1,9 @@
 // @harness-uid u_7knh6lpstr
-import type { EnrollmentDisplay, EnrollmentView } from './SyncEnrollments.types';
+import type {
+	EnrollmentDecision,
+	EnrollmentDisplay,
+	EnrollmentView
+} from './SyncEnrollments.types';
 import type { SyncHttpDeps } from './SyncHttp.types';
 import { isScopeId, syncLimits } from './syncWire';
 import { readJsonBody } from '../../../utils/development-tooling/readJsonBody';
@@ -66,6 +70,7 @@ export class SyncHttp {
 			return failure(400, 'invalid');
 		if (id === undefined)
 			return this.openEnroll(by, text, now, body?.display as EnrollmentDisplay | undefined);
+		if (body?.decision) return this.decide(id, by, body.decision as EnrollmentDecision, now);
 		const appended = this.deps.enrollments.append(id, by, text, now);
 		if (!appended) return failure(409, 'enrollment-unavailable');
 		const { step, created } = appended;
@@ -74,8 +79,21 @@ export class SyncHttp {
 		return json(step, 201);
 	}
 
+	private decide(id: string, by: string, choice: EnrollmentDecision, now: number): Response {
+		const created = this.deps.enrollments.decide(id, by, choice, now);
+		if (created === null) return failure(409, 'enrollment-unavailable');
+		if (created && choice.kind === 'deny') this.deps.sockets.announce({ id, n: 3 });
+		return json({ denied: choice.kind === 'deny' }, created ? 201 : 200);
+	}
+
 	private readEnroll(id: string | undefined, now: number): Response {
-		if (id === undefined) return json({ requests: this.deps.enrollments.pending(now) });
+		if (id === undefined)
+			return json({
+				requests: this.deps.enrollments.pending(now).map((view) => ({
+					...transcript(view),
+					display: view.display
+				}))
+			});
 		const view = this.deps.enrollments.read(id, now);
 		return view ? json(transcript(view)) : failure(404, 'not-found');
 	}
@@ -95,6 +113,6 @@ export class SyncHttp {
 	}
 }
 
-function transcript({ id, createdAt, steps }: EnrollmentView) {
-	return { id, createdAt, steps };
+function transcript({ id, createdAt, steps, decision }: EnrollmentView) {
+	return { id, createdAt, steps, ...(decision === 'denied' ? { denied: true } : {}) };
 }

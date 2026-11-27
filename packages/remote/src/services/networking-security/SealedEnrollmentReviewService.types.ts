@@ -25,6 +25,7 @@ export interface MailboxStep {
 export interface EnrollmentMailbox {
 	id: string;
 	steps: MailboxStep[];
+	denied?: boolean;
 }
 export interface EnrollmentOpening {
 	kemPublic: string;
@@ -38,5 +39,5 @@ export interface EnrollmentPublication {
 }
 
 export type EnrollmentWrite =
-	| Record<string, string>
-	| { entries: SealedChainEntry[]; grants: SealedGrant[] };
+	| Record<string, string | boolean>
+	| { entries: SealedChainEntry[]; grants: SealedGrant[]; enrollment: string };

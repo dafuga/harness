@@ -16,6 +16,8 @@
 			"ReviewTransport.constructor",
 			"ReviewTransport.call",
 			"ReviewTransport.mailbox",
+			"ReviewTransport.deny",
+			"ReviewTransport.publish",
 			"ReviewTransport.append",
 			"ReviewTransport.chain",
 			"ReviewTransport.grants",
@@ -46,6 +48,16 @@
 				"required": false
 			},
 			{
+				"name": "ReviewTransport.publish.entry",
+				"type": "SealedChainEntry",
+				"required": true
+			},
+			{
+				"name": "ReviewTransport.publish.grants",
+				"type": "SealedGrant[]",
+				"required": true
+			},
+			{
 				"name": "ReviewTransport.append.n",
 				"type": "number",
 				"required": true
@@ -74,6 +86,14 @@
 			{
 				"name": "ReviewTransport.mailbox",
 				"type": "Promise<MailboxStep[]>"
+			},
+			{
+				"name": "ReviewTransport.deny",
+				"type": "Promise<void>"
+			},
+			{
+				"name": "ReviewTransport.publish",
+				"type": "unknown"
 			},
 			{
 				"name": "ReviewTransport.append",
@@ -143,6 +163,46 @@
 						"type": "thrown"
 					}
 				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReviewTransport.deny",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "ReviewTransport.deny",
+						"type": "Promise<void>"
+					}
+				],
+				"errors": [
+					{
+						"name": "SealedError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "ReviewTransport.publish",
+				"inputs": [
+					{
+						"name": "ReviewTransport.publish.entry",
+						"type": "SealedChainEntry",
+						"required": true
+					},
+					{
+						"name": "ReviewTransport.publish.grants",
+						"type": "SealedGrant[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ReviewTransport.publish",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
 				"errorStatus": "unknown"
 			},
 			{

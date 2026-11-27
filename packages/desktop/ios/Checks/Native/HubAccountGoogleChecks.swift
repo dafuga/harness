@@ -33,6 +33,7 @@ func accountGoogleChecks() {
     check(awaited(bench.session.computers)?.refusal != nil && bench.hub.asked("/api/remote/hosts").isEmpty,
           "Google account: a waiting device cannot discover or pair computers")
     verifyLoginComparison(bench)
+    verifyDeniedEnrollment()
     approvedDeviceReply(bench, path: devicePath, signer: signer)
     wait { (try? bench.status()?.get())?["state"] as? String == "signed-in" }
     check(bench.hub.asked(devicePath).contains { $0.httpMethod == "POST" } &&
@@ -127,16 +128,17 @@ private func accountComputerRequest(
 
 private let enrollPath = "/api/sync/v1/enroll"
 
-private func setupEnrollmentMailbox(_ bench: AccountBench) {
+private func setupEnrollmentMailbox(_ bench: AccountBench, denied: Bool = false) {
     var response: HubAccountReply?
     bench.hub.routes["GET " + enrollPath + "/" + String(repeating: "a", count: 32)] = { _ in response ?? hubJSON(404, [:]) }
     bench.hub.routes["POST " + enrollPath] = { request in
         guard let data = request.httpBody, let body = String(data: data, encoding: .utf8),
             let by = request.value(forHTTPHeaderField: "X-Harness-Device")
         else { return hubJSON(400, [:]) }
-        let value: [String: Any] = ["id": String(repeating: "a", count: 32),
+        var value: [String: Any] = ["id": String(repeating: "a", count: 32),
             "createdAt": Int(bench.time.timeIntervalSince1970 * 1000),
             "steps": [["n": 0, "by": by, "body": body]]]
+        if denied { value["denied"] = true }
         response = hubJSON(200, value)
         return hubJSON(201, value)
     }
@@ -158,4 +160,15 @@ private func verifyEnrollmentOpening(_ bench: AccountBench, signer: P256.Signing
           fields["signingPublic"] as? String == RemoteCoding.base64url(signer.publicKey.x963Representation) &&
           (fields["commit"] as? String)?.count == 64 && bench.hub.bearer(enrollPath) == "Bearer " + hubToken,
           "Google account: waiting opens one account-bound mailbox for this phone's keys")
+}
+
+private func verifyDeniedEnrollment() {
+    let bench = AccountBench()
+    setupEnrollmentMailbox(bench, denied: true)
+    bench.hub.routes["GET /api/sync/v1/device-session"] = { _ in hubJSON(200, ["state": "waiting-for-approval"]) }
+    bench.signIn()
+    let result = bench.status()
+    check(result?.refusal?.code == "approval-denied" &&
+          bench.request("/api/projects")?.refusal != nil && bench.hub.asked("/api/projects").isEmpty,
+          "Google account: denial closes the request while the phone stays locked")
 }
