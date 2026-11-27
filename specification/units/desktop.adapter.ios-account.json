@@ -25,7 +25,7 @@
 			{
 				"name": "account status",
 				"type": "NativeHostedStatus",
-				"description": "The public status says whether this build is configured and whether the account is signed-out, pending approval, or signed-in. It includes only an actor's id, name and email or a pending handoff code, verification URL, expiry and 1–30 second poll interval; approval waits are limited to 15 minutes.",
+				"description": "A kept iPhone session requires a matching non-backed-up installation marker. A relaunch preserves it. Sign-out, reinstall and a legacy unbound credential require a fresh login. The public status says whether this build is configured and whether the account is signed-out, pending approval, or signed-in. It includes only an actor's id, name and email or a pending handoff code, verification URL, expiry and 1–30 second poll interval; approval waits are limited to 15 minutes.",
 				"examples": [
 					{
 						"configured": true,

@@ -61,7 +61,32 @@ struct HubAccountKeychain: HubAccountVault {
             .appendingPathComponent("HarnessAccount", isDirectory: true)
     }
 
-    func load() -> HubAccountCredential? { item.load() }
-    func save(_ credential: HubAccountCredential) throws { try item.save(credential) }
-    func wipe() { item.wipe() }
+    private var marker: URL { directory.appendingPathComponent("session-binding") }
+
+    func load() -> HubAccountCredential? {
+        guard let credential = item.load(), let binding = credential.installationBinding,
+            let stored = try? Data(contentsOf: marker), stored == Data(binding.uuidString.utf8)
+        else { return nil }
+        return credential
+    }
+
+    func save(_ credential: HubAccountCredential) throws {
+        // A Keychain item can survive uninstall. Keep its matching marker in the app container,
+        // excluded from backups. Only a newly issued session can create the binding.
+        var folder = directory
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        var properties = URLResourceValues()
+        properties.isExcludedFromBackup = true
+        try folder.setResourceValues(properties)
+        let binding = UUID()
+        var bound = credential
+        bound.installationBinding = binding
+        try Data(binding.uuidString.utf8).write(to: marker, options: .atomic)
+        try item.save(bound)
+    }
+
+    func wipe() {
+        try? FileManager.default.removeItem(at: marker)
+        item.wipe()
+    }
 }

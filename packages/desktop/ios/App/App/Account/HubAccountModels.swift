@@ -59,6 +59,8 @@ struct HubAccountCredential: Codable, Equatable {
     var email: String
     var token: String
     var expiresAt: Date
+    /// Matches a non-secret marker in this installation's app container.
+    var installationBinding: UUID?
 }
 
 /// One call of the page: a method and a path of the project API, its fields and its body. It
