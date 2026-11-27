@@ -54,7 +54,6 @@
 		view.agents?.filter((agent) => !isWorking(agent) && agent.state !== 'needs-you').length ?? 0
 	);
 </script>
-
 {#snippet empty(text: string, action?: string, act?: () => void)}
 	<EmptyState as="div" className="po-empty hh-empty"
 		><hx-p>{text}</hx-p>

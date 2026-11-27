@@ -25,14 +25,6 @@ const kinds: Record<WriteAction, string> = {
 	remind: 'Snooze'
 };
 
-/** Explains why the decision list is unavailable on this device. */
-export function overviewFailureMessage(code: string | undefined, mode: 'phone' | 'mac'): string {
-	if (mode === 'mac') return 'Tracker could not be reached on this Mac.';
-	return code === 'denied' || code === 'noReplica'
-		? 'No Tracker copy is on this phone yet. Connect to your computer to sync it.'
-		: 'The Tracker copy on this phone could not be read.';
-}
-
 export function syncMessage(
 	mode: 'phone' | 'mac',
 	loaded: boolean,

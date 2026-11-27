@@ -12,7 +12,6 @@
 			"packages/desktop/src/lib/development-tooling/tracker-inbox/trackerInboxMessages.ts"
 		],
 		"symbols": [
-			"overviewFailureMessage",
 			"syncMessage",
 			"loadFailureMessage",
 			"overviewFailureMessage",
@@ -23,16 +22,6 @@
 	"contract": {
 		"origin": "derived",
 		"inputs": [
-			{
-				"name": "overviewFailureMessage.code",
-				"type": "string | undefined",
-				"required": true
-			},
-			{
-				"name": "overviewFailureMessage.mode",
-				"type": "'phone' | 'mac'",
-				"required": true
-			},
 			{
 				"name": "syncMessage.mode",
 				"type": "'phone' | 'mac'",
@@ -93,10 +82,6 @@
 		],
 		"outputs": [
 			{
-				"name": "overviewFailureMessage",
-				"type": "string"
-			},
-			{
 				"name": "syncMessage",
 				"type": "string"
 			},
@@ -120,29 +105,6 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
-			{
-				"name": "overviewFailureMessage",
-				"inputs": [
-					{
-						"name": "overviewFailureMessage.code",
-						"type": "string | undefined",
-						"required": true
-					},
-					{
-						"name": "overviewFailureMessage.mode",
-						"type": "'phone' | 'mac'",
-						"required": true
-					}
-				],
-				"outputs": [
-					{
-						"name": "overviewFailureMessage",
-						"type": "string"
-					}
-				],
-				"errors": [],
-				"errorStatus": "none-found"
-			},
 			{
 				"name": "syncMessage",
 				"inputs": [

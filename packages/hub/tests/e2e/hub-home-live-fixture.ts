@@ -41,26 +41,6 @@ export const overview = (page: Page) =>
 export const liveRows = (page: Page) =>
 	overview(page).locator('.hh-live-row[data-state="running"]');
 
-export async function expectEvenHeaderSpacing(page: Page) {
-	const [heading, summary, source] = await Promise.all(
-		[
-			overview(page).getByRole('heading', { name: 'Live overview' }),
-			overview(page).getByRole('status'),
-			overview(page).getByText(/^From \d+ of /)
-		].map(async (line) => (await line.boundingBox())!)
-	);
-	const above = summary.y - (heading.y + heading.height);
-	const below = source.y - (summary.y + summary.height);
-	expect(Math.abs(below - above)).toBeLessThanOrEqual(2);
-	expect(below).toBeLessThanOrEqual(8);
-}
-
-export async function expandProjects(page: Page) {
-	await expect(overview(page).locator('details.hh-live-project > summary').first()).toBeVisible();
-	const summaries = overview(page).locator('details.hh-live-project:not([open]) > summary');
-	while (await summaries.count()) await summaries.first().click();
-}
-
 export function seedLiveDisposition(tracker: RecordedTracker) {
 	const live = new Set(
 		tracker.runs.filter((run) => run.ended_at === null).map((run) => run.item_id)
