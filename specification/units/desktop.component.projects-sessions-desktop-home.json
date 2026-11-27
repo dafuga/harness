@@ -15,6 +15,7 @@
 			"hub.component.projects-sessions-hub-home-dialogs",
 			"hub.component.projects-sessions-hub-home-header",
 			"hub.component.projects-sessions-hub-home-live",
+			"reports.component.modal",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-div",
@@ -27,41 +28,47 @@
 		"symbols": ["DesktopHome", "DesktopHome.accountMenu"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "DesktopHome.workspace",
 				"type": "Workspace",
-				"required": true
+				"required": true,
+				"description": "The active desktop workspace, including its bridge, project list and selection actions."
 			},
 			{
 				"name": "DesktopHome.accountName",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Public display name of the signed-in Google account."
 			},
 			{
 				"name": "DesktopHome.signOut",
 				"type": "() => void",
-				"required": true
+				"required": true,
+				"description": "Signs out of the active account when the account menu action is chosen."
 			},
 			{
 				"name": "DesktopHome.phone",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Renders linked-device controls in a dialog when supplied."
 			},
 			{
 				"name": "DesktopHome.needsOnly",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Displays the shared decision cards with links to Home and the full Tracker inbox."
 			}
 		],
 		"outputs": [
 			{
 				"name": "DesktopHome",
-				"type": "markup"
+				"type": "markup",
+				"description": "The shared Hub Home frame with Tracker decisions, navigation to Tracker, Hub and local projects, and account controls. The Needs you view reuses the same decision cards."
 			}
 		],
 		"errors": [],
@@ -155,6 +162,16 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-spec-document-view",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
@@ -176,6 +193,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-realtime-realtime-types",
 			"via": "import",
 			"origin": "derived"
 		}

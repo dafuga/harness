@@ -53,7 +53,8 @@
 				"name": "TrackerInbox.project",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "When supplied in the Mac project view, restricts the inbox and search to this exact Tracker project and initially shows all of its items."
 			}
 		],
 		"outputs": [

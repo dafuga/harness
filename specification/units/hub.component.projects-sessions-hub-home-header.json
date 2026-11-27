@@ -51,31 +51,36 @@
 				"name": "HubHomeHeader.accountName",
 				"type": "string",
 				"required": false,
-				"default": ""
+				"default": "",
+				"description": "Display name of the signed-in account shown with its initial."
 			},
 			{
 				"name": "HubHomeHeader.accountMenu",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Account actions supplied by the web or native host."
 			},
 			{
 				"name": "HubHomeHeader.needsHref",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Address of the native Needs you view, when the host offers it."
 			},
 			{
 				"name": "HubHomeHeader.needsOnly",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Shows the Needs you heading and a link back to Home."
 			},
 			{
 				"name": "HubHomeHeader.notifications",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "Optional notification controls supplied by the web host."
 			}
 		],
 		"outputs": [

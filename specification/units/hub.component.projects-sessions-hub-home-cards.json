@@ -73,7 +73,8 @@
 				"name": "HubHomeCards.needsOnly",
 				"type": "boolean",
 				"required": false,
-				"default": false
+				"default": false,
+				"description": "Render the shared decisions and chat without the project, plan, quota and schedule cards."
 			}
 		],
 		"outputs": [

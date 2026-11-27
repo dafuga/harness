@@ -47,7 +47,8 @@
 				"name": "HubHomeLive.local",
 				"type": "HomeLiveOverview",
 				"required": false,
-				"default": "undefined (omitted)"
+				"default": "undefined (omitted)",
+				"description": "An optional live Tracker overview read directly by the native host."
 			}
 		],
 		"outputs": [
@@ -130,6 +131,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
 			"via": "import",
 			"origin": "derived"
 		}

@@ -96,7 +96,7 @@
 				data-sveltekit-reload
 				href={workspace.bridge.homeSnapshot
 					? resolve('/') + '?view=needs-you'
-					: resolve('/tracker')}><hx-span>Needs you</hx-span></hx-a
+					: resolve('/tracker' as '/')}><hx-span>Needs you</hx-span></hx-a
 			>{/if}
 	</hx-nav>
 

@@ -12,33 +12,38 @@
 		"symbols": ["desktopHomeView"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "desktopHomeView.home",
 				"type": "OwnerHomeSnapshot | null",
-				"required": true
+				"required": true,
+				"description": "The Tracker projection from the Mac bridge, or null while unresolved or unavailable."
 			},
 			{
 				"name": "desktopHomeView.workspace",
 				"type": "Pick< Workspace, | 'projects' | 'projectListReady' | 'busy' | 'switchProject' | 'hubProjectListStatus' | 'localProjectListFailed' >",
-				"required": true
+				"required": true,
+				"description": "The project list, listing statuses and selection operation of the active desktop workspace."
 			},
 			{
 				"name": "desktopHomeView.settled",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Whether the initial Tracker home read has answered."
 			},
 			{
 				"name": "desktopHomeView.now",
 				"type": "number",
-				"required": true
+				"required": true,
+				"description": "Current Unix time in milliseconds, used to classify scheduled and past-due work."
 			}
 		],
 		"outputs": [
 			{
 				"name": "desktopHomeView",
-				"type": "HomeView"
+				"type": "HomeView",
+				"description": "Home presentation data with independent workspace and Tracker states, source notices and project navigation."
 			}
 		],
 		"errors": [],
@@ -50,28 +55,33 @@
 					{
 						"name": "desktopHomeView.home",
 						"type": "OwnerHomeSnapshot | null",
-						"required": true
+						"required": true,
+						"description": "The Tracker projection from the Mac bridge, or null while unresolved or unavailable."
 					},
 					{
 						"name": "desktopHomeView.workspace",
 						"type": "Pick< Workspace, | 'projects' | 'projectListReady' | 'busy' | 'switchProject' | 'hubProjectListStatus' | 'localProjectListFailed' >",
-						"required": true
+						"required": true,
+						"description": "The project list, listing statuses and selection operation of the active desktop workspace."
 					},
 					{
 						"name": "desktopHomeView.settled",
 						"type": "boolean",
-						"required": true
+						"required": true,
+						"description": "Whether the initial Tracker home read has answered."
 					},
 					{
 						"name": "desktopHomeView.now",
 						"type": "number",
-						"required": true
+						"required": true,
+						"description": "Current Unix time in milliseconds, used to classify scheduled and past-due work."
 					}
 				],
 				"outputs": [
 					{
 						"name": "desktopHomeView",
-						"type": "HomeView"
+						"type": "HomeView",
+						"description": "Home presentation data with independent workspace and Tracker states, source notices and project navigation."
 					}
 				],
 				"errors": [],
@@ -98,6 +108,21 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-direct-agents",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

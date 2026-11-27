@@ -12,6 +12,7 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-row",
 			"hub.component.projects-sessions-hub-home-skeleton",
+			"reports.component.explorer-ui-explorer-kit-empty-state",
 			"reports.component.shared-primitives-atoms-html-a",
 			"reports.component.shared-primitives-atoms-html-button",
 			"reports.component.shared-primitives-atoms-html-p",
@@ -23,18 +24,21 @@
 		"symbols": ["HubHomeDirectory", "HubHomeDirectory.trailing", "HubHomeDirectory.trailing"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-empty-state"],
 		"inputs": [
 			{
 				"name": "HubHomeDirectory.view",
 				"type": "HomeView",
-				"required": true
+				"required": true,
+				"description": "Home data containing Tracker directory summaries, hosted project records and optional native project selection."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeDirectory",
-				"type": "markup"
+				"type": "markup",
+				"description": "A project list with direct open actions, source-specific notices and loading and empty states."
 			}
 		],
 		"errors": [],
@@ -85,6 +89,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.explorer-ui-explorer-kit-empty-state",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.component.shared-primitives-atoms-html-a",
 			"via": "import",
 			"origin": "derived"
@@ -101,6 +110,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

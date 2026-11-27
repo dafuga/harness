@@ -132,10 +132,13 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 		.map((entry) => entry.overview)
 		.reduce((a, b) => (betterOverview(b, a) ? b : a));
 	const providers = snapshots.map((entry) => entry.providers);
+	const liveOverview = mergeLiveOverview(snapshots);
+	const directory =
+		snapshots.find((entry) => entry.liveOverview === liveOverview && entry.projectDirectory)
+			?.projectDirectory ?? snapshots.find((entry) => entry.projectDirectory)?.projectDirectory;
 	return {
 		overview,
-		projectDirectory: snapshots.find((entry) => entry.projectDirectory !== undefined)
-			?.projectDirectory,
+		...(directory && { projectDirectory: directory }),
 		agents: mergeAgents(snapshots.flatMap((entry) => entry.agents)),
 		openAsks: mergeOpenAsks(snapshots),
 		plans: newest(
@@ -157,7 +160,7 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 			quota: mergeQuota(providers.map((entry) => entry.quota)),
 			...mergeRoutines(providers)
 		},
-		liveOverview: mergeLiveOverview(snapshots)
+		liveOverview
 	};
 }
 
