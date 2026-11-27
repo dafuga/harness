@@ -20,11 +20,13 @@ func accountGoogleChecks() {
     }
     let devicePath = "/api/sync/v1/device-session"
     bench.hub.routes["GET " + devicePath] = { _ in hubJSON(200, ["state": "waiting-for-approval"]) }
+    setupEnrollmentMailbox(bench)
     bench.session.browserReturned(url, state: handoff)
     wait { bench.vault.credential != nil }
     let stage = try? bench.status()?.get()
     check(stage?["state"] as? String == "waiting-for-approval" && stage?["actor"] == nil,
           "Google account: a new device waits after the native return")
+    verifyEnrollmentOpening(bench, signer: signer)
     let reads = bench.hub.asked("/api/projects").count
     check(bench.request("/api/projects")?.refusal != nil && bench.hub.asked("/api/projects").count == reads,
           "Google account: a waiting device cannot read projects")
@@ -120,4 +122,27 @@ private func accountComputerRequest(
     let after: Result<Void, RemoteFailure>? = awaited { account.request(sealed, $0) }
     check(after?.refusal != nil && bench.hub.asked(path).count == requests.count,
           "account computers: a pairing from a signed-out session cannot send again")
+}
+
+private let enrollPath = "/api/sync/v1/enroll"
+
+private func setupEnrollmentMailbox(_ bench: AccountBench) {
+    bench.hub.routes["POST " + enrollPath] = { request in
+        guard let data = request.httpBody, let body = String(data: data, encoding: .utf8),
+            let by = request.value(forHTTPHeaderField: "X-Harness-Device")
+        else { return hubJSON(400, [:]) }
+        return hubJSON(201, ["id": String(repeating: "a", count: 32),
+            "createdAt": Int(bench.time.timeIntervalSince1970 * 1000),
+            "steps": [["n": 0, "by": by, "body": body]]])
+    }
+}
+
+private func verifyEnrollmentOpening(_ bench: AccountBench, signer: P256.Signing.PrivateKey) {
+    _ = bench.status()
+    let openings = bench.hub.asked(enrollPath).filter { $0.httpMethod == "POST" }
+    let fields = bench.hub.body(enrollPath)
+    check(openings.count == 1 && Set(fields.keys) == ["kemPublic", "signingPublic", "commit"] &&
+          fields["signingPublic"] as? String == RemoteCoding.base64url(signer.publicKey.x963Representation) &&
+          (fields["commit"] as? String)?.count == 64 && bench.hub.bearer(enrollPath) == "Bearer " + hubToken,
+          "Google account: waiting opens one account-bound mailbox for this phone's keys")
 }
