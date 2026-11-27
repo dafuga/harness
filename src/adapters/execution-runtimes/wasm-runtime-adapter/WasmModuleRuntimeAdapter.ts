@@ -74,7 +74,15 @@ export class WasmModuleRuntimeAdapter implements UnitRuntime {
 		const input = new TextEncoder().encode(text);
 		const pointer = abi.harness_alloc(input.length);
 		new Uint8Array(abi.memory.buffer, pointer, input.length).set(input);
-		const packed = abi.harness_invoke(pointer, input.length);
+		let packed: bigint;
+		try {
+			packed = abi.harness_invoke(pointer, input.length);
+		} catch (error) {
+			if (error instanceof WebAssembly.RuntimeError) {
+				error.message += ` (harness_invoke(pointer=${pointer}, inputBytes=${input.length}, memoryBytes=${abi.memory.buffer.byteLength}))`;
+			}
+			throw error;
+		}
 		abi.harness_free(pointer, input.length);
 		const at = Number(packed >> 32n);
 		const length = Number(packed & 0xffffffffn);

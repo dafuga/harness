@@ -167,7 +167,7 @@
 			{
 				"name": "RuntimeError",
 				"type": "thrown",
-				"description": "A trap in module initialization or an exported ABI call rejects the raw method; invoke converts call failures to runtime-failed."
+				"description": "A trap in module initialization or an exported ABI call rejects the raw method. A harness_invoke trap includes the input pointer, encoded input byte length, and linear-memory size in bytes at the trap. invoke converts call failures to runtime-failed."
 			},
 			{
 				"name": "TypeError",
@@ -307,7 +307,7 @@
 					{
 						"name": "RuntimeError",
 						"type": "thrown",
-						"description": "A trap in module initialization or an exported ABI call rejects the raw method; invoke converts call failures to runtime-failed."
+						"description": "A trap in module initialization or an exported ABI call rejects the raw method. A harness_invoke trap includes the input pointer, encoded input byte length, and linear-memory size in bytes at the trap. invoke converts call failures to runtime-failed."
 					},
 					{
 						"name": "TypeError",
@@ -357,7 +357,7 @@
 					{
 						"name": "RuntimeError",
 						"type": "thrown",
-						"description": "A trap in module initialization or an exported ABI call rejects the raw method; invoke converts call failures to runtime-failed."
+						"description": "A trap in module initialization or an exported ABI call rejects the raw method. A harness_invoke trap includes the input pointer, encoded input byte length, and linear-memory size in bytes at the trap. invoke converts call failures to runtime-failed."
 					},
 					{
 						"name": "TypeError",
