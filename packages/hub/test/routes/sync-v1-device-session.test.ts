@@ -85,6 +85,10 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		status: 403,
 		body: { error: 'device-approval-required' }
 	});
+	const inbox = await fixture.call(session, 'GET', 'enroll', { headers });
+	expect(await snapshot(inbox)).toEqual({ status: 200, body: { requests: [] } });
+	const listener = await fixture.socket(session, device.deviceId);
+	listener.close();
 	const pending = await sealedDevice();
 	const unrelated = await fixture.call(otherSession, 'GET', 'device-session', {
 		headers: { 'X-Harness-Device': pending.deviceId }
@@ -93,4 +97,11 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		status: 200,
 		body: { state: 'waiting-for-approval' }
 	});
+	const newHeaders = { 'X-Harness-Device': pending.deviceId };
+	const heldInbox = await fixture.call(otherSession, 'GET', 'enroll', { headers: newHeaders });
+	expect(await snapshot(heldInbox)).toEqual({
+		status: 403,
+		body: { error: 'device-approval-required' }
+	});
+	await expect(fixture.socket(otherSession, pending.deviceId)).rejects.toThrow();
 }, 60_000);
