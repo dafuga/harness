@@ -47,7 +47,7 @@ function pendingAnswers(store: TrackerPersistenceService) {
 		.prepare(
 			`SELECT i.id, i.answered_at AS answeredAt, json_extract(i.clocks, '$.answer') AS generation,
 				CASE WHEN i.answer_option IS NOT NULL AND coalesce(i.confirm,'') <> 'secret'
-					AND coalesce(i.sensitive,0) <> 1 THEN i.answer END AS choice,
+					AND cast(coalesce(i.sensitive,0) AS INTEGER) = 0 THEN i.answer END AS choice,
 				(i.status = 'blocked' AND json_extract(i.clocks,'$.status') >= json_extract(i.clocks,'$.answer'))
 					AS keepBlocked
 			FROM items i

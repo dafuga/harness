@@ -62,22 +62,26 @@ export function trackerHostWatchdog(
 		chiefOfStaff,
 		inspect: inspectHostWatchdog({ store, items, driver }, { ...options, readItems }),
 		async tick(signal: AbortSignal) {
-			if (config.transcriptRoots?.length) await scanTranscripts(signal);
-			liveSessions = (await pollSessions(signal)) ?? liveSessions;
-			const launchAlert =
-				chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
-			if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
-				lastCosPoll = now();
-				peerAlerts = (await driver.peers?.(signal)) ?? [];
-				await sendWatchdogAlerts(
-					store,
-					driver,
-					alerts().filter(({ kind }) => kind !== 'missing' && kind !== 'context'),
-					signal
-				);
+			try {
+				if (config.transcriptRoots?.length) await scanTranscripts(signal);
+				liveSessions = (await pollSessions(signal)) ?? liveSessions;
+				const launchAlert =
+					chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
+				if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
+					lastCosPoll = now();
+					peerAlerts = (await driver.peers?.(signal)) ?? [];
+					await sendWatchdogAlerts(
+						store,
+						driver,
+						alerts().filter(({ kind }) => kind !== 'missing' && kind !== 'context'),
+						signal
+					);
+				}
+			} finally {
+				// Answer delivery checks its own pane, even if the wider watchdog scan fails.
+				await deliverAnswers(signal);
 			}
-			// Last, so a pane that cannot be typed into never holds back the checks above.
-			await deliverAnswers(signal);
+			// A pane that cannot be typed into never holds back the checks above.
 			await deliverMessages(signal);
 		}
 	};
