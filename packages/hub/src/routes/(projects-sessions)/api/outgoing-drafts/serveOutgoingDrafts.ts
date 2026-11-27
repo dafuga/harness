@@ -13,16 +13,30 @@ const admittedStatus = new Set([200, 400, 403, 404, 409, 413]);
 export async function serveOutgoingDrafts(request: Request, deps: OutgoingDraftDeps) {
 	const url = new URL(request.url);
 	if (url.pathname !== path || url.search || !deps.ownerId) return error(404, 'not-found');
-	const session = await deps.sessions?.resolve(request);
-	if (!session || session.actor.id !== deps.ownerId) return error(403, 'forbidden');
-	if (session.kind === 'native' && session.resource !== 'projects') return error(403, 'forbidden');
+	if (!(await verifiedOwner(request, deps))) return error(403, 'forbidden');
 	if (!deps.gateway) return error(503, 'drafts-unavailable');
 	const { method } = request;
 	if (method !== 'GET' && method !== 'POST') return error(405, 'method-not-allowed');
 	const body = method === 'POST' ? await boundedBody(request) : '';
-	if (body instanceof Response) return body;
+	return body instanceof Response ? body : await proxyDraft(method, body, deps.gateway, deps);
+}
+
+async function verifiedOwner(request: Request, deps: OutgoingDraftDeps) {
+	const session = await deps.sessions?.resolve(request);
+	return (
+		session?.actor.id === deps.ownerId &&
+		(session?.kind === 'browser' || session?.resource === 'projects')
+	);
+}
+
+async function proxyDraft(
+	method: 'GET' | 'POST',
+	body: string,
+	gateway: NonNullable<OutgoingDraftDeps['gateway']>,
+	deps: OutgoingDraftDeps
+) {
 	try {
-		const result = await forwardOutgoingDraft(method, body, deps.gateway, deps);
+		const result = await forwardOutgoingDraft(method, body, gateway, deps);
 		if (!admittedStatus.has(result.status)) {
 			await result.body?.cancel();
 			return error(503, 'drafts-unavailable');
