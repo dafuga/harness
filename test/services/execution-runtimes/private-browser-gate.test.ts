@@ -1,4 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
+import { measureWorkload } from '../../support/measureWorkload';
 import { PrivateBrowserGateService } from '../../../src/services/execution-runtimes/PrivateBrowserGateService';
 
 const fixture = () => {
@@ -42,29 +43,35 @@ test('recover denies reads on boot and requires input revocation and confirmed f
 });
 
 test('request aborts and drains existing work before private input and drops its output', async () => {
-	const { gate } = fixture();
-	await gate.recover();
-	const started = Promise.withResolvers<AbortSignal>();
-	const output = Promise.withResolvers<string>();
-	const existing = gate.read(async (signal) => {
-		started.resolve(signal);
-		return output.promise;
-	});
-	const signal = await started.promise;
-	const starting = gate.request('paired-device');
-	expect(signal.aborted).toBe(true);
-	expect(gate.status()).toBe('draining');
-	expect(await gate.request('paired-device')).toBeUndefined();
-	const later = vi.fn(async () => 'other browser content');
-	expect(await gate.read(later)).toBeUndefined();
-	expect(later).not.toHaveBeenCalled();
-	output.resolve('synthetic private canary');
-	expect(await existing).toBeUndefined();
+	await measureWorkload(
+		'service.execution-runtimes-private-browser-gate',
+		'in-flight read through private admission and cancel',
+		async () => {
+			const { gate } = fixture();
+			await gate.recover();
+			const started = Promise.withResolvers<AbortSignal>();
+			const output = Promise.withResolvers<string>();
+			const existing = gate.read(async (signal) => {
+				started.resolve(signal);
+				return output.promise;
+			});
+			const signal = await started.promise;
+			const starting = gate.request('paired-device');
+			expect(signal.aborted).toBe(true);
+			expect(gate.status()).toBe('draining');
+			expect(await gate.request('paired-device')).toBeUndefined();
+			const later = vi.fn(async () => 'other browser content');
+			expect(await gate.read(later)).toBeUndefined();
+			expect(later).not.toHaveBeenCalled();
+			output.resolve('synthetic private canary');
+			expect(await existing).toBeUndefined();
 
-	const receipt = await starting;
-	expect(receipt).toEqual({ requestId: expect.any(String) });
-	expect(gate.status()).toBe('private');
-	expect(await gate.cancel(receipt?.requestId ?? '')).toBe(true);
+			const receipt = await starting;
+			expect(receipt).toEqual({ requestId: expect.any(String) });
+			expect(gate.status()).toBe('private');
+			expect(await gate.cancel(receipt?.requestId ?? '')).toBe(true);
+		}
+	);
 });
 
 test('finish requires the active request and paired device and waits for cleanup and verification', async () => {

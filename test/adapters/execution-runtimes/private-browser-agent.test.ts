@@ -3,6 +3,7 @@ import { rmSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { once } from 'node:events';
 import { expect, test, vi } from 'vitest';
+import { measureWorkload } from '../../support/measureWorkload';
 import { PrivateBrowserAgentAdapter } from '../../../src/adapters/execution-runtimes/PrivateBrowserAgentAdapter';
 import { PrivateBrowserGateService } from '../../../src/services/execution-runtimes/PrivateBrowserGateService';
 import { createTempDirectory } from '../../support/temporary';
@@ -74,44 +75,57 @@ test('listen fails closed for an unverified or wrong agent identity', async () =
 });
 
 test('only reviewed reads, request and status are exposed and private entry blocks all reads', async () => {
-	const { adapter, socketPath, close, gate, reviewedRead } = await fixture();
-	try {
-		await adapter.listen();
-		expect(await call(socketPath, '/status', 'GET')).toEqual({
-			status: 200,
-			body: { phase: 'ready' }
-		});
-		expect(await call(socketPath, '/read')).toEqual({
-			status: 200,
-			body: { result: { state: 'reviewed' } }
-		});
-		expect(await call(socketPath, '/private-entry', 'POST', '{"deviceId":"forged"}')).toEqual({
-			status: 400,
-			body: { error: 'Body not allowed' }
-		});
-		const admitted = await call(socketPath, '/private-entry');
-		expect(admitted).toEqual({ status: 202, body: { requestId: expect.any(String) } });
-		expect(await call(socketPath, '/status', 'GET')).toEqual({
-			status: 200,
-			body: { phase: 'private' }
-		});
-		for (const path of ['/finish', '/screen', '/json/list', '/devtools', '/logs', '/recording']) {
-			expect(await call(socketPath, path)).toEqual({
-				status: 404,
-				body: { error: 'Unknown route' }
-			});
+	await measureWorkload(
+		'adapter.execution-runtimes-private-browser-agent',
+		'ordinary reads and private refusal over a Unix socket',
+		async () => {
+			const { adapter, socketPath, close, gate, reviewedRead } = await fixture();
+			try {
+				await adapter.listen();
+				expect(await call(socketPath, '/status', 'GET')).toEqual({
+					status: 200,
+					body: { phase: 'ready' }
+				});
+				expect(await call(socketPath, '/read')).toEqual({
+					status: 200,
+					body: { result: { state: 'reviewed' } }
+				});
+				expect(await call(socketPath, '/private-entry', 'POST', '{"deviceId":"forged"}')).toEqual({
+					status: 400,
+					body: { error: 'Body not allowed' }
+				});
+				const admitted = await call(socketPath, '/private-entry');
+				expect(admitted).toEqual({ status: 202, body: { requestId: expect.any(String) } });
+				expect(await call(socketPath, '/status', 'GET')).toEqual({
+					status: 200,
+					body: { phase: 'private' }
+				});
+				for (const path of [
+					'/finish',
+					'/screen',
+					'/json/list',
+					'/devtools',
+					'/logs',
+					'/recording'
+				]) {
+					expect(await call(socketPath, path)).toEqual({
+						status: 404,
+						body: { error: 'Unknown route' }
+					});
+				}
+				expect(await call(socketPath, '/read')).toEqual({
+					status: 409,
+					body: { error: 'Read unavailable' }
+				});
+				expect(reviewedRead).toHaveBeenCalledTimes(1);
+				const { requestId } = admitted.body as { requestId: string };
+				expect(await gate.finish(requestId, 'paired-fixture')).toBe(true);
+				expect((await call(socketPath, '/read')).status).toBe(200);
+			} finally {
+				await close();
+			}
 		}
-		expect(await call(socketPath, '/read')).toEqual({
-			status: 409,
-			body: { error: 'Read unavailable' }
-		});
-		expect(reviewedRead).toHaveBeenCalledTimes(1);
-		const { requestId } = admitted.body as { requestId: string };
-		expect(await gate.finish(requestId, 'paired-fixture')).toBe(true);
-		expect((await call(socketPath, '/read')).status).toBe(200);
-	} finally {
-		await close();
-	}
+	);
 });
 
 test('close preserves a socket whose bind failed because another service owns the name', async () => {

@@ -1,4 +1,5 @@
 import { expect, test, vi } from 'vitest';
+import { measureWorkload } from '../../support/measureWorkload';
 import { VaultDeviceRepository } from '../../../src/repositories/accounts-access/VaultDeviceRepository';
 import { PrivateBrowserGateService } from '../../../src/services/execution-runtimes/PrivateBrowserGateService';
 import { PrivateBrowserPhoneService } from '../../../src/services/execution-runtimes/PrivateBrowserPhoneService';
@@ -83,17 +84,23 @@ async function fixture() {
 }
 
 test('accepts one enrolled phone submission, never returns the field and clears plaintext', async () => {
-	const { offer, proof, service, gate, submitField, verifyResult } = await fixture();
-	const offered = offer();
-	const signed = proof(offered);
-	expect(await service.submit(signed)).toBe(true);
-	expect(submitField).toHaveBeenCalledTimes(1);
-	const [scope, observed] = submitField.mock.calls[0];
-	expect(scope).toEqual(reviewed);
-	expect(observed.every((byte) => byte === 0)).toBe(true);
-	expect(verifyResult).toHaveBeenCalledTimes(1);
-	expect(gate.status()).toBe('ready');
-	expect(await service.submit(signed)).toBe(false);
+	await measureWorkload(
+		'service.execution-runtimes-private-browser-phone',
+		'signed phone delivery and result verification',
+		async () => {
+			const { offer, proof, service, gate, submitField, verifyResult } = await fixture();
+			const offered = offer();
+			const signed = proof(offered);
+			expect(await service.submit(signed)).toBe(true);
+			expect(submitField).toHaveBeenCalledTimes(1);
+			const [scope, observed] = submitField.mock.calls[0];
+			expect(scope).toEqual(reviewed);
+			expect(observed.every((byte) => byte === 0)).toBe(true);
+			expect(verifyResult).toHaveBeenCalledTimes(1);
+			expect(gate.status()).toBe('ready');
+			expect(await service.submit(signed)).toBe(false);
+		}
+	);
 });
 
 test('rejects signed scope changes, another enrolled phone, the wrong route and expired delivery', async () => {
