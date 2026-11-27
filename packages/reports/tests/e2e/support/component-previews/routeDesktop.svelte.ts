@@ -7,7 +7,7 @@ import type { DesktopData } from './desktopData.svelte';
 import { desktopData } from './sealedData';
 import { designPreviewPage } from './designCanvasPreviews';
 import { openRoute, page } from './router.svelte';
-import { catalogHome } from './hubHomeCatalogData';
+import { catalogDesktopHome } from './hubHomeCatalogData';
 import type { PreviewProps } from './shared';
 const project = encodeURIComponent(desktopData.project.id);
 /** The tip of the orders branch at Pages, where the workspace opens; then under its project. */
@@ -57,7 +57,7 @@ function routeBridge(desktop: DesktopData): DesktopBridge {
 	};
 	return {
 		...desktop.bridge,
-		homeSnapshot: async () => catalogHome.snapshot,
+		homeSnapshot: async () => catalogDesktopHome,
 		projectOverview: async () => allStatesSnapshot(),
 		designCanvases: async () => designPreviewPage,
 		listProjects: async () => [{ id, name, kind: 'local', root }],
