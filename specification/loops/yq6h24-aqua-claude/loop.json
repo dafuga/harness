@@ -2,11 +2,9 @@
 	"name": "yq6h24-aqua-claude",
 	"goal": "Preserve MB2's active sessions while new Claude launches use the Aqua keychain, refuse a signed-out pane, and prove a launcher-started Haiku reply",
 	"createdAt": "2026-11-27T20:18:17.981Z",
-	"updatedAt": "2026-11-27T20:18:38.364Z",
+	"updatedAt": "2026-11-27T20:23:47.206Z",
 	"template": "bug-fix",
-	"templateLineage": [
-		"bug-fix"
-	],
+	"templateLineage": ["bug-fix"],
 	"enforceOrder": true,
 	"regressionCommits": 1,
 	"steps": [
@@ -27,17 +25,23 @@
 		{
 			"id": "red",
 			"title": "Strengthen the existing standardized test; commit it before repair, run it failing with loop record --phase red, and preserve the assertion.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T20:23:05.538Z",
+			"evidence": "Both existing standardized scenarios failed. The launcher selected the old socket; the foreground persisted running when the pane said Not logged in."
 		},
 		{
 			"id": "implement",
 			"title": "Implement the smallest repair without weakening the regression test.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T20:23:06.955Z",
+			"evidence": "New MB2 native Claude attempts record a separate Aqua socket and keep legacy receipts on their original sockets. The startup check refuses a signed-out screen before checking the composer."
 		},
 		{
 			"id": "green",
 			"title": "Rerun the same unchanged regression test at a separate fix commit with loop record --phase green; preserve passing proof.",
-			"status": "pending"
+			"status": "complete",
+			"completedAt": "2026-11-27T20:23:47.206Z",
+			"evidence": "The unchanged managed-worker and foreground suites pass with one worker."
 		},
 		{
 			"id": "siblings",

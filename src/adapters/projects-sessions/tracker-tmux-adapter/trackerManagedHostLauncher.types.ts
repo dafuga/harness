@@ -3,6 +3,7 @@ import type {
 	TrackerManagedLaunchConfig,
 	TrackerWorkerClient
 } from '../../../services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types';
+import type { trackerClaudeAquaSocket } from './trackerTmuxPane';
 
 export type TrackerManagedPresence = 'live' | 'absent' | 'unknown';
 
@@ -13,6 +14,7 @@ export interface TrackerManagedReceipt {
 	key: string;
 	token: string;
 	tmux: string;
+	socket?: typeof trackerClaudeAquaSocket;
 	issuedAt: number;
 	checkClaudeStartup?: true;
 }
