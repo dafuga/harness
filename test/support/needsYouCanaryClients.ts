@@ -21,6 +21,9 @@ import {
 	attentionRevision,
 	readPhoneReplicaItem
 } from '../../src/services/projects-sessions/tracker-phone-replica-service/phoneReplicaRows';
+import type { RealTracker } from './needsYouCanaryClients.types';
+
+export type { RealTracker };
 
 const at = Date.UTC(2026, 10, 27, 9);
 
@@ -37,8 +40,6 @@ export function realTracker() {
 		(await (await send(`http://127.0.0.1:7700${path}`)).json()) as CanaryItem;
 	return { database, store, send, read, close: () => database.close() };
 }
-
-export type RealTracker = ReturnType<typeof realTracker>;
 
 /** Raises the canary's own ask with the canary's own command lines. */
 export async function raise(tracker: RealTracker, ask: CanaryAsk): Promise<string> {
