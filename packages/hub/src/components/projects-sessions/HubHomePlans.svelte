@@ -72,10 +72,10 @@
 		{#each visible as plan (plan.id)}
 			{@const agent = agents.find((agent) => agent.name === plan.project && agent.itemId)}
 			{@const tone = planTones[plan.state]}
-			<hx-article class={`po-card po-${tone} hh-plan`}>
+			<hx-article class={`po-card po-${tone} hh-plan hh-row-target`}>
 				<hx-div class="po-card-head">
 					<hx-div class="po-card-title">
-						<hx-h3 class="po-name hh-row-target">
+						<hx-h3 class="po-name">
 							<LinkifiedText text={plan.title} />
 							<hx-button
 								type="button"
