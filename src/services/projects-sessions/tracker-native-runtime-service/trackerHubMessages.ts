@@ -6,18 +6,10 @@ import {
 } from '../../../utils/projects-sessions/hubSessionMessages';
 import type { HubThreadMessage } from '../../../utils/projects-sessions/hubSessionMessages.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
-import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import { pendingHubMessages, recordHubReceipt } from './trackerHubMessageNotes';
+import type { HubMessageDelivery, LocalRun } from './trackerHubMessages.types';
 
 const retryMs = 15_000;
-
-interface HubMessageDelivery {
-	store: TrackerPersistenceService;
-	driver: TrackerWatchdogPort;
-	now?: () => number;
-}
-
-type LocalRun = { item_id: string; state: string; ended_at: number | null; tmux: string | null };
 
 /**
  * Types each stored session message of the last day into its run's pane, from the computer that

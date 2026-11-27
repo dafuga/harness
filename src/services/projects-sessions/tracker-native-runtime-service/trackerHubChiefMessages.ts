@@ -9,18 +9,12 @@ import type { HubThreadMessage } from '../../../utils/projects-sessions/hubSessi
 import type { TrackerChiefChannel } from '../TrackerNotificationService.types';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 import { pendingHubMessages, recordHubReceipt } from './trackerHubMessageNotes';
+import type { HubChiefDelivery } from './trackerHubChiefMessages.types';
 
 const retryMs = 15_000;
 /** The receipt's session word: Chief of Staff is reached through a channel, not a pane. */
 export const chiefChannelSession = 'chief-of-staff-channel';
 export const chiefChannelMissing = 'Chief of Staff channel not configured';
-
-interface HubChiefDelivery {
-	store: TrackerPersistenceService;
-	/** The hub's Chief of Staff channel; undefined when none is configured. */
-	channel: () => TrackerChiefChannel | undefined;
-	now?: () => number;
-}
 
 /**
  * On the hub, sends each stored Chief of Staff Hub message through Chief of Staff's notification

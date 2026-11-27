@@ -14,6 +14,23 @@ import type { HostPairingFrame } from '../../../desktop/src/services/networking-
 
 const project = { id: 'local-' + 'b'.repeat(64), name: 'Desk project' };
 
+/** The signed-in account's computers; the offline one can be removed. */
+async function computerListRoutes(
+	page: Page,
+	online: { hostId: string; name: string; online: boolean },
+	offline: { hostId: string; name: string; online: boolean }
+) {
+	let includeOffline = true;
+	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
+		route.fulfill({ json: { computers: [online, ...(includeOffline ? [offline] : [])] } })
+	);
+	await page.route('**/api/remote/hosts/' + offline.hostId, (route) => {
+		expect(route.request().method()).toBe('DELETE');
+		includeOffline = false;
+		return route.fulfill({ json: { ok: true } });
+	});
+}
+
 /** A synthetic signed-in Hub and Mac, speaking the real encrypted wire protocol. */
 export async function linkedComputersFixture(
 	page: Page,
@@ -32,20 +49,8 @@ export async function linkedComputersFixture(
 	const grant = { projects: [project], comments: false, agents: false };
 	const pairing = new HostPairingService({ hostId, keys });
 	const endpoint = `/api/remote/hosts/${hostId}/pairing`;
-	let includeOffline = true;
 	let device: Awaited<ReturnType<typeof pairing.approve>> | undefined;
-	await page.route(/\/api\/remote\/hosts\?linked=1$/, (route) =>
-		route.fulfill({
-			json: {
-				computers: [{ hostId, name: host.name, online: true }, ...(includeOffline ? [offline] : [])]
-			}
-		})
-	);
-	await page.route('**/api/remote/hosts/' + offline.hostId, (route) => {
-		expect(route.request().method()).toBe('DELETE');
-		includeOffline = false;
-		return route.fulfill({ json: { ok: true } });
-	});
+	await computerListRoutes(page, { hostId, name: host.name, online: true }, offline);
 	await page.route('**' + endpoint, async (route) => {
 		const request = route.request();
 		if (request.method() === 'GET')
