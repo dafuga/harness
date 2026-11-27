@@ -44,22 +44,25 @@ afterEach(async () => {
 });
 
 function get(path: string, headers: Record<string, string> = {}) {
-	return new Promise<{ status: number; body: string; cookie?: string }>((resolve, reject) => {
-		const options = { host: '127.0.0.1', port, path, headers };
-		request(options, (response) => {
-			let body = '';
-			response.on('data', (chunk) => (body += chunk));
-			response.on('end', () =>
-				resolve({
-					status: response.statusCode ?? 0,
-					body,
-					cookie: response.headers['set-cookie']?.[0]
-				})
-			);
-		})
-			.on('error', reject)
-			.end();
-	});
+	return new Promise<{ status: number; body: string; cookie?: string; location?: string }>(
+		(resolve, reject) => {
+			const options = { host: '127.0.0.1', port, path, headers };
+			request(options, (response) => {
+				let body = '';
+				response.on('data', (chunk) => (body += chunk));
+				response.on('end', () =>
+					resolve({
+						status: response.statusCode ?? 0,
+						body,
+						cookie: response.headers['set-cookie']?.[0],
+						location: response.headers.location
+					})
+				);
+			})
+				.on('error', reject)
+				.end();
+		}
+	);
 }
 
 function viewer(cookie: string, origin = `http://127.0.0.1:${port}`) {
@@ -83,6 +86,7 @@ test('an unapproved device sees only its pairing code', async () => {
 	const { first, cookie, code } = await pair();
 	expect(first.cookie).toContain('HttpOnly; SameSite=Strict');
 	expect((await get('/', { cookie })).body).toContain(code);
+	expect((await get('/viewer', { cookie })).status).toBe(403);
 	expect((await get('/vnc.html', { cookie })).status).toBe(403);
 	expect(await refused(viewer(cookie))).toBe(true);
 	expect(pipes).toEqual([]);
@@ -95,7 +99,12 @@ test('approval admits that device to the client and the screen, and revoke remov
 	expect(devices.approve('000000' === code ? '000001' : '000000')).toBe(false);
 	expect(devices.approve(code)).toBe(true);
 	expect(devices.approve(code)).toBe(false);
-	expect((await get('/', { cookie })).status).toBe(302);
+	const entry = await get('/', { cookie });
+	expect(entry).toMatchObject({ status: 302, location: '/viewer' });
+	const controls = await get(entry.location!, { cookie });
+	expect(controls.status).toBe(200);
+	for (const label of ['Back', 'Forward', 'Reload', 'Home', 'URL'])
+		expect(controls.body).toContain(label);
 	expect((await get('/vnc.html', { cookie })).body).toBe('CLIENT');
 	const socket = viewer(cookie);
 	await new Promise((resolve) => socket.once('open', resolve));

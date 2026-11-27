@@ -19,9 +19,9 @@ on the Mac's screen. Each profile keeps its own sign-in in a Docker volume.
 ## Not a disguise
 
 The browser is stock Debian Chromium. Harness sets no user agent, patches no
-`navigator` property, adds no stealth extension and solves no captcha. It reads
-through DevTools with `Page.navigate` and `Runtime.evaluate` only (and
-`Browser.close` to shut it down). A site's
+`navigator` property, adds no stealth extension and solves no captcha. The reader
+uses a private DevTools pipe. The viewer uses that same pipe for navigation,
+and the adapter asks Chromium to shut down with `Browser.close`. A site's
 "verify it is you" step is a question for the owner, never something to work
 around. A site's own rules on automated access still apply.
 
@@ -50,6 +50,23 @@ drops connected ones within five seconds. Requests with another Host name, and
 screen sockets from another origin, are refused. Anything able to run commands as
 the host user can already reach the container, so approval is not a boundary
 against that user.
+
+The paired viewer shows Back, Forward, Reload, Home, and a URL field above
+the remote screen. Commands apply to the focused Chromium page, including
+popups. Home opens a blank page. The URL field accepts HTTP and HTTPS addresses
+and starts empty so the viewer chrome never copies an address from a remote tab.
+Navigation accepts same-origin POSTs with live device approval.
+
+For use outside the private network, a Cloudflare Tunnel on the browser's Mac
+forwards to loopback. Its exact hostname is protected by an Access application
+that admits only Daniel's configured identity. The viewer verifies the issuer,
+audience, identity and expiry before issuing a device code, serving the viewer,
+or opening a screen socket. Device approvals and Access sessions expire in
+15 minutes in this mode. The screen socket closes when either expires.
+
+On Hub Home, an open Needs You item that includes the canonical viewer
+address can open a detail dialog. The dialog opens the protected viewer as a
+top-level browser tab so that Cloudflare authentication works across devices.
 
 ## Commands
 
