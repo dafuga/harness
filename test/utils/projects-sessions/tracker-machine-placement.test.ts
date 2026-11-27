@@ -102,5 +102,8 @@ test('never recommends an overloaded or offline computer', () => {
 		row('daniel-primary-mbp', { ram: { ...resourceSample(now).ram, pressure: 'warn' } })
 	]);
 	expect(placement.recommended).toBeNull();
+	const rising = row('daniel-primary-mbp', { load: [14, 16, 1] });
+	expect(rising.status).toBe('busy');
+	expect(placeTrackerWork([rising]).recommended).toBeNull();
 	expect(placement.ranked.at(-1)).toMatchObject({ node: 'harbor-mbp-2', score: null });
 });

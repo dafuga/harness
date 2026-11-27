@@ -164,6 +164,7 @@ test('a peer that stops reporting or is overloaded loses its due-start grant', a
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBe('no fresh machine sample');
 		nodes.readings[peerNode] = { load: [40, 40, 40] };
 		await nodes.tick();
+		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('load above the start limit');
 		nodes.clock.at += minute;
 		await nodes.tick();
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('is overloaded');
@@ -171,7 +172,6 @@ test('a peer that stops reporting or is overloaded loses its due-start grant', a
 		nodes.close();
 	}
 });
-
 test('--computer auto picks the computer whose launcher maps the project', async () => {
 	const nodes = fleet({
 		planLaunch: (fields) => ({
