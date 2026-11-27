@@ -105,7 +105,7 @@
 			},
 			{
 				"name": "SyncEnrollments.append",
-				"type": "EnrollStep | null"
+				"type": "unknown"
 			},
 			{
 				"name": "SyncEnrollments.expire",
@@ -215,7 +215,7 @@
 				"outputs": [
 					{
 						"name": "SyncEnrollments.append",
-						"type": "EnrollStep | null"
+						"type": "unknown"
 					}
 				],
 				"errors": [],

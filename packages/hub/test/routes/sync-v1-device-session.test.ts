@@ -1,4 +1,5 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
+import { sealedEnrollCommit } from '../../../remote/src/utils/networking-security/sealedSas';
 import { sealedDevice } from '../../../remote/src/utils/networking-security/sealedDevice';
 import { toBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
 import { readSealedDeviceSession } from '../../../remote/src/utils/networking-security/readSealedDeviceSession';
@@ -102,6 +103,26 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	expect(await snapshot(heldInbox)).toEqual({
 		status: 403,
 		body: { error: 'device-approval-required' }
+	});
+	const opening = {
+		kemPublic: toBase64Url(pending.kemPublic),
+		signingPublic: toBase64Url(pending.signingPublic),
+		commit: await sealedEnrollCommit(pending, crypto.getRandomValues(new Uint8Array(32)))
+	};
+	const mailbox = await fixture.call(otherSession, 'POST', 'enroll', {
+		headers: newHeaders,
+		body: opening
+	});
+	expect(mailbox.status).toBe(201);
+	const { id } = (await mailbox.json()) as { id: string };
+	const claim = {
+		approver: device.deviceId,
+		nonce: toBase64Url(crypto.getRandomValues(new Uint8Array(32)))
+	};
+	const accepted = await fixture.call(session, 'POST', 'enroll/' + id, { headers, body: claim });
+	expect(await snapshot(accepted)).toEqual({
+		status: 201,
+		body: { n: 1, by: device.deviceId, body: JSON.stringify(claim) }
 	});
 	await expect(fixture.socket(otherSession, pending.deviceId)).rejects.toThrow();
 }, 60_000);
