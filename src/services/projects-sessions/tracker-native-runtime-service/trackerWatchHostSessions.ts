@@ -33,7 +33,7 @@ export function watchHostSessions(hosts: WatchdogSessionHost, options: WatchdogS
 	let lastContextPoll = -Infinity;
 	return async (signal: AbortSignal) => {
 		const now = options.now();
-		if (now - lastHealthPoll < recoveryPollInterval) return;
+		if (now - lastHealthPoll < recoveryPollInterval) return undefined;
 		lastHealthPoll = now;
 		const sample = now - lastContextPoll >= sessionHealthInterval;
 		if (sample) lastContextPoll = now;

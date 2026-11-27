@@ -27,6 +27,8 @@ import { trackerHubMessageDelivery } from './trackerHubMessages';
 import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
 const minute = 60_000;
+const slotAlerts = new Set(['orphan', 'finished', ...slotAlertKinds]);
+const recoveryFailures = new Set(['recovery-failed', 'handoff-failed']);
 const sessionAlerts = new Set(['idle', 'context', 'overdue', 'startup']);
 
 export function trackerHostWatchdog(
@@ -122,17 +124,24 @@ function stillApplies(
 	liveSessions: ReadonlySet<string>
 ) {
 	// A leaked pane or idle run matters whatever its item says.
-	if (kind === 'orphan' || kind === 'finished' || slotAlertKinds.has(kind)) return true;
+	if (slotAlerts.has(kind)) return true;
 	const item = activeWatchdogItem(items, item_id);
 	if (sessionAlerts.has(kind))
-		return item?.status === 'in_progress' && Boolean(session && liveSessions.has(session));
-	if (kind.startsWith('credential exposure:') && /^[a-f0-9]{64}:\d+$/.test(identity)) {
+		return item?.status === 'in_progress' && liveSessions.has(session ?? '');
+	const rotation = exposureRotationId(kind, identity);
+	if (rotation) {
 		// The scanner uses the first ten hex digits of its event hash as the rotation item ID.
-		return Boolean(activeWatchdogItem(items, identity.slice(0, 10)));
+		return Boolean(activeWatchdogItem(items, rotation));
 	}
-	if (kind === 'recovery-failed' || kind === 'handoff-failed')
+	if (recoveryFailures.has(kind))
 		return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
 	return Boolean(item);
+}
+
+function exposureRotationId(kind: string, identity: string) {
+	if (kind.startsWith('credential exposure:') && /^[a-f0-9]{64}:\d+$/.test(identity))
+		return identity.slice(0, 10);
+	return undefined;
 }
 
 function inspectHostWatchdog(
