@@ -26,6 +26,10 @@ import { watchHostSessions } from './trackerWatchHostSessions';
 import { trackerHubMessageDelivery } from './trackerHubMessages';
 import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
+const slotAlerts = new Set(['orphan', 'finished', ...slotAlertKinds]);
+const recoveryFailures = new Set(['recovery-failed', 'handoff-failed']);
+const sessionAlerts = new Set(['idle', 'context', 'overdue', 'startup']);
+
 export function trackerHostWatchdog(
 	store: TrackerPersistenceService,
 	config: NonNullable<TrackerHostEffects['watchdog']>,
@@ -41,9 +45,10 @@ export function trackerHostWatchdog(
 	const items = new TrackerItemReadRepository(store.database);
 	const chiefOfStaff = config.chiefOfStaff === true && store.node === 'daniel-primary-mbp';
 	const readItems = () => items.list({ status: 'all', limit: -1 });
+	let liveSessions = new Set<string>();
 	const cos = trackerCosRound(store, driver, {
 		now,
-		local: () => localAlerts(store, items, now())
+		local: () => localAlerts(store, items, now(), liveSessions)
 	});
 	const alerts = cos.alerts;
 	const pollSessions = watchHostSessions(
@@ -58,7 +63,7 @@ export function trackerHostWatchdog(
 		async tick(signal: AbortSignal) {
 			try {
 				if (config.transcriptRoots?.length) await scanTranscripts(signal);
-				await pollSessions(signal);
+				liveSessions = (await pollSessions(signal)) ?? liveSessions;
 			} finally {
 				// A broken pane scan must not also silence the alerts or the stuck-delivery ask.
 				const launchAlert =
@@ -95,10 +100,11 @@ export function configuredHostWatchdog(
 function localAlerts(
 	store: TrackerPersistenceService,
 	items: TrackerItemReadRepository,
-	now: number
+	now: number,
+	liveSessions: ReadonlySet<string>
 ) {
 	const open = Object.values(readWatchdogAlerts(store)).filter(
-		(alert) => unreadMessage(alert, now) || stillApplies(items, alert)
+		(alert) => unreadMessage(alert, now) || stillApplies(items, alert, liveSessions)
 	);
 	return open.map((alert) => withSlotSummary(store, alert));
 }
@@ -108,13 +114,30 @@ function unreadMessage({ kind, at }: TrackerWatchdogAlert, now: number) {
 	return trackerCosInboxKinds.has(kind) && now - at < trackerCosInboxRetention;
 }
 
-function stillApplies(items: TrackerItemReadRepository, { item_id, kind }: TrackerWatchdogAlert) {
+function stillApplies(
+	items: TrackerItemReadRepository,
+	{ item_id, kind, session, identity }: TrackerWatchdogAlert,
+	liveSessions: ReadonlySet<string>
+) {
 	// A leaked pane or idle run matters whatever its item says.
-	if (kind === 'orphan' || kind === 'finished' || slotAlertKinds.has(kind)) return true;
+	if (slotAlerts.has(kind)) return true;
 	const item = activeWatchdogItem(items, item_id);
-	if (kind === 'recovery-failed' || kind === 'handoff-failed')
+	if (sessionAlerts.has(kind))
+		return item?.status === 'in_progress' && liveSessions.has(String(session));
+	const rotation = exposureRotationId(kind, identity);
+	if (rotation) {
+		// The scanner uses the first ten hex digits of its event hash as the rotation item ID.
+		return Boolean(activeWatchdogItem(items, rotation));
+	}
+	if (recoveryFailures.has(kind))
 		return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
 	return Boolean(item);
+}
+
+function exposureRotationId(kind: string, identity: string) {
+	if (kind.startsWith('credential exposure:') && /^[a-f0-9]{64}:\d+$/.test(identity))
+		return identity.slice(0, 10);
+	return undefined;
 }
 
 function inspectHostWatchdog(

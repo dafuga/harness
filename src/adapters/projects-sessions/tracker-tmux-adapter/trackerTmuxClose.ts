@@ -12,7 +12,7 @@ import type { TrackerManagedReceipt } from './trackerManagedHostLauncher.types';
 import { trackerSocket } from './trackerManagedWorkerProcess';
 import { watchdogManualPrefix } from '../../../services/projects-sessions/WatchdogPaneService';
 import type { TrackerTmuxClose, TrackerTmuxPane } from '../TrackerTmuxAdapter.types';
-import { matchesTrackerTmuxPane, trackerSessionName } from './trackerTmuxPane';
+import { matchesTrackerTmuxPane, trackerPaneFormat, trackerSessionName } from './trackerTmuxPane';
 
 const managedName = /^auto-[a-z0-9]{6,10}-r[1-9][0-9]*$/;
 
@@ -32,6 +32,28 @@ export function closePaneCandidate(input: TrackerTmuxClose, layouts: TrackerTmux
 			candidate.name === pane.name &&
 			matchesTrackerTmuxPane(candidate, pane)
 	);
+}
+
+/** Let the tmux server recheck the pane's identity and owner in the command that kills it. */
+export async function killUnchangedPane(
+	observed: TrackerTmuxPane,
+	attempt: string | undefined,
+	command: (args: string[]) => ReturnType<typeof runTrackerHostCommand>
+): Promise<boolean> {
+	const { id, raw } = observed;
+	const identity = `#{==:${trackerPaneFormat},${raw}}`;
+	const owner = `#{==:#{HARNESS_TRACKER_ATTEMPT},${attempt ?? ''}}`;
+	const guard = `#{&&:${identity},${owner}}`;
+	const closed = 'tracker-session-closed';
+	const result = await command([
+		'if-shell',
+		'-F',
+		'-t',
+		id,
+		guard,
+		`display-message -p ${closed} ; kill-session -t ${id}`
+	]);
+	return result.code === 0 && result.stdout.trim() === closed;
 }
 
 export async function stopManagedRun(

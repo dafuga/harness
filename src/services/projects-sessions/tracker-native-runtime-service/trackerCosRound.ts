@@ -23,7 +23,7 @@ export function trackerCosRound(
 		async run(signal: AbortSignal, urgent: boolean) {
 			if (!urgent && now() - lastRun < interval) return;
 			lastRun = now();
-			peerAlerts = (await driver.peers?.(signal)) ?? peerAlerts;
+			peerAlerts = (await driver.peers?.(signal)) ?? [];
 			const deliverable = alerts().filter(({ kind }) => kind !== 'missing' && kind !== 'context');
 			// Checked before sending, so a send that throws cannot hide the backlog.
 			watchCosDelivery(store, unsentCosAlerts(store, deliverable), now());

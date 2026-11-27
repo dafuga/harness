@@ -11,7 +11,7 @@ import {
 import { finishRun } from '../../../services/agents-providers/tracker-dispatcher-service/runReceipt';
 import { trackerItemError } from '../../../utils/projects-sessions/trackerItemError';
 import { TrackerItemReadRepository } from '../TrackerItemReadRepository';
-import { persistDispatchRun } from './dispatchRunRows';
+import { managedDispatchRuns, persistDispatchRun } from './dispatchRunRows';
 
 const automaticStartsKey = 'harness_automatic_launch_slots';
 
@@ -49,6 +49,25 @@ export function trackerDispatchControl(
 		},
 		...trackerStopControl(store, node, snapshot, now)
 	};
+}
+
+/** Finish this computer's queued runs that no host was ever asked to start. */
+export function cancelQueuedDispatchRuns(
+	store: TrackerPersistenceService,
+	itemId: string,
+	now: number
+) {
+	if (!store.database.prepare("SELECT 1 FROM sqlite_schema WHERE name = 'runs'").get()) return;
+	const node = canonicalNode(store.node, {});
+	for (const run of managedDispatchRuns(store.database, node)) {
+		if (run.item_id !== itemId || run.revision < 0 || !neverDispatched(run)) continue;
+		const reason = 'launch cancelled before startup';
+		persistDispatchRun(store, finishRun(run, { outcome: 'abandoned', reason, now }), node);
+	}
+}
+
+function neverDispatched({ state, dispatch_at, started_at }: TrackerRunReceipt) {
+	return state === 'queued' && dispatch_at === undefined && started_at === null;
 }
 
 function trackerStopControl(

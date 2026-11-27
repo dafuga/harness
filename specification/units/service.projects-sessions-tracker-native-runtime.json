@@ -248,6 +248,7 @@
 			"recordWatchdogAlert",
 			"contextAlert",
 			"recordHandoffFailure",
+			"recordOverdueAlert",
 			"applyIdleDecision",
 			"watchdogScan",
 			"watchdogEffectReceipt",
@@ -1260,6 +1261,26 @@
 			},
 			{
 				"name": "recordHandoffFailure.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recordOverdueAlert.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordOverdueAlert.run",
+				"type": "TrackerRunReceipt",
+				"required": true
+			},
+			{
+				"name": "recordOverdueAlert.reason",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordOverdueAlert.at",
 				"type": "number",
 				"required": true
 			},
@@ -4089,6 +4110,39 @@
 				"outputs": [
 					{
 						"name": "recordHandoffFailure",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordOverdueAlert",
+				"inputs": [
+					{
+						"name": "recordOverdueAlert.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordOverdueAlert.run",
+						"type": "TrackerRunReceipt",
+						"required": true
+					},
+					{
+						"name": "recordOverdueAlert.reason",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordOverdueAlert.at",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordOverdueAlert",
 						"type": "unknown"
 					}
 				],
