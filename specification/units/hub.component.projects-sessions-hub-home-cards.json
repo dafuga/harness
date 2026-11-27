@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-card",
+			"hub.component.projects-sessions-hub-home-cos-chat",
 			"hub.component.projects-sessions-hub-home-live",
 			"hub.component.projects-sessions-hub-home-needs-you",
 			"hub.component.projects-sessions-hub-home-row",
@@ -60,12 +61,14 @@
 			{
 				"name": "HubHomeCards.send",
 				"type": "SendHomeChat",
-				"required": true
+				"required": true,
+				"description": "Sends Daniel's answer or message to the linked Mac and returns its receipt."
 			},
 			{
 				"name": "HubHomeCards.receipt",
 				"type": "(id: string) => Promise<HomeChatReceipt>",
-				"required": true
+				"required": true,
+				"description": "Reads the latest receipt for a sent answer or message by its id."
 			}
 		],
 		"outputs": [
@@ -161,6 +164,11 @@
 	"dependencies": [
 		{
 			"unit": "hub.component.projects-sessions-hub-home-card",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.component.projects-sessions-hub-home-cos-chat",
 			"via": "import",
 			"origin": "derived"
 		},

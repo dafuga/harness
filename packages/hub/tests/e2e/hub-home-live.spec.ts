@@ -15,7 +15,7 @@ test('a signed-in account sees its linked Mac streaming sessions without connect
 	);
 	await linkedComputersFixture(page, homeData(mockup('default')));
 	await page.goto('/');
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/working, .* need[s]? you/);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(/running.*, .* need[s]? you/);
 	await expect(page.getByText('Connect your Mac')).toHaveCount(0);
 	await expect(page.getByText('Connect a computer')).toHaveCount(0);
 	await expect(page.locator('.hh-agent-list li').first()).toBeVisible();

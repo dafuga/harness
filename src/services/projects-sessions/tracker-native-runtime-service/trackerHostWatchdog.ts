@@ -22,6 +22,7 @@ import { withSlotSummary } from './trackerSlotAlerts';
 import { trackerTranscriptScan } from './trackerTranscriptScan';
 import { trackerWatchdogPort } from './trackerWatchdogPort';
 import { watchHostSessions } from './trackerWatchHostSessions';
+import { trackerHubMessageDelivery } from './trackerHubMessages';
 import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
 export function trackerHostWatchdog(
@@ -45,6 +46,7 @@ export function trackerHostWatchdog(
 		{ store, items, driver },
 		{ ...options, readItems, roots: config.transcriptRoots }
 	);
+	const deliverMessages = trackerHubMessageDelivery({ store, driver, now });
 	return {
 		alerts,
 		chiefOfStaff,
@@ -60,6 +62,8 @@ export function trackerHostWatchdog(
 					watchLaunchRequests(store, now(), !watchdogLaunchHold(now(), automaticEnabled));
 				if (chiefOfStaff && !signal.aborted) await cos.run(signal, launchAlert);
 			}
+			// Last, so a pane that cannot be typed into never holds back the checks above.
+			await deliverMessages(signal);
 		}
 	};
 }

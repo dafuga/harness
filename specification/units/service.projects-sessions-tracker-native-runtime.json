@@ -29,10 +29,12 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerDestinations.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/configuredTrackerReminderHost.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDispatch.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerDuePolicy.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerHostEffects.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerLinks.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/nativeTrackerTelemetry.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/readTrackerDuePreview.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAdapterFailover.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerAutolaunchAdmin.ts",
@@ -74,6 +76,11 @@
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogIdle.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogSchema.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubChiefMessages.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubChiefMessages.types.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessageNotes.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.ts",
+			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubMessages.types.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerHubPermits.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchEventBatch.ts",
 			"src/services/projects-sessions/tracker-native-runtime-service/trackerLaunchWait.ts",
@@ -126,6 +133,7 @@
 			"configuredTrackerDestinations",
 			"configuredTrackerReminderHost",
 			"composeTrackerDispatch",
+			"PeerStarts",
 			"liveTrackerDuePolicy",
 			"observeTrackerDuePolicy",
 			"TrackerHostEffectsMode",
@@ -137,15 +145,16 @@
 			"TrackerHostAdapterConfig",
 			"TrackerWorkerClient",
 			"TrackerGuestAuthWriter",
+			"trackerMachineSample",
+			"trackerRunnerSample",
 			"composeTrackerLinks",
 			"trackerHubMachines",
 			"localRunnerStatus",
 			"machineReport",
-			"trackerRunnerSample",
-			"trackerMachineSample",
 			"trackerFleetMachineStore",
 			"trackerSpokeStatus",
 			"composeTrackerTelemetry",
+			"TrackerTelemetryParts",
 			"readTrackerDuePreview",
 			"trackerDueItemPreview",
 			"adapterFailover",
@@ -248,6 +257,15 @@
 			"paneNudgeKey",
 			"handoffRunOwnership",
 			"activeWatchdogItem",
+			"chiefChannelSession",
+			"chiefChannelMissing",
+			"trackerHubChiefDelivery",
+			"HubChiefDelivery",
+			"pendingHubMessages",
+			"recordHubReceipt",
+			"trackerHubMessageDelivery",
+			"HubMessageDelivery",
+			"LocalRun",
 			"spokeGrant",
 			"spokeAutomaticPermit",
 			"batchTrackerLaunchEvents",
@@ -384,6 +402,11 @@
 				"required": true
 			},
 			{
+				"name": "composeTrackerDispatch.machines",
+				"type": "PeerStarts",
+				"required": false
+			},
+			{
 				"name": "liveTrackerDuePolicy.store",
 				"type": "TrackerPersistenceService",
 				"required": true
@@ -479,9 +502,9 @@
 				"required": true
 			},
 			{
-				"name": "composeTrackerTelemetry.scheduler",
-				"type": "TrackerDispatchSchedulerService",
-				"required": false
+				"name": "composeTrackerTelemetry.parts",
+				"type": "TrackerTelemetryParts",
+				"required": true
 			},
 			{
 				"name": "readTrackerDuePreview.runtime",
@@ -1356,6 +1379,41 @@
 			{
 				"name": "activeWatchdogItem.id",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHubChiefDelivery.input",
+				"type": "HubChiefDelivery",
+				"required": true
+			},
+			{
+				"name": "pendingHubMessages.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "pendingHubMessages.now",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.itemId",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "recordHubReceipt.text",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerHubMessageDelivery.input",
+				"type": "HubMessageDelivery",
 				"required": true
 			},
 			{
@@ -2406,6 +2464,11 @@
 						"name": "composeTrackerDispatch.options",
 						"type": "TrackerNativeRuntimeOptions",
 						"required": true
+					},
+					{
+						"name": "composeTrackerDispatch.machines",
+						"type": "PeerStarts",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -2619,9 +2682,9 @@
 						"required": true
 					},
 					{
-						"name": "composeTrackerTelemetry.scheduler",
-						"type": "TrackerDispatchSchedulerService",
-						"required": false
+						"name": "composeTrackerTelemetry.parts",
+						"type": "TrackerTelemetryParts",
+						"required": true
 					}
 				],
 				"outputs": [
@@ -4268,6 +4331,93 @@
 				"errorStatus": "unknown"
 			},
 			{
+				"name": "trackerHubChiefDelivery",
+				"inputs": [
+					{
+						"name": "trackerHubChiefDelivery.input",
+						"type": "HubChiefDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubChiefDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "pendingHubMessages",
+				"inputs": [
+					{
+						"name": "pendingHubMessages.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "pendingHubMessages.now",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pendingHubMessages",
+						"type": "{ itemId: string; message: HubThreadMessage }[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordHubReceipt",
+				"inputs": [
+					{
+						"name": "recordHubReceipt.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordHubReceipt.itemId",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "recordHubReceipt.text",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordHubReceipt",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerHubMessageDelivery",
+				"inputs": [
+					{
+						"name": "trackerHubMessageDelivery.input",
+						"type": "HubMessageDelivery",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerHubMessageDelivery",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
 				"name": "spokeGrant",
 				"inputs": [
 					{
@@ -5611,6 +5761,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-hub-session-messages",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "function.projects-sessions-next-tracker-clock",
 			"via": "import",
 			"origin": "derived"
@@ -5731,7 +5886,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-machine",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-fleet",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-recurrence",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-compose-tracker-web-push",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -5751,7 +5921,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-sample-schema",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-fleet-telemetry",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-host-resource-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-native-runtime-service-tracker-spoke-telemetry",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -5782,6 +5967,11 @@
 		},
 		{
 			"unit": "service.projects-sessions-tracker-spoke-sync",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push",
 			"via": "import",
 			"origin": "derived"
 		},

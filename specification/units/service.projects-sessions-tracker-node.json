@@ -25,6 +25,7 @@
 			"src/services/projects-sessions/tracker-node-service/holdLegacySupervisorSocket.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerBackupList.ts",
 			"src/services/projects-sessions/tracker-node-service/readTrackerNodeInspection.ts",
+			"src/services/projects-sessions/tracker-node-service/trackerAdapterRoutes.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerAutolaunchCommand.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerDigestSession.ts",
 			"src/services/projects-sessions/tracker-node-service/trackerNodeConfig.ts",
@@ -49,6 +50,8 @@
 			"readTrackerBackupList",
 			"readTrackerBackupFiles",
 			"readTrackerNodeInspection",
+			"trackerSlowAdapterPath",
+			"trackerAdapterRoute",
 			"trackerCommandOrItemResponse",
 			"trackerDigestSession",
 			"loadTrackerNodeConfig",
@@ -143,6 +146,16 @@
 			{
 				"name": "readTrackerNodeInspection.supervisor",
 				"type": "TrackerSupervisorService",
+				"required": true
+			},
+			{
+				"name": "trackerAdapterRoute.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerAdapterRoute.runtime",
+				"type": "TrackerNativeRuntimeService",
 				"required": true
 			},
 			{
@@ -329,6 +342,14 @@
 			{
 				"name": "readTrackerNodeInspection",
 				"type": "Response | undefined"
+			},
+			{
+				"name": "trackerSlowAdapterPath",
+				"type": "RegExp"
+			},
+			{
+				"name": "trackerAdapterRoute",
+				"type": "Promise<Response> | undefined"
 			},
 			{
 				"name": "trackerCommandOrItemResponse",
@@ -566,6 +587,29 @@
 					{
 						"name": "readTrackerNodeInspection",
 						"type": "Response | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "trackerAdapterRoute",
+				"inputs": [
+					{
+						"name": "trackerAdapterRoute.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerAdapterRoute.runtime",
+						"type": "TrackerNativeRuntimeService",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAdapterRoute",
+						"type": "Promise<Response> | undefined"
 					}
 				],
 				"errors": [],
@@ -1020,6 +1064,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "adapter.projects-sessions-tracker-machine-sampler",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "adapter.projects-sessions-tracker-tmux",
 			"via": "import",
 			"origin": "derived"
@@ -1050,6 +1099,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "repository.projects-sessions-tracker-adapter",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "repository.projects-sessions-tracker-adapter-source",
 			"via": "import",
 			"origin": "derived"
@@ -1075,12 +1129,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "service.projects-sessions-tracker-adapter-poll",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "service.projects-sessions-tracker-backup-service-take-tracker-backup-now",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "service.projects-sessions-tracker-change-feed-serve-tracker-changes",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-local-api",
 			"via": "import",
 			"origin": "derived"
 		},

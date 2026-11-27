@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-needs-link",
+	"uid": "u_fhjqrozyv5",
+	"kind": "component",
+	"title": "HubHomeNeedsLink",
+	"responsibility": "Takes a clicked notification to its ask's session chat, or to the needs-you list.",
+	"responsibilityOrigin": "declared",
+	"status": "retired",
+	"composition": {
+		"level": "organism",
+		"uses": []
+	},
+	"retired": {
+		"reason": "Draws nothing, so it became the followNeedsLink module before landing.",
+		"at": "2026-11-26T22:17:27.133Z"
+	},
+	"owns": {
+		"source": ["packages/hub/src/components/projects-sessions/HubHomeNeedsLink.svelte"],
+		"symbols": ["HubHomeNeedsLink"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeNeedsLink.view",
+				"type": "HomeView",
+				"required": true,
+				"description": "The Home view, read for the current open asks."
+			},
+			{
+				"name": "HubHomeNeedsLink.open",
+				"type": "OpenHomeSection",
+				"required": true,
+				"description": "Opens a Home section; used for the asking session's chat."
+			},
+			{
+				"name": "HubHomeNeedsLink.close",
+				"type": "() => void",
+				"required": true,
+				"description": "Closes the open Home dialog before the list is shown."
+			},
+			{
+				"name": "HubHomeNeedsLink.reload",
+				"type": "() => void",
+				"required": true,
+				"description": "Reads Home again after a click reaches an open tab."
+			},
+			{
+				"name": "HubHomeNeedsLink.dialog",
+				"type": "boolean",
+				"required": true,
+				"description": "True while a Home dialog is open."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeNeedsLink",
+				"type": "markup",
+				"description": "No markup; it only navigates and focuses."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-needs-target",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/HubHomeNeedsLink.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/HubHomeNeedsLink.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

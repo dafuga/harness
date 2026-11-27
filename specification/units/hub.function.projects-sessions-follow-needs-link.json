@@ -1,0 +1,93 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.function.projects-sessions-follow-needs-link",
+	"uid": "u_edh24hc4bb",
+	"kind": "function",
+	"title": "followNeedsLink",
+	"responsibility": "Takes a clicked notification to its ask's session chat, or to the needs-you list.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"packages/hub/src/components/projects-sessions/followNeedsLink.svelte.ts",
+			"packages/hub/src/components/projects-sessions/followNeedsLink.svelte.types.ts"
+		],
+		"symbols": ["followNeedsLink", "NeedsLinkHome"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "followNeedsLink.home",
+				"type": "() => NeedsLinkHome",
+				"required": true,
+				"description": "Returns Home's current open asks, dialog state and its open, close and reload actions."
+			}
+		],
+		"outputs": [
+			{
+				"name": "followNeedsLink",
+				"type": "void",
+				"description": "Nothing; during the calling component's life it follows the address or worker message once each."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "followNeedsLink",
+				"inputs": [
+					{
+						"name": "followNeedsLink.home",
+						"type": "() => NeedsLinkHome",
+						"required": true,
+						"description": "Returns Home's current open asks, dialog state and its open, close and reload actions."
+					}
+				],
+				"outputs": [
+					{
+						"name": "followNeedsLink",
+						"type": "void",
+						"description": "Nothing; during the calling component's life it follows the address or worker message once each."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-needs-target",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/hub/src/components/projects-sessions/followNeedsLink.svelte.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

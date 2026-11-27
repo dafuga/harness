@@ -81,3 +81,32 @@ test('a late status from the previous Google account cannot replace the latest i
 	await Promise.all([first, second]);
 	expect(session.actor, 'latest Google account wins over stale status').toEqual(ben);
 });
+
+test.each(['check', 'refresh'] as const)(
+	'a check overtaken by a %s resolves only once the newest answer is shown',
+	async (overtaker) => {
+		const ben = { ...ada, id: 'google:ben', name: 'Ben Example' };
+		const answers: ((actor: typeof ada) => void)[] = [];
+		const auth = {
+			status: () =>
+				new Promise((resolve) => {
+					answers.push((actor) => resolve({ actor, configured: true, clientId: 'client-1' }));
+				})
+		};
+		const session = createSessionStore(auth as unknown as BrowserAuth);
+		const signedIn = session.refresh();
+		answers[0](ada);
+		await signedIn;
+		let seen: string | undefined;
+		const overtaken = session.check().then(() => {
+			seen = session.actor?.id;
+		});
+		const newest = session[overtaker]();
+		answers[1](ben);
+		await new Promise((resolve) => setTimeout(resolve));
+		expect(seen, 'the overtaken check has no answer to act on yet').toBeUndefined();
+		answers[2](ben);
+		await Promise.all([overtaken, newest]);
+		expect(seen, 'its caller then sees the account the server names now').toBe(ben.id);
+	}
+);

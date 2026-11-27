@@ -21,4 +21,9 @@ export interface TrackerWatchdogPort {
 		signal: AbortSignal,
 		queue?: { backlog: boolean }
 	): Promise<boolean>;
+	/** Type one message into the named session's idle prompt and confirm it was submitted. */
+	deliver?(
+		input: { session: string; message: string },
+		signal: AbortSignal
+	): Promise<'delivered' | 'busy' | 'missing'>;
 }

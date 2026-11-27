@@ -1,0 +1,121 @@
+{
+	"schemaVersion": 1,
+	"id": "service.projects-sessions-tracker-web-push",
+	"uid": "u_z4ttafmvjp",
+	"kind": "service",
+	"title": "TrackerWebPushService",
+	"responsibility": "Notifies Daniel's browsers about open decisions from the Tracker hub.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/projects-sessions/TrackerWebPushService.ts",
+			"src/services/projects-sessions/TrackerWebPushService.types.ts"
+		],
+		"symbols": [
+			"TrackerWebPushService",
+			"TrackerWebPushService.constructor",
+			"TrackerWebPushService.tick",
+			"TrackerWebPushOptions"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "TrackerWebPushService.constructor.options",
+				"type": "TrackerWebPushOptions",
+				"required": true,
+				"description": "Journal path, open asks, clock and optional fetch."
+			}
+		],
+		"outputs": [
+			{
+				"name": "TrackerWebPushService.tick",
+				"type": "Promise<void>",
+				"description": "Sends when due and stores the new state; does nothing before setup."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "TrackerWebPushService.tick",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerWebPushService.tick",
+						"type": "Promise<void>",
+						"description": "Sends when due and stores the new state; does nothing before setup."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": [
+			{
+				"name": "TrackerWebPushService.constructor",
+				"inputs": [
+					{
+						"name": "TrackerWebPushService.constructor.options",
+						"type": "TrackerWebPushOptions",
+						"required": true,
+						"description": "Journal path, open asks, clock and optional fetch."
+					}
+				],
+				"outputs": [
+					{
+						"name": "TrackerWebPushService.constructor",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-deliver-needs-you",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-plan-needs-you-push",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-files",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-transport",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.projects-sessions-tracker-web-push-service-web-push-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/projects-sessions/TrackerWebPushService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/projects-sessions/TrackerWebPushService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

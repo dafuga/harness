@@ -2,6 +2,7 @@
 import { resolve } from 'node:path';
 import { nativeTrackerAskBody } from './nativeTrackerAskOptions';
 import type { NativeTrackerRequest } from './nativeTrackerCli.types';
+import { nativeTrackerAdapterOptions } from './nativeTrackerAdapterRequest';
 
 const text = { type: 'string' } as const;
 const flag = { type: 'boolean' } as const;
@@ -92,7 +93,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['priority', {}],
 	['park', { until: text }],
 	['move-on', {}],
-	['block', { force: flag }],
+	['block', { force: flag, 'needs-daniel': flag }],
 	['unblock', { note: text }],
 	['ignore', { reason: text, until: text }],
 	['unignore', { note: text }],
@@ -124,8 +125,9 @@ export const nativeTrackerCommandOptions = new Map<
 	['runs', { item: text, limit: text }],
 	['models', {}],
 	['pick', {}],
+	['reply', {}],
 	['autolaunch', {}],
-	['adapter', { 'dry-run': flag, 'backfill-comments': flag }],
+	['adapter', nativeTrackerAdapterOptions],
 	['backup', { to: text }],
 	['job', { cmd: text, 'wake-on': text, timeout: text }],
 	['start', {}],
@@ -138,6 +140,8 @@ export const nativeTrackerCommandOptions = new Map<
 	['digest', {}],
 	['sync', {}],
 	['watchdog', { item: text }],
+	['machines', { hours: text }],
+	['place', { kind: text, 'needs-ram': text }],
 	['needs-attention', {}],
 	['ensure', {}]
 ]);
