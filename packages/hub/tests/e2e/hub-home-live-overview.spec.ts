@@ -218,7 +218,9 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	await expect(page.getByRole('status', { name: 'Updates' })).toHaveText('Live');
 	const stored = () => requests.filter((entry) => entry.path === '/api/hub-home').length;
 	const storedBefore = stored();
-	const finished = live[0];
+	const lastSession = answer.liveOverview!.projects.find((project) => project.running === 1)!;
+	const itemId = lastSession.rows.find((row) => row.state === 'running')!.itemId;
+	const finished = live.find((run) => run.item_id === itemId)!;
 	const item = tracker.items.find((entry) => entry.id === finished.item_id)!;
 	finished.ended_at = Date.parse(tracker.recordedAt);
 	finished.state = 'finished';
@@ -232,6 +234,11 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	const group = overview(page)
 		.locator('details.hh-live-project')
 		.filter({ has: page.locator('summary.hh-live-head', { hasText: item.agent! }) });
+	await expect(group).toHaveCount(0);
+	await overview(page)
+		.getByRole('button', { name: /^See all projects/ })
+		.click();
+	await expect(group.locator(':scope > summary')).toContainText('Running 0');
 	if (!(await group.evaluate((node) => (node as HTMLDetailsElement).open)))
 		await group.locator(':scope > summary').click();
 	const more = group.getByRole('button', { name: /^See all/ });
