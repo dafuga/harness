@@ -44,34 +44,53 @@ test('desktop Google sign-in gates direct links and lands on Home', async ({ pag
 	await page.getByRole('button', { name: 'Cancel', exact: true }).click();
 	await expect(google).toBeVisible();
 	await google.click();
+	await expect(page.getByRole('status')).toHaveText('Waiting for Google…');
 	await page.evaluate(() => {
 		(window as unknown as { __hosted: { state: string } }).__hosted.state = 'signed-in';
 	});
-	await expect(page).toHaveURL(/\/$/);
+	await expect(page).toHaveURL(/\/$/, { timeout: 15000 });
 	await expect(page.getByRole('button', { name: 'Open Gamma', exact: true })).toBeVisible();
 	const projects = page.getByRole('region', { name: 'Projects', exact: true });
 	if (process.env.TAKE_SCREENSHOT === 'true') {
 		await page.evaluate(() => document.fonts.ready);
-		await page.screenshot({
-			path: `${process.env.HEADLESS_RUN_ARTIFACTS ?? '/tmp'}/signed-in-home-${process.env.SCREENSHOT_LABEL}.png`
-		});
+		for (const [name, width, height] of [
+			['desktop', 1440, 900],
+			['tablet', 920, 800],
+			['phone', 390, 844]
+		] as const) {
+			await page.setViewportSize({ width, height });
+			await page.screenshot({
+				path: `${process.env.HEADLESS_RUN_ARTIFACTS ?? '/tmp'}/signed-in-home-${process.env.SCREENSHOT_LABEL}-${name}.png`
+			});
+		}
+		await page.setViewportSize({ width: 1440, height: 900 });
 	}
 	await expect(projects.getByRole('link', { name: 'Open Tracker Orion' })).toBeVisible();
 	await expect(projects.getByText('2 need you')).toBeVisible();
+	await expect(
+		page.getByRole('region', { name: 'Blocked - needs you' }).getByText('Review the launch plan')
+	).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Needs you', exact: true })).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Harness', exact: true })).toHaveCount(0);
 	await projects.getByRole('button', { name: 'Open Gamma', exact: true }).click();
 	await expect(page).toHaveURL(new RegExp(`/projects/${gamma}/harness/`));
-	await expect(page.getByRole('link', { name: 'Needs you', exact: true })).toBeVisible();
-	await page.goto('/');
+	await page.getByRole('link', { name: 'Needs you', exact: true }).click();
+	await expect(page).toHaveURL(/\?view=needs-you$/);
+	await expect(page.getByRole('heading', { name: 'Needs you', exact: true })).toBeVisible();
+	await expect(page.getByText('Review the launch plan')).toBeVisible();
+	await expect(projects).toHaveCount(0);
+	await page.getByRole('link', { name: 'Home', exact: true }).click();
 	await projects.getByRole('link', { name: 'Open Tracker Orion' }).click();
 	await expect(page).toHaveURL(/\/tracker\?project=Tracker\+Orion$/);
 	await expect(page.getByRole('heading', { name: 'Tracker Orion', exact: true })).toBeVisible();
+	await expect(page.getByText('Orion task')).toBeVisible();
+	await expect(page.getByText('Unrelated task')).toHaveCount(0);
 	await page.evaluate(() => sessionStorage.setItem('fixtureHubUnavailable', 'yes'));
 	await page.goto('/');
 	await expect(projects.getByText('Hub projects could not be loaded.')).toBeVisible();
 	await expect(projects.getByRole('button', { name: 'Open Alpha', exact: true })).toBeVisible();
 	await expect(projects.getByRole('link', { name: 'Open Tracker Orion' })).toBeVisible();
+	await page.getByRole('button', { name: 'Account', exact: true }).click();
 	await page.getByRole('button', { name: 'Sign out', exact: true }).click();
 	await expect(google).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Open Alpha', exact: true })).toHaveCount(0);
