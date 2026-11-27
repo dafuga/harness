@@ -11,7 +11,6 @@ import type { TrackerSlotFixture } from '../../support/trackerSlotFixture.types'
 
 const noon = Date.parse('2026-11-25T12:00:00Z');
 const minute = 60_000;
-// Each tick runs the scripted tmux and host driver as real processes.
 vi.setConfig({ testTimeout: 90_000 });
 const running = { state: 'running', outcome: null };
 const finished = (outcome: string) => ({ state: 'finished', outcome });
