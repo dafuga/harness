@@ -48,6 +48,7 @@ if (args.includes('capture-pane')) {
 	const mode = fs.readFileSync(stateFile, 'utf8');
 	const screens = {
 		onboarding: 'Choose the text style that looks best with your terminal\\n',
+		'locked-keychain': '────────────\\n❯\\u00A0\\n────────────\\n  ⏵⏵ bypass permissions on\\n  Not logged in - run security unlock-keychain\\n',
 		untrusted: ' Accessing workspace:\\n\\n Quick safety check: Is this a project you created or one you trust?\\n\\n ❯ No, exit\\n   Yes, I trust this folder\\n\\n Enter to confirm · Esc to cancel\\n',
 		crash: 'Error: synthetic launcher crash\\n'
 	};
@@ -74,6 +75,7 @@ if (args.includes('show-environment')) {
 	process.exit(matches ? 0 : 1);
 }
 if (!args.includes('new-session')) process.exit(2);
+fs.appendFileSync(join(__dirname, 'launch-sockets'), args[args.indexOf('-L') + 1] + '\\n');
 if (fs.existsSync(join(__dirname, 'tmux-refuses'))) {
 	process.stderr.write('create window failed: synthetic refusal\\n');
 	process.exit(1);

@@ -50,6 +50,7 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	const native = launchInput(root, 2, 'native');
 	const claude = {
 		...native,
+		node: 'harbor-mbp-2',
 		runId: 3,
 		key: JSON.stringify([native.itemId, 'reserved-claude-fixture', 1]),
 		selection: { provider: 'claude', model: 'claude-sonnet-4-6', intelligence: 'high' },
@@ -69,6 +70,7 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	} finally {
 		vi.unstubAllEnvs();
 	}
+	verifyLaunchSockets(root);
 	const restarted = trackerManagedHostLauncher(managed, { client: scoped, platform: 'darwin' });
 	const replies = await restarted.inspect(
 		{ node, keys: [docker.key, native.key, 'wrong'] },
@@ -85,6 +87,15 @@ async function proveManagedWorker({ root, git }: TemporaryRepo) {
 	).toEqual({
 		status: 'rejected'
 	});
+}
+
+function verifyLaunchSockets(root: string) {
+	expect(readFileSync(join(root, 'launch-sockets'), 'utf8').trim().split('\n')).toEqual([
+		'default',
+		'default',
+		'tracker-claude-aqua',
+		'tracker-claude-aqua'
+	]);
 }
 
 function loadManagedFixture(
