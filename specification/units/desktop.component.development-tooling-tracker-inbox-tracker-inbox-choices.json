@@ -45,6 +45,13 @@
 				"description": "Disables the choices while an answer is being sent. Defaults to false."
 			},
 			{
+				"name": "TrackerInboxChoices.compact",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Shows only labels and the recommendation badge when rendering tiles in the inbox list."
+			},
+			{
 				"name": "TrackerInboxChoices.onpick",
 				"type": "(number: number) => void",
 				"required": true,
@@ -61,7 +68,7 @@
 			{
 				"name": "TrackerInboxChoices",
 				"type": "markup",
-				"description": "Choice buttons, the optional confirm step and the Other modal."
+				"description": "A responsive grid of answer tiles, the optional confirm step and the Other modal."
 			}
 		],
 		"errors": [],
