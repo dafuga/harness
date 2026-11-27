@@ -3,6 +3,8 @@
 <!-- @harness-uid u_n72w2an74r -->
 <!-- @harness-view overview -->
 <script lang="ts">
+	import { hasWebLink } from '../../../utils/strings/linkSegments';
+	import LinkifiedText from '../../shared-primitives/LinkifiedText.svelte';
 	import { tick } from 'svelte';
 	import BrandMark from '../../shared-primitives/BrandMark.svelte';
 	import EmptyState from '../../explorer-ui/explorer-kit/EmptyState.svelte';
@@ -154,11 +156,17 @@
 	</hx-div>
 {/if}
 
-<Modal isOpen={selected !== null} title={selected?.title ?? ''} variant="text" onClose={closeItem}>
+<Modal
+	isOpen={selected !== null}
+	title={selected && hasWebLink(selected.title) ? 'Tracker item' : (selected?.title ?? '')}
+	variant="text"
+	onClose={closeItem}
+>
 	{#if selected}
+		{#if hasWebLink(selected.title)}<hx-p><LinkifiedText text={selected.title} /></hx-p>{/if}
 		<DetailList rows={detailRows} rowKey={(row) => row.term} className="po-detail">
 			{#snippet label(row: ProjectOverviewDetailRow)}{row.term}{/snippet}
-			{#snippet children(row: ProjectOverviewDetailRow)}{row.value}{/snippet}
+			{#snippet children(row: ProjectOverviewDetailRow)}<LinkifiedText text={row.value} />{/snippet}
 		</DetailList>
 	{/if}
 </Modal>

@@ -33,6 +33,10 @@ for (const [device, width, height] of [
 		await page.clock.setFixedTime(Date.parse(tracker.recordedAt));
 		await page.goto('/');
 
+		await overview(page)
+			.locator('details.hh-live-project > summary')
+			.filter({ hasText: working.agent! })
+			.click();
 		const row = liveRows(page).filter({ has: page.getByText(working.title, { exact: true }) });
 		// The owner's latest milestone, not the watchdog note written after it.
 		await expect(row.locator('.hh-live-now')).toHaveText(milestone);

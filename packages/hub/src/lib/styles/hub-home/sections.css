@@ -204,3 +204,8 @@
 	color: var(--home-accent);
 	background: var(--hx-color-primary-soft);
 }
+
+.hh-home .hh-row :is(.po-item-title, .po-item-meta):has(.hx-text-link) {
+	display: block;
+	overflow: visible;
+}

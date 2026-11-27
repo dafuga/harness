@@ -3,6 +3,7 @@
 <!-- @harness-uid u_v13wsp3cm0 -->
 <!-- @harness-uid u_fywzaaju5j -->
 <script lang="ts">
+	import LinkifiedText from '../../shared-primitives/LinkifiedText.svelte';
 	import type { Snippet } from 'svelte';
 	import type { TrackerAttachment } from '../../../../../../src/utils/projects-sessions/trackerAttachment.types';
 	import type { LoadSpecDocument } from './SpecDocumentView.types';
@@ -64,7 +65,7 @@
 			{/if}
 		</hx-div>
 		<hx-div class="spec-answers" role="region" aria-label="Answer">
-			<hx-p class="spec-question">{question}</hx-p>
+			<hx-p class="spec-question"><LinkifiedText text={question} /></hx-p>
 			{@render answers(onclose)}
 		</hx-div>
 	</hx-div>

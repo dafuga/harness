@@ -8,11 +8,13 @@
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
-		"level": "molecule",
+		"level": "organism",
 		"uses": [
 			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-li",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -20,7 +22,7 @@
 			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewItem.svelte",
 			"packages/reports/src/components/projects-sessions/project-overview/ProjectOverviewItem.types.ts"
 		],
-		"symbols": ["ProjectOverviewItem", "ProjectOverviewItemProps"]
+		"symbols": ["ProjectOverviewItem", "ProjectOverviewItem.summary", "ProjectOverviewItemProps"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -61,11 +63,36 @@
 		"errors": [],
 		"errorStatus": "none-found",
 		"operations": [],
-		"initialization": []
+		"initialization": [],
+		"snippets": [
+			{
+				"name": "ProjectOverviewItem.summary",
+				"inputs": [
+					{
+						"name": "ProjectOverviewItem.summary.linked",
+						"type": "boolean",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "ProjectOverviewItem.summary",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		]
 	},
 	"dependencies": [
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -80,7 +107,17 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.function.projects-sessions-project-overview-project-overview-presentation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.strings-link-segments",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -183,3 +183,8 @@
 .hh-home .hh-overview .po-head {
 	display: none;
 }
+
+.hh-home .hh-agent-linked-meta {
+	padding: 0 var(--hx-space-12) var(--hx-space-8);
+	overflow-wrap: anywhere;
+}
