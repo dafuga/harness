@@ -34,6 +34,7 @@ func accountGoogleChecks() {
           "Google account: a waiting device cannot discover or pair computers")
     verifyLoginComparison(bench)
     verifyDeniedEnrollment()
+    macEnrollmentChecks()
     approvedDeviceReply(bench, path: devicePath, signer: signer)
     wait { (try? bench.status()?.get())?["state"] as? String == "signed-in" }
     check(bench.hub.asked(devicePath).contains { $0.httpMethod == "POST" } &&
@@ -171,4 +172,16 @@ private func verifyDeniedEnrollment() {
     check(result?.refusal?.code == "approval-denied" &&
           bench.request("/api/projects")?.refusal != nil && bench.hub.asked("/api/projects").isEmpty,
           "Google account: denial closes the request while the phone stays locked")
+}
+
+private func macEnrollmentChecks() {
+    let bench = AccountBench()
+    bench.session.enrollmentPlatform = .mac
+    bench.hub.routes["GET /api/sync/v1/device-session"] = { _ in hubJSON(200, ["state": "waiting-for-approval"]) }
+    setupEnrollmentMailbox(bench)
+    bench.signIn()
+    let stage = try? bench.status()?.get()
+    check(stage?["state"] as? String == "waiting-for-approval" && stage?["actor"] == nil &&
+          bench.hub.body("/api/sync/v1/enroll")["platform"] as? String == "mac",
+          "Mac account: the real admission flow waits with a Mac enrollment label")
 }
