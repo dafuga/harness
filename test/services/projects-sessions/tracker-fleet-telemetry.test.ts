@@ -42,7 +42,6 @@ test('both computers see each other in machines, place and status', async () => 
 		nodes.close();
 	}
 });
-
 test('raises one Chief of Staff alert for a sustained overload and closes it when calm', async () => {
 	const nodes = fleet({
 		// Never run here. A CI runner's own Node binary may be writable by others and is refused.
@@ -111,13 +110,14 @@ test('raises one Chief of Staff alert for a sustained overload and closes it whe
 			ram: { ...resourceSample(nodes.clock.at).ram, pressure: 'warn' }
 		};
 		const box = resourceSample(nodes.clock.at).disks[0];
+		const diskUsers = [{ label: 'Harness state and worktrees', used_gb: 85 }];
 		for (let passed = 0; passed < 4; passed++) {
 			await exchange(nodes, {
 				...report(nodes, 'grok-box', []),
 				resources: resourceSample(nodes.clock.at, {
 					platform: 'linux',
 					disks: [{ ...box, mount: '/', free_gb: 12 }],
-					disk_users: [{ label: 'Harness state and worktrees', used_gb: 85 }]
+					disk_users: passed ? diskUsers : []
 				})
 			});
 			await advance(1);
