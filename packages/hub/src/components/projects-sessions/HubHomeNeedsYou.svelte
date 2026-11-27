@@ -26,9 +26,19 @@
 		receipt: (id: string) => Promise<HomeChatReceipt>;
 	} = $props();
 	const chat = homeCosChat();
-	let detail = $state<{ itemId: string; question: string; content: Snippet } | null>(null);
+	let detail = $state<{
+		itemId: string;
+		question: string;
+		since: string;
+		content: Snippet;
+	} | null>(null);
 	const activeDetail = $derived(
-		asks.some((ask) => ask.itemId === detail?.itemId && ask.question === detail.question)
+		asks.some(
+			(ask) =>
+				ask.itemId === detail?.itemId &&
+				ask.question === detail.question &&
+				ask.since === detail.since
+		)
 			? detail?.content
 			: undefined
 	);
@@ -64,7 +74,9 @@
 						{send}
 						{receipt}
 						present={(content) =>
-							(detail = content ? { itemId: ask.itemId, question: ask.question, content } : null)}
+							(detail = content
+								? { itemId: ask.itemId, question: ask.question, since: ask.since, content }
+								: null)}
 					/>
 				</hx-li>
 			{/each}

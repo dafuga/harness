@@ -45,7 +45,7 @@ function chatWrite(input: HomeChatInput, home: Pick<OwnerHomeSnapshot, 'agents' 
 	);
 	const path = chatPath(input, home.agents, ask);
 	const text = path ? deliverableText(input, ask) : null;
-	return path && text !== null ? { path, body: chatBody(input, text) } : null;
+	return path && text !== null ? { path, body: chatBody(input, text, ask) } : null;
 }
 
 /** Done and snooze go only to a listed personal reminder still armed for the time shown. */
@@ -74,9 +74,10 @@ function deliveryStatus(response: Response): HomeChatReceipt['status'] {
 	return response.status < 500 ? 'refused' : 'unconfirmed';
 }
 
-function chatBody(input: HomeChatInput, text: string) {
+function chatBody(input: HomeChatInput, text: string, ask: HomeOpenAsk | undefined) {
 	if (input.kind !== 'answer') return { text: 'Hub message: ' + text };
-	const by = 'Daniel via Hub';
+	// Only the fresh Tracker item can mark a disposable question as automation-owned.
+	const by = ask?.title.startsWith('[QA automation] ') ? 'QA automation via Hub' : 'Daniel via Hub';
 	return input.option === undefined
 		? { answer: text, by }
 		: { option: input.option, confirmed: input.confirmed === true, by };
