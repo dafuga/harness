@@ -30,6 +30,7 @@
 		footer?: import('svelte').Snippet;
 	}>();
 	let dialog = $state<HTMLDialogElement>();
+	let openedAsModal = true;
 	const titleId = $props.id();
 	let shown = $derived(isOpen ?? open);
 	$effect(() => {
@@ -38,10 +39,11 @@
 			dialog.close();
 			return;
 		}
-		if (dialog.open && dialog.matches(':modal') === modal) return;
+		if (dialog.open && openedAsModal === modal) return;
 		if (dialog.open) dialog.close();
 		if (modal) dialog.showModal();
 		else dialog.show();
+		openedAsModal = modal;
 	});
 	function close() {
 		onClose?.();
