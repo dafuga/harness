@@ -1,0 +1,81 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-x-feed-reader-service-parse-xposts",
+	"uid": "u_eywzkjmlef",
+	"kind": "service",
+	"title": "parseXPosts",
+	"responsibility": "Validate posts read from the page and parse their counts.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/services/agents-providers/x-feed-reader-service/parseXPosts.ts"],
+		"symbols": ["parseXPosts"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "parseXPosts.value",
+				"type": "UntrustedValue",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "parseXPosts",
+				"type": "XPost[]"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "parseXPosts",
+				"inputs": [
+					{
+						"name": "parseXPosts.value",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "parseXPosts",
+						"type": "XPost[]"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/x-feed-reader-service/parseXPosts.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/x-feed-reader-service/parseXPosts.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

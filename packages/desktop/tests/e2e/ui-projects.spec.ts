@@ -111,7 +111,7 @@ test('a project link opens its project, full commit, entity and History', async 
 	await expect(page.locator('.revision-summary strong')).toHaveText(
 		`Historical commit · ${earlier.slice(0, 7)}`
 	);
-	expect(await currentRow(page, 'Choose commit')).toContainText(earlier.slice(0, 7));
+	await expect(await currentRow(page, 'Choose commit')).toContainText(earlier.slice(0, 7));
 	await page.keyboard.press('Escape');
 	await expect(await openRows(page, 'Choose branch')).toContainText(
 		`Branch tip ${tip.slice(0, 7)} committed`

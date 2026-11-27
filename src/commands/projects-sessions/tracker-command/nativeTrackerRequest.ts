@@ -144,12 +144,12 @@ function itemAction(
 	}
 }
 
+const textVerbs = new Set(['note', 'progress', 'alert']);
+
 function actionBody(command: string, words: string[], values: Record<string, unknown>) {
 	const text = words.join(' ');
+	if (textVerbs.has(command)) return { text };
 	switch (command) {
-		case 'note':
-		case 'progress':
-			return { text };
 		case 'reject':
 			return { reason: text };
 		case 'flag':

@@ -1,0 +1,104 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-container-cdp-adapter-pipe-web-socket",
+	"uid": "u_o472ng3iiw",
+	"kind": "adapter",
+	"title": "pipeWebSocket",
+	"responsibility": "Open a WebSocket client over an existing byte stream and verify its handshake.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/adapters/execution-runtimes/container-cdp-adapter/pipeWebSocket.ts",
+			"src/adapters/execution-runtimes/container-cdp-adapter/pipeWebSocket.types.ts"
+		],
+		"symbols": ["pipeWebSocket", "PipeWebSocketHandlers"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "pipeWebSocket.stream",
+				"type": "Duplex",
+				"required": true
+			},
+			{
+				"name": "pipeWebSocket.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "pipeWebSocket.handlers",
+				"type": "PipeWebSocketHandlers",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "pipeWebSocket",
+				"type": "Promise<{ send(text: string): void }>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "pipeWebSocket",
+				"inputs": [
+					{
+						"name": "pipeWebSocket.stream",
+						"type": "Duplex",
+						"required": true
+					},
+					{
+						"name": "pipeWebSocket.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "pipeWebSocket.handlers",
+						"type": "PipeWebSocketHandlers",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "pipeWebSocket",
+						"type": "Promise<{ send(text: string): void }>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-cdp-adapter-web-socket-frames",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/container-cdp-adapter/pipeWebSocket.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/container-cdp-adapter/pipeWebSocket.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

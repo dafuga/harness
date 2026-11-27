@@ -3,7 +3,8 @@ import { z } from 'zod';
 import type { PlatformMessage } from '../../../core/agents-providers/platformAdapter.types';
 
 export const slackTimestamp = z.string().regex(/^\d{1,20}\.\d{1,9}$/);
-export const channelId = z.string().regex(/^[CG][A-Z0-9]{1,63}$/);
+// Public, private and direct-message conversations; the binding's allowlist still decides.
+export const channelId = z.string().regex(/^[CGD][A-Z0-9]{1,63}$/);
 export const teamId = z.string().regex(/^T[A-Z0-9]{1,63}$/);
 export const appId = z.string().regex(/^A[A-Z0-9]{1,63}$/);
 export const botId = z.string().regex(/^B[A-Z0-9]{1,63}$/);
