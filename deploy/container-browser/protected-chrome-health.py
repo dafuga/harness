@@ -5,9 +5,14 @@ import fcntl
 import os
 from pathlib import Path
 import re
-from subprocess import DEVNULL, PIPE, run
+from subprocess import DEVNULL, PIPE, SubprocessError, run
 from time import monotonic, sleep
 from urllib.parse import urlsplit
+
+import gi
+
+gi.require_version('Atspi', '2.0')
+from gi.repository import Atspi, GLib
 
 PROFILE = Path('/profile/google-chrome')
 GOOGLE_ACCOUNT_PAGE = 'https://myaccount.google.com/security'
@@ -97,10 +102,6 @@ def probe_window(pid, url):
 def probe(url, classify, timeout=12):
     """Run with viewer input and other browser work excluded by the executor."""
     try:
-        import gi
-        gi.require_version('Atspi', '2.0')
-        from gi.repository import Atspi
-
         with PROBE_LOCK.open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             pid = int(os.readlink(PROFILE / 'SingletonLock').rsplit('-', 1)[-1])
@@ -111,7 +112,7 @@ def probe(url, classify, timeout=12):
             previous = set(children(app))
             with probe_window(pid, url):
                 return wait_for_status(Atspi, (app, previous), classify, monotonic() + timeout)
-    except Exception:
+    except (AttributeError, GLib.Error, OSError, RuntimeError, SubprocessError, ValueError):
         # D-Bus, window manager and navigation failures reveal neither URLs nor page contents.
         return 'unknown'
 
