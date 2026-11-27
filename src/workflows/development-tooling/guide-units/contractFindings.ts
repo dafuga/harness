@@ -56,7 +56,7 @@ function inputFindings(entity: string, input: ContractItem, where: string): Cont
 			detail: `${input.name} does not declare required or optional.`,
 			where
 		});
-	if (input.required === false && !Object.hasOwn(input, 'default'))
+	if (input.required === false && !input.defaultKind && !Object.hasOwn(input, 'default'))
 		findings.push({
 			entity,
 			kind: 'missing-default',

@@ -69,6 +69,7 @@ export function fieldOf(item: HarnessContractItem, unit: HarnessUnit): ContractF
 		name: nameOf(item, unit),
 		type,
 		required: item.required,
+		...(item.defaultKind ? { defaultKind: item.defaultKind } : {}),
 		...(Object.hasOwn(item, 'default') ? { default: item.default } : {}),
 		...(description ? { description } : {}),
 		...examplesOf(item, type)

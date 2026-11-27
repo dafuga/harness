@@ -86,6 +86,7 @@ export interface HarnessUnit extends HarnessUnitLimits, UnitMetadata {
 			type: string;
 			required?: boolean;
 			default?: unknown;
+			defaultKind?: 'omitted' | 'undefined';
 			description?: string;
 			examples?: unknown[];
 		}>

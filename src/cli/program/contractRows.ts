@@ -8,6 +8,8 @@ export const indent = (lines: string[], depth = 1) =>
 function qualifiers(item: Field): string {
 	const values: string[] = [];
 	if (item.required !== undefined) values.push(item.required ? 'required' : 'optional');
+	if (item.defaultKind === 'omitted') values.push('no default');
+	if (item.defaultKind === 'undefined') values.push('default undefined');
 	if (Object.hasOwn(item, 'default')) values.push(`default ${JSON.stringify(item.default)}`);
 	return values.length ? `  (${values.join('; ')})` : '';
 }
