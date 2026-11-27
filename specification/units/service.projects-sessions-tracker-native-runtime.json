@@ -168,6 +168,7 @@
 			"trackerAutolaunchAdmin",
 			"trackerHubDuePolicy",
 			"trackerContextHandoffs",
+			"staleDispatchHeartbeatKind",
 			"isOutageAlert",
 			"watchCosDelivery",
 			"TrackerCosDeliveryAlarm",
@@ -269,6 +270,7 @@
 			"paneNudgeKey",
 			"handoffRunOwnership",
 			"activeWatchdogItem",
+			"staleDispatchAlerts",
 			"chiefChannelSession",
 			"chiefChannelMissing",
 			"trackerHubChiefDelivery",
@@ -1112,9 +1114,9 @@
 				"required": true
 			},
 			{
-				"name": "trackerHostReport.verification",
-				"type": "ReturnType<typeof trackerHostVerification>",
-				"required": true
+				"name": "trackerHostReport.verifyCommand",
+				"type": "TrackerHostVerifyCommand",
+				"required": false
 			},
 			{
 				"name": "withLaunchOrigin.event",
@@ -1209,12 +1211,12 @@
 			},
 			{
 				"name": "trackerHostWatchdog.options",
-				"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' >",
+				"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' | 'dispatchAlerts' >",
 				"required": true
 			},
 			{
 				"name": "configuredHostWatchdog.runtime",
-				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
+				"type": "Pick< TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role' | 'scheduler' | 'fleetSamples' >",
 				"required": true
 			},
 			{
@@ -1436,6 +1438,11 @@
 			{
 				"name": "activeWatchdogItem.id",
 				"type": "string",
+				"required": true
+			},
+			{
+				"name": "staleDispatchAlerts.runtime",
+				"type": "Pick<TrackerNativeRuntimeService, 'store' | 'scheduler' | 'fleetSamples' | 'now'>",
 				"required": true
 			},
 			{
@@ -3871,9 +3878,9 @@
 						"required": true
 					},
 					{
-						"name": "trackerHostReport.verification",
-						"type": "ReturnType<typeof trackerHostVerification>",
-						"required": true
+						"name": "trackerHostReport.verifyCommand",
+						"type": "TrackerHostVerifyCommand",
+						"required": false
 					}
 				],
 				"outputs": [
@@ -4046,7 +4053,7 @@
 					},
 					{
 						"name": "trackerHostWatchdog.options",
-						"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' >",
+						"type": "Pick< WatchdogSessionScan, 'now' | 'launch' | 'settle' | 'idleWork' | 'automaticEnabled' | 'slotCap' | 'dispatchAlerts' >",
 						"required": true
 					}
 				],
@@ -4064,7 +4071,7 @@
 				"inputs": [
 					{
 						"name": "configuredHostWatchdog.runtime",
-						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role'>",
+						"type": "Pick< TrackerNativeRuntimeService, 'store' | 'now' | 'dispatch' | 'role' | 'scheduler' | 'fleetSamples' >",
 						"required": true
 					},
 					{
@@ -4475,6 +4482,24 @@
 					{
 						"name": "activeWatchdogItem",
 						"type": "TrackerItem | undefined"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "staleDispatchAlerts",
+				"inputs": [
+					{
+						"name": "staleDispatchAlerts.runtime",
+						"type": "Pick<TrackerNativeRuntimeService, 'store' | 'scheduler' | 'fleetSamples' | 'now'>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "staleDispatchAlerts",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

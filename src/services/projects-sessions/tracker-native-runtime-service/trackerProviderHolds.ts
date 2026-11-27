@@ -93,6 +93,7 @@ export async function watchTrackerQuota(
 	);
 	if (!tmux || !names.length) return;
 	const panes = await tmux.scan(signal, new RegExp(`^(?:${names.join('|')})$`));
+	signal.throwIfAborted();
 	observeTrackerQuota(store, { runs, panes, now });
 }
 

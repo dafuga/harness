@@ -1,5 +1,4 @@
 // @harness-uid u_fnfvgcje7d
-import { execFile } from 'node:child_process';
 import { existsSync, statfsSync, statSync } from 'node:fs';
 import { availableParallelism, cpus, loadavg } from 'node:os';
 import {
@@ -11,7 +10,10 @@ import type {
 	TrackerProcessGroup,
 	TrackerResourceSample
 } from '../../utils/projects-sessions/trackerMachine.types';
-import { readTrackerMemory } from './tracker-machine-sampler-adapter/readTrackerMemory';
+import {
+	readTrackerMemory,
+	readTrackerMetricsCommand
+} from './tracker-machine-sampler-adapter/readTrackerMemory';
 
 const gib = 1024 ** 3;
 
@@ -46,8 +48,8 @@ export class TrackerMachineSamplerAdapter {
 	/** Command lines are read to classify processes and dropped before the sample leaves here. */
 	private async groups(): Promise<TrackerProcessGroup[]> {
 		const [table, commands, panes] = await Promise.all([
-			read('/bin/ps', ['-axo', 'pid=,ppid=,rss=,pcpu=,comm=']),
-			read('/bin/ps', ['-axo', 'pid=,args=']),
+			readTrackerMetricsCommand('/bin/ps', ['-axo', 'pid=,ppid=,rss=,pcpu=,comm=']),
+			readTrackerMetricsCommand('/bin/ps', ['-axo', 'pid=,args=']),
 			this.panes()
 		]);
 		const args = new Map<number, string>();
@@ -62,7 +64,7 @@ export class TrackerMachineSamplerAdapter {
 		const panes = new Map<number, string>();
 		const sockets = this.node === 'harbor-mbp-2' ? [[], ['-L', 'claude']] : [[]];
 		for (const socket of sockets) {
-			const listed = await read(this.tmux, [
+			const listed = await readTrackerMetricsCommand(this.tmux, [
 				...socket,
 				'list-panes',
 				'-a',
@@ -76,15 +78,6 @@ export class TrackerMachineSamplerAdapter {
 		}
 		return panes;
 	}
-}
-
-/** A missing tool or an absent tmux server leaves its reading empty. */
-function read(command: string, args: string[]): Promise<string> {
-	return new Promise((resolve) => {
-		execFile(command, args, { timeout: 10_000, maxBuffer: 16 * 1024 * 1024 }, (error, stdout) =>
-			resolve(error ? '' : stdout)
-		);
-	});
 }
 
 function cpuTimes() {

@@ -32,7 +32,6 @@ import type {
 } from './trackerHostLaunch.types';
 import { trackerHandSession } from '../../../utils/projects-sessions/trackerSessionNames';
 import type { TrackerTmuxWindow } from '../../../utils/projects-sessions/trackerSessionNames.types';
-import { trackerHostVerification } from './trackerHostVerification';
 import { trackerHostReport, trackerRouteSessionName, withLaunchOrigin } from './trackerHostReport';
 import { formatTrackerHostBrief } from './trackerHostBrief';
 import { recordedHostEvent } from './trackerHostRunEvents';
@@ -49,19 +48,19 @@ export function trackerHostRunner(
 	const { tmux, legacyRunDirectory, now = Date.now, automaticEnabled } = options;
 	const items = new TrackerItemReadRepository(store.database);
 	const node = canonicalNode(store.node, {});
-	let [sessions, panes]: [TrackerHostSession[], WatchdogPane[]] = [[], []];
-	let windows: TrackerTmuxWindow[] = [];
-	const legacySession = legacySessionReader(legacyRunDirectory, () => sessions);
-	const verify = trackerHostVerification(driver, options.verifyCommand);
-	const report = trackerHostReport({ store, driver, routeFor, now }, verify);
+	let inventory = emptyHostInventory();
+	const legacySession = legacySessionReader(legacyRunDirectory, () => inventory.sessions);
+	const report = trackerHostReport({ store, driver, routeFor, now }, options.verifyCommand);
 	return {
 		runner: {
 			async refresh(signal: AbortSignal, runs: readonly TrackerRunReceipt[]) {
 				report.retain(runs);
-				({ sessions, panes, windows } = await trackerHostInventory(
+				const refreshed = await trackerHostInventory(
 					{ store, driver, tmux, node, runs, keys: runs.map(attemptKey), now: now() },
 					signal
-				));
+				);
+				signal.throwIfAborted();
+				inventory = refreshed;
 			},
 			async start(reservation: TrackerReservedStart, signal: AbortSignal, instructions: string) {
 				const item = items.getStored(reservation.run.item_id);
@@ -75,24 +74,32 @@ export function trackerHostRunner(
 					{ item, reservation, instructions },
 					signal
 				);
-				if (result?.type === 'session') sessions.push({ ...result.session, itemId: item.id });
+				signal.throwIfAborted();
+				if (result?.type === 'session')
+					inventory.sessions.push({ ...result.session, itemId: item.id });
 				return withLaunchOrigin(result, routeFor(item), item);
 			},
 			legacySession,
 			confirmLegacyNeverStarted: legacyTrackerStartupProbe(
 				driver,
 				tmux && legacyRunDirectory,
-				() => panes
+				() => inventory.panes
 			),
-			async observe(run: TrackerRunReceipt, key: string, signal: AbortSignal) {
-				const event = recordedHostEvent(run, { key, sessions, items, legacySession });
-				return report(event, run, signal);
-			},
+			observe: (run: TrackerRunReceipt, key: string, signal: AbortSignal) =>
+				report(recordedHostEvent(run, { key, ...inventory, items, legacySession }), run, signal),
 			overdue: (run: TrackerRunReceipt, reason: string) =>
 				recordOverdueAlert(store, run, { reason, at: now() }),
 			...optionalHostControls(driver)
 		},
-		sessions: (itemId: string) => itemSessions({ store, items, sessions, panes, windows }, itemId)
+		sessions: (itemId: string) => itemSessions({ store, items, ...inventory }, itemId)
+	};
+}
+
+function emptyHostInventory() {
+	return {
+		sessions: [] as TrackerHostSession[],
+		panes: [] as WatchdogPane[],
+		windows: [] as TrackerTmuxWindow[]
 	};
 }
 
