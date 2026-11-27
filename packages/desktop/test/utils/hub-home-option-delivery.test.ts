@@ -87,5 +87,13 @@ describe('a Hub option tap reaches the tracker as one structured answer', () => 
 		const { calls, fetcher } = recorder();
 		await deliverHomeChat(tap({ option: undefined, text: 'Do it Friday' }), homeOf(), fetcher);
 		expect(calls[0].body).toEqual({ answer: 'Do it Friday', by: 'Daniel via Hub' });
+		await deliverHomeChat(
+			tap({ option: 2, text: 'Wait' }),
+			homeOf({
+				task: '[QA automation] Hub canary'
+			}),
+			fetcher
+		);
+		expect(calls[1].body).toEqual({ option: 2, confirmed: false, by: 'QA automation via Hub' });
 	});
 });
