@@ -148,21 +148,25 @@ function explainedItem(
 	const documentation = { ...previous };
 	delete documentation.default;
 	delete documentation.defaultKind;
-	// Keep authored concrete defaults when source gives no initializer value.
-	const keepsAuthoredDefault =
-		Object.hasOwn(previous, 'default') &&
-		item.required === false &&
-		item.defaultKind !== 'undefined' &&
-		!Object.hasOwn(item, 'default') &&
-		!(item.defaultKind === 'omitted' && previous.default === 'undefined (omitted)');
-	const field = { ...item };
-	if (keepsAuthoredDefault) {
-		delete field.defaultKind;
-		field.default = previous.default;
-	}
+
 	return {
 		...documentation,
-		...field,
+		...withAuthoredDefault(item, previous),
 		...(item.type === 'unknown' && previous.type ? { type: previous.type } : {})
 	};
+}
+
+/** Keep authored concrete defaults when source gives no initializer value. */
+function withAuthoredDefault(item: ContractItem, previous: Partial<ContractItem>): ContractItem {
+	if (
+		!Object.hasOwn(previous, 'default') ||
+		item.required !== false ||
+		item.defaultKind === 'undefined' ||
+		Object.hasOwn(item, 'default') ||
+		(item.defaultKind === 'omitted' && previous.default === 'undefined (omitted)')
+	)
+		return item;
+	const field = { ...item, default: previous.default };
+	delete field.defaultKind;
+	return field;
 }
