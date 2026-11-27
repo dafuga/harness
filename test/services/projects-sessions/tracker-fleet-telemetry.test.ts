@@ -77,6 +77,7 @@ test('raises one Chief of Staff alert for a sustained overload and closes it whe
 		};
 		await advance(9);
 		expect(await items()).toEqual([]);
+		expect(nodes.hub.machines.rows().find(({ node }) => node === peerNode)?.status).toBe('busy');
 		await advance(4);
 		const [raised, ...others] = await items();
 		expect(others).toEqual([]);
@@ -90,10 +91,14 @@ test('raises one Chief of Staff alert for a sustained overload and closes it whe
 		expect(alert.reason).toContain('claude in tmux:auto-a-r1');
 		expect(alert.reason).toContain(`Suggested move: claude in tmux:auto-a-r1 to ${hubNode}`);
 		nodes.readings[peerNode] = {};
-		await advance(13);
+		await advance(2);
+		expect(nodes.hub.machines.rows().find(({ node }) => node === peerNode)).toMatchObject({
+			status: 'ok',
+			reasons: []
+		});
+		await advance(11);
 		expect(await items()).toMatchObject([{ status: 'done' }]);
 		expect(nodes.hub.watchdog!.alerts()).toEqual([]);
-
 		nodes.readings[peerNode] = {
 			load: [220, 20, 1],
 			system_cpu: [
@@ -123,15 +128,15 @@ test('raises one Chief of Staff alert for a sustained overload and closes it whe
 			expect.arrayContaining([
 				expect.objectContaining({
 					host: peerNode,
-					reason: expect.stringContaining('1-min load 220')
+					reason: expect.stringContaining('System load 22× capacity')
 				}),
 				expect.objectContaining({
 					host: hubNode,
-					reason: expect.stringContaining('memory pressure warn')
+					reason: expect.stringContaining('Memory nearly full')
 				}),
 				expect.objectContaining({
 					host: 'grok-box',
-					reason: expect.stringContaining('disk / 12 GB free')
+					reason: expect.stringContaining('12 GB free on /')
 				})
 			])
 		);
@@ -157,7 +162,9 @@ test('a peer that stops reporting or is overloaded loses its due-start grant', a
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBeNull();
 		nodes.clock.at += 3 * minute;
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBe('no fresh machine sample');
-		nodes.readings[peerNode] = { load: [30, 30, 30] };
+		nodes.readings[peerNode] = { load: [40, 40, 40] };
+		await nodes.tick();
+		nodes.clock.at += minute;
 		await nodes.tick();
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('is overloaded');
 	} finally {
