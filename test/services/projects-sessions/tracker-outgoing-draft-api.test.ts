@@ -9,6 +9,18 @@ const id = '77ecc6dd-7d69-4c9c-9981-2804ecc6f93c';
 const fleetPath = '/sync/outgoing-drafts';
 const ownerPath = '/sync/owner/outgoing-drafts';
 
+const draft = {
+	id,
+	itemId,
+	message: {
+		channel: 'gmail',
+		account: 'fixture',
+		to: ['recipient@example.test'],
+		cc: [],
+		body: 'Private fixture text'
+	}
+};
+
 function fixture() {
 	const database = new DatabaseSync(':memory:');
 	onTestFinished(() => database.close());
@@ -46,17 +58,7 @@ function fixture() {
 
 test('fleet creation returns a redacted receipt and only the owner grant can authorize delivery', async () => {
 	const { call, fleet, owner, send } = fixture();
-	const draft = {
-		id,
-		itemId,
-		message: {
-			channel: 'gmail',
-			account: 'fixture',
-			to: ['recipient@example.test'],
-			cc: [],
-			body: 'Private fixture text'
-		}
-	};
+
 	const created = await call(fleetPath, draft, fleet);
 	expect(created.status).toBe(201);
 	expect(await created.json()).toEqual({

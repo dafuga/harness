@@ -20,6 +20,7 @@ import type { TrackerGuestAuthWriter } from '../tracker-native-runtime-service/n
 import type { TrackerNativeRuntimeOptions } from '../TrackerNativeRuntimeService.types';
 import { readPrivateJson, readPrivateText, trackerSyncPort } from './trackerNodeConfig';
 import type { TrackerNodeConfig } from './trackerNodeConfig.types';
+import { configuredOutgoingProvider } from './configuredOutgoingProvider';
 import { trackerNodeNotifications } from './trackerNodeNotifications';
 import { trackerUpstreamLink } from './trackerUpstreamLink';
 
@@ -49,6 +50,10 @@ export function trackerNodeRuntime(
 		automaticEnabled: trackerAutomaticSetting(config),
 		machineSampler: new TrackerMachineSamplerAdapter(config.node, configuredTmux(config)),
 		syncResponder: configuredSyncResponder(config, secret),
+		outgoingProvider: configuredOutgoingProvider(
+			config,
+			process.env.HARNESS_TRACKER_OUTGOING_GMAIL_BINDING
+		),
 		...(config.role === 'spoke' && { links: spokeLinks(config, secret) }),
 		...(config.role === 'hub' && notification?.webhook && { recurring: boxJobs(config) }),
 		validateModel(model) {
