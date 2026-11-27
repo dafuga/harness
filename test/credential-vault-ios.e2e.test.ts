@@ -3,7 +3,7 @@ import { once } from 'node:events';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { createInterface } from 'node:readline';
-import { expect, test } from 'vitest';
+import { beforeAll, expect, test } from 'vitest';
 import { VaultDeviceRepository } from '../src/repositories/accounts-access/VaultDeviceRepository';
 import { VaultBrokerService } from '../src/services/accounts-access/VaultBrokerService';
 import { privateBrowserPhonePaths } from '../src/services/execution-runtimes/PrivateBrowserPhoneService';
@@ -26,13 +26,17 @@ import type { NativeVaultTestRun } from './credential-vault-ios.e2e.test.types';
 const deviceId = 'synthetic-native-iphone';
 const ios = 'packages/desktop/ios/App/App';
 const refused = { error: 'Native Vault refused the request.' };
+let binary: string;
+beforeAll(() => {
+	if (process.platform === 'darwin')
+		binary = compileNativePhone(join(vaultBroker().state, 'phone'));
+}, 65_000);
 
 test.skipIf(process.platform !== 'darwin')(
 	'Harness iOS signs the broker queue and decisions and seals to the checked runner',
 	async () => {
 		const fixture = vaultBroker();
 		fixture.clock.now = Date.now();
-		const binary = compileNativePhone(join(fixture.state, 'phone'));
 		const phone = nativePhone(binary);
 		try {
 			const { signingKey } = await phone.read<{ signingKey: string }>();
@@ -62,17 +66,13 @@ test.skipIf(process.platform !== 'darwin')(
 
 test.skipIf(process.platform !== 'darwin')(
 	'Harness iOS opens the standalone broker’s legacy add fixture and refuses changed envelopes',
-	() => {
-		const binary = compileNativePhone(join(vaultBroker().state, 'legacy-add'));
-		execFileSync(binary, ['test/support/credential-vault/legacy-vault-add-vector.json']);
-	},
-	30_000
+	() => void execFileSync(binary, ['test/support/credential-vault/legacy-vault-add-vector.json'])
 );
 
 function compileNativePhone(binary: string): string {
 	const core = `${ios}/Vault/Core`;
 	const vaultSources = readdirSync(core).filter((file) => file.endsWith('.swift'));
-	execFileSync('xcrun', [
+	const swiftArguments = [
 		'swiftc',
 		`${ios}/Remote/RemoteCoding.swift`,
 		`${ios}/Vault/VaultApprovalRequest.swift`,
@@ -83,7 +83,8 @@ function compileNativePhone(binary: string): string {
 		'test/support/credential-vault/iosLegacyAdd.swift',
 		'-o',
 		binary
-	]);
+	];
+	execFileSync('xcrun', swiftArguments, { timeout: 60_000 });
 	return binary;
 }
 
