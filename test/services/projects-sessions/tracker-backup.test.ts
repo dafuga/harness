@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import {
 	existsSync,
 	mkdirSync,
@@ -11,12 +12,12 @@ import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { gunzipSync, gzipSync } from 'node:zlib';
 import { expect, test } from 'vitest';
-import { trackerBackupFixture } from '../../support/trackerBackupFixture';
+import { trackerHealthBackupChecks } from '../../../src/services/projects-sessions/tracker-health-service/trackerHealthBackupChecks';
+import { concurrentBackupWinners, trackerBackupFixture } from '../../support/trackerBackupFixture';
 
 const daily = (names: string[]) =>
 	names.filter((name) => /^tracker-\d{4}-\d\d-\d\d\.db\.gz$/.test(name));
 const weekly = (names: string[]) => names.filter((name) => name.startsWith('tracker-weekly-'));
-
 test('the hub takes one verified private snapshot a day from 03:30 Lisbon', async () => {
 	const hub = await trackerBackupFixture('2026-11-27T03:29:00Z');
 	await hub.tick();
@@ -140,4 +141,79 @@ test('verify and restore read a WAL-mode copy that arrives without its sidecar f
 	expect(hub.bunCli('backup', 'verify', file)).toMatchObject({ code: 0, err: '' });
 	const to = join(hub.root, 'restored.db');
 	expect(hub.bunCli('backup', 'restore', file, '--to', to)).toMatchObject({ code: 0, err: '' });
+});
+
+test('another database never replaces or rotates the backups already in a folder', async () => {
+	const hub = await trackerBackupFixture('2026-11-29T15:00:00Z'); // Sunday: also weekly.
+	await hub.tick();
+	const names = hub.files();
+	const contents = () =>
+		names.map((name) =>
+			createHash('sha256')
+				.update(readFileSync(join(hub.directory, name)))
+				.digest('hex')
+		);
+	const before = contents();
+	// A rehearsal hub left on the default folder: same day first, then a later day.
+	const other = await trackerBackupFixture('2026-11-29T17:00:00Z', hub);
+	await other.tick();
+	expect(contents()).toEqual(before);
+	expect(other.alerts()[0].question).toContain('another database');
+	other.at('2026-11-30T17:00:00Z');
+	expect(await other.api('POST', '/backup/now')).toMatchObject({
+		ok: false,
+		error: expect.stringContaining('another database')
+	});
+	expect(hub.files()).toEqual(names);
+	expect(contents()).toEqual(before);
+	expect(await hub.api('POST', '/backup/now')).toMatchObject({ ok: true });
+	expect(await concurrentBackupWinners(hub.root)).toEqual([1]);
+}, 20_000);
+
+test('a same-day file from another database or an unreadable one is never replaced', async () => {
+	const hub = await trackerBackupFixture('2026-11-27T04:00:00Z');
+	const other = await trackerBackupFixture('2026-11-26T04:00:00Z');
+	await hub.tick();
+	await other.tick();
+	const name = 'tracker-2026-11-26.db.gz';
+	const path = join(hub.directory, name);
+	for (const foreign of [readFileSync(join(other.directory, name)), Buffer.from('garbage')]) {
+		writeFileSync(path, foreign);
+		hub.at('2026-11-26T05:00:00Z');
+		expect(await hub.api('POST', '/backup/now')).toMatchObject({
+			ok: false,
+			error: expect.stringContaining(name)
+		});
+		expect(readFileSync(path)).toEqual(foreign);
+	}
+	expect(hub.files()).toEqual([name, 'tracker-2026-11-27.db.gz']);
+});
+
+test('status checks the newest backup on disk and asks Daniel when it changed', async () => {
+	const hub = await trackerBackupFixture('2026-11-27T04:00:00Z');
+	await hub.tick();
+	const path = join(hub.directory, 'tracker-2026-11-27.db.gz');
+	const status = async () => (await hub.api('GET', '/status')).backup;
+	expect(await status()).toMatchObject({ stale: false, file_error: null });
+	writeFileSync(path, 'replaced');
+	expect(await status()).toMatchObject({
+		stale: true,
+		file_error: expect.stringContaining('is 8 bytes on disk')
+	});
+	expect(trackerHealthBackupChecks({ backup: await status() })).toMatchObject([
+		{ ok: false, severity: 'fail', detail: expect.stringContaining('8 bytes') }
+	]);
+	await hub.tick();
+	await hub.tick();
+	expect(hub.alerts()).toMatchObject([
+		{ needs_daniel: 1, question: expect.stringContaining('8 bytes') }
+	]);
+	rmSync(path);
+	expect(await status()).toMatchObject({
+		stale: true,
+		file_error: expect.stringContaining('is missing')
+	});
+	expect(await hub.api('POST', '/backup/now')).toMatchObject({ ok: true });
+	expect(await status()).toMatchObject({ stale: false, file_error: null });
+	expect(hub.alerts()).toMatchObject([{ status: 'done' }]);
 });
