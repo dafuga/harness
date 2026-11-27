@@ -48,4 +48,3 @@ func accountInstallationChecks(_ hubKept: HubAccountCredential) {
         check(reinstalled.load() == nil, "account installation: explicit sign-out clears the login")
     } catch { check(false, "account installation: disposable session storage works") }
 }
-
