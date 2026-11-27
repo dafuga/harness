@@ -16,6 +16,7 @@ export interface SyncCall {
 	request: Request;
 	url: URL;
 	account: string;
+	sessionHash: string;
 	/** The calling app's own device id (`X-Harness-Device`). The chain, not this id, decides trust. */
 	device: string;
 	deps: SyncDeps & { db: D1Database };

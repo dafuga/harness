@@ -3,6 +3,7 @@ import type { SyncCall, SyncDeps } from './syncPolicy.types';
 import { hubHttpFailure } from '../[...path]/hub-api-controller/hubHttp';
 import { bootstrap, readRecovery } from './syncBootstrap';
 import { changeDevices } from './syncDevices';
+import { bindDeviceSession, readDeviceSession } from './syncDeviceSession';
 import { appendChain, readChain } from './syncChain';
 import { enroll } from './syncEnroll';
 import { putGrants, readGrants } from './syncGrants';
@@ -17,6 +18,10 @@ const routes: Record<string, Record<string, { handler: Handler; parts: number[] 
 		POST: { handler: bootstrap, parts: [1] }
 	},
 	devices: { POST: { handler: changeDevices, parts: [1] } },
+	'device-session': {
+		GET: { handler: readDeviceSession, parts: [1] },
+		POST: { handler: bindDeviceSession, parts: [1] }
+	},
 	chain: { GET: { handler: readChain, parts: [1] }, POST: { handler: appendChain, parts: [1] } },
 	grants: { GET: { handler: readGrants, parts: [1] }, POST: { handler: putGrants, parts: [1] } },
 	ops: { GET: { handler: readOps, parts: [2] }, POST: { handler: postOps, parts: [2] } },
@@ -76,6 +81,7 @@ async function dispatch(request: Request, deps: SyncDeps): Promise<Response> {
 		request,
 		url,
 		account: session.actor.id,
+		sessionHash: session.idHash,
 		device,
 		deps: { ...deps, db: deps.db },
 		parts
