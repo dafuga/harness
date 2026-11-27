@@ -73,8 +73,13 @@ export async function expectLiveDisposition(page: Page, screenshot: string) {
 		.filter({ hasText: 'Waiting on Daniel' });
 	await expect(blocked.first()).toBeVisible();
 	await expect(overview(page)).not.toContainText('No live run');
-	if (process.env.TAKE_SCREENSHOT) await queued.scrollIntoViewIfNeeded();
-	if (process.env.TAKE_SCREENSHOT) await page.screenshot({ path: screenshot });
+	if (!process.env.TAKE_SCREENSHOT) return;
+	await queued.scrollIntoViewIfNeeded();
+	await page.evaluate(async () => {
+		await document.fonts.ready;
+		await Promise.all([...document.images].map((image) => image.decode()));
+	});
+	await page.screenshot({ path: screenshot, animations: 'disabled' });
 }
 
 export async function expectNoSidewaysScroll(page: Page, width: number) {
