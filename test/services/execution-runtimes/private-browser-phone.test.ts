@@ -62,8 +62,7 @@ async function fixture() {
 		offered: ReturnType<typeof offer>,
 		updates = {},
 		device = phone,
-		path = submitPath,
-		value = fieldValue
+		...[path = submitPath, value = fieldValue]: [string?, string?]
 	) => {
 		const { runnerPublicKey, ...scope } = offered;
 		const sealed = phone.seal.seal(runnerPublicKey, offered.requestId, Buffer.from(value));
