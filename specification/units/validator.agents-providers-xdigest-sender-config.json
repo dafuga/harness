@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.agents-providers-xdigest-sender-config",
+	"uid": "u_z43xcnkqer",
+	"kind": "validator",
+	"title": "XDigestSenderConfigValidator",
+	"responsibility": "Validate the sender config, shell-safe source and direct-message destination.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/agents-providers/XDigestSenderConfigValidator.ts"],
+		"symbols": ["XDigestSenderConfigValidator", "XDigestSenderConfigValidator.parse"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XDigestSenderConfigValidator.parse.value",
+				"type": "UntrustedValue",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "XDigestSenderConfigValidator.parse",
+				"type": "XDigestSenderConfig"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XDigestSenderConfigValidator.parse",
+				"inputs": [
+					{
+						"name": "XDigestSenderConfigValidator.parse.value",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestSenderConfigValidator.parse",
+						"type": "XDigestSenderConfig"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-x-digest-send-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/agents-providers/XDigestSenderConfigValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/agents-providers/XDigestSenderConfigValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

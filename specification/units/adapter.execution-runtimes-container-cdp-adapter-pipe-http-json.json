@@ -1,0 +1,98 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-container-cdp-adapter-pipe-http-json",
+	"uid": "u_wwxrcb3ahx",
+	"kind": "adapter",
+	"title": "pipeHttpJson",
+	"responsibility": "Fetch one bounded DevTools JSON document over a byte stream.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/execution-runtimes/container-cdp-adapter/pipeHttpJson.ts"],
+		"symbols": ["pipeHttpJson"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "pipeHttpJson.stream",
+				"type": "Duplex",
+				"required": true
+			},
+			{
+				"name": "pipeHttpJson.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "pipeHttpJson.timeoutMs",
+				"type": "number",
+				"required": false,
+				"default": 10000
+			}
+		],
+		"outputs": [
+			{
+				"name": "pipeHttpJson",
+				"type": "Promise<unknown>"
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [
+			{
+				"name": "pipeHttpJson",
+				"inputs": [
+					{
+						"name": "pipeHttpJson.stream",
+						"type": "Duplex",
+						"required": true
+					},
+					{
+						"name": "pipeHttpJson.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "pipeHttpJson.timeoutMs",
+						"type": "number",
+						"required": false,
+						"default": 10000
+					}
+				],
+				"outputs": [
+					{
+						"name": "pipeHttpJson",
+						"type": "Promise<unknown>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/container-cdp-adapter/pipeHttpJson.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/container-cdp-adapter/pipeHttpJson.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

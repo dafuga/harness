@@ -222,6 +222,12 @@ operator verifies the stopped database and chooses a rollback.
   answer with `tracker answer`, or use `unflag` or `ignore` to dismiss an
   ordinary ask. iPhone push delivery depends on the separate `0wn8nf` rollout.
 
+  A Hub or CLI answer to an assigned task is routed to its current Codex or
+  Claude pane. Tracker waits for an idle composer, records the computer and run
+  once submission is confirmed, and alerts Chief of Staff if delivery stays
+  pending. An answer that releases a finished blocked run allows the watcher to
+  relaunch the task. The answer stays available on the item during recovery.
+
   Chief of Staff files ideas when Daniel raises them and sets the project.
   Use `add --next-step` or `update --next-step` to record a decision. Use
   `done --next-step` when work finishes with a decision outstanding. That
@@ -575,9 +581,17 @@ The primary watchdog alerts CoS when a request has no matching run after
 and clears the alert when the request is withdrawn or receives a run. Spokes
 send signed updates promptly when their launch holds or run state change.
 
+While an attempt's session is live, crossing its ETA and inactivity limit or its
+run cap raises an overdue alert and preserves its run ID and slot. The activity
+clock includes Tracker item updates, pane output, and a quiet pane reporting a
+background shell or monitor. Use `tracker stop <item>` to end a hung attempt.
+Session check-ins are eligible for delivery while the item is in progress and
+the host observes its session. Completing the linked credential rotation clears
+the exposure alert. A new detection can reopen the rotation.
+
 To replace a pending managed launch, run `tracker unlaunch <item>` and then
-`tracker launch <item>`. The launcher retires a cancelled retry that was never
-dispatched. After five minutes, it also retires an undispatched retry whose item
+`tracker launch <item>`. The local launcher retires an undispatched queued run in the
+same write that cancels the request. After five minutes, it also retires an undispatched retry whose item
 became ineligible, preserving any open question. For a dispatched reservation,
 expiry requires absence of the exact tmux session and all startup or exit
 markers. An eligible request can retry within its existing retry limit. Old
@@ -744,6 +758,29 @@ supervise`, and install starts it at once. The supervisor holds one lock per
 - **Human redo.** When a done item has failed, rejected or timed-out attempts
   with no active attempt and no later successful one on any computer, the
   owning computer records `redone_by` as `human`.
+
+## Launch settings
+
+- **Run limits.** `launch.maxRetries` (default 1), `defaultEtaMinutes` (120),
+  `stallMinutes` (45) and `maxRunMinutes` (480) override the dispatcher on that
+  host. Closing finished sessions has no setting here.
+- **Routing.** The optional top-level `routing` object sets `ladder` (effort and
+  price for the built-in `haiku`, `terra` or `sol` model IDs),
+  `learning.minSamples` (3), `learning.upBelow` (0.5) and `claudeOnlyUntil`.
+  Launch, retry and `tracker pick` share it; run reports list the same ladder.
+- **Learning.** A first launch reads finished runs on similar tasks, local and
+  replicated, as `tracker pick` does. History only moves a task to a stronger
+  rung. Pinned items ignore it, and retries step up the route without it.
+- **In place.** On a managed macOS route, a directory outside git runs in place,
+  as does a route with `"worktree": false`. Sessions there share the directory,
+  and `verify` runs in it. A git failure other than "not a git repository" still
+  rejects the launch, and Docker workers never run in place. In-place Codex runs
+  report no token usage, because a shared directory cannot identify the rollout.
+- **Retired model.** A queued, unstarted `gpt-6.1-sol` run starts on
+  `gpt-6.2-sol`.
+
+These keys are new. An older release rejects a node configuration that sets
+them, so remove them before rolling back.
 
 ## Release copy and soak
 

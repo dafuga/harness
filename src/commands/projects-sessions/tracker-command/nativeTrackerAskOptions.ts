@@ -51,7 +51,8 @@ function requireStructuredAsk(values: NativeTrackerAskValues): void {
 	if (values.option !== undefined && values.recommend !== undefined) return;
 	throw new TypeError(
 		'tracker flag needs choices: --option "label=what happens" (2 to 4 times) and --recommend N. ' +
-			'"Other" is added for you. For a dependency or other blocker with no decision, use tracker block.'
+			'"Other" is added for you. For a dependency or other blocker with no decision, use tracker block. ' +
+			'Scripts and monitors use tracker alert <id> "<message>".'
 	);
 }
 

@@ -10,13 +10,19 @@
 	"composition": {
 		"level": "organism",
 		"uses": [
+			"hub.component.projects-sessions-hub-home-ask",
 			"hub.component.projects-sessions-hub-home-composer",
+			"reports.component.explorer-ui-explorer-kit-pill",
+			"reports.component.modal",
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-ol",
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span"
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -25,6 +31,7 @@
 	},
 	"contract": {
 		"origin": "declared",
+		"primitives": ["reports.component.explorer-ui-explorer-kit-pill"],
 		"inputs": [
 			{
 				"name": "HubHomeCosChat.agent",
@@ -44,13 +51,27 @@
 				"type": "SendHomeChat",
 				"required": true,
 				"description": "Sends one Home message through a linked computer or the Hub queue."
+			},
+			{
+				"name": "HubHomeCosChat.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": false,
+				"default": "undefined (omitted)",
+				"description": "Looks up the delivery state of an answer. Required when displaying answer controls."
+			},
+			{
+				"name": "HubHomeCosChat.asks",
+				"type": "HomeOpenAsk[]",
+				"required": false,
+				"default": [],
+				"description": "The current Tracker questions, used to show choices for an attached ask by item ID."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomeCosChat",
 				"type": "markup",
-				"description": "A \"Message Chief of Staff\" region with the latest four entries and one field."
+				"description": "A Chief of Staff status card and the shared chat overlay with optional item context and current answer choices."
 			}
 		],
 		"errors": [],
@@ -60,7 +81,17 @@
 	},
 	"dependencies": [
 		{
+			"unit": "hub.component.projects-sessions-hub-home-ask",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "hub.component.projects-sessions-hub-home-composer",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -71,6 +102,26 @@
 		},
 		{
 			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.explorer-ui-explorer-kit-pill",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.modal",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -101,6 +152,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
 			"via": "import",
 			"origin": "derived"
 		},

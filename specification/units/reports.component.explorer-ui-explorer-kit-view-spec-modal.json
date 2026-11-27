@@ -17,7 +17,8 @@
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
 			"reports.component.shared-primitives-atoms-html-header",
-			"reports.component.shared-primitives-atoms-html-p"
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -116,6 +117,11 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
 			"via": "import",
 			"origin": "derived"
 		},

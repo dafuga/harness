@@ -1,0 +1,73 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-x-feed-reader-service-classify-xurl",
+	"uid": "u_fgneoorzj7",
+	"kind": "service",
+	"title": "classifyXUrl",
+	"responsibility": "Classify an X tab from its address alone.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/x-feed-reader-service/classifyXUrl.ts",
+			"src/services/agents-providers/x-feed-reader-service/classifyXUrl.types.ts"
+		],
+		"symbols": ["classifyXUrl", "XUrlState"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "classifyXUrl.address",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "classifyXUrl",
+				"type": "XUrlState"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "classifyXUrl",
+				"inputs": [
+					{
+						"name": "classifyXUrl.address",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "classifyXUrl",
+						"type": "XUrlState"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/x-feed-reader-service/classifyXUrl.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/x-feed-reader-service/classifyXUrl.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

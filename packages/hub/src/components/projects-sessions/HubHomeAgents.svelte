@@ -2,13 +2,15 @@
 <!-- @harness-atoms ../../../../reports/src/components/shared-primitives/atoms -->
 <!-- @harness-uid u_aigdzmrsfg -->
 <script lang="ts">
+	import { homeCosChat } from './hubHomeChatContext.svelte';
+	import { hasWebLink } from '$reports/utils/strings/linkSegments';
+	import LinkifiedText from '$reports/components/shared-primitives/LinkifiedText.svelte';
 	import EmptyState from '$reports/components/explorer-ui/explorer-kit/EmptyState.svelte';
 	import Pill from '$reports/components/explorer-ui/explorer-kit/Pill.svelte';
 	import type {
 		HomeAgent,
 		HomeChatInput,
-		HomeChatReceipt,
-		HomeOpenAsk
+		HomeChatReceipt
 	} from '$reports/lib/projects-sessions/hub-home/hubHome.types';
 	import {
 		agentGroups,
@@ -23,14 +25,11 @@
 	import { isPending, receiptText } from './hubHomeMessages';
 	import type { ChangeSession, SendHomeChat } from './hubHomeView.types';
 	import HubHomeAddSession from './HubHomeAddSession.svelte';
-	import HubHomeAsk from './HubHomeAsk.svelte';
 	import HubHomeComposer from './HubHomeComposer.svelte';
 	import HubHomeSkeleton from './HubHomeSkeleton.svelte';
 
 	let {
-		agents: listed,
-		asks = [],
-		openAsks = [],
+		agents,
 		added = [],
 		changeSession,
 		agentId,
@@ -40,9 +39,6 @@
 		chatName = $bindable('')
 	}: {
 		agents: HomeAgent[] | null;
-		/** Other projects' agents that need you: not listed sessions, but their asks and options show. */
-		asks?: HomeAgent[];
-		openAsks?: HomeOpenAsk[];
 		added?: string[];
 		changeSession: ChangeSession;
 		agentId?: string;
@@ -51,7 +47,7 @@
 		chatOpen?: boolean;
 		chatName?: string;
 	} = $props();
-	const agents = $derived(listed === null ? null : [...listed, ...asks]);
+	const cosChat = homeCosChat();
 	let selected = $state<string>();
 	let pending = $state<{ message: HomeChatInput; receipt: HomeChatReceipt }[]>([]);
 	const active = $derived(
@@ -59,18 +55,10 @@
 			currentAgent(agents ?? []) ??
 			agents?.[0]
 	);
-	/** The chosen session's open asks. They are the latest messages of its chat. */
-	const chatAsks = $derived(openAsks.filter((ask) => ask.agentId === active?.id));
-
 	$effect(() => void (chatName = active?.name ?? ''));
 	function select(id: string) {
 		selected = id;
 		chatOpen = true;
-	}
-
-	/** Opening the chat lands on the question, wherever the thread starts. */
-	function revealAsk(element: HTMLElement) {
-		requestAnimationFrame(() => element.scrollIntoView({ block: 'nearest' }));
 	}
 
 	function submitted(message: HomeChatInput, result: HomeChatReceipt) {
@@ -109,6 +97,8 @@
 						>
 						<hx-ul class="po-items">
 							{#each members as agent (agent.id)}
+								{@const activity = agentActivity(agent)}
+								{@const linkedActivity = hasWebLink(activity)}
 								<hx-li
 									class="po-item hh-agent-row"
 									aria-current={active.id === agent.id ? 'true' : undefined}
@@ -123,7 +113,7 @@
 										>
 										<hx-span class="po-item-text">
 											<hx-span class="po-item-title">{agent.name}</hx-span>
-											<hx-span class="po-item-meta">{agentActivity(agent)}</hx-span>
+											{#if !linkedActivity}<hx-span class="po-item-meta">{activity}</hx-span>{/if}
 											<hx-span class="po-item-meta hh-agent-where"
 												>{[agent.machine, agent.model].filter(Boolean).join(' · ')}</hx-span
 											>
@@ -136,6 +126,9 @@
 											]}</Pill
 										>
 									</hx-button>
+									{#if linkedActivity}<hx-p class="po-item-meta hh-agent-linked-meta"
+											><LinkifiedText text={activity} /></hx-p
+										>{/if}
 								</hx-li>
 							{/each}
 						</hx-ul>
@@ -165,25 +158,30 @@
 				{#each active.messages.filter((message) => message.id !== 'question') as message (message.id)}
 					{@const status = messageStatusText(message, active.name)}
 					<hx-li class="hh-msg" data-from={message.from} data-status={message.status}>
-						<hx-p>{message.text}</hx-p><hx-span class="hh-msg-at"
+						<hx-p><LinkifiedText text={message.text} /></hx-p><hx-span class="hh-msg-at"
 							>{status ? `${status} · ${runTime(message.at)}` : runTime(message.at)}</hx-span
 						>
 					</hx-li>
 				{/each}
 				{#each pending.filter((entry) => isPending(entry, active)) as entry (entry.message.id)}
 					<hx-li class="hh-msg" data-from="you">
-						<hx-p>{entry.message.text}</hx-p><hx-span class="hh-msg-at" role="status"
-							>{receiptText(entry.receipt)}</hx-span
+						<hx-p><LinkifiedText text={entry.message.text} /></hx-p><hx-span
+							class="hh-msg-at"
+							role="status">{receiptText(entry.receipt)}</hx-span
 						>
 					</hx-li>
 				{/each}
-				{#each chatAsks as ask (ask.itemId)}
-					<hx-li class="hh-msg hh-msg-ask" data-from="agent" {@attach revealAsk}>
-						<HubHomeAsk {ask} {send} {receipt} {submitted} />
-					</hx-li>
-				{/each}
 			</hx-ol>
-			{#if active.itemId || active.id === 'cos'}
+			{#if active.id === 'cos'}
+				{#if cosChat}
+					<hx-button
+						type="button"
+						class="po-action"
+						aria-haspopup="dialog"
+						onclick={(event) => cosChat.open(event.currentTarget)}>Open chat</hx-button
+					>
+				{/if}
+			{:else if active.itemId}
 				{#key active.id}<HubHomeComposer {agents} agentId={active.id} {send} {submitted} />{/key}
 			{:else}
 				<hx-p class="po-sessions">This agent has no current Tracker item.</hx-p>

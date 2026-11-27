@@ -1,4 +1,5 @@
 // @harness-uid u_g7kdpz7bel
+import { cancelQueuedDispatchRuns } from '../../repositories/projects-sessions/tracker-dispatch-repository/dispatchLaunchControl';
 import type { TrackerItemReadRepository } from '../../repositories/projects-sessions/TrackerItemReadRepository';
 import { checkTrackerItem } from '../../utils/projects-sessions/checkTrackerItem';
 import { planTrackerItemMutation } from '../../utils/projects-sessions/planTrackerItemMutation';
@@ -20,6 +21,10 @@ import {
 } from './tracker-local-api-service/trackerLocalResponse';
 import { recordCosFlag } from './tracker-local-api-service/recordCosFlag';
 import { trackerRejectItem } from './tracker-local-api-service/trackerLocalRejection';
+import {
+	isTrackerAlert,
+	trackerAlertResponse
+} from './tracker-local-api-service/trackerLocalAlert';
 import { phoneReplicaResponse } from './tracker-local-api-service/trackerPhoneReplicaResponse';
 import { trackerInboxItem } from './tracker-local-api-service/trackerLocalInbox';
 import { writeTrackerPlanning } from './tracker-local-api-service/trackerLocalPlanning';
@@ -137,10 +142,12 @@ export class TrackerLocalApiService {
 		const plan = action
 			? planTrackerItemMutation(itemMutation(action, id, body, this.items), context)
 			: planTrackerManualLaunch(verb, this.items.resolve(id), body, context);
-		const persist =
-			action === 'start'
-				? () => recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run)
-				: undefined;
+		const persist = () => {
+			if (action === 'start')
+				recordTrackerSessionItem(this.store.database, plan.itemId, body.session_run);
+			if (manual && verb === 'unlaunch')
+				cancelQueuedDispatchRuns(this.store, plan.itemId, context.now);
+		};
 		if (plan.fields)
 			this.store.appendLocal({ itemId: plan.itemId, fields: plan.fields, actor }, persist);
 		const flag = { itemId: plan.itemId, action, question: body.question };
@@ -155,6 +162,7 @@ function trackerSpecialResponse(
 	dependencies: Parameters<typeof trackerItemSpecialResponse>[2]
 ) {
 	if (parts[0] === 'jobs') return trackerJobResponse(request, parts, dependencies);
+	if (isTrackerAlert(request, parts)) return trackerAlertResponse(request, parts[1], dependencies);
 	if (parts[0] === 'messages')
 		return trackerMessageEndpoint(request, parts, {
 			...dependencies,

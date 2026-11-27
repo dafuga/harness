@@ -122,3 +122,12 @@ export function liveNotice(reading: LinkedHome | null): string | null {
 		? 'Update Harness on your Mac to see every project, session and run.'
 		: 'Your Mac answered but could not read Tracker. Check that Tracker is running on it.';
 }
+
+/** @pure Reports live-data failures that need a prominent Home alert. */
+export function liveSystemNotice(reading: LinkedHome | null): string | null {
+	const failure =
+		reading?.unlisted ||
+		(Boolean(reading?.linked) && !reading?.answered) ||
+		reading?.snapshot?.overview.status === 'unavailable';
+	return failure ? liveNotice(reading) : null;
+}

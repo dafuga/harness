@@ -11,7 +11,6 @@
 		"level": "organism",
 		"uses": [
 			"hub.component.projects-sessions-hub-home-add-session",
-			"hub.component.projects-sessions-hub-home-ask",
 			"hub.component.projects-sessions-hub-home-composer",
 			"hub.component.projects-sessions-hub-home-skeleton",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
@@ -25,7 +24,8 @@
 			"reports.component.shared-primitives-atoms-html-p",
 			"reports.component.shared-primitives-atoms-html-section",
 			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-ul",
+			"reports.component.shared-primitives-linkified-text"
 		]
 	},
 	"owns": {
@@ -44,20 +44,6 @@
 				"type": "HomeAgent[] | null",
 				"required": true,
 				"description": "Agents and their current Tracker context. A null value indicates loading where supported."
-			},
-			{
-				"name": "HubHomeAgents.asks",
-				"type": "HomeAgent[]",
-				"required": false,
-				"default": [],
-				"description": "Other projects' agents that need Daniel. They are not listed sessions but their questions and option buttons still show."
-			},
-			{
-				"name": "HubHomeAgents.openAsks",
-				"type": "HomeOpenAsk[]",
-				"required": false,
-				"default": [],
-				"description": "Open structured asks to show on their agents. Defaults to an empty list."
 			},
 			{
 				"name": "HubHomeAgents.added",
@@ -125,17 +111,17 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "hub.component.projects-sessions-hub-home-ask",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "hub.component.projects-sessions-hub-home-composer",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "hub.component.projects-sessions-hub-home-skeleton",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "hub.function.projects-sessions-hub-home-chat-context",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -206,6 +192,16 @@
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.function.strings-link-segments",
 			"via": "import",
 			"origin": "derived"
 		},

@@ -5,7 +5,9 @@ import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema';
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
+import { cosSendWindowStart } from './trackerCosWindow';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
+import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { WatchdogPaneService } from '../WatchdogPaneService';
 
@@ -45,6 +47,11 @@ export function trackerWatchdogPort(
 	};
 }
 
+const minute = 60_000;
+/** One message per half hour, sooner while more alerts than one message holds are waiting. */
+const cosInterval = 30 * minute;
+const backlogInterval = 5 * minute;
+
 /** The pane input refuses long messages, so the slot lines take only the room that is left. */
 const cosMessageLimit = 5000;
 
@@ -64,11 +71,6 @@ function plain(text: string) {
 }
 
 function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatchdogPort {
-	const lisbon = new Intl.DateTimeFormat('en-GB', {
-		timeZone: 'Europe/Lisbon',
-		hour: 'numeric',
-		hourCycle: 'h23'
-	});
 	let nextCosTick = 0;
 	return {
 		...(chiefOfStaff && { peers: readTrackerWatchdogPeer }),
@@ -77,10 +79,9 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		inventory: (signal) => tmux.inventory(signal),
 		nudge: (input, signal) => tmux.nudge(input, signal),
 		deliver: (input, signal) => deliverToSession(tmux, input, signal),
-		async send(alerts, signal) {
+		async send(alerts, signal, queue) {
 			const now = Date.now();
-			const hour = Number(lisbon.format(now));
-			if (hour < 8 || hour >= 22) return false;
+			if (cosSendWindowStart(now) === null) return false;
 			if (now < nextCosTick && !alerts.some(({ kind }) => kind === urgentQueueAlertKind))
 				return false;
 			const panes = await tmux.scan(signal, /^cos$/);
@@ -91,7 +92,7 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 			);
 			const message = cosMessage(summary, alerts);
 			const sent = await tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
-			if (sent) nextCosTick = now + 30 * 60_000;
+			if (sent) nextCosTick = now + (queue?.backlog ? backlogInterval : cosInterval);
 			return sent;
 		}
 	};
@@ -100,14 +101,28 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 /** Only one pane of exactly that name, and only while its prompt is empty and waiting. */
 async function deliverToSession(
 	tmux: TrackerTmuxAdapter,
-	{ session, message }: { session: string; message: string },
+	{ session, message, expected }: Parameters<NonNullable<TrackerWatchdogPort['deliver']>>[0],
 	signal: AbortSignal
 ): Promise<'delivered' | 'busy' | 'missing'> {
 	if (!/^[A-Za-z0-9._-]{1,100}$/.test(session)) return 'missing';
 	const names = new RegExp(`^${session.replace(/[.]/g, '\\.')}$`);
 	const found = await tmux.scan(signal, names);
-	if (found.length !== 1) return 'missing';
-	const cli = panes.idlePrompt(found[0]);
-	if (!cli) return 'busy';
-	return (await tmux.nudge({ pane: found[0], cli, message, names }, signal)) ? 'delivered' : 'busy';
+	const [pane] = found;
+	if (found.length !== 1 || !matchesAnswerPane(pane, expected)) return 'missing';
+	const cli = panes.idlePrompt(pane);
+	if (!cli || (expected && expected.cli !== cli)) return 'busy';
+	return (await tmux.nudge({ pane, cli, message, names }, signal)) ? 'delivered' : 'busy';
+}
+
+function matchesAnswerPane(
+	pane: WatchdogPane,
+	expected: Parameters<NonNullable<TrackerWatchdogPort['deliver']>>[0]['expected']
+) {
+	if (!expected) return true;
+	const { startedAt, key } = expected;
+	return (
+		startedAt >= pane.createdAt - 1000 &&
+		startedAt <= pane.createdAt + 60_000 &&
+		(!key || key === pane.key)
+	);
 }

@@ -3,6 +3,7 @@ import { onMount, tick, untrack } from 'svelte';
 import { replaceState } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { needsTarget } from './hubHomeNeedsTarget';
+import type { OpenHomeCosAsk } from './hubHomeChatContext.types';
 import type { NeedsLinkHome } from './followNeedsLink.svelte.types';
 
 /** The linked computers answer within this; after it, the list is shown as it stands. */
@@ -19,7 +20,14 @@ async function showList(close: (() => void) | null) {
 	const list = document.getElementById('hh-needs-title')?.closest('section');
 	list?.scrollIntoView({ block: 'start' });
 	// The row that opens the chat, never one of its answer buttons: Enter must not answer.
-	list?.querySelector<HTMLElement>('.hh-needs-row')?.focus({ preventScroll: true });
+	list?.querySelector<HTMLElement>('.hh-needs-talk')?.focus({ preventScroll: true });
+}
+
+async function showAsk(itemId: string, openAsk: OpenHomeCosAsk, close: (() => void) | null) {
+	close?.();
+	await tick();
+	const trigger = document.getElementById(`hh-ask-${itemId}`);
+	if (trigger) openAsk(trigger, itemId);
 }
 
 /** Hears the address a notification opened, and the worker's message to an open tab. */
@@ -39,7 +47,7 @@ function listen(follow: (needs: string) => void, reload: () => void) {
 }
 
 /**
- * Takes a clicked notification to its ask's session chat, or to the needs-you list. Call it
+ * Takes a clicked notification to Chief of Staff chat, or to the needs-you list. Call it
  * while Home initialises; `home` is read again as Home's asks arrive.
  */
 export function followNeedsLink(home: () => NeedsLinkHome): void {
@@ -69,8 +77,8 @@ export function followNeedsLink(home: () => NeedsLinkHome): void {
 			clearTimeout(timer);
 			needs = null;
 			forgetAddress();
-			const { open, close, dialog } = home();
-			if (target.kind === 'ask') open('agents', target.agentId);
+			const { openAsk, close, dialog } = home();
+			if (target.kind === 'ask') void showAsk(target.itemId, openAsk, dialog ? close : null);
 			else if (target.kind === 'list') void showList(dialog ? close : null);
 		});
 	});

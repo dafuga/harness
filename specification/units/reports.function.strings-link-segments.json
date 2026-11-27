@@ -1,0 +1,105 @@
+{
+	"schemaVersion": 1,
+	"id": "reports.function.strings-link-segments",
+	"uid": "u_44o75ivrws",
+	"kind": "function",
+	"title": "linkSegments",
+	"responsibility": "Finds explicit HTTP and HTTPS URLs in plain text and preserves the surrounding text.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["packages/reports/src/utils/strings/linkSegments.ts"],
+		"symbols": ["linkSegments", "hasWebLink"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "linkSegments.text",
+				"type": "string",
+				"required": true,
+				"description": "Plain text to scan for HTTP and HTTPS URLs."
+			},
+			{
+				"name": "hasWebLink.text",
+				"type": "string",
+				"required": true,
+				"description": "Plain text to check for at least one HTTP or HTTPS URL."
+			}
+		],
+		"outputs": [
+			{
+				"name": "linkSegments",
+				"type": "{ text: string; href?: string }[]",
+				"description": "Returns ordered text and URL segments without losing adjacent punctuation."
+			},
+			{
+				"name": "hasWebLink",
+				"type": "boolean",
+				"description": "Returns true when at least one supported URL can be linked."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "linkSegments",
+				"inputs": [
+					{
+						"name": "linkSegments.text",
+						"type": "string",
+						"required": true,
+						"description": "Plain text to scan for HTTP and HTTPS URLs."
+					}
+				],
+				"outputs": [
+					{
+						"name": "linkSegments",
+						"type": "{ text: string; href?: string }[]",
+						"description": "Returns ordered text and URL segments without losing adjacent punctuation."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "hasWebLink",
+				"inputs": [
+					{
+						"name": "hasWebLink.text",
+						"type": "string",
+						"required": true,
+						"description": "Plain text to check for at least one HTTP or HTTPS URL."
+					}
+				],
+				"outputs": [
+					{
+						"name": "hasWebLink",
+						"type": "boolean",
+						"description": "Returns true when at least one supported URL can be linked."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/utils/strings/linkSegments.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/utils/strings/linkSegments.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

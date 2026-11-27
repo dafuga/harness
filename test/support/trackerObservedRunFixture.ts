@@ -69,3 +69,19 @@ if (command === 'list-panes' || command === 'display-message') {
 	process.stdout.write('tracker-session-closed\\n');
 } else process.exit(2);
 `;
+
+export async function verifyStaleIdleAlert(
+	runtime: TrackerNativeRuntimeService,
+	root: string,
+	itemId: string,
+	advance: () => void
+) {
+	runtime.store.appendLocal({ itemId, fields: { status: 'blocked' } });
+	const idle = () => runtime.watchdog!.alerts().filter(({ kind }) => kind === 'idle');
+	expect(idle()).toEqual([]);
+	runtime.store.appendLocal({ itemId, fields: { status: 'in_progress' } });
+	writeFileSync(join(root, 'hand-session'), '');
+	advance();
+	await runtime.watchdog!.tick(new AbortController().signal);
+	expect(idle()).toEqual([]);
+}

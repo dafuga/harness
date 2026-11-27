@@ -52,6 +52,12 @@ export function checkTrackerManagedReceipt(
 	return record;
 }
 
+/** Where one attempt runs: its own worktree unless it recorded that it runs in place. */
+export function trackerManagedWorkingDirectory(directory: string, node: string, key: string) {
+	const attempt = join(directory, trackerManagedToken(node, key));
+	return privateRecord(join(attempt, 'working-directory')) ?? join(attempt, 'worktree');
+}
+
 export function trackerManagedEvidence(
 	directory: string,
 	receipt: TrackerManagedReceipt,

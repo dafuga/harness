@@ -1,4 +1,4 @@
-import { verifyAdoption } from '../../support/trackerObservedRunFixture';
+import { verifyAdoption, verifyStaleIdleAlert } from '../../support/trackerObservedRunFixture';
 import {
 	verifyLaunchWatchdogBoundary,
 	verifyIdleWatchdogAlert
@@ -75,6 +75,9 @@ async function proveWatchdog(root: string) {
 			{ operation: 'watchdog-cos', alerts: [{ item_id: requestId, host: 'harbor-mbp-2' }] },
 			{ operation: 'watchdog-cos', alerts: [{ item_id: itemId, host: node }] }
 		]);
+		await verifyStaleIdleAlert(restarted, root, itemId, () => {
+			clock += 10 * minute;
+		});
 	} finally {
 		db.close();
 	}

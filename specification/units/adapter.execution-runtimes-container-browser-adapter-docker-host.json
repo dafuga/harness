@@ -1,0 +1,165 @@
+{
+	"schemaVersion": 1,
+	"id": "adapter.execution-runtimes-container-browser-adapter-docker-host",
+	"uid": "u_vzhwfqsqhp",
+	"kind": "adapter",
+	"title": "dockerHost",
+	"responsibility": "Run docker against the dedicated engine socket with a credential-free Docker config.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/adapters/execution-runtimes/container-browser-adapter/dockerHost.ts"],
+		"symbols": ["dockerHost", "browserEndpoint", "childStream"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "dockerHost.endpoint",
+				"type": "DockerEndpoint",
+				"required": false
+			},
+			{
+				"name": "browserEndpoint.home",
+				"type": "string",
+				"required": false
+			},
+			{
+				"name": "childStream.command",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "childStream.args",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "childStream.env",
+				"type": "Record<string, string | undefined>",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "dockerHost",
+				"type": "ContainerBrowserHost"
+			},
+			{
+				"name": "browserEndpoint",
+				"type": "DockerEndpoint"
+			},
+			{
+				"name": "childStream",
+				"type": "Duplex"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "dockerHost",
+				"inputs": [
+					{
+						"name": "dockerHost.endpoint",
+						"type": "DockerEndpoint",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "dockerHost",
+						"type": "ContainerBrowserHost"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "browserEndpoint",
+				"inputs": [
+					{
+						"name": "browserEndpoint.home",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "browserEndpoint",
+						"type": "DockerEndpoint"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "childStream",
+				"inputs": [
+					{
+						"name": "childStream.command",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "childStream.args",
+						"type": "string[]",
+						"required": true
+					},
+					{
+						"name": "childStream.env",
+						"type": "Record<string, string | undefined>",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "childStream",
+						"type": "Duplex"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.execution-runtimes-container-browser",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "adapter.execution-runtimes-container-browser-adapter-colima-runtime",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/adapters/execution-runtimes/container-browser-adapter/dockerHost.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/adapters/execution-runtimes/container-browser-adapter/dockerHost.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

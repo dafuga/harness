@@ -13,8 +13,6 @@ const stuckGrace = 10 * 60_000;
 const linkedWorkGrace = 15 * 60_000;
 export const runSessionName = /^auto-([a-z0-9]{6,10})-r([1-9][0-9]*)$/;
 
-export const closedBlockedKey = (runId: number) => 'tracker_closed_blocked_run:' + runId;
-
 /**
  * Close the tmux session of every finished run, whatever its outcome. Only the launcher's own
  * `auto-<item>-r<run>` names qualify, so control and deploy sessions are out of reach.
@@ -62,8 +60,6 @@ async function closeRunSession(
 		signal
 	);
 	if (!closed) return;
-	// Only an answer to a block whose pane the launcher closed may ask for a fresh session.
-	if (run.outcome === 'blocked') store.writeMeta({ [closedBlockedKey(run.id)]: String(now) });
 	const resume = run.cli === 'codex' ? 'codex resume --all' : 'claude --resume';
 	store.appendLocal({
 		itemId: run.itemId,
@@ -121,6 +117,13 @@ function readFinishedPaneRun(
 		WHERE r.id = ? AND (r.tmux = ? OR (r.tmux IS NULL AND r.started_at IS NULL))
 		AND (r.item_id = ? OR substr(r.item_id, 1, 6) = ?)
 		AND r.state = 'finished' AND r.ended_at <= ? AND r.cli IN ('codex', 'claude')
+		AND NOT (
+			coalesce(r.outcome,'') = 'blocked' AND coalesce(i.status,'') = 'blocked'
+			AND coalesce(i.auto = r.auto_token, 0)
+			AND i.resolved = 1 AND i.needs_daniel = 0
+			AND coalesce(json_extract(i.clocks,'$.answer'),'') > coalesce(json_extract(i.clocks,'$.question'),'')
+			AND coalesce(json_extract(i.clocks,'$.answer'),'') > coalesce(json_extract(i.clocks,'$.status'),'')
+		)
 		AND (r.started_at IS NULL OR r.started_at BETWEEN ? AND ?)
 		AND (r.watch_pane IS NULL OR r.watch_pane = ?)
 		AND (coalesce(json_extract(reservation.v, '$.hostSessionId'), '') NOT GLOB '*:%*'

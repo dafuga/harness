@@ -1,0 +1,96 @@
+{
+	"schemaVersion": 1,
+	"id": "validator.agents-providers-xdigest-config",
+	"uid": "u_vnpkolzkuz",
+	"kind": "validator",
+	"title": "XDigestConfigValidator",
+	"responsibility": "Validate the collector config.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/validators/agents-providers/XDigestConfigValidator.ts"],
+		"symbols": ["XDigestConfigValidator", "XDigestConfigValidator.parse"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "XDigestConfigValidator.parse.value",
+				"type": "UntrustedValue",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "XDigestConfigValidator.parse",
+				"type": "XDigestConfig"
+			}
+		],
+		"errors": [
+			{
+				"name": "ExpectedCliError",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "XDigestConfigValidator.parse",
+				"inputs": [
+					{
+						"name": "XDigestConfigValidator.parse.value",
+						"type": "UntrustedValue",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "XDigestConfigValidator.parse",
+						"type": "XDigestConfig"
+					}
+				],
+				"errors": [
+					{
+						"name": "ExpectedCliError",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "function.agents-providers-project-assistant-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.agents-providers-x-digest-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.errors",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/validators/agents-providers/XDigestConfigValidator.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/validators/agents-providers/XDigestConfigValidator.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

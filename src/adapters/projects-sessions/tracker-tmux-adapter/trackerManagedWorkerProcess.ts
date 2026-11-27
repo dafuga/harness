@@ -1,6 +1,5 @@
 // @harness-uid u_fyf7e7kyi5
 import { trackerSecretSafetyRule } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerSecretSafetyRule';
-import { realpathSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { runTrackerHostCommand } from '../tracker-host-process-adapter/trackerHostCommand';
 import type { TrackerHostStartRequest } from '../../../services/projects-sessions/tracker-native-runtime-service/trackerHostLaunch.types';
@@ -119,35 +118,6 @@ export async function launchTmux(
 	return created.code === 0
 		? undefined
 		: trackerStartupCause(`tmux could not start the session: ${created.stderr}`);
-}
-
-/** Resolve the configured ops directory or create a detached checkout for the attempt. */
-export async function prepareTrackerWorkingDirectory(
-	directory: string,
-	input: TrackerHostStartRequest,
-	signal: AbortSignal
-): Promise<string | { failure: string }> {
-	const source = realpathSync('workdir' in input ? input.workdir : input.repo);
-	if (!statSync(source).isDirectory()) return { failure: `${source} is not a directory` };
-	if ('workdir' in input) return source;
-	const worktree = join(directory, 'worktree');
-	const git = await runTrackerHostCommand(
-		'/usr/bin/git',
-		[
-			'-C',
-			source,
-			'-c',
-			'core.hooksPath=/dev/null',
-			'worktree',
-			'add',
-			'--detach',
-			worktree,
-			'HEAD'
-		],
-		signal
-	);
-	if (git.code === 0) return worktree;
-	return { failure: `could not create a worktree of ${source}: ${git.stderr}` };
 }
 
 export function trackerSocket(node: string): string {

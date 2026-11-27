@@ -13,6 +13,8 @@
 			"src/services/projects-sessions/TrackerLocalApiService.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/readTrackerRunEndpoint.ts",
 			"src/services/projects-sessions/tracker-local-api-service/recordCosFlag.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalAlert.ts",
+			"src/services/projects-sessions/tracker-local-api-service/trackerLocalAlert.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalInbox.types.ts",
 			"src/services/projects-sessions/tracker-local-api-service/trackerLocalItemMutation.ts",
@@ -33,6 +35,9 @@
 			"readTrackerItemDetail",
 			"readTrackerRunEndpoint",
 			"recordCosFlag",
+			"isTrackerAlert",
+			"trackerAlertResponse",
+			"TrackerAlertDependencies",
 			"trackerInboxItem",
 			"TrackerInboxReview",
 			"TrackerInboxRoute",
@@ -119,6 +124,31 @@
 			{
 				"name": "recordCosFlag.now",
 				"type": "number",
+				"required": true
+			},
+			{
+				"name": "isTrackerAlert.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "isTrackerAlert.parts",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.request",
+				"type": "Request",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.target",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "trackerAlertResponse.dependencies",
+				"type": "TrackerAlertDependencies",
 				"required": true
 			},
 			{
@@ -381,6 +411,14 @@
 				"type": "void"
 			},
 			{
+				"name": "isTrackerAlert",
+				"type": "boolean"
+			},
+			{
+				"name": "trackerAlertResponse",
+				"type": "Promise<Response>"
+			},
+			{
 				"name": "trackerInboxItem",
 				"type": "Promise<TrackerInboxResult>"
 			},
@@ -540,6 +578,57 @@
 					{
 						"name": "recordCosFlag",
 						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isTrackerAlert",
+				"inputs": [
+					{
+						"name": "isTrackerAlert.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "isTrackerAlert.parts",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isTrackerAlert",
+						"type": "boolean"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "trackerAlertResponse",
+				"inputs": [
+					{
+						"name": "trackerAlertResponse.request",
+						"type": "Request",
+						"required": true
+					},
+					{
+						"name": "trackerAlertResponse.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "trackerAlertResponse.dependencies",
+						"type": "TrackerAlertDependencies",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerAlertResponse",
+						"type": "Promise<Response>"
 					}
 				],
 				"errors": [],
@@ -1003,17 +1092,12 @@
 	},
 	"dependencies": [
 		{
-			"unit": "function.agents-providers-classify-tracker-task",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "function.agents-providers-parse-tracker-model-spec",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "function.agents-providers-pick-tracker-model",
+			"unit": "function.agents-providers-pick-tracker-model-from-runs",
 			"via": "import",
 			"origin": "derived"
 		},
