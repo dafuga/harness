@@ -203,6 +203,8 @@
 			"formatTrackerHostBrief",
 			"unsentCosAlerts",
 			"sendWatchdogAlerts",
+			"recordCosReceipts",
+			"cosReceiptReference",
 			"trackerHostEffectsSchema",
 			"trackerHostInventory",
 			"hasManualTrackerPane",
@@ -901,6 +903,21 @@
 			{
 				"name": "sendWatchdogAlerts.signal",
 				"type": "AbortSignal",
+				"required": true
+			},
+			{
+				"name": "recordCosReceipts.store",
+				"type": "TrackerPersistenceService",
+				"required": true
+			},
+			{
+				"name": "recordCosReceipts.alerts",
+				"type": "readonly TrackerWatchdogAlert[]",
+				"required": true
+			},
+			{
+				"name": "cosReceiptReference.alert",
+				"type": "TrackerWatchdogAlert",
 				"required": true
 			},
 			{
@@ -3464,6 +3481,47 @@
 					{
 						"name": "sendWatchdogAlerts",
 						"type": "Promise<void>"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "recordCosReceipts",
+				"inputs": [
+					{
+						"name": "recordCosReceipts.store",
+						"type": "TrackerPersistenceService",
+						"required": true
+					},
+					{
+						"name": "recordCosReceipts.alerts",
+						"type": "readonly TrackerWatchdogAlert[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "recordCosReceipts",
+						"type": "void"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "cosReceiptReference",
+				"inputs": [
+					{
+						"name": "cosReceiptReference.alert",
+						"type": "TrackerWatchdogAlert",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "cosReceiptReference",
+						"type": "string"
 					}
 				],
 				"errors": [],

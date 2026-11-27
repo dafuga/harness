@@ -1,13 +1,93 @@
 import { DatabaseSync } from 'node:sqlite';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { expect, test } from 'vitest';
+import { readClaudeCosReceipts } from '../../../src/adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt';
 import { TrackerItemReadRepository } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository';
 import { TrackerRunReadRepository } from '../../../src/repositories/projects-sessions/TrackerRunReadRepository';
 import { TrackerLocalApiService } from '../../../src/services/projects-sessions/TrackerLocalApiService';
 import { TrackerPersistenceService } from '../../../src/services/projects-sessions/TrackerPersistenceService';
 import { recordWatchdogAlert } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostWatchdogState';
+import { cosReceiptReference } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerHostCos';
+import { trackerCosRound } from '../../../src/services/projects-sessions/tracker-native-runtime-service/trackerCosRound';
+import {
+	alarmAsks,
+	cosDeliveryFixture,
+	minute,
+	recordedDependencyQueue
+} from '../../support/trackerCosDeliveryFixture';
+import { withTempDir } from '../../support/temporary';
 
 const now = Date.UTC(2026, 10, 25, 23);
+
+test('Claude transcript receipts prevent another send when tmux misses acceptance', () =>
+	cosDeliveryFixture(async ({ store, items }) => {
+		const queue = recordedDependencyQueue();
+		const rows = queue.map((alert) => ({
+			id: alert.id,
+			line: `[${alert.item_id.slice(0, 6)}] ${alert.host}: ${alert.reason.slice(0, 500)}`,
+			reference: cosReceiptReference(alert),
+			since: alert.at
+		}));
+		let clock = Math.max(...queue.map(({ at }) => at)) + 20 * minute;
+		await withTempDir('hnt-cos-transcript-', async (root) => {
+			writeAcceptedPrompts(root, rows, new Date(clock).toISOString());
+			const sent: string[][] = [];
+			const driver = {
+				scan: async () => null,
+				nudge: async () => false,
+				receipts: () => readClaudeCosReceipts('/fixture/cos', rows, root),
+				send: async (batch: Readonly<typeof queue>) => {
+					sent.push(batch.map(({ id }) => id));
+					return false;
+				}
+			};
+			const watchdog = trackerCosRound(store, driver, { now: () => clock, local: () => queue });
+			const signal = new AbortController().signal;
+			await watchdog.run(signal, false);
+			clock += 5 * minute;
+			await watchdog.run(signal, false);
+			expect(sent).toEqual([]);
+			expect(alarmAsks(items, clock)).toEqual([]);
+		});
+	}));
+
+function writeAcceptedPrompts(
+	root: string,
+	rows: { line: string; reference: string }[],
+	timestamp: string
+) {
+	const heading = 'Tracker watchdog alerts for Chief of Staff. Review these items. ';
+	const legacy = rows
+		.slice(0, 4)
+		.map(({ line }) => line)
+		.join(' | ');
+	const queued = rows.slice(4);
+	const refs = queued.map(({ reference }) => reference).join(',');
+	const directory = join(root, '-fixture-cos');
+	mkdirSync(directory);
+	const file = join(directory, '11111111-1111-4111-a111-111111111111.jsonl');
+	const flag = 'NEW FLAG TRIAGE (automated, flag-triage.py, not typed by Daniel): fixture';
+	const prompts = [
+		{
+			type: 'user',
+			timestamp,
+			message: {
+				role: 'user',
+				content: `<pasted_content id="recorded">\n${heading}${legacy}\n</pasted_content>${flag}`
+			}
+		},
+		{
+			type: 'queue-operation',
+			operation: 'enqueue',
+			timestamp,
+			content: `${heading}Watchdog receipts: ${refs} || ${queued.map(({ line }) => line).join(' | ')}`
+		}
+	];
+	writeFileSync(file, prompts.map((prompt) => JSON.stringify(prompt)).join('\n') + '\n');
+}
+
 const options = [
 	{ label: 'Approve', effect: '', recommended: true },
 	{ label: 'Hold', effect: '' }

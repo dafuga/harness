@@ -1,6 +1,7 @@
 // @harness-uid u_bl6xl2h4a3
 import { TrackerHostProcessAdapter } from '../../../adapters/projects-sessions/TrackerHostProcessAdapter';
 import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
+import { readClaudeCosReceipts } from '../../../adapters/projects-sessions/tracker-tmux-adapter/readClaudeCosReceipt';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema';
 import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
@@ -10,6 +11,7 @@ import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
 import type { WatchdogPane } from '../WatchdogPaneService.types';
 import type { TrackerWatchdogAlert } from './trackerHostWatchdog.types';
 import { WatchdogPaneService } from '../WatchdogPaneService';
+import { cosReceiptReference } from './trackerHostCos';
 
 const panes = new WatchdogPaneService();
 
@@ -55,9 +57,7 @@ const backlogInterval = 5 * minute;
 /** The pane input refuses long messages, so the slot lines take only the room that is left. */
 const cosMessageLimit = 5000;
 
-function cosMessage(summary: readonly string[], alerts: readonly TrackerWatchdogAlert[]) {
-	const message =
-		'Tracker watchdog alerts for Chief of Staff. Review these items. ' + summary.join(' | ');
+function cosMessage(message: string, alerts: readonly TrackerWatchdogAlert[]) {
 	const slots = new Map(
 		alerts.flatMap(({ host, slots }) => (slots ? [[host, plain(slots)] as const] : []))
 	);
@@ -79,6 +79,18 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		inventory: (signal) => tmux.inventory(signal),
 		nudge: (input, signal) => tmux.nudge(input, signal),
 		deliver: (input, signal) => deliverToSession(tmux, input, signal),
+		async receipts(alerts, signal) {
+			const found = await tmux.scan(signal, /^cos$/);
+			return readClaudeCosReceipts(
+				found.length === 1 ? found[0].cwd : undefined,
+				alerts.map((alert) => ({
+					id: alert.id,
+					line: cosAlertLine(alert),
+					reference: cosReceiptReference(alert),
+					since: alert.at
+				}))
+			);
+		},
 		async send(alerts, signal, queue) {
 			const now = Date.now();
 			if (cosSendWindowStart(now) === null) return false;
@@ -86,16 +98,26 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 				return false;
 			const panes = await tmux.scan(signal, /^cos$/);
 			if (panes.length !== 1) return false;
-			const summary = alerts.map(
-				({ item_id, host, reason }) =>
-					`[${item_id.slice(0, 6)}] ${host}: ${plain(reason).slice(0, 500)}`
-			);
+			const summary = cosSummary(alerts);
 			const message = cosMessage(summary, alerts);
 			const sent = await tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
 			if (sent) nextCosTick = now + (queue?.backlog ? backlogInterval : cosInterval);
 			return sent;
 		}
 	};
+}
+
+function cosSummary(alerts: readonly TrackerWatchdogAlert[]) {
+	const references = alerts.map(cosReceiptReference).join(',');
+	return (
+		'Tracker watchdog alerts for Chief of Staff. Review these items. ' +
+		`Watchdog receipts: ${references} || ` +
+		alerts.map(cosAlertLine).join(' | ')
+	);
+}
+
+function cosAlertLine({ item_id, host, reason }: TrackerWatchdogAlert) {
+	return `[${item_id.slice(0, 6)}] ${host}: ${plain(reason).slice(0, 500)}`;
 }
 
 /** Only one pane of exactly that name, and only while its prompt is empty and waiting. */

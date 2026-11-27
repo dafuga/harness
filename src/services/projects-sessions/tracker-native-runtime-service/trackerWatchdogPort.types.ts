@@ -15,6 +15,10 @@ export interface TrackerWatchdogPort {
 		input: TrackerTmuxNudge & { id: string; itemId: string },
 		signal: AbortSignal
 	): Promise<boolean>;
+	receipts?(
+		alerts: readonly TrackerWatchdogAlert[],
+		signal: AbortSignal
+	): Promise<ReadonlySet<string>>;
 	/** True only with proof of delivery. `backlog` says more alerts wait behind this batch. */
 	send(
 		alerts: readonly TrackerWatchdogAlert[],
