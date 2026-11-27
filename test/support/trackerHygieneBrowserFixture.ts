@@ -8,6 +8,7 @@ export async function openHygieneBrowserFixture(root: string) {
 	const profile = join(root, 'chromium');
 	const context = await chromium.launchPersistentContext(profile, {
 		channel: 'chromium',
+		executablePath: process.env.HARNESS_FIXTURE_CHROMIUM,
 		headless: true,
 		args: ['--remote-debugging-address=127.0.0.1', '--remote-debugging-port=0']
 	});
