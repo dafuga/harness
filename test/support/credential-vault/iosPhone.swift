@@ -17,7 +17,11 @@ private struct Command: Decodable {
     func proof(sign: VaultApprovalCrypto.Sign) throws -> VaultDeviceProof {
         if let privateOffer {
             let now = Int64(Date().timeIntervalSince1970 * 1_000)
-            let payload = try privateOffer.seal("7", now: now)
+            let payload = if privateOffer.fields == nil {
+                try privateOffer.seal("7", now: now)
+            } else {
+                try privateOffer.seal(privateOffer.fieldNames.indices.map { String($0 + 7) }, now: now)
+            }
             let proof = BrokerProtocol.signingInput(
                 for: .init(origin: origin, deviceID: deviceId), path: .privateBrowserSubmit,
                 nonce: nonce, payload: payload

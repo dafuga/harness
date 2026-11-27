@@ -42,6 +42,7 @@ test.skipIf(process.platform !== 'darwin')(
 			await verifyDecision(run, 'oauth-device', 'grant', null);
 			await verifyDecision(run, 'browser', 'deny', null);
 			await verifyPrivateField(run);
+			await verifyPrivateField(run, ['fixture-account', 'fixture-code', 'fixture-challenge']);
 		} finally {
 			await phone.close();
 		}
@@ -153,7 +154,7 @@ async function verifyNativeRefusals(
 	expect(wrongMethod).toEqual(refused);
 }
 
-async function verifyPrivateField(run: NativeVaultTestRun): Promise<void> {
+async function verifyPrivateField(run: NativeVaultTestRun, fields?: string[]): Promise<void> {
 	const dispose = async () => undefined;
 	let validField = false;
 	const gate = new PrivateBrowserGateService({
@@ -167,14 +168,18 @@ async function verifyPrivateField(run: NativeVaultTestRun): Promise<void> {
 		gate,
 		devices: run.devices,
 		submitField: async (_scope, plaintext) => {
-			validField = plaintext.equals(Buffer.from('7'));
+			const expected = fields
+				? JSON.stringify(fields.map((_field, index) => String(index + 7)))
+				: '7';
+			validField = plaintext.equals(Buffer.from(expected));
 		}
 	});
 	const privateOffer = delivery.offer(request?.requestId ?? '', deviceId, {
 		executor: 'mb2-fixture',
 		origin: 'https://private.fixture.test',
 		tabId: 'fixture-tab',
-		field: 'fixture-code',
+		field: fields ? 'fixture-form' : 'fixture-code',
+		fields,
 		action: 'submit-code',
 		recipeDigest: 'd'.repeat(64)
 	});
