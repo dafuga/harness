@@ -1,5 +1,13 @@
 import { afterAll, beforeAll, expect, test } from 'vitest';
-import { sealedEnrollCommit } from '../../../remote/src/utils/networking-security/sealedSas';
+import { SealedEnrollmentReviewService } from '../../../remote/src/services/networking-security/SealedEnrollmentReviewService';
+import { chainEntryHash } from '../../../remote/src/utils/networking-security/sealedChainEntry';
+import { sealedChain } from '../../../remote/src/utils/networking-security/sealedChain';
+import { openSealedGrant } from '../../../remote/src/utils/networking-security/sealedGrant';
+import { fromBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
+import {
+	sealedSas,
+	sealedEnrollCommit
+} from '../../../remote/src/utils/networking-security/sealedSas';
 import { sealedDevice } from '../../../remote/src/utils/networking-security/sealedDevice';
 import { toBase64Url } from '../../../remote/src/utils/networking-security/remoteBytes';
 import { readSealedDeviceSession } from '../../../remote/src/utils/networking-security/readSealedDeviceSession';
@@ -39,11 +47,16 @@ async function signedIn() {
 	expect(await snapshot(first)).toEqual({ status: 200, body: { state: 'first-device' } });
 	const response = await fixture.call(session, 'POST', 'bootstrap', candidate);
 	expect(response.status).toBe(201);
-	return { device: admin, headers, scope: body.grants[0].scope };
+	return {
+		device: admin,
+		headers,
+		pin: { seq: 0, head: await chainEntryHash(body.entry) },
+		scope: body.grants[0].scope
+	};
 }
 
 test('an enrolled identifier cannot approve another Google session', async () => {
-	const { device, headers, scope } = await signedIn();
+	const { device, headers, scope, pin } = await signedIn();
 	const path = `ops/${scope}`;
 	const hold = await fixture.call(session, 'GET', path, { headers });
 	expect(await snapshot(hold)).toEqual({
@@ -104,10 +117,11 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 		status: 403,
 		body: { error: 'device-approval-required' }
 	});
+	const requestNonce = crypto.getRandomValues(new Uint8Array(32));
 	const opening = {
 		kemPublic: toBase64Url(pending.kemPublic),
 		signingPublic: toBase64Url(pending.signingPublic),
-		commit: await sealedEnrollCommit(pending, crypto.getRandomValues(new Uint8Array(32)))
+		commit: await sealedEnrollCommit(pending, requestNonce)
 	};
 	const mailbox = await fixture.call(otherSession, 'POST', 'enroll', {
 		headers: newHeaders,
@@ -115,14 +129,66 @@ test('an enrolled identifier cannot approve another Google session', async () =>
 	});
 	expect(mailbox.status).toBe(201);
 	const { id } = (await mailbox.json()) as { id: string };
-	const claim = {
-		approver: device.deviceId,
-		nonce: toBase64Url(crypto.getRandomValues(new Uint8Array(32)))
-	};
-	const accepted = await fixture.call(session, 'POST', 'enroll/' + id, { headers, body: claim });
-	expect(await snapshot(accepted)).toEqual({
-		status: 201,
-		body: { n: 1, by: device.deviceId, body: JSON.stringify(claim) }
-	});
 	await expect(fixture.socket(otherSession, pending.deviceId)).rejects.toThrow();
+	const review = new SealedEnrollmentReviewService(
+		{
+			account,
+			pin,
+			device,
+			signal: new AbortController().signal,
+			request: (path, init) =>
+				fetch(fixture.origin + path, {
+					...init,
+					headers: { ...init.headers, 'X-Test-Session': session }
+				})
+		},
+		id
+	);
+	await review.claim();
+	expect(await review.comparison()).toBeNull();
+	const pathToMailbox = 'enroll/' + id;
+	const claimed = await (
+		await fixture.call(otherSession, 'GET', pathToMailbox, { headers: newHeaders })
+	).json();
+	const claim = JSON.parse(claimed.steps[1].body);
+	const code = await sealedSas({
+		request: pending,
+		requestNonce,
+		approverSigningPublic: device.signingPublic,
+		approverNonce: fromBase64Url(claim.nonce)
+	});
+	expect(
+		(
+			await fixture.call(otherSession, 'POST', pathToMailbox, {
+				headers: newHeaders,
+				body: { nonce: toBase64Url(requestNonce) }
+			})
+		).status
+	).toBe(201);
+	expect(await review.comparison()).toBe(code);
+	expect(await review.approve(code, async () => false)).toBeNull();
+	expect(
+		(
+			await (
+				await fixture.call(otherSession, 'GET', 'device-session', { headers: newHeaders })
+			).json()
+		).state
+	).toBe('waiting-for-approval');
+	const nextPin = await review.approve(code, async () => true);
+	expect(nextPin?.seq).toBe(1);
+	const history = await (
+		await fixture.call(otherSession, 'GET', 'chain', { headers: newHeaders })
+	).json();
+	const chain = await sealedChain(history.entries, { account, pin: nextPin! });
+	const delivered = await (
+		await fixture.call(otherSession, 'GET', 'grants?device=' + pending.deviceId, {
+			headers: newHeaders
+		})
+	).json();
+	expect(toBase64Url((await openSealedGrant(delivered.grants[0], pending, chain)).scopeId)).toBe(
+		scope
+	);
+	expect(await (await fixture.call(session, 'GET', 'enroll', { headers })).json()).toEqual({
+		requests: []
+	});
 }, 60_000);

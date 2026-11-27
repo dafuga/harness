@@ -113,6 +113,11 @@ leave the approval inbox and remain readable until their ten-minute expiry.
 On recoverable accounts, claiming and acknowledging require a current
 device-bound admin session. The iPhone keeps polling its account while it
 shows the comparison code and withholds protected reads until admission.
+The reviewing client pins the opening before claiming it, checks the reveal
+against that commitment, and presents the comparison code. After local user
+confirmation it rechecks the same mailbox and uses its previously pinned
+account chain to wrap the current scope grants for those exact device keys.
+A cancelled review sends no enrollment or grant.
 
 No QR code exists in any flow, and a QR code is not an optional shortcut. Devices link only
 through Google sign-in (see `google-device-linking.md`). Sign-in alone shows "Approve this

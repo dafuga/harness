@@ -83,3 +83,4 @@ export { sealedChain } from './utils/networking-security/sealedChain';
 export { sealedSas } from './utils/networking-security/sealedSas';
 export { sealedRecovery } from './utils/networking-security/sealedRecovery';
 export { readSealedDeviceSession } from './utils/networking-security/readSealedDeviceSession';
+export { SealedEnrollmentReviewService } from './services/networking-security/SealedEnrollmentReviewService';
