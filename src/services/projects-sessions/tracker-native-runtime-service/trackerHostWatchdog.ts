@@ -27,6 +27,9 @@ import { trackerHubMessageDelivery } from './trackerHubMessages';
 import type { WatchdogSessionScan } from './trackerWatchHostSessions.types';
 
 const minute = 60_000;
+const slotAlerts = new Set(['orphan', 'finished', ...slotAlertKinds]);
+const recoveryFailures = new Set(['recovery-failed', 'handoff-failed']);
+const sessionAlerts = new Set(['idle', 'context', 'overdue', 'startup']);
 
 export function trackerHostWatchdog(
 	store: TrackerPersistenceService,
@@ -45,7 +48,8 @@ export function trackerHostWatchdog(
 	let lastCosPoll = -Infinity;
 	let peerAlerts: readonly TrackerWatchdogAlert[] = [];
 	const readItems = () => items.list({ status: 'all', limit: -1 });
-	const alerts = () => [...localAlerts(store, items, now()), ...peerAlerts];
+	let liveSessions = new Set<string>();
+	const alerts = () => [...localAlerts(store, items, now(), liveSessions), ...peerAlerts];
 	const pollSessions = watchHostSessions(
 		{ store, items, driver },
 		{ ...options, readItems, roots: config.transcriptRoots }
@@ -57,12 +61,12 @@ export function trackerHostWatchdog(
 		inspect: inspectHostWatchdog({ store, items, driver }, { ...options, readItems }),
 		async tick(signal: AbortSignal) {
 			if (config.transcriptRoots?.length) await scanTranscripts(signal);
-			await pollSessions(signal);
+			liveSessions = (await pollSessions(signal)) ?? liveSessions;
 			const launchAlert =
 				chiefOfStaff && watchLaunchRequests(store, now(), !watchdogLaunchHold(automaticEnabled));
 			if (chiefOfStaff && (launchAlert || now() - lastCosPoll >= minute)) {
 				lastCosPoll = now();
-				peerAlerts = (await driver.peers?.(signal)) ?? peerAlerts;
+				peerAlerts = (await driver.peers?.(signal)) ?? [];
 				await sendWatchdogAlerts(
 					store,
 					driver,
@@ -100,10 +104,11 @@ export function configuredHostWatchdog(
 function localAlerts(
 	store: TrackerPersistenceService,
 	items: TrackerItemReadRepository,
-	now: number
+	now: number,
+	liveSessions: ReadonlySet<string>
 ) {
 	const open = Object.values(readWatchdogAlerts(store)).filter(
-		(alert) => unreadMessage(alert, now) || stillApplies(items, alert)
+		(alert) => unreadMessage(alert, now) || stillApplies(items, alert, liveSessions)
 	);
 	return open.map((alert) => withSlotSummary(store, alert));
 }
@@ -113,13 +118,30 @@ function unreadMessage({ kind, at }: TrackerWatchdogAlert, now: number) {
 	return trackerCosInboxKinds.has(kind) && now - at < trackerCosInboxRetention;
 }
 
-function stillApplies(items: TrackerItemReadRepository, { item_id, kind }: TrackerWatchdogAlert) {
+function stillApplies(
+	items: TrackerItemReadRepository,
+	{ item_id, kind, session, identity }: TrackerWatchdogAlert,
+	liveSessions: ReadonlySet<string>
+) {
 	// A leaked pane or idle run matters whatever its item says.
-	if (kind === 'orphan' || kind === 'finished' || slotAlertKinds.has(kind)) return true;
+	if (slotAlerts.has(kind)) return true;
 	const item = activeWatchdogItem(items, item_id);
-	if (kind === 'recovery-failed' || kind === 'handoff-failed')
+	if (sessionAlerts.has(kind))
+		return item?.status === 'in_progress' && liveSessions.has(String(session));
+	const rotation = exposureRotationId(kind, identity);
+	if (rotation) {
+		// The scanner uses the first ten hex digits of its event hash as the rotation item ID.
+		return Boolean(activeWatchdogItem(items, rotation));
+	}
+	if (recoveryFailures.has(kind))
 		return item?.status === 'blocked' && item.blocked_reason?.startsWith('Tracker recovery:');
 	return Boolean(item);
+}
+
+function exposureRotationId(kind: string, identity: string) {
+	if (kind.startsWith('credential exposure:') && /^[a-f0-9]{64}:\d+$/.test(identity))
+		return identity.slice(0, 10);
+	return undefined;
 }
 
 function inspectHostWatchdog(

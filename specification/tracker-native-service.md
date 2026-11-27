@@ -575,9 +575,17 @@ The primary watchdog alerts CoS when a request has no matching run after
 and clears the alert when the request is withdrawn or receives a run. Spokes
 send signed updates promptly when their launch holds or run state change.
 
+While an attempt's session is live, crossing its ETA and inactivity limit or its
+run cap raises an overdue alert and preserves its run ID and slot. The activity
+clock includes Tracker item updates, pane output, and a quiet pane reporting a
+background shell or monitor. Use `tracker stop <item>` to end a hung attempt.
+Session check-ins are eligible for delivery while the item is in progress and
+the host observes its session. Completing the linked credential rotation clears
+the exposure alert. A new detection can reopen the rotation.
+
 To replace a pending managed launch, run `tracker unlaunch <item>` and then
-`tracker launch <item>`. The launcher retires a cancelled retry that was never
-dispatched. After five minutes, it also retires an undispatched retry whose item
+`tracker launch <item>`. The local launcher retires an undispatched queued run in the
+same write that cancels the request. After five minutes, it also retires an undispatched retry whose item
 became ineligible, preserving any open question. For a dispatched reservation,
 expiry requires absence of the exact tmux session and all startup or exit
 markers. An eligible request can retry within its existing retry limit. Old

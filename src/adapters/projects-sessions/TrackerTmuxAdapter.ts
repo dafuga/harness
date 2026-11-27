@@ -21,7 +21,11 @@ import {
 } from './tracker-tmux-adapter/trackerTmuxPane';
 
 import { trackerTmuxWindows } from './tracker-tmux-adapter/trackerTmuxWindows';
-import { closePaneCandidate, closePaneNames } from './tracker-tmux-adapter/trackerTmuxClose';
+import {
+	closePaneCandidate,
+	closePaneNames,
+	killUnchangedPane
+} from './tracker-tmux-adapter/trackerTmuxClose';
 import {
 	sendTrackerTmuxNudge,
 	trackerTmuxCwd
@@ -64,6 +68,14 @@ export class TrackerTmuxAdapter {
 		return (await this.layouts(signal, trackerSessionName)).map(({ pane }) => pane);
 	}
 
+	/** Read the screen of one inventoried pane; it stays null if the pane changed or is unreadable. */
+	async captured(pane: WatchdogPane, signal: AbortSignal): Promise<WatchdogPane> {
+		const layout = (await this.layouts(signal, trackerSessionName)).find(
+			({ pane: current }) => current.key === pane.key && current.name === pane.name
+		);
+		return layout ? (await this.capture(layout, signal)).pane : pane;
+	}
+
 	windows(signal: AbortSignal) {
 		return trackerTmuxWindows(this.sockets, (socket, args) => this.command(socket, args, signal));
 	}
@@ -104,17 +116,9 @@ export class TrackerTmuxAdapter {
 		if (!candidate) return false;
 		const observed = await this.capture(candidate, signal);
 		if (!closableScreen(input, observed.pane) || !stillComplete()) return false;
-		const { socket, id, raw } = observed;
-		const identity = `#{==:${trackerPaneFormat},${raw}}`;
-		const owner = `#{==:#{HARNESS_TRACKER_ATTEMPT},${attempt ?? ''}}`;
-		const guard = `#{&&:${identity},${owner}}`;
-		const closed = 'tracker-session-closed';
-		const result = await this.command(
-			socket,
-			['if-shell', '-F', '-t', id, guard, `display-message -p ${closed} ; kill-session -t ${id}`],
-			signal
+		return killUnchangedPane(observed, attempt, (args) =>
+			this.command(observed.socket, args, signal)
 		);
-		return result.code === 0 && result.stdout.trim() === closed;
 	}
 
 	private async layouts(signal: AbortSignal, names: RegExp): Promise<TrackerTmuxPane[]> {
