@@ -95,7 +95,15 @@ export interface RemoteProjectPort {
 }
 export interface NativeHostedStatus {
 	configured: boolean;
-	state: 'signed-out' | 'pending' | 'signed-in';
+	state:
+		| 'signed-out'
+		| 'pending'
+		| 'checking-device'
+		| 'first-device'
+		| 'waiting-for-approval'
+		| 'signed-in';
+	/** Public comparison code from the verified enrollment transcript. */
+	verificationCode?: string;
 	actor?: { id: string; name: string; email: string };
 	handoff?: {
 		userCode: string;

@@ -32,7 +32,12 @@
 	function schedule() {
 		clearTimeout(timer);
 		if (!active || !required) return;
-		const delay = status?.state === 'pending' ? (status.handoff?.interval ?? 2) * 1000 : 30_000;
+		const delay =
+			status?.state === 'pending'
+				? (status.handoff?.interval ?? 2) * 1000
+				: status?.state === 'waiting-for-approval' || status?.state === 'checking-device'
+					? 2000
+					: 30_000;
 		timer = setTimeout(() => void refresh(), delay);
 	}
 
@@ -46,7 +51,7 @@
 				? 'Sign-in ended. Try again.'
 				: '';
 		status = answer;
-		if (answer.state !== 'pending') signingIn = false;
+		if (answer.state === 'signed-in' || answer.state === 'signed-out') signingIn = false;
 	}
 
 	async function update(call: () => Promise<NativeHostedStatus>, action = false) {

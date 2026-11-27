@@ -20,7 +20,14 @@ const refusals = new Map([
 	['too-large', 413]
 ]);
 
-const states: readonly string[] = ['signed-out', 'pending', 'signed-in'];
+const states: readonly string[] = [
+	'signed-out',
+	'pending',
+	'checking-device',
+	'first-device',
+	'waiting-for-approval',
+	'signed-in'
+];
 
 const large = 'The answer of the Hub is too large for this phone.';
 
@@ -113,6 +120,14 @@ export function publicStatus(value: AccountNativeStatus): NativeHostedStatus {
 	const status: NativeHostedStatus = { configured: value?.configured === true, state };
 	const actor = state === 'signed-in' ? publicActor(value.actor) : undefined;
 	const handoff = state === 'pending' ? publicHandoff(value.handoff) : undefined;
+	const code = value?.verificationCode;
+	if (
+		state === 'waiting-for-approval' &&
+		typeof code === 'string' &&
+		/^[0-9]{6}$/.test(code) &&
+		code.length === 6
+	)
+		status.verificationCode = code;
 	if (actor) status.actor = actor;
 	if (handoff) status.handoff = handoff;
 	return status;

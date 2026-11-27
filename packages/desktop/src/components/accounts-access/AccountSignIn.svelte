@@ -25,13 +25,40 @@
 	const waiting = $derived(status?.state === 'pending');
 	const code = $derived(waiting ? status?.handoff?.userCode : undefined);
 	const address = $derived(hostedAddress(code ? status?.handoff?.verificationUrl : undefined));
+	const stage = $derived(status?.state);
+	const deviceStep = $derived(
+		stage === 'checking-device' || stage === 'first-device' || stage === 'waiting-for-approval'
+	);
+	const verificationCode = $derived.by(() => {
+		const value = status?.state === 'waiting-for-approval' ? status.verificationCode : undefined;
+		return value && /^\d{6}$/.test(value) ? value : undefined;
+	});
 </script>
 
 <hx-main class="sign-in" data-harness-component="account-sign-in">
 	<hx-section class="sign-in-inner" aria-label="Sign in to Harness">
 		<hx-span class="sign-in-mark" role="img" aria-label="Harness"><BrandMark size={40} /></hx-span>
-		{#if waiting}
-			{#if code}
+		{#if waiting || deviceStep}
+			{#if deviceStep}
+				<hx-section class="sign-in-step" role="status">
+					{#if stage === 'checking-device'}
+						<hx-p class="waiting">Checking this device…</hx-p>
+					{:else if stage === 'first-device'}
+						<hx-p class="waiting">Secure account setup pending</hx-p>
+						<hx-p class="note">This is the first device on this account.</hx-p>
+					{:else}
+						<hx-p class="waiting">Waiting for approval</hx-p>
+						{#if verificationCode}
+							<hx-p class="note"
+								>Open Harness on an approved device. Approve only if both codes match.</hx-p
+							>
+							<hx-p class="code verification-code">{verificationCode}</hx-p>
+						{:else}
+							<hx-p class="note">Open Harness on an approved device to approve this one.</hx-p>
+						{/if}
+					{/if}
+				</hx-section>
+			{:else if code}
 				<hx-p role="status">Enter this code on the Harness Hub.</hx-p>
 				<hx-p class="code">{code}</hx-p>
 				{#if address}<hx-p>{address}</hx-p>{/if}
@@ -73,10 +100,13 @@
 	.sign-in {
 		min-height: 100dvh;
 	}
-	.sign-in-inner {
+	.sign-in-inner,
+	.sign-in-step {
 		display: grid;
 		justify-items: center;
 		gap: var(--hx-space-12);
+	}
+	.sign-in-inner {
 		width: min(100%, 420px);
 		margin: 0 auto;
 		padding: 22vh var(--hx-space-24) var(--hx-space-40);
@@ -115,5 +145,11 @@
 	}
 	.code {
 		font: var(--hx-type-size-heading) var(--hx-font-family-code);
+	}
+	.verification-code {
+		margin: 0;
+		/* Spaced digits are easier to compare; the start padding offsets the trailing spacing. */
+		letter-spacing: 0.15em;
+		padding-inline-start: 0.15em;
 	}
 </style>
