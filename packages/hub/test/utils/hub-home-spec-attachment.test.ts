@@ -91,6 +91,7 @@ test('a flagged spec reaches Hub: listing in the snapshot, document stored apart
 		const [wanted] = await reconcileHomeDocuments(bucket, 'owner', snapshot);
 		expect(wanted).toEqual({ id: listing.id, itemId: 'review001' });
 		const document = await readLocalAttachment(wanted, tracker.fetcher);
+		expect(await readLocalAttachment(wanted, tracker.fetcher, 'open-ask')).toEqual({ markdown });
 		const forged = { id: wanted.id, document: { markdown: 'other text' } };
 		expect(await storeHomeDocument(bucket, 'owner', forged, snapshot)).toBe(false);
 		const upload = { id: wanted.id, document };
@@ -99,6 +100,10 @@ test('a flagged spec reaches Hub: listing in the snapshot, document stored apart
 		expect(await reconcileHomeDocuments(bucket, 'owner', snapshot)).toEqual([]);
 
 		await tracker.post('/items/review001/answer', { option: 1, by: 'Daniel' });
+		expect(
+			await readLocalAttachment(wanted, tracker.fetcher, 'open-ask'),
+			'a closed ask is no longer readable through the linked connection'
+		).toBeNull();
 		await reconcileHomeDocuments(bucket, 'owner', await snapshotOf(tracker));
 		expect([...files.values()].join()).not.toContain('| API | Us |');
 	} finally {

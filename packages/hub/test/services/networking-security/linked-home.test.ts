@@ -2,6 +2,7 @@ import { expect, test, vi } from 'vitest';
 import { LinkedHomeService } from '../../../src/services/networking-security/LinkedHomeService';
 import type { BrowserComputerService } from '../../../src/services/networking-security/BrowserComputerService';
 import type { BrowserApi } from '../../../src/utils/browserApi';
+import { RemoteFailure } from '../../../../remote/src/index';
 
 const ready = {
 	overview: { status: 'ready', projects: [], machines: [], liveSessions: 0 },
@@ -79,4 +80,70 @@ test('an account with no linked computer, or with remote access off, reads as no
 		});
 		expect(await service.read()).toEqual({ linked: 0, answered: 0, snapshot: null });
 	}
+});
+
+function snapshotWithDocument(itemId: string, id: string) {
+	return {
+		...ready,
+		openAsks: [
+			{
+				itemId,
+				agentId: 'cos',
+				agentName: 'Chief of Staff',
+				title: 'Review',
+				question: 'Approve the spec?',
+				options: [
+					{ label: 'Approve', effect: '', recommended: true },
+					{ label: 'Hold', effect: '' }
+				],
+				since: '2026-11-27T00:00:00.000Z',
+				attachments: [{ id, kind: 'spec', title: 'Review', bytes: 8 }]
+			}
+		]
+	};
+}
+
+test('an ask document is read only from its linked computers while Home is open', async () => {
+	const id = 'c'.repeat(64);
+	const itemId = 'review001';
+	const document = { markdown: '# Review' };
+	const listed = snapshotWithDocument(itemId, id);
+	const readDocument = vi.fn(async () => document);
+	const unrelated = vi.fn(async () => document);
+	const unavailable = vi.fn(async () => {
+		throw new RemoteFailure('method-denied');
+	});
+	const computers = ['a', 'b', 'c'].map((key) => ({
+		hostId: key.repeat(64),
+		name: key,
+		online: true
+	}));
+	const connections = [
+		Object.assign(
+			link(async () => ready),
+			{ readDocument: unrelated }
+		),
+		Object.assign(
+			link(async () => listed),
+			{ readDocument: unavailable }
+		),
+		Object.assign(
+			link(async () => listed),
+			{ readDocument }
+		)
+	];
+	const service = new LinkedHomeService(
+		api(computers),
+		'actor',
+		(hostId) => connections[computers.findIndex((computer) => computer.hostId === hostId)]
+	);
+	await service.read();
+	expect(await service.readDocument('d'.repeat(64))).toBeNull();
+	expect(await service.readDocument(id)).toEqual(document);
+	expect(unavailable).toHaveBeenCalledExactlyOnceWith(itemId, id);
+	expect(readDocument).toHaveBeenCalledExactlyOnceWith(itemId, id);
+	expect(unrelated).not.toHaveBeenCalled();
+	service.close();
+	expect(await service.readDocument(id)).toBeNull();
+	expect(readDocument).toHaveBeenCalledTimes(1);
 });
