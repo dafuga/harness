@@ -9,7 +9,9 @@ function elapsedSeconds(elapsed: string): number {
 }
 
 export function fixtureProcessTable(pid?: number): FixtureProcess[] {
-	const scope = pid === undefined ? ['-A'] : ['-p', String(pid)];
+	const uid = process.getuid?.();
+	if (uid === undefined) return [];
+	const scope = pid === undefined ? ['-U', String(uid)] : ['-p', String(pid)];
 	let output: string;
 	try {
 		output = execFileSync(
@@ -19,12 +21,13 @@ export function fixtureProcessTable(pid?: number): FixtureProcess[] {
 		);
 	} catch (error) {
 		if (pid !== undefined && (error as { status?: number }).status === 1) return [];
-		throw error;
+		// A failed read can carry other processes' command lines in its captured stdout.
+		throw new Error('Could not read the synthetic fixture process table');
 	}
 	const rows: FixtureProcess[] = [];
 	for (const line of output.split('\n')) {
 		const match = /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(.{24})\s+(\S+)\s+(.*)$/.exec(line);
-		if (!match || Number(match[1]) !== process.getuid?.()) continue;
+		if (!match || Number(match[1]) !== uid) continue;
 		rows.push({
 			pid: Number(match[2]),
 			parent: Number(match[3]),
