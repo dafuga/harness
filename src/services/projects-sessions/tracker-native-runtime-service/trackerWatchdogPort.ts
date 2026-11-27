@@ -3,7 +3,7 @@ import { TrackerHostProcessAdapter } from '../../../adapters/projects-sessions/T
 import { TrackerTmuxAdapter } from '../../../adapters/projects-sessions/TrackerTmuxAdapter';
 import type { TrackerHostEffects } from './nativeTrackerHostEffects.types';
 import { watchdogEffectReceipt, watchdogScan } from './trackerHostWatchdogSchema';
-import { urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
+import { trackerOverloadAlertKind, urgentQueueAlertKind } from './trackerHostWatchdogAlerts';
 import { readTrackerWatchdogPeer } from './trackerWatchdogPeer';
 import { cosSendWindowStart } from './trackerCosWindow';
 import type { TrackerWatchdogPort } from './trackerWatchdogPort.types';
@@ -81,9 +81,8 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 		deliver: (input, signal) => deliverToSession(tmux, input, signal),
 		async send(alerts, signal, queue) {
 			const now = Date.now();
-			if (cosSendWindowStart(now) === null) return false;
-			if (now < nextCosTick && !alerts.some(({ kind }) => kind === urgentQueueAlertKind))
-				return false;
+			const healthOnly = alerts.every(({ kind }) => kind === trackerOverloadAlertKind);
+			if (!healthOnly && !canSendRoutine(alerts, now, nextCosTick)) return false;
 			const panes = await tmux.scan(signal, /^cos$/);
 			if (panes.length !== 1) return false;
 			const summary = alerts.map(
@@ -92,10 +91,17 @@ function tmuxPort(tmux: TrackerTmuxAdapter, chiefOfStaff: boolean): TrackerWatch
 			);
 			const message = cosMessage(summary, alerts);
 			const sent = await tmux.nudge({ pane: panes[0], cli: 'claude', message }, signal);
-			if (sent) nextCosTick = now + (queue?.backlog ? backlogInterval : cosInterval);
+			if (sent && !healthOnly) nextCosTick = now + (queue?.backlog ? backlogInterval : cosInterval);
 			return sent;
 		}
 	};
+}
+
+function canSendRoutine(alerts: readonly TrackerWatchdogAlert[], now: number, nextCosTick: number) {
+	return (
+		cosSendWindowStart(now) !== null &&
+		(now >= nextCosTick || alerts.some(({ kind }) => kind === urgentQueueAlertKind))
+	);
 }
 
 /** Only one pane of exactly that name, and only while its prompt is empty and waiting. */

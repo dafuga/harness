@@ -1,41 +1,18 @@
-import type { Page } from '@playwright/test';
 import { expect, test } from '../../../../test/support/browserTest';
+import { trackerMachineStatus } from '../../../../src/utils/projects-sessions/trackerMachineStatus';
+import { resourceSample } from '../../../../test/support/trackerMachineFixture';
 import { recordedTracker } from '../../test/support/recordedTracker';
-import { liveRows, macAnswer, overview, productionHome } from './hub-home-live-fixture';
+import {
+	expandProjects,
+	expectEvenHeaderSpacing,
+	expectNoSidewaysScroll,
+	liveRows,
+	macAnswer,
+	overview,
+	productionHome
+} from './hub-home-live-fixture';
 
 test.setTimeout(90000);
-
-async function expectNoSidewaysScroll(page: Page, width: number) {
-	const wide = await page.evaluate(() => {
-		const rows = [...document.querySelectorAll('.hh-live-overview *')];
-		return {
-			page: document.documentElement.scrollWidth,
-			right: Math.max(...rows.map((node) => node.getBoundingClientRect().right))
-		};
-	});
-	expect(wide.page).toBeLessThanOrEqual(width);
-	expect(wide.right).toBeLessThanOrEqual(width);
-}
-
-async function expectEvenHeaderSpacing(page: Page) {
-	const [heading, summary, source] = await Promise.all(
-		[
-			overview(page).getByRole('heading', { name: 'Live overview' }),
-			overview(page).getByRole('status'),
-			overview(page).getByText(/^From \d+ of /)
-		].map(async (line) => (await line.boundingBox())!)
-	);
-	const above = summary.y - (heading.y + heading.height);
-	const below = source.y - (summary.y + summary.height);
-	expect(Math.abs(below - above)).toBeLessThanOrEqual(2);
-	expect(below).toBeLessThanOrEqual(8);
-}
-
-async function expandProjects(page: Page) {
-	await expect(overview(page).locator('details.hh-live-project > summary').first()).toBeVisible();
-	const summaries = overview(page).locator('details.hh-live-project:not([open]) > summary');
-	while (await summaries.count()) await summaries.first().click();
-}
 
 for (const [device, width, height] of [
 	['desktop', 1440, 900],
@@ -46,6 +23,13 @@ for (const [device, width, height] of [
 	}) => {
 		const tracker = recordedTracker();
 		await page.setViewportSize({ width, height });
+		const now = Date.parse(tracker.recordedAt);
+		const readings = { load: [43, 43, 43] };
+		const prior = resourceSample(now - 60_000, readings);
+		tracker.machines.push({
+			node: 'harbor-mbp-2',
+			...trackerMachineStatus(resourceSample(now, readings), [prior], now)
+		});
 		const answer = await macAnswer(tracker);
 		answer.liveOverview!.machines.push({ name: 'grok-box', status: 'offline' });
 		const requests = await productionHome(page, answer);
@@ -72,6 +56,18 @@ for (const [device, width, height] of [
 				path: test.info().outputPath(`live-collapsed-${device}.png`)
 			});
 		}
+		const machine = page
+			.getByRole('list', { name: 'Computers' })
+			.getByRole('listitem')
+			.filter({ hasText: 'harbor-mbp-2' });
+		if (device === 'desktop' && process.env.TAKE_SCREENSHOT === 'true') {
+			await page.setViewportSize({ width: 768, height: 1024 });
+			await page.screenshot({ path: test.info().outputPath('home-top-tablet.png') });
+			await expectNoSidewaysScroll(page, 768);
+			await page.setViewportSize({ width, height });
+		}
+		await expect(machine).toContainText('overloaded');
+		await expect(machine).toContainText('System load 4.3× capacity');
 		await expandProjects(page);
 		await expect(liveRows(page)).toHaveCount(live.length);
 		const projects = new Set(tracker.items.map((item) => item.agent));
@@ -146,6 +142,11 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	page
 }) => {
 	const tracker = recordedTracker();
+	tracker.machines.push({
+		node: 'harbor-mbp-2',
+		status: 'overloaded',
+		reasons: ['Memory nearly full']
+	});
 	const answer = await macAnswer(tracker);
 	await page.routeWebSocket('**/api/sync/v1/live', () => {});
 	const requests = await productionHome(page, answer, true);
@@ -154,6 +155,13 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	const live = tracker.runs.filter((run) => run.ended_at === null);
 	await expect(liveRows(page)).toHaveCount(live.length);
 	await expect(page.getByRole('status', { name: 'Updates' })).toHaveText('Live');
+	const machine = page
+		.getByRole('list', { name: 'Computers' })
+		.getByRole('listitem')
+		.filter({ hasText: 'harbor-mbp-2' });
+	await expect(machine).toContainText('Memory nearly full');
+	tracker.machines.pop();
+	tracker.machines.push({ node: 'harbor-mbp-2', status: 'ok', reasons: [] });
 	const stored = () => requests.filter((entry) => entry.path === '/api/hub-home').length;
 	const storedBefore = stored();
 	const finished = live[0];
@@ -167,6 +175,8 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	await page.clock.runFor(21_000);
 
 	await expect(liveRows(page)).toHaveCount(live.length - 1);
+	await expect(machine).toContainText('ok');
+	await expect(machine).not.toContainText(/overloaded|Memory nearly full/);
 	const group = overview(page)
 		.locator('details.hh-live-project')
 		.filter({ has: page.locator('summary.hh-live-head', { hasText: item.agent! }) });

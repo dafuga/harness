@@ -27,16 +27,36 @@ function row(node: string, over: Partial<TrackerResourceSample> = {}) {
 test('judges a computer as ok, busy, overloaded or offline', () => {
 	expect(status({}).status).toBe('ok');
 	expect(status({ load: [1, 11, 1] }).status).toBe('busy');
-	expect(status({ load: [1, 16, 1] })).toMatchObject({
+	const high = { load: [43, 43, 43] };
+	const moderate = { load: [20, 20, 20] };
+	const sustained = Array.from({ length: 10 }, (_, index) =>
+		resourceSample(now - (index + 1) * minute, moderate)
+	);
+	expect(status({ load: [1, 16, 1] }).status).toBe('busy');
+	expect(status(high).status).toBe('busy');
+	expect(status(high, [resourceSample(now - 3 * minute, high)]).status).toBe('busy');
+	expect(status(high, [resourceSample(now - minute, high)])).toMatchObject({
 		status: 'overloaded',
-		reasons: ['5-min load 16 > 15 (1.5x 10 cores)']
+		reasons: ['System load 4.3× capacity']
 	});
+	expect(status(moderate, sustained.slice(0, -1)).status).toBe('busy');
+	expect(status(moderate, sustained)).toMatchObject({
+		status: 'overloaded',
+		reasons: ['System load 2× capacity']
+	});
+	expect(
+		status(
+			moderate,
+			sustained.filter((_, index) => index !== 5 && index !== 6)
+		).status
+	).toBe('busy');
+	expect(status({ load: [1, 20, 20] }, sustained).status).toBe('busy');
 	const ram = resourceSample(now).ram;
 	expect(status({ ram: { ...ram, available_pct: 5 } }).status).toBe('overloaded');
 	expect(status({ ram: { ...ram, available_pct: 5, pressure_free_pct: 60 } }).status).toBe('ok');
 	expect(status({ ram: { ...ram, pressure: 'critical' } }).status).toBe('overloaded');
 	const earlier = resourceSample(now - 9 * minute);
-	expect(status({ swap: { total_mb: 2048, used_mb: 700 } }, [earlier]).status).toBe('overloaded');
+	expect(status({ swap: { total_mb: 2048, used_mb: 700 } }, [earlier]).status).toBe('busy');
 	expect(trackerMachineStatus(resourceSample(now - 6 * minute), [], now).status).toBe('offline');
 	expect(trackerMachineStatus(null, [], now).reasons).toEqual(['never reported a sample']);
 });
@@ -44,7 +64,10 @@ test('judges a computer as ok, busy, overloaded or offline', () => {
 test('absolute free space protects a disk; a low percentage alone does not', () => {
 	const disk = { mount: '/', total_gb: 1000, free_gb: 60, free_pct: 6 };
 	expect(status({ disks: [disk] }).status).toBe('ok');
-	expect(status({ disks: [{ ...disk, free_gb: 25 }] }).status).toBe('busy');
+	expect(status({ platform: 'linux', disks: [{ ...disk, free_gb: 25 }] }).status).toBe('busy');
+	expect(status({ disks: [{ ...disk, free_gb: 59 }] }).status).toBe('overloaded');
+	expect(status({ disks: [{ ...disk, free_gb: 60 }] }).status).toBe('ok');
+	expect(status({ platform: 'linux', disks: [{ ...disk, free_gb: 59 }] }).status).toBe('ok');
 	expect(status({ disks: [{ ...disk, free_gb: 19 }] }).status).toBe('overloaded');
 });
 
@@ -74,7 +97,13 @@ test('never recommends an overloaded or offline computer', () => {
 		...trackerMachineStatus(null, [], now),
 		sample: null
 	};
-	const placement = placeTrackerWork([offline, row('daniel-primary-mbp', { load: [20, 20, 20] })]);
+	const placement = placeTrackerWork([
+		offline,
+		row('daniel-primary-mbp', { ram: { ...resourceSample(now).ram, pressure: 'warn' } })
+	]);
 	expect(placement.recommended).toBeNull();
+	const rising = row('daniel-primary-mbp', { load: [14, 16, 1] });
+	expect(rising.status).toBe('busy');
+	expect(placeTrackerWork([rising]).recommended).toBeNull();
 	expect(placement.ranked.at(-1)).toMatchObject({ node: 'harbor-mbp-2', score: null });
 });

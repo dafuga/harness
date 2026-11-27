@@ -32,5 +32,5 @@ export interface RecordedTracker {
 	recordedAt: string;
 	items: RecordedTrackerItem[];
 	runs: RecordedTrackerRun[];
-	machines: { node: string; status: string }[];
+	machines: { node: string; status: string; reasons?: string[] }[];
 }

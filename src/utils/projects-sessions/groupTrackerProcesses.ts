@@ -1,7 +1,11 @@
 import type { TrackerProcessRow, Tree } from './groupTrackerProcesses.types';
 // @harness-uid u_bpxxjlm3vz
 import { basename } from 'node:path';
-import type { TrackerAgentKind, TrackerProcessGroup } from './trackerMachine.types';
+import type {
+	TrackerAgentKind,
+	TrackerProcessGroup,
+	TrackerSystemProcessGroup
+} from './trackerMachine.types';
 
 const testRunner =
 	/(?:^|[\s/])(?:vitest|jest|mocha|ava|tap)(?:\.js|\.mjs|\.cjs)?(?:\s|$)|\s--test(?:\s|=|$)|(?:^|[\s/])bun\s+test(?:\s|$)|playwright(?:\.js)?\s+test|npm-cli\.js\s+(?:run\s+)?test|(?:^|[\s/])(?:npm|pnpm|yarn)\s+(?:run\s+)?test(?:\s|$)/;
@@ -63,9 +67,46 @@ export function groupTrackerProcesses(
 	});
 }
 
+/** Attribute non-agent CPU and RSS without including command lines or arbitrary executable names. */
+export function groupTrackerSystemProcesses(
+	rows: readonly TrackerProcessRow[],
+	argsByPid: ReadonlyMap<number, string>,
+	agents: readonly TrackerProcessGroup[]
+): TrackerSystemProcessGroup[] {
+	const tree = processTree(rows);
+	const covered = new Set(agents.map(({ pid }) => pid));
+	const roots = new Map(rows.map((row) => [row.pid, systemFamily(row, argsByPid.get(row.pid))]));
+	const groups = new Map<string, TrackerSystemProcessGroup>();
+	for (const row of rows) {
+		const branch = [row, ...ancestors(tree, row)];
+		if (branch.some(({ pid }) => covered.has(pid))) continue;
+		const family = branch.map(({ pid }) => roots.get(pid)).find(Boolean);
+		const label = family ?? `Process pid ${row.pid}`;
+		const group = groups.get(label) ?? { pid: row.pid, label, procs: 0, cpu: 0, rss_mb: 0 };
+		group.procs++;
+		group.cpu += row.cpu;
+		group.rss_mb += row.rss;
+		groups.set(label, group);
+	}
+	return [...groups.values()].map((group) => ({
+		...group,
+		cpu: Math.round(group.cpu * 10) / 10,
+		rss_mb: Math.round(group.rss_mb / 1024)
+	}));
+}
+
+function systemFamily({ name, ppid }: TrackerProcessRow, args = ''): string | undefined {
+	if (ppid === 1 && /\/harness-services-[\w-]+\//.test(args))
+		return 'Orphaned Harness test helpers';
+	if (/^(Simulator|launchd_sim|CoreSimulatorService|SimulatorTrampoline)$/.test(name))
+		return 'iOS Simulator';
+	if (/^\/[^\s]*\/CoreSimulator\/(?:Volumes|Devices)\//.test(args)) return 'iOS Simulator';
+	return undefined;
+}
+
 function processTree(
 	rows: readonly TrackerProcessRow[],
-	argsByPid: ReadonlyMap<number, string>
+	argsByPid?: ReadonlyMap<number, string>
 ): Tree {
 	const tree: Tree = { byPid: new Map(), children: new Map(), kinds: new Map() };
 	for (const row of rows) {
@@ -73,7 +114,7 @@ function processTree(
 		const siblings = tree.children.get(row.ppid);
 		if (siblings) siblings.push(row);
 		else tree.children.set(row.ppid, [row]);
-		const kind = classifyTrackerProcess(row.name, argsByPid.get(row.pid));
+		const kind = argsByPid && classifyTrackerProcess(row.name, argsByPid.get(row.pid));
 		if (kind) tree.kinds.set(row.pid, kind);
 	}
 	return tree;

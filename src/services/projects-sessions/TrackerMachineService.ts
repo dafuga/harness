@@ -3,6 +3,7 @@ import { TrackerMachineRepository } from '../../repositories/projects-sessions/T
 import { trackerResourceSample } from '../../repositories/projects-sessions/tracker-machine-repository/trackerResourceSample';
 import { placeTrackerWork } from '../../utils/projects-sessions/placeTrackerWork';
 import {
+	trackerLoadExceedsStartGuard,
 	trackerMachineRole,
 	trackerMachineStatus
 } from '../../utils/projects-sessions/trackerMachineStatus';
@@ -89,7 +90,8 @@ export class TrackerMachineService {
 		const row = this.rows().find((candidate) => candidate.node === node);
 		if (!row?.sample) return null;
 		if ((row.age_s ?? Infinity) * 1000 > grantSampleAge) return 'no fresh machine sample';
-		return row.status === 'overloaded' ? `${node} is overloaded: ${row.reasons[0]}` : null;
+		if (row.status === 'overloaded') return `${node} is overloaded: ${row.reasons[0]}`;
+		return trackerLoadExceedsStartGuard(row.sample) ? `${node}: load above the start limit` : null;
 	}
 }
 

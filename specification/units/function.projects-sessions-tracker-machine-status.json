@@ -11,7 +11,9 @@
 		"source": ["src/utils/projects-sessions/trackerMachineStatus.ts"],
 		"symbols": [
 			"trackerSampleOfflineMs",
+			"trackerDiskAlertFloor",
 			"trackerBusyLoadPerCore",
+			"trackerLoadExceedsStartGuard",
 			"trackerMachineRole",
 			"trackerMachineStatus"
 		]
@@ -19,6 +21,18 @@
 	"contract": {
 		"origin": "declared",
 		"inputs": [
+			{
+				"name": "trackerDiskAlertFloor.platform",
+				"type": "string",
+				"required": true,
+				"description": "Platform of the sampled host, such as darwin or linux."
+			},
+			{
+				"name": "trackerLoadExceedsStartGuard.sample",
+				"type": "TrackerResourceSample",
+				"required": true,
+				"description": "Latest load averages and core count of the sampled host."
+			},
 			{
 				"name": "trackerMachineRole.node",
 				"type": "string",
@@ -35,7 +49,7 @@
 				"name": "trackerMachineStatus.recent",
 				"type": "readonly TrackerResourceSample[]",
 				"required": true,
-				"description": "Earlier samples used to measure swap growth over ten minutes."
+				"description": "Earlier samples used to confirm sustained or severe load and measure swap growth."
 			},
 			{
 				"name": "trackerMachineStatus.now",
@@ -53,7 +67,12 @@
 			{
 				"name": "trackerBusyLoadPerCore",
 				"type": "unknown",
-				"description": "Five-minute load per core above which a computer is busy."
+				"description": "Load per core above which a computer is busy."
+			},
+			{
+				"name": "trackerLoadExceedsStartGuard",
+				"type": "boolean",
+				"description": "True when the current load is too high to start new work."
 			},
 			{
 				"name": "trackerMachineRole",
@@ -69,6 +88,46 @@
 		"errors": [],
 		"errorStatus": "unknown",
 		"operations": [
+			{
+				"name": "trackerDiskAlertFloor",
+				"inputs": [
+					{
+						"name": "trackerDiskAlertFloor.platform",
+						"type": "string",
+						"required": true,
+						"description": "Platform of the sampled host, such as darwin or linux."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerDiskAlertFloor",
+						"type": "number",
+						"description": "Free-space alert floor in GB for the platform. macOS uses 60 GB and other platforms use 20 GB."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "trackerLoadExceedsStartGuard",
+				"inputs": [
+					{
+						"name": "trackerLoadExceedsStartGuard.sample",
+						"type": "TrackerResourceSample",
+						"required": true,
+						"description": "Latest load averages and core count of the sampled host."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerLoadExceedsStartGuard",
+						"type": "boolean",
+						"description": "True when the current load is too high to start new work."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
 			{
 				"name": "trackerMachineRole",
 				"inputs": [
@@ -102,7 +161,7 @@
 						"name": "trackerMachineStatus.recent",
 						"type": "readonly TrackerResourceSample[]",
 						"required": true,
-						"description": "Earlier samples used to measure swap growth over ten minutes."
+						"description": "Earlier samples used to confirm sustained or severe load and measure swap growth."
 					},
 					{
 						"name": "trackerMachineStatus.now",

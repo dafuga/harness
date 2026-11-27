@@ -15,7 +15,10 @@ import {
 
 test('alerts undelivered for over an hour raise one tracker ask that needs no tmux pane', () =>
 	cosDeliveryFixture(({ store, items }) => {
-		const waiting = [alert('idle', noon - 50 * minute)];
+		const overload = alert('overload', noon - 2 * hour);
+		round(store, [overload], noon);
+		expect(alarmAsks(items, noon)).toEqual([]);
+		const waiting = [alert('idle', noon - 50 * minute), overload];
 		round(store, waiting, noon);
 		expect(alarmAsks(items, noon)).toEqual([]);
 		round(store, waiting, noon + 11 * minute);
@@ -101,6 +104,12 @@ test('a failed send keeps the batch, tells the sender about a backlog and sends 
 		expect(calls[0].kinds[0]).toBe('credential exposure: GitHub token');
 		expect(calls.map(({ backlog }) => backlog)).toEqual([true, true, false]);
 		expect(calls[2].kinds).toHaveLength(2);
+
+		calls.length = 0;
+		const health = [alert('idle', noon), alert('overload', noon)];
+		await sendWatchdogAlerts(store, driver, health, signal);
+		await sendWatchdogAlerts(store, driver, health, signal);
+		expect(calls.map(({ kinds }) => kinds)).toEqual([['overload'], ['idle']]);
 	}));
 
 test('the hub tick raises the ask even when the pane scan is broken', () =>

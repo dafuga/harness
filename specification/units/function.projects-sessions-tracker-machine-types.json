@@ -11,7 +11,9 @@
 		"source": ["src/utils/projects-sessions/trackerMachine.types.ts"],
 		"symbols": [
 			"TrackerAgentKind",
+			"TrackerSystemProcessGroup",
 			"TrackerProcessGroup",
+			"TrackerDiskUser",
 			"TrackerDiskSample",
 			"TrackerResourceSample",
 			"TrackerMachineState",

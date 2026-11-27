@@ -4,7 +4,7 @@
 	"uid": "u_bpxxjlm3vz",
 	"kind": "function",
 	"title": "groupTrackerProcesses",
-	"responsibility": "Parses a process table and groups agent sessions, test runners and Playwright browsers with their total usage, without returning command lines.",
+	"responsibility": "Groups CPU and resident memory by agent session, simulator, orphaned Harness test helpers and otherwise unassigned process.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
@@ -16,6 +16,7 @@
 			"parseTrackerProcesses",
 			"classifyTrackerProcess",
 			"groupTrackerProcesses",
+			"groupTrackerSystemProcesses",
 			"TrackerProcessRow",
 			"Tree"
 		]
@@ -59,6 +60,24 @@
 				"type": "ReadonlyMap<number, string>",
 				"required": true,
 				"description": "tmux session name of each pane process id, used to label groups."
+			},
+			{
+				"name": "groupTrackerSystemProcesses.rows",
+				"type": "readonly TrackerProcessRow[]",
+				"required": true,
+				"description": "Process table rows with parent IDs, CPU percentages and resident memory."
+			},
+			{
+				"name": "groupTrackerSystemProcesses.argsByPid",
+				"type": "ReadonlyMap<number, string>",
+				"required": true,
+				"description": "Local command lines used to identify simulator and orphaned test helpers. The groups carry no command lines."
+			},
+			{
+				"name": "groupTrackerSystemProcesses.agents",
+				"type": "readonly TrackerProcessGroup[]",
+				"required": true,
+				"description": "Agent roots whose usage is accounted for separately."
 			}
 		],
 		"outputs": [
@@ -159,6 +178,38 @@
 				],
 				"errors": [],
 				"errorStatus": "unknown"
+			},
+			{
+				"name": "groupTrackerSystemProcesses",
+				"inputs": [
+					{
+						"name": "groupTrackerSystemProcesses.rows",
+						"type": "readonly TrackerProcessRow[]",
+						"required": true,
+						"description": "Process table rows with parent IDs, CPU percentages and resident memory."
+					},
+					{
+						"name": "groupTrackerSystemProcesses.argsByPid",
+						"type": "ReadonlyMap<number, string>",
+						"required": true,
+						"description": "Local command lines used to identify simulator and orphaned test helpers. The groups carry no command lines."
+					},
+					{
+						"name": "groupTrackerSystemProcesses.agents",
+						"type": "readonly TrackerProcessGroup[]",
+						"required": true,
+						"description": "Agent roots whose usage is accounted for separately."
+					}
+				],
+				"outputs": [
+					{
+						"name": "groupTrackerSystemProcesses",
+						"type": "TrackerSystemProcessGroup[]",
+						"description": "CPU and resident memory for named system groups and unassigned processes, with labels safe to share."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
 			}
 		],
 		"initialization": []

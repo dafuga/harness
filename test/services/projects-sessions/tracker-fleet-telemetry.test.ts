@@ -1,11 +1,16 @@
 import { expect, test } from 'vitest';
 import { nativeTrackerArgs } from '../../../src/commands/projects-sessions/tracker-command/nativeTrackerRequest';
-import { TrackerSpokeSyncService } from '../../../src/services/projects-sessions/TrackerSpokeSyncService';
-import type { TrackerWireValue } from '../../../src/services/projects-sessions/TrackerHubSyncService.types';
 import { assignTrackerLaunches } from '../../../src/services/projects-sessions/tracker-machine-service/assignTrackerLaunches';
-import { fixtureSecret, wire } from '../../support/trackerDispatchQueueFixture';
-import { resourceSample, runnerReport } from '../../support/trackerMachineFixture';
-import { call, fleet, hubNode, minute, peerNode } from '../../support/trackerFleetFixture';
+import { resourceSample } from '../../support/trackerMachineFixture';
+import {
+	call,
+	exchange,
+	fleet,
+	hubNode,
+	minute,
+	peerNode,
+	report
+} from '../../support/trackerFleetFixture';
 
 test('both computers see each other in machines, place and status', async () => {
 	const nodes = fleet();
@@ -37,7 +42,6 @@ test('both computers see each other in machines, place and status', async () => 
 		nodes.close();
 	}
 });
-
 test('raises one Chief of Staff alert for a sustained overload and closes it when calm', async () => {
 	const nodes = fleet({
 		// Never run here. A CI runner's own Node binary may be writable by others and is refused.
@@ -58,7 +62,7 @@ test('raises one Chief of Staff alert for a sustained overload and closes it whe
 		}[];
 	try {
 		nodes.readings[peerNode] = {
-			load: [30, 30, 30],
+			load: [20, 20, 20],
 			top_cpu: [
 				{
 					kind: 'claude',
@@ -72,6 +76,7 @@ test('raises one Chief of Staff alert for a sustained overload and closes it whe
 		};
 		await advance(9);
 		expect(await items()).toEqual([]);
+		expect(nodes.hub.machines.rows().find(({ node }) => node === peerNode)?.status).toBe('busy');
 		await advance(4);
 		const [raised, ...others] = await items();
 		expect(others).toEqual([]);
@@ -82,12 +87,68 @@ test('raises one Chief of Staff alert for a sustained overload and closes it whe
 		});
 		const [alert] = nodes.hub.watchdog!.alerts();
 		expect(alert).toMatchObject({ kind: 'overload', host: peerNode });
-		expect(alert.reason).toContain('Heaviest: claude in tmux:auto-a-r1');
+		expect(alert.reason).toContain('claude in tmux:auto-a-r1');
 		expect(alert.reason).toContain(`Suggested move: claude in tmux:auto-a-r1 to ${hubNode}`);
 		nodes.readings[peerNode] = {};
-		await advance(13);
+		await advance(2);
+		expect(nodes.hub.machines.rows().find(({ node }) => node === peerNode)).toMatchObject({
+			status: 'ok',
+			reasons: []
+		});
+		await advance(11);
 		expect(await items()).toMatchObject([{ status: 'done' }]);
 		expect(nodes.hub.watchdog!.alerts()).toEqual([]);
+		nodes.readings[peerNode] = {
+			load: [220, 20, 1],
+			system_cpu: [
+				{ label: 'iOS Simulator', pid: 50, procs: 45, cpu: 750, rss_mb: 3000 },
+				{ label: 'Orphaned Harness test helpers', pid: 60, procs: 56, cpu: 100, rss_mb: 600 }
+			],
+			system_rss: [{ label: 'Memory-heavy process', pid: 70, procs: 1, cpu: 0, rss_mb: 8000 }]
+		};
+		nodes.readings[hubNode] = {
+			ram: { ...resourceSample(nodes.clock.at).ram, pressure: 'warn' }
+		};
+		const box = resourceSample(nodes.clock.at).disks[0];
+		const diskUsers = [{ label: 'Harness state and worktrees', used_gb: 85 }];
+		for (let passed = 0; passed < 4; passed++) {
+			await exchange(nodes, {
+				...report(nodes, 'grok-box', []),
+				resources: resourceSample(nodes.clock.at, {
+					platform: 'linux',
+					disks: [{ ...box, mount: '/', free_gb: 12 }],
+					disk_users: passed ? diskUsers : []
+				})
+			});
+			await advance(1);
+		}
+		const incident = nodes.hub.watchdog!.alerts();
+		expect(incident).toHaveLength(3);
+		expect(incident).toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({
+					host: peerNode,
+					reason: expect.stringContaining('System load 22× capacity')
+				}),
+				expect.objectContaining({
+					host: hubNode,
+					reason: expect.stringContaining('Memory nearly full')
+				}),
+				expect.objectContaining({
+					host: 'grok-box',
+					reason: expect.stringContaining('12 GB free on /')
+				})
+			])
+		);
+		const spike = incident.find(({ host }) => host === peerNode)?.reason;
+		expect(spike).toContain(
+			'Top CPU: iOS Simulator (750%, 45 procs), Orphaned Harness test helpers'
+		);
+		expect(spike).toContain('Top memory: Memory-heavy process (8000 MB)');
+		expect(incident.find(({ host }) => host === 'grok-box')?.reason).toContain(
+			'Largest sampled disk users: Harness state and worktrees (85 GB)'
+		);
+		expect((await items()).every(({ needs_daniel }) => !needs_daniel)).toBe(true);
 	} finally {
 		nodes.close();
 	}
@@ -101,34 +162,16 @@ test('a peer that stops reporting or is overloaded loses its due-start grant', a
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBeNull();
 		nodes.clock.at += 3 * minute;
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toBe('no fresh machine sample');
-		nodes.readings[peerNode] = { load: [30, 30, 30] };
+		nodes.readings[peerNode] = { load: [40, 40, 40] };
+		await nodes.tick();
+		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('load above the start limit');
+		nodes.clock.at += minute;
 		await nodes.tick();
 		expect(nodes.hub.machines.peerStartHold(peerNode)).toContain('is overloaded');
 	} finally {
 		nodes.close();
 	}
 });
-
-function report(nodes: ReturnType<typeof fleet>, node: string, projects: string[]) {
-	const at = nodes.clock.at;
-	return {
-		node,
-		at: new Date(at).toISOString(),
-		runner: runnerReport(at, projects),
-		resources: resourceSample(at)
-	};
-}
-
-/** Send one launcher report to the hub as the peer would. */
-async function exchange(nodes: ReturnType<typeof fleet>, sample: ReturnType<typeof report>) {
-	const client = new TrackerSpokeSyncService({
-		store: nodes.peer.store,
-		secret: fixtureSecret,
-		transport: wire(nodes.hub.sync!)
-	});
-	await client.exchangeMachine(sample as unknown as TrackerWireValue, []);
-}
-
 test('--computer auto picks the computer whose launcher maps the project', async () => {
 	const nodes = fleet({
 		planLaunch: (fields) => ({

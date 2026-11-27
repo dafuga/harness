@@ -4,12 +4,12 @@
 	"uid": "u_dq6rdp5vsp",
 	"kind": "service",
 	"title": "trackerOverloadAlerts",
-	"responsibility": "Owns the trackerOverloadAlerts service workflow.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Opens one Tracker alert for Chief of Staff per unhealthy computer and clears it after ten minutes of healthy samples.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"owns": {
 		"source": ["src/services/projects-sessions/tracker-machine-service/trackerOverloadAlerts.ts"],
-		"symbols": ["trackerOverloadAlertKind", "trackerOverloadTitle", "checkTrackerOverloads"]
+		"symbols": ["trackerOverloadTitle", "checkTrackerOverloads"]
 	},
 	"contract": {
 		"origin": "derived",
@@ -31,10 +31,6 @@
 			}
 		],
 		"outputs": [
-			{
-				"name": "trackerOverloadAlertKind",
-				"type": "unknown"
-			},
 			{
 				"name": "trackerOverloadTitle",
 				"type": "string"
@@ -94,6 +90,11 @@
 	"dependencies": [
 		{
 			"unit": "function.projects-sessions-plan-tracker-item-mutation",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "function.projects-sessions-tracker-machine-status",
 			"via": "import",
 			"origin": "derived"
 		},

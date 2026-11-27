@@ -249,6 +249,7 @@
 			"configuredHostWatchdog",
 			"TrackerWatchdogAlerts",
 			"TrackerWatchdogAlert",
+			"trackerOverloadAlertKind",
 			"urgentQueueAlertKind",
 			"recordStartupAlerts",
 			"recordWatchdogAlert",
@@ -617,7 +618,7 @@
 				"required": true
 			},
 			{
-				"name": "watchCosDelivery.pending",
+				"name": "watchCosDelivery.alerts",
 				"type": "readonly TrackerWatchdogAlert[]",
 				"required": true
 			},
@@ -2939,7 +2940,7 @@
 						"required": true
 					},
 					{
-						"name": "watchCosDelivery.pending",
+						"name": "watchCosDelivery.alerts",
 						"type": "readonly TrackerWatchdogAlert[]",
 						"required": true
 					},

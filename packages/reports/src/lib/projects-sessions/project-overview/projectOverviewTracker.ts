@@ -4,8 +4,8 @@ import { trackerAttachmentFields } from '../../../../../../src/utils/projects-se
 import { trackerStageSchema } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
 import { readHomeAskConfirm, readHomeAskOptions } from '../hub-home/homeAskOptions';
 import type { HomeAskInput } from '../hub-home/hubHome.types';
-import type { MachineStatus } from './projectOverview.types';
 import type {
+	TrackerMachineRecord,
 	TrackerItemRecord,
 	TrackerItemStatus,
 	TrackerNote,
@@ -155,11 +155,16 @@ function parseRun(value: unknown, includeHomeFields: boolean): TrackerRunRecord 
 	};
 }
 
-function parseMachine(value: unknown): { node: string; status: MachineStatus } {
+function parseMachine(value: unknown): TrackerMachineRecord {
 	const row = asRecord(value, 'machine');
 	return {
 		node: requiredText(row.node, 'machine node'),
-		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as MachineStatus
+		status: oneOf(row.status, MACHINE_STATUSES, 'machine status') as TrackerMachineRecord['status'],
+		...(Array.isArray(row.reasons) && {
+			reasons: row.reasons
+				.filter((reason): reason is string => typeof reason === 'string')
+				.slice(0, 5)
+		})
 	};
 }
 
@@ -170,19 +175,16 @@ function optionalNotes(value: unknown): TrackerNote[] | undefined {
 		return { at: requiredTime(row.at, 'note at'), text: requiredText(row.text, 'note text') };
 	});
 }
-
 function asList(value: unknown, name: string): unknown[] {
 	if (!Array.isArray(value)) throw new Error(`malformed tracker ${name}`);
 	return value;
 }
-
 function asRecord(value: unknown, name: string): Record<string, unknown> {
 	if (typeof value !== 'object' || value === null || Array.isArray(value)) {
 		throw new Error(`malformed tracker ${name}`);
 	}
 	return value as Record<string, unknown>;
 }
-
 function requiredText(value: unknown, name: string): string {
 	if (typeof value !== 'string' || value.length === 0) throw new Error(`malformed ${name}`);
 	return value;

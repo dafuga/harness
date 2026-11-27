@@ -1,26 +1,32 @@
 // @harness-uid u_dq6rdp5vsp
 import { TrackerItemReadRepository } from '../../../repositories/projects-sessions/TrackerItemReadRepository';
+import { trackerDiskAlertFloor } from '../../../utils/projects-sessions/trackerMachineStatus';
 import type { TrackerOverloadState } from '../../../repositories/projects-sessions/TrackerMachineRepository.types';
 import { planTrackerItemMutation } from '../../../utils/projects-sessions/planTrackerItemMutation';
 import type {
 	TrackerMachineRow,
 	TrackerProcessGroup,
+	TrackerSystemProcessGroup,
+	TrackerResourceSample,
 	TrackerWorkKind
 } from '../../../utils/projects-sessions/trackerMachine.types';
 import {
 	itemMutation,
 	itemMutationContext
 } from '../tracker-local-api-service/trackerLocalItemMutation';
-import { recordWatchdogAlert } from '../tracker-native-runtime-service/trackerHostWatchdogAlerts';
+import {
+	recordWatchdogAlert,
+	trackerOverloadAlertKind
+} from '../tracker-native-runtime-service/trackerHostWatchdogAlerts';
 import { readWatchdogAlerts } from '../tracker-native-runtime-service/trackerHostWatchdogState';
 import type { TrackerMachineService } from '../TrackerMachineService';
 import type { TrackerPersistenceService } from '../TrackerPersistenceService';
 
 const minute = 60_000;
-/** An overload must last this long before it is raised, and calm this long before it closes. */
-const sustained = 10 * minute;
+/** Resolve the alert after ten minutes of continuing healthy samples. */
+const recovery = 10 * minute;
 
-export const trackerOverloadAlertKind = 'overload';
+const sampleGap = 150_000;
 
 export function trackerOverloadTitle(node: string): string {
 	return `Computer overloaded: ${node}`;
@@ -32,8 +38,9 @@ export function trackerOverloadTitle(node: string): string {
  */
 export function checkTrackerOverloads(machines: TrackerMachineService, now: number): void {
 	for (const row of machines.rows()) {
-		if (row.status === 'offline') continue;
-		const state = machines.repository.overloadState(row.node);
+		if (!row.sample || row.status === 'offline' || (row.age_s ?? Infinity) > sampleGap / 1000)
+			continue;
+		const state = contiguousState(machines, row.node, now);
 		const next =
 			row.status === 'overloaded'
 				? whileOverloaded(machines, row, { state, now })
@@ -42,14 +49,32 @@ export function checkTrackerOverloads(machines: TrackerMachineService, now: numb
 	}
 }
 
+function contiguousState(machines: TrackerMachineService, node: string, now: number) {
+	const state = machines.repository.overloadState(node);
+	const readings = machines.repository.recent(node, now);
+	let start = Date.parse(readings.at(-1)?.at ?? '');
+	for (const reading of readings.slice(0, -1).reverse()) {
+		const at = Date.parse(reading.at);
+		if (start - at > sampleGap) break;
+		start = at;
+	}
+	if (state.over_since !== null && state.over_since < start) state.over_since = null;
+	if (state.calm_since !== null && state.calm_since < start) state.calm_since = null;
+	return state;
+}
+
 function whileOverloaded(
 	machines: TrackerMachineService,
 	row: TrackerMachineRow,
 	{ state, now }: { state: TrackerOverloadState; now: number }
 ): TrackerOverloadState {
-	const overSince = state.over_since ?? now;
+	const observedAt = row.sample ? Date.parse(row.sample.at) : now;
+	const overSince = state.over_since ?? observedAt;
 	const next = { ...state, over_since: overSince, calm_since: null };
-	if (state.flagged_item || now - overSince < sustained) return next;
+	if (state.flagged_item) return next;
+	// The low-disk scan runs after sampling. Give it the next reading to attach attribution.
+	if (row.sample && diskAttributionPending(row.sample) && observedAt - overSince < minute)
+		return next;
 	const title = trackerOverloadTitle(row.node);
 	const existing = overloadItems(machines.store, title);
 	// An ignored overload item stays ignored.
@@ -64,7 +89,7 @@ function whileOverloaded(
 			kind: trackerOverloadAlertKind,
 			host: row.node,
 			identity: `${row.node}:${overSince}`,
-			reason: overloadReason(machines, row, Math.round((now - overSince) / minute))
+			reason: overloadReason(machines, row)
 		},
 		now
 	);
@@ -78,8 +103,9 @@ function whileCalm(
 ): TrackerOverloadState {
 	const cleared = { over_since: null, calm_since: null, flagged_item: null };
 	if (!state.flagged_item) return cleared;
-	const calmSince = state.calm_since ?? now;
-	if (now - calmSince < sustained)
+	const observedAt = row.sample ? Date.parse(row.sample.at) : now;
+	const calmSince = state.calm_since ?? observedAt;
+	if (observedAt - calmSince < recovery)
 		return { over_since: null, calm_since: calmSince, flagged_item: state.flagged_item };
 	clearAlert(store, row.node);
 	const items = new TrackerItemReadRepository(store.database);
@@ -87,7 +113,7 @@ function whileCalm(
 		({ id, status }) => id === state.flagged_item && status !== 'done' && status !== 'ignored'
 	);
 	if (open) {
-		const note = `${row.node} back to ${row.status} for ${sustained / minute} min`;
+		const note = `${row.node} back to ${row.status} for ${recovery / minute} min`;
 		const plan = planTrackerItemMutation(
 			{ action: 'done', item: items.resolve(open.id), body: { note } },
 			{ ...itemMutationContext(store, items, { now: () => now }) }
@@ -121,22 +147,51 @@ function addItem(store: TrackerPersistenceService, title: string, now: number): 
 	return plan.itemId;
 }
 
-function overloadReason(machines: TrackerMachineService, row: TrackerMachineRow, minutes: number) {
-	const lead = `${row.node} has been overloaded for ${minutes} min: ${row.reasons.join('; ')}.`;
-	const heavy = heaviest(row);
-	const [first] = heavy;
-	if (!first) return `${lead} No agent sessions found; the load comes from other processes.`;
-	const listed = heavy
-		.map((group) => `${group.label} (cpu ${group.cpu}%, ${group.rss_mb} MB, ${group.procs} procs)`)
-		.join(', ');
-	return `${lead} Heaviest: ${listed}. ${suggestedMove(machines, row.node, first)}`;
+function overloadReason(machines: TrackerMachineService, row: TrackerMachineRow) {
+	const lead = `${row.node} is overloaded: ${row.reasons.join('; ')}.`;
+	if (!row.sample) return lead;
+	const { sample } = row;
+	const cpu = highest(sample.top_cpu, sample.system_cpu ?? [], 'cpu');
+	const memory = highest(sample.top_rss, sample.system_rss ?? [], 'rss_mb');
+	const ranked = new Set([...cpu, ...memory].map(({ pid }) => pid));
+	const groups = sample.system_groups?.filter(({ pid }) => !ranked.has(pid)) ?? [];
+	const moving = sample.top_cpu.find(({ pid }) => pid === cpu[0]?.pid);
+	return [
+		lead,
+		groups.length &&
+			`Process groups: ${groups.map(({ label, procs }) => `${label} (${procs} procs)`).join(', ')}.`,
+		cpu.length &&
+			`Top CPU: ${cpu.map(({ label, cpu, procs }) => `${label} (${cpu}%, ${procs} procs)`).join(', ')}.`,
+		memory.length &&
+			`Top memory: ${memory.map(({ label, rss_mb }) => `${label} (${rss_mb} MB)`).join(', ')}.`,
+		diskUsers(sample),
+		moving && suggestedMove(machines, row.node, moving)
+	]
+		.filter(Boolean)
+		.join(' ');
 }
 
-function heaviest(row: TrackerMachineRow): TrackerProcessGroup[] {
-	const groups = [...(row.sample?.top_cpu ?? []), ...(row.sample?.top_rss ?? [])];
-	return [...new Map(groups.map((group) => [group.pid, group])).values()]
-		.sort((left, right) => right.cpu - left.cpu || right.rss_mb - left.rss_mb)
-		.slice(0, 3);
+function highest(
+	agents: TrackerProcessGroup[],
+	system: TrackerSystemProcessGroup[],
+	metric: 'cpu' | 'rss_mb'
+) {
+	return [...agents, ...system].sort((left, right) => right[metric] - left[metric]).slice(0, 2);
+}
+
+function hasLowDisk(sample: TrackerResourceSample): boolean {
+	return sample.disks.some(({ free_gb }) => free_gb < trackerDiskAlertFloor(sample.platform));
+}
+
+function diskAttributionPending(sample: TrackerResourceSample): boolean {
+	return hasLowDisk(sample) && !sample.disk_users?.length;
+}
+
+function diskUsers(sample: TrackerResourceSample): string {
+	const users = sample.disk_users ?? [];
+	if (users.length)
+		return `Largest sampled disk users: ${users.map(({ label, used_gb }) => `${label} (${used_gb} GB)`).join(', ')}.`;
+	return hasLowDisk(sample) ? 'Disk usage breakdown unavailable.' : '';
 }
 
 function suggestedMove(machines: TrackerMachineService, node: string, group: TrackerProcessGroup) {
