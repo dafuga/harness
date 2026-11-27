@@ -547,6 +547,21 @@ requested. The hub delivers to Chief of Staff at the scheduled time,
 including overnight, and follows up after two
 hours, six hours, and at 08:00 daily until the item is done or snoozed.
 
+### Repeating reminders
+
+`tracker add --reminder --every "0 10 * * 0" "Title"` creates a reminder that
+repeats (`--tz` defaults to Europe/Lisbon; `--at` may set the first time).
+`tracker update <id> --every "<cron>" --kind reminder` makes an existing item
+repeat. The item has one armed time, `remind_at`. `tracker done <id>` records
+this one as done and arms the first scheduled time after both now and the armed
+time, so done before the time skips it. `--occurrence <armed time>` refuses a
+second done once the reminder has moved. `tracker remind <id> --at <time>`
+snoozes this one only; the schedule stays. Nothing else re-arms it: until it is
+done or snoozed it follows up like any reminder. To end the series, run
+`tracker update <id> --every none`, then `tracker done <id>`. The recurring job
+scheduler ignores reminders. Every computer needs this release before it can
+create or finish a repeating reminder.
+
 ### Scheduled reminders on other items
 
 Use `tracker remind <id> --at <ISO timestamp with a time zone>` for an

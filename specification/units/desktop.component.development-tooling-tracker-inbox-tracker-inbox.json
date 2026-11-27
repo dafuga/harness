@@ -11,6 +11,7 @@
 		"level": "organism",
 		"uses": [
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-detail",
+			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 			"desktop.component.development-tooling-tracker-inbox-tracker-inbox-writes",
 			"reports.component.shared-primitives-atoms-html-button",
@@ -114,6 +115,11 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-reminders",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "desktop.component.development-tooling-tracker-inbox-tracker-inbox-rows",
 			"via": "import",
 			"origin": "derived"
@@ -135,6 +141,11 @@
 		},
 		{
 			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "desktop.module.development-tooling-tracker-inbox-tracker-inbox-messages",
 			"via": "import",
 			"origin": "derived"
 		},

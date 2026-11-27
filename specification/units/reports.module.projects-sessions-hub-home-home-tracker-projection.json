@@ -81,12 +81,22 @@
 			"origin": "derived"
 		},
 		{
+			"unit": "function.projects-sessions-tracker-unattended-hold",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
 			"unit": "reports.module.projects-sessions-hub-home-home-ask-options",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.module.projects-sessions-hub-home-home-provider-payload",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-home-reminders",
 			"via": "import",
 			"origin": "derived"
 		},

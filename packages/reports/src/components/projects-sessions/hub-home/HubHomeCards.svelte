@@ -27,6 +27,7 @@
 	import type { HomeCardsProps } from './hubHomeView.types';
 	import HubHomeCard from './HubHomeCard.svelte';
 	import HubHomeNeedsYou from './HubHomeNeedsYou.svelte';
+	import HubHomeReminders from './HubHomeReminders.svelte';
 	import { homeCosChat, provideHomeCosChat } from './hubHomeChatContext.svelte';
 	import HubHomeCosChat from './HubHomeCosChat.svelte';
 	import HubHomeRow from './HubHomeRow.svelte';
@@ -60,6 +61,9 @@
 	</EmptyState>
 {/snippet}
 <HubHomeNeedsYou asks={view.openAsks} now={view.now} {send} {receipt} />
+{#if view.reminders && !needsOnly}
+	<HubHomeReminders reminders={view.reminders} now={view.now} {send} {receipt} />
+{/if}
 {#if view.agents && (view.owner || view.linkedComputers)}<HubHomeCosChat
 		agent={view.agents.find((agent) => agent.id === 'cos')}
 		now={new Date(view.now).toISOString()}

@@ -71,6 +71,7 @@
 		overview,
 		agents: snapshot?.agents ?? (settled ? [] : null),
 		openAsks: snapshot?.openAsks ?? [],
+		reminders: snapshot?.reminders ?? null,
 		controlled,
 		plans: snapshot?.plans ?? (settled ? [] : null),
 		schedule: board?.upcoming ?? (settled ? [] : null),
@@ -176,9 +177,7 @@
 		const result = await api.send<{ controlled: string[] }>(
 			add ? 'POST' : 'DELETE',
 			'/api/hub-home/agents',
-			{
-				id
-			}
+			{ id }
 		);
 		if (home) home = { ...home, controlled: result.controlled };
 		refresh();

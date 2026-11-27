@@ -6,8 +6,8 @@ import type {
 } from '$reports/lib/projects-sessions/realtime/realtime.types';
 import { randomBytes, toBase64Url } from '../../../../remote/src/index';
 
-/** While pushes arrive, a full read still happens this often, for what is not pushed. */
-export const liveReadMs = 60_000;
+/** A connected socket can stay quiet, so Home still needs a full read on its next poll. */
+export const liveReadMs = 20_000;
 
 const protocol = 'harness.sync.v1';
 const deviceKey = 'harness.sync.device';

@@ -35,6 +35,7 @@ export function desktopHomeView(
 	].filter(Boolean);
 	return {
 		...tracker,
+		reminders: home?.reminders ?? null,
 		controlled: [],
 		projects: [],
 		projectsFailed: false,

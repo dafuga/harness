@@ -5,6 +5,8 @@ import {
 	trackerPlanningSchema,
 	trackerStageSchema
 } from '../../../../../../src/utils/projects-sessions/trackerPlanning';
+import { trackerPersonalReminder } from '../../../../../../src/utils/projects-sessions/trackerPersonalReminder';
+import { trackerPersonalAgent } from '../../../../../../src/utils/projects-sessions/trackerUnattendedHold';
 import { trackerStructuredAsk } from '../../../../../../src/utils/projects-sessions/trackerStructuredAsk';
 import { sanitizeTrackerText } from '../../../../../../src/utils/projects-sessions/sanitizeTrackerText';
 import type {
@@ -18,7 +20,7 @@ import type { TrackerInboxItemReply } from './MacTrackerInboxService.types';
 export const safeId = /^[a-z0-9_-]{1,80}$/;
 
 export function projectRow(item: TrackerItem): InboxRow {
-	const open = trackerStructuredAsk(item);
+	const open = !trackerPersonalAgent(item.agent) && trackerStructuredAsk(item);
 	return {
 		header: projectHeader(item),
 		bucket: itemBucket(item.status ?? 'open', open),
@@ -34,8 +36,10 @@ export function visible(item: TrackerItem): boolean {
 
 export function projectHeader(item: TrackerItem) {
 	const stage = trackerStageSchema.safeParse(item.stage);
+	const reminder = trackerPersonalReminder({ ...item, remindAt: item.remind_at });
 	return {
 		id: item.id,
+		...(reminder && { reminder }),
 		title: safe(item.title),
 		project: safe(item.project || item.agent),
 		status: item.status ?? 'open',

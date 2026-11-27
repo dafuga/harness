@@ -1,0 +1,74 @@
+{
+	"schemaVersion": 1,
+	"id": "function.projects-sessions-tracker-repeat-label",
+	"uid": "u_iyhps4wxee",
+	"kind": "function",
+	"title": "trackerRepeatLabel",
+	"responsibility": "Names how often a Tracker cron schedule repeats, in one word.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": ["src/utils/projects-sessions/trackerRepeatLabel.ts"],
+		"symbols": ["trackerRepeatLabel"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "trackerRepeatLabel.every",
+				"type": "string | null | undefined",
+				"required": true,
+				"description": "Cron schedule or macro, or nothing for a one-off reminder."
+			}
+		],
+		"outputs": [
+			{
+				"name": "trackerRepeatLabel",
+				"type": "string | null",
+				"description": "Hourly, Daily, Weekly, Monthly, Yearly or Repeats; null without a schedule."
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "trackerRepeatLabel",
+				"inputs": [
+					{
+						"name": "trackerRepeatLabel.every",
+						"type": "string | null | undefined",
+						"required": true,
+						"description": "Cron schedule or macro, or nothing for a one-off reminder."
+					}
+				],
+				"outputs": [
+					{
+						"name": "trackerRepeatLabel",
+						"type": "string | null",
+						"description": "Hourly, Daily, Weekly, Monthly, Yearly or Repeats; null without a schedule."
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/utils/projects-sessions/trackerRepeatLabel.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/utils/projects-sessions/trackerRepeatLabel.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

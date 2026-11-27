@@ -67,6 +67,16 @@ function mergeOpenAsks(snapshots: OwnerHomeSnapshot[]) {
 	).sort((a, b) => Date.parse(a.since) - Date.parse(b.since) || a.itemId.localeCompare(b.itemId));
 }
 
+/** A synced reminder shows once, as its newest copy. Undefined when no computer lists any. */
+function mergeReminders(snapshots: OwnerHomeSnapshot[]) {
+	if (!snapshots.some((entry) => entry.reminders)) return undefined;
+	return newest(
+		snapshots.flatMap((entry) => entry.reminders ?? []),
+		(reminder) => reminder.itemId,
+		(a, b) => Date.parse(a.updatedAt) > Date.parse(b.updatedAt)
+	).sort((a, b) => a.at.localeCompare(b.at) || a.itemId.localeCompare(b.itemId));
+}
+
 function mergeQuota(all: (HomeSubscription[] | null)[]): HomeSubscription[] | null {
 	const lists = all.filter((list): list is HomeSubscription[] => Array.isArray(list));
 	if (!lists.length) return null;
@@ -148,6 +158,7 @@ export function mergeHomeSnapshots(snapshots: OwnerHomeSnapshot[]): OwnerHomeSna
 		...(directory && { projectDirectory: directory }),
 		agents: mergeAgents(snapshots.flatMap((entry) => entry.agents)),
 		openAsks: mergeOpenAsks(snapshots),
+		reminders: mergeReminders(snapshots),
 		plans: newest(
 			snapshots.flatMap((entry) => entry.plans),
 			(plan) => plan.id,

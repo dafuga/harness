@@ -1,6 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import { encryptWebPush } from '../../../src/services/projects-sessions/tracker-web-push-service/encryptWebPush';
 import { needsYouPushMessage } from '../../../src/services/projects-sessions/tracker-web-push-service/needsYouPushMessage';
+import { openPushAsks } from '../../../src/services/projects-sessions/tracker-web-push-service/openPushAsks';
+import type { TrackerItem } from '../../../src/repositories/projects-sessions/TrackerItemReadRepository.types';
 import {
 	deliveredPush,
 	emptyPushState,
@@ -31,6 +33,23 @@ test('encrypts the RFC 8291 test vector byte for byte', () => {
 	expect(sealed.toString('base64url')).toBe(
 		'DGv6ra1nlYgDCS1FRnbzlwAAEABBBP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A_yl95bQpu6cVPTpK4Mqgkf1CXztLVBSt2Ks3oZwbuwXPXLWyouBWLVWGNWQexSgSxsj_Qulcy4a-fN'
 	);
+});
+
+test('a personal or family ask never sends a needs-you notification', () => {
+	const flagged = ['harness', 'personal', 'dad', 'family'].map((agent) => ({
+		id: `${agent}-item`,
+		agent,
+		deleted: false,
+		sensitive: false,
+		needs_daniel: true,
+		resolved: false,
+		question: 'Book the sample room?',
+		options: [
+			{ label: 'Yes', effect: '', recommended: true },
+			{ label: 'No', effect: '' }
+		]
+	})) as unknown as TrackerItem[];
+	expect(openPushAsks(flagged).map((ask) => ask.itemId)).toEqual(['harness-item']);
 });
 
 describe('when to notify', () => {

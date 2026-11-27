@@ -1,0 +1,201 @@
+{
+	"schemaVersion": 1,
+	"id": "service.agents-providers-agent-tool-safety",
+	"uid": "u_3n5vo4mix3",
+	"kind": "service",
+	"title": "AgentToolSafetyService",
+	"responsibility": "Brokers untrusted model tool proposals through current grants, independent screening, durable budget reservations and exact owner approval.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"owns": {
+		"source": [
+			"src/services/agents-providers/AgentToolSafetyService.ts",
+			"src/services/agents-providers/AgentToolSafetyService.types.ts"
+		],
+		"symbols": [
+			"AgentToolSafetyService",
+			"AgentToolSafetyService.constructor",
+			"AgentToolSafetyService.submit",
+			"AgentToolSafetyService.approve",
+			"AgentToolAction",
+			"AgentToolScope",
+			"AgentToolPolicy",
+			"AgentToolCharge",
+			"PreparedAgentTool",
+			"AgentToolDefinition",
+			"AgentToolDenial",
+			"AgentToolEvent",
+			"AgentToolApproval",
+			"AgentToolReview",
+			"AgentToolJournalTransaction",
+			"AgentToolJournal",
+			"AgentToolSafetyOptions",
+			"AgentToolDecision"
+		]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "AgentToolSafetyService.constructor.options",
+				"type": "AgentToolSafetyOptions",
+				"required": true,
+				"description": "Trusted tool definitions, current agent policy, durable journal, clock and optional independent classifier."
+			},
+			{
+				"name": "AgentToolSafetyService.submit.agentId",
+				"type": "string",
+				"required": true,
+				"description": "Host-assigned identity for the agent whose grants apply."
+			},
+			{
+				"name": "AgentToolSafetyService.submit.proposal",
+				"type": "string",
+				"required": true,
+				"description": "Bounded, untrusted JSON with a tool name and exact tool arguments."
+			},
+			{
+				"name": "AgentToolSafetyService.approve.agentId",
+				"type": "string",
+				"required": true,
+				"description": "Host-assigned identity for the agent whose grants apply."
+			},
+			{
+				"name": "AgentToolSafetyService.approve.approvalId",
+				"type": "string",
+				"required": true,
+				"description": "One-use challenge ID returned to the authenticated reviewer."
+			},
+			{
+				"name": "AgentToolSafetyService.approve.proposal",
+				"type": "string",
+				"required": true,
+				"description": "Bounded, untrusted JSON with a tool name and exact tool arguments."
+			}
+		],
+		"outputs": [
+			{
+				"name": "AgentToolSafetyService.submit",
+				"type": "Promise<AgentToolDecision>",
+				"description": "The admission decision, pending review, action result or execution failure. A grant revoked at dispatch returns a failed decision."
+			},
+			{
+				"name": "AgentToolSafetyService.approve",
+				"type": "Promise<AgentToolDecision>",
+				"description": "The decision after rechecking the exact approved proposal and current policy."
+			}
+		],
+		"errors": [],
+		"errorStatus": "declared",
+		"operations": [
+			{
+				"name": "AgentToolSafetyService.submit",
+				"inputs": [
+					{
+						"name": "AgentToolSafetyService.submit.agentId",
+						"type": "string",
+						"required": true,
+						"description": "Host-assigned identity for the agent whose grants apply."
+					},
+					{
+						"name": "AgentToolSafetyService.submit.proposal",
+						"type": "string",
+						"required": true,
+						"description": "Bounded, untrusted JSON with a tool name and exact tool arguments."
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentToolSafetyService.submit",
+						"type": "Promise<AgentToolDecision>",
+						"description": "The admission decision, pending review, action result or execution failure. A grant revoked at dispatch returns a failed decision."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			},
+			{
+				"name": "AgentToolSafetyService.approve",
+				"inputs": [
+					{
+						"name": "AgentToolSafetyService.approve.agentId",
+						"type": "string",
+						"required": true,
+						"description": "Host-assigned identity for the agent whose grants apply."
+					},
+					{
+						"name": "AgentToolSafetyService.approve.approvalId",
+						"type": "string",
+						"required": true,
+						"description": "One-use challenge ID returned to the authenticated reviewer."
+					},
+					{
+						"name": "AgentToolSafetyService.approve.proposal",
+						"type": "string",
+						"required": true,
+						"description": "Bounded, untrusted JSON with a tool name and exact tool arguments."
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentToolSafetyService.approve",
+						"type": "Promise<AgentToolDecision>",
+						"description": "The decision after rechecking the exact approved proposal and current policy."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		],
+		"initialization": [
+			{
+				"name": "AgentToolSafetyService.constructor",
+				"inputs": [
+					{
+						"name": "AgentToolSafetyService.constructor.options",
+						"type": "AgentToolSafetyOptions",
+						"required": true,
+						"description": "Trusted tool definitions, current agent policy, durable journal, clock and optional independent classifier."
+					}
+				],
+				"outputs": [
+					{
+						"name": "AgentToolSafetyService.constructor",
+						"type": "unknown",
+						"description": "A broker whose construction starts no effects."
+					}
+				],
+				"errors": [],
+				"errorStatus": "declared"
+			}
+		]
+	},
+	"dependencies": [
+		{
+			"unit": "service.agents-providers-agent-tool-safety-service-agent-tool-admission",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "service.agents-providers-agent-tool-safety-service-reserve-agent-tool",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/services/agents-providers/AgentToolSafetyService.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/services/agents-providers/AgentToolSafetyService.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

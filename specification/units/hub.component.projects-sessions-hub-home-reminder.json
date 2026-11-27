@@ -1,0 +1,128 @@
+{
+	"schemaVersion": 1,
+	"id": "hub.component.projects-sessions-hub-home-reminder",
+	"uid": "u_wppzl5o65z",
+	"kind": "component",
+	"title": "HubHomeReminder",
+	"responsibility": "Shows one personal reminder with its next time and sends Done or Snooze for it.",
+	"responsibilityOrigin": "declared",
+	"status": "active",
+	"composition": {
+		"level": "organism",
+		"uses": [
+			"reports.component.shared-primitives-atoms-html-button",
+			"reports.component.shared-primitives-atoms-html-div",
+			"reports.component.shared-primitives-atoms-html-li",
+			"reports.component.shared-primitives-atoms-html-p",
+			"reports.component.shared-primitives-atoms-html-span",
+			"reports.component.shared-primitives-linkified-text"
+		]
+	},
+	"owns": {
+		"source": ["packages/reports/src/components/projects-sessions/hub-home/HubHomeReminder.svelte"],
+		"symbols": ["HubHomeReminder"]
+	},
+	"contract": {
+		"origin": "declared",
+		"inputs": [
+			{
+				"name": "HubHomeReminder.reminder",
+				"type": "HomeReminder",
+				"required": true,
+				"description": "The personal reminder shown on this row."
+			},
+			{
+				"name": "HubHomeReminder.now",
+				"type": "number",
+				"required": true,
+				"description": "Current time in epoch milliseconds, for the next-time label and snooze choices."
+			},
+			{
+				"name": "HubHomeReminder.send",
+				"type": "SendHomeChat",
+				"required": true,
+				"description": "Sends the Done or Snooze tap to a computer."
+			},
+			{
+				"name": "HubHomeReminder.receipt",
+				"type": "(id: string) => Promise<HomeChatReceipt>",
+				"required": true,
+				"description": "Reads what became of a sent tap."
+			}
+		],
+		"outputs": [
+			{
+				"name": "HubHomeReminder",
+				"type": "markup",
+				"description": "A list row with title, next time, repeat word, Done, Snooze and the tap status."
+			}
+		],
+		"errors": [],
+		"errorStatus": "none-found",
+		"operations": [],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "hub.function.projects-sessions-hub-home-view-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-button",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-div",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-li",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-p",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.component.shared-primitives-linkified-text",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "reports.module.projects-sessions-hub-home-reminder-times",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminder.svelte",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "packages/reports/src/components/projects-sessions/hub-home/HubHomeReminder.svelte"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

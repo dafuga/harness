@@ -82,6 +82,17 @@ export const trackerToolSchemas = [
 			additionalProperties: false
 		}
 	},
+	{
+		name: 'tracker_done',
+		description: 'Mark a reminder or item done after the user confirms it on the phone.',
+		inputSchema: noteInput
+	},
+	{
+		name: 'tracker_remind',
+		description:
+			'Snooze a reminder to an ISO time in `text` after the user confirms it on the phone.',
+		inputSchema: noteInput
+	},
 	...(['note', 'flag', 'answer'] as const).map((action) => ({
 		name: `tracker_${action}` as const,
 		description: confirmedWrites[action] + ' after the user confirms it on the phone.',
