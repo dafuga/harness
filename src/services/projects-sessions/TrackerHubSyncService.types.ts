@@ -1,6 +1,7 @@
 // @harness-uid u_jkomno4o5u
 import type { TrackerSyncAuthService } from '../networking-security/TrackerSyncAuthService';
 
+import type { TrackerOutgoingDraftService } from './TrackerOutgoingDraftService';
 import type { z } from 'zod';
 
 export type TrackerWireValue = z.infer<ReturnType<typeof z.json>>;
@@ -68,6 +69,7 @@ export interface TrackerHubRunStore {
 
 export interface TrackerHubOptions {
 	auth: TrackerSyncAuthService;
+	outgoingDrafts?: TrackerOutgoingDraftService;
 	store: TrackerHubStore;
 	machines?: TrackerHubMachineStore;
 	runs?: () => TrackerHubRunStore | null | undefined;

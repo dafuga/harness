@@ -106,6 +106,7 @@ export const nativeTrackerCommandOptions = new Map<
 	['show', {}],
 	['stage', {}],
 	['artifact', {}],
+	['draft', {}],
 	[
 		'list',
 		{

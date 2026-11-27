@@ -11,6 +11,7 @@ import { TrackerRecurringRepository } from '../../repositories/projects-sessions
 import { composeTrackerBackups } from './tracker-backup-service/composeTrackerBackups';
 import type { TrackerAdapterPollService } from './TrackerAdapterPollService';
 import type { TrackerHubSyncService } from './TrackerHubSyncService';
+import { composeOutgoingDrafts } from './tracker-native-runtime-service/composeOutgoingDrafts';
 import { TrackerLocalApiService } from './TrackerLocalApiService';
 import { TrackerPhoneReplicaService } from './TrackerPhoneReplicaService';
 import type {
@@ -44,6 +45,7 @@ import { configuredTrackerDestinations } from './tracker-native-runtime-service/
 
 /** Composes the Tracker node's API, delivery and link workers over one SQLite journal. */
 export class TrackerNativeRuntimeService {
+	readonly outgoingDrafts: ReturnType<typeof composeOutgoingDrafts>;
 	readonly role: 'hub' | 'spoke';
 	readonly dispatch?: TrackerDispatcherService;
 	readonly scheduler?: TrackerDispatchSchedulerService;
@@ -92,6 +94,7 @@ export class TrackerNativeRuntimeService {
 		this.watchdog = configuredHostWatchdog(this, hostEffects, options.automaticEnabled);
 		const fleet = composeTrackerFleet(runs, { ...options, dispatch }, this);
 		({ tick: this.telemetry, samples: this.fleetSamples } = fleet);
+		this.outgoingDrafts = composeOutgoingDrafts(store, options);
 		this.items = composeItemApi(this, runs, fleet.apiOptions(options), recurring);
 		this.backups = composeTrackerBackups(this, options);
 		this.sync = composeTrackerResponder(this, runs, fleet.syncOptions, composed);

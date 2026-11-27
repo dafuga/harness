@@ -8,7 +8,7 @@ import { trackerHubDuePolicy } from './trackerAutolaunchAdmin';
 import type { composeTrackerDispatch } from './nativeTrackerDispatch';
 
 export function composeTrackerResponder(
-	runtime: Pick<TrackerNativeRuntimeService, 'store' | 'machines'>,
+	runtime: Pick<TrackerNativeRuntimeService, 'store' | 'machines' | 'outgoingDrafts'>,
 	runs: TrackerRunReadRepository,
 	options: TrackerNativeRuntimeOptions,
 	composed: Pick<
@@ -27,6 +27,7 @@ export function composeTrackerResponder(
 		duePolicy,
 		...permits,
 		...syncResponder,
+		outgoingDrafts: runtime.outgoingDrafts.service,
 		machines:
 			syncResponder.machines &&
 			trackerHubMachines(syncResponder.machines, runs, options, { machines, scheduler }),

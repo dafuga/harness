@@ -1,3 +1,4 @@
+import { verifyDraftCli } from './trackerOutgoingDraftAssertions';
 import { qualifyPlanningStages } from './trackerPlanningAssertions';
 import { verifyLaunchCliOptions } from './trackerManagedLaunchAssertions';
 import { createServer } from 'node:http';
@@ -48,6 +49,7 @@ export async function proveForegroundSync(
 				.poll(() => fixtureTrackerJson(hub, ['list']), { timeout: 8_000 })
 				.toEqual(expect.arrayContaining([expect.objectContaining({ id })]));
 			expect(await fixtureTrackerJson(hub, ['show', id])).toMatchObject({ stage: 'build' });
+			await verifyDraftCli(hub, spoke, id);
 			await verifySpokePublication(hub);
 			await verifyDefaultPickup(hub);
 			await verifyTrackerWire(syncPort, id);

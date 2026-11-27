@@ -1,4 +1,6 @@
 // @harness-uid u_jkomno4o5u
+import { outgoingDraftSyncPath } from './tracker-outgoing-draft-service/outgoingDraftAgentApi';
+import { serveSyncedDraft } from './tracker-hub-sync/serveSyncedDraft';
 import type { TrackerHubOptions, TrackerHubRequest } from './TrackerHubSyncService.types';
 import { readTrackerHubBody, trackerHubResponse } from './tracker-hub-sync/hubHttp';
 import { TrackerHubInputError } from './tracker-hub-sync/TrackerHubInputError';
@@ -69,6 +71,8 @@ export class TrackerHubSyncService {
 		const queryStart = pathAndQuery.indexOf('?');
 		const path = queryStart < 0 ? pathAndQuery : pathAndQuery.slice(0, queryStart);
 		const store = this.#options.store;
+		if (path === outgoingDraftSyncPath && queryStart === -1 && this.#options.outgoingDrafts)
+			return serveSyncedDraft(this.#options.outgoingDrafts, request.method, body, peer);
 		switch (`${method} ${path}`) {
 			case 'POST /sync/push':
 				return receiveJournalPush(store, body);
