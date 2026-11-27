@@ -3432,6 +3432,42 @@
 			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverviewPrivacy",
 			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverviewPrivacy.ts",
 			"reason": "The linked-computer live overview shares Reports contracts and shared components through the app build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/homeLive.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/homeLive.types.ts",
+			"reason": "Hub Home uses the shared Reports work and answer presentation through its build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLive.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the shared Reports work and answer presentation through its build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/HubHomeLiveProject.svelte",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the shared Reports work and answer presentation through its build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeChatContext.svelte.ts",
+			"specifier": "$reports/lib/projects-sessions/hub-home/hubHome.types",
+			"to": "packages/reports/src/lib/projects-sessions/hub-home/hubHome.types.ts",
+			"reason": "Hub Home uses the shared Reports work and answer presentation through its build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomePresentation.ts",
+			"specifier": "$reports/components/projects-sessions/project-overview/projectOverviewPresentation",
+			"to": "packages/reports/src/components/projects-sessions/project-overview/projectOverviewPresentation.ts",
+			"reason": "Hub Home uses the shared Reports work and answer presentation through its build alias."
+		},
+		{
+			"from": "packages/hub/src/components/projects-sessions/hubHomeStatusText.ts",
+			"specifier": "$reports/lib/projects-sessions/project-overview/projectOverview.types",
+			"to": "packages/reports/src/lib/projects-sessions/project-overview/projectOverview.types.ts",
+			"reason": "Hub Home uses the shared Reports work and answer presentation through its build alias."
 		}
 	]
 }

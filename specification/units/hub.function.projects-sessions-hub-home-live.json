@@ -20,7 +20,7 @@
 			"workTimes",
 			"workFacts",
 			"liveSummary",
-			"projectSummary",
+			"projectWorkCounts",
 			"liveNotice",
 			"liveSystemNotice"
 		]
@@ -83,10 +83,9 @@
 				"description": "The overview being totalled."
 			},
 			{
-				"name": "projectSummary.project",
+				"name": "projectWorkCounts.project",
 				"type": "HomeWorkProject",
-				"required": true,
-				"description": "The project whose running and status counts are worded."
+				"required": true
 			},
 			{
 				"name": "liveNotice.reading",
@@ -313,20 +312,18 @@
 				"errorStatus": "unknown"
 			},
 			{
-				"name": "projectSummary",
+				"name": "projectWorkCounts",
 				"inputs": [
 					{
-						"name": "projectSummary.project",
+						"name": "projectWorkCounts.project",
 						"type": "HomeWorkProject",
-						"required": true,
-						"description": "The project whose running and status counts are worded."
+						"required": true
 					}
 				],
 				"outputs": [
 					{
-						"name": "projectSummary",
-						"type": "unknown",
-						"description": "The non-zero counts of a project in one line."
+						"name": "projectWorkCounts",
+						"type": "unknown"
 					}
 				],
 				"errors": [],

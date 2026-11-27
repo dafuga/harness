@@ -12,15 +12,10 @@
 		"uses": [
 			"hub.component.projects-sessions-hub-home-live-project",
 			"reports.component.explorer-ui-explorer-kit-empty-state",
-			"reports.component.shared-primitives-atoms-html-details",
 			"reports.component.shared-primitives-atoms-html-div",
 			"reports.component.shared-primitives-atoms-html-h2",
-			"reports.component.shared-primitives-atoms-html-li",
 			"reports.component.shared-primitives-atoms-html-p",
-			"reports.component.shared-primitives-atoms-html-section",
-			"reports.component.shared-primitives-atoms-html-span",
-			"reports.component.shared-primitives-atoms-html-summary",
-			"reports.component.shared-primitives-atoms-html-ul"
+			"reports.component.shared-primitives-atoms-html-section"
 		]
 	},
 	"owns": {
@@ -34,7 +29,8 @@
 			{
 				"name": "HubHomeLive.reading",
 				"type": "LinkedHome | null",
-				"required": true,
+				"required": false,
+				"default": null,
 				"description": "What the linked computers last answered; null while the first answer is awaited."
 			},
 			{
@@ -42,6 +38,18 @@
 				"type": "number",
 				"required": true,
 				"description": "The current time in milliseconds, used for run ages."
+			},
+			{
+				"name": "HubHomeLive.native",
+				"type": "HomeLiveOverview",
+				"required": false,
+				"default": "undefined (omitted)"
+			},
+			{
+				"name": "HubHomeLive.pastDue",
+				"type": "HomePastDue[]",
+				"required": false,
+				"default": []
 			}
 		],
 		"outputs": [
@@ -83,22 +91,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-details",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
 			"unit": "reports.component.shared-primitives-atoms-html-div",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
 			"unit": "reports.component.shared-primitives-atoms-html-h2",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-li",
 			"via": "import",
 			"origin": "derived"
 		},
@@ -113,17 +111,12 @@
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-span",
+			"unit": "reports.module.projects-sessions-hub-home-home-live-overview",
 			"via": "import",
 			"origin": "derived"
 		},
 		{
-			"unit": "reports.component.shared-primitives-atoms-html-summary",
-			"via": "import",
-			"origin": "derived"
-		},
-		{
-			"unit": "reports.component.shared-primitives-atoms-html-ul",
+			"unit": "reports.module.projects-sessions-hub-home-hub-home-types",
 			"via": "import",
 			"origin": "derived"
 		}

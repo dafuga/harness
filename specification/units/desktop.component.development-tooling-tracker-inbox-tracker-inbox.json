@@ -31,7 +31,7 @@
 			"packages/desktop/src/components/development-tooling/tracker-inbox/TrackerInbox.svelte",
 			"packages/desktop/src/components/development-tooling/tracker-inbox/tracker-inbox.css"
 		],
-		"symbols": ["TrackerInbox", "reload", "TrackerInbox.rows"]
+		"symbols": ["TrackerInbox", "reload", "TrackerInbox.rows", "TrackerInbox.needsHeading"]
 	},
 	"contract": {
 		"origin": "declared",
@@ -48,6 +48,12 @@
 				"required": false,
 				"default": "phone",
 				"description": "Chooses direct Mac status or phone sync and outbox status."
+			},
+			{
+				"name": "TrackerInbox.home",
+				"type": "boolean",
+				"required": false,
+				"default": false
 			}
 		],
 		"outputs": [
@@ -87,6 +93,18 @@
 				"outputs": [
 					{
 						"name": "TrackerInbox.rows",
+						"type": "markup"
+					}
+				],
+				"errors": [],
+				"errorStatus": "none-found"
+			},
+			{
+				"name": "TrackerInbox.needsHeading",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "TrackerInbox.needsHeading",
 						"type": "markup"
 					}
 				],
