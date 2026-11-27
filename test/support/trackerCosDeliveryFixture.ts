@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { TrackerItemReadRepository } from '../../src/repositories/projects-sessions/TrackerItemReadRepository';
@@ -111,4 +111,12 @@ export function writeAcceptedPrompts(
 		}
 	];
 	writeFileSync(file, prompts.map((prompt) => JSON.stringify(prompt)).join('\n') + '\n');
+}
+
+export function readCosPrompts(root: string): string[] {
+	return readFileSync(join(root, 'commands'), 'utf8')
+		.trim()
+		.split('\n')
+		.map((line) => JSON.parse(line).text)
+		.filter((text): text is string => typeof text === 'string');
 }

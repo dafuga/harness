@@ -20,6 +20,7 @@ import {
 	alarmAsks,
 	cosDeliveryFixture,
 	minute,
+	readCosPrompts,
 	recordedDependencyQueue,
 	writeAcceptedPrompts
 } from '../../support/trackerCosDeliveryFixture';
@@ -84,14 +85,6 @@ test(
 		),
 	25_000
 );
-
-function readCosPrompts(root: string): string[] {
-	return readFileSync(join(root, 'commands'), 'utf8')
-		.trim()
-		.split('\n')
-		.map((line) => JSON.parse(line).text)
-		.filter((text): text is string => typeof text === 'string');
-}
 
 test('Claude transcript receipts prevent another send when tmux misses acceptance', () =>
 	cosDeliveryFixture(async ({ store, items }) => {
