@@ -1,0 +1,278 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-ledger",
+	"kind": "command",
+	"title": "hygieneLedger",
+	"responsibility": "Owns the hygieneLedger command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-hygiene-command/hygieneLedger.ts"],
+		"symbols": [
+			"hygieneDirectory",
+			"beginResource",
+			"saveResource",
+			"writeHygieneJson",
+			"readResource",
+			"isClosing",
+			"markResource"
+		]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "beginResource.value",
+				"type": "z.infer<typeof receipt>",
+				"required": true
+			},
+			{
+				"name": "saveResource.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "saveResource.value",
+				"type": "z.infer<typeof receipt>",
+				"required": true
+			},
+			{
+				"name": "writeHygieneJson.target",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "writeHygieneJson.value",
+				"type": "unknown",
+				"required": true
+			},
+			{
+				"name": "readResource.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "isClosing.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "markResource.path",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "markResource.name",
+				"type": "'ready' | 'closed' | 'closing'",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "hygieneDirectory",
+				"type": "string"
+			},
+			{
+				"name": "beginResource",
+				"type": "string"
+			},
+			{
+				"name": "saveResource",
+				"type": "unknown"
+			},
+			{
+				"name": "writeHygieneJson",
+				"type": "unknown"
+			},
+			{
+				"name": "readResource",
+				"type": "unknown"
+			},
+			{
+				"name": "isClosing",
+				"type": "unknown"
+			},
+			{
+				"name": "markResource",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "hygieneDirectory",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "hygieneDirectory",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "beginResource",
+				"inputs": [
+					{
+						"name": "beginResource.value",
+						"type": "z.infer<typeof receipt>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "beginResource",
+						"type": "string"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "saveResource",
+				"inputs": [
+					{
+						"name": "saveResource.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "saveResource.value",
+						"type": "z.infer<typeof receipt>",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "saveResource",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "writeHygieneJson",
+				"inputs": [
+					{
+						"name": "writeHygieneJson.target",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "writeHygieneJson.value",
+						"type": "unknown",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "writeHygieneJson",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "readResource",
+				"inputs": [
+					{
+						"name": "readResource.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "readResource",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "isClosing",
+				"inputs": [
+					{
+						"name": "isClosing.path",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "isClosing",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "markResource",
+				"inputs": [
+					{
+						"name": "markResource.path",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "markResource.name",
+						"type": "'ready' | 'closed' | 'closing'",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "markResource",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneLedger.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneLedger.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

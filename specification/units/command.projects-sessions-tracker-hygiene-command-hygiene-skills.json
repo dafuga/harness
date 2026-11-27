@@ -1,0 +1,61 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-skills",
+	"kind": "command",
+	"title": "hygieneSkills",
+	"responsibility": "Owns the hygieneSkills command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-hygiene-command/hygieneSkills.ts"],
+		"symbols": ["hygieneSkills", "installHygieneSkills"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [],
+		"outputs": [
+			{
+				"name": "hygieneSkills",
+				"type": "unknown"
+			},
+			{
+				"name": "installHygieneSkills",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "installHygieneSkills",
+				"inputs": [],
+				"outputs": [
+					{
+						"name": "installHygieneSkills",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneSkills.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneSkills.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

@@ -53,7 +53,10 @@ const launchSchema = z.discriminatedUnion('version', [
 
 export async function launchDirectory(cwd: string): Promise<string> {
 	const scope = await localSupervisorScope();
-	const path = join(resourceHome(), 'managed-docker-launches', scope);
+	const tracker = process.env.HARNESS_TRACKER_HYGIENE;
+	const path = tracker
+		? join(tracker, 'provider-docker', scope)
+		: join(resourceHome(), 'managed-docker-launches', scope);
 	await mkdir(path, { mode: 0o700, recursive: true });
 	const metadata = await lstat(path);
 	if (!metadata.isDirectory() || metadata.uid !== process.getuid?.() || metadata.mode & 0o077)

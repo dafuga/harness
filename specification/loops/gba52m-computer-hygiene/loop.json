@@ -1,0 +1,45 @@
+{
+	"name": "gba52m-computer-hygiene",
+	"goal": "Built-in skills and every managed launch brief guide run-owned resource creation, and exit, stop and timeout reap only that run’s resources and report anything remaining.",
+	"createdAt": "2026-11-27T15:37:32.645Z",
+	"updatedAt": "2026-11-27T15:48:16.934Z",
+	"template": "feature",
+	"templateLineage": [
+		"feature"
+	],
+	"enforceOrder": false,
+	"steps": [
+		{
+			"id": "spec",
+			"title": "Confirm scope, success criteria, constraints, and proof.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:38:14.649Z",
+			"evidence": "Verify bundled skill mirroring, brief coverage, resource identifiers captured by creation commands, isolated teardown on exit/stop/timeout, and preservation of independently opened controls. Shared release awaits Daniel."
+		},
+		{
+			"id": "implement",
+			"title": "Implement the smallest complete feature slice.",
+			"status": "complete",
+			"completedAt": "2026-11-27T15:48:16.934Z",
+			"evidence": "Per-run ledger, detached managed worker cleanup supervisor, strict resource identity checks, compiled skill mirroring and launch-brief integration implemented. Explicitly unregistered resources remain under their opening tool."
+		},
+		{
+			"id": "test",
+			"title": "Add or update focused automated coverage.",
+			"status": "pending"
+		},
+		{
+			"id": "verify",
+			"title": "Run the relevant project verification commands.",
+			"status": "pending"
+		}
+	],
+	"evaluators": [
+		{
+			"id": "check",
+			"title": "Run the project check script.",
+			"command": "bun run check",
+			"step": "verify"
+		}
+	]
+}

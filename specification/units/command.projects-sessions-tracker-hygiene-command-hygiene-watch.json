@@ -1,0 +1,177 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-watch",
+	"kind": "command",
+	"title": "hygieneWatch",
+	"responsibility": "Owns the hygieneWatch command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-hygiene-command/hygieneWatch.ts"],
+		"symbols": ["startHygieneWatch", "watchHygiene"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "startHygieneWatch.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "startHygieneWatch.worker",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "startHygieneWatch.maxMinutes",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "watchHygiene.directory",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "watchHygiene.worker",
+				"type": "number",
+				"required": true
+			},
+			{
+				"name": "watchHygiene.start",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "watchHygiene.minutes",
+				"type": "number",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "startHygieneWatch",
+				"type": "unknown"
+			},
+			{
+				"name": "watchHygiene",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "startHygieneWatch",
+				"inputs": [
+					{
+						"name": "startHygieneWatch.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "startHygieneWatch.worker",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "startHygieneWatch.maxMinutes",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "startHygieneWatch",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "watchHygiene",
+				"inputs": [
+					{
+						"name": "watchHygiene.directory",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "watchHygiene.worker",
+						"type": "number",
+						"required": true
+					},
+					{
+						"name": "watchHygiene.start",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "watchHygiene.minutes",
+						"type": "number",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "watchHygiene",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.process-identity",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-child",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-cleanup",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-ledger",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneWatch.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneWatch.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

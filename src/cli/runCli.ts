@@ -17,6 +17,12 @@ export async function runCli(entry: string): Promise<void> {
 		process.exitCode = await new TrackerCommand().run(args.slice(1));
 		return;
 	}
+	if (args[0] === 'hygiene') {
+		const { TrackerHygieneCommand } =
+			await import('../commands/projects-sessions/TrackerHygieneCommand');
+		process.exitCode = await new TrackerHygieneCommand().run(args.slice(1));
+		return;
+	}
 	const warning = staleBuild(entry);
 	if (warning) console.error(warning);
 	const startedAt = Date.now();

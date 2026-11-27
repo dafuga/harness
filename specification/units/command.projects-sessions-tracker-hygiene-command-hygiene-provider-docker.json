@@ -1,0 +1,75 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-provider-docker",
+	"kind": "command",
+	"title": "hygieneProviderDocker",
+	"responsibility": "Owns the hygieneProviderDocker command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-hygiene-command/hygieneProviderDocker.ts"],
+		"symbols": ["reapHygieneProviderDocker"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "reapHygieneProviderDocker.directory",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "reapHygieneProviderDocker",
+				"type": "unknown"
+			}
+		],
+		"errors": [],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "reapHygieneProviderDocker",
+				"inputs": [
+					{
+						"name": "reapHygieneProviderDocker.directory",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "reapHygieneProviderDocker",
+						"type": "unknown"
+					}
+				],
+				"errors": [],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-managed-provider-docker",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneProviderDocker.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneProviderDocker.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

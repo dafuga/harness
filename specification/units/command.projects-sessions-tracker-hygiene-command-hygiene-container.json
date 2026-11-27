@@ -1,0 +1,142 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-container",
+	"kind": "command",
+	"title": "hygieneContainer",
+	"responsibility": "Owns the hygieneContainer command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-hygiene-command/hygieneContainer.ts"],
+		"symbols": ["openHygieneContainer", "closeHygieneContainer"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "openHygieneContainer.[image, ...command]",
+				"type": "string[]",
+				"required": true
+			},
+			{
+				"name": "closeHygieneContainer.entry",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "closeHygieneContainer.host",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "closeHygieneContainer.id",
+				"type": "string",
+				"required": true
+			}
+		],
+		"outputs": [
+			{
+				"name": "openHygieneContainer",
+				"type": "unknown"
+			},
+			{
+				"name": "closeHygieneContainer",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "openHygieneContainer",
+				"inputs": [
+					{
+						"name": "openHygieneContainer.[image, ...command]",
+						"type": "string[]",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "openHygieneContainer",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "closeHygieneContainer",
+				"inputs": [
+					{
+						"name": "closeHygieneContainer.entry",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "closeHygieneContainer.host",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "closeHygieneContainer.id",
+						"type": "string",
+						"required": true
+					}
+				],
+				"outputs": [
+					{
+						"name": "closeHygieneContainer",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "adapter.agents-providers-managed-provider-docker",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-ledger",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneContainer.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneContainer.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

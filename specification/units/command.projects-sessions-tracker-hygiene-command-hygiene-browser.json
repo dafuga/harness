@@ -1,0 +1,154 @@
+{
+	"schemaVersion": 1,
+	"id": "command.projects-sessions-tracker-hygiene-command-hygiene-browser",
+	"kind": "command",
+	"title": "hygieneBrowser",
+	"responsibility": "Owns the hygieneBrowser command registration.",
+	"responsibilityOrigin": "derived",
+	"status": "active",
+	"owns": {
+		"source": ["src/commands/projects-sessions/tracker-hygiene-command/hygieneBrowser.ts"],
+		"symbols": ["openHygieneBrowser", "closeHygieneBrowser"]
+	},
+	"contract": {
+		"origin": "derived",
+		"inputs": [
+			{
+				"name": "openHygieneBrowser.kind",
+				"type": "'tab' | 'window'",
+				"required": true
+			},
+			{
+				"name": "openHygieneBrowser.address",
+				"type": "string",
+				"required": false,
+				"default": "about:blank"
+			},
+			{
+				"name": "closeHygieneBrowser.browser",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "closeHygieneBrowser.entry",
+				"type": "string",
+				"required": true
+			},
+			{
+				"name": "closeHygieneBrowser.target",
+				"type": "string",
+				"required": false
+			}
+		],
+		"outputs": [
+			{
+				"name": "openHygieneBrowser",
+				"type": "unknown"
+			},
+			{
+				"name": "closeHygieneBrowser",
+				"type": "unknown"
+			}
+		],
+		"errors": [
+			{
+				"name": "Error",
+				"type": "thrown"
+			}
+		],
+		"errorStatus": "unknown",
+		"operations": [
+			{
+				"name": "openHygieneBrowser",
+				"inputs": [
+					{
+						"name": "openHygieneBrowser.kind",
+						"type": "'tab' | 'window'",
+						"required": true
+					},
+					{
+						"name": "openHygieneBrowser.address",
+						"type": "string",
+						"required": false,
+						"default": "about:blank"
+					}
+				],
+				"outputs": [
+					{
+						"name": "openHygieneBrowser",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			},
+			{
+				"name": "closeHygieneBrowser",
+				"inputs": [
+					{
+						"name": "closeHygieneBrowser.browser",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "closeHygieneBrowser.entry",
+						"type": "string",
+						"required": true
+					},
+					{
+						"name": "closeHygieneBrowser.target",
+						"type": "string",
+						"required": false
+					}
+				],
+				"outputs": [
+					{
+						"name": "closeHygieneBrowser",
+						"type": "unknown"
+					}
+				],
+				"errors": [
+					{
+						"name": "Error",
+						"type": "thrown"
+					}
+				],
+				"errorStatus": "unknown"
+			}
+		],
+		"initialization": []
+	},
+	"dependencies": [
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-child",
+			"via": "import",
+			"origin": "derived"
+		},
+		{
+			"unit": "command.projects-sessions-tracker-hygiene-command-hygiene-ledger",
+			"via": "import",
+			"origin": "derived"
+		}
+	],
+	"runtime": {
+		"kind": "module",
+		"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneBrowser.ts",
+		"targets": [
+			{
+				"kind": "module",
+				"entry": "src/commands/projects-sessions/tracker-hygiene-command/hygieneBrowser.ts"
+			}
+		]
+	},
+	"scenarios": [],
+	"budgets": {
+		"size": "frozen",
+		"complexity": "frozen",
+		"performance": []
+	}
+}

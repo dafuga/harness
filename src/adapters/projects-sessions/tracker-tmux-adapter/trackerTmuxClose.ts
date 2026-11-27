@@ -1,4 +1,5 @@
 // @harness-uid u_fyf7e7kyi5
+import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { TrackerRunReceipt } from '../../../services/agents-providers/TrackerDispatcherService.types';
 import { attemptKey } from '../../../services/agents-providers/tracker-dispatcher-service/launchEligibility';
@@ -68,7 +69,10 @@ export async function stopManagedRun(
 	const path = join(directory, token);
 	const record = checkTrackerManagedReceipt(path, node, key);
 	const probe = await managedTmuxEnvironment(tmux, node, name, signal);
-	if (probe.code === 1 && missingTmuxSession(probe.stderr, name)) return true;
+	if (probe.code === 1 && missingTmuxSession(probe.stderr, name)) {
+		if (matchesManagedStop(record, { itemId, runId, name })) requestResourceCleanup(path);
+		return true;
+	}
 	if (
 		probe.code !== 0 ||
 		probe.stdout.trim() !== `HARNESS_TRACKER_ATTEMPT=${token}` ||
@@ -94,7 +98,9 @@ export async function stopManagedRun(
 	);
 	if (result.code !== 0 || result.stdout.trim() !== 'tracker-session-stopped') return false;
 	const after = await managedTmuxEnvironment(tmux, node, name, signal);
-	return after.code === 1 && missingTmuxSession(after.stderr, name);
+	const stopped = after.code === 1 && missingTmuxSession(after.stderr, name);
+	if (stopped) requestResourceCleanup(path);
+	return stopped;
 }
 
 async function managedSessionPane(tmux: string, node: string, name: string, signal: AbortSignal) {
@@ -134,4 +140,9 @@ export function missingTmuxSession(stderr: string, name: string): boolean {
 			stderr.trim()
 		)
 	);
+}
+
+function requestResourceCleanup(attempt: string) {
+	const directory = join(attempt, 'hygiene');
+	if (existsSync(directory)) writeFileSync(join(directory, 'closing'), '', { mode: 0o600 });
 }
