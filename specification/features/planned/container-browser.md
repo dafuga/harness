@@ -134,7 +134,14 @@ runs a throwaway profile in a real container: no published port, a VNC greeting
 over the pipe, and the page scripts reading a fixture over DevTools.
 It also checks the active saving policies reported by Chromium.
 
-`HARNESS_TEST_CONTAINER_BROWSER=1 bunx vitest run --maxWorkers=1 test/container-private-browser.e2e.test.ts`
-uses a separate disposable profile in the bounded browser engine. It checks that
-reads cannot see form values and that the executor verifies tab disposal before
-reading from the safe result page.
+On harbor-mbp-2, point `HARNESS_TEST_PRIVATE_BROWSER_SOCKET` at an idle,
+separate Docker engine capped at two CPUs and four GiB, with the reviewed
+Chromium image already available. Then run:
+
+```sh
+HARNESS_TEST_CONTAINER_BROWSER=1 bunx vitest run --maxWorkers=1 test/container-private-browser.e2e.test.ts
+```
+
+The fixture rejects the legacy browser engine. It verifies that ordinary reads
+cannot see form values and resume only after the tab is disposed and a separate
+result page is checked.
