@@ -117,6 +117,7 @@ test('expiry denies private input, disposes the form and rejects a stale complet
 	await vi.advanceTimersByTimeAsync(0);
 	expect(gate.status()).toBe('ready');
 	expect(verifyResult).not.toHaveBeenCalled();
+	expect(gate.receipt()).toEqual({ requestId, outcome: 'aborted' });
 	expect(await gate.finish(requestId, 'paired-device')).toBe(false);
 });
 

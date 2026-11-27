@@ -8,6 +8,7 @@ import { PrivateBrowserAgentAdapter } from '../../../src/adapters/execution-runt
 import { PrivateBrowserGateService } from '../../../src/services/execution-runtimes/PrivateBrowserGateService';
 import { createTempDirectory } from '../../support/temporary';
 
+const unexposed = ['/finish', '/screen', '/json/list', '/devtools', '/logs', '/recording'];
 const agentUid = process.getuid?.() === 65534 ? 65533 : 65534;
 
 async function fixture() {
@@ -100,14 +101,7 @@ test('only reviewed reads, request and status are exposed and private entry bloc
 					status: 200,
 					body: { phase: 'private' }
 				});
-				for (const path of [
-					'/finish',
-					'/screen',
-					'/json/list',
-					'/devtools',
-					'/logs',
-					'/recording'
-				]) {
+				for (const path of unexposed) {
 					expect(await call(socketPath, path)).toEqual({
 						status: 404,
 						body: { error: 'Unknown route' }
@@ -120,6 +114,10 @@ test('only reviewed reads, request and status are exposed and private entry bloc
 				expect(reviewedRead).toHaveBeenCalledTimes(1);
 				const { requestId } = admitted.body as { requestId: string };
 				expect(await gate.finish(requestId, 'paired-fixture')).toBe(true);
+				expect(await call(socketPath, '/status', 'GET')).toEqual({
+					status: 200,
+					body: { phase: 'ready', receipt: { requestId, outcome: 'completed' } }
+				});
 				expect((await call(socketPath, '/read')).status).toBe(200);
 			} finally {
 				await close();
