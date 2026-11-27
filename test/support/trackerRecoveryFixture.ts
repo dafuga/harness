@@ -117,8 +117,14 @@ async function verifyEligibleRecovery(
 	}
 ) {
 	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 1 });
-	expect(items.getStored(id).auto).not.toBeNull();
-	runtime.store.appendLocal({ itemId: id, fields: { schedule_off: 0 } });
+	expect(items.getStored(id)).toMatchObject({
+		status: 'blocked',
+		blocked_reason: expect.stringContaining('automatic launch opted out')
+	});
+	runtime.store.appendLocal({
+		itemId: id,
+		fields: { schedule_off: 0, status: 'in_progress', blocked_reason: null }
+	});
 	await waitForRecoveryCapacity(runtime, database, { dispatch, tmux, watchdog });
 	await watchdog(11 * minute);
 	await expect
@@ -156,7 +162,13 @@ async function waitForRecoveryCapacity(
 	const waiting = new TrackerItemReadRepository(database).getStored(id);
 	expect(waiting.needs_daniel).toBe(false);
 	expect(waiting.notes_log.some(({ text }) => /Relaunch [0-9]+\/3 failed:/.test(text))).toBe(false);
-	expect(database.prepare('SELECT COUNT(*) AS total FROM runs').get()).toEqual({ total: 2 });
+	expect(
+		database.prepare('SELECT id, state FROM runs WHERE item_id = ? ORDER BY id').all(id)
+	).toEqual([
+		{ id: 1, state: 'finished' },
+		{ id: 3, state: 'queued' }
+	]);
+	expect(waiting.status).toBe('open');
 	expect((await managedTrackerItemRequest(runtime, occupantId, 'done')).ok).toBe(true);
 	tmux('kill-session', '-t', '=auto-occupy-r2');
 }

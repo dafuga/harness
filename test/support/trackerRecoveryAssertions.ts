@@ -23,6 +23,7 @@ export async function verifyStoppedRun(
 	seedTask(runtime, Date.now(), itemId);
 	expect((await managedTrackerItemRequest(runtime, itemId, 'launch')).ok).toBe(true);
 	await dispatch();
+	expect((await managedTrackerItemRequest(runtime, itemId, 'start')).ok).toBe(true);
 	const row = runtime.store.database
 		.prepare("SELECT id, tmux FROM runs WHERE item_id = ? AND state = 'running'")
 		.get(itemId) as { id: number; tmux: string };
@@ -35,6 +36,14 @@ export async function verifyStoppedRun(
 	});
 	expect(() => tmux('has-session', '-t', '=' + row.tmux)).toThrow();
 	await watchdog(11 * minute);
+	expect(
+		runtime.store.database
+			.prepare('SELECT status, blocked_reason FROM items WHERE id = ?')
+			.get(itemId)
+	).toMatchObject({
+		status: 'blocked',
+		blocked_reason: expect.stringContaining('stopped by operator')
+	});
 	expect(
 		runtime.store.database
 			.prepare('SELECT state, failure_reason FROM runs WHERE id = ?')

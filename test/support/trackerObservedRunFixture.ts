@@ -47,15 +47,11 @@ export async function verifyAdoption(
 	expect(rows()).toEqual([
 		{ state: 'finished', model: 'gpt-6.1-terra', effort: 'high', tmux: 'man123-recovery' }
 	]);
-	expect((await runtime.watchdog!.inspect(manual, signal)).recovery).toMatchObject([
-		{
-			item_id: manual,
-			host: runtime.store.node,
-			kind: 'missing',
-			recover: false,
-			reason: expect.stringContaining('automatic launch opted out')
-		}
-	]);
+	expect(db.prepare('SELECT status, blocked_reason FROM items WHERE id = ?').get(manual)).toEqual({
+		status: 'blocked',
+		blocked_reason: 'automatic launch opted out'
+	});
+	expect((await runtime.watchdog!.inspect(manual, signal)).recovery).toEqual([]);
 }
 
 export const retainedTrackerTmuxFixture = (at: number) => `
