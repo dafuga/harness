@@ -8,5 +8,5 @@
 		"outDir": "dist/types",
 		"types": ["node"]
 	},
-	"include": ["src/lib/*.ts"]
+	"include": ["src/lib/*.ts", "src/lib/agents-providers/slackUser.ts"]
 }
