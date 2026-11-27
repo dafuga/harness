@@ -22,7 +22,14 @@ test('every session brief tells the agent to flag with 2 to 4 options and one re
 	expect(brief).toContain('what you want to do and why in one sentence');
 	expect(brief).toContain('tool or process questions to Chief of Staff');
 	expect(brief.indexOf('## Secret-safe computer use')).toBeLessThan(brief.indexOf('## Asking'));
-	expect(brief).not.toContain('combined release');
+	expect(brief).not.toContain('bun run check --item');
+	expect(brief).toContain('Run only the tests relevant to your change');
+	expect(brief).toContain('Reuse GitHub CI results when available');
+	expect(brief).toContain('once per combined release');
+	expect(brief).toContain('focused unit and E2E tests for changed modules and their dependents');
+	expect(brief).toContain('typecheck and lint the changed files');
+	expect(brief).toContain('deliver a screen recording of the real app');
+	expect(brief).toContain('list the timestamp of each extracted frame');
 	const harness = formatTrackerHostBrief(
 		{ ...item, agent: 'harness' },
 		'Finish by running tracker done.'
@@ -89,6 +96,7 @@ test('a truncated Docker brief keeps the done proof rule within its 15,900 byte 
 			brief: formatTrackerHostBrief(long, completion)
 		} as Parameters<typeof managedBrief>[0]);
 		expect(brief).toContain(trackerDoneProofRule);
+		expect(brief).toContain('Run only the tests relevant to your change');
 		expect(brief).toContain('Never merge into a Greymass repository');
 		expect(brief).toContain('Read the full task with `tracker show abcdef1234567890`.');
 		expect(brief).not.toContain('�');
