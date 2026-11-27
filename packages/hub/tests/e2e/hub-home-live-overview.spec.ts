@@ -175,6 +175,7 @@ test('a change on the Mac shows within one turn, also while change notices are c
 	await page.clock.runFor(21_000);
 
 	await expect(liveRows(page)).toHaveCount(live.length - 1);
+	await expect(machine).toContainText('ok');
 	await expect(machine).not.toContainText(/overloaded|Memory nearly full/);
 	const group = overview(page)
 		.locator('details.hh-live-project')
