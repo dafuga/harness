@@ -4,7 +4,7 @@
 	"uid": "u_mvlweghhmy",
 	"kind": "component",
 	"title": "TrackerPlanningDetails",
-	"responsibility": "Show a Tracker item's current planning stage, saved artifacts, and promotion history.",
+	"responsibility": "Display the current Tracker stage, promotion history, page states, artifact links and inline design images.",
 	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
@@ -33,28 +33,28 @@
 				"type": "TrackerStage",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "The item's current stage, marked in the four-stage list."
+				"description": "The current stage when the Tracker source reports it."
 			},
 			{
 				"name": "TrackerPlanningDetails.planning",
 				"type": "TrackerPlanning",
 				"required": false,
 				"default": "undefined (omitted)",
-				"description": "Artifacts and promotion receipts by stage. Omit to show empty artifacts."
+				"description": "The recorded stage artifacts and promotions."
 			},
 			{
 				"name": "TrackerPlanningDetails.linkTarget",
 				"type": "'_blank' | 'tracker-artifact'",
 				"required": false,
 				"default": "_blank",
-				"description": "Opens artifact links in a new tab or delegates them to the Mac's system browser."
+				"description": "The browser tab or Mac artifact handler for opening a design link."
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerPlanningDetails",
 				"type": "markup",
-				"description": "A read-only planning section with stage labels, receipts, page states, and links."
+				"description": "Renders the stage history and recorded artifacts, including image previews."
 			}
 		],
 		"errors": [],

@@ -4,8 +4,8 @@
 	"uid": "u_axpmgg2n3c",
 	"kind": "component",
 	"title": "HubHomePlannable",
-	"responsibility": "Owns the HubHomePlannable Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Show Plans and Scheduled previews and open the selected detail, complete list or contextual chat.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -29,23 +29,26 @@
 		]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "HubHomePlannable.view",
 				"type": "Pick<HomeView, 'plans' | 'schedule' | 'agents' | 'now' | 'needsMac'>",
-				"required": true
+				"required": true,
+				"description": "The current plans, schedule, connection state, clock and available agents."
 			},
 			{
 				"name": "HubHomePlannable.open",
 				"type": "OpenHomeSection",
-				"required": true
+				"required": true,
+				"description": "Opens a complete list or the plan with the given ID."
 			}
 		],
 		"outputs": [
 			{
 				"name": "HubHomePlannable",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders compact Plans and Scheduled previews with selectable rows."
 			}
 		],
 		"errors": [],

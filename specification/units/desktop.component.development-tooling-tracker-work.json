@@ -4,8 +4,8 @@
 	"uid": "u_qvuoo5oeav",
 	"kind": "component",
 	"title": "TrackerWork",
-	"responsibility": "Owns the TrackerWork Svelte component.",
-	"responsibilityOrigin": "derived",
+	"responsibility": "Present Tracker plans and scheduled work in the Mac and iPhone app, using the shared detail and Chief of Staff views.",
+	"responsibilityOrigin": "declared",
 	"status": "active",
 	"composition": {
 		"level": "organism",
@@ -26,23 +26,26 @@
 		"symbols": ["TrackerWork"]
 	},
 	"contract": {
-		"origin": "derived",
+		"origin": "declared",
 		"inputs": [
 			{
 				"name": "TrackerWork.source",
 				"type": "TrackerHomeSource",
-				"required": true
+				"required": true,
+				"description": "Reads the current Tracker Home snapshot and sends messages through the approved device connection."
 			},
 			{
 				"name": "TrackerWork.mac",
 				"type": "boolean",
-				"required": true
+				"required": true,
+				"description": "Uses the Mac link target for external design artifacts and shows local connection status."
 			}
 		],
 		"outputs": [
 			{
 				"name": "TrackerWork",
-				"type": "markup"
+				"type": "markup",
+				"description": "Renders the plan and schedule previews, their full lists, a selected plan and the contextual chat."
 			}
 		],
 		"errors": [],
