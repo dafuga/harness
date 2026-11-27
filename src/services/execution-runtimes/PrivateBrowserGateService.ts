@@ -48,16 +48,8 @@ export class PrivateBrowserGateService {
 	async request(deviceId: string): Promise<{ requestId: string } | undefined> {
 		if (this.phase !== 'ready' || !deviceId) return undefined;
 		this.phase = 'draining';
-		const requestId = randomUUID();
-		const expired = () => void this.cancel(requestId);
-		const window = {
-			requestId,
-			deviceId,
-			expiresAt: performance.now() + privateWindowMs,
-			expiry: setTimeout(expired, privateWindowMs),
-			drained: Promise.allSettled(this.reads.values())
-		};
-		window.expiry.unref();
+		const window = openWindow(deviceId, this.reads.values(), (id) => void this.cancel(id));
+		const { requestId } = window;
 		this.active = window;
 		for (const read of this.reads.keys()) read.abort();
 		await window.drained;
@@ -75,8 +67,36 @@ export class PrivateBrowserGateService {
 			this.phase === 'private' &&
 			this.active?.requestId === requestId &&
 			this.active.deviceId === deviceId &&
+			!this.active.native &&
 			performance.now() < this.active.expiresAt
 		);
+	}
+
+	/** Revokes live viewer input before the executor opens a sealed field. */
+	async nativeInput(
+		requestId: string,
+		deviceId: string,
+		operation: (signal: AbortSignal) => Promise<void>
+	): Promise<boolean> {
+		const window = this.active;
+		if (!window || !this.permitsInput(requestId, deviceId)) return false;
+		const controller = new AbortController();
+		const drained = Promise.resolve().then(async () => {
+			await this.cleanup.revokeInput();
+			controller.signal.throwIfAborted();
+			await operation(controller.signal);
+		});
+		window.native = { controller, drained };
+		try {
+			await drained;
+		} catch {
+			await this.cancel(requestId);
+			return false;
+		}
+		if (this.active !== window) return false;
+		if (performance.now() < window.expiresAt) return this.end(window, true);
+		await this.cancel(requestId);
+		return false;
 	}
 
 	async finish(requestId: string, deviceId: string): Promise<boolean> {
@@ -93,7 +113,8 @@ export class PrivateBrowserGateService {
 		this.phase = 'disposing';
 		this.active = undefined;
 		clearTimeout(window.expiry);
-		await window.drained;
+		window.native?.controller.abort();
+		await Promise.allSettled([window.drained, window.native?.drained]);
 		return this.clean(verify);
 	}
 
@@ -107,4 +128,21 @@ export class PrivateBrowserGateService {
 		}
 		return this.phase === 'ready';
 	}
+}
+
+function openWindow(
+	deviceId: string,
+	reads: Iterable<Promise<unknown>>,
+	expire: (requestId: string) => void
+): PrivateBrowserRequest {
+	const requestId = randomUUID();
+	const expiry = setTimeout(() => expire(requestId), privateWindowMs);
+	expiry.unref();
+	return {
+		requestId,
+		deviceId,
+		expiresAt: performance.now() + privateWindowMs,
+		expiry,
+		drained: Promise.allSettled(reads)
+	};
 }

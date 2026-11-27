@@ -15,4 +15,5 @@ export interface PrivateBrowserRequest {
 	expiresAt: number;
 	expiry: ReturnType<typeof setTimeout>;
 	drained: Promise<unknown>;
+	native?: { controller: AbortController; drained: Promise<void> };
 }
