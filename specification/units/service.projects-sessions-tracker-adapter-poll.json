@@ -280,7 +280,8 @@
 			{
 				"name": "matchesGithubIssue.matchesItem",
 				"type": "TrackerAdapterIntakePolicy['matchesItem']",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "followUpInstructions.policy",
@@ -390,7 +391,8 @@
 			{
 				"name": "trackerTesterLogin.actor",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerAdapterPollError.constructor.message",
@@ -890,7 +892,8 @@
 					{
 						"name": "matchesGithubIssue.matchesItem",
 						"type": "TrackerAdapterIntakePolicy['matchesItem']",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -1117,7 +1120,8 @@
 					{
 						"name": "trackerTesterLogin.actor",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

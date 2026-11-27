@@ -295,7 +295,7 @@
 				"name": "EntityBehavior.reasons",
 				"type": "Reasons",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "What the commit says it changed in the entity, shown in its own EntityReasons block apart from the test observations; non-empty behavior text replaces the derived explanation and stays visible while results load, and without it the derived explanation or 'No reason is recorded for this entity here.' is shown. Defaults to JavaScript undefined (omitted).",
 				"examples": [
 					{
@@ -357,7 +357,7 @@
 				"name": "EntityBehavior.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The function identifier the results are shown for, when they are shown as its rows; it is passed to each run panel, and while it is set the full-test link reads View examples. It defaults to JavaScript undefined (omitted), not the literal string.",
 				"examples": ["reports.function.entity-behavior", "reports.function.explorer-reading"]
 			}

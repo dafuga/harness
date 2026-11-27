@@ -39,7 +39,7 @@
 				"name": "GameLiveAi.choice",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The chosen model key, bindable. The select changes it only while the control is available and not busy."
 			},
 			{

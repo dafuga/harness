@@ -62,7 +62,7 @@
 				"name": "HubHomeChoices.present",
 				"type": "(content: Snippet | null) => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Places a choice detail or written-answer dialog in the caller’s dialog outlet when supplied."
 			}
 		],
@@ -84,7 +84,8 @@
 					{
 						"name": "HubHomeChoices.badge.recommended",
 						"type": "boolean",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

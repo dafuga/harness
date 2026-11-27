@@ -64,7 +64,8 @@
 			{
 				"name": "trackerSupervisorStatus.views",
 				"type": "Partial<TrackerSupervisorViews>",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -192,7 +193,8 @@
 					{
 						"name": "trackerSupervisorStatus.views",
 						"type": "Partial<TrackerSupervisorViews>",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

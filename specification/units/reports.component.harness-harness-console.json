@@ -58,7 +58,7 @@
 				"name": "HarnessConsole.links",
 				"type": "Array<{ label: string; href: string }>",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional compatibility prop that is not destructured or rendered by this component. It defaults to undefined.",
 				"examples": [
 					[
@@ -79,7 +79,7 @@
 				"name": "HarnessConsole.projectsHref",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The local Projects destination supplied by the Explorer. Embedders may omit it."
 			}
 		],

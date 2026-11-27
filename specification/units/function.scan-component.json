@@ -115,6 +115,13 @@
 				"examples": ["Button"]
 			},
 			{
+				"name": "boundProps.allowBareUndefined",
+				"type": "boolean",
+				"required": false,
+				"default": false,
+				"description": "Whether both component script scopes establish that bare undefined is unshadowed."
+			},
+			{
 				"name": "componentSnippets.code",
 				"type": "string",
 				"required": true,
@@ -376,6 +383,13 @@
 						"required": true,
 						"description": "Canonical component name used to qualify each public input.",
 						"examples": ["Button"]
+					},
+					{
+						"name": "boundProps.allowBareUndefined",
+						"type": "boolean",
+						"required": false,
+						"default": false,
+						"description": "Whether both component script scopes establish that bare undefined is unshadowed."
 					}
 				],
 				"outputs": [

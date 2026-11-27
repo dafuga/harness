@@ -72,7 +72,7 @@
 				"name": "FloatingChat.navigation",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet rendered between the header and scrolling conversation body. When omitted, it is undefined and nothing is rendered in that slot."
 			},
 			{

@@ -72,7 +72,8 @@
 			{
 				"name": "PairingAccessService.requestAccount.holder",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -223,7 +224,8 @@
 					{
 						"name": "PairingAccessService.requestAccount.holder",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

@@ -2,15 +2,54 @@
 import ts from 'typescript';
 import type { ContractItem } from '../../core/development-tooling/unitTypes';
 
-/** Decode literal syntax only; default expressions never run during indexing. */
-export function parameterDefault(node: ts.Expression | undefined): Pick<ContractItem, 'default'> {
-	if (!node) return {};
+/** Without a type checker, any possible binding in this source makes bare undefined ambiguous. */
+export function sourceAllowsUndefined(code: string): boolean {
+	if (!code.includes('undefined') && !code.includes('\\')) return true;
+	const file = ts.createSourceFile('defaults.ts', code, ts.ScriptTarget.Latest, true);
+	function shadowed(node: ts.Node): true | undefined {
+		if (ts.isWithStatement(node)) return true;
+		if (
+			ts.isIdentifier(node) &&
+			node.text === 'undefined' &&
+			(node.parent as ts.NamedDeclaration).name === node
+		)
+			return true;
+		return ts.forEachChild(node, shadowed);
+	}
+	return !ts.forEachChild(file, shadowed);
+}
+
+export function inputDefault(
+	node: ts.Expression | undefined,
+	omitted: boolean,
+	allowBareUndefined: boolean
+): Pick<ContractItem, 'default' | 'defaultKind'> {
+	if (!node) return omitted ? { defaultKind: 'omitted' } : {};
+	const value = unwrapDefault(node);
+	if (allowBareUndefined && ts.isIdentifier(value) && value.text === 'undefined')
+		return { defaultKind: 'undefined' };
+	if (ts.isVoidExpression(value)) {
+		const operand = unwrapDefault(value.expression);
+		if (ts.isNumericLiteral(operand) && Number(operand.text) === 0)
+			return { defaultKind: 'undefined' };
+	}
+	return parameterDefault(value);
+}
+
+function unwrapDefault(node: ts.Expression): ts.Expression {
 	if (
 		ts.isParenthesizedExpression(node) ||
 		ts.isAsExpression(node) ||
 		ts.isSatisfiesExpression(node)
 	)
-		return parameterDefault(node.expression);
+		return unwrapDefault(node.expression);
+	return node;
+}
+
+/** Decode literal syntax only; default expressions never run during indexing. */
+export function parameterDefault(node: ts.Expression | undefined): Pick<ContractItem, 'default'> {
+	if (!node) return {};
+	node = unwrapDefault(node);
 	const primitive = primitiveDefault(node);
 	if (primitive) return primitive;
 	if (ts.isArrayLiteralExpression(node)) {

@@ -23,7 +23,7 @@
 				"name": "HtmlSelect.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional content rendered inside the native select element only when it is provided; omitting it leaves the select with no content. The component does not validate the content, so native HTML content rules still apply."
 			}
 		],

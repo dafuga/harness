@@ -233,7 +233,7 @@
 				"name": "EntityDetails.tab",
 				"type": "ExplorerTab | 'summary'",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "When undefined, the component renders the contract with its measurement summary; 'source', 'measurements', and 'summary' select their corresponding panels. Other ExplorerTab values follow the default contract branch.",
 				"examples": ["summary"]
 			},
@@ -241,7 +241,7 @@
 				"name": "EntityDetails.repository",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional GitHub repository base URL used to create source links. Links require the exact github.com owner/repository pattern, a lowercase 40- or 64-character hexadecimal commit, and a safe relative file path; otherwise the files remain unlinked.",
 				"examples": ["https://github.com/octocat/Hello-World"]
 			},
@@ -256,7 +256,7 @@
 				"name": "EntityDetails.nav",
 				"type": "EntityNav",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional revision-scoped navigation object passed to EntitySource on the Source tab. File actions are omitted when it is undefined, and an action has no callback unless nav.source is supplied."
 			}
 		],

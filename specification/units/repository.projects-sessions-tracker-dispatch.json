@@ -220,7 +220,8 @@
 			{
 				"name": "recordLaunchEvents.writes",
 				"type": "TrackerDispatchWrites",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "recordLaunchEvents.at",
@@ -823,7 +824,8 @@
 					{
 						"name": "recordLaunchEvents.writes",
 						"type": "TrackerDispatchWrites",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "recordLaunchEvents.at",

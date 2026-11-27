@@ -26,7 +26,7 @@
 				"name": "SvgFeDropShadow.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "A Svelte Snippet whose rendered output becomes the content of the feDropShadow element; when omitted, the element has no content. It is destructured out of the props so it is never spread onto the element as an attribute, and the component calls it with no arguments only when it is truthy, without checking anything else about the value."
 			}
 		],

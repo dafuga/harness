@@ -22,7 +22,8 @@
 			{
 				"name": "containerBrowserState.directory",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "containerBrowserSources.from",
@@ -59,7 +60,8 @@
 					{
 						"name": "containerBrowserState.directory",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

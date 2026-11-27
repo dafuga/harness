@@ -31,7 +31,7 @@
 				"name": "AccountSignIn.status",
 				"type": "NativeHostedStatus",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Hosted account status selects checking, configured sign-in, pending handoff, or unavailable states."
 			},
 			{

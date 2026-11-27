@@ -25,6 +25,7 @@
 				"name": "newScopeKeys.rotating",
 				"type": "RawScopeKeys",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Current scope keys for a rotation. Omit to create a scope at epoch zero."
 			},
 			{
@@ -107,6 +108,7 @@
 						"name": "newScopeKeys.rotating",
 						"type": "RawScopeKeys",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Current scope keys for a rotation. Omit to create a scope at epoch zero."
 					}
 				],

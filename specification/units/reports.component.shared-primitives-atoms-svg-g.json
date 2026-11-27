@@ -23,7 +23,7 @@
 				"name": "SvgG.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet rendered inside the g element only when it is truthy; when it is omitted, this component renders no child content. It matters when the caller needs nested content inside the group, and the component adds no validation, so whatever the snippet renders passes through unchanged."
 			}
 		],

@@ -71,6 +71,7 @@
 				"name": "trackerItemInput.current",
 				"type": "TrackerItemSnapshot",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Existing item when updating, omitted for creation."
 			},
 			{
@@ -149,6 +150,7 @@
 				"name": "trackerItemLaunchFields.current",
 				"type": "TrackerItemSnapshot",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Existing item used for updates. Missing when this request creates an item."
 			}
 		],
@@ -213,6 +215,7 @@
 						"name": "trackerItemInput.current",
 						"type": "TrackerItemSnapshot",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Existing item when updating, omitted for creation."
 					}
 				],
@@ -391,6 +394,7 @@
 						"name": "trackerItemLaunchFields.current",
 						"type": "TrackerItemSnapshot",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Existing item used for updates. Missing when this request creates an item."
 					}
 				],

@@ -23,7 +23,7 @@
 				"name": "HtmlLegend.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet rendered inside the native legend when provided. When absent, no child content is rendered."
 			}
 		],

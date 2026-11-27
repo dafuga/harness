@@ -44,6 +44,7 @@
 				"name": "reportFilter.pairs",
 				"type": "ReadonlyMap<string, Evidence>",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional after-to-before pair map allowing either member to satisfy all filters."
 			},
 			{
@@ -127,6 +128,7 @@
 						"name": "reportFilter.pairs",
 						"type": "ReadonlyMap<string, Evidence>",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional after-to-before pair map allowing either member to satisfy all filters."
 					}
 				],

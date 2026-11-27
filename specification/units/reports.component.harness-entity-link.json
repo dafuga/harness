@@ -47,7 +47,7 @@
 				"name": "EntityLink.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional accessible name forwarded to aria-label when the visible text alone does not say where the link leads. When omitted, its value is undefined and this component adds no fallback label.",
 				"examples": ["Open the Entity link contract", "View the Entity link source"]
 			},

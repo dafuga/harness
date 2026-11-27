@@ -24,7 +24,7 @@
 				"name": "platformStatus.platform",
 				"type": "PlatformEntry",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The selected revision’s PlatformEntry declaration, when one is available. The function reads only status; when omitted, it defaults to undefined and reports not-recorded.",
 				"examples": [
 					{
@@ -106,7 +106,7 @@
 						"name": "platformStatus.platform",
 						"type": "PlatformEntry",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "The selected revision’s PlatformEntry declaration, when one is available. The function reads only status; when omitted, it defaults to undefined and reports not-recorded.",
 						"examples": [
 							{

@@ -5,6 +5,7 @@ import type { ContractItem } from '../../core/development-tooling/unitTypes';
 import { blockSpans, type BlockSpan } from './block-spans/blockSpans';
 import { maskSource } from './maskSource';
 import { normalizeType, parseParameters } from './parseParameters';
+import { sourceAllowsUndefined } from './parameterDefault';
 import { bodyEnd, matchingBrace, sourceNesting, type SourceNesting } from './sourceNesting';
 import { callsCliFail, scanSymbolErrors } from './scanSymbolErrors';
 
@@ -18,9 +19,17 @@ const defaultStart =
 const hidden = /^(?:(?:static|override|async|readonly)\s+)*(?:private|protected|#)/;
 
 /** Lists exported symbols with the inputs and outputs readable from their signatures. */
-export function scanExports(code: string): ExportScan {
+export function scanExports(
+	code: string,
+	allowBareUndefined: boolean = sourceAllowsUndefined(code)
+): ExportScan {
 	const masked = maskSource(code);
-	const source: Source = { code, masked, nesting: sourceNesting(masked) };
+	const source: Source = {
+		code,
+		masked,
+		nesting: sourceNesting(masked),
+		allowBareUndefined
+	};
 	const spans = blockSpans(masked);
 	const located = [
 		...matches(source, callable).map((match) => callableSymbol(source, match)),
@@ -103,7 +112,7 @@ function signatureAt(
 	const inputs = parseParameters(
 		source.code.slice(open + 1, close),
 		source.masked.slice(open + 1, close),
-		{ owner }
+		{ owner, allowBareUndefined: source.allowBareUndefined }
 	);
 	return { inputs, output: returnType(source, close) };
 }

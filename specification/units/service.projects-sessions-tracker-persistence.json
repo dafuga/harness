@@ -66,7 +66,8 @@
 			{
 				"name": "TrackerPersistenceService.opsSince.filter",
 				"type": "TrackerOperationFilter",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerPersistenceService.countLocalOpsSince.seq",
@@ -81,7 +82,8 @@
 			{
 				"name": "TrackerPersistenceService.countOpsSince.node",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerPersistenceService.applyOps.operations",
@@ -96,7 +98,8 @@
 			{
 				"name": "TrackerPersistenceService.appendLocal.persist",
 				"type": "() => void",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerPersistenceService.commitLocal.decide",
@@ -223,7 +226,8 @@
 					{
 						"name": "TrackerPersistenceService.opsSince.filter",
 						"type": "TrackerOperationFilter",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -264,7 +268,8 @@
 					{
 						"name": "TrackerPersistenceService.countOpsSince.node",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -305,7 +310,8 @@
 					{
 						"name": "TrackerPersistenceService.appendLocal.persist",
 						"type": "() => void",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

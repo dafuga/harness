@@ -94,6 +94,7 @@
 				"name": "committedSourcePaths.ranges",
 				"type": "Map<string, SourceRange[]>",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional map of source paths with changed line ranges to consider."
 			},
 			{
@@ -292,6 +293,7 @@
 				"name": "repairSiblings.onResult",
 				"type": "(results: SiblingRepairResult[]) => Promise<void>",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional callback to persist accumulated outcomes after each repair."
 			},
 			{
@@ -498,6 +500,7 @@
 						"name": "committedSourcePaths.ranges",
 						"type": "Map<string, SourceRange[]>",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional map of source paths with changed line ranges to consider."
 					}
 				],
@@ -896,6 +899,7 @@
 						"name": "repairSiblings.onResult",
 						"type": "(results: SiblingRepairResult[]) => Promise<void>",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional callback to persist accumulated outcomes after each repair."
 					}
 				],

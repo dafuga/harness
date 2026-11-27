@@ -66,7 +66,7 @@
 				"name": "EvidenceCard.before",
 				"type": "Evidence",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Evidence record used only when item classifies as audio; its presence selects AudioComparison instead of AudioEvidence. It is ignored for image cards.",
 				"examples": [
 					{

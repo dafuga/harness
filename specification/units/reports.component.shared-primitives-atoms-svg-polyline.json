@@ -23,7 +23,7 @@
 				"name": "SvgPolyline.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte Snippet rendered inside the native SVG <polyline> when truthy; if omitted or falsy, no child content is rendered. The component invokes it without arguments and does not transform its output."
 			}
 		],

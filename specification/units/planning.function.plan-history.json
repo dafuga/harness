@@ -73,7 +73,7 @@
 				"name": "commits.path",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional repository path passed to git log after '--', so only commits touching it are listed. An empty string or an omitted value applies no path filter.",
 				"examples": [
 					"plans/reports.component.evidence-grid",
@@ -90,7 +90,7 @@
 				"name": "revisionInfo.requested",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Branch, tag or commit to resolve; omitted means HEAD. A provided value is returned unchanged in the requested field, and an omitted value appears there as null.",
 				"examples": ["main", "v1.4.0", "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"]
 			}
@@ -435,7 +435,7 @@
 						"name": "commits.path",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional repository path passed to git log after '--', so only commits touching it are listed. An empty string or an omitted value applies no path filter.",
 						"examples": [
 							"plans/reports.component.evidence-grid",
@@ -499,7 +499,7 @@
 						"name": "revisionInfo.requested",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Branch, tag or commit to resolve; omitted means HEAD. A provided value is returned unchanged in the requested field, and an omitted value appears there as null.",
 						"examples": ["main", "v1.4.0", "c4e8a1f7d2b9063e5a7c1f8d4b2e6a0c9f3d5b71"]
 					}

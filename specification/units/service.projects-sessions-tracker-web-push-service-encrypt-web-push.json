@@ -33,6 +33,7 @@
 				"name": "encryptWebPush.seed",
 				"type": "WebPushSeed",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Fixed salt and one-time key for the published test vector only."
 			}
 		],
@@ -65,6 +66,7 @@
 						"name": "encryptWebPush.seed",
 						"type": "WebPushSeed",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Fixed salt and one-time key for the published test vector only."
 					}
 				],

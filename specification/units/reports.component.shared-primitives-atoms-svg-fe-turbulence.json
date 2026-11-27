@@ -26,7 +26,7 @@
 				"name": "SvgFeTurbulence.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Snippet whose rendered output becomes the content of the feTurbulence element; it matters only when the caller needs content inside the element, and when it is omitted nothing is rendered in its place. The component passes that output straight into the element without validating or filtering it."
 			}
 		],

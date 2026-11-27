@@ -15,6 +15,14 @@ export async function assertContractDocumentation(
 		'retain-authored-method-and-constructor-contracts',
 		() => indexFiles(files, declared)
 	);
+	const call = unitOf(again, 'function.call');
+	expect(call.contract.inputs.find((field) => field.name === 'call.flag')).toEqual({
+		name: 'call.flag',
+		type: 'boolean',
+		required: false,
+		default: false,
+		description: 'Shared input explanation.'
+	});
 	const model = unitOf(again, 'model.entry');
 	expect(unitOf(again, 'function.call').contract.operations?.[0].inputs[0].description).toBe(
 		'Shared input explanation.'
@@ -37,7 +45,7 @@ export async function assertContractDocumentation(
 		}
 	]);
 	expect(unitOf(again, 'component.panel').contract.inputs).toContainEqual(
-		expect.objectContaining({ name: 'Panel.children', default: 'undefined (omitted)' })
+		expect.objectContaining({ name: 'Panel.children', defaultKind: 'omitted' })
 	);
 	expect((await indexFiles(files, again.result.manifests)).result.updated).toEqual([]);
 }
@@ -50,6 +58,7 @@ function documented(unit: ComponentManifest): ComponentManifest {
 			origin: 'declared' as const,
 			inputs: unit.contract.inputs.map((field) => ({
 				...field,
+				...(field.name === 'call.flag' ? { default: false, defaultKind: undefined } : {}),
 				description: 'Shared input explanation.'
 			})),
 			operations: unit.contract.operations?.map((operation) => ({

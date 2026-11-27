@@ -26,7 +26,7 @@
 				"name": "SvgDesc.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet rendered inside the desc element with {@render children()} only when it is truthy; when it is omitted, the element has no content. The component adds no wrapper element or text of its own, and it invokes the value as a function, so it must be a snippet."
 			}
 		],

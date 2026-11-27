@@ -45,7 +45,8 @@
 			{
 				"name": "trackerRequest.init",
 				"type": "RequestInit",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "readReply.response",
@@ -135,7 +136,8 @@
 					{
 						"name": "trackerRequest.init",
 						"type": "RequestInit",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

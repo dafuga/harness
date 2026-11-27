@@ -96,7 +96,7 @@
 				"name": "artifactCases.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional unit identifier used only to filter recorded-invocation documents; a different `unitId` produces a gap, while legacy observations are not filtered. Defaults to undefined, so omitting it leaves valid recorded invocations unfiltered.",
 				"examples": ["reports.function.artifact-cases"]
 			}
@@ -279,7 +279,7 @@
 						"name": "artifactCases.unit",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional unit identifier used only to filter recorded-invocation documents; a different `unitId` produces a gap, while legacy observations are not filtered. Defaults to undefined, so omitting it leaves valid recorded invocations unfiltered.",
 						"examples": ["reports.function.artifact-cases"]
 					}

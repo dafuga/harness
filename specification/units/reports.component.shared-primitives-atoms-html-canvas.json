@@ -23,7 +23,7 @@
 				"name": "HtmlCanvas.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte Snippet that the component invokes and renders inside the canvas when present. If omitted, no snippet content is rendered, and the component does not transform the snippet."
 			}
 		],

@@ -93,6 +93,7 @@
 				"name": "RemoteFailure.constructor.message",
 				"type": "string",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional display text for the failure. If omitted or nullish at runtime, the constructor uses remoteErrorMessages[code].",
 				"examples": [
 					"The request was not understood.",
@@ -372,6 +373,7 @@
 						"name": "RemoteFailure.constructor.message",
 						"type": "string",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional display text for the failure. If omitted or nullish at runtime, the constructor uses remoteErrorMessages[code].",
 						"examples": [
 							"The request was not understood.",

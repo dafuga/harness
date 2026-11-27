@@ -23,7 +23,7 @@
 				"name": "HtmlInputImage.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet read from `children` when the component receives props. The component does not insert it into the `<input type=\"image\">` body, which remains a void element."
 			}
 		],

@@ -23,7 +23,7 @@
 				"name": "SvgEllipse.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet rendered inside the native ellipse when supplied. The component invokes the snippet without transforming its output."
 			}
 		],

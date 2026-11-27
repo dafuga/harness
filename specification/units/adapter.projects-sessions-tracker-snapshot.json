@@ -44,7 +44,8 @@
 			{
 				"name": "TrackerSnapshotAdapter.read.sync",
 				"type": "TrackerSnapshotSyncOptions",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerSnapshotAdapter.compare.beforePath",
@@ -59,7 +60,8 @@
 			{
 				"name": "TrackerSnapshotAdapter.compare.sync",
 				"type": "TrackerSnapshotSyncOptions",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerSnapshotError.constructor.message",
@@ -159,7 +161,8 @@
 					{
 						"name": "TrackerSnapshotAdapter.read.sync",
 						"type": "TrackerSnapshotSyncOptions",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -192,7 +195,8 @@
 					{
 						"name": "TrackerSnapshotAdapter.compare.sync",
 						"type": "TrackerSnapshotSyncOptions",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

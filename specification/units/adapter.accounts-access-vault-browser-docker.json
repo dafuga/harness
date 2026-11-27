@@ -69,7 +69,8 @@
 			{
 				"name": "browserDockerArgs.network",
 				"type": "VaultFixtureNetwork",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "browserDockerEgress.origins",
@@ -253,7 +254,8 @@
 					{
 						"name": "browserDockerArgs.network",
 						"type": "VaultFixtureNetwork",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

@@ -25,7 +25,7 @@
 				"name": "taskApiCost.usage",
 				"type": "TaskUsage",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "CLI token counters for one task (inputTokens, outputTokens, cacheReadTokens, cacheWriteTokens, cacheWriteLongTokens); a finite reportedCostUsd of zero or more is returned unchanged as usd, minimumUsd and maximumUsd with basis 'cli-reported'. Without a valid reportedCostUsd, omitted usage (default undefined), a null inputTokens or outputTokens, or contradictory cache counters (cacheReadTokens, or cacheReadTokens plus cacheWriteTokens, above inputTokens; cacheWriteLongTokens above a non-null cacheWriteTokens) give basis 'unavailable' with null amounts.",
 				"examples": [
 					{
@@ -114,7 +114,7 @@
 						"name": "taskApiCost.usage",
 						"type": "TaskUsage",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "CLI token counters for one task (inputTokens, outputTokens, cacheReadTokens, cacheWriteTokens, cacheWriteLongTokens); a finite reportedCostUsd of zero or more is returned unchanged as usd, minimumUsd and maximumUsd with basis 'cli-reported'. Without a valid reportedCostUsd, omitted usage (default undefined), a null inputTokens or outputTokens, or contradictory cache counters (cacheReadTokens, or cacheReadTokens plus cacheWriteTokens, above inputTokens; cacheWriteLongTokens above a non-null cacheWriteTokens) give basis 'unavailable' with null amounts.",
 						"examples": [
 							{

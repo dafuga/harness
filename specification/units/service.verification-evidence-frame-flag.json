@@ -157,7 +157,7 @@
 				"name": "defaultAttachedReader.pinned",
 				"type": "PinnedHistory",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened. Omission passes undefined; the implementation applies the documented optional behavior."
 			},
 			{
@@ -332,14 +332,14 @@
 				"name": "readFrameFlags.reader",
 				"type": "FrameClipReader",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior."
 			},
 			{
 				"name": "readFrameFlags.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional owning unit. When supplied, return only its flags and open only its resolution media while checking every retained flag and resolution metadata binding; omission replays all owners."
 			},
 			{
@@ -388,7 +388,7 @@
 				"name": "readFrameCapture.pinned",
 				"type": "PinnedHistory",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes. Omission passes undefined; the implementation applies the documented optional behavior."
 			}
 		],
@@ -740,7 +740,7 @@
 						"name": "defaultAttachedReader.pinned",
 						"type": "PinnedHistory",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional fixed evidence and notes snapshot; supplied bounds are never widened. Omission passes undefined; the implementation applies the documented optional behavior."
 					}
 				],
@@ -1213,14 +1213,14 @@
 						"name": "readFrameFlags.reader",
 						"type": "FrameClipReader",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Exact-reference clip reader; its returned claim is independently validated before use. Omission passes undefined; the implementation applies the documented optional behavior."
 					},
 					{
 						"name": "readFrameFlags.unit",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional owning unit. When supplied, return only its flags and open only its resolution media while checking every retained flag and resolution metadata binding; omission replays all owners."
 					}
 				],
@@ -1334,7 +1334,7 @@
 						"name": "readFrameCapture.pinned",
 						"type": "PinnedHistory",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Immutable evidence and notes commits; null refuses unavailable evidence or notes. Omission passes undefined; the implementation applies the documented optional behavior."
 					}
 				],

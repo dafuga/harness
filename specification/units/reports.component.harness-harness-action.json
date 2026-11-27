@@ -26,7 +26,7 @@
 				"name": "HarnessAction.href",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional address passed as the href of the rendered link. A nonempty href with disabled false renders an hx-a link, while an empty or omitted href, or disabled set to true, renders an hx-button instead.",
 				"examples": ["/reports/explorer/index.html", "https://example.com/reports/summary"]
 			},
@@ -34,7 +34,7 @@
 				"name": "HarnessAction.onclick",
 				"type": "(event: MouseEvent) => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional click handler that receives the MouseEvent; on a link it runs only for a plain click, with preventDefault called first, and a click with a modifier or with another mouse button is left to the browser. On a button it is called for each click the button receives."
 			},
 			{
@@ -57,7 +57,7 @@
 				"name": "HarnessAction.icon",
 				"type": "HarnessIconName",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional trailing icon, drawn after the children content at size 18. Its value is a HarnessIconName, one of the keys of harnessIcons; when undefined, no trailing icon is rendered.",
 				"examples": ["arrow-right", "external", "chevron-right"]
 			},
@@ -65,7 +65,7 @@
 				"name": "HarnessAction.lead",
 				"type": "HarnessIconName",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional leading icon, drawn before the children content at size 18. Its value is a HarnessIconName, one of the keys of harnessIcons; when undefined, no leading icon is rendered.",
 				"examples": ["search", "file", "list"]
 			},
@@ -73,7 +73,7 @@
 				"name": "HarnessAction.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional fuller accessible name, set as the aria-label of the rendered link or button. When undefined, the component sets no aria-label.",
 				"examples": ["Open the full explorer report", "Show every unit in this group"]
 			},

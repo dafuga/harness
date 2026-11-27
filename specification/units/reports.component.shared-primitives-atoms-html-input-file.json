@@ -23,7 +23,7 @@
 				"name": "HtmlInputFile.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet that is destructured out of the props, so it is never spread onto the input and never rendered. It never changes the output, because the template does not reference it and the input element renders no child content."
 			}
 		],

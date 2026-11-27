@@ -23,7 +23,7 @@
 				"name": "HtmlOptgroup.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet whose markup renders inside the optgroup element; it is called with no arguments only when it is truthy, so omitting it leaves the optgroup without content. The component does not inspect or filter that markup, so the HTML content model of the optgroup element governs what it renders."
 			}
 		],

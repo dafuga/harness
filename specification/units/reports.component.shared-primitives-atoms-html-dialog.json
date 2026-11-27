@@ -23,7 +23,7 @@
 				"name": "HtmlDialog.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet rendered inside the native dialog when provided; it is invoked only when truthy. When omitted, it is undefined and no child content is rendered."
 			}
 		],

@@ -28,7 +28,7 @@
 				"name": "SvgFeComponentTransfer.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet, called with no arguments and rendered inside the feComponentTransfer element through {@render children()} only when it is truthy; when it is omitted, no snippet content is rendered. The value is removed from the rest props before the attributes are spread, so it is never set as an attribute, and the component does not validate or restrict what the snippet renders."
 			}
 		],

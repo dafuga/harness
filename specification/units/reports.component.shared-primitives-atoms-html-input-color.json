@@ -23,7 +23,7 @@
 				"name": "HtmlInputColor.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet accepted as a prop but not forwarded or rendered, because the component emits no child content for the native input. Its value has no effect on the rendered control."
 			}
 		],

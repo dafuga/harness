@@ -31,7 +31,7 @@
 				"name": "apiAgent.method",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "API method name passed to client.call when operation is call; other branches ignore it. There is no runtime check, so omission passes undefined to client.call despite the TypeScript non-null assertion.",
 				"examples": ["createPlan", "events", "startRun"]
 			},
@@ -132,7 +132,7 @@
 						"name": "apiAgent.method",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "API method name passed to client.call when operation is call; other branches ignore it. There is no runtime check, so omission passes undefined to client.call despite the TypeScript non-null assertion.",
 						"examples": ["createPlan", "events", "startRun"]
 					}

@@ -79,7 +79,8 @@
 			{
 				"name": "TrackerRecurringRepository.settle.outcome",
 				"type": "TrackerRecurringSettlement",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerRecurringRepository.history.id",
@@ -281,7 +282,8 @@
 					{
 						"name": "TrackerRecurringRepository.settle.outcome",
 						"type": "TrackerRecurringSettlement",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

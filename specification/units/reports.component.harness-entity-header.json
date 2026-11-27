@@ -180,7 +180,7 @@
 				"name": "EntityHeader.owner",
 				"type": "ExplorerEntity",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional owner entity used as the breadcrumb link only when the entity category is functions and explorerCategory(entity.unit) is null. If absent in that case, the breadcrumb text is Function; otherwise this prop is unused.",
 				"examples": [
 					{
@@ -324,7 +324,7 @@
 				"name": "EntityHeader.preview",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet rendered after the header and before the tabs; when absent, no preview is rendered."
 			},
 			{

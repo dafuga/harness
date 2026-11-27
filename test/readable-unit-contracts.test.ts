@@ -137,7 +137,7 @@ function assertContractFields(
 			if (group === 'inputs') expect(typeof field.required, `${id}: ${field.name}`).toBe('boolean');
 			if (group === 'inputs' && id.includes('.component.') && field.required === false)
 				expect(
-					Object.hasOwn(field, 'default') || /defaults?\b/i.test(field.description ?? ''),
+					recordsDefault(field) || /defaults?\b/i.test(field.description ?? ''),
 					`${id}: ${field.name} explains its omitted default`
 				).toBe(true);
 		}
@@ -149,7 +149,11 @@ function appendReviewedPropGaps(unit: ComponentManifest, gaps: string[]): void {
 		if (typeof field.required !== 'boolean')
 			gaps.push(`${unit.id}: required flag for ${field.name}`);
 		const documentedDefault = /Defaults to /.test(field.description ?? '');
-		if (field.required === false && !Object.hasOwn(field, 'default') && !documentedDefault)
+		if (field.required === false && !recordsDefault(field) && !documentedDefault)
 			gaps.push(`${unit.id}: default for ${field.name}`);
 	}
+}
+
+function recordsDefault(field: ComponentManifest['contract']['inputs'][number]): boolean {
+	return Object.hasOwn(field, 'default') || field.defaultKind !== undefined;
 }

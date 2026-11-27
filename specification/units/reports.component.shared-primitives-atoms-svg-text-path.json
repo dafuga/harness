@@ -23,7 +23,7 @@
 				"name": "SvgTextPath.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet rendered as children of the native SVG <textPath> element when supplied; omitted children produce no child content."
 			}
 		],

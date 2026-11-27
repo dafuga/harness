@@ -66,7 +66,7 @@
 				"name": "jevMetrics.author",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "When present, this filters by exact event.agentModel equality, treating a missing agent model as \"unknown\". It applies to check counts, outcome counts, exclusions, and task summaries.",
 				"examples": ["gpt-6-luna"]
 			},
@@ -74,7 +74,7 @@
 				"name": "jevMetrics.model",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "When present and truthy, this keeps checks whose agentModel or evaluatorModel equals the model string. An omitted or empty string disables this filter.",
 				"examples": ["gpt-6-luna"]
 			}
@@ -172,7 +172,7 @@
 						"name": "jevMetrics.author",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "When present, this filters by exact event.agentModel equality, treating a missing agent model as \"unknown\". It applies to check counts, outcome counts, exclusions, and task summaries.",
 						"examples": ["gpt-6-luna"]
 					},
@@ -180,7 +180,7 @@
 						"name": "jevMetrics.model",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "When present and truthy, this keeps checks whose agentModel or evaluatorModel equals the model string. An omitted or empty string disables this filter.",
 						"examples": ["gpt-6-luna"]
 					}

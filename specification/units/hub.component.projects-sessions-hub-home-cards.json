@@ -94,12 +94,14 @@
 					{
 						"name": "HubHomeCards.empty.action",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "HubHomeCards.empty.act",
 						"type": "() => void",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

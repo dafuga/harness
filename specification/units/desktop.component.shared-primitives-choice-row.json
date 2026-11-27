@@ -55,7 +55,7 @@
 				"name": "ChoiceRow.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional accessible name that describes the action taken when the row is chosen."
 			},
 			{

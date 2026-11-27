@@ -37,7 +37,8 @@
 			{
 				"name": "childStream.env",
 				"type": "Record<string, string | undefined>",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -114,7 +115,8 @@
 					{
 						"name": "childStream.env",
 						"type": "Record<string, string | undefined>",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

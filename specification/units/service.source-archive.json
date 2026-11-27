@@ -92,6 +92,7 @@
 				"name": "SourceArchiveService.archive.side",
 				"type": "StoredSide",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Selected revision graph and authored scenarios for direct test imports and declared test coverage; absent historical graphs provide no inferred tests.",
 				"examples": [
 					{
@@ -246,6 +247,7 @@
 				"name": "testImporters.side",
 				"type": "StoredSide",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional compact graph for the selected revision; without it there are no direct-import edges to index.",
 				"examples": [
 					{
@@ -373,6 +375,7 @@
 						"name": "SourceArchiveService.archive.side",
 						"type": "StoredSide",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Selected revision graph and authored scenarios for direct test imports and declared test coverage; absent historical graphs provide no inferred tests.",
 						"examples": [
 							{
@@ -580,6 +583,7 @@
 						"name": "testImporters.side",
 						"type": "StoredSide",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional compact graph for the selected revision; without it there are no direct-import edges to index.",
 						"examples": [
 							{

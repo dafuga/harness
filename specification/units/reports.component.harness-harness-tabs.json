@@ -40,7 +40,7 @@
 				"name": "HarnessTabs.tabs",
 				"type": "Array<HarnessTab<View>>",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "When omitted, the component uses the built-in map, compare, history, growth, and activity tabs; an empty array renders no tabs. Each item.id is the keyed-list key, and an item with a truthy href is rendered as a link only when it is not disabled; all other items render as buttons.",
 				"examples": [
 					[

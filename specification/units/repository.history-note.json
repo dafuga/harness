@@ -50,7 +50,7 @@
 				"name": "HistoryNoteRepository.read.at",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Omit to read the current notes ref. Supply the full immutable notes-commit hash to read only the supplied source commit note from that snapshot; null holds no notes. An absent source note yields empty entries and problems. Other note blobs are not read or parsed.",
 				"examples": ["89abcdef89abcdef89abcdef89abcdef89abcdef", null]
 			},
@@ -100,7 +100,7 @@
 				"name": "HistoryNoteRepository.all.at",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional full lowercase 40-character commit hash of a notes commit whose tree should be read; null yields an empty Map and omission reads the current notes ref. A supplied non-null value outside that hash format throws ExpectedCliError.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 			}
@@ -249,7 +249,7 @@
 						"name": "HistoryNoteRepository.read.at",
 						"type": "string | null",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Omit to read the current notes ref. Supply the full immutable notes-commit hash to read only the supplied source commit note from that snapshot; null holds no notes. An absent source note yields empty entries and problems. Other note blobs are not read or parsed.",
 						"examples": ["89abcdef89abcdef89abcdef89abcdef89abcdef", null]
 					}
@@ -416,7 +416,7 @@
 						"name": "HistoryNoteRepository.all.at",
 						"type": "string | null",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional full lowercase 40-character commit hash of a notes commit whose tree should be read; null yields an empty Map and omission reads the current notes ref. A supplied non-null value outside that hash format throws ExpectedCliError.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567", null]
 					}

@@ -31,7 +31,7 @@
 				"name": "ChoiceRows.title",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional heading displayed above the rows. Defaults to no heading."
 			},
 			{

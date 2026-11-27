@@ -74,21 +74,21 @@
 				"name": "Status.cancel",
 				"type": "() => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Provides the callback for the Cancel run button and defaults to undefined. It is only attached when run mode has a truthy label and active is true; callback errors propagate."
 			},
 			{
 				"name": "Status.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Provides custom run content and defaults to undefined. Run mode renders it instead of the label when both the snippet and a truthy label are present; rendering errors propagate."
 			},
 			{
 				"name": "Status.label",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Supplies the displayed label and defaults to undefined; verdict mode derives Full coverage passed or Verification failed when it is absent. Run mode renders nothing unless the label is truthy.",
 				"examples": ["Full coverage passed", "Verification failed", "Generating report"]
 			},
@@ -115,7 +115,7 @@
 				"name": "Status.bare",
 				"type": "boolean",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Accepts a compatibility boolean and defaults to undefined. The value is not read when rendering; verdict mode always draws only the icon.",
 				"examples": [false, true]
 			}

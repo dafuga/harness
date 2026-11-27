@@ -6922,6 +6922,13 @@
 			"definition": "ae33aafa7296de2b03252581b006603800be4ef0d6eb07d3f7a53d59d0da24e0",
 			"to": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts",
 			"ownerSource": "packages/desktop/src/utils/execution-runtimes/ipc-payload/ipcPayload.ts"
+		},
+		{
+			"unit": "function.scan-component",
+			"name": "scanComponent",
+			"commit": "9b4e5dab21a4043b228b24010d4793de18f27f30",
+			"definition": "027976949fb56eeba06cacd9f6f2eb4138d0330d7eb88e23e7bcf4237897712d",
+			"reason": "Distinguish omitted and undefined prop defaults with both script scopes available."
 		}
 	],
 	"retiredOwners": [

@@ -23,7 +23,7 @@
 				"name": "HtmlInputDate.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet prop, destructured out of the props so it is never spread onto the input as an attribute. The markup never renders it, so passing it has no effect on the output."
 			}
 		],

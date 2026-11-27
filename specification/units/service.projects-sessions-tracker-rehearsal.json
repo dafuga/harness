@@ -32,7 +32,8 @@
 			{
 				"name": "TrackerRehearsalService.start.options",
 				"type": "Omit<TrackerNativeRuntimeOptions, 'node'>",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -70,7 +71,8 @@
 					{
 						"name": "TrackerRehearsalService.start.options",
 						"type": "Omit<TrackerNativeRuntimeOptions, 'node'>",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

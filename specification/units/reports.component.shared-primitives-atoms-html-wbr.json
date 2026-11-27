@@ -26,7 +26,7 @@
 				"name": "HtmlWbr.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte child snippet accepted by the component. It is destructured but not rendered because this component emits the void <wbr> element with an empty body."
 			}
 		],

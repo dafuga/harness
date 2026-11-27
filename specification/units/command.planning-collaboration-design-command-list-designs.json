@@ -24,12 +24,14 @@
 				"name": "listDesigns.canvas",
 				"type": "string",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Canvas name, or the canvas data to show or record."
 			},
 			{
 				"name": "listDesigns.json",
 				"type": "boolean",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Print JSON instead of text."
 			}
 		],
@@ -56,12 +58,14 @@
 						"name": "listDesigns.canvas",
 						"type": "string",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Canvas name, or the canvas data to show or record."
 					},
 					{
 						"name": "listDesigns.json",
 						"type": "boolean",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Print JSON instead of text."
 					}
 				],

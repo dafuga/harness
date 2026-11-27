@@ -20,12 +20,14 @@
 				"name": "createHomeSnapshotReader.providerFile",
 				"type": "string",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional owner-managed provider quota file. Defaults to none, which leaves quota unknown."
 			},
 			{
 				"name": "createHomeSnapshotReader.sources",
 				"type": "QuotaSource[]",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -45,12 +47,14 @@
 						"name": "createHomeSnapshotReader.providerFile",
 						"type": "string",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional owner-managed provider quota file. Defaults to none, which leaves quota unknown."
 					},
 					{
 						"name": "createHomeSnapshotReader.sources",
 						"type": "QuotaSource[]",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

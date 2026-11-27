@@ -23,7 +23,7 @@
 				"name": "HtmlInputMonth.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet that the component destructures out of its props, so it is never spread onto the input as an attribute. The markup never references it, so passing a snippet has no effect on the rendered input."
 			}
 		],

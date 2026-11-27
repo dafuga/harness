@@ -38,7 +38,8 @@
 			{
 				"name": "TrackerCliAdapter.list.status",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerCliAdapter.show.id",
@@ -93,7 +94,8 @@
 					{
 						"name": "TrackerCliAdapter.list.status",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

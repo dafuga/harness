@@ -23,7 +23,7 @@
 				"name": "HtmlInputTime.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte snippet that is destructured out of the props and never rendered, so passing one has no effect on the output. The element is an input, which is a void element, so it can never contain child content."
 			}
 		],

@@ -26,7 +26,7 @@
 				"name": "SvgFeOffset.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet supplied as the element's children; when present, the component invokes it and renders its output inside the native feOffset element. If omitted, no child content is rendered."
 			}
 		],

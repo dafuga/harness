@@ -152,7 +152,7 @@
 				"name": "EntityArtifact.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The unit id of the function these results are shown for: when given, it is passed to EntityCases with callable set to true, and a recorded case document that names another unitId shows a gap that names the other unit instead of rows. Defaults to undefined (omitted), not the string 'undefined': callable is then false and cases are not filtered by unit.",
 				"examples": ["reports.function.entity-behavior", "reports.function.harness-evidence"]
 			}

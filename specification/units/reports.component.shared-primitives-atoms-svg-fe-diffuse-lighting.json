@@ -28,7 +28,7 @@
 				"name": "SvgFeDiffuseLighting.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte Snippet rendered inside the native feDiffuseLighting element when its value is truthy. The component calls it with no arguments and skips rendering it when its value is falsy."
 			}
 		],

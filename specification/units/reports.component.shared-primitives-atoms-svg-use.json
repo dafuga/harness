@@ -23,7 +23,7 @@
 				"name": "SvgUse.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet rendered as the child content of the native use element; when it is omitted, the use element renders no child content. The component invokes it as children() with no arguments and adds no wrapper around its output."
 			}
 		],

@@ -549,6 +549,7 @@
 				"name": "trackerTmuxKeys.message",
 				"type": "string",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Control-character-free message already checked by the caller."
 			},
 			{
@@ -1614,6 +1615,7 @@
 						"name": "trackerTmuxKeys.message",
 						"type": "string",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Control-character-free message already checked by the caller."
 					},
 					{

@@ -26,7 +26,7 @@
 				"name": "SvgFeMorphology.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet that is rendered inside the feMorphology element only when it is truthy; when it is omitted, nothing is rendered inside the element. The component calls it with no arguments and does not wrap, validate, or transform it."
 			}
 		],

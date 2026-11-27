@@ -39,7 +39,7 @@
 				"name": "ReportRepository.constructor.root",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional storage root. The constructor has no parameter initializer, so omission passes undefined; reportFiles then uses a truthy PROJECT_REPORTS_HOME or falls back to join(homedir(), '.codex', 'project-reports').",
 				"examples": ["/tmp/project-reports", "/var/tmp/project-reports"]
 			},
@@ -828,7 +828,7 @@
 						"name": "ReportRepository.constructor.root",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional storage root. The constructor has no parameter initializer, so omission passes undefined; reportFiles then uses a truthy PROJECT_REPORTS_HOME or falls back to join(homedir(), '.codex', 'project-reports').",
 						"examples": ["/tmp/project-reports", "/var/tmp/project-reports"]
 					}

@@ -26,7 +26,7 @@
 				"name": "SvgFeImage.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet rendered inside the feImage element when truthy. When omitted, it produces no rendered child content."
 			}
 		],

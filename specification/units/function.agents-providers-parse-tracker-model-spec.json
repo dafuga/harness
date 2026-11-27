@@ -29,6 +29,7 @@
 				"name": "ladderFrom.config",
 				"type": "TrackerLadderConfig",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional configuration overriding matching default ladder entries."
 			},
 			{
@@ -77,6 +78,7 @@
 						"name": "ladderFrom.config",
 						"type": "TrackerLadderConfig",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional configuration overriding matching default ladder entries."
 					}
 				],

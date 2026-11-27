@@ -268,7 +268,7 @@
 				"name": "EntityScreens.preview",
 				"type": "ScreenPick",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The scenario, state and viewport this page declares as its preview: with a focused scenario in options only the preview's state and viewport are used, otherwise its scenario and state are shown as given and kept by viewport buttons. When omitted (undefined), the focused scenario is shown if present, else the first scenario, each with its first state and viewport.",
 				"examples": [
 					{

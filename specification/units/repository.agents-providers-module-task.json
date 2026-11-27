@@ -79,7 +79,7 @@
 				"name": "ModuleTaskRepository.update.source",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional source commit supplied as a parent when creating a queue commit; when omitted, the prior queue commit is used, or HEAD seeds the first queue commit. The value must identify a commit Git accepts as a parent.",
 				"examples": ["0123456789abcdef0123456789abcdef01234567"]
 			},
@@ -287,7 +287,7 @@
 						"name": "ModuleTaskRepository.update.source",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional source commit supplied as a parent when creating a queue commit; when omitted, the prior queue commit is used, or HEAD seeds the first queue commit. The value must identify a commit Git accepts as a parent.",
 						"examples": ["0123456789abcdef0123456789abcdef01234567"]
 					}

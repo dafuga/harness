@@ -66,7 +66,7 @@
 				"name": "UsageExamples.setup",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Setup text placed before each call when setupTitle is not set; when setupTitle and a non-empty setup are both set, it is shown once as its own block and left out of the snippets. It is displayed as text and never executed, and documented setup is trimmed and limited to 32,000 characters.",
 				"examples": [
 					"const summary = { status: \"passed\", total: 3 };",
@@ -77,7 +77,7 @@
 				"name": "UsageExamples.setupTitle",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Heading for the setup block, rendered once above the example snippets only when a non-empty setup is also given. With both set, the setup appears under this heading and is not repeated inside each snippet.",
 				"examples": ["Create the service", "Setup"]
 			}
@@ -209,7 +209,7 @@
 						"name": "usageExamples.setup",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Setup text placed before the call in every returned snippet; an undefined or empty value adds no line, because falsy parts are filtered out.",
 						"examples": [
 							"const items = [1, 2, 3];",

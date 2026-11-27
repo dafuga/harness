@@ -184,6 +184,7 @@
 				"name": "TrackerDispatcherService.claim.grant",
 				"type": "TrackerDueGrant",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional spoke authorization bound to the current token and node. Only an unreachable hub permits configured sole-owner fallback."
 			},
 			{
@@ -202,6 +203,7 @@
 				"name": "TrackerDispatcherService.prepare.grant",
 				"type": "TrackerDueGrant",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional spoke authorization bound to the current token and node. Only an unreachable hub permits configured sole-owner fallback."
 			},
 			{
@@ -260,7 +262,8 @@
 			{
 				"name": "dueGrantHold.grant",
 				"type": "TrackerDueGrant",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "dueGrantHold.policy",
@@ -320,7 +323,8 @@
 			{
 				"name": "trackerFlagBlocksRecovery.question",
 				"type": "string | null",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "startable.item",
@@ -530,7 +534,8 @@
 			{
 				"name": "claimLaunch.grant",
 				"type": "TrackerDueGrant",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "claimLaunch.policy",
@@ -555,7 +560,8 @@
 			{
 				"name": "prepareRetry.grant",
 				"type": "TrackerDueGrant",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "prepareRetry.policy",
@@ -616,7 +622,8 @@
 			{
 				"name": "giveUp.reopen",
 				"type": "TrackerDispatchWrites['item']",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "activeRun.run",
@@ -651,7 +658,8 @@
 			{
 				"name": "hasOpenSession.except",
 				"type": "TrackerRunReceipt",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "attemptKey.run",
@@ -711,7 +719,8 @@
 			{
 				"name": "completeRun.usage",
 				"type": "TrackerReceiptUsage",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "etaFor.item",
@@ -766,7 +775,8 @@
 			{
 				"name": "recordRun.item",
 				"type": "TrackerDispatchWrites['item']",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "finishRun.run",
@@ -791,12 +801,14 @@
 			{
 				"name": "finishRun.exitCode",
 				"type": "number | null",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "finishRun.usage",
 				"type": "TrackerReceiptUsage",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "failRun.snapshot",
@@ -1070,6 +1082,7 @@
 						"name": "TrackerDispatcherService.claim.grant",
 						"type": "TrackerDueGrant",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional spoke authorization bound to the current token and node. Only an unreachable hub permits configured sole-owner fallback."
 					}
 				],
@@ -1102,6 +1115,7 @@
 						"name": "TrackerDispatcherService.prepare.grant",
 						"type": "TrackerDueGrant",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional spoke authorization bound to the current token and node. Only an unreachable hub permits configured sole-owner fallback."
 					}
 				],
@@ -1214,7 +1228,8 @@
 					{
 						"name": "dueGrantHold.grant",
 						"type": "TrackerDueGrant",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "dueGrantHold.policy",
@@ -1352,7 +1367,8 @@
 					{
 						"name": "trackerFlagBlocksRecovery.question",
 						"type": "string | null",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -1757,7 +1773,8 @@
 					{
 						"name": "claimLaunch.grant",
 						"type": "TrackerDueGrant",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "claimLaunch.policy",
@@ -1795,7 +1812,8 @@
 					{
 						"name": "prepareRetry.grant",
 						"type": "TrackerDueGrant",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "prepareRetry.policy",
@@ -1895,7 +1913,8 @@
 					{
 						"name": "giveUp.reopen",
 						"type": "TrackerDispatchWrites['item']",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -1956,7 +1975,8 @@
 					{
 						"name": "hasOpenSession.except",
 						"type": "TrackerRunReceipt",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -2068,7 +2088,8 @@
 					{
 						"name": "completeRun.usage",
 						"type": "TrackerReceiptUsage",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -2175,7 +2196,8 @@
 					{
 						"name": "recordRun.item",
 						"type": "TrackerDispatchWrites['item']",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -2213,12 +2235,14 @@
 					{
 						"name": "finishRun.exitCode",
 						"type": "number | null",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "finishRun.usage",
 						"type": "TrackerReceiptUsage",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

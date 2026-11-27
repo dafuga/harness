@@ -47,14 +47,14 @@
 				"name": "HubHomeAsk.submitted",
 				"type": "(message: HomeChatInput, receipt: HomeChatReceipt) => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Receives each queued answer and its receipt. Defaults to nothing being notified."
 			},
 			{
 				"name": "HubHomeAsk.present",
 				"type": "(content: Snippet | null) => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Renders a choice or written-answer dialog beside the Home list when provided."
 			}
 		],
@@ -76,7 +76,8 @@
 					{
 						"name": "HubHomeAsk.choices.done",
 						"type": "() => void",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

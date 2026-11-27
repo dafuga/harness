@@ -34,7 +34,7 @@
 				"name": "BrowserErrors.diagnostics",
 				"type": "BrowserDiagnostic[]",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional list of recorded test attempts, one BrowserDiagnostic per attempt with its observed errors (errors) and expected errors (expected), omitted (undefined) by default. Undefined shows an unavailable message, an empty array shows a no-entries message, and a non-empty array renders the Browser errors group; the component does not validate the shape, so each attempt must provide both arrays.",
 				"examples": [
 					[

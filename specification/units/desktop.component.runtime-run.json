@@ -196,7 +196,7 @@
 				"name": "RuntimeRun.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The identifier of the function the results are shown for, when they are shown as its rows; it is passed unchanged to every result's artifact. It is optional: when it is omitted, the artifact receives undefined.",
 				"examples": ["reports.function.entity-behavior"]
 			}

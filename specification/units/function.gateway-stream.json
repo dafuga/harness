@@ -30,7 +30,7 @@
 				"name": "gatewayStream.context",
 				"type": "{ key: string; signal: globalThis.AbortSignal }",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional replay key and abort signal read when the stream starts. A future abort event invokes `repository.cancel(session)` once if the stream is unfinished (an already-aborted signal is not checked), and a terminal event stores the captured stream under `key`; omitting the context skips both behaviors."
 			}
 		],
@@ -69,7 +69,7 @@
 						"name": "gatewayStream.context",
 						"type": "{ key: string; signal: globalThis.AbortSignal }",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional replay key and abort signal read when the stream starts. A future abort event invokes `repository.cancel(session)` once if the stream is unfinished (an already-aborted signal is not checked), and a terminal event stores the captured stream under `key`; omitting the context skips both behaviors."
 					}
 				],

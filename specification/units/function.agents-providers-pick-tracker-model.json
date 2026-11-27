@@ -56,12 +56,14 @@
 				"name": "retryTrackerModel.cfg",
 				"type": "TrackerLadderConfig",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional configuration for the current model ladder and eligibility rules."
 			},
 			{
 				"name": "retryTrackerModel.now",
 				"type": "number",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Epoch milliseconds that choose the routing table; defaults to the current time."
 			}
 		],
@@ -126,12 +128,14 @@
 						"name": "retryTrackerModel.cfg",
 						"type": "TrackerLadderConfig",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional configuration for the current model ladder and eligibility rules."
 					},
 					{
 						"name": "retryTrackerModel.now",
 						"type": "number",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Epoch milliseconds that choose the routing table; defaults to the current time."
 					}
 				],

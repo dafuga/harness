@@ -60,7 +60,8 @@
 			{
 				"name": "DevicePairingService.requestAccount.keys",
 				"type": "RemoteKeyPair",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "DevicePairingService.poll.pending",
@@ -153,7 +154,8 @@
 					{
 						"name": "DevicePairingService.requestAccount.keys",
 						"type": "RemoteKeyPair",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

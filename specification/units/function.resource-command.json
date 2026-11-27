@@ -43,7 +43,7 @@
 				"name": "resourceCommand.signal",
 				"type": "AbortSignal",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional cancellation signal: if it is aborted while the command runs, the command is halted and cleaned up, and the call then rejects with the signal's abort reason; a signal that is already aborted rejects before the command starts. Without it, the command runs until it exits or reaches timeoutMs."
 			},
 			{
@@ -111,7 +111,7 @@
 						"name": "resourceCommand.signal",
 						"type": "AbortSignal",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Optional cancellation signal: if it is aborted while the command runs, the command is halted and cleaned up, and the call then rejects with the signal's abort reason; a signal that is already aborted rejects before the command starts. Without it, the command runs until it exits or reaches timeoutMs."
 					},
 					{

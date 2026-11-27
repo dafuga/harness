@@ -23,7 +23,7 @@
 				"name": "HtmlElement.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet provides child content for the selected element. It is called and rendered inside that element only when children is truthy; otherwise no snippet is rendered."
 			},
 			{

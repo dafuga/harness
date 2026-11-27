@@ -23,7 +23,7 @@
 				"name": "HtmlInputSearch.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet declared in the props type and removed from the spread by destructuring, so it is never forwarded to the element. The markup never renders it, so passing a snippet has no effect on the output."
 			}
 		],

@@ -23,7 +23,7 @@
 				"name": "SvgForeignObject.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet that supplies the element's child content. It is invoked without arguments when present; when omitted, no child content is rendered."
 			}
 		],

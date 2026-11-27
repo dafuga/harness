@@ -132,7 +132,7 @@
 				"name": "SourceCodeAction.title",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The name the entity is shown under at this place, passed as the second argument of nav.source. When it is omitted, entity.name is passed instead; any string, including an empty one, is passed through unchanged.",
 				"examples": ["SourceCodeAction", "renderOrderRow — OrderTable"]
 			},

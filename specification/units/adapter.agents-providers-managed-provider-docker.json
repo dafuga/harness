@@ -114,7 +114,8 @@
 			{
 				"name": "dockerDaemon.context",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "requireWorkspaceImage.daemon",
@@ -548,7 +549,8 @@
 					{
 						"name": "dockerDaemon.context",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

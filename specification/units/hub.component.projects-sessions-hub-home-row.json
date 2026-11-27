@@ -33,7 +33,7 @@
 				"name": "HubHomeRow.meta",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional secondary row label."
 			},
 			{
@@ -54,14 +54,14 @@
 				"name": "HubHomeRow.lead",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional snippet placed before the title."
 			},
 			{
 				"name": "HubHomeRow.trailing",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional snippet placed after the row content."
 			}
 		],

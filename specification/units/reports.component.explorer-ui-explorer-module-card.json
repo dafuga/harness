@@ -243,7 +243,7 @@
 				"name": "ExplorerModuleCard.category",
 				"type": "ExplorerCategory | null",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional category override; undefined or null falls back to a catalog entity category, while a support row has no category fallback. The effective category selects the page, visual, or code-card branch.",
 				"examples": ["components", null]
 			},
@@ -251,7 +251,7 @@
 				"name": "ExplorerModuleCard.shot",
 				"type": "Evidence | null",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional card-owned evidence capture; when omitted, a visual catalog row resolves its capture through lens.evidence and catalogShot, while null forces a gap. Nonvisual branches do not render the picture snippet.",
 				"examples": [
 					{

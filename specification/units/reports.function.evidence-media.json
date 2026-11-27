@@ -21,7 +21,7 @@
 				"name": "formatDuration.seconds",
 				"type": "number",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Duration in seconds, used for audio clip lengths: the recorded durationSeconds, or the duration an audio element reports after its metadata loads. Fractions are dropped by flooring, and undefined, NaN, infinite or negative values produce an empty string.",
 				"examples": [4.52, 93.8, 3725.4]
 			},
@@ -97,7 +97,7 @@
 						"name": "formatDuration.seconds",
 						"type": "number",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Duration in seconds, used for audio clip lengths: the recorded durationSeconds, or the duration an audio element reports after its metadata loads. Fractions are dropped by flooring, and undefined, NaN, infinite or negative values produce an empty string.",
 						"examples": [4.52, 93.8, 3725.4]
 					}
@@ -203,7 +203,8 @@
 				{
 					"name": "formatDuration.seconds",
 					"type": "number",
-					"required": false
+					"required": false,
+					"defaultKind": "omitted"
 				}
 			],
 			"output": "string",

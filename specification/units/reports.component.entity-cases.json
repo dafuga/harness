@@ -39,7 +39,7 @@
 				"name": "EntityCases.document",
 				"type": "unknown",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional recorded document passed with unit to artifactCases when examples is undefined, to produce observed rows or a gap. In the non-gap recorded view, it appears in the expandable full-values disclosure.",
 				"examples": [null],
 				"unknownReason": "Recorded evidence can come from multiple producers or be absent; the reader recognizes supported document shapes."
@@ -48,7 +48,7 @@
 				"name": "EntityCases.examples",
 				"type": "UsageExample[]",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional array of UsageExample values; defining it selects documented mode, and an empty array shows the no-documented-examples message. It takes precedence over document and its entries provide expected rows.",
 				"examples": [
 					[]
@@ -58,7 +58,7 @@
 				"name": "EntityCases.unit",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional unit identifier passed with document to artifactCases only when examples is undefined. It defaults to undefined (omitted), so examples mode does not use it.",
 				"examples": ["reports.function.artifact-cases"]
 			},

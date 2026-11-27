@@ -70,7 +70,7 @@
 				"name": "RegressionProof.follow",
 				"type": "(commit: string) => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional callback for client-side navigation to a checkpoint commit; when omitted, links use their ordinary anchor behavior. It is called only for an unprevented, unmodified primary click and defaults to undefined."
 			}
 		],

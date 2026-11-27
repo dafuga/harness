@@ -53,7 +53,8 @@
 			{
 				"name": "PairingExchangeService.exchange.holder",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -93,7 +94,8 @@
 					{
 						"name": "PairingExchangeService.exchange.holder",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

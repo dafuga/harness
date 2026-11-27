@@ -29,7 +29,8 @@
 			{
 				"name": "trackerHostResourceAdmission.resources",
 				"type": "TrackerHostResources",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerHostResourceAdmission.occupied",
@@ -62,7 +63,8 @@
 					{
 						"name": "trackerHostResourceAdmission.resources",
 						"type": "TrackerHostResources",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "trackerHostResourceAdmission.occupied",

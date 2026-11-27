@@ -47,7 +47,7 @@
 				"name": "HarnessGroup.icon",
 				"type": "HarnessIconName",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional HarnessIconName rendered beside the title when truthy. If omitted, no group icon is rendered.",
 				"examples": ["chevron-down", "chevron-right"]
 			},
@@ -55,7 +55,7 @@
 				"name": "HarnessGroup.source",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional string passed as the heading element's title attribute. If omitted, the component passes undefined.",
 				"examples": ["packages/reports/src/components/explorer-ui/HarnessGroup.svelte"]
 			},
@@ -63,7 +63,7 @@
 				"name": "HarnessGroup.description",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional paragraph rendered above the children when truthy. An empty string or omitted value renders no paragraph.",
 				"examples": ["Reusable report components", "Modules related to this report"]
 			},

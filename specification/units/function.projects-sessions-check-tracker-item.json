@@ -64,6 +64,7 @@
 				"name": "trackerItemError.body",
 				"type": "TrackerDuplicateDetails",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional duplicate details attached to the error for structured clients."
 			}
 		],
@@ -136,6 +137,7 @@
 						"name": "trackerItemError.body",
 						"type": "TrackerDuplicateDetails",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional duplicate details attached to the error for structured clients."
 					}
 				],

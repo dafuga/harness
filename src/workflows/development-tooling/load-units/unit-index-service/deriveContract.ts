@@ -73,6 +73,7 @@ function storageInputs(
 			name: `${model.name}.${field.name}`,
 			type: field.type,
 			required: field.required,
+			...(field.defaultKind ? { defaultKind: field.defaultKind } : {}),
 			...(Object.hasOwn(field, 'default') ? { default: field.default } : {})
 		}))
 	);
@@ -146,15 +147,26 @@ function explainedItem(
 	if (previous.type === 'unknown' && inherited) previous.type = inherited.type;
 	const documentation = { ...previous };
 	delete documentation.default;
-	// Preserve authored defaults when an optional prop has no source literal.
-	const keepsAuthoredDefault =
-		Object.hasOwn(previous, 'default') &&
-		item.required === false &&
-		!Object.hasOwn(item, 'default');
+	delete documentation.defaultKind;
+
 	return {
 		...documentation,
-		...item,
-		...(keepsAuthoredDefault ? { default: previous.default } : {}),
+		...withAuthoredDefault(item, previous),
 		...(item.type === 'unknown' && previous.type ? { type: previous.type } : {})
 	};
+}
+
+/** Keep authored concrete defaults when source gives no initializer value. */
+function withAuthoredDefault(item: ContractItem, previous: Partial<ContractItem>): ContractItem {
+	if (
+		!Object.hasOwn(previous, 'default') ||
+		item.required !== false ||
+		item.defaultKind === 'undefined' ||
+		Object.hasOwn(item, 'default') ||
+		(item.defaultKind === 'omitted' && previous.default === 'undefined (omitted)')
+	)
+		return item;
+	const field = { ...item, default: previous.default };
+	delete field.defaultKind;
+	return field;
 }

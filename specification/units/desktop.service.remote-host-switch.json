@@ -36,7 +36,8 @@
 			{
 				"name": "RemoteHostSwitchService.enable.ownerId",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -150,7 +151,8 @@
 					{
 						"name": "RemoteHostSwitchService.enable.ownerId",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

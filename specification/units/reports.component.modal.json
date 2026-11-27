@@ -41,7 +41,7 @@
 				"name": "Modal.isOpen",
 				"type": "boolean",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional open state that overrides open whenever it is not null or undefined, and it defaults to JavaScript undefined. A supplied boolean, including false, takes precedence over open.",
 				"examples": [true, false]
 			},
@@ -57,14 +57,14 @@
 				"name": "Modal.summary",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional description displayed below the section dialog title. Defaults to omitted."
 			},
 			{
 				"name": "Modal.actions",
 				"type": "import('svelte').Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional section-specific controls rendered in the dialog header. Defaults to omitted."
 			},
 			{
@@ -86,28 +86,28 @@
 				"name": "Modal.onClose",
 				"type": "() => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional close-request callback, defaulting to JavaScript undefined so nothing is called. It runs before onclose for a close-button click, a backdrop click (a click whose target is the dialog element) and the native cancel event, and the component never changes open state itself."
 			},
 			{
 				"name": "Modal.onclose",
 				"type": "() => void",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional second close-request callback, defaulting to JavaScript undefined. close() calls it after onClose in the same call, and if onClose throws, the error propagates out of close() and this callback is not called."
 			},
 			{
 				"name": "Modal.children",
 				"type": "import('svelte').Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional dialog body snippet, defaulting to JavaScript undefined so no body content renders. It renders with no arguments inside the viewer-content wrapper below the header, and only while the dialog is shown."
 			},
 			{
 				"name": "Modal.footer",
 				"type": "import('svelte').Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional footer snippet, defaulting to JavaScript undefined, which omits the footer element entirely. When supplied, it renders with no arguments inside an hx-footer element after the content wrapper, and only while the dialog is shown."
 			}
 		],

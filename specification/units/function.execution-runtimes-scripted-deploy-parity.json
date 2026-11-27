@@ -71,6 +71,7 @@
 				"name": "parityReport.candidate",
 				"type": "{ release: Release; target: Environment }",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional immutable release and destination whose applied migrations must be checked."
 			},
 			{
@@ -223,6 +224,7 @@
 						"name": "parityReport.candidate",
 						"type": "{ release: Release; target: Environment }",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional immutable release and destination whose applied migrations must be checked."
 					}
 				],

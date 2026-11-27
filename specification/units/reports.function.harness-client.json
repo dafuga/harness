@@ -35,6 +35,7 @@
 				"name": "harnessClient.fetcher",
 				"type": "typeof fetch",
 				"required": false,
+				"defaultKind": "omitted",
 				"description": "Optional fetch implementation used for resource requests; when omitted, the code uses the global fetch function via fetcher ?? fetch. Providing a fetcher skips the shared-client cache, so each call to harnessClient creates an independent client."
 			}
 		],
@@ -68,6 +69,7 @@
 						"name": "harnessClient.fetcher",
 						"type": "typeof fetch",
 						"required": false,
+						"defaultKind": "omitted",
 						"description": "Optional fetch implementation used for resource requests; when omitted, the code uses the global fetch function via fetcher ?? fetch. Providing a fetcher skips the shared-client cache, so each call to harnessClient creates an independent client."
 					}
 				],

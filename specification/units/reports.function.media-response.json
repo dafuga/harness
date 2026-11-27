@@ -31,7 +31,7 @@
 				"name": "mediaResponse.range",
 				"type": "string | null",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "When omitted (default undefined), null, or empty, the helper returns the full buffer; otherwise this is one bytes=...-... range. It accepts closed, open-ended, or positive suffix ranges and returns 416 for malformed, unsafe-integer, or unsatisfiable ranges; multiple ranges are unsupported.",
 				"examples": [null, "bytes=0-1023", "bytes=-512"]
 			},
@@ -80,7 +80,7 @@
 						"name": "mediaResponse.range",
 						"type": "string | null",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "When omitted (default undefined), null, or empty, the helper returns the full buffer; otherwise this is one bytes=...-... range. It accepts closed, open-ended, or positive suffix ranges and returns 416 for malformed, unsafe-integer, or unsatisfiable ranges; multiple ranges are unsupported.",
 						"examples": [null, "bytes=0-1023", "bytes=-512"]
 					},

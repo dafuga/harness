@@ -40,7 +40,7 @@
 				"name": "manageHooks.root",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Root path used to locate the Git working tree for hook management. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
 				"examples": ["/workspace/project"]
 			},
@@ -64,7 +64,7 @@
 				"name": "runHook.root",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Root path used to locate the Git working tree for the hook run. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
 				"examples": ["/workspace/project"]
 			},
@@ -79,7 +79,7 @@
 				"name": "checkMessage.root",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Root path used to locate the Git working tree for the message check. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
 				"examples": ["/workspace/project"]
 			},
@@ -257,7 +257,7 @@
 						"name": "manageHooks.root",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Root path used to locate the Git working tree for hook management. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
 						"examples": ["/workspace/project"]
 					}
@@ -332,7 +332,7 @@
 						"name": "runHook.root",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Root path used to locate the Git working tree for the hook run. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
 						"examples": ["/workspace/project"]
 					}
@@ -383,7 +383,7 @@
 						"name": "checkMessage.root",
 						"type": "string",
 						"required": false,
-						"default": "undefined (omitted)",
+						"defaultKind": "omitted",
 						"description": "Root path used to locate the Git working tree for the message check. It is resolved to an absolute path and defaults to `process.cwd()` when omitted.",
 						"examples": ["/workspace/project"]
 					}

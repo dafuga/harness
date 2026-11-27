@@ -29,12 +29,14 @@
 			{
 				"name": "trackerHostModelPolicy.ladderConfig",
 				"type": "TrackerLadderConfig",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerHostModelPolicy.now",
 				"type": "() => number",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -62,12 +64,14 @@
 					{
 						"name": "trackerHostModelPolicy.ladderConfig",
 						"type": "TrackerLadderConfig",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "trackerHostModelPolicy.now",
 						"type": "() => number",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

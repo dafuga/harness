@@ -26,7 +26,7 @@
 				"name": "SvgFeDistantLight.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Svelte Snippet rendered inside the feDistantLight element with {@render children()} only when it is truthy. When it is omitted (undefined), the element renders with no child content, and any value passed must be a Snippet, since the code calls it as a function."
 			}
 		],

@@ -23,7 +23,7 @@
 				"name": "HtmlH5.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "The Svelte Snippet that supplies the h5 content; the component calls it with no arguments through `{@render children()}` only when it is truthy, so omitting it leaves the h5 empty. It matters only when the heading needs content, and the component does not validate, wrap, or restrict what the snippet renders."
 			}
 		],

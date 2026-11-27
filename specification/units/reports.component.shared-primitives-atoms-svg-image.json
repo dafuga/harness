@@ -23,7 +23,7 @@
 				"name": "SvgImage.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "An optional Svelte snippet rendered inside the native image element when provided. It is not called when absent."
 			}
 		],

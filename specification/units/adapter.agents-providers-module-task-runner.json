@@ -216,7 +216,8 @@
 			{
 				"name": "pendingInputTokens.prior",
 				"type": "RequestContext",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "contextThreshold.value",
@@ -292,7 +293,8 @@
 			{
 				"name": "dockerTaskImage.image",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "parsePositiveIntegerEnvironmentValue.value",
@@ -332,7 +334,8 @@
 			{
 				"name": "processMonitor.gate",
 				"type": "ProviderRequestGate",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "killGroup.child",
@@ -847,7 +850,8 @@
 					{
 						"name": "pendingInputTokens.prior",
 						"type": "RequestContext",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -1038,7 +1042,8 @@
 					{
 						"name": "dockerTaskImage.image",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -1122,7 +1127,8 @@
 					{
 						"name": "processMonitor.gate",
 						"type": "ProviderRequestGate",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

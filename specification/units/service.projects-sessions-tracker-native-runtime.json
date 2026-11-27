@@ -414,7 +414,8 @@
 			{
 				"name": "composeTrackerDispatch.machines",
 				"type": "PeerStarts",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "liveTrackerDuePolicy.store",
@@ -469,12 +470,14 @@
 			{
 				"name": "trackerHubMachines.scheduler",
 				"type": "TrackerDispatchSchedulerService",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "localRunnerStatus.scheduler",
 				"type": "TrackerDispatchSchedulerService",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "machineReport.runner",
@@ -764,7 +767,8 @@
 			{
 				"name": "handLaunchSelection.pane",
 				"type": "WatchdogPane",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "handLaunchNode.item",
@@ -825,7 +829,8 @@
 			{
 				"name": "trackerHostAdmission.adapter",
 				"type": "TrackerHostAdapterConfig",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerHostAdmission.routeFor",
@@ -835,7 +840,8 @@
 			{
 				"name": "trackerHostAdmission.hostResources",
 				"type": "TrackerHostResources",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerHostAdmission.now",
@@ -916,7 +922,8 @@
 			{
 				"name": "trackerHostInventory.tmux",
 				"type": "TrackerTmuxAdapter",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerHostInventory.node",
@@ -1002,12 +1009,14 @@
 			{
 				"name": "trackerHostLaunchPort.client",
 				"type": "TrackerWorkerClient",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "trackerHostLaunchPort.transcriptRoots",
 				"type": "readonly string[]",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "withTrackerRunUsage.event",
@@ -1198,12 +1207,14 @@
 			{
 				"name": "configuredHostWatchdog.hostEffects",
 				"type": "Pick<TrackerHostEffects, 'watchdog' | 'launch'>",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "configuredHostWatchdog.automaticEnabled",
 				"type": "() => boolean",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "recordStartupAlerts.store",
@@ -1238,7 +1249,8 @@
 			{
 				"name": "recordWatchdogAlert.hold",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "contextAlert.store",
@@ -1313,7 +1325,8 @@
 			{
 				"name": "applyIdleDecision.settles",
 				"type": "boolean",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "applyIdleDecision.decision",
@@ -1650,7 +1663,8 @@
 			{
 				"name": "watchTrackerQuota.tmux",
 				"type": "TrackerTmuxAdapter",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "watchTrackerQuota.runs",
@@ -1695,7 +1709,8 @@
 			{
 				"name": "automaticQueueHold.policy",
 				"type": "TrackerDispatchPolicy",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "automaticQueueHold.intent",
@@ -1710,7 +1725,8 @@
 			{
 				"name": "automaticQueueHold.queued",
 				"type": "TrackerLaunchRung",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "queuedRung.run",
@@ -1730,7 +1746,8 @@
 			{
 				"name": "recoveryBudget.latest",
 				"type": "TrackerListedRun",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "recoveryBudget.item",
@@ -1835,7 +1852,8 @@
 			{
 				"name": "trackerRecoveryLaunch.dispatch",
 				"type": "TrackerDispatcherService",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "recheckTrackerRecovery.store",
@@ -2503,7 +2521,8 @@
 					{
 						"name": "composeTrackerDispatch.machines",
 						"type": "PeerStarts",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -2610,7 +2629,8 @@
 					{
 						"name": "trackerHubMachines.scheduler",
 						"type": "TrackerDispatchSchedulerService",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -2628,7 +2648,8 @@
 					{
 						"name": "localRunnerStatus.scheduler",
 						"type": "TrackerDispatchSchedulerService",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -3203,7 +3224,8 @@
 					{
 						"name": "handLaunchSelection.pane",
 						"type": "WatchdogPane",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -3316,7 +3338,8 @@
 					{
 						"name": "trackerHostAdmission.adapter",
 						"type": "TrackerHostAdapterConfig",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "trackerHostAdmission.routeFor",
@@ -3326,7 +3349,8 @@
 					{
 						"name": "trackerHostAdmission.hostResources",
 						"type": "TrackerHostResources",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "trackerHostAdmission.now",
@@ -3485,7 +3509,8 @@
 					{
 						"name": "trackerHostInventory.tmux",
 						"type": "TrackerTmuxAdapter",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "trackerHostInventory.node",
@@ -3636,12 +3661,14 @@
 					{
 						"name": "trackerHostLaunchPort.client",
 						"type": "TrackerWorkerClient",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "trackerHostLaunchPort.transcriptRoots",
 						"type": "readonly string[]",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -3993,12 +4020,14 @@
 					{
 						"name": "configuredHostWatchdog.hostEffects",
 						"type": "Pick<TrackerHostEffects, 'watchdog' | 'launch'>",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "configuredHostWatchdog.automaticEnabled",
 						"type": "() => boolean",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -4059,7 +4088,8 @@
 					{
 						"name": "recordWatchdogAlert.hold",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -4186,7 +4216,8 @@
 					{
 						"name": "applyIdleDecision.settles",
 						"type": "boolean",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "applyIdleDecision.decision",
@@ -4944,7 +4975,8 @@
 					{
 						"name": "watchTrackerQuota.tmux",
 						"type": "TrackerTmuxAdapter",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "watchTrackerQuota.runs",
@@ -5015,7 +5047,8 @@
 					{
 						"name": "automaticQueueHold.policy",
 						"type": "TrackerDispatchPolicy",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "automaticQueueHold.intent",
@@ -5030,7 +5063,8 @@
 					{
 						"name": "automaticQueueHold.queued",
 						"type": "TrackerLaunchRung",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -5076,7 +5110,8 @@
 					{
 						"name": "recoveryBudget.latest",
 						"type": "TrackerListedRun",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					},
 					{
 						"name": "recoveryBudget.item",
@@ -5285,7 +5320,8 @@
 					{
 						"name": "trackerRecoveryLaunch.dispatch",
 						"type": "TrackerDispatcherService",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

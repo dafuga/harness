@@ -11,14 +11,7 @@ test('Extracts parameter fields and respects nested syntax', () => {
 	const code =
 		'url: string, retries = 3, label?: string, callback: (value: Map<string, number>) => void';
 	const options = { owner: 'request' };
-	const parameters = parseParameters(code, code, options).map(
-		({ name, type, required, default: value }) => ({
-			name,
-			type,
-			required,
-			...(value === undefined ? {} : { default: value })
-		})
-	);
+	const parameters = parseParameters(code, code, options);
 	const nested = 'fn(a, b), next';
 	const cuts = splitTopLevel(nested, ',');
 	const normalized = normalizeType('  Promise < string > ; ');
@@ -26,7 +19,7 @@ test('Extracts parameter fields and respects nested syntax', () => {
 	expect(parameters).toEqual([
 		{ name: 'request.url', type: 'string', required: true },
 		{ name: 'request.retries', type: 'number', required: false, default: 3 },
-		{ name: 'request.label', type: 'string', required: false },
+		{ name: 'request.label', type: 'string', required: false, defaultKind: 'omitted' },
 		{ name: 'request.callback', type: '(value: Map<string, number>) => void', required: true }
 	]);
 	expect(cuts).toEqual([8]);

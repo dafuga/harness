@@ -59,7 +59,8 @@
 			{
 				"name": "TrackerOperationRepository.applyOps.persist",
 				"type": "() => void",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerOperationRepository.appendLocal.request",
@@ -69,7 +70,8 @@
 			{
 				"name": "TrackerOperationRepository.appendLocal.persist",
 				"type": "() => void",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "TrackerOperationRepository.commitLocal.node",
@@ -106,7 +108,8 @@
 			{
 				"name": "TrackerOperationRepository.countOpsSince.onlyNode",
 				"type": "string",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "localTrackerOperation.database",
@@ -182,7 +185,8 @@
 					{
 						"name": "TrackerOperationRepository.applyOps.persist",
 						"type": "() => void",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -205,7 +209,8 @@
 					{
 						"name": "TrackerOperationRepository.appendLocal.persist",
 						"type": "() => void",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
@@ -293,7 +298,8 @@
 					{
 						"name": "TrackerOperationRepository.countOpsSince.onlyNode",
 						"type": "string",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

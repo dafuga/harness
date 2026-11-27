@@ -41,7 +41,8 @@
 			{
 				"name": "RemoteHostAccountService.constructor.unregister",
 				"type": "(hostId: string, ownerId: string) => Promise<void>",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			},
 			{
 				"name": "RemoteHostAccountService.link.ownerId",
@@ -168,7 +169,8 @@
 					{
 						"name": "RemoteHostAccountService.constructor.unregister",
 						"type": "(hostId: string, ownerId: string) => Promise<void>",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

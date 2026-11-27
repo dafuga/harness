@@ -25,7 +25,8 @@
 			{
 				"name": "estimateApiCost.usage",
 				"type": "TaskUsage",
-				"required": false
+				"required": false,
+				"defaultKind": "omitted"
 			}
 		],
 		"outputs": [
@@ -52,7 +53,8 @@
 					{
 						"name": "estimateApiCost.usage",
 						"type": "TaskUsage",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [

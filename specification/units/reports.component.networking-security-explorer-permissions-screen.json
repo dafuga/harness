@@ -421,7 +421,7 @@
 				"name": "ExplorerPermissionsScreen.endpoint",
 				"type": "string",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional API unit ID that limits the screen to the API grants naming that endpoint across all profiles. Defaults to JavaScript undefined, which shows the profile index or the selected profile instead.",
 				"examples": ["reports.endpoint.api-report-audio-comparison"]
 			}

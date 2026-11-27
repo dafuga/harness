@@ -56,7 +56,7 @@
 				"name": "ExplorerUsage.layout",
 				"type": "'grouped' | 'flat'",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Compatibility input accepting grouped or flat; this component never reads it, so it does not change the single flat consumer list. The list remains in first-occurrence order and is subject to limit and the three-link maximum.",
 				"examples": ["grouped", "flat"]
 			},

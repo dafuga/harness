@@ -26,7 +26,7 @@
 				"name": "SvgDefs.children",
 				"type": "Snippet",
 				"required": false,
-				"default": "undefined (omitted)",
+				"defaultKind": "omitted",
 				"description": "Optional Snippet rendered with no arguments inside the defs element through `{#if children}{@render children()}{/if}`, so it matters only when the caller needs child content inside the element. It is destructured out of the props, so it is never spread onto the element as an attribute, and when omitted (undefined) the element renders no child content."
 			}
 		],

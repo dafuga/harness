@@ -54,7 +54,8 @@
 					{
 						"name": "readOverview.signal",
 						"type": "AbortSignal",
-						"required": false
+						"required": false,
+						"defaultKind": "omitted"
 					}
 				],
 				"outputs": [
